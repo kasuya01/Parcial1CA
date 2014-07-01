@@ -1,0 +1,20 @@
+<table width='100%' hight='10%' align='center'>
+				<tr>
+					<td colspan='5' align='center'><a href='../../../Reportes/Rep_General_de_pruebas_por_servicio_04_06_2013__02_57_36 PM.ods'><H5>DESCARGAR REPORTE EXCEL <img src='../../../Imagenes/excel.gif'></H5></a></td>
+				</tr>
+				<tr>
+					<td colspan='25' align='center'><h3>REGISTRO DE EXAMENES PRACTCADOS A LOS DIFERENTES SERVICIOS SEPARADOS POR SECCION</h3></td>
+				</tr>
+				<tr>
+					<td colspan='25' align='center'><h3>PERIODO DEL:  01/02/2013 AL 04/06/2013</h3></td>
+				</tr>
+	     		</table><table colspan='21' width='100%' hight='10%' align='center'>
+	        		<tr>
+						<td colspan='25' align='center' ><h3>PROCEDENCIA: CONSULTA EXTERNA</h3></td>
+					</tr></table><table width='100%' border='1' align='center'>
+						<tr style='background:#BBBEC9'>
+							<td class='CobaltFieldCaptionTD'><strong>Servicio</strong></td><td class='CobaltFieldCaptionTD'><strong>BACTERIOLOGIA</strong></td><td class='CobaltFieldCaptionTD'><strong>BANCO DE SANGRE</strong></td><td class='CobaltFieldCaptionTD'><strong>CLINICAS VICITS</strong></td><td class='CobaltFieldCaptionTD'><strong>HEMATOLOGIA</strong></td><td class='CobaltFieldCaptionTD'><strong>INMUNOLOGIA</strong></td><td class='CobaltFieldCaptionTD'><strong>QUIMICA SANGUINEA</strong></td><td class='CobaltFieldCaptionTD'><strong>URIANALISIS Y COPROLOGIA</strong></td><td class='CobaltFieldCaptionTD'><strong>TOTAL</strong></td>
+						</tr><tr>
+						<td width='10%'>Clinicas VICITS</td><td width='10%'>1</td><td width='10%'>0</td><td width='10%'>8</td><td width='10%'>1</td><td width='10%'>1</td><td width='10%'>8</td><td width='10%'>2</td><td width='14%'><strong>21</strong></td>
+		                           </tr></table>
+				<br><br>

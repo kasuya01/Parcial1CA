@@ -1,0 +1,105 @@
+@charset "utf-8";
+/* CSS Document */
+.titulo {
+  margin-top: 1px;
+  letter-spacing: 12px;
+  color: darkblue;
+  font-weight:bolder;
+  font-size: 24px;
+}
+
+.titulo2 {
+  letter-spacing: 4px;
+  color: darkgreen;
+  font-weight:bold;
+  font-size: 16px;
+}
+
+
+.tituloCelda{
+  color:#FFFFFF;
+  font-weight:900;
+  font-size: 16px;
+}
+
+.tituloFieldset{
+  margin-top: 1px;
+  letter-spacing: 6px;
+  color:#004600;
+  font-weight:bolder;
+  font-size: 24px;
+}
+
+
+.encabezadoTabla {			
+		border: 1px solid #000000;		
+		background:#007900;
+		color:#FFFFFF;
+ 	    font-weight:bolder;		
+}
+
+.contenidoTabla {			
+		background:#F2F2F2;
+		color:#000000;
+ 	    font-weight:bolder;		
+}
+
+.contenidoId{			
+		background:#F2F2F2;
+		letter-spacing: 3px;
+		color:#000000;
+ 	    font-weight:bolder;		
+		font-size:16px;
+}
+
+.calendarBox {
+		position: relative;
+		top: 0px;
+		margin: 0 auto;
+		padding: 5px;
+		width: 859px;
+		border: 2px solid #000000;		
+		
+}
+
+
+.calendarBoxDetalle {
+		position: relative;
+		top: 0px;
+		margin: 0 auto;
+		padding: 5px;
+		width: 660px;
+		border: 2px solid #EAEA00;	
+		background:#003300;	
+		
+}
+
+.detalleEstados{
+		position: relative;
+		top: 0px;
+		margin: 0 auto;
+		padding: 5px;
+		width: 660px;
+		border: 2px solid #000000;	
+		
+}
+
+
+.calendarFloat {
+		float: left;
+		width: 164px;
+		height: 105px;
+		margin: 1px 0px 0px 1px;
+		padding: 1px;
+		border: 2px solid #000000;
+}
+	
+.calendarFloat2 {
+		float: left;
+		width: 164px;
+		height: 40px;
+		margin: 1px 0px 0px 1px;
+		padding: 1px;
+		border: 2px solid #000000;
+}
+

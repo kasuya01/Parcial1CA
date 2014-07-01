@@ -1,0 +1,52 @@
+<table width='100%' hight='10%' align='center'>
+				<tr>
+					<td colspan='5' align='center'><a href='../../../Reportes/Rep_General_de_pruebas_por_servicio_04_03_2013__09_11_38 AM.ods'><H5>DESCARGAR REPORTE EXCEL <img   src='../../../Imagenes/excel.gif'></H5></a></td>
+				</tr>
+				<tr>
+					<td colspan='25' align='center'><h3>REGISTRO DE EXAMENES PRACTCADOS A LOS DIFERENTES SERVICIOS SEPARADOS POR SECCION</h3></td>
+				</tr>
+				<tr>
+					<td colspan='25' align='center'><h3>PERIODO DEL:  04/03/2012 AL 04/03/2013</h3></td>
+				</tr>
+	     		</table><table colspan='21' width='100%' hight='10%' align='center'>
+	        		<tr>
+						<td colspan='25' align='center' ><h3>PROCEDENCIA: CONSULTA EMERGENCIA</h3></td>
+					</tr></table><table colspan='21' width='100%' hight='10%' align='center'>
+	        		<tr>
+						<td colspan='25' align='center' ><h3>PROCEDENCIA: CONSULTA EXTERNA</h3></td>
+					</tr></table><table width='100%' border='1' align='center'>
+						<tr style='background:#BBBEC9'>
+							<td class='CobaltFieldCaptionTD'><strong>Servicio</strong></td><td class='CobaltFieldCaptionTD'><strong>Acido Resistente</strong></td><td class='CobaltFieldCaptionTD'><strong>Bacteriologia</strong></td><td class='CobaltFieldCaptionTD'><strong>Banco de Sangre</strong></td><td class='CobaltFieldCaptionTD'><strong>Coagulacion</strong></td><td class='CobaltFieldCaptionTD'><strong>Hematologia</strong></td><td class='CobaltFieldCaptionTD'><strong>Pruebas Especiales</strong></td><td class='CobaltFieldCaptionTD'><strong>Quimica</strong></td><td class='CobaltFieldCaptionTD'><strong>Urianalisis y Coprologia</strong></td><td class='CobaltFieldCaptionTD'><strong>TOTAL</strong></td>
+						</tr><tr>
+						<td width='10%'>Cirugia General</td><td width='10%'>0</td><td width='10%'>0</td><td width='10%'>0</td><td width='10%'>0</td><td width='10%'>0</td><td width='10%'>0</td><td width='10%'>4</td><td width='10%'>0</td><td width='14%'><strong>4</strong></td>
+		                           </tr><tr>
+						<td width='10%'>Medicina Interna</td><td width='10%'>0</td><td width='10%'>1</td><td width='10%'>0</td><td width='10%'>0</td><td width='10%'>1</td><td width='10%'>0</td><td width='10%'>5</td><td width='10%'>0</td><td width='14%'><strong>7</strong></td>
+		                           </tr></table>
+				<br><br><table colspan='21' width='100%' hight='10%' align='center'>
+	        		<tr>
+						<td colspan='25' align='center' ><h3>PROCEDENCIA: HOSPITALIZACION BIENESTAR MAGISTERIAL</h3></td>
+					</tr></table><table colspan='21' width='100%' hight='10%' align='center'>
+	        		<tr>
+						<td colspan='25' align='center' ><h3>PROCEDENCIA: HOSPITALIZACION CIRUGIA</h3></td>
+					</tr></table><table colspan='21' width='100%' hight='10%' align='center'>
+	        		<tr>
+						<td colspan='25' align='center' ><h3>PROCEDENCIA: HOSPITALIZACION GINECOLOGIA</h3></td>
+					</tr></table><table colspan='21' width='100%' hight='10%' align='center'>
+	        		<tr>
+						<td colspan='25' align='center' ><h3>PROCEDENCIA: HOSPITALIZACION ISSS</h3></td>
+					</tr></table><table colspan='21' width='100%' hight='10%' align='center'>
+	        		<tr>
+						<td colspan='25' align='center' ><h3>PROCEDENCIA: HOSPITALIZACION MEDICINA</h3></td>
+					</tr></table><table colspan='21' width='100%' hight='10%' align='center'>
+	        		<tr>
+						<td colspan='25' align='center' ><h3>PROCEDENCIA: HOSPITALIZACION NEONATOLOGIA</h3></td>
+					</tr></table><table colspan='21' width='100%' hight='10%' align='center'>
+	        		<tr>
+						<td colspan='25' align='center' ><h3>PROCEDENCIA: HOSPITALIZACION OBSTETRICIA</h3></td>
+					</tr></table><table colspan='21' width='100%' hight='10%' align='center'>
+	        		<tr>
+						<td colspan='25' align='center' ><h3>PROCEDENCIA: HOSPITALIZACION PEDIATRICA CIRUGIA</h3></td>
+					</tr></table><table colspan='21' width='100%' hight='10%' align='center'>
+	        		<tr>
+						<td colspan='25' align='center' ><h3>PROCEDENCIA: HOSPITALIZACION PEDIATRICA MEDICINA</h3></td>
+					</tr></table>

@@ -1,0 +1,14 @@
+<tr>
+						<td colspan='28' align='center'><h3>REGISTRO DE EXAMENES PRACTICADOS A LOS DIFERENTES SERVICIOS SEPARADOS POR SECCION</h3></td>
+					</tr>
+					<tr>
+						<td colspan='28' align='center' ><h4>PROCEDENCIA:CONSULTA EXTERNA</h4></td>
+					</tr>
+					<tr>
+						<td colspan='28' align='center'><h4>PERIODO DEL:  01/02/2013 AL 13/06/2013</h4></td>
+					</tr>
+	        	</table><table width='90%' border='1' align='center' >
+					<tr style='background:#BBBEC9'>
+						<td class='CobaltFieldCaptionTD' width='20%'><strong>Servicio</strong></td><td class='CobaltFieldCaptionTD' width='12%'><strong>BACTERIOLOGIA</strong></td><td class='CobaltFieldCaptionTD' width='12%'><strong>BANCO DE SANGRE</strong></td><td class='CobaltFieldCaptionTD' width='12%'><strong>CLINICAS VICITS</strong></td><td class='CobaltFieldCaptionTD' width='12%'><strong>HEMATOLOGIA</strong></td><td class='CobaltFieldCaptionTD' width='12%'><strong>INMUNOLOGIA</strong></td><td class='CobaltFieldCaptionTD' width='12%'><strong>QUIMICA SANGUINEA</strong></td><td class='CobaltFieldCaptionTD' width='12%'><strong>URIANALISIS Y COPROLOGIA</strong></td><td class='CobaltFieldCaptionTD' width='12%'><strong>TOTAL</strong></td></tr><tr>
+						<td width='10%'>Clinicas VICITS</td><td width='10%'>1</td><td width='10%'>1</td><td width='10%'>11</td><td width='10%'>2</td><td width='10%'>1</td><td width='10%'>10</td><td width='10%'>3</td><td width='14%'><strong>29</strong></td>
+			        	</tr></table>

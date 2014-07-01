@@ -1,0 +1,37 @@
+/* Mailbox CCSTheme */
+BODY, TABLE, TH, TR, TD, UL, OL, LI, P, FONT, A, BLOCKQUOTE, LABEL { font-family: Tahoma, Verdana, Arial, Helvetica; font-size: 13px; }
+.MailboxPageBODY { font-family: Tahoma, Verdana, Arial, Helvetica; font-size: 13px; }
+.MailboxFormHeaderFont { color: #000000; font-size: 16px; font-weight: bold; }
+.MailboxFormTABLE { font-family: Tahoma, Verdana, Arial, Helvetica; font-size: 13px; }
+.MailboxColumnTD { background-color: #336699; color: #FFFFFF; font-size: 13px; font-weight: bold; }
+.MailboxFieldCaptionTD { background-color: #336699; color: #FFFFFF; font-size: 13px; }
+.MailboxDataTD { background-color: #EEEECC; color: #000000; font-size: 13px; }
+.MailboxErrorDataTD { background-color: #EEEECC; color: #FF0000; font-size: 13px; }
+.MailboxSeparatorTD{ height: 1px; background-color: #EEEECC; }
+.MailboxAltDataTD{ background-color: #F5F5E2; color: #000000; font-size: 13px; }
+.MailboxFooterTD { background-color: #336699; color: #FFFFFF; font-size: 13px; }
+a.MailboxSorterLink:link,a.MailboxSorterLink:visited{ color: #FFFFFF; font-weight: bold; text-decoration: underline; }
+a.MailboxSorterLink:hover,a.MailboxSorterLink:active{ color: #FFFF00; font-weight: bold; text-decoration: none; }
+a.MailboxDataLink:link,a.MailboxDataLink:visited{ color: #0000FF; text-decoration: underline; }
+a.MailboxDataLink:hover,a.MailboxDataLink:active{ color: #FF0000; text-decoration: none; }
+a.MailboxNavigatorLink:link,a.MailboxNavigatorLink:visited{ color: #FFFFFF; font-weight: bold; text-decoration: underline; }
+a.MailboxNavigatorLink:hover,a.MailboxNavigatorLink:active{ color: #FFFF00; font-weight: bold; text-decoration: none; }
+.MailboxButton { font-family: Arial, Tahoma, Helvetica, Verdana; font-size: 13px; }
+.MailboxInput { font-family: Arial, Tahoma, Helvetica, Verdana; font-size: 13px; }
+.MailboxTextarea { font-family: Arial, Tahoma, Helvetica, Verdana; font-size: 13px; }
+.MailboxSelect { font-family: Arial, Tahoma, Helvetica, Verdana; font-size: 13px; }
+/* Calendar */
+a.today:link,a.today:visited{ color: #FF0000; font-weight: bold; text-decoration: none; }
+a.today:hover,a.today:active{ color: #000000; font-weight: bold; text-decoration: none; }
+a.selectedDay:link,a.selectedDay:visited{ color: #FFFFFF; font-weight: bold; text-decoration: none; }
+a.selectedDay:hover,a.selectedDay:active{ color: #FF0000; font-weight: bold; text-decoration: none; }
+a.weekDay:link,a.weekDay:visited{ color: #0000FF; text-decoration: none; }
+a.weekDay:hover,a.weekDay:active{ color: #FF0000; text-decoration: none; }
+TD.selectedDay { margin: 1px; background-color: #336699; color: #FFFFFF; font-size: 13px; font-weight: bold; }
+TD.today { border-top: 1px solid #FF0000; border-left: 1px solid #FF0000; border-bottom: 1px solid #FF0000; border-right: 1px solid #FF0000; background-color: #F5F5E2; color: #000000; font-size: 13px; }
+TD.workday { background-color: #F5F5E2; color: #000000; font-size: 13px; }
+TD.weekend { background-color: #E4E5B5; color: #000000; font-size: 13px; }
+TH.calendar { margin: 1px; background-color: #336699; color: #FFFFFF; font-size: 13px; font-weight: bold; }
+.CalendarButtons { margin: 1px; font-family: Arial,Tahoma,Verdana,Helvetica; font-size: 13px; }
+.CalendarControls { font-family: Arial,Tahoma,Verdana,Helvetica; font-size: 13px; }
+.Table { }

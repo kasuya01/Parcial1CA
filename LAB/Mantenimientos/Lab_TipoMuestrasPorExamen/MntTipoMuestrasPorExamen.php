@@ -1,0 +1,216 @@
+<?php session_start();
+$nivel=$_SESSION['NIVEL'];
+$corr=$_SESSION['Correlativo'];
+$lugar=$_SESSION['Lugar'];
+$area=$_SESSION['Idarea']; 
+?>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">    
+<title>Mantenimiento de Examenes de Laboratorio</title>
+<script language="JavaScript" type="text/javascript" src="ajax_Lab_TipoMuestrasPorExamen.js"></script>
+<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
+<link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+<script language="JavaScript" >
+var resto = new Array();
+var c = 0;
+
+function LlenarComboExamen(idArea)
+{
+  LlenarExamenes(idArea);   
+}
+
+function AgregarItemsLista()
+{
+   var j=0; 
+   var encontrado = false; 
+   var texto = new Array(); 
+   var valor = new Array(); 
+   var combo=document.getElementById('cmbExamen');
+   var list1 = document.getElementById('ListMuestras');
+   var list2 = document.getElementById('ListAsociados');
+   // C�digo para ver cual son los que hay que eliminar de un select e incluirlos en el otro. 
+	if (combo.value != 0)
+	{
+            for (i=0 ; i<list1.options.length ; i++) 
+            { 	// Los que est�n seleccionados, comprobamos que no est�n en la segunda lista y si es asi, lo a�adimos a esta. 
+                if (list1.options[i].selected) 
+                {   j=0; 
+                    encontrado = false; 
+                    while (j < list2.options.length && !encontrado) 
+                    { 
+                        if (list1.options[i].value == list2.options[j].value) 
+			{ 
+                            encontrado = true; 
+			} 
+			j++; 
+                    } 
+					if (!encontrado) 
+					{ 
+						texto[texto.length] = list1.options[i].text; 
+						valor[valor.length] = list1.options[i].value; 
+					} 
+					else{alert("La Muestra ya esta asociado..")}
+			} 
+		} 
+		   // Eliminamos de uno y lo incluimos en el otro. 
+		for (h=texto.length-1;h>=0;h--) 
+		{ 
+			list2.options[list2.options.length] = new Option (texto[h], valor[h]); 
+			list1.options[texto[h]] = null; 
+			} 
+	}
+	else{
+		alert("Seleccione un Examen");
+	}
+}
+
+function EliminarItemsLista()
+{ 
+//alert("ENTRO");
+       indice=document.getElementById('ListAsociados').selectedIndex;
+	var lista = document.getElementById('ListAsociados').options;
+       // alert (indice);
+	if (document.getElementById('ListAsociados').length!=0){
+		if (indice != (-1))
+		{	//guardando en un arreglo temporal
+			resto[c]=document.getElementById('ListAsociados').value;
+			c++;
+			//eliminando el elemento de la lista
+			lista[indice] = null;
+		}
+		else
+		{
+		  alert("Seleccione la muestra a eliminar");
+		}
+	}
+	else alert("No hay muestra que eliminar");
+}
+</script>
+</head>
+
+<body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" >
+<?php 
+if ($nivel==1){
+	include_once ('../../../PaginaPrincipal/index_laboratorio2.php');}
+if ($nivel==2){
+	include_once ('../../../PaginaPrincipal/index_laboratorio22.php');}
+if ($nivel==31){
+	include_once ('../../../PaginaPrincipal/index_laboratorio31.php');}
+if ($nivel==33){
+	include_once ('../../../PaginaPrincipal/index_laboratorio33.php');}
+?><br>
+<table align="center" width="100%">
+<tr>
+<td>
+<div id="divOculto">
+<input type="hidden" name="txtoculto" id="txtoculto" value="NNN"/>
+</div>
+<div  id="divFrmNuevo" >
+<form name="frmnuevo">
+<table width="60%" border="0" align="center" class="StormyWeatherFormTABLE">
+    <tr>
+        <td colspan="2" class="CobaltFieldCaptionTD" align="center"><h3><strong>Asociaci&oacute;n de Tipos de Muestra por Examen</strong></h3>
+	</td>
+    </tr>
+    <tr>
+        <td class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
+        <td class="StormyWeatherDataTD">
+            <select id="cmbArea" name="cmbArea" size="1" onChange="LlenarComboExamen(this.value);">
+                <option value="0" >--Seleccione un &Aacute;rea--</option>
+                    <?php
+			include('../Lab_Areas/clsLab_Areas.php');
+			$objeareas=new clsLab_Areas;
+			$consulta= $objeareas->consultaractivas($lugar);
+			while($row = mysql_fetch_array($consulta)){
+			echo "<option value='" . $row['IdArea']. "'>" . htmlentities($row['NombreArea']) . "</option>";
+			}
+			mysql_free_result($row);		
+                    ?>		  
+             </select>		  
+	</td>
+     </tr>
+     <tr>
+        <td class="StormyWeatherFieldCaptionTD">Examen </td>
+        <td class="StormyWeatherDataTD">
+            <div id="divExamen">
+                <select id="cmbExamen" name="cmbExamen" size="1">
+                    <option value="0">--Seleccione un Examen--</option>
+			
+		</select>
+            </div>		  
+	</td>
+    </tr>
+    <tr>		  
+        <td colspan="2">
+            <table width="100%" height="100%" border="0"  class="StormyWeatherFormTABLE"  >
+                <tr>
+                    <td class="StormyWeatherFieldCaptionTD" width="45%"><div align="center">Tipos de Muestra </div>
+                    </td>
+                    <td  class="StormyWeatherDataTD" width="10%" class="StormyWeatherDataTD"><div align="center"></div>
+                    </td>
+                    <td width="45%" class="StormyWeatherFieldCaptionTD"><div align="center">Muestras Asociados </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="StormyWeatherDataTD" align="center">
+                        <select id="ListMuestras" name="ListMuestras" size="8" multiple>
+                            <?php
+                                include('../Lab_TipoMuestra/clsLab_TipoMuestra.php');
+                                $obje=new clsLab_TipoMuestra;
+                                $consulta= $obje->consultar();
+                                while($row = mysql_fetch_array($consulta)){
+                                    echo "<option value='" . $row[0]. "'>" . $row[1] . "</option>";
+                                }
+                             ?>
+			</select>
+                    </td>
+                    <td  rowspan="3" class="StormyWeatherDataTD" align="center"><input name="button" type="button" id='btnAgregar' onClick="AgregarItemsLista();"  value="&gt;&gt;" ><br>
+                        <input type="button" id="btnEliminar" name="btnEliminar" value="<<"  onClick="EliminarItemsLista();" >
+                    </td>
+                    <td  class="StormyWeatherDataTD" align="center">
+                        <div id="divDatos">
+                            <select name="ListAsociados" id="ListAsociados" size="8" multiple>
+                            </select>
+                        </div>	
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="right" class="StormyWeatherDataTD">
+                        <input type="button" name="Submit" value="Guardar Muestras" onClick="Guardar() ;" >
+                        <input type="button" name="submit1" value="Eliminar Muestra" onClick="Eliminar() ;" >
+                    </td>
+               
+		</tr>
+            </table>              
+        </td>
+    </tr>
+   </table>
+</form>
+</div>
+</td>
+	</tr>
+	<tr>
+		<td>
+			<div  id="divresultado" >
+
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div  id="divFrmModificar" >
+
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div  id="divinicial" >
+
+			</div>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<tr>
+							<td class="StormyWeatherFieldCaptionTD"><strong>Programa de Salud</strong> </td>
+							<td class="StormyWeatherDataTD">
+								<select id="cmbPrograma" name="cmbPrograma" size="1">
+									<option value="0">--Seleccione un Est&aacute;ndar--</option>
+								<?php
+									$obje1=new clsLab_Examenes;
+									$consulta= $obje1->consultar_programas();
+							while($row = mysql_fetch_array($consulta)){
+							  echo "<option value='" . $row['0']. "'>" . $row['0'].'- '.$row['1'] . "</option>";
+								}
+								
+								?>	
+								</select>  
+							</td>
+					</tr>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menuinfo type="horz" 
+          
+          baseOffsetY="-1" 
+          subOffsetX="-1" 
+         
+          delaySubClose="500" 
+   
+          shadowOffset="1"
+		  overlapHack="true">
+    <menu>
+        <menu labelText="PROCESOS">
+			<item labelText="Rechazar Muestra" url="../../../LAB/Procesos/SolicitudesPorAreaExterna/Proc_SolicitudesPorArea.php"/>
+                        <item labelText="Ingreso de Resultados" url="../../../LAB/Procesos/SolicitudesExternas/Proc_SolicitudesProcesadasExternas.php"/>
+                        <item labelText="Agregar Examen a Solicitud" url="../../../LAB/Procesos/AgregarExamenExterno/AgregarExamen.php"/>
+                        <item labelText="Reactivar Muestra" url="../../../LAB/Procesos/MuestrasRechazadasExternas/Proc_MuestrasRechazadas.php"/>
+                        <item labelText="Eliminar Resultado" url="../../../LAB/Procesos/EliminarResultadosExternos/EliminarResultado.php"/>
+                        <item labelText="Imprimir Resultado" url="../../../LAB/Procesos/ImprimirResultadosExternos/ImprimirResultado.php"/>
+		</menu> 
+	<sep/>
+		
+			<item labelText="CAMBIAR CLAVE" url="../../../LAB/Procesos/CambioClave/CambioClave.php"/>
+	<sep/>
+		
+			<item labelText="CERRAR SESIÓN" url="../../../cerrarsesion.php"/>
+	<sep/>
+   </menu>
+</menuinfo>

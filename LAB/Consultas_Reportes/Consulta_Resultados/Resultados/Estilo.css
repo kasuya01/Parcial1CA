@@ -1,0 +1,43 @@
+@charset "utf-8";
+/* CSS Document */
+@charset "utf-8";
+/* CSS Document */
+h3{
+	position:absolute;
+	top:-15px;
+	left:15px;
+	margin:0;
+	padding:0 5px;
+	line-height:25px;
+	background:darkgreen;
+	color: #FFFFFF;
+	border:3px solid #000;
+}
+
+.outer ,.outer2 {
+	position:relative;
+	float:left;
+	width:1100px;
+	border:2px dashed #000;
+	margin-top:20px;
+	margin-left:5px;
+	background-color: #F7F7F7;
+}
+
+.outer3 {
+	position:relative;
+	float:left;
+	width:990px;
+	border:2px dashed #000;
+	margin-top:20px;
+	margin-left:5px;
+	background-color: #F7F7F7;
+}
+.inner {
+	position:relative;
+	border:1px solid white;	
+	position:relative;
+	z-index:100;
+	margin:-1px;
+}
+

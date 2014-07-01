@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menuConfig>
+   <ver>1.0</ver>
+   <menuType>thin-all</menuType>
+   <noVerBaseSep>true</noVerBaseSep>
+   <noSubSep>true</noSubSep>
+   <noBaseTitle>true</noBaseTitle>
+   <noSubTitle>true</noSubTitle>
+</menuConfig>

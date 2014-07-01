@@ -1,0 +1,16 @@
+<tr>
+						<td colspan='28' align='center'><h3>REGISTRO DE EXAMENES PRACTICADOS A LOS DIFERENTES SERVICIOS SEPARADOS POR SECCION</h3></td>
+					</tr>
+					<tr>
+						<td colspan='28' align='center' ><h4>PROCEDENCIA:CONSULTA EXTERNA</h4></td>
+					</tr>
+					<tr>
+						<td colspan='28' align='center'><h4>PERIODO DEL:  04/03/2012 AL 04/03/2013</h4></td>
+					</tr>
+	        	</table><table width='90%' border='1' align='center' >
+					<tr style='background:#BBBEC9'>
+						<td class='CobaltFieldCaptionTD' width='20%'><strong>Servicio</strong></td><td class='CobaltFieldCaptionTD' width='12%'><strong>Acido Resistente</strong></td><td class='CobaltFieldCaptionTD' width='12%'><strong>Bacteriologia</strong></td><td class='CobaltFieldCaptionTD' width='12%'><strong>Banco de Sangre</strong></td><td class='CobaltFieldCaptionTD' width='12%'><strong>Coagulacion</strong></td><td class='CobaltFieldCaptionTD' width='12%'><strong>Hematologia</strong></td><td class='CobaltFieldCaptionTD' width='12%'><strong>Pruebas Especiales</strong></td><td class='CobaltFieldCaptionTD' width='12%'><strong>Quimica</strong></td><td class='CobaltFieldCaptionTD' width='12%'><strong>Urianalisis y Coprologia</strong></td><td class='CobaltFieldCaptionTD' width='12%'><strong>TOTAL</strong></td></tr><tr>
+						<td width='10%'>Cirugia General</td><td width='10%'>0</td><td width='10%'>0</td><td width='10%'>0</td><td width='10%'>0</td><td width='10%'>0</td><td width='10%'>0</td><td width='10%'>4</td><td width='10%'>0</td><td width='14%'><strong>4</strong></td>
+			        	</tr><tr>
+						<td width='10%'>Medicina Interna</td><td width='10%'>0</td><td width='10%'>1</td><td width='10%'>0</td><td width='10%'>0</td><td width='10%'>1</td><td width='10%'>0</td><td width='10%'>5</td><td width='10%'>0</td><td width='14%'><strong>7</strong></td>
+			        	</tr></table>

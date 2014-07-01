@@ -1,0 +1,36 @@
+#nav {
+	position:absolute;
+	left:590px;
+	top:1px;
+	width:56px;
+	height:19px;
+	z-index:9;
+}
+
+#nav2 {
+	position:absolute;
+	left:600px;
+	top:100px;
+	width:56px;
+	height:19px;
+	z-index:9;
+}
+
+#nav3 {
+	position:absolute;
+	left:666px;
+	top:1px;
+	width:56px;
+	height:19px;
+	z-index:9;
+}
+
+@media print {
+* { background: #fff; color: #000; }
+html { font: 100%/1.5 Arial, Helvetica, sans-serif; }
+#nav, #nav2, #about { display: none; }
+#footer { display:none;}
+#span{ color:#FFFFFF}
+}
+.style15 {font-size: 18px}
+.style17 {font-weight: bold}

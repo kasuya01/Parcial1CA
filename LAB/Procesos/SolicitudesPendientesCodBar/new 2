@@ -1,0 +1,6 @@
+UPDATE farm_medicinadespacha,farm_medicinarecetada,farm_recetas
+SET farm_medicinadespachada.IdLote = “el IdLote”
+WHERE farm_medicinadespachada.IdMedicinaRecetada=farm_medicinarecetada.IdMedicinaRecetada
+AND farm_recetas.IdReceta = farm_medicinarecetada.IdReceta
+AND farm_medicinarecetada.IdMedicina=IdMedicina
+AND farm_recetas.IdArea=IdArea
