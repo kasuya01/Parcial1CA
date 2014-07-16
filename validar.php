@@ -8,7 +8,7 @@ $password=htmlentities($_POST['txtpassword']);
    if ($numreg == "1")
    {
 	$datos=$objdatos->datosusuario($login,$password);
-	$row_datos = mysql_fetch_array($datos);
+	$row_datos = pg_fetch_array($datos);
 	$lugar=$row_datos['IdEstablecimiento'];
 	$nivel=$row_datos['NIVEL'];
 	$area=$row_datos['IdArea'];
