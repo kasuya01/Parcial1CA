@@ -13,9 +13,9 @@ class clsLab_AntibioticosPorTarjeta
    if($con->conectar()==true) 
    {
    
-    $query = "INSERT INTO lab_antibioticosportarjeta(IdAntibiotico,IdTarjeta,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod,IdEstablecimiento) 
+    $query = "INSERT INTO lab_antibioticosportarjeta(idantibiotico,idtarjeta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento) 
 			  VALUES($idantibiotico,$idtarjeta,$usuario,NOW(),$usuario,NOW(),$lugar)";
-    $result = @mysql_query($query);
+    $result = @pg_query($query);
 	 
      if (!$result)
        return false;
@@ -28,9 +28,9 @@ class clsLab_AntibioticosPorTarjeta
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "UPDATE lab_antibioticosportarjeta SET idantibiotico=$idantibiotico, idtarjeta=$idtarjeta,IdUsuarioMod=$usuario,FechaHoraMod=NOW() 
-			   WHERE IdAntibioticoPorTarjeta=$idantibioticoportarjeta";
-     $result = @mysql_query($query);
+     $query = "UPDATE lab_antibioticosportarjeta SET idantibiotico=$idantibiotico, idtarjeta=$idtarjeta,idusuariomod=$usuario,fechahoramod=NOW() 
+			   WHERE id=$idantibioticoportarjeta";
+     $result = @pg_query($query);
 	 
      if (!$result)
        return false;
@@ -44,8 +44,8 @@ class clsLab_AntibioticosPorTarjeta
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "DELETE FROM lab_antibioticosportarjeta WHERE IdAntibiotico=$idantibiotico AND IdTarjeta=$idtarjeta AND IdEstablecimiento=$lugar";
-     $result = mysql_query($query);
+     $query = "DELETE FROM lab_antibioticosportarjeta WHERE idantibiotico=$idantibiotico AND idtarjeta=$idtarjeta AND idestablecimiento=$lugar";
+     $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -58,8 +58,8 @@ class clsLab_AntibioticosPorTarjeta
 function Verificar_Antibiotico($idantibiotico,$idtarjeta,$lugar){
  $con = new ConexionBD;
 	if($con->conectar()==true)
-	{ $query="SELECT count(*) FROM lab_antibioticosportarjeta WHERE IdAntibiotico=$idantibiotico and Idtarjeta=$idtarjeta and IdEstablecimiento=$lugar";
-		$result = mysql_query($query);
+	{ $query="SELECT count(*) FROM lab_antibioticosportarjeta WHERE idantibiotico=$idantibiotico and idtarjeta=$idtarjeta and idestablecimiento=$lugar";
+		$result = pg_query($query);
 		if (!$result)
 			return false;
 		else
@@ -74,8 +74,8 @@ function Verificar_Antibiotico($idantibiotico,$idtarjeta,$lugar){
    if($con->conectar()==true)
    {
      $query = "SELECT * FROM lab_antibioticosportarjetaportarjeta WHERE idantibiotico='$idantibiotico'";
-     $result = @mysql_query($query);
-	 $cuenta = mysql_num_rows($result);
+     $result = @pg_query($query);
+	 $cuenta = pg_num_rows($result);
 	 
      if ($cuenta > 0)
        return true;
@@ -90,7 +90,7 @@ function Verificar_Antibiotico($idantibiotico,$idtarjeta,$lugar){
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
      $query = "SELECT * FROM lab_antibioticosportarjeta ORDER BY idantibiotico LIMIT $RegistrosAEmpezar, $RegistrosAMostrar ";
-	 $result = @mysql_query($query);
+	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -104,8 +104,8 @@ function Verificar_Antibiotico($idantibiotico,$idtarjeta,$lugar){
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT * FROM lab_antibioticosportarjeta WHERE IdEstablecimiento=$lugar ORDER BY idantibiotico ";
-	 $result = mysql_query($query);
+     $query = "SELECT * FROM lab_antibioticosportarjeta WHERE idestablecimiento=$lugar ORDER BY idantibiotico ";
+	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -118,11 +118,11 @@ function Verificar_Antibiotico($idantibiotico,$idtarjeta,$lugar){
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "select IdAntibioticoPorTarjeta,A.IdAntibiotico, A.IdTarjeta, Antibiotico
+     $query = "select id,A.idantibiotico, A.idtarjeta, antibiotico
 			    from lab_antibioticosportarjeta A
 				inner join lab_antibioticos B on A.IdAntibiotico=B.IdAntibiotico
 				where idtarjeta=$idtarjeta" ;
-	 $result = @mysql_query($query);
+	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -136,7 +136,7 @@ function Verificar_Antibiotico($idantibiotico,$idtarjeta,$lugar){
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
      $query = "select * from lab_antibioticosportarjeta ";
-	 $numreg = mysql_num_rows(mysql_query($query));
+	 $numreg = pg_num_rows(pg_query($query));
 	 if (!$numreg )
 	   return false;
 	 else
@@ -151,7 +151,7 @@ function Verificar_Antibiotico($idantibiotico,$idtarjeta,$lugar){
    if($con->conectar()==true)
    {
      $query = "SELECT * FROM lab_antibioticosportarjeta WHERE idantibiotico='$idantibiotico'";
-     $result = @mysql_query($query);
+     $result = @pg_query($query);
      if (!$result)
        return false;
      else

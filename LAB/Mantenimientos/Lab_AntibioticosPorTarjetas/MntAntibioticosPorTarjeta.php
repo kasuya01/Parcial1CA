@@ -135,7 +135,7 @@ if ($nivel==33){
 						include_once('../Lab_TarjetasVITEK/clsLab_TarjetasVITEK.php');
 						$obj=new clsLab_TarjetasVITEK;
 						$consulta= $obj->consultar($lugar);
-						while($row = mysql_fetch_array($consulta))
+						while($row = pg_fetch_array($consulta))
 						{
 				          echo "<option value='" . $row['IdTarjeta']. "'>" . $row['NombreTarjeta'] . "</option>";
 						}
@@ -159,7 +159,7 @@ if ($nivel==33){
 													include_once('../Lab_Antibioticos/clsLab_Antibioticos.php');
 													$obj=new clsLab_Antibioticos;
 													$consulta= $obj->consultar($lugara);
-													while($row = mysql_fetch_array($consulta))
+													while($row = pg_fetch_array($consulta))
 													{
 													echo "<option value='" . $row['IdAntibiotico']. "'>" . $row['Antibiotico'] . "</option>";
 													}

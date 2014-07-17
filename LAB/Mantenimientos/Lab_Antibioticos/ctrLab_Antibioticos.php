@@ -68,7 +68,7 @@ switch ($opcion)
 			   <td class='CobaltFieldCaptionTD'> Antibiotico </td>	   
 			   </tr>";
 
-		while($row = mysql_fetch_array($consulta)){
+		while($row = pg_fetch_array($consulta)){
 			echo "<tr>
 					<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
@@ -115,12 +115,12 @@ switch ($opcion)
       break;
       case 5: //buscar
             
-	    $query = "SELECT IdAntibiotico,Antibiotico FROM lab_antibioticos
+	    $query = "SELECT id,antibiotico FROM lab_antibioticos
 		      WHERE ";
 				
 		//VERIFICANDO LOS POST ENVIADOS
 		if (!empty($_POST['antibiotico']))
-		{ $query .= " Antibiotico like'%".$_POST['antibiotico']."%' "; }
+		{ $query .= " antibiotico like'%".$_POST['antibiotico']."%' "; }
 		
 		$query = substr($query ,0,strlen($query)-1);
 		//echo $query;
@@ -141,7 +141,7 @@ switch ($opcion)
 			   <td class='CobaltFieldCaptionTD'> Antibiotico </td>	   
 			   </tr>";
 
-		while($row = mysql_fetch_array($consulta)){
+		while($row = pg_fetch_array($consulta)){
 			echo "<tr>
 					<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 

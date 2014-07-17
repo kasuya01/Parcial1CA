@@ -19,7 +19,7 @@ switch ($opcion)
 		 $idtarjeta=$_POST['idtarjeta'];
 		//echo $idantibiotico."+".$idtarjeta;
 		 $cant=$objdatos->Verificar_Antibiotico($idantibiotico,$idtarjeta,$lugar);
-		 $cantidad=mysql_fetch_array($cant);
+		 $cantidad=pg_fetch_array($cant);
 			//echo $cantidad[0];
 		 if ($cantidad[0]==0){
 			if ($objdatos->insertar($idantibiotico,$idtarjeta,$usuario,$lugar)==true)
@@ -66,7 +66,7 @@ switch ($opcion)
 							require_once('clsLab_AntibioticosPorTarjeta.php');
 							$obj=new clsLab_AntibioticosPorTarjeta;
 							$consulta_a= $obj->consultarasociados($idtarjeta);
-							while($row = mysql_fetch_array($consulta_a))
+							while($row = pg_fetch_array($consulta_a))
 							{
 						$resultado .="<option value='" . $row['IdAntibiotico']. "'>" . $row['Antibiotico'] . "</option>";
 						}

@@ -7,7 +7,7 @@ $area=$_SESSION['Idarea'];
 $idantibiotico=$_POST['idantibiotico'];
 $obj = new clsLab_Antibioticos;
 $consulta=$obj->consultarid($idantibiotico);
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 
 //valores de las consultas
 $antibiotico=$row[1];

@@ -13,8 +13,8 @@ class clsLab_Antibioticos
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_antibioticos(Antibiotico,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod) VALUES('$antibiotico','$usuario',NOW(),'$usuario',NOW())";
-     $result = mysql_query($query);
+    $query = "INSERT INTO lab_antibioticos(antibiotico,idusuarioreg,fechahorareg,idusuariomod,fechahoramod) VALUES('$antibiotico','$usuario',NOW(),'$usuario',NOW())";
+     $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -28,8 +28,8 @@ function actualizar($idantibiotico,$antibiotico,$usuario)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "UPDATE lab_antibioticos SET Antibiotico='$antibiotico',IdUsuarioMod='$usuario',FechaHoraMod=NOW() WHERE IdAntibiotico='$idantibiotico'";
-     $result = mysql_query($query);
+     $query = "UPDATE lab_antibioticos SET antibiotico='$antibiotico',idusuarioreg='$usuario',fechahorareg=NOW() WHERE IdAntibiotico='$idantibiotico'";
+     $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -44,8 +44,8 @@ function eliminar($idantibiotico)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "DELETE FROM lab_antibioticos WHERE IdAntibiotico='$idantibiotico'";
-     $result = mysql_query($query);
+     $query = "DELETE FROM lab_antibioticos WHERE id='$idantibiotico'";
+     $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -61,9 +61,9 @@ function VerificarIntegridad($idantibiotico)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT * FROM lab_antibioticosportarjeta WHERE IdAntibiotico='$idantibiotico'";
-     $result = mysql_query($query);
-	 $cuenta = mysql_num_rows($result);
+     $query = "SELECT * FROM lab_antibioticosportarjeta WHERE idantibiotico='$idantibiotico'";
+     $result = pg_query($query);
+	 $cuenta = pg_num_rows($result);
 	 
      if ($cuenta > 0)
        return true;
@@ -77,8 +77,8 @@ function consultarpag($RegistrosAEmpezar, $RegistrosAMostrar){
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT * FROM lab_antibioticos ORDER BY IdAntibiotico LIMIT $RegistrosAEmpezar, $RegistrosAMostrar ";
-	 $result = mysql_query($query);
+     $query = "SELECT * FROM lab_antibioticos ORDER BY id LIMIT $RegistrosAEmpezar, $RegistrosAMostrar ";
+	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -91,8 +91,8 @@ function consultar(){
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT * FROM lab_antibioticos ORDER BY IdAntibiotico";
-	 $result = mysql_query($query);
+     $query = "SELECT * FROM lab_antibioticos ORDER BY id";
+	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -107,7 +107,7 @@ function consultarpagbus($query,$RegistrosAEmpezar, $RegistrosAMostrar)
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
 	     $query = $query." LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-		 $result = mysql_query($query);
+		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -123,7 +123,7 @@ function consultarpagbus($query,$RegistrosAEmpezar, $RegistrosAMostrar)
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
      $query = "SELECT * FROM lab_antibioticos ";
-	 $numreg = mysql_num_rows(mysql_query($query));
+	 $numreg = pg_num_rows(pg_query($query));
 	 if (!$numreg )
 	   return false;
 	 else
@@ -136,7 +136,7 @@ function NumeroDeRegistrosbus($query){
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $numreg = mysql_num_rows(mysql_query($query));
+	     $numreg = pg_num_rows(pg_query($query));
 		 if (!$numreg )
 		   return false;
 		 else
@@ -150,8 +150,8 @@ function consultarid($idantibiotico)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT * FROM lab_antibioticos WHERE IdAntibiotico='$idantibiotico'";
-     $result = mysql_query($query);
+     $query = "SELECT * FROM lab_antibioticos WHERE id='$idantibiotico'";
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -168,7 +168,7 @@ class clsLabor_Antibioticos
 	    $con2 = new ConexionBDLab;
 		if($con2->conectarT()==true){
 		$query = "INSERT INTO laboratorio.lab_antibioticos(Antibiotico,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod) VALUES('$antibiotico','$usuario',NOW(),'$usuario',NOW())";
-		 $result = mysql_query($query);
+		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -181,7 +181,7 @@ class clsLabor_Antibioticos
 	   $con2 = new ConexionBDLab;
 		if($con2->conectarT()==true){
 		 $query = "UPDATE laboratorio.lab_antibioticos SET Antibiotico='$antibiotico',IdUsuarioMod='$usuario',FechaHoraMod=NOW() WHERE IdAntibiotico='$idantibiotico'";
-		 $result = mysql_query($query);
+		 $result = pg_query($query);
 		 
 		 if (!$result)
 		   return false;
@@ -196,7 +196,7 @@ class clsLabor_Antibioticos
 	    $con2 = new ConexionBDLab;
 		if($con2->conectarT()==true){
 		 $query = "DELETE FROM laboratorio.lab_antibioticos WHERE IdAntibiotico='$idantibiotico'";
-		 $result = mysql_query($query);
+		 $result = pg_query($query);
 		 
 		 if (!$result)
 		   return false;
