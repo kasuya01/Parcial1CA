@@ -12,14 +12,16 @@ function validarexistencia($login,$password)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "SELECT count(nivel) as numreg FROM mnt_usuarios 
-              WHERE login='$login' AND password= md5('$password') AND modulo='LAB'";
-     $result = @mysql_query($query);	 
+    $query = "SELECT count(*)
+              FROM fos_user_user t01 
+              WHERE t01.username ='labadmin' AND t01.password = md5('admincentral') AND t01.modulo = 'LAB'";
+     
+     $result = @pg_query($query);	 
      if (!$result)
        return false;
      else
      {
-	$row = mysql_fetch_array($result);
+	$row = pg_fetch_array($result);
         return $row[0];
 		 	  
       } 
@@ -32,13 +34,14 @@ function validarexistencia($login,$password)
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "select nivel from mnt_usuarios 
-          where login='$login' and password= md5('$password') and modulo='LAB'";
-	 $result = @mysql_query($query);
+     $query = "select nivel from fos_user_user 
+               where username = '$login'
+                    and password = md5('$password') and modulo='LAB'";
+	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;
 	 else{
-	     $row = mysql_fetch_array($result);
+	     $row = pg_fetch_array($result);
          return $row[0];
 		 }
    }
@@ -51,14 +54,15 @@ function validarexistencia($login,$password)
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT IdEstablecimiento FROM mnt_usuarios 
-       INNER JOIN mnt_empleados ON mnt_usuarios.IdEmpleado=mnt_empleados.IdEmpleado 
-          where login='$login' and password= md5('$password') and modulo='LAB'";
-	 $result = @mysql_query($query);
+     $query = "SELECT t02.id_establecimiento
+               FROM fos_user_user       t01
+               INNER JOIN mnt_empleados t02 ON (t02.id = t01.id_empleado
+               WHERE username = '$login' and password= md5('$password') and modulo='LAB'";
+	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;
 	 else{
-	     $row = mysql_fetch_array($result);
+	     $row = pg_fetch_array($result);
          return $row[0];
 		 }
    }
@@ -70,13 +74,14 @@ function validarexistencia($login,$password)
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "select nivel from mnt_usuarios 
-          where login='$login' and password= md5('$password') and modulo='LAB'";
-	 $result = @mysql_query($query);
+     $query = "select nivel
+               from fos_user_user
+               where username='$login' and password= md5('$password') and modulo='LAB'";
+	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;
 	 else{
-	     $row = mysql_fetch_array($result);
+	     $row = pg_fetch_array($result);
          return $row[0];
 		 }
    }
@@ -88,13 +93,17 @@ function validarexistencia($login,$password)
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT mnt_empleados.IdEstablecimiento, mnt_empleados.IdArea,mnt_usuarios.nivel AS NIVEL,
-		mnt_empleados.IdEmpleado,mnt_empleados.Correlativo, mnt_usuarios.iduser, area
-		FROM mnt_usuarios 
-		INNER JOIN mnt_empleados 
-		ON (mnt_usuarios.IdEmpleado=mnt_empleados.IdEmpleado AND mnt_usuarios.IdEstablecimiento=mnt_empleados.IdEstablecimiento) 
-		WHERE login='$login' AND password= md5('$password') AND modulo='LAB'";
-      $result = @mysql_query($query);
+     $query = "SELECT t02.id_establecimiento,
+                      t02.id_area,
+                      t01.nivel AS NIVEL,
+                      t02.id_empleado,
+                      t02.correlativo, 
+                      t01.id, area
+		FROM fos_user_user       t01
+		INNER JOIN mnt_empleado t02 ON (t02.id = t01.id_empleado AND t01.id_establecimiento = t02.id_establecimiento) 
+		WHERE username='$login' AND password= md5('$password') AND modulo='LAB'";
+     var_dump($query);exit();
+      $result = @pg_query($query);
       if (!$result)
 	   return false;
       else{
