@@ -177,10 +177,10 @@ switch ($opcion)
 		$tipo=$_POST['tipo'];
 		//echo $activo;
 		//$Pag =$_POST['Pag'];
-	    $query = "SELECT lab_areas.IdArea,lab_areas.NombreArea,lab_areasxestablecimiento.Condicion,Administrativa,IdEstablecimiento
+	    $query = "SELECT lab_areas.id,lab_areas.nombrearea,administrativa,lab_areasxestablecimiento.condicion,idestablecimiento
 		      FROM lab_areas
-		      INNER JOIN lab_areasxestablecimiento ON lab_areas.IdArea=lab_areasxestablecimiento.IdArea 
-		      WHERE lab_areasxestablecimiento.IdEstablecimiento=$lugar AND";
+		      INNER JOIN lab_areasxestablecimiento ON lab_areas.id =lab_areasxestablecimiento.id  
+		      WHERE lab_areasxestablecimiento.idestablecimiento=$lugar AND";
 					
 		//VERIFICANDO LOS POST ENVIADOS
 		if (!empty($_POST['idarea']))

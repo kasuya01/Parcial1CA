@@ -10,21 +10,21 @@ $cod=$_SESSION['IdEmpleado'];
 // Creamos un objeto Conexion, Paciente
 	$Conexion= new ConexionBD;   
 	$Conectar=$Conexion->Conectar();
-	$SQL= "SELECT mnt_establecimiento.Nombre,mnt_empleados.NombreEmpleado
+	$SQL= "SELECT ctl_establecimiento.nombre,mnt_empleado.nombreempleado
 		FROM mnt_usuarios 
-		INNER JOIN mnt_empleados 
-		ON (mnt_usuarios.IdEmpleado=mnt_empleados.IdEmpleado AND mnt_usuarios.IdEstablecimiento=mnt_empleados.IdEstablecimiento) 
-		INNER JOIN mnt_establecimiento
-		ON mnt_empleados.IdEstablecimiento=mnt_establecimiento.IdEstablecimiento
-	    WHERE mnt_empleados.IdEmpleado='$cod' AND mnt_empleados.IdEstablecimiento=$lugar AND  mnt_usuarios.modulo='LAB'";
+		INNER JOIN mnt_empleado
+		ON (mnt_usuarios.idempleado=mnt_empleado.idempleado AND mnt_usuarios.idestablecimiento=mnt_empleado.id_establecimiento) 
+		INNER JOIN ctl_establecimiento
+		ON mnt_empleado.id_establecimiento=ctl_establecimiento.id_establecimiento_padre
+	    WHERE mnt_empleado.idempleado='$cod' AND mnt_empleado.id_establecimiento=$lugar AND  mnt_usuarios.modulo='LAB'";
 	
-	$Resultado = mysql_query($SQL) or die('La consulta fall&oacute;: ' . mysql_error());
-			$Rows = mysql_fetch_array($Resultado);
-			$NombreEmpleado=$Rows['NombreEmpleado'];
+	$Resultado = pg_query($SQL) or die('La consulta fall&oacute;: ' . pg_error());
+			$Rows = pg_fetch_array($Resultado);
+			$NombreEmpleado=$Rows['nombreempleado'];
 			//$IdTipoEmpleado=$Rows['IdTipoEmpleado'];	
 		   	//$Correlativo=$Rows['Correlativo'];
                        	//$_SESSION['Correlativo']=$Correlativo;
-			$Establecimiento=$Rows['Nombre'];  
+			$Establecimiento=$Rows['nombre'];  
 	echo '<!-- Start Required XML Menu markup for head tag -->
 <link href="../Menu/xm-style.css" rel="stylesheet" type="text/css">
 <script src="../Menu/xm-menu.js" type="text/javascript"></script>

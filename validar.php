@@ -9,13 +9,11 @@ $password=htmlentities($_POST['txtpassword']);
    {
 	$datos=$objdatos->datosusuario($login,$password);
 	$row_datos = pg_fetch_array($datos);
-	$lugar=$row_datos['IdEstablecimiento'];
-	$nivel=$row_datos['NIVEL'];
-	$area=$row_datos['IdArea'];
-        $corr=$row_datos['Correlativo'];
-        $cod=$row_datos['IdEmpleado'];
-        $_SESSION['iduser']=$row_datos['iduser']; 
-        $_SESSION['Modalidad']=$row_datos['area']; //Llevaran 1:Minsal 2:FOSALUD del user logged
+	$lugar=$row_datos['id_establecimiento'];
+	$nivel=$row_datos['nivel'];
+	$area=$row_datos['id_area_laboratorio'];
+        $corr=$row_datos['correlativo'];
+        $cod=$row_datos['id_empleado'];
 	switch ($nivel) 
 	{
 	    case 1://Administrador y jefe del laboratorio

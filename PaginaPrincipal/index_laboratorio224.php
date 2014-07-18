@@ -13,17 +13,20 @@ include_once("../Conexion/ConexionBD.php"); //Agregamos el Archivo con las clase
 // Creamos un objeto Conexion, Paciente
 	$Conexion= new ConexionBD;   
 	$Conectar=$Conexion->Conectar();
-	$SQL= "SELECT mnt_establecimiento.Nombre,mnt_empleados.NombreEmpleado
-                FROM mnt_usuarios 
-		INNER JOIN mnt_empleados 
-		ON (mnt_usuarios.IdEmpleado=mnt_empleados.IdEmpleado AND mnt_usuarios.IdEstablecimiento=mnt_empleados.IdEstablecimiento)  
-		INNER JOIN mnt_establecimiento
-		ON mnt_empleados.IdEstablecimiento=mnt_establecimiento.IdEstablecimiento
-	       	WHERE mnt_empleados.IdEmpleado='$cod' AND mnt_empleados.IdEstablecimiento=$lugar 
-                AND  mnt_usuarios.modulo='LAB'";
+	$SQL= "SELECT ctl_establecimiento.nombre,mnt_empleado.nombreempleado
+		FROM mnt_usuarios 
+		INNER JOIN mnt_empleado
+		ON (mnt_usuarios.idempleado=mnt_empleado.idempleado AND mnt_usuarios.idestablecimiento=mnt_empleado.id_establecimiento) 
+		INNER JOIN ctl_establecimiento
+		ON mnt_empleado.id_establecimiento=ctl_establecimiento.id_establecimiento_padre
+	    WHERE mnt_empleado.idempleado='$cod' AND mnt_empleado.id_establecimiento=$lugar AND  mnt_usuarios.modulo='LAB'";
+        
+        
+        
+        
 	
-			$Resultado = mysql_query($SQL) or die('La consulta fall&oacute;: ' . mysql_error());
-			$Rows = mysql_fetch_array($Resultado);
+			$Resultado = pg_query($SQL) or die('La consulta fall&oacute;: ' . mysql_error());
+			$Rows = pg_fetch_array($Resultado);
 			$NombreEmpleado=$Rows['NombreEmpleado'];
 			$Establecimiento=$Rows['Nombre'];  			
 //$IdTipoEmpleado=$Rows['IdTipoEmpleado'];	

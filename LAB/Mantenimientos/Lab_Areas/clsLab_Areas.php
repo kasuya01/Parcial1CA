@@ -12,10 +12,10 @@ class clsLab_Areas
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_areas(IdArea,NombreArea,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod,Administrativa) 
+    $query = "INSERT INTO lab_areas(id,nombrearea,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,administrativa) 
 			VALUES('$idarea','$nombrearea','$usuario',NOW(),'$usuario',NOW(),'$tipo')";
   // echo $query; 
-    $result = @mysql_query($query);
+    $result = @pg_query($query);
 	 
      if (!$result)
        return false;
@@ -30,8 +30,8 @@ function ingresarareaxestablecimiento($idarea,$cond,$lugar,$usuario)
 $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_areasxestablecimiento(Idarea,IdEstablecimiento,Condicion,IdUsuarioReg,IdUsuarioMod,FechaHoraReg,FechaHoraMod) VALUES('$idarea',$lugar,'$cond','$usuario','$usuario',NOW(),NOW())";
-     $result = @mysql_query($query);
+    $query = "INSERT INTO lab_areasxestablecimiento(id,idestablecimiento,condicion,idusuarioreg,idusuariomod,fechahorareg,fechahoramod) VALUES('$idarea',$lugar,'$cond','$usuario','$usuario',NOW(),NOW())";
+     $result = @pg_query($query);
 	 
      if (!$result)
        return false;
@@ -47,9 +47,9 @@ function actualizar($idarea,$nom,$usuario,$tipo)
    if($con->conectar()==true) 
    {
     
-     $query = "UPDATE lab_areas SET NombreArea='$nom',IdUsuarioMod='$usuario',FechaHoraMod=NOW(),Administrativa='$tipo' WHERE IdArea='$idarea'";
+     $query = "UPDATE lab_areas SET nombrearea='$nom',idusuariomod='$usuario',fechahoramod=NOW(),administrativa='$tipo' WHERE id='$idarea'";
      //echo $query;
-     $result = @mysql_query($query);
+     $result = @pg_query($query);
 	 
      if (!$result)
        return false;
@@ -64,8 +64,8 @@ function ActualizarxEstablercimiento($idarea,$cond,$lugar,$usuario)
    if($con->conectar()==true) 
    {
     
-     $query = "UPDATE lab_areasxestablecimiento SET Condicion='$cond',IdEstablecimiento='$lugar',IdUsuarioMod='$usuario',FechaHoraMod=NOW() WHERE IdArea='$idarea'";	
-     $result = @mysql_query($query);
+     $query = "UPDATE lab_areasxestablecimiento SET condicion='$cond',idestablecimiento='$lugar',idusuariomod='$usuario',fechahoramod=NOW() WHERE id='$idarea'";	
+     $result = @pg_query($query);
 	 
      if (!$result)
        return false;
@@ -79,8 +79,8 @@ function EliminarxEstablecimiento($idarea)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "DELETE FROM lab_areasxestablecimiento WHERE IdArea='$idarea'";
-     $result = @mysql_query($query);
+     $query = "DELETE FROM lab_areasxestablecimiento WHERE id='$idarea'";
+     $result = @pg_query($query);
 	 
      if (!$result)
        return false;
@@ -97,8 +97,8 @@ function eliminar($idarea)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "DELETE FROM lab_areas WHERE IdArea='$idarea'";
-     $result = @mysql_query($query);
+     $query = "DELETE FROM lab_areas WHERE id='$idarea'";
+     $result = @pg_query($query);
 	 
      if (!$result)
        return false;
@@ -113,11 +113,11 @@ function eliminar($idarea)
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT lab_areas.IdArea, lab_areas.NombreArea,lab_areasxestablecimiento.Condicion FROM lab_areas 
-INNER JOIN lab_areasxestablecimiento ON lab_areas.IdArea=lab_areasxestablecimiento.IdArea
-WHERE lab_areasxestablecimiento.Condicion='H' AND lab_areasxestablecimiento.IdEstablecimiento=$lugar 
-ORDER BY NombreArea";
-	 $result = @mysql_query($query);
+     $query = "SELECT lab_areas.id, lab_areas.nombrearea,lab_areasxestablecimiento.condicion FROM lab_areas 
+INNER JOIN lab_areasxestablecimiento ON lab_areas.id=lab_areasxestablecimiento.id
+WHERE lab_areasxestablecimiento.condicion='H' AND lab_areasxestablecimiento.idestablecimiento=$lugar 
+ORDER BY nombrearea";
+	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -130,12 +130,12 @@ ORDER BY NombreArea";
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT lab_areas.IdArea,NombreArea FROM lab_areas 
-	       INNER JOIN lab_areasxestablecimiento ON lab_areas.IdArea= lab_areasxestablecimiento.IdArea
-	       WHERE lab_areasxestablecimiento.Condicion='H' AND lab_areas.Administrativa='N' 
-               AND lab_areasxestablecimiento.IdEstablecimiento=$lugar 
-	       ORDER BY NombreArea";
-	 $result = @mysql_query($query);
+     $query = "SELECT lab_areas.id,nombrearea FROM lab_areas 
+	       INNER JOIN lab_areasxestablecimiento ON lab_areas.id= lab_areasxestablecimiento.id
+	       WHERE lab_areasxestablecimiento.condicion='H' AND lab_areas.Administrativa='N' 
+               AND lab_areasxestablecimiento.idestablecimiento=$lugar 
+	       ORDER BY nombrearea";
+	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -151,10 +151,10 @@ ORDER BY NombreArea";
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
      $query = "SELECT * FROM lab_areas 
-INNER JOIN lab_areasxestablecimiento ON lab_areas.IdArea= lab_areasxestablecimiento.IdArea
-WHERE lab_areasxestablecimiento.IdEstablecimiento=$lugar AND Condicion='H'
-ORDER BY NombreArea";
-	 $result = mysql_query($query);
+INNER JOIN lab_areasxestablecimiento ON lab_areas.id= lab_areasxestablecimiento.id
+WHERE lab_areasxestablecimiento.idestablecimiento=$lugar AND condicion='H'
+ORDER BY nombrearea";
+	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -167,9 +167,9 @@ function VerificarIntegridad($idarea)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT * FROM lab_examenes WHERE IdArea='$idarea'";
-     $result = @mysql_query($query);
-	 $cuenta = mysql_num_rows($result);
+     $query = "SELECT * FROM lab_examenes WHERE id='$idarea'";
+     $result = @pg_query($query);
+	 $cuenta = pg_num_rows($result);
 	 
      if ($cuenta > 0)
        return true;
@@ -184,10 +184,10 @@ function VerificarIntegridad($idarea)
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT lab_areas.IdArea, lab_areas.NombreArea  FROM lab_areas
-INNER JOIN lab_areasxestablecimiento ON lab_areas.IdArea=lab_areasxestablecimiento.IdArea
-WHERE lab_areasxestablecimiento.IdEstablecimiento=$lugar";
-	 $numreg = mysql_num_rows(mysql_query($query));
+     $query = "SELECT lab_areas.id, lab_areas.nombrearea  FROM lab_areas
+INNER JOIN lab_areasxestablecimiento ON lab_areas.id=lab_areasxestablecimiento.id
+WHERE lab_areasxestablecimiento.idestablecimiento=$lugar";
+	 $numreg = pg_num_rows(pg_query($query));
 	 if (!$numreg )
 	   return false;
 	 else
@@ -201,12 +201,12 @@ WHERE lab_areasxestablecimiento.IdEstablecimiento=$lugar";
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT lab_areas.IdArea,lab_areas.NombreArea,lab_areasxestablecimiento.Condicion,Administrativa
+     $query = "SELECT lab_areas.id,lab_areas.nombrearea,lab_areasxestablecimiento.condicion,administrativa
 			   FROM lab_areas 
-			   INNER JOIN lab_areasxestablecimiento ON lab_areas.IdArea=lab_areasxestablecimiento.IdArea
-			   WHERE IdEstablecimiento=$lugar
-			   ORDER BY lab_areas.IdArea LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-	 $result = @mysql_query($query);
+			   INNER JOIN lab_areasxestablecimiento ON lab_areas.id=lab_areasxestablecimiento.id
+			   WHERE idestablecimiento=$lugar
+			   ORDER BY lab_areas.id LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
+	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -221,11 +221,11 @@ WHERE lab_areasxestablecimiento.IdEstablecimiento=$lugar";
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT lab_areas.IdArea,Nombrearea,Condicion,Administrativa,IdEstablecimiento 
+     $query = "SELECT lab_areas.id,nombrearea,administrativa,lab_areasxestablecimiento.condicion,idestablecimiento
 			   FROM lab_areas 
-			   INNER JOIN lab_areasxestablecimiento ON lab_areas.IdArea= lab_areasxestablecimiento.IdArea
-			   WHERE lab_areas.IdArea='$idarea'AND lab_areasxestablecimiento.IdEstablecimiento=$lugar";
-     $result = @mysql_query($query);
+			   INNER JOIN lab_areasxestablecimiento ON lab_areas.id= lab_areasxestablecimiento.id
+			   WHERE lab_areas.id='$idarea'AND lab_areasxestablecimiento.idestablecimiento=$lugar";
+     $result = @pg_query($query);
      if (!$result)
        return false;
      else
@@ -241,7 +241,7 @@ function consultarpagbus($query,$RegistrosAEmpezar, $RegistrosAMostrar)
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
 	     $query = $query." LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-		 $result = mysql_query($query);
+		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -254,7 +254,7 @@ function NumeroDeRegistrosbus($query){
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $numreg = mysql_num_rows(mysql_query($query));
+	     $numreg = pg_num_rows(pg_query($query));
 		 if (!$numreg )
 		   return false;
 		 else
