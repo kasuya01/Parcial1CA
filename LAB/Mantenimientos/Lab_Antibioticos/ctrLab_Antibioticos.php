@@ -120,7 +120,7 @@ switch ($opcion)
 				
 		//VERIFICANDO LOS POST ENVIADOS
 		if (!empty($_POST['antibiotico']))
-		{ $query .= " antibiotico like'%".$_POST['antibiotico']."%' "; }
+		{ $query .= "antibiotico like'%".$_POST['antibiotico']."%' "; }
 		
 		$query = substr($query ,0,strlen($query)-1);
 		//echo $query;
