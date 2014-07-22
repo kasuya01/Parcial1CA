@@ -1,20 +1,20 @@
 <?php session_start();		
 include_once("clsUsuarios.php");
 $objdatos = new clsUsuarios;
-$login=htmlentities($_POST['txtlogin']);
-$password=htmlentities($_POST['txtpassword']);
+$login    = htmlentities($_POST['txtlogin']);
+$password = htmlentities($_POST['txtpassword']);
   
    $numreg = $objdatos->validarexistencia($login,$password);
    if ($numreg == "1")
    {
-	$datos=$objdatos->datosusuario($login,$password);
+	$datos = $objdatos->datosusuario($login,$password);
 	$row_datos = pg_fetch_array($datos);
         
-	$lugar=$row_datos['id_establecimiento'];
-	$nivel=$row_datos['nivel'];
-	$area=$row_datos['id_area_laboratorio'];
-        $corr=$row_datos['correlativo'];
-        $cod=$row_datos['id_empleado'];
+	$lugar = $row_datos['id_establecimiento'];
+	$nivel = $row_datos['nivel'];
+	$area  = $row_datos['id_area_laboratorio'];
+        $corr  = $row_datos['correlativo'];
+        $cod   = $row_datos['id_empleado'];
 	switch ($nivel) 
 	{
 	    case 1://Administrador y jefe del laboratorio
@@ -43,7 +43,7 @@ $password=htmlentities($_POST['txtpassword']);
 			header("Location: ../Laboratorio/PaginaPrincipal/index_laboratorio231.php");
 	    break;
 	    case 32://Toma de Muestras
-		header("Location: ../Laboratorio/PaginaPrincipal/index_laboratorio232.html");
+		//header("Location: ../Laboratorio/PaginaPrincipal/index_laboratorio232.html");
 	    break;
 	    case 33://Recepcion en el Area de Laboratorio
                         $_SESSION['NIVEL']=$nivel;
