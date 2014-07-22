@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-$usuario = $_SESSION['IdUsuario'];
+$usuario = $_SESSION['Correlativo'];
 $lugar   = $_SESSION['Lugar'];
 $area    = $_SESSION['Idarea'];
 include_once("clsLab_Areas.php");
