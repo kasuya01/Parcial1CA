@@ -93,11 +93,11 @@ class clsUsuarios {
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
             $query = "SELECT 
-                      t01.id AS correlativo
+                      t01.id AS correlativo,
                       t02.id_establecimiento,
                       t02.id_area_laboratorio,
                       t01.nivel,
-                      t01.id_empleado,
+                      t01.id_empleado
 		FROM fos_user_user      t01
 		INNER JOIN mnt_empleado t02 ON (t02.id = t01.id_empleado AND t01.id_establecimiento = t02.id_establecimiento) 
 		WHERE username='$login' AND password= md5('$password') AND modulo='LAB'";

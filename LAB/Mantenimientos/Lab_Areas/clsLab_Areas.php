@@ -66,7 +66,7 @@ class clsLab_Areas {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
 
-            echo $query = "UPDATE lab_areas SET nombrearea='$nom',idusuariomod='$usuario',fechahoramod=(SELECT date_trunc('seconds',(SELECT now()))),administrativa='$tipo' WHERE id='$idarea'";
+            $query = "UPDATE lab_areas SET nombrearea = '$nom', idusuariomod = $usuario, fechahoramod=(SELECT date_trunc('seconds',(SELECT now()))), administrativa='$tipo' WHERE idarea = '$idarea'";
             
             $result = @pg_query($query);
 
