@@ -47,7 +47,7 @@ $password = htmlentities($_POST['txtpassword']);
 			header("Location: ../Laboratorio/PaginaPrincipal/index_laboratorio231.php");
 	    break;
 	    case 32://Toma de Muestras
-		header("Location: ../Laboratorio/PaginaPrincipal/index_laboratorio232.html");
+		//header("Location: ../Laboratorio/PaginaPrincipal/index_laboratorio232.html");
 	    break;
 	    case 33://Recepcion en el Area de Laboratorio
                         $_SESSION['NIVEL']=$nivel;
