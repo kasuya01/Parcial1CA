@@ -13,8 +13,10 @@ class clsLab_CodigosEstandar
    if($con->conectar()==true) 
    {
     $query = "INSERT INTO lab_codigosestandar(idestandar,descripcion,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod,idgrupo) 
-        VALUES('$idestandar','$descripcion','$usuario',NOW(),'$usuario',NOW(),'$grupo')";
-     $result = @mysql_query($query);
+              VALUES('$idestandar','$descripcion','$usuario',NOW(),'$usuario',NOW(),$grupo)";
+    //echo $query;
+    
+     $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -28,8 +30,8 @@ class clsLab_CodigosEstandar
    if($con->conectar()==true) 
    {
      $query = "UPDATE lab_codigosestandar SET descripcion='$descripcion',idgrupo='$grupo' 
-         WHERE idestandar='$idestandar'";
-     $result = @mysql_query($query);
+               WHERE idestandar='$idestandar'";
+     $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -43,8 +45,9 @@ class clsLab_CodigosEstandar
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "DELETE FROM lab_codigosestandar WHERE idestandar='$idestandar'";
-     $result = @mysql_query($query);
+     $query = "DELETE FROM lab_codigosestandar WHERE id='$idestandar'";
+     echo $query;
+    // $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -60,7 +63,7 @@ function VerificarIntegridad($idestandar)
    if($con->conectar()==true)
    {
      $query = "SELECT * FROM lab_examenes WHERE idestandar='$idestandar'";
-     $result = @mysql_query($query);
+     $result = pg_query($query);
 	 $cuenta = mysql_num_rows($result);
 	 
      //if ($cuenta > 0)
@@ -78,12 +81,15 @@ function VerificarIntegridad($idestandar)
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT idestandar,descripcion,lab_codigosestandar.idgrupo,nombregrupo 
-               FROM lab_codigosestandar 
-               LEFT JOIN lab_estandarxgrupo ON lab_codigosestandar.idgrupo=lab_estandarxgrupo.idgrupo
-               ORDER BY idEstandar LIMIT $RegistrosAEmpezar, $RegistrosAMostrar ";
+     $query ="SELECT lab_codigosestandar.id,lab_codigosestandar.idestandar,lab_codigosestandar.descripcion,
+              lab_codigosestandar.idgrupo,lab_estandarxgrupo.nombregrupo 
+              FROM lab_codigosestandar 
+              LEFT JOIN lab_estandarxgrupo 
+              ON lab_codigosestandar.idgrupo=lab_estandarxgrupo.id  
+              LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar "; 
+           
     // echo $query;
-	 $result = @mysql_query($query);
+	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -98,8 +104,10 @@ function Leer_grupos()
    if($con->conectar()==true)
    {
      
-     $query = "select idgrupo,nombregrupo from lab_estandarxgrupo order by idgrupo";
-     $result = mysql_query($query);
+     $query = "SELECT id,idgrupo,nombregrupo FROM lab_estandarxgrupo ORDER BY id";
+  
+     $result = pg_query($query);
+    
      if (!$result)
        return false;
      else
@@ -113,7 +121,7 @@ function Leer_grupos()
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
      $query = "SELECT * FROM lab_codigosestandar ORDER BY idEstandar ";
-	 $result = @mysql_query($query);
+	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -127,7 +135,7 @@ function Leer_grupos()
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
      $query = "SELECT * FROM lab_codigosestandar ";
-	 $numreg = mysql_num_rows(mysql_query($query));
+	 $numreg = pg_num_rows(pg_query($query));
         // echo $numreg;
 	 if (!$numreg )
 	   return false;
@@ -142,10 +150,13 @@ function Leer_grupos()
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT idestandar,descripcion,lab_codigosestandar.idgrupo,nombregrupo FROM lab_codigosestandar 
-               LEFT JOIN lab_estandarxgrupo ON lab_codigosestandar.idgrupo=lab_estandarxgrupo.idgrupo
-               WHERE idEstandar='$idestandar'";
-     $result = @mysql_query($query);
+     $query = "SELECT idestandar,descripcion,lab_codigosestandar.idgrupo,nombregrupo 
+               FROM lab_codigosestandar 
+               LEFT JOIN lab_estandarxgrupo 
+               ON lab_codigosestandar.idgrupo=lab_estandarxgrupo.id
+               WHERE lab_codigosestandar.id=$idestandar";
+     //echo $query;
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -160,7 +171,7 @@ function Leer_grupos()
    {
      $query = "SELECT IdGrupo, NombreGrupo
             FROM lab_estandarxgrupo ";
-     $result = @mysql_query($query);
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -174,13 +185,13 @@ function Leer_grupos()
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $numreg = mysql_num_rows(mysql_query($query));
+	     $numreg = pg_num_rows(pg_query($query));
 		 if (!$numreg )
 		   return false;
 		 else
 		   return $numreg ;
-	   }
-	  }	   
+          }
+   }	   
 
  function consultarpagbus($query,$RegistrosAEmpezar, $RegistrosAMostrar)
  {
@@ -188,8 +199,8 @@ function Leer_grupos()
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = $query." LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-		 $result = @mysql_query($query);
+	     $query = $query." LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+	     $result = pg_query($query);
 		 if (!$result)
 		   return false;
 		 else

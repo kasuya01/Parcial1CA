@@ -4,13 +4,14 @@ $lugar=$_SESSION['Lugar'];
 $usuario=$_SESSION['Correlativo'];
 $area=$_SESSION['Idarea'];
 //consulta los datos por su id
-$idestandar=$_POST['idestandar'];
+$id=$_POST['idestandar'];
 $obj = new clsLab_CodigosEstandar;
-$consulta=$obj->consultarid($idestandar);
+$consulta=$obj->consultarid($id);
 
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 
 //valores de las consultas
+$idestandar=$row['idestandar'];
 $descripcion=$row['descripcion'];
 $idgrupo=$row['idgrupo'];
 $grupo=$row['nombregrupo'];
@@ -43,8 +44,8 @@ onsubmit="enviarDatos(); return false">
 		<?php
                      $obj=new clsLab_CodigosEstandar;
                      $consulta= $obj->Leer_grupos();
-		     while($row = mysql_fetch_array($consulta)){
-		         echo "<option value='" . $row['idgrupo']. "'>".$row['idgrupo']."  - ".htmlentities($row['nombregrupo']) . "</option>";
+		     while($row = pg_fetch_array($consulta)){
+		         echo "<option value='" . $row['id']. "'>".$row['idgrupo']."  - ".htmlentities($row['nombregrupo']) . "</option>";
 		     }//echo $idgrupo."--".$grupo;
                          echo "<option value='" . $idgrupo . "' selected='selected'>" .htmlentities($grupo). "</option>";
                 
