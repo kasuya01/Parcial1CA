@@ -54,19 +54,19 @@ switch ($opcion)
 		echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
 			   <tr>
 			   <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td>
+			 <!--  <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
 			   <td class='CobaltFieldCaptionTD'> Idbacteria</td>
 			   <td class='CobaltFieldCaptionTD'> Bacteria </td>	   
 			   </tr>";
 
-		while($row = mysql_fetch_array($consulta)){
+		while($row = pg_fetch_array($consulta)){
 			echo "<tr>
 					<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 					onclick=\"pedirDatos('".$row[0]."')\"> </td>
-					<td aling ='center'> 
+				<!-- <td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"eliminarDato('".$row[0]."')\"> </td>
+					onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
 					<td> $row[0] </td>
 					<td>".htmlentities($row[1])."</td>
 					</tr>";
@@ -106,15 +106,16 @@ switch ($opcion)
      break;
      case 5:  //buscar
             
-	    $query = "SELECT IdBacteria,Bacteria FROM lab_bacterias
+	    $query = "SELECT id,bacteria FROM lab_bacterias
 		      WHERE ";
 				
 		//VERIFICANDO LOS POST ENVIADOS
-		if (!empty($_POST['bacteria']))
-		{ $query .= " Bacteria like'%".$_POST['bacteria']."%' "; }
+        		if (!empty($_POST['bacteria']))
+                    		{ 
+                    $query .= " bacteria ilike '%".$_POST['bacteria']."%' "; }
 		
 		$query = substr($query ,0,strlen($query)-1);
-		//echo $query;
+	
 		//para manejo de la paginacion
 		$RegistrosAMostrar=4;
 		$RegistrosAEmpezar=($_POST['Pag']-1)*$RegistrosAMostrar;
@@ -127,22 +128,22 @@ switch ($opcion)
 		echo "<table border = 1 align='center' class='estilotabla'>
 			  <tr>
 			   <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td>
+			 <!--  <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
 			   <td class='CobaltFieldCaptionTD'> Idbacteria</td>
 			   <td class='CobaltFieldCaptionTD'> Bacteria </td>	   
 			   </tr>";
 
-		while($row = mysql_fetch_array($consulta)){
+		while($row = pg_fetch_array($consulta)){
 		      echo "<tr>
 					<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 					onclick=\"pedirDatos('".$row[0]."')\"> </td>
-					<td aling ='center'> 
-					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"eliminarDato('".$row[0]."')\"> </td>
-					<td> $row[0] </td>
-					<td>".htmlentities($row[1])."</td>
-					</tr>";
+				      <!-- <td aling ='center'> 
+					 <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+					 onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
+					 <td> $row[0] </td> 
+					<td>".htmlentities($row[1])."</td> 
+					</tr>"; 
 		}
 		echo "</table>"; 
 

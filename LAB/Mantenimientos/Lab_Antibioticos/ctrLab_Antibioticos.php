@@ -63,7 +63,7 @@ switch ($opcion)
 		echo "<table border = 1 align='center' class='estilotabla'>
 			   <tr>
 			   <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td>
+			  <!-- <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
 			   <td class='CobaltFieldCaptionTD'> IdAntibiotico</td>
 			   <td class='CobaltFieldCaptionTD'> Antibiotico </td>	   
 			   </tr>";
@@ -73,9 +73,9 @@ switch ($opcion)
 					<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 					onclick=\"pedirDatos('".$row[0]."')\"> </td>
-					<td aling ='center'> 
+			<!--	<td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"eliminarDato('".$row[0]."')\"> </td>
+					onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
 					<td> $row[0] </td>
 					<td>".htmlentities($row[1])."</td>
 					</tr>";
@@ -136,7 +136,7 @@ switch ($opcion)
 		echo "<table border = 1 align='center' class='estilotabla'>
 			   <tr>
 			   <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td>
+			  <!-- <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
 			   <td class='CobaltFieldCaptionTD'> IdAntibiotico</td>
 			   <td class='CobaltFieldCaptionTD'> Antibiotico </td>	   
 			   </tr>";
@@ -146,9 +146,9 @@ switch ($opcion)
 					<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 					onclick=\"pedirDatos('".$row[0]."')\"> </td>
-					<td aling ='center'> 
+					<!- <td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"eliminarDato('".$row[0]."')\"> </td>
+					onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
 					<td> $row[0] </td>
 					<td>".htmlentities($row[1])."</td>
 					</tr>";

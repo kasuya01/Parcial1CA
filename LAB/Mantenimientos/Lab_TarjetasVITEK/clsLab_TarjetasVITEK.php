@@ -9,12 +9,12 @@ class clsLab_TarjetasVITEK
  }	
  
  function insertar($nombretarjeta,$usuario,$lugar,$Fechaini,$Fechafin)
- {
+ { 
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_tarjetasvitek(nombretarjeta,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod,IdEstablecimiento,FechaIni,FechaFin) VALUES('$nombretarjeta','$usuario',NOW(),'$usuario',NOW(),$lugar,'$Fechaini','$Fechafin')";
-     $result = mysql_query($query);
+  echo $query = "INSERT INTO lab_tarjetasvitek(nombretarjeta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,fechaini,fechafin) VALUES('$nombretarjeta','$usuario',NOW(),'$usuario',NOW(),$lugar,'$Fechaini','$Fechafin')";
+     $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -29,7 +29,7 @@ class clsLab_TarjetasVITEK
    if($con->conectar()==true) 
    {
      $query = "UPDATE lab_tarjetasvitek SET nombretarjeta='$nombretarjeta',IdUsuarioMod='$usuario', FechaHoraMod=NOW(),FechaIni='$Fechaini',FechaFin='$Fechafin' WHERE idtarjeta=$idtarjeta AND IdEstablecimiento=$lugar";
-     $result = mysql_query($query);
+     $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -45,7 +45,7 @@ class clsLab_TarjetasVITEK
    if($con->conectar()==true) 
    {
      $query = "DELETE FROM lab_tarjetasvitek WHERE idtarjeta='$idtarjeta'";
-     $result = mysql_query($query);
+     $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -63,7 +63,7 @@ class clsLab_TarjetasVITEK
    if($con->conectar()==true){
      $query = "SELECT IdTarjeta,NombreTarjeta,FechaIni,FechaFin FROM lab_tarjetasvitek 
 	 WHERE IdEstablecimiento=$lugar ORDER BY idtarjeta LIMIT $RegistrosAEmpezar, $RegistrosAMostrar ";
-	 $result = mysql_query($query);
+	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -77,7 +77,7 @@ function consultar($lugar){
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
      $query = "SELECT * FROM lab_tarjetasvitek WHERE IdEstablecimiento=$lugar ORDER BY IdTarjeta ";
-	 $result = mysql_query($query);
+	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -92,7 +92,7 @@ function NumeroDeRegistros($lugar){
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
      $query = "SELECT IdTarjeta,NombreTarjeta,FechaIni,FechaFin FROM lab_tarjetasvitek WHERE IdEstablecimiento=$lugar ";
-	 $numreg = mysql_num_rows(mysql_query($query));
+	 $numreg = pg_num_rows(pg_query($query));
 	 if (!$numreg )
 	   return false;
 	 else
@@ -106,9 +106,9 @@ function NumeroDeRegistros($lugar){
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT IdTarjeta,NombreTarjeta,DATE_FORMAT(FechaIni,'%d/%m/%Y')AS FechaIni,
+    $query = "SELECT IdTarjeta,NombreTarjeta,DATE_FORMAT(FechaIni,'%d/%m/%Y')AS FechaIni,
 			DATE_FORMAT(FechaFin,'%d/%m/%Y')AS FechaFin  FROM lab_tarjetasvitek WHERE IdTarjeta='$idtarjeta' AND IdEstablecimiento=$lugar";
-     $result = mysql_query($query);
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -123,7 +123,7 @@ function consultarpagbus($query,$RegistrosAEmpezar, $RegistrosAMostrar)
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
 	     $query = $query." LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-		 $result = mysql_query($query);
+		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -136,7 +136,7 @@ function NumeroDeRegistrosbus($query){
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $numreg = mysql_num_rows(mysql_query($query));
+	     $numreg = pg_num_rows(pg_query($query));
 		 if (!$numreg )
 		   return false;
 		 else
@@ -152,8 +152,8 @@ class clsLabor_TarjetasVITEK
 	{
 		$con2 = new ConexionBDLab;
 		if($con2->conectarT()==true){
-			$query = "INSERT INTO laboratorio.lab_tarjetasvitek(nombretarjeta,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod,IdEstablecimiento,FechaIni,FechaFin) VALUES('$nombretarjeta','$usuario',NOW(),'$usuario',NOW(),$lugar,'$Fechaini','$Fechafin')";
-			$result = mysql_query($query);
+			echo $query = "INSERT INTO laboratorio.lab_tarjetasvitek(nombretarjeta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,fechaini,fechafin) VALUES('$nombretarjeta','$usuario',NOW(),'$usuario',NOW(),$lugar,'$Fechaini','$Fechafin')";
+			$result = pg_query($query);
 	 
 			if (!$result)
 				return false;
@@ -167,7 +167,7 @@ class clsLabor_TarjetasVITEK
 	   $con2 = new ConexionBDLab;
 		if($con2->conectarT()==true){
 		 $query = "UPDATE laboratorio.lab_tarjetasvitek SET nombretarjeta='$nombretarjeta',IdUsuarioReg='$usuario', FechaHoraMod=NOW(),FechaIni='$Fechaini',FechaFin='$Fechafin' WHERE IdTarjeta=$idtarjeta AND IdEstablecimiento=$lugar";
-		 $result = mysql_query($query);
+		 $result = pg_query($query);
 		 
 		 if (!$result)
 		   return false;
@@ -182,7 +182,7 @@ class clsLabor_TarjetasVITEK
 		$con2 = new ConexionBDLab;
 		if($con2->conectarT()==true){
 			$query = "DELETE FROM laboratorio.lab_tarjetasvitek WHERE idtarjeta='$idtarjeta'";
-			$result = mysql_query($query);
+			$result = pg_query($query);
 	 
 		if (!$result)
        return false;

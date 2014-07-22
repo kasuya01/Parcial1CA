@@ -9,6 +9,7 @@ $password=htmlentities($_POST['txtpassword']);
    {
 	$datos=$objdatos->datosusuario($login,$password);
 	$row_datos = pg_fetch_array($datos);
+        
 	$lugar=$row_datos['id_establecimiento'];
 	$nivel=$row_datos['nivel'];
 	$area=$row_datos['id_area_laboratorio'];

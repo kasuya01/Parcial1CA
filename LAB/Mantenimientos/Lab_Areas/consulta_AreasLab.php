@@ -8,7 +8,7 @@ include_once("clsLab_Areas.php");
 $idarea=$_POST['idarea'];
 $objareas = new clsLab_Areas;
 $consulta=$objareas->consultarid($idarea,$lugar);
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 //valores de las consultas
 $nombre=$row['Nombrearea'];
 $activo=$row['Condicion'];

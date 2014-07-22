@@ -8,7 +8,7 @@ $area=$_SESSION['Idarea'];
 $idtarjeta=$_POST['idtarjeta'];
 $obj = new clsLab_TarjetasVITEK;
 $consulta=$obj->consultarid($idtarjeta,$lugar);
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 //valores de las consultas
 $nombretarjeta=$row[1];
 $Fechaini=$row[2];

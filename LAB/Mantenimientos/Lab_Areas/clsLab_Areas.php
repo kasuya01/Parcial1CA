@@ -3,6 +3,7 @@ include_once("../../../Conexion/ConexionBD.php");
 //implementamos la clase lab_areas
 class clsLab_Areas
 {
+    var $ultimoregistroinsertado_lab_areas=0;
  //constructor	
  function clsLab_Areas(){
  }	
@@ -12,8 +13,9 @@ class clsLab_Areas
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_areas(id,nombrearea,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,administrativa) 
+    $query = "INSERT INTO lab_areas(idarea,nombrearea,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,administrativa) 
 			VALUES('$idarea','$nombrearea','$usuario',NOW(),'$usuario',NOW(),'$tipo')";
+    
   // echo $query; 
     $result = @pg_query($query);
 	 
@@ -23,14 +25,63 @@ class clsLab_Areas
        return true;
    }
  }
-
+ 
+ 
+ 
+ 
+ function recuperarultimoreg()
+ {
+   $con = new ConexionBD;
+   if($con->conectar()==true) 
+   {
+     $query = "SELECT id FROM lab_areas ORDER BY id DESC LIMIT 1;";
+  // echo $query; 
+    $result = @pg_query($query);
+     $row = pg_fetch_array($result);     
+     $this->ultimoregistroinsertado_lab_areas=$row['id']; 
+     
+    
+     if (!$result)
+       return false;
+     else
+       return true;
+   }
+ }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+//
 /* Función para ingresar un área asociada a un establecimiento*/
 function ingresarareaxestablecimiento($idarea,$cond,$lugar,$usuario)
 {
 $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_areasxestablecimiento(id,idestablecimiento,condicion,idusuarioreg,idusuariomod,fechahorareg,fechahoramod) VALUES('$idarea',$lugar,'$cond','$usuario','$usuario',NOW(),NOW())";
+ echo $query = "INSERT INTO lab_areasxestablecimiento(idarea,idestablecimiento,condicion,idusuarioreg,idusuariomod,fechahorareg,fechahoramod) VALUES('$idarea',$lugar,'$cond','$usuario','$usuario',NOW(),NOW())";
      $result = @pg_query($query);
 	 
      if (!$result)
@@ -47,7 +98,7 @@ function actualizar($idarea,$nom,$usuario,$tipo)
    if($con->conectar()==true) 
    {
     
-     $query = "UPDATE lab_areas SET nombrearea='$nom',idusuariomod='$usuario',fechahoramod=NOW(),administrativa='$tipo' WHERE id='$idarea'";
+   echo  $query = "UPDATE lab_areas SET nombrearea='$nom',idusuariomod='$usuario',fechahoramod=NOW(),administrativa='$tipo' WHERE id='$idarea'";
      //echo $query;
      $result = @pg_query($query);
 	 
@@ -113,7 +164,7 @@ function eliminar($idarea)
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT lab_areas.id, lab_areas.nombrearea,lab_areasxestablecimiento.condicion FROM lab_areas 
+   echo  $query = "SELECT lab_areas.id, lab_areas.nombrearea,lab_areasxestablecimiento.condicion FROM lab_areas 
 INNER JOIN lab_areasxestablecimiento ON lab_areas.id=lab_areasxestablecimiento.id
 WHERE lab_areasxestablecimiento.condicion='H' AND lab_areasxestablecimiento.idestablecimiento=$lugar 
 ORDER BY nombrearea";
@@ -201,11 +252,11 @@ WHERE lab_areasxestablecimiento.idestablecimiento=$lugar";
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT lab_areas.id,lab_areas.nombrearea,lab_areasxestablecimiento.condicion,administrativa
+     $query = "SELECT lab_areas.id,nombrearea,lab_areasxestablecimiento.condicion,administrativa
 			   FROM lab_areas 
 			   INNER JOIN lab_areasxestablecimiento ON lab_areas.id=lab_areasxestablecimiento.id
 			   WHERE idestablecimiento=$lugar
-			   ORDER BY lab_areas.id LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
+			   ORDER BY lab_areas.id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar ";
 	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;
@@ -240,7 +291,7 @@ function consultarpagbus($query,$RegistrosAEmpezar, $RegistrosAMostrar)
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = $query." LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
+	     $query = $query." LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
 		 $result = pg_query($query);
 		 if (!$result)
 		   return false;

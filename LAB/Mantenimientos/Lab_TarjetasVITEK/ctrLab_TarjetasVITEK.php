@@ -29,7 +29,7 @@ switch ($opcion)
 			$Fechafin=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];	
 		}
 		
-       	if (($objdatos->insertar($nombretarjeta,$usuario,$lugar,$Fechaini,$Fechafin)==true) && ($Clases->insertar_labo($nombretarjeta,$usuario,$lugar,$Fechaini,$Fechafin)==true))
+       	if (($objdatos->insertar($nombretarjeta,$usuario,$lugar,$Fechaini,$Fechafin)==true)) //&& ($Clases->insertar_labo($nombretarjeta,$usuario,$lugar,$Fechaini,$Fechafin)==true))
 	   	{
 			    echo "Registro Agregado";
 		}
@@ -96,7 +96,7 @@ switch ($opcion)
 				<td class='CobaltFieldCaptionTD'> Fecha Finalización </td>	
 			   </tr>";
 
-		while($row = mysql_fetch_array($consulta)){
+		while($row = pg_fetch_array($consulta)){
 			echo "<tr>
 					<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
@@ -203,7 +203,7 @@ switch ($opcion)
 							 <td class='CobaltFieldCaptionTD'> Fecha Finalización </td>	
 							 </tr>";
 
-					while($row = mysql_fetch_array($consulta)){
+					while($row = pg_fetch_array($consulta)){
 						echo "<tr>
 							<td aling='center'> 
 							<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 

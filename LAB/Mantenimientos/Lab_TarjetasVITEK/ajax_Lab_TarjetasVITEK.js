@@ -94,6 +94,7 @@ function IngresarRegistro(){ //INGRESAR REGISTROS
 		}
 		ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores
+                //alert(Fechaini+Fechafin)
 		ajax.send("nombretarjeta="+escape(nombretarjeta)+"&Pag="+Pag+"&opcion="+opcion+"&Fechaini="+Fechaini+"&Fechafin="+Fechafin);		
 	}
 	else{
@@ -148,6 +149,7 @@ function enviarDatos(){    //FUNCION PARA MODIFICAR
 	//muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
+       // alert("fechas1: "+Fechaini+"fecha2: "+ Fechaini);
 	ajax.send("idtarjeta="+idtarjeta+"&nombretarjeta="+escape(nombretarjeta)+"&Pag="+Pag+"&opcion="+opcion+"&Fechaini="+Fechaini+"&Fechafin="+Fechafin);
 	ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {

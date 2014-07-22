@@ -22,15 +22,16 @@ $antibiotico=$row[1];
 			<td colspan="2" class="CobaltFieldCaptionTD" align="center"><h3><strong>Mantenimiento de Antibi&oacute;ticos</strong></h3>
 			</td>
 		</tr>
-		<tr>
+		<!--<tr>
 			<td class="StormyWeatherFieldCaptionTD">IdAntibiotico</td>
 			<td class="StormyWeatherDataTD"><input name="idantibiotico" id="idantibiotico" type="text" value="<?php echo $idantibiotico; ?>" disabled="disabled" />
 			</td>
-		</tr>
+		</tr> -->
 		<tr>
 			<td class="StormyWeatherFieldCaptionTD">Antibi&oacute;tico</td>
 			<td class="StormyWeatherDataTD"><input name="antibiotico" id="antibiotico" type="text" value="<?php echo htmlentities($antibiotico); ?>" size="40" />
-			</td>    
+                            <input name="idantibiotico" id="idantibiotico" type="hidden" value="<?php echo $idantibiotico; ?>" disabled="disabled" />
+                        </td>    
 		</tr>
 			<td class="StormyWeatherDataTD" colspan="2" align="right">
 				<input type="button" name="btnActualizar" value="Actualizar" onclick="ActualizarDatos()" />

@@ -22,15 +22,19 @@ switch ($opcion)
 		$nom=$_POST['nombrearea'];
 		$tipo=$_POST['tipo'];
 		$activo=$_POST['activo'];
+                $idinsertado=0;
 		//echo $activo;
       	if($objdatos->insertar($idarea,$nom,$usuario,$tipo,$lugar)==true)
-		{ 	if ($activo=='S'){
+		{ 
+            $consultaUltimoReg=$objdatos->recuperarultimoreg();
+            $idinsertado=$objdatos->ultimoregistroinsertado_lab_areas;
+            if ($activo=='S'){
                       $cond='H';
             }else{ 
                       $cond='I'; 
 			}
             //echo $cond;
-			if($objdatos->IngresarAreaxEstablecimiento($idarea,$activo,$lugar,$usuario)==true){
+			if($objdatos->IngresarAreaxEstablecimiento($idinsertado,$activo,$lugar,$usuario)==true){
 			echo "Registro Agregado";
 			//$objeda=new clsLab_Areas;
 			//$valor=$objdatos->InsertarParametro($idarea,$nom);
@@ -108,21 +112,21 @@ switch ($opcion)
 		echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
 		   <tr>
 			   <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
-			   <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td>
+			 <!--  <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
 			   <td class='CobaltFieldCaptionTD'> IdArea</td>
 			   <td class='CobaltFieldCaptionTD'> Nombre </td>
 			   <td class='CobaltFieldCaptionTD'>Activa </td>
 				<td class='CobaltFieldCaptionTD'>Tipo &Aacute;rea</td>
 			   </tr>";
 
-		while($row = mysql_fetch_array($consulta)){
+		while($row = pg_fetch_array($consulta)){
 			echo "<tr>
 					<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 					onclick=\"pedirDatos('".$row['IdArea']."')\"> </td>
-					<td aling ='center'> 
+					<!-- <td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"eliminarDato('".$row['IdArea']."')\"> </td>
+					onclick=\"eliminarDato('".$row['IdArea']."')\"> </td> -->
 					<td>".$row['IdArea']."</td>
 					<td>".htmlentities($row['NombreArea'])."</td>";
 					if ($row['Condicion']=='H')
@@ -210,21 +214,21 @@ switch ($opcion)
 		echo "<table border = 1 align='center' class='estilotabla'>
                         <tr>
                             <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
-			    <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td>
+			 <!--   <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
 			    <td class='CobaltFieldCaptionTD'> IdArea</td>
 			    <td class='CobaltFieldCaptionTD'> Nombre </td>
 			    <td class='CobaltFieldCaptionTD'>Activa </td>
 			    <td class='CobaltFieldCaptionTD'>Tipo &Aacute;rea</td>			   
 			 </tr>";
 
-		while($row = mysql_fetch_array($consulta)){
+		while($row = pg_fetch_array($consulta)){
 		   echo "<tr>
                             <td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 					onclick=\"pedirDatos('".$row[0]."')\"> </td>
-			    <td aling ='center'> 
+			  <!--  <td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"eliminarDato('".$row[0]."')\"> </td>
+					onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
 			    <td>".$row[0]."</td>
 			    <td>".htmlentities($row[1])."</td>";
 		   if($row[2]=='H')

@@ -13,13 +13,17 @@ class clsLab_Bacterias
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_bacterias(Bacteria,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod) VALUES('$bacteria','$usuario',NOW(),'$usuario',NOW())";
-     $result = @mysql_query($query);
+    $query = "INSERT INTO lab_bacterias(bacteria,idusuarioreg,fechahorareg,idusuariomod,fechahoramod) VALUES('$bacteria','$usuario',NOW(),'$usuario',NOW())";
+     $result = @pg_query($query);
 	 
-     if (!$result)
+   if (!$result){
+      
        return false;
-     else
-       return true;	   
+   }
+     else{
+
+       return true;
+     }
    }
  }
 
@@ -28,8 +32,8 @@ class clsLab_Bacterias
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "UPDATE lab_bacterias SET Bacteria='$bacteria',IdUsuarioMod='$usuario',FechaHoraMod=NOW() WHERE IdBacteria='$idbacteria'";
-     $result = @mysql_query($query);
+     $query = "UPDATE lab_bacterias SET bacteria='$bacteria',idusuariomod='$usuario',fechahoramod=NOW() WHERE id ='$idbacteria'";
+     $result = @pg_query($query);
 	 
      if (!$result)
        return false;
@@ -44,8 +48,8 @@ class clsLab_Bacterias
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "DELETE FROM lab_bacterias WHERE IdBacteria='$idbacteria'";
-     $result = @mysql_query($query);
+     $query = "DELETE FROM lab_bacterias WHERE id ='$idbacteria'";
+     $result = @pg_query($query);
 	 
      if (!$result)
        return false;
@@ -61,9 +65,9 @@ function VerificarIntegridad($idbacteria)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT * FROM lab_examenes WHERE IdBacteria='$idbacteria'";
-     $result = @mysql_query($query);
-	 $cuenta = mysql_num_rows($result);
+     $query = "SELECT * FROM lab_bacterias WHERE id ='$idbacteria'";
+     $result = @pg_query($query);
+	 $cuenta = pg_num_rows($result);
 	 
      if ($cuenta > 0)
        return true;
@@ -78,8 +82,8 @@ function VerificarIntegridad($idbacteria)
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT * FROM lab_bacterias ORDER BY IdBacteria LIMIT $RegistrosAEmpezar, $RegistrosAMostrar ";
-	 $result = @mysql_query($query);
+     $query = "SELECT * FROM lab_bacterias ORDER BY id  LIMIT  $RegistrosAMostrar OFFSET $RegistrosAEmpezar ";
+	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -92,8 +96,8 @@ function VerificarIntegridad($idbacteria)
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT * FROM lab_bacterias ORDER BY IdBacteria ";
-	 $result = @mysql_query($query);
+     $query = "SELECT * FROM lab_bacterias ORDER BY id  ";
+	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -107,8 +111,8 @@ function consultarpagbus($query,$RegistrosAEmpezar, $RegistrosAMostrar)
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = $query." LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-		 $result = @mysql_query($query);
+	     $query = $query." LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+		 $result = @pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -121,7 +125,7 @@ function NumeroDeRegistrosbus($query){
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $numreg = mysql_num_rows(mysql_query($query));
+	     $numreg = pg_num_rows(mysql_query($query));
 		 if (!$numreg )
 		   return false;
 		 else
@@ -136,7 +140,7 @@ function NumeroDeRegistrosbus($query){
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
      $query = "SELECT * FROM lab_bacterias ";
-	 $numreg = mysql_num_rows(mysql_query($query));
+	 $numreg = pg_num_rows(mysql_query($query));
 	 if (!$numreg )
 	   return false;
 	 else
@@ -150,8 +154,8 @@ function NumeroDeRegistrosbus($query){
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT * FROM lab_bacterias WHERE IdBacteria='$idbacteria'";
-     $result = @mysql_query($query);
+     $query = "SELECT * FROM lab_bacterias WHERE id ='$idbacteria'";
+     $result = @pg_query($query);
      if (!$result)
        return false;
      else
@@ -169,7 +173,7 @@ class clsLabor_Bacterias
 		    $con2 = new ConexionBDLab;
 		    if($con2->conectarT()==true){
 			$query = "INSERT INTO laboratorio.lab_bacterias(Bacteria,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod) VALUES('$bacteria','$usuario',NOW(),'$usuario',NOW())";
-			 $result = @mysql_query($query);
+			 $result = @pg_query($query);
 			 
 			 if (!$result)
 			   return false;
@@ -183,7 +187,7 @@ class clsLabor_Bacterias
 	   $con2 = new ConexionBDLab;
 	   if($con2->conectarT()==true){
 			 $query = "UPDATE laboratorio.lab_bacterias SET Bacteria='$bacteria',IdUsuarioMod='$usuario',FechaHoraMod=NOW() WHERE IdBacteria='$idbacteria'";
-			 $result = @mysql_query($query);
+			 $result = @pg_query($query);
 			 
 			 if (!$result)
 			   return false;
@@ -198,7 +202,7 @@ class clsLabor_Bacterias
 	   $con2 = new ConexionBDLab;
 		if($con2->conectarT()==true){
 			 $query = "DELETE FROM laboratorio.lab_bacterias WHERE IdBacteria='$idbacteria'";
-			 $result = @mysql_query($query);
+			 $result = @pg_query($query);
 			 
 			 if (!$result)
 			   return false;

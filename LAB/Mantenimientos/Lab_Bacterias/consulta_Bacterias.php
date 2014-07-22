@@ -7,7 +7,7 @@ $area=$_SESSION['Idarea'];
 $idbacteria=$_POST['idbacteria'];
 $obj = new clsLab_Bacterias;
 $consulta=$obj->consultarid($idbacteria);
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 
 //valores de las consultas
 $bacteria=$row[1];
@@ -23,14 +23,17 @@ onsubmit="enviarDatos(); return false">
 <tr>
 	<td colspan="2" class="CobaltFieldCaptionTD" align="center"><h3><strong>Mantenimiento de Bacterias</strong></h3>
 	</td>
-</tr><tr>
-	<td class="StormyWeatherFieldCaptionTD">IdBacteria</td>
-	<td class="StormyWeatherDataTD"><input name="idbacteria" id="idbacteria" type="text" value="<?php echo $idbacteria; ?>" disabled="disabled" /></td>
 </tr>
+<!--<tr>  
+	<td class="StormyWeatherFieldCaptionTD">IdBacteria</td> 
+	<td class="StormyWeatherDataTD"><input name="idbacteria" id="idbacteria" type="text" value="<?php echo $idbacteria; ?>" disabled="disabled" /></td> -->
+<!--</tr> -->
 <tr>
 	<td class="StormyWeatherFieldCaptionTD">Bacteria</td>
 	<td class="StormyWeatherDataTD"><input name="bacteria" id="bacteria" type="text" value="<?php echo htmlentities($bacteria); ?>" size="50" />
-</td>    
+            <input name="idbacteria" id="idbacteria" type="hidden" value="<?php echo $idbacteria; ?>" disabled="disabled" />
+            
+        </td>    
 </tr>
 	<td class="StormyWeatherDataTD" colspan="2" align="right">
 	    <input type="submit" name="btnActualizar" value="Actualizar" />

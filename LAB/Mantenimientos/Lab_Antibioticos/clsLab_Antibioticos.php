@@ -28,7 +28,7 @@ function actualizar($idantibiotico,$antibiotico,$usuario)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "UPDATE lab_antibioticos SET antibiotico='$antibiotico',idusuarioreg='$usuario',fechahorareg=NOW() WHERE IdAntibiotico='$idantibiotico'";
+     $query = "UPDATE lab_antibioticos SET antibiotico='$antibiotico',idusuarioreg='$usuario',fechahorareg=NOW() WHERE id='$idantibiotico'";
      $result = pg_query($query);
 	 
      if (!$result)
@@ -77,7 +77,7 @@ function consultarpag($RegistrosAEmpezar, $RegistrosAMostrar){
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT * FROM lab_antibioticos ORDER BY id LIMIT $RegistrosAEmpezar, $RegistrosAMostrar ";
+     $query = "SELECT * FROM lab_antibioticos ORDER BY id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar  ";
 	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
@@ -106,7 +106,7 @@ function consultarpagbus($query,$RegistrosAEmpezar, $RegistrosAMostrar)
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = $query." LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
+	     $query = $query." LIMIT $RegistrosAMostrar  OFFSET $RegistrosAEmpezar ";
 		 $result = pg_query($query);
 		 if (!$result)
 		   return false;

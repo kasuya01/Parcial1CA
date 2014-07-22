@@ -42,13 +42,14 @@ if ($nivel==33){
 					<td colspan="3" align="center" class="CobaltFieldCaptionTD"><h3><strong>Mantenimiento de Antibi&oacute;ticos</h3></strong>
 					</td>
 				</tr>
-				<tr>
+				<!--<tr>
 					<td class="StormyWeatherFieldCaptionTD">IdAntibiotico</td>
 					<td class="StormyWeatherDataTD"><input type="text" name="txtidantibiotico" id="txtidantibiotico" disabled="disabled" /></td>
-				</tr>
+				</tr>  -->
 				<tr>
 					<td class="StormyWeatherFieldCaptionTD">Antibi&oacute;tico </td>
-					<td class="StormyWeatherDataTD"><input type="text" name="txtantibiotico" id="txtantibiotico" size="40" /></td>
+					<td class="StormyWeatherDataTD"><input type="text" name="txtantibiotico" id="txtantibiotico" size="40" />
+                                            <input type="hidden" name="txtidantibiotico" id="txtidantibiotico" disabled="disabled" /></td>
 				</tr>
 				<tr>
 					<td class="StormyWeatherDataTD" colspan="2" align="right">

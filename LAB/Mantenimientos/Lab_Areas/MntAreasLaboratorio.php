@@ -40,7 +40,7 @@ if ($nivel==33){
   		</tr>
   		<tr>
       			<td class="StormyWeatherFieldCaptionTD"><strong>C&oacute;digo del &Aacute;rea</strong></td>
-      			<td class="StormyWeatherDataTD"><input type="text" name="txtidarea" id="txtidarea" ></td>
+                        <td class="StormyWeatherDataTD"><input type="text" name="txtidarea" id="txtidarea" maxlength="3"></td>
    		</tr>
    		<tr>
        			<td class="StormyWeatherFieldCaptionTD"><strong>Nombre del &Aacute;rea </strong></td>
@@ -62,7 +62,7 @@ if ($nivel==33){
 					<select id="cmbTipo" name="cmbTipo" size="1" >
 						<option value="0" >--Seleccione--</option>
 						<option value="S" >Administrativa</option>
-						<option value="N" >T�cnica</option>
+						<option value="N" >Tecnica</option>
 					</select>
 				</td>
      	</tr>
