@@ -81,7 +81,7 @@ switch ($opcion)
                             <td class='CobaltFieldCaptionTD'> Grupo </td>
 			   </tr>";
 
-		while($row = mysql_fetch_array($consulta)){
+		while($row = pg_fetch_array($consulta)){
 			echo "<tr>
                                 <td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
@@ -89,9 +89,9 @@ switch ($opcion)
 					<td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 					onclick=\"eliminarDato('".$row[0]."')\"> </td>
-					<td> $row[0] </td>
-					<td>". $row[1]."</td>
-                                        <td>". $row[3]."</td>    
+					<td> $row[1] </td>
+					<td>". $row[2]."</td>
+                                        <td>". $row[4]."</td>    
 					</tr>";
 		}
 		echo "</table>"; 
@@ -128,9 +128,9 @@ switch ($opcion)
 			  </table>";
 	break;
 	case 5://buscar
-	    $query = "SELECT idestandar,descripcion,lab_codigosestandar.idgrupo,nombregrupo 
+	    $query = "SELECT idestandar,descripcion,lab_codigosestandar.id,nombregrupo 
                       FROM lab_codigosestandar 
-                      LEFT JOIN lab_estandarxgrupo ON lab_codigosestandar.idgrupo=lab_estandarxgrupo.idgrupo
+                      LEFT JOIN lab_estandarxgrupo ON lab_codigosestandar.idgrupo=lab_estandarxgrupo.id
 		      WHERE ";
 				
 		//VERIFICANDO LOS POST ENVIADOS
@@ -145,7 +145,7 @@ switch ($opcion)
 		
 		$query = substr($query ,0,strlen($query)-4);
 			
-                // echo $query ;			
+               // echo $query ;			
 		//para manejo de la paginacion
 		$RegistrosAMostrar=4;
 		$RegistrosAEmpezar=($_POST['Pag']-1)*$RegistrosAMostrar;
@@ -164,7 +164,7 @@ switch ($opcion)
                            <td class='CobaltFieldCaptionTD'> Grupo </td>
 			   </tr>";
 
-		while($row = mysql_fetch_array($consulta)){
+		while($row = pg_fetch_array($consulta)){
                     echo "<tr>
 				<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
