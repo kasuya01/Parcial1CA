@@ -90,8 +90,8 @@ switch ($opcion)
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 					onclick=\"eliminarDato('".$row[0]."')\"> </td>
 					<td> $row[1] </td>
-					<td>". $row[2]."</td>
-                                        <td>". $row[4]."</td>    
+					<td>".$row[2]."</td>
+                                        <td>".$row[4]."</td>    
 					</tr>";
 		}
 		echo "</table>"; 

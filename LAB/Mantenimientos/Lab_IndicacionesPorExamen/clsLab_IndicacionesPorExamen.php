@@ -16,7 +16,7 @@ class clsLab_IndicacionesPorExamen
 	    $query = "INSERT INTO mnt_indicacionesporexamen
 		     (IdExamen,IdArea,Indicacion,IdServicio,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod) 
 		      VALUES('$idexamen','$idarea','$indicacion','DCOLAB',$usuario,NOW(),$usuario,NOW())";
-	     $result = @mysql_query($query);
+	     $result = pg_query($query);
 		 
 	     if (!$result)
 	       return false;
@@ -33,7 +33,7 @@ class clsLab_IndicacionesPorExamen
 	     $query = "UPDATE mnt_indicacionesporexamen SET Indicacion='$indicacion', IdExamen='$idexamen', 
 		       IdArea='$idarea', IdUsuarioMod= $usuario, FechaHoraMod=NOW() 
 		       WHERE IdIndicacionPorExamen=$idindicacion";
-	     $result = @mysql_query($query);
+	     $result = pg_query($query);
 		 if (!$result)
 	       return false;
 	     else
@@ -48,7 +48,7 @@ class clsLab_IndicacionesPorExamen
 	   if($con->conectar()==true) 
 	   {
 	     $query = "DELETE FROM mnt_indicacionesporexamen WHERE IdIndicacionPorExamen=$idindicacion";
-	     $result = @mysql_query($query);
+	     $result = pg_query($query);
 		 
 	     if (!$result)
 	       return false;
@@ -67,7 +67,7 @@ class clsLab_IndicacionesPorExamen
 	     $query = "SELECT IdExamen,Indicacion FROM mnt_indicacionesporexamen
 		       WHERE IdServicio='DCOLAB'
 		       ORDER BY IdExamen";
-		 $result = @mysql_query($query);
+		 $result = pgl_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -87,7 +87,7 @@ class clsLab_IndicacionesPorExamen
                        INNER JOIN lab_examenes ON mnt_indicacionesporexamen.IdExamen=lab_examenes.IdExamen
                        WHERE IdIndicacionPorExamen=$idindicacion
                        ORDER BY lab_examenes.IdExamen";
-	     $result = @mysql_query($query);
+	     $result = pg_query($query);
 	     if (!$result)
 	       return false;
 	     else
@@ -107,7 +107,7 @@ class clsLab_IndicacionesPorExamen
                        ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
                        WHERE lab_examenes.IdArea ='$idarea' AND Condicion = 'H'
                        ORDER BY IdExamen";
-		 $result = mysql_query($query);
+		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -123,7 +123,7 @@ class clsLab_IndicacionesPorExamen
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
 	     $query = "SELECT * FROM mnt_indicacionesporexamen";
-		 $numreg = mysql_num_rows(mysql_query($query));
+		 $numreg = pg_num_rows(pg_query($query));
 		 if (!$numreg )
 		   return false;
 		 else
@@ -137,7 +137,7 @@ class clsLab_IndicacionesPorExamen
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
 	     $query = $query_search;
-		 $numreg = mysql_num_rows(mysql_query($query));
+		 $numreg = pg_num_rows(pg_query($query));
 		 if (!$numreg )
 		   return false;
 		 else
@@ -152,7 +152,7 @@ class clsLab_IndicacionesPorExamen
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
 	     $query = "SELECT IdIndicacionPorExamen,IdArea,IdExamen,Indicacion FROM mnt_indicacionesporexamen LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-		 $result = @mysql_query($query);
+		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
 		 else

@@ -45,9 +45,9 @@ class clsLab_CodigosEstandar
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "DELETE FROM lab_codigosestandar WHERE id='$idestandar'";
-     echo $query;
-    // $result = pg_query($query);
+     $query = "DELETE FROM lab_codigosestandar WHERE id=$idestandar";
+     //echo $query;
+     $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -62,9 +62,9 @@ function VerificarIntegridad($idestandar)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT * FROM lab_examenes WHERE idestandar='$idestandar'";
+     $query = "SELECT * FROM lab_examenes WHERE id='$idestandar'";
      $result = pg_query($query);
-	 $cuenta = mysql_num_rows($result);
+	 $cuenta = pg_num_rows($result);
 	 
      //if ($cuenta > 0)
        return $cuenta;
