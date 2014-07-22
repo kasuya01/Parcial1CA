@@ -54,8 +54,8 @@ if ($nivel==33){
                
                 $obj=new clsLab_CodigosEstandar;
 		$consulta= $obj->Leer_grupos();
-		while($row = mysql_fetch_array($consulta)){
-		   echo "<option value='" . $row['idgrupo']. "'>".$row['idgrupo']." - ".htmlentities($row['nombregrupo']) . "</option>";
+		while($row = pg_fetch_array($consulta)){
+		   echo "<option value='" . $row['id']. "'>".$row['idgrupo']." - ".htmlentities($row['nombregrupo']) . "</option>";
 		}
                 
 		?>		  
