@@ -35,13 +35,14 @@ if ($nivel==33){
 <table width="60%" border="0" align="center" class="StormyWeatherFormTABLE">
     <tr>
 		<td colspan="2" class="CobaltFieldCaptionTD" align="center"><H3><strong>Mantenimiento de Observaciones</strong></H3>
-		</td>
+		 <input type="hidden" name="txtidobservacion" id="txtidobservacion" disabled="disabled" />
+                 </td>
 	</tr>	
-	<tr>
+	<!-- <tr>
 		<td class="StormyWeatherFieldCaptionTD">Idobservacion</td>
         <td class="StormyWeatherDataTD"><input type="text" name="txtidobservacion" id="txtidobservacion" disabled="disabled" />
 		</td>
-    </tr>
+    </tr> -->
 	<tr>
         <td class="StormyWeatherFieldCaptionTD">C&oacute;digo del &Aacute;rea</td>
         <td class="StormyWeatherDataTD">
@@ -50,8 +51,8 @@ if ($nivel==33){
 			<?php
 			$objeareas=new clsLab_Areas;
 			$consulta= $objeareas->consultaractivas($lugar);
-			while($row = mysql_fetch_array($consulta)){
-			echo "<option value='" . $row['IdArea']. "'>" . $row['NombreArea'] . "</option>";
+			while($row = pg_fetch_array($consulta)){
+			echo "<option value='" . $row['id']. "'>" . $row['nombrearea'] . "</option>";
 			}
 			?>		  
           </select>

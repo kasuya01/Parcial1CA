@@ -24,14 +24,15 @@ $Fechafin=$row[3];
 		<td colspan="2" class="CobaltFieldCaptionTD" align="center"><h3><strong>Mantenimiento de Tarjetas VITEK</strong></h3>
 		</td>
 	</tr>	
-	<tr>
+	<!-- <tr>
 		<td  width="21%" class="StormyWeatherFieldCaptionTD">IdTarjeta</td>
 		<td   class="StormyWeatherDataTD"><input name="idtarjeta" id="idtarjeta" type="text" value="<?php echo $idtarjeta; ?>" disabled="disabled" /></td>
-	</tr>
+	</tr> -->
 	<tr>
 		<td   width="21%"class="StormyWeatherFieldCaptionTD">Nombre Tarjeta</td>
 		<td class="StormyWeatherDataTD"> <input name="nombretarjeta" id="nombretarjeta" type="text" value="<?php echo $nombretarjeta; ?>" size="40" />
-		</td>    
+                    <input name="idtarjeta" id="idtarjeta" type="hidden" value="<?php echo $idtarjeta; ?>" disabled="disabled" />
+                </td>    
 	</tr>
 	<tr>
        	<td colspan="2" class="StormyWeatherDataTD">

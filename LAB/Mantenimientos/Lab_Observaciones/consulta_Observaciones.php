@@ -9,7 +9,7 @@ $idobservacion=$_POST['idobservacion'];
 $obj = new clsLab_observaciones;
 $consulta=$obj->consultarid($idobservacion);
 
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 
 //valores de las consultas
 $observacion=$row['Observacion'];
@@ -40,7 +40,7 @@ $nombrearea=$row['NombreArea'];
 			include('../Lab_Areas/clsLab_Areas.php');
 			$objeareas=new clsLab_Areas;
 			$consulta= $objeareas->consultaractivas();
-			while($row = mysql_fetch_array($consulta)){
+			while($row = pg_fetch_array($consulta)){
 			echo "<option value='" . $row['IdArea']. "'>" . htmlentities($row['NombreArea']) . "</option>";
 			}
 			echo "<option value='" . $idarea . "' selected='selected'>" . htmlentities($nombrearea). "</option>";
