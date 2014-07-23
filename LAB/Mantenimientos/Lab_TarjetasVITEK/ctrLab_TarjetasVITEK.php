@@ -103,11 +103,11 @@ switch ($opcion)
 					onclick=\"pedirDatos('".$row['IdTarjeta']."')\"> </td>
 					<!-- <td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"eliminarDato('".$row['IdTarjeta']."')\"> </td> -->
-					<td>".$row['IdTarjeta']."</td>
-					<td>".htmlentities($row['NombreTarjeta'])." </td>
-					<td>".htmlentities($row['FechaIni'])." </td>
-					<td>".htmlentities($row['FechaFin'])." </td>
+					onclick=\"eliminarDato('".$row['id']."')\"> </td> -->
+					<td>".$row['id']."</td>
+					<td>".htmlentities($row['nombretarjeta'])." </td>
+					<td>".htmlentities($row['fechaini'])." </td>
+					<td>".htmlentities($row['fechafin'])." </td>
 					</tr>";
 		}
 		echo "</table>"; 

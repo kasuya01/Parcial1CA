@@ -27,7 +27,7 @@ class clsLab_Observaciones
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-   echo  $query = "UPDATE lab_observaciones SET observacion='$observacion', tiporespuesta='$tiporespuesta',idusuariomod='$usuario',fechahoramod=NOW() WHERE id=$idobservacion";
+     $query = "UPDATE lab_observaciones SET observacion='$observacion', tiporespuesta='$tiporespuesta',idusuariomod='$usuario',fechahoramod=NOW() WHERE id=$idobservacion";
      $result = @pg_query($query);
 	 
      if (!$result)
@@ -59,11 +59,16 @@ class clsLab_Observaciones
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT t02.idarea, t01.observacion, t01.tiporespuesta 
+     $query = "SELECT idarea, observacion, tiporespuesta 
+			   FROM lab_observaciones 
+                           order by id 
+			   LIMIT $RegistrosAMostrar OFFSET  $RegistrosAEmpezar";
+     
+     /*"SELECT t02.idarea, t01.observacion, t01.tiporespuesta 
 			   FROM lab_observaciones t01
                            INNER JOIN lab_areas t02 ON (t02.id = t01.idarea)
                            order by t01.id 
-			   LIMIT $RegistrosAMostrar OFFSET  $RegistrosAEmpezar";
+			   LIMIT $RegistrosAMostrar OFFSET  $RegistrosAEmpezar";*/
 	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;
