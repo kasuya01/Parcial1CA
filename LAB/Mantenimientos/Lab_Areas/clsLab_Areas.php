@@ -83,7 +83,7 @@ class clsLab_Areas {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
 
-            $query = "UPDATE lab_areasxestablecimiento SET condicion='$cond',idestablecimiento='$lugar',idusuariomod='$usuario',fechahoramod=(SELECT date_trunc('seconds',(SELECT now()))) WHERE id='$idarea'";
+            $query = "UPDATE lab_areasxestablecimiento SET condicion='$cond',idestablecimiento=$lugar,idusuariomod=$usuario,fechahoramod=(SELECT date_trunc('seconds',(SELECT now()))) WHERE idarea = (SELECT id FROM lab_areas WHERE idarea = '$idarea')";
             $result = @pg_query($query);
 
             if (!$result)
@@ -98,7 +98,7 @@ class clsLab_Areas {
     function EliminarxEstablecimiento($idarea) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "DELETE FROM lab_areasxestablecimiento WHERE id='$idarea'";
+            $query = "DELETE FROM lab_areasxestablecimiento WHERE idarea = (SELECT id FROM lab_areas WHERE idarea = '$idarea')";
             $result = @pg_query($query);
 
             if (!$result)
@@ -113,7 +113,7 @@ class clsLab_Areas {
     function eliminar($idarea) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "DELETE FROM lab_areas WHERE id='$idarea'";
+            $query = "DELETE FROM lab_areas WHERE idarea = '$idarea'";
             $result = @pg_query($query);
 
             if (!$result)
@@ -129,10 +129,15 @@ class clsLab_Areas {
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
-            $query = "SELECT lab_areas.id, lab_areas.nombrearea,lab_areasxestablecimiento.condicion FROM lab_areas 
-                           INNER JOIN lab_areasxestablecimiento ON lab_areas.id=lab_areasxestablecimiento.id
-                           WHERE lab_areasxestablecimiento.condicion='H' AND lab_areasxestablecimiento.idestablecimiento=$lugar 
-                           ORDER BY nombrearea";
+            $query = "SELECT t01.idarea,
+                             t01.nombrearea,
+                             t02.condicion,
+                             t01.id
+                      FROM lab_areas t01
+                      INNER JOIN lab_areasxestablecimiento t02 ON (t01.id = t02.idarea)
+                      WHERE t02.condicion='H' AND t02.idestablecimiento = $lugar
+                      ORDER BY nombrearea";
+            
             $result = @pg_query($query);
             if (!$result)
                 return false;
@@ -147,10 +152,11 @@ class clsLab_Areas {
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
-            $query = "SELECT lab_areas.id,nombrearea FROM lab_areas 
-                      INNER JOIN lab_areasxestablecimiento ON lab_areas.id= lab_areasxestablecimiento.id
-                      WHERE lab_areasxestablecimiento.condicion='H' AND lab_areas.Administrativa='N' 
-                      AND lab_areasxestablecimiento.idestablecimiento=$lugar 
+            $query = "SELECT t01.idarea, nombrearea
+                      FROM lab_areas t01
+                      INNER JOIN lab_areasxestablecimiento t02 ON (t01.id = t02.idarea)
+                      WHERE t02.condicion = 'H' AND t01.administrativa = 'N' 
+                            AND t02.idestablecimiento = $lugar 
                       ORDER BY nombrearea";
             $result = @pg_query($query);
             if (!$result)
@@ -166,9 +172,9 @@ class clsLab_Areas {
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
-            $query = "SELECT * FROM lab_areas 
-                      INNER JOIN lab_areasxestablecimiento ON lab_areas.id= lab_areasxestablecimiento.id
-                      WHERE lab_areasxestablecimiento.idestablecimiento=$lugar AND condicion='H'
+            $query = "SELECT * FROM lab_areas t01
+                      INNER JOIN lab_areasxestablecimiento t02 ON (t01.id = t02.idarea)
+                      WHERE t02.idestablecimiento = $lugar AND condicion = 'H'
                       ORDER BY nombrearea";
             $result = pg_query($query);
             if (!$result)
@@ -182,7 +188,7 @@ class clsLab_Areas {
     function VerificarIntegridad($idarea) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "SELECT * FROM lab_examenes WHERE id='$idarea'";
+            $query = "SELECT * FROM lab_examenes WHERE idarea = (SELECT id FROM lab_areas WHERE idarea = '$idarea')";
             $result = @pg_query($query);
             $cuenta = pg_num_rows($result);
 
@@ -200,9 +206,11 @@ class clsLab_Areas {
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
-            $query = "SELECT lab_areas.id, lab_areas.nombrearea  FROM lab_areas
-                      INNER JOIN lab_areasxestablecimiento ON lab_areas.id=lab_areasxestablecimiento.id
-                      WHERE lab_areasxestablecimiento.idestablecimiento=$lugar";
+            $query = "SELECT t01.idarea,
+                             t01.nombrearea
+                      FROM lab_areas t01
+                      INNER JOIN lab_areasxestablecimiento t02 ON (t01.id = t02.idarea)
+                      WHERE t02.idestablecimiento = $lugar";
             $numreg = pg_num_rows(pg_query($query));
             if (!$numreg)
                 return false;

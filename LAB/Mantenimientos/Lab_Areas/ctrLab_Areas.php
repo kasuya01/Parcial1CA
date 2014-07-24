@@ -19,7 +19,7 @@ switch ($opcion) {
         $activo = $_POST['activo'];
         $idinsertado = 0;
 
-        if ($objdatos->insertar($idarea, $nom, $usuario, $tipo, $lugar) == true) {
+        if ($objdatos->insertar(strtoupper($idarea), strtoupper($nom), $usuario, $tipo, $lugar) == true) {
             $consultaUltimoReg = $objdatos->recuperarultimoreg();
             $idinsertado = $objdatos->ultimoregistroinsertado_lab_areas;
             if ($activo == 'S') {
@@ -154,37 +154,40 @@ switch ($opcion) {
         echo "</tr>
             </table>";
         break;
-    case 5:// echo $nom."-".$idarea;
-        $Pag = $_POST['Pag'];
+    case 5:
+        $Pag    = $_POST['Pag'];
         $idarea = $_POST['idarea'];
-        $nom = $_POST['nombrearea'];
+        $nom    = $_POST['nombrearea'];
         $activo = $_POST['activo'];
-        $tipo = $_POST['tipo'];
-        //echo $activo;
-        //$Pag =$_POST['Pag'];
-        $query = "SELECT lab_areas.id,lab_areas.nombrearea,administrativa,lab_areasxestablecimiento.condicion,idestablecimiento
-		      FROM lab_areas
-		      INNER JOIN lab_areasxestablecimiento ON lab_areas.id =lab_areasxestablecimiento.id  
-		      WHERE lab_areasxestablecimiento.idestablecimiento=$lugar AND";
+        $tipo   = $_POST['tipo'];
+        
+        $query = "SELECT t01.idarea,
+                         t01.nombrearea,
+                         t02.condicion,
+                         t01.administrativa,
+                         t02.idestablecimiento
+		      FROM lab_areas t01
+		      INNER JOIN lab_areasxestablecimiento t02 ON (t01.id = t02.idarea)  
+		      WHERE t02.idestablecimiento = $lugar";
 
         //VERIFICANDO LOS POST ENVIADOS
         if (!empty($_POST['idarea'])) {
-            $query .= " lab_areas.IdArea like '%" . $_POST['idarea'] . "%' AND";
+            $query .= " AND UPPER(t01.idarea) like '%" . strtoupper($_POST['idarea']) . "%'";
         }
 
         if (!empty($_POST['nombrearea'])) {
-            $query .= " NombreArea like '%" . $_POST['nombrearea'] . "%' AND";
+            $query .= " AND UPPER(t01.nombrearea) like '%" . strtoupper($_POST['nombrearea']) . "%'";
         }
 
         if (!empty($_POST['activo'])) {
-            $query .= " lab_areasxestablecimiento.Condicion='" . $_POST['activo'] . "' AND";
+            $query .= " AND t02.condicion = '" . $_POST['activo'] . "'";
         }
 
         if (!empty($_POST['tipo'])) {
-            $query .= " lab_areas.Administrativa='" . $_POST['tipo'] . "' AND";
+            $query .= " AND t01.administrativa ='" . $_POST['tipo'] . "'";
         }
 
-        $query = substr($query, 0, strlen($query) - 3);
+        //$query = substr($query, 0, strlen($query) - 3);
         //echo $query;			
         //para manejo de la paginacion
         $RegistrosAMostrar = 4;
