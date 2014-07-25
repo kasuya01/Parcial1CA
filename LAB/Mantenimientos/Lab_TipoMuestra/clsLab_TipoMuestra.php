@@ -70,13 +70,15 @@ class clsLab_TipoMuestra
    }
  }
  //fn pg
-  function eliminar($idtipo)
+  function eliminar($idtipo, $usuario)
  {
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
      $query = "UPDATE lab_tipomuestra
-                set habilitado=false
+                set habilitado=false, 
+                idusuariomod=$usuario,
+                fechamod=now()
                 where id=$idtipo";
      $result = @pg_query($query);
 	 

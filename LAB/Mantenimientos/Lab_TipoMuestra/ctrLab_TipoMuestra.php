@@ -45,7 +45,7 @@ switch ($opcion)
       		$numreg=$objdatos->VerificarIntegridad($idtipo);
 	  	if ($numreg == 0)
 	 	{
-			if ($objdatos->eliminar($idtipo)==true){
+			if ($objdatos->eliminar($idtipo, $usuario)==true){
 	       			 echo "Registro Inhabilitado";
 			
 	      	  	}
