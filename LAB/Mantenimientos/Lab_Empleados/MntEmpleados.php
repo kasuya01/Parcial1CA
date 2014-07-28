@@ -84,8 +84,8 @@ $area  = $_SESSION['Idarea'];
                                             <?php
                                             $objeareas = new clsLab_Areas;
                                             $consulta = $objeareas->consultarareas($lugar);
-                                            while ($row = mysql_fetch_array($consulta)) {
-                                                echo "<option value='" . $row['IdArea'] . "'>" . $row['NombreArea'] . "</option>";
+                                            while ($row = pg_fetch_array($consulta)) {
+                                                echo "<option value='" . $row['idarea'] . "'>" . $row['nombrearea'] . "</option>";
                                             }
                                             ?>		  
                                         </select>		 
@@ -103,8 +103,8 @@ $area  = $_SESSION['Idarea'];
                                             <?php
                                             $objeareas = new clsLab_Empleados;
                                             $consulta = $objeareas->LeerCargos();
-                                            while ($row = mysql_fetch_array($consulta)) {
-                                                echo "<option value='" . $row['IdCargoEmpleado'] . "'>" . $row['Cargo'] . "</option>";
+                                            while ($row = pg_fetch_array($consulta)) {
+                                                echo "<option value='" . $row['idcargoempleado'] . "'>" . $row['cargo'] . "</option>";
                                             }
                                             ?>	
                                         </select>

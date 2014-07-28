@@ -9,7 +9,7 @@ $area  = $_SESSION['Idarea'];
 $IdEmpleado = $_POST['idempleado'];
 $obj        = new clsLab_Empleados;
 $consulta   = $obj->consultarid($IdEmpleado, $lugar);
-$row        = mysql_fetch_array($consulta);
+$row        = pg_fetch_array($consulta);
 
 //valores de las consultas
 $codempleado     = $row['idempleado'];
@@ -41,7 +41,7 @@ $login           = $row['login'];
                     include('../Lab_Areas/clsLab_Areas.php');
                     $objeareas = new clsLab_Areas;
                     $consulta = $objeareas->consultaractivas($lugar);
-                    while ($row = mysql_fetch_array($consulta)) {
+                    while ($row = pg_fetch_array($consulta)) {
                         echo "<option value='" . $row['idarea'] . "'>" . htmlentities($row['nombrearea']) . "</option>";
                     }
                     echo "<option value='" . $idarea . "' selected='selected'>" . htmlentities($nombrearea) . "</option>";
@@ -62,7 +62,7 @@ $login           = $row['login'];
                     require_once('clsLab_Empleados.php');
                     $objeareas = new clsLab_Empleados;
                     $consulta = $objeareas->LeerCargos();
-                    while ($row = mysql_fetch_array($consulta)) {
+                    while ($row = pg_fetch_array($consulta)) {
                         echo "<option value='" . $row['idcargoempleado'] . "'>" . htmlentities($row['cargo']) . "</option>";
                     }
                     echo "<option value='" . $idcargoempleado . "' selected='selected'>" . $cargo . "</option>";

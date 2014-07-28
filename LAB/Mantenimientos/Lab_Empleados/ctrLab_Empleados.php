@@ -22,19 +22,19 @@ switch ($opcion) {
         $corr = $objdatos->LeerUltimoCodigo($lugar);
         if (($cargo == 6) or ( $cargo == 10)) {
             $niv = 1;
-            $IdEstabExt = 0;
+            $IdEstabExt = 'null';
         } else if ($cargo == 1) {
             $niv = 2;
-            $IdEstabExt = 0;
+            $IdEstabExt = 'null';
         } else if (($cargo == 2) or ( $cargo == 8)) {
             $niv = 33;
-            $IdEstabExt = 0;
+            $IdEstabExt = 'null';
         } else if ($cargo == 7) {
             $niv = 31;
-            $IdEstabExt = 0;
+            $IdEstabExt = 'null';
         } else if ($cargo == 11) {
             $niv = 4;
-            $IdEstabExt = 1305;
+            $IdEstabExt = 1037; //Codigo del establecimiento de Laboratorio Central
         }
 
         //echo $cargo."y nivel".$niv;
@@ -160,50 +160,48 @@ switch ($opcion) {
         break;
 
     case 7: //BUSQUEDA
-
-        $query = "SELECT mnt_empleados.IdEmpleado,mnt_usuarios.estadocuenta, 
-                    (CASE estadocuenta
-                    WHEN 'H' THEN 'Habilitado'
-                    ELSE 'Inhabilitado' END) AS Habilitado,
-                    mnt_empleados.IdArea,lab_areas.NombreArea,
-                    mnt_empleados.NombreEmpleado,mnt_cargoempleados.IdCargoEmpleado,
-                    mnt_cargoempleados.Cargo,mnt_empleados.IdEstablecimiento, mnt_usuarios.login 
-                    FROM mnt_empleados
-                    INNER JOIN mnt_cargoempleados ON mnt_empleados.IdCargoEmpleado=mnt_cargoempleados.IdCargoEmpleado
-                    INNER JOIN lab_areas ON mnt_empleados.IdArea=lab_areas.IdArea
-                    INNER JOIN mnt_usuarios ON (mnt_empleados.IdEmpleado=mnt_usuarios.IdEmpleado 
-                    AND mnt_empleados.IdEstablecimiento=mnt_empleados.IdEstablecimiento) WHERE ";
-
-
+        $query = "SELECT t01.idempleado,
+                         t04.enabled AS estadocuenta, 
+                         CASE WHEN enabled = true THEN 'Habilitado'
+                              ELSE 'Inhabilitado' END AS Habilitado,
+                         t01.idarea,
+                         t03.nombrearea,
+                         t01.nombreempleado,
+                         t02.id AS idcargoempleado,
+                         t02.cargo,
+                         t01.id_establecimiento AS idestablecimiento,
+                         t04.username AS login
+                    FROM mnt_empleado t01
+                    INNER JOIN mnt_cargoempleados t02 ON (t02.id = t01.id_cargo_empleado)
+                    INNER JOIN lab_areas          t03 ON (t03.id = t01.idarea)
+                    INNER JOIN fos_user_user      t04 ON (t01.id = t04.id_empleado AND t01.id_establecimiento = t04.id_establecimiento) WHERE ";
 
         $conEmp = $objdatos->BuscarEmpleado($idempleado, $lugar);
-        //print_r ($conExam);
         $ExisEmp = pg_fetch_array($conEmp);
-
         $ban = 0;
         $ban1 = 0;
-        //echo $ExisEmp[0];
+        
         //VERIFICANDO LOS POST ENVIADOS
         if ($ExisEmp[0] >= 1) {//si existe el empleado	
             // echo $idempleado;
             if (!empty($_POST['idempleado'])) {
-                $query .= " mnt_empleados.IdEmpleado='" . $_POST['idempleado'] . "' AND";
+                $query .= " t01.idempleado ILIKE '%" . $_POST['idempleado'] . "%' AND";
             }
         }
         if (!empty($_POST['nomempleado'])) {
-            $query .= " mnt_empleados.NombreEmpleado='" . $_POST['nomempleado'] . "' AND";
+            $query .= " t01.nombreempleado ILIKE '%" . $_POST['nomempleado'] . "%' AND";
         }
 
         if (!empty($_POST['idarea'])) {
-            $query .= " mnt_empleados.IdArea='" . $_POST['idarea'] . "' AND";
+            $query .= " t01.idarea = " . $_POST['idarea'] . " AND";
         }
 
         if (!empty($_POST['cargo'])) {
-            $query .= " mnt_cargoempleados.IdCargoEmpleado='" . $_POST['cargo'] . "' AND";
+            $query .= " t01.id_cargo_empleado = " . $_POST['cargo'] . " AND";
         }
 
         if (!empty($_POST['login'])) {
-            $query .= " mnt_usuarios.login='" . $_POST['login'] . "' AND";
+            $query .= " t04.username ILIKE '%" . $_POST['login'] . "%' AND";
         }
 
         if ((empty($_POST['cargo'])) and ( empty($_POST['idarea'])) and ( empty($_POST['nomempleado'])) and ( empty($_POST['idempleado'])) and ( empty($_POST['login']))) {
@@ -213,8 +211,8 @@ switch ($opcion) {
 
         if ($ban == 0) {
             $query = substr($query, 0, strlen($query) - 4);
-            $query_search = $query . " AND IdTipoEmpleado='LAB' AND Correlativo<>0 AND mnt_empleados.IdEstablecimiento=$lugar order by idempleado";
-            //  echo $query_search;
+            $query_search = $query . " AND id_tipo_empleado = (SELECT id FROM mnt_tipo_empleado WHERE codigo = 'LAB') AND correlativo !=0 AND t01.id_establecimiento = $lugar ORDER BY t01.idempleado";
+            
             ////para manejo de la paginacion
             $RegistrosAMostrar = 4;
             $RegistrosAEmpezar = ($_POST['Pag'] - 1) * $RegistrosAMostrar;
@@ -270,29 +268,25 @@ switch ($opcion) {
                 $PagUlt = floor($PagUlt) + 1;
 
             echo "<table align='center'>
-		      <tr>
-			   <td colspan=3 align='center'> <strong>Pagina " . $PagAct . "/" . $PagUlt . "</strong> </td>
-		      </tr>
-		      <tr>
-			   <td>
-                                <a onclick=\"show_event_search('1')\">Primero</a> </td>";
+		    <tr>
+			<td colspan=3 align='center'> <strong>Pagina " . $PagAct . "/" . $PagUlt . "</strong> </td>
+		    </tr>
+		    <tr>
+			<td>
+                            <a onclick=\"show_event_search('1')\" style='cursor: pointer;'>Primero</a> </td>";
             //// desplazamiento
 
             if ($PagAct > 1)
-                echo "<td> <a onclick=\"show_event_search('$PagAnt')\">Anterior</a> </td>";
+                echo "<td><a onclick=\"show_event_search('$PagAnt')\" style='cursor: pointer;'>Anterior</a></td>";
             if ($PagAct < $PagUlt)
-                echo "<td> <a onclick=\"show_event_search('$PagSig')\">Siguiente</a> </td>";
-            echo "<td> <a onclick=\"show_event_search('$PagUlt')\">Ultimo</a></td>";
+                echo "<td><a onclick=\"show_event_search('$PagSig')\" style='cursor: pointer;'>Siguiente</a></td>";
+            echo "<td><a onclick=\"show_event_search('$PagUlt')\" style='cursor: pointer;'>Ultimo</a></td>";
             echo "</tr>
-		   </table>";
-
-            //echo $query_search;
+		</table>";
         }
         else {
-            $query = substr($query, 0, strlen($query) - 6);
-            $query_search = $query . " AND IdTipoEmpleado='LAB' order by c.IdArea,IdEmpleado";
+            $query_search = $query . " AND id_tipo_empleado = (SELECT id FROM mnt_tipo_empleado WHERE codigo = 'LAB') order by t03.idarea, t01.idempleado";
 
-            //require_once("clsLab_Empleados.php");
             ////para manejo de la paginacion
             $RegistrosAMostrar = 4;
             $RegistrosAEmpezar = ($_POST['Pag'] - 1) * $RegistrosAMostrar;
@@ -300,7 +294,6 @@ switch ($opcion) {
 
             //ENVIANDO A EJECUTAR LA BUSQUEDA!!
             /////LAMANDO LA FUNCION DE LA CLASE 
-            //$obje=new clsLab_Empleados;
             $consulta = $objdatos->consultarpagbus($query_search, $RegistrosAEmpezar, $RegistrosAMostrar);
             //echo $consulta;
             //muestra los datos consultados en la tabla
@@ -337,7 +330,7 @@ switch ($opcion) {
             $PagSig = $PagAct + 1;
 
             $PagUlt = $NroRegistros / $RegistrosAMostrar;
-            // echo $PagUlt;
+
             //verificamos residuo para ver si llevar� decimales
             $Res = $NroRegistros % $RegistrosAMostrar;
 
@@ -353,67 +346,63 @@ switch ($opcion) {
 			   </tr>
 			   <tr>
 			   <td>
-			   <a onclick=\"show_event('1')\">Primero</a> </td>";
+			   <a onclick=\"show_event('1')\" style='cursor: pointer;'>Primero</a> </td>";
             //// desplazamiento
 
             if ($PagAct > 1)
-                echo "<td> <a onclick=\"show_event('$PagAnt')\">Anterior</a> </td>";
+                echo "<td> <a onclick=\"show_event('$PagAnt')\" style='cursor: pointer;'>Anterior</a> </td>";
             if ($PagAct < $PagUlt)
-                echo "<td> <a onclick=\"show_event('$PagSig')\">Siguiente</a> </td>";
-            echo "<td> <a onclick=\"show_event('$PagUlt')\">Ultimo</a></td>";
+                echo "<td> <a onclick=\"show_event('$PagSig')\" style='cursor: pointer;'>Siguiente</a> </td>";
+            echo "<td> <a onclick=\"show_event('$PagUlt')\" style='cursor: pointer;'>Ultimo</a></td>";
             echo "</tr>
-			  </table>";
-
-            //echo $query_search;
+                </table>";
         }
-
-
-        //esto estaba en comentario
-        //echo $query_search;
         break;
 
     case 8://PAGINACION DE BUSQUEDA
-        $query = "SELECT mnt_empleados.IdEmpleado,mnt_empleados.IdArea,lab_areas.NombreArea,mnt_empleados.NombreEmpleado,
-                          mnt_cargoempleados.IdCargoEmpleado,mnt_cargoempleados.Cargo,mnt_empleados.IdEstablecimiento,
-                          IF(mnt_usuarios.EstadoCuenta='H','Habilitado','Inhabilitado')as Habilitado, mnt_usuarios.EstadoCuenta,
-                          mnt_usuarios.login 
-                          FROM mnt_empleados 
-                          INNER JOIN mnt_cargoempleados ON mnt_empleados.IdCargoEmpleado=mnt_cargoempleados.IdCargoEmpleado
-                          INNER JOIN lab_areas ON mnt_empleados.IdArea=lab_areas.IdArea
-                          INNER JOIN mnt_usuarios ON (mnt_empleados.IdEmpleado=mnt_usuarios.IdEmpleado 
-                          AND mnt_empleados.IdEstablecimiento= mnt_usuarios.IdEstablecimiento) WHERE ";
-
-
+        $query = "SELECT t01.idempleado,
+                         t01.idarea,
+                         t03.nombrearea,
+                         t01.nombreempleado,
+                         t02.id AS idcargoempleado,
+                         t02.cargo,
+                         t01.id_establecimiento AS idestablecimiento,
+                         CASE WHEN t04.enabled = true THEN 'Habilitado'
+                                ELSE 'Inhabilitado' END AS Habilitado,
+                         t04.enabled AS estadocuenta,
+                         t04.username AS login 
+                  FROM mnt_empleado t01
+                  INNER JOIN mnt_cargoempleados t02 ON (t02.id = t01.id_cargo_empleado)
+                  INNER JOIN lab_areas          t03 ON (t03.id = t01.idarea)
+                  INNER JOIN fos_user_user      t04 ON (t01.id = t04.id_empleado AND t01.id_establecimiento = t04.id_establecimiento) WHERE ";
 
         $ban = 0;
         $ban1 = 0;
 
         $conEmp = $objdatos->BuscarEmpleado($idempleado, $lugar);
-        //print_r ($conExam);
         $ExisEmp = pg_fetch_array($conEmp);
+        
         //VERIFICANDO LOS POST ENVIADOS
-
         if ($ExisEmp[0] >= 1) {//si existe el empleado	
-            // echo $idempleado;
             if (!empty($_POST['idempleado'])) {
-                $query .= " mnt_empleados.IdEmpleado='" . $_POST['idempleado'] . "' AND";
+                $query .= " t01.idempleado ILIKE '%" . $_POST['idempleado'] . "%' AND";
             }
         }
 
         if (!empty($_POST['nomempleado'])) {
-            $query .= " mnt_empleados.NombreEmpleado='" . $_POST['nomempleado'] . "' AND";
+            $query .= " t01.nombreempleado ILIKE '%" . $_POST['nomempleado'] . "%' AND";
         }
 
         if (!empty($_POST['idarea'])) {
-            $query .= " mnt_empleados.IdArea='" . $_POST['idarea'] . "' AND";
+            $query .= " t01.idarea = " . $_POST['idarea'] . " AND";
         }
 
         if (!empty($_POST['cargo'])) {
-            $query .= " mnt_cargoempleados.IdCargoEmpleado='" . $_POST['cargo'] . "' AND";
+            $query .= " t02.id = " . $_POST['cargo'] . " AND";
         }
 
         if (!empty($_POST['login'])) {
-            $query .= " mnt_usuarios.login='" . $_POST['login'] . "' AND";
+            $query .= " t04.username ILIKE '%" . $_POST['login'] . "%' AND";
         }
 
         if ((empty($_POST['cargo'])) and ( empty($_POST['idarea'])) and ( empty($_POST['nomempleado'])) and ( empty($_POST['idempleado'])) and ( empty($_POST['login']))) {
@@ -423,7 +412,7 @@ switch ($opcion) {
 
         if ($ban == 0) {
             $query = substr($query, 0, strlen($query) - 4);
-            $query_search = $query . " AND IdTipoEmpleado='LAB' AND mnt_empleados.IdEstablecimiento=$lugar order by IdEmpleado";
+            $query_search = $query . " AND t01.id_tipo_empleado = (SELECT id FROM mnt_tipo_empleado WHERE codigo = 'LAB') AND t01.id_establecimiento = $lugar ORDER BY t01.idempleado";
             //  echo $query_search;
             ////para manejo de la paginacion
             $RegistrosAMostrar = 4;
@@ -498,10 +487,7 @@ switch ($opcion) {
             //echo $query_search;
         }
         else {
-            $query = substr($query, 0, strlen($query) - 6);
             $query_search = $query . " AND IdTipoEmpleado='LAB' order by c.IdArea,IdEmpleado";
-
-            //require_once("clsLab_Empleados.php");
             ////para manejo de la paginacion
             $RegistrosAMostrar = 4;
             $RegistrosAEmpezar = ($_POST['Pag'] - 1) * $RegistrosAMostrar;
