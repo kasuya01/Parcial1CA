@@ -89,13 +89,13 @@ class clsLab_TipoMuestra
 	   
    }
  }
- 
+ //Fn Pg Consultada  desde MntTipoMuestrasPorExamen.php
  function consultar(){
    //creamos el objeto $con a partir de la clase ConexionBD
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "select * from lab_tipomuestra where habilitado=true";
+     $query = "select * from lab_tipomuestra where habilitado=true order by tipomuestra";
 	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;
