@@ -6,7 +6,7 @@ $area=$_SESSION['Idarea'];
 ?>
 <html>
 <head>
-<meta http-equiv="Content-type" content="text/html;charset=UTF-8">    
+ <meta http-equiv="content-type" content="text/html;" http-equiv="content-type" charset="utf-8">
 <title>Mantenimiento de Tipo de Muestra</title>
 <script language="JavaScript" type="text/javascript" src="ajax_Lab_TipoMuestra.js"></script>
 <script language="JavaScript" type="text/javascript">
@@ -55,10 +55,10 @@ if ($nivel==33){
 		<td colspan="2" class="CobaltFieldCaptionTD" align="center"><h3><strong>Mantenimiento de Muestras</strong></h3>
 		</td>
 	</tr>
-    <tr>
+<!--    <tr>
         <td class="StormyWeatherFieldCaptionTD">C&oacute;digo Muestra </td>
         <td class="StormyWeatherDataTD"><input type="text" name="txtidtipo" id="txtidtipo" disabled="disabled" /></td>
-    </tr>
+    </tr>-->
     <tr>
         <td class="StormyWeatherFieldCaptionTD">Nombre de la Muestra </td>
         <td class="StormyWeatherDataTD"><input name="txtnombretipo" id="txtnombretipo" type="text" size="32" /></td>

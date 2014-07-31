@@ -8,19 +8,25 @@ $idtipo=$_POST['idtipo'];
 $nombretipo=$_POST['nombretipo'];
 $opcion=$_POST['opcion'];
 $Pag=$_POST['Pag'];
-//echo $nombretipo;
 //actualiza los datos del empleados
 $objdatos = new clsLab_TipoMuestra;
 
 switch ($opcion) 
 {
-	case 1:  //INSERTAR	
-		if ($objdatos->insertar($nombretipo,$usuario)==true)
+	case 1:  //INSERTAR
+            $respuesta=$objdatos->insertar($nombretipo,$usuario);
+		if ($respuesta==true)
 	    	{
 		   echo "Registro Agregado";
 	   	}
 		else{
-			echo "No se pudo Agregar";			
+                    if ($respuesta==0){
+                        echo "Registro previamente ingresado";		
+                    }
+                    else{
+                        echo $respuesta."Error al agregar la muestra ".$nombretipo;		
+                    }
+				
 		}
 		
 	break;
@@ -39,12 +45,12 @@ switch ($opcion)
       		$numreg=$objdatos->VerificarIntegridad($idtipo);
 	  	if ($numreg == 0)
 	 	{
-			if ($objdatos->eliminar($idtipo)==true){
-	       			 echo "Registro Eliminado";
+			if ($objdatos->eliminar($idtipo, $usuario)==true){
+	       			 echo "Registro Inhabilitado";
 			
 	      	  	}
 	     	  	else{
-	       			echo "El registro no pudo ser eliminado ";
+	       			echo "El registro no pudo ser inhabilitado ";
 	    	 	}
 	   	}
 		else{
@@ -67,21 +73,19 @@ switch ($opcion)
 				echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
 			   <tr>
 			   <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td>
-			   <td class='CobaltFieldCaptionTD'> Codigo Muestra</td>
+			   <td aling='center' class='CobaltFieldCaptionTD'> Inhabilitado</td>
 			   <td class='CobaltFieldCaptionTD'> Nombre Muestra </td>	   
 			   </tr>";
 
-		while($row = mysql_fetch_array($consulta)){
+		while($row = pg_fetch_array($consulta)){
 			echo "<tr>
 					<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"pedirDatos('".$row[0]."')\"> </td>
+					onclick=\"pedirDatos('".$row['id']."')\"> </td>
 					<td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"eliminarDato('".$row[0]."')\"> </td>
-					<td> $row[0] </td>
-					<td>".htmlentities($row[1])."</td>
+					onclick=\"eliminarDato('".$row['id']."')\"> </td>
+					<td>".htmlentities($row['tipomuestra'])."</td>
 					</tr>";
 		}
 		echo "</table>"; 
@@ -90,14 +94,11 @@ switch ($opcion)
 		 $PagAnt=$PagAct-1;
 		 $PagSig=$PagAct+1;
 		 
-		 $PagUlt=$NroRegistros/$RegistrosAMostrar;
+		 $PagUlt=ceil($NroRegistros/$RegistrosAMostrar);
 		 
 		 //verificamos residuo para ver si llevar� decimales
-		 $Res=$NroRegistros%$RegistrosAMostrar;
-		 //si hay residuo usamos funcion floor para que me
-		 //devuelva la parte entera, SIN REDONDEAR, y le sumamos
-		 //una unidad para obtener la ultima pagina
-		 if($Res>0) $PagUlt=floor($PagUlt)+1;
+		// $Res=ceil($NroRegistros/$RegistrosAMostrar);
+		 
 
 		 echo "<table align='center'>
 		       <tr>
@@ -120,58 +121,40 @@ switch ($opcion)
 	
 	case 5: //BUSQUEDA   
 
-		$query = "SELECT IdTipoMuestra,TipoMuestra FROM lab_tipomuestra
-		      WHERE";
-		//VERIFICANDO LOS POST ENVIADOS
-		if (!empty($_POST['nombretipo']))
-		{ $query .= " TipoMuestra like '%".$_POST['nombretipo']."%'"; }
-		
-		$query = substr($query ,0,strlen($query));
-		//echo $query;
+                    $query = " SELECT id,tipomuestra FROM lab_tipomuestra WHERE tipomuestra ilike '%".$_POST['nombretipo']."%' and habilitado=true"; 
+                $NroRegistros =$objdatos->NumeroDeRegistrosbus($query);
+                if ($NroRegistros>0){
 		//para manejo de la paginacion
 		$RegistrosAMostrar=4;
 		$RegistrosAEmpezar=($_POST['Pag']-1)*$RegistrosAMostrar;
-		$PagAct=$_POST['Pag'];
-	
+		$PagAct=$_POST['Pag'];	
 		//LAMANDO LA FUNCION DE LA CLASE 
 		$consulta= $objdatos->consultarpagbus($query,$RegistrosAEmpezar, $RegistrosAMostrar);
-
 		//muestra los datos consultados en la tabla
-		echo "<table border = 1 align='center' class='estilotabla'>
+		echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
 			   <tr>
 			   <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td>
-			   <td class='CobaltFieldCaptionTD'> Codigo Muestra</td>
+			   <td aling='center' class='CobaltFieldCaptionTD'> Inhabilitado</td>
 			   <td class='CobaltFieldCaptionTD'> Nombre Muestra </td>	   
 			   </tr>";
-		while($row = mysql_fetch_array($consulta)){
+		while($row = pg_fetch_array($consulta)){
 			echo "<tr>
 					<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"pedirDatos('".$row[0]."')\"> </td>
+					onclick=\"pedirDatos('".$row['id']."')\"> </td>
 					<td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"eliminarDato('".$row[0]."')\"> </td>
-					<td> $row[0] </td>
-					<td>".htmlentities($row[1])."</td>
+					onclick=\"eliminarDato('".$row['id']."')\"> </td>
+					<td>".$row['tipomuestra']."</td>
 					</tr>";
 		}
 		echo "</table>"; 
 
 		//determinando el numero de paginas
-		 $NroRegistros= $objdatos->NumeroDeRegistrosbus($query);
 		 $PagAnt=$PagAct-1;
-		 $PagSig=$PagAct+1;
+		 $PagSig=$PagAct+1;		 
+		 $PagUlt=ceil($NroRegistros/$RegistrosAMostrar);
 		 
-		 $PagUlt=$NroRegistros/$RegistrosAMostrar;
-		 
-		 //verificamos residuo para ver si llevar� decimales
-		 $Res=$NroRegistros%$RegistrosAMostrar;
-		 //si hay residuo usamos funcion floor para que me
-		 //devuelva la parte entera, SIN REDONDEAR, y le sumamos
-		 //una unidad para obtener la ultima pagina
-		 if($Res>0) $PagUlt=floor($PagUlt)+1;
-
 		 echo "<table align='center'>
 		       <tr>
 			   <td colspan=3 align='center'> <strong>Pagina ".$PagAct."/".$PagUlt."</strong> </td>
@@ -188,6 +171,10 @@ switch ($opcion)
 			 echo "<td> <a onclick=\"show_event_search('$PagUlt')\">Ultimo</a></td>";
 			 echo "</tr>
 			  </table>";
+                }
+                else{
+                    echo '<center><h2>No existen registros que coincidan con '.$_POST['nombretipo'].'</center></h2>';
+                    }
 	   	 
 	break;
 
