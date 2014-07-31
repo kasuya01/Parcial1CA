@@ -145,7 +145,7 @@ class clsLab_Areas {
                 return $result;
         }
     }
-
+    //Fn Pg.. consultada por MntTipoMuestrasPorExamen.php
     // consulta las areas de la BD
     function consultaractivas($lugar) {
         //creamos el objeto $con a partir de la clase ConexionBD

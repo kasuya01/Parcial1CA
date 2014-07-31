@@ -26,7 +26,7 @@ function DatosCompletos()
 }
 
 function LimpiarCampos(){
-	document.frmnuevo.txtidtipo.value="";
+	//document.frmnuevo.txtidtipo.value="";
 	document.frmnuevo.txtnombretipo.value="";
 	document.frmnuevo.txtnombretipo.focus();
 } 
@@ -38,7 +38,7 @@ function IngresarRegistro(){ //INGRESAR REGISTROS
 		divResultado = document.getElementById('divresultado');
 		divInicial= document.getElementById('divinicial');
 		//valores de los inputs
-		cod=document.frmnuevo.txtidtipo.value;
+		//cod=document.frmnuevo.txtidtipo.value;
 		nom=document.frmnuevo.txtnombretipo.value;
 		var opcion=1;
 		Pag=1;
@@ -50,7 +50,7 @@ function IngresarRegistro(){ //INGRESAR REGISTROS
 		ajax.open("POST", "ctrLab_TipoMuestra.php",true);
 		ajax.onreadystatechange=function() {
 			if (ajax.readyState==4) {
-				
+			  //document.getElementById('divinicial').innerHTML = ajax.responseText	
 			//mostrar resultados en esta capa
 			//document.getElementById('divinicial').innerHTML = ajax.responseText;
 			alert(ajax.responseText);
@@ -60,7 +60,7 @@ function IngresarRegistro(){ //INGRESAR REGISTROS
 		}
 		ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores
-		ajax.send("nombretipo="+escape(nom)+"&opcion="+opcion+"&idtipo="+cod+"&Pag="+Pag);
+		ajax.send("nombretipo="+nom+"&opcion="+opcion+"&Pag="+Pag);
 	}
 	else{
 		alert("Complete los datos a Ingresar");
@@ -95,10 +95,6 @@ ajax.send("idtipo="+idtipo);
 } 
 
 function enviarDatos(){//FUNCION PARA MODIFICAR
-	//donde se mostrar� lo resultados
-	//divFormulario = document.getElementById('divFrmModificar');
-	//divNuevo = document.getElementById('divFrmNuevo');
-	//divInicio=document.getElementById('divinicial');
 	divFormulario = document.getElementById('divFrmModificar');
 	divNuevo = document.getElementById('divFrmNuevo');
 	divResultado = document.getElementById('divinicial');
@@ -115,17 +111,12 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
 	//muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
-	ajax.send("idtipo="+idtipo+"&nombretipo="+escape(nom)+"&opcion="+opcion+"&Pag="+Pag);
+	ajax.send("idtipo="+idtipo+"&nombretipo="+nom+"&opcion="+opcion+"&Pag="+Pag);
 	
 	ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
-			//mostrar los nuevos registros en esta capa
-			//document.getElementById('divresultado').innerHTML = ajax.responseText
-			//una vez actualizacion ocultamos formulario
-			//divFormulario.style.display="none";
-			//divNuevo.style.display="block";
-			//divInicio.style.display="none";
-			//divResultado.style.display="block";
+			//mostrar los nuevos registros en esta capa		
+			//una vez actualizacion ocultamos formulario		
  			alert(ajax.responseText);
 			//mostrar los nuevos registros en esta capa
 			divResultado.innerHTML = ajax.responseText
@@ -140,7 +131,6 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
 
 function eliminarDato(idtipo){ //FUNCION PARA ELIMINACION
 	//donde se mostrar� el resultado de la eliminacion
-	//divResultado = document.getElementById('divresultado');
 	divResultado = document.getElementById('divinicial');
 	//divInicio=document.getElementById('divinicial');
 	var opcion=3;
@@ -156,11 +146,10 @@ function eliminarDato(idtipo){ //FUNCION PARA ELIMINACION
 		ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores
 		//ajax.send("idtipo="+idtipo+"&opcion="+opcion);
-		ajax.send("idtipo="+idtipo+"&nombretipo="+escape(nom)+"&opcion="+opcion+"&Pag="+Pag);
+		ajax.send("idtipo="+idtipo+"&nombretipo="+nom+"&opcion="+opcion+"&Pag="+Pag);
 		ajax.onreadystatechange=function() {
 			if (ajax.readyState==4) {
 				//mostrar resultados en esta capa
-				//divResultado.innerHTML = ajax.responseText;
 				 alert(ajax.responseText);
 				 show_event(1);
 				//divInicio.style.display="none";
@@ -178,7 +167,7 @@ function BuscarCodigo()
         //valores de los cajas de texto
 	cod="";
 	nom=document.getElementById('txtnombretipo').value;
-      
+      alert 
 	//instanciamos el objetoAjax
 	ajax=objetoAjax();
 	//archivo que realizar� la operacion ->actualizacion.php
@@ -187,7 +176,7 @@ function BuscarCodigo()
 	//muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
-	ajax.send("idtipo="+cod+"&nombretipo="+escape(nom)+"&opcion="+opcion+"&Pag="+Pag);	
+	ajax.send("idtipo="+cod+"&nombretipo="+nom+"&opcion="+opcion+"&Pag="+Pag);	
 	ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
 			//mostrar los nuevos registros en esta capa
@@ -211,13 +200,13 @@ function show_event(Pag)
 		  }
 	}
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	ajax.send("idtipo="+idtipo+"&nombretipo="+escape(nombretipo)+"&Pag="+Pag+"&opcion="+opcion);	
+	ajax.send("idtipo="+idtipo+"&nombretipo="+nombretipo+"&Pag="+Pag+"&opcion="+opcion);	
 }
 
 function show_event_search(Pag)
 {	
 	opcion=5;
-	cod=document.getElementById('txtidtipo').value;
+	//cod=document.getElementById('txtidtipo').value;
 	nom=document.getElementById('txtnombretipo').value;
 	ajax=objetoAjax();
 	ajax.open("POST", "ctrLab_TipoMuestra.php", true);
@@ -228,7 +217,7 @@ function show_event_search(Pag)
 		 }
 	}
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	ajax.send("idtipo="+cod+"&nombretipo="+escape(nom)+"&opcion="+opcion+"&Pag="+Pag);	
+	ajax.send("nombretipo="+nom+"&opcion="+opcion+"&Pag="+Pag);	
 }
 
 

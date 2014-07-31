@@ -8,9 +8,9 @@ $area=$_SESSION['Idarea'];
 $idtipo=$_POST['idtipo'];
 $obj = new clsLab_TipoMuestra;
 $consulta=$obj->consultarid($idtipo);
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 //valores de las consultas
-$nombre=$row['TipoMuestra'];
+$nombre=$row['tipomuestra'];
 //muestra los datos consultados en los campos del formulario
 ?>
 
@@ -22,18 +22,14 @@ $nombre=$row['TipoMuestra'];
 	</td>
 </tr>
 <tr>
-	<td class="StormyWeatherFieldCaptionTD">C&oacute;digo Muestra</td>
-	<td class="StormyWeatherDataTD"><input name="idtipo" id="idtipo" type="text" value="<?php echo $idtipo; ?>" disabled="disabled" />	  </td>
-</tr>
-<tr>
 	<td class="StormyWeatherFieldCaptionTD">Nombre de la Muestra</td>
-	<td class="StormyWeatherDataTD"><input name="nombretipo"id="nombretipo" type="text" value="<?php echo htmlentities($nombre); ?>" size="40"  />
+	<td class="StormyWeatherDataTD"><input name="nombretipo"id="nombretipo" type="text" value="<?php echo $nombre; ?>" size="40"  /><input name="idtipo" id="idtipo" type="hidden" value="<?php echo $idtipo; ?>" disabled="disabled" />
 	</td>    
 </tr>
 <tr>
 	<td class="StormyWeatherDataTD" colspan="2" align="right">
 		<input type="button" name="btnActualizar" value="Actualizar" onclick="ModificarRegistro();" />
-		<input type="button" name="btnNuevo" id="btnNuevo" value="Nuevo" onClick="window.location.replace('MntTipoMuestra.php')">
+		<input type="button" name="btnNuevo" id="btnNuevo" value="Cancelar" onClick="window.location.replace('MntTipoMuestra.php')">
 	</td>
 </tr>
 </table>
