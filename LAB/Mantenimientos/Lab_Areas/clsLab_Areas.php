@@ -67,7 +67,7 @@ class clsLab_Areas {
         if ($con->conectar() == true) {
 
             $query = "UPDATE lab_areas SET nombrearea = '$nom', idusuariomod = $usuario, fechahoramod=(SELECT date_trunc('seconds',(SELECT now()))), administrativa='$tipo' WHERE idarea = '$idarea'";
-            
+
             $result = @pg_query($query);
 
             if (!$result)
@@ -137,7 +137,7 @@ class clsLab_Areas {
                       INNER JOIN lab_areasxestablecimiento t02 ON (t01.id = t02.idarea)
                       WHERE t02.condicion='H' AND t02.idestablecimiento = $lugar
                       ORDER BY nombrearea";
-            
+
             $result = @pg_query($query);
             if (!$result)
                 return false;
@@ -254,7 +254,7 @@ class clsLab_Areas {
                       FROM lab_areas t01
                       INNER JOIN lab_areasxestablecimiento t02 ON (t01.id = t02.idarea)
                       WHERE t01.idarea = '$idarea'AND t02.idestablecimiento = $lugar";
-            
+
             $result = @pg_query($query);
             if (!$result)
                 return false;
