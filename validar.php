@@ -12,7 +12,7 @@ $password = htmlentities($_POST['txtpassword']);
         
 	$lugar = $row_datos['id_establecimiento'];
 	$nivel = $row_datos['nivel'];
-	$area  = $row_datos['id_area_laboratorio'];
+	$area  = $row_datos['idarea'];
         $corr  = $row_datos['correlativo'];
         $cod   = $row_datos['id_empleado'];
 	switch ($nivel) 
