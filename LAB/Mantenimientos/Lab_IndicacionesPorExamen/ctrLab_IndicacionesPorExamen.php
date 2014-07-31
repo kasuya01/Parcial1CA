@@ -188,26 +188,31 @@ switch ($opcion)
 	  break;
 	case 7: //BUSQUEDA
 		
-		$query = "SELECT IdIndicacionPorExamen,IdArea,IdExamen,Indicacion FROM mnt_indicacionesporexamen WHERE ";
+		$query = "SELECT mnt_indicacionesporexamen.id,lab_areas.idarea,lab_examenes.idexamen,indicacion 
+                          FROM mnt_indicacionesporexamen 
+                          INNER JOIN lab_examenes ON mnt_indicacionesporexamen.idexamen=lab_examenes.id
+                          INNER JOIN lab_areas ON mnt_indicacionesporexamen.idarea=lab_areas.id
+                          INNER JOIN ctl_atencion ON mnt_indicacionesporexamen.idservicio=ctl_atencion.id
+                          WHERE ";
 		$ban=0;
 		//VERIFICANDO LOS POST ENVIADOS
 		if (!empty($_POST['idexamen']))
-		{ $query .= " IdExamen='".$_POST['idexamen']."' AND"; }
+		{ $query .= " mnt_indicacionesporexamen.idexamen='".$_POST['idexamen']."' AND"; }
 		else{$ban=1;}
 		
 		if (!empty($_POST['idarea']))
-		{ $query .= " IdArea='".$_POST['idarea']."' AND"; }
+		{ $query .= " mnt_indicacionesporexamen.idarea=".$_POST['idarea']." AND"; }
 		else{$ban=1;}
 		
 		if (!empty($_POST['indicacion']))
-		{ $query .= " Indicacion='".$_POST['indicacion']."' AND"; }
+		{ $query .= " indicacion='".$_POST['indicacion']."' AND"; }
 		else{$ban=1;}
 		if ($ban==0)
 		{    $query = substr($query ,0,strlen($query)-4);
-			 $query_search = $query. " AND IdServicio='DCOLAB'";
+			 $query_search = $query. " AND ctl_atencion.codigo_busqueda='DCOLAB'";
 		}
 		else {
-			$query_search = $query. " IdServicio='DCOLAB'";
+			$query_search = $query. " ctl_atencion.codigo_busqueda='DCOLAB'";
 		}
 		echo $query_search;
 		//ENVIANDO A EJECUTAR LA BUSQUEDA!!
@@ -236,10 +241,10 @@ switch ($opcion)
 		  echo "<tr>
 		  		<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"pedirDatos('".$row['IdIndicacionPorExamen']."')\"> </td>
+					onclick=\"pedirDatos('".$row['id']."')\"> </td>
 				<td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"eliminarDato('".$row['IdIndicacionPorExamen']."')\"> </td>
+					onclick=\"eliminarDato('".$row['id']."')\"> </td>
 				<td> $row[1] </td>
 				<td> $row[2] </td>
 				<td>".htmlentities( $row[3])."</td>

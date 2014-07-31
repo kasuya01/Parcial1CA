@@ -14,7 +14,7 @@ class clsLab_IndicacionesPorExamen
 	   if($con->conectar()==true) 
 	   {
 	    $query = "INSERT INTO mnt_indicacionesporexamen
-		     (IdExamen,IdArea,Indicacion,IdServicio,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod) 
+		     (idexamen,idarea,indicacion,IdServicio,idusuarioreg,fechahorareg,idusuarioMod,fechahoraMod) 
 		      VALUES('$idexamen','$idarea','$indicacion','DCOLAB',$usuario,NOW(),$usuario,NOW())";
 	     $result = pg_query($query);
 		 
@@ -30,9 +30,9 @@ class clsLab_IndicacionesPorExamen
 	   $con = new ConexionBD;
 	   if($con->conectar()==true) 
 	   {
-	     $query = "UPDATE mnt_indicacionesporexamen SET Indicacion='$indicacion', idexamen='$idexamen', 
+	     $query = "UPDATE mnt_indicacionesporexamen SET indicacion='$indicacion', idexamen='$idexamen', 
 		       idarea='$idarea', idusuariomod= $usuario, fechahoramod=NOW() 
-		       WHERE idindicacionPorExamen=$idindicacion";
+		       WHERE id=$idindicacion";
 	     $result = pg_query($query);
 		 if (!$result)
 	       return false;
@@ -47,7 +47,7 @@ class clsLab_IndicacionesPorExamen
 	   $con = new ConexionBD;
 	   if($con->conectar()==true) 
 	   {
-	     $query = "DELETE FROM mnt_indicacionesporexamen WHERE IdIndicacionPorExamen=$idindicacion";
+	     $query = "DELETE FROM mnt_indicacionesporexamen WHERE id=$idindicacion";
 	     $result = pg_query($query);
 		 
 	     if (!$result)
@@ -64,9 +64,9 @@ class clsLab_IndicacionesPorExamen
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = "SELECT IdExamen,Indicacion FROM mnt_indicacionesporexamen
-		       WHERE IdServicio='DCOLAB'
-		       ORDER BY IdExamen";
+	     $query = "SELECT idExamen,indicacion FROM mnt_indicacionesporexamen
+		       WHERE idServicio='DCOLAB'
+		       ORDER BY idExamen";
 		 $result = pgl_query($query);
 		 if (!$result)
 		   return false;
@@ -81,12 +81,12 @@ class clsLab_IndicacionesPorExamen
 	   $con = new ConexionBD;
 	   if($con->conectar()==true)
 	   {
-	     $query = "SELECT lab_examenes.IdExamen,NombreExamen,Indicacion,lab_areas.IdArea,NombreArea 
+	     $query = "SELECT lab_examenes.idexamen,nombreexamen,indicacion,lab_areas.idarea,nombrearea 
                        FROM mnt_indicacionesporexamen 
-                       INNER JOIN lab_areas ON mnt_indicacionesporexamen.IdArea=lab_areas.IdArea
-                       INNER JOIN lab_examenes ON mnt_indicacionesporexamen.IdExamen=lab_examenes.IdExamen
-                       WHERE IdIndicacionPorExamen=$idindicacion
-                       ORDER BY lab_examenes.IdExamen";
+                       INNER JOIN lab_areas ON mnt_indicacionesporexamen.idarea=lab_areas.idarea
+                       INNER JOIN lab_examenes ON mnt_indicacionesporexamen.idexamen=lab_examenes.idexamen
+                       WHERE id=$idindicacion
+                       ORDER BY lab_examenes.idexamen";
 	     $result = pg_query($query);
 	     if (!$result)
 	       return false;
@@ -104,9 +104,9 @@ class clsLab_IndicacionesPorExamen
 	     $query = "SELECT lab_examenes.id,nombreexamen
                        FROM lab_examenes
                       INNER JOIN lab_examenesxestablecimiento ON lab_examenes.id=lab_examenesxestablecimiento.idexamen 
-                       WHERE lab_examenes.idarea ='$idarea' AND condicion = 'H'
+                       WHERE lab_examenes.idarea =$idarea AND condicion = 'H'
                        ORDER BY nombreexamen";
-             //echo $query;
+           // echo $query;
 		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
@@ -151,9 +151,12 @@ class clsLab_IndicacionesPorExamen
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = "SELECT IdIndicacionPorExamen,IdArea,IdExamen,Indicacion 
-                 FROM mnt_indicacionesporexamen 
-                 LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+	     $query = "SELECT mnt_indicacionesporexamen.id,lab_areas.idarea,lab_examenes.idexamen,indicacion 
+                       FROM mnt_indicacionesporexamen 
+                       INNER JOIN lab_examenes ON mnt_indicacionesporexamen.idexamen=lab_examenes.id
+                       INNER JOIN lab_areas ON mnt_indicacionesporexamen.idarea=lab_areas.id
+                       LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+            // echo $query;
 		 $result = pg_query($query);
 		 if (!$result)
 		   return false;

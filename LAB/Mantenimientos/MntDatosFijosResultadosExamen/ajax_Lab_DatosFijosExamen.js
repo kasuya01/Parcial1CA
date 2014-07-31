@@ -16,7 +16,7 @@ function objetoAjax(){
 }
 
 function LlenarExamenes(idarea)
-{
+{         // alert (idarea);
 	var opcion=5;
        //instanciamos el objetoAjax
 	ajax=objetoAjax();

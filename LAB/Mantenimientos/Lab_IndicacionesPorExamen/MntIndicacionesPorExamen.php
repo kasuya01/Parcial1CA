@@ -22,10 +22,10 @@ $objeareas=new clsLab_Areas;
 function Guardar(){
    	IngresarRegistro();
 }
-function LlenarComboExamen(idArea)
+function LlenarComboExamen(idarea)
 {
-    alert(idarea); 
-   LlenarExamenes(idArea);   
+    //alert(idarea); 
+   LlenarExamenes(idarea);   
 }
 function Buscar(){
 	BuscarDatos();
@@ -77,7 +77,7 @@ if ($nivel==33){
 				<?php
                                        $consulta= $objeareas->consultaractivas($lugar); 
 					while($row = pg_fetch_array($consulta)){
-						echo "<option value='" . $row['id']. "'>" . $row['nombrearea'] . "</option>";
+						echo "<option value='" . $row['idarea']. "'>" . $row['nombrearea'] . "</option>";
 					}
 				?>		  
 			</select>		  

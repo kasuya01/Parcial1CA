@@ -16,13 +16,10 @@ $Clases = new clsLabor_DatosFijosExamen;
 switch ($opcion) 
 {
 	case 1:  //INSERTAR	
-		//echo $nota;
+		
 		$idexamen=$_POST['idexamen'];
 		$idarea=$_POST['idarea'];
-		$unidades=$_POST['unidades'];
-		//$nota=$_POST['nota'];
-               // $sexo=$_POST['sexo'];
-                $unidades=(empty($_POST['unidades'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidades']) . "'"; 
+		$unidades=(empty($_POST['unidades'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidades']) . "'"; 
                 $nota=(empty($_POST['nota'])) ? 'NULL' : "'" . pg_escape_string($_POST['nota']) . "'";  
                 $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";        
                 $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'"; 
@@ -31,33 +28,7 @@ switch ($opcion)
                 $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
 		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
                 
-              // echo $sexo."**".$redad;
-		/*if (empty($_POST['rangoinicio'])){
-			$rangoinicio="(NULL)";
-		}else{
-			$rangoinicio=$_POST['rangoinicio'];
-		}
-	
-		if (empty($_POST['rangofin'])){
-			$rangofin=NULL;
-		}else{
-			$rangofin=$_POST['rangofin'];
-		}
-                 if (empty($_POST['Fechaini'])){
-			$Fechaini=NULL; 
-		}else{ 
-			$FechaI=explode('/',$_POST['Fechaini']);
-	  		$Fechaini=$FechaI[2].'/'.$FechaI[1].'/'.$FechaI[0];
-	  	}
-                
-                //echo $Fechafin;
-		if (empty($_POST['Fechafin'])){
-			$Fechafin=NULL;
-		}else{ 
-                    if (!empty($Fechafin1)){
-			$FechaF=explode('/',$Fechafin1);
-                    $Fechafin=$FechaF[2].'-'.$FechaF[1].'-'.$FechaF[0];}	
-		}*/
+        
 
 		if ($objdatos->insertar($idarea,$idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,$lugar,$Fechaini,$Fechafin,$sexo,$redad)==true) 
                      /*   && 
@@ -73,54 +44,23 @@ switch ($opcion)
     	case 2:  //MODIFICAR      
 			$idexamen=$_POST['idexamen'];
 			$idarea=$_POST['idarea'];
-			$unidades=$_POST['unidades'];
+			
 			$iddatosfijosresultado=$_POST['iddatosfijosexamen'];
-		        //$sexo=$_POST['sexo'];
-                       // $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";
-                        //echo $sexo;
-                       // $redad=$_POST['redad']; 
-                        $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'"; 
-                       // echo $idexamen." id=".$iddatosfijosresultado;
-                        //  $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";
-			/*if (($_POST['sexo']=0)){
-                            $sexo=NULL;
-                         
-                        }
-                        else
-                            $sexo=$_POST['sexo'];*/
-                       /*  if (empty($_POST['sexo'])){
-                            $sexo=NULL;
-			}else{
-                            $sexo=$_POST['sexo'];
-			}*/
+		                             $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'";
                         $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";  
-                        $unidades=(empty($_POST['unidades'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidades']) . "'"; 
-                       /* if (empty($_POST['unidades'])){
-                            $unidades=NULL;
-			}else{
-                            $unidades=$_POST['unidades'];
-			}*/
-                        
+                        $unidades=(empty($_POST['unidades'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidades']) . "'";
                         $rangoinicio=(empty($_POST['rangoinicio'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangoinicio']) . "'";
                         $rangofin=(empty($_POST['rangofin'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangofin']) . "'";
-//                     
-			//	$nota=$_POST['nota'];
+                      
+                        
+                      
+
                         $nota=(empty($_POST['nota'])) ? 'NULL' : "'" . pg_escape_string($_POST['nota']) . "'";  
 
-			/*if (empty($_POST['Fechaini'])){
-				$Fechaini=NULL;
-			}else{ 
-				$FechaI=explode('/',$_POST['Fechaini']);
-				$Fechaini=$FechaI[2].'/'.$FechaI[1].'/'.$FechaI[0];
-			}
-			if (empty($_POST['Fechafin'])){
-				$Fechafin=NULL;
-			}else{ 
-				$FechaF=explode('/',$_POST['Fechafin']);
-				$Fechafin=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];	
-			}*/
+		
 			$Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
-                        $Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";		
+                        $Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
+                        echo $unidades;
 			if ($objdatos->actualizar($iddatosfijosresultado,$idarea,$idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,$lugar,$Fechaini,$Fechafin,$sexo,$redad)==true) 
                            /* && $Clases->actualizar_labo($iddatosfijosresultado,$idarea,$idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,$lugar,$Fechaini,$Fechafin,$sexo,$redad)==true)*/
 			{
@@ -274,29 +214,22 @@ switch ($opcion)
 	case 7: //BUSQUEDA
 		$idexamen=$_POST['idexamen'];
 		$idarea=$_POST['idarea'];
-		$unidades=$_POST['unidades'];
-		$unidades=$_POST['unidades'];
-		$nota=$_POST['nota'];
-                $sexo=$_POST['sexo'];
-              //  echo $sexo;
-                $redad=$_POST['redad'];
-		if (empty($_POST['rangoinicio'])){
-			$rangoinicio="(NULL)";
-		}else{
-			$rangoinicio=$_POST['rangoinicio'];
-		}
-	
-		if (empty($_POST['rangofin'])){
-			$rangofin="(NULL)";
-		}else{
-			$rangofin=$_POST['rangofin'];
-		}
-
+		              
+                $unidades=(empty($_POST['unidades'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidades']) . "'"; 
+                $nota=(empty($_POST['nota'])) ? 'NULL' : "'" . pg_escape_string($_POST['nota']) . "'";  
+                $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";        
+                $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'"; 
+                $rangoinicio=(empty($_POST['rangoinicio'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangoinicio']) . "'";
+                $rangofin=(empty($_POST['rangofin'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangofin']) . "'";
+                $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
+		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
+		
 	  	
-		$query = "SELECT lab_datosfijosresultado.id,lab_examenes.idexamen,lab_examenes.nombreexamen, lab_datosfijosresultado.unidades,
-                          lab_datosfijosresultado.rangoInicio,rangofin, lab_datosfijosresultado.nota,
-                          to_char(lab_datosfijosresultado.fechaini,'YYYY/mm/dd') AS FechaIni,
-                          to_char(lab_datosfijosresultado.fechafin,'YYYY-mm-dd') AS FechaFin, 
+		$query = "SELECT lab_datosfijosresultado.id,lab_examenes.idexamen,lab_examenes.nombreexamen, 
+                          lab_datosfijosresultado.unidades,lab_datosfijosresultado.rangoinicio,rangofin,
+                          lab_datosfijosresultado.nota,
+                          to_char(lab_datosfijosresultado.fechaini,'dd/mm/YYYY') AS FechaIni,
+                          to_char(lab_datosfijosresultado.fechafin,'dd/mm/YYYY') AS FechaFin, 
                           ctl_sexo.nombre as sexo,ctl_rango_edad.nombre as redad
                           FROM lab_datosfijosresultado 
                           INNER join lab_examenes ON lab_datosfijosresultado.idexamen=lab_examenes.id 
@@ -361,7 +294,7 @@ switch ($opcion)
                             $query_search = $query. " ORDER BY lab_examenes.idarea,lab_examenes.id";
                         }
 				
-		echo $query_search;
+		//echo $query_search;
 		//ENVIANDO A EJECUTAR LA BUSQUEDA!!
 		//para manejo de la paginacion
 		$RegistrosAMostrar=4;
@@ -387,48 +320,48 @@ switch ($opcion)
 					   <td class='CobaltFieldCaptionTD'> Fecha Inicio </td>	 
 					   <td class='CobaltFieldCaptionTD'> Fecha Finalización </td>		   
 				</tr>";
-				while($row = pg_fetch_array($consulta))
-				{
-                          echo "<tr>
-                                            <td aling='center'> 
-						<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-						onclick=\"pedirDatos('".$row['id']."')\">
-                                            </td>
-                                            <td aling ='center'> 
-						<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-						onclick=\"eliminarDato('".$row['id']."')\"> </td>
-                                            <td>".$row['idexamen']."</td>
-                                            <td>".htmlentities($row['nombreexamen'])."</td>";
-                            if (empty($row['uidades']))
-                                      echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-                            else
-                                      echo"<td>".htmlentities($row['unidades'])."</td>";
-					
-				     echo "<td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
-					
-                            if (empty($row['nota']))
-                                    echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-                            else
-                                    echo "<td>".htmlentities($row['nota'])."</td>";
-                            if (!empty($row['sexo']))
-                                    echo "<td>".htmlentities($row['sexo'])."</td>";
-                            else 
-                                    echo "<td>Ambos</td>";
-                                    echo "<td>".htmlentities($row['redad'])."</td>";
-                           
-						
-			if(($row['fechaini']=="(NULL)") || ($row['fechaini']=="00/00/0000") || (empty($row['fechaini'])) )
-			    echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-			else
-			    echo "<td>".$row['fechaini']."</td>";
-								
-			if((empty($row['fechafin'])) || ($row['fechafin']=="(NULL)") || ($row['fechafin']=="00/00/0000")) 
+				while($row = pg_fetch_array($consulta)){
+		  echo "<tr>
+				<td aling='center'> 
+                                    <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+                                    onclick=\"pedirDatos('".$row['id']."')\"> </td>
+				<td aling ='center'> 
+                                    <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+                                    onclick=\"eliminarDato('".$row['id']."')\"> </td>
+				<td>". $row['idexamen'] ."</td>
+				<td>".htmlentities($row['nombreexamen'])."</td>";
+			if (empty($row['unidades']))
 				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-			else	
-				echo "<td>".$row['fechafin']."</td>";
-							
-		  echo "</tr>";
-				}
+			else
+				echo"<td>".htmlentities($row['unidades'])."</td>";
+					
+                        if ((empty($row['rangoInicio'])) && (empty($row['rangofin'])))
+                                echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+			else 
+                               echo "<td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
+			
+			if (empty($row['nota']))	
+                            echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+			else
+                            echo "<td>".htmlentities($row['nota'])."</td>";	
+                        
+                        if (empty($row['sexo']))
+                            echo "<td> Ambos </td>";
+                        else
+                            echo "<td>".$row['sexo']."</td>";
+                        
+                            echo "<td>".$row['redad']."</td>";
+			
+			if((empty($row[7])) || ($row[7]=="(NULL)") || ($row[7]=="00-00-0000"))
+				     echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
+				else
+					 echo"<td>".$row[7]."</td>";
+			if((empty($row[8])) || ($row[8]=="(NULL)") || ($row[8]=="00/00/0000"))
+			     echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
+			else
+					echo"<td>".$row[8]."</td></tr>";
+            echo "</tr>";
+		}
 		          echo "</table>"; 
 		//determinando el numero de paginas
 		 $NroRegistros= $objdatos->NumeroDeRegistrosbus($query_search);
@@ -465,25 +398,22 @@ switch ($opcion)
 	case 8://PAGINACION DE BUSQUEDA
 		$idexamen=$_POST['idexamen'];
 		$idarea=$_POST['idarea'];
-		$unidades=$_POST['unidades'];
-		$unidades=$_POST['unidades'];
-                // echo $sexo;
-		if (empty($_POST['rangoinicio'])){
-			$rangoinicio="(NULL)";
-		}else{
-			$rangoinicio=$_POST['rangoinicio'];
-		}
-	
-		if (empty($_POST['rangofin'])){
-			$rangofin="(NULL)";
-		}else{
-			$rangofin=$_POST['rangofin'];
-		}
+		//$unidades=$_POST['unidades'];
+                 $unidades=(empty($_POST['unidades'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidades']) . "'"; 
+                $nota=(empty($_POST['nota'])) ? 'NULL' : "'" . pg_escape_string($_POST['nota']) . "'";  
+                $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";        
+                $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'"; 
+                $rangoinicio=(empty($_POST['rangoinicio'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangoinicio']) . "'";
+                $rangofin=(empty($_POST['rangofin'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangofin']) . "'";
+                $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
+		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
+		
 
-		$query = "SELECT lab_datosfijosresultado.id,lab_examenes.idexamen,lab_examenes.nombreexamen, lab_datosfijosresultado.unidades,
-                          lab_datosfijosresultado.rangoInicio,rangofin, lab_datosfijosresultado.nota,
-                          to_char(lab_datosfijosresultado.fechaini,'YYYY/mm/dd') AS FechaIni,
-                          to_char(lab_datosfijosresultado.fechafin,'YYYY-mm-dd') AS FechaFin, 
+		$query = "SELECT lab_datosfijosresultado.id,lab_examenes.idexamen,lab_examenes.nombreexamen, 
+                          lab_datosfijosresultado.unidades,lab_datosfijosresultado.rangoinicio,rangofin,
+                          lab_datosfijosresultado.nota,
+                          to_char(lab_datosfijosresultado.fechaini,'dd/mm/YYYY') AS FechaIni,
+                          to_char(lab_datosfijosresultado.fechafin,'dd/mm/YYYY') AS FechaFin, 
                           ctl_sexo.nombre as sexo,ctl_rango_edad.nombre as redad
                           FROM lab_datosfijosresultado 
                           INNER join lab_examenes ON lab_datosfijosresultado.idexamen=lab_examenes.id 
@@ -556,7 +486,7 @@ switch ($opcion)
 	{   $query = substr($query ,0,strlen($query)-3); 
 	    $query_search = $query. " ORDER BY lab_examenes.id";
 	}
-       //echo $query_search;
+      // echo $query_search;
 	
 		//ENVIANDO A EJECUTAR LA BUSQUEDA!!
 		//para manejo de la paginacion
@@ -583,45 +513,48 @@ switch ($opcion)
 				<td class='CobaltFieldCaptionTD'> Fecha Inicio </td>	 
 				<td class='CobaltFieldCaptionTD'> Fecha Finalización </td>		   
 			</tr>";
-		while($row = pg_fetch_array($consulta))
-		{
+		while($row = pg_fetch_array($consulta)){
 		  echo "<tr>
 				<td aling='center'> 
-					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"pedirDatos('".$row['id']."')\"> </td>
+                                    <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+                                    onclick=\"pedirDatos('".$row['id']."')\"> </td>
 				<td aling ='center'> 
-					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"eliminarDato('".$row['id']."')\"> </td>
-				<td>". $row['idexamen']."</td>
+                                    <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+                                    onclick=\"eliminarDato('".$row['id']."')\"> </td>
+				<td>". $row['idexamen'] ."</td>
 				<td>".htmlentities($row['nombreexamen'])."</td>";
+			if (empty($row['unidades']))
+				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+			else
+				echo"<td>".htmlentities($row['unidades'])."</td>";
+					
+                        if ((empty($row['rangoInicio'])) && (empty($row['rangofin'])))
+                                echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+			else 
+                               echo "<td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
 			
-		if (empty($row['unidades']))
-					echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-		else
-		   echo "<td>".htmlentities($row['unidades'])."</td>";
-		   echo "<td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
-		   
-		if (empty($row['nota']))
-			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-		else
-			echo "<td>".htmlentities($row['nota'])."</td>";
-                if (!empty($row['sexo']))
-                    echo "<td>".htmlentities($row['sexo'])."</td>";
-                else 
-                    echo "<td>Ambos</td>";
-                echo "<td>".htmlentities($row['redad'])."</td>";
-                
-		if(($row['fechaini']=="(NULL)") || ($row['fechaini']=="00/00/0000") ||(empty($row['fechaini'])))
-			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-		else
-			echo "<td>".$row['fechaini']."</td>";
-								
-		if((empty($row['fechafin'])) || ($row['fechafin']=="(NULL)") || ($row['fechafin']=="00/00/0000")) 
-			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-		else	
-			echo "<td>".$row['fechafin']."</td>";
-
-	echo "</tr>";
+			if (empty($row['nota']))	
+                            echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+			else
+                            echo "<td>".htmlentities($row['nota'])."</td>";	
+                        
+                        if (empty($row['sexo']))
+                            echo "<td> Ambos </td>";
+                        else
+                            echo "<td>".$row['sexo']."</td>";
+                        
+                            echo "<td>".$row['redad']."</td>";
+			
+			if((empty($row[7])) || ($row[7]=="(NULL)") || ($row[7]=="00-00-0000"))
+				     echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
+				else
+					 echo"<td>".$row[7]."</td>";
+			if((empty($row[8])) || ($row[8]=="(NULL)") || ($row[8]=="00/00/0000"))
+			     echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
+			else
+					echo"<td>".$row[8]."</td></tr>";
+            echo "</tr>";
+		//}
 		}
 	       	echo "</table>"; 
 		//determinando el numero de paginas

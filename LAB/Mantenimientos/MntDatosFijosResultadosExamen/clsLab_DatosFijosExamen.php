@@ -15,8 +15,8 @@ class clsLab_DatosFijosExamen
 	   if($con->conectar()==true) 
 	   {
 	    $query = "INSERT INTO lab_datosfijosresultado
-				(idarea,idexamen,unidades,rangoinicio,rangofin,nota,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,fechaini,fechafin,idsexo,idedad) 
-				VALUES($idarea,$idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,NOW(),$usuario,NOW(),$lugar,$Fechaini,$Fechafin,$sexo,$redad)";
+		      (idarea,idexamen,unidades,rangoinicio,rangofin,nota,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,fechaini,fechafin,idsexo,idedad) 
+		 VALUES($idarea,$idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,NOW(),$usuario,NOW(),$lugar,$Fechaini,$Fechafin,$sexo,$redad)";
 		echo $query;
 	     $result = pg_query($query);
 	
@@ -171,7 +171,8 @@ class clsLab_DatosFijosExamen
 			AND  lab_examenesxestablecimiento.idplantilla=1 AND lab_examenesxestablecimiento.condicion='H'
 			AND lab_examenesxestablecimiento.idestablecimiento=$lugar
 			ORDER BY lab_examenes.idarea ";
-              //echo $query;
+              
+            //  echo $query;
 		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
@@ -224,11 +225,11 @@ class clsLab_DatosFijosExamen
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
             if($con->conectar()==true){
-                $query = "SELECT lab_datosfijosresultado.id,lab_examenes.id as idexamen,lab_examenes.nombreexamen, 
+                $query = "SELECT lab_datosfijosresultado.id,lab_examenes.idexamen,lab_examenes.nombreexamen, 
                           lab_datosfijosresultado.unidades,lab_datosfijosresultado.rangoinicio,rangofin,
                           lab_datosfijosresultado.nota,
-                          to_char(lab_datosfijosresultado.fechaini,'YYYY/mm/dd') AS FechaIni,
-                          to_char(lab_datosfijosresultado.fechafin,'YYYY-mm-dd') AS FechaFin, 
+                          to_char(lab_datosfijosresultado.fechaini,'dd/mm/YYYY') AS FechaIni,
+                          to_char(lab_datosfijosresultado.fechafin,'dd/mm/YYYY') AS FechaFin, 
                           ctl_sexo.nombre as sexo,ctl_rango_edad.nombre as redad
                           FROM lab_datosfijosresultado 
                           INNER join lab_examenes ON lab_datosfijosresultado.idexamen=lab_examenes.id 

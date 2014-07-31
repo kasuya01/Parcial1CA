@@ -13,12 +13,13 @@ $row = pg_fetch_array($consulta);
 //$iddatosfijosexamen;
 //valores de las consultas
 $idarea=$row['idarea'];
-echo $idarea;
+//echo $idarea;
 $nombrearea=$row['nombrearea'];
 $idexamen=$row['idexamen'];
 //echo $idexamen;
 $nombreexamen=$row['nombreexamen'];
 $unidades=$row['unidades'];
+//echo $unidades;
 $rangoinicio=$row['rangoinicio'];
 $rangofin=$row['rangofin'];
 $nota=$row['nota'];
@@ -69,7 +70,7 @@ $rangoedad=$row['redad'];
                         $consultaex = $obj->ExamenesPorArea($idarea);
                         while($row = mysql_fetch_array($consultaex))
                         {
-                            echo "<option value='" . $row['IdExamen']. "'>" . $row['NombreExamen'] . "</option>";
+                            echo "<option value='" . $row['idexamen']. "'>" . $row['nombreexamen'] . "</option>";
                         }						            	
                             echo "<option value='" . $idexamen . "' selected='selected'>" .$nombreexamen. "</option>";
                     ?>	

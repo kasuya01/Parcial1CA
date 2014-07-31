@@ -1,6 +1,6 @@
 <?php 
 include("../../../Conexion/ConexionBD.php");
-include("../../../Conexion/ConexionBDLab.php");
+//include("../../../Conexion/ConexionBDLab.php");
 //implementamos la clase lab_areas
 class clsRecepcionSolicitud
 {
@@ -16,7 +16,7 @@ $con = new ConexionBD;
 			    FROM mnt_establecimiento 
 			    INNER JOIN mnt_tipoestablecimiento ON mnt_establecimiento.IdTipoEstablecimiento= mnt_tipoestablecimiento.IdTipoEstablecimiento
 			    WHERE IdEstablecimiento=$lugar";
-		$resul = mysql_query($conNom) or die('La consulta fall&oacute;: ' . mysql_error());
+		$resul = pg_query($conNom) or die('La consulta fall&oacute;: ' . mysql_error());
 	}
  return $resul;
 }
