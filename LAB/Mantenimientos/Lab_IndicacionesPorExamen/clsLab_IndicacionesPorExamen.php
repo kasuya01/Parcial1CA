@@ -30,9 +30,9 @@ class clsLab_IndicacionesPorExamen
 	   $con = new ConexionBD;
 	   if($con->conectar()==true) 
 	   {
-	     $query = "UPDATE mnt_indicacionesporexamen SET Indicacion='$indicacion', IdExamen='$idexamen', 
-		       IdArea='$idarea', IdUsuarioMod= $usuario, FechaHoraMod=NOW() 
-		       WHERE IdIndicacionPorExamen=$idindicacion";
+	     $query = "UPDATE mnt_indicacionesporexamen SET Indicacion='$indicacion', idexamen='$idexamen', 
+		       idarea='$idarea', idusuariomod= $usuario, fechahoramod=NOW() 
+		       WHERE idindicacionPorExamen=$idindicacion";
 	     $result = pg_query($query);
 		 if (!$result)
 	       return false;
@@ -101,12 +101,12 @@ class clsLab_IndicacionesPorExamen
 		$con = new ConexionBD;
 	    //usamos el metodo conectar para realizar la conexion
 	    if($con->conectar()==true){
-	     $query = "SELECT lab_examenes.IdExamen, NombreExamen
+	     $query = "SELECT lab_examenes.id,nombreexamen
                        FROM lab_examenes
-                       INNER JOIN lab_examenesxestablecimiento 
-                       ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
-                       WHERE lab_examenes.IdArea ='$idarea' AND Condicion = 'H'
-                       ORDER BY IdExamen";
+                      INNER JOIN lab_examenesxestablecimiento ON lab_examenes.id=lab_examenesxestablecimiento.idexamen 
+                       WHERE lab_examenes.idarea ='$idarea' AND condicion = 'H'
+                       ORDER BY nombreexamen";
+             //echo $query;
 		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
@@ -151,7 +151,9 @@ class clsLab_IndicacionesPorExamen
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = "SELECT IdIndicacionPorExamen,IdArea,IdExamen,Indicacion FROM mnt_indicacionesporexamen LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
+	     $query = "SELECT IdIndicacionPorExamen,IdArea,IdExamen,Indicacion 
+                 FROM mnt_indicacionesporexamen 
+                 LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
 		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
@@ -166,8 +168,9 @@ class clsLab_IndicacionesPorExamen
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = $query_search." LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-		 $result = @mysql_query($query);
+	     $query = $query_search." 
+                 LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
 		 else

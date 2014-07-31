@@ -30,6 +30,7 @@ function Guardar(){
 }
 function LlenarComboExamen(idArea)
 {
+   // alert("aqui"+idarea);
   LlenarExamenes(idArea);
 }
 
@@ -88,8 +89,8 @@ if ($nivel==33){
                                     include('../Lab_Areas/clsLab_Areas.php');
                                     $objeareas=new clsLab_Areas;
                                     $consulta= $objeareas->consultaractivas($lugar);
-                                    while($row = mysql_fetch_array($consulta)){
-                                        echo "<option value='".$row['IdArea']."'>".$row['NombreArea']."</option>";
+                                    while($row = pg_fetch_array($consulta)){
+                                        echo "<option value='".$row['id']."'>".$row['nombrearea']."</option>";
                                     }
 				?>		  
                             </select>		  
@@ -109,10 +110,12 @@ if ($nivel==33){
                         <td width="17%" class="StormyWeatherFieldCaptionTD">Sexo</td>
                         <td width="83%"  class="StormyWeatherDataTD">
                             <select id="cmbSexo" name="cmbSexo" size="1" >
-                                <option value="0" >--Seleccione Sexo--</option>
+                               
+                                <option value="3">Ninguno</option>
+                                 <option value="0">Ambos</option>
                                 <?php
                                     $consultaS= $objdatos->consultarsexo();
-                                     while($row =mysql_fetch_array($consultaS)){
+                                     while($row =pg_fetch_array($consultaS)){
                                          echo "<option value='" . $row[0]. "'>". $row[1] . "</option>";
                                                                                                                   
                                       }
@@ -127,7 +130,7 @@ if ($nivel==33){
                                 <option value="0" >--Seleccione un Rango de Edad--</option>
                                 <?php
                                     $conEdad = $objdatos->RangosEdades();
-                                    while($row = mysql_fetch_array($conEdad)){
+                                    while($row = pg_fetch_array($conEdad)){
                                         echo "<option value='" . $row[0]. "'>". $row[1] . "</option>";
                                     }
                                  ?>    

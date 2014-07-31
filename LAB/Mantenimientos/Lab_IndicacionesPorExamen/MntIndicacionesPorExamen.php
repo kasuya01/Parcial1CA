@@ -4,6 +4,9 @@ $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea']; 
+$objeareas=new clsLab_Areas;
+
+                                        
 
 ?>
 
@@ -21,7 +24,8 @@ function Guardar(){
 }
 function LlenarComboExamen(idArea)
 {
-  LlenarExamenes(idArea);   
+    alert(idarea); 
+   LlenarExamenes(idArea);   
 }
 function Buscar(){
 	BuscarDatos();
@@ -71,10 +75,9 @@ if ($nivel==33){
 			<select id="cmbArea" name="cmbArea" size="1" onChange="LlenarComboExamen(this.value);">
 				<option value="0" >--Seleccione un &Aacute;rea--</option>
 				<?php
-                                        $objeareas=new clsLab_Areas;
-					$consulta= $objeareas->consultaractivas($lugar);
-					while($row = mysql_fetch_array($consulta)){
-						echo "<option value='" . $row['IdArea']. "'>" . $row['NombreArea'] . "</option>";
+                                       $consulta= $objeareas->consultaractivas($lugar); 
+					while($row = pg_fetch_array($consulta)){
+						echo "<option value='" . $row['id']. "'>" . $row['nombrearea'] . "</option>";
 					}
 				?>		  
 			</select>		  

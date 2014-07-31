@@ -6,26 +6,33 @@ $area=$_SESSION['Idarea'];
 //consulta los datos por su id
 $iddatosfijosexamen=$_POST['iddatosfijosexamen'];
 //echo $iddatosfijosexamen;
+//echo $iddatosfijosexamen;
 $obj = new clsLab_DatosFijosExamen;
 $consulta=$obj->consultarid($iddatosfijosexamen,$lugar);
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 //$iddatosfijosexamen;
 //valores de las consultas
-$idarea=$row['IdArea'];
-$nombrearea=$row['NombreArea'];
-$idexamen=$row['IdExamen'];
-$nombreexamen=$row['NombreExamen'];
-$unidades=$row['Unidades'];
-$rangoinicio=$row['RangoInicio'];
-$rangofin=$row['RangoFin'];
-$nota=$row['Nota'];
-$Fechaini=$row['FechaIni'];
-$Fechafin=$row['FechaFin'];
+$idarea=$row['idarea'];
+echo $idarea;
+$nombrearea=$row['nombrearea'];
+$idexamen=$row['idexamen'];
+//echo $idexamen;
+$nombreexamen=$row['nombreexamen'];
+$unidades=$row['unidades'];
+$rangoinicio=$row['rangoinicio'];
+$rangofin=$row['rangofin'];
+$nota=$row['nota'];
+$Fechaini=$row['fechaini'];
+$Fechafin=$row['fechafin'];
 $idsexo=$row['idsexo'];
-$nombresexo=$row['sexovn'];
-$idedad=$row['idedad'];
-$rangoedad=$row['nombregrupoedad'];
+$nombresexo=$row['sexo'];
+if (empty($idsexo)){
+    $idsexo=0;
+$nombresexo="Ambos";}    
 
+$idedad=$row['idedad'];
+$rangoedad=$row['redad'];
+//echo $idsexo,$nombresexo;
 //muestra los datos consultados en los campos del formulario
 ?>
 
@@ -44,8 +51,9 @@ $rangoedad=$row['nombregrupoedad'];
 			include('../Lab_Areas/clsLab_Areas.php');
 			$objeareas=new clsLab_Areas;
 			$consulta= $objeareas->consultaractivas();
-			while($row = mysql_fetch_array($consulta)){
-                            echo "<option value='" . $row['IdArea']. "'>" . htmlentities($row['NombreArea']) . "</option>";
+			while($row = pg_fetch_array($consulta)){
+                            echo "<option value='".$row['id']."'>".$row['nombrearea']."</option>";
+                           
                         }
                             echo "<option value='" . $idarea . "' selected='selected'>" .htmlentities($nombrearea). "</option>";
                     ?>		  
@@ -72,10 +80,11 @@ $rangoedad=$row['nombregrupoedad'];
             <td width="17%" class="StormyWeatherFieldCaptionTD">Sexo</td>
             <td width="83%"  class="StormyWeatherDataTD">
                 <select id="cmbSexo" name="cmbSexo" size="1" >
-                    <option value="0" >--Seleccione Sexo--</option>
+                     <option value="3">Ninguno</option>  
+                     <option value="0">Ambos</option>
                     <?php
                             $consultaS= $obj->consultarsexo();
-                            while($row =mysql_fetch_array($consultaS)){
+                            while($row =pg_fetch_array($consultaS)){
                                  echo "<option value='" . $row[0]. "'>". $row[1] . "</option>";
 
                             }
@@ -92,7 +101,7 @@ $rangoedad=$row['nombregrupoedad'];
                         <option value="0" >--Seleccione un Rango de Edad--</option>
                             <?php
                                 $conEdad = $obj->RangosEdades();
-                                while($row = mysql_fetch_array($conEdad)){
+                                while($row = pg_fetch_array($conEdad)){
                                      echo "<option value='" . $row[0]. "'>". $row[1] . "</option>";
                                 }
                                 echo "<option value='" . $idedad . "' selected='selected'>" .$rangoedad. "</option>";

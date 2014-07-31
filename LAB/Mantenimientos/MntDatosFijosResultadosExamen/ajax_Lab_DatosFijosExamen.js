@@ -37,7 +37,7 @@ function LlenarExamenes(idarea)
 function LimpiarCampos(){
 	document.getElementById('cmbArea').value="0";
 	document.getElementById('cmbExamen').value="0";
-        document.getElementById('cmbSexo').value="0";
+        document.getElementById('cmbSexo').value="3";
         document.getElementById('cmbEdad').value="0";
 	document.getElementById('txtunidades').value="";
 	document.getElementById('txtrangoinicio').value="";
@@ -125,7 +125,9 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
 	Fechaini=document.frmModificar.txtFechainicio.value;
 	Fechafin=document.frmModificar.txtFechaFin.value;	
 	iddatosfijosexamen=document.frmModificar.txtoculto.value;
+      
         sexo=document.frmModificar.cmbSexo.value;
+        //  alert (sexo);
         redad=document.frmModificar.cmbEdad.value;
 	var opcion=2;	
 	Pag=1;

@@ -74,7 +74,7 @@ switch ($opcion)
 						<td class='CobaltFieldCaptionTD'> Indicaci&oacute;n </td>	   
 					   </tr>";
 
-				while($row = mysql_fetch_array($consulta)){
+				while($row = pg_fetch_array($consulta)){
                                     echo "<tr>
 						<td aling='center'> 
                                         		<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
@@ -130,7 +130,7 @@ switch ($opcion)
 		      $resultado = "<select id='cmbExamen' name='cmbExamen' size='1'>
 					<option value='0'>--Seleccione un Examen--</option>";
 						
-				while($rowex = mysql_fetch_array($consultaex))
+				while($rowex = pg_fetch_array($consultaex))
 						{
 		$resultado .= "<option value='" . $rowex[0]. "'>" .htmlentities($rowex[1]) . "</option>";
 						}
@@ -209,7 +209,7 @@ switch ($opcion)
 		else {
 			$query_search = $query. " IdServicio='DCOLAB'";
 		}
-		
+		echo $query_search;
 		//ENVIANDO A EJECUTAR LA BUSQUEDA!!
 		
 		//require_once("clsLab_IndicacionesPorExamen.php");
@@ -232,7 +232,7 @@ switch ($opcion)
 				<td class='CobaltFieldCaptionTD'> Indicaci&oacute;n </td>	   
 			</tr>";
 
-			while($row = mysql_fetch_array($consulta)){
+			while($row = pg_fetch_array($consulta)){
 		  echo "<tr>
 		  		<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
@@ -281,16 +281,16 @@ switch ($opcion)
 		
 	break;
 	case 8://PAGINACION DE BUSQUEDA
-		$query = "SELECT IdIndicacionPorExamen,IdArea,IdExamen,Indicacion FROM mnt_indicacionesporexamen WHERE ";
+		$query = "SELECT id,idarea,ideExamen,indicacion FROM mnt_indicacionesporexamen WHERE ";
 		$ban=0;
 		
 		//VERIFICANDO LOS POST ENVIADOS
 		if (!empty($_POST['idexamen']))
-		{ $query .= " IdExamen='".$_POST['idexamen']."' AND"; }
+		{ $query .= " idexamen='".$_POST['idexamen']."' AND"; }
 		else{$ban=1;}
 		
 		if (!empty($_POST['idarea']))
-		{ $query .= " IdArea='".$_POST['idarea']."' AND"; }
+		{ $query .= " idarea='".$_POST['idarea']."' AND"; }
 		else{$ban=1;}
 		
 		if (!empty($_POST['indicacion']))
@@ -304,7 +304,7 @@ switch ($opcion)
 		else {
 			$query_search = $query. " IdServicio='DCOLAB'";
 		}
-		
+		echo $query_search;
 		//require_once("clsLab_IndicacionesPorExamen.php");
 		////para manejo de la paginacion
 		$RegistrosAMostrar=4;
@@ -326,7 +326,7 @@ switch ($opcion)
 					   <td class='CobaltFieldCaptionTD'> Indicaci&oacute;n </td>	   
 					   </tr>";
 
-				while($row = mysql_fetch_array($consulta)){
+				while($row = pg_fetch_array($consulta)){
 					echo "<tr>
 							<td aling='center'> 
 							<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
