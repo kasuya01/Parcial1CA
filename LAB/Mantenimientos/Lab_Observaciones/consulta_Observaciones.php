@@ -12,26 +12,28 @@ $consulta=$obj->consultarid($idobservacion);
 $row = pg_fetch_array($consulta);
 
 //valores de las consultas
-$observacion=$row['Observacion'];
-$tiporespuesta=$row['TipoRespuesta'];
-$idarea=$row['IdArea'];
-$nombrearea=$row['NombreArea'];
+$observacion=$row['observacion'];
+$tiporespuesta=$row['tiporespuesta'];
+$idarea=$row['id'];
+$nombrearea=$row['nombrearea'];
 
 //muestra los datos consultados en los campos del formulario
 ?>
 
 <form name= "frmModificar" onsubmit="enviarDatos(); return false">
-  <input name="opcion" type="hidden" value="N" />
+  <input name="opcion" type="hidden" value="N"/>
 	<table width="60%" border="0" align="center" class="StormyWeatherFormTABLE">
 	<tr>
-		<td colspan="2" class="CobaltFieldCaptionTD" align="center"><h3><strong>Mantenimiento de Observaciones</strong></h3>
+		<td colspan="2" class="CobaltFieldCaptionTD" align="center">
+                    <h3><strong>Mantenimiento de Observaciones</strong></h3>
 		</td>
 	</tr>	
-	<tr>
+	<!--<tr>
 		<td class="StormyWeatherFieldCaptionTD">Idobservacion</td>
 		<td class="StormyWeatherDataTD"><input name="idobservacion" id="idobservacion" type="text" value="<?php echo $idobservacion; ?>" disabled="disabled" /></td>
-	</tr>
+	</tr> -->
 	<tr>
+        <input name="idobservacion" id="idobservacion" type="hidden" value="<?php echo $idobservacion; ?>" disabled="disabled" />   
         <td class="StormyWeatherFieldCaptionTD">C&oacute;digo del &Aacute;rea</td>
         <td class="StormyWeatherDataTD">
 			<select id="cmbArea" name="cmbArea" size="1">
@@ -39,9 +41,9 @@ $nombrearea=$row['NombreArea'];
 			<?php
 			include('../Lab_Areas/clsLab_Areas.php');
 			$objeareas=new clsLab_Areas;
-			$consulta= $objeareas->consultaractivas();
+			$consulta= $objeareas->consultaractivas($lugar);
 			while($row = pg_fetch_array($consulta)){
-			echo "<option value='" . $row['IdArea']. "'>" . htmlentities($row['NombreArea']) . "</option>";
+			echo "<option value='" . $row['id']. "'>" . htmlentities($row['nombrearea']) . "</option>";
 			}
 			echo "<option value='" . $idarea . "' selected='selected'>" . htmlentities($nombrearea). "</option>";
 			?>		  

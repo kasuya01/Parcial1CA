@@ -7,10 +7,11 @@ $area=$_SESSION['Idarea'];
 $idElemTin=$_POST['idElemTin'];
 $obj = new clsLab_ElementosTincion;
 $consulta=$obj->consultarid($idElemTin);
+$row = pg_fetch_array($consulta);
 
-$row = mysql_fetch_array($consulta);
+
 //valores de las consultas
-$ElemTin=$row[1];
+ $ElemTin=$row[0];
 
 //muestra los datos consultados en los campos del formulario
 ?>
@@ -23,14 +24,15 @@ onsubmit="enviarDatos(); return false">
 		<td colspan="2" class="CobaltFieldCaptionTD" align="center"><h3><strong>Mantenimiento de Elementos de Tinci&oacute;n</strong><h3>
 		</td>
 	</tr>	
-	<tr>
+<!--	<tr>
 		<td class="StormyWeatherFieldCaptionTD">IdElemento</td>
 		<td class="StormyWeatherDataTD"><input name="idElemTin" id="idElemTin" type="text" value="<?php echo $idElemTin; ?>" disabled="disabled" /></td>
-	</tr>	
+	</tr>	-->
 	<tr>
 		<td class="StormyWeatherFieldCaptionTD">Elemento Tinci&oacute;n </td>
 		<td class="StormyWeatherDataTD"><input name="ElemTin" id="ElemTin" type="text" value="<?php echo htmlentities($ElemTin); ?>" size="35" />
-		</td>    
+                    <input name="idElemTin" id="idElemTin" type="hidden" value="<?php echo $idElemTin; ?>" disabled="disabled" />
+                </td>    
 	</tr>
 		<td class="StormyWeatherDataTD" colspan="2" align="right">
 			<input type="submit" name="btnActualizar" value="Actualizar" />

@@ -42,7 +42,7 @@ class clsLab_Observaciones
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "DELETE FROM lab_observaciones WHERE IdObservacion='$idobservacion'";
+     $query = "DELETE FROM lab_observaciones WHERE id='$idobservacion'";
      $result = @pg_query($query);
 	 
      if (!$result)
@@ -111,10 +111,10 @@ class clsLab_Observaciones
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-      $query = "SELECT lab_observaciones.observacion,lab_observaciones.tiporespuesta,
+     $query = "SELECT lab_observaciones.observacion,lab_observaciones.tiporespuesta,
 		lab_observaciones.idarea,lab_areas.nombrearea FROM lab_observaciones 
-	        INNER JOIN lab_areas ON lab_observaciones.idarea=lab_areas.idarea
-		WHERE id=$idobservacion";
+	        INNER JOIN lab_areas ON lab_observaciones.idarea=lab_areas.id
+		WHERE lab_observaciones.id=$idobservacion";
      $result = @pg_query($query);
      if (!$result)
        return false;

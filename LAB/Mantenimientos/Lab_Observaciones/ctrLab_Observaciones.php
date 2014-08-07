@@ -59,7 +59,7 @@ switch ($opcion)
 		 <!--  <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
 		   <td class='CobaltFieldCaptionTD'> Area</td>
 		   <td class='CobaltFieldCaptionTD'> observacion </td>
-                   <td class='CobaltFieldCaptionTD'> Tipo de Respuesta </td>		   
+                   <td class='CobaltFieldCaptionTD'> Tipo de Respuesta</td>		   
 	      </tr>";
              while($row = pg_fetch_array($consulta)){
 		echo "<tr>
@@ -125,7 +125,7 @@ switch ($opcion)
 		{ $query .="tiporespuesta='".$_POST['tiporespuesta']."'AND"; }
 	
 	if (!empty($_POST['observacion']))
-		{ $query .="observacion like '%".$_POST['observacion']."%'AND";}
+		{ $query .="observacion ilike '%".$_POST['observacion']."%'AND";}
                   	
 		 $query = substr($query ,0,strlen($query)-4);
 		$query_search = $query."ORDER BY observacion";	

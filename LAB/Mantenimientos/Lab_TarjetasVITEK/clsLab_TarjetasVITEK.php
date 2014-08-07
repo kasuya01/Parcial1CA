@@ -13,7 +13,7 @@ class clsLab_TarjetasVITEK
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-  echo $query = "INSERT INTO lab_tarjetasvitek(nombretarjeta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,fechaini,fechafin) VALUES('$nombretarjeta','$usuario',NOW(),'$usuario',NOW(),$lugar,'$Fechaini','$Fechafin')";
+   $query = "INSERT INTO lab_tarjetasvitek(nombretarjeta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,fechaini,fechafin) VALUES('$nombretarjeta','$usuario',NOW(),'$usuario',NOW(),$lugar,'$Fechaini','$Fechafin')";
      $result = pg_query($query);
 	 
      if (!$result)
@@ -76,7 +76,7 @@ function consultar($lugar){
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT * FROM lab_tarjetasvitek WHERE idestablecimiento=$lugar ORDER BY id  ";
+     echo $query = "SELECT * FROM lab_tarjetasvitek WHERE idestablecimiento=$lugar ORDER BY id  ";
 	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
@@ -106,8 +106,9 @@ function NumeroDeRegistros($lugar){
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-    $query = "SELECT id,nombretarjeta,DATE_FORMAT(fechaini,'%d/%m/%Y')AS fechafin,
-			DATE_FORMAT(fechafin,'%d/%m/%Y')AS fechafin  FROM lab_tarjetasvitek WHERE id='$idtarjeta' AND idestablecimiento=$lugar";
+    $query = "SELECT id,nombretarjeta,
+                        fechaini,
+			 fechafin  FROM lab_tarjetasvitek WHERE id='$idtarjeta' AND idestablecimiento=$lugar";
      $result = pg_query($query);
      if (!$result)
        return false;

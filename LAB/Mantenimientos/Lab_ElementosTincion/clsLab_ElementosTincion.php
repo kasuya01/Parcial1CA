@@ -12,8 +12,8 @@ class clsLab_ElementosTincion
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_elementostincion (ElementoTincion,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod) VALUES('$ElemTin','$usuario',NOW(),'$usuario',NOW())";
-     $result = @mysql_query($query);
+    $query = "INSERT INTO lab_elementostincion (elementotincion,idusuarioreg,fechahorareg,idusuariomod,fechahoramod) VALUES('$ElemTin','$usuario',NOW(),'$usuario',NOW())";
+     $result = @pg_query($query);
 	 
      if (!$result)
        return false;
@@ -26,8 +26,8 @@ class clsLab_ElementosTincion
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "UPDATE lab_elementostincion SET ElementoTincion='$ElemTin',IdUsuarioMod='$usuario',FechaHoraMod=NOW() WHERE IdElementosTincion ='$idElemTin'";
-     $result = @mysql_query($query);
+     $query = "UPDATE lab_elementostincion SET elementotincion='$ElemTin',idusuariomod='$usuario',fechahoramod=NOW() WHERE id ='$idElemTin'";
+     $result = @pg_query($query);
 	 
      if (!$result)
        return false;
@@ -41,8 +41,8 @@ class clsLab_ElementosTincion
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "DELETE FROM lab_elementostincion WHERE IdElementosTincion ='$idElemTin'";
-     $result = @mysql_query($query);
+     $query = "DELETE FROM lab_elementostincion WHERE id ='$idElemTin'";
+     $result = @pg_query($query);
 	 
      if (!$result)
        return false;
@@ -57,9 +57,9 @@ function VerificarIntegridad($idElemTin)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT * FROM lab_examenes WHERE IdElementosTincion='$idElemTin'";
-     $result = @mysql_query($query);
-	 $cuenta = mysql_num_rows($result);
+     $query = "SELECT * FROM lab_examenes WHERE id='$idElemTin'";
+     $result = @pg_query($query);
+	 $cuenta = pg_num_rows($result);
 	 
      if ($cuenta > 0)
        return true;
@@ -73,8 +73,8 @@ function VerificarIntegridad($idElemTin)
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT * FROM lab_elementostincion ORDER BY IdElementosTincion LIMIT $RegistrosAEmpezar, $RegistrosAMostrar ";
-	 $result = @mysql_query($query);
+     $query = "SELECT id,elementotincion FROM lab_elementostincion ORDER BY id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar  ";
+	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -86,8 +86,8 @@ function VerificarIntegridad($idElemTin)
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT * FROM lab_elementostincion ORDER BY IdElementosTincion ";
-	 $result = @mysql_query($query);
+     $query = "SELECT * FROM lab_elementostincion ORDER BY id ";
+	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -101,7 +101,7 @@ function VerificarIntegridad($idElemTin)
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
      $query = "SELECT * FROM lab_elementostincion ";
-	 $numreg = mysql_num_rows(mysql_query($query));
+	 $numreg = pg_num_rows(pg_query($query));
 	 if (!$numreg )
 	   return false;
 	 else
@@ -115,8 +115,8 @@ function VerificarIntegridad($idElemTin)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT * FROM lab_elementostincion  WHERE IdElementosTincion='$idElemTin'";
-     $result = @mysql_query($query);
+     $query = "SELECT * FROM lab_elementostincion  WHERE id='$idElemTin'";
+     $result = @pg_query($query);
      if (!$result)
        return false;
      else
@@ -130,8 +130,8 @@ function consultarpagbus($query,$RegistrosAEmpezar, $RegistrosAMostrar)
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = $query." LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-		 $result = @mysql_query($query);
+	     $query = $query." LIMIT  $RegistrosAMostrar OFFSET $RegistrosAEmpezar ";
+		 $result = @pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -144,7 +144,7 @@ function consultarpagbus($query,$RegistrosAEmpezar, $RegistrosAMostrar)
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $numreg = mysql_num_rows(mysql_query($query));
+	     $numreg = pg_num_rows(pg_query($query));
 		 if (!$numreg )
 		   return false;
 		 else
@@ -162,7 +162,7 @@ class clsLabor_ElementosTincion{
 		$con2 = new ConexionBDLab;
 		if($con2->conectarT()==true){
 			$query = "INSERT INTO laboratorio.lab_elementostincion (ElementoTincion,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod) VALUES('$ElemTin','$usuario',NOW(),'$usuario',NOW())";
-			$result = @mysql_query($query);
+			$result = @pg_query($query);
 		 
 		if (!$result)
 		   return false;
@@ -176,7 +176,7 @@ class clsLabor_ElementosTincion{
 	   $con2 = new ConexionBDLab;
 	   if($con2->conectarT()==true){
 		 $query = "UPDATE laboratorio.lab_elementostincion SET ElementoTincion='$ElemTin',IdUsuarioMod='$usuario',FechaHoraMod=NOW() WHERE IdElementosTincion ='$idElemTin'";
-		 $result = @mysql_query($query);
+		 $result = @pg_query($query);
 		 
 		 if (!$result)
 		   return false;
@@ -191,7 +191,7 @@ class clsLabor_ElementosTincion{
 	   $con2 = new ConexionBDLab;
 	   if($con2->conectarT()==true){
 		 $query = "DELETE FROM laboratorio.lab_elementostincion WHERE IdElementosTincion ='$idElemTin'";
-		 $result = @mysql_query($query);
+		 $result = @pg_query($query);
 		 
 		 if (!$result)
 		   return false;

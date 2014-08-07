@@ -106,7 +106,7 @@ switch ($opcion)
      break;
      case 5:  //buscar
             
-	    $query = "SELECT id,bacteria FROM lab_bacterias
+	   $query = "SELECT id,bacteria FROM lab_bacterias
 		      WHERE ";
 				
 		//VERIFICANDO LOS POST ENVIADOS
