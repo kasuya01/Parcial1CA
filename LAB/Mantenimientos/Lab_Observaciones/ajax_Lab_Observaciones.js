@@ -82,7 +82,8 @@ function pedirDatos(idobservacion){   //CARGAR DATOS A MODIFICAR
 	divFormularioNuevo=document.getElementById('divFrmNuevo');
 	divInicial= document.getElementById('divinicial');
 	
-	//instanciamos el objetoAjax
+        //alert("idobservacion"+idobservacion);
+    //instanciamos el objetoAjax
 	ajax=objetoAjax();
 	//uso del medotod POST
 	ajax.open("POST", "consulta_Observaciones.php");

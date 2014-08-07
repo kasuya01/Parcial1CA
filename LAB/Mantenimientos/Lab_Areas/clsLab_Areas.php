@@ -147,9 +147,9 @@ class clsLab_Areas {
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
-            $query = "SELECT lab_areas.id,nombrearea FROM lab_areas 
+           $query = "SELECT lab_areas.id,nombrearea FROM lab_areas 
                       INNER JOIN lab_areasxestablecimiento ON lab_areas.id= lab_areasxestablecimiento.id
-                      WHERE lab_areasxestablecimiento.condicion='H' AND lab_areas.Administrativa='N' 
+                      WHERE lab_areasxestablecimiento.condicion='H' AND lab_areas.administrativa='N' 
                       AND lab_areasxestablecimiento.idestablecimiento=$lugar 
                       ORDER BY nombrearea";
             $result = @pg_query($query);

@@ -125,7 +125,7 @@ function NumeroDeRegistrosbus($query){
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $numreg = pg_num_rows(mysql_query($query));
+	     $numreg = pg_num_rows(pg_query($query));
 		 if (!$numreg )
 		   return false;
 		 else
@@ -140,7 +140,7 @@ function NumeroDeRegistrosbus($query){
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
      $query = "SELECT * FROM lab_bacterias ";
-	 $numreg = pg_num_rows(mysql_query($query));
+	 $numreg = pg_num_rows(pg_query($query));
 	 if (!$numreg )
 	   return false;
 	 else

@@ -92,7 +92,7 @@ function consultar(){
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
      $query = "SELECT * FROM lab_antibioticos ORDER BY id";
-	 $result = pg_query($query);
+                $result = pg_query($query);
 	 if (!$result)
 	   return false;
 	 else

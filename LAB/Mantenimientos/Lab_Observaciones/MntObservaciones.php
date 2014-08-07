@@ -46,8 +46,9 @@ if ($nivel==33){
 	<tr>
         <td class="StormyWeatherFieldCaptionTD">C&oacute;digo del &Aacute;rea</td>
         <td class="StormyWeatherDataTD">
+            <input type="hidden" name="txtidobservacion" id="txtidobservacion" disabled="disabled" />
 			<select id="cmbArea" name="cmbArea" size="1">
-			<option value="0" >--Seleccione un &Aacute;rea--</option>
+			<option value="0" >--Seleccione un &Aacute;--</option>
 			<?php
 			$objeareas=new clsLab_Areas;
 			$consulta= $objeareas->consultaractivas($lugar);
