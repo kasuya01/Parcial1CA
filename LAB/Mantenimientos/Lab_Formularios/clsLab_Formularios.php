@@ -1,291 +1,279 @@
-<?php 
+<?php
+
 include_once("../../../Conexion/ConexionBD.php");
 include_once("../../../Conexion/ConexionBDLab.php");
 
-class clsLab_Formularios
-{
- //constructor	
- function clsLab_Formularios(){
- }	
- 
- 
- function insertar($Formulario,$usuario)
- {
-   $con = new ConexionBD;
-   if($con->conectar()==true) 
-   {
-    $query = "INSERT INTO mnt_formularios(NombreFormulario,IdusuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod) 
-	VALUES('$Formulario','$usuario',NOW(),'$usuario',NOW())";
-	 $result = @mysql_query($query);
-	 if (!$result)
-       return false;
-     else
-       $idultimo= @mysql_insert_id();
-	   return $idultimo;	   
-  
-   }
- }
- 
- 
- function IdUltimoProgramaInsertado()
- {
-   $con = new ConexionBD;
-   if($con->conectar()==true) 
-   {
-    $query = "SELECT MAX(IdFormulario) AS id FROM mnt_formularios";
-     $result = @mysql_query($query);
-	  $row_Id=mysql_fetch_array($result);
-	  $Id=$row_Id[0];
-     if (!$result)
-       return false;
-     else
-       return $result;	   
-   }
- }
- 
- 
- function IngFormularioxEstablecimiento($IdForm,$Idprograma,$lugar,$cond,$usuario){
-   $con = new ConexionBD;
-   if($con->conectar()==true) 
-   {
-    $query = "INSERT INTO mnt_formulariosxestablecimiento(IdFormulario,IdPrograma,IdEstablecimiento,Condicion,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod) 
-			  VALUES($IdForm,$Idprograma,$lugar,'$cond',$usuario,NOW(),$usuario,NOW())";
-	//echo $query;
-   $result = mysql_query($query);
-	 
-     if (!$result)
-       return false;
-     else
-       return true;
+class clsLab_Formularios {
+
+    //constructor	
+    function clsLab_Formularios() {
+        
     }
-}
 
-
-function actualizar($IdFormulario,$Formulario,$usuario)
- {
-   $con = new ConexionBD;
-   if($con->conectar()==true) 
-   {
-     $query = "UPDATE mnt_formularios SET NombreFormulario='$Formulario',IdUsuarioMod='$usuario',FechaHoraMod=NOW() WHERE IdFormulario='$IdFormulario'";
-     $result = mysql_query($query);
-	 
-     if (!$result)
-       return false;
-     else
-       return true;
-	   
-   }
- }
-
- 
- function actualizarxestablecimiento($IdFormulario,$IdPrograma,$lugar,$usuario){
-    $con = new ConexionBD;
-    if($con->conectar()==true) 
-    {
-        $query = "UPDATE mnt_formulariosxestablecimiento 
-                  SET IdPrograma=$IdPrograma,IdUsuarioMod=$usuario,FechaHoraMod=NOW() 
-                  WHERE IdFormulario=$IdFormulario AND IdEstablecimiento=$lugar";
-        $result = mysql_query($query);
-
-      if (!$result)
-        return false;
-      else
-        return true;
-           }
- 
- }
- 
- 
-  function eliminar($IdFormulario)
- {
-   $con = new ConexionBD;
-   if($con->conectar()==true) 
-   {
-     $query = "DELETE FROM mnt_formularios WHERE IdFormulario='$IdFormulario'";
-     $result = mysql_query($query);
-	 
-     if (!$result)
-       return false;
-     else
-       return true;
-	   
-   }
- }
-
- //FUNCION PARA VERIFICAR LA INTEGRIDAD DE LOS DATOS
-function VerificarIntegridad($IdPrograma)
-{
-   $con = new ConexionBD;
-   if($con->conectar()==true)
-   {
-     $query = "SELECT * FROM mnt_formularios WHERE IdFormulario='$IdFormulario'";
-     $result = mysql_query($query);
-	 $cuenta = mysql_num_rows($result);
-	 
-     if ($cuenta > 0)
-       return true;
-     else
-       return false;
+    function insertar($Formulario, $usuario) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query = "INSERT INTO mnt_formularios(nombreformulario,idusuarioreg,fechahoraReg) 
+                      VALUES('$Formulario','$usuario',(SELECT date_trunc('seconds',(SELECT now())))) RETURNING id";
+            $result = @pg_query($query);
+            
+            if (!$result)
+                return false;
+            else
+                $insert_row = pg_fetch_row($result);
+                return $insert_row[0];
+        }
     }
-}
-
- // consulta las areas de la BD
- function consultarpag($RegistrosAEmpezar,$RegistrosAMostrar,$lugar){
-   //creamos el objeto $con a partir de la clase ConexionBD
-   $con = new ConexionBD;
-   //usamos el metodo conectar para realizar la conexion
-   if($con->conectar()==true){
-     $query = "SELECT mnt_formularios.IdFormulario,mnt_formularios.NombreFormulario,mnt_formulariosxestablecimiento.Condicion,
-IF(mnt_formulariosxestablecimiento.Condicion='H','Habilitado','Inhabilitado')as Cond, mnt_programas.NombrePrograma
-FROM mnt_formularios
-INNER JOIN mnt_formulariosxestablecimiento 
-ON mnt_formularios.IdFormulario=mnt_formulariosxestablecimiento.IdFormulario
-INNER JOIN mnt_programasxestablecimiento 
-ON mnt_formulariosxestablecimiento.IdPrograma=mnt_programasxestablecimiento.IdPrograma
-INNER JOIN mnt_programas ON mnt_programasxestablecimiento.IdPrograma=mnt_programas.IdPrograma
-WHERE mnt_formulariosxestablecimiento.IdEstablecimiento=$lugar
-ORDER BY mnt_formularios.IdFormulario LIMIT $RegistrosAEmpezar, $RegistrosAMostrar ";
-	 $result = mysql_query($query);
-	 if (!$result)
-	   return false;
-	 else
-	   return $result;
-   }
-  } 
-
-
-function consultarProgramas($lugar){
-   //creamos el objeto $con a partir de la clase ConexionBD
-   $con = new ConexionBD;
-   //usamos el metodo conectar para realizar la conexion
-   if($con->conectar()==true){
-     $query = "SELECT mnt_programas.IdPrograma,mnt_programas.NombrePrograma
-			   FROM mnt_programas
-			   INNER JOIN mnt_programasxestablecimiento  
-			   ON mnt_programas.IdPrograma=mnt_programasxestablecimiento.IdPrograma
-			   WHERE IdEstablecimiento=$lugar
-			   ORDER BY mnt_programas.NombrePrograma";
-	 $result = @mysql_query($query);
-	 if (!$result)
-	   return false;
-	 else
-	   return $result;
-   }
-  } 
-
- function consultar($lugar){
-   //creamos el objeto $con a partir de la clase ConexionBD
-   $con = new ConexionBD;
-   //usamos el metodo conectar para realizar la conexion
-   if($con->conectar()==true){
-     $query = "SELECT * FROM mnt_formularios
-			   INNER JOIN mnt_formulariosxestablecimiento  
-			   ON mnt_formularios.IdFormulario=mnt_formulariosxestablecimiento.IdFormulario
-			   WHERE IdEstablecimiento=$lugar
-			   ORDER BY mnt_formularios.IdFormulario";
-	 $result = @mysql_query($query);
-	 if (!$result)
-	   return false;
-	 else
-	   return $result;
-   }
-  } 
-
-function consultarpagbus($query,$RegistrosAEmpezar, $RegistrosAMostrar)
- {
-	   //creamos el objeto $con a partir de la clase ConexionBD
-	   $con = new ConexionBD;
-	   //usamos el metodo conectar para realizar la conexion
-	   if($con->conectar()==true){
-	     $query = $query." LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-		 $result = @mysql_query($query);
-		 if (!$result)
-		   return false;
-		 else
-		   return $result;
-	   }
-  } 	
-
-function NumeroDeRegistrosbus($query){
-	   //creamos el objeto $con a partir de la clase ConexionBD
-	   $con = new ConexionBD;
-	   //usamos el metodo conectar para realizar la conexion
-	   if($con->conectar()==true){
-	     $numreg = mysql_num_rows(mysql_query($query));
-		 if (!$numreg )
-		   return false;
-		 else
-		   return $numreg ;
-	   }
- }
-
-  //consultando el numero de registros de la tabla
-   function NumeroDeRegistros($lugar){
-   //creamos el objeto $con a partir de la clase ConexionBD
-   $con = new ConexionBD;
-   //usamos el metodo conectar para realizar la conexion
-   if($con->conectar()==true){
-     $query = "SELECT * 
-			   FROM mnt_formularios
-			   INNER JOIN mnt_formulariosxestablecimiento  
-			   ON mnt_formularios.IdFormulario=mnt_formulariosxestablecimiento.IdFormulario
-			   WHERE IdEstablecimiento=$lugar";
-	 $numreg = mysql_num_rows(mysql_query($query));
-	 if (!$numreg )
-	   return false;
-	 else
-	   return $numreg ;
-   }
-  }
-  
-  // consulta empleado por su codigo
- function consultarid($IdFormulario,$lugar)
- {
-   $con = new ConexionBD;
-   if($con->conectar()==true)
-   {
-     $query = "SELECT mnt_formularios.IdFormulario,mnt_formularios.NombreFormulario,mnt_programas.IdPrograma,mnt_programas.NombrePrograma FROM mnt_formularios 
-INNER JOIN mnt_formulariosxestablecimiento 
-ON mnt_formularios.IdFormulario=mnt_formulariosxestablecimiento.IdFormulario
-INNER JOIN mnt_programasxestablecimiento 
-ON mnt_formulariosxestablecimiento.IdPrograma=mnt_programasxestablecimiento.IdPrograma
-INNER JOIN mnt_programas ON mnt_programasxestablecimiento.IdPrograma=mnt_programas.IdPrograma
-WHERE mnt_formulariosxestablecimiento.IdFormulario=$IdFormulario
-AND mnt_formulariosxestablecimiento.IdEstablecimiento=$lugar";
-	           
-     $result = mysql_query($query);
-     if (!$result)
-       return false;
-     else
-       return $result;
+    
+    function verifyUnique($nombre, $atencion, $establecimiento) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query = "SELECT *
+                      FROM mnt_formularios t01
+                      INNER JOIN mnt_formulariosxestablecimiento t02 ON (t01.id = t02.idformulario)
+                      WHERE t01.nombreformulario ILIKE '$nombre' AND t02.id_atencion = $atencion AND t02.idestablecimiento = $establecimiento";
+            $result = @pg_query($query);
+            
+            if (!$result)
+                return false;
+            else
+                return true;
+        }
     }
-  }
-  
-  function EstadoCuenta($IdFormulario,$cond,$lugar){ 
-		$con = new ConexionBD;
-		   //usamos el metodo conectar para realizar la conexion
-		if($con->conectar()==true){
-			 if($cond=='H'){
-			$query = "UPDATE mnt_formulariosxestablecimiento SET Condicion='I' 
+
+    function IdUltimoProgramaInsertado() {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query = "SELECT MAX(id) AS id FROM mnt_formularios";
+            $result = @pg_query($query);
+            $row_Id = pg_fetch_array($result);
+            $Id = $row_Id[0];
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
+
+    function IngFormularioxEstablecimiento($IdForm, $Idprograma, $lugar, $cond, $usuario) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query = "INSERT INTO mnt_formulariosxestablecimiento(idformulario, id_atencion, idestablecimiento,condicion,idusuarioreg,fechahorareg) 
+                      VALUES($IdForm,$Idprograma,$lugar,'$cond',$usuario,(SELECT date_trunc('seconds',(SELECT now()))))";
+
+            $result = pg_query($query);
+
+            if (!$result)
+                return false;
+            else
+                return true;
+        }
+    }
+
+    function actualizar($IdFormulario, $Formulario, $usuario) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query = "UPDATE mnt_formularios SET nombreformulario='$Formulario', idusuariomod = $usuario, fechahoramod = (SELECT date_trunc('seconds',(SELECT now()))) WHERE id = '$IdFormulario'";
+            $result = pg_query($query);
+
+            if (!$result)
+                return false;
+            else
+                return true;
+        }
+    }
+
+    function actualizarxestablecimiento($IdFormulario, $IdPrograma, $lugar, $usuario) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query = "UPDATE mnt_formulariosxestablecimiento SET id_atencion = $IdPrograma, idusuariomod = $usuario, fechahoramod = (SELECT date_trunc('seconds',(SELECT now())))"
+                    ."WHERE idformulario = $IdFormulario AND idestablecimiento = $lugar";
+            $result = pg_query($query);
+
+            if (!$result)
+                return false;
+            else
+                return true;
+        }
+    }
+
+    function eliminar($IdFormulario) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query = "DELETE FROM mnt_formularios WHERE IdFormulario='$IdFormulario'";
+            $result = pg_query($query);
+
+            if (!$result)
+                return false;
+            else
+                return true;
+        }
+    }
+
+    //FUNCION PARA VERIFICAR LA INTEGRIDAD DE LOS DATOS
+    function VerificarIntegridad($IdPrograma) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query = "SELECT * FROM mnt_formularios WHERE IdFormulario='$IdFormulario'";
+            $result = pg_query($query);
+            $cuenta = pg_num_rows($result);
+
+            if ($cuenta > 0)
+                return true;
+            else
+                return false;
+        }
+    }
+
+    // consulta las areas de la BD
+    function consultarpag($RegistrosAEmpezar, $RegistrosAMostrar, $lugar) {
+        //creamos el objeto $con a partir de la clase ConexionBD
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if ($con->conectar() == true) {
+            $query = "SELECT t01.id AS idformulario,
+                             t01.nombreformulario,
+                             t02.condicion,
+                             CASE WHEN t02.condicion = 'H' THEN 'Habilitado' ELSE 'Inhabilitado' END AS cond,
+                             t03.nombre AS nombreprograma
+                      FROM mnt_formularios t01
+                      INNER JOIN mnt_formulariosxestablecimiento t02 ON (t01.id = t02.idformulario)
+                      INNER JOIN ctl_atencion                    t03 ON (t03.id = t02.id_atencion)
+                      WHERE t02.idestablecimiento = $lugar
+                      ORDER BY t01.id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+            $result = pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
+
+    function consultarProgramas($lugar) {
+        //creamos el objeto $con a partir de la clase ConexionBD
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if ($con->conectar() == true) {
+            $query = "SELECT t01.id AS idprograma,
+                             t01.nombre AS nombreprograma
+                      FROM ctl_atencion t01
+                      WHERE t01.id_tipo_atencion = 6
+                      ORDER BY t01.nombre";
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
+
+    function consultar($lugar) {
+        //creamos el objeto $con a partir de la clase ConexionBD
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if ($con->conectar() == true) {
+            $query = "SELECT * 
+                      FROM mnt_formularios t01
+                      INNER JOIN mnt_formulariosxestablecimiento t02 ON (t01.id = t02.idformulario)
+                      WHERE idestablecimiento = $lugar
+                      ORDER BY t01.id";
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
+
+    function consultarpagbus($query, $RegistrosAEmpezar, $RegistrosAMostrar) {
+        //creamos el objeto $con a partir de la clase ConexionBD
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if ($con->conectar() == true) {
+            $query = $query . " LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
+
+    function NumeroDeRegistrosbus($query) {
+        //creamos el objeto $con a partir de la clase ConexionBD
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if ($con->conectar() == true) {
+            $numreg = pg_num_rows(pg_query($query));
+            if (!$numreg)
+                return false;
+            else
+                return $numreg;
+        }
+    }
+
+    //consultando el numero de registros de la tabla
+    function NumeroDeRegistros($lugar) {
+        //creamos el objeto $con a partir de la clase ConexionBD
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if ($con->conectar() == true) {
+            $query = "SELECT * 
+                      FROM mnt_formularios t01
+                      INNER JOIN mnt_formulariosxestablecimiento t02 ON (t01.id = t02.idformulario)
+                      WHERE t02.idestablecimiento = $lugar";
+            $numreg = pg_num_rows(pg_query($query));
+            if (!$numreg)
+                return false;
+            else
+                return $numreg;
+        }
+    }
+
+    // consulta empleado por su codigo
+    function consultarid($IdFormulario, $lugar) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query = "SELECT t01.id AS IdFormulario,
+                             t01.nombreformulario,
+                             t03.id AS idprograma,
+                             t03.nombre AS nombreprograma
+                      FROM mnt_formularios t01
+                      INNER JOIN mnt_formulariosxestablecimiento t02 ON (t01.id = t02.idformulario)
+                      INNER JOIN ctl_atencion                    t03 ON (t03.id = t02.id_atencion)
+                      WHERE t02.id = $IdFormulario AND t02.idestablecimiento = $lugar AND t03.id_tipo_atencion = 6";
+
+            $result = pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
+
+    function EstadoCuenta($IdFormulario, $cond, $lugar) {
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if ($con->conectar() == true) {
+            if ($cond == 'H') {
+                $query = "UPDATE mnt_formulariosxestablecimiento SET Condicion='I' 
 					  WHERE IdFormulario='$IdFormulario' AND IdEstablecimiento=$lugar";
-			$result = mysql_query($query);
-				/*	$query1= "UPDATE lab_examenes SET Habilitado='N' WHERE IdExamen='$idexamen'" ;
-			$result1 = mysql_query($query1);*/
-			 }
-			 if($cond=='I'){
-				$query = "UPDATE mnt_formulariosxestablecimiento SET Condicion='H' 
+                $result = pg_query($query);
+                /* 	$query1= "UPDATE lab_examenes SET Habilitado='N' WHERE IdExamen='$idexamen'" ;
+                  $result1 = pg_query($query1); */
+            }
+            if ($cond == 'I') {
+                $query = "UPDATE mnt_formulariosxestablecimiento SET Condicion='H' 
 						  WHERE IdFormulario='$IdFormulario' AND IdEstablecimiento=$lugar";
-				$result = mysql_query($query);
-				/*$query1= "UPDATE lab_examenes SET Habilitado='S' WHERE IdExamen='$idexamen'";*/
-				//$result1 = mysql_query($query1);
+                $result = pg_query($query);
+                /* $query1= "UPDATE lab_examenes SET Habilitado='S' WHERE IdExamen='$idexamen'"; */
+                //$result1 = pg_query($query1);
+            }
+        }
+        $con->desconectar();
+    }
 
-			 }
-		}
-		$con->desconectar();
-	}
-  
-}//CLASE
+}
 
-
-
+//CLASE
 ?>

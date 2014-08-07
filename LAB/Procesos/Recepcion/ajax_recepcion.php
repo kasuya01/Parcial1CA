@@ -1,10 +1,12 @@
-<?php session_start();
+<?php 
+include("../../../Conexion/ConexionBD.php");
+include_once("cls_recepcion.php");
+
+session_start();
 $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 
-include("../../../Conexion/ConexionBD.php");
-include_once("cls_recepcion.php");
 
 $recepcion = new clsRecepcion;
 $con = new ConexionBD;
@@ -17,10 +19,12 @@ switch($Proceso){
 		$Idtipo=$_POST['idtipoEstab'];
              $dtIdEstab=$recepcion->LlenarCmbEstablecimiento($Idtipo, $lugar);
               $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:350px">';
+              $rows=  pg_fetch_array($dtIdEstab);
+               $rslts.= '<option value="' . $rows['idestablecimiento'] .'" >'. $rows['nombre'].'</option>';
 		//$rslts .='<option value="0">--Seleccione Establecimiento--</option>';
-               while ($rows =mysql_fetch_array( $dtIdEstab)){
+               /*while ($rows =pg_fetch_array( $dtIdEstab)){
 		  $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
-	       }
+	       }*/
 				
 		$rslts .= '</select>';
 		echo $rslts;
@@ -215,7 +219,7 @@ switch($Proceso){
 	break;
 	
 	case 'searchpac':
-	
+	//Funcion ya en postgres
 	$nec=$_POST['nec'];
 	$NecEncontrado=$recepcion->ValidarExpediente($nec);
 			
@@ -312,19 +316,19 @@ switch($Proceso){
               <tr>
                       <td class="StormyWeatherFieldCaptionTD">Expediente</td>
                       <td class="StormyWeatherDataTD">
-                              <input id="IdNumeroExp" class="CobaltInput" style="width:188px; height:20px" size="26" value="'.$DatosPaciente["IdNumeroExp"].'" >
+                              <input id="IdNumeroExp" class="CobaltInput" style="width:188px; height:20px" size="26" value="'.$DatosPaciente["numero"].'" >
                       </td> 
               </tr>
               <tr>
                       <td class="StormyWeatherFieldCaptionTD">Nombre Completo</td>
                       <td class="StormyWeatherDataTD">
-                              <input id="Nombre" class="CobaltInput" style="width:400px; height:20px" size="50" value="'.$DatosPaciente["Nombre"].'" >
+                              <input id="Nombre" class="CobaltInput" style="width:400px; height:20px" size="50" value="'.$DatosPaciente["nombre"].'" >
                       </td> 
               </tr>
               <tr>
                       <td class="StormyWeatherFieldCaptionTD">Edad</td>
                       <td class="StormyWeatherDataTD">
-                              <input id="Edad" class="CobaltInput" style="width:188px; height:20px" size="26" value="'.$DatosPaciente["Edad"].'" >
+                              <input id="Edad" class="CobaltInput" style="width:188px; height:20px" size="26" value="'.$DatosPaciente["edad"].'" >
                       </td> 
               </tr>
               <tr>
@@ -337,7 +341,7 @@ switch($Proceso){
               <tr>
                       <td class="StormyWeatherFieldCaptionTD" >Conocido por</td>
                       <td class="StormyWeatherDataTD">
-                              <input id="ConocidoPor" class="CobaltInput" style="width:188px; height:20px" size="26" value="'.$DatosPaciente["ConocidoPor"].'" >
+                              <input id="ConocidoPor" class="CobaltInput" style="width:188px; height:20px" size="26" value="'.$DatosPaciente["conocido_por"].'" >
                       </td> 
               </tr>
       </table>

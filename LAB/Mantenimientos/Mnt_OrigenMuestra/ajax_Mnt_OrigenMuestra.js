@@ -16,17 +16,17 @@ function objetoAjax(){
 }
 
 function LimpiarCampos(){
-	document.getElementById('txtidorigen').value="";
+//	document.getElementById('txtidorigen').value="";
 	document.getElementById('txtnombreorigen').value="";
 	document.getElementById('cmbTipoMuestra').value="0";
-	document.getElementById('txtidorigen').focus();
+	document.getElementById('cmbTipoMuestra').focus();
 }
 
 function IngresarRegistro(){ //INGRESAR REGISTROS
   	//donde se mostrar� lo resultados
 		divResultado = document.getElementById('divinicial');
 		//valores de los inputs
-		idorigen=document.getElementById('txtidorigen').value;
+		//idorigen=document.getElementById('txtidorigen').value;
 		nombreorigen=document.getElementById('txtnombreorigen').value;
 		tipomuestra=document.getElementById('cmbTipoMuestra').value;
 		var opcion=1;
@@ -48,7 +48,7 @@ function IngresarRegistro(){ //INGRESAR REGISTROS
 		}
 		ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores
-		ajax.send("idorigen="+idorigen+"&nombreorigen="+escape(nombreorigen)+"&tipomuestra="+tipomuestra+"&Pag="+Pag+"&opcion="+opcion);
+		ajax.send("nombreorigen="+nombreorigen+"&tipomuestra="+tipomuestra+"&Pag="+Pag+"&opcion="+opcion);
 
 }
 
@@ -99,7 +99,7 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
 	//muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
-	ajax.send("idorigen="+idorigen+"&nombreorigen="+escape(nombreorigen)+"&tipomuestra="+tipomuestra+"&Pag="+Pag+"&opcion="+opcion);
+	ajax.send("idorigen="+idorigen+"&nombreorigen="+nombreorigen+"&tipomuestra="+tipomuestra+"&Pag="+Pag+"&opcion="+opcion);
 	
 	ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
@@ -133,8 +133,7 @@ function eliminarDato(idorigen){ //FUNCION PARA ELIMINACION
 		ajax.open("POST", "ctrMnt_OrigenMuestra.php",true);
 		ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores
-		//ajax.send("idarea="+idarea+"&opcion="+opcion);
-		ajax.send("idorigen="+idorigen+"&nombreorigen="+escape(nombreorigen)+"&tipomuestra="+tipomuestra+"&Pag="+Pag+"&opcion="+opcion);
+		ajax.send("idorigen="+idorigen+"&nombreorigen="+nombreorigen+"&tipomuestra="+tipomuestra+"&Pag="+Pag+"&opcion="+opcion);
 		ajax.onreadystatechange=function() {
 			if (ajax.readyState==4) {
 				//mostrar resultados en esta capa
@@ -153,8 +152,9 @@ function BuscarCodigo()
 	var opcion=5;
 	Pag=1;
         //valores de los cajas de texto
-	idorigen=document.getElementById('txtidorigen').value;
+//	idorigen=document.getElementById('txtidorigen').value;
 	tipomuestra=document.getElementById('cmbTipoMuestra').value;
+      //  alert (tipomuestra)
 	nombreorigen=document.getElementById('txtnombreorigen').value;
 	//instanciamos el objetoAjax
 	ajax=objetoAjax();
@@ -163,7 +163,7 @@ function BuscarCodigo()
 	//muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
-	ajax.send("idorigen="+idorigen+"&nombreorigen="+escape(nombreorigen)+"&tipomuestra="+tipomuestra+"&Pag="+Pag+"&opcion="+opcion);
+	ajax.send("nombreorigen="+nombreorigen+"&tipomuestra="+tipomuestra+"&Pag="+Pag+"&opcion="+opcion);
 	ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
 			//mostrar los nuevos registros en esta capa
@@ -191,13 +191,13 @@ function show_event(Pag)
 	}
 	
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	ajax.send("idorigen="+idorigen+"&nombreorigen="+escape(nombreorigen)+"&Pag="+Pag+"&opcion="+opcion+"&tipomuestra="+tipomuestra);	
+	ajax.send("idorigen="+idorigen+"&nombreorigen="+nombreorigen+"&Pag="+Pag+"&opcion="+opcion+"&tipomuestra="+tipomuestra);	
 }
 
 function show_event_search(Pag)
 {	
 	opcion=5;
-	idorigen=document.getElementById('txtidorigen').value;
+	//idorigen=document.getElementById('txtidorigen').value;
 	nombreorigen=document.getElementById('txtnombreorigen').value;
 	tipomuestra=document.getElementById('cmbTipoMuestra').value;
 	ajax=objetoAjax();
@@ -209,7 +209,7 @@ function show_event_search(Pag)
 		 }
 	}
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	ajax.send("idorigen="+idorigen+"&nombreorigen="+escape(nombreorigen)+"&Pag="+Pag+"&opcion="+opcion+"&tipomuestra="+tipomuestra);
+	ajax.send("idorigen="+idorigen+"&nombreorigen="+nombreorigen+"&Pag="+Pag+"&opcion="+opcion+"&tipomuestra="+tipomuestra);
 }
 
 

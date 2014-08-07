@@ -18,12 +18,13 @@ switch ($opcion)
 			$idexamen=$_POST['idexamen'];
 			$idtipomuestra=$_POST['idtipomuestra'];
 	        $cant=$objdatos->Verificar_Muestra($idexamen,$idtipomuestra);
-		    $cantidad=mysql_fetch_array($cant);
-			//echo $cantidad[0];
+		    $cantidad=pg_fetch_array($cant);
+		//	echo 'cant: '.$cantidad[0]. ' |idtipomuestra:'.$idtipomuestra;
 			if ($cantidad[0]==0){
 				if ($objdatos->insertar($idexamen,$idtipomuestra,$usuario)==true)
 				{
 					echo "Datos Ingresados";		   
+					//echo "Datos Ingresados".$idexamen.' /'.$idtipomuestra;		   
 				}
 				else{
 				//echo $idexamen.$idtipomuestra;
@@ -37,14 +38,14 @@ switch ($opcion)
 	//DIBUJANDO EL FORMULARIO NUEVAMENTE
 		$resultado= "<select name='ListAsociados' id='ListAsociados' size='8' multiple>";
 							//LLENANDO LISTA DE MUESTRAS ASOCIADOS
-						require_once('clsLab_TipoMuestrasPorExamen.php');
-							$obj=new clsLab_TipoMuestrasPorExamen;
-						$consulta_a= $obj->consultarasociados($idexamen);
-			while($row = mysql_fetch_array($consulta_a))
+		//$obj=new clsLab_TipoMuestrasPorExamen;
+		$consulta_a= $objdatos->consultarasociados($idexamen);
+			while($row = pg_fetch_array($consulta_a))
 			{
-			$resultado.="<option value='" . $row['IdTipoMuestra']. "'>" . htmlentities($row['TipoMuestra']) . "</option>";
+			$resultado.="<option value='" . $row['idtipomuestra']. "'>" . $row['tipomuestra'] . "</option>";
 			}
 		$resultado.="</select>";
+                
 			echo  $resultado;
 	break;
 	case 3://Elimininar elemmentos de la lista
@@ -52,7 +53,7 @@ switch ($opcion)
 			$idtipomuestra=$_POST['idtipomuestra'];
 			
 			//echo $idexamen."*".$idtipomuestra;  
-			if ($objdatos->Eliminar($idexamen,$idtipomuestra)==true)
+			if ($objdatos->Eliminar($idexamen,$idtipomuestra, $usuario)==true)
 				echo "Dato Eliminado";
 			else
 				echo "No se pudo eliminar el dato";
@@ -61,16 +62,24 @@ switch ($opcion)
 	case 5:  //LLENAR COMBO DE EXAMENES  
 	//DIBUJANDO EL FORMULARIO NUEVAMENTE
 		$idarea=$_POST['idarea'];
-		$resultado= "<select id='cmbExamen' name='cmbExamen' size='1'onchange='BuscandoAsociados();' >
-						<option value='0'>--Seleccione un Examen--</option>";
+            
+		$resultado= "<select id='cmbExamen' name='cmbExamen' size='1'onchange='BuscandoAsociados();' >";
 					//// LLENAR EL COMBO ////
 				$consultaex= $objdatos->ExamenesPorArea($idarea,$lugar);
-				while($rowex = mysql_fetch_array($consultaex))
+                                
+                if (pg_num_rows($consultaex)>0){
+                      $resultado .= "<option value='0'>--Seleccione un Examen--</option>";
+				while($rowex = pg_fetch_array($consultaex))
 				{
-		 $resultado .= "<option value='" . $rowex[0]. "'>" . htmlentities($rowex[1]) . "</option>";
+                                  
+		 $resultado .= "<option value='" . $rowex['id']. "'>" . $rowex['nombreexamen'] . "</option>";
 				}
 			  ///// FINALIZA LLENADO /////
 		$resultado.= "</select>";
+                }
+                else{
+                    $resultado.= '<option value="0">No tiene examenes asociados</option>';
+                }
 	echo  $resultado;
      
 	break;
