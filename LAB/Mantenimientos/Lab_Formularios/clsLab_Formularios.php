@@ -100,7 +100,7 @@ class clsLab_Formularios {
     function eliminar($IdFormulario) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "DELETE FROM mnt_formularios WHERE IdFormulario='$IdFormulario'";
+            $query = "DELETE FROM mnt_formularios WHERE id = '$IdFormulario'";
             $result = pg_query($query);
 
             if (!$result)
@@ -114,7 +114,7 @@ class clsLab_Formularios {
     function VerificarIntegridad($IdPrograma) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "SELECT * FROM mnt_formularios WHERE IdFormulario='$IdFormulario'";
+            $query = "SELECT * FROM mnt_formularios WHERE id = '$IdFormulario'";
             $result = pg_query($query);
             $cuenta = pg_num_rows($result);
 
@@ -256,24 +256,18 @@ class clsLab_Formularios {
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
             if ($cond == 'H') {
-                $query = "UPDATE mnt_formulariosxestablecimiento SET Condicion='I' 
-					  WHERE IdFormulario='$IdFormulario' AND IdEstablecimiento=$lugar";
+                $query = "UPDATE mnt_formulariosxestablecimiento SET condicion = 'I' 
+			  WHERE idformulario = $IdFormulario AND idestablecimiento = $lugar";
                 $result = pg_query($query);
-                /* 	$query1= "UPDATE lab_examenes SET Habilitado='N' WHERE IdExamen='$idexamen'" ;
-                  $result1 = pg_query($query1); */
             }
             if ($cond == 'I') {
-                $query = "UPDATE mnt_formulariosxestablecimiento SET Condicion='H' 
-						  WHERE IdFormulario='$IdFormulario' AND IdEstablecimiento=$lugar";
+                $query = "UPDATE mnt_formulariosxestablecimiento SET condicion = 'H' 
+			  WHERE idformulario = $IdFormulario AND idestablecimiento = $lugar";
                 $result = pg_query($query);
-                /* $query1= "UPDATE lab_examenes SET Habilitado='S' WHERE IdExamen='$idexamen'"; */
-                //$result1 = pg_query($query1);
             }
         }
         $con->desconectar();
     }
-
 }
-
 //CLASE
 ?>
