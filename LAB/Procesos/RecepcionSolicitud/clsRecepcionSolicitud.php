@@ -65,6 +65,50 @@ ORDER BY Nombre";
                 return $result;
         }
     }
+    
+    function BuscarTodasSolicitudes($idexpediente, $fechacita, $lugar, $idEstablecimiento) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+        
+            $query = "SELECT t05.id AS id_expediente,
+                             t05.numero AS numero_expediente,
+                             t02.fecha AS fecha_cita,
+                             t03.fechaconsulta AS fecha_consulta,
+                             CONCAT_WS(' ', t07.primer_apellido, t07.segundo_apellido, t07.apellido_casada) || ', ' || CONCAT_WS(' ', t07.primer_nombre, t07.segundo_nombre, t07.tercer_nombre) AS nombre_paciente,
+                             CASE t04.idestado
+                                WHEN 'D' THEN 'Digitada'
+                                WHEN 'R' then 'Recibida'
+                                WHEN 'P' then 'En Proceso'
+                                WHEN 'C' then 'Completa'
+                             END AS estado
+                      FROM sec_solicitudestudios           t01
+                      INNER JOIN cit_citas_serviciodeapoyo t02 ON (t01.id = t02.id_solicitudestudios)
+                      INNER JOIN sec_historial_clinico     t03 ON (t03.id = t01.id_historial_clinico)
+                      INNER JOIN lab_estadossolicitud      t04 ON (t04.id = t01.estado)
+                      INNER JOIN mnt_expediente            t05 ON (t05.id = t01.id_expediente)
+                      INNER JOIN ctl_atencion              t06 ON (t06.id = t01.id_atencion)
+                      INNER JOIN mnt_paciente              t07 ON (t07.id = t05.id_paciente)";
+            
+            $where = " WHERE t01.id_establecimiento = $lugar AND t03.idestablecimiento = $idEstablecimiento
+                         AND t04.idestado = 'D'              AND t06.codigo_busqueda = 'DCOLAB'";
+            
+            $orderBy = " ORDER BY t05.numero";
+            
+            if($idexpediente !== '') {
+                $where = $where." AND t05.numero = '$idexpediente'";
+            }
+            
+            if($fechacita !== '') {
+                $where = $where." AND t02.fecha = '$fechacita'";
+            }
+
+            $result = @pg_query($query.$where.$orderBy);
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
 
     function NumeroDeRegistros($idexpediente, $fechacita, $lugar, $idEstablecimiento) {
         //creamos el objeto $con a partir de la clase ConexionBD

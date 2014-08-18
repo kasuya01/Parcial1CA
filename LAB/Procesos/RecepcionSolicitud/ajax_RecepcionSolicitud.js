@@ -39,7 +39,7 @@ function xmlhttp() {
         return xmlhttp;
 }//xmlhttp
 
-///////////////***********FUNCIONES PARA EL MANEJO DE CADENAS ELININACION DE ESPACIOS EN BLANCO **********///
+/***********FUNCIONES PARA EL MANEJO DE CADENAS ELININACION DE ESPACIOS EN BLANCO **********/
 function trim(str)
 {
     var resultstr = "";
@@ -188,48 +188,47 @@ function calcular_edad(fecha) {
 }
 
 
-function BuscarDatos()
-{
-    if (DatosCompletos()) {
-        idexpediente      = document.getElementById('txtidexpediente').value;
-        fechacita         = document.getElementById('txtfechasolicitud').value;
-        idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
-        VerificarExistencia(idexpediente, fechacita, idEstablecimiento);
-    } else {
-        alert("Complete los datos para la busqueda");
-    }
+function BuscarDatos() {
+    idexpediente      = document.getElementById('txtidexpediente').value;
+    fechacita         = document.getElementById('txtfechasolicitud').value;
+    idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
+    VerificarExistencia(idexpediente, fechacita, idEstablecimiento);
 }
 
 //FUNCION PARA VERIFICAR SI EXISTEN  DATOS DE LA SOLICITUD
 function VerificarExistencia(idexpediente, fechacita, idEstablecimiento)
 {
-    //divResultado=document.getElementById('divResultado');
-    ajax = objetoAjax();
-    opcion = 2;
-    //usando del medoto POST
-    ajax.open("POST", "ctrRecepcionSolicitud.php", true);
-    //muy importante este encabezado ya que hacemos uso de un formulario
-    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    //enviando los valores
-    //estado="";
-    //idsolicitud="";
-    ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&opcion=" + opcion + "&idEstablecimiento=" + idEstablecimiento);
-    ajax.onreadystatechange = function() {
-        if (ajax.readyState == 4)
-        {	//mostrar los nuevos registros en esta capa
-            if (ajax.status == 200)
-            { //alert (ajax.responseText);
-                if (ajax.responseText == 'D')//si existen datos para la solicitud
-                {
-                    MostrarDatosGenerales();
-                }
-                else { //mueestra el mensaje de estado de la solicitud
+    if (DatosCompletos()) {
+        //divResultado=document.getElementById('divResultado');
+        ajax = objetoAjax();
+        opcion = 2;
+        //usando del medoto POST
+        ajax.open("POST", "ctrRecepcionSolicitud.php", true);
+        //muy importante este encabezado ya que hacemos uso de un formulario
+        ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        //enviando los valores
+        //estado="";
+        //idsolicitud="";
+        ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&opcion=" + opcion + "&idEstablecimiento=" + idEstablecimiento);
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4)
+            {	//mostrar los nuevos registros en esta capa
+                if (ajax.status == 200)
+                { //alert (ajax.responseText);
+                    if (ajax.responseText == 'D')//si existen datos para la solicitud
+                    {
+                        MostrarDatosGenerales();
+                    }
+                    else { //mueestra el mensaje de estado de la solicitud
 
-                    alert(ajax.responseText);
+                        alert(ajax.responseText);
 
+                    }
                 }
             }
         }
+    } else {
+        MostrarTodos();
     }
 }
 
@@ -280,6 +279,33 @@ function MostrarDatosGenerales()
                 document.getElementById('divResultado').innerHTML = ajax.responseText;
                 //posicion=document.getElementById('topei').value;
                 calc_edad();
+                //alert(ajax.responseText);
+            }
+        }
+    }
+}
+
+function MostrarTodos()
+{
+    //valores de los text
+    idexpediente      = document.getElementById('txtidexpediente').value;
+    fechacita         = document.getElementById('txtfechasolicitud').value;
+    idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
+
+    //instanciamos el objetoAjax
+    ajax = objetoAjax();
+    //usando del medoto POST
+    ajax.open("POST", "RecepcionSolicitudTodos.php", true);
+    //muy importante este encabezado ya que hacemos uso de un formulario
+    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    //enviando los valores
+    ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&idEstablecimiento=" + idEstablecimiento);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4) {
+            if (ajax.status == 200) {
+                //mostrar los nuevos registros en esta capa
+                document.getElementById('divResultado').innerHTML = ajax.responseText;
+                //posicion=document.getElementById('topei').value;
                 //alert(ajax.responseText);
             }
         }

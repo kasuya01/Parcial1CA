@@ -5,6 +5,7 @@ if (isset($_SESSION['Correlativo'])) {
     $corr  = $_SESSION['Correlativo'];
     $lugar = $_SESSION['Lugar'];
     $area  = $_SESSION['Idarea'];
+    $ROOT_PATH = $_SESSION['ROOT_PATH'];
     include_once("clsRecepcionSolicitud.php");
     
     //consulta los datos por su id
@@ -35,7 +36,8 @@ if (isset($_SESSION['Correlativo'])) {
             <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
             <title>Recepcion de Solicitudes Servicio de Laboratorio Clinico</title>
             <script language="JavaScript" type="text/javascript" src="ajax_RecepcionSolicitud.js"></script>
-
+            <?php include_once $ROOT_PATH."/public/css.php";?>
+            <?php include_once $ROOT_PATH."/public/js.php";?>
             <!--referencias del estilo del calendario-->
             <link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
             <link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />

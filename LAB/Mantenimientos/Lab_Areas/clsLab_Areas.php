@@ -16,8 +16,8 @@ class clsLab_Areas {
     function insertar($idarea, $nombrearea, $usuario, $tipo, $lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "INSERT INTO lab_areas(idarea,nombrearea,idusuarioreg,fechahorareg,idusuariomod,fechahoramod, administrativa) 
-			VALUES('$idarea','$nombrearea','$usuario', (SELECT date_trunc('seconds',(SELECT now()))),'$usuario', (SELECT date_trunc('seconds',(SELECT now()))), '$tipo')";
+            $query = "INSERT INTO ctl_area_servicio_apoyo(idarea,nombrearea,idusuarioreg,fechahorareg,idusuariomod,fechahoramod, administrativa,id_atencion) 
+			VALUES('$idarea','$nombrearea','$usuario', (SELECT date_trunc('seconds',(SELECT now()))),'$usuario', (SELECT date_trunc('seconds',(SELECT now()))), '$tipo', (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))";
 
             $result = @pg_query($query);
 
@@ -291,6 +291,5 @@ class clsLab_Areas {
     }
 
 }
-
 //CLASE
 ?>
