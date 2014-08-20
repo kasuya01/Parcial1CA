@@ -13,7 +13,7 @@ class clsLab_TarjetasVITEK
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-  echo $query = "INSERT INTO lab_tarjetasvitek(nombretarjeta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,fechaini,fechafin) VALUES('$nombretarjeta','$usuario',NOW(),'$usuario',NOW(),$lugar,'$Fechaini','$Fechafin')";
+   $query = "INSERT INTO lab_tarjetasvitek(nombretarjeta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,fechaini,fechafin) VALUES('$nombretarjeta','$usuario',NOW(),'$usuario',NOW(),$lugar,'$Fechaini','$Fechafin')";
      $result = pg_query($query);
 	 
      if (!$result)
@@ -28,7 +28,7 @@ class clsLab_TarjetasVITEK
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "UPDATE lab_tarjetasvitek SET nombretarjeta='$nombretarjeta',IdUsuarioMod='$usuario', FechaHoraMod=NOW(),FechaIni='$Fechaini',FechaFin='$Fechafin' WHERE idtarjeta=$idtarjeta AND IdEstablecimiento=$lugar";
+     $query = "UPDATE lab_tarjetasvitek SET nombretarjeta='$nombretarjeta',idusuariomod='$usuario', fechahoramod=NOW(),fechaini='$Fechaini',fechafin='$Fechafin' WHERE id=$idtarjeta AND idestablecimiento=$lugar";
      $result = pg_query($query);
 	 
      if (!$result)
@@ -61,9 +61,9 @@ class clsLab_TarjetasVITEK
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT IdTarjeta,NombreTarjeta,FechaIni,FechaFin FROM lab_tarjetasvitek 
-	 WHERE IdEstablecimiento=$lugar ORDER BY idtarjeta LIMIT $RegistrosAEmpezar, $RegistrosAMostrar ";
-	 $result = pg_query($query);
+     $query = "SELECT id,nombretarjeta,fechaini,fechafin FROM  lab_tarjetasvitek
+	 WHERE idestablecimiento=$lugar ORDER BY id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar  ";
+     	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -76,7 +76,7 @@ function consultar($lugar){
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT * FROM lab_tarjetasvitek WHERE IdEstablecimiento=$lugar ORDER BY IdTarjeta ";
+     echo $query = "SELECT * FROM lab_tarjetasvitek WHERE idestablecimiento=$lugar ORDER BY id  ";
 	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
@@ -91,7 +91,7 @@ function NumeroDeRegistros($lugar){
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT IdTarjeta,NombreTarjeta,FechaIni,FechaFin FROM lab_tarjetasvitek WHERE IdEstablecimiento=$lugar ";
+     $query = "SELECT id,nombretarjeta,fechaini,fechafin FROM lab_tarjetasvitek WHERE idestablecimiento=$lugar ";
 	 $numreg = pg_num_rows(pg_query($query));
 	 if (!$numreg )
 	   return false;
@@ -106,8 +106,9 @@ function NumeroDeRegistros($lugar){
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-    $query = "SELECT IdTarjeta,NombreTarjeta,DATE_FORMAT(FechaIni,'%d/%m/%Y')AS FechaIni,
-			DATE_FORMAT(FechaFin,'%d/%m/%Y')AS FechaFin  FROM lab_tarjetasvitek WHERE IdTarjeta='$idtarjeta' AND IdEstablecimiento=$lugar";
+    $query = "SELECT id,nombretarjeta,
+                        fechaini,
+			 fechafin  FROM lab_tarjetasvitek WHERE id='$idtarjeta' AND idestablecimiento=$lugar";
      $result = pg_query($query);
      if (!$result)
        return false;
@@ -122,7 +123,7 @@ function consultarpagbus($query,$RegistrosAEmpezar, $RegistrosAMostrar)
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = $query." LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
+	     $query = $query." LIMIT  $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
 		 $result = pg_query($query);
 		 if (!$result)
 		   return false;

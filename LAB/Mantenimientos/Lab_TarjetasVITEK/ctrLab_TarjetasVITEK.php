@@ -55,7 +55,9 @@ switch ($opcion)
 			$Fechafin=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];	
 		}
 		
-		If (($objdatos->actualizar($idtarjeta,$nombretarjeta,$usuario,$lugar,$Fechaini,$Fechafin)==true) && ($Clases->actualizar_labo($idtarjeta,$nombretarjeta,$usuario,$lugar,$Fechaini,$Fechafin)==true)){
+		If (($objdatos->actualizar($idtarjeta,$nombretarjeta,$usuario,$lugar,$Fechaini,$Fechafin)==true))//&& ($Clases->actualizar_labo($idtarjeta,$nombretarjeta,$usuario,$lugar,$Fechaini,$Fechafin)==true))
+                 {
+            
 			echo "Registro Actualizado"	;	
 		}
 		else{
@@ -89,7 +91,7 @@ switch ($opcion)
 		echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
 			   <tr>
 			   <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
-			   <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td>
+			 <!--  <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
 			   <td class='CobaltFieldCaptionTD'> IdTarjeta</td>
 			   <td class='CobaltFieldCaptionTD'> Nombre de Tarjeta </td>
 				<td class='CobaltFieldCaptionTD'> Fecha Inicio </td>	 
@@ -100,14 +102,14 @@ switch ($opcion)
 			echo "<tr>
 					<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"pedirDatos('".$row['IdTarjeta']."')\"> </td>
-					<td aling ='center'> 
+					onclick=\"pedirDatos('".$row['id']."')\"> </td>
+					<!-- <td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"eliminarDato('".$row['IdTarjeta']."')\"> </td>
-					<td>".$row['IdTarjeta']."</td>
-					<td>".htmlentities($row['NombreTarjeta'])." </td>
-					<td>".htmlentities($row['FechaIni'])." </td>
-					<td>".htmlentities($row['FechaFin'])." </td>
+					onclick=\"eliminarDato('".$row['id']."')\"> </td> -->
+					<td>".$row['id']."</td>
+					<td>".htmlentities($row['nombretarjeta'])." </td>
+					<td>".htmlentities($row['fechaini'])." </td>
+					<td>".htmlentities($row['fechafin'])." </td>
 					</tr>";
 		}
 		echo "</table>"; 
@@ -160,11 +162,11 @@ switch ($opcion)
 				$FechaF=explode('/',$_POST['Fechafin']);
 				$Fechafin=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];	
 			}
-		   $query = "SELECT IdTarjeta,NombreTarjeta,FechaIni,FechaFin FROM lab_tarjetasvitek WHERE IdEstablecimiento=$lugar AND ";
+		   $query = "SELECT id,nombretarjeta,fechaini,fechafin FROM lab_tarjetasvitek WHERE idestablecimiento=$lugar AND ";
 				
 			//VERIFICANDO LOS POST ENVIADOS
 			if (!empty($_POST['nombretarjeta']))
-				{ $query .= " NombreTarjeta like'%".$_POST['nombretarjeta']."%' AND"; }
+				{ $query .= " nombretarjeta ilike'%".$_POST['nombretarjeta']."%' AND"; }
 			
 			if (!empty($_POST['Fechaini']))
 				{$FechaI=explode('/',$_POST['Fechaini']);
@@ -196,7 +198,7 @@ switch ($opcion)
 					echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
 							 <tr>
 							 <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
-							 <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td>
+							<!-- <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
 							 <td class='CobaltFieldCaptionTD' > IdTarjeta</td>
 							 <td class='CobaltFieldCaptionTD'> Nombre de Tarjeta </td>
 							 <td class='CobaltFieldCaptionTD'> Fecha Inicio </td>	 
@@ -208,13 +210,13 @@ switch ($opcion)
 							<td aling='center'> 
 							<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 							onclick=\"pedirDatos('".$row[0]."')\"> </td>
-							<td aling ='center'> 
+							<!-- <td aling ='center'> 
 							<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-							onclick=\"eliminarDato('".$row[0]."')\"> </td>
-							<td>".$row['IdTarjeta']."</td>
-							<td>".htmlentities($row['NombreTarjeta'])." </td>
-							<td>".$row['FechaIni']."</td>
-							<td>".$row['FechaFin']."</td>
+							onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
+							<td>".$row['id']."</td>
+							<td>".htmlentities($row['nombretarjeta'])." </td>
+							<td>".$row['fechaini']."</td>
+							<td>".$row['fechafin']."</td>
 								  </tr>";
 					}
 					echo "</table>"; 

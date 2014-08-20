@@ -52,10 +52,6 @@ if ($nivel==33){
   <tr>
 	  <td colspan="2" align="center" class="CobaltFieldCaptionTD"><h3><strong>Mantenimiento de Origen de Muestra</h3></strong></td>
   </tr>
-  <tr>
-      <td class="StormyWeatherFieldCaptionTD"><strong>C&oacute;digo Origen Muestra </strong></td>
-      <td class="StormyWeatherDataTD"><input type="text" disabled="disabled" name="txtidorigen" id="txtidorigen" ></td>
-   </tr>
    <tr>
        <td class="StormyWeatherFieldCaptionTD"><strong>Tipo Muestra </strong></td>
        <td class="StormyWeatherDataTD"><select id="cmbTipoMuestra" name="cmbTipoMuestra" size="1">
@@ -65,8 +61,8 @@ if ($nivel==33){
 			include('clsMnt_OrigenMuestra.php');
 			$obje=new clsMnt_OrigenMuestra;
 			$consulta= $obje->LeerTipoMuestra();
-			while($row = mysql_fetch_array($consulta)){
-			  echo "<option value='" . $row[0]. "'>" . $row[1] . "</option>";
+			while($row = pg_fetch_array($consulta)){
+			  echo "<option value='" . $row['id']. "'>" . $row['tipomuestra'] . "</option>";
 			}
 			?>
             </select>

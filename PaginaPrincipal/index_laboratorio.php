@@ -11,7 +11,7 @@ $cod   = $_SESSION['IdEmpleado'];
 // Creamos un objeto Conexion, Paciente
 $Conexion = new ConexionBD;
 $Conectar = $Conexion->Conectar();
-$SQL = "SELECT t03.nombre,
+ $SQL = "SELECT t03.nombre,
                t02.nombreempleado 
         FROM fos_user_user             t01 
         INNER JOIN mnt_empleado        t02 ON (t02.id = t01.id_empleado AND t01.id_establecimiento = t02.id_establecimiento) 

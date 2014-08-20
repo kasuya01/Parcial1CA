@@ -55,15 +55,16 @@ if ($nivel==33){
 		<td width="20%" colspan="2" class="CobaltFieldCaptionTD" align="center"><h3><strong>Mantenimiento de Tarjetas VITEK</strong></h3>
 		</td>
 	</tr>	
-	<tr>
+	<!-- <tr>
         <td width="20%"  class="StormyWeatherFieldCaptionTD">IdTarjeta</td>
-        <td class="StormyWeatherDataTD"><input type="text" name="txtidtarjeta" id="txtidtarjeta" disabled="disabled" /></td>
-    </tr>
+        <td class="StormyWeatherDataTD"><input type="hidden" name="txtidtarjeta" id="txtidtarjeta" disabled="disabled" /></td>
+    </tr> -->
     <tr>
 		<td class="StormyWeatherFieldCaptionTD">Nombre Tarjeta</td>
         <td class="StormyWeatherDataTD">
 			<input type="text" name="txtnombretarjeta" id="txtnombretarjeta" size="40" /></td>
-	</tr>
+                        <input type="hidden" name="txtidtarjeta" id="txtidtarjeta" disabled="disabled" />
+    </tr>
 	<tr>	
 		<td colspan="2" class="StormyWeatherDataTD">
 			<table width="100%" border="0" align="center" class="StormyWeatherFormTABLE">
