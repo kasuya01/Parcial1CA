@@ -16,8 +16,8 @@ class clsLab_Areas {
     function insertar($idarea, $nombrearea, $usuario, $tipo, $lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-          $query = "INSERT INTO ctl_area_servicio_diagnostico(idarea,nombrearea,idusuarioreg,fechahorareg,idusuariomod,fechahoramod, administrativa) 
-			VALUES('$idarea','$nombrearea','$usuario', (SELECT date_trunc('seconds',(SELECT now()))),'$usuario', (SELECT date_trunc('seconds',(SELECT now()))), '$tipo')";
+            $query = "INSERT INTO ctl_area_servicio_diagnostico(idarea,nombrearea,idusuarioreg,fechahorareg, administrativa,id_atencion) 
+			VALUES('$idarea','$nombrearea','$usuario', (SELECT date_trunc('seconds',(SELECT now()))), '$tipo', (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))";
 
             $result = @pg_query($query);
 
@@ -31,11 +31,11 @@ class clsLab_Areas {
     function recuperarultimoreg() {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "SELECT id FROM lab_areas ORDER BY id DESC LIMIT 1;";
+            $query = "SELECT id FROM ctl_area_servicio_diagnostico ORDER BY id DESC LIMIT 1;";
 
             $result = @pg_query($query);
             $row = pg_fetch_array($result);
-            $this->ultimoregistroinsertado_lab_areas = $row['id'];
+            $this->ultimoregistroinsertado_ctl_area_servicio_diagnostico = $row['id'];
 
 
             if (!$result)
@@ -50,8 +50,8 @@ class clsLab_Areas {
     function ingresarareaxestablecimiento($idarea, $cond, $lugar, $usuario) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "INSERT INTO lab_areasxestablecimiento(idarea,idestablecimiento,condicion,idusuarioreg,idusuariomod,fechahorareg,fechahoramod)"
-                    . "         VALUES($idarea,$lugar,'$cond','$usuario','$usuario',(SELECT date_trunc('seconds',(SELECT now()))), (SELECT date_trunc('seconds',(SELECT now()))))";
+            $query = "INSERT INTO lab_areasxestablecimiento(idarea,idestablecimiento,condicion,idusuarioreg,fechahorareg)"
+                    . "         VALUES($idarea,$lugar,'$cond','$usuario',(SELECT date_trunc('seconds',(SELECT now()))))";
             $result = @pg_query($query);
 
             if (!$result)
@@ -66,7 +66,7 @@ class clsLab_Areas {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
 
-            $query = "UPDATE lab_areas SET nombrearea = '$nom', idusuariomod = $usuario, fechahoramod=(SELECT date_trunc('seconds',(SELECT now()))), administrativa='$tipo' WHERE idarea = '$idarea'";
+            $query = "UPDATE ctl_area_servicio_diagnostico SET nombrearea = '$nom', idusuariomod = $usuario, fechahoramod=(SELECT date_trunc('seconds',(SELECT now()))), administrativa='$tipo' WHERE idarea = '$idarea'";
 
             $result = @pg_query($query);
 
@@ -83,7 +83,7 @@ class clsLab_Areas {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
 
-            $query = "UPDATE lab_areasxestablecimiento SET condicion='$cond',idestablecimiento=$lugar,idusuariomod=$usuario,fechahoramod=(SELECT date_trunc('seconds',(SELECT now()))) WHERE idarea = (SELECT id FROM lab_areas WHERE idarea = '$idarea')";
+            $query = "UPDATE lab_areasxestablecimiento SET condicion='$cond',idestablecimiento=$lugar,idusuariomod=$usuario,fechahoramod=(SELECT date_trunc('seconds',(SELECT now()))) WHERE idarea = (SELECT id FROM ctl_area_servicio_diagnostico WHERE idarea = '$idarea')";
             $result = @pg_query($query);
 
             if (!$result)
@@ -98,7 +98,7 @@ class clsLab_Areas {
     function EliminarxEstablecimiento($idarea) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "DELETE FROM lab_areasxestablecimiento WHERE idarea = (SELECT id FROM lab_areas WHERE idarea = '$idarea')";
+            $query = "DELETE FROM lab_areasxestablecimiento WHERE idarea = (SELECT id FROM ctl_area_servicio_diagnostico WHERE idarea = '$idarea')";
             $result = @pg_query($query);
 
             if (!$result)
@@ -113,7 +113,7 @@ class clsLab_Areas {
     function eliminar($idarea) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "DELETE FROM lab_areas WHERE idarea = '$idarea'";
+            $query = "DELETE FROM ctl_area_servicio_diagnostico WHERE idarea = '$idarea'";
             $result = @pg_query($query);
 
             if (!$result)
@@ -133,7 +133,7 @@ class clsLab_Areas {
                              t01.nombrearea,
                              t02.condicion,
                              t01.id
-                      FROM lab_areas t01
+                      FROM ctl_area_servicio_diagnostico t01
                       INNER JOIN lab_areasxestablecimiento t02 ON (t01.id = t02.idarea)
                       WHERE t02.condicion='H' AND t02.idestablecimiento = $lugar
                       ORDER BY nombrearea";
@@ -180,7 +180,7 @@ class clsLab_Areas {
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
-            $query = "SELECT * FROM lab_areas t01
+            $query = "SELECT * FROM ctl_area_servicio_diagnostico t01
                       INNER JOIN lab_areasxestablecimiento t02 ON (t01.id = t02.idarea)
                       WHERE t02.idestablecimiento = $lugar AND condicion = 'H'
                       ORDER BY nombrearea";
@@ -196,7 +196,11 @@ class clsLab_Areas {
     function VerificarIntegridad($idarea) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "SELECT * FROM lab_examenes WHERE idarea = (SELECT id FROM lab_areas WHERE idarea = '$idarea')";
+            $query = "SELECT t01
+                      FROM ctl_examen_servicio_diagnostico       t01
+                      INNER JOIN mnt_area_examen_establecimiento t02 ON (t01.id = t02.id_examen_servicio_diagnostico)
+                      INNER JOIN ctl_area_servicio_diagnostico   t03 ON (t03.id = t02.id_area_servicio_diagnostico)
+                      WHERE t03.idarea '$idarea'";
             $result = @pg_query($query);
             $cuenta = pg_num_rows($result);
 
@@ -216,7 +220,7 @@ class clsLab_Areas {
         if ($con->conectar() == true) {
             $query = "SELECT t01.idarea,
                              t01.nombrearea
-                      FROM lab_areas t01
+                      FROM ctl_area_servicio_diagnostico t01
                       INNER JOIN lab_areasxestablecimiento t02 ON (t01.id = t02.idarea)
                       WHERE t02.idestablecimiento = $lugar";
             $numreg = pg_num_rows(pg_query($query));
@@ -236,7 +240,7 @@ class clsLab_Areas {
                              t01.nombrearea, 
                              t02.condicion,
                              t01.administrativa
-                      FROM lab_areas t01
+                      FROM ctl_area_servicio_diagnostico t01
                       INNER JOIN lab_areasxestablecimiento t02 ON (t01.id = t02.idarea)
                       WHERE t02.idestablecimiento = $lugar
                       ORDER BY T01.id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
@@ -259,7 +263,7 @@ class clsLab_Areas {
                              t01.administrativa,
                              t02.condicion,
                              t02.idestablecimiento
-                      FROM lab_areas t01
+                      FROM ctl_area_servicio_diagnostico t01
                       INNER JOIN lab_areasxestablecimiento t02 ON (t01.id = t02.idarea)
                       WHERE t01.idarea = '$idarea'AND t02.idestablecimiento = $lugar";
 
@@ -299,6 +303,5 @@ class clsLab_Areas {
     }
 
 }
-
 //CLASE
 ?>

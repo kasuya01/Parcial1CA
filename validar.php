@@ -17,8 +17,10 @@ $password = htmlentities($_POST['txtpassword']);
 	$area  = $row_datos['idarea'];
         $corr  = $row_datos['correlativo'];
         $cod   = $row_datos['id_empleado'];
-	switch ($nivel) 
-	{
+        
+        $_SESSION['ROOT_PATH'] = realpath(__DIR__);
+        
+	switch ($nivel) {
 	    case 1://Administrador y jefe del laboratorio
 		//$_SESSION['user']=$login;
 			$_SESSION['NIVEL']=$nivel;

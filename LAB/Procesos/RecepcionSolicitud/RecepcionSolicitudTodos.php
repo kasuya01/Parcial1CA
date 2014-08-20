@@ -1,9 +1,9 @@
 <?php
 session_start();
 include_once("clsRecepcionSolicitud.php");
-$usuario = $_SESSION['Correlativo'];
-$lugar   = $_SESSION['Lugar'];
-$area    = $_SESSION['Idarea'];
+$usuario   = $_SESSION['Correlativo'];
+$lugar     = $_SESSION['Lugar'];
+$area      = $_SESSION['Idarea'];
 ?>
 <script language="JavaScript" type="text/javascript" src="ajax_RecepcinSolicitud.js"></script>
 <script language="JavaScript" ></script>
@@ -11,33 +11,40 @@ $area    = $_SESSION['Idarea'];
 //variables POST
 $idexpediente = $_POST['idexpediente'];
 $fechacita    = $_POST['fechacita'];
-$Nfecha       = explode("/", $fechacita);
-
-$Nfechacita = $Nfecha[2] . "/" . $Nfecha[1] . "/" . $Nfecha[0];
-$estado     = 'D';
 $idEstablecimiento = $_POST['idEstablecimiento'];
-//echo $idEstablecimiento; 
-$arraysolic  = array();
-$arraypiloto = array();
-$i   = 0;
-$j   = 0;
-$ban = 0;
-$pos = 0;
-//actualiza los datos del empleados
-$objdatos = new clsRecepcionSolicitud;
-$consulta = $objdatos->BuscarSolicitudes($idexpediente, $Nfechacita, $lugar, $idEstablecimiento);
 
-$NroRegistros = $objdatos->NumeroDeRegistros($idexpediente, $Nfechacita, $lugar, $idEstablecimiento);
-$pil = $objdatos->Piloto($idexpediente, $Nfechacita, $lugar, $idEstablecimiento);
-
-while ($piloto = pg_fetch_array($pil)) {
-    $arraypiloto[$j] = $piloto[0];
-    $j++;
+$Nfechacita = "";
+if($fechacita != "") {
+    $Nfecha     = explode("/", $fechacita);
+    $Nfechacita = $Nfecha[2] . "/" . $Nfecha[1] . "/" . $Nfecha[0];
 }
+$estado     = 'D';
 
-while ($rowsolic = pg_fetch_array($consulta)) {
-    $arraysolic[$i] = $rowsolic[0];
-    $i++;
+$objdatos = new clsRecepcionSolicitud;
+$consulta = $objdatos->BuscarTodasSolicitudes($idexpediente, $Nfechacita, $lugar, $idEstablecimiento);
+$NroRegistros = $numreg = pg_num_rows($consulta);
+
+if($NroRegistros !== -1) {
+    $html = "<table width='70%' border='0' align='center' class='StormyWeatherFormTABLE'>
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>N&uacute;mero de Expediente</th>
+                        <th>Nombre del Paciente</th>
+                        <th>Fecha de Cita</th>
+                        <th>Fecha de Consulta</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>";
+    for($i = 0; i < $NroRegistros; $i++) {
+        $html = $html.""
+                 . "<tr>"
+                     . "<td></td>"
+                 . "</tr>";
+    }
+} else {
+    echo '<h3>Error al procesar el numero de registros...!!!</h3>';
 }
 
 for ($i = 0; $i < $NroRegistros; $i++) {

@@ -1,619 +1,573 @@
-function objetoAjax(){
-	var xmlhttp=false;
-	try{
-		xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-	}catch(e){
-		try{
-			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}catch(e){
-			xmlhttp = false;
-  		}
-	}
-	if (!xmlhttp && typeof XMLHttpRequest!='undefined') {
-		xmlhttp = new XMLHttpRequest();
-	}
-	return xmlhttp;
+function objetoAjax() {
+    var xmlhttp = false;
+    try {
+        xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+    } catch (e) {
+        try {
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        } catch (e) {
+            xmlhttp = false;
+        }
+    }
+    if (!xmlhttp && typeof XMLHttpRequest != 'undefined') {
+        xmlhttp = new XMLHttpRequest();
+    }
+    return xmlhttp;
 }
 
-function xmlhttp(){
-		var xmlhttp;
-		try{xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");}
-		catch(e){
-			try{xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");}
-			catch(e){
-				try{xmlhttp = new XMLHttpRequest();}
-				catch(e){
-					xmlhttp = false;
-				}
-			}
-		}
-		if (!xmlhttp) 
-				return null;
-			else
-				return xmlhttp;
+function xmlhttp() {
+    var xmlhttp;
+    try {
+        xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+    }
+    catch (e) {
+        try {
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        catch (e) {
+            try {
+                xmlhttp = new XMLHttpRequest();
+            }
+            catch (e) {
+                xmlhttp = false;
+            }
+        }
+    }
+    if (!xmlhttp)
+        return null;
+    else
+        return xmlhttp;
 }//xmlhttp
 
-///////////////***********FUNCIONES PARA EL MANEJO DE CADENAS ELININACION DE ESPACIOS EN BLANCO **********///
-function trim( str ) 
+/***********FUNCIONES PARA EL MANEJO DE CADENAS ELININACION DE ESPACIOS EN BLANCO **********/
+function trim(str)
 {
-	var resultstr = "";
+    var resultstr = "";
 
-	resultstr = trimleft(str);
-	resultstr = trimright(resultstr);
-	return resultstr;
+    resultstr = trimleft(str);
+    resultstr = trimright(resultstr);
+    return resultstr;
 }
 
-function trimright( str ) {
-	var resultStr = "";
-	var i = 0;
+function trimright(str) {
+    var resultStr = "";
+    var i = 0;
 
-	// Return immediately if an invalid value was passed in
-	if (str+"" == "undefined" || str == null)	
-		return null;
+    // Return immediately if an invalid value was passed in
+    if (str + "" == "undefined" || str == null)
+        return null;
 
-	// Make sure the argument is a string
-	str += "";
-	
-	if (str.length == 0) 
-		resultStr = "";
-	else {
-  		// Loop through string starting at the end as long as there
-  		// are spaces.
-  		i = str.length - 1;
-  		while ((i >= 0) && (str.charAt(i) == " "))
- 			i--;
- 			
- 		// When the loop is done, we're sitting at the last non-space char,
- 		// so return that char plus all previous chars of the string.
-  		resultStr = str.substring(0, i + 1);
-  	}
-  	
-  	return resultStr;  	
+    // Make sure the argument is a string
+    str += "";
+
+    if (str.length == 0)
+        resultStr = "";
+    else {
+        // Loop through string starting at the end as long as there
+        // are spaces.
+        i = str.length - 1;
+        while ((i >= 0) && (str.charAt(i) == " "))
+            i--;
+
+        // When the loop is done, we're sitting at the last non-space char,
+        // so return that char plus all previous chars of the string.
+        resultStr = str.substring(0, i + 1);
+    }
+
+    return resultStr;
 }
 
-function trimleft(str) { 
-	for(var k = 0; k < str.length && isWhitespace(str.charAt(k)); k++);
-	return str.substring(k, str.length);
+function trimleft(str) {
+    for (var k = 0; k < str.length && isWhitespace(str.charAt(k)); k++)
+        ;
+    return str.substring(k, str.length);
 }
 
 function isWhitespace(charToCheck) {
-	var whitespaceChars = " \t\n\r\f";
-	return (whitespaceChars.indexOf(charToCheck) != -1);
+    var whitespaceChars = " \t\n\r\f";
+    return (whitespaceChars.indexOf(charToCheck) != -1);
 }
- 
+
 //funcion para calcular la edad
-function calcular_edad(fecha){
+function calcular_edad(fecha) {
     //calculo la fecha de hoy
-    hoy=new Date();
+    hoy = new Date();
 
     //calculo la fecha que recibo
     //La descompongo en un array
     var array_fecha = fecha.split("/");
     //si el array no tiene tres partes, la fecha es incorrecta
-    if (array_fecha.length!=3){
-       return false;
+    if (array_fecha.length != 3) {
+        return false;
     }
     //compruebo que los ano, mes, dia son correctos
     var ano;
-    ano = fecha.substring(6,10);
-    if (isNaN(ano)){
-       return false;
+    ano = fecha.substring(6, 10);
+    if (isNaN(ano)) {
+        return false;
     }
 
     var mes;
-    mes = fecha.substring(3,5);   
-    if (isNaN(mes)){
-       return false;
+    mes = fecha.substring(3, 5);
+    if (isNaN(mes)) {
+        return false;
     }
 
     var dia;
-    dia = fecha.substring(0,2);
-    if (isNaN(dia)){
-       return false;
+    dia = fecha.substring(0, 2);
+    if (isNaN(dia)) {
+        return false;
     }
     //si el aï¿½o de la fecha que recibo solo tiene 2 cifras hay que cambiarlo a 4
-    if (ano<=99){
-       ano +=1900;       
+    if (ano <= 99) {
+        ano += 1900;
     }
-
-// alert("dia: "+dia+" mes:"+mes+" anio:"+ano);
-//        08       08        2010
+    
     //resto los aï¿½os de las dos fechas
-    annios=hoy.getFullYear()- ano;
-        edad=hoy.getFullYear()- ano - 1; //-1 porque no se si ha cumplido aï¿½os ya este aï¿½o
+    annios = hoy.getFullYear() - ano;
+    edad = hoy.getFullYear() - ano - 1; //-1 porque no se si ha cumplido aï¿½os ya este aï¿½o
     //si resto los meses y me da menor que 0 entonces no ha cumplido aï¿½os. Si da mayor si ha cumplido
-   
-   
-    var meses=hoy.getMonth() + 1 - mes;   
-
-    var dias=hoy.getUTCDate() - dia    ;
 
 
- //alert("Dias: "+dias+" Meses:"+meses+" Anios:"+annios+" Edad:"+edad);
+    var meses = hoy.getMonth() + 1 - mes;
+
+    var dias = hoy.getUTCDate() - dia;
+
+
+    //alert("Dias: "+dias+" Meses:"+meses+" Anios:"+annios+" Edad:"+edad);
 //        -3         1        1        0
- var Minimo="0 dias";
- var diasx=0;
-    if(dias<0){
-        diasx=dias;
-        dias=30+dias;
-        if(meses==1){
-           Minimo=dias+" DIAS";
+    var Minimo = "0 dias";
+    var diasx = 0;
+    if (dias < 0) {
+        diasx = dias;
+        dias = 30 + dias;
+        if (meses == 1) {
+            Minimo = dias + " DIAS";
         }
 
     }
 
     //alert(diasx+" dias:"+dias);
-   
-    if(Minimo=="0 dias" && dias >=0){Minimo=dias+" dias";}
-   
-    if(diasx<0){
-        meses=meses-1;
-       
+
+    if (Minimo == "0 dias" && dias >= 0) {
+        Minimo = dias + " dias";
     }
 
-    if(meses==0 && annios==0){return dias+" DIAS";}
-    if(annios==0){return meses+" MESES Y "+Minimo;}
-    if(meses<0){meses=12+meses;}
+    if (diasx < 0) {
+        meses = meses - 1;
+    }
+
+    if (meses == 0 && annios == 0) {
+        return dias + " DIAS";
+    }
+    if (annios == 0) {
+        return meses + " MESES Y " + Minimo;
+    }
+    if (meses < 0) {
+        meses = 12 + meses;
+    }
 
 
 
-    if (hoy.getMonth() + 1 - mes < 0){
-       return edad+" a\u00f1os y "+meses+" meses y "+Minimo;       
-//       return edad;       
+    if (hoy.getMonth() + 1 - mes < 0) {
+        return edad + " a\u00f1os y " + meses + " meses y " + Minimo;
+      //       return edad;       
     } //+ 1 porque los meses empiezan en 0
-    if (hoy.getMonth() + 1 - mes > 0){
-       return (edad+1)+" a\u00f1os y "+meses+" meses y "+Minimo;
+    if (hoy.getMonth() + 1 - mes > 0) {
+        return (edad + 1) + " a\u00f1os y " + meses + " meses y " + Minimo;
 //       return edad+1;
     }
     //entonces es que eran iguales. miro los dias
     //si resto los dias y me da menor que 0 entonces no ha cumplido aï¿½os. Si da mayor o igual si ha cumplido
-    if (hoy.getUTCDate() - dia >= 0){
-       return (edad+1)+" a\u00f1os y "+meses+" meses y "+Minimo;       
+    if (hoy.getUTCDate() - dia >= 0) {
+        return (edad + 1) + " a\u00f1os y " + meses + " meses y " + Minimo;
 //       return edad + 1;
     }
-    return edad+" a\u00f1os y "+meses+" meses y "+Minimo;
+    return edad + " a\u00f1os y " + meses + " meses y " + Minimo;
 //    return edad;
 }
 
 
-function BuscarDatos()
-{	
-	if (DatosCompletos())
-	{
-		
-		idexpediente=document.getElementById('txtidexpediente').value;
-		fechacita=document.getElementById('txtfechasolicitud').value;
-                idEstablecimiento=document.getElementById('cmbEstablecimiento').value;
-              //  alert(idEstablecimiento);
-		VerificarExistencia(idexpediente,fechacita,idEstablecimiento);
-	}
-	else{
-		alert("Complete los datos para la busqueda");
-	}
+function BuscarDatos() {
+    idexpediente      = document.getElementById('txtidexpediente').value;
+    fechacita         = document.getElementById('txtfechasolicitud').value;
+    idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
+    VerificarExistencia(idexpediente, fechacita, idEstablecimiento);
 }
 
 //FUNCION PARA VERIFICAR SI EXISTEN  DATOS DE LA SOLICITUD
-function VerificarExistencia(idexpediente,fechacita,idEstablecimiento)
+function VerificarExistencia(idexpediente, fechacita, idEstablecimiento)
 {
-	//divResultado=document.getElementById('divResultado');
-	ajax=objetoAjax();
-	opcion=2;
-	//alert(idexpediente+"*"+fechacita+"*"+idEstablecimiento);
-	//usando del medoto POST
-	ajax.open("POST", "ctrRecepcionSolicitud.php",true);
-	//muy importante este encabezado ya que hacemos uso de un formulario
-	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	//enviando los valores
-	//estado="";
-    //idsolicitud="";
-	ajax.send("idexpediente="+idexpediente+"&fechacita="+fechacita+"&opcion="+opcion+"&idEstablecimiento="+idEstablecimiento);	
-	ajax.onreadystatechange=function() {
-		if (ajax.readyState==4) 
-		{	//mostrar los nuevos registros en esta capa
-			if (ajax.status == 200)
-			{ //alert (ajax.responseText);
-				if(ajax.responseText=='D')//si existen datos para la solicitud
-				{
-						MostrarDatosGenerales();
-				}
-				else{ //mueestra el mensaje de estado de la solicitud
-					
-						alert(ajax.responseText);
-					
-				}
-			}
-		}
-	}
+    if (DatosCompletos()) {
+        //divResultado=document.getElementById('divResultado');
+        ajax = objetoAjax();
+        opcion = 2;
+        //usando del medoto POST
+        ajax.open("POST", "ctrRecepcionSolicitud.php", true);
+        //muy importante este encabezado ya que hacemos uso de un formulario
+        ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        //enviando los valores
+        //estado="";
+        //idsolicitud="";
+        ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&opcion=" + opcion + "&idEstablecimiento=" + idEstablecimiento);
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4)
+            {	//mostrar los nuevos registros en esta capa
+                if (ajax.status == 200)
+                { //alert (ajax.responseText);
+                    if (ajax.responseText == 'D')//si existen datos para la solicitud
+                    {
+                        MostrarDatosGenerales();
+                    }
+                    else { //mueestra el mensaje de estado de la solicitud
+
+                        alert(ajax.responseText);
+
+                    }
+                }
+            }
+        }
+    } else {
+        MostrarTodos();
+    }
 }
 
 function LlenarEstablecimiento(IdTipoEstab)
 {
- 
-  ajax=objetoAjax();
- 
-  opcion=8;
-  ajax.open("POST", "ctrRecepcionSolicitud.php",true);
-  //muy importante este encabezado ya que hacemos uso de un formulario
-  ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
- //alert(IdTipoEstab+"-"+opcion);
-  //enviando los valores
-  ajax.send("IdTipoEstab="+IdTipoEstab+"&opcion="+opcion);
+    ajax = objetoAjax();
+    opcion = 8;
+    ajax.open("POST", "ctrRecepcionSolicitud.php", true);
+    //muy importante este encabezado ya que hacemos uso de un formulario
+    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    //alert(IdTipoEstab+"-"+opcion);
+    //enviando los valores
+    ajax.send("IdTipoEstab=" + IdTipoEstab + "&opcion=" + opcion);
 
-			 
-  ajax.onreadystatechange=function() 
-  {
-	 if (ajax.readyState == 4){//4 The request is complete
-		if (ajax.status == 200){//200 means no error.
-                    resp = ajax.responseText;
-		 	document.getElementById('divEstablecimiento').innerHTML = resp ;
-                 }
-         }
-   }
+
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState === 4) {//4 The request is complete
+            if (ajax.status === 200) {//200 means no error.
+                resp = ajax.responseText;
+                document.getElementById('divEstablecimiento').innerHTML = resp;
+            }
+        }
+    };
 }
 
 //FUNCION PARA RECUPERAR LOS DATOS GENERALES DE LA SOLICITUD
 function MostrarDatosGenerales()
 {
-  //valores de los text
-  idexpediente= document.getElementById('txtidexpediente').value;
-  fechacita=document.getElementById('txtfechasolicitud').value;
-  idEstablecimiento=document.getElementById('cmbEstablecimiento').value;
- 
-  //alert (idEstablecimiento);
-  //instanciamos el objetoAjax
-  ajax=objetoAjax();
-  //usando del medoto POST
-   ajax.open("POST", "RecepcionSolicitud.php",true);
-  //muy importante este encabezado ya que hacemos uso de un formulario
-  ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-  //enviando los valores
-  ajax.send("idexpediente="+idexpediente+"&fechacita="+fechacita+"&idEstablecimiento="+idEstablecimiento);
-	ajax.onreadystatechange=function() {
-		if (ajax.readyState==4) {
-			if (ajax.status == 200)
-			{
-				//mostrar los nuevos registros en esta capa
-				document.getElementById('divResultado').innerHTML = ajax.responseText;
-				//posicion=document.getElementById('topei').value;
-				calc_edad();
-				//alert(ajax.responseText);
-			}
-		}
-	}
+    //valores de los text
+    idexpediente = document.getElementById('txtidexpediente').value;
+    fechacita = document.getElementById('txtfechasolicitud').value;
+    idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
+
+    //alert (idEstablecimiento);
+    //instanciamos el objetoAjax
+    ajax = objetoAjax();
+    //usando del medoto POST
+    ajax.open("POST", "RecepcionSolicitud.php", true);
+    //muy importante este encabezado ya que hacemos uso de un formulario
+    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    //enviando los valores
+    ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&idEstablecimiento=" + idEstablecimiento);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4) {
+            if (ajax.status == 200)
+            {
+                //mostrar los nuevos registros en esta capa
+                document.getElementById('divResultado').innerHTML = ajax.responseText;
+                //posicion=document.getElementById('topei').value;
+                calc_edad();
+                //alert(ajax.responseText);
+            }
+        }
+    }
+}
+
+function MostrarTodos()
+{
+    //valores de los text
+    idexpediente      = document.getElementById('txtidexpediente').value;
+    fechacita         = document.getElementById('txtfechasolicitud').value;
+    idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
+
+    //instanciamos el objetoAjax
+    ajax = objetoAjax();
+    //usando del medoto POST
+    ajax.open("POST", "RecepcionSolicitudTodos.php", true);
+    //muy importante este encabezado ya que hacemos uso de un formulario
+    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    //enviando los valores
+    ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&idEstablecimiento=" + idEstablecimiento);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4) {
+            if (ajax.status == 200) {
+                //mostrar los nuevos registros en esta capa
+                document.getElementById('divResultado').innerHTML = ajax.responseText;
+                //posicion=document.getElementById('topei').value;
+                //alert(ajax.responseText);
+            }
+        }
+    }
 }
 
 
 function calc_edad()
-{  var total=document.getElementById('topei').value;
-  //alert(posicion);
-  
-for (i=0;i< document.getElementById('topei').value;i++){
-   fecnac1=document.getElementById('suEdad['+i+']').value;	
-   fecnac2=fecnac1.substring(0,10);
-   suEdades=calcular_edad(fecnac2);
-    // alert(suEdades); 
-  document.getElementById('divsuedad['+i+']').innerHTML=suEdades;}
+{
+    var total = document.getElementById('topei').value;
+    //alert(posicion);
+
+    for (i = 0; i < document.getElementById('topei').value; i++) {
+        fecnac1 = document.getElementById('suEdad[' + i + ']').value;
+        fecnac2 = fecnac1.substring(0, 10);
+        suEdades = calcular_edad(fecnac2);
+        // alert(suEdades); 
+        document.getElementById('divsuedad[' + i + ']').innerHTML = suEdades;
+    }
 }
 
 
 //FUNCION PARA CAMBIAR ESTADO DE CADA DETALLE DE LA SOLICITUD
 function CambiarEstadoDetalleSolicitud(estado)
 {
-   	idsolicitud=document.getElementById('txtidsolicitud').value;
-	idexpediente=document.getElementById('txtidexpediente').value;
-	fechasolicitud=document.getElementById('txtfechasolicitud').value;
-	opcion=5;
-	idsolicitud=trim(idsolicitud);
-	idexpediente=trim(idexpediente);
-	fechasolicitud=trim(fechasolicitud);
-	//instanciamos el objetoAjax
-	ajax=objetoAjax();
-	//usando del medoto POST
-	ajax.open("POST", "ctrRecepcionSolicitud.php",true);
-	//muy importante este encabezado ya que hacemos uso de un formulario
-	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	//enviando los valores
-	ajax.send("idexpediente="+idexpediente+"&fechasolicitud="+fechasolicitud+"&idsolicitud="+idsolicitud+"&opcion="+opcion+"&estado="+estado);	
-	ajax.onreadystatechange=function() 
-	{
-		if (ajax.readyState==4) 
-		{
-			if (ajax.status == 200)
-			{
-						//mostrar los nuevos registros en esta capa
-						//document.getElementById('divCambioEstado').innerHTML = ajax.responseText;	
-						alert(ajax.responseText);					
-			}
-		}
-	}
-	
-}
+    idsolicitud = document.getElementById('txtidsolicitud').value;
+    idexpediente = document.getElementById('txtidexpediente').value;
+    fechasolicitud = document.getElementById('txtfechasolicitud').value;
+    opcion = 5;
+    idsolicitud = trim(idsolicitud);
+    idexpediente = trim(idexpediente);
+    fechasolicitud = trim(fechasolicitud);
+    //instanciamos el objetoAjax
+    ajax = objetoAjax();
+    //usando del medoto POST
+    ajax.open("POST", "ctrRecepcionSolicitud.php", true);
+    //muy importante este encabezado ya que hacemos uso de un formulario
+    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    //enviando los valores
+    ajax.send("idexpediente=" + idexpediente + "&fechasolicitud=" + fechasolicitud + "&idsolicitud=" + idsolicitud + "&opcion=" + opcion + "&estado=" + estado);
+    ajax.onreadystatechange = function()
+    {
+        if (ajax.readyState == 4)
+        {
+            if (ajax.status == 200)
+            {
+                //mostrar los nuevos registros en esta capa
+                //document.getElementById('divCambioEstado').innerHTML = ajax.responseText;	
+                alert(ajax.responseText);
+            }
+        }
+    }
 
-//FUNCION PARA VERIFICAR SI EXISTEN  DATOS DE LA SOLICITUD
-function VerificarEstado()
-{
-	divResultado=document.getElementById('divOculto');
-	ajax=objetoAjax();
-	opcion=3;
-	estado="N";
-	//usando del medoto POST
-	ajax.open("POST", "ctrRecepcionSolicitud.php",true);
-	//muy importante este encabezado ya que hacemos uso de un formulario
-	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	//enviando los valores
-	ajax.send("idexpediente="+idexpediente+"&fechasolicitud="+fechasolicitud+"&opcion="+opcion+"&estado="+estado);	
-	ajax.onreadystatechange=function() {
-		if (ajax.readyState==4) 
-		{	//mostrar los nuevos registros en esta capa
-			if (ajax.status == 200)
-			{
-				divResultado.style.display="block";
-				divResultado.innerHTML = ajax.responseText
-			}
-		}
-	}
-}
-
-
-
-//FUNCION PARA RECUPERAR LOS DATOS DEL DETALLE DE LA SOLICITUD
-function MostrarDatosDetalle()
-{
-  //valores de los text
-	idexpediente=document.getElementById('txtidexpediente').value;
-	fechacita=document.getElementById('txtfechasolicitud').value;
-	opcion=3;
-		//instanciamos el objetoAjax
-	ajax=objetoAjax();
-	//usando del medoto POST
-	ajax.open("POST", "ctrRecepcionSolicitud.php",true);
-	//muy importante este encabezado ya que hacemos uso de un formulario
-	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	//enviando los valores
-	ajax.send("idexpediente="+idexpediente+"&fechacita="+fechacita);
-	ajax.onreadystatechange=function() {
-		if (ajax.readyState==4) 
-		{
-			if (ajax.status == 200)
-			{
-		//mostrar los nuevos registros en esta capa
-		document.getElementById('divResultado').innerHTML = ajax.responseText
-			}
-		}
-	}
-}
-
-
-
-function CargarDatosEtiqueta(idexpediente,fechacita)
-{
-	ajax=objetoAjax();
-	opcion=6;
-	idsolicitud="";
-	estado="";
-	ajax.open("POST", "ctrRecepcionSolicitud.php",true);
-		  //muy importante este encabezado ya que hacemos uso de un formulario
-	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-		  //enviando los valores
-	ajax.send("opcion="+opcion+"&fechacita="+fechacita+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud+"&estado="+estado);
-	ajax.onreadystatechange=function() 
-	{
-		if (ajax.readyState==4) 
-		{	if (ajax.status == 200)
-			{  //mostrar los nuevos registros en esta capa
-			  document.getElementById('divFormulario').innerHTML = ajax.responseText;
-			}
-	        }
-	}
 }
 
 
 function imprimiretiquetas(posicion)
 {//cambiar imprimir  etiquetas1.php  por imprimir.php
-	idexpediente=document.getElementById('txtidexpediente').value;
-	fechacita=document.getElementById('txtfechasolicitud').value;
-	idsolicitud=document.getElementById('txtidsolicitud['+posicion+']').value;
-	idEstablecimiento=document.getElementById('cmbEstablecimiento').value;
-        //alert (idexpediente+' *** '+fechacita+' *** '+idsolicitud+' *** '+idEstablecimiento);
-	ventana_secundaria = window.open("etiquetas.php?var1="+idexpediente+
-	"&var2="+fechacita+"&var3="+idsolicitud+"&var4="+idEstablecimiento,"etiquetas",
-	"width=400,height=600,menubar=no,location=no,scrollbars=yes") ;
+    idexpediente = document.getElementById('txtidexpediente').value;
+    fechacita    = document.getElementById('txtfechasolicitud').value;
+    idsolicitud  = document.getElementById('txtidsolicitud[' + posicion + ']').value;
+    idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
+    //alert (idexpediente+' *** '+fechacita+' *** '+idsolicitud+' *** '+idEstablecimiento);
+    ventana_secundaria = window.open("etiquetas.php?var1=" + idexpediente +
+            "&var2=" + fechacita + "&var3=" + idsolicitud + "&var4=" + idEstablecimiento, "etiquetas",
+            "width=400,height=600,menubar=no,location=no,scrollbars=yes");
 }
-	
+
 function EnviarDatosSolicitud(posicion)
 {
-	idexpediente=document.getElementById('txtidexpediente').value;
-	fechacita=document.getElementById('txtfechasolicitud').value;
-	idsolicitud=document.getElementById('txtidsolicitud['+posicion+']').value;
-	idEstablecimiento=document.getElementById('cmbEstablecimiento').value;
-      //alert (idEstablecimiento);
-	ventana_secundaria = window.open("Solicitud.php?var1="+idexpediente+
-		 "&var2="+fechacita+"&var3="+idsolicitud+"&var4="+idEstablecimiento,"etiquetas",
-         "width=1000,height=600,menubar=no,location=no,scrollbars=yes") ;
-		
-}	
-	
+    idexpediente = document.getElementById('txtidexpediente').value;
+    fechacita = document.getElementById('txtfechasolicitud').value;
+    idsolicitud = document.getElementById('txtidsolicitud[' + posicion + ']').value;
+    idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
+    //alert (idEstablecimiento);
+    ventana_secundaria = window.open("Solicitud.php?var1=" + idexpediente +
+            "&var2=" + fechacita + "&var3=" + idsolicitud + "&var4=" + idEstablecimiento, "etiquetas",
+            "width=1000,height=600,menubar=no,location=no,scrollbars=yes");
+
+}
+
 
 
 function RegistrarNumeroMuestra(posicion)//Registrando Numero de Muestra asociado al paciente
 {
-	idsolicitud=document.getElementById('txtidsolicitud['+posicion+']').value;
-	fechacita=document.getElementById('txtfecha['+posicion+']').value;
-	//objeto AJAX
-	ajax=xmlhttp();
-	//usando del medoto POST
-	opcion=4;
-	//alert(idsolicitud);
-	ajax.open("POST", "ctrRecepcionSolicitud.php",true);
-	//muy importante este encabezado ya que hacemos uso de un formulario
-	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	//enviando los valores
-	ajax.send("idsolicitud="+idsolicitud+"&fechacita="+fechacita+"&opcion="+opcion+"&idexpediente="+idexpediente);	
-	ajax.onreadystatechange=function() 
-	{
-	//alert(ajax.readyState);
-		if(ajax.readyState==2){
-	    	//alert('btnActualizar['+posicion+']');
-			document.getElementById('btnActualizar['+posicion+']').disabled=true;
-		}
-		if (ajax.readyState==4) 
-		{
-		 	if (ajax.status == 200)
-		  	{   
-			
-				if (ajax.responseText !="N")
-				{
-				  	if (ajax.responseText !="NN")
-				  	{
-					  
-					  alert(ajax.responseText);
-					  HabilitarBoton(idsolicitud,posicion);//habilitando el boton de Impresion de Vi�etas
-					  //alert("Aqui"+idsolicitud+" "+posicion )
-					  //Crear_Archivo(idsolicitud, posicion);
-					  document.getElementById('btnActualizar['+posicion+']').disabled=true;
-					}
-					else{ 
-						alert(ajax.responseText);
-						alert("Problemas al Asignar Numero de Muestra..Consulte al Administrador del Sistema 1");
-					}
-				}
-				else{
-					alert(ajax.responseText);
-					alert("Problema al Asignar Numero de Muestra..Consulte al Administrador del Sistema 2");
-			 	 }	
-			} 
-		}		
-	}
+    idsolicitud = document.getElementById('txtidsolicitud[' + posicion + ']').value;
+    fechacita = document.getElementById('txtfecha[' + posicion + ']').value;
+    //objeto AJAX
+    ajax = xmlhttp();
+    //usando del medoto POST
+    opcion = 4;
+    //alert(idsolicitud);
+    ajax.open("POST", "ctrRecepcionSolicitud.php", true);
+    //muy importante este encabezado ya que hacemos uso de un formulario
+    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    //enviando los valores
+    ajax.send("idsolicitud=" + idsolicitud + "&fechacita=" + fechacita + "&opcion=" + opcion + "&idexpediente=" + idexpediente);
+    ajax.onreadystatechange = function()
+    {
+        //alert(ajax.readyState);
+        if (ajax.readyState == 2) {
+            //alert('btnActualizar['+posicion+']');
+            document.getElementById('btnActualizar[' + posicion + ']').disabled = true;
+        }
+        if (ajax.readyState == 4)
+        {
+            if (ajax.status == 200)
+            {
+
+                if (ajax.responseText != "N")
+                {
+                    if (ajax.responseText != "NN")
+                    {
+
+                        alert(ajax.responseText);
+                        HabilitarBoton(idsolicitud, posicion);//habilitando el boton de Impresion de Vi�etas
+                        //alert("Aqui"+idsolicitud+" "+posicion )
+                        //Crear_Archivo(idsolicitud, posicion);
+                        document.getElementById('btnActualizar[' + posicion + ']').disabled = true;
+                    }
+                    else {
+                        alert(ajax.responseText);
+                        alert("Problemas al Asignar Numero de Muestra..Consulte al Administrador del Sistema 1");
+                    }
+                }
+                else {
+                    alert(ajax.responseText);
+                    alert("Problema al Asignar Numero de Muestra..Consulte al Administrador del Sistema 2");
+                }
+            }
+        }
+    }
 }
 
 //FUNCION PARA CREAR ARCHIVO DE LA SOLICITUD
- function Crear_Archivo(idsolicitud,posicion){
- NEC=document.getElementById('txtidexpediente').value;
- Solicitud=window.document.getElementById('txtidsolicitud[' +posicion+ ']').value;
- 
- //alert(posicion)
- opcion=6;
- //instanciamos el objetoAjax
-	ajax=objetoAjax(); 
-	//usando del medoto POST
-	ajax.open("POST", "ctrRecepcionSolicitud.php",true);
-	//muy importante este encabezado ya que hacemos uso de un formulario
-	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	//enviando los valores
-	ajax.send("&opcion="+opcion+"&NEC="+NEC+"&Solicitud="+Solicitud);	
-	ajax.onreadystatechange=function() {
-		if (ajax.readyState==4) {
-			if (ajax.status == 200)
-			{
-				ajax.responseText;
-			}
-		}
-	}
-  }
- 
- function IngresarDatosTemp(idsolicitud,posicion){
- NEC=document.getElementById('txtidexpediente').value;
- Solicitud=window.document.getElementById('txtidsolicitud[' +posicion+ ']').value;
- //NEC=document.getElementById('txtidexpediente').value;
-  //alert( NEC);
- opcion=7;
- //instanciamos el objetoAjax
-	ajax=objetoAjax(); 
-	//usando del medoto POST
-	ajax.open("POST", "ctrRecepcionSolicitud.php",true);
-	//muy importante este encabezado ya que hacemos uso de un formulario
-	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	//enviando los valores
-	ajax.send("&opcion="+opcion+"&NEC="+NEC+"&Solicitud="+Solicitud);	
-	ajax.onreadystatechange=function() {
-		if (ajax.readyState==4) {
-			if (ajax.status == 200)
-			{
-				ajax.responseText;
-			}
-		}
-	}
-  }
- 
- 
+function Crear_Archivo(idsolicitud, posicion) {
+    NEC = document.getElementById('txtidexpediente').value;
+    Solicitud = window.document.getElementById('txtidsolicitud[' + posicion + ']').value;
+
+    //alert(posicion)
+    opcion = 6;
+    //instanciamos el objetoAjax
+    ajax = objetoAjax();
+    //usando del medoto POST
+    ajax.open("POST", "ctrRecepcionSolicitud.php", true);
+    //muy importante este encabezado ya que hacemos uso de un formulario
+    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    //enviando los valores
+    ajax.send("&opcion=" + opcion + "&NEC=" + NEC + "&Solicitud=" + Solicitud);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4) {
+            if (ajax.status == 200)
+            {
+                ajax.responseText;
+            }
+        }
+    }
+}
+
+function IngresarDatosTemp(idsolicitud, posicion) {
+    NEC = document.getElementById('txtidexpediente').value;
+    Solicitud = window.document.getElementById('txtidsolicitud[' + posicion + ']').value;
+    //NEC=document.getElementById('txtidexpediente').value;
+    //alert( NEC);
+    opcion = 7;
+    //instanciamos el objetoAjax
+    ajax = objetoAjax();
+    //usando del medoto POST
+    ajax.open("POST", "ctrRecepcionSolicitud.php", true);
+    //muy importante este encabezado ya que hacemos uso de un formulario
+    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    //enviando los valores
+    ajax.send("&opcion=" + opcion + "&NEC=" + NEC + "&Solicitud=" + Solicitud);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4) {
+            if (ajax.status == 200)
+            {
+                ajax.responseText;
+            }
+        }
+    }
+}
+
+
 //FUNCION PARA CAMBIAR ESTADO DE LA SOLICITUD
-function CambiarEstadoSolicitud(estado,idsolicitud,posicion)
+function CambiarEstadoSolicitud(estado, idsolicitud, posicion)
 {
-	idexpediente= document.getElementById('txtidexpediente').value;
-	Solicitud=document.getElementById('txtidsolicitud['+posicion+']').value;
-	fechacita= "";
-	opcion=1;
-        idsolicitud=idsolicitud;
-	//alert(posicion)
-	//instanciamos el objetoAjax
-	ajax=objetoAjax(); 
-	//usando del medoto POST
-	ajax.open("POST", "ctrRecepcionSolicitud.php",true);
-	//muy importante este encabezado ya que hacemos uso de un formulario
-	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	//enviando los valores
-	ajax.send("idexpediente="+idexpediente+"&fechacita="+fechacita+"&opcion="+opcion+"&estado="+estado+"&idsolicitud="+idsolicitud+"&Solicitud="+Solicitud);	
-	ajax.onreadystatechange=function() {
-		if (ajax.readyState==4) {
-		        if (ajax.status == 200)
-			{
-				//mostrar los nuevos registros en esta capa
-				document.getElementById('divCambioEstado').style.display = "none";
-				document.getElementById('divCambioEstado').innerHTML = ajax.responseText;
-				//verificando el cambio de estado
-				if (ajax.responseText =="Y")
-				{
-					//alert(ajax.responseText);
-					/* ****** ingresar datos temporales ********************* */
-					//IngresarDatosTemp(Solicitud,posicion);
-					alert("La solicitud fue procesada con exito...");
-					//Crear_Archivo(Solicitud,posicion);
-					
-				}
-				else{
-					alert(ajax.responseText);
-					alert("La solicitud no puedo ser procesada, contacte al Administrador 1");
-				}
-			}			
-		}		
-	}
+    idexpediente = document.getElementById('txtidexpediente').value;
+    Solicitud = document.getElementById('txtidsolicitud[' + posicion + ']').value;
+    fechacita = "";
+    opcion = 1;
+    idsolicitud = idsolicitud;
+    //alert(posicion)
+    //instanciamos el objetoAjax
+    ajax = objetoAjax();
+    //usando del medoto POST
+    ajax.open("POST", "ctrRecepcionSolicitud.php", true);
+    //muy importante este encabezado ya que hacemos uso de un formulario
+    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    //enviando los valores
+    ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&opcion=" + opcion + "&estado=" + estado + "&idsolicitud=" + idsolicitud + "&Solicitud=" + Solicitud);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4) {
+            if (ajax.status == 200)
+            {
+                //mostrar los nuevos registros en esta capa
+                document.getElementById('divCambioEstado').style.display = "none";
+                document.getElementById('divCambioEstado').innerHTML = ajax.responseText;
+                //verificando el cambio de estado
+                if (ajax.responseText == "Y")
+                {
+                    //alert(ajax.responseText);
+                    /* ****** ingresar datos temporales ********************* */
+                    //IngresarDatosTemp(Solicitud,posicion);
+                    alert("La solicitud fue procesada con exito...");
+                    //Crear_Archivo(Solicitud,posicion);
+
+                }
+                else {
+                    alert(ajax.responseText);
+                    alert("La solicitud no puedo ser procesada, contacte al Administrador 1");
+                }
+            }
+        }
+    }
 }
 
 
 //FUNCION QUE VERIFICA QUE LOS PARAMETROS DE BUSQUEDA ESTEN COMPLETOS
 function DatosCompletos()
 {
-  var resp = true;
-	if (document.getElementById('txtidexpediente').value == "")
- 	{
-		resp= false;		
- 	}
- 	if (document.getElementById('txtfechasolicitud').value == "")
- 	{
-		resp= false;		
-	 }
- return resp;
+    var resp = true;
+    if (document.getElementById('txtidexpediente').value == "")
+    {
+        resp = false;
+    }
+    if (document.getElementById('txtfechasolicitud').value == "")
+    {
+        resp = false;
+    }
+    return resp;
 }
 
 //FUNCION PARA BUSCAR DATOS DE LA SOLICITUD
 
 //FUNCION PARA HABILITAR BOTON Y PROCESAR LA SOLICITUD CAMPBIANDO DE ESTADO
-function HabilitarBoton(idsolicitud,posicion){
+function HabilitarBoton(idsolicitud, posicion) {
     //alert(idsolicitud);
-	//verificando que se haya obtenido datos de la consulta
-	idsolicitud=document.getElementById('txtidsolicitud['+posicion+']').value;
-	valor=document.getElementById('txtprecedencia['+posicion+']').value;
-	if(valor !=" ")
-	{	
-	    //VERIFICANDO QUE LA SOLICITUD HAYA SIDO PROCESADA
-		//Cambia el estado de la solicitud
-		CambiarEstadoSolicitud('P',idsolicitud,posicion);
-		//CambiarEstadoDetalleSolicitud('TR');
-		//Habilita el boton para la impresion
-		div = document.getElementById('divoculto['+posicion+']');
-		div.style.display = "block";
-	}
-	else {
-		alert("No se encontraron datos que procesar...");
-	}
+    //verificando que se haya obtenido datos de la consulta
+    idsolicitud = document.getElementById('txtidsolicitud[' + posicion + ']').value;
+    valor = document.getElementById('txtprecedencia[' + posicion + ']').value;
+    if (valor != " ")
+    {
+        //VERIFICANDO QUE LA SOLICITUD HAYA SIDO PROCESADA
+        //Cambia el estado de la solicitud
+        CambiarEstadoSolicitud('P', idsolicitud, posicion);
+        //CambiarEstadoDetalleSolicitud('TR');
+        //Habilita el boton para la impresion
+        div = document.getElementById('divoculto[' + posicion + ']');
+        div.style.display = "block";
+    }
+    else {
+        alert("No se encontraron datos que procesar...");
+    }
 }
