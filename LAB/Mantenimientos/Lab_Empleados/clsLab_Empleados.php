@@ -78,11 +78,11 @@ class clsLab_Empleados {
                             t02.id AS idcargoempleado,
                             t02.cargo,
                             t01.id_establecimiento
-                      FROM mnt_empleado                  t01
-                      INNER JOIN mnt_cargoempleados      t02 ON (t02.id = t01.id_cargo_empleado)
-                      INNER JOIN ctl_area_servicio_apoyo t03 ON (t03.id = t01.idarea)
-                      INNER JOIN mnt_tipo_empleado       t04 ON (t04.id = t01.id_tipo_empleado)
-                      INNER JOIN ctl_atencion            t05 ON (t05.id = t03.id_atencion AND t05.codigo_busqueda = 'DCOLAB')
+                      FROM mnt_empleado                        t01
+                      INNER JOIN mnt_cargoempleados            t02 ON (t02.id = t01.id_cargo_empleado)
+                      INNER JOIN ctl_area_servicio_diagnostico t03 ON (t03.id = t01.idarea)
+                      INNER JOIN mnt_tipo_empleado             t04 ON (t04.id = t01.id_tipo_empleado)
+                      INNER JOIN ctl_atencion                  t05 ON (t05.id = t03.id_atencion AND t05.codigo_busqueda = 'DCOLAB')
                       WHERE t04.codigo = 'LAB' AND t01.id_establecimiento = $lugar
                       ORDER BY t01.idarea, t01.idempleado";
             $result = @pg_query($query);
@@ -104,11 +104,11 @@ class clsLab_Empleados {
                             t02.id AS idcargoempleado,
                             t02.cargo,
                             t04.username AS login
-                     FROM mnt_empleado                  t01
-                     INNER JOIN mnt_cargoempleados      t02 ON (t02.id = t01.id_cargo_empleado)
-                     INNER JOIN ctl_area_servicio_apoyo t03 ON (t03.id = t01.idarea)
-                     INNER JOIN fos_user_user           t04 ON (t01.id = t04.id_empleado AND t01.id_establecimiento = t04.id_establecimiento)
-                     INNER JOIN ctl_atencion            t05 ON (t05.id = t03.id_atencion AND t05.codigo_busqueda = 'DCOLAB')
+                     FROM mnt_empleado                        t01
+                     INNER JOIN mnt_cargoempleados            t02 ON (t02.id = t01.id_cargo_empleado)
+                     INNER JOIN ctl_area_servicio_diagnostico t03 ON (t03.id = t01.idarea)
+                     INNER JOIN fos_user_user                 t04 ON (t01.id = t04.id_empleado AND t01.id_establecimiento = t04.id_establecimiento)
+                     INNER JOIN ctl_atencion                  t05 ON (t05.id = t03.id_atencion AND t05.codigo_busqueda = 'DCOLAB')
                      WHERE t01.idempleado = '$IdEmpleado' AND t01.id_establecimiento = $lugar";
             // echo $query;
             $result = pg_query($query);
@@ -237,12 +237,12 @@ class clsLab_Empleados {
                              CASE WHEN t04.enabled = true THEN 'Habilitado' ELSE 'Inhabilitado' END AS habilitado, 
                              CASE WHEN t04.enabled = true THEN 'H' ELSE 'I' END AS estadocuenta,
                              t04.username AS login
-                      FROM mnt_empleado                  t01
-                      INNER JOIN mnt_cargoempleados      t02 ON (t02.id = t01.id_cargo_empleado)
-                      INNER JOIN ctl_area_servicio_apoyo t03 ON (t03.id = t01.idarea)
-                      INNER JOIN fos_user_user           t04 ON (t01.id = t04.id_empleado AND t01.id_establecimiento = t04.id_establecimiento)
-                      INNER JOIN mnt_tipo_empleado       t05 ON (t05.id = t01.id_tipo_empleado)
-                      INNER JOIN ctl_atencion            t06 ON (t06.id = t03.id_atencion AND t06.codigo_busqueda = 'DCOLAB')
+                      FROM mnt_empleado                        t01
+                      INNER JOIN mnt_cargoempleados            t02 ON (t02.id = t01.id_cargo_empleado)
+                      INNER JOIN ctl_area_servicio_diagnostico t03 ON (t03.id = t01.idarea)
+                      INNER JOIN fos_user_user                 t04 ON (t01.id = t04.id_empleado AND t01.id_establecimiento = t04.id_establecimiento)
+                      INNER JOIN mnt_tipo_empleado             t05 ON (t05.id = t01.id_tipo_empleado)
+                      INNER JOIN ctl_atencion                  t06 ON (t06.id = t03.id_atencion AND t06.codigo_busqueda = 'DCOLAB')
                       WHERE t05.codigo = 'LAB' AND t01.id_establecimiento = $lugar
                       ORDER BY t01.idempleado LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
             $result = @pg_query($query);
