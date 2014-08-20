@@ -7,7 +7,7 @@ $area=$_SESSION['Idarea'];
 $idCanTin=$_POST['idCanTin'];
 $obj = new clsLab_CantidadTincion;
 $consulta=$obj->consultarid($idCanTin);
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 
 //valores de las consultas
 $CanTin=$row[1];
@@ -23,14 +23,15 @@ onsubmit="enviarDatos(); return false">
 		<td colspan="2" class="CobaltFieldCaptionTD" align="center"><h3><strong>Mantenimiento de Cantidad Tinci&oacute;n</strong></h3>
 		</td>
 	</tr>
-	<tr>
+	<!--<tr>
 		<td class="StormyWeatherFieldCaptionTD">IdCantidad</td>
 		<td class="StormyWeatherDataTD"><input name="idCanTin" id="idCanTin" type="text" value="<?php echo $idCanTin; ?>" disabled="disabled" /></td>
-	</tr>
+	</tr> -->
 	<tr>
 		<td class="StormyWeatherFieldCaptionTD">Cantidad Tinci&oacute;n</td>
 		<td class="StormyWeatherDataTD"><input name="CanTin" id="CanTin" type="text" value="<?php echo htmlentities($CanTin); ?>" size="35" />
-		</td>  
+                                                <input name="idCanTin" id="idCanTin" type="hidden" value="<?php echo $idCanTin; ?>" disabled="disabled" />
+                </td>  
 	</tr>
 	<tr>	
 		<td class="StormyWeatherDataTD" colspan="2" align="right">

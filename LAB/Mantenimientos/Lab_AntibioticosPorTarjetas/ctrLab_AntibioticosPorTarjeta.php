@@ -9,6 +9,7 @@ $idantibiotico=$_POST['idantibiotico'];
 $idtarjeta=$_POST['idtarjeta'];
 $Pag =$_POST['Pag'];*/
 $opcion=$_POST['opcion'];
+
 //actualiza los datos del empleados
 $objdatos = new clsLab_AntibioticosPorTarjeta;
 
@@ -45,11 +46,12 @@ switch ($opcion)
 	 case 3:  //ELIMINAR    
 		 //Vefificando Integridad de los datos
 		 //$idantibioticoportarjeta=$_POST['idantibioticoportarjeta'];
-		 $idantibiotico=$_POST['idantibiotico'];
-		 $idtarjeta=$_POST['idtarjeta'];
+		$idantibiotico=$_POST['idantibiotico'];
+		"idtarjeta"."!!  ". $idtarjeta=$_POST['idtarjeta'];
 		//  echo $idantibiotico."*".$idtarjeta;
-		 if ($objdatos->eliminar($idantibiotico,$idtarjeta,$lugar)==true){		
-			echo "Registro Eliminado" ;					
+                
+		 if ($objdatos->eliminar( $idantibiotico,$idtarjeta,$lugar)==true){		
+			echo "Registro Eliminadooooo" ;					
 		}
 		else{
 				echo "El registro no pudo ser eliminado ";
@@ -68,7 +70,7 @@ switch ($opcion)
 							$consulta_a= $obj->consultarasociados($idtarjeta);
 							while($row = pg_fetch_array($consulta_a))
 							{
-						$resultado .="<option value='" . $row['IdAntibiotico']. "'>" . $row['Antibiotico'] . "</option>";
+						$resultado .="<option value='" . $row['antibiotico_id']. "'>" . $row['antibiotico'] . "</option>";
 						}
 			$resultado .="</select>";
 			echo  $resultado;

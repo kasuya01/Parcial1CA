@@ -73,7 +73,7 @@ switch ($opcion)
 					<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 					onclick=\"pedirDatos('".$row[0]."')\"> </td>
-			<!--	<td aling ='center'> 
+			<!-- <td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 					onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
 					<td> $row[0] </td>
@@ -120,7 +120,7 @@ switch ($opcion)
 				
 		//VERIFICANDO LOS POST ENVIADOS
 		if (!empty($_POST['antibiotico']))
-		{ $query .= " antibiotico like'%".$_POST['antibiotico']."%' "; }
+		{ $query .= "antibiotico ilike'%".$_POST['antibiotico']."%' "; }
 		
 		$query = substr($query ,0,strlen($query)-1);
 		//echo $query;
@@ -146,7 +146,7 @@ switch ($opcion)
 					<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 					onclick=\"pedirDatos('".$row[0]."')\"> </td>
-					<!- <td aling ='center'> 
+					<!-- <td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 					onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
 					<td> $row[0] </td>
