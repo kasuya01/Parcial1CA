@@ -17,6 +17,7 @@ include_once("ClaseSolicitud.php"); //Agregamos el Archivo con las clases y func
 	$FechaConsulta=$_GET["FechaConsulta"];
 	$IdCitaServApoyo=$_GET["IdCitaServApoyo"];
         $sexo=$_GET["Sexo"];
+        $idexpediente=$_GET["idexpediente"];
         //echo ' lugar :'.$lugar .'  IdEstablecimiento: '.$IdEstablecimiento;
 //exit;
         $FechaSolicitud=$FechaConsulta;
@@ -30,7 +31,7 @@ include_once("ClaseSolicitud.php"); //Agregamos el Archivo con las clases y func
                         $ippc = $_SERVER['REMOTE_ADDR'];
         /* **************************************************************** */	
 	$Historial= new CrearHistorialClinico;
-        $IdHistorialClinico=$Historial->HistorialClinico($IdNumeroExp,$IdEstablecimiento,$IdSubServicio,$IdEmpleado,$FechaConsulta,$_SESSION['iduser'],$ippc);
+        $IdHistorialClinico=$Historial->HistorialClinico($IdNumeroExp,$IdEstablecimiento,$IdSubServicio,$IdEmpleado,$FechaConsulta,$_SESSION['iduser'],$ippc, $idexpediente);
         
 
 	// $IdEstablecimiento=$Establecimiento->IdEstablecimiento($IdUsuarioReg);

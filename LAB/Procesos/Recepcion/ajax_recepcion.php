@@ -37,8 +37,8 @@ switch($Proceso){
 	      $dtserv=$recepcion->LlenarCmbServ($IdServ,$lugar);
 	      	$rslts = '<select name="cmbSubServ" id="cmbSubServ" onChange="fillMed(this.value)" style="width:350px">';
 			$rslts .='<option value="0">--Seleccione Subespecialidad--</option>';
-			while ($rows =mysql_fetch_array($dtserv)){
-		  	$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
+			while ($rows =pg_fetch_array($dtserv)){
+		  	$rslts.= '<option value="' . $rows['id'] .'" >'. $rows['servicio'].'</option>';
 	       }
 				
 		$rslts .='</select>';
@@ -48,10 +48,18 @@ switch($Proceso){
         case 'fillMed':
  		$rslts='';
                $idSubEsp=$_POST['idSubEsp'];
-              // echo $idSubEsp; 
-               $dttipo=$recepcion->ObtenerServicio($idSubEsp);
-               $row=mysql_fetch_array($dttipo);
-               $Servicio=$row[0];
+               //echo $idSubEsp; 
+               $dtmed=$recepcion->LlenarCmbMed($idSubEsp,$lugar);
+               $rslts = '<select name="cmbMedico" id="cmbMedico"  style="width:350px">';
+				$rslts .='<option value="0">--selecione un M&eacute;dico--</option>';
+				while ($rows =pg_fetch_array($dtmed)){
+					$rslts.= '<option value="' . $rows['id'] .'" >'. $rows['nombre'].'</option>';
+				}
+                                $rslts .='</select>';
+			echo $rslts;
+            /*  $dttipo=$recepcion->ObtenerServicio($idSubEsp);
+               $row=pg_fetch_array($dttipo);
+               $Servicio=$row['id_atencion'];
   //echo $Servicio;
              if ($Servicio=='CONREF' OR $Servicio=='CONEXT'){
 	      		$dtmed=$recepcion->LlenarCmbMed($idSubEsp,$lugar);
@@ -73,7 +81,7 @@ switch($Proceso){
 			$rslts .='</select>';
 			echo $rslts;
 
-		}
+		}*/
        
         break;
 	
@@ -217,7 +225,7 @@ switch($Proceso){
 	
 	echo $rslts;	
 	break;
-	
+	//case PG
 	case 'searchpac':
 	//Funcion ya en postgres
 	$nec=$_POST['nec'];
@@ -317,6 +325,7 @@ switch($Proceso){
                       <td class="StormyWeatherFieldCaptionTD">Expediente</td>
                       <td class="StormyWeatherDataTD">
                               <input id="IdNumeroExp" class="CobaltInput" style="width:188px; height:20px" size="26" value="'.$DatosPaciente["numero"].'" >
+                                  <input type="hidden" id="idexpediente" name="idexpediente" value="'.$DatosPaciente["id"].'">
                       </td> 
               </tr>
               <tr>
@@ -335,7 +344,7 @@ switch($Proceso){
                       <td class="StormyWeatherFieldCaptionTD">Sexo</td>
                       <td class="StormyWeatherDataTD">
                               <input id="sexo" name ="sexo" class="CobaltInput" style="width:188px; height:20px" size="26" value="'.$DatosPaciente["sexoconv"].'" >
-                              <input id="tiposexo" type="hidden" class="CobaltInput" style="width:188px; height:20px" size="26" value="'.$DatosPaciente["sexo"].'" >    
+                              <input id="tiposexo" type="hidden" class="CobaltInput" style="width:188px; height:20px" size="26" value="'.$DatosPaciente["id_sexo"].'" >    
                       </td> 
               </tr>
               <tr>

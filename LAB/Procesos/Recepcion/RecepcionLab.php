@@ -473,6 +473,7 @@ function Examenes(){
     var FechaConsulta = document.getElementById("txtconsulta").value;
     var IdCitaServApoyo = document.getElementById("IdCitaServApoyo").value;
     var Sexo = document.getElementById("tiposexo").value;
+    var idexpediente = document.getElementById("idexpediente").value;
     /*
     var IdHistorialClinico = document.getElementById("IdHistorialClinico").value;
     var IdSubEspecialidad = document.getElementById("IdSubEspecialidad").value;
@@ -485,10 +486,13 @@ function Examenes(){
             Parametros+="&IdEmpleado="+IdEmpleado;
             Parametros+="&FechaConsulta="+FechaConsulta;
             Parametros+="&IdCitaServApoyo="+IdCitaServApoyo;
-            Parametros+="&Sexo="+Sexo;/*
+            Parametros+="&Sexo="+Sexo;
+            Parametros+="&idexpediente="+idexpediente;/*
 var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
 */
 // alert (IdEstablecimiento+ ' -- ' +lugar+ ' -- ' + IdSubServicio+ ' -- ' +IdEmpleado+ ' -- ' +FechaConsulta);
+alert (Parametros)
+return false;
     var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
     window.open(url,"Solicitudes","fullscreen=yes, toolbar=no, scrollbars=yes");
 }
@@ -572,8 +576,8 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
                             <select name="CmbServicio" id="CmbServicio" style="width:350px" onChange="fillservicio(this.value)" >
                                     <option value="0" selected="selected">--Seleccione Procedencia--</option>
                                     <?php
-                                    $tiposerv=$recepcion->tipoestactual($lugar);
-                                    $rows=  pg_fetch_array($tiposerv);
+                                    $tiposerv=$recepcion->tipoestservicio($lugar);
+                                    /*$rows=  pg_fetch_array($tiposerv);
                                             $db = new ConexionBD;
                                                     if($db->conectar()==true){
                                                     $consulta  = "SELECT mnt_servicio.IdServicio,mnt_servicio.NombreServicio FROM mnt_servicio 
@@ -582,11 +586,11 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
                                                     WHERE IdTipoServicio<>'DCO' AND IdTipoServicio<>'FAR' AND IdEstablecimiento=$lugar";
                                                     $resultado = mysql_query($consulta) or die('La consulta fall&oacute;: ' . mysql_error());
 
-                                            //por cada registro encontrado en la tabla me genera un <option>
-                                                    while ($rows = mysql_fetch_array($resultado)){
-                                                            echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
+                                            //por cada registro encontrado en la tabla me genera un <option>*/
+                                                    while ($rows = pg_fetch_array($tiposerv)){
+                                                            echo '<option value="' . $rows['0'] . '">' . $rows['nombre'] . '</option>'; 
                                                     }
-                                            }
+                                        //    }
                                     ?>
                             </select>
                     </td>
