@@ -152,12 +152,11 @@ class clsLab_Areas {
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
-            $query = "SELECT t01.id AS idarea, t01.nombrearea
-                           FROM ctl_area_servicio_diagnostico t01
-                           INNER JOIN lab_areasxestablecimiento t02 ON (t01.id = t02.idarea)
-                           WHERE t02.condicion = 'H' AND t01.administrativa = 'N' 
-                            AND t02.idestablecimiento = $lugar 
-                           ORDER BY nombrearea";
+            $query = "select distinct(id_area_servicio_diagnostico) as id, idarea, nombrearea
+                from ctl_area_servicio_diagnostico casd
+                join mnt_area_examen_establecimiento mnt4 on (casd.id=mnt4.id_area_servicio_diagnostico)
+                where mnt4.id_establecimiento=$lugar
+                order by nombrearea";
             $result = @pg_query($query);
             if (!$result)
                 return false;

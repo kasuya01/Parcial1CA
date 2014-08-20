@@ -32,7 +32,7 @@ switch ($opcion)
 				}
 			}
 			ELSE 
-			    echo "Ya existen los elementos seleccionados";
+			    echo "Ya existe un elemento seleccionado";
 		break;
 	case 2:  //LLENAR LISTA
 	//DIBUJANDO EL FORMULARIO NUEVAMENTE
@@ -72,7 +72,7 @@ switch ($opcion)
 				while($rowex = pg_fetch_array($consultaex))
 				{
                                   
-		 $resultado .= "<option value='" . $rowex['id']. "'>" . $rowex['nombreexamen'] . "</option>";
+		 $resultado .= "<option value='" . $rowex['idexamen']. "'>" . $rowex['descripcion'] . "</option>";
 				}
 			  ///// FINALIZA LLENADO /////
 		$resultado.= "</select>";
