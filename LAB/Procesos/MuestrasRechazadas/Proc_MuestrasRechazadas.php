@@ -8,10 +8,10 @@ $nivel=$_SESSION['NIVEL'];
 //consulta los datos por su id
 $obj = new clsMuestrasRechazadas;
 $consulta=$obj->DatosEstablecimiento($lugar);
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 
 $ConArea=$obj->DatosArea($area);
-$rowArea = mysql_fetch_array($ConArea);
+$rowArea = pg_fetch_array($ConArea);
 //valores de las consultas
 $tipo=$row[0];
 $nombrEstab=$row[1];
@@ -117,10 +117,10 @@ if ($nivel==4){
 			<?php
 				$db = new ConexionBD;
 				if($db->conectar()==true){
-					$consulta  = "SELECT IdTipoEstablecimiento,NombreTipoEstablecimiento FROM mnt_tipoestablecimiento ORDER BY NombreTipoEstablecimiento";
-					$resultado = mysql_query($consulta) or die('La consulta fall&oacute;: ' . mysql_error());
+					$consulta  = "SELECT id,nombre FROM ctl_tipo_establecimiento ORDER BY nombre";
+					$resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
 					//por cada registro encontrado en la tabla me genera un <option>
-					while ($rows = mysql_fetch_array($resultado)){
+					while ($rows = pg_fetch_array($resultado)){
 						echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
 					}
 						echo '<option value="'. $tipo .'" selected="selected">' .htmlentities($nomtipo). '</option>';
@@ -138,10 +138,11 @@ if ($nivel==4){
 		              	include_once("../../../Conexion/ConexionBD.php");
 					$con = new ConexionBD;
 					if($con->conectar()==true){			  
-						$consulta  = "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$tipo' ORDER BY Nombre";
-						$resultado = @mysql_query($consulta) or die('La consulta fall&oacute;: ' . @mysql_error());
+						//$consulta  = "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$tipo' ORDER BY Nombre";
+                                                $consulta  = "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento='$tipo' ORDER BY nombre";
+						$resultado = @pg_query($consulta) or die('La consulta fall&oacute;: ' . @pg_error());
 						//por cada registro encontrado en la tabla me genera un <option>
-						while ($rows = @mysql_fetch_array($resultado)){
+						while ($rows = @pg_fetch_array($resultado)){
 							echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]). '</option>';
 						}
 		            }
@@ -158,15 +159,21 @@ if ($nivel==4){
 				<?php
 					$db = new ConexionBD;
 					if($db->conectar()==true){
-						$consulta  = "SELECT mnt_servicio.IdServicio,mnt_servicio.NombreServicio 
+						/*$consulta  = "SELECT mnt_servicio.IdServicio,mnt_servicio.NombreServicio 
 						FROM mnt_servicio 
 						INNER JOIN mnt_servicioxestablecimiento 
 						ON mnt_servicio.IdServicio=mnt_servicioxestablecimiento.IdServicio
 						WHERE IdTipoServicio<>'DCO' AND IdTipoServicio<>'FAR' AND IdEstablecimiento=$lugar";
-						$resultado = mysql_query($consulta) or die('La consulta fall&oacute;: ' . mysql_error());
-										
+						$resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());*/
+							
+                                            $consulta  = "SELECT mnt_servicio.IdServicio,mnt_servicio.NombreServicio 
+						FROM mnt_servicio 
+						INNER JOIN mnt_servicioxestablecimiento 
+						ON mnt_servicio.IdServicio=mnt_servicioxestablecimiento.IdServicio
+						WHERE IdTipoServicio<>'DCO' AND IdTipoServicio<>'FAR' AND IdEstablecimiento=$lugar";
+						$resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
 						//por cada registro encontrado en la tabla me genera un <option>
-						while ($rows = mysql_fetch_array($resultado)){
+						while ($rows = pg_fetch_array($resultado)){
 							echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
 						}
 					}
@@ -193,7 +200,7 @@ if ($nivel==4){
 				include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
 				$objeareas=new clsLab_Areas;
 				$consulta= $objeareas->consultaractivas($lugar);
-				while($row = mysql_fetch_array($consulta)){
+				while($row = pg_fetch_array($consulta)){
 			        echo "<option value='" . $row['IdArea']. "'>" . htmlentities($row['NombreArea']) . "</option>";
 				}
 				echo '<option value="'.$area1.'" selected="selected">'.htmlentities($nomarea).'</option>';

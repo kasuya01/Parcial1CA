@@ -62,11 +62,12 @@ switch ($opcion)
     break;
     
     case 2:  //MODIFICAR      
-		$idexamen=$_POST['idexamen'];
+	         $idexamen=$_POST['idexamen'];
 		$proce=$_POST['proce'];
 		$idarea=$_POST['idarea'];
 		$unidades=$_POST['unidades'];
 		$idproce=$_POST['idproce'];
+                
                 $sexo=$_POST['sexo'];
                 $redad=$_POST['redad'];
 		if (empty($_POST['rangoini'])){
@@ -106,8 +107,8 @@ switch ($opcion)
                         
 		}
 		else
-                    echo "No se pudo actualizar siap";
-					
+                    echo "No se pudo actualizar";
+                    
 	break;
 	case 3:  //ELIMINAR    
 		//Vefificando Integridad de los datos
@@ -137,8 +138,8 @@ switch ($opcion)
 	  echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
                     <tr>
                         <td  class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
-			<td  class='CobaltFieldCaptionTD' aling='center'> Eliminar</td>
-			<td class='CobaltFieldCaptionTD'> IdExamen </td>
+			<!-- <td  class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
+			<!--<td class='CobaltFieldCaptionTD'> IdExamen </td> -->
 			<td class='CobaltFieldCaptionTD'> Examen </td>
 			<td class='CobaltFieldCaptionTD'> Procedimiento </td>
 			<td class='CobaltFieldCaptionTD'> Unidades </td>	   
@@ -149,15 +150,15 @@ switch ($opcion)
 			<td class='CobaltFieldCaptionTD'> Fecha Finalización </td>
                     </tr>";
 
-          while($row = mysql_fetch_array($consulta)){
-               echo "<tr>
+          while($row = pg_fetch_array($consulta)){
+             /*  echo "<tr>
 			<td aling='center'> 
                 		<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-                    		onclick=\"pedirDatos('".$row['IdProcedimientoporexamen']."')\"> </td>
-                    	<td aling ='center'> 
+                    		onclick=\"pedirDatos('".$row['id']."')\"> </td>
+                    <!--	<td aling ='center'> 
 				<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-				onclick=\"eliminarDato('".$row['IdProcedimientoporexamen']."',$lugar)\">
-			</td>
+				onclick=\"eliminarDato('".$row['id']."',$lugar)\">
+			</td> -->
 			<td>".$row[1]."</td>
 			<td>".htmlentities($row[2])."</td>
                         <td>".htmlentities($row[3])."</td>";
@@ -180,7 +181,34 @@ switch ($opcion)
 	          echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
 	    else
                    echo"<td>".$row[8]."</td>
-                   </tr>";
+                   </tr>"; */
+              //se desconfigurava.....
+              
+               echo "<tr>
+                    <td aling='center'> 
+                        <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+			onclick=\"pedirDatos('".$row['id']."')\"> </td>
+                   <!-- <td aling ='center'> 
+			 <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+			onclick=\"eliminarDato('".$row['id']."',$lugar)\"> </td> -->
+                   <!-- <td>".$row[0]."</td> -->
+                    <td>".htmlentities($row['nombreexamen'])."</td>
+                    <td>".htmlentities($row['nombreprocedimiento'])."</td>
+                    <td>".htmlentities($row['unidades'])."</td>
+                    <td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
+              echo "<td>".$row['abreviatura']."</td>
+                    <td>".$row['nombre']."</td>";
+	   if(($row['fechaini']=="(NULL)") || ($row['fechaini']=="00/00/0000") ||(empty($row['fechaini'])) )
+              echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+	   else
+	      echo "<td>".$row['fechaini']."</td>";
+								
+			if((empty($row['fechafin'])) || ($row['fechafin']=="(NULL)") || ($row['fechafin']=="00/00/0000")) 
+		      echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+			else	
+			  echo "<td>".$row['fechafin']."</td>
+			          ";
+		 echo"</tr>";
 	  }
 	echo "</table>"; 
 		 //determinando el numero de paginas
@@ -223,7 +251,7 @@ switch ($opcion)
 		$rslts = '<select name="cmbExamen" id="cmbExamen" size="1" >';
 		$rslts .='<option value="0">--Seleccione un Examen--</option>';
 			
-		while ($rows =mysql_fetch_array($consultaex)){
+		while ($rows =pg_fetch_array($consultaex)){
 			$rslts.= '<option value="' .$rows[0].'" >'.htmlentities($rows[1]).'</option>';
 		}
 		$rslts .= '</select>';
@@ -266,27 +294,29 @@ switch ($opcion)
 			$FechaF=explode('/',$_POST['Fechafin']);
 			$Fechafin=$FechaF[2].'-'.$FechaF[1].'-'.$FechaF[0];	
 		}
-		$query = "SELECT lab_procedimientosporexamen.IdProcedimientoporexamen,lab_examenes.IdExamen,lab_examenes.NombreExamen,
-                          lab_procedimientosporexamen.NombreProcedimiento,unidades,rangoinicio,rangofin,
-                          DATE_FORMAT(lab_procedimientosporexamen.FechaIni,'%d/%m/%Y')AS FechaIni,
-                          DATE_FORMAT(lab_procedimientosporexamen.FechaFin,'%d/%m/%Y')AS FechaFin,
-                          mnt_sexo.idsexo,mnt_sexo.sexovn,mnt_rangoedad.idedad,mnt_rangoedad.nombregrupoedad
+		 $query = "SELECT lab_procedimientosporexamen.id,lab_examenes.id,lab_examenes.nombreexamen,
+                          lab_procedimientosporexamen.nombreprocedimiento,unidades,rangoinicio,rangofin,
+                          (lab_procedimientosporexamen.fechaini)AS fechaini,
+                          (lab_procedimientosporexamen.fechafin)AS fechafin,
+                          ctl_sexo.id,ctl_sexo.abreviatura,ctl_rango_edad.id,ctl_rango_edad.nombre
                           FROM lab_procedimientosporexamen 
-                          INNER JOIN lab_examenesxestablecimiento ON lab_procedimientosporexamen.IdExamen = lab_examenesxestablecimiento.IdExamen
-                          INNER JOIN lab_examenes ON lab_examenesxestablecimiento.IdExamen = lab_examenes.IdExamen
-                          INNER JOIN mnt_sexo ON lab_procedimientosporexamen.idsexo = mnt_sexo.idsexo
-                          INNER JOIN mnt_rangoedad ON lab_procedimientosporexamen.idedad = mnt_rangoedad.idedad
-                          WHERE lab_examenesxestablecimiento.IdEstablecimiento=$lugar AND ";
+                          INNER JOIN lab_examenesxestablecimiento ON lab_procedimientosporexamen.idexamen = lab_examenesxestablecimiento.idexamen
+                          INNER JOIN lab_examenes ON lab_examenesxestablecimiento.idexamen = lab_examenes.id
+                          INNER JOIN ctl_sexo ON lab_procedimientosporexamen.idsexo = ctl_sexo.id
+                          INNER JOIN ctl_rango_edad ON lab_procedimientosporexamen.idrangoedad = ctl_rango_edad.id
+                          WHERE lab_examenesxestablecimiento.idestablecimiento=$lugar AND ";
+                
+              
 		$ban=0;
 		//VERIFICANDO LOS POST ENVIADOS
 		if (!empty($_POST['idarea']))
-		{ $query .= " lab_procedimientosporexamen.IdArea='".$_POST['idarea']."' AND"; }
+		{ $query .= " lab_procedimientosporexamen.idarea='".$_POST['idarea']."' AND"; }
 		
 		if (!empty($_POST['idexamen']))
-		{ $query .= " lab_procedimientosporexamen.IdExamen='".$_POST['idexamen']."' AND"; }
+		{ $query .= " lab_procedimientosporexamen.idexamen='".$_POST['idexamen']."' AND"; }
 		
 		if (!empty($_POST['proce']))
-		{ $query .= " NombreProcedimiento='".$_POST['proce']."' AND"; }
+		{ $query .= " nombreprocedimiento='".$_POST['proce']."' AND"; }
 		
 		if (!empty($_POST['unidades']))
 		{ $query .= " unidades='".$_POST['unidades']."' AND"; }
@@ -298,20 +328,20 @@ switch ($opcion)
 		{ $query .= " rangofin='".$_POST['rangofin']."' AND"; }
                 
                 if (!empty($_POST['idsexo']))
-		{ $query .= " mnt_sexo.idsexo='".$_POST['sexo']."' AND"; }
+		{ $query .= " ctl_sexo.id='".$_POST['sexo']."' AND"; }
                 
                  if (!empty($_POST['redad']))
-		{ $query .= " mnt_rangoedad.idedad='".$_POST['redad']."' AND"; }
+		{ $query .= " ctl_rango_edad.id='".$_POST['redad']."' AND"; }
 
 		if (!empty($_POST['Fechaini']))
 		{ 	$FechaI=explode('/',$_POST['Fechaini']);
 			$Fechaini=$FechaI[2].'/'.$FechaI[1].'/'.$FechaI[0];
-			$query .= " FechaIni='".$Fechaini."' AND"; }
+			$query .= " fechaini='".$Fechaini."' AND"; }
 
 		if (!empty($_POST['Fechafin'])){
 			$FechaF=explode('/',$_POST['Fechafin']);
 	  		$Fechafin=$FechaF[2].'-'.$FechaF[1].'-'.$FechaF[0];
-			$query .= " FechaFin='".$Fechafin."' AND"; } 
+			$query .= " fechafin='".$Fechafin."' AND"; } 
 		
 		if((empty($_POST['idarea'])) and (empty($_POST['idexamen'])) and (empty($_POST['proce'])) and (empty($_POST['unidades'])) and (empty($_POST['rangoini'])) 
 		and (empty($_POST['rangofin'])) and (empty($_POST['Fechafin'])) and (empty($_POST['Fechaini'])) and (empty($_POST['sexo'])) and (empty($_POST['redad'])))
@@ -320,7 +350,7 @@ switch ($opcion)
 		}
 		if ($ban==0)
 		{   $query = substr($query ,0,strlen($query)-3); 
-		    $query_search = $query. " ORDER BY lab_procedimientosporexamen.IdExamen";
+		  $query_search = $query. " ORDER BY lab_procedimientosporexamen.idexamen";
 		//echo $query_search;
 		//ENVIANDO A EJECUTAR LA BUSQUEDA!!
 		//require_once("clsLab_Procedimientos.php");
@@ -338,8 +368,8 @@ switch ($opcion)
 	 echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
                <tr>
                     <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-                    <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td>
-                    <td class='CobaltFieldCaptionTD'> IdExamen </td>
+                  <!--  <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
+                   <!-- <td class='CobaltFieldCaptionTD'> IdExamen </td> -->
                     <td class='CobaltFieldCaptionTD'> Examen </td>
                     <td class='CobaltFieldCaptionTD'> Procedimiento </td>
                     <td class='CobaltFieldCaptionTD'> Unidades </td>	   
@@ -349,31 +379,31 @@ switch ($opcion)
                     <td class='CobaltFieldCaptionTD'> Fecha Inicio </td>	 
                     <td class='CobaltFieldCaptionTD'> Fecha Finalización </td>
 		</tr>";
-		while($row = mysql_fetch_array($consulta))
+		while($row = pg_fetch_array($consulta))
 				{
 	   echo "<tr>
                     <td aling='center'> 
                         <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-			onclick=\"pedirDatos('".$row['IdProcedimientoporexamen']."')\"> </td>
-                    <td aling ='center'> 
-			<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-			onclick=\"eliminarDato('".$row['IdProcedimientoporexamen']."',$lugar)\"> </td>
-                    <td>".$row['IdExamen']."</td>
-                    <td>".htmlentities($row['NombreExamen'])."</td>
-                    <td>".htmlentities($row['NombreProcedimiento'])."</td>
+			onclick=\"pedirDatos('".$row[0]."')\"> </td>
+                   <!-- <td aling ='center'> 
+			 <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+			onclick=\"eliminarDato('".$row['id']."',$lugar)\"> </td> -->
+                  <!--   <td>".$row['id']."oooo"."</td>  -->
+                    <td>".htmlentities($row['nombreexamen'])."</td>
+                    <td>".htmlentities($row['nombreprocedimiento'])."</td>
                     <td>".htmlentities($row['unidades'])."</td>
                     <td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
-              echo "<td>".$row['sexovn']."</td>
-                    <td>".$row['nombregrupoedad']."</td>";
-	   if(($row['FechaIni']=="(NULL)") || ($row['FechaIni']=="00/00/0000") ||(empty($row['FechaIni'])) )
+              echo "<td>".$row['abreviatura']."</td>
+                    <td>".$row['nombre']."</td>";
+	   if(($row['fechaini']=="(NULL)") || ($row['fechaini']=="00/00/0000") ||(empty($row['fechaini'])) )
               echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 	   else
-	      echo "<td>".$row['FechaIni']."</td>";
+	      echo "<td>".$row['fechaini']."</td>";
 								
-			if((empty($row['FechaFin'])) || ($row['FechaFin']=="(NULL)") || ($row['FechaFin']=="00/00/0000")) 
+			if((empty($row['fechafin'])) || ($row['fechafin']=="(NULL)") || ($row['fechafin']=="00/00/0000")) 
 		      echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 			else	
-			  echo "<td>".$row['FechaFin']."</td>
+			  echo "<td>".$row['fechafin']."</td>
 			          ";
 		 echo"</tr>";
 				}
@@ -414,7 +444,7 @@ switch ($opcion)
 		}
 		else {
 			$query = substr($query ,0,strlen($query)-6);
-			$query_search = $query. " ORDER BY lab_procedimientosporexamen.IdExamen";
+			$query_search = $query. " ORDER BY lab_procedimientosporexamen.idexamen";
             		
 		
 		
@@ -436,8 +466,8 @@ switch ($opcion)
 					   
 					   <tr>
 					   <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
-					   <td class='CobaltFieldCaptionTD'aling='center'> Eliminar</td>
-					   <td class='CobaltFieldCaptionTD'> IdExamen</td>
+					 <!--  <td class='CobaltFieldCaptionTD'aling='center'> Eliminar</td> -->
+					 <!--  <td class='CobaltFieldCaptionTD'> IdExamen</td> -->
 					   <td class='CobaltFieldCaptionTD'> Examen </td>  
 					   <td class='CobaltFieldCaptionTD'> Procedimiento </td>
 					   <td class='CobaltFieldCaptionTD'> Unidades </td>	   
@@ -448,32 +478,32 @@ switch ($opcion)
 					   <td class='CobaltFieldCaptionTD'> Fecha Finalización </td>
 					      
 					   </tr>";
-			   while($row = mysql_fetch_array($consulta))
+			   while($row = pg_fetch_array($consulta))
 			   {
 				     echo "<tr>
                                                 <td aling='center'> 
                                                     <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
                                                     onclick=\"pedirDatos('".$row[0]."')\"> </td>
-						<td aling ='center'> 
+						<!-- <td aling ='center'> 
                                                     <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-                                                    onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"> </td>
-                                                <td>". $row['IdExamen']."</td>
-						<td>".htmlentities($row['NombreExamen'])."</td>
-						<td>".htmlentities($row['NombreProcedimiento'])."</td>
+                                                    onclick=\"eliminarDato('".$row['id']."',$lugar)\"> </td> -->
+                                               <!-- <td>". $row['id']."</td> -->
+						<td>".htmlentities($row['nombreexamen'])."</td>
+						<td>".htmlentities($row['nombreprocedimiento'])."</td>
 						<td>".htmlentities($row['unidades'])."</td>
 						<td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
-                                          echo "<td>".$row['sexovn']."</td>
-                                                <td>".$row['nombregrupoedad']."</td>";
+                                          echo "<td>".$row['abreviatura']."</td>
+                                                <td>".$row['nombe']."</td>";
 							
-                                        if(($row['FechaIni']=="(NULL)") || ($row['FechaIni']=="00/00/0000") ||(empty($row['FechaIni'])) )
+                                        if(($row['fechaini']=="(NULL)") || ($row['fechaini']=="00/00/0000") ||(empty($row['fechaini'])) )
 					    echo"<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 					else
                                             echo"<td>".$row['FechaIni']." </td>";
 								
-					if((empty($row['FechaFin'])) || ($row['FechaFin']=="(NULL)") || ($row['FechaFin']=="00/00/0000"))
+					if((empty($row['fechafin'])) || ($row['fechafin']=="(NULL)") || ($row['fechafin']=="00/00/0000"))
 					    echo"<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 					else	
-                                            echo"<td>".$row['FechaFin']."</td>";
+                                            echo"<td>".$row['fechafin']."</td>";
 				    echo"</tr>";
                             }
                             echo "</table>"; 
@@ -548,32 +578,35 @@ switch ($opcion)
 			$Fechafin=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];	
 		}
 
-		$query = "SELECT lab_examenes.IdExamen,lab_examenes.NombreExamen,lab_procedimientosporexamen.IdProcedimientoporexamen,lab_procedimientosporexamen.NombreProcedimiento,
-		lab_procedimientosporexamen.unidades,lab_procedimientosporexamen.rangoInicio,
+		 $query = "SELECT lab_examenes.id,lab_examenes.nombreexamen,lab_procedimientosporexamen.id,lab_procedimientosporexamen.nombreprocedimiento,
+		lab_procedimientosporexamen.unidades,lab_procedimientosporexamen.rangoinicio,
 		lab_procedimientosporexamen.rangofin,
-                DATE_FORMAT(lab_procedimientosporexamen.FechaIni,'%d/%m/%Y')AS FechaIni,
-		DATE_FORMAT(lab_procedimientosporexamen.FechaFin,'%d/%m/%Y')AS FechaFin,
-                mnt_sexo.idsexo,mnt_sexo.sexovn,mnt_rangoedad.idedad,mnt_rangoedad.nombregrupoedad 
+                (lab_procedimientosporexamen.fechaini)AS fechaini,
+		(lab_procedimientosporexamen.fechafin)AS fechafin,
+                ctl_sexo.id,ctl_sexo.abreviatura,ctl_rango_edad.id,ctl_rango_edad.nombre
                 FROM lab_procedimientosporexamen 
-               INNER JOIN lab_examenes ON lab_procedimientosporexamen.IdExamen=lab_examenes.IdExamen 
-             INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
-	     INNER JOIN lab_areas ON lab_examenes.IdArea=lab_areas.IdArea
-             INNER JOIN lab_areasxestablecimiento ON lab_areas.IdArea=lab_areasxestablecimiento.IdArea
-             INNER JOIN mnt_sexo ON lab_procedimientosporexamen.idsexo = mnt_sexo.idsexo
-             INNER JOIN mnt_rangoedad ON lab_procedimientosporexamen.idedad = mnt_rangoedad.idedad 
-		WHERE lab_examenesxestablecimiento.Idplantilla='E' AND lab_examenesxestablecimiento.Condicion='H' AND 
-                lab_areasxestablecimiento.Condicion='H' AND lab_examenesxestablecimiento.IdEstablecimiento=$lugar AND ";
+                INNER JOIN lab_examenes ON lab_procedimientosporexamen.idexamen=lab_examenes.id 
+                INNER JOIN lab_examenesxestablecimiento ON lab_examenes.id=lab_examenesxestablecimiento.idexamen
+	        INNER JOIN lab_areas ON lab_examenes.idarea=lab_areas.id
+                INNER JOIN lab_areasxestablecimiento ON lab_areas.id=lab_areasxestablecimiento.idarea
+                INNER JOIN ctl_sexo ON lab_procedimientosporexamen.idsexo = ctl_sexo.id
+                INNER JOIN ctl_rango_edad ON lab_procedimientosporexamen.idrangoedad = ctl_rango_edad.id 
+		WHERE lab_examenesxestablecimiento.idplantilla=5 AND lab_examenesxestablecimiento.condicion='H' AND 
+                lab_areasxestablecimiento.condicion='H' AND lab_examenesxestablecimiento.idestablecimiento=$lugar AND ";
 		$ban=0;
+                
+                
+                
 		
 		//VERIFICANDO LOS POST ENVIADOS
 		if (!empty($_POST['idarea']))
-		{ $query .= " lab_procedimientosporexamen.IdArea='".$_POST['idarea']."' AND"; }
+		{ $query .= " lab_procedimientosporexamen.idarea='".$_POST['idarea']."' AND"; }
 		
 		if (!empty($_POST['idexamen']))
-		{ $query .= " lab_procedimientosporexamen.IdExamen='".$_POST['idexamen']."' AND"; }
+		{ $query .= " lab_procedimientosporexamen.idexamen='".$_POST['idexamen']."' AND"; }
 	
 		if (!empty($_POST['proce']))
-		{ $query .= "lab_procedimientosporexamen.NombreProcedimiento='".$_POST['proce']."' AND"; }
+		{ $query .= "lab_procedimientosporexamen.nombreprocedimiento='".$_POST['proce']."' AND"; }
 	
 		if (!empty($_POST['unidades']))
 		{ $query .= " lab_procedimientosporexamen.unidades='".$_POST['unidades']."' AND"; }
@@ -585,20 +618,20 @@ switch ($opcion)
 		{ $query .= " lab_procedimientosporexamen.rangofin='".$_POST['rangofin']."' AND"; }
                 
                 if (!empty($_POST['idsexo']))
-		{ $query .= " mnt_sexo.idsexo='".$_POST['sexo']."' AND"; }
+		{ $query .= " ctl_sexo.id='".$_POST['sexo']."' AND"; }
                 
                 if (!empty($_POST['redad']))
-		{ $query .= " mnt_rangoedad.idedad='".$_POST['redad']."' AND"; }
+		{ $query .= " ctl_rango_edad.id='".$_POST['redad']."' AND"; }
 		
 		if (!empty($_POST['Fechaini']))
 		{ 	$FechaI=explode('/',$_POST['Fechaini']);
 			$Fechaini=$FechaI[2].'/'.$FechaI[1].'/'.$FechaI[0];
-			$query .= " FechaIni='".$Fechaini."' AND"; }
+			$query .= " fechaini='".$Fechaini."' AND"; }
 
 		if (!empty($_POST['Fechafin'])){
 			$FechaF=explode('/',$_POST['Fechafin']);
 	  		$Fechafin=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];
-			$query .= " FechaFin='".$Fechafin."' AND"; } 
+			$query .= " fechafin='".$Fechafin."' AND"; } 
 		
 	
 		if((empty($_POST['idarea'])) and (empty($_POST['idexamen'])) and (empty($_POST['proce'])) 
@@ -611,11 +644,11 @@ switch ($opcion)
 	
 		if ($ban==0)
 		{   $query = substr($query ,0,strlen($query)-3); 
-		    $query_search = $query. " ORDER BY lab_procedimientosporexamen.IdExamen";
+		    $query_search = $query. " ORDER BY lab_procedimientosporexamen.idexamen";
 		}
 		else {
 			$query = substr($query ,0,strlen($query)-6);
-			$query_search = $query. " ORDER BY lab_procedimientosporexamen.IdExamen";
+			$query_search = $query. " ORDER BY lab_procedimientosporexamen.idexamen";
 		}
            // echo $query_search;
 		//ENVIANDO A EJECUTAR LA BUSQUEDA!!
@@ -633,7 +666,7 @@ switch ($opcion)
 		echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
                       <tr>
                           <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
-			  <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td>
+			<!--  <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
 			  <td class='CobaltFieldCaptionTD'> IdExamen </td>
 			  <td class='CobaltFieldCaptionTD'> Examen </td>
 			  <td class='CobaltFieldCaptionTD'> Procedimiento </td>
@@ -644,31 +677,31 @@ switch ($opcion)
 			  <td class='CobaltFieldCaptionTD'> Fecha Inicio </td>	 
 			  <td class='CobaltFieldCaptionTD'> Fecha Finalización </td>
 		      </tr>";
-	while($row = mysql_fetch_array($consulta))
+	while($row = pg_fetch_array($consulta))
 	{
 		echo "<tr>
                     	<td aling='center'> 
                         	<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-				onclick=\"pedirDatos('".$row['IdProcedimientoporexamen']."')\"> </td>
-			<td aling ='center'> 
-				<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-				onclick=\"eliminarDato('".$row['IdProcedimientoporexamen']."',$lugar)\"> </td>
-			<td>". $row['IdExamen']."</td>
-			<td>".htmlentities($row['NombreExamen'])."</td>
-			<td>".htmlentities($row['NombreProcedimiento'])."</td>
+				onclick=\"pedirDatos('".$row['id']."')\"> </td>
+			<!-- <td aling ='center'> 
+				 <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+				onclick=\"eliminarDato('".$row['id']."',$lugar)\"> </td> -->
+			<td>". $row['id']."</td>
+			<td>".htmlentities($row['nombreexamen'])."</td>
+			<td>".htmlentities($row['nombreprocedimiento'])."</td>
 			<td>".htmlentities($row['unidades'])."</td>
                         <td>".$row['rangoInicio']."-".$row['rangofin']."</td>";
-                  echo "<td>".$row['sexovn']."</td>
-                        <td>".$row['nombregrupoedad']."</td>";
-                if(($row['FechaIni']=="(NULL)") || ($row['FechaIni']=="00/00/0000") || (empty($row['FechaIni'])) )
+                  echo "<td>".$row['abreviatura']."</td>
+                        <td>".$row['nombre']."</td>";
+                if(($row['fechaini']=="(NULL)") || ($row['fechaini']=="00/00/0000") || (empty($row['fechaini'])) )
                    echo"<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 		else
-                   echo"<td>".$row['FechaIni']." </td>";
+                   echo"<td>".$row['fechaini']." </td>";
 						
-		if((empty($row['FechaFin'])) || ($row['FechaFin']=="(NULL)") || ($row['FechaFin']=="00/00/0000"))
+		if((empty($row['fechafin'])) || ($row['fechafin']=="(NULL)") || ($row['fechafin']=="00/00/0000"))
                   echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 		else	
-                  echo "<td>".$row['FechaFin']."</td>";
+                  echo "<td>".$row['fechafin']."</td>";
 		echo"</tr>";
 	}
 	echo "</table>"; 

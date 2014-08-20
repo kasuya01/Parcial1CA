@@ -126,9 +126,9 @@ switch ($opcion)
                                     <td>Prioridad</td>
 			 </tr>";    
                     $pos=0;
-		 //$row = mysql_fetch_array($consulta);
+		 //$row = pg_fetch_array($consulta);
 		 
-		   while ($row = mysql_fetch_array($consulta))
+		   while ($row = pg_fetch_array($consulta))
 			{ 
 		   echo "<tr>
 				   <td width='8%'>".$row['NumeroMuestra']."</td>
@@ -171,7 +171,7 @@ switch ($opcion)
 			include_once("clsMuestrasRechazadas.php");
 			//recuperando los valores generales de la solicitud
 			$consulta=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud);
-			$row = mysql_fetch_array($consulta);
+			$row = pg_fetch_array($consulta);
 			//obteniedo los datos generales de la solicitud
 			//valores de las consultas
 			$medico=$row['NombreMedico'];
@@ -272,7 +272,7 @@ switch ($opcion)
                                         <td> Indicaci&oacute;n M&eacute;dica </td>
                                     </tr>";
         $pos=0;
-        while($fila = mysql_fetch_array($datosexamen)){
+        while($fila = pg_fetch_array($datosexamen)){
                       $imprimir .= "<tr>
                                         <td>".$fila['IdExamen']."</td>
                                         <td>".htmlentities($fila['NombreExamen'])."</td>	
@@ -339,7 +339,7 @@ mysql_free_result($datosexamen);
 		include_once("clsMuestrasRechazadas.php");
 		//recuperando los valores generales de la solicitud
 		$consulta=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud);
-		$row = mysql_fetch_array($consulta);
+		$row = pg_fetch_array($consulta);
 		//obteniedo los datos generales de la solicitud
 		//valores de las consultas
 		$medico=$row['NombreMedico'];
@@ -438,7 +438,7 @@ mysql_free_result($datosexamen);
 			   		<td> Indicaci&oacute;n M&eacute;dica </td>
 			   	</tr>";
 			$pos=0;
-			while($fila = mysql_fetch_array($consultadetalle)){
+			while($fila = pg_fetch_array($consultadetalle)){
 			$imprimir .= "<tr>
 				      	<td>".$fila['IdExamen']."</td>
 					<td>".htmlentities($fila['NombreExamen'])."</td>	
@@ -586,7 +586,7 @@ mysql_free_result($consultadetalle);
 		$rslts = '<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:250px">';
 		$rslts .='<option value="0"> Seleccione Examen </option>';
 			
-		while ($rows =mysql_fetch_array($dtExam)){
+		while ($rows =pg_fetch_array($dtExam)){
 			$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 		}
 				
@@ -600,7 +600,7 @@ mysql_free_result($consultadetalle);
             	$dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
               	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:375px">';
 		$rslts .='<option value="0"> Seleccione Establecimiento </option>';
-               while ($rows =mysql_fetch_array( $dtIdEstab)){
+               while ($rows =pg_fetch_array( $dtIdEstab)){
 		  $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 	       }
 				
@@ -614,7 +614,7 @@ mysql_free_result($consultadetalle);
 	     $dtserv=$objdatos->LlenarCmbServ($IdServ,$lugar);
 	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:375px">';
 			$rslts .='<option value="0"> Seleccione Subespecialidad </option>';
-			while ($rows =mysql_fetch_array($dtserv)){
+			while ($rows =pg_fetch_array($dtserv)){
 		  	$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 	       		}
 				

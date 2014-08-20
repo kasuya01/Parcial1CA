@@ -16,7 +16,7 @@ class clsLab_Areas {
     function insertar($idarea, $nombrearea, $usuario, $tipo, $lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "INSERT INTO lab_areas(idarea,nombrearea,idusuarioreg,fechahorareg,idusuariomod,fechahoramod, administrativa) 
+          $query = "INSERT INTO ctl_area_servicio_diagnostico(idarea,nombrearea,idusuarioreg,fechahorareg,idusuariomod,fechahoramod, administrativa) 
 			VALUES('$idarea','$nombrearea','$usuario', (SELECT date_trunc('seconds',(SELECT now()))),'$usuario', (SELECT date_trunc('seconds',(SELECT now()))), '$tipo')";
 
             $result = @pg_query($query);
@@ -153,11 +153,19 @@ class clsLab_Areas {
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
             $query = "SELECT t01.id AS idarea, t01.nombrearea
-                           FROM lab_areas t01
+                           FROM ctl_area_servicio_diagnostico t01
                            INNER JOIN lab_areasxestablecimiento t02 ON (t01.id = t02.idarea)
                            WHERE t02.condicion = 'H' AND t01.administrativa = 'N' 
                             AND t02.idestablecimiento = $lugar 
                            ORDER BY nombrearea";
+            
+           /* $query = "SELECT t01.id AS idarea, t01.nombrearea
+                           FROM ctl_area_servicio_diagnostico t01
+                           INNER JOIN lab_areasxestablecimiento t02 ON (t01.id = t02.idarea)
+                           WHERE t02.condicion = 'H' AND t01.administrativa = 'N' 
+                           
+                            
+                           ORDER BY nombrearea";*/
             $result = @pg_query($query);
             if (!$result)
                 return false;

@@ -159,7 +159,18 @@ WHERE IdPrograma=$IdPrograma AND IdEstablecimiento=$lugar";
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT lab_examenes.IdExamen,lab_examenes.IdEstandar,lab_examenes.IdArea,NombreExamen,Descripcion,NombreArea,
+   /*  $query = "SELECT lab_examenes.IdExamen,lab_examenes.IdEstandar,lab_examenes.IdArea,NombreExamen,Descripcion,NombreArea,
+lab_examenesxestablecimiento.IdPlantilla,Observacion,lab_examenes.habilitado,lab_examenesxestablecimiento.Condicion,
+lab_examenes.Ubicacion,Urgente 
+from lab_examenes 
+INNER JOIN lab_areas  on lab_examenes.IdArea=lab_areas.IdArea
+INNER JOIN lab_codigosestandar ON lab_examenes.IdEstandar=lab_codigosestandar.IdEstandar
+INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
+WHERE lab_examenesxestablecimiento.Condicion='H' AND lab_examenesxestablecimiento.IdEstablecimiento=$lugar
+ORDER BY lab_examenes.IdArea,lab_examenes.IdExamen";
+	 $result = mysql_query($query);*/
+       
+       $query = "SELECT laexa.id,laexa.idestandar,laexa.idarea,nombreexamen,observacion,NombreArea,
 lab_examenesxestablecimiento.IdPlantilla,Observacion,lab_examenes.habilitado,lab_examenesxestablecimiento.Condicion,
 lab_examenes.Ubicacion,Urgente 
 from lab_examenes 

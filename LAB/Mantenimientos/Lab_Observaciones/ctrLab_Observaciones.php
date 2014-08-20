@@ -4,10 +4,10 @@ $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 //variables POST
-$idobservacion=$_POST['idobservacion'];
-$observacion=htmlentities($_POST['observacion']);
-$idarea=$_POST['idarea'];
-$tiporespuesta=$_POST['tiporespuesta'];
+ echo "ttttttttt".$idobservacion=$_POST['idobservacion'];
+ echo "ooo".$observacion=htmlentities($_POST['observacion']);
+ $idarea=$_POST['idarea'];
+ $tiporespuesta=$_POST['tiporespuesta'];
 $opcion=$_POST['opcion'];
 $Pag =$_POST['Pag'];
 
@@ -128,7 +128,7 @@ switch ($opcion)
 		{ $query .="observacion ilike '%".$_POST['observacion']."%'AND";}
                   	
 		 $query = substr($query ,0,strlen($query)-4);
-		$query_search = $query."ORDER BY observacion";	
+		$query_search = $query."ORDER  BY observacion";	
      //  echo $query_search ;
 	//para manejo de la paginacion
 		$RegistrosAMostrar=4;
