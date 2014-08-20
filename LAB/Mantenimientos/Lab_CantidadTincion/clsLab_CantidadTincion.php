@@ -13,8 +13,8 @@ class clsLab_CantidadTincion
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_cantidadestincion(CantidadTincion,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod) VALUES('$CanTin','$usuario',NOW(),'$usuario',NOW())";
-     $result = @mysql_query($query);
+    $query = "INSERT INTO lab_cantidadestincion(cantidadtincion,idusuarioreg,fechahorareg,idusuariomod,fechahoramod) VALUES('$CanTin','$usuario',NOW(),'$usuario',NOW())";
+     $result = @pg_query($query);
 	 
      if (!$result)
        return false;
@@ -27,8 +27,8 @@ class clsLab_CantidadTincion
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "UPDATE lab_cantidadestincion SET CantidadTincion='$CanTin',IdUsuarioMod='$usuario',FechaHoraMod=NOW() WHERE IdCantidadesTincion='$idCanTin'";
-     $result = @mysql_query($query);
+     $query = "UPDATE lab_cantidadestincion SET cantidadtincion='$CanTin',idusuariomod='$usuario',fechahoramod=NOW() WHERE id='$idCanTin'";
+     $result = @pg_query($query);
 	 
      if (!$result)
        return false;
@@ -43,7 +43,7 @@ class clsLab_CantidadTincion
    if($con->conectar()==true) 
    {
      $query = "DELETE FROM lab_cantidadestincion WHERE IdCantidadesTincion='$idCanTin'";
-     $result = @mysql_query($query);
+     $result = @pg_query($query);
 	 
      if (!$result)
        return false;
@@ -59,8 +59,8 @@ function VerificarIntegridad($idCanTin)
    if($con->conectar()==true)
    {
      $query = "SELECT * FROM lab_examenes WHERE IdCantidadesTincion='$idCanTin'";
-     $result = @mysql_query($query);
-	 $cuenta = mysql_num_rows($result);
+     $result = @pg_query($query);
+	 $cuenta = pg_num_rows($result);
 	 
      if ($cuenta > 0)
        return true;
@@ -74,8 +74,8 @@ function VerificarIntegridad($idCanTin)
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "select * from lab_cantidadestincion order by IdCantidadesTincion LIMIT $RegistrosAEmpezar, $RegistrosAMostrar ";
-	 $result = @mysql_query($query);
+     $query = "select * from lab_cantidadestincion order by id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar  ";
+	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -87,8 +87,8 @@ function VerificarIntegridad($idCanTin)
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "select * from lab_cantidadestincion order by IdCantidadesTincion";
-	 $result = @mysql_query($query);
+     $query = "select * from lab_cantidadestincion order by id";
+	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -102,7 +102,7 @@ function VerificarIntegridad($idCanTin)
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
      $query = "select * from lab_cantidadestincion ";
-	 $numreg = mysql_num_rows(mysql_query($query));
+	 $numreg = pg_num_rows(pg_query($query));
 	 if (!$numreg )
 	   return false;
 	 else
@@ -116,8 +116,8 @@ function VerificarIntegridad($idCanTin)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT * FROM lab_cantidadestincion WHERE IdCantidadesTincion='$idCanTin'";
-     $result = @mysql_query($query);
+     $query = "SELECT * FROM lab_cantidadestincion WHERE id='$idCanTin'";
+     $result = @pg_query($query);
      if (!$result)
        return false;
      else
@@ -131,8 +131,8 @@ function consultarpagbus($query,$RegistrosAEmpezar, $RegistrosAMostrar)
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = $query." LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-		 $result = @mysql_query($query);
+	     $query = $query." LIMIT $RegistrosAMostrar  OFFSET $RegistrosAEmpezar ";
+		 $result = @pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -145,7 +145,7 @@ function NumeroDeRegistrosbus($query){
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $numreg = mysql_num_rows(mysql_query($query));
+	     $numreg = pg_num_rows(pg_query($query));
 		 if (!$numreg )
 		   return false;
 		 else
@@ -163,7 +163,7 @@ class clsLabor_CantidadTincion
 		if($con2->conectarT()==true){ 
 		
 			$query = "INSERT INTO laboratorio.lab_cantidadestincion(CantidadTincion,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod) VALUES('$CanTin','$usuario',NOW(),'$usuario',NOW())";
-			$result = @mysql_query($query);
+			$result = @pg_query($query);
 		 
 			if (!$result)
 				return false;
@@ -177,7 +177,7 @@ class clsLabor_CantidadTincion
 	   $con2 = new ConexionBDLab;
 	   if($con2->conectarT()==true){
 			$query = "UPDATE laboratorio.lab_cantidadestincion SET CantidadTincion='$CanTin',IdUsuarioMod='$usuario',FechaHoraMod=NOW() WHERE IdCantidadesTincion='$idCanTin'";
-			$result = @mysql_query($query);
+			$result = @pg_query($query);
 			 
 			if (!$result)
 				return false;
@@ -192,7 +192,7 @@ class clsLabor_CantidadTincion
 		$con2 = new ConexionBDLab;
 		if($con2->conectarT()==true){
 			$query = "DELETE FROM laboratorio.lab_cantidadestincion WHERE IdCantidadesTincion='$idCanTin'";
-			$result = @mysql_query($query);
+			$result = @pg_query($query);
 		 
 			if (!$result)
 				return false;

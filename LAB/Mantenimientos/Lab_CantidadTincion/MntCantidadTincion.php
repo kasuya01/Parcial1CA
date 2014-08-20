@@ -36,13 +36,15 @@ if ($nivel==33){
 		<td colspan="2" class="CobaltFieldCaptionTD" align="center"><h3><strong>Mantenimiento de Cantidad Tinci&oacute;n</strong></h3>
 		</td>
 	</tr>
-	<tr>
+	<!--<tr>
         <td class="StormyWeatherFieldCaptionTD">IdCantidad</td>
         <td class="StormyWeatherDataTD"><input type="text" name="txtidCanTin" id="txtidCanTin" disabled="disabled" /></td>
-    </tr>
+    </tr> -->
     <tr>
         <td class="StormyWeatherFieldCaptionTD">Cantidad Tinci&oacute;n </td>
-        <td class="StormyWeatherDataTD"><input type="text" name="txtCanTin" id="txtCanTin" size="35" /></td>
+        <td class="StormyWeatherDataTD"><input type="text" name="txtCanTin" id="txtCanTin" size="35" />
+                                        <input type="hidden" name="txtidCanTin" id="txtidCanTin" disabled="disabled" />
+        </td>
     </tr>
     <tr>
         <td class="StormyWeatherDataTD" colspan="2" align="right">

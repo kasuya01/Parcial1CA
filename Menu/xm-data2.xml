@@ -25,9 +25,9 @@
 		
 		<menu labelText="MANTENIMIENTOS">
         	<menu labelText="LABORATORIO">
-				<item labelText="Áreas de Laboratorio" url="../../Mantenimientos/Lab_Areas/MntAreasLaboratorio.php"/>
+				<!--item labelText="Áreas de Laboratorio" url="../../Mantenimientos/Lab_Areas/MntAreasLaboratorio.php"/-->
 				<item labelText="Empleados por Área" url="../../Mantenimientos/Lab_Empleados/MntEmpleados.php"/>
-				<item labelText="Programas de Salud" url="../../Mantenimientos/Lab_Programas/MntProgramas.php"/>
+				<!--item labelText="Programas de Salud" url="../../Mantenimientos/Lab_Programas/MntProgramas.php"/-->
 				<item labelText="Formularios por Programas de Salud" url="../../Mantenimientos/Lab_Formularios/MntFormularios.php"/>
 			</menu>	
 			<menu labelText="EXÁMENES">

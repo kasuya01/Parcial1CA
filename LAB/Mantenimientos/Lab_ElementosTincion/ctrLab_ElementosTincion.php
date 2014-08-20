@@ -15,7 +15,7 @@ $Clases = new clsLabor_ElementosTincion;
 switch ($opcion) 
 {
 	case 1:  //INSERTAR	
-       	if (($objdatos->insertar($ElemTin,$usuario)==true) && ($Clases->insertar_labo($ElemTin,$usuario)==true))
+       	if (($objdatos->insertar($ElemTin,$usuario)==true))// && ($Clases->insertar_labo($ElemTin,$usuario)==true))
 	   	{
 			    echo "Registro Agregado";
 		}
@@ -24,7 +24,8 @@ switch ($opcion)
 		}
 	break;
     case 2:  //MODIFICAR      
-		if (($objdatos->actualizar($idElemTin,$ElemTin,$usuario)==true) && ($Clases->actualizar_labo($idElemTin,$ElemTin,$usuario)==true)){
+		if (($objdatos->actualizar($idElemTin,$ElemTin,$usuario)==true))// && ($Clases->actualizar_labo($idElemTin,$ElemTin,$usuario)==true))
+                {
 			echo "Registro Actualizado"	;	
 		
 		}
@@ -56,19 +57,19 @@ switch ($opcion)
 		echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
 			   <tr>
 			   <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td>
+			<!--   <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
 			   <td class='CobaltFieldCaptionTD'> IdElemento</td>
 			   <td class='CobaltFieldCaptionTD'> Elemento Tincion</td>	   
 			   </tr>";
 
-		while($row = mysql_fetch_array($consulta)){
+		while($row = pg_fetch_array($consulta)){
 			echo "<tr>
 					<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 					onclick=\"pedirDatos('".$row[0]."')\"> </td>
-					<td aling ='center'> 
+				<!--	<td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"eliminarDato('".$row[0]."')\"> </td>
+					onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
 					<td> $row[0] </td>
 					<td>".htmlentities($row[1])."</td>
 					</tr>";
@@ -108,12 +109,12 @@ switch ($opcion)
 	break;
 	case 5: //buscar
             
-	    $query = "SELECT IdElementosTincion,ElementoTincion FROM lab_elementostincion
+	   $query = "SELECT id,elementotincion FROM lab_elementostincion
 		      WHERE ";
 				
 		//VERIFICANDO LOS POST ENVIADOS
 		if (!empty($_POST['ElemTin']))
-		{ $query .= " ElementoTincion like'%".$_POST['ElemTin']."%' "; }
+		{ $query .= " ElementoTincion ilike'%".$_POST['ElemTin']."%' "; }
 		
 		$query = substr($query ,0,strlen($query)-1);
 		//echo $query;
@@ -129,19 +130,19 @@ switch ($opcion)
 		echo "<table border = 1 align='center' class='estilotabla'>
 			  <tr>
 			   <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td>
+			<!--   <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
 			   <td class='CobaltFieldCaptionTD'> IdElemento</td>
 			   <td class='CobaltFieldCaptionTD'> Elemento Tincion</td>	   
 			   </tr>";
 
-		while($row = mysql_fetch_array($consulta)){
+		while($row = pg_fetch_array($consulta)){
 			echo "<tr>
 					<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 					onclick=\"pedirDatos('".$row[0]."')\"> </td>
-					<td aling ='center'> 
+				<!--	<td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"eliminarDato('".$row[0]."')\"> </td>
+					onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
 					<td> $row[0] </td>
 					<td>".htmlentities($row[1])."</td>
 					</tr>";

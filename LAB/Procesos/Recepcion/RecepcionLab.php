@@ -1,11 +1,13 @@
 <?php session_start();
 include_once("../../../Conexion/ConexionBD.php"); 
+include_once("cls_recepcion.php");
 //include_once("cls_recepcion.php");
 if(isset($_SESSION['Correlativo'])){
 $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea']; 
+$recepcion = new clsRecepcion;
 // echo $lugar;
 /***************/
 if ($nivel==1){
@@ -50,7 +52,7 @@ function fillEstablecimiento(idtipoEstab){
   accion=8;
   
 	if(idtipoEstab==0){ 
-	  alert("Seleccione una tipo de establecimiento!");
+	  alert("Seleccione un tipo de establecimiento!");
 	} else{
 		  
 	  if (window.XMLHttpRequest) {
@@ -385,7 +387,8 @@ function procesaEsp(){
  if (sendReq.readyState == 4){//4 The request is complete
    if (sendReq.status == 200){//200 means no error.
 	  respuesta = sendReq.responseText;	
-	  //alert (respuesta);
+//	  alert ('RESPUESTA: '+respuesta+':FIN RESPUESTA');
+//          return false;
 	  switch(accion){
 		case 1:
 		  	document.getElementById('lyMed').innerHTML = respuesta;
@@ -531,7 +534,10 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
                     <td class="StormyWeatherDataTD">
                             <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:350px"  onFocus="fillEstablecimiento(this.value)">
                                     <?php //  <option value="0" selected="selected">--Seleccione un tipo de Establecimiento--</option>
-                                            $db = new ConexionBD;
+                                    $tipoest=$recepcion->tipoestactual($lugar);
+                                    $rows=  pg_fetch_array($tipoest);
+                                       echo '<option value="' . $rows['idtipoestablecimiento'] . '" selected="selected" >' . $rows['nombretipoestablecimiento'] . '</option>'; 
+                                   /*         $db = new ConexionBD;
                                             if($db->conectar()==true){// SELECT IdTipoEstablecimiento,NombreTipoEstablecimiento FROM mnt_tipoestablecimiento ORDER BY NombreTipoEstablecimiento
                                                     $consulta  = "
                                                             SELECT a.IdTipoEstablecimiento, a.NombreTipoEstablecimiento
@@ -544,7 +550,7 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
                                                     while ($rows = mysql_fetch_array($resultado)){
                                                             echo '<option value="' . $rows[0] . '" selected="selected" >' . $rows[1] . '</option>'; 
                                                     }
-                                            }
+                                            }*/
                                     ?>
                             </select>
                     </td>
@@ -566,6 +572,8 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
                             <select name="CmbServicio" id="CmbServicio" style="width:350px" onChange="fillservicio(this.value)" >
                                     <option value="0" selected="selected">--Seleccione Procedencia--</option>
                                     <?php
+                                    $tiposerv=$recepcion->tipoestactual($lugar);
+                                    $rows=  pg_fetch_array($tiposerv);
                                             $db = new ConexionBD;
                                                     if($db->conectar()==true){
                                                     $consulta  = "SELECT mnt_servicio.IdServicio,mnt_servicio.NombreServicio FROM mnt_servicio 

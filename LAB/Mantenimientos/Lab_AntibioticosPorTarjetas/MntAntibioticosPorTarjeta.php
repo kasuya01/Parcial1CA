@@ -46,7 +46,7 @@ function AgregarItemsLista()
 						texto[texto.length] = list1.options[i].text; 
 						valor[valor.length] = list1.options[i].value; 
 					} 
-					else{alert("El Antibiotico ya esta asociado..")}
+					else{alert("El Antibiotico ya esta asociado...")}
 			} 
 		} 
 		   // Eliminamos de uno y lo incluimos en el otro. 
@@ -130,14 +130,14 @@ if ($nivel==33){
 				<td width="47%" class="StormyWeatherFieldCaptionTD">Tarjeta VITEK </td>
 				<td width="53%"  class="StormyWeatherDataTD">
 					<select name="cmbTarjetas" id="cmbTarjetas" onChange="LlenarLista(this.value);">
-					<option value="0" >--Seleccione un Tarjeta--</option>
+					<option value="0" >--Seleccione una Tarjeta--</option>
 					<?php
 						include_once('../Lab_TarjetasVITEK/clsLab_TarjetasVITEK.php');
 						$obj=new clsLab_TarjetasVITEK;
 						$consulta= $obj->consultar($lugar);
 						while($row = pg_fetch_array($consulta))
 						{
-				          echo "<option value='" . $row['IdTarjeta']. "'>" . $row['NombreTarjeta'] . "</option>";
+				          echo "<option value='" . $row['id']. "'>" . $row['nombretarjeta'] . "</option>";
 						}
 					?>		
 					</select>
@@ -158,10 +158,10 @@ if ($nivel==33){
 												<?php
 													include_once('../Lab_Antibioticos/clsLab_Antibioticos.php');
 													$obj=new clsLab_Antibioticos;
-													$consulta= $obj->consultar($lugara);
+													echo $consulta= $obj->consultar();
 													while($row = pg_fetch_array($consulta))
 													{
-													echo "<option value='" . $row['IdAntibiotico']. "'>" . $row['Antibiotico'] . "</option>";
+													echo "<option value='" . $row['id']. "'>" . $row['antibiotico'] . "</option>";
 													}
 												?>		
 												</select>            

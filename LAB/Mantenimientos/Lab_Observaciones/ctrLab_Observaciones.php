@@ -56,22 +56,22 @@ switch ($opcion)
 	echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
 	      <tr>
 		   <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
-		   <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td>
+		 <!--  <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
 		   <td class='CobaltFieldCaptionTD'> Area</td>
 		   <td class='CobaltFieldCaptionTD'> observacion </td>
-                   <td class='CobaltFieldCaptionTD'> Tipo de Respuesta </td>		   
+                   <td class='CobaltFieldCaptionTD'> Tipo de Respuesta</td>		   
 	      </tr>";
-             while($row = mysql_fetch_array($consulta)){
+             while($row = pg_fetch_array($consulta)){
 		echo "<tr>
 			<td aling='center'> 
 			<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 			onclick=\"pedirDatos('".$row[0]."')\"> </td>
-			<td aling ='center'> 
+			<!-- <td aling ='center'> 
 			<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-			onclick=\"eliminarDato('".$row[0]."')\"> </td>
-			<td>". $row['IdArea'] ."</td>
-			<td>".htmlentities($row['Observacion'])."</td>";
-                         $resp=$row['TipoRespuesta'];
+			onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
+			<td>". $row['idarea'] ."</td>
+			<td>".htmlentities($row['observacion'])."</td>";
+                         $resp=$row['tiporespuesta'];
                           if ($resp=='S')
                              echo "<td>Positivo</td>";
                           else if($resp=='N') 
@@ -115,20 +115,20 @@ switch ($opcion)
 			
     break;
     case 5://buscar
-	$query = "SELECT IdArea,TipoRespuesta,Observacion FROM lab_observaciones WHERE ";
+	$query = "SELECT idarea,tiporespuesta,observacion FROM lab_observaciones WHERE ";
 		
 	//VERIFICANDO LOS POST ENVIADOS
 	if (!empty($_POST['idarea']))
-		{ $query .= "IdArea='".$_POST['idarea']."' AND"; }
+		{ $query .="idarea='".$_POST['idarea']."'AND"; }
 		
 	if (!empty($_POST['tiporespuesta']))
-		{ $query .= " TipoRespuesta='".$_POST['tiporespuesta']."' AND"; }
+		{ $query .="tiporespuesta='".$_POST['tiporespuesta']."'AND"; }
 	
 	if (!empty($_POST['observacion']))
-		{ $query .= " Observacion like '%".$_POST['observacion']."%' AND";}
+		{ $query .="observacion ilike '%".$_POST['observacion']."%'AND";}
                   	
 		 $query = substr($query ,0,strlen($query)-4);
-		$query_search = $query. " ORDER BY Observacion";	
+		$query_search = $query."ORDER BY observacion";	
      //  echo $query_search ;
 	//para manejo de la paginacion
 		$RegistrosAMostrar=4;
@@ -142,22 +142,22 @@ switch ($opcion)
 	echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
 	      <tr>
 		   <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
-		   <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td>
+		  <!-- <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
 		   <td class='CobaltFieldCaptionTD'> Area</td>
 		   <td class='CobaltFieldCaptionTD'> observacion </td>
                    <td class='CobaltFieldCaptionTD'> Tipo de Respuesta </td>		   
 	      </tr>";
-             while($row = mysql_fetch_array($consulta)){
+             while($row = pg_fetch_array($consulta)){
 		echo "<tr>
 			<td aling='center'> 
 			<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 			onclick=\"pedirDatos('".$row[0]."')\"> </td>
-			<td aling ='center'> 
+			<!-- <td aling ='center'> 
 			<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-			onclick=\"eliminarDato('".$row[0]."')\"> </td>
-			<td>". $row['IdArea'] ."</td>
-			<td>".htmlentities($row['Observacion'])."</td>";
-                         $resp=$row['TipoRespuesta'];
+			onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
+			<td>". $row['idarea'] ."</td>
+			<td>".htmlentities($row['observacion'])."</td>";
+                         $resp=$row['tiporespuesta'];
                           if ($resp=='S')
                              echo "<td>Positivo</td>";
                           else if($resp=='N') 
