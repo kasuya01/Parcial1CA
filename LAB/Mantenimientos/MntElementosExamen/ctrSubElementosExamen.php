@@ -24,86 +24,40 @@ switch ($opcion)
 		$idelemento=$_POST['idelemento'];
 		$subelemento=$_POST['subelemento'];
 		$elemento=$_POST['elemento'];
-		$unidad=$_POST['unidad'];
-                $sexo=$_POST['sexo'];
-                $redad=$_POST['redad'];
-                              
-		if (empty($_POST['Fechaini'])){
-			$Fechaini="NULL";
-		}else{ 
-			$FechaI=explode('/',$_POST['Fechaini']);
-                        $Fechaini=$FechaI[2].'-'.$FechaI[1].'-'.$FechaI[0];
-	  	}
+		//$unidad=$_POST['unidad'];
+                //$sexo=$_POST['sexo'];
+                //$redad=$_POST['redad'];
+                $unidad=(empty($_POST['unidad'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidad']) . "'"; 
+                $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";        
+                $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'"; 
+                $rangoini=(empty($_POST['rangoini'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangoini']) . "'";
+                $rangofin=(empty($_POST['rangofin'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangofin']) . "'";
+                $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
+		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";              
 		
-		if (empty($_POST['Fechafin'])){
-			$Fechafin="NULL";
-		}else{ 
-			$FechaF=explode('/',$_POST['Fechafin']);
-			$Fechafin=$FechaF[2].'-'.$FechaF[1].'-'.$FechaF[0];	
-		}
-                
-                
-                if (empty($_POST['rangoini'])){
-			$rangoini=0;
-		}
-		else{
-			$rangoini=$_POST['rangoini'];
-		}
-	
-		if (empty($_POST['rangofin'])){
-			$rangofin="(NULL)";
-		}else{
-			$rangofin=$_POST['rangofin'];
-		}
-               // echo $rangoini."-".$rangofin;
-		//echo $idelemento."Unidad= ".$unidad." Sub-ele= ".$subelemento." FI= ".$Fechaini." FF= ".$Fechafin;
-       	if ($objdatos->insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad)==true) 
+        	if ($objdatos->insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad)==true) 
                 //&& ($Clases->insertar_labo($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad)==true)){
 		//if ($Clases->insertar_labo($idelemento,$unidad,$subelemento,$Fechaini,$Fechafin,$lugar)==true){
 			echo "Registro Agregado";
 		//}
-		else{
+		else
 			echo "No se pudo Ingresar el Registro";			
-		}
+		
 		
 	
 	break;
 	case 2:  //MODIFICAR   
 		$idsubelemento=$_POST['idsubelemento'];
-		$unidad=$_POST['unidad'];
+		//$unidad=$_POST['unidad'];
 		$subelemento=$_POST['subelemento'];
-                $sexo=$_POST['sexo'];
-                $redad=$_POST['redad'];
-		 if (empty($_POST['rangoini'])){
-			$rangoini="(NULL)";
-		}
-		else{
-			$rangoini=$_POST['rangoini'];
-		}
-	
-		if (empty($_POST['rangofin'])){
-			$rangofin=="(NULL)";
-		}else{
-			$rangofin=$_POST['rangofin'];
-		}
-                
-               // echo $rangoini."-".$rangofin;
-                
-		if (empty($_POST['Fechaini'])){
-			$Fechaini="(NULL)";
-		}else{ 
-			$FechaI=explode('/',$_POST['Fechaini']);
-			$Fechaini=$FechaI[2].'-'.$FechaI[1].'-'.$FechaI[0];
-		}
-		
-		if (empty($_POST['Fechafin'])){
-			$Fechafin="NULL";
-		}else{ 
-                   // echo $_POST['Fechafin'];
-			$FechaF=explode('/',$_POST['Fechafin']);
-			$Fechafin=$FechaF[2].'-'.$FechaF[1].'-'.$FechaF[0];	
-		}
-		//echo  $Fechaini."**".$Fechafin."**".$rangofin."**".$rangofin;
+                $unidad=(empty($_POST['unidad'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidad']) . "'"; 
+                $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";        
+                $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'"; 
+                $rangoini=(empty($_POST['rangoini'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangoini']) . "'";
+                $rangofin=(empty($_POST['rangofin'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangofin']) . "'";
+                $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
+		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";   
+              
 		
 		if ($objdatos->actualizar($idsubelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad)==true) 
                    //&& ($Clases->actualizar_labo($idsubelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad)==true)){
@@ -114,7 +68,8 @@ switch ($opcion)
 	case 3:  //ELIMINAR 
 		//Vefificando Integridad de los datos
 		$idsubelemento=$_POST['idsubelemento'];
-		if (($objdatos->eliminar($idsubelemento)==true) && ($Clases->eliminar_labo($idsubelemento)== true)){		
+		if ($objdatos->eliminar($idsubelemento)==true){ 
+                        //&& ($Clases->eliminar_labo($idsubelemento)== true)){		
 			echo "Registro Eliminado" ;		
 		}
 		else{
@@ -124,7 +79,7 @@ switch ($opcion)
 	break;
 	case 4:// PAGINACION
 		$idelemento=$_POST['idelemento'];
-	//	echo $idelemento;
+	
 		$Pag =$_POST['Pag'];
 		////para manejo de la paginacion
 		$RegistrosAMostrar=4;
@@ -137,8 +92,8 @@ switch ($opcion)
 		//muestra los datos consultados en la tabla
 	  echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
 	        <tr>
-                    <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
-                    <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td>
+                    <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>";
+               echo "     <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td>
                     <td class='CobaltFieldCaptionTD'> SubElemento </td>
                     <td class='CobaltFieldCaptionTD'> Unidad </td>
                     <td class='CobaltFieldCaptionTD'> Valores Normales </td>
@@ -147,27 +102,38 @@ switch ($opcion)
 		    <td class='CobaltFieldCaptionTD'> Fecha Inicio</td>	
                     <td class='CobaltFieldCaptionTD'> Fecha Fin</td>	
 	        </tr>";
-    while($row = mysql_fetch_array($consulta)){
+    while($row = pg_fetch_array($consulta)){
           echo "<tr>
                     <td aling='center'> 
 			<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-			onclick=\"pedirDatosSubElementos('".$row['IdSubElemento']."')\"> </td>
+			onclick=\"pedirDatosSubElementos('".$row['id']."')\"> </td>
                     <td aling ='center'> 
 			<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-			onclick=\"eliminarDatoSubElemento('".$row['IdSubElemento']."')\"> </td>
-                    <td>".htmlentities($row['SubElemento'])."</td>
-                    <td>".htmlentities($row['Unidad'])."</td>";
+			onclick=\"eliminarDatoSubElemento('".$row['id']."')\"> </td>
+                    <td>".htmlentities($row['subelemento'])."</td>";
+           if (!empty($row['unidad']))            
+              echo" <td>".htmlentities($row['unidad'])."</td>";
+           else
+               echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
+               
           if ((empty($row['rangoinicio'])) AND (empty($row['rangofin'])))
               echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
           else
               echo "<td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
-              echo "<td>".$row['nombregrupoedad']."</td>
-                    <td>".$row['sexovn']."</td>
-                    <td>".htmlentities($row['FechaIni'])."</td>";
-	  if (($row['FechaFin']=="00-00-0000") ||($row['FechaFin']=="(NULL)") ||(empty($row['FechaFin'])) )
+              
+              echo "<td>".$row['nombreedad']."</td>";
+                     if (empty($row['nombresexo']))
+                            echo "<td> Ambos </td>";
+                        else
+                            echo "<td>".$row['nombresexo']."</td>";
+                        
+                           
+                   
+                 echo "   <td>".htmlentities($row['fechaini'])."</td>";
+	  if (($row['fechafin']=="00-00-0000") ||($row['fechafin']=="(NULL)") ||(empty($row['fechafin'])) )
 	      echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 	  else 	
-	      echo "<td>".htmlentities($row['FechaFin'])."</td>";
+	      echo "<td>".htmlentities($row['fechafin'])."</td>";
 	  echo "</tr>";
 		}
 	  echo "</table>"; 
@@ -192,7 +158,7 @@ switch ($opcion)
 		<tr>
 			<td><a onclick=\"show_subelemento('1',$idelemento)\">Primero</a> </td>";
 		//// desplazamiento
-         //show_subelemento(Pag,idelemento)
+        
 	  if($PagAct>1) 
 	           echo "<td> <a onclick=\"show_subelemento('$PagAnt',$idelemento)\">Anterior</a> </td>";
 	  if($PagAct<$PagUlt)  
@@ -206,22 +172,24 @@ switch ($opcion)
                 $idsubelemento=$_POST['idsubelemento'];
 		
                 $consulta=$objdatos->consultarid($idsubelemento);
-		$row = mysql_fetch_array($consulta);
+		$row = pg_fetch_array($consulta);
         
 		//valores de las consultas
-		$unidad=$row['Unidad'];
-		$subelemento=$row['SubElemento'];
-		$idelemento=$row['IdElemento'];
-		$elemento=$row['Elemento'];
-		$FechaIni=$row['FechaIni'];
-		$FechaFin=$row['FechaFin'];
+		$unidad=$row['unidad'];
+		$subelemento=$row['subelemento'];
+		$idelemento=$row['id'];
+		$elemento=$row['elemento'];
+		$FechaIni=$row['fechaini'];
+		$FechaFin=$row['fechafin'];
 		$idsexo=$row['idsexo'];
-                $nombresexo=$row['sexovn'];
+                $nombresexo=$row['nombresexo'];
                 $idedad=$row['idedad'];
-                $rangoedad=$row['nombregrupoedad'];
+                $rangoedad=$row['nombreedad'];
                 $rangoini=$row['rangoinicio'];
                 $rangofin=$row['rangofin'];
-                
+                if (empty($row['idsexo'])){
+                 $idsexo=0;
+                $nombresexo="Ambos";} 
 	$imprimir="<form name= 'frmModificar' >
                         <table width='90%' border='0' align='center' class='StormyWeatherFormTABLE'>
                             <tr>
@@ -245,10 +213,10 @@ switch ($opcion)
                                 <td  class='StormyWeatherFieldCaptionTD'>Sexo</td>
                                 <td colspan='3' class='StormyWeatherDataTD'>
                                     <select id='cmbSexo' name='cmbSexo' size='1' >
-                                        <option value='0' >--Seleccione Sexo--</option>";
+                                             <option value='0'>Ambos</option>";
 
                                                 $consultaS= $objdatos->consultarsexo();
-                                                while($row =mysql_fetch_array($consultaS)){
+                                                while($row =pg_fetch_array($consultaS)){
                                                     $imprimir.= "<option value='" . $row[0]. "'>". $row[1] ."</option>";
                                                 }
                                                $imprimir.= "<option value='" . $idsexo . "' selected='selected'>" .$nombresexo. "</option>";
@@ -263,7 +231,7 @@ switch ($opcion)
                                         <option value='0' >--Seleccione un Rango de Edad--</option>";
 
                                             $conEdad = $objdatos->RangosEdades();
-                                            while($row = mysql_fetch_array($conEdad)){
+                                            while($row = pg_fetch_array($conEdad)){
                                                  $imprimir.="<option value='" . $row[0]. "'>". $row[1] . "</option>";
                                             }
                                              $imprimir.= "<option value='" . $idedad . "' selected='selected'>" .$rangoedad. "</option>";

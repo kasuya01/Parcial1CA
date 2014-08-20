@@ -13,10 +13,10 @@ class clsLab_Examenes
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_examenes(IdExamen,IdArea,nombreExamen,IdEstandar,Observacion,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod,IdSexo) 
-	VALUES('$idexamen','$idarea','$nomexamen','$idestandar','$observacion',$usuario,NOW(),$usuario,NOW(),$sexo)";
+    $query = "INSERT INTO lab_examenes(idexamen,idarea,nombreexamen,idestandar,Observacion,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idsexo) 
+              VALUES($idexamen,$idarea,$nomexamen,$idestandar,$observacion,$usuario,NOW(),$usuario,NOW(),$sexo)";
    //echo $query;
-    $result = mysql_query($query);
+    $result = pg_query($query);
 	 
     if (!$result)
        return false;
@@ -30,14 +30,14 @@ function IngExamenxEstablecimiento($idexamen,$lugar,$cond,$usuario,$IdFormulario
    if($con->conectar()==true) 
    {
     $query = "INSERT INTO lab_examenesxestablecimiento
-              (IdExamen,IdEstablecimiento,Condicion,IdUsuarioReg,IdUsuarioMod,FechaHoraReg,FechaHoraMod,IdFormulario,IdEstandarRep,Urgente,IdPlantilla,Impresion,Ubicacion,CODIGOSUMI) 
-	      VALUES('$idexamen',$lugar,'H',$usuario,$usuario,NOW(),NOW(),$IdFormulario,'$IdEstandarResp',$Urgente,'$plantilla','$letra',$ubicacion,NULL)";
-   //  echo $query;	
-    $result = mysql_query($query);
+              (idexamen,idestablecimiento,condicion,idusuarioreg,idusuariomod,fechahorareg,fechahoramod,idformulario,idestandarRep,urgente,idplantilla,impresion,Ubicacion,codigosumi) 
+	      VALUES($idexamen,$lugar,'H',$usuario,$usuario,NOW(),NOW(),$IdFormulario,'$IdEstandarResp',$Urgente,$plantilla,'$letra',$ubicacion,NULL)";
+     echo $query;	
+    $result = pg_query($query);
      
-    $sqlText = "INSERT INTO cit_programacionxexams (IdExam,RangoTiempoPrev,IdServicio,IdEstablecimiento,IdUsuarioReg,FechaHoraReg) 
-                VALUES ('".$idexamen."',$TiempoPrevio,'DCOLAB',$lugar,$usuario,NOW())";
-    $dtSub = mysql_query($sqlText) or die('La consulta fall&oacute;: ' . mysql_error());
+    $sqlText = "INSERT INTO cit_programacionxexams (idexam,rangotiempoprev,idservicio,idestablecimiento,idusuarioreg,fechahorareg) 
+                VALUES ($idexamen,$TiempoPrevio,78,$lugar,$usuario,NOW())";
+    $dtSub = pg_query($sqlText) or die('La consulta fall&oacute;: ' . pg_error());
 	// echo $sqlText;
      if (!$result && !$dtSub)
        return false;
@@ -53,7 +53,7 @@ function AgregarDatosFijos($idexamen,$idarea,$usuario,$lugar){
     $query = "INSERT INTO lab_datosfijosresultado (IdArea,IdExamen,IdUsuarioReg,FechaHoraReg,IdEstablecimiento,FechaIni,FechaFin)
               VALUES ('$idarea','$idexamen',$usuario,NOW(),$lugar,CURDATE(),NULL)";
     // echo $query;
-     $result = mysql_query($query);
+     $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -71,7 +71,7 @@ function AgregarDatosFijos($idexamen,$idarea,$usuario,$lugar){
 	   {
 		 $query = "UPDATE lab_examenes SET nombreExamen='$nomexamen',idestandar='$idestandar',idarea='$idarea',Observacion='$observacion',
 		 IdUsuarioMod='$usuario',FechaHoraMod=NOW(),IdSexo=$sexo WHERE idexamen='$idexamen'";
-		 $result = mysql_query($query);
+		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -95,7 +95,7 @@ function AgregarDatosFijos($idexamen,$idarea,$usuario,$lugar){
                             Condicion='$Hab', cit_programacionxexams.RangoTiempoPrev=$TiempoPrevio
                             WHERE idexamen='$idexamen' AND lab_examenesxestablecimiento.IdEstablecimiento=$lugar";
 		//echo $query;
-                 $result = mysql_query($query);
+                 $result = pg_query($query);
                 
 		 if (!$result)
 		    return false;
@@ -110,7 +110,7 @@ function AgregarDatosFijos($idexamen,$idarea,$usuario,$lugar){
 	 if($con->conectar()==true) 
 		{
 			$query = "SELECT * FROM mnt_programas ORDER BY IdPrograma";
-			 $result = mysql_query($query);
+			 $result = pg_query($query);
 			if (!$result)
 				return false;
 			else
@@ -124,8 +124,8 @@ function AgregarDatosFijos($idexamen,$idarea,$usuario,$lugar){
        $con = new ConexionBD;
 	 if($con->conectar()==true) 
 		{
-			$query = "SELECT * FROM mnt_sexo ";
-			 $result = mysql_query($query);
+			$query = "SELECT * FROM ctl_sexo where id <>3";
+			 $result = pg_query($query);
 			if (!$result)
                              return false;
 			else
@@ -135,17 +135,17 @@ function AgregarDatosFijos($idexamen,$idarea,$usuario,$lugar){
       
   }
   //CONSULTA LOS FORMULARIOS POR PROGRAMA
-  function consultar_formularios($IdPrograma,$lugar){
+  function consultar_formularios($lugar){
 	 $con = new ConexionBD;
 	 if($con->conectar()==true) 
 		{
-			$query = "SELECT mnt_formulariosxestablecimiento.IdFormulario,NombreFormulario,IdPrograma 
+			$query = "SELECT mnt_formulariosxestablecimiento.idformulario,nombreformulario 
 				  FROM mnt_formularios 
-				  INNER JOIN mnt_formulariosxestablecimiento 
-				  ON mnt_formularios.IdFormulario=mnt_formulariosxestablecimiento.IdFormulario
-				
-WHERE IdPrograma=$IdPrograma AND IdEstablecimiento=$lugar";
-			 $result = mysql_query($query);
+				  INNER JOIN mnt_formulariosxestablecimiento    
+				  ON mnt_formularios.id=mnt_formulariosxestablecimiento.idformulario
+		                  WHERE idestablecimiento=$lugar";
+                        //echo $query;
+			 $result = pg_query($query);
 			if (!$result)
 				return false;
 			else
@@ -159,16 +159,16 @@ WHERE IdPrograma=$IdPrograma AND IdEstablecimiento=$lugar";
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT lab_examenes.IdExamen,lab_examenes.IdEstandar,lab_examenes.IdArea,NombreExamen,Descripcion,NombreArea,
-lab_examenesxestablecimiento.IdPlantilla,Observacion,lab_examenes.habilitado,lab_examenesxestablecimiento.Condicion,
-lab_examenes.Ubicacion,Urgente 
+     $query = "SELECT lab_examenes.idexamen,lab_examenes.idestandar,lab_examenes.idarea,nombreexamen,descripcion,nombreArea,
+lab_examenesxestablecimiento.idplantilla,observacion,lab_examenes.habilitado,lab_examenesxestablecimiento.condicion,
+lab_examenes.ubicacion,urgente 
 from lab_examenes 
-INNER JOIN lab_areas  on lab_examenes.IdArea=lab_areas.IdArea
-INNER JOIN lab_codigosestandar ON lab_examenes.IdEstandar=lab_codigosestandar.IdEstandar
-INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
-WHERE lab_examenesxestablecimiento.Condicion='H' AND lab_examenesxestablecimiento.IdEstablecimiento=$lugar
-ORDER BY lab_examenes.IdArea,lab_examenes.IdExamen";
-	 $result = mysql_query($query);
+INNER JOIN lab_areas  on lab_examenes.idarea=lab_areas.id
+INNER JOIN lab_codigosestandar ON lab_examenes.idestandar=lab_codigosestandar.id
+INNER JOIN lab_examenesxestablecimiento ON lab_examenes.id=lab_examenesxestablecimiento.idexamen
+WHERE lab_examenesxestablecimiento.condicion='H' AND lab_examenesxestablecimiento.idestablecimiento=$lugar
+ORDER BY lab_examenes.idarea,lab_examenes.idexamen";
+	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -182,7 +182,7 @@ ORDER BY lab_examenes.IdArea,lab_examenes.IdExamen";
 	   {
 		
 		 $query = "SELECT Descripcion FROM lab_codigosestandar WHERE  IdEstandar='$IdEstandarResp'";
-		 $result = mysql_query($query);
+		 $result = pg_query($query);
 		  if (!$result)
 				return false;
 		  else
@@ -196,28 +196,27 @@ ORDER BY lab_examenes.IdArea,lab_examenes.IdExamen";
    if($con->conectar()==true)
    {
      //$query = "SELECT * FROM lab_examenes WHERE idexamen='$idexamen'";
-	  $query = "SELECT lab_examenes.IdExamen,lab_examenes.IdEstandar,lab_examenes.IdArea,lab_examenes.NombreExamen,
-		    Descripcion,lab_areas.NombreArea,lab_examenesxestablecimiento.IdPlantilla, 
-		    lab_plantilla.Plantilla,Observacion,lab_examenesxestablecimiento.Ubicacion,
-		    mnt_formulariosxestablecimiento.IdFormulario,mnt_formularios.NombreFormulario,
-		    lab_examenesxestablecimiento.IdEstandarRep,mnt_programas.IdPrograma,
-		    mnt_programas.NombrePrograma,lab_examenesxestablecimiento.Impresion,
-                    lab_examenesxestablecimiento.Urgente,lab_examenes.IdSexo,mnt_sexo.sexovn,lab_examenesxestablecimiento.Condicion,
+	  $query = "SELECT lab_examenes.id,lab_examenes.idexamen,lab_examenes.idestandar,
+                    lab_examenes.idarea,lab_examenes.nombreexamen,descripcion,lab_areas.nombrerea,
+                    lab_examenesxestablecimiento.idalantilla,lab_plantilla.plantilla,observacion,
+                    lab_examenesxestablecimiento.ubicacion,mnt_formulariosxestablecimiento.idformulario,
+                    mnt_formularios.nombreformulario,lab_examenesxestablecimiento.idestandarRep,
+                    lab_examenesxestablecimiento.impresion,lab_examenesxestablecimiento.urgente,
+                    lab_examenes.idsexo,ctl_sexo.nombre as nombresexo,lab_examenesxestablecimiento.condicion,
                     rangotiempoprev 
                     FROM lab_examenes 
-                    INNER JOIN lab_areas ON lab_examenes.IdArea=lab_areas.IdArea
-                    INNER JOIN lab_codigosestandar ON lab_examenes.IdEstandar=lab_codigosestandar.IdEstandar
-                    INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
-                    LEFT JOIN lab_plantilla  ON lab_plantilla.IdPlantilla=lab_examenesxestablecimiento.IdPlantilla
-                    LEFT JOIN mnt_formulariosxestablecimiento ON lab_examenesxestablecimiento.IdFormulario=mnt_formulariosxestablecimiento.IdFormulario
-                    LEFT JOIN mnt_programas ON mnt_formulariosxestablecimiento.IdPrograma= mnt_programas.IdPrograma
-                    LEFT JOIN mnt_formularios ON mnt_formulariosxestablecimiento.IdFormulario=mnt_formularios.IdFormulario
-                    INNER JOIN mnt_sexo ON lab_examenes.IdSexo= mnt_sexo.IdSexo
+                    INNER JOIN lab_areas ON lab_examenes.idarea=lab_areas.id
+                    INNER JOIN lab_codigosestandar ON lab_examenes.idestandar=lab_codigosestandar.idestandar
+                    INNER JOIN lab_examenesxestablecimiento ON lab_examenes.id=lab_examenesxestablecimiento.idexamen
+                    LEFT JOIN lab_plantilla  ON lab_plantilla.id=lab_examenesxestablecimiento.idplantilla
+                    LEFT JOIN mnt_formulariosxestablecimiento ON lab_examenesxestablecimiento.idaormulario=mnt_formulariosxestablecimiento.idformulario
+                    LEFT JOIN mnt_formularios ON mnt_formulariosxestablecimiento.idformulario=mnt_formularios.id
+                    INNER JOIN mnt_sexo ON lab_examenes.idsexo= mnt_sexo.id
                     LEFT JOIN cit_programacionxexams ON lab_examenesxestablecimiento.idexamen=cit_programacionxexams.idexam
-                    WHERE lab_examenesxestablecimiento.IdEstablecimiento=$lugar AND lab_examenes.IdExamen='$idexamen'";
+                    WHERE lab_examenesxestablecimiento.idestablecimiento=$lugar AND lab_examenes.id='$idexamen'";
           
           //echo $query;
-     $result = mysql_query($query);
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -233,7 +232,7 @@ ORDER BY lab_examenes.IdArea,lab_examenes.IdExamen";
    if($con->conectar()==true)
    {
      $query = "SELECT * from lab_plantilla";
-     $result = mysql_query($query);
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -246,13 +245,14 @@ function LeerUltimoCodigo($idarea)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "SELECT IdExamen FROM lab_examenes WHERE Idarea='$idarea' ORDER BY IdExamen DESC LIMIT 1";
-     $result = mysql_query($query);
+     $query = "SELECT idexamen FROM lab_examenes WHERE idarea='$idarea' ORDER BY id DESC LIMIT 1";
+     //echo $query;
+     $result = pg_query($query);
 	 
      if (!$result)
        return false;
      else
-	   $row = mysql_fetch_array($result);
+	   $row = pg_fetch_array($result);
        return $row[0];
 	   
 	   }
@@ -267,18 +267,18 @@ function LeerUltimoCodigo($idarea)
    if($con->conectar()==true){
        $query ="SELECT *
                 FROM lab_examenesxestablecimiento 
-                INNER JOIN lab_examenes ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
-                INNER JOIN lab_areasxestablecimiento ON lab_examenes.IdArea=lab_areasxestablecimiento.IdArea
-                INNER JOIN lab_areas ON lab_areasxestablecimiento.IdArea=lab_areas.IdArea
-                INNER JOIN lab_codigosestandar ON lab_examenes.IdEstandar= lab_codigosestandar.IdEstandar
-                LEFT JOIN mnt_formularios ON lab_examenesxestablecimiento.IdFormulario=mnt_formularios.IdFormulario 
-                INNER JOIN mnt_sexo ON lab_examenes.IdSexo= mnt_sexo.IdSexo
-                WHERE lab_examenesxestablecimiento.IdEstablecimiento=$lugar 
-                AND lab_areasxestablecimiento.Condicion='H' AND lab_areasxestablecimiento.IdEstablecimiento=$lugar
-                ORDER BY lab_examenes.IdArea,lab_examenes.IdExamen"; 
-               
+                INNER JOIN lab_examenes ON lab_examenes.id=lab_examenesxestablecimiento.idexamen
+                INNER JOIN lab_areasxestablecimiento ON lab_examenes.idarea=lab_areasxestablecimiento.idarea
+                INNER JOIN lab_areas ON lab_areasxestablecimiento.idarea=lab_areas.id
+                INNER JOIN lab_codigosestandar ON lab_examenes.idestandar= lab_codigosestandar.id
+                LEFT JOIN mnt_formularios ON lab_examenesxestablecimiento.idformulario=mnt_formularios.id 
+                LEFT JOIN ctl_sexo ON lab_examenes.idsexo= ctl_sexo.id
+                WHERE lab_examenesxestablecimiento.idestablecimiento=$lugar 
+                AND lab_areasxestablecimiento.condicion='H' AND lab_areasxestablecimiento.idestablecimiento=$lugar
+                ORDER BY lab_examenes.idarea,lab_examenes.id"; 
+          // echo $query;     
              
-	 $numreg = mysql_num_rows(mysql_query($query));
+	 $numreg = pg_num_rows(pg_query($query));
 	 if (!$numreg )
 	   return false;
 	 else
@@ -292,7 +292,7 @@ function LeerUltimoCodigo($idarea)
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
 	     $query = $query_search;
-		 $numreg = mysql_num_rows(mysql_query($query));
+		 $numreg = pg_num_rows(pg_query($query));
 		 if (!$numreg )
 		   return false;
 		 else
@@ -307,13 +307,27 @@ function LeerUltimoCodigo($idarea)
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
 	     $query = $query_search." LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-		 $result = mysql_query($query);
+		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
 		   return $result;
 	   }
 	  } 
+function ObtenerCodigo($idarea){
+     //creamos el objeto $con a partir de la clase ConexionBD
+	   $con = new ConexionBD;
+	   //usamos el metodo conectar para realizar la conexion
+     if($con->conectar()==true){
+        $query ="SELECT idarea FROM lab_areas WHERE id=$idarea";
+        $result = pg_fetch_array(pg_query($query));
+	if (!$result)
+	   return false;
+	 else
+     return $result;
+         
+     }
+}
 
  function BuscarExamen($idexamen,$lugar){
     $con = new ConexionBD;
@@ -321,12 +335,12 @@ function LeerUltimoCodigo($idarea)
     if($con->conectar()==true){
         $query ="SELECT count( * )
                  FROM lab_examenes
-                 INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen = lab_examenesxestablecimiento.IdExamen
+                 INNER JOIN lab_examenesxestablecimiento ON lab_examenes.id = lab_examenesxestablecimiento.idexamen
                  WHERE lab_examenes.idexamen = '$idexamen'
-                 AND IdEstablecimiento =$lugar";
+                 AND idestablecimiento =$lugar";
               
        // echo $query;
-	$result = mysql_query($query);
+	$result = pg_query($query);
 	if (!$result)
 	   return false;
 	 else
@@ -340,68 +354,66 @@ function LeerUltimoCodigo($idarea)
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-		   $query = "SELECT lab_examenes.IdExamen,lab_examenes.IdEstandar,lab_examenes.IdArea,NombreExamen,Descripcion,
-                             NombreArea,lab_examenesxestablecimiento.Condicion,
-                             IF(lab_examenesxestablecimiento.Condicion='H','Habilitado','Inhabilitado')AS Cond,
-                             CASE lab_examenesxestablecimiento.Ubicacion
-                                                WHEN 0 THEN 'Todas las Procedencias'
-                                                WHEN 1 then 'Hospitalización y Emergencia'
-                                                WHEN 4 then 'Laboratorio'
-                                         END AS Ubicacion,
-                             lab_examenesxestablecimiento.IdPlantilla,mnt_formularios.NombreFormulario,
-                             lab_examenesxestablecimiento.IdEstandarRep ,lab_examenesxestablecimiento.Impresion,Urgente,sexovn,rangotiempoprev
+		   $query = "SELECT lab_examenes.id,lab_examenes.idexamen,lab_codigosestandar.idestandar,lab_examenes.idarea,nombreexamen,descripcion, nombrearea,
+                             lab_examenesxestablecimiento.condicion, (CASE WHEN lab_examenesxestablecimiento.condicion='H' THEN 'Habilitado' ELSE 'Inhabilitado' end )AS Cond, 
+                             (CASE WHEN lab_examenesxestablecimiento.ubicacion=0 THEN 'Todas las Procedencias' 
+                             WHEN lab_examenesxestablecimiento.ubicacion=1 THEN 'Hospitalización y Emergencia' 
+                             WHEN lab_examenesxestablecimiento.ubicacion=4 THEN 'Laboratorio' END ) AS Ubicacion, 
+                             lab_plantilla.idplantilla,mnt_formularios.nombreformulario, idestandarrep,
+                             (SELECT idestandar FROM lab_codigosestandar where lab_examenesxestablecimiento.idestandarrep=lab_codigosestandar.id) AS estandarrep,
+                             lab_examenesxestablecimiento.impresion,urgente, ctl_sexo.nombre AS nombresexo
                              FROM lab_examenesxestablecimiento 
-                             INNER JOIN lab_examenes ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
-                             INNER JOIN lab_areasxestablecimiento ON lab_examenes.IdArea=lab_areasxestablecimiento.IdArea
-                             INNER JOIN lab_areas ON lab_areasxestablecimiento.IdArea=lab_areas.IdArea
-                             INNER JOIN lab_codigosestandar ON lab_examenes.IdEstandar= lab_codigosestandar.IdEstandar
-                             LEFT JOIN mnt_formularios ON lab_examenesxestablecimiento.IdFormulario=mnt_formularios.IdFormulario
-                             INNER JOIN mnt_sexo ON lab_examenes.IdSexo= mnt_sexo.IdSexo
-                             LEFT JOIN cit_programacionxexams ON lab_examenesxestablecimiento.idexamen=cit_programacionxexams.idexam
-                             WHERE lab_examenesxestablecimiento.IdEstablecimiento=$lugar 
-                             AND lab_areasxestablecimiento.Condicion='H' AND lab_areasxestablecimiento.IdEstablecimiento=$lugar
-                             ORDER BY lab_examenes.IdArea,lab_examenes.IdExamen  
-                             LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-                        // echo $query; 
-                            $result = mysql_query($query);
+                             INNER JOIN lab_examenes ON lab_examenes.id=lab_examenesxestablecimiento.idexamen 
+                             INNER JOIN lab_areasxestablecimiento ON lab_examenes.idarea=lab_areasxestablecimiento.idarea 
+                             INNER JOIN lab_areas ON lab_areasxestablecimiento.idarea=lab_areas.id 
+                             INNER JOIN lab_codigosestandar ON lab_examenes.idestandar = lab_codigosestandar.id 
+                             LEFT JOIN mnt_formularios ON lab_examenesxestablecimiento.idformulario=mnt_formularios.id 
+                             LEFT JOIN ctl_sexo ON lab_examenes.idsexo= ctl_sexo.id 
+                             INNER JOIN lab_plantilla ON lab_examenesxestablecimiento.idplantilla=lab_plantilla.id
+                             WHERE lab_examenesxestablecimiento.idestablecimiento=$lugar 
+                             AND lab_areasxestablecimiento.condicion='H' AND lab_areasxestablecimiento.idestablecimiento=$lugar
+                             ORDER BY lab_examenes.idarea,lab_examenes.id  
+                             LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+                     // echo $query; 
+                            $result = pg_query($query);
                              
                             if (!$result)
                                 return false;
                             else
                                 return $result;
-                      echo $query;      
+                     // echo $query;      
 	   }
   } 
   
   function EstadoCuenta($idexamen,$cond,$lugar){ 
     $con = new ConexionBD;
     //usamos el metodo conectar para realizar la conexion
-    if($con->conectar()==true){
-        if($cond=='H'){
-            $query = "UPDATE lab_examenesxestablecimiento SET Condicion='I' WHERE IdExamen='$idexamen' AND IdEstablecimiento=$lugar";
-            $result = mysql_query($query);
-            $query1= "UPDATE lab_examenes SET Habilitado='N' WHERE IdExamen='$idexamen'" ;
-            $result1 = mysql_query($query1);
-	 }
-	 if($cond=='I'){
-            $query = "UPDATE lab_examenesxestablecimiento SET Condicion='H' WHERE IdExamen='$idexamen' AND IdEstablecimiento=$lugar";
-            $result = mysql_query($query);
-            $query1= "UPDATE lab_examenes SET Habilitado='S' WHERE IdExamen='$idexamen'";
-            $result1 = mysql_query($query1);
-	 }
-    }
-    $con->desconectar();
+        if($con->conectar()==true){
+            if($cond=='H'){
+                $query = "UPDATE lab_examenesxestablecimiento SET condicion='I' WHERE idexamen='$idexamen' AND idestablecimiento=$lugar";
+                $result = pg_query($query);
+              //  $query1= "UPDATE lab_examenes SET Habilitado='N' WHERE IdExamen='$idexamen'" ;
+               // $result1 = pg_query($query1);
+             }
+             if($cond=='I'){
+                $query = "UPDATE lab_examenesxestablecimiento SET condicion='H' WHERE idexamen='$idexamen' AND idestablecimiento=$lugar";
+                $result = pg_query($query);
+               // $query1= "UPDATE lab_examenes SET Habilitado='S' WHERE IdExamen='$idexamen'";
+                //$result1 = pg_query($query1);
+             }
+        }
+        $con->desconectar();
     }
 	
  function obtener_letra($idarea){
 	$con = new ConexionBD;
     if($con->conectar()==true) 
 	{
-		$query = "SELECT ORD(Impresion)
+		$query = "SELECT ORD(impresion)
 		FROM lab_examenesxestablecimiento 
-		WHERE IdExamen like'$idarea%' 
-		AND Impresion<>'G' ORDER BY Impresion DESC LIMIT 1";
-		$result = mysql_query($query);
+		WHERE idexamen ilike'$idarea%' 
+		AND impresion<>'G' ORDER BY Impresion DESC LIMIT 1";
+		$result = pg_query($query);
 		if (!$result)
 			return false;
 		else
@@ -423,15 +435,15 @@ function LeerUltimoCodigo($idarea)
 		if($con->conectar()==true){
 			 if($cond=='H'){
 			$query = "UPDATE lab_examenesxestablecimiento SET Condicion='I' WHERE IdExamen='$idexamen' AND IdEstablecimiento=$lugar";
-			$result = mysql_query($query);
+			$result = pg_query($query);
 					$query1= "UPDATE lab_examenes SET Habilitado='N' WHERE IdExamen='$idexamen'" ;
-			$result1 = mysql_query($query1);
+			$result1 = pg_query($query1);
 			 }
 			 if($cond=='I'){
 				$query = "UPDATE lab_examenesxestablecimiento SET Condicion='H' WHERE IdExamen='$idexamen' AND IdEstablecimiento=$lugar";
-				$result = mysql_query($query);
+				$result = pg_query($query);
 				$query1= "UPDATE lab_examenes SET Habilitado='S' WHERE IdExamen='$idexamen'";
-				//$result1 = mysql_query($query1);
+				//$result1 = pg_query($query1);
 
 			 }
 		}
@@ -449,7 +461,7 @@ class clsLabor_Examenes
 	   if($con->conectar()==true) 
 	   {
 		$query = "INSERT INTO laboratorio.lab_examenes(idexamen,IdArea,nombreExamen,IdEstandar,Observacion,IdPlantilla,Habilitado,Ubicacion,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod) VALUES('$idexamen','$idarea','$nomexamen','$idestandar','$observacion','$plantilla','$activo',$ubicacion,$usuario,NOW(),$usuario,NOW())";
-		 $result = mysql_query($query);
+		 $result = pg_query($query);
 		 
 		 if (!$result)
 		   return false;
@@ -465,7 +477,7 @@ class clsLabor_Examenes
 	   if($con->conectar()==true) 
 	   {
 		 $query = "UPDATE laboratorio.lab_examenes SET nombreExamen='$nomexamen' , idestandar='$idestandar', idarea='$idarea', IdPlantilla='$plantilla',Observacion='$observacion',Ubicacion=$ubicacion,IdUsuarioMod='$usuario', FechaHoraMod=NOW() WHERE idexamen='$idexamen'";
-		 $result = mysql_query($query);
+		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
 		 else

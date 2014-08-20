@@ -123,7 +123,7 @@ if (ValidarCampos())
         tiempoprevio=document.getElementById('inidate').value;
        
 	//codempresa=document.frmnuevo.txttxtcodempresa.value;
-	//alert(Hab);
+	alert(idestandar);
 	//alert (idPrograma+"*****"+idestandarRep);
 	
 	var opcion=1;

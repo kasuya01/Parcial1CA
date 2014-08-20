@@ -44,23 +44,16 @@ switch ($opcion)
     	case 2:  //MODIFICAR      
 			$idexamen=$_POST['idexamen'];
 			$idarea=$_POST['idarea'];
-			
 			$iddatosfijosresultado=$_POST['iddatosfijosexamen'];
-		                             $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'";
+		        $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'";
                         $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";  
                         $unidades=(empty($_POST['unidades'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidades']) . "'";
                         $rangoinicio=(empty($_POST['rangoinicio'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangoinicio']) . "'";
                         $rangofin=(empty($_POST['rangofin'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangofin']) . "'";
-                      
-                        
-                      
-
                         $nota=(empty($_POST['nota'])) ? 'NULL' : "'" . pg_escape_string($_POST['nota']) . "'";  
-
-		
-			$Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
+                        $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
                         $Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
-                        echo $unidades;
+                       // echo $unidades;
 			if ($objdatos->actualizar($iddatosfijosresultado,$idarea,$idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,$lugar,$Fechaini,$Fechafin,$sexo,$redad)==true) 
                            /* && $Clases->actualizar_labo($iddatosfijosresultado,$idarea,$idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,$lugar,$Fechaini,$Fechafin,$sexo,$redad)==true)*/
 			{
@@ -75,12 +68,12 @@ switch ($opcion)
 		 //Vefificando Integridad de los datos
 		$iddatosfijosresultado=$_POST['iddatosfijosresultado'];
 			//echo $iddatosfijosresultado;
-		 if ($objdatos->eliminar($iddatosfijosresultado,$lugar)==true){ 
+		if ($objdatos->eliminar($iddatosfijosresultado,$lugar)==true){ 
                          /*&& $Clases->eliminar_labo($iddatosfijosresultado,$lugar)){		*/
 			echo "Registro Eliminado" ;		
 				
-                    }
-                    else{
+                }
+                else{
                             echo "El registro no pudo ser eliminado ";
                     }			
 
@@ -143,8 +136,8 @@ switch ($opcion)
                             echo "<td>".$row['sexo']."</td>";
                         
                             echo "<td>".$row['redad']."</td>";
-			
-			if((empty($row[7])) || ($row[7]=="(NULL)") || ($row[7]=="00-00-0000"))
+			//echo $row[7];
+			if((empty($row[7])) || ($row[7]=="NULL") || ($row[7]=="00-00-0000"))
 				     echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
 				else
 					 echo"<td>".$row[7]."</td>";
@@ -398,8 +391,7 @@ switch ($opcion)
 	case 8://PAGINACION DE BUSQUEDA
 		$idexamen=$_POST['idexamen'];
 		$idarea=$_POST['idarea'];
-		//$unidades=$_POST['unidades'];
-                 $unidades=(empty($_POST['unidades'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidades']) . "'"; 
+		$unidades=(empty($_POST['unidades'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidades']) . "'"; 
                 $nota=(empty($_POST['nota'])) ? 'NULL' : "'" . pg_escape_string($_POST['nota']) . "'";  
                 $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";        
                 $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'"; 
@@ -574,18 +566,18 @@ switch ($opcion)
 		 echo "<table align='center'>
 		       <tr>
 			   <td colspan=3 align='center'> <strong>Pagina ".$PagAct."/".$PagUlt."</strong> </td>
-			   </tr>
-			   <tr>
+                       </tr>
+                       <tr>
 			   <td><a onclick=\"show_event_search('1')\">Primero</a></td>";
 		//// desplazamiento
 
 		 if($PagAct>1) 
-			 echo "<td> <a onclick=\"show_event_search('$PagAnt')\">Anterior</a> </td>";
+                     echo "<td> <a onclick=\"show_event_search('$PagAnt')\">Anterior</a> </td>";
 		 if($PagAct<$PagUlt)  
-			 echo "<td> <a onclick=\"show_event_search('$PagSig')\">Siguiente</a> </td>";
-			 if($PagUlt > 0)
-				echo "<td> <a onclick=\"show_event_search('$PagUlt')\">Ultimo</a></td>";
-			 echo "</tr>
+                     echo "<td> <a onclick=\"show_event_search('$PagSig')\">Siguiente</a> </td>";
+                 if($PagUlt > 0)
+                     echo "<td> <a onclick=\"show_event_search('$PagUlt')\">Ultimo</a></td>";
+		 echo "</tr>
 			  </table>";
 		
 		//echo $query_search;

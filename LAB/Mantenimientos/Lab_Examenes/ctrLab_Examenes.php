@@ -17,27 +17,30 @@ $opcion=$_POST['opcion'];
 switch ($opcion) 
 {
 	case 1:  //INSERTAR	
-		$idexamen=$_POST['idexamen'];
-		$idarea=$_POST['idarea'];
-		$nomexamen=$_POST['nomexamen'];
-		$idestandar=$_POST['idestandar'];
-		$plantilla=$_POST['plantilla'];
-		$observacion=$_POST['observacion'];
-		$ubicacion=$_POST['ubicacion'];
-		$IdFormulario=$_POST['idformulario'];
-		$IdEstandarResp=$_POST['idestandarRep'];
-		$etiqueta=$_POST['etiqueta'];
-                $Urgente=$_POST['urgente'];
-                $sexo=$_POST['sexo'];
-                $Hab=$_POST['Hab'];
+		$idexamen=(empty($_POST['idexamen']))? 'NULL' : "'" . pg_escape_string($_POST['idexamen']). "'";
+		$idarea=(empty($_POST['idarea']))? 'NULL' : "'" . pg_escape_string($_POST['idarea']). "'";
+		$nomexamen=(empty($_POST['nomexamen']))? 'NULL' : "'" . pg_escape_string($_POST['nomexamen']). "'";
+               //  $nota=(empty($_POST['nota'])) ? 'NULL' : "'" . pg_escape_string($_POST['nota']) . "'";  
+		$idestandar=(empty($_POST['idestandar']))? 'NULL' : "'" . pg_escape_string($_POST['idestandar']). "'";
+                //echo $idestandar;
+		$plantilla=(empty($_POST['plantilla']))? 'NULL' : "'" . pg_escape_string($_POST['plantilla']). "'";
+		$observacion=(empty($_POST['observacion']))? 'NULL' : "'" . pg_escape_string($_POST['observacion']). "'";
+		$ubicacion=(empty($_POST['ubicacion']))? 'NULL' : "'" . pg_escape_string($_POST['ubicacion']). "'";
+		$IdFormulario=(empty($_POST['idformulario']))? 'NULL' : "'" . pg_escape_string($_POST['idformulario']). "'";
+		$IdEstandarResp=(empty($_POST['idestandarRep']))? 'NULL' : "'" . pg_escape_string($_POST['idestandarRep']). "'";
+		echo $IdEstandarResp;
+                $etiqueta=(empty($_POST['etiqueta']))? 'NULL' : "'" . pg_escape_string($_POST['etiqueta']). "'";
+                $Urgente=(empty($_POST['urgente']))? 'NULL' : "'" . pg_escape_string($_POST['urgente']). "'";
+                $sexo=(empty($_POST['sexo']))? 'NULL' : "'" . pg_escape_string($_POST['sexo']). "'";
+                $Hab=(empty($_POST['Hab']))? 'NULL' : "'" . pg_escape_string($_POST['Hab']). "'";
                 
-                $TiempoPrevio=$_POST['tiempoprevio'];
+                $TiempoPrevio=(empty($_POST['tiempoprevio']))? 'NULL' : "'" . pg_escape_string($_POST['tiempoprevio']). "'";
                 //echo $Hab;
 			
                 $cond='H';
                     if ($etiqueta=="O"){
                             $dato=$objdatos->obtener_letra($idarea);
-                            $rowletra=mysql_fetch_array($dato);
+                            $rowletra=pg_fetch_array($dato);
                             $rletra= $rowletra[0];
                             if (!empty($rletra)){
                             	$num=$rletra +1;
@@ -168,39 +171,41 @@ switch ($opcion)
                             <td class='CobaltFieldCaptionTD'>Sexo</td>
                             <td class='CobaltFieldCaptionTD'>Tiempo Previo</td>
 		      </tr>";
-		while($row = mysql_fetch_array($consulta)){
+		while($row = pg_fetch_array($consulta)){
 		 echo "<tr>
                             <td aling='center'> 
 				<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-				onclick=\"pedirDatos('".$row[0]."')\"> </td>
+				onclick=\"pedirDatos('".$row['id']."')\"> </td>
                             <td class='CobaltDataTD' style='text-decoration:underline;cursor:pointer;' ".
-                   	"onclick='Estado(\"".$row['IdExamen']."\",\"".$row['Condicion']."\")'>".$row['Cond']."</td>
-                            <td>".$row['IdExamen']." </td>
-                            <td>".htmlentities($row['NombreExamen'])." </td>
-                            <td>".htmlentities($row['NombreArea'])." </td>
-                            <td>".htmlentities($row['IdPlantilla'])." </td>
-                            <td>".htmlentities($row['IdEstandar'])." </td>
-                            <td>".htmlentities($row['Ubicacion'])."</td>";
+                   	"onclick='Estado(\"".$row['id']."\",\"".$row['condicion']."\")'>".$row['cond']."</td>
+                            <td>".$row['idexamen']." </td>
+                            <td>".htmlentities($row['nombreexamen'])." </td>
+                            <td>".htmlentities($row['nombrearea'])." </td>
+                            <td>".htmlentities($row['idplantilla'])." </td>
+                            <td>".htmlentities($row['idestandar'])." </td>
+                            <td>".htmlentities($row['ubicacion'])."</td>";
 		  
-                    if(!empty($row['NombreFormulario']))
-		       echo"<td>".htmlentities($row['NombreFormulario'])." </td> ";
-                    else       
-                         echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-                     echo "<td>".htmlentities($row['IdEstandarRep'])." </td>";
-                     if ($row['Impresion']=='G')                      
-		       echo"<td>General</td>";
-                     else
-                       echo"<td>Especial </td>";
-                     if($row['Urgente']==0)
-                        echo"<td>NO</td>";
-                     else
-                       echo"<td>SI</td>
-                                 ";
-                     echo"<td>".htmlentities($row['sexovn'])." </td>";
-                     if(!empty($row['rangotiempoprev']))
-                        echo"<td>".$row['rangotiempoprev']." </td><tr>";
-                     else       
-                        echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><tr>";
+              if(!empty($row['nombreFormulario']))
+		   echo"<td>".htmlentities($row['nombreformulario'])." </td> ";
+              else       
+                   echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+                   echo "<td>".htmlentities($row['estandarrep'])." </td>";
+              if ($row['impresion']=='G')                      
+		   echo"<td>General</td>";
+              else
+                   echo"<td>Especial </td>";
+              if($row['urgente']==0)
+                    echo"<td>NO</td>";
+              else
+                    echo"<td>SI</td>";
+               if(!empty($row['nombresexo']))      
+                     echo"<td>".htmlentities($row['nombresexo'])." </td>";
+               else
+                    echo "<td>Ambos</td>";
+               if(!empty($row['rangotiempoprev']))
+                    echo"<td>".$row['rangotiempoprev']." </td><tr>";
+               else       
+                    echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><tr>";
                     
 		}
 		echo "</table>"; 
@@ -238,30 +243,34 @@ switch ($opcion)
 			  </table>";
 	break;
 	case 5:// Se genera el Código del Examenen
-            $idarea=$_POST['idarea'];          
-			$cod=$objdatos->LeerUltimoCodigo($idarea);
+            $idarea=$_POST['idarea'];  
+          //  echo $idarea1;
+            $idarea1=$objdatos->ObtenerCodigo($idarea);
+           $area= $idarea1[0];
+            $cod=$objdatos->LeerUltimoCodigo($idarea);
             $dato=substr("$cod", -3);
             $val=(int)$dato;
+            //echo $val;
             $consulta= $val+1;
 		if ($consulta >= 0 && $consulta  <= 9){
-		$codigo=$idarea.'00'.$consulta;
+		$codigo=$area.'00'.$consulta;
 		}
 		if ($consulta >= 10 && $consulta  <= 99){
-			$codigo=$idarea.'0'.$consulta;
+			$codigo=$area.'0'.$consulta;
 			//document.frmnuevo.txtidexamen.value=idArea+'0'+numero;
 		}
 		if ($consulta >= 100 && $consulta  <= 999){
-			$codigo=$idarea.$consulta;
+			$codigo=$area.$consulta;
 			//document.frmnuevo.txtidexamen.value=idArea+numero;
 		}
     		 echo "<input type='text' id='txtidexamen'  name='txtidexamen' value='".$codigo."'  />";
                    
     break;
 	case 6:
-		$IdPrograma=$_POST['idprograma'];
+		/*$IdPrograma=$_POST['idprograma'];
            	//echo $idarea; 
 	  	$rslts='';
-		$consulta= $objdatos->consultar_formularios($IdPrograma,$lugar);
+		$consulta= $objdatos->consultar_formularios($lugar);
 		//$dtMed=$obj->LlenarSubServ($proce);	
 		
 		$rslts = '<select name="cmbFormularios" id="cmbFormularios" size="1" >';
@@ -272,7 +281,7 @@ switch ($opcion)
 		}
 				
 		$rslts .= '</select>';
-		echo $rslts;
+		echo $rslts;*/
 	
 	
 	break;
@@ -296,31 +305,25 @@ switch ($opcion)
 				$conExam=$objdatos->BuscarExamen($idexamen,$lugar);
                                 
 				//print_r ($conExam);
-				$ExisExa=mysql_fetch_array($conExam);
+				$ExisExa=pg_fetch_array($conExam);
 				//print_r ($ExisExa[0]);
 				//echo $ExisExa[0];
-				$query = "SELECT lab_examenes.IdExamen,lab_examenes.IdEstandar,lab_examenes.IdArea,lab_examenes.NombreExamen,
-					 lab_codigosestandar.Descripcion,lab_areas.NombreArea,lab_examenesxestablecimiento.Idplantilla,
-					 lab_examenesxestablecimiento.Condicion,
-					 IF(lab_examenesxestablecimiento.Condicion='H','Habilitado','Inhabilitado')as Cond,
-					 CASE lab_examenesxestablecimiento.Ubicacion
-                                                WHEN 0 THEN 'Todas las Procedencias'
-                                                WHEN 1 then 'Hospitalización y Emergencia'
-                                                WHEN 4 then 'Laboratorio'
-                                         END AS Ubicacion,
-                                         NombreFormulario,lab_examenesxestablecimiento.IdEstandarRep,
-                                         lab_examenesxestablecimiento.Impresion,Urgente,mnt_sexo.sexovn,mnt_sexo.IdSexo,
-                                         lab_examenesxestablecimiento.Impresion,rangotiempoprev  
-					 FROM lab_examenesxestablecimiento 
-					 INNER JOIN lab_examenes ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
-					 INNER JOIN lab_areasxestablecimiento ON lab_examenes.IdArea=lab_areasxestablecimiento.IdArea
-					 INNER JOIN lab_areas ON lab_areasxestablecimiento.IdArea=lab_areas.IdArea
-					 INNER JOIN lab_codigosestandar ON lab_examenes.IdEstandar= lab_codigosestandar.IdEstandar
-                                         LEFT JOIN mnt_formularios ON lab_examenesxestablecimiento.IdFormulario=mnt_formularios.IdFormulario 
-                                         INNER JOIN mnt_sexo ON lab_examenes.IdSexo= mnt_sexo.IdSexo
-                                         LEFT JOIN cit_programacionxexams ON lab_examenesxestablecimiento.idexamen=cit_programacionxexams.idexam
-					 WHERE lab_areasxestablecimiento.Condicion='H' AND lab_areasxestablecimiento.IdEstablecimiento=$lugar
-					 AND lab_examenesxestablecimiento.IdEstablecimiento=$lugar AND ";
+				$query = "SELECT lab_examenes.id,lab_examenes.idexamen,lab_examenes.idestandar,lab_examenes.idarea,nombreexamen,descripcion, nombrearea,
+                                          lab_examenesxestablecimiento.condicion, (CASE WHEN lab_examenesxestablecimiento.condicion='H' THEN 'Habilitado' ELSE 'Inhabilitado' end )AS Cond, 
+                                          (CASE WHEN lab_examenesxestablecimiento.ubicacion=0 THEN 'Todas las Procedencias' 
+                                                WHEN lab_examenesxestablecimiento.ubicacion=1 THEN 'Hospitalización y Emergencia' 
+                                                WHEN lab_examenesxestablecimiento.ubicacion=4 THEN 'Laboratorio' END ) AS Ubicacion, 
+                                          lab_examenesxestablecimiento.idplantilla,mnt_formularios.nombreformulario, 
+                                          lab_examenesxestablecimiento.idestandarrep ,lab_examenesxestablecimiento.impresion,urgente, ctl_sexo.nombre AS nombresexo
+                                          FROM lab_examenesxestablecimiento 
+                                          INNER JOIN lab_examenes ON lab_examenes.id=lab_examenesxestablecimiento.idexamen 
+                                          INNER JOIN lab_areasxestablecimiento ON lab_examenes.idarea=lab_areasxestablecimiento.idarea 
+                                          INNER JOIN lab_areas ON lab_areasxestablecimiento.idarea=lab_areas.id 
+                                          INNER JOIN lab_codigosestandar ON lab_examenes.idestandar= lab_codigosestandar.id 
+                                          LEFT JOIN mnt_formularios ON lab_examenesxestablecimiento.idformulario=mnt_formularios.id 
+                                          INNER JOIN ctl_sexo ON lab_examenes.idsexo= ctl_sexo.id
+					  WHERE lab_areasxestablecimiento.condicion='H' AND lab_areasxestablecimiento.idestablecimiento=$lugar
+					  AND lab_examenesxestablecimiento.idestablecimiento=$lugar AND ";
 					$ban=0;
 					
 						//VERIFICANDO LOS POST ENVIADOS
@@ -328,43 +331,45 @@ switch ($opcion)
                                         if($ExisExa[0]>0){//si existe el examen 
 
                                              if (!empty($_POST['idexamen']))
-                                                 { $query .= " lab_examenes.IdExamen='".$_POST['idexamen']."' AND"; }
+                                                 { $query .= " lab_examenes.id='".$_POST['idexamen']."' AND"; }
                                         }	
                                         if (!empty($_POST['nomexamen']))
-					{ $query .= " NombreExamen like'%".$_POST['nomexamen']."%' AND"; }
+					{ $query .= " nombreexamen ilike'%".$_POST['nomexamen']."%' AND"; }
 						
 					if (!empty($_POST['idarea']))
-					{ $query .= " lab_areas.IdArea='".$_POST['idarea']."' AND"; }
+					{ $query .= " lab_areas.idarea='".$_POST['idarea']."' AND"; }
 						
 					if (!empty($_POST['plantilla']))
-					{ $query .= " lab_examenesxestablecimiento.Idplantilla='".$_POST['plantilla']."' AND"; }
+					{ $query .= " lab_examenesxestablecimiento.idplantilla='".$_POST['plantilla']."' AND"; }
 						
 					if (!empty($_POST['idestandar']))
-					{ $query .= " lab_codigosestandar.IdEstandar='".$_POST['idestandar']."' AND"; }
+					{ $query .= " lab_codigosestandar.idestandar='".$_POST['idestandar']."' AND"; }
 					
 					if (!empty($_POST['idestandarRep']))
-					{ $query .= " lab_codigosestandar.IdEstandar='".$_POST['idestandarRep']."' AND"; }
+					{ $query .= " lab_codigosestandar.idestandar='".$_POST['idestandarRep']."' AND"; }
 						
 					if (!empty($_POST['idformulario']))
-					{ $query .= " lab_examenesxestablecimiento.IdFormulario='".$_POST['idformulario']."' AND"; }
+					{ $query .= " lab_examenesxestablecimiento.idformulario='".$_POST['idformulario']."' AND"; }
                                         
                                         if (!empty($_POST['ubicacion']))
-					{ $query .= " lab_examenesxestablecimiento.Ubicacion='".$_POST['ubicacion']."' AND"; }
+					{ $query .= " lab_examenesxestablecimiento.ubicacion='".$_POST['ubicacion']."' AND"; }
 						
 					if (!empty($_POST['etiqueta'])){
                                             if ($_POST['etiqueta']=='G')
-                                                { $query .= "  lab_examenesxestablecimiento.Impresion='G' AND"; }
+                                                { $query .= "  lab_examenesxestablecimiento.impresion='G' AND"; }
                                             else    
-                                                { $query .= "  lab_examenesxestablecimiento.Impresion<>'G' AND"; } 
+                                                { $query .= "  lab_examenesxestablecimiento.impresion<>'G' AND"; } 
                                         }        
 					if (!empty($_POST['sexo']))
-					{ $query .= "  lab_examenes.IdSexo ='".$_POST['sexo']."' AND"; }
+					{ $query .= "  lab_examenes.idsexo ='".$_POST['sexo']."' AND"; }
+                                        
+                                            
                                         
                                         if (!empty($_POST['Hab'])){
                                             if ($_POST['Hab']=='H')
-                                                { $query .= "  lab_examenesxestablecimiento.Condicion='H' AND"; }
+                                                { $query .= "  lab_examenesxestablecimiento.condicion='H' AND"; }
                                             else    
-                                                { $query .= "  lab_examenesxestablecimiento.Condicion='I' AND"; } 
+                                                { $query .= "  lab_examenesxestablecimiento.condicion='I' AND"; } 
                                         }      
                                         
                                         else{$ban=1;}
@@ -372,11 +377,11 @@ switch ($opcion)
 						
 					if ($ban==0)
 					{    $query = substr($query ,0,strlen($query)-4);
-					     $query_search = $query. " ORDER BY lab_examenes.IdArea,lab_examenes.IdExamen";
+					     $query_search = $query. " ORDER BY lab_examenes.idarea,lab_examenes.id";
 					}
 					else {
                                             $query = substr($query ,0,strlen($query)-4);
-                                            $query_search = $query. " ORDER BY lab_examenes.IdArea,lab_examenes.IdExamen";
+                                            $query_search = $query. " ORDER BY lab_examenes.idarea,lab_examenes.id";
 					}
 			
 		//echo $query_search;
@@ -407,37 +412,37 @@ switch ($opcion)
                             <td class='CobaltFieldCaptionTD'>Sexo</td>
                             <td class='CobaltFieldCaptionTD'>Tiempo Previo</td>
 		      </tr>";
-			while($row = mysql_fetch_array($consulta)){
+			while($row = pg_fetch_array($consulta)){
 		echo "<tr>
                             <td aling='center'> 
 				<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 				onclick=\"pedirDatos('".$row[0]."')\"></td>
                             <td class='CobaltDataTD' style='text-decoration:underline;cursor:pointer;' ".
-				"onclick='Estado(\"".$row['IdExamen']."\",\"".$row['Condicion']."\")'>".$row['Cond']."</td>
-                            <td>".$row['IdExamen']." </td>
-                            <td>".htmlentities($row['NombreExamen'])."</td>
-                            <td>".htmlentities($row['NombreArea'])."</td>
-                            <td>".htmlentities($row['Idplantilla'])."</td>
-                            <td>".htmlentities($row['IdEstandar'])."</td>
-                            <td>".htmlentities($row['Ubicacion'])."</td>";
+				"onclick='Estado(\"".$row['id']."\",\"".$row['Condicion']."\")'>".$row['Cond']."</td>
+                            <td>".$row['id']." </td>
+                            <td>".htmlentities($row['nombreexamen'])."</td>
+                            <td>".htmlentities($row['nombrearea'])."</td>
+                            <td>".htmlentities($row['idplantilla'])."</td>
+                            <td>".htmlentities($row['idestandar'])."</td>
+                            <td>".htmlentities($row['ubicacion'])."</td>";
 		    
               //if ($row['Ubicacion']=='0')
 		    //   echo"<td>SI</td>";
 		   // else
 		     //  echo"<td>NO</td>";*/
-                       echo"<td>".htmlentities($row['NombreFormulario'])." </td> 
-                            <td>".htmlentities($row['IdEstandarRep'])." </td>";
+                       echo"<td>".htmlentities($row['nombreformulario'])." </td> 
+                            <td>".htmlentities($row['estandarRep'])." </td>";
                     
-                       if ($row['Impresion']=='G')                      
+                       if ($row['impresion']=='G')                      
 		       echo"<td>General</td>";
                      else
                        echo"<td>Especial </td>";
-                     if($row['Urgente']==0)
+                     if($row['urgente']==0)
                        echo"<td>NO</td>";
                      else
                        echo"<td>SI</td>";
                      
-                       echo"<td>".htmlentities($row['sexovn'])." </td>";
+                       echo"<td>".htmlentities($row['nombresexo'])." </td>";
                     if(!empty($row['rangotiempoprev']))
                             echo"<td>".$row['rangotiempoprev']." </td><tr>";
                      else       
@@ -501,29 +506,24 @@ switch ($opcion)
 				//print_r ($ExisExa[0]);
 				
 		
-			  $query = "SELECT lab_examenes.IdExamen,lab_examenes.IdEstandar,lab_examenes.IdArea,lab_examenes.NombreExamen,
-				    lab_codigosestandar.Descripcion,lab_areas.NombreArea,lab_examenesxestablecimiento.Idplantilla,
-				    lab_examenesxestablecimiento.Condicion,
-				    IF(lab_examenesxestablecimiento.Condicion='H','Habilitado','Inhabilitado')as Cond,
-				    CASE lab_examenesxestablecimiento.Ubicacion
-                                                WHEN 0 THEN 'Todas las Procedencias'
-                                                WHEN 1 then 'Hospitalización y Emergencia'
-                                                WHEN 4 then 'Laboratorio'
-                                    END AS Ubicacion,
-                                    NombreFormulario,lab_examenesxestablecimiento.IdEstandarRep,
-                                    lab_examenesxestablecimiento.Impresion,Urgente,sexovn,mnt_sexo.IdSexo,lab_examenesxestablecimiento.Impresion,
-                                    rangotiempoprev  
-                                    FROM lab_examenesxestablecimiento 
-				    INNER JOIN lab_examenes ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
-				    INNER JOIN lab_areasxestablecimiento ON lab_examenes.IdArea=lab_areasxestablecimiento.IdArea
-				    INNER JOIN lab_areas ON lab_areasxestablecimiento.IdArea=lab_areas.IdArea
-				    INNER JOIN lab_codigosestandar ON lab_examenes.IdEstandar= lab_codigosestandar.IdEstandar
-				    LEFT JOIN mnt_formularios ON lab_examenesxestablecimiento.IdFormulario=mnt_formularios.IdFormulario
-                                    INNER JOIN mnt_sexo ON lab_examenes.IdSexo= mnt_sexo.IdSexo
-                                    LEFT JOIN cit_programacionxexams ON lab_examenesxestablecimiento.idexamen=cit_programacionxexams.idexam
-				    WHERE lab_areasxestablecimiento.Condicion='H'  
-				    AND lab_areasxestablecimiento.IdEstablecimiento=$lugar
-				    AND lab_examenesxestablecimiento.IdEstablecimiento=$lugar AND ";
+			  $query = "SELECT lab_examenes.id,lab_examenes.idexamen,lab_examenes.idestandar,lab_examenes.idarea,nombreexamen,descripcion, nombrearea,
+                             lab_examenesxestablecimiento.condicion, (CASE WHEN lab_examenesxestablecimiento.condicion='H' THEN 'Habilitado' ELSE 'Inhabilitado' end )AS Cond, 
+                             (CASE WHEN lab_examenesxestablecimiento.ubicacion=0 THEN 'Todas las Procedencias' 
+                              WHEN lab_examenesxestablecimiento.ubicacion=1 THEN 'Hospitalización y Emergencia' 
+                              WHEN lab_examenesxestablecimiento.ubicacion=4 THEN 'Laboratorio' END ) AS Ubicacion, 
+                              lab_examenesxestablecimiento.idplantilla,mnt_formularios.nombreformulario, 
+                              lab_examenesxestablecimiento.idestandarrep ,lab_examenesxestablecimiento.impresion,
+                              urgente, ctl_sexo.nombre AS nombresexo
+                              FROM lab_examenesxestablecimiento 
+                              INNER JOIN lab_examenes ON lab_examenes.id=lab_examenesxestablecimiento.idexamen 
+                              INNER JOIN lab_areasxestablecimiento ON lab_examenes.idarea=lab_areasxestablecimiento.idarea 
+                              INNER JOIN lab_areas ON lab_areasxestablecimiento.idarea=lab_areas.id 
+                              INNER JOIN lab_codigosestandar ON lab_examenes.idestandar= lab_codigosestandar.id 
+                              LEFT JOIN mnt_formularios ON lab_examenesxestablecimiento.idformulario=mnt_formularios.id 
+                              INNER JOIN ctl_sexo ON lab_examenes.idsexo= ctl_sexo.id
+			      WHERE lab_areasxestablecimiento.condicion='H'  
+			      AND lab_areasxestablecimiento.idEstablecimiento=$lugar
+			      AND lab_examenesxestablecimiento.idEstablecimiento=$lugar AND ";
                           
                           
                           
@@ -534,48 +534,42 @@ switch ($opcion)
 		if($ExisExa[0]>=1){//verifica si existe el examen 
 				   			
 			if (!empty($_POST['idexamen']))
-				{ $query .= " lab_examenes.IdExamen='".$_POST['idexamen']."' AND"; }
+				{ $query .= " lab_examenes.idexamen='".$_POST['idexamen']."' AND"; }
 		}	
 		
 		if (!empty($_POST['nomexamen']))
-		{ $query .= " NombreExamen='".$_POST['nomexamen']."' AND"; }
+		{ $query .= " nombreexamen='".$_POST['nomexamen']."' AND"; }
 		
 		if (!empty($_POST['idarea']))
-		{ $query .= " lab_areas.IdArea='".$_POST['idarea']."' AND"; }
+		{ $query .= " lab_areas.idarea='".$_POST['idarea']."' AND"; }
 		
 		if (!empty($_POST['plantilla']))
-		{ $query .= " lab_examenesxestablecimiento.Idplantilla='".$_POST['plantilla']."' AND"; }
+		{ $query .= " lab_examenesxestablecimiento.idplantilla='".$_POST['plantilla']."' AND"; }
 		
 		if (!empty($_POST['idestandar']))
-		{ $query .= " lab_codigosestandar.IdEstandar='".$_POST['idestandar']."' AND"; }
-        
-		if (!empty($_POST['idestandar']))
-		{ $query .= " lab_codigosestandar.IdEstandar='".$_POST['idestandar']."' AND"; }
-        
-		if (!empty($_POST['idestandar']))
-		{ $query .= " lab_codigosestandar.IdEstandar='".$_POST['idestandar']."' AND"; }
+		{ $query .= " lab_codigosestandar.idestandar='".$_POST['idestandar']."' AND"; }
         
 		if (!empty($_POST['ubicacion']))
-		{ $query .= " lab_examenesxestablecimiento.Ubicacion='".$_POST['ubicacion']."' AND"; }
+		{ $query .= " lab_examenesxestablecimiento.ubicacion='".$_POST['ubicacion']."' AND"; }
                
 		
 		if (!empty($_POST['idestandarRep']))
-		{ $query .= " lab_codigosestandar.IdEstandar='".$_POST['idestandarRep']."' AND"; }
+		{ $query .= " lab_codigosestandar.idestandar='".$_POST['idestandarRep']."' AND"; }
 		
 		if (!empty($_POST['etiqueta'])){
                    if ($_POST['etiqueta']=='G')
-                         { $query .= "  lab_examenesxestablecimiento.Impresion='G' AND"; }
+                         { $query .= "  lab_examenesxestablecimiento.impresion='G' AND"; }
                    else    
-                         { $query .= "  lab_examenesxestablecimiento.Impresion<>'G' AND"; } 
+                         { $query .= "  lab_examenesxestablecimiento.impresion<>'G' AND"; } 
                 }        
 		if (!empty($_POST['sexo']))
-		{ $query .= "  lab_examenes.IdSexo ='".$_POST['sexo']."' AND"; }
+		{ $query .= "  lab_examenes.idsexo ='".$_POST['sexo']."' AND"; }
                 
                 if (!empty($_POST['Hab'])){
                     if ($_POST['Hab']=='H')
-                        { $query .= "  lab_examenesxestablecimiento.Condicion='H' AND"; }
+                        { $query .= "  lab_examenesxestablecimiento.condicion='H' AND"; }
                     else    
-                        { $query .= "  lab_examenesxestablecimiento.Condicion='I' AND"; } 
+                        { $query .= "  lab_examenesxestablecimiento.condicion='I' AND"; } 
                     }      
                                         
 		else{$ban=1;}
@@ -583,11 +577,11 @@ switch ($opcion)
 		
 		if ($ban==0)
 		{    $query = substr($query ,0,strlen($query)-4);
-			 $query_search = $query. " ORDER BY lab_examenes.IdArea,lab_examenes.IdExamen";
+			 $query_search = $query. " ORDER BY lab_examenes.idarea,lab_examenes.id";
 		}
 		else {
 			$query = substr($query ,0,strlen($query)-4);
-			$query_search = $query. " ORDER BY lab_examenes.IdArea,lab_examenes.IdExamen";
+			$query_search = $query. " ORDER BY lab_examenes.idarea,lab_examenes.id";
 		}
 			
 		//echo $query_search;
@@ -618,7 +612,7 @@ switch ($opcion)
                             <td aling='center' class='CobaltFieldCaptionTD'>Sexo</td>
                             <td aling='center' class='CobaltFieldCaptionTD'>Tiempo Previo</td>
 		      </tr>";
-            while($row = mysql_fetch_array($consulta)){
+            while($row = pg_fetch_array($consulta)){
 		echo "<tr>
                             <td aling='center'> 
 				<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
@@ -626,27 +620,27 @@ switch ($opcion)
                             <td class='CobaltDataTD' style='text-decoration:underline;cursor:pointer;' ".
 				"onclick='Estado(\"".$row['IdExamen']."\",\"".$row['Condicion']."\")'>".$row['Cond']."</td>
                             <td>".$row['IdExamen']." </td>
-                            <td>".htmlentities($row['NombreExamen'])." </td>
-                            <td>".htmlentities($row['NombreArea'])." </td>
-                            <td>".htmlentities($row['Idplantilla'])." </td>
-                            <td>".htmlentities($row['IdEstandar'])." </td>	";
+                            <td>".htmlentities($row['nombreexamen'])." </td>
+                            <td>".htmlentities($row['nombrearea'])." </td>
+                            <td>".htmlentities($row['idplantilla'])." </td>
+                            <td>".htmlentities($row['idestandar'])." </td>	";
 		   
                 if ($row['Ubicacion']=='0')
 		       echo"<td>SI</td>";
 		    else
 		       echo"<td>NO</td>";
-		       echo"<td>".htmlentities($row['NombreFormulario'])." </td> 
-			    <td>".htmlentities($row['IdEstandarRep'])." </td>";
+		       echo"<td>".htmlentities($row['nombreformulario'])." </td> 
+			    <td>".htmlentities($row['idestandarRep'])." </td>";
                    
-                    if ($row['Impresion']=='G')                      
+                    if ($row['impresion']=='G')                      
 		       echo"<td>General</td>";
                     else
                        echo"<td>Especial </td>";
-                    if($row['Urgente']==0)
+                    if($row['urgente']==0)
                         echo"<td>NO</td>";
                     else
                          echo"<td>SI</td>";
-                         echo"<td>".htmlentities($row['sexovn'])." </td>";
+                         echo"<td>".htmlentities($row['nombresexo'])." </td>";
                          if(!empty($row['rangotiempoprev']))
                             echo"<td>".$row['rangotiempoprev']." </td><tr>";
                      else       
@@ -691,12 +685,12 @@ switch ($opcion)
 		$IdPrograma=$_POST['idprograma'];
         //echo $IdPrograma;  
 	  	$rslts='';
-		$consulta= $objdatos->consultar_formularios($IdPrograma,$lugar);
+		$consulta= $objdatos->consultar_formularios($lugar);
 		
 		$rslts = '<select name="cmbConForm" id="cmbConForm"   size"1">';
 		$rslts .='<option value="0">--Seleccione--</option>';
 			
-		while ($rows =mysql_fetch_array($consulta)){
+		while ($rows =pg_fetch_array($consulta)){
 			$rslts.= '<option value="' .$rows[0].'" >'.htmlentities($rows[1]).'</option>';
 		}
 				

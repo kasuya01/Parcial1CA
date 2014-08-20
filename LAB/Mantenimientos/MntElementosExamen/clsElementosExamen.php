@@ -16,7 +16,7 @@ class clsElementosExamen
    {
     $query = "INSERT INTO lab_elementos(idexamen,elemento,subelemento,UnidadElem,ObservElem,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod,IdEstablecimiento,FechaIni,FechaFin) 
     VALUES('$idexamen','$nomelemento','$subelemento','$unidadele','$observacionele',$usuario,NOW(),$usuario,NOW(),$lugar,'$Fechaini','$Fechafin')";
-     $result = @mysql_query($query);
+     $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -31,10 +31,11 @@ class clsElementosExamen
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "UPDATE lab_elementos SET Elemento='$nomelemento' , subelemento='$subelemento',UnidadElem='$unidadele', 
-		 ObservElem='$observacionele',IdUsuarioMod='$usuario', FechaHoraMod=NOW(),Fechaini='$Fechaini', 
-		 FechaFin='$Fechafin' WHERE idelemento=$idelemento AND IdEstablecimiento=$lugar";
-     $result = @mysql_query($query);
+     $query = "UPDATE lab_elementos SET elemento='$nomelemento' , subelemento='$subelemento',unidadelem=$unidadele, 
+		 observelem=$observacionele,idusuariomod='$usuario', fechahoramod=NOW(),fechaini=$Fechaini, 
+		 fechafin=$Fechafin WHERE id=$idelemento AND idestablecimiento=$lugar";
+     echo $query;
+    $result = pg_query($query);
 	 if (!$result)
        return false;
      else
@@ -50,7 +51,7 @@ class clsElementosExamen
    if($con->conectar()==true) 
    {
      $query = "DELETE FROM lab_elementos WHERE idelemento='$idelemento' AND IdEstablecimiento=$lugar";
-     $result = @mysql_query($query);
+     $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -67,19 +68,19 @@ function consultar($lugar){
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT lab_areas.IdArea,NombreArea,lab_examenesxestablecimiento.IdExamen,NombreExamen,
-                IdElemento,Elemento,SubElemento,UnidadElem,ObservElem,FechaIni,FechaFin 
+     $query = "SELECT lab_areas.id,nombrearea,lab_examenesxestablecimiento.idexamen,nombreexamen,
+                idelemento,elemento,subelemento,unidadelem,observelem,fechaini,fechafin 
 		FROM lab_elementos 
-		INNER JOIN lab_examenes  ON lab_elementos.IdExamen=lab_examenes.IdExamen
-		INNER JOIN lab_areas     ON lab_areas.IdArea=lab_examenes.IdArea
-		INNER JOIN lab_areasxestablecimiento ON lab_areas.IdArea=lab_areasxestablecimiento.IdArea
-		INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen= lab_examenesxestablecimiento.IdExamen
-		WHERE lab_examenesxestablecimiento.Condicion='H' 
-		AND lab_areasxestablecimiento.Condicion='H' AND lab_examenesxestablecimiento.IdPlantilla='B' 
-                AND lab_examenesxestablecimiento.IdEstablecimiento=$lugar
-		ORDER BY IdExamen,IdElemento";
+		INNER JOIN lab_examenes  ON lab_elementos.idexamen=lab_examenes.id
+		INNER JOIN lab_areas     ON lab_areas.id=lab_examenes.idarea
+		INNER JOIN lab_areasxestablecimiento ON lab_areas.id=lab_areasxestablecimiento.idarea
+		INNER JOIN lab_examenesxestablecimiento ON lab_examenes.idexamen= lab_examenesxestablecimiento.idexamen
+		WHERE lab_examenesxestablecimiento.condicion='H' 
+		AND lab_areasxestablecimiento.condicion='H' AND lab_examenesxestablecimiento.idplantilla=2 
+                AND lab_examenesxestablecimiento.idestablecimiento=$lugar
+		ORDER BY lab_elementos.idexamen,lab_elementos.id";
     
-	 $result = @mysql_query($query);
+	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -92,17 +93,18 @@ function consultar($lugar){
  {
    $con = new ConexionBD;
    if($con->conectar()==true)
-   {  $query = "SELECT lab_areas.IdArea,NombreArea,lab_examenes.IdExamen,NombreExamen,IdElemento,Elemento,
-                UnidadElem,ObservElem,SubElemento, lab_elementos.IdEstablecimiento,
-                DATE_FORMAT(FechaIni,'%d/%m/%Y')AS FechaIni,
-		DATE_FORMAT(FechaFin,'%d/%m/%Y')AS FechaFin 
-                FROM lab_elementos 
-                INNER JOIN lab_examenes ON lab_elementos.IdExamen=lab_examenes.IdExamen
-                INNER JOIN lab_areas    ON lab_areas.IdArea=lab_examenes.IdArea
-                INNER JOIN lab_areasxestablecimiento ON lab_areas.IdArea=lab_areasxestablecimiento.IdArea
-                INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen= lab_examenesxestablecimiento.IdExamen
-                WHERE lab_elementos.IdEstablecimiento=$lugar AND IdElemento=$idelemento";
-                $result = @mysql_query($query);
+   {  $query = "SELECT lab_areas.idarea,nombrearea,lab_examenes.idexamen,nombreexamen,lab_elementos.id,elemento,
+                unidadelem,observelem,subelemento, lab_elementos.idestablecimiento,
+                to_char(fechaini,'dd/mm/YYYY')AS fechaini,
+                to_char(fechafin,'dd/mm/YYYY')AS fechafin  
+		FROM lab_elementos 
+                INNER JOIN lab_examenes ON lab_elementos.idexamen=lab_examenes.id
+                INNER JOIN lab_areas    ON lab_areas.id=lab_examenes.idarea
+                INNER JOIN lab_areasxestablecimiento ON lab_areas.id=lab_areasxestablecimiento.idarea
+                INNER JOIN lab_examenesxestablecimiento ON lab_examenes.id= lab_examenesxestablecimiento.idexamen
+                WHERE lab_elementos.idestablecimiento=$lugar AND lab_elementos.id=$idelemento";
+                $result = pg_query($query);
+                //echo $query;
      if (!$result)
        return false;
      else
@@ -116,8 +118,9 @@ function consultar($lugar){
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "select IdElemento,Elemento,SubElemento,UnidadElem,ObservElem from lab_elementos where IdExamen='$idexamen'";
-     $result = @mysql_query($query);
+     $query = "SELECT id,elemento,subelemento,unidadelem,observElem 
+              FROM lab_elementos WHERE idexamen='$idexamen'";
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -131,8 +134,10 @@ function consultar($lugar){
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "select SubElemento,Unidad from lab_subelementos where idelemento=$idelemento";
-     $result = @mysql_query($query);
+     $query = "SELECT subelemento,unidad 
+                FROM lab_subelementos 
+                WHERE idelemento=$idelemento";
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -148,14 +153,15 @@ function consultar($lugar){
 	    //usamos el metodo conectar para realizar la conexion
 	    if($con->conectar()==true)
 		{
-	     $query = "SELECT lab_examenes.IdExamen,lab_examenes.NombreExamen 
-				   FROM lab_examenes INNER JOIN lab_examenesxestablecimiento 
-				   ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
-				   WHERE IdArea='$idarea' AND lab_examenesxestablecimiento.IdPlantilla='B' 
-				   AND lab_examenesxestablecimiento.Condicion='H' AND lab_examenesxestablecimiento.IdEstablecimiento=$lugar
-				   ORDER BY lab_examenes.NombreExamen";
-				   
-		 $result = @mysql_query($query);
+	     $query ="SELECT lab_examenes.id,lab_examenes.nombreexamen FROM lab_examenes 
+		        INNER JOIN lab_examenesxestablecimiento ON    
+                        lab_examenes.id=lab_examenesxestablecimiento.idexamen
+			WHERE lab_examenes.idarea='$idarea'
+			AND  lab_examenesxestablecimiento.idplantilla=2 AND lab_examenesxestablecimiento.condicion='H'
+			AND lab_examenesxestablecimiento.idestablecimiento=$lugar
+			ORDER BY lab_examenes.idarea";
+                     
+		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -173,14 +179,15 @@ function consultar($lugar){
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
      $query = "SELECT * FROM lab_elementos
-	INNER JOIN lab_examenes ON lab_elementos.IdExamen=lab_examenes.IdExamen
-	INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen= lab_examenesxestablecimiento.IdExamen	
-	INNER JOIN lab_areas ON lab_examenes.IdArea=lab_areas.IdArea
-	INNER JOIN lab_areasxestablecimiento ON lab_areas.IdArea=lab_areasxestablecimiento.IdArea
-	WHERE lab_areasxestablecimiento.Condicion='H' AND lab_examenesxestablecimiento.Condicion='H' 
-	AND lab_examenesxestablecimiento.IdPlantilla='B' AND lab_elementos.IdEstablecimiento=$lugar
-	ORDER BY lab_elementos.IdExamen,IdElemento";
-	 $numreg = mysql_num_rows(mysql_query($query));
+	INNER JOIN lab_examenes ON lab_elementos.idexamen=lab_examenes.id
+	INNER JOIN lab_examenesxestablecimiento ON lab_examenes.id= lab_examenesxestablecimiento.idexamen	
+	INNER JOIN lab_areas ON lab_examenes.idarea=lab_areas.id
+	INNER JOIN lab_areasxestablecimiento ON lab_areas.id=lab_areasxestablecimiento.idarea
+	WHERE lab_areasxestablecimiento.condicion='H' AND lab_examenesxestablecimiento.condicion='H' 
+	AND lab_examenesxestablecimiento.idplantilla=2 AND lab_elementos.idestablecimiento=$lugar
+	ORDER BY lab_elementos.idexamen,lab_elementos.id";
+     //echo $query;
+	 $numreg = pg_num_rows(pg_query($query));
 	 if (!$numreg )
 	   return false;
 	 else
@@ -194,7 +201,7 @@ function consultar($lugar){
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
 	     $query = $query_search;
-		 $numreg = mysql_num_rows(mysql_query($query));
+		 $numreg = pg_num_rows(pg_query($query));
 		 if (!$numreg )
 		   return false;
 		 else
@@ -208,22 +215,26 @@ function consultar($lugar){
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT lab_areas.IdArea,NombreArea,lab_examenes.IdExamen,NombreExamen,IdElemento,
-	 Elemento,IF(SubElemento='S','SI','NO')AS SubElemento,lab_elementos.IdEstablecimiento,UnidadElem,ObservElem,
-         DATE_FORMAT(FechaIni,'%d/%m/%Y')AS FechaIni,
-         DATE_FORMAT(FechaFin,'%d/%m/%Y')AS FechaFin  
+     $query = "SELECT lab_areas.idarea,nombrearea,lab_examenes.idexamen,nombreexamen,
+         lab_elementos.id,Elemento,
+         (case when subelemento='S' 
+          then 'SI' 
+          else 'NO' end ) as subelemento,
+         lab_elementos.idestablecimiento,unidadelem,observelem,
+         to_char(fechaini,'dd/mm/YYYY') AS fechaini,
+         to_char(fechafin,'dd/mm/YYYY') AS fechafin  
          FROM lab_elementos
-	 INNER JOIN lab_examenes ON lab_elementos.IdExamen=lab_examenes.IdExamen
-	 INNER JOIN lab_areas ON lab_areas.IdArea=lab_examenes.IdArea
-	 INNER JOIN lab_areasxestablecimiento ON lab_areas.IdArea=lab_areasxestablecimiento.IdArea
-	 INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen= lab_examenesxestablecimiento.IdExamen	
-	 WHERE lab_areasxestablecimiento.Condicion='H' AND lab_examenesxestablecimiento.Condicion='H' 
-	 AND lab_examenesxestablecimiento.IdPlantilla='B' and lab_elementos.IdEstablecimiento=$lugar
-	 ORDER BY IdExamen,IdElemento
-	 LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-   
+	 INNER JOIN lab_examenes ON lab_elementos.idexamen=lab_examenes.id
+	 INNER JOIN lab_areas ON lab_areas.id=lab_examenes.idarea
+	 INNER JOIN lab_areasxestablecimiento ON lab_areas.id=lab_areasxestablecimiento.idarea
+	 INNER JOIN lab_examenesxestablecimiento ON lab_examenes.id=lab_examenesxestablecimiento.idexamen	
+	 WHERE lab_areasxestablecimiento.condicion='H' AND lab_examenesxestablecimiento.condicion='H' 
+	 AND lab_examenesxestablecimiento.idplantilla=2 AND lab_elementos.idestablecimiento=$lugar
+	 ORDER BY lab_elementos.idexamen,lab_elementos.id
+	 LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+      //  echo $query;
      
-	 $result = @mysql_query($query);
+	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -237,8 +248,8 @@ function consultar($lugar){
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = $query_search." LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-		 $result = @mysql_query($query);
+	     $query = $query_search." LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -257,7 +268,7 @@ class clsLabor_ElementosExamen
 	    $con2 = new ConexionBDLab;
 		if($con2->conectarT()==true){
 			$query = "INSERT INTO laboratorio.lab_elementos(idexamen,elemento,subelemento,UnidadElem,ObservElem,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod,IdEstablecimiento,FechaIni,FechaFin)VALUES('$idexamen','$nomelemento','$subelemento','$unidadele','$observacionele',$usuario,NOW(),$usuario,NOW(),$lugar,'$Fechaini','$Fechafin')";
-			$result = mysql_query($query);
+			$result = pg_query($query);
 	 
 		if (!$result)
 			return false;
@@ -276,7 +287,7 @@ class clsLabor_ElementosExamen
 			 $query = "UPDATE laboratorio.lab_elementos SET Elemento='$nomelemento' , subelemento='$subelemento',UnidadElem='$unidadele', 
 				 ObservElem='$observacionele',IdUsuarioMod='$usuario', FechaHoraMod=NOW(),Fechaini='$Fechaini', 
 				 FechaFin='$Fechafin' WHERE idelemento=$idelemento AND IdEstablecimiento=$lugar";
-			 $result = mysql_query($query);
+			 $result = pg_query($query);
 			 if (!$result)
 			   return false;
 			 else
@@ -292,7 +303,7 @@ class clsLabor_ElementosExamen
 		 if($con2->conectarT()==true){
 			
 			 $query = "DELETE FROM laboratorio.lab_elementos WHERE idelemento='$idelemento' AND IdEstablecimiento=$lugar";
-			 $result = mysql_query($query);
+			 $result = pg_query($query);
 			 
 			 if (!$result)
 			   return false;

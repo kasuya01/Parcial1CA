@@ -11,21 +11,21 @@ $area=$_SESSION['Idarea'];
 $idelemento=$_POST['idelemento'];
 
 $consulta=$obj->consultarid($idelemento,$lugar);
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 
 //valores de las consultas
-$codexamen=$row['IdExamen'];
-$subelemento=$row['SubElemento'];
-$nombreelemento=$row['Elemento'];
+$codexamen=$row['idexamen'];
+$subelemento=$row['subelemento'];
+$nombreelemento=$row['elemento'];
 
-$unidadele=$row['UnidadElem'];
-$observacionele=$row['ObservElem'];
+$unidadele=$row['unidadelem'];
+$observacionele=$row['observelem'];
 
-$idarea=$row['IdArea'];
-$nombreexamen=$row['NombreExamen'];
-$nombrearea=$row['NombreArea'];
-$Fechaini=$row['FechaIni'];
-$Fechafin=$row['FechaFin'];
+$idarea=$row['idarea'];
+$nombreexamen=$row['nombreexamen'];
+$nombrearea=$row['nombrearea'];
+$Fechaini=$row['fechaini'];
+$Fechafin=$row['fechafin'];
 
 //echo $Fechaini."".$Fechafin;
 //muestra los datos consultados en los campos del formulario
@@ -48,8 +48,8 @@ $Fechafin=$row['FechaFin'];
 				<?php
 				
 				$consulta= $objeareas->consultar();
-				while($row = mysql_fetch_array($consulta)){
-					echo "<option value='" . $row['IdArea']. "'>" . htmlentities($row['NombreArea']) . "</option>";
+				while($row = pg_fetch_array($consulta)){
+					echo "<option value='" . $row['id']. "'>" . htmlentities($row['nombrearea']) . "</option>";
 				}
 				echo "<option value='" . $idarea . "' selected='selected'>" .htmlentities($nombrearea). "</option>";
 				?>		  
@@ -62,9 +62,9 @@ $Fechafin=$row['FechaFin'];
 				<option value="0">--Seleccione un Examen--</option>
 				<?php
 				$consultaex = $obj->ExamenesPorArea($idarea);
-				while($row = mysql_fetch_array($consultaex))
+				while($row = pg_fetch_array($consultaex))
 				{
-					echo "<option value='" . $row['IdExamen']. "'>" . $row['NombreExamen'] . "</option>";
+					echo "<option value='" . $row['id']. "'>" . $row['nombreexamen'] . "</option>";
 				}						            	
 					echo "<option value='" . $idexamen . "' selected='selected'>" .htmlentities($nombreexamen). "</option>";
 				?>	

@@ -16,8 +16,8 @@ class clsLab_DatosFijosExamen
 	   {
 	    $query = "INSERT INTO lab_datosfijosresultado
 		      (idarea,idexamen,unidades,rangoinicio,rangofin,nota,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,fechaini,fechafin,idsexo,idedad) 
-		 VALUES($idarea,$idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,NOW(),$usuario,NOW(),$lugar,$Fechaini,$Fechafin,$sexo,$redad)";
-		echo $query;
+                    VALUES($idarea,$idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,NOW(),$usuario,NOW(),$lugar,$Fechaini,$Fechafin,$sexo,$redad)";
+		//echo $query;
 	     $result = pg_query($query);
 	
 	     if (!$result)
@@ -232,7 +232,7 @@ class clsLab_DatosFijosExamen
                           to_char(lab_datosfijosresultado.fechafin,'dd/mm/YYYY') AS FechaFin, 
                           ctl_sexo.nombre as sexo,ctl_rango_edad.nombre as redad
                           FROM lab_datosfijosresultado 
-                          INNER join lab_examenes ON lab_datosfijosresultado.idexamen=lab_examenes.id 
+                          INNER join ctl_examen_servicio_diagnostico ON lab_datosfijosresultado.idexamen=lab_examenes.id 
                           INNER JOIN lab_areas ON lab_examenes.idarea=lab_areas.id 
                           INNER JOIN lab_areasxestablecimiento ON lab_areas.id=lab_areasxestablecimiento.idarea 
                           INNER JOIN lab_examenesxestablecimiento ON lab_examenes.id=lab_examenesxestablecimiento.idexamen 
@@ -242,7 +242,8 @@ class clsLab_DatosFijosExamen
                           AND lab_areasxestablecimiento.condicion='H' AND lab_datosfijosresultado.IdEstablecimiento=$lugar
                           ORDER BY lab_examenes.idarea
                           LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
-               // echo $query;
+               
+                echo $query;
                     $result = pg_query($query);
                     if (!$result)
 			return false;

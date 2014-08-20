@@ -7,7 +7,10 @@ $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 $obje=new clsLab_CodigosEstandar;
-$objeareas=new clsLab_Areas;?>
+$objeareas=new clsLab_Areas;
+$obj=new clsLab_Examenes;
+ //echo $lugar;
+?>
 <html>
 <head> 
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
@@ -81,8 +84,8 @@ if ($nivel==33){
                                     <option value="0" >--Seleccione un &Aacute;rea--</option>
                                     <?php
                                         $consulta= $objeareas->consultaractivas($lugar);
-					while($row = mysql_fetch_array($consulta)){
-                                            echo "<option value='" . $row['IdArea']. "'>" . $row['NombreArea'] . "</option>";
+					while($row = pg_fetch_array($consulta)){
+                                            echo "<option value='" . $row['idarea']. "'>" . $row['nombrearea'] . "</option>";
 					}
                                     ?>		  
 				</select>
@@ -100,7 +103,7 @@ if ($nivel==33){
                                         <?php
                                             $obje=new clsLab_Examenes;
                                             $consulta= $obje->LeerPlantilla();
-                                            while($row = mysql_fetch_array($consulta)){
+                                            while($row = pg_fetch_array($consulta)){
 						echo "<option value='" . $row[0]. "'>" . $row[1] . "</option>";
                                             }
 					?>
@@ -115,8 +118,8 @@ if ($nivel==33){
 					<?php
                                             $obje=new clsLab_CodigosEstandar;
                                             $consulta= $obje->consultar();
-                                            while($row = mysql_fetch_array($consulta)){
-                                                echo "<option value='" . $row['0']. "'>" . $row['0'].'- '.$row['1'] . "</option>";
+                                            while($row = pg_fetch_array($consulta)){
+                                                echo "<option value='" . $row['0']. "'>" . $row['1'].'- '.$row['2'] . "</option>";
                                             }
 								//mysql_free_result($row);		
 					?>		 
@@ -138,29 +141,22 @@ if ($nivel==33){
 				</select>
                             </td>
 			</tr>
-			<tr>
-                            <td class="StormyWeatherFieldCaptionTD" width="40%"><strong>Programa Nacional de Salud</strong> </td>
-                            <td class="StormyWeatherDataTD">
-                                <select id="cmbPrograma" name="cmbPrograma" size="1" onChange="LlenarComboFormulario(this.value);">
-                                    <option value="0">Ninguno</option>
-                                        <?php
-                                            $obje1=new clsLab_Examenes;
-                                            $consulta= $obje1->consultar_programas();
-                                            while($row = mysql_fetch_array($consulta)){
-                                                echo "<option value='" . $row['0']. "'>" .$row['1'] . "</option>";
-                                            }
-                                        ?>	
-				</select>  
-                            </td>
-			</tr>
+			
 			<tr>
                             <td width="17%" class="StormyWeatherFieldCaptionTD">Formulario para Examen</td>
                             <td width="83%"  class="StormyWeatherDataTD">
-                                <div id="divFormularios">
-                                    <select name="cmbFormularios" id="cmbFormularios" style="width:250px"> 
+                             
+                                    <select name="cmbFormularios" id="cmbFormularios" size="1" > 
                                         <option value="0">Ninguno</option>
+                                        <?php
+                                            $consulta= $obj->consultar_formularios($lugar);
+                                            while($row = pg_fetch_array($consulta)){
+                                                echo "<option value='" . $row['0']. "'>" .$row['1'] . "</option>";
+                                            }
+                                        ?>	
                                     </select>
-				</div>
+                                
+				
                             </td>
                        </tr>
                         <tr>
@@ -171,8 +167,8 @@ if ($nivel==33){
                                         <?php
                                             $obje=new clsLab_CodigosEstandar;
                                             $consulta= $obje->consultar();
-                                            while($row = mysql_fetch_array($consulta)){
-                                                echo "<option value='" . $row['0']. "'>" . $row['0'].'- '.$row['1'] . "</option>";
+                                            while($row = pg_fetch_array($consulta)){
+                                                echo "<option value='" . $row['0']. "'>" . $row['1'].'- '.$row['2'] . "</option>";
                                             }
 								//mysql_free_result($row);		
 					?>		 		
@@ -202,11 +198,11 @@ if ($nivel==33){
                             <td class="StormyWeatherFieldCaptionTD">Sexo al que se le realiza la prueba</td>
                             <td class="StormyWeatherDataTD">
                                 <select id="cmbsexo" name="cmbsexo" size="1">
-                                    <option value="0">-- Seleccione sexo --</option>
+                                     <option value="0">Ambos</option>
                                     <?php
                                         $obje1=new clsLab_Examenes;
                                         $consulta= $obje1->catalogo_sexo();
-                                        while($row = mysql_fetch_array($consulta)){
+                                        while($row = pg_fetch_array($consulta)){
                                             echo "<option value='" . $row['0']. "'>" .$row['1'] . "</option>";
                                         }
 				    ?>

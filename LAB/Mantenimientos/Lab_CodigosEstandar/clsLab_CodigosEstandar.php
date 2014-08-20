@@ -120,7 +120,7 @@ function Leer_grupos()
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT * FROM lab_codigosestandar ORDER BY idEstandar ";
+     $query = "SELECT id,idestandar,descripcion FROM lab_codigosestandar ORDER BY idEstandar ";
 	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
