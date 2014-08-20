@@ -663,7 +663,7 @@ class CrearHistorialClinico{
     function Historia(){	
     }	
 
-    function HistorialClinico($IdNumeroExp,$lugar,$IdSubServicio,$IdEmpleado,$FechaConsulta,$iduser,$ippc){
+    function HistorialClinico($IdNumeroExp,$lugar,$IdSubServicio,$IdEmpleado,$FechaConsulta,$iduser,$ippc, $idexpediente){
     //$ippc=$_SERVER["REMOTE_ADDR"];
     $sqlInsertCita= "
     INSERT INTO sec_historial_clinico
