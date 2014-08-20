@@ -171,11 +171,11 @@ switch ($opcion) {
                          t02.cargo,
                          t01.id_establecimiento AS idestablecimiento,
                          t04.username AS login
-                    FROM mnt_empleado                  t01
-                    INNER JOIN mnt_cargoempleados      t02 ON (t02.id = t01.id_cargo_empleado)
-                    INNER JOIN ctl_area_servicio_apoyo t03 ON (t03.id = t01.idarea)
-                    INNER JOIN fos_user_user           t04 ON (t01.id = t04.id_empleado AND t01.id_establecimiento = t04.id_establecimiento)
-                    INNER JOIN ctl_atencion            t05 ON (t05.id = t03.id_atencion AND t05.codigo_busqueda = 'DCOLAB') WHERE ";
+                    FROM mnt_empleado                        t01
+                    INNER JOIN mnt_cargoempleados            t02 ON (t02.id = t01.id_cargo_empleado)
+                    INNER JOIN ctl_area_servicio_diagnostico t03 ON (t03.id = t01.idarea)
+                    INNER JOIN fos_user_user                 t04 ON (t01.id = t04.id_empleado AND t01.id_establecimiento = t04.id_establecimiento)
+                    INNER JOIN ctl_atencion                  t05 ON (t05.id = t03.id_atencion AND t05.codigo_busqueda = 'DCOLAB') WHERE ";
 
         $conEmp = $objdatos->BuscarEmpleado($idempleado, $lugar);
         $ExisEmp = pg_fetch_array($conEmp);
@@ -372,11 +372,11 @@ switch ($opcion) {
                                 ELSE 'Inhabilitado' END AS Habilitado,
                          t04.enabled AS estadocuenta,
                          t04.username AS login 
-                  FROM mnt_empleado                  t01
-                  INNER JOIN mnt_cargoempleados      t02 ON (t02.id = t01.id_cargo_empleado)
-                  INNER JOIN ctl_area_servicio_apoyo t03 ON (t03.id = t01.idarea)
-                  INNER JOIN fos_user_user           t04 ON (t01.id = t04.id_empleado AND t01.id_establecimiento = t04.id_establecimiento)
-                  INNER JOIN ctl_atencion            t05 ON (t05.id = t03.id_atencion AND t05.codigo_busqueda = 'DCOLAB') WHERE ";
+                  FROM mnt_empleado                        t01
+                  INNER JOIN mnt_cargoempleados            t02 ON (t02.id = t01.id_cargo_empleado)
+                  INNER JOIN ctl_area_servicio_diagnostico t03 ON (t03.id = t01.idarea)
+                  INNER JOIN fos_user_user                 t04 ON (t01.id = t04.id_empleado AND t01.id_establecimiento = t04.id_establecimiento)
+                  INNER JOIN ctl_atencion                  t05 ON (t05.id = t03.id_atencion AND t05.codigo_busqueda = 'DCOLAB') WHERE ";
 
         $ban = 0;
         $ban1 = 0;

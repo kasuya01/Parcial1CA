@@ -126,7 +126,7 @@ class clsLab_Empleados {
 
             $query = "SELECT t01.idempleado,
                              t01.nombreempleado 
-                      FROM mnt_empleadot 01
+                      FROM mnt_empleado t01
                       INNER JOIN mnt_tipo_empleado  t02 ON (t02.id = t01.id_tipo_empleado)
                       WHERE t02.codigo ='LAB' AND t01.id_establecimiento = $lugar";
             $result = @pg_query($query);
