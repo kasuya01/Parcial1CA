@@ -6,8 +6,8 @@ include("../../../Conexion/ConexionBDLab.php");
 //implementamos la clase lab_areas
 class clsRecepcionSolicitud {
 
-    //constructor	
-    function clsRecepcionSolicitud() { //FUNCION PARA MOSTRAR DATOS GENERALES DE LA SOLICITUD 
+    //constructor
+    function clsRecepcionSolicitud() { //FUNCION PARA MOSTRAR DATOS GENERALES DE LA SOLICITUD
     }
 
     function DatosEstablecimiento($lugar) {
@@ -27,7 +27,7 @@ class clsRecepcionSolicitud {
     function DatosArea($area) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $NomAre = "select NombreArea,Administrativa from lab_areas where IdArea='$area'";
+            $NomAre = "SELECT nombrearea, administrativa from ctl_area_servicio_diagnostico where idarea = '$area'";
             $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
         }
         return $resul;
@@ -54,7 +54,7 @@ ORDER BY Nombre";
                       INNER JOIN sec_historial_clinico     t03 ON (t03.id = t01.id_historial_clinico)
                       INNER JOIN mnt_expediente            t04 ON (t04.id = t01.id_expediente)
                       INNER JOIN lab_estadossolicitud      t05 ON (t05.id = t01.estado)
-                      WHERE t04.numero = '$idexpediente' AND t05.idestado = 'D' AND t02.fecha = '$fechacita' AND t01.id_establecimiento = $lugar 
+                      WHERE t04.numero = '$idexpediente' AND t05.idestado = 'D' AND t02.fecha = '$fechacita' AND t01.id_establecimiento = $lugar
                             AND t03.idestablecimiento = $idEstablecimiento";
             //echo $query;
 
@@ -65,11 +65,11 @@ ORDER BY Nombre";
                 return $result;
         }
     }
-    
+
     function BuscarTodasSolicitudes($idexpediente, $fechacita, $lugar, $idEstablecimiento) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-        
+
             $query = "SELECT t05.id AS id_expediente,
                              t05.numero AS numero_expediente,
                              t02.fecha AS fecha_cita,
@@ -88,16 +88,16 @@ ORDER BY Nombre";
                       INNER JOIN mnt_expediente            t05 ON (t05.id = t01.id_expediente)
                       INNER JOIN ctl_atencion              t06 ON (t06.id = t01.id_atencion)
                       INNER JOIN mnt_paciente              t07 ON (t07.id = t05.id_paciente)";
-            
+
             $where = " WHERE t01.id_establecimiento = $lugar AND t03.idestablecimiento = $idEstablecimiento
                          AND t04.idestado = 'D'              AND t06.codigo_busqueda = 'DCOLAB'";
-            
+
             $orderBy = " ORDER BY t05.numero";
-            
+
             if($idexpediente !== '') {
                 $where = $where." AND t05.numero = '$idexpediente'";
             }
-            
+
             if($fechacita !== '') {
                 $where = $where." AND t02.fecha = '$fechacita'";
             }
@@ -121,7 +121,7 @@ ORDER BY Nombre";
                       INNER JOIN sec_historial_clinico     t03 ON (t03.id = t01.id_historial_clinico)
                       INNER JOIN mnt_expediente            t04 ON (t04.id = t01.id_expediente)
                       INNER JOIN lab_estadossolicitud      t05 ON (t05.id = t01.estado)
-                      WHERE t04.numero = '$idexpediente' AND t05.idestado = 'D' AND t02.fecha = '$fechacita' AND t01.id_establecimiento = $lugar 
+                      WHERE t04.numero = '$idexpediente' AND t05.idestado = 'D' AND t02.fecha = '$fechacita' AND t01.id_establecimiento = $lugar
                             AND t03.idestablecimiento = $idEstablecimiento";
             $numreg = pg_num_rows(pg_query($query));
             // echo $numreg;
@@ -141,13 +141,13 @@ ORDER BY Nombre";
 		lab_examenes.IdExamen AS IdExamen,
 		NombreExamen,Indicacion,FechaSolicitud,sec_historial_clinico.IdSubServicio,
 		sec_solicitudestudios.IdsolicitudEstudio
-		FROM sec_detallesolicitudestudios 
+		FROM sec_detallesolicitudestudios
 		INNER JOIN sec_solicitudestudios  ON sec_detallesolicitudestudios.IdSolicitudEstudio=sec_solicitudestudios.IdSolicitudEstudio
 		INNER JOIN lab_examenes  ON sec_detallesolicitudestudios.idExamen=lab_examenes.IdExamen
 		INNER JOIN sec_historial_clinico ON sec_solicitudestudios.IdHistorialClinico=sec_historial_clinico.IdHistorialClinico
 		INNER JOIN cit_citasxserviciodeapoyo ON cit_citasxserviciodeapoyo .IdSolicitudEstudio=sec_solicitudestudios.IdSolicitudEstudio
-		WHERE sec_solicitudestudios.IdServicio ='DCOLAB' AND sec_solicitudestudios.IdNumeroExp='$idexpediente' 
-		AND cit_citasxserviciodeapoyo .fecha='$fechacita' AND sec_detallesolicitudestudios.EstadoDetalle='D' 
+		WHERE sec_solicitudestudios.IdServicio ='DCOLAB' AND sec_solicitudestudios.IdNumeroExp='$idexpediente'
+		AND cit_citasxserviciodeapoyo .fecha='$fechacita' AND sec_detallesolicitudestudios.EstadoDetalle='D'
 		AND sec_solicitudestudios.IdEstablecimiento=$lugar AND sec_historial_clinico.IdEstablecimiento=$idEstablecimiento
 		ORDER BY lab_examenes.IdArea";
             $numreg = pg_num_rows(pg_query($query));
@@ -163,7 +163,7 @@ ORDER BY Nombre";
         if ($con->conectar() == true) {
 
             $query = "SELECT DISTINCT mnt_establecimiento.Nombre, mnt_empleados.IdEmpleado AS IdMedico, NombreEmpleado AS NombreMedico,
-		NombreSubServicio AS Origen,NombreServicio AS Precedencia, mnt_expediente.IdNumeroExp, 
+		NombreSubServicio AS Origen,NombreServicio AS Precedencia, mnt_expediente.IdNumeroExp,
 		CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoApellido) AS NombrePaciente,
 		CURDATE() as Fecha,(year(CURRENT_DATE)-year(FechaNacimiento))AS Edad,
 		IF(Sexo=1,'Masculino','Femenino') AS Sexo
@@ -171,7 +171,7 @@ ORDER BY Nombre";
 		INNER JOIN sec_solicitudestudios  ON sec_historial_clinico.IdHistorialClinico= sec_solicitudestudios.IdHistorialClinico
 		INNER JOIN mnt_empleados ON sec_historial_clinico.IDEmpleado= mnt_empleados.IdEmpleado
 		INNER JOIN mnt_expediente ON sec_historial_clinico.IdNumeroExp= mnt_expediente.IdNumeroExp
-		INNER JOIN mnt_datospaciente ON mnt_expediente.IdPaciente=mnt_datospaciente.IdPaciente  
+		INNER JOIN mnt_datospaciente ON mnt_expediente.IdPaciente=mnt_datospaciente.IdPaciente
 		INNER JOIN mnt_subservicio ON mnt_subservicio.IdSubServicio= sec_historial_clinico.IdSubServicio
 		INNER JOIN mnt_servicio ON mnt_servicio.IdServicio= mnt_subservicio.IdServicio
 		INNER JOIN cit_citasxserviciodeapoyo ON sec_solicitudestudios.IdSolicitudEstudio=cit_citasxserviciodeapoyo.IdSolicitudEstudio
@@ -195,7 +195,7 @@ ORDER BY Nombre";
                              t03.nombreempleado AS nombremedico,
                              t08.nombre AS Origen,
                              t02.id AS idsolicitudestudio,
-                             (SELECT nombre 
+                             (SELECT nombre
                               FROM ctl_atencion
                               WHERE id_atencion_padre = t08.id) AS Precedencia,
                              t04.numero AS idnumeroexp,
@@ -216,7 +216,7 @@ ORDER BY Nombre";
                              'day', 'día') AS edad,
                              t06.nombre AS sexo,
                              t07.id AS idsubservicio,
-                             t10.peso, 
+                             t10.peso,
                              t10.talla,
                              t13.nombre,
                              TO_DATE(t05.fecha_nacimiento::text, 'DD/MM/YYYY') AS fechanacimiento,
@@ -250,7 +250,7 @@ ORDER BY Nombre";
         }
     }
 
-    //FUNCION PARA MOSTRAR DETALLE DE LA SOLICITUD 
+    //FUNCION PARA MOSTRAR DETALLE DE LA SOLICITUD
     function DetalleSolicitud($idexpediente, $fechacita) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
@@ -259,7 +259,7 @@ ORDER BY Nombre";
 			INNER JOIN sec_solicitudestudios AS C ON A.IdSolicitudEstudio=C.IdSolicitudEstudio
 			INNER JOIN lab_examenes AS B ON A.idExamen=B.IdExamen
 			INNER JOIN cit_citasxserviciodeapoyo  AS D ON D.IdSolicitudEstudio=C.IdSolicitudEstudio
-			WHERE C.IdServicio ='DCOLAB' AND C.IdNumeroExp='$idexpediente' AND D.fecha='$fechacita' 
+			WHERE C.IdServicio ='DCOLAB' AND C.IdNumeroExp='$idexpediente' AND D.fecha='$fechacita'
 			ORDER BY B.IdArea";
             $result = @pg_query($query);
             if (!$result)
@@ -297,7 +297,7 @@ ORDER BY Nombre";
                       INNER JOIN cit_citas_serviciodeapoyo    t10 ON (t06.id = t10.id_solicitudestudios)
                       INNER JOIN lab_codigosestandar          t11 ON (t11.id = t02.idestandar)
                       INNER JOIN sec_historial_clinico        t12 ON (t12.id = t06.id_historial_clinico)
-                      WHERE t07.numero = '$idexpediente' AND t10.fecha = '$fechacita' 
+                      WHERE t07.numero = '$idexpediente' AND t10.fecha = '$fechacita'
                             AND t06.id = $idsolicitud    AND t04.idestablecimientoexterno = $IdEstablecimiento
                       GROUP BY SUBSTRING(t02.idexamen,1,3), t05.tipomuestra, t03.impresion";
             $result = @pg_query($query);
@@ -317,8 +317,8 @@ ORDER BY Nombre";
 			 FROM sec_detallesolicitudestudios AS A
 			 INNER JOIN sec_solicitudestudios AS C ON A.IdSolicitudEstudio=C.IdSolicitudEstudio
 			 INNER JOIN lab_examenes B ON A.idExamen=B.IdExamen
-			 WHERE IdServicio ='DCOLAB' AND C.IdNumeroExp='$idexpediente' 
-			 AND FechaSolicitud='$fechasolicitud' 
+			 WHERE IdServicio ='DCOLAB' AND C.IdNumeroExp='$idexpediente'
+			 AND FechaSolicitud='$fechasolicitud'
 			 ORDER BY B.IdArea";
 
 
@@ -336,7 +336,7 @@ ORDER BY Nombre";
         if ($con->conectar() == true) {
             $query = "UPDATE sec_solicitudestudios SET estado='$estado'
 			 WHERE IdNumeroExp='$idexpediente' AND
-			 FechaSolicitud='$fechacita' AND 
+			 FechaSolicitud='$fechacita' AND
 			 IdServicio='DCOLAB'";
             $result = @pg_query($query);
             if (!$result)
@@ -355,7 +355,7 @@ ORDER BY Nombre";
 		INNER JOIN sec_solicitudestudios AS B ON A.IdHistorialClinico= B.IdHistorialClinico
 		INNER JOIN mnt_empleados 	AS C ON A.IDEmpleado= C.IdEmpleado
 		INNER JOIN mnt_expediente        AS D ON A.IdNumeroExp= D.IdNumeroExp
-		INNER JOIN mnt_datospaciente 	AS E ON D.IdPaciente=E.IdPaciente  
+		INNER JOIN mnt_datospaciente 	AS E ON D.IdPaciente=E.IdPaciente
 		INNER JOIN mnt_subservicio 	AS F ON F.IdSubServicio= A.IDSubServicio
 		INNER JOIN mnt_servicio 	AS G ON G.IdServicio= F.IdServicio
 		WHERE B.IdServicio ='DCOLAB' AND A.IdNumeroExp='$idexpediente' AND
@@ -374,15 +374,15 @@ ORDER BY Nombre";
         $con = new ConexionBD;
         if ($con->conectar() == true) {
 
-            $query = "SELECT CASE estado 
+            $query = "SELECT CASE estado
 			WHEN 'D' THEN 'Digitada'
 			WHEN 'R' THEN 'Recibida'
 			WHEN 'P' THEN 'En Proceso'
 			WHEN 'C' THEN 'Resultado de Estudios Completo'
-			END AS estado 
+			END AS estado
 			FROM sec_solicitudestudios AS A
 			INNER JOIN cit_citasxserviciodeapoyo B ON A.IdSolicitudEstudio=B.IdSolicitudEstudio
-			WHERE IdNumeroExp='$idexpediente' AND fecha='$fechacita' 
+			WHERE IdNumeroExp='$idexpediente' AND fecha='$fechacita'
 			AND A.IdServicio='DCOLAB";
             $result = @pg_query($query);
 
@@ -390,7 +390,7 @@ ORDER BY Nombre";
                 return false;
             } else {
                 $row = pg_fetch_array($result);
-                //return $result;	
+                //return $result;
                 return $row[0];
             }
         }
@@ -399,7 +399,7 @@ ORDER BY Nombre";
     function NumeroMuestra() {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "SELECT MAX(NumeroMuestra) + 1 AS NumeroMuestra FROM lab_recepcionmuestra 
+            $query = "SELECT MAX(NumeroMuestra) + 1 AS NumeroMuestra FROM lab_recepcionmuestra
 	         WHERE fecharecepcion=CURRENT_DATE";
             $result = @pg_query($query);
             if (!$result)
@@ -417,15 +417,15 @@ ORDER BY Nombre";
         if ($con->conectar() == true) {
             $query = "SELECT DISTINCT mnt_empleados.IdEmpleado as IdMedico,NombreEmpleado as NombreMedico,
 	NombreSubServicio AS Origen,sec_solicitudestudios.IdSolicitudEstudio,
-	NombreServicio AS Precedencia, mnt_expediente.IdNumeroExp, 
+	NombreServicio AS Precedencia, mnt_expediente.IdNumeroExp,
 	CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoApellido) AS NombrePaciente,
 	CURDATE() AS Fecha,(year(CURRENT_DATE)-year(FechaNacimiento))AS Edad,
 	IF(Sexo=1,'Masculino','Femenino') AS Sexo,mnt_subservicio.IdSubServicio,mnt_establecimiento.Nombre,DATE_FORMAT(FechaNacimiento,'%d/%m/%Y') as FechaNacimiento
-	FROM sec_historial_clinico 
+	FROM sec_historial_clinico
 	INNER JOIN sec_solicitudestudios ON sec_historial_clinico .IdHistorialClinico= sec_solicitudestudios.IdHistorialClinico
 	INNER JOIN mnt_empleados ON sec_historial_clinico.IDEmpleado= mnt_empleados.IdEmpleado
 	INNER JOIN mnt_expediente ON sec_historial_clinico.IdNumeroExp=mnt_expediente.IdNumeroExp
-	INNER JOIN mnt_datospaciente ON mnt_expediente.IdPaciente=mnt_datospaciente.IdPaciente  
+	INNER JOIN mnt_datospaciente ON mnt_expediente.IdPaciente=mnt_datospaciente.IdPaciente
 	INNER JOIN mnt_subservicio ON mnt_subservicio.IdSubServicio= sec_historial_clinico.IdSubServicio
 	INNER JOIN mnt_servicio ON mnt_servicio.IdServicio= mnt_subservicio.IdServicio
 	INNER JOIN cit_citasxserviciodeapoyo ON sec_solicitudestudios.IdSolicitudEstudio=cit_citasxserviciodeapoyo.IdSolicitudEstudio
@@ -448,7 +448,7 @@ ORDER BY Nombre";
 
             $query = "SELECT t08.numero AS idnumeroexp,
                              t04.idarea,
-                             t03.idexamen, 					
+                             t03.idexamen,
                              t03.nombreexamen,
                              t01.indicacion,
                              t02.fecha_solicitud AS fechasolicitud,
@@ -467,8 +467,8 @@ ORDER BY Nombre";
                       INNER JOIN mnt_aten_area_mod_estab     t10 ON (t10.id = t02.id_atencion)
                       INNER JOIN ctl_atencion                t11 ON (t11.id = t10.id_atencion)
                       INNER JOIN lab_estadosdetallesolicitud t12 ON (t12.id = t01.estadodetalle)
-                      WHERE t11.codigo_busqueda = 'DCOLAB' AND t08.numero = '$idexpediente' AND t06.fecha = '$fechacita' 				
-                            AND t02.id = $IdSolicitud      AND t12.idestadodetalle = 'D'    AND t01.idestablecimientoexterno = $idEstablecimiento 
+                      WHERE t11.codigo_busqueda = 'DCOLAB' AND t08.numero = '$idexpediente' AND t06.fecha = '$fechacita'
+                            AND t02.id = $IdSolicitud      AND t12.idestadodetalle = 'D'    AND t01.idestablecimientoexterno = $idEstablecimiento
                       ORDER BY t04.idarea";
             //echo $query;
             $result = @pg_query($query);
@@ -491,7 +491,7 @@ ORDER BY Nombre";
 		INNER JOIN sec_solicitudestudios  AS B ON A.IdHistorialClinico= B.IdHistorialClinico
 		INNER JOIN mnt_empleados AS C ON A.IDEmpleado= C.IdEmpleado
 		INNER JOIN mnt_expediente AS D ON A.IdNumeroExp= D.IdNumeroExp
-		INNER JOIN mnt_datospaciente AS E ON D.IdPaciente=E.IdPaciente  
+		INNER JOIN mnt_datospaciente AS E ON D.IdPaciente=E.IdPaciente
 		INNER JOIN mnt_subservicio AS F ON F.IdSubServicio= A.IdSubServicio
 		INNER JOIN mnt_servicio AS G ON G.IdServicio= F.IdServicio
 		INNER JOIN lab_recepcionmuestra AS H ON B.IdSolicitudEstudio=H.IdSolicitudEstudio
@@ -517,7 +517,7 @@ ORDER BY Nombre";
 			INNER JOIN sec_solicitudestudios  AS B ON A.IdHistorialClinico= B.IdHistorialClinico
 			INNER JOIN mnt_empleados AS C ON A.IDEmpleado= C.IdEmpleado
 			INNER JOIN mnt_expediente AS D ON A.IdNumeroExp= D.IdNumeroExp
-			INNER JOIN mnt_datospaciente AS E ON D.IdPaciente=E.IdPaciente  
+			INNER JOIN mnt_datospaciente AS E ON D.IdPaciente=E.IdPaciente
 			INNER JOIN mnt_subservicio AS F ON F.IdSubServicio= A.IdSubServicio
 			INNER JOIN mnt_servicio AS G ON G.IdServicio= F.IdServicio
 			INNER JOIN lab_recepcionmuestra AS H ON B.IdSolicitudEstudio=H.IdSolicitudEstudio
@@ -535,13 +535,13 @@ ORDER BY Nombre";
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
-            $query = "SELECT t03.piloto 
+            $query = "SELECT t03.piloto
                       FROM  sec_solicitudestudios          t01
                       INNER JOIN cit_citas_serviciodeapoyo t02 ON (t01.id = t02.id_solicitudestudios)
                       INNER JOIN sec_historial_clinico     t03 ON (t03.id = t01.id_historial_clinico)
                       INNER JOIN mnt_expediente            t04 ON (t04.id = t01.id_expediente)
                       INNER JOIN lab_estadossolicitud      t05 ON (t05.id = t01.estado)
-                      WHERE t04.numero = '$idexpediente' AND t05.idestado = 'D' AND t02.fecha='$fechacita' AND t01.id_establecimiento = $lugar 
+                      WHERE t04.numero = '$idexpediente' AND t05.idestado = 'D' AND t02.fecha='$fechacita' AND t01.id_establecimiento = $lugar
                             AND t03.idestablecimiento = $idEstablecimiento";
             $result = @pg_query($query);
             if (!$result)
