@@ -22,13 +22,13 @@ $establecimietno=$_GET['var14'];
 $responsable=$_GET['var15'];
 $sexo=$_GET['var16'];
 $idedad=$_GET['var17'];
-//echo $sexo." - ".$idedad; 
+//echo $sexo." - ".$idedad;
 ?>
 <html>
 <head>
-<meta http-equiv="Content-type" content="text/html;charset=UTF-8"> 
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <title>Resultados de Examenes de Laboratorio </title>
-<script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script> 
+<script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script>
 <!--<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">-->
 
@@ -40,7 +40,7 @@ function calc_edad()
 //alert (fecnac2);
   var suEdades=calcular_edad(fecnac2);
  // alert(suEdades);
-       
+
   document.getElementById("divsuedad").innerHTML=suEdades;
 }
 
@@ -65,8 +65,8 @@ function calc_edad()
 </head>
 
 <body>
-<?php 
-	
+<?php
+
 	$obj = new clsConsultarElementos;
 	$Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
 	$ConEstandar=$obj->Obtener_Estandar($idexamen);
@@ -75,17 +75,17 @@ function calc_edad()
 	$row_estab = mysql_fetch_array($Consulta_Estab);
 	$FechaRes=$obj->ObtenerFechaResultado($idsolicitud,$idexamen,$lugar);
 	$row_fecha=mysql_fetch_array($FechaRes);
-        
+
        /* $Cuentadias=$obj->CalculoDias($fechanac);
         $Cdias= mysql_fetch_array($Cuentadias);
         $dias=$Cdias[0];
-	
+
         $ConRangos=$obj->ObtenerCodigoRango($dias);
         $row_rangos=  mysql_fetch_array($ConRangos);
         $idedad=$row_rangos[0];   */
-        
-       
-	
+
+
+
 	switch ($idexamen){
 
 	case "H50":
@@ -99,12 +99,12 @@ function calc_edad()
 		$datos_generales=$obj->MostrarDatosGenerales($idsolicitud,$lugar);
 		$row_generales= mysql_fetch_array($datos_generales);
 		$row_area = mysql_fetch_array($consulta_datos);
-                
-                
+
+
                  $Cuentadias=$obj->CalculoDias($row_generales['fechanac']);
                  $Cdias= mysql_fetch_array($Cuentadias);
                  $dias=$Cdias[0];
-        
+
                 $ConRangos=$obj->ObtenerCodigoRango($dias);
                 $row_rangos= mysql_fetch_array($ConRangos);
                 $idedad=$row_rangos[0];   ?>
@@ -117,7 +117,7 @@ function calc_edad()
 			 <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO </strong></p>
 			 <p><strong><?php echo $row_estab['Nombre'] ?></strong></p>
 			 <p><strong>&Aacute;rea de <?php echo htmlentities($row_area['NombreArea'])?> </strong></p></td>
-                    <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.gif" width="210" name="Image3"></td>
+                    <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
 		</tr>
                 <tr>
 			<td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;</td>
@@ -129,7 +129,7 @@ function calc_edad()
 			<td colspan='2' class="Estilo6"><?php echo $row_fecha['FechaResultado']?></td>
 					<input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row_generales['FechaNacimiento']?>>
 		</tr>
-		
+
 		<tr>
 			<td colspan='1' class="Estilo6"><strong>NEC</strong></td>
 			<td colspan='1' class="Estilo6"><?php echo $row_generales['IdNumeroExp']?></td>
@@ -150,17 +150,17 @@ function calc_edad()
 			<td colspan='1' class="Estilo6"><strong>Sexo:</strong></td>
 			<td colspan='1' class="Estilo6"><?php echo $row_generales['Sexo']?></td>
 		</tr>
-		<tr>	
+		<tr>
 			<td colspan='1' class="Estilo6"><strong>Procedencia:</strong></td>
 			<td colspan='1' class="Estilo6"><?php echo $row_generales['Procedencia']?></td>
-			
+
 			<td colspan='1' class="Estilo6"><strong>Servicio:</strong></td>
 			<td colspan='2' class="Estilo6"><?php echo $row_generales['Origen']?></td>
 		</tr>
 		<tr>
 			 <td colspan='1' class="Estilo6"><strong>Examen Realizado:</strong></td>
 			 <td colspan='4' class="Estilo6"><?php echo htmlentities($row_area['NombreExamen'])?></td>
-		</tr>				 
+		</tr>
 		<tr>
 			 <td colspan='1' class="Estilo6"><strong>Validado Por:</strong></td>
 			 <td colspan='4' class="Estilo6"><?php echo htmlentities($responsable)?></td>
@@ -170,7 +170,7 @@ function calc_edad()
 			 <td colspan='4' class="Estilo6"><?php echo htmlentities($observacion)?></td>
 		</tr>
                 <tr>     <td colspan='5'>
-		
+
                             <table width='90%' border='0' align='center' class='StormyWeatherFormTABLE' cellspacing="0">
                                     <?php mysql_free_result($consulta_datos);
                                     mysql_free_result($datos_generales);?>
@@ -183,7 +183,7 @@ function calc_edad()
                                     <?php   $pos=0;
                                             $posele=0;
                     while($row = mysql_fetch_array($consulta))//ELEMENTOS
-                    {  
+                    {
                             if($row['SubElemento']=='S')
                             { ?>
                             <tr class='StormyWeatherFieldCaptionTD'>
@@ -221,8 +221,8 @@ function calc_edad()
                             <tr>
                                     <td colspan='6' class="Estilo6">&nbsp;</td></tr>
                             </table>
-                    <?php	}	
-                        
+                    <?php	}
+
 	}// del while
 	mysql_free_result($consulta);?>
             </table>
@@ -233,20 +233,20 @@ function calc_edad()
                     <td colspan="7" align="center">
                         <input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
 			<input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar();" />
-				
+
                     </td>
 		</tr>
             </table>
         </div>
 	<?php
  	break;
-  
+
 	default:
-	
+
 	  $cadena=$valores_subelementos;
 	  $vector=EXPLODE("/",$cadena);
 	  $vector_elementos=EXPLODE("/",$valores_elementos);
-          
+
 	 // $obj = new clsConsultarElementos;
 	  $consulta=$obj->LeerElementosExamen($idexamen,$lugar);
 	  $consulta_datos=$obj->LeerDatos($idexamen);
@@ -254,8 +254,8 @@ function calc_edad()
 			//$datos_empleado=$obj->DatosEmpleado($idempleado);
 	  $row_generales= mysql_fetch_array($datos_generales);
 	  $row_area = mysql_fetch_array($consulta_datos);
-                
-          
+
+
           $idsexo=$row_generales['idsexo'];
          // $idedad=$row_generales['fechanac'];
       //    echo  $idsexo." ".$idedad;
@@ -269,8 +269,8 @@ function calc_edad()
                 <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
                 <p><strong><?php echo $row_estab['Nombre'] ?></strong></p>
 		<p><strong>ÁREA DE <?php echo htmlentities($row_area['NombreArea'])?> </strong></p>
-            </td> 
-            <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.gif" width="210" name="Image3"></td>
+            </td>
+            <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
         </tr>
         <tr>
             <td colspan='1' class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
@@ -299,7 +299,7 @@ function calc_edad()
             <td colspan='1' class="Estilo5"><strong>Sexo:</strong></td>
             <td colspan='2' class="Estilo6"><?php echo $row_generales['Sexo']?></td>
 	</tr>
-	<tr>	
+	<tr>
             <td colspan='1' class="Estilo5"><strong>Procedencia:</strong></td>
             <td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['Procedencia'])?></td>
             <td colspan='1' class="Estilo5"><strong>Servicio:</strong></td>
@@ -308,7 +308,7 @@ function calc_edad()
 	<tr>
             <td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
             <td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['NombreExamen'])?></td>
-	</tr>				 
+	</tr>
 	<tr>
             <td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>
             <td colspan='5' class="Estilo6"><?php echo htmlentities($responsable)?>						</td>
@@ -331,14 +331,14 @@ function calc_edad()
                     <?php $pos=0;
                           $posele=0;
 	while($row = mysql_fetch_array($consulta))//ELEMENTOS
-	{  
+	{
             if($row['SubElemento']=="S")
             {   ?>
                    <tr class='StormyWeatherFieldCaptionTD'>
 			<td colspan='5' class="Estilo5"><strong><?php echo htmlentities($row['Elemento'])?></strong></td>
                     </tr>
 			<?php	$consulta2=$obj->LeerSubElementosExamen($row['IdElemento'],$lugar,$sexo,$idedad);
-			 
+
               while($rowsub = mysql_fetch_array($consulta2))//SUBELEMENTOS
 		{?>
                     <tr>
@@ -347,12 +347,12 @@ function calc_edad()
 			</td>
 			<td width='15%' class="Estilo5"><?php echo htmlentities($rowsub['Unidad'])?></td>
           <?php   if ((!empty($rowsub['rangoinicio'])) AND (!empty($rowsub['rangofin']))){?>
-                        <td width='30%' class="Estilo5"><?php echo $rowsub['rangoinicio']." - ".$rowsub['rangofin']?></td> 
-            <?php }else{?>  
-                        <td width='30%' align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>   
+                        <td width='30%' class="Estilo5"><?php echo $rowsub['rangoinicio']." - ".$rowsub['rangofin']?></td>
+            <?php }else{?>
+                        <td width='30%' align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
             <?php }  ?>
                     </tr>
-                    <?php	
+                    <?php
 			$pos=$pos + 1;
 		}
 		?>
@@ -367,7 +367,7 @@ function calc_edad()
 			<td class="Estilo5"><?php echo htmlentities($vector_elementos[$posele])?></td>
 			<td width='25%' class="Estilo6"><?php htmlentities($row['UnidadElem'])?></td>
                     </tr>
-				<?php 
+				<?php
 					$posele=$posele+1;
 				?>
                     <tr>
@@ -375,17 +375,17 @@ function calc_edad()
                     </tr>
                 </table>
 				<?php
-			}	
-			
+			}
+
 		}
-                
-				
+
+
 				mysql_free_result($consulta);
 				mysql_free_result($consulta_datos);
 				mysql_free_result($datos_generales);
 		?>
-        </table> 
-    </div>  
+        </table>
+    </div>
 </form>
     <div id="boton">
         <table align="center">

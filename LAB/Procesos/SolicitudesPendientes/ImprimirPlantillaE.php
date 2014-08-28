@@ -21,7 +21,7 @@ $idedad=$_GET['var12'];
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <title>Resultados de Examenes de Laboratorio </title>
-<script language="JavaScript" type="text/javascript" src="../SolicitudesPendientes/ajax_SolicitudesProcesadas.js"></script> 
+<script language="JavaScript" type="text/javascript" src="../SolicitudesPendientes/ajax_SolicitudesProcesadas.js"></script>
 <!--<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">-->
 <script language="JavaScript">
@@ -32,7 +32,7 @@ function calc_edad()
 //alert (fecnac2);
   var suEdades=calcular_edad(fecnac2);
  // alert(suEdades);
-       
+
   document.getElementById("divsuedad").innerHTML=suEdades;
 }
 </script>
@@ -56,23 +56,23 @@ function calc_edad()
 </head>
 
 <body>
-<?php 
+<?php
 include_once("clsPlantillaE.php");
 //creando los objetos de las clases
 	$obj = new clsPlantillaE;
 
 	$Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
 	$row_estab = mysql_fetch_array($Consulta_Estab);
-	
+
 	$ConEstandar=$obj->Obtener_Estandar($idexamen);
 	$CodEstandar= mysql_fetch_array($ConEstandar);
 	$IdEstandar=$CodEstandar[0];
-	
+
 	$FechaRes=$obj->ObtenerFechaResultado($idsolicitud,$idexamen,$lugar);
 	$row_fecha=mysql_fetch_array($FechaRes);
-	
-	
-	if ($IdEstandar=="H15"){   
+
+
+	if ($IdEstandar=="H15"){
 		$consulta_datos=$obj->LeerDatos($idexamen);
 		$datos_generales=$obj->MostrarDatosGenerales($idsolicitud);
 		//$datos_empleado=$obj->DatosEmpleado($idempleado);
@@ -82,7 +82,7 @@ include_once("clsPlantillaE.php");
 		$vector_idprocesos=EXPLODE("/",$codigos);
 		$vector_respuesta=EXPLODE("/",$valores);
 		$vector_comentarios=EXPLODE("/",$comentarios);?>
-			
+
 		<table width='100%' border='0' align='center' >
                     <tr>
                         <td colspan="1" align="left"><img id="Image1" style="WIDTH: 80px; HEIGHT: 55px" height="86" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
@@ -91,7 +91,7 @@ include_once("clsPlantillaE.php");
                             <p><strong><?php  echo $row_estab['Nombre'] ?></strong></p>
                             <p><strong>Area de <?php echo htmlentities($row_area['NombreArea'])?> </strong></p>
                         </td>
-                        <td colspan="1" align="right"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.gif" width="210" name="Image3"></td>
+                        <td colspan="1" align="right"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
                     </tr>
                     <tr>
                          <td colspan="6" align='center' >&nbsp;&nbsp;&nbsp;</td>
@@ -103,12 +103,12 @@ include_once("clsPlantillaE.php");
 			 <td colspan='2' class="Estilo6"><?php echo $row_fecha['FechaResultado']?></td>
                             <input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row_generales['FechaNacimiento']?>>
                     </tr>
-                    	
+
                     <tr>
 			<td colspan='1' class="Estilo5">NEC</td>
 			<td colspan='5' class="Estilo7"><?php echo $row_generales['IdNumeroExp']?></td>
-                    </tr>     
-		    <tr>	
+                    </tr>
+		    <tr>
 			<td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
 			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_generales['NombrePaciente'])?></td>
                     </tr>
@@ -124,13 +124,13 @@ include_once("clsPlantillaE.php");
 			<td colspan='1' class="Estilo5"><strong>Sexo:</strong></td>
 			<td colspan='2' class="Estilo6"><?php echo $row_generales['Sexo']?></td>
                     </tr>
-                    <tr>	
+                    <tr>
                     	<td colspan='1' class="Estilo5"><strong>Procedencia:</strong></td>
 			<td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['Procedencia'])?></td>
 			<td colspan='1' class="Estilo5"><strong>Servicio:</strong></td>
 			<td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['Origen'])?></td>
                     </tr>
-                    
+
                     <tr>
                     	<td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
                     	<td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['NombreExamen'])?></td>
@@ -146,8 +146,8 @@ include_once("clsPlantillaE.php");
 			<?php mysql_free_result($consulta_datos);
                               mysql_free_result($datos_generales);
                               $consulta=$obj->LeerProcesoExamen($idexamen,$sexo,$idedad);
-			?>	
-                    
+			?>
+
                     <tr>
                         <td colspan='6'>
                             <table width='100%' border='0' align='center' class='StormyWeatherFormTABLE' >
@@ -165,19 +165,19 @@ include_once("clsPlantillaE.php");
                                     <td class='Estilo5' align='center'>
                                     	<input name='oi dprueba[<?php $pos ?>]' type='hidden' id='oidprueba[<?php $pos ?>]' value='<?php $row['idprocedimientoporexamen'] ?>'><?php echo htmlentities($vector_respuesta[$pos])?></td>
                                     <td class='Estilo5'><?php echo $row['unidades']?></td>
-                                    <td class='Estilo5' align='center'><?php echo htmlentities($vector_comentarios[$pos])?></td>					  
+                                    <td class='Estilo5' align='center'><?php echo htmlentities($vector_comentarios[$pos])?></td>
                                     <td class='Estilo5'><?php echo htmlentities($row['unidades'])?></td>
 				</tr>
-																				
-				<?php $pos=$pos + 1;		 
+
+				<?php $pos=$pos + 1;
 						}
 					mysql_free_result($consulta);?>
-                               
-				
-					
+
+
+
                             </table>
-                        </td>           
-                    </tr>       
+                        </td>
+                    </tr>
 		</table>
                 <div id="boton1">
                     <table>
@@ -187,10 +187,10 @@ include_once("clsPlantillaE.php");
                                 <input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar() ;"/>
                             </td>
 			</tr>
-                    </table>	
+                    </table>
 		</div>
-	<?php 	
-	}else{		
+	<?php
+	}else{
 		$consulta_datos=$obj->LeerDatos($idexamen);
 		$datos_generales=$obj->MostrarDatosGenerales($idsolicitud);
 		//$datos_empleado=$obj->DatosEmpleado($idempleado);
@@ -208,7 +208,7 @@ include_once("clsPlantillaE.php");
                                         <p><strong><?php  echo $row_estab['Nombre'] ?></strong></p>
 					<p><strong>ÁREA DE <?php echo htmlentities($row_area['NombreArea'])?> </strong></p>
                             </td>
-                             <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.gif" width="210" name="Image3"></td>
+                             <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
 		</tr>
 			</tr>
                         <tr>
@@ -221,18 +221,18 @@ include_once("clsPlantillaE.php");
 				<td colspan="2" class="Estilo6"><?php echo $row_fecha['FechaResultado']?></td>
 					<input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row_generales['FechaNacimiento']?>>
 			</tr>
-			
+
 			<tr>
 				<td colspan="1" class="Estilo5"><strong>NEC:</strong></td>
 				<td colspan="5" class="Estilo7"><?php echo $row_generales['IdNumeroExp'] ?></td>
                         </tr>
                         <tr>
-		
+
 				<td colspan="1" class="Estilo5"><strong>Paciente:</strong></td>
 				<td colspan="5" class="Estilo6"><?php echo htmlentities($row_generales['NombrePaciente'])?></td>
 			</tr>
 			<tr>
-				
+
 				<td colspan="1" class="Estilo5"><strong>Edad:</strong></td>
 				<td colspan="2" class="Estilo6"><div id="divsuedad">
         				<script language="JavaScript" type="text/javascript">
@@ -240,21 +240,21 @@ include_once("clsPlantillaE.php");
           				</script>
     		   		</div>
 				</td>
-				
+
 				<td colspan="1" class="Estilo5"><strong>Sexo:</strong></td>
 				<td colspan="2" class="Estilo6"><?php echo $row_generales['Sexo']?></td>
 			</tr>
-			<tr>	
+			<tr>
 				<td colspan="1" class="Estilo5"><strong>Procedencia:</strong></td>
 				<td colspan="2" class="Estilo6"><?php echo $row_generales['Procedencia']?></td>
-				
+
 				<td colspan="1" class="Estilo5"><strong>Servicio:</strong></td>
 				<td colspan="2" class="Estilo6"><?php echo $row_generales['Origen']?></td>
 			</tr>
 			<tr>
 				<td colspan="1" class="Estilo5"><strong>Examen Realizado:</strong></td>
 				<td colspan="5" class="Estilo6"><?php echo htmlentities($row_area['NombreExamen'])?></td>
-			</tr>				 
+			</tr>
 			<tr>
 				<td colspan="1" class="Estilo5"><strong>Validado Por:</strong></td>
 				<td colspan="5" class="Estilo6"><?php echo htmlentities($responsable)?></td>
@@ -266,13 +266,13 @@ include_once("clsPlantillaE.php");
                         <tr>
                                 <td colspan="6" align='center' >&nbsp;&nbsp;&nbsp;</td>
                         </tr>
-			
+
 				<?php mysql_free_result($consulta_datos);
 					mysql_free_result($datos_generales);
 					$consulta=$obj->LeerProcesoExamen($idexamen,$sexo,$idedad);
 			?>
-				
-                           <tr> 
+
+                           <tr>
                                <td colspan="6">
                                     <table width="100%"  align="center" border="0" cellspacing="0">
                                         <tr>
@@ -288,14 +288,14 @@ include_once("clsPlantillaE.php");
 						<td class="Estilo6"><?php echo htmlentities($row['nombreprocedimiento'])?></td>
 						<td class="Estilo6" align="center"><input name='oidprueba[<?php $pos?>]' type='hidden' id='oidprueba[<?php $pos?>]' value='<?php $row['idprocedimientoporexamen']?>'><?php echo htmlentities($vector_respuesta[$pos])?></td>
 						<td class="Estilo6" align="center"><?php echo htmlentities($row['unidades'])?></td>
-                                                <td class="Estilo6" align="center"><?php 
+                                                <td class="Estilo6" align="center"><?php
                                                      if((!empty($row['rangoinicio'])) AND (!empty($row['rangoinicio'])))
                                                            echo $row['rangoinicio']."-".$row['rangofin'];?>
                                                 </td>
-                                        </tr>				  						<?php  $pos=$pos + 1;		 
+                                        </tr>				  						<?php  $pos=$pos + 1;
 					     }
 						mysql_free_result($consulta);?>
-                                        	
+
                                     </table>
                                 </td>
                             </tr>
@@ -308,8 +308,7 @@ include_once("clsPlantillaE.php");
 				<input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar() ;"/>
                             </td>
 			</tr>
-                    </table>   
+                    </table>
                  </div>
 
 			<?php }?>
-

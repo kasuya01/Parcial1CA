@@ -10,14 +10,14 @@ $opcion=$_POST['opcion'];
 
 //creando los objetos de las clases
 $objdatos = new clsConsultarElementosPlantillaC;
-   
-switch ($opcion) 
+
+switch ($opcion)
 {
   case 1:  //MOSTRANDO ANTIBIOTICOS ASOCIADOS A LA PLANTILLA
 	$idtarjeta=$_POST['idtarjeta'];
 	$idexamen=$_POST['idexamen'];
 
-     
+
 	$consulta=$objdatos->LeerAntibioticos($idtarjeta);
 	 $pos=0;
 	$imprimir="<table width='70%' border='0' align='center' class='StormyWeatherFormTABLE'>
@@ -40,7 +40,7 @@ switch ($opcion)
 					<input name='oidantibiotico[".$pos."]' type='hidden' id='oidantibiotico[".$pos."]' value='".$row['IdAntibiotico']."'>
 				</td>
 			</tr>";
-		$pos=$pos+1;		
+		$pos=$pos+1;
 	}
 	mysql_free_result($consulta);
 	$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>"	;
@@ -50,17 +50,17 @@ switch ($opcion)
 				</td>
 			</tr>
 	           </table>";
-			   
+
 	echo $imprimir;
-   
+
    break;
-   
+
    case 2://MOSTRANDO VISTA PREVIA DE LOS RESULTADO POSITIVOS INGRESADOS
    		$idexamen=$_POST['idexamen'];
 		$idsolicitud= $_POST['idsolicitud'];
 		$idempleado= $_POST['idempleado'];
 		$idrecepcion= $_POST['idrecepcion'];
-		$iddetalle= $_POST['iddetalle'];	
+		$iddetalle= $_POST['iddetalle'];
 		$observacion= $_POST['observacion'];
 		$codigos_antibioticos=$_POST['codigos_antibioticos'];
 		$valores_antibioticos=$_POST['valores_antibioticos'];
@@ -85,19 +85,19 @@ switch ($opcion)
 		$datos_empleado=$objdatos->DatosEmpleado($idempleado,$lugar);
 		$datos_observacion=$objdatos->LeerObservacion($observacion);
 		$bateria=$objdatos->NombreBacteria($idbacteria);
-		
+
 		$row_generales= mysql_fetch_array($datos_generales);
 		$row_area = mysql_fetch_array($consulta_datos);
 		$row_empleado = mysql_fetch_array($datos_empleado);
 		$row_observacion = mysql_fetch_array($datos_observacion);
 		$row_nombrebacteria= mysql_fetch_array($bateria);
-	
+
         $imprimir="<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
                         <tr>
                             <td colspan='1' align='left'   width='20%'><img id='Image1' style='WIDTH: 80px; HEIGHT: 55px' height='86' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
                             <td colspan='4' align='center' width='70%'><img id='Image2' style='WIDTH: 100px; HEIGHT: 55px' height='86' src='../../../Imagenes/INS.png' width='210' name='Image2'></td>
-                            <td colspan='1' align='right'  width='20%'><img id='Image3' style='WIDTH: 100px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.gif' width='210' name='Image3'></td>
-                        </tr> 
+                            <td colspan='1' align='right'  width='20%'><img id='Image3' style='WIDTH: 100px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
+                        </tr>
                         <tr>
 				<td align='center' colspan='6' >
 					<p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
@@ -113,10 +113,10 @@ switch ($opcion)
 				<td colspan='2'>".$row_generales['Fecha']."
 				<input name='suEdad' id='suEdad'  type='hidden'  value='".$row_generales['FechaNacimiento']."'/></td>
 			</tr>
-			<tr>	
+			<tr>
 				<td colspan='1' style='font:bold'><strong>Procedencia</strong></td>
 				<td colspan='2' style='font:bold'>".htmlentities($row_generales['Procedencia'])."</td>
-               
+
 				<td colspan='1'  style='font:bold'><strong>Servicio</strong></td>
 				<td colspan='2' style='font:bold'>".htmlentities($row_generales['Origen'])."</td>
 			</tr>
@@ -125,23 +125,23 @@ switch ($opcion)
 				<td colspan='2'>".$row_generales['IdNumeroExp']."</td>
 				<td colspan='1' style='font:bold'><strong>Paciente:</strong></td>
 				<td colspan='2'>".htmlentities($row_generales['NombrePaciente'])."</td>
-				
+
                         <tr>
 				<td colspan='1' ><strong>Edad:</strong></td>
                                 <td colspan='2'>
                                     <div id='divsuedad'>
-          
+
                                     </div>
 				</td>
-				
+
 				<td colspan='1' style='font:bold'><strong>Sexo:</strong></td>
 				<td colspan='2'>".$row_generales['Sexo']."</td>
 			</tr>
 			<tr>
 				<td colspan='1' style='font:bold'><strong>Examen Realizado:</strong></td>
 				<td colspan='5' style='font:bold'>".htmlentities($row_area['NombreExamen'])."</td>
-			</tr>				 
-			
+			</tr>
+
 			<tr>
 				<td colspan='1' style='font:bold'><strong>Validado Por:</strong></td>
 				<td colspan='5'>".htmlentities($row_empleado['NombreEmpleado'])."</td>
@@ -164,10 +164,10 @@ switch ($opcion)
 			<tr>
 				<td colspan='6'>&nbsp;</td>
 			</tr>
-			<tr> 
+			<tr>
                             <td colspan='6'>
                             <table width='60%' border='0' align='left' cellspacing='0'>
-                                <tr >	
+                                <tr >
                                         <td colspan='2'  ><strong>ANTIBIOTICO</strong></td>
                                         <td colspan='4'  ><strong>INTERPRETACI&Oacute;N</strong></td>
                                 </tr>";
@@ -183,7 +183,7 @@ switch ($opcion)
                                                         "<input name='oidantibiotico[".$pos."]' type='hidden' id='oidantibiotico[".$pos."]' value='".$row['IdAntibiotico']."'>
                                                 </td>
                                 </tr>";
-                                        $pos=$pos+1;		
+                                        $pos=$pos+1;
                                 }
                                         mysql_free_result($consulta);
 
@@ -199,10 +199,10 @@ switch ($opcion)
 				</td>
 			</tr>
 	    </table>";
-		//<input type='button' name='Ingresar' id='Ingresar' value='Ingresar otro Resultado' onclick='IngresarOtro()'\><input type='button'  name='Submit' value='Cerrar' Onclick='salir() ;'></td>	   
+		//<input type='button' name='Ingresar' id='Ingresar' value='Ingresar otro Resultado' onclick='IngresarOtro()'\><input type='button'  name='Submit' value='Cerrar' Onclick='salir() ;'></td>
 		echo $imprimir;
 	break;
-	
+
 	case 3://GUARDANDO DATOS DE LOS RESULTADOS EN LAS TABLAS
 		$idexamen=$_POST['idexamen'];
 		$idsolicitud= $_POST['idsolicitud'];
@@ -223,9 +223,9 @@ switch ($opcion)
    	 	$vector_antibioticos=EXPLODE("/",$codigos_antibioticos);
 		//$objdatos = new clsConsultarElementosPlantillaC;
     		$tamano_vector=count($vector_valores);
-		$tamano_vectoantibiotico=count($vector_antibioticos); 
+		$tamano_vectoantibiotico=count($vector_antibioticos);
 
-  
+
   		$posele=0;
   		$ban=0;
  		//echo $v_id_elementos[1];
@@ -238,52 +238,52 @@ switch ($opcion)
 					$idresultado=$ultimo;
 					//insertando el detalle
 					$iddetalleresultado=$objdatos->insertar_detalle($idresultado,$idbacteria,$idtarjeta,$cantidad,$lugar);
-			
+
 				//insertando el detalle de resultados de la tarjeta asociada
 				if (($tamano_vector-1)>0)
 				{
 					for ($i=0; $i < $tamano_vector-1 ; $i++) //INSERTANDO ANTIBIOTICOS
-					{				 
+					{
 						if ($objdatos->insertar_resultadoantibioticos($iddetalleresultado,$vector_antibioticos[$i],$vector_valores[$i],$lugar)==false)
-						{ 
+						{
 							$ban=1;
 						}
 						$posele=$posele+1;
 					}
-				
+
 				}
 				if($ban==0){
 				//actualiza el estado del detalle de la solicitud para indicar que el resultado esta completo para el examen
-			
+
 					echo "Datos Guardados";
-			
-				
+
+
 					if (($objdatos->CambiarEstadoDetalle($iddetalle)==true)&&($objdatos->CambiarEstadoSolicitud($idsolicitud)==true))
-					{    
+					{
 						echo " Correctamente";
 					}
-			
+
 				}
 				else
-				{	
-				
+				{
+
 					echo "Los resultados no pueden ser guardados consulte al Administrador...";
 				}
-    			}    
-	
-  		}  
-  		else{ echo "Los resultados no pueden ser guardados consulte al Administrador...";}  
+    			}
+
+  		}
+  		else{ echo "Los resultados no pueden ser guardados consulte al Administrador...";}
    	break;
-   
-   
+
+
    	case 4://MOSTRANDO COMBO DE OBSERVACIONES SEGUN EL FILTRO
                 $idexamen=$_POST['idexamen'];
 		$idarea=$_POST['idarea'];
 		$idtarjeta=$_POST['idtarjeta'];
 		$tiporespuesta=$_POST['tiporespuesta'];
-		
+
 		$consulta_ob=$objdatos->LeerObservaciones($idarea,$tiporespuesta);
-                  	
+
 		 $imprimir="<table class='StormyWeatherFormTABLE' width='100%' >
 			    <tr>
 				<td width='45%' class='StormyWeatherFieldCaptionTD'>Observaci&oacute;n</td>
@@ -295,14 +295,14 @@ switch ($opcion)
 			}
 		 	$imprimir.="</select></td>
 					</tr></table>";
-			echo $imprimir; 
-		
-   
+			echo $imprimir;
+
+
    break;
-   
+
    case 5:
    //MOSTRANDO VISTA PREVIA DE LOS RESULTADOS INGRESADOS CASO RESPUESTA NEGATIVOS
-  
+
 	$idexamen=$_POST['idexamen'];
 	$idtarjeta=$_POST['idtarjeta'];
 	$tiporespuesta=$_POST['tiporespuesta'];
@@ -315,7 +315,7 @@ switch ($opcion)
         $IdEstabExt=$_POST['IdEstabExt'];
 	$Consulta_Estab=$objdatos->Nombre_Establecimiento($IdEstabExt);
 	$row_estab = mysql_fetch_array($Consulta_Estab);
-  
+
 	$datos_generales=$objdatos->MostrarDatosGenerales($idsolicitud,$lugar);
 	$datos_empleado=$objdatos->DatosEmpleado($idempleado,$lugar);
 	$consulta_datos=$objdatos->LeerDatos($idexamen);
@@ -329,9 +329,9 @@ switch ($opcion)
           <tr>
                <td colspan='1' align='left'   width='20%'><img id='Image1' style='WIDTH: 80px; HEIGHT: 55px' height='86' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
                <td colspan='4' align='center' width='70%'><img id='Image2' style='WIDTH: 100px; HEIGHT: 55px' height='86' src='../../../Imagenes/INS.png' width='210' name='Image2'></td>
-               <td colspan='1' align='right'  width='20%'><img id='Image3' style='WIDTH: 100px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.gif' width='210' name='Image3'></td>
-           </tr> 
-            
+               <td colspan='1' align='right'  width='20%'><img id='Image3' style='WIDTH: 100px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
+           </tr>
+
            <tr>
 			<td align='center' colspan='6' >
 				<p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO </strong></p>
@@ -347,9 +347,9 @@ switch ($opcion)
 			<td colspan='2'>".$establecimiento."</td>
 			<td colspan='1' style='font:bold'><strong>Fecha</strong></td>
 			<td colspan='2'>".$row_generales['Fecha']."<input name='suEdad' id='suEdad'  type='hidden'  value='".$row_generales['FechaNacimiento']."'/></td>
-			
+
 		</tr>
-		<tr>	
+		<tr>
 			<td colspan='1' style='font:bold'><strong>Procedencia:</strong></td>
 			<td colspan='2' style='font:bold'>".htmlentities($row_generales['Procedencia'])."</td>
 			<td colspan='1' style='font:bold'><strong>Servicio:</strong></td>
@@ -361,10 +361,10 @@ switch ($opcion)
 			<td colspan='1' style='font:bold'><strong>Paciente:</strong></td>
 			<td colspan='2'>".htmlentities($row_generales['NombrePaciente'])."</td>
 		</tr>
-		<tr> 	
+		<tr>
 			<td colspan='1'style='font:bold'><strong>Edad:</strong></td>
 			<td colspan='2'><div id='divsuedad'>
-          
+
     			  </div></td>
 			<td colspan='1' style='font:bold'><strong>Sexo:</strong></td>
 			<td colspan='2'>".$row_generales['Sexo']."</td>
@@ -372,7 +372,7 @@ switch ($opcion)
 		<tr>
 		    <td colspan='1'><strong>Examen Realizado:</strong></td>
 			<td colspan='4'style='font:bold'>".htmlentities($row_area['NombreExamen'])."</td>
-		</tr>				 
+		</tr>
 		<tr>
 			<td colspan='1'style='font:bold'><strong>Validado Por:</strong></td>
 		    <td colspan='5'>".htmlentities($row_empleado['NombreEmpleado'])."</td>
@@ -380,8 +380,8 @@ switch ($opcion)
 		<tr>
 			 <td style='font:bold'><strong>Resultado:</strong></td>";
 					mysql_free_result($consulta_datos);
-					mysql_free_result($datos_generales);	 
-					 
+					mysql_free_result($datos_generales);
+
 	switch($resultado)
 	{
 		case "P";
@@ -393,9 +393,9 @@ switch ($opcion)
 		case "O";
 			$imprimir.=	"<td colspan='4'>--</td>";
 		break;
-			   
+
 	}
-					 
+
 $imprimir.="</tr>
 		<tr>
 			<td style='font:bold'><strong>Observaci&oacute;n:</strong></td>
@@ -416,10 +416,10 @@ $imprimir.="</tr>
 			</td>
 		</tr></div>
  </table>";
-				 
+
 	echo $imprimir;
 	break;
-	
+
 case 6:
 	$idexamen=$_POST['idexamen'];
 	//$tiporespuesta=$_POST['tiporespuesta'];
@@ -429,25 +429,25 @@ case 6:
 	$iddetalle= $_POST['iddetalle'];
 	$observacion= $_POST['observacion'];
 	$resultado=$_POST['resultado'];
-	
+
 	 if ($resultado=="N")
 	{
             $codigoResultado=2;
             $ultimo=$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar);
-	                      
+
 	   echo "Datos Guardados";
 	}
 	 else{
 		$codigoResultado=2;
-		
-	
+
+
                 $ultimo=$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar);
-	   
+
                 echo "Datos Guardados";
 	}
- 
+
 	if (($objdatos->CambiarEstadoDetalle($iddetalle)==true)&&($objdatos->CambiarEstadoSolicitud($idsolicitud)==false))
-	     {    
+	     {
 			echo (" Correctamente");
 		}
 	/*$idexamen=$_POST['idexamen'];
@@ -457,13 +457,13 @@ case 6:
 	$iddetalle= $_POST['iddetalle'];
 	$observacion= $_POST['observacion'];
 	$resultado=$_POST['resultado'];
-	
+
 	 if ($resultado=="N")
 	{
 	  $codigoResultado=2;
-	 
+
 	  if(($objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar))==true)
-	               
+
 		//	echo $idsolicitud." det=".$iddetalle." *=".$idexamen." recep=".$idrecepcion=."observ=".$observacion." resul=".$resultado." emp=".$idempleado." usuario=".$usuario." tab".$codigoResultado."est".$lugar;
 			echo "Datos Guardados";
 	}
@@ -471,18 +471,18 @@ case 6:
 		$codigoResultado=6;
 			echo $idsolicitud." det".$iddetalle." *".$idexamen." *".$idrecepcion."observ".$observacion." *".$resultado." *".$idempleado." usuario".$usuario." tab".$codigoResultado."est".$lugar;
 	   $ultimo=$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar);
-	   
+
 	   echo "Datos Guardados";
 	}
- 
+
 /*	if (($objdatos->CambiarEstadoDetalle($iddetalle)==true)&&($objdatos->CambiarEstadoSolicitud($idsolicitud)==false))
-	     {    
+	     {
 			echo (" Correctamente");
 		}*/
-	
+
 	break;
-   
-  
+
+
  }
 
 ?>

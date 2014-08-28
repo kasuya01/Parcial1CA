@@ -9,16 +9,16 @@
 <center>
 		<table width="100%" border="0" bgcolor="#FFFFFF">
 		<tr>
-		    <td><img id="Image1" style="WIDTH: 204px; HEIGHT: 99px" height="86" src="./Imagenes/paisanito.gif" width="210" name="Image1"></td> 
+		    <td><img id="Image1" style="width: 181px; height: 76px;" height="86" src="./Imagenes/paisanito.png" width="210" name="Image1"></td> 
 		    <td style="vertical-align:top">
  			 <h2 align="center" >
-              Ministerio de Salud 
-              <br> Sistema de Integral de Atención a Pacientes<br><br>              
+              Ministerio de Salud
+              <br> Sistema de Integral de Atención a Pacientes<br><br>
   <font face="Verdana" size="2" align="center"><font color="#ff0000" size="2"><strong></strong></font></font></h2>
   </td>
   </tr>
 </table>
-</center><br><br><br> 
+</center><br><br><br>
 
 <form action="Direcciones.php" method="post" enctype="multipart/form-data" >
 <table align="center" width="100%" border="0" class="MailboxFormTABLE">
@@ -30,9 +30,9 @@
                     <td class="MailboxFieldCaptionTD" colspan="3" align="center" ><h2>Usuarios Externos</h2></td>
                 </tr>
                 <tr>
-                    
+
                     <td width="40%" class="MailboxFieldCaptionTD"><strong>Seleccione Establecimiento</strong></td>
-                   
+
                     <td width="60%" class="MailboxDataTD">
                             <select id="cmbEstablecimiento" name="cmbEstablecimiento" size="1">
                                 <option value="0">Ninguno</option>
@@ -50,4 +50,3 @@
 </table>
 
 </form>
-

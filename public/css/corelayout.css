@@ -1,0 +1,27 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/*
+    Created on : 08-26-2014, 08:30:56 AM
+    Author     : klb rodriguez
+*/
+@-moz-document url-prefix() {
+  fieldset { display: table-cell; }
+}
+
+.table-white {
+    background: white !important;
+}
+
+table thead {
+    font-size: 10pt;
+    background-color: #D0E6FF;
+    color: black;
+    border-top: 2px solid #3c8dbc;
+}
+
+.table-bordered.no-v-border > tbody > tr > td {
+    border: 0 !important;
+}

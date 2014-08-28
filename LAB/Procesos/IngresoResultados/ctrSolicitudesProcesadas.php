@@ -11,9 +11,9 @@ $opcion=$_POST['opcion'];
 //creando los objetos de las clases
 $objdatos = new clsSolicitudesProcesadas;
 
-switch ($opcion) 
+switch ($opcion)
 {
-	case 1:  
+	case 1:
 		$ban=0;
 		$IdEstab=$_POST['IdEstab'];
                 $IdServ=$_POST['IdServ'];
@@ -28,14 +28,14 @@ switch ($opcion)
 		$SApellido=$_POST['SApellido'];
 		$TipoSolic=$_POST['TipoSolic'];
 		//echo $IdEstab;
- 		$query = "SELECT lab_examenesxestablecimiento.IdPlantilla,sec_detallesolicitudestudios.IdDetalleSolicitud, 		
+ 		$query = "SELECT lab_examenesxestablecimiento.IdPlantilla,sec_detallesolicitudestudios.IdDetalleSolicitud,
 			  sec_solicitudestudios.IdSolicitudEstudio,NumeroMuestra,sec_solicitudestudios.IdNumeroExp,IdRecepcionMuestra,
                           lab_examenes.idexamen, nombreexamen,Indicacion,NombreArea,
 			  CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoApellido) AS Paciente,
                           NombreSubServicio,NombreServicio, sec_solicitudestudios.Impresiones,mnt_establecimiento.Nombre,
 			  sec_historial_clinico.IdHistorialClinico,sec_solicitudestudios.FechaSolicitud,
-			  IF(sec_solicitudestudios.IdTipoSolicitud='S','URGENTE','NORMAL') AS prioridad,FechaNacimiento,Sexo,IdEstandar         
-			  FROM sec_detallesolicitudestudios 
+			  IF(sec_solicitudestudios.IdTipoSolicitud='S','URGENTE','NORMAL') AS prioridad,FechaNacimiento,Sexo,IdEstandar
+			  FROM sec_detallesolicitudestudios
 			  INNER JOIN sec_solicitudestudios ON sec_detallesolicitudestudios.IdSolicitudEstudio=sec_solicitudestudios.IdSolicitudEstudio
 			  INNER JOIN lab_recepcionmuestra  ON sec_detallesolicitudestudios.IdSolicitudEstudio= lab_recepcionmuestra.IdSolicitudEstudio
 			  INNER JOIN lab_examenes          ON sec_detallesolicitudestudios.IdExamen=lab_examenes.IdExamen
@@ -46,29 +46,29 @@ switch ($opcion)
 			  INNER JOIN sec_historial_clinico ON sec_historial_clinico.IdHistorialClinico=sec_solicitudestudios.IdHistorialClinico
 			  INNER JOIN mnt_subservicio	   ON mnt_subservicio.IdSubServicio=sec_historial_clinico.IdSubServicio
 		 	  INNER JOIN mnt_servicio  	   ON mnt_servicio.IdServicio=mnt_subservicio.IdServicio
-			  INNER JOIN mnt_establecimiento ON sec_historial_clinico.IdEstablecimiento=mnt_establecimiento.IdEstablecimiento 
+			  INNER JOIN mnt_establecimiento ON sec_historial_clinico.IdEstablecimiento=mnt_establecimiento.IdEstablecimiento
 			  INNER JOIN cit_citasxserviciodeapoyo ON sec_solicitudestudios.IdSolicitudEstudio=cit_citasxserviciodeapoyo.IdSolicitudEstudio
-			  WHERE estadodetalle='PM' AND lab_recepcionmuestra.FechaRecepcion=CURRENT_DATE 
+			  WHERE estadodetalle='PM' AND lab_recepcionmuestra.FechaRecepcion=CURRENT_DATE
                           AND sec_solicitudestudios.IdEstablecimiento=$lugar AND ";
-		$ban=0;	
+		$ban=0;
 //AND sec_detallesolicitudestudios.IdEstablecimiento=$IdEstab
 
 		//VERIFICANDO LOS POST ENVIADOS
 		if (!empty($_POST['IdEstab']))
-		{ $query .= " sec_historial_clinico.IdEstablecimiento ='".$_POST['IdEstab']."' AND";}	
-			
+		{ $query .= " sec_historial_clinico.IdEstablecimiento ='".$_POST['IdEstab']."' AND";}
+
 		if (!empty($_POST['IdServ']))
 		{ $query .= " mnt_subservicio.IdServicio ='".$_POST['IdServ']."' AND";}
-		
+
 		if (!empty($_POST['IdSubServ']))
 		{ $query .= " mnt_subservicio.IdSubServicio ='".$_POST['IdSubServ']."' AND";}
 
 		if (!empty($_POST['idarea']))
-		{ $query .= " lab_areas.IdArea='".$_POST['idarea']."' AND";}	
-		
+		{ $query .= " lab_areas.IdArea='".$_POST['idarea']."' AND";}
+
 		if (!empty($_POST['idexpediente']))
 		{ $query .= " sec_solicitudestudios.IdNumeroExp='".$_POST['idexpediente']."' AND";}
-		
+
 		if (!empty($_POST['idexamen']))
 		{ $query .= " lab_examenes.idexamen='".$_POST['idexamen']."' AND";}
 
@@ -77,36 +77,36 @@ switch ($opcion)
 
 		if (!empty($_POST['PNombre']))
 		{ $query .= " mnt_datospaciente.PrimerNombre='".$_POST['PNombre']."' AND";}
-		
+
 		if (!empty($_POST['SNombre']))
 		{ $query .= " mnt_datospaciente.SegundoNombre='".$_POST['SNombre']."' AND";}
-		
+
 		if (!empty($_POST['PApellido']))
 		{ $query .= " mnt_datospaciente.PrimerApellido='".$_POST['PApellido']."' AND";}
-		
+
 		if (!empty($_POST['SApellido']))
 		{ $query .= " mnt_datospaciente.SegundoApellido='".$_POST['SApellido']."' AND";}
-		
+
 		if (!empty($_POST['TipoSolic']))
 		{ $query .= " sec_solicitudestudios.IdTipoSolicitud='".$_POST['TipoSolic']."' AND";}
-		
-		if((empty($_POST['idexpediente'])) AND (empty($_POST['idarea'])) AND (empty($_POST['fechasolicitud'])) 
-		AND (empty($_POST['IdEstab'])) AND (empty($_POST['IdServ'])) AND (empty($_POST['IdSubServ'])) 
-		AND (empty($_POST['PNombre'])) AND (empty($_POST['SNombre'])) AND (empty($_POST['PApellido'])) 
+
+		if((empty($_POST['idexpediente'])) AND (empty($_POST['idarea'])) AND (empty($_POST['fechasolicitud']))
+		AND (empty($_POST['IdEstab'])) AND (empty($_POST['IdServ'])) AND (empty($_POST['IdSubServ']))
+		AND (empty($_POST['PNombre'])) AND (empty($_POST['SNombre'])) AND (empty($_POST['PApellido']))
 		AND (empty($_POST['SApellido'])) AND (empty($_POST['idexamen'])) AND (empty($_POST['TipoSolic'])))
 		{
 			$ban=1;
 		}
-		
+
 		if ($ban==0){
-							
+
 			$query = substr($query ,0,strlen($query)-3);
 			$query_search = $query. " ORDER BY lab_recepcionmuestra.FechaRecepcion DESC";
-				
+
 		}
 		//echo $query_search;
-		
-  		$consulta=$objdatos->ListadoSolicitudesPorArea($query_search);  
+
+  		$consulta=$objdatos->ListadoSolicitudesPorArea($query_search);
 		   echo "<table width='81%' border='1' align='center'>
 				<tr class='CobaltFieldCaptionTD'>
 					<td>Muestra </td>
@@ -119,16 +119,16 @@ switch ($opcion)
 					<td>Establecimiento</td>
 					<td>Fecha Consulta</td>
 					<td>Prioridad</td>
-				</tr>";    
+				</tr>";
 			$pos=0;
-					
-			while ($row = mysql_fetch_array($consulta)){ 
+
+			while ($row = mysql_fetch_array($consulta)){
 			 echo  "<tr>
 					<td width='5%'>".$row['NumeroMuestra']."</td>
 					<td width='7%'>
 						<a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(".$pos.");'>".
-						$row['IdNumeroExp']."</a>". 
-				       "</td>". 
+						$row['IdNumeroExp']."</a>".
+				       "</td>".
 						"<input name='idsolicitud[".$pos."]' id='idsolicitud[".$pos."]' type='hidden' size='60' value='".$row["IdSolicitudEstudio"]."' />".
 						"<input name='idexpediente[".$pos."]' id='idexpediente[".$pos."]' type='hidden' size='60' value='".$row["IdNumeroExp"]."' />".
 						"<input name='paciente[".$pos."]' id='paciente[".$pos."]' type='hidden' size='60' value='".htmlentities($row["Paciente"])."' />".
@@ -144,12 +144,12 @@ switch ($opcion)
 						"<input name='establecimiento[".$pos."]' id='establecimiento[".$pos."]' type='hidden' size='60' value='".htmlentities($row["Nombre"])."'/>".
                                                 "<input name='FechaNac[".$pos."]' id='FechaNac[".$pos."]' type='hidden' size='60' value='".htmlentities($row["FechaNacimiento"])."'/>".
                                                 "<input name='Sexo[".$pos."]' id='Sexo[".$pos."]' type='hidden' size='60' value='".htmlentities($row["Sexo"])."'/>".
-                                                "<input name='IdEstandar[".$pos."]' id='IdEstandar[".$pos."]' type='hidden' size='60' value='".htmlentities($row["IdEstandar"])."'/>". 
+                                                "<input name='IdEstandar[".$pos."]' id='IdEstandar[".$pos."]' type='hidden' size='60' value='".htmlentities($row["IdEstandar"])."'/>".
                                                 "<input name='IdHistorial[".$pos."]' id='IdHistorial[".$pos."]' type='hidden' size='60' value='".htmlentities($row["IdHistorialClinico"])."'/>".
                                        "<td width='20%'>".htmlentities($row['Paciente'])."</td>
 					<td width='7%'>".$row['idexamen']."</td>
 					<td width='20%'>".htmlentities($row['nombreexamen'])."</td>
-					<td width='12%'>".htmlentities($row['NombreSubServicio'])."</td>	
+					<td width='12%'>".htmlentities($row['NombreSubServicio'])."</td>
 					<td width='10%'>".htmlentities($row['NombreServicio'])."</td>
 					<td width='20%'>".htmlentities($row['Nombre'])."</td>
 					<td width='10%'>".($row['FechaSolicitud'])."</td>
@@ -158,15 +158,15 @@ switch ($opcion)
 					$pos=$pos + 1;
 			}
 				mysql_free_result($consulta);
-				echo "<input type='hidden' name='oculto' id='text' value='".$pos."' /> 
+				echo "<input type='hidden' name='oculto' id='text' value='".$pos."' />
 			</table>";
-	
-   
+
+
    break;
-   
+
    case 2://LLENANDO COMBO DE EMPLEADOS
 	 $idarea=$_POST['idarea'];
-         //echo $idarea; 	
+         //echo $idarea;
 	 $resultado = "<select id='cmbEmpleados' name='cmbEmpleados' size='1'>
                             <option value='0' >--Seleccione--</option>";
                             require_once('clsSolicitudesProcesadas.php');
@@ -197,9 +197,9 @@ switch ($opcion)
         // echo $verifica[0];
          if ($verifica==0){
             $verdadero=$objdatos->InsertarResultadoPlantillaA($idexamen,$idsolicitud,$iddetalle,$resultado,$lectura,$observacion,$responsable,$lectura,$idrecepcion,$interpretacion,$observacion,$usuario,$codigo,$lugar);
-    	
+
 		if ($verdadero!=0)
-		{ echo "Datos Guardados";  
+		{ echo "Datos Guardados";
 			if (($objdatos->CambiarEstadoDetalle($iddetalle)==true)&&($objdatos->CambiarEstadoSolicitud($idsolicitud)==true)){
 				echo " Correctamente";
 			}
@@ -209,13 +209,13 @@ switch ($opcion)
                echo "Ya Existe un Resultado para esta prueba";
            }
    //Cambia estado del detalle de la solicitud
-	
+
 	break;
-	
-	case 4: //MOSTRAR PREVIAMENTE LOS RESULTADOS 
+
+	case 4: //MOSTRAR PREVIAMENTE LOS RESULTADOS
                 $idsolicitud=$_POST['idsolicitud'];
                 $cod=$_POST['codigo'];
-                
+
                 $idexamen=$_POST['idexamen'];
 		$resultado=$_POST['resultado'];
 		$lectura=$_POST['lectura'];
@@ -226,24 +226,24 @@ switch ($opcion)
 		$establecimiento=$_POST['establecimiento'];
 		$fechanac=$_POST['fechanac'];
                 $sexo=$_POST['sexo'];
-          
+
                 $Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
 		$row_estab = mysql_fetch_array($Consulta_Estab);
-                              
+
                // echo $idsolicitud." - ".$idexamen." - ".$lugar." - ".$sexo." - ".$idedad;
 		$consulta=$objdatos->MostrarResultadoGenerales($idsolicitud,$idexamen,$lugar);
 		$row = mysql_fetch_array($consulta);
 		$nombre=$row['NombreArea'];
                 $proce=$row['Procedencia'];
-                
+
                 $Cuentadias=$objdatos->CalculoDias($fechanac);
                 $Cdias= mysql_fetch_array($Cuentadias);
                 $dias=$Cdias[0];
-	
+
                 $ConRangos=$objdatos->ObtenerCodigoRango($dias);
                 $row_rangos=  mysql_fetch_array($ConRangos);
-                $idedad=$row_rangos[0];  
-                
+                $idedad=$row_rangos[0];
+
                    //  echo $fechanac."***".$sexo."***".$idedad;
 		  //cho $idedad;
 	 $Imprimir="<table width='100%' align='center' border='0' class='StormyWeatherFormTABLE'>
@@ -254,7 +254,7 @@ switch ($opcion)
                             <p><strong>".$row_estab['Nombre']."</strong></p>
                             <p><strong>&Aacute;REA DE ".htmlentities($nombre)." </strong></p>
 			</td>
-                        <td colspan='1' align='right' width='20%'><img id='Image3' style='WIDTH: 110px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.gif' width='210' name='Image3'></td>
+                        <td colspan='1' align='right' width='20%'><img id='Image3' style='WIDTH: 110px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
                     </tr>
                     <tr>
                         <td colspan='6' align='center'></td>
@@ -265,23 +265,23 @@ switch ($opcion)
                     	<td colspan='1'style='font:bold'><strong>Fecha:</strong></td>
                     	<td colspan='2' style='font:bold'>".$row['Fecha']."<input name='suEdad' id='suEdad'  type='hidden'  value='".$row['FechaNacimiento']."'/></td>
                     </tr>
-                   
+
                     <tr>
                     	<td colspan='1' style='font:bold'><strong>NEC:</strong></td>
 			<td colspan='2' style='font:bold'>".$row['IdNumeroExp']."</td></tr>
 		    <tr>
                         <td colspan='1' style='font:bold'><strong>Paciente:</strong></td>
 			<td colspan='5' style='font:bold'>".htmlentities($row['NombrePaciente'])."</td>
-                    </tr>        
+                    </tr>
                     <tr>
 			<td colspan='1' style='font:bold'><strong>Edad:</strong></td>
 			<td colspan='2' style='font:bold'>
                             <div id='divsuedad'>
                             </div></td>
 			<td colspan='1' style='font:bold'><strong>Sexo:</strong></td>
-			<td colspan='2' style='font:bold'>".$row['Sexo']."</td>					
+			<td colspan='2' style='font:bold'>".$row['Sexo']."</td>
                     </tr>
-                     </tr>	
+                     </tr>
                     	<td colspan='1'style='font:bold'><strong>Procedencia:</strong></td>
                     	<td colspan='2''>".htmlentities($row['Procedencia'])."</td>
                     	<td colspan='1' style='font:bold'><strong>Servicio:</strong></td>
@@ -298,15 +298,15 @@ switch ($opcion)
                         <td colspan='1'>Resultado Tabulador:</td>";
                                 $nomcod=$objdatos->ObtenerNombreCodigo($cod);
                                 $row_codigo= mysql_fetch_array($nomcod);
-                                          
+
             $Imprimir.="<td colspan='5'>".$row_codigo[0]."</td>
 	            </tr>
 		    <tr>
 			<td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;</td>
 		    </tr>
-		    
+
 		    </table>";
-			
+
 	$Imprimir.="<table width='100%'  align='center' border='0' class='StormyWeatherFormTABLE'>
                         <tr>
                             <td colspan='6' align='center' >&nbsp;DETALLE DE RESULTADOS</td>
@@ -324,7 +324,7 @@ switch ($opcion)
 	//MOSTRAR DATOS FIJOS Y RESULTADOS DIGITADOS
 				$consulta2=$objdatos->MostrarDatosFijosPlantillaA($idexamen,$lugar,$sexo,$idedad);
 				$fila = mysql_fetch_array($consulta2);
-			
+
 	    $Imprimir.="<tr>
                             <td align='center' style='font:bold'><strong>".htmlentities($fila['NombreExamen'])."</strong></td>
 			    <td align='center'>".htmlentities($resultado)."</td>
@@ -333,22 +333,22 @@ switch ($opcion)
 			    <td align='center'>".htmlentities($lectura)."</td>
 			    <td align='center'>".htmlentities($interpretacion)."</td>
 			    <td align='center'>".htmlentities($observacion)."</td>
-			</tr>"; 
+			</tr>";
 	    $Imprimir.="<tr>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
-                            <td>&nbsp;</td>			
+                            <td>&nbsp;</td>
 			</tr>
                         </table>";
-	 $Imprimir.="<table align='center' border='0'>	
+	 $Imprimir.="<table align='center' border='0'>
                         <tr>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
-                            <td>&nbsp;</td>			
+                            <td>&nbsp;</td>
 			</tr>
                         <tr>
                             <td colspan='7' align='center' >
@@ -359,27 +359,27 @@ switch ($opcion)
 			</tr>
 			</table>";
 			echo $Imprimir;
-		
+
 		mysql_free_result($consulta2);
 	break;
 	case 5://LLENANDO COMBO DE Examenes
 		$rslts='';
-		
+
 		$idarea=$_POST['idarea'];
 		//echo $IdSubEsp;
-		$dtExam=$objdatos-> ExamenesPorArea($idarea,$lugar);	
-		
+		$dtExam=$objdatos-> ExamenesPorArea($idarea,$lugar);
+
 		$rslts = '<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:250px">';
 		$rslts .='<option value="0"> Seleccione Examen </option>';
-			
+
 		while ($rows =mysql_fetch_array($dtExam)){
 			$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 		}
-				
+
 		$rslts .= '</select>';
 		echo $rslts;
-		
-	
+
+
    	break;
 	case 6:// Llenar Combo Establecimiento
 		$rslts='';
@@ -391,7 +391,7 @@ switch ($opcion)
                 while ($rows =mysql_fetch_array( $dtIdEstab)){
                    $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
                 }
-				
+
 		$rslts .= '</select>';
 		echo $rslts;
    	break;
@@ -405,10 +405,10 @@ switch ($opcion)
 			while ($rows =mysql_fetch_array($dtserv)){
 		  	$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 	       		}
-				
+
 	      $rslts .='</select>';
 	      echo $rslts;
-    break;	
+    break;
 	case 8:// LLenado de combo de resultados para tabulaci�n tabulaci�n
 	  $resultado = "<select id='cmbResultado2' name='cmbResultado2' size='1'>
 				<option value='0' >--Seleccione--</option>";
@@ -421,10 +421,10 @@ switch ($opcion)
 						mysql_free_result($consulta);
 	  $resultado.= "</select>";
 		echo $resultado;
-		
-	break;	
-	
-    	
+
+	break;
+
+
 }
 
 ?>
