@@ -25,3 +25,8 @@ table thead {
 .table-bordered.no-v-border > tbody > tr > td {
     border: 0 !important;
 }
+
+.search-label {
+    color:#888888;
+    font-weight: bold;
+}

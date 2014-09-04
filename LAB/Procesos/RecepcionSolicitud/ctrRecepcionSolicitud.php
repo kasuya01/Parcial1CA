@@ -10,6 +10,7 @@ $Clases  = new cls_Clases;
 
 //variables POST
 $opcion = $_POST['opcion'];
+$object = new clsRecepcionSolicitud;
 
 //creando los objetos de las clases
 $con = new ConexionBD;
@@ -20,12 +21,12 @@ switch ($opcion) {
         $fechacita    = $_POST['fechacita'];
         $estado       = $_POST['estado'];
         $idsolicitud  = $_POST['idsolicitud'];
-        
+
         if ($con->conectar() == true) {
             $query = "UPDATE sec_solicitudestudios SET estado = (SELECT id FROM lab_estadossolicitud WHERE idestado = '$estado')
                       WHERE id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB') AND id_establecimiento = $lugar
                             AND id_expediente = (SELECT id FROM mnt_expediente WHERE numero = '$idexpediente') AND  id = $idsolicitud";
-            
+
             $query1 ="UPDATE sec_detallesolicitudestudios SET estadodetalle = (SELECT id FROM lab_estadosdetallesolicitud WHERE idestadodetalle = 'PM')
                       WHERE idsolicitudestudio = $idsolicitud AND idestablecimiento = $lugar";
 
@@ -69,7 +70,7 @@ switch ($opcion) {
                                  INNER JOIN lab_estadossolicitud      t04 ON (t04.id = t01.estado)
                                  INNER JOIN mnt_expediente            t05 ON (t05.id = t01.id_expediente)
                                  INNER JOIN ctl_atencion              t06 ON (t06.id = t01.id_atencion)
-				 WHERE t05.numero = '$idexpediente' AND t02.fecha = '$Nfechacita' AND  t01.id_establecimiento = $lugar 
+				 WHERE t05.numero = '$idexpediente' AND t02.fecha = '$Nfechacita' AND  t01.id_establecimiento = $lugar
                                        AND t03.idestablecimiento = $idEstablecimiento AND t06.codigo_busqueda = 'DCOLAB'";
 
                 $result = @pg_query($query_estado);
@@ -84,14 +85,14 @@ switch ($opcion) {
                     }
                 }
             }
-            
+
             if ($numreg[0] > 1) {
                 $query_estado = "SELECT CASE t04.idestado
                                             WHEN 'D' THEN 'Digitada'
                                             WHEN 'R' then 'Recibida'
                                             WHEN 'P' then 'En Proceso'
                                             WHEN 'C' then 'Completa'
-        				END AS estado 
+        				END AS estado
                                  FROM sec_solicitudestudios           t01
 				 INNER JOIN cit_citas_serviciodeapoyo t02 ON (t01.id = t02.id_solicitudestudios)
 				 INNER JOIN sec_historial_clinico     t03 ON (t03.id = t01.id_historial_clinico)
@@ -127,7 +128,7 @@ switch ($opcion) {
         $idexpediente = $_POST['idexpediente'];
         $fechacita    = $_POST['fechacita'];
         $idsolicitud  = $_POST['idsolicitud'];
-        
+
         //Asignando el Numero de Muestra y Registrando la recepcion
         if ($con->conectar() == true) {
             $query = "SELECT MAX(t01.numeromuestra) + 1 AS numeromuestra
@@ -161,7 +162,7 @@ switch ($opcion) {
         $fechacita    = $_POST['fechacita'];
         $estado       = $_POST['estado'];
         $idsolicitud  = $_POST['idsolicitud'];
-        
+
         //CAMBIO DEL ESTADO DE LA SOLICITUD
         if ($con->conectar() == true) {
             $query = "UPDATE sec_detallesolicitudestudios SET estadodetalle = (SELECT id FROM lab_estadosdetallesolicitud WHERE idestadodetalle = '$estado')
@@ -186,7 +187,7 @@ switch ($opcion) {
 			sec_detallesolicitudestudios.IdExamen, lab_examenes.CODIGOSUMI,sec_solicitudestudios.Impresiones,sec_detallesolicitudestudios.IdDetalleSolicitud,sec_detallesolicitudestudios.Indicacion,
 			sec_detallesolicitudestudios.IdTipoMuestra,sec_detallesolicitudestudios.IdOrigenMuestra, lab_examenes.IdPlantilla,sec_detallesolicitudestudios.Observacion,
 			sec_detallesolicitudestudios.EstadoDetalle,lab_recepcionmuestra.IdRecepcionMuestra,lab_recepcionmuestra.NumeroMuestra,sec_solicitudestudios.CAMA
-			FROM sec_solicitudestudios 
+			FROM sec_solicitudestudios
 			INNER JOIN sec_historial_clinico ON sec_solicitudestudios.IdHistorialClinico=sec_historial_clinico.IdHistorialClinico
 			INNER JOIN sec_detallesolicitudestudios ON sec_solicitudestudios.IdSolicitudEstudio=sec_detallesolicitudestudios.IdSolicitudEstudio
 			INNER JOIN mnt_empleados ON sec_historial_clinico.IdEmpleado=mnt_empleados.IdEmpleado
@@ -230,5 +231,22 @@ switch ($opcion) {
         $rslts .= '</select>';
         echo $rslts;
         break;
-}
+    case 9: //Mostrar todos las solicitudes
+        $idexpediente = $_POST['idexpediente'];
+        $fechacita = $_POST['fechacita'];
+        $idEstablecimiento = $_POST['idEstablecimiento'];
 
+        $query = $object->buscarTodasSolicitudes($idexpediente, $fechacita, $lugar, $idEstablecimiento);
+
+        if($query !== false) {
+            $jsonresponse['status'] = true;
+            $jsonresponse['num_rows'] = pg_num_rows($query);
+
+            if(pg_num_rows($query) > 0)
+                $jsonresponse['data']   = pg_fetch_all($query);
+        } else {
+            $jsonresponse['status'] = false;
+        }
+        echo json_encode($jsonresponse);
+        break;
+}

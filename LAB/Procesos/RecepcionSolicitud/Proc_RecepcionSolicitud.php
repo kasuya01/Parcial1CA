@@ -7,20 +7,20 @@ if (isset($_SESSION['Correlativo'])) {
     $area  = $_SESSION['Idarea'];
     $ROOT_PATH = $_SESSION['ROOT_PATH'];
     include_once("clsRecepcionSolicitud.php");
-    
+
     //consulta los datos por su id
     $obj      = new clsRecepcionSolicitud;
     $consulta = $obj->DatosEstablecimiento($lugar);
     $row      = pg_fetch_array($consulta);
     $ConArea  = $obj->DatosArea($area);
     $rowArea  = pg_fetch_array($ConArea);
-    
+
     //valores de las consultas
     $tipo       = $row[0];
     $nombrEstab = $row[1];
     $nomtipo    = $row[2];
     $tipoarea   = $rowArea[1];
-    
+
     if ($tipoarea == 'S') {
         $area1 = 0;
         $nomarea = "Seleccione un Area";
@@ -28,7 +28,7 @@ if (isset($_SESSION['Correlativo'])) {
         $area1 = $area;
         $nomarea = $rowArea[0];
     }
-    
+
     ?>
     <html>
         <head>
@@ -72,6 +72,48 @@ if (isset($_SESSION['Correlativo'])) {
                     EnviarDatosSolicitud(posicion);
                 }
             </script>
+            <script type="text/javascript">
+                function searchAllBuild(object) {
+                    jQuery('#divResultado').empty();
+                    jQuery('#divResultado').append('<center><img id="wait" src="<?php echo $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST']; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" class="search-label">Buscando...</div></center>');
+
+                    setTimeout(function() {
+                        var html =  '<center>\
+                                        <div style="background-color:#FAFAFA;padding: 20px 0 20px 0;">\
+                                            <div class="table-responsive" style="width: 80%;">\
+                                                <table class="table table-hover table-bordered table-condensed table-white">\
+                                            <thead>\
+                                                <tr>\
+                                                    <th>N&deg; Expediente</th>\
+                                                    <th>Fecha Consulta</th>\
+                                                    <th>Fecha Cita</th>\
+                                                    <th>Nombre Paciente</th>\
+                                                    <th>Estado</th>\
+                                                </tr>\
+                                            </thead>\
+                                            <tbody>';
+                        if(object.num_rows > 0) {
+                            jQuery.each(object.data, function(idx,val) {
+                                html = html + '<tr>\
+                                                <td><button type="button" class="btn btn-link" onclick="VerificarExistencia('+val.numero_expediente+', '+val.fecha_cita+', '+val.id_establecimiento+', true);">'+val.numero_expediente+'</button></td>\
+                                                <td>'+val.fecha_consulta+'</td>\
+                                                <td>'+val.fecha_cita+'</td>\
+                                                <td>'+val.nombre_paciente+'</td>\
+                                                <td>'+val.estado+'</td>\
+                                            </tr>';
+                            });
+                        } else {
+                            html = html + '<tr><td colspan="5" style="color:#888888; font-weit">No se encontraron solicitudes para mostrar...</td></tr>';
+                        }
+
+                        html = html + '     </tbody>\
+                                        </table>\
+                                    </center>';
+                        jQuery('#divResultado').empty();
+                        jQuery('#divResultado').append(html);
+                    }, 500);
+                }
+            </script>
         </head>
         <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7">
 
@@ -96,7 +138,7 @@ if (isset($_SESSION['Correlativo'])) {
                 <tr>
                     <td>
                         <div  id="divFrmNuevo" >
-                            <form name="FrmBuscar" > 
+                            <form name="FrmBuscar" >
                                 <table width="60%" border="1" align="center" class="StormyWeatherFormTABLE">
                                     <tr>
                                         <td colspan="3" align="center" class="CobaltFieldCaptionTD">
@@ -120,7 +162,7 @@ if (isset($_SESSION['Correlativo'])) {
                                                     echo '<option value="' . $tipo . '" selected="selected">' . htmlentities($nomtipo) . '</option>';
                                                     //@pg_free_result($consulta); // Liberar memoria usada por consulta.
                                                 }
-                                                ?> 
+                                                ?>
                                             </select>
                                         </TD>
                                     </tr>
@@ -143,7 +185,7 @@ if (isset($_SESSION['Correlativo'])) {
                                                     }
                                                     ?>
                                                 </select>
-                                            </div>	
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -153,29 +195,28 @@ if (isset($_SESSION['Correlativo'])) {
                                     <tr>
                                         <td class="StormyWeatherFieldCaptionTD">Fecha de Cita</td>
                                         <td class="StormyWeatherDataTD">
-                                            <input type="text" name="txtfechasolicitud" id="txtfechasolicitud" value="<?php echo date("d/m/Y"); ?>"/>
+                                            <input type="text" name="txtfechasolicitud" id="txtfechasolicitud" value="<?php //echo date("d/m/Y"); ?>"/>
                                             <input type="button" value="..." id="trigger">dd/mm/aaaa
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="2" class="StormyWeatherDataTD" align="right">
-                                            <input type="button" name="btnBuscar" value="Buscar Solicitud" onClick="BuscarDatos();" /> 
-                                        </td> 			
+                                            <input type="button" name="btnBuscar" value="Buscar Solicitud" onClick="BuscarDatos();" />
+                                        </td>
                                     </tr>
                                 </table>
                             </form>
                             <script type="text/javascript">
                                 Calendar.setup(
                                         {
-                                            inputField: "txtfechasolicitud", // el ID texto 
+                                            inputField: "txtfechasolicitud", // el ID texto
                                             ifFormat: "%d/%m/%Y", // formato de la fecha
-                                            button: "trigger"       // el ID del boton			  	  
+                                            button: "trigger"       // el ID del boton
                                         }
                                 );
                             </script>
                         </div>
                         <div id="divResultado">
-
                         </div>
                         <div id="divCambioEstado">
                         </div>
@@ -184,7 +225,7 @@ if (isset($_SESSION['Correlativo'])) {
                         <div id="divArchivo">
                         </div>
                     </TD>
-                </TR>	
+                </TR>
         </body>
     </html>
     <?php
