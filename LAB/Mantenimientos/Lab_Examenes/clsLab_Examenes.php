@@ -246,7 +246,7 @@ function LeerUltimoCodigo($idarea)
    if($con->conectar()==true) 
    {
      $query = "SELECT idexamen FROM lab_examenes WHERE idarea='$idarea' ORDER BY id DESC LIMIT 1";
-     //echo $query;
+     echo $query;
      $result = pg_query($query);
 	 
      if (!$result)
@@ -319,7 +319,8 @@ function ObtenerCodigo($idarea){
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
      if($con->conectar()==true){
-        $query ="SELECT idarea FROM lab_areas WHERE id=$idarea";
+        $query ="SELECT idarea FROM ctl_area_servicio_diagnostico WHERE id=$idarea";
+       // echo $query;
         $result = pg_fetch_array(pg_query($query));
 	if (!$result)
 	   return false;
