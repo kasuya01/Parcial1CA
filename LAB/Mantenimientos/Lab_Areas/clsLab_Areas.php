@@ -153,10 +153,10 @@ class clsLab_Areas {
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
-            $query = "SELECT t01.id AS idarea, t01.nombrearea
+            echo $query = "SELECT t01.id AS idarea, t01.nombrearea
                       FROM ctl_area_servicio_diagnostico t01
                       WHERE t01.id IN (
-                        SELECT DISTINCT id
+                        SELECT idarea
                         FROM lab_areasxestablecimiento 
                         WHERE condicion = 'H'  AND idestablecimiento = $lugar)
                         AND t01.administrativa = 'N'
