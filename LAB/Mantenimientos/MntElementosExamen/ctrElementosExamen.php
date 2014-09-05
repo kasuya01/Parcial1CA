@@ -88,10 +88,10 @@ switch ($opcion)
                 echo"<tr>
 			<td aling='center'> 
                             <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-                            onclick=\"pedirDatos('".$row['id']."')\"> </td>
+                            onclick=\"pedirDatos('".$row['idelemento']."')\"> </td>
 				<td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"eliminarDato('".$row['id']."')\"> </td>
+					onclick=\"eliminarDato('".$row['idelemento']."')\"> </td>
 				<td>".$row['idexamen']."</td>
 				<td>".htmlentities($row['elemento'])."</td>";
 				if (empty($row['unidadelem']))
@@ -166,30 +166,30 @@ switch ($opcion)
 		$Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
 		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
                 
-		$query = "SELECT lab_elementos.id,lab_examenes.idexamen,unidadelem,observelem,subelemento,elemento,
-                          lab_examenes.nombreexamen,lab_examenes.idarea,
-                          (CASE WHEN subelemento='S' 
-                          THEN 'SI' 
-                          ELSE 'NO' END ) AS subelemento,unidadelem,observelem,
-                          to_char(fechaini,'dd/mm/YYYY') AS fechaini,
-                          to_char(fechafin,'dd/mm/YYYY') AS fechafin  
-                          FROM lab_elementos  
-			  INNER JOIN lab_examenes ON lab_elementos.idexamen=lab_examenes.id 
-			  INNER JOIN lab_examenesxestablecimiento ON lab_examenes.id= lab_examenesxestablecimiento.idexamen	
-			  INNER JOIN lab_areas ON lab_examenes.idarea=lab_areas.id
-			  INNER JOIN lab_areasxestablecimiento ON lab_areas.id=lab_areasxestablecimiento.idarea
-			  WHERE lab_examenesxestablecimiento.condicion='H' 
-			  AND lab_areasxestablecimiento.condicion='H' AND lab_examenesxestablecimiento.idplantilla=2 
-			  AND lab_elementos.IdEstablecimiento=$lugar AND";
+		$query = "SELECT lab_elementos.id,lab_conf_examen_estab.codigo_examen as idexamen,unidadelem,observelem,subelemento,elemento,
+                          lab_conf_examen_estab.nombre_examen,mnt_area_examen_establecimiento.id_area_servicio_diagnostico as idarea,
+                         (CASE WHEN subelemento='S' 
+                         THEN 'SI' 
+                         ELSE 'NO' END ) AS subelemento,unidadelem,observelem,
+                         to_char(fechaini,'dd/mm/YYYY') AS fechaini,
+                         to_char(fechafin,'dd/mm/YYYY') AS fechafin  
+                         FROM lab_elementos  
+			 INNER JOIN lab_conf_examen_estab ON lab_elementos.id_conf_examen_estab=lab_conf_examen_estab.id 
+                         INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
+                         INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
+                         INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
+			 WHERE lab_conf_examen_estab.condicion='H' 
+			 AND lab_areasxestablecimiento.condicion='H' AND lab_conf_examen_estab.idplantilla=2 
+			 AND lab_elementos.IdEstablecimiento=$lugar AND";
 		//$ban1=0;
 		$ban=0;
 
 		//VERIFICANDO LOS POST ENVIADOS
 		if (!empty($_POST['idarea']))
-		{ $query .= " lab_examenes.idarea='".$_POST['idarea']."' AND"; }
+		{ $query .= " mnt_area_examen_establecimiento.id_area_servicio_diagnostico='".$_POST['idarea']."' AND"; }
 		
 		if (!empty($_POST['idexamen']))
-		{ $query .= " lab_elementos.idexamen='".$_POST['idexamen']."' AND"; }
+		{ $query .= " lab_conf_examen_estab.codigo_examen='".$_POST['idexamen']."' AND"; }
 					
 		if (!empty($_POST['elemento']))
 		{ $query .= " Elemento='".$_POST['elemento']."' AND"; }
@@ -219,12 +219,12 @@ switch ($opcion)
 		}
 		if ($ban==0)
 		{    $query = substr($query ,0,strlen($query)-4);
-			 $query_search = $query. " ORDER BY lab_examenes.idarea,lab_elementos.id ";
+			 $query_search = $query. " ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,lab_elementos.id ";
 			 
 		}
 		else {
                         $query = substr($query ,0,strlen($query)-6);
-			$query_search = $query. " ORDER BY lab_examenes.idarea,lab_elementos.id";
+			$query_search = $query. " ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,lab_elementos.id";
 		}	
 	//echo $query_search;
 		////para manejo de la paginacion
@@ -324,30 +324,30 @@ switch ($opcion)
 		$observacionele=$_POST['observacionele'];
 		$subelemento=$_POST['subelemento'];
 		
-		$query = "SELECT lab_elementos.id,lab_examenes.idexamen,unidadelem,observelem,subelemento,elemento,
-                          lab_examenes.nombreexamen,lab_examenes.idarea,
-                          (CASE WHEN subelemento='S' 
-                          THEN 'SI' 
-                          ELSE 'NO' end ) AS subelemento,unidadelem,observelem,
-                          to_char(fechaini,'dd/mm/YYYY') AS fechaini,
-                          to_char(fechafin,'dd/mm/YYYY') AS fechafin  
-                          FROM lab_elementos  
-			  INNER JOIN lab_examenes ON lab_elementos.idexamen=lab_examenes.id 
-			  INNER JOIN lab_examenesxestablecimiento ON lab_examenes.id= lab_examenesxestablecimiento.idexamen	
-			  INNER JOIN lab_areas ON lab_examenes.idarea=lab_areas.id
-			  INNER JOIN lab_areasxestablecimiento ON lab_areas.id=lab_areasxestablecimiento.idarea
-			  WHERE lab_examenesxestablecimiento.condicion='H' 
-			  AND lab_areasxestablecimiento.condicion='H' AND lab_examenesxestablecimiento.idplantilla=2
-			AND lab_elementos.IdEstablecimiento=$lugar AND";
+		$query = "SELECT lab_elementos.id,lab_conf_examen_estab.codigo_examen as idexamen,unidadelem,observelem,subelemento,elemento,
+                          lab_conf_examen_estab.nombre_examen,mnt_area_examen_establecimiento.id_area_servicio_diagnostico as idarea,
+                         (CASE WHEN subelemento='S' 
+                         THEN 'SI' 
+                         ELSE 'NO' END ) AS subelemento,unidadelem,observelem,
+                         to_char(fechaini,'dd/mm/YYYY') AS fechaini,
+                         to_char(fechafin,'dd/mm/YYYY') AS fechafin  
+                         FROM lab_elementos  
+			 INNER JOIN lab_conf_examen_estab ON lab_elementos.id_conf_examen_estab=lab_conf_examen_estab.id 
+                         INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
+                         INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
+                         INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
+			 WHERE lab_conf_examen_estab.condicion='H' 
+			 AND lab_areasxestablecimiento.condicion='H' AND lab_conf_examen_estab.idplantilla=2 
+			 AND lab_elementos.IdEstablecimiento=$lugar AND";
 		//$ban1=0;
 		$ban=0;
 
 		//VERIFICANDO LOS POST ENVIADOS
 		if (!empty($_POST['idarea']))
-		{ $query .= " lab_examenes.idarea=".$_POST['idarea']." AND"; }
+		{ $query .= " mnt_area_examen_establecimiento.id_area_servicio_diagnostico=".$_POST['idarea']." AND"; }
 		
 		if (!empty($_POST['idexamen']))
-		{ $query .= " lab_elementos.idexamen='".$_POST['idexamen']."' AND"; }
+		{ $query .= " lab_conf_examen_estab.codigo_examen='".$_POST['idexamen']."' AND"; }
 					
 		if (!empty($_POST['elemento']))
 		{ $query .= " elemento='".$_POST['elemento']."' AND"; }
@@ -369,7 +369,7 @@ switch ($opcion)
 		}
 		if ($ban==0)
 		{    $query = substr($query ,0,strlen($query)-4);
-			 $query_search = $query. " ORDER BY lab_examenes.idarea,lab_elementos.id ";
+			 $query_search = $query. " ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,lab_elementos.id ";
 			 
 		}
 	

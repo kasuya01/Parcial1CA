@@ -17,7 +17,7 @@ $idarea=$row['idarea'];
 $nombrearea=$row['nombrearea'];
 $idexamen=$row['idexamen'];
 //echo $idexamen;
-$nombreexamen=$row['nombreexamen'];
+$nombreexamen=$row['nombre_examen'];
 $unidades=$row['unidades'];
 //echo $unidades;
 $rangoinicio=$row['rangoinicio'];

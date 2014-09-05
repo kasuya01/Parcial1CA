@@ -374,7 +374,7 @@ function ObtenerCodigo($idarea){
                              AND lab_areasxestablecimiento.condicion='H' AND lab_areasxestablecimiento.idestablecimiento=$lugar
                              ORDER BY lab_examenes.idarea,lab_examenes.id  
                              LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
-                     // echo $query; 
+                      echo $query; 
                             $result = pg_query($query);
                              
                             if (!$result)

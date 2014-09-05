@@ -53,7 +53,7 @@ switch ($opcion)
                         $nota=(empty($_POST['nota'])) ? 'NULL' : "'" . pg_escape_string($_POST['nota']) . "'";  
                         $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
                         $Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
-                       // echo $unidades;
+                       // echo $sexo;
 			if ($objdatos->actualizar($iddatosfijosresultado,$idarea,$idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,$lugar,$Fechaini,$Fechafin,$sexo,$redad)==true) 
                            /* && $Clases->actualizar_labo($iddatosfijosresultado,$idarea,$idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,$lugar,$Fechaini,$Fechafin,$sexo,$redad)==true)*/
 			{
@@ -113,8 +113,8 @@ switch ($opcion)
 				<td aling ='center'> 
                                     <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
                                     onclick=\"eliminarDato('".$row['id']."')\"> </td>
-				<td>". $row['idexamen'] ."</td>
-				<td>".htmlentities($row['nombreexamen'])."</td>";
+				<td>". $row['codigo_examen'] ."</td>
+				<td>".htmlentities($row['nombre_examen'])."</td>";
 			if (empty($row['unidades']))
 				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 			else
@@ -218,28 +218,26 @@ switch ($opcion)
 		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
 		
 	  	
-		$query = "SELECT lab_datosfijosresultado.id,lab_examenes.idexamen,lab_examenes.nombreexamen, 
-                          lab_datosfijosresultado.unidades,lab_datosfijosresultado.rangoinicio,rangofin,
-                          lab_datosfijosresultado.nota,
-                          to_char(lab_datosfijosresultado.fechaini,'dd/mm/YYYY') AS FechaIni,
-                          to_char(lab_datosfijosresultado.fechafin,'dd/mm/YYYY') AS FechaFin, 
-                          ctl_sexo.nombre as sexo,ctl_rango_edad.nombre as redad
-                          FROM lab_datosfijosresultado 
-                          INNER join lab_examenes ON lab_datosfijosresultado.idexamen=lab_examenes.id 
-                          INNER JOIN lab_areas ON lab_examenes.idarea=lab_areas.id 
-                          INNER JOIN lab_areasxestablecimiento ON lab_areas.id=lab_areasxestablecimiento.idarea 
-                          INNER JOIN lab_examenesxestablecimiento ON lab_examenes.id=lab_examenesxestablecimiento.idexamen 
-                          LEFT JOIN ctl_sexo ON lab_datosfijosresultado.idsexo = ctl_sexo.id 
-                          INNER JOIN ctl_rango_edad ON lab_datosfijosresultado.idedad = ctl_rango_edad.id 
-                          WHERE lab_examenesxestablecimiento.idplantilla=1 AND lab_examenesxestablecimiento.condicion='H' 
-                          AND lab_areasxestablecimiento.condicion='H' AND lab_datosfijosresultado.idestablecimiento=$lugar AND ";
+		$query = "SELECT lab_datosfijosresultado.id,lab_conf_examen_estab.codigo_examen as idexamen,lab_conf_examen_estab.nombre_examen as nombreexamen, 
+                         lab_datosfijosresultado.unidades,lab_datosfijosresultado.rangoinicio,rangofin, lab_datosfijosresultado.nota, 
+                         to_char(lab_datosfijosresultado.fechaini,'dd/mm/YYYY') AS FechaIni, 
+                         to_char(lab_datosfijosresultado.fechafin,'dd/mm/YYYY') AS FechaFin, ctl_sexo.nombre as sexo,ctl_rango_edad.nombre as redad 
+                         FROM lab_datosfijosresultado
+                         INNER JOIN lab_conf_examen_estab ON lab_datosfijosresultado.id_conf_examen_estab=lab_conf_examen_estab.id 
+                         INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
+                         INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
+                         INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
+                         LEFT JOIN ctl_sexo ON lab_datosfijosresultado.idsexo = ctl_sexo.id 
+                         INNER JOIN ctl_rango_edad ON lab_datosfijosresultado.idedad = ctl_rango_edad.id 
+                         WHERE lab_conf_examen_estab.idplantilla=1 AND lab_conf_examen_estab.condicion='H' 
+                         AND lab_areasxestablecimiento.condicion='H' AND lab_datosfijosresultado.idestablecimiento=$lugar AND ";
                         $ban=0;
                         //VERIFICANDO LOS POST ENVIADOS
                         if (!empty($_POST['idarea']))
-                        { $query .= " lab_datosfijosresultado.idarea=".$_POST['idarea']." AND"; }
+                        { $query .= " mnt_area_examen_establecimiento.id_area_servicio_diagnostico=".$_POST['idarea']." AND"; }
 
                         if (!empty($_POST['idexamen']))
-                        { $query .= " lab_datosfijosresultado.idexamen=".$_POST['idexamen']." AND"; }
+                        { $query .= " lab_conf_examen_estab.id=".$_POST['idexamen']." AND"; }
 
                         if (!empty($_POST['unidades']))
                         { $query .= " unidades='".$_POST['unidades']."' AND"; }
@@ -284,7 +282,7 @@ switch ($opcion)
                         }
                         if ($ban==0)
                         {   $query = substr($query ,0,strlen($query)-3); 
-                            $query_search = $query. " ORDER BY lab_examenes.idarea,lab_examenes.id";
+                            $query_search = $query. " ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,lab_conf_examen_estab.id";
                         }
 				
 		//echo $query_search;
@@ -401,30 +399,28 @@ switch ($opcion)
 		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
 		
 
-		$query = "SELECT lab_datosfijosresultado.id,lab_examenes.idexamen,lab_examenes.nombreexamen, 
-                          lab_datosfijosresultado.unidades,lab_datosfijosresultado.rangoinicio,rangofin,
-                          lab_datosfijosresultado.nota,
-                          to_char(lab_datosfijosresultado.fechaini,'dd/mm/YYYY') AS FechaIni,
-                          to_char(lab_datosfijosresultado.fechafin,'dd/mm/YYYY') AS FechaFin, 
-                          ctl_sexo.nombre as sexo,ctl_rango_edad.nombre as redad
-                          FROM lab_datosfijosresultado 
-                          INNER join lab_examenes ON lab_datosfijosresultado.idexamen=lab_examenes.id 
-                          INNER JOIN lab_areas ON lab_examenes.idarea=lab_areas.id 
-                          INNER JOIN lab_areasxestablecimiento ON lab_areas.id=lab_areasxestablecimiento.idarea 
-                          INNER JOIN lab_examenesxestablecimiento ON lab_examenes.id=lab_examenesxestablecimiento.idexamen 
-                          LEFT JOIN ctl_sexo ON lab_datosfijosresultado.idsexo = ctl_sexo.id 
-                          INNER JOIN ctl_rango_edad ON lab_datosfijosresultado.idedad = ctl_rango_edad.id 
-                          WHERE lab_examenesxestablecimiento.idplantilla=1 AND lab_examenesxestablecimiento.condicion='H' 
-                          AND lab_areasxestablecimiento.condicion='H' AND lab_datosfijosresultado.idestablecimiento=$lugar AND ";
+		$query = "SELECT lab_datosfijosresultado.id,lab_conf_examen_estab.codigo_examen as idexamen,lab_conf_examen_estab.nombre_examen as nombreexamen, 
+                         lab_datosfijosresultado.unidades,lab_datosfijosresultado.rangoinicio,rangofin, lab_datosfijosresultado.nota, 
+                         to_char(lab_datosfijosresultado.fechaini,'dd/mm/YYYY') AS FechaIni, 
+                         to_char(lab_datosfijosresultado.fechafin,'dd/mm/YYYY') AS FechaFin, ctl_sexo.nombre as sexo,ctl_rango_edad.nombre as redad 
+                         FROM lab_datosfijosresultado
+                         INNER JOIN lab_conf_examen_estab ON lab_datosfijosresultado.id_conf_examen_estab=lab_conf_examen_estab.id 
+                         INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
+                         INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
+                         INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
+                         LEFT JOIN ctl_sexo ON lab_datosfijosresultado.idsexo = ctl_sexo.id 
+                         INNER JOIN ctl_rango_edad ON lab_datosfijosresultado.idedad = ctl_rango_edad.id 
+                         WHERE lab_conf_examen_estab.idplantilla=1 AND lab_conf_examen_estab.condicion='H' 
+                         AND lab_areasxestablecimiento.condicion='H' AND lab_datosfijosresultado.idestablecimiento=$lugar AND ";
 		$ban=0;
 		
 		//VERIFICANDO LOS POST ENVIADOS
 		if (!empty($_POST['idarea']))
-		{ $query .= " lab_datosfijosresultado.idarea='".$_POST['idarea']."' AND"; }
+		{ $query .= " mnt_area_examen_establecimiento.id_area_servicio_diagnostico='".$_POST['idarea']."' AND"; }
 		//else{$ban=1;}
 		
 		if (!empty($_POST['idexamen']))
-		{ $query .= " lab_datosfijosresultado.idexamen='".$_POST['idexamen']."' AND"; }
+		{ $query .= " lab_conf_examen_estab.id='".$_POST['idexamen']."' AND"; }
 	//	else{$ban=1;}
 		
 		if (!empty($_POST['unidades']))
@@ -476,9 +472,9 @@ switch ($opcion)
 		
 	if ($ban==0)
 	{   $query = substr($query ,0,strlen($query)-3); 
-	    $query_search = $query. " ORDER BY lab_examenes.id";
+	    $query_search = $query. " ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,lab_conf_examen_estab.id";
 	}
-      // echo $query_search;
+    //  echo $query_search;
 	
 		//ENVIANDO A EJECUTAR LA BUSQUEDA!!
 		//para manejo de la paginacion

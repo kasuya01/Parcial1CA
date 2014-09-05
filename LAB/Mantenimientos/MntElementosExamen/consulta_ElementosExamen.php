@@ -22,7 +22,7 @@ $unidadele=$row['unidadelem'];
 $observacionele=$row['observelem'];
 
 $idarea=$row['idarea'];
-$nombreexamen=$row['nombreexamen'];
+$nombreexamen=$row['nombre_examen'];
 $nombrearea=$row['nombrearea'];
 $Fechaini=$row['fechaini'];
 $Fechafin=$row['fechafin'];
