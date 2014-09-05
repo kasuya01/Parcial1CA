@@ -13,6 +13,7 @@ $Pag         = $_POST['Pag'];
 $opcion      = $_POST['opcion'];
 $cargo       = $_POST['cargo'];
 $login       = $_POST['login'];
+$modalidad   = $_POST['modalidad'];
 //actualiza los datos del empleados
 $objdatos = new clsLab_Empleados;
 //echo $idempleado;
@@ -38,7 +39,7 @@ switch ($opcion) {
         }
 
         //echo $cargo."y nivel".$niv;
-        if (($objdatos->insertar($idempleado, $lugar, $idarea, $nomempleado, $cargo, $usuario, $corr, $IdEstabExt) == true) && ($objdatos->Insertar_Usuario($login, $idempleado, $pass, $niv, $lugar) == 1)) {
+        if (($objdatos->insertar($idempleado, $lugar, $idarea, $nomempleado, $cargo, $usuario, $corr, $IdEstabExt) == true) && ($objdatos->Insertar_Usuario($login, $idempleado, $pass, $niv, $lugar, $modalidad) == 1)) {
             echo "Registro Agregado";
         } else {
             echo "No se pudo Agregar el Registro";
@@ -59,7 +60,7 @@ switch ($opcion) {
         }
         //echo $cargo."y nivel".$niv;
         If (($objdatos->actualizar($idempleado, $lugar, $idarea, $nomempleado, $cargo, $usuario) == true) &&
-                ($objdatos->actualizar_Usuario($idempleado, $login, $niv, $lugar)) == true) {
+                ($objdatos->actualizar_Usuario($idempleado, $login, $niv, $lugar, $modalidad)) == true) {
             echo "Registro Actualizado";
         } else {
             echo "No se pudo actualizar";
@@ -84,9 +85,10 @@ switch ($opcion) {
                     <td aling='center' class='CobaltFieldCaptionTD'> Habilitado</td>
                     <td aling='center' class='CobaltFieldCaptionTD'> C&oacute;digo Empleado </td>
                     <td aling='center' class='CobaltFieldCaptionTD'> Nombre Empleado </td>
+                    <td aling='center' class='CobaltFieldCaptionTD'> Modalidad de Contrato</td>
                     <td aling='center' class='CobaltFieldCaptionTD'> &Aacute;rea</td>
                     <td aling='center' class='CobaltFieldCaptionTD'> Cargo </td>
-                    <td aling='center' class='CobaltFieldCaptionTD'> Usuario </td>	   
+                    <td aling='center' class='CobaltFieldCaptionTD'> Usuario </td>
 		</tr>";
         while ($row = pg_fetch_array($consulta)) {
             echo "<tr>
@@ -99,6 +101,7 @@ switch ($opcion) {
                     "</td>
                     <td>" . $row['idempleado'] . "</td>
                     <td>" . htmlentities($row['nombreempleado']) . "</td>
+                    <td>" . htmlentities($row['nombre_modalidad']) . "</td>
                     <td>" . htmlentities($row['nombrearea']) . "</td>
                     <td>" . htmlentities($row['cargo']) . "</td>
                     <td>" . htmlentities($row['login']) . "</td>
@@ -170,12 +173,17 @@ switch ($opcion) {
                          t02.id AS idcargoempleado,
                          t02.cargo,
                          t01.id_establecimiento AS idestablecimiento,
-                         t04.username AS login
-                    FROM mnt_empleado                        t01
-                    INNER JOIN mnt_cargoempleados            t02 ON (t02.id = t01.id_cargo_empleado)
-                    INNER JOIN ctl_area_servicio_diagnostico t03 ON (t03.id = t01.idarea)
-                    INNER JOIN fos_user_user                 t04 ON (t01.id = t04.id_empleado AND t01.id_establecimiento = t04.id_establecimiento)
-                    INNER JOIN ctl_atencion                  t05 ON (t05.id = t03.id_atencion AND t05.codigo_busqueda = 'DCOLAB') WHERE ";
+                         t04.username AS login,
+                         COALESCE(t04.id_modalidad_estab, 0) AS id_modalidad_estab,
+                         COALESCE(t07.nombre, '') AS nombre_modalidad
+                    FROM mnt_empleado                             t01
+                    INNER JOIN mnt_cargoempleados                 t02 ON (t02.id = t01.id_cargo_empleado)
+                    INNER JOIN ctl_area_servicio_diagnostico      t03 ON (t03.id = t01.idarea)
+                    INNER JOIN fos_user_user                      t04 ON (t01.id = t04.id_empleado AND t01.id_establecimiento = t04.id_establecimiento)
+                    INNER JOIN ctl_atencion                       t05 ON (t05.id = t03.id_atencion AND t05.codigo_busqueda = 'DCOLAB')
+                    LEFT OUTER JOIN mnt_modalidad_establecimiento t06 ON (t06.id = t04.id_modalidad_estab)
+                    LEFT OUTER JOIN ctl_modalidad                 t07 ON (t07.id = t06.id_modalidad)
+                    WHERE ";
 
         $conEmp = $objdatos->BuscarEmpleado($idempleado, $lugar);
         $ExisEmp = pg_fetch_array($conEmp);
@@ -205,7 +213,11 @@ switch ($opcion) {
             $query .= " t04.username ILIKE '%" . $_POST['login'] . "%' AND";
         }
 
-        if ((empty($_POST['cargo'])) and ( empty($_POST['idarea'])) and ( empty($_POST['nomempleado'])) and ( empty($_POST['idempleado'])) and ( empty($_POST['login']))) {
+        if (!empty($_POST['modalidad'])) {
+            $query .= " t04.id_modalidad_estab = " . $_POST['modalidad'] . " AND";
+        }
+
+        if ((empty($_POST['cargo'])) and ( empty($_POST['idarea'])) and ( empty($_POST['nomempleado'])) and ( empty($_POST['idempleado'])) and ( empty($_POST['login'])) and (empty($_POST['modalidad']))) {
             $ban = 1;
         }
 
@@ -230,6 +242,7 @@ switch ($opcion) {
                             <td aling='center' class='CobaltFieldCaptionTD'> Habilitado</td>
                             <td aling='center' class='CobaltFieldCaptionTD'> C&oacute;digo Empleado </td>
                             <td aling='center' class='CobaltFieldCaptionTD'> Nombre Empleado </td>
+                            <td aling='center' class='CobaltFieldCaptionTD'> Modalidad de Contrato</td>
                             <td aling='center' class='CobaltFieldCaptionTD'> &Aacute;rea</td>
                             <td aling='center' class='CobaltFieldCaptionTD'> Cargo </td>
 			    <td aling='center' class='CobaltFieldCaptionTD'> Usuario </td>	    
@@ -245,6 +258,7 @@ switch ($opcion) {
                 "onclick='Estado(\"" . $row['idempleado'] . "\",\"" . $row['estadocuenta'] . "\")'>" . $row['habilitado'] . "</td>" .
                 "<td>" . $row['idempleado'] . "</td>
                             <td>" . htmlentities($row['nombreempleado']) . "</td>
+                            <td>" . htmlentities($row['nombre_modalidad']) . "</td>
                             <td>" . htmlentities($row['nombrearea']) . "</td>
                             <td>" . htmlentities($row['cargo']) . "</td>
                             <td>" . htmlentities($row['login']) . "</td>
@@ -371,12 +385,17 @@ switch ($opcion) {
                          CASE WHEN t04.enabled = true THEN 'Habilitado'
                                 ELSE 'Inhabilitado' END AS Habilitado,
                          t04.enabled AS estadocuenta,
-                         t04.username AS login 
-                  FROM mnt_empleado                        t01
-                  INNER JOIN mnt_cargoempleados            t02 ON (t02.id = t01.id_cargo_empleado)
-                  INNER JOIN ctl_area_servicio_diagnostico t03 ON (t03.id = t01.idarea)
-                  INNER JOIN fos_user_user                 t04 ON (t01.id = t04.id_empleado AND t01.id_establecimiento = t04.id_establecimiento)
-                  INNER JOIN ctl_atencion                  t05 ON (t05.id = t03.id_atencion AND t05.codigo_busqueda = 'DCOLAB') WHERE ";
+                         t04.username AS login,
+                         COALESCE(t04.id_modalidad_estab, 0) AS id_modalidad_estab,
+                         COALESCE(t07.nombre, '') AS nombre_modalidad
+                  FROM mnt_empleado                             t01
+                  INNER JOIN mnt_cargoempleados                 t02 ON (t02.id = t01.id_cargo_empleado)
+                  INNER JOIN ctl_area_servicio_diagnostico      t03 ON (t03.id = t01.idarea)
+                  INNER JOIN fos_user_user                      t04 ON (t01.id = t04.id_empleado AND t01.id_establecimiento = t04.id_establecimiento)
+                  INNER JOIN ctl_atencion                       t05 ON (t05.id = t03.id_atencion AND t05.codigo_busqueda = 'DCOLAB')
+                  LEFT OUTER JOIN mnt_modalidad_establecimiento t06 ON (t06.id = t04.id_modalidad_estab)
+                  LEFT OUTER JOIN ctl_modalidad                 t07 ON (t07.id = t06.id_modalidad)
+                  WHERE ";
 
         $ban = 0;
         $ban1 = 0;
@@ -407,7 +426,11 @@ switch ($opcion) {
             $query .= " t04.username ILIKE '%" . $_POST['login'] . "%' AND";
         }
 
-        if ((empty($_POST['cargo'])) and ( empty($_POST['idarea'])) and ( empty($_POST['nomempleado'])) and ( empty($_POST['idempleado'])) and ( empty($_POST['login']))) {
+        if (!empty($_POST['modalidad'])) {
+            $query .= " t04.id_modalidad_estab = " . $_POST['modalidad'] . " AND";
+        }
+
+        if ((empty($_POST['cargo'])) and ( empty($_POST['idarea'])) and ( empty($_POST['nomempleado'])) and ( empty($_POST['idempleado'])) and ( empty($_POST['login'])) and (empty($_POST['modalidad']))) {
             $ban = 1;
         }
 
@@ -432,8 +455,9 @@ switch ($opcion) {
                             <td aling='center' class='CobaltFieldCaptionTD'> Habilitado</td>
                             <td aling='center' class='CobaltFieldCaptionTD'> C&oacute;digo Empleado </td>
                             <td aling='center' class='CobaltFieldCaptionTD'> Nombre Empleado </td>
-			    <td aling='center' class='CobaltFieldCaptionTD'> &Aacute;rea</td>
-			    <td aling='center' class='CobaltFieldCaptionTD'> Cargo </td>
+                            <td aling='center' class='CobaltFieldCaptionTD'> Modalidad de Contrato</td>
+			                <td aling='center' class='CobaltFieldCaptionTD'> &Aacute;rea</td>
+			                <td aling='center' class='CobaltFieldCaptionTD'> Cargo </td>
                             <td aling='center' class='CobaltFieldCaptionTD'> Usuario </td>	    
 			</tr>";
 
@@ -446,6 +470,7 @@ switch ($opcion) {
                 "onclick='Estado(\"" . $row['idempleado'] . "\",\"" . $row['estadocuenta'] . "\")'>" . $row['habilitado'] . "</td>" .
                 "<td>" . $row['idempleado'] . "</td>
 				<td>" . htmlentities($row['nombreempleado']) . "</td>
+                <td>" . htmlentities($row['nombre_modalidad']) . "</td>
 				<td>" . htmlentities($row['nombrearea']) . "</td>
 				<td>" . htmlentities($row['cargo']) . "</td>
 				<td>" . htmlentities($row['login']) . "</td>
@@ -509,7 +534,7 @@ switch ($opcion) {
 			   <td aling='center' class='CobaltFieldCaptionTD'> Codigo Empleado </td>
 			   <td aling='center' class='CobaltFieldCaptionTD'> Nombre Empleado </td>
 			   <td aling='center' class='CobaltFieldCaptionTD'> Cargo </td>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Usuario </td>	   
+			   <td aling='center' class='CobaltFieldCaptionTD'> Usuario </td>
 		     </tr>";
             while ($row = pg_fetch_array($consulta)) {
                 echo "<tr>

@@ -24,11 +24,11 @@ class clsLab_Empleados {
         }
     }
 
-    function Insertar_Usuario($login, $idempleado, $pass, $niv, $lugar) {
+    function Insertar_Usuario($login, $idempleado, $pass, $niv, $lugar, $modalidad) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "INSERT INTO fos_user_user(id,username, username_canonical, email, email_canonical, enabled, password, locked, expired, roles, credentials_expired, firstname, lastname, gender, id_establecimiento, id_empleado, modulo, nivel) 
-                            VALUES((SELECT last_value FROM fos_user_user_id_seq)+1,'$login','$login','".$login."@salud.gob.sv','".$login."@salud.gob.sv',true,md5('$pass'),false,false,'a:0:{}',false,(SELECT nombre FROM mnt_empleado WHERE idempleado = '$idempleado'),(SELECT apellido FROM mnt_empleado WHERE idempleado = '$idempleado'),'u',$lugar,(SELECT id from mnt_empleado WHERE idempleado = '$idempleado'),'LAB',$niv);
+            $query = "INSERT INTO fos_user_user(id,username, username_canonical, email, email_canonical, enabled, password, locked, expired, roles, credentials_expired, firstname, lastname, gender, id_establecimiento, id_empleado, modulo, nivel, id_modalidad_estab) 
+                            VALUES((SELECT last_value FROM fos_user_user_id_seq)+1,'$login','$login','".$login."@salud.gob.sv','".$login."@salud.gob.sv',true,md5('$pass'),false,false,'a:0:{}',false,(SELECT nombre FROM mnt_empleado WHERE idempleado = '$idempleado'),(SELECT apellido FROM mnt_empleado WHERE idempleado = '$idempleado'),'u',$lugar,(SELECT id from mnt_empleado WHERE idempleado = '$idempleado'),'LAB',$niv,$modalidad);
                       SELECT SETVAL('fos_user_user_id_seq', (SELECT MAX(id) FROM fos_user_user), true);";
             $result = pg_query($query);
             if (!$result)
@@ -54,10 +54,10 @@ class clsLab_Empleados {
     }
 
     //ACTUALIZA UN REGISTRO
-    function actualizar_Usuario($idempleado, $login, $niv, $lugar) {
+    function actualizar_Usuario($idempleado, $login, $niv, $lugar, $modalidad) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "UPDATE fos_user_user SET nivel = $niv WHERE id_empleado = (SELECT id FROM mnt_empleado WHERE idempleado = '$idempleado') AND id_establecimiento = $lugar";
+            $query = "UPDATE fos_user_user SET nivel = $niv, id_modalidad_estab = $modalidad WHERE id_empleado = (SELECT id FROM mnt_empleado WHERE idempleado = '$idempleado') AND id_establecimiento = $lugar";
             $result = pg_query($query);
             if (!$result)
                 return false;
@@ -103,12 +103,16 @@ class clsLab_Empleados {
                             t01.nombreempleado,
                             t02.id AS idcargoempleado,
                             t02.cargo,
-                            t04.username AS login
-                     FROM mnt_empleado                        t01
-                     INNER JOIN mnt_cargoempleados            t02 ON (t02.id = t01.id_cargo_empleado)
-                     INNER JOIN ctl_area_servicio_diagnostico t03 ON (t03.id = t01.idarea)
-                     INNER JOIN fos_user_user                 t04 ON (t01.id = t04.id_empleado AND t01.id_establecimiento = t04.id_establecimiento)
-                     INNER JOIN ctl_atencion                  t05 ON (t05.id = t03.id_atencion AND t05.codigo_busqueda = 'DCOLAB')
+                            t04.username AS login,
+                            COALESCE(t04.id_modalidad_estab, 0) AS idmodalidad,
+                            COALESCE(t07.nombre, '') AS nombremodalidad
+                     FROM mnt_empleado                             t01
+                     INNER JOIN mnt_cargoempleados                 t02 ON (t02.id = t01.id_cargo_empleado)
+                     INNER JOIN ctl_area_servicio_diagnostico      t03 ON (t03.id = t01.idarea)
+                     INNER JOIN fos_user_user                      t04 ON (t01.id = t04.id_empleado AND t01.id_establecimiento = t04.id_establecimiento)
+                     INNER JOIN ctl_atencion                       t05 ON (t05.id = t03.id_atencion AND t05.codigo_busqueda = 'DCOLAB')
+                     LEFT OUTER JOIN mnt_modalidad_establecimiento t06 ON (t06.id = t04.id_modalidad_estab)
+                     LEFT OUTER JOIN ctl_modalidad                 t07 ON (t07.id = t06.id_modalidad)
                      WHERE t01.idempleado = '$IdEmpleado' AND t01.id_establecimiento = $lugar";
             // echo $query;
             $result = pg_query($query);
@@ -236,13 +240,17 @@ class clsLab_Empleados {
                              t01.id_establecimiento AS idestablecimiento,
                              CASE WHEN t04.enabled = true THEN 'Habilitado' ELSE 'Inhabilitado' END AS habilitado, 
                              CASE WHEN t04.enabled = true THEN 'H' ELSE 'I' END AS estadocuenta,
-                             t04.username AS login
-                      FROM mnt_empleado                        t01
-                      INNER JOIN mnt_cargoempleados            t02 ON (t02.id = t01.id_cargo_empleado)
-                      INNER JOIN ctl_area_servicio_diagnostico t03 ON (t03.id = t01.idarea)
-                      INNER JOIN fos_user_user                 t04 ON (t01.id = t04.id_empleado AND t01.id_establecimiento = t04.id_establecimiento)
-                      INNER JOIN mnt_tipo_empleado             t05 ON (t05.id = t01.id_tipo_empleado)
-                      INNER JOIN ctl_atencion                  t06 ON (t06.id = t03.id_atencion AND t06.codigo_busqueda = 'DCOLAB')
+                             t04.username AS login,
+                             COALESCE(t04.id_modalidad_estab, 0) AS id_modalidad_estab,
+                             COALESCE(t08.nombre, '') AS nombre_modalidad
+                      FROM mnt_empleado                             t01
+                      INNER JOIN mnt_cargoempleados                 t02 ON (t02.id = t01.id_cargo_empleado)
+                      INNER JOIN ctl_area_servicio_diagnostico      t03 ON (t03.id = t01.idarea)
+                      INNER JOIN fos_user_user                      t04 ON (t01.id = t04.id_empleado AND t01.id_establecimiento = t04.id_establecimiento)
+                      INNER JOIN mnt_tipo_empleado                  t05 ON (t05.id = t01.id_tipo_empleado)
+                      INNER JOIN ctl_atencion                       t06 ON (t06.id = t03.id_atencion AND t06.codigo_busqueda = 'DCOLAB')
+                      LEFT OUTER JOIN mnt_modalidad_establecimiento t07 ON (t07.id = t04.id_modalidad_estab)
+                      LEFT OUTER JOIN ctl_modalidad                 t08 ON (t08.id = t07.id_modalidad)
                       WHERE t05.codigo = 'LAB' AND t01.id_establecimiento = $lugar
                       ORDER BY t01.idempleado LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
             $result = @pg_query($query);
@@ -268,6 +276,24 @@ class clsLab_Empleados {
         }
     }
     //***************************FIN FUNCIONES PARA MANEJO DE PAGINACION***************************/
+
+    function consultarModalidad($idEstablecimiento) {
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if ($con->conectar() == true) {
+            $query = "SELECT t01.id,
+                             t02.nombre
+                      FROM mnt_modalidad_establecimiento t01
+                      INNER JOIN ctl_modalidad t02 ON (t02.id = t01.id_modalidad)
+                      WHERE t01.id_establecimiento = $idEstablecimiento";
+            
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
 }
 
 //CLASE
