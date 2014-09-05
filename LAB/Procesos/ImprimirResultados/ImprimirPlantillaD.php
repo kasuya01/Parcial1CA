@@ -16,9 +16,9 @@ $idexamen=$_GET['var6'];
 ?>
 <html>
 <head>
-<meta http-equiv="Content-type" content="text/html;charset=UTF-8"> 
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <title>Resultados de Examenes de Laboratorio </title>
-<script language="JavaScript" type="text/javascript" src="ajax_ImprimirResultado.js"></script> 
+<script language="JavaScript" type="text/javascript" src="ajax_ImprimirResultado.js"></script>
 <!--<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">-->
 <script language="JavaScript">
@@ -29,7 +29,7 @@ function calc_edad()
 //alert (fecnac2);
   var suEdades=calcular_edad(fecnac2);
  // alert(suEdades);
-       
+
   document.getElementById("divsuedad").innerHTML=suEdades;
 }
 </script>
@@ -50,7 +50,7 @@ function calc_edad()
 </head>
 
 <body>
-<?php 
+<?php
 
 
 	$Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
@@ -72,7 +72,7 @@ function calc_edad()
 				<p><strong><?php echo $row_estab['Nombre'] ?></strong></p>
 				<p><strong>ÁREA DE <?php echo htmlentities($row_area['NombreArea'])?> </strong></p>
 			</td>
-                        <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.gif" width="210" name="Image3"></td>
+                        <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
 		</tr>
 		<tr>
                     <td colspan="6" align='center' >&nbsp;&nbsp;&nbsp;</td>
@@ -84,7 +84,7 @@ function calc_edad()
 			<td colspan="2" class="Estilo6"><?php echo $row_generales['Fecha']?></td>
 				<input name='suEdad' id='suEdad' type='hidden' value=<?php echo $row_generales['FechaNacimiento']?>>
 		</tr>
-		
+
 		<tr>
 			<td colspan="1" class="Estilo5"><strong>NEC</strong></td>
 			<td colspan="5" class="Estilo7"><?php echo $row_generales['IdNumeroExp']?></td>
@@ -103,16 +103,16 @@ function calc_edad()
 			<td colspan="1" class="Estilo5"><strong>Sexo:</strong></td>
 			<td colspan="2" class="Estilo6"><?php echo $row_generales['Sexo']?></td>
 		</tr>
-		<tr>	
+		<tr>
 			<td colspan="1" class="Estilo5"><strong>Procedencia:</strong></td>
 			<td colspan="2" class="Estilo6"><?php echo htmlentities($row_generales['Procedencia'])?></td>
 			<td colspan="1" class="Estilo5"><strong>Origen:</strong></td>
 			<td colspan='2' class="Estilo6" ><?php echo $row_generales['Origen']?></td>
-		</tr>	
+		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
 			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['NombreExamen'])?></td>
-		</tr>				 
+		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>
 			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_generales['NombreEmpleado'])?></td>
@@ -142,7 +142,7 @@ function calc_edad()
 						mysql_free_result($datos_generales);?>
 				</table>
 			</td>
-                 </tr>	
+                 </tr>
              </table>
              <div id="boton" >
                 <table align="center">
@@ -151,6 +151,6 @@ function calc_edad()
                             <input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
                             <input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar() ;" />
 			</td>
-					
-                    </tr></div>		
+
+                    </tr></div>
                 </table>

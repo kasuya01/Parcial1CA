@@ -16,7 +16,7 @@ $IdExamen=$_GET['var6'];
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <title>Resultados de Examenes de Laboratorio </title>
-<script language="JavaScript" type="text/javascript" src="ajax_ImprimirResultado.js"></script> 
+<script language="JavaScript" type="text/javascript" src="ajax_ImprimirResultado.js"></script>
 <!--<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">-->
 <script language="JavaScript">
@@ -27,7 +27,7 @@ function calc_edad()
 //alert (fecnac2);
   var suEdades=calcular_edad(fecnac2);
  // alert(suEdades);
-       
+
   document.getElementById("divsuedad").innerHTML=suEdades;
 }
 </script>
@@ -48,11 +48,11 @@ function calc_edad()
 </head>
 
 <body>
-<?php 
+<?php
 include_once("clsImprimirResultado.php");
 $objdatos = new clsImprimirResultado;
 $Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
-$row_estab = mysql_fetch_array($Consulta_Estab);	
+$row_estab = mysql_fetch_array($Consulta_Estab);
 $consulta=$objdatos->MostrarResultadoGenerales($idsolicitud,$IdExamen,$lugar);
 $row = mysql_fetch_array($consulta);
 $nombre=$row['NombreArea'];
@@ -71,7 +71,7 @@ $nombre=$row['NombreArea'];
 					<p><strong><?php echo $row_estab['Nombre'] ?></strong></p>
 					<p><strong>ÁREA DE <?php echo $nombre; ?> </strong></p>
 				</td>
-                                <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.gif" width="210" name="Image3"></td>
+                                <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
 			</tr>
 			<tr>
 				<td colspan='6' align='center'>&nbsp;&nbsp;&nbsp;</td>
@@ -83,16 +83,16 @@ $nombre=$row['NombreArea'];
 				<td colspan="2" class="Estilo6"><?php echo $row['Fecha'];?></td>
 				<input name='suEdad' id='suEdad' type='hidden'  value=<?php echo $row['FechaNacimiento']?>>
 			</tr>
-			
+
 			<tr>
 				<td colspan="1" class="Estilo5"><strong>NEC</strong></td>
 				<td colspan="5" class="Estilo7"><?php echo $row['IdNumeroExp'];?></td>
                         </tr>
                         <tr>
-				
+
 				<td colspan="1" class="Estilo5"><strong>Paciente:</strong></td>
 				<td colspan="5" class="Estilo6"><?php echo htmlentities($row['NombrePaciente'])?></td>
-			</tr>	
+			</tr>
 			<tr>
 				<td colspan="1" class="Estilo5"><strong>Edad:</strong></td>
 				<td colspan="2" class="Estilo6"><div id="divsuedad">
@@ -101,12 +101,12 @@ $nombre=$row['NombreArea'];
           				</script>
     		   		    </div>
 				</td>
-				
+
 				<td colspan="1" class="Estilo5"><strong>Sexo:</strong></td>
-				<td colspan="2" class="Estilo6"><?php echo $row['Sexo']?></td>					
-			</tr>	
-			
-			<?php 
+				<td colspan="2" class="Estilo6"><?php echo $row['Sexo']?></td>
+			</tr>
+
+			<?php
 				$consulta2=$objdatos->MostrarDatosFijosPlantillaA($IdExamen,$lugar,$idsolicitud);
 				$fila = mysql_fetch_array($consulta2);
 			?>
@@ -137,7 +137,7 @@ $nombre=$row['NombreArea'];
                                             <td align="center" class="Estilo5"><strong>Lectura</strong></td>
                                             <td align="center" class="Estilo5"><strong>Interpretaci&oacute;n</strong></td>
                                             <td align="center" class="Estilo5"><strong>Observaci&oacute;n</strong></td>
-                                    </tr>	
+                                    </tr>
                                     <tr>
                                             <td align="left" class="Estilo5"><?php echo htmlentities($fila['NombreExamen'])?></td>
                                             <td align="center" class="Estilo5"><?php echo htmlentities($row['Resultado'])?></td>
@@ -146,7 +146,7 @@ $nombre=$row['NombreArea'];
                                             <td align="justify" class="Estilo5"><?php echo htmlentities($row['Lectura'])?></td>
                                             <td align="justify" class="Estilo5"><?php echo htmlentities($row['Interpretacion'])?></td>
                                             <td align="justify" class="Estilo5"><?php echo htmlentities($row['Observacion'])?></td>
-                                    </tr> 
+                                    </tr>
                                 </table>
 			  </td>
                         </tr>
@@ -157,11 +157,11 @@ $nombre=$row['NombreArea'];
 				<td colspan="7" align="center" >
                                     <input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
                                     <input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="window.close();" />
-				 	 
+
 				</td>
-                            </tr>		
+                            </tr>
                         </table>
-                      </div>  
+                      </div>
 		</form>
 	</div>
 </tr>

@@ -11,13 +11,13 @@ $idarea=$_GET['var5'];
 $sexo=$_GET['var6'];
 $fechanac=$_GET['var7'];
 //echo $fechanac."    ".$sexo;
-//echo $iddetalle."*sol".$idsolicitud."*plan".$idplatilla."*exp".$expediente."*area".$idarea 
+//echo $iddetalle."*sol".$idsolicitud."*plan".$idplatilla."*exp".$expediente."*area".$idarea
 ?>
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <title>Resultados de Examenes de Laboratorio </title>
-<script language="JavaScript" type="text/javascript" src="ajax_ImprimirResultado.js"></script> 
+<script language="JavaScript" type="text/javascript" src="ajax_ImprimirResultado.js"></script>
 <!--<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">-->
 
@@ -29,7 +29,7 @@ function calc_edad()
 //alert (fecnac2);
   var suEdades=calcular_edad(fecnac2);
  // alert(suEdades);
-       
+
   document.getElementById("divsuedad").innerHTML=suEdades;
 }
 </script>
@@ -51,40 +51,40 @@ function calc_edad()
 </head>
 
 <body>
-<?php 
+<?php
 include_once("clsImprimirResultado.php");
   $objdatos = new clsImprimirResultado;
 
 //echo $lugar;
 //echo $idsolicitud."-".$idarea."-".$lugar;
-  	
+
   $consulta1=$objdatos->MostrarResultadoGenerales1($idsolicitud,$idarea,$lugar);
-  $row = mysql_fetch_array($consulta1);  
+  $row = mysql_fetch_array($consulta1);
   $Establecimiento=$row['IdEstablecimiento'];
  // $nombre=$row['NombreArea'];
-   //echo $Establecimiento; 
+   //echo $Establecimiento;
   $Consulta_Estab=$objdatos->Nombre_Establecimiento($Establecimiento);
   $row_estab = mysql_fetch_array($Consulta_Estab);
- 
+
   $Cuentadias=$objdatos->CalculoDias($fechanac);
   $Cdias= mysql_fetch_array($Cuentadias);
   $dias=$Cdias[0];
-	
+
   $ConRangos=$objdatos->ObtenerCodigoRango($dias);
   $row_rangos=  mysql_fetch_array($ConRangos);
-  $idedad=$row_rangos[0];  
-   
+  $idedad=$row_rangos[0];
+
   $FechaRes=$objdatos->ObtenerFechaResultado($idsolicitud,$idarea,$lugar);
   $row_fecha=mysql_fetch_array($FechaRes);
   $FechaResultado=$row_fecha[0];
   $IdEmpleado=$row_fecha[1];
  // echo $IdEmpleado;
-  
+
   $consulta_empleado=$objdatos->BuscarEmpleadoValidador($IdEmpleado);
   $fila_empleado = mysql_fetch_array($consulta_empleado);
 //echo  $idedad."   ".$sexo;
     $consulta=$objdatos->DetalleExamenes($idsolicitud,$idarea,$lugar,$idedad,$sexo);
-	
+
 ?>
     <table width='100%' align='center' class='StormyWeatherFormTABLE'>
         <tr>
@@ -94,7 +94,7 @@ include_once("clsImprimirResultado.php");
                 <p><strong><?php echo $row['Nombre'] ?></strong></p>
                 <p><strong>ÁREA DE <?php echo htmlentities($row['NombreArea'])?></strong></p>
             </td>
-            <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.gif" width="210" name="Image3"></td>
+            <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
 	</tr>
         <tr>
             <td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;</td>
@@ -106,17 +106,17 @@ include_once("clsImprimirResultado.php");
             <td colspan="2" class="Estilo6"><?php echo $FechaResultado;?></td>
 		<input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row['FechaNacimiento']?>>
 	</tr>
-	
+
 	<tr>
             <td colspan='1' class="Estilo5"><strong>NEC</strong></td>
             <td colspan='5' class="Estilo7"><?php echo $row['IdNumeroExp']?></td>
-           
+
         </tr>
-       
+
         <tr>
             <td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
             <td colspan='5' class="Estilo6"><?php echo htmlentities($row['NombrePaciente'])?></td>
- 	</tr>		
+ 	</tr>
 	<tr>
             <td colspan='1' class="Estilo5"><strong>Edad:</strong></td>
             <td colspan='2' class="Estilo6">
@@ -127,9 +127,9 @@ include_once("clsImprimirResultado.php");
                 </div>
             </td>
             <td colspan='1' class="Estilo5"><strong>Sexo:</strong></td>
-            <td colspan='2' class="Estilo6"><?php echo $row['Sexo']?></td>					
+            <td colspan='2' class="Estilo6"><?php echo $row['Sexo']?></td>
         </tr>
-        
+
         <tr>
             <td colspan="1" class="Estilo5"><strong>Procedencia:</strong></td>
             <td colspan="2" class="Estilo6"><?php echo htmlentities($row['Procedencia'])?></td>
@@ -139,7 +139,7 @@ include_once("clsImprimirResultado.php");
          <tr>
             <td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>
             <td colspan='2' class="Estilo6"><?php echo $fila_empleado['NombreEmpleado']?></td>
-        </tr>   
+        </tr>
 	<tr>
             <td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;</td>
 	</tr>
@@ -157,8 +157,8 @@ include_once("clsImprimirResultado.php");
                         <td align="center" class="Estilo5"><strong>Lectura</strong></td>
                         <td align="center" class="Estilo5"><strong>Interpretación</strong></td>
                         <td align="center" class="Estilo5"><strong>Observación</strong></td>
-                       
-                        
+
+
                     </tr>
                                 <?php $pos=0;
                         while($rowdet = mysql_fetch_array($consulta)){?>
@@ -170,29 +170,28 @@ include_once("clsImprimirResultado.php");
                         <td align="center" class="Estilo5"><?php echo htmlentities($rowdet['Lectura'])?></td>
                         <td align='justify' class="Estilo5"><?php echo htmlentities($rowdet['Interpretacion'])?></td>
                         <td align='justify' class="Estilo5"><?php echo htmlentities($rowdet['Observacion'])?></td>
-                        
-                       
+
+
                     </tr>
                         <?php
 
                                 $pos=$pos + 1;
                         }
-                        ?>					
+                        ?>
                     </table>
                 </td>
             </tr>
     </table>
      <div id="boton">
             <table align='center' border="0">
-               
+
                     <tr>
                         <td colspan="7" align="center" >
 
                             <input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
                             <input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="window.close();" />
-                                    
+
                         </td>
                     </tr>
             </table>
-     </div>  
-
+     </div>

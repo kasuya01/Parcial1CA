@@ -11,10 +11,10 @@ $opcion=$_POST['opcion'];
 //creando los objetos de las clases
 $objdatos = new clsSolicitudesProcesadas;
 
-switch ($opcion) 
+switch ($opcion)
 {
-  case 1: 
-        $idsolicitud=$_POST['idsolicitud']; 
+  case 1:
+        $idsolicitud=$_POST['idsolicitud'];
 	$idarea=$_POST['idarea'];
         $fechanac=$_POST['FechaNac'];
         $sexo=$_POST['Sexo'];
@@ -25,15 +25,15 @@ switch ($opcion)
         $Cuentadias=$objdatos->CalculoDias($fechanac);
         $Cdias= mysql_fetch_array($Cuentadias);
         $dias=$Cdias[0];
-	
+
         $ConRangos=$objdatos->ObtenerCodigoRango($dias);
         $row_rangos=  mysql_fetch_array($ConRangos);
-        $idedad=$row_rangos[0];   
-        
+        $idedad=$row_rangos[0];
+
 	$imprimir="";
-  	
+
 	$consulta=$objdatos->DatosExamenes($idsolicitud,$idarea,$lugar,$sexo,$idedad);
-	
+
 	echo "<table width='65%'  align='center' border='0' class='StormyWeatherFormTABLE'><tr>";
 	$pos=0;
 	 while($row = mysql_fetch_array($consulta))
@@ -42,13 +42,13 @@ switch ($opcion)
                             <tr class='CobaltButton'>
                                 <td width='30%' class='StormyWeatherFieldCaptionTD'>Prueba Realizada </td>
 				<td width='35%' class='StormyWeatherDataTD'>".htmlentities($row['NombreExamen'])."
-                                    <input name='oiddetalle[".$pos."]' type='hidden' id='oiddetalle[".$pos."]' value='".$row['IdDetalleSolicitud']."'> 
-                                    <input name='oidexamen[".$pos."]' type='hidden' id='oidexamen[".$pos."]' value='".$row['IdExamen']."'> 
+                                    <input name='oiddetalle[".$pos."]' type='hidden' id='oiddetalle[".$pos."]' value='".$row['IdDetalleSolicitud']."'>
+                                    <input name='oidexamen[".$pos."]' type='hidden' id='oidexamen[".$pos."]' value='".$row['IdExamen']."'>
                                 </td>
                                 <td width='10%' class='StormyWeatherFieldCaptionTD'>Unidades</td>
 				<td align='center' width='15%' class='StormyWeatherFieldCaptionTD'>Rangos Normales </td>
-                            </tr>	
-                            <tr class='CobaltButton'>	
+                            </tr>
+                            <tr class='CobaltButton'>
                                 <td width='30%' class='StormyWeatherFieldCaptionTD'>Resultado</td>
 				<td width='35%' class='StormyWeatherDataTD'>
                                     <input size='35' name='txtresultado[".$pos."]' type='text' id='txtresultado[".$pos."]'>
@@ -77,7 +77,7 @@ switch ($opcion)
 								   $imprimir .="</td></tr> ";
 					//numero de cajas de texto dibujadas para resultados
 					$pos=$pos + 1;
-					
+
 				echo $imprimir;
 			 }
 				//echo $pos;
@@ -90,12 +90,12 @@ switch ($opcion)
 					</tr>
 		</table>";
        //echo $imprimir;
-   
+
    break;
-   
+
    case 2:
 		$responsable=$_POST['idempleado'];
-		$idsolicitud=$_POST['idsolicitud']; 
+		$idsolicitud=$_POST['idsolicitud'];
 		$idarea=$_POST['idarea'];
 		$idrecepcion=$_POST['idrecepcion'];
 		$valores_resultados=$_POST['valores_resultados'];
@@ -111,14 +111,14 @@ switch ($opcion)
                 $Cuentadias=$objdatos->CalculoDias($fechanac);
                 $Cdias= mysql_fetch_array($Cuentadias);
                 $dias=$Cdias[0];
-	
+
                 $ConRangos=$objdatos->ObtenerCodigoRango($dias);
                 $row_rangos=  mysql_fetch_array($ConRangos);
-                $idedad=$row_rangos[0];  
-                
+                $idedad=$row_rangos[0];
+
                 $Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
 		$row_estab = mysql_fetch_array($Consulta_Estab);
-  
+
                 $consulta=$objdatos->MostrarResultadoGenerales1($idsolicitud,$idarea,$lugar);
 		$row = mysql_fetch_array($consulta);
 		$nombre=$row['NombreArea'];
@@ -129,7 +129,7 @@ switch ($opcion)
 		$vector_obser=EXPLODE("/",$valores_obser);
 		$vector_examenes=EXPLODE("/",$codigos_examenes);
 		$consulta=$objdatos->DatosExamenes($idsolicitud,$idarea,$lugar,$sexo,$idedad);
-	
+
    $Imprimir="<table width='90%' align='center' class='StormyWeatherFormTABLE'>
                 <tr>
                     <td colspan='1' align='left' width='20%'><img id='Image1' style='WIDTH: 80px; HEIGHT: 55px' height='86' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
@@ -138,7 +138,7 @@ switch ($opcion)
 			<p><strong>                       ".$row_estab['Nombre']."</strong></p>
 			<p><strong>&Aacute;REA DE ".htmlentities($row['NombreArea'])." </strong></p>
                     </td>
-                    <td colspan='1' align='right' width='20%'><img id='Image3' style='WIDTH: 110px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.gif' width='210' name='Image3'></td>
+                    <td colspan='1' align='right' width='20%'><img id='Image3' style='WIDTH: 110px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
 		</tr>
 		<tr>
                     <td colspan='6' align='center'></td>
@@ -163,14 +163,14 @@ switch ($opcion)
 					<td colspan='1' style='font:bold'><strong>Edad:</strong></td>
 					<td colspan='1' style='font:bold'>
 						<div id='divsuedad'>
-			  
+
 						</div>
 					</td>
 					<td colspan='1'>&nbsp;&nbsp;&nbsp;</td>
 					<td colspan='1' style='font:bold'><strong>Sexo:</strong></td>
-					<td colspan='1' style='font:bold'>".$row['Sexo']."</td>					
+					<td colspan='1' style='font:bold'>".$row['Sexo']."</td>
 				</tr>
-				<tr>	
+				<tr>
 					<td colspan='1' style='font:bold'><strong>Procedencia:</strong></td>
 					<td colspan='1' style='font:bold'>".htmlentities($row['Procedencia'])."</td>
 					<td colspan='1'>&nbsp;&nbsp;&nbsp;</td>
@@ -207,40 +207,40 @@ switch ($opcion)
 		{
                     $Imprimir.="<tr>
                                     <td width='35%' >".htmlentities($row['NombreExamen'])."
-                                        <input name='oiddetalle[".$pos."]' type='hidden' id='oiddetalle[".$pos."]' value='".$row['IdDetalleSolicitud']."'> 
-					<input name='oidexamen[".$pos."]' type='hidden' id='oidexamen[".$pos."]' value='".$row['IdExamen']."'> 
+                                        <input name='oiddetalle[".$pos."]' type='hidden' id='oiddetalle[".$pos."]' value='".$row['IdDetalleSolicitud']."'>
+					<input name='oidexamen[".$pos."]' type='hidden' id='oidexamen[".$pos."]' value='".$row['IdExamen']."'>
                                     </td>";
 			if ($row['IdDetalleSolicitud']== $vector_codigos[$pos]){
                         $Imprimir.="<td>".htmlentities($vector_resultados[$pos])."</td>";
 				if ($vector_resultados[$pos]>=$row['RangoInicio'] AND $vector_resultados[$pos]<=$row['RangoFin']){
 					$tab=1;
-					$Imprimir.="<input name='txttab[".$pos."]' type='hidden' id='txttab[".$pos."]' value='".$tab."'>"; 
+					$Imprimir.="<input name='txttab[".$pos."]' type='hidden' id='txttab[".$pos."]' value='".$tab."'>";
 				}
 				else{
 					$tab=3;
-					$Imprimir.="<input name='txttab[".$pos."]' type='hidden' id='txttab[".$pos."]' value='".$tab."'>"; 
+					$Imprimir.="<input name='txttab[".$pos."]' type='hidden' id='txttab[".$pos."]' value='".$tab."'>";
 				}
                         $Imprimir.="<td align='center'>".htmlentities($row['Unidades'])."</td>";
                                 if ((!empty($row['RangoInicio'])) && (!empty($row['RangoFin'])))
                         $Imprimir.="<td width='15%' align='center'>".$row['RangoInicio']."-".$row['RangoFin']."</td>";
                                 else
                         $Imprimir.="<td align='center'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td>
-                                   
+
 				    <td align='center'>".htmlentities($vector_lecturas[$pos])."</td>
 				    <td align='center'>".htmlentities($vector_inter[$pos])."</td>
 				    <td align='center'>".htmlentities($vector_obser[$pos])."</td>
 				</tr>";
                             $pos=$pos + 1;
 			}
-	
+
 	 }
-	
+
 	$Imprimir.="<tr>
 					<td>&nbsp;</td>
 					<td>&nbsp;</td>
 					<td>&nbsp;</td>
 					<td>&nbsp;</td>
-					<td>&nbsp;</td>			
+					<td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td colspan='6' align='center' >
@@ -249,14 +249,14 @@ switch ($opcion)
 						<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaA1(".$idsolicitud.",\"".$idarea."\",\"".$responsable."\", \"".htmlentities($valores_resultados)."\",\"".$codigos_resultados."\",\"".htmlentities($valores_lecturas)."\",\"".htmlentities($valores_inter)."\",\"".htmlentities($valores_obser)."\",\"".$codigos_examenes."\",\"".htmlentities($establecimiento)."\",\"".$sexo."\",\"".$idedad."\") ;'>
 						<input type='submit' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' />
 					</td>
-			    </tr></table>";	
+			    </tr></table>";
 		echo $Imprimir;
-		
+
    break;
-   
+
    case 3://GUARDANDO DATOS DE RESULTADOS Y MOSTANDO LISTA ACTUALIZADA PLANTILLA "A"
 		//Guardando Resultados
-		$idsolicitud=$_POST['idsolicitud']; 
+		$idsolicitud=$_POST['idsolicitud'];
 		$idarea=$_POST['idarea'];
 		$idrecepcion=$_POST['idrecepcion'];
 		$valores_resultados=$_POST['valores_resultados'];
@@ -267,14 +267,14 @@ switch ($opcion)
 		$codigos_examenes=$_POST['codigos_examenes'];
 		$tabuladores=$_POST['tabuladores'];
 		$responsable=$_POST['idempleado'];
-		
+
    	 	//**************************************************************************
 		  $vector_resultados=EXPLODE("/",$valores_resultados);
 		  $vector_codigos=EXPLODE("/",$codigos_resultados);
 		  $vector_lecturas=EXPLODE("/",$valores_lecturas);
 		  $vector_inter=EXPLODE("/",$valores_inter);
 		  $vector_obser=EXPLODE("/",$valores_obser);
-		  $vector_examenes=EXPLODE("/",$codigos_examenes); 
+		  $vector_examenes=EXPLODE("/",$codigos_examenes);
 		  $vector_tabuladores=EXPLODE("/",$tabuladores);
 		  $obj = new clsSolicitudesProcesadas;
 		  $tamano_vector=count($vector_resultados);
@@ -282,25 +282,25 @@ switch ($opcion)
 		  $pos=0;
 		  $ban=0;
 		  $ban1=1;
-		   
+
 	 if (($tamano_vector-1)>0){
 		for ($i=0; $i < $tamano_vector-1 ; $i++) //INSERTANDO ELEMENTOS
 		{
 			$consulta=$obj->valores_referencia($vector_examenes[$pos]);
 			$row = mysql_fetch_array($consulta);
-										
+
 			 if ($obj->InsertarResultadoPlantillaA1($vector_examenes[$pos],$idsolicitud,$vector_codigos[$pos],$vector_resultados[$pos],$vector_lecturas[$pos],$idrecepcion,$vector_inter[$pos],$vector_obser[$pos],$responsable,$usuario,$vector_tabuladores[$pos],$lugar)==true)
-			 { 
+			 {
 				if (($objdatos->CambiarEstadoDetalle($vector_codigos[$pos])==true)&&($objdatos->CambiarEstadoSolicitud($idsolicitud)==true)){
 					$ban1=0;
-							  
+
 				}
 			 }
 			 else{
 				 $ban=1;}
 					 $pos=$pos+1;
 			 }
-			
+
 		}
 
 		if($ban==0){
@@ -308,33 +308,33 @@ switch ($opcion)
 			{
 				echo ("Datos Guardados correctamente");
 			}
-			else{ 	
+			else{
 				echo ("Datos Guardados ");
 			}
 		}
 		else{
 		//	echo $ban ."-".$ban1;
 			echo "Los resultados no pueden ser guardados consulte al Administrador...";
-		}  
-				
+		}
+
 		//*************************************************************************
-	
-		
- 	
-	
+
+
+
+
 	break;
-	
-	case 4: //MOSTRAR PREVIAMENTE LOS RESULTADOS 
-                  $idsolicitud=$_POST['idsolicitud']; 
+
+	case 4: //MOSTRAR PREVIAMENTE LOS RESULTADOS
+                  $idsolicitud=$_POST['idsolicitud'];
 		  $idexamen=$_POST['idexamen'];
 		  $responsable=$_POST['idempleado'];
-                  
+
 		  $consulta=$objdatos->MostrarResultadoGenerales($idsolicitud,$idexamen);
 		  $row = mysql_fetch_array($consulta);
 		  $nombre=$row['NombreArea'];
-		  
+
 		  $Imprimir="
-		
+
 			<table width='90%' align='center' class='StormyWeatherFormTABLE'>
 				<tr>
 					<td align='center' colspan='6' class='CobaltButton'>
@@ -345,7 +345,7 @@ switch ($opcion)
 				<tr>
 					<td colspan='6' align='center'></td>
 				</tr>
-				
+
 				<tr>
 					<td style='font:bold'><strong>NEC:</strong></td>
 					<td style='font:bold'>".$row['IdNumeroExp']."</td>
@@ -356,13 +356,13 @@ switch ($opcion)
 					<td style='font:bold'><strong>Paciente:</strong></td>
 					<td style='font:bold'>".htmlentities($row['NombrePaciente'])."</td>
 				</tr>
-				<tr>		
+				<tr>
 					<td style='font:bold'><strong>Edad:</strong></td>
 					<td style='font:bold'>".$row['Edad']."</td>
 					<td style='font:bold'><strong>Sexo:</strong></td>
-					<td style='font:bold'>".$row['Sexo']."</td>					
+					<td style='font:bold'>".$row['Sexo']."</td>
 				</tr>
-				</tr>	
+				</tr>
 					<td style='font:bold'><strong>Procedencia:</strong></td>
 					<td style='font:bold'>".htmlentities($row['Procedencia'])."</td>
 					<td style='font:bold'><strong>Origen:</strong></td>
@@ -382,7 +382,7 @@ switch ($opcion)
 				<td colspan='6' align='center' >&nbsp;DETALLE DE RESULTADOS</td>
 				</tr>
 		</table>";
-			
+
 			$Imprimir.="
 					<table width='90%'  align='center' border='0' class='StormyWeatherFormTABLE'>
 						<tr class='CobaltButton'>
@@ -393,14 +393,14 @@ switch ($opcion)
 							<td align='center'>Lectura</td>
 							<td align='center'>Interpretaci&oacute;n</td>
 							<td align='center'>Observaci&oacute;n</td>
-							
+
 						</tr>";
-	
-    //mysql_free_result($consulta_empleado);            
+
+    //mysql_free_result($consulta_empleado);
 	//MOSTRAR DATOS FIJOS Y RESULTADOS DIGITADOS
 			$consulta2=$objdatos->MostrarDatosFijosPlantillaA($idexamen,$lugar);
 			$fila = mysql_fetch_array($consulta2);
-			
+
 			$Imprimir.="
 						<tr>
 							<td align='center' style='font:bold'><strong>".htmlentities($fila['NombreExamen'])."</strong></td>
@@ -410,15 +410,15 @@ switch ($opcion)
 							<td align='justify'>".htmlentities($lectura)."</td>
 							<td align='justify'>".htmlentities($interpretacion)."</td>
 							<td align='justify'>".htmlentities($observacion)."</td>
-						</tr>"; 
-			$Imprimir.="					
+						</tr>";
+			$Imprimir.="
 			<tr>
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
-				<td>&nbsp;</td>			
-			
+				<td>&nbsp;</td>
+
 			</tr>
 			<tr>
 				<td colspan='7' align='center' >
@@ -426,37 +426,37 @@ switch ($opcion)
 					<input type='submit' id='btnImprimir' value='Imprimir' Onclick='ImprimirA() ;' />
 					<input type='submit' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' />
 				</td>
-			</tr></table>		
+			</tr></table>
 		";
 		echo $Imprimir;
-		
+
 		mysql_free_result($consulta2);
 	break;
 	case 5://LLENANDO COMBO DE Examenes
 		$rslts='';
-		
+
 		$idarea=$_POST['idarea'];
 		//echo $IdSubEsp;
-		$dtExam=$objdatos-> ExamenesPorArea($idarea);	
-		
+		$dtExam=$objdatos-> ExamenesPorArea($idarea);
+
 		$rslts = '<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:250px">';
 		$rslts .='<option value="0">--Seleccione Examen--</option>';
-			
+
 		while ($rows =mysql_fetch_array($dtExam)){
 			$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 		}
-				
+
 		$rslts .= '</select>';
 		echo $rslts;
-		
-	
-   break;	
-   
+
+
+   break;
+
    case 6:
      $total=0;
 	 $pos=0;
-	echo $idsolicitud;	
-		
+	echo $idsolicitud;
+
 	//$total=$objdatos->ContarExamenes($idsolicitud,$idarea)
 	 // $consulta=$objdatos->DatosExamenes($idsolicitud,$idarea);
 	// while($row = mysql_fetch_array($consulta))
@@ -470,13 +470,13 @@ switch ($opcion)
 							// <td align='center'>Lectura</td>
 							// <td align='center'>Interpretaci&oacute;n</td>
 							// <td align='center'>Observaci&oacute;n</td>
-							
+
 						// </tr>
 						// <tr>
 							// <td width='30%' class='StormyWeatherDataTD'>".htmlentities($row['NombreExamen'])."</td>
 							// <td width='30%' class='StormyWeatherDataTD'>
 								// <input size='25' name='txtresultadosub[".$pos."]' type='text' id='txtresultado[".$pos."]'>
-								// <input name='oiddetalle[".$pos."]' type='hidden' id='oiddetalle[".$pos."]' value='".$row['IdDetalleSolicitud']."'> 
+								// <input name='oiddetalle[".$pos."]' type='hidden' id='oiddetalle[".$pos."]' value='".$row['IdDetalleSolicitud']."'>
 							// </td>
 							// <td width='30%' class='StormyWeatherDataTD'>".htmlentities($row['Unidades'])."</td>
 							// <td width='30%' class='StormyWeatherDataTD'>".$row['RangoInicio']."-".$row['RangoFin']."</td>
@@ -486,7 +486,7 @@ switch ($opcion)
 							// $pos=$pos + 1;
 	// }
 	break;
-    	
+
 }
 
 ?>

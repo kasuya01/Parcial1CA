@@ -122,7 +122,7 @@ function calcular_edad(fecha) {
     if (ano <= 99) {
         ano += 1900;
     }
-    
+
     //resto los aï¿½os de las dos fechas
     annios = hoy.getFullYear() - ano;
     edad = hoy.getFullYear() - ano - 1; //-1 porque no se si ha cumplido aï¿½os ya este aï¿½o
@@ -171,7 +171,7 @@ function calcular_edad(fecha) {
 
     if (hoy.getMonth() + 1 - mes < 0) {
         return edad + " a\u00f1os y " + meses + " meses y " + Minimo;
-      //       return edad;       
+      //       return edad;
     } //+ 1 porque los meses empiezan en 0
     if (hoy.getMonth() + 1 - mes > 0) {
         return (edad + 1) + " a\u00f1os y " + meses + " meses y " + Minimo;
@@ -192,13 +192,12 @@ function BuscarDatos() {
     idexpediente      = document.getElementById('txtidexpediente').value;
     fechacita         = document.getElementById('txtfechasolicitud').value;
     idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
-    VerificarExistencia(idexpediente, fechacita, idEstablecimiento);
+    VerificarExistencia(idexpediente, fechacita, idEstablecimiento, false);
 }
 
 //FUNCION PARA VERIFICAR SI EXISTEN  DATOS DE LA SOLICITUD
-function VerificarExistencia(idexpediente, fechacita, idEstablecimiento)
-{
-    if (DatosCompletos()) {
+function VerificarExistencia(idexpediente, fechacita, idEstablecimiento, omitir_verificacion) {
+    if (DatosCompletos() || omitir_verificacion) {
         //divResultado=document.getElementById('divResultado');
         ajax = objetoAjax();
         opcion = 2;
@@ -255,8 +254,7 @@ function LlenarEstablecimiento(IdTipoEstab)
 }
 
 //FUNCION PARA RECUPERAR LOS DATOS GENERALES DE LA SOLICITUD
-function MostrarDatosGenerales()
-{
+function MostrarDatosGenerales() {
     //valores de los text
     idexpediente = document.getElementById('txtidexpediente').value;
     fechacita = document.getElementById('txtfechasolicitud').value;
@@ -285,31 +283,71 @@ function MostrarDatosGenerales()
     }
 }
 
-function MostrarTodos()
-{
-    //valores de los text
+function MostrarTodos() {
     idexpediente      = document.getElementById('txtidexpediente').value;
     fechacita         = document.getElementById('txtfechasolicitud').value;
     idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
 
-    //instanciamos el objetoAjax
-    ajax = objetoAjax();
-    //usando del medoto POST
-    ajax.open("POST", "RecepcionSolicitudTodos.php", true);
-    //muy importante este encabezado ya que hacemos uso de un formulario
-    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    //enviando los valores
-    ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&idEstablecimiento=" + idEstablecimiento);
-    ajax.onreadystatechange = function() {
-        if (ajax.readyState == 4) {
-            if (ajax.status == 200) {
-                //mostrar los nuevos registros en esta capa
-                document.getElementById('divResultado').innerHTML = ajax.responseText;
-                //posicion=document.getElementById('topei').value;
-                //alert(ajax.responseText);
+    var parameters = {'opcion': 9};
+
+    parameters['idexpediente'] = idexpediente;
+    parameters['fechacita'] = fechacita;
+    parameters['idEstablecimiento'] = idEstablecimiento;
+
+    jQuery.ajax({
+        url: 'ctrRecepcionSolicitud.php',
+        type: 'post',
+        dataType: 'json',
+        async: true,
+        data: parameters,
+        success: function(data) {
+            if(data.status)
+                searchAllBuild(data);
+            else
+                alert('Error al procesar los registros...');
+        },
+        error: function(jqXHR, exception) {
+            if (jqXHR.status === 0) {
+                alert('Not connect.\n Verify Network.');
+            } else if (jqXHR.status == 404) {
+                alert('Requested page not found. [404]');
+            } else if (jqXHR.status == 500) {
+                alert('Internal Server Error [500].');
+            } else if (exception === 'parsererror') {
+                alert('Requested JSON parse failed.');
+            } else if (exception === 'timeout') {
+                alert('Time out error.');
+            } else if (exception === 'abort') {
+                alert('Ajax request aborted.');
+            } else {
+                alert('Uncaught Error.\n' + jqXHR.responseText);
             }
         }
-    }
+    });
+    //
+    // //valores de los text
+    // idexpediente      = document.getElementById('txtidexpediente').value;
+    // fechacita         = document.getElementById('txtfechasolicitud').value;
+    // idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
+    //
+    // //instanciamos el objetoAjax
+    // ajax = objetoAjax();
+    // //usando del medoto POST
+    // ajax.open("POST", "RecepcionSolicitudTodos.php", true);
+    // //muy importante este encabezado ya que hacemos uso de un formulario
+    // ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    // //enviando los valores
+    // ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&idEstablecimiento=" + idEstablecimiento);
+    // ajax.onreadystatechange = function() {
+    //     if (ajax.readyState == 4) {
+    //         if (ajax.status == 200) {
+    //             //mostrar los nuevos registros en esta capa
+    //             document.getElementById('divResultado').innerHTML = ajax.responseText;
+    //             //posicion=document.getElementById('topei').value;
+    //             //alert(ajax.responseText);
+    //         }
+    //     }
+    // }
 }
 
 
@@ -322,7 +360,7 @@ function calc_edad()
         fecnac1 = document.getElementById('suEdad[' + i + ']').value;
         fecnac2 = fecnac1.substring(0, 10);
         suEdades = calcular_edad(fecnac2);
-        // alert(suEdades); 
+        // alert(suEdades);
         document.getElementById('divsuedad[' + i + ']').innerHTML = suEdades;
     }
 }
@@ -353,7 +391,7 @@ function CambiarEstadoDetalleSolicitud(estado)
             if (ajax.status == 200)
             {
                 //mostrar los nuevos registros en esta capa
-                //document.getElementById('divCambioEstado').innerHTML = ajax.responseText;	
+                //document.getElementById('divCambioEstado').innerHTML = ajax.responseText;
                 alert(ajax.responseText);
             }
         }
@@ -538,12 +576,10 @@ function CambiarEstadoSolicitud(estado, idsolicitud, posicion)
 function DatosCompletos()
 {
     var resp = true;
-    if (document.getElementById('txtidexpediente').value == "")
-    {
+    if (document.getElementById('txtidexpediente').value == "") {
         resp = false;
     }
-    if (document.getElementById('txtfechasolicitud').value == "")
-    {
+    if (document.getElementById('txtfechasolicitud').value == "") {
         resp = false;
     }
     return resp;

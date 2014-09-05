@@ -28,31 +28,30 @@ $Programa     = $row[3];
             <td colspan="2" class="CobaltFieldCaptionTD" align="center"><h3><strong>Mantenimiento de Formularios</strong></h3>
             </td>
         </tr><tr>
-            <td class="StormyWeatherFieldCaptionTD">IdFormulario</td>
+            <td class="StormyWeatherFieldCaptionTD">Formulario</td>
             <td class="StormyWeatherDataTD"><input name="IdFormulario" id="IdFormulario" type="text" value="<?php echo $IdFormulario; ?>" disabled="disabled" /></td>
         </tr>
         <tr>
-            <td class="StormyWeatherFieldCaptionTD">Formulario</td>
+            <td class="StormyWeatherFieldCaptionTD">Programa de Salud</td>
             <td class="StormyWeatherDataTD"><input name="Formulario" id="Formulario" type="text" value="<?php echo htmlentities($Formulario); ?>" size="50" />
         </tr>
         <tr>
             <td class="StormyWeatherFieldCaptionTD">Programa</td>
-            <td class="StormyWeatherDataTD"><select id="cmbPrograma" name="cmbPrograma" size="1" >			 
+            <td class="StormyWeatherDataTD"><select id="cmbPrograma" name="cmbPrograma" size="1" >
                     <?php
                     $consulta = $obj->consultarProgramas($lugar);
                     while ($row = pg_fetch_array($consulta)) {
                         echo "<option value='" . $row['idprograma'] . "'>" . $row['nombreprograma'] . "</option>";
                     }
                     echo "<option value='" . $IdPrograma . "' selected='selected'>" . htmlentities($Programa) . "</option>";
-                    ?>		  
-                </select></td>	
+                    ?>
+                </select></td>
         </tr>
         <tr>
             <td class="StormyWeatherDataTD" colspan="2" align="right">
                 <input type="submit" name="btnActualizar" value="Actualizar" />
                 <input type="button" name="btnNuevo" id="btnNuevo" value="Nuevo" onClick="window.location.replace('MntProgramas.php')">
             </td>
-        </tr>	
+        </tr>
     </table>
 </form>
-

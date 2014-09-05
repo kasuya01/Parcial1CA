@@ -92,6 +92,21 @@ $area  = $_SESSION['Idarea'];
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td class="StormyWeatherFieldCaptionTD"> Modalidad de Contrato</td>
+                                    <td class="StormyWeatherDataTD">
+                                        <select id="cmbModalidad" name="cmbModalidad" size="1" >
+                                            <option value="0" >--Seleccione una modalidad--</option>
+                                            <?php
+                                            $objeareas = new clsLab_Empleados;
+                                            $consulta = $objeareas->consultarModalidad($lugar);
+                                            while ($row = pg_fetch_array($consulta)) {
+                                                echo "<option value='" . $row[0] . "'>" . $row[1] . "</option>";
+                                            }
+                                            ?>        
+                                        </select>        
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td class="StormyWeatherFieldCaptionTD">Nombre del Empleado</td>
                                     <td class="StormyWeatherDataTD"><input type="text" id="txtnombre" name="txtnombre" size="40" /></td>
                                 </tr>

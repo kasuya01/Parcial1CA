@@ -18,7 +18,7 @@ $establecimiento=$_GET['var5'];
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <title>Resultados de Examenes de Laboratorio </title>
-<script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script> 
+<script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script>
 <!--<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">-->
 
@@ -30,7 +30,7 @@ function calc_edad()
 //alert (fecnac2);
   var suEdades=calcular_edad(fecnac2);
  // alert(suEdades);
-       
+
   document.getElementById("divsuedad").innerHTML=suEdades;
 }
 </script>
@@ -51,7 +51,7 @@ function calc_edad()
 </head>
 
 <body>
-<?php 
+<?php
 
         $Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
         $row_estab = mysql_fetch_array($Consulta_Estab);
@@ -65,10 +65,10 @@ function calc_edad()
 	$row_empleado = mysql_fetch_array($datos_empleado);
         $FechaRes=$obj->ObtenerFechaResultado($idsolicitud,$idexamen,$lugar);
 	$row_fecha=mysql_fetch_array($FechaRes);
-	
+
         //echo $IdSolicitud."-".$IdExamen."-".$Idresultado."-".$IdArea;
 ?>
-	
+
 	<table width='100%' align='center' border="0" class='StormyWeatherFormTABLE' cellspacing="0">
 		<tr>
 			<td colspan="1" align="left" width="20%"><img id="Image1" style="WIDTH: 80px; HEIGHT: 55px" height="86" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
@@ -77,7 +77,7 @@ function calc_edad()
 				<p><strong><?php echo $row_estab['Nombre'] ?></strong></p>
 				<p><strong>ÁREA DE <?php echo htmlentities($row_area['NombreArea'])?> </strong></p></span
 			</td>
-                        <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.gif" width="210" name="Image3"></td>
+                        <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
 		</tr>
                 <tr>
                     <td colspan="6" align='center' >&nbsp;&nbsp;&nbsp;</td>
@@ -89,7 +89,7 @@ function calc_edad()
 			<td colspan='2' class="Estilo6"><?php echo $row_fecha['FechaResultado']?></td>
                             <input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row_generales['FechaNacimiento']?>>
 		</tr>
-		
+
 		<tr>
 			<td colspan='1' class="Estilo5" style='font:bold'><strong>NEC</strong></td>
 			<td colspan='5' class="Estilo7" ><?php echo $row_generales['IdNumeroExp']?></td>
@@ -99,7 +99,7 @@ function calc_edad()
 			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_generales['NombrePaciente'])?></td>
 		</tr>
 		<tr>
-			
+
 			<td colspan='1' class="Estilo5" style='font:bold'><strong>Edad:</strong></td>
 			<td colspan='2' class="Estilo6">
                             <div id="divsuedad">
@@ -111,16 +111,16 @@ function calc_edad()
 			<td colspan='1' class="Estilo5" style='font:bold'><strong>Sexo:</strong></td>
 			<td colspan='2' class="Estilo6"><?php echo $row_generales['Sexo']?></td>
 		</tr>
-		<tr>	
+		<tr>
 			<td colspan='1' class="Estilo5" style='font:bold'><strong>Procedencia:</strong></td>
 			<td colspan='2' class="Estilo6" style='font:bold'><?php echo htmlentities($row_generales['Procedencia'])?></td>
 			<td colspan='1' class="Estilo5" style='font:bold'><strong>Servicio:</strong></td>
 			<td colspan='2' class="Estilo6" style='font:bold' colspan='2'><?php echo $row_generales['Origen']?></td>
-		</tr>	
+		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5" style='font:bold'><strong>Examen Realizado:</strong></td>
 			<td colspan='5' class="Estilo6" style='font:bold'><?php echo htmlentities($row_area['NombreExamen'])?></td>
-		</tr>				 
+		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5" style='font:bold'><strong>Validado Por:</strong></td>
 			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_empleado['NombreEmpleado'])?></td>
@@ -164,5 +164,4 @@ function calc_edad()
 
                     </tr>
                  </table>
-             </div>		
-	
+             </div>
