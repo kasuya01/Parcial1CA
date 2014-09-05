@@ -45,10 +45,10 @@ include('clsLab_Formularios.php');
                                         <h3><strong>Mantenimiento de Formularios por Programa</strong></h3>
                                     </td>
                                 </tr>
-                                <tr>
+                                <!--tr>
                                     <td class="StormyWeatherFieldCaptionTD">IdFormulario</td>
                                     <td class="StormyWeatherDataTD"><input type="text" name="txtIdForm" id="txtIdForm" disabled="disabled" /></td>
-                                </tr>
+                                </tr-->
                                 <tr>
                                     <td class="StormyWeatherFieldCaptionTD">Nombre del Formulario </td>
                                     <td class="StormyWeatherDataTD"><input type="text" name="txtForm" id="txtForm" size="50" /></td>

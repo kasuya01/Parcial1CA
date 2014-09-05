@@ -22,7 +22,7 @@ $idedad=$_GET['var12'];
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <title>Resultados de Examenes de Laboratorio </title>
-<script language="JavaScript" type="text/javascript" src="../SolicitudesPendientes/ajax_SolicitudesProcesadas.js"></script> 
+<script language="JavaScript" type="text/javascript" src="../SolicitudesPendientes/ajax_SolicitudesProcesadas.js"></script>
 <!--<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">-->
 
@@ -34,7 +34,7 @@ function calc_edad()
 //alert (fecnac2);
   var suEdades=calcular_edad(fecnac2);
  // alert(suEdades);
-       
+
   document.getElementById("divsuedad").innerHTML=suEdades;
 }
 
@@ -60,7 +60,7 @@ function calc_edad()
 </head>
 
 <body>
-<?php 
+<?php
 include_once("clsPlantillaE.php");
 //creando los objetos de las clases
 $obj = new clsPlantillaE;
@@ -71,9 +71,9 @@ $CodEstandar= mysql_fetch_array($ConEstandar);
 $IdEstandar=$CodEstandar[0];
 $FechaRes=$obj->ObtenerFechaResultado($idsolicitud,$idexamen,$lugar);
 $row_fecha=mysql_fetch_array($FechaRes);
-//echo $row_fecha['FechaResultado'];	
-if ($IdEstandar=="H15"){ 
-  
+//echo $row_fecha['FechaResultado'];
+if ($IdEstandar=="H15"){
+
 	$consulta_datos=$obj->LeerDatos($idexamen);
 	$datos_generales=$obj->MostrarDatosGenerales($idsolicitud,$lugar);
 	$row_generales= mysql_fetch_array($datos_generales);
@@ -81,7 +81,7 @@ if ($IdEstandar=="H15"){
 	$vector_idprocesos=EXPLODE("/",$codigos);
 	$vector_respuesta=EXPLODE("/",$valores);
 	$vector_comentarios=EXPLODE("/",$comentarios);?>
-			
+
 	<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
 		<tr>
 			<td colspan="1" align="left" width="20%"><img id="Image1" style="WIDTH: 80px; HEIGHT: 55px" height="86" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
@@ -90,12 +90,12 @@ if ($IdEstandar=="H15"){
                                 <p><strong><?php  echo                        $row_estab['Nombre'] ?></strong></p>
 				<p><strong>ÁREA DE <?php echo htmlentities($row_area['NombreArea'])?> </strong></p>
 			</td>
-                        <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.gif" width="210" name="Image3"></td>
+                        <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
 		</tr>
                  <tr>
 		<td colspan='6'>&nbsp;</td>
             </tr>
-		<tr>	
+		<tr>
 			<td colspan='1' class="Estilo5">Establecimiento Solicitante:</td>
 			<td colspan='2' class="Estilo6"><?php echo $establecimiento?></td>
 			<td colspan='1' class="Estilo5">Fecha Resultado:</td>
@@ -122,22 +122,22 @@ if ($IdEstandar=="H15"){
 			<td colspan='1' class="Estilo5"><strong>Sexo:</strong></td>
 			<td colspan='2' class="Estilo6"><?php echo $row_generales['Sexo']?></td>
 		</tr>
-               
+
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>
 			<td colspan='5' class="Estilo6"><?php echo $responsable?></td>
 		</tr>
-                 <tr>	
+                 <tr>
 			<td colspan='1' class="Estilo5"><strong>Procedencia:</strong></td>
 			<td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['Procedencia'])?></td>
-			
+
 			<td colspan='1' class="Estilo5"><strong>Servicio:</strong></td>
 			<td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['Origen'])?></td>
 		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
 			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['NombreExamen'])?></td>
-		</tr>				 
+		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Observacion:<strong></td>
 			<td colspan='5' class="Estilo6"><?php echo htmlentities($observacion)?></td>
@@ -145,7 +145,7 @@ if ($IdEstandar=="H15"){
 			<?php mysql_free_result($consulta_datos);
 		          mysql_free_result($datos_generales);
 				$consulta=$obj->LeerProcesoExamen($idexamen,$lugar,$sexo,$idedad);
-			?>	
+			?>
 		<tr>
 			<td colspan="6" align="center"></td>
 		</tr>
@@ -165,32 +165,32 @@ if ($IdEstandar=="H15"){
 					<td class="Estilo5" align='center'>
 						<input name='oidprueba[<?php $pos ?>]' type='hidden' id='oidprueba[<?php $pos ?>]' value='<?php $row['idprocedimientoporexamen'] ?>'><?php echo htmlentities($vector_respuesta[$pos])?></td>
 					<td class="Estilo5"><?php echo $row['unidades']?></td>
-					<td class="Estilo5" align='center'><?php echo htmlentities($vector_comentarios[$pos])?></td>			
+					<td class="Estilo5" align='center'><?php echo htmlentities($vector_comentarios[$pos])?></td>
 					<td class="Estilo5"><?php echo htmlentities($row['unidades'])?></td>
 				</tr>
-				<?php $pos=$pos + 1;		 
+				<?php $pos=$pos + 1;
 				}
 					mysql_free_result($consulta);?>
 			</table>
 		</tr>
 		<tr>
 			<td colspan="7" align="center" >
-				<div id="boton1">	
+				<div id="boton1">
 					<input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
 					<input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar() ;"/>
 				</div>
 			</td>
-		</tr>		
+		</tr>
 		</table>
-		
-<?php 	
-}else{		
+
+<?php
+}else{
 	$consulta_datos=$obj->LeerDatos($idexamen);
 	$datos_generales=$obj->MostrarDatosGenerales($idsolicitud,$lugar);
 	//$datos_empleado=$obj->DatosEmpleado($idempleado);
 	$row_generales= mysql_fetch_array($datos_generales);
 	$row_area = mysql_fetch_array($consulta_datos);
-        
+
         $Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
         $row_estab = mysql_fetch_array($Consulta_Estab);
 	//$row_empleado = mysql_fetch_array($datos_empleado);
@@ -206,7 +206,7 @@ if ($IdEstandar=="H15"){
                                 <p><strong><?php echo $row_estab['Nombre'] ?></strong></p>
 				<p><strong>ÁREA DE <?php echo htmlentities($row_area['NombreArea'])?> </strong></p>
 			</td>
-                        <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.gif" width="210" name="Image3"></td>
+                        <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
 		</tr>
                  <tr>
                         <td colspan='6'>&nbsp;</td>
@@ -238,7 +238,7 @@ if ($IdEstandar=="H15"){
 			<td colspan='1' class="Estilo5"><strong>Sexo:</strong></td>
 			<td colspan='2' class="Estilo6"><?php echo $row_generales['Sexo']?></td>
 		</tr>
-		<tr>	
+		<tr>
 			<td colspan='1' class="Estilo5"><strong>Procedencia:</strong></td>
 			<td colspan='2' class="Estilo6"><?php echo $row_generales['Procedencia']?></td>
 			<td colspan='1' class="Estilo5"><strong>Servicio:</strong></td>
@@ -247,7 +247,7 @@ if ($IdEstandar=="H15"){
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
 			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['NombreExamen'])?></td>
-		</tr>				 
+		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>
 			<td colspan='5' class="Estilo6"><?php echo $responsable?></td>
@@ -259,14 +259,14 @@ if ($IdEstandar=="H15"){
                 <tr>
 			<td colspan='6' align="center"></td>
 		</tr>
-		<tr> 
+		<tr>
 			<?php mysql_free_result($consulta_datos);
 				  mysql_free_result($datos_generales);
 				  $consulta=$obj->LeerProcesoExamen($idexamen,$lugar,$sexo,$idedad);
 	        ?>
-			
+
                 <tr><td colspan='6'>
-                        
+
                     <table width='90%' border='0' align='left' cellspacing="0">
 				<tr >
                                         <td class="Estilo5" width='25%' align='left'><strong> Prueba </strong> </td>
@@ -281,12 +281,12 @@ if ($IdEstandar=="H15"){
 					<td class="Estilo5" width='25%'align='left'><?php echo htmlentities($row['nombreprocedimiento'])?></td>
 					<td class="Estilo5" width='30%'align='center'><input name='oidprueba[<?php $pos?>]' type='hidden' id='oidprueba[<?php $pos?>]' value='<?php $row['idprocedimientoporexamen']?>'><?php echo htmlentities($vector_respuesta[$pos])?></td>
 					<td class="Estilo5" width='20%'align='center'><?php echo htmlentities($row['unidades'])?></td>
-                                        
-					<td class="Estilo5" align='center' width='30%'><?php 
+
+					<td class="Estilo5" align='center' width='30%'><?php
                                                      if((!empty($row['rangoinicio'])) AND (!empty($row['rangoinicio'])))
-                                                           echo $row['rangoinicio']."-".$row['rangofin'];?></td>	
+                                                           echo $row['rangoinicio']."-".$row['rangofin'];?></td>
 				</tr>
-					<?php  $pos=$pos + 1;		 
+					<?php  $pos=$pos + 1;
 					}
 					mysql_free_result($consulta);?>
                         </table>
@@ -300,9 +300,8 @@ if ($IdEstandar=="H15"){
 			<input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
 			<input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar() ;"/>
                     </td>
-		</tr>		
+		</tr>
             </table>
         </div>
 
 <?php }?>
-

@@ -1,1 +1,2 @@
-<link href="/package/bootstrap-3.2.0-dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="<?php echo $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST']; ?>/Laboratorio/public/css/corelayout.css" rel="stylesheet">
+<link href="<?php echo $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST']; ?>/Laboratorio/public/package/bootstrap-3.2.0-dist/css/bootstrap.min.css" rel="stylesheet">

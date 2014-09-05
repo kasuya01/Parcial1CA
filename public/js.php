@@ -1,1 +1,2 @@
-<script src="./package/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
+<script src="<?php echo $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST']; ?>/Laboratorio/public/js/jquery.min.js"></script>
+<script src="<?php echo $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST']; ?>/Laboratorio/public/package/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
