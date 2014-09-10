@@ -5,18 +5,19 @@ $usuario=$_SESSION['Correlativo'];
 $area=$_SESSION['Idarea'];
 //consulta los datos por su id
 $idproce=$_POST['idproce'];
-//echo $idproce;
+ $idproce;
 $obj = new clsLab_Procedimientos;
+
 
 $consulta=$obj->consultarid($idproce,$lugar);
 $row = pg_fetch_array($consulta);
 
 //valores de las consultas
-$idarea=$row['id'];
-$nombrearea=$row['nombrearea'];
-$idexamen=$row['id'];
-$nombreexamen=$row['nombreexamen'];
-$proce=$row['nombreprocedimiento'];
+$idarea=$row[0];
+$nombrearea=$row[1];
+$idexamen=$row[2];
+$nombreexamen=$row[4];
+$proce=$row[5];
 $unidades=$row['unidades'];
 $rangoini=$row['rangoinicio'];
 $rangofin=$row['rangofin'];
@@ -27,8 +28,8 @@ $Fechaini = $anio . "/" . $mes . "/" . $dia;
 $Fechafin=$row['fechafin'];
 list($anio, $mes, $dia) = split('[/.-]', $Fechafin);
 $Fechafin = $anio . "/" . $mes . "/" . $dia;
-$idsexo=$row['id'];
-$nombresexo=$row['abreviatura'];
+$idsexo=$row[11];
+$nombresexo=$row[12];
 $idedad=$row['id'];
 $rangoedad=$row['nombre'];
 //muestra los datos consultados en los campos del formulario
@@ -52,10 +53,13 @@ $rangoedad=$row['nombre'];
 			include('../Lab_Areas/clsLab_Areas.php');
 			$objeareas=new clsLab_Areas;
 			$consulta= $objeareas->consultaractivas();
-			while($row = pg_fetch_array($consulta)){
-			echo "<option value='" . $row['id']. "'>" .htmlentities($row['nombrearea']) . "</option>";
+			
+                        
+                        while($row = pg_fetch_array($consulta)){
+			 "<option value='" . $row[1]. "'>" .htmlentities($row[2]) . "</option>";
 			}
 			echo "<option value='" . $idarea . "' selected='selected'>" .htmlentities($nombrearea). "</option>";
+                        
 			?>		  
             		</select>		  
 		</td>
@@ -69,7 +73,7 @@ $rangoedad=$row['nombre'];
 				$consultaex = $obj->ExamenesPorArea($idarea);
 				while($row = pg_fetch_array($consultaex))
 				{
-					echo "<option value='" . $row['id']. "'>" . $row['nombreexamen'] . "</option>";
+					echo "<option value='" . $row['id']. "'>" . $row['nombre_examen'] . "</option>";
 				}						            	
 				echo "<option value='" . $idexamen . "' selected='selected'>" .$nombreexamen. "</option>";
 			?>	
@@ -84,7 +88,7 @@ $rangoedad=$row['nombre'];
                     <?php
                             $consultaS= $obj->consultarsexo();
                             while($row =pg_fetch_array($consultaS)){
-                                 echo "<option value='" . $row[0]. "'>". $row[1] . "</option>";
+                                 echo "<option value='" . $row[0]. "'>". $row['nombre'] . "</option>";
 
                             }
 

@@ -54,7 +54,7 @@ switch ($opcion)
 		      <tr>
 			   <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
 			 <!--  <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
-			   <td class='CobaltFieldCaptionTD'> IdCantidad</td>
+			  <!-- <td class='CobaltFieldCaptionTD'> IdCantidad</td> -->
 			   <td class='CobaltFieldCaptionTD'> Cantidad Tincion </td>	   
 		      </tr>";
 			while($row = pg_fetch_array($consulta)){
@@ -65,7 +65,7 @@ switch ($opcion)
 			  <!-- <td aling ='center'> 
 				<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 				onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
-			    <td> $row[0] </td>
+			   <!-- <td> $row[0] </td> -->
 			    <td>".htmlentities($row[1])."</td>
 		       </tr>";
 		        }
@@ -124,7 +124,7 @@ switch ($opcion)
 			   <tr>
 			   <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
 			 <!--  <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
-			   <td class='CobaltFieldCaptionTD'> IdCantidad</td>
+			  <!-- <td class='CobaltFieldCaptionTD'> IdCantidad</td> -->
 			   <td class='CobaltFieldCaptionTD'> Cantidad Tincion </td>	   
 		      </tr>";
 
@@ -136,7 +136,7 @@ switch ($opcion)
 					<!--<td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 					onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
-					<td> $row[0] </td>
+					<!-- <td> $row[0] </td> -->
 					<td>".htmlentities($row[1])."</td>
 					</tr>";
 		}

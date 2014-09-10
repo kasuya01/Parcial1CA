@@ -17,11 +17,15 @@ class clsLab_Procedimientos
 	   $con = new ConexionBD;
 	   if($con->conectar()==true) 
 	   {
-	   $query ="INSERT INTO lab_procedimientosporexamen
+	 $query =/*"INSERT INTO lab_procedimientosporexamen
                     (nombreprocedimiento,idarea,idexamen,unidades,rangoinicio,rangofin,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,fechaini,fechafin,idsexo,idrangoedad) 
-                    VALUES('$proce','$idarea','$idexamen','$unidades',$rangoini,$rangofin,$usuario,NOW(),$usuario,NOW(),$lugar,'$Fechaini','$Fechafin',$sexo,$redad)";
-           //echo $query; 
+                    VALUES('$proce','$idarea','$idexamen','$unidades',$rangoini,$rangofin,$usuario,NOW(),$usuario,NOW(),$lugar,'$Fechaini','$Fechafin',$sexo,$redad)";*/
+           
+                "INSERT INTO lab_procedimientosporexamen
+                    (nombreprocedimiento,id_conf_examen_estab,unidades,rangoinicio,rangofin,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,fechaini,fechafin,idsexo,idrangoedad) 
+                    VALUES('$proce','$idexamen','$unidades',$rangoini,$rangofin,$usuario,NOW(),$usuario,NOW(),$lugar,'$Fechaini','$Fechafin',$sexo,$redad)";
             $result = @pg_query($query);
+            
 	     if (!$result)
 	       return false;
 	     else
@@ -35,11 +39,15 @@ class clsLab_Procedimientos
 	$con = new ConexionBD;
 	if($con->conectar()==true) 
 	{
-	    $query = "UPDATE lab_procedimientosporexamen SET nombreprocedimiento='$proce',idexamen='$idexamen', idarea='$idarea',
+	 $query =/* "UPDATE lab_procedimientosporexamen SET nombreprocedimiento='$proce',idexamen='$idexamen', idarea='$idarea',
+		 unidades='$unidades', rangoinicio=$rangoini , rangofin=$rangofin , idusuariomod=$usuario ,fechahoramod=NOW(),
+		 fechaini='$Fechaini', fechafin='$Fechafin', idsexo=$sexo, idrangoedad=$redad 
+		 WHERE lab_procedimientosporexamen.id=$idproce AND idestablecimiento=$lugar";*/
+                  
+	"UPDATE lab_procedimientosporexamen SET nombreprocedimiento='$proce', id_conf_examen_estab='$idexamen',
 		 unidades='$unidades', rangoinicio=$rangoini , rangofin=$rangofin , idusuariomod=$usuario ,fechahoramod=NOW(),
 		 fechaini='$Fechaini', fechafin='$Fechafin', idsexo=$sexo, idrangoedad=$redad 
 		 WHERE lab_procedimientosporexamen.id=$idproce AND idestablecimiento=$lugar";
-	
 	     $result = pg_query($query);
              
              //  echo "SIAP   ".$query;
@@ -83,19 +91,6 @@ class clsLab_Procedimientos
           }
     }
     
-    /* function consultarexamen()
-   {
-         $con = new ConexionBD;
-         if($con->conectar()==true)
-         {
-           $query = "select id,nombreexamen from lab_examenes";
-           $result = pg_query($query);
-           if (!$result)
-             return false;
-           else
-             return $result;
-          }
-    }*/
 
        function RangosEdades(){
          $con = new ConexionBD;
@@ -117,19 +112,19 @@ class clsLab_Procedimientos
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-        $query = "SELECT lab_examenes.idexamen,nombreexamen,lab_procedimientosporexamen.id,
-	nombreprocedimiento,unidades,rangoinicio,rangofin,
-        (lab_procedimientosporexamen.fechaini,'%d/%m/%Y')AS fechaini,
-	(lab_procedimientosporexamen.fechafin,'%d/%m/%Y')AS fechafin 
-        FROM lab_procedimientosporexamen 
-	INNER JOIN lab_examenes  ON lab_procedimientosporexamen.idexamen=lab_examenes.id
-	INNER JOIN lab_examenesxestablecimiento ON lab_examenes.id= lab_examenesxestablecimiento.idexamen
-        INNER JOIN lab_areasxestablecimiento ON lab_areasxestablecimiento.id=lab_procedimientosporexamen.idarea
-        INNER JOIN ctl_sexo ON lab_procedimientosporexamen.idsexo = ctl_sexo.id
-        INNER JOIN ctl_rango_edad ON lab_procedimientosporexamen.idrangoedad = ctl_rango_edad.id
-	WHERE lab_examenesxestablecimiento.condicion='H' AND lab_areasxestablecimiento.condicion='H' 
-        AND lab_procedimientosporexamen.idestablecimiento=$lugar 
-	ORDER BY lab_examenes.id";
+        $query = "select lppe.id,mnt4.id, lcee.nombre_examen, 
+                            lppe.nombreprocedimiento, unidades,rangoinicio,rangofin, 
+                            (lppe.fechaini) AS fechaini, (lppe.fechafin)AS fechafin, 
+                            cex.id,cex.abreviatura,cre.id,cre.nombre,lppe.idsexo
+                            from mnt_area_examen_establecimiento mnt4
+                            join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen)
+                            join lab_procedimientosporexamen lppe on (lppe.id_conf_examen_estab=lcee.id)
+                            left JOIN ctl_sexo cex ON lppe.idsexo = cex.id 
+                            left JOIN ctl_rango_edad  cre ON lppe.idrangoedad = cre.id 
+                            where id_establecimiento=$lugar
+                            ORDER BY mnt4.id";
+        
+       
        // echo $query;
 	$result = pg_query($query);
 	 if (!$result)
@@ -145,20 +140,21 @@ class clsLab_Procedimientos
 	   $con = new ConexionBD;
 	   if($con->conectar()==true)
 	   {
-	     $query = "SELECT lab_procedimientosporexamen.id,lab_examenes.id,nombreexamen,lab_areas.id,nombrearea,
-	     nombreprocedimiento ,unidades,rangoinicio,rangofin,
-             (lab_procedimientosporexamen.fechaini)AS fechaini,
-             (lab_procedimientosporexamen.fechafin)AS fechafin,ctl_sexo.id,ctl_sexo.abreviatura,
-             ctl_rango_edad.id,ctl_rango_edad.nombre 
-	     FROM lab_procedimientosporexamen 
-	     INNER JOIN lab_examenes ON lab_procedimientosporexamen.idexamen=lab_examenes.id
-	     INNER JOIN lab_areas ON lab_procedimientosporexamen.idarea=lab_areas.id
-             INNER JOIN ctl_sexo ON lab_procedimientosporexamen.idsexo = ctl_sexo.id
-             INNER JOIN ctl_rango_edad ON lab_procedimientosporexamen.idrangoedad = ctl_rango_edad.id	
-	     WHERE lab_procedimientosporexamen.id=$idproce AND idestablecimiento=$lugar
-	     ORDER BY lab_examenes.id";
-		
-	     $result = @pg_query($query);
+	 $query = "select casd.id,casd.nombrearea,lcee.id,
+                mnt4.id,
+             lcee.nombre_examen,
+                lppe.nombreprocedimiento,
+    unidades,rangoinicio,rangofin,
+    (lppe.fechaini) AS fechaini, (lppe.fechafin)AS fechafin, cex.id,cex.abreviatura,cre.id,cre.nombre,lppe.idsexo 
+    from ctl_area_servicio_diagnostico casd
+     join mnt_area_examen_establecimiento mnt4 on   mnt4.id_area_servicio_diagnostico=casd.id
+     join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen) 
+     join lab_procedimientosporexamen lppe on (lppe.id_conf_examen_estab=lcee.id) 
+     left JOIN ctl_sexo cex ON lppe.idsexo = cex.id 
+     left JOIN ctl_rango_edad cre ON lppe.idrangoedad = cre.id 
+     where lppe.id=$idproce AND idestablecimiento=$lugar ORDER BY mnt4.id";
+ 
+         $result = @pg_query($query);
 	     if (!$result)
 	       return false;
 	     else
@@ -172,24 +168,18 @@ class clsLab_Procedimientos
 		$con = new ConexionBD;
 	    //usamos el metodo conectar para realizar la conexion
 	    if($con->conectar()==true){
-	    /* $query = "SELECT lab_examenes.IdExamen,lab_examenes.NombreExamen 
-                       FROM lab_examenes 
-                       INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen= lab_examenesxestablecimiento.IdExamen
-                       WHERE lab_examenes.IdArea='$idarea'
-                       AND lab_examenesxestablecimiento.IdPlantilla='E' AND lab_examenesxestablecimiento.Condicion='H' 
-                       AND lab_examenesxestablecimiento.IdEstablecimiento=$lugar
-                       ORDER BY NombreExamen";
-		 $result = @pg_query($query);*/
-                
-
-               //pregutar a que equivale "E" de lab_examenesxestablecimiento.idplantilla='E'
-                 $query = "SELECT lab_examenes.id,lab_examenes.nombreexamen 
-                       FROM lab_examenes 
-                       INNER JOIN lab_examenesxestablecimiento ON lab_examenes.id= lab_examenesxestablecimiento.idexamen
-                       WHERE lab_examenes.idarea='$idarea'
-                       AND lab_examenesxestablecimiento.idplantilla=5 AND lab_examenesxestablecimiento.condicion='H' 
-                       AND lab_examenesxestablecimiento.idestablecimiento=$lugar
-                       ORDER BY nombreexamen";
+	   
+              $query = 
+   "SELECT lcee.id,lcee.nombre_examen 
+                    FROM mnt_area_examen_establecimiento maees
+                    INNER JOIN lab_conf_examen_estab lcee ON maees.id= lcee.idexamen 
+                    WHERE maees.id_area_servicio_diagnostico=$idarea
+                    AND lcee.condicion='H' 
+                    AND maees.id_establecimiento=$lugar
+                    ORDER BY lcee.idexamen";
+           
+        
+                       
 		 $result = @pg_query($query);
 		 if (!$result)
 		   return false;
@@ -204,13 +194,23 @@ class clsLab_Procedimientos
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = "SELECT * FROM lab_procedimientosporexamen 
-                       INNER JOIN lab_examenes ON lab_procedimientosporexamen.idexamen=lab_examenes.id
-                       INNER JOIN lab_examenesxestablecimiento ON lab_examenes.id= lab_examenesxestablecimiento.idexamen 
-                       INNER JOIN lab_areas ON lab_examenes.idarea=lab_areas.id
-                       INNER JOIN lab_areasxestablecimiento ON lab_areas.id=lab_areasxestablecimiento.idarea
-                       WHERE  lab_examenesxestablecimiento.condicion='H' AND lab_areasxestablecimiento.condicion='H' 
-                       AND lab_examenesxestablecimiento.idplantilla=5 AND lab_areasxestablecimiento.idestablecimiento=$lugar";
+$query =    "SELECT lcee.id,lcee.nombre_examen, 
+                            lppe.nombreprocedimiento, 
+                            lppe.unidades,lppe.rangoinicio, 
+                            lppe.rangofin,(lppe.fechaini)AS fechaini, 
+                            (lppe.fechafin)AS fechafin,cex.abreviatura,cre.nombre, lppe.id 
+                            from ctl_area_servicio_diagnostico casd 
+                            join mnt_area_examen_establecimiento mnt4 on mnt4.id_area_servicio_diagnostico=casd.id 
+                            join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen) 
+                            join lab_procedimientosporexamen lppe on (lppe.id_conf_examen_estab=lcee.id) 
+                            left JOIN ctl_sexo cex ON lppe.idsexo = cex.id 
+                            left JOIN ctl_rango_edad cre ON lppe.idrangoedad = cre.id 
+                            WHERE lcee.condicion='H' 
+                                    AND lcee.condicion='H' AND lcee.idplantilla=5
+                                    AND lppe.idestablecimiento=$lugar";
+                           
+
+                                        
             $numreg = pg_num_rows(pg_query($query));
             if (!$numreg )
                return false;
@@ -239,55 +239,21 @@ class clsLab_Procedimientos
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	    /* $query = " SELECT IdProcedimientoporexamen,lab_examenes.IdExamen,lab_examenes.NombreExamen,
-                        lab_procedimientosporexamen.nombreprocedimiento,
-                        lab_procedimientosporexamen.unidades,lab_procedimientosporexamen.rangoinicio,
-                        lab_procedimientosporexamen.rangofin,DATE_FORMAT(lab_procedimientosporexamen.FechaIni,'%d/%m/%Y')AS FechaIni,
-                        DATE_FORMAT(lab_procedimientosporexamen.FechaFin,'%d/%m/%Y')AS FechaFin,mnt_sexo.sexovn,mnt_rangoedad.nombregrupoedad  
-                        FROM lab_procedimientosporexamen 
-                        INNER JOIN lab_examenes ON lab_procedimientosporexamen.IdExamen=lab_examenes.IdExamen 
-                        INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
-                        INNER JOIN lab_areas ON lab_examenes.IdArea=lab_areas.IdArea
-                        INNER JOIN lab_areasxestablecimiento ON lab_areas.IdArea=lab_areasxestablecimiento.IdArea
-                        INNER JOIN mnt_sexo ON lab_procedimientosporexamen.idsexo = mnt_sexo.idsexo
-                        INNER JOIN mnt_rangoedad ON lab_procedimientosporexamen.idedad = mnt_rangoedad.idedad
-                        WHERE lab_examenesxestablecimiento.Condicion='H' AND lab_areasxestablecimiento.Condicion='H' 
-                        AND lab_examenesxestablecimiento.Idplantilla='E'
-                        AND lab_procedimientosporexamen.IdEstablecimiento=$lugar
-                        ORDER BY lab_examenes.IdExamen LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-            //echo $query;*/
-               
-         $query = " SELECT lab_procedimientosporexamen.id,lab_examenes.nombreexamen,
-                        lab_procedimientosporexamen.nombreprocedimiento,
-                        lab_procedimientosporexamen.unidades,lab_procedimientosporexamen.rangoinicio,
-                        lab_procedimientosporexamen.rangofin,(lab_procedimientosporexamen.fechaini)AS fechaini,
-                        (lab_procedimientosporexamen.fechafin)AS fechafin,ctl_sexo.abreviatura,ctl_rango_edad.nombre 
-                        FROM lab_procedimientosporexamen  
-                        INNER JOIN lab_examenes ON lab_procedimientosporexamen.idexamen=lab_examenes.id 
-                        INNER JOIN lab_examenesxestablecimiento ON lab_examenes.id=lab_examenesxestablecimiento.idexamen
-                        INNER JOIN lab_areas ON lab_examenes.idarea=lab_areas.id
-                        INNER JOIN lab_areasxestablecimiento ON lab_areas.id=lab_areasxestablecimiento.idarea
-                        INNER JOIN ctl_sexo ON lab_procedimientosporexamen.idsexo = ctl_sexo.id
-                        INNER JOIN ctl_rango_edad ON lab_procedimientosporexamen.idrangoedad = ctl_rango_edad.id
-                        WHERE lab_examenesxestablecimiento.condicion='H' AND lab_areasxestablecimiento.condicion='H' 
-                        AND lab_examenesxestablecimiento.idplantilla=5
-                        AND lab_procedimientosporexamen.idestablecimiento=$lugar
-                        ORDER BY lab_examenes.id LIMIT $RegistrosAMostrar  OFFSET $RegistrosAEmpezar ";
+          $query = " SELECT lcee.id,lcee.nombre_examen, 
+                            lppe.nombreprocedimiento, 
+                            lppe.unidades,lppe.rangoinicio, 
+                            lppe.rangofin,(lppe.fechaini)AS fechaini, 
+                            (lppe.fechafin)AS fechafin,cex.nombre,cre.nombre, lppe.id 
+                            from ctl_area_servicio_diagnostico casd 
+                            join mnt_area_examen_establecimiento mnt4 on mnt4.id_area_servicio_diagnostico=casd.id 
+                            join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen) 
+                            join lab_procedimientosporexamen lppe on (lppe.id_conf_examen_estab=lcee.id) 
+                            left JOIN ctl_sexo cex ON lppe.idsexo = cex.id 
+                            left JOIN ctl_rango_edad cre ON lppe.idrangoedad = cre.id 
+                            WHERE lppe.idestablecimiento=$lugar 
+                            ORDER BY mnt4.id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar"; 
             
-           /* echo "--->".    $query = "SELECT lab_procedimientosporexamen.id,lab_examenes.nombreexamen,
-                        lab_procedimientosporexamen.nombreprocedimiento,
-                        lab_procedimientosporexamen.unidades,lab_procedimientosporexamen.rangoinicio,
-                        lab_procedimientosporexamen.rangofin,(lab_procedimientosporexamen.fechaini)AS fechaini,
-                        (lab_procedimientosporexamen.fechafin)AS fechafin,ctl_sexo.abreviatura,ctl_rango_edad.nombre 
-                        FROM lab_procedimientosporexamen  
-                        INNER JOIN lab_examenes ON lab_procedimientosporexamen.idexamen=lab_examenes.id 
-                        INNER JOIN lab_examenesxestablecimiento ON lab_examenes.id=lab_examenesxestablecimiento.idexamen
-                        INNER JOIN lab_areas ON lab_examenes.idarea=lab_areas.id
-                        INNER JOIN lab_areasxestablecimiento ON lab_areas.id=lab_areasxestablecimiento.idarea
-                        INNER JOIN ctl_sexo ON lab_procedimientosporexamen.idsexo = ctl_sexo.id
-                        INNER JOIN ctl_rango_edad ON lab_procedimientosporexamen.idrangoedad = ctl_rango_edad.id
-                        WHERE   lab_procedimientosporexamen.idestablecimiento=$lugar ORDER BY id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar  ";*/
-		 $result = @pg_query($query);
+           $result = @pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -301,7 +267,7 @@ class clsLab_Procedimientos
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = $query_search." LIMIT $RegistrosAMostrar  OFFSET $RegistrosAEmpezar ";
+	    $query = $query_search." LIMIT $RegistrosAMostrar  OFFSET $RegistrosAEmpezar ";
 		 $result = @pg_query($query);
 		 if (!$result)
 		   return false;

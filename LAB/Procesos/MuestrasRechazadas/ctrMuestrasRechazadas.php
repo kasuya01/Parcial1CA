@@ -287,7 +287,7 @@ switch ($opcion)
 $pos=$pos + 1;
 }
 
-mysql_free_result($datosexamen);
+pg_free_result($datosexamen);
 
 //echo $idexamen;
  $imprimir .= "<input type='hidden' name='oculto' id='oculto' value='".$pos."' />
@@ -454,7 +454,7 @@ mysql_free_result($datosexamen);
 $pos=$pos + 1;
 }
 
-mysql_free_result($consultadetalle);
+pg_free_result($consultadetalle);
 
  $imprimir .= "<input type='hidden' name='oculto' id='oculto' value='".$pos."' />
 			</table>

@@ -166,11 +166,18 @@ if ($nivel==4){
 						WHERE IdTipoServicio<>'DCO' AND IdTipoServicio<>'FAR' AND IdEstablecimiento=$lugar";
 						$resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());*/
 							
-                                            $consulta  = "SELECT mnt_servicio.IdServicio,mnt_servicio.NombreServicio 
+                                            $consulta  = /*"SELECT mnt_servicio.IdServicio,mnt_servicio.NombreServicio 
 						FROM mnt_servicio 
 						INNER JOIN mnt_servicioxestablecimiento 
 						ON mnt_servicio.IdServicio=mnt_servicioxestablecimiento.IdServicio
-						WHERE IdTipoServicio<>'DCO' AND IdTipoServicio<>'FAR' AND IdEstablecimiento=$lugar";
+						WHERE IdTipoServicio<>'DCO' AND IdTipoServicio<>'FAR' AND IdEstablecimiento=$lugar";*/
+                                            
+                                            "SELECT mse.id,mse.nombre 
+						FROM mnt_servicio_externo mse 
+						INNER JOIN mnt_servicio_externo_establecimiento msee 
+						ON mse.id=msee.id
+						WHERE   msee.id_establecimiento=$lugar";
+                                            
 						$resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
 						//por cada registro encontrado en la tabla me genera un <option>
 						while ($rows = pg_fetch_array($resultado)){
@@ -201,7 +208,7 @@ if ($nivel==4){
 				$objeareas=new clsLab_Areas;
 				$consulta= $objeareas->consultaractivas($lugar);
 				while($row = pg_fetch_array($consulta)){
-			        echo "<option value='" . $row['IdArea']. "'>" . htmlentities($row['NombreArea']) . "</option>";
+			        echo "<option value='" . $row['idarea']. "'>" . htmlentities($row['nombrearea']) . "</option>";
 				}
 				echo '<option value="'.$area1.'" selected="selected">'.htmlentities($nomarea).'</option>';
 				?>		  

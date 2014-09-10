@@ -4,8 +4,8 @@ $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 //variables POST
- echo "ttttttttt".$idobservacion=$_POST['idobservacion'];
- echo "ooo".$observacion=htmlentities($_POST['observacion']);
+$idobservacion=$_POST['idobservacion'];
+ $observacion=htmlentities($_POST['observacion']);
  $idarea=$_POST['idarea'];
  $tiporespuesta=$_POST['tiporespuesta'];
 $opcion=$_POST['opcion'];
@@ -57,7 +57,7 @@ switch ($opcion)
 	      <tr>
 		   <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
 		 <!--  <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
-		   <td class='CobaltFieldCaptionTD'> Area</td>
+		  <!--  <td class='CobaltFieldCaptionTD'> Area</td> -->
 		   <td class='CobaltFieldCaptionTD'> observacion </td>
                    <td class='CobaltFieldCaptionTD'> Tipo de Respuesta</td>		   
 	      </tr>";
@@ -69,7 +69,7 @@ switch ($opcion)
 			<!-- <td aling ='center'> 
 			<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 			onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
-			<td>". $row['idarea'] ."</td>
+			<!-- <td>". $row['id'] ."</td> -->
 			<td>".htmlentities($row['observacion'])."</td>";
                          $resp=$row['tiporespuesta'];
                           if ($resp=='S')
@@ -119,13 +119,13 @@ switch ($opcion)
 		
 	//VERIFICANDO LOS POST ENVIADOS
 	if (!empty($_POST['idarea']))
-		{ $query .="idarea='".$_POST['idarea']."'AND"; }
+		{ $query .="idarea=".$_POST['idarea']."'AND"; }
 		
 	if (!empty($_POST['tiporespuesta']))
 		{ $query .="tiporespuesta='".$_POST['tiporespuesta']."'AND"; }
 	
 	if (!empty($_POST['observacion']))
-		{ $query .="observacion ilike '%".$_POST['observacion']."%'AND";}
+		{ $query .="observacion ilike '%'".$_POST['observacion']."%'AND";}
                   	
 		 $query = substr($query ,0,strlen($query)-4);
 		$query_search = $query."ORDER  BY observacion";	
@@ -143,7 +143,7 @@ switch ($opcion)
 	      <tr>
 		   <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
 		  <!-- <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
-		   <td class='CobaltFieldCaptionTD'> Area</td>
+		   <!-- <td class='CobaltFieldCaptionTD'> Area</td> -->
 		   <td class='CobaltFieldCaptionTD'> observacion </td>
                    <td class='CobaltFieldCaptionTD'> Tipo de Respuesta </td>		   
 	      </tr>";
@@ -155,7 +155,7 @@ switch ($opcion)
 			<!-- <td aling ='center'> 
 			<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 			onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
-			<td>". $row['idarea'] ."</td>
+		<!-- 	<td>". $row['id'] ."</td> -->
 			<td>".htmlentities($row['observacion'])."</td>";
                          $resp=$row['tiporespuesta'];
                           if ($resp=='S')
