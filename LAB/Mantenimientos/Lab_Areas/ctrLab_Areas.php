@@ -12,7 +12,7 @@ $opcion = $_POST['opcion'];
 $objdatos = new clsLab_Areas;
 
 switch ($opcion) {
-    case 1:  //INSERTAR	
+    case 1:  //INSERSION
         $idarea = $_POST['idarea'];
         $nom    = $_POST['nombrearea'];
         $tipo   = $_POST['tipo'];
@@ -38,7 +38,7 @@ switch ($opcion) {
             echo "No se pudo Agregar el Registro";
         }
         break;
-    case 2:  //MODIFICAR 
+    case 2:  //MODIFICAR
         $idarea = $_POST['idarea'];
         $nom    = $_POST['nombrearea'];
         $tipo   = $_POST['tipo'];
@@ -59,7 +59,7 @@ switch ($opcion) {
         } else
             echo "No se pudo Actualizar el Registro";
         break;
-    case 3:  //ELIMINAR    
+    case 3:  //ELIMINAR
         //Vefificando Integridad de los datos
         $idarea = $_POST['idarea'];
         //$nom=$_POST['nombrearea'];
@@ -69,7 +69,7 @@ switch ($opcion) {
             //echo $idarea;
             if ($objdatos->eliminar($idarea) == true) {
                 if ($objdatos->EliminarxEstablecimiento($idarea) == true) {
-                    
+
                 } else {
                     echo "El registro no pudo ser eliminado 1 ";
                 }
@@ -80,13 +80,13 @@ switch ($opcion) {
         break;
     case 4:// PAGINACION
         $Pag = $_POST['Pag'];
-        //echo $Pag; 
+        //echo $Pag;
         //para manejo de la paginacion
         $RegistrosAMostrar = 4;
         $RegistrosAEmpezar = ($_POST['Pag'] - 1) * $RegistrosAMostrar;
         $PagAct = $_POST['Pag'];
 
-        //LAMANDO LA FUNCION DE LA CLASE 
+        //LAMANDO LA FUNCION DE LA CLASE
         $consulta = $objdatos->consultarpag($lugar, $RegistrosAEmpezar, $RegistrosAMostrar);
 
         //muestra los datos consultados en la tabla
@@ -101,12 +101,12 @@ switch ($opcion) {
                 </tr>";
         while ($row = pg_fetch_array($consulta)) {
             echo "<tr>
-                    <td aling='center'> 
-                        <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+                    <td aling='center'>
+                        <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\"
                         onclick=\"pedirDatos('" . $row['idarea'] . "')\">
                     </td>
-                    <!-- <td aling ='center'> 
-                        <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+                    <!-- <td aling ='center'>
+                        <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
                         onclick=\"eliminarDato('" . $row['idarea'] . "')\"> </td> -->
                     <td>" . $row['idarea'] . "</td>
                     <td>" . htmlentities($row['nombrearea']) . "</td>";
@@ -160,14 +160,14 @@ switch ($opcion) {
         $nom    = $_POST['nombrearea'];
         $activo = $_POST['activo'];
         $tipo   = $_POST['tipo'];
-        
+
         $query = "SELECT t01.idarea,
                          t01.nombrearea,
                          t02.condicion,
                          t01.administrativa,
                          t02.idestablecimiento
 		      FROM lab_areas t01
-		      INNER JOIN lab_areasxestablecimiento t02 ON (t01.id = t02.idarea)  
+		      INNER JOIN lab_areasxestablecimiento t02 ON (t01.id = t02.idarea)
 		      WHERE t02.idestablecimiento = $lugar";
 
         //VERIFICANDO LOS POST ENVIADOS
@@ -188,13 +188,13 @@ switch ($opcion) {
         }
 
         //$query = substr($query, 0, strlen($query) - 3);
-        //echo $query;			
+        //echo $query;
         //para manejo de la paginacion
         $RegistrosAMostrar = 4;
         $RegistrosAEmpezar = ($_POST['Pag'] - 1) * $RegistrosAMostrar;
         $PagAct = $_POST['Pag'];
 
-        //LAMANDO LA FUNCION DE LA CLASE 
+        //LAMANDO LA FUNCION DE LA CLASE
         $consulta = $objdatos->consultarpagbus($query, $RegistrosAEmpezar, $RegistrosAMostrar);
 
         //muestra los datos consultados en la tabla
@@ -205,16 +205,16 @@ switch ($opcion) {
 			    <td class='CobaltFieldCaptionTD'> IdArea</td>
 			    <td class='CobaltFieldCaptionTD'> Nombre </td>
 			    <td class='CobaltFieldCaptionTD'>Activa </td>
-			    <td class='CobaltFieldCaptionTD'>Tipo &Aacute;rea</td>			   
+			    <td class='CobaltFieldCaptionTD'>Tipo &Aacute;rea</td>
 			 </tr>";
 
         while ($row = pg_fetch_array($consulta)) {
             echo "<tr>
-                            <td aling='center'> 
-					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+                            <td aling='center'>
+					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\"
 					onclick=\"pedirDatos('" . $row[0] . "')\"> </td>
-			  <!--  <td aling ='center'> 
-					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+			  <!--  <td aling ='center'>
+					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
 					onclick=\"eliminarDato('" . $row[0] . "')\"> </td> -->
 			    <td>" . $row[0] . "</td>
 			    <td>" . htmlentities($row[1]) . "</td>";
@@ -255,10 +255,37 @@ switch ($opcion) {
               echo "<td> <a onclick=\"show_event_search('$PagAnt')\" style='cursor: pointer;'>Anterior</a> </td>";
         if ($PagAct < $PagUlt)
               echo "<td> <a onclick=\"show_event_search('$PagSig')\" style='cursor: pointer;'>Siguiente</a> </td>";
-        
+
               echo "<td> <a onclick=\"show_event_search('$PagUlt')\" style='cursor: pointer;'>Ultimo</a></td>";
           echo "</tr>
             </table>";
+        break;
+    case 6:
+        $query = $objdatos->getLabAreas($lugar,98);
+        if($query !== false) {
+            $jsonresponse['status'] = true;
+            $jsonresponse['data']   = pg_fetch_all($query);
+        } else {
+            $jsonresponse['status'] = false;
+        }
+        echo json_encode($jsonresponse);
+        break;
+    case 7:
+        $array = array();
+        foreach ($_POST as $key => $value) {
+            if($key !== 'opcion') {
+                $array[] = $value;
+            }
+        }
+
+        $query = $objdatos->updateAreaEstablecimiento($lugar, $array);
+
+        if($query !== false) {
+            $jsonresponse['status'] = true;
+        } else {
+            $jsonresponse['status'] = false;
+        }
+        echo json_encode($jsonresponse);
         break;
 }
 ?>

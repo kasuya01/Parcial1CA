@@ -1,4 +1,4 @@
-<?php session_start(); 
+<?php session_start();
 $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
@@ -11,9 +11,9 @@ $obj = new clsPlantillaD;
 $opcion=$_POST['opcion'];
 
 
-switch ($opcion) 
+switch ($opcion)
 {
-  case 1:  
+  case 1:
 	//variables POST
 	$idsolicitud= $_POST['idsolicitud'];
 	$idexamen=$_POST['idexamen'];//*
@@ -45,19 +45,19 @@ switch ($opcion)
 		<tr>";
 	while($row = mysql_fetch_array($consulta)){
   $resultado.= "<tr>
-                    <td aling ='center'> 
-			<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+                    <td aling ='center'>
+			<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
 			onclick=\"EliminarElemento('".$row[0]."')\"> </td>
                     <td> $row[0] </td>
                     <td> $row[1] </td>
 		</tr>";
 	}
 	$resultado.="</table>";
-	
+
 	echo $resultado;
-	
+
    break;
-   
+
    case 2:  // AGREGA NUEVO ELEMENTO DE TINCION AL RESULTADO
 	$idelemento= $_POST['idelemento'];
 	$idcantidad= $_POST['idcantidad'];
@@ -67,13 +67,13 @@ switch ($opcion)
 	$resultado="";
 	//VERIFICANDO QUE NO EXISTA ESTE ELEMENTO PARA ESTE RESULTADO
 	$reg=$obj->ValidacionElemento($idresultado,$idelemento);
-	
+
 	if($reg == 0)
 	 {
-	    
+
 		$obj->insertar_elemento($idresultado,$idelemento,$idcantidad,$lugar);
 		//consultando los resultados ingresados
-		
+
 		$consulta=$obj->MostrarElementosAgregados($idresultado);
 		$resultado.="
 			<input name='oresultado' type='hidden' id='oresultado' value='".$idresultado."'>
@@ -86,23 +86,23 @@ switch ($opcion)
 				<tr>";
 		while($row = mysql_fetch_array($consulta)){
 				$resultado.= "<tr>
-							<td aling ='center'> 
-								<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+							<td aling ='center'>
+								<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
 								onclick=\"EliminarElemento('".$row[0]."')\"> </td>
 							<td> $row[0] </td>
 							<td> $row[1] </td>
 						</tr>";
 					}
 			mysql_free_result($consulta);
-					
+
 		$resultado.="</table>";
-		
-		
+
+
 	}
 	else{$resultado="N";}
 		echo $resultado;
    break;
-  
+
    case 3: //VISTA PREVIA DE LOS RESULTADOS
    	$idexamen=$_POST['idexamen'];//
 	$idsolicitud= $_POST['idsolicitud'];
@@ -111,7 +111,7 @@ switch ($opcion)
 	$idresultado= $_POST['idresultado'];
 	$establecimiento=$_POST['estab'];
 	$tab= $_POST['tab'];
-	
+
 	$Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
 	$row_estab = mysql_fetch_array($Consulta_Estab);
 
@@ -133,7 +133,7 @@ switch ($opcion)
 					<p><strong>".$row_estab['Nombre']."</strong></p>
 					<p><strong>ÁREA DE ".htmlentities($row_area['NombreArea'])." </strong></p>
 				</td>
-                                <td colspan='1' align='right' width='20%'><img id='Image3' style='WIDTH: 110px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.gif' width='210' name='Image3'></td>
+                                <td colspan='1' align='right' width='20%'><img id='Image3' style='WIDTH: 110px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
 			</tr>
                         <td colspan='6'>&nbsp;</td>
 			<tr>
@@ -142,7 +142,7 @@ switch ($opcion)
 				<td colspan='1'><strong>Fecha Recepción:</strong></td>
 				<td colspan='2'>".$row_generales['Fecha']."</td>
                         </tr>
-			
+
 			<tr>
 				<td colspan='1'><strong>NEC</strong></td>
 				<td colspan='5'>".$row_generales['IdNumeroExp']."</td>
@@ -156,23 +156,23 @@ switch ($opcion)
 				<td colspan='1' ><strong>Edad:</strong></td>
 				<td colspan='2'>
                                     <div id='divsuedad'>
-          
+
                                     </div>
                                 </td>
 				<td colspan='1'><strong>Sexo:</strong></td>
 				<td colspan='2'>".$row_generales['Sexo']."</td>
 			</tr>
-			<tr>	
+			<tr>
 				<td colspan='1'><strong>Procedencia:</strong></td>
 				<td colspan='2'>".htmlentities($row_generales['Procedencia'])."</td>
-				
+
 				<td colspan='1'><strong>Servicio:</strong></td>
 				<td colspan='2'>".$row_generales['Origen']."</td>
-			</tr>	
+			</tr>
 			<tr>
 				<td colspan='1'><strong>Examen Realizado:</strong></td>
 				<td colspan='5'>".htmlentities($row_area['NombreExamen'])."</td>
-			</tr>				 
+			</tr>
 			<tr>
 				<td colspan='1'><strong>Validado Por:</strong></td>
 				<td colspan='5'>".htmlentities($row_empleado['NombreEmpleado'])."</td>
@@ -220,11 +220,11 @@ switch ($opcion)
 		</table>";
 	echo $resultado;
    break;
-   
+
    case 4:
-	
+
 	$idelemento= $_POST['idelemento'];
-	$idresultado= $_POST['idresultado']; 
+	$idresultado= $_POST['idresultado'];
 	$resultado=" ";
    $obj->EliminarElementoDetalle($idresultado,$idelemento);
    $consulta=$obj->MostrarElementosAgregados($idresultado);
@@ -239,19 +239,19 @@ switch ($opcion)
 				<tr>";
 	while($row = mysql_fetch_array($consulta)){
 			$resultado.= "<tr>
-							<td aling ='center'> 
-							<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+							<td aling ='center'>
+							<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
 							onclick=\"EliminarElemento('".$row[0]."')\"> </td>
 							<td> $row[0] </td>
 							<td> $row[1] </td>
 							</tr>";
 				}
 				mysql_free_result($consulta);
-				
+
 	$resultado.="</table>";
 	echo $resultado;
    break;
-   
+
   }
 
 ?>

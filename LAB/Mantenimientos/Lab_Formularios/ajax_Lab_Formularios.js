@@ -187,7 +187,7 @@ function BuscarCodigo()
     var opcion = 5;
     Pag = 1;
     //valores de los cajas de texto
-    IdFormulario = document.getElementById('txtIdForm').value;
+    //IdFormulario = document.getElementById('txtIdForm').value;
     Formulario = document.getElementById('txtForm').value;
     cmbFormulario = document.getElementById('cmbPrograma').value;
     //instanciamos el objetoAjax
@@ -198,7 +198,7 @@ function BuscarCodigo()
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
 
-    ajax.send("Pag=" + Pag + "&opcion=" + opcion + "&Formulario=" + Formulario + "&IdFormulario=" + IdFormulario + "&cmbFormulario=" + cmbFormulario);
+    ajax.send("Pag=" + Pag + "&opcion=" + opcion + "&Formulario=" + Formulario + "&cmbFormulario=" + cmbFormulario);
     ajax.onreadystatechange = function() {
         if (ajax.readyState == 4) {
             //mostrar los nuevos registros en esta capa

@@ -99,7 +99,7 @@ function pedirDatos(idarea) { //CARGAR DATOS A MODIFICAR
     }
     //como hacemos uso del metodo POST
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    //enviando el codigo 
+    //enviando el codigo
     ajax.send("idarea=" + idarea);
 }
 
@@ -153,7 +153,7 @@ function eliminarDato(idarea) { //FUNCION PARA ELIMINACION
     var opcion = 3;
     Pag = 1;
 
-    //usaremos un cuadro de confirmacion	
+    //usaremos un cuadro de confirmacion
     var eliminar = confirm("De verdad desea eliminar este dato?")
     if (eliminar) {
         //instanciamos el objetoAjax
@@ -239,4 +239,70 @@ function show_event_search(Pag)
     }
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     ajax.send("idarea=" + idarea + "&nombrearea=" + nom + "&activo=" + activo + "&Pag=" + Pag + "&opcion=" + opcion + "&tipo=" + tipo);
+}
+
+function getLabAreas(handleData) {
+    jQuery.ajaxSetup({
+        error: function(jqXHR, exception) {
+            if (jqXHR.status === 0) {
+                alert('Not connect.\n Verify Network.');
+            } else if (jqXHR.status == 404) {
+                alert('Requested page not found. [404]');
+            } else if (jqXHR.status == 500) {
+                alert('Internal Server Error [500].');
+            } else if (exception === 'parsererror') {
+                alert('Requested JSON parse failed.');
+            } else if (exception === 'timeout') {
+                alert('Time out error.');
+            } else if (exception === 'abort') {
+                alert('Ajax request aborted.');
+            } else {
+                alert('Uncaught Error.\n' + jqXHR.responseText);
+            }
+        }
+    });
+
+    jQuery.ajax({
+        url: 'ctrLab_Areas.php',
+        async: true,
+        dataType: 'json',
+        type: 'POST',
+        data: { opcion: '6' },
+        success: function(data) {
+            handleData(data);
+        }
+    });
+}
+
+function updateRegistros() {
+    jQuery.ajax({
+        url: 'ctrLab_Areas.php',
+        type: 'post',
+        dataType: 'json',
+        async: false,
+        data: 'opcion=7&' + $('form#lab-form').serialize(),
+        success: function(data) {
+            if(data.status)
+                alert('Registros Ingresados Exitosamente...');
+            else
+                alert('Error al procesar los registros...');
+        },
+        error: function(jqXHR, exception) {
+            if (jqXHR.status === 0) {
+                alert('Not connect.\n Verify Network.');
+            } else if (jqXHR.status == 404) {
+                alert('Requested page not found. [404]');
+            } else if (jqXHR.status == 500) {
+                alert('Internal Server Error [500].');
+            } else if (exception === 'parsererror') {
+                alert('Requested JSON parse failed.');
+            } else if (exception === 'timeout') {
+                alert('Time out error.');
+            } else if (exception === 'abort') {
+                alert('Ajax request aborted.');
+            } else {
+                alert('Uncaught Error.\n' + jqXHR.responseText);
+            }
+        }
+    });
 }

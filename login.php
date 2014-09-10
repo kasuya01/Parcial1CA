@@ -15,11 +15,11 @@ function ValidarContrasena()
 <center>
 		<table width="100%" border="0" bgcolor="#FFFFFF">
 		<tr>
-		    <td align="left"><img id="Image1" style="WIDTH: 204px; HEIGHT: 99px" height="86" src="./Imagenes/paisanito.gif" width="210" name="Image1"></td> 
+		    <td align="left"><img id="Image1" style="width: 181px; height: 76px;" height="86" src="./Imagenes/paisanito.png" width="210" name="Image1"></td> 
 		    <td style="vertical-align:top">
  			 <h2 align="center" >
-              Ministerio de Salud 
-              <br> Sistema de Informaci&oacute;n de Atenci&oacute;n de Pacientes<br><br>              
+              Ministerio de Salud
+              <br> Sistema de Informaci&oacute;n de Atenci&oacute;n de Pacientes<br><br>
   <font face="Verdana" size="2" align="center"><font color="#ff0000" size="2"><strong></strong></font></font></h2>
   </td>
   </tr>

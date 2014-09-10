@@ -19,7 +19,7 @@ $idexamen=$_GET['var6'];
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <title>Resultados de Examenes de Laboratorio </title>
-<script language="JavaScript" type="text/javascript" src="ajax_ImprimirResultado.js"></script> 
+<script language="JavaScript" type="text/javascript" src="ajax_ImprimirResultado.js"></script>
 <!--<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">-->
 <script language="JavaScript">
@@ -50,7 +50,7 @@ function calc_edad()
 </head>
 
 <body>
-<?php 
+<?php
 $Catidad=$obj->ObtenerCantidadResultados($idsolicitud,$iddetalle);
 $row_cantidad=mysql_fetch_array($Catidad);
 //echo $row_cantidad[0];
@@ -69,10 +69,10 @@ $row_cantidad=mysql_fetch_array($Catidad);
 			$consulta_datos=$obj->DatosResultadoPlanCPositivo($idsolicitud,$iddetalle);
 			$row_datos= mysql_fetch_array($consulta_datos);
 			$consulta=$obj->LeerResultadosAntibioticos($idsolicitud,$iddetalle);
-			  
-		  	
+
+
 		  	$ban=0;
-			
+
 			$nombre=$row_area['NombreArea'];
 			?>
 			<table width='100%' border='0' align='center' cellspacing="0">
@@ -82,7 +82,7 @@ $row_cantidad=mysql_fetch_array($Catidad);
                                     <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
 			            <p><strong><?php echo $row_estab['Nombre'] ?></strong></p>
                                     <p><strong>ÁREA DE <?php echo htmlentities($row_area['NombreArea'])?> </strong></p></td>
-                                <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.gif" width="210" name="Image3"></td>
+                                <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
 				</tr>
 				<tr>
 					<td colspan='1' class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
@@ -90,7 +90,7 @@ $row_cantidad=mysql_fetch_array($Catidad);
 					<td colspan='1' class="Estilo5"><strong>Fecha Resultado:</strong></td>
 			  		<td colspan='2' class="Estilo6"><?php echo $row_generales['Fecha']?></td>
 				</tr>
-				
+
 				<tr>
 					<td colspan='1' class="Estilo5"><strong>NEC:</strong></td>
 			  		<td colspan='5' class="Estilo7"><?php echo $row_generales['IdNumeroExp']?></td>
@@ -108,14 +108,14 @@ $row_cantidad=mysql_fetch_array($Catidad);
 		        			</script>
 		    	  		   	</div>
 					</td>
-					
+
 					<td colspan='1' class="Estilo5"><strong>Sexo:</strong></td>
 			  		<td colspan='2' class="Estilo6"><?php echo $row_generales['Sexo'];?></td>
 				</tr>
-				<tr>	
+				<tr>
 					<td colspan='1' class="Estilo5"><strong>Procedencia:</strong></td>
 					<td colspan='1' class="Estilo6"><?php echo htmlentities($row_generales['Procedencia']);?></td>
-				
+
 					<td colspan='1' class="Estilo5"><strong>Servicio:</strong></td>
 					<td colspan='2' class="Estilo6" width='6%'><?php echo htmlentities($row_generales['Origen']);?></td>
 				</tr>
@@ -130,22 +130,22 @@ $row_cantidad=mysql_fetch_array($Catidad);
                                 <tr>
                                         <td colspan="6">&nbsp;</td>
                                 </tr>
-                                <tr> 
+                                <tr>
                                     <td colspan="6">
                                         <table width="75%" border="0" align="left" cellspacing="0" >
-                                
+
                                         <tr>
                                                 <td colspan='1' class="Estilo5"><strong>Resultado:</strong></td>
                                                 <td colspan='4' class="Estilo6"><?php echo "Positivo"?></td>
                                         </tr>
                                         <tr>
                                                 <td colspan='1' class="Estilo5" ><strong>Organismo:</strong></td>
-                                                <td colspan='4' class="Estilo6"><?php echo htmlentities($row_datos['Bacteria']); ?></td>		
+                                                <td colspan='4' class="Estilo6"><?php echo htmlentities($row_datos['Bacteria']); ?></td>
                                         </tr>
                                         <tr>
                                                 <td class="Estilo5" colspan="1" style="font:bold" ><strong>Cultivo con Cuenta de Colonias:</strong></td>
                                                 <td class="Estilo5" colspan="5"><?php echo htmlentities($row_datos['Cantidad'])?></td>
-				
+
                                         <tr>
                                                 <td colspan='6'>&nbsp;</td>
                                         </tr>
@@ -157,7 +157,7 @@ $row_cantidad=mysql_fetch_array($Catidad);
                                                                     <td class="Estilo5" colspan="1" ><strong>ANTIBIOTICO</strong></td>
                                                                     <td class="Estilo5" colspan="2" style='font:bold'  ><strong>INTERPRETACI&Oacute;N</strong>
                                                                     </td>
-                                                            </tr>	
+                                                            </tr>
                                                                     <?php	mysql_free_result($datos_generales);
                                                                             $pos=0;
 
@@ -169,17 +169,17 @@ $row_cantidad=mysql_fetch_array($Catidad);
                                                                     </td>
                                                                     <td width='60%'>&nbsp; </td>
                                                             </tr>
-                                                            <?php 		
+                                                            <?php
                                                             }
                                                             mysql_free_result($consulta);?>
                                                             <tr>
                                                                     <td colspan="7" align="center" >
-                                                                            <div id="boton">	
+                                                                            <div id="boton">
                                                                                     <input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
                                                                                     <input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar() ;"/>
                                                                             </div>
                                                                     </td>
-                                                            </tr>		
+                                                            </tr>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -188,12 +188,12 @@ $row_cantidad=mysql_fetch_array($Catidad);
                                 </tr>
                         </table>
 
-			
-		<?php 
+
+		<?php
 		}else{
 	//	     $total= $row_cantidad[0];
           //           $cont=1;
-            
+
                         // echo $idsolicitud."-".$iddetalle."-".$lugar;
 			$Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
 			$row_estab = mysql_fetch_array($Consulta_Estab);
@@ -208,7 +208,7 @@ $row_cantidad=mysql_fetch_array($Catidad);
 			$nombre=$row_area['NombreArea'];
 			?>
 
-			
+
                                 <div  id="divImpresion" >
                                     <table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
                                         <tr>
@@ -218,7 +218,7 @@ $row_cantidad=mysql_fetch_array($Catidad);
                                                 <p><strong><?php echo $row_estab['Nombre'] ?></strong></p>
 						<p><strong>ÁREA DE <?php echo htmlentities($row_area['NombreArea'])?> </strong></p>
                                             </td>
-                                            <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.gif" width="210" name="Image3"></td>
+                                            <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
 					</tr>
                                         <tr>
                                             <td colspan="6">&nbsp;</td>
@@ -247,21 +247,21 @@ $row_cantidad=mysql_fetch_array($Catidad);
                                                     </script>
                                                 </div>
                                             </td>
-                                      
+
                                             <td colspan="1" class="Estilo5"><strong>Sexo:</strong></td>
                                             <td colspan="2" class="Estilo6"><?php echo $row_generales['Sexo']?></td>
 					</tr>
-					<tr>	
+					<tr>
                                             <td colspan="1" class="Estilo5"><strong>Procedencia:</strong></td>
                                             <td colspan="2"class="Estilo6"><?php echo htmlentities($row_generales['Procedencia'])?></td>
-                                     
+
                                             <td colspan="1" class="Estilo5"><strong>Origen:</strong></td>
                                             <td colspan="2" class="Estilo6"><?php echo htmlentities($row_generales['Origen'])?></td>
-					</tr>				
+					</tr>
 					<tr>
                                             <td colspan="1" class="Estilo5"><strong>Examen Realizado:</strong></td>
                                             <td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['NombreExamen'])?></td>
-					</tr>				 
+					</tr>
 					<tr>
                                             <td colspan="1" class="Estilo5"><strong>Validado Por:</strong></td>
                                             <td colspan='5' class="Estilo6"><?php echo $row_generales['NombreEmpleado']; ?></td>
@@ -269,8 +269,8 @@ $row_cantidad=mysql_fetch_array($Catidad);
 					<tr>
                                             <td colspan="1" class="Estilo5"><strong>Resultado:</strong></td>
 						<?php 	mysql_free_result($consulta_datos);
-							mysql_free_result($datos_generales);	 
-								
+							mysql_free_result($datos_generales);
+
 							switch($Resultado)
 							{
 								case "N";?>
@@ -293,19 +293,19 @@ $row_cantidad=mysql_fetch_array($Catidad);
                                 <div id="boton">
                                     <table align="center">
                                         <tr class="6">
-                                            <td>		
+                                            <td>
                                                 <input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
 						<input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar() ;" />
                                             </td>
                                         </tr>
                                     </table>
                                 </div>
-				
-			
+
+
 
 		<?php }
 	}
-	else{//Mas de un resultado 
+	else{//Mas de un resultado
 		// echo $row_cantidad[0];
 		 $tipo=$obj->ObtenerResultadoxId($idsolicitud,$iddetalle);
 		 while( $row_tipo=mysql_fetch_array($tipo)){
@@ -322,10 +322,10 @@ $row_cantidad=mysql_fetch_array($Catidad);
 				$row_datos= mysql_fetch_array($consulta_datos);
 				//echo $row_datos[0];
 				$consulta=$obj->LeerResultadosAntibioticosxId($idsolicitud,$iddetalle,$row_tipo[0]);
-				
+
 				$posele=0;
 		  	$ban=0;
-			
+
 			$nombre=$row_area['NombreArea'];
 			?>
 			<table width="100%" border="0" align="center" class="StormyWeatherFormTABLE">
@@ -335,7 +335,7 @@ $row_cantidad=mysql_fetch_array($Catidad);
                                     <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
 			            <p><strong><?php echo $row_estab['Nombre'] ?></strong></p>
                                     <p><strong>&Aacute;rea de <?php echo htmlentities($row_area['NombreArea'])?> </strong></p></td>
-                                <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.gif" width="210" name="Image3"></td>
+                                <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
                             </tr>
                             <tr>
 				<td colspan="1" class="Estilo5"><strong>Establecimiento:</strong></td>
@@ -364,7 +364,7 @@ $row_cantidad=mysql_fetch_array($Catidad);
 				<td colspan="1" class="Estilo5"><strong>Sexo:</strong></td>
 			  	<td colspan="2" class="Estilo6"><?php echo $row_generales['Sexo'];?></td>
                             </tr>
-                            <tr>	
+                            <tr>
                                 <td colspan="1" class="Estilo5"><strong>Procedencia:</strong></td>
 				<td colspan="2" class="Estilo6" width='38%'><?php echo htmlentities($row_generales['Procedencia']);?></td>
 				<td colspan="1" class="Estilo5"><strong>Servicio:</strong></td>
@@ -373,7 +373,7 @@ $row_cantidad=mysql_fetch_array($Catidad);
                             <tr>
 				<td colspan="1" class="Estilo5"><strong>Examen Realizado:</strong></td>
                                 <td colspan="5" class="Estilo6"><?php echo htmlentities($row_area['NombreExamen']);?></td>
-                            </tr>				 
+                            </tr>
                             <tr>
 				<td colspan="1" class="Estilo5"><strong>Resultado:</strong></td>
 				<td colspan="5" class="Estilo6"><?php echo "Positivo"?></td>
@@ -384,12 +384,12 @@ $row_cantidad=mysql_fetch_array($Catidad);
                             </tr>
                             <tr>
                                 <td colspan="6">&nbsp;</td>
-                            </tr>    
-                            	
+                            </tr>
+
                             <tr>
 				<td colspan="6">&nbsp;</td>
                             </tr>
-                            <tr> 
+                            <tr>
                                 <td colspan="6">
                                     <table width="75%" border="0" align="left" cellspacing="0" >
                                         <tr>
@@ -398,7 +398,7 @@ $row_cantidad=mysql_fetch_array($Catidad);
                                         </tr>
                                         <tr>
                                             <td colspan="1" class="Estilo5" >Organismo:</td>
-                                            <td colspan="5" class="Estilo6"><?php echo htmlentities($row_generales['Bacteria']); ?></td>		
+                                            <td colspan="5" class="Estilo6"><?php echo htmlentities($row_generales['Bacteria']); ?></td>
                                         </tr>
                                         <tr>
                                             <td colspan="1" class="Estilo5">CULTIVO CON CUENTA DE COLONIAS</td>
@@ -414,10 +414,10 @@ $row_cantidad=mysql_fetch_array($Catidad);
                                                         <td colspan="1" class="Estilo5" ><strong>ANTIBIOTICO</strong></td>
                                                         <td colspan="2" class="Estilo5"  ><strong>INTERPRETACI&Oacute;N</strong>
                                                         </td>
-                                                    </tr>	
+                                                    </tr>
 						<?php	mysql_free_result($datos_generales);
 							$pos=0;
-									
+
 						while($row = mysql_fetch_array($consulta))//ELEMENTOS)
 						{?>
                                                     <tr>
@@ -426,17 +426,17 @@ $row_cantidad=mysql_fetch_array($Catidad);
                                                         </td>
 
                                                     </tr>
-                                            <?php 		
+                                            <?php
 						}
-                                              
+
 						mysql_free_result($consulta);?>
                                                 </table>
                                              </td>
                                         </tr>
-                                    </table> 
+                                    </table>
                                 </td>
                             </tr>
-			</table>  
+			</table>
                        <div id="boton">
                             <table align="center">
                                  <tr>
@@ -444,18 +444,18 @@ $row_cantidad=mysql_fetch_array($Catidad);
                                          <input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
                                          <input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar() ;"/>
                                      </td>
-                                 </tr>		
-                            </table> 
+                                 </tr>
+                            </table>
                        </div>
-       
-                               
-			
-			<?php 
+
+
+
+			<?php
 			}?>
 			<br style="page-break-after: always;" />
-		<?php	
+		<?php
 		 }?>
-	 
-	<?php 	
-	}	
+
+	<?php
+	}
 ?>

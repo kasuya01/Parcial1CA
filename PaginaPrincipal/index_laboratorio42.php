@@ -12,10 +12,10 @@ $cod   = $_SESSION['IdEmpleado'];
 $Conexion = new ConexionBD;
 $Conectar = $Conexion->Conectar();
 $SQL = "SELECT t03.nombre,
-               t02.nombreempleado 
+               t02.nombreempleado
         FROM fos_user_user             t01
-        INNER JOIN mnt_empleado        t02 ON (t02.id = t01.id_empleado AND t02.id_establecimiento = t01.id_establecimiento) 
-        INNER JOIN ctl_establecimiento t03 ON (t03.id = t02.id_establecimiento) 
+        INNER JOIN mnt_empleado        t02 ON (t02.id = t01.id_empleado AND t02.id_establecimiento = t01.id_establecimiento)
+        INNER JOIN ctl_establecimiento t03 ON (t03.id = t02.id_establecimiento)
         WHERE t02.id='$cod' AND t02.id_establecimiento = $lugar AND  t01.modulo = 'LAB'";
 
 $Resultado = pg_query($SQL) or die('La consulta fall&oacute;: ' . pg_error());
@@ -31,9 +31,9 @@ echo '<!-- Start Required XML Menu markup for head tag -->
 echo '<center>
 	<table width="100%" border="0" bgcolor="#FFFFFF">
             <tr>
-                <td><img id="Image1" style="WIDTH: 204px; HEIGHT: 99px" height="86" src="../../../Imagenes/paisanito.gif" width="210" name="Image1"></td> 
+                <td><img id="Image1" style="width: 181px; height: 76px;" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image1"></td> 
 		<td style="vertical-align:top">
-                    <h2 align="center" >Ministerio de Salud <br> Sistema de Informaci&oacute;n de Atenci&oacute;n de Pacientes<br><br>' . htmlentities($Establecimiento) . '  <br><br>              
+                    <h2 align="center" >Ministerio de Salud <br> Sistema de Informaci&oacute;n de Atenci&oacute;n de Pacientes<br><br>' . htmlentities($Establecimiento) . '  <br><br>
                     <font face="Verdana" size="2" align="center">Usuario:. <font color="#ff0000" size="2"><strong>' . htmlentities($NombreEmpleado) . '</strong></font></font></h2>
                 </td>
             </tr>

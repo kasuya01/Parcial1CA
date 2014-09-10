@@ -23,7 +23,7 @@ $row_estab = mysql_fetch_array($Consulta_Estab);
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <title>Resultados de Examenes de Laboratorio </title>
-<script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script> 
+<script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 
@@ -44,8 +44,8 @@ $row_estab = mysql_fetch_array($Consulta_Estab);
 </head>
 
 <body>
-<?php 
-	
+<?php
+
 	$datos_generales=$obj->MostrarDatosGenerales($idsolicitud,$lugar);
 	//$datos_empleado=$obj->DatosEmpleado($idempleado);
 	$consulta_datos=$obj->LeerDatos($idexamen);
@@ -68,16 +68,16 @@ $row_estab = mysql_fetch_array($Consulta_Estab);
 					 <p><strong><?php echo $row_estab['Nombre'] ?></strong></p>
 					<p><strong>Area de <?php echo htmlentities($row_area['NombreArea'])?> </strong></p>
 				</td>
-                                 <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.gif" width="210" name="Image3"></td>
+                                 <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
 			</tr>
-		
+
 			<tr>
 				<td style='font:bold'><strong>Establecimiento Solicitante:</strong></td>
 				<td colspan='2'><?php echo $establecimiento?></td>
 				<td style='font:bold'><strong>Fecha Resultado:</strong></td>
 				<td colspan='2'><?php echo $row_generales['Fecha']?></td>
 			</tr>
-			
+
 			<tr>
 				<td style='font:bold'><strong>NEC</strong></td>
 				<td><?php echo $row_generales['IdNumeroExp']?></td>
@@ -92,17 +92,17 @@ $row_estab = mysql_fetch_array($Consulta_Estab);
 				<td style='font:bold'><strong>Sexo</strong></td>
 				<td><?php echo $row_generales['Sexo']?></td>
 			</tr>
-			<tr>	
+			<tr>
 				<td style='font:bold'><strong>Procedencia:</strong></td>
 				<td style='font:bold'><?php echo htmlentities($row_generales['Procedencia'])?></td>
 				<td colspan='1'>&nbsp;</td>
 				<td style='font:bold'><strong>Origen:</strong></td>
 				<td style='font:bold'><?php echo htmlentities($row_generales['Origen'])?></td>
-			</tr>				
+			</tr>
 			<tr>
 				 <td style='font:bold'><strong>Examen Realizado:</strong></td>
 				 <td colspan='4' style='font:bold'><?php echo htmlentities($row_area['NombreExamen'])?></td>
-		        </tr>				 
+		        </tr>
 			<tr>
 				 <td style='font:bold'><strong>Validado Por</strong></td>
 				 <td colspan='2'><?php echo htmlentities($responsable) ?></td>
@@ -110,8 +110,8 @@ $row_estab = mysql_fetch_array($Consulta_Estab);
 			<tr>
 				 <td style='font:bold'><strong>Resultado</strong></td>
 					<?php 	mysql_free_result($consulta_datos);
-						mysql_free_result($datos_generales);	 
-					 
+						mysql_free_result($datos_generales);
+
 						 switch($resultado)
 						{
 						  case "P";?>
@@ -123,7 +123,7 @@ $row_estab = mysql_fetch_array($Consulta_Estab);
 					case "O";?>
 							<td colspan='4'>--</td>
 					<?php break;
-	   
+
 					}?>
 			</tr>
 			<tr>
@@ -137,8 +137,8 @@ $row_estab = mysql_fetch_array($Consulta_Estab);
 				<td colspan='5'>&nbsp;</td>
 			</tr>
 		</table></div></td></tr>
-        <tr class="5"><td>		
-		 	<div id="boton">	
+        <tr class="5"><td>
+		 	<div id="boton">
 				<div align="center">
 				  <input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
 				  <input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar() ;" />
