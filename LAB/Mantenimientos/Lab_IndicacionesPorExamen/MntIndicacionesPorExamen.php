@@ -70,13 +70,18 @@ if ($nivel==33){
         <td class="StormyWeatherDataTD">
 			<select id="cmbArea" name="cmbArea" size="1" onChange="LlenarComboExamen(this.value);">
 				<option value="0" >--Seleccione un &Aacute;rea--</option>
-				<?php
-                                        $objeareas=new clsLab_Areas;
-					$consulta= $objeareas->consultaractivas($lugar);
-					while($row = mysql_fetch_array($consulta)){
-						echo "<option value='" . $row['IdArea']. "'>" . $row['NombreArea'] . "</option>";
-					}
-				?>		  
+				
+                                <?php
+                                            $objeareas=new clsLab_Areas;
+                                            $consulta= $objeareas->consultaractivas($lugar);
+                                            while($row = pg_fetch_array($consulta)){
+                                                 echo "<option value='" . $row[0]. "'>" . $row['nombrearea'] . "</option>";
+                                                 
+                                                
+                                            }
+                                            
+                                            
+					?>	
 			</select>		  
 	</td>
     </tr>
