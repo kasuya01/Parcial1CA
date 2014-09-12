@@ -72,8 +72,8 @@ class clsRecepcionSolicitud {
 
             $query = "SELECT t05.id AS id_expediente,
                              t05.numero AS numero_expediente,
-                             t02.fecha AS fecha_cita,
-                             t03.fechaconsulta AS fecha_consulta,
+                             TO_CHAR(t02.fecha, 'DD/MM/YYYY') AS fecha_cita,
+                             TO_CHAR(t03.fechaconsulta, 'DD/MM/YYYY') AS fecha_consulta,
                              CONCAT_WS(' ', t07.primer_apellido, t07.segundo_apellido, t07.apellido_casada) || ', ' || CONCAT_WS(' ', t07.primer_nombre, t07.segundo_nombre, t07.tercer_nombre) AS nombre_paciente,
                              CASE t04.idestado
                                 WHEN 'D' THEN 'Digitada'
@@ -202,7 +202,7 @@ class clsRecepcionSolicitud {
                               FROM ctl_atencion
                               WHERE id_atencion_padre = t08.id) AS Precedencia,
                              t04.numero AS idnumeroexp,
-                             CONCAT_WS(' ',t05.primer_nombre, t05.segundo_nombre,t05.tercer_nombre, t05.primer_apellido, t05.segundo_apellido, t05.pellido_casada) as nombrepaciente,
+                             CONCAT_WS(' ',t05.primer_nombre, t05.segundo_nombre,t05.tercer_nombre, t05.primer_apellido, t05.segundo_apellido, t05.apellido_casada) as nombrepaciente,
                              (SELECT date_trunc('seconds',(SELECT now()))) as fecha,
                              REPLACE(
                                 REPLACE(
@@ -210,7 +210,7 @@ class clsRecepcionSolicitud {
                                         REPLACE(
                                             REPLACE(
                                                 REPLACE(
-                                                    AGE(fecha_nacimiento::timestamp)::text,
+                                                    AGE(t05.fecha_nacimiento::timestamp)::text,
                                                 'years', 'años'),
                                             'year', 'año'),
                                         'mons', 'meses'),
@@ -472,7 +472,7 @@ class clsRecepcionSolicitud {
                       INNER JOIN ctl_atencion                    t12 ON (t12.id = t11.id_atencion)
                       WHERE t12.codigo_busqueda = 'DCOLAB' AND t09.numero = '$idexpediente' AND t07.fecha = '$fechacita'
                             AND t02.id = $IdSolicitud      AND t01.idestablecimientoexterno = $idEstablecimiento
-                            AND t01.estadodetalle = (SELECT id FROM ctl_esatdo_servicio_diagnostico WHERE idestado = 'D' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+                            AND t01.estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = 'D' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
                       ORDER BY t05.idarea";
             //echo $query;
             $result = @pg_query($query);

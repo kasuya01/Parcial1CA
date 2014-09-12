@@ -22,10 +22,14 @@
 			<item labelText="Agregar Examen a Solicitud" url="../../../LAB/Procesos/AgregarExamen/AgregarExamen.php"/>
 		</menu>
 		<sep/>
-		
+		<menu labelText="CONFIGURACIÓN">
+			<item labelText="Áreas de Laboratorio" url="../../Mantenimientos/Lab_Areas/MntAreasLaboratorio.php"/>
+			<item labelText="Examenes por Área" url="../../Mantenimientos/Mnt_AreaExamenEstablecimiento/MntAreaExamenEstablecimiento.php"/>
+		</menu>
+		<sep/>
 		<menu labelText="MANTENIMIENTOS">
         	<menu labelText="LABORATORIO">
-				<item labelText="Áreas de Laboratorio" url="../../Mantenimientos/Lab_Areas/MntAreasLaboratorio.php"/>
+				<!-- item labelText="Áreas de Laboratorio" url="../../Mantenimientos/Lab_Areas/MntAreasLaboratorio.php"/ -->
 				<item labelText="Empleados por Área" url="../../Mantenimientos/Lab_Empleados/MntEmpleados.php"/>
 				<!--item labelText="Programas de Salud" url="../../Mantenimientos/Lab_Programas/MntProgramas.php"/-->
 				<item labelText="Formularios por Programas de Salud" url="../../Mantenimientos/Lab_Formularios/MntFormularios.php"/>

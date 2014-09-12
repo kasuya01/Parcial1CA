@@ -206,23 +206,18 @@ function VerificarExistencia(idexpediente, fechacita, idEstablecimiento, omitir_
         //muy importante este encabezado ya que hacemos uso de un formulario
         ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         //enviando los valores
-        //estado="";
-        //idsolicitud="";
         ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&opcion=" + opcion + "&idEstablecimiento=" + idEstablecimiento);
         ajax.onreadystatechange = function() {
-            if (ajax.readyState == 4)
-            {	//mostrar los nuevos registros en esta capa
-                if (ajax.status == 200)
-                { //alert (ajax.responseText);
-                    if (ajax.responseText == 'D')//si existen datos para la solicitud
-                    {
-                        MostrarDatosGenerales();
-                    }
-                    else { //mueestra el mensaje de estado de la solicitud
-
+            if (ajax.readyState == 4) {	//mostrar los nuevos registros en esta capa
+                if (ajax.status == 200) { //alert (ajax.responseText);
+                    if (ajax.responseText.replace(/(\r\n|\n|\r| )/gm,'') == 'D') { //si existen datos para la solicitud
+                        MostrarDatosGenerales(idexpediente, fechacita, idEstablecimiento);
+                    } else { //mueestra el mensaje de estado de la solicitud
                         alert(ajax.responseText);
-
                     }
+                    //console.log(ajax.responseText.replace(/(\r\n|\n|\r| )/gm,'').length);
+                    //console.log(ajax.responseText.replace(/(\r\n|\n|\r| )/gm,''));
+                    //document.getElementById('divResultado').innerHTML = ajax.responseText;
                 }
             }
         }
@@ -254,11 +249,11 @@ function LlenarEstablecimiento(IdTipoEstab)
 }
 
 //FUNCION PARA RECUPERAR LOS DATOS GENERALES DE LA SOLICITUD
-function MostrarDatosGenerales() {
+function MostrarDatosGenerales(idexpediente, fechacita, idEstablecimiento) {
     //valores de los text
-    idexpediente = document.getElementById('txtidexpediente').value;
-    fechacita = document.getElementById('txtfechasolicitud').value;
-    idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
+    // idexpediente = document.getElementById('txtidexpediente').value;
+    // fechacita = document.getElementById('txtfechasolicitud').value;
+    // idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
 
     //alert (idEstablecimiento);
     //instanciamos el objetoAjax

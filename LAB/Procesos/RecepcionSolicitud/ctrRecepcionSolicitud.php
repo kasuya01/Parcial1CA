@@ -23,11 +23,10 @@ switch ($opcion) {
         $idsolicitud  = $_POST['idsolicitud'];
 
         if ($con->conectar() == true) {
-            $query = "UPDATE sec_solicitudestudios SET estado = (SELECT id FROM lab_estadossolicitud WHERE idestado = '$estado')
-                      WHERE id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB') AND id_establecimiento = $lugar
-                            AND id_expediente = (SELECT id FROM mnt_expediente WHERE numero = '$idexpediente') AND  id = $idsolicitud";
+            $query = "UPDATE sec_solicitudestudios SET estado = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = '$estado' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+                      WHERE id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB') AND id_establecimiento = $lugar AND id_expediente = (SELECT id FROM mnt_expediente WHERE numero = '$idexpediente') AND  id = $idsolicitud";
 
-            $query1 ="UPDATE sec_detallesolicitudestudios SET estadodetalle = (SELECT id FROM lab_estadosdetallesolicitud WHERE idestadodetalle = 'PM')
+            $query1 ="UPDATE sec_detallesolicitudestudios SET estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = 'PM' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
                       WHERE idsolicitudestudio = $idsolicitud AND idestablecimiento = $lugar";
 
             $result = @pg_query($query);
@@ -64,12 +63,12 @@ switch ($opcion) {
                                             WHEN 'P' then 'En Proceso'
                                             WHEN 'C' then 'Completa'
                                         END AS estado
-				 FROM sec_solicitudestudios           t01
-				 INNER JOIN cit_citas_serviciodeapoyo t02 ON (t01.id = t02.id_solicitudestudios)
-				 INNER JOIN sec_historial_clinico     t03 ON (t03.id = t01.id_historial_clinico)
-                                 INNER JOIN lab_estadossolicitud      t04 ON (t04.id = t01.estado)
-                                 INNER JOIN mnt_expediente            t05 ON (t05.id = t01.id_expediente)
-                                 INNER JOIN ctl_atencion              t06 ON (t06.id = t01.id_atencion)
+				                 FROM sec_solicitudestudios                 t01
+				                 INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
+				                 INNER JOIN sec_historial_clinico           t03 ON (t03.id = t01.id_historial_clinico)
+                                 INNER JOIN ctl_estado_servicio_diagnostico t04 ON (t04.id = t01.estado AND t04.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+                                 INNER JOIN mnt_expediente                  t05 ON (t05.id = t01.id_expediente)
+                                 INNER JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)
 				 WHERE t05.numero = '$idexpediente' AND t02.fecha = '$Nfechacita' AND  t01.id_establecimiento = $lugar
                                        AND t03.idestablecimiento = $idEstablecimiento AND t06.codigo_busqueda = 'DCOLAB'";
 
@@ -88,19 +87,19 @@ switch ($opcion) {
 
             if ($numreg[0] > 1) {
                 $query_estado = "SELECT CASE t04.idestado
-                                            WHEN 'D' THEN 'Digitada'
-                                            WHEN 'R' then 'Recibida'
-                                            WHEN 'P' then 'En Proceso'
-                                            WHEN 'C' then 'Completa'
-        				END AS estado
-                                 FROM sec_solicitudestudios           t01
-				 INNER JOIN cit_citas_serviciodeapoyo t02 ON (t01.id = t02.id_solicitudestudios)
-				 INNER JOIN sec_historial_clinico     t03 ON (t03.id = t01.id_historial_clinico)
-                                 INNER JOIN lab_estadossolicitud      t04 ON (t04.id = t01.estado)
-                                 INNER JOIN mnt_expediente            t05 ON (t05.id = t01.id_expediente)
-                                 INNER JOIN ctl_atencion              t06 ON (t06.id = t01.id_atencion)
-				 WHERE t05.numero = '$idexpediente' AND t02.fecha = '$Nfechacita' AND t04.idestado = 'D' AND t01.id_establecimiento = $lugar
-                                       AND t03.idestablecimiento = $idEstablecimiento AND t06.codigo_busqueda = 'DCOLAB'";
+                                                WHEN 'D' THEN 'Digitada'
+                                                WHEN 'R' then 'Recibida'
+                                                WHEN 'P' then 'En Proceso'
+                                                WHEN 'C' then 'Completa'
+        				                    END AS estado
+                                      FROM sec_solicitudestudios                 t01
+				                      INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
+				                      INNER JOIN sec_historial_clinico           t03 ON (t03.id = t01.id_historial_clinico)
+                                      INNER JOIN ctl_estado_servicio_diagnostico t04 ON (t04.id = t01.estado AND t04.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+                                      INNER JOIN mnt_expediente                  t05 ON (t05.id = t01.id_expediente)
+                                      INNER JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)
+				                      WHERE t05.numero = '$idexpediente' AND t02.fecha = '$Nfechacita' AND t04.idestado = 'D' AND t01.id_establecimiento = $lugar
+                                        AND t03.idestablecimiento = $idEstablecimiento AND t06.codigo_busqueda = 'DCOLAB'";
 
                 $result = @pg_query($query_estado);
                 $row = pg_fetch_array($result);
@@ -108,7 +107,7 @@ switch ($opcion) {
 
                 if ($estadosolicitud != '') {
                     if ($estadosolicitud == "Digitada") { //Mostrar datos de la solicitud
-                        echo "D";
+                        echo 'D';
                     } else {
                         if ($estadosolicitud == "Recibida" or $estadosolicitud == "En Proceso" or $estadosolicitud == "Completa") { //echo "N";
                             echo "La Solicitud esta: " . $estadosolicitud;
