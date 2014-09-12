@@ -3,6 +3,8 @@ include_once("clsUsuarios.php");
 $objdatos = new clsUsuarios;
 $login    = htmlentities($_POST['txtlogin']);
 $password = htmlentities($_POST['txtpassword']);
+//echo 'log: '.$login.'  pass:'.$password.'<br/>';
+
   
    $numreg = $objdatos->validarexistencia($login,$password);
    if ($numreg == "1")
@@ -68,7 +70,7 @@ $password = htmlentities($_POST['txtpassword']);
    }
    else
    {
-	header("Location: ../Laboratorio/login.php");
+	//header("Location: ../Laboratorio/login.php");
    }
  
 

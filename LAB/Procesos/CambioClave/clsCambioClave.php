@@ -12,9 +12,18 @@ class clsCambioClave
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT IdEmpleado from mnt_empleados WHERE IdTipoEmpleado='LAB' 
-			   AND Correlativo=$usuario AND IdEstablecimiento=$lugar";
-	 $result = mysql_query($query);
+  /*  $query = "SELECT idempleado from mnt_empleado WHERE id_tipo_empleado='LAB' 
+			   AND correlativo=$usuario AND id_establecimiento=$lugar";
+    
+    */
+       
+                 $query = "   SELECT mne.id from mnt_empleado mne
+                                    join fos_user_user fuu on (fuu.id_empleado=mne.id)
+                                    where fuu.id=$usuario
+                                    and fuu.id_establecimiento=$lugar";
+       
+       
+	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -31,8 +40,8 @@ class clsCambioClave
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "SELECT * FROM mnt_usuarios  WHERE IdEmpleado='$cod' AND IdEstablecimiento=$lugar AND password= MD5('$cActual')";
-     $result = mysql_query($query);
+   $query = "SELECT * FROM fos_user_user  WHERE id='$cod' AND id_establecimiento=$lugar AND password= MD5('$cActual')";
+     $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -48,8 +57,8 @@ function ActualizarClave($nClave,$lugar,$cod)
    if($con->conectar()==true) 
    {
     
-     $query = "UPDATE mnt_usuarios SET password=md5('$nClave') WHERE IdEmpleado='$cod' AND IdEstablecimiento=$lugar";	
-     $result = mysql_query($query);
+        $query = "UPDATE fos_user_user SET password=md5('$nClave') WHERE id='$cod' AND id_establecimiento=$lugar";	
+     $result = pg_query($query);
 	 
      if (!$result)
        return false;

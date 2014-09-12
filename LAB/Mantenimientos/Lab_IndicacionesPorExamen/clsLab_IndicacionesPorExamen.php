@@ -13,10 +13,10 @@ class clsLab_IndicacionesPorExamen
 	   $con = new ConexionBD;
 	   if($con->conectar()==true) 
 	   {
-	    $query = "INSERT INTO mnt_indicacionesporexamen
-		     (IdExamen,IdArea,Indicacion,IdServicio,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod) 
-		      VALUES('$idexamen','$idarea','$indicacion','DCOLAB',$usuario,NOW(),$usuario,NOW())";
-	     $result = @mysql_query($query);
+	   $query = "INSERT INTO mnt_indicacionesporexamen
+		     (id_conf_examen_estab,indicacion,idservicio,idusuarioreg,fechahorareg,idusuariomod,fechahoramod) 
+		      VALUES('$idexamen','$indicacion','98',$usuario,NOW(),$usuario,NOW())";
+	     $result = @pg_query($query);
 		 
 	     if (!$result)
 	       return false;
@@ -30,10 +30,10 @@ class clsLab_IndicacionesPorExamen
 	   $con = new ConexionBD;
 	   if($con->conectar()==true) 
 	   {
-	     $query = "UPDATE mnt_indicacionesporexamen SET Indicacion='$indicacion', IdExamen='$idexamen', 
-		       IdArea='$idarea', IdUsuarioMod= $usuario, FechaHoraMod=NOW() 
-		       WHERE IdIndicacionPorExamen=$idindicacion";
-	     $result = @mysql_query($query);
+	    $query = "UPDATE mnt_indicacionesporexamen SET indicacion='$indicacion', id_conf_examen_estab='$idexamen', 
+		        idusuariomod= '$usuario',idservicio='98', fechahoramod=NOW() 
+		       WHERE id=$idindicacion";
+	     $result = @pg_query($query);
 		 if (!$result)
 	       return false;
 	     else
@@ -48,7 +48,7 @@ class clsLab_IndicacionesPorExamen
 	   if($con->conectar()==true) 
 	   {
 	     $query = "DELETE FROM mnt_indicacionesporexamen WHERE IdIndicacionPorExamen=$idindicacion";
-	     $result = @mysql_query($query);
+	     $result = @pg_query($query);
 		 
 	     if (!$result)
 	       return false;
@@ -64,10 +64,10 @@ class clsLab_IndicacionesPorExamen
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = "SELECT IdExamen,Indicacion FROM mnt_indicacionesporexamen
-		       WHERE IdServicio='DCOLAB'
-		       ORDER BY IdExamen";
-		 $result = @mysql_query($query);
+	     $query = "SELECT id_conf_examen_estab,indicacion FROM mnt_indicacionesporexamen
+		       WHERE idservicio=3
+		       ORDER BY id_conf_examen_estab";
+		 $result = @pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -81,13 +81,23 @@ class clsLab_IndicacionesPorExamen
 	   $con = new ConexionBD;
 	   if($con->conectar()==true)
 	   {
-	     $query = "SELECT lab_examenes.IdExamen,NombreExamen,Indicacion,lab_areas.IdArea,NombreArea 
+	  $query = /*"SELECT lab_examenes.IdExamen,NombreExamen,Indicacion,lab_areas.IdArea,NombreArea 
                        FROM mnt_indicacionesporexamen 
                        INNER JOIN lab_areas ON mnt_indicacionesporexamen.IdArea=lab_areas.IdArea
                        INNER JOIN lab_examenes ON mnt_indicacionesporexamen.IdExamen=lab_examenes.IdExamen
                        WHERE IdIndicacionPorExamen=$idindicacion
-                       ORDER BY lab_examenes.IdExamen";
-	     $result = @mysql_query($query);
+                       ORDER BY lab_examenes.IdExamen";*/
+                     
+                 "select casd.id,casd.nombrearea,lcee.id,lcee.nombre_examen,mipe.indicacion		
+                        from ctl_area_servicio_diagnostico casd
+			join mnt_area_examen_establecimiento mnt4 on   mnt4.id_area_servicio_diagnostico=casd.id
+			join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen) 
+			join mnt_indicacionesporexamen mipe on (mipe.id_conf_examen_estab=lcee.id) 
+                        where mipe.id=$idindicacion
+                        ORDER BY mnt4.id";
+             
+             
+	     $result = @pg_query($query);
 	     if (!$result)
 	       return false;
 	     else
@@ -101,13 +111,14 @@ class clsLab_IndicacionesPorExamen
 		$con = new ConexionBD;
 	    //usamos el metodo conectar para realizar la conexion
 	    if($con->conectar()==true){
-	     $query = "SELECT lab_examenes.IdExamen, NombreExamen
-                       FROM lab_examenes
-                       INNER JOIN lab_examenesxestablecimiento 
-                       ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
-                       WHERE lab_examenes.IdArea ='$idarea' AND Condicion = 'H'
-                       ORDER BY IdExamen";
-		 $result = mysql_query($query);
+	     $query = "SELECT lcee.id,lcee.nombre_examen 
+                    FROM mnt_area_examen_establecimiento maees
+                    INNER JOIN lab_conf_examen_estab lcee ON maees.id= lcee.idexamen 
+                    WHERE maees.id_area_servicio_diagnostico=$idarea
+                    AND lcee.condicion='H' 
+                    ORDER BY lcee.idexamen";
+             
+		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -122,8 +133,8 @@ class clsLab_IndicacionesPorExamen
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = "SELECT * FROM mnt_indicacionesporexamen";
-		 $numreg = mysql_num_rows(mysql_query($query));
+	   $query = "SELECT * FROM mnt_indicacionesporexamen";
+		 $numreg = pg_num_rows(pg_query($query));
 		 if (!$numreg )
 		   return false;
 		 else
@@ -136,8 +147,8 @@ class clsLab_IndicacionesPorExamen
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = $query_search;
-		 $numreg = mysql_num_rows(mysql_query($query));
+	  echo "rr".  $query = $query_search;
+		 $numreg = pg_num_rows(pg_query($query));
 		 if (!$numreg )
 		   return false;
 		 else
@@ -151,8 +162,16 @@ class clsLab_IndicacionesPorExamen
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = "SELECT IdIndicacionPorExamen,IdArea,IdExamen,Indicacion FROM mnt_indicacionesporexamen LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-		 $result = @mysql_query($query);
+	echo "pag".   $query = "select mipe.id,casd.id,casd.nombrearea,lcee.id,lcee.nombre_examen,mipe.indicacion 
+                               from ctl_area_servicio_diagnostico casd join mnt_area_examen_establecimiento 
+                               mnt4 on mnt4.id_area_servicio_diagnostico=casd.id join lab_conf_examen_estab 
+                               lcee on (mnt4.id=lcee.idexamen) 
+                                join mnt_indicacionesporexamen 
+                            mipe on (mipe.id_conf_examen_estab=lcee.id)  ORDER BY mnt4.id 
+                            LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+                
+              /*  "SELECT id,idservicio,id_conf_examen_estab,indicacion FROM mnt_indicacionesporexamen LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar ";*/
+		 $result = @pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -166,8 +185,8 @@ class clsLab_IndicacionesPorExamen
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = $query_search." LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-		 $result = @mysql_query($query);
+	echo  $query = $query_search." LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+		 $result = @pg_query($query);
 		 if (!$result)
 		   return false;
 		 else

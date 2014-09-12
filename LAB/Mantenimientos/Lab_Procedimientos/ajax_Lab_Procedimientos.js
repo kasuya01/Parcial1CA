@@ -131,7 +131,7 @@ function pedirDatos(idproce){ //CARGAR DATOS A MODIFICAR
 	divFormularioNuevo=document.getElementById('divFrmNuevo');
 	//instanciamos el objetoAjax
 	ajax=objetoAjax();
-	//alert(idproce);
+	//alert("esto----> ".idproce);
 	//uso del medotod POST
 	ajax.open("POST", "consulta_Procedimientos.php");
 	ajax.onreadystatechange=function() {

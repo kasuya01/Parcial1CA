@@ -6,14 +6,14 @@ include_once("clsLab_IndicacionesPorExamen.php");
 $idindicacion=$_POST['idindicacion'];
 $obj = new clsLab_IndicacionesPorExamen;
 $consulta=$obj->consultarid_indicacion($idindicacion);
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 
 //valores de las consultas
-$idexamen=$row['IdExamen'];
-$nombreexamen=$row['NombreExamen'];
-$idarea=$row['IdArea'];
-$nombrearea=$row['NombreArea'];
-$indicacion=$row['Indicacion'];
+$idexamen=$row[2];
+$nombreexamen=$row[3];
+$idarea=$row[0];
+$nombrearea=$row[1];
+$indicacion=$row['indicacion'];
 //muestra los datos consultados en los campos del formulario
 ?>
 
@@ -31,9 +31,9 @@ $indicacion=$row['Indicacion'];
 			include('../Lab_Areas/clsLab_Areas.php');
 			$objeareas = new clsLab_Areas;
 			$consulta = $objeareas->consultaractivas();
-			while($row = mysql_fetch_array($consulta))
+			while($row = pg_fetch_array($consulta))
 			{
-				echo "<option value='" . $row['IdArea']. "'>" . htmlentities($row['NombreArea']) . "</option>";
+				echo "<option value='" . $row['idarea']. "'>" . htmlentities($row['nombrearea']) . "</option>";
 			}						            	
 			echo "<option value='" . $idarea . "' selected='selected'>" .htmlentities($nombrearea). "</option>";
 			?>		  
@@ -42,13 +42,13 @@ $indicacion=$row['Indicacion'];
           <tr>
             <td class="StormyWeatherFieldCaptionTD">Examen </td>
             <td class="StormyWeatherDataTD"><select name="cmbExamen" size="1">
-            <?php
-			$consultaex = $obj->ExamenesPorArea($idarea);
-			while($row = mysql_fetch_array($consultaex))
-			{
-				echo "<option value='" . $row['IdExamen']. "'>" . $row['NombreExamen'] . "</option>";
-			}						            	
-			echo "<option value='" . $idexamen . "' selected='selected'>" .$nombreexamen. "</option>";
+          <?php
+				$consultaex = $obj->ExamenesPorArea($idarea);
+				while($row = pg_fetch_array($consultaex))
+				{
+					echo "<option value='" . $row['id']. "'>" . $row['nombre_examen'] . "</option>";
+				}						            	
+				echo "<option value='" . $idexamen . "' selected='selected'>" .$nombreexamen. "</option>";
 			?>	
             </select></td>
           </tr>

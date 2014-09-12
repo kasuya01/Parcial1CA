@@ -20,6 +20,7 @@ $objeareas=new clsLab_Areas;
 switch ($opcion) 
 {
     case 1:  //INSERTAR	
+       // echo $indicacion;
       if ($objdatos->insertar($idexamen,$idarea,$indicacion,$usuario)==true)
 	   {
 		   echo "Registro Agregado";
@@ -68,23 +69,23 @@ switch ($opcion)
 				echo "<table border = 1 align='center' width='60%' class='StormyWeatherFormTABLE'>
 					   <tr>
 						<td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-						<td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td>
-						<td class='CobaltFieldCaptionTD'> IdArea </td>
-						<td class='CobaltFieldCaptionTD'> IdExamen </td>
+						<!-- <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
+						<td class='CobaltFieldCaptionTD'> Area </td>
+						<td class='CobaltFieldCaptionTD'> Examen </td> 
 						<td class='CobaltFieldCaptionTD'> Indicaci&oacute;n </td>	   
 					   </tr>";
 
-				while($row = mysql_fetch_array($consulta)){
+				while($row = pg_fetch_array($consulta)){
                                     echo "<tr>
 						<td aling='center'> 
                                         		<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 							onclick=\"pedirDatos('".$row[0]."')\"> </td>
-						<td aling ='center'> 
+						<!-- <td aling ='center'> 
 							<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-							onclick=\"eliminarDato('".$row[0]."')\"> </td>
-						<td> $row[1] </td>
-						<td> $row[2] </td>
-						<td>".htmlentities( $row[3])."</td>
+							onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
+						<!-- area --> <td> $row[2] </td> 
+						<!-- examen --> <td> $row[4] </td>
+					    <!-- indicacion-->	<td>".htmlentities( $row[5])."</td>
 					</tr>";
 				}
                                 echo "</table>"; 
@@ -130,7 +131,7 @@ switch ($opcion)
 		      $resultado = "<select id='cmbExamen' name='cmbExamen' size='1'>
 					<option value='0'>--Seleccione un Examen--</option>";
 						
-				while($rowex = mysql_fetch_array($consultaex))
+				while($rowex = pg_fetch_array($consultaex))
 						{
 		$resultado .= "<option value='" . $rowex[0]. "'>" .htmlentities($rowex[1]) . "</option>";
 						}
@@ -157,9 +158,9 @@ switch ($opcion)
 						//include('../Lab_Areas/clsLab_Areas.php');
 						//$objeareas=new clsLab_Areas;
 						$consulta= $objeareas->consultaractivas($lugar);
-						while($row = mysql_fetch_array($consulta))
+						while($row = pg_fetch_array($consulta))
 						{
-		$resultado .= "<option value='" . $row['IdArea']. "'>" . $row['NombreArea'] . "</option>";
+		$resultado .= "<option value='" . $row['idarea']. "'>" . $row['nombrearea'] . "</option>";
 						}
 		$resultado .= "</select>
 					</td>
@@ -188,26 +189,44 @@ switch ($opcion)
 	  break;
 	case 7: //BUSQUEDA
 		
-		$query = "SELECT IdIndicacionPorExamen,IdArea,IdExamen,Indicacion FROM mnt_indicacionesporexamen WHERE ";
+		$query = "select mipe.id, casd.id,casd.nombrearea,lcee.id,lcee.nombre_examen,mipe.indicacion		
+                        from ctl_area_servicio_diagnostico casd
+			join mnt_area_examen_establecimiento mnt4 on   mnt4.id_area_servicio_diagnostico=casd.id
+			join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen) 
+			join mnt_indicacionesporexamen mipe on (mipe.id_conf_examen_estab=lcee.id) where";
 		$ban=0;
 		//VERIFICANDO LOS POST ENVIADOS
-		if (!empty($_POST['idexamen']))
-		{ $query .= " IdExamen='".$_POST['idexamen']."' AND"; }
-		else{$ban=1;}
+                if (!empty($_POST['idarea']))
+		{ $query .= " (case '".$_POST['idarea']."'
+                            when '0' then casd.id >=0
+                            else  (casd.id='".$_POST['idarea']."')end)
+                                 AND"; }
+                    
+                   // { $query .= " casd.id='".$_POST['idarea']."' AND"; }
 		
-		if (!empty($_POST['idarea']))
-		{ $query .= " IdArea='".$_POST['idarea']."' AND"; }
-		else{$ban=1;}
+                else{$ban=1;}
+                
+		if (!empty($_POST['idexamen']) || $_POST['idexamen']!=0)
+		{ $query .= " (case '".$_POST['idexamen']."'
+                                    when '0' then lcee.id >=0 
+                                    else  (lcee.id='".$_POST['idexamen']."') end) 
+                         AND"; }
+                    
+                   // { $query .= " mnt4.id='".$_POST['idexamen']."' AND"; }
+		
+                else{$ban=1;}
+		
+		
 		
 		if (!empty($_POST['indicacion']))
-		{ $query .= " Indicacion='".$_POST['indicacion']."' AND"; }
+		{ $query .= " mipe.indicacion ilike '%%".$_POST['indicacion']."%%' AND"; }
 		else{$ban=1;}
 		if ($ban==0)
 		{    $query = substr($query ,0,strlen($query)-4);
-			 $query_search = $query. " AND IdServicio='DCOLAB'";
+			 $query_search = $query. " AND idservicio=98";
 		}
 		else {
-			$query_search = $query. " IdServicio='DCOLAB'";
+			$query_search = $query. " idservicio=98";
 		}
 		
 		//ENVIANDO A EJECUTAR LA BUSQUEDA!!
@@ -226,23 +245,23 @@ switch ($opcion)
 		   echo "<table border = 1 align='center'  width='60%' class='StormyWeatherFormTABLE'>
 		        <tr>
 				<td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-				<td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td>
-				<td class='CobaltFieldCaptionTD'> IdArea </td>
-				<td class='CobaltFieldCaptionTD'> IdExamen </td>
+				<!--<td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
+				<td class='CobaltFieldCaptionTD'> Area </td>
+				<td class='CobaltFieldCaptionTD'> Examen </td>
 				<td class='CobaltFieldCaptionTD'> Indicaci&oacute;n </td>	   
 			</tr>";
 
-			while($row = mysql_fetch_array($consulta)){
+			while($row = pg_fetch_array($consulta)){
 		  echo "<tr>
 		  		<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"pedirDatos('".$row['IdIndicacionPorExamen']."')\"> </td>
-				<td aling ='center'> 
-					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"eliminarDato('".$row['IdIndicacionPorExamen']."')\"> </td>
-				<td> $row[1] </td>
+					onclick=\"pedirDatos('".$row[0]."')\"> </td>
+				<!-- <td aling ='center'> 
+					 <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+					onclick=\"eliminarDato('".$row['id']."')\"> </td> -->
 				<td> $row[2] </td>
-				<td>".htmlentities( $row[3])."</td>
+				<td> $row[4] </td>
+				<td>".htmlentities( $row[5])."</td>
 				</tr>";
 				}
 		echo "</table>"; 
@@ -281,28 +300,65 @@ switch ($opcion)
 		
 	break;
 	case 8://PAGINACION DE BUSQUEDA
-		$query = "SELECT IdIndicacionPorExamen,IdArea,IdExamen,Indicacion FROM mnt_indicacionesporexamen WHERE ";
+		$query = "select mipe.id, casd.id,casd.nombrearea,lcee.id,lcee.nombre_examen,mipe.indicacion		
+                        from ctl_area_servicio_diagnostico casd
+			join mnt_area_examen_establecimiento mnt4 on   mnt4.id_area_servicio_diagnostico=casd.id
+			join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen) 
+			join mnt_indicacionesporexamen mipe on (mipe.id_conf_examen_estab=lcee.id) where ";
 		$ban=0;
 		
 		//VERIFICANDO LOS POST ENVIADOS
-		if (!empty($_POST['idexamen']))
-		{ $query .= " IdExamen='".$_POST['idexamen']."' AND"; }
+		/*if (!empty($_POST['idexamen']))
+		{ $query .= " mnt4.id='".$_POST['idexamen']."' AND"; }
 		else{$ban=1;}
 		
 		if (!empty($_POST['idarea']))
-		{ $query .= " IdArea='".$_POST['idarea']."' AND"; }
+		{ $query .= " casd.id='".$_POST['idarea']."' AND"; }
 		else{$ban=1;}
 		
 		if (!empty($_POST['indicacion']))
-		{ $query .= " Indicacion='".$_POST['indicacion']."' AND"; }
+		{ $query .= " mipe.indicacion='".$_POST['indicacion']."' AND"; }
 		else{$ban=1;}
 		
 		if ($ban==0)
 		{    $query = substr($query ,0,strlen($query)-4);
-			 $query_search = $query. " AND IdServicio='DCOLAB'";
+			 $query_search = $query. " AND idservicio=98";
 		}
 		else {
-			$query_search = $query. " IdServicio='DCOLAB'";
+			$query_search = $query. " idservicio=98";
+		}*/
+                //VERIFICANDO LOS POST ENVIADOS
+                if (!empty($_POST['idarea']))
+		{ $query .= " (case '".$_POST['idarea']."'
+                            when '0' then casd.id >=0
+                            else  (casd.id='".$_POST['idarea']."')end)
+                                 AND"; }
+                    
+                   // { $query .= " casd.id='".$_POST['idarea']."' AND"; }
+		
+                else{$ban=1;}
+                
+		if (!empty($_POST['idexamen']) || $_POST['idexamen']!=0)
+		{ $query .= " (case '".$_POST['idexamen']."'
+                                    when '0' then lcee.id >=0 
+                                    else  (lcee.id='".$_POST['idexamen']."') end) 
+                         AND"; }
+                    
+                   // { $query .= " mnt4.id='".$_POST['idexamen']."' AND"; }
+		
+                else{$ban=1;}
+		
+		
+		
+		if (!empty($_POST['indicacion']))
+		{ $query .= " mipe.indicacion ilike '%%".$_POST['indicacion']."%%' AND"; }
+		else{$ban=1;}
+		if ($ban==0)
+		{    $query = substr($query ,0,strlen($query)-4);
+			 $query_search = $query. " AND idservicio=98";
+		}
+		else {
+			$query_search = $query. " idservicio=98";
 		}
 		
 		//require_once("clsLab_IndicacionesPorExamen.php");
@@ -313,6 +369,7 @@ switch ($opcion)
 	
 		 /////LAMANDO LA FUNCION DE LA CLASE 
 		//$obje=new clsLab_IndicacionesPorExamen;
+              
 		$consulta= $objdatos->consultarpagbus($query_search,$RegistrosAEmpezar, $RegistrosAMostrar);
 
 		//muestra los datos consultados en la tabla
@@ -320,23 +377,23 @@ switch ($opcion)
 					   <tr>
 					   <tr>
 					   <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-					   <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td>
-					   <td class='CobaltFieldCaptionTD'> IdArea </td>
-					   <td class='CobaltFieldCaptionTD'> IdExamen </td>
+					 <!--  <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
+					   <td class='CobaltFieldCaptionTD'> Area </td>
+					   <td class='CobaltFieldCaptionTD'> Examen </td>
 					   <td class='CobaltFieldCaptionTD'> Indicaci&oacute;n </td>	   
 					   </tr>";
 
-				while($row = mysql_fetch_array($consulta)){
+				while($row = pg_fetch_array($consulta)){
 					echo "<tr>
 							<td aling='center'> 
 							<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 							onclick=\"pedirDatos('".$row[0]."')\"> </td>
-							<td aling ='center'> 
+							<!-- <td aling ='center'> 
 							<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-							onclick=\"eliminarDato('".$row[0]."')\"> </td>
-							<td> $row[1] </td>
+							onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
 							<td> $row[2] </td>
-							<td>".htmlentities($row[3])."</td>
+							<td> $row[4] </td>
+							<td>".htmlentities($row[5])."</td>
 							</tr>";
 				}
 		echo "</table>"; 

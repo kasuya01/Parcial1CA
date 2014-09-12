@@ -16,7 +16,7 @@ class clsUsuarios {
         if ($con->conectar() == true) {
             $query = "SELECT count(*)
               FROM fos_user_user t01 
-              WHERE t01.username ='labadmin' AND t01.password = md5('admincentral') AND t01.modulo = 'LAB'";
+              WHERE t01.username ='$login' AND t01.password = md5('$password') AND t01.modulo = 'LAB'";
 
             $result = @pg_query($query);
             if (!$result)
