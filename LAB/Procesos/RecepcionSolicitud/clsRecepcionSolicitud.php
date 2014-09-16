@@ -194,7 +194,7 @@ class clsRecepcionSolicitud {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
 
-            $query = "SELECT DISTINCT t03.idempleado AS idmedico,
+            $query = "SELECT t03.idempleado AS idmedico,
                              t03.nombreempleado AS nombremedico,
                              t08.nombre AS Origen,
                              t02.id AS idsolicitudestudio,
@@ -203,7 +203,7 @@ class clsRecepcionSolicitud {
                               WHERE id_atencion_padre = t08.id) AS Precedencia,
                              t04.numero AS idnumeroexp,
                              CONCAT_WS(' ',t05.primer_nombre, t05.segundo_nombre,t05.tercer_nombre, t05.primer_apellido, t05.segundo_apellido, t05.apellido_casada) as nombrepaciente,
-                             (SELECT date_trunc('seconds',(SELECT now()))) as fecha,
+                             TO_CHAR(NOW(), 'DD/MM/YYYY') as fecha,
                              REPLACE(
                                 REPLACE(
                                     REPLACE(
@@ -222,7 +222,7 @@ class clsRecepcionSolicitud {
                              t10.peso,
                              t10.talla,
                              t13.nombre,
-                             TO_DATE(t05.fecha_nacimiento::text, 'DD/MM/YYYY') AS fechanacimiento,
+                             TO_CHAR(t05.fecha_nacimiento, 'DD/MM/YYYY') AS fechanacimiento,
                              t01.idestablecimiento,
                              t14.tiposolicitud,
                              t12.codigo AS iddiagnostico1,
@@ -298,13 +298,13 @@ class clsRecepcionSolicitud {
                       INNER JOIN mnt_paciente                     t08 ON (t08.id = t07.id_paciente)
                       INNER JOIN lab_recepcionmuestra             t09 ON (t06.id = t09.idsolicitudestudio)
                       INNER JOIN cit_citas_serviciodeapoyo        t10 ON (t06.id = t10.id_solicitudestudios)
-                      INNER JOIN ctl_examene_servicio_diagnostico t11 ON (t11.id = t02.id_examen_servicio_diagnostico)
+                      INNER JOIN ctl_examen_servicio_diagnostico t11 ON (t11.id = t02.id_examen_servicio_diagnostico)
                       INNER JOIN sec_historial_clinico            t12 ON (t12.id = t06.id_historial_clinico)
                       INNER JOIN ctl_atencion                     t13 ON (t13.id = t01.id_atencion)
                       WHERE t07.numero = '$idexpediente' AND t10.fecha = '$fechacita'
                             AND t06.id = $idsolicitud    AND t04.idestablecimientoexterno = $IdEstablecimiento
                             AND t13.codigo_busqueda = 'DCOLAB'
-                      GROUP BY SUBSTRING(t03.codigo_examen,1,3), t05.tipomuestra, t03.impresion";
+                      --GROUP BY SUBSTRING(t03.codigo_examen,1,3), t05.tipomuestra, t03.impresion";
             $result = @pg_query($query);
             if (!$result)
                 return false;
@@ -451,26 +451,25 @@ class clsRecepcionSolicitud {
 
             $query = "SELECT t09.numero AS idnumeroexp,
                              t05.idarea,
-                             t04.codigo_examen AS idexamen,
-                             t04.nombre_examen AS nombreexamen,
+                             t03.codigo_examen AS idexamen,
+                             t03.nombre_examen AS nombreexamen,
                              t01.indicacion,
                              t02.fecha_solicitud AS fechasolicitud,
                              t06.idsubservicio,
                              t02.id AS idsolicitudestudio,
                              t10.idestandar
-                      FROM  sec_detallesolicitudestudios         t01
-                      INNER JOIN sec_solicitudestudios           t02 ON (t02.id = t01.idsolicitudestudio)
-                      INNER JOIN mnt_area_examen_establecimiento t03 ON (t03.id = t01.idexamen)
-                      INNER JOIN lab_conf_examen_estab           t04 ON (t03.id = t04.idexamen)
-                      INNER JOIN ctl_area_servicio_diagnostico   t05 ON (t05.id = t03.id_area_servicio_diagnostico)
-                      INNER JOIN sec_historial_clinico           t06 ON (t06.id = t02.id_historial_clinico)
-                      INNER JOIN cit_citas_serviciodeapoyo       t07 ON (t02.id = t07.id_solicitudestudios)
+                      FROM sec_detallesolicitudestudios 		 t01
+                      INNER JOIN sec_solicitudestudios 		     t02 ON (t02.id = t01.idsolicitudestudio)
+                      INNER JOIN lab_conf_examen_estab 		     t03 ON (t03.id = t01.id_conf_examen_estab)
+                      INNER JOIN mnt_area_examen_establecimiento t04 ON (t04.id = t03.idexamen)
+                      INNER JOIN ctl_area_servicio_diagnostico 	 t05 ON (t05.id = t04.id_area_servicio_diagnostico)
+                      INNER JOIN sec_historial_clinico 		     t06 ON (t06.id = t02.id_historial_clinico)
+                      INNER JOIN cit_citas_serviciodeapoyo 		 t07 ON (t02.id = t07.id_solicitudestudios)
                       INNER JOIN ctl_estado_servicio_diagnostico t08 ON (t08.id = t02.estado AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-                      INNER JOIN mnt_expediente                  t09 ON (t09.id = t02.id_expediente)
-                      INNER JOIN ctl_examen_servicio_diagnostico t10 ON (t10.id = t03.id_examen_servicio_diagnostico)
-                      INNER JOIN mnt_aten_area_mod_estab         t11 ON (t11.id = t02.id_atencion)
-                      INNER JOIN ctl_atencion                    t12 ON (t12.id = t11.id_atencion)
-                      WHERE t12.codigo_busqueda = 'DCOLAB' AND t09.numero = '$idexpediente' AND t07.fecha = '$fechacita'
+                      INNER JOIN mnt_expediente 			     t09 ON (t09.id = t02.id_expediente)
+                      INNER JOIN ctl_examen_servicio_diagnostico t10 ON (t10.id = t04.id_examen_servicio_diagnostico)
+                      INNER JOIN ctl_atencion 			         t11 ON (t11.id = t02.id_atencion)
+                      WHERE t11.codigo_busqueda = 'DCOLAB' AND t09.numero = '$idexpediente' AND t07.fecha = '$fechacita'
                             AND t02.id = $IdSolicitud      AND t01.idestablecimientoexterno = $idEstablecimiento
                             AND t01.estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = 'D' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
                       ORDER BY t05.idarea";

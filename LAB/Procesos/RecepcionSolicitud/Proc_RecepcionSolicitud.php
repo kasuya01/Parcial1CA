@@ -6,6 +6,7 @@ if (isset($_SESSION['Correlativo'])) {
     $lugar = $_SESSION['Lugar'];
     $area  = $_SESSION['Idarea'];
     $ROOT_PATH = $_SESSION['ROOT_PATH'];
+    $base_url  = $_SESSION['base_url'];
     include_once("clsRecepcionSolicitud.php");
 
     //consulta los datos por su id
@@ -75,7 +76,7 @@ if (isset($_SESSION['Correlativo'])) {
             <script type="text/javascript">
                 function searchAllBuild(object) {
                     jQuery('#divResultado').empty();
-                    jQuery('#divResultado').append('<center><img id="wait" src="<?php echo $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST']; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" class="search-label">Buscando...</div></center>');
+                    jQuery('#divResultado').append('<center><img id="wait" src="<?php echo $base_url; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" class="search-label">Buscando...</div></center>');
 
                     setTimeout(function() {
                         var html =  '<center>\
@@ -142,7 +143,7 @@ if (isset($_SESSION['Correlativo'])) {
                                 <table width="60%" border="1" align="center" class="StormyWeatherFormTABLE">
                                     <tr>
                                         <td colspan="3" align="center" class="CobaltFieldCaptionTD">
-                                            <strong><h3>Recepci&oacute;n de Solicitudes de Ex&aacute;menes de Laboratorio</h3></strong>
+                                            <strong><h3 class="h3-table-header">Recepci&oacute;n de Solicitudes de Ex&aacute;menes de Laboratorio</h3></strong>
                                         </td>
                                     </tr>
                                     <tr>	<td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</TD>

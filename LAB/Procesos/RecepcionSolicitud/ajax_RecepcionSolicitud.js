@@ -251,8 +251,8 @@ function LlenarEstablecimiento(IdTipoEstab)
 //FUNCION PARA RECUPERAR LOS DATOS GENERALES DE LA SOLICITUD
 function MostrarDatosGenerales(idexpediente, fechacita, idEstablecimiento) {
     //valores de los text
-    // idexpediente = document.getElementById('txtidexpediente').value;
-    // fechacita = document.getElementById('txtfechasolicitud').value;
+    document.getElementById('txtidexpediente').value = idexpediente;
+    document.getElementById('txtfechasolicitud').value = fechacita;
     // idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
 
     //alert (idEstablecimiento);
@@ -396,7 +396,7 @@ function CambiarEstadoDetalleSolicitud(estado)
 
 
 function imprimiretiquetas(posicion)
-{//cambiar imprimir  etiquetas1.php  por imprimir.php
+{//cambiar imprimir  etiquetas1.php  por imprimir.ph
     idexpediente = document.getElementById('txtidexpediente').value;
     fechacita    = document.getElementById('txtfechasolicitud').value;
     idsolicitud  = document.getElementById('txtidsolicitud[' + posicion + ']').value;
@@ -447,10 +447,9 @@ function RegistrarNumeroMuestra(posicion)//Registrando Numero de Muestra asociad
         {
             if (ajax.status == 200)
             {
-
-                if (ajax.responseText != "N")
+                if (ajax.responseText.replace(/(\r\n|\n|\r| )/gm,'') != "N")
                 {
-                    if (ajax.responseText != "NN")
+                    if (ajax.responseText.replace(/(\r\n|\n|\r| )/gm,'') != "NN")
                     {
 
                         alert(ajax.responseText);
@@ -548,7 +547,7 @@ function CambiarEstadoSolicitud(estado, idsolicitud, posicion)
                 document.getElementById('divCambioEstado').style.display = "none";
                 document.getElementById('divCambioEstado').innerHTML = ajax.responseText;
                 //verificando el cambio de estado
-                if (ajax.responseText == "Y")
+                if (ajax.responseText.replace(/(\r\n|\n|\r| )/gm,'') == "Y")
                 {
                     //alert(ajax.responseText);
                     /* ****** ingresar datos temporales ********************* */

@@ -87,19 +87,19 @@ switch ($opcion) {
 
             if ($numreg[0] > 1) {
                 $query_estado = "SELECT CASE t04.idestado
-                                                WHEN 'D' THEN 'Digitada'
-                                                WHEN 'R' then 'Recibida'
-                                                WHEN 'P' then 'En Proceso'
-                                                WHEN 'C' then 'Completa'
-        				                    END AS estado
-                                      FROM sec_solicitudestudios                 t01
-				                      INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
-				                      INNER JOIN sec_historial_clinico           t03 ON (t03.id = t01.id_historial_clinico)
-                                      INNER JOIN ctl_estado_servicio_diagnostico t04 ON (t04.id = t01.estado AND t04.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-                                      INNER JOIN mnt_expediente                  t05 ON (t05.id = t01.id_expediente)
-                                      INNER JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)
-				                      WHERE t05.numero = '$idexpediente' AND t02.fecha = '$Nfechacita' AND t04.idestado = 'D' AND t01.id_establecimiento = $lugar
-                                        AND t03.idestablecimiento = $idEstablecimiento AND t06.codigo_busqueda = 'DCOLAB'";
+                                            WHEN 'D' THEN 'Digitada'
+                                            WHEN 'R' then 'Recibida'
+                                            WHEN 'P' then 'En Proceso'
+                                            WHEN 'C' then 'Completa'
+        				                END AS estado
+                                 FROM sec_solicitudestudios                 t01
+				                 INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
+				                 INNER JOIN sec_historial_clinico           t03 ON (t03.id = t01.id_historial_clinico)
+                                 INNER JOIN ctl_estado_servicio_diagnostico t04 ON (t04.id = t01.estado AND t04.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+                                 INNER JOIN mnt_expediente                  t05 ON (t05.id = t01.id_expediente)
+                                 INNER JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)
+				                 WHERE t05.numero = '$idexpediente' AND t02.fecha = '$Nfechacita' AND t04.idestado = 'D' AND t01.id_establecimiento = $lugar
+                                   AND t03.idestablecimiento = $idEstablecimiento AND t06.codigo_busqueda = 'DCOLAB'";
 
                 $result = @pg_query($query_estado);
                 $row = pg_fetch_array($result);
@@ -132,8 +132,8 @@ switch ($opcion) {
         if ($con->conectar() == true) {
             $query = "SELECT MAX(t01.numeromuestra) + 1 AS numeromuestra
                       FROM lab_recepcionmuestra        t01
-		      INNER JOIN sec_solicitudestudios t02 ON (t01.id = t02.idsolicitudestudio)
-		      WHERE t01.fecharecepcion = (SELECT date_trunc('seconds',(SELECT now()))) AND t02.id_establecimiento = $lugar";
+		      INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
+		      WHERE t01.fecharecepcion = TO_DATE(NOW()::text, 'YYYY-MM-DD') AND t02.id_establecimiento = $lugar";
             $result = @pg_query($query);
             if (!$result)
                 echo "N";
@@ -144,8 +144,8 @@ switch ($opcion) {
                     $numero = 1;
                 }
                 //Registro de la recepcion
-                $query_insert = "INSERT INTO lab_recepcionmuestra(idsolicitudestudio, numeromuestra, fechacita, fecharecepcion, idusuarioreg, fechahorareg)
-                                 VALUES($idsolicitud,$numero,'$fechacita', (SELECT date_trunc('seconds',(SELECT now()))),$usuario, (SELECT date_trunc('seconds',(SELECT now()))))";
+                $query_insert = "INSERT INTO lab_recepcionmuestra(idsolicitudestudio, numeromuestra, fechacita, fecharecepcion, idusuarioreg, fechahorareg, idestablecimiento)
+                                 VALUES($idsolicitud,$numero,'$fechacita', TO_DATE(NOW()::text, 'YYYY-MM-DD'), $usuario ,date_trunc('seconds', now()), $lugar)";
                 $result_insert = @pg_query($query_insert);
                 if (!$result_insert) {
                     echo "NN";
