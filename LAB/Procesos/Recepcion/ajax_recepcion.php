@@ -53,7 +53,7 @@ switch($Proceso){
                $rslts = '<select name="cmbMedico" id="cmbMedico"  style="width:350px">';
 				$rslts .='<option value="0">--selecione un M&eacute;dico--</option>';
 				while ($rows =pg_fetch_array($dtmed)){
-					$rslts.= '<option value="' . $rows['id'] .'" >'. $rows['nombre'].'</option>';
+					$rslts.= '<option value="'.$rows['idemp'].'" >'. $rows['nombre'].'</option>';
 				}
                                 $rslts .='</select>';
 			echo $rslts;

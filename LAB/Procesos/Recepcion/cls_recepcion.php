@@ -107,7 +107,7 @@ select id, servicio from tbl_servicio where servicio is not null;
 			   INNER JOIN mnt_usuarios ON mnt_empleados.IdEmpleado=mnt_usuarios.IdEmpleado 
 				WHERE mnt_usuarios.IdSubServicio=$idSubEsp  AND mnt_empleados.IdEstablecimiento=$lugar ORDER BY mnt_empleados.NombreEmpleado";
             $dt = mysql_query($sqlText) or die('La consulta fall&oacute;:' . mysql_error());*/
-            $sqlText="select mem.id as idempleado, (nombre||' '||apellido) as nombre, idempleado  
+            $sqlText="select mem.id as idemp, (nombre||' '||apellido) as nombre, idempleado  
 from mnt_empleado_especialidad_estab empest
 join mnt_empleado mem on (empest.id_empleado=mem.id)
 where id_aten_area_mod_estab=$idSubEsp";

@@ -474,12 +474,23 @@ function Examenes(){
     var IdCitaServApoyo = document.getElementById("IdCitaServApoyo").value;
     var Sexo = document.getElementById("tiposexo").value;
     var idexpediente = document.getElementById("idexpediente").value;
+    var mensaje="";
+    if (FechaConsulta==''){
+        mensaje +="Ingrese el dato de la Fecha de la consulta ";
+    }   
+    if (IdSubServicio==0){
+        mensaje +="\nIngrese el dato del subservicio"
+    }
+    if (mensaje !=''){
+        alert (mensaje)
+        return false;
+    }
     /*
     var IdHistorialClinico = document.getElementById("IdHistorialClinico").value;
     var IdSubEspecialidad = document.getElementById("IdSubEspecialidad").value;
     var IdUsuarioReg = document.getElementById("IdUsuarioReg").value;
     var FechaHoraReg = document.getElementById("FechaHoraReg").value;*/
-    var Parametros="?IdNumeroExp="+IdNumeroExp;
+    var Parametros="IdNumeroExp="+IdNumeroExp;
             Parametros+="&IdEstablecimiento="+IdEstablecimiento;
             Parametros+="&lugar="+lugar;
             Parametros+="&IdSubServicio="+IdSubServicio;
@@ -492,8 +503,8 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
 */
 // alert (IdEstablecimiento+ ' -- ' +lugar+ ' -- ' + IdSubServicio+ ' -- ' +IdEmpleado+ ' -- ' +FechaConsulta);
 alert (Parametros)
-return false;
-    var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
+//return false;
+    var url = "../EstudiosLaboratorio/Solicitud.php?"+Parametros;
     window.open(url,"Solicitudes","fullscreen=yes, toolbar=no, scrollbars=yes");
 }
 
@@ -502,7 +513,7 @@ return false;
 
 <body text="#000000" class="CobaltPageBody" onLoad="frmdatosexpediente.txtexp.focus();">
 
-<link href="../../../css/paginalab.css" rel="stylesheet" type="text/css" />
+<!--<link href="../../../css/paginalab.css" rel="stylesheet" type="text/css" />-->
 <form name="frmdatosexpediente" action="" method="post">	
 <table border = 1 class="CobaltFormTABLE" cellspacing="0" cellpadding="3" align="center">
 	<tr>

@@ -34,7 +34,7 @@ function CerrarVentana(){
 
 function AgregarExamen(){
 	var IdHistorialClinico=document.getElementById('IdHistorialClinico').value;
-	var IdNumeroExp=document.getElementById('IdNumeroExp').value;
+	var IdNumeroExp=document.getElementById('idexpediente').value;
 	var FechaSolicitud=document.getElementById('FechaSolicitud').value;				
 	var IdUsuarioReg=document.getElementById('IdUsuarioReg').value;				
 	var FechaHoraReg=document.getElementById('FechaHoraReg').value;	
@@ -49,7 +49,7 @@ function AgregarExamen(){
 }
 
 function ListaExamenes(IdHistorialClinico,IdCitaServApoyo){
-	window.location.href='./ExamenesSolicitados.php?IdHistorialClinico='+IdHistorialClinico+'&IdCitaServApoyo='+IdCitaServApoyo;
+	window.location.href='ExamenesSolicitados.php?IdHistorialClinico='+IdHistorialClinico+'&IdCitaServApoyo='+IdCitaServApoyo;
 	//MostrarDetalle(IdHistorialClinico);
 }
 
@@ -81,7 +81,8 @@ function NuevoAjax(){
 
 
 /***************************************************************************************/
-function ImprimirResultados(IdHistorialClinico){	
+//Fn PG
+function ImprimirResultados(IdHistorialClinico, idsolicitudestudio){	
 	var bandera=document.getElementById('Imprimir');
 	if(bandera.checked==true){
 		var Bandera='1';
@@ -106,7 +107,7 @@ function ImprimirResultados(IdHistorialClinico){
 	var param = 'Proceso='+Proceso;
 		
 	// Concatenaci�n y Env�o de Par�metros
-	param += "&Bandera="+Bandera+"&IdHistorialClinico="+IdHistorialClinico;
+	param += "&Bandera="+Bandera+"&IdHistorialClinico="+IdHistorialClinico+"&idsolicitudestudio="+idsolicitudestudio;
 	//alert(param);
 	ObjetoAjax.send(param);  
 		
@@ -141,7 +142,7 @@ var Origen;
 		var IdExamen=Examen;
 		var Proceso='Combos';
 		var param = 'Proceso='+Proceso;
-			
+			//alert (IdExamen)
 		// Concatenación y Envío de Parámetros
 		param += '&IdExamen='+IdExamen;
 		ObjetoAjax.send(param);  
@@ -159,7 +160,7 @@ var Origen;
 /************************************************************************************************/
 /* 			Funcion Para Mostrar  el origen y tipo de muestra de un examen						*/
 /************************************************************************************************/
-
+//fn pg
 function MostrarOrigen(Muestra,Examen){	
 	Nombre=Examen;
 	Origen="O"+Examen;
@@ -224,6 +225,7 @@ function MostrarDetalle(IdHistorialClinico){
                 document.getElementById('Enviar').disabled=true;
 		var IdHistorialClinico=document.getElementById('IdHistorialClinico').value;
 		var IdNumeroExp=document.getElementById('IdNumeroExp').value;
+		var idexpediente=document.getElementById('idexpediente').value;
 		var FechaSolicitud=document.getElementById('FechaSolicitud').value;				
 		var IdUsuarioReg=document.getElementById('IdUsuarioReg').value;				
 		var IdCitaServApoyo=document.getElementById('IdCitaServApoyo').value;	
@@ -236,7 +238,7 @@ function MostrarDetalle(IdHistorialClinico){
 		
 		
 				for (i=0;i<Tope;i++){
-					var ID='Examenes'+i;
+					var ID='Examenes'+i;                                      
 					if (document.getElementById(ID).checked == true){
 						suma++;	
 						Resta++;
@@ -258,6 +260,8 @@ function MostrarDetalle(IdHistorialClinico){
 					Muestra="M"+ NombreExamen;
 					Origen="Origen"+ NombreExamen;
 					NombreMuestra=document.getElementById(Muestra).value;
+                                        
+                                       
 					if(NombreMuestra==0){
 						NombreOrigen=0;
 					}else{
@@ -268,7 +272,6 @@ function MostrarDetalle(IdHistorialClinico){
 						NombreOrigen=0;
 					}
 				//************************************************************************************
-				
 				var ajax2 = xmlhttp();
 
 				ajax2.onreadystatechange=function(){
@@ -292,20 +295,34 @@ function MostrarDetalle(IdHistorialClinico){
 					}//Estado == 4
 				}//On ready state
 			var Proceso='GuardarDatos';
-                        //alert(' Proceso '+Proceso+' IdHistorialClinico '+IdHistorialClinico+' IdNumeroExp '+IdNumeroExp+' FechaSolicitud '+FechaSolicitud+' IdUsuarioReg '+IdUsuarioReg+' FechaHoraReg '+FechaHoraReg+' NombreExamen '+NombreExamen+' Indicacion '+Indicacion+' NombreMuestra '+NombreMuestra+' NombreOrigen '+NombreOrigen);
-		ajax2.open("GET",'Procesar.php?Proceso='+Proceso+'&IdHistorialClinico='+IdHistorialClinico+'&IdNumeroExp='+IdNumeroExp+'&FechaSolicitud='+FechaSolicitud+'&IdUsuarioReg='+IdUsuarioReg+'&IdExamen='+NombreExamen+'&Indicacion='+Indicacion+'&IdTipoMuestra='+NombreMuestra+'&IdOrigen='+NombreOrigen,true);		
+                        alert(' Proceso '+Proceso+' IdHistorialClinico '+IdHistorialClinico+' IdNumeroExp '+IdNumeroExp+' FechaSolicitud '+FechaSolicitud+' IdUsuarioReg '+IdUsuarioReg+' NombreExamen '+NombreExamen+' Indicacion '+Indicacion+' NombreMuestra '+NombreMuestra+' NombreOrigen '+NombreOrigen+'&idexpediente:'+idexpediente);
+               //         alert (NombreExamen)
+		ajax2.open("GET",'Procesar.php?Proceso='+Proceso+'&IdHistorialClinico='+IdHistorialClinico+'&IdNumeroExp='+IdNumeroExp+'&idexpediente='+idexpediente+'&FechaSolicitud='+FechaSolicitud+'&IdUsuarioReg='+IdUsuarioReg+'&IdExamen='+NombreExamen+'&Indicacion='+Indicacion+'&IdTipoMuestra='+NombreMuestra+'&IdOrigen='+NombreOrigen,true);	/*	ajax.onreadystatechange=function() {
+	if (ajax.readyState==4) 
+	{
+		document.getElementById('Resultados').innerHTML = ajax.responseText
+		
+	}
+  }
+//alert (parametros)
+  ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");*/
 		ajax2.send(null);
 		return false;
-				
+			
 				
 						
 			}//If checked == true
 	//}//for
-			
+                        
 			// AKI CREAR LA cit_citasxserviciodeapoyo o actualizar la fecha de la cita una solo ves.
 			if(BanderaExiste !=0){
 				//Abre la hoja que muesta el detalle de la solicitud de estudios
-				ListaExamenes(IdHistorialClinico,IdCitaServApoyo);
+                                 // alert(' Proceso '+Proceso+' IdHistorialClinico '+IdHistorialClinico+' IdNumeroExp '+IdNumeroExp+' FechaSolicitud '+FechaSolicitud+' IdUsuarioReg '+IdUsuarioReg+' FechaHoraReg '+FechaHoraReg+' NombreExamen '+NombreExamen+' Indicacion '+Indicacion+' NombreMuestra '+NombreMuestra+' NombreOrigen '+NombreOrigen+'&idexpediente:'+idexpediente);
+                                 // alert ('Qie pasa')
+                              //   return false;
+                                alert ('WTFuuaaa!!')
+                              //  return false;
+                                ListaExamenes(IdHistorialClinico,IdCitaServApoyo);
 			}
 			
 			if(BanderaExiste==0){
@@ -337,7 +354,7 @@ function Retraso(ID){
  function GuardarCambios(){	
 	// Definicion de Variables		
 		var Indicacion;
-		var Indica
+		var Indica;
 		var IdExamen;
 		var IdDetalle;
 		var Contar=document.getElementById('total').value;
@@ -350,50 +367,57 @@ function Retraso(ID){
 	
 	
 	if(Contar==1 && document.Editar.ExamenesLab.checked == true){	
-				/**** Pasos para Guardar los datos***/
-				// Parametros del Detalle de los examenes
-					IdExamen=document.Editar.ExamenesLab.value;
-					IdDetalle=document.getElementById("IdDetalle"+IdExamen).value;
-				// Crear Objeto Ajax
-					ObjetoAjax=NuevoAjax();			
-					
-					// Hacer el Request y llamar o Dibujar el Resultado
-					ObjetoAjax.onreadystatechange = CargarContenido;
-					ObjetoAjax.open("POST", 'Procesar.php', true);
-					ObjetoAjax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-					
-					// Declaración de parámetros
-					
-					var Proceso='GuardarCambios';
-					var param = 'Proceso='+Proceso;
-						
-					// Concatenación y Envío de Parámetros
-					param += '&IdDetalle='+IdDetalle;
-					ObjetoAjax.send(param); 	
+        /**** Pasos para Guardar los datos***/
+        // Parametros del Detalle de los examenes
+                IdExamen=document.Editar.ExamenesLab.value;
+                IdDetalle=document.getElementById("IdDetalle"+IdExamen).value;
+                //Detalle=document.getElementById("Detalle"+IdExamen).value;
+        // Crear Objeto Ajax
+                ObjetoAjax=NuevoAjax();			
+
+                // Hacer el Request y llamar o Dibujar el Resultado
+                ObjetoAjax.onreadystatechange = CargarContenido;
+                ObjetoAjax.open("POST", 'Procesar.php', true);
+                ObjetoAjax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+
+                // Declaración de parámetros
+
+                var Proceso='GuardarCambios';
+                var param = 'Proceso='+Proceso;
+
+                // Concatenación y Envío de Parámetros          
+                param += '&IdDetalle='+IdDetalle;
+                ObjetoAjax.send(param); 	
 	}
 	else if (Contar==1 && document.Editar.ExamenesLab.checked == false){	
-				IdExamen=document.Editar.ExamenesLab.value;
-				Indicacion=document.getElementById("Indicacion"+IdExamen).value;
-				IdDetalle=document.getElementById("IdDetalle"+IdExamen).value;
+            IdExamen=document.Editar.ExamenesLab.value;
+            Indicacion=document.getElementById("Indicacion"+IdExamen).value;
+            Detalle=document.getElementById("Detalle"+IdExamen);
+            if (IdDetalle==null){
+                Detalle=2;
+            }
+            else{
+                Detalle=1;
+            }                    
 
-			if(Indicacion != ""){
-					// Crear Objeto Ajax
-						ObjetoAjax=NuevoAjax();			
-						
-						// Hacer el Request y llamar o Dibujar el Resultado
-						ObjetoAjax.onreadystatechange = CargarContenido;
-						ObjetoAjax.open("POST", 'Procesar.php', true);
-						ObjetoAjax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-						
-						// Declaración de parámetros
-						
-						var Proceso='ActualizarDatos';
-						var param = 'Proceso='+Proceso;
-							
-						// Concatenación y Envío de Parámetros
-						param += '&IdDetalle='+IdDetalle+"&Indicacion="+Indicacion;
-						ObjetoAjax.send(param); 
-				} // Fin Else para Actualizar Datos
+            if(Indicacion != ""){
+                            // Crear Objeto Ajax
+                ObjetoAjax=NuevoAjax();			
+
+                // Hacer el Request y llamar o Dibujar el Resultado
+                ObjetoAjax.onreadystatechange = CargarContenido;
+                ObjetoAjax.open("POST", 'Procesar.php', true);
+                ObjetoAjax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+
+                // Declaración de parámetros
+
+                var Proceso='ActualizarDatos';
+                var param = 'Proceso='+Proceso;
+
+                // Concatenación y Envío de Parámetros
+                param += '&IdDetalle='+IdDetalle+"&Indicacion="+Indicacion+"&Detalle="+Detalle;
+                ObjetoAjax.send(param); 
+            } // Fin Else para Actualizar Datos
 	}
 
 	else{
