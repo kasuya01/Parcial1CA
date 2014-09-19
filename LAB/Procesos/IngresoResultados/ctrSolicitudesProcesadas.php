@@ -15,90 +15,115 @@ $objdatos = new clsSolicitudesProcesadas;
 switch ($opcion) {
     case 1:
         $ban = 0;
-        $IdEstab = $_POST['IdEstab'];
-        $IdServ = $_POST['IdServ'];
-        $IdSubServ = $_POST['IdSubServ'];
-        $idarea = $_POST['idarea'];
-        $idexamen = $_POST['idexamen'];
-        $idexpediente = $_POST['idexpediente'];
+        $IdEstab        = $_POST['IdEstab'];
+        $IdServ         = $_POST['IdServ'];
+        $IdSubServ      = $_POST['IdSubServ'];
+        $idarea         = $_POST['idarea'];
+        $idexamen       = $_POST['idexamen'];
+        $idexpediente   = $_POST['idexpediente'];
         $fechasolicitud = $_POST['fechasolicitud'];
-        $PNombre = $_POST['PNombre'];
-        $SNomre = $_POST['SNombre'];
-        $PApellido = $_POST['PApellido'];
-        $SApellido = $_POST['SApellido'];
-        $TipoSolic = $_POST['TipoSolic'];
-        //echo $IdEstab;
-        $query = "SELECT lab_examenesxestablecimiento.IdPlantilla,sec_detallesolicitudestudios.IdDetalleSolicitud,
-			  sec_solicitudestudios.IdSolicitudEstudio,NumeroMuestra,sec_solicitudestudios.IdNumeroExp,IdRecepcionMuestra,
-                          lab_examenes.idexamen, nombreexamen,Indicacion,NombreArea,
-			  CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoApellido) AS Paciente,
-                          NombreSubServicio,NombreServicio, sec_solicitudestudios.Impresiones,mnt_establecimiento.Nombre,
-			  sec_historial_clinico.IdHistorialClinico,sec_solicitudestudios.FechaSolicitud,
-			  IF(sec_solicitudestudios.IdTipoSolicitud='S','URGENTE','NORMAL') AS prioridad,FechaNacimiento,Sexo,IdEstandar
-			  FROM sec_detallesolicitudestudios
-			  INNER JOIN sec_solicitudestudios ON sec_detallesolicitudestudios.IdSolicitudEstudio=sec_solicitudestudios.IdSolicitudEstudio
-			  INNER JOIN lab_recepcionmuestra  ON sec_detallesolicitudestudios.IdSolicitudEstudio= lab_recepcionmuestra.IdSolicitudEstudio
-			  INNER JOIN lab_examenes          ON sec_detallesolicitudestudios.IdExamen=lab_examenes.IdExamen
-                          INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen= lab_examenesxestablecimiento.IdExamen
-			  INNER JOIN mnt_expediente        ON mnt_expediente.IdNumeroExp=sec_solicitudestudios.IdNumeroExp
-			  INNER JOIN mnt_datospaciente     ON mnt_datospaciente.IdPaciente=mnt_expediente.IdPaciente
-			  INNER JOIN lab_areas             ON lab_areas.IdArea=lab_examenes.IdArea
-			  INNER JOIN sec_historial_clinico ON sec_historial_clinico.IdHistorialClinico=sec_solicitudestudios.IdHistorialClinico
-			  INNER JOIN mnt_subservicio	   ON mnt_subservicio.IdSubServicio=sec_historial_clinico.IdSubServicio
-		 	  INNER JOIN mnt_servicio  	   ON mnt_servicio.IdServicio=mnt_subservicio.IdServicio
-			  INNER JOIN mnt_establecimiento ON sec_historial_clinico.IdEstablecimiento=mnt_establecimiento.IdEstablecimiento
-			  INNER JOIN cit_citasxserviciodeapoyo ON sec_solicitudestudios.IdSolicitudEstudio=cit_citasxserviciodeapoyo.IdSolicitudEstudio
-			  WHERE estadodetalle='PM' AND lab_recepcionmuestra.FechaRecepcion=CURRENT_DATE
-                          AND sec_solicitudestudios.IdEstablecimiento=$lugar AND ";
+        $fecharecepcion = $_POST['fecharecepcion'];
+        $PNombre        = $_POST['PNombre'];
+        $SNomre         = $_POST['SNombre'];
+        $PApellido      = $_POST['PApellido'];
+        $SApellido      = $_POST['SApellido'];
+        $TipoSolic      = $_POST['TipoSolic'];
+
+        $query = "SELECT t04.idplantilla,
+                         t01.id AS iddetallesolicitud,
+			 t02.id AS idsolicitudestudio,
+                         t03.numeromuestra,
+                         t06.numero AS idnumeroexp,
+                         t03.id AS idrecepcionmuestra,
+                         t04.codigo_examen AS idexamen,
+                         t04.nombre_examen AS nombreexamen,
+                         t01.indicacion,
+                         t08.nombrearea,
+			 CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido,t07.apellido_casada) AS paciente,
+                         t11.nombre AS nombresubservicio,
+                         t13.nombre AS nombreservicio,
+                         t02.impresiones,
+                         t14.nombre,
+			 t09.id AS idhistorialclinico,
+                         TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud,
+                         TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
+                         t17.tiposolicitud AS prioridad,
+                         t07.fecha_nacimiento AS fechanacimiento,
+                         t19.nombre AS sexo,
+                         t18.idestandar
+		  FROM sec_detallesolicitudestudios          t01
+		  INNER JOIN sec_solicitudestudios           t02 ON (t02.id = t01.idsolicitudestudio)
+		  INNER JOIN lab_recepcionmuestra            t03 ON (t02.id = t03.idsolicitudestudio)
+                  INNER JOIN lab_conf_examen_estab           t04 ON (t04.id = t01.id_conf_examen_estab)
+                  INNER JOIN mnt_area_examen_establecimiento t05 ON (t05.id = t04.idexamen)
+		  INNER JOIN mnt_expediente                  t06 ON (t06.id = t02.id_expediente)
+		  INNER JOIN mnt_paciente                    t07 ON (t07.id = t06.id_paciente)
+		  INNER JOIN ctl_area_servicio_diagnostico   t08 ON (t08.id = t05.id_area_servicio_diagnostico AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+		  INNER JOIN sec_historial_clinico           t09 ON (t09.id = t02.id_historial_clinico)
+		  INNER JOIN mnt_aten_area_mod_estab         t10 ON (t10.id = t09.idsubservicio)
+		  INNER JOIN ctl_atencion                    t11 ON (t11.id = t10.id_atencion)
+                  INNER JOIN mnt_area_mod_estab              t12 ON (t12.id = t10.id_area_mod_estab)
+                  INNER JOIN ctl_area_atencion               t13 ON (t13.id = t12.id_area_atencion)
+		  INNER JOIN ctl_establecimiento             t14 ON (t14.id = t09.idestablecimiento)
+		  INNER JOIN cit_citas_serviciodeapoyo       t15 ON (t02.id = t15.id_solicitudestudios)
+                  INNER JOIN ctl_estado_servicio_diagnostico t16 ON (t16.id = t01.estadodetalle)
+                  INNER JOIN lab_tiposolicitud               t17 ON (t17.id = t02.idtiposolicitud)
+                  INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico)
+                  INNER JOIN ctl_sexo                        t19 ON (t19.id = t07.id_sexo)
+		  WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $lugar AND ";
         $ban = 0;
-//AND sec_detallesolicitudestudios.IdEstablecimiento=$IdEstab
+
         //VERIFICANDO LOS POST ENVIADOS
         if (!empty($_POST['IdEstab'])) {
-            $query .= " sec_historial_clinico.IdEstablecimiento ='" . $_POST['IdEstab'] . "' AND";
+            $query .= " t09.idestablecimiento = " . $_POST['IdEstab'] . " AND";
         }
 
         if (!empty($_POST['IdServ'])) {
-            $query .= " mnt_subservicio.IdServicio ='" . $_POST['IdServ'] . "' AND";
+            $query .= " t13.id  = " . $_POST['IdServ'] . " AND";
         }
 
         if (!empty($_POST['IdSubServ'])) {
-            $query .= " mnt_subservicio.IdSubServicio ='" . $_POST['IdSubServ'] . "' AND";
+            $query .= " t10.id = " . $_POST['IdSubServ'] . " AND";
         }
 
         if (!empty($_POST['idarea'])) {
-            $query .= " lab_areas.IdArea='" . $_POST['idarea'] . "' AND";
+            $query .= " t08.id = " . $_POST['idarea'] . " AND";
         }
 
         if (!empty($_POST['idexpediente'])) {
-            $query .= " sec_solicitudestudios.IdNumeroExp='" . $_POST['idexpediente'] . "' AND";
+            $query .= " t06.numero = '" . $_POST['idexpediente'] . "' AND";
         }
 
         if (!empty($_POST['idexamen'])) {
-            $query .= " lab_examenes.idexamen='" . $_POST['idexamen'] . "' AND";
+            $query .= " t04.id = " . $_POST['idexamen'] . " AND";
         }
 
         if (!empty($_POST['fechasolicitud'])) {
-            $query .= " sec_solicitudestudios.FechaSolicitud='" . $_POST['fechasolicitud'] . "' AND";
+            $query .= " t02.fechasolicitud = '" . $_POST['fechasolicitud'] . "' AND";
+        }
+        
+        if (!empty($_POST['fecharecepcion'])) {
+            $query .= " t03.fecharecepcion = '" . $_POST['fecharecepcion'] . "' AND";
         }
 
         if (!empty($_POST['PNombre'])) {
-            $query .= " mnt_datospaciente.PrimerNombre='" . $_POST['PNombre'] . "' AND";
+            $query .= " t07.primer_nombre ILIKE '" . $_POST['PNombre'] . "%' AND";
         }
 
         if (!empty($_POST['SNombre'])) {
-            $query .= " mnt_datospaciente.SegundoNombre='" . $_POST['SNombre'] . "' AND";
+            $query .= " t07.segundo_nombre ILIKE '" . $_POST['SNombre'] . "%' AND";
         }
 
         if (!empty($_POST['PApellido'])) {
-            $query .= " mnt_datospaciente.PrimerApellido='" . $_POST['PApellido'] . "' AND";
+            $query .= " t07.primer_apellido ILIKE '" . $_POST['PApellido'] . "%' AND";
         }
 
         if (!empty($_POST['SApellido'])) {
-            $query .= " mnt_datospaciente.SegundoApellido='" . $_POST['SApellido'] . "' AND";
+            $query .= " t07.segundo_apellido ILIKE '" . $_POST['SApellido'] . "%' AND";
         }
 
         if (!empty($_POST['TipoSolic'])) {
-            $query .= " sec_solicitudestudios.IdTipoSolicitud='" . $_POST['TipoSolic'] . "' AND";
+            $query .= " t17.idtiposolicitud = '" . $_POST['TipoSolic'] . "' AND";
         }
 
         if ((empty($_POST['idexpediente'])) AND ( empty($_POST['idarea'])) AND ( empty($_POST['fechasolicitud']))
@@ -111,66 +136,70 @@ switch ($opcion) {
         if ($ban == 0) {
 
             $query = substr($query, 0, strlen($query) - 3);
-            $query_search = $query . " ORDER BY lab_recepcionmuestra.FechaRecepcion DESC";
+            $query_search = $query . " ORDER BY t03.fecharecepcion DESC";
         }
         //echo $query_search;
-
+        
         $consulta = $objdatos->ListadoSolicitudesPorArea($query_search);
+        
         echo "<table width='81%' border='1' align='center'>
-				<tr class='CobaltFieldCaptionTD'>
-					<td>Muestra </td>
-					<td>NEC </td>
-					<td>Paciente </td>
-					<td>Id Examen</td>
-					<td>Examen</td>
-					<td>Servicio</td>
-					<td>Procedencia</td>
-					<td>Establecimiento</td>
-					<td>Fecha Consulta</td>
-					<td>Prioridad</td>
-				</tr>";
-        $pos = 0;
+                <tr class='CobaltFieldCaptionTD'>
+                    <td>Muestra </td>
+                    <td>NEC </td>
+                    <td>paciente </td>
+                    <td>Id Examen</td>
+                    <td>Examen</td>
+                    <td>Servicio</td>
+                    <td>Procedencia</td>
+                    <td>Establecimiento</td>
+                    <td>Fecha Consulta</td>
+                    <td>Fecha Recepcion</td>
+                    <td>Prioridad</td>
+                </tr>";
+        if(pg_num_rows($consulta)){
+            $pos = 0;
 
-        while ($row = pg_fetch_array($consulta)) {
-            echo "<tr>
-					<td width='5%'>" . $row['NumeroMuestra'] . "</td>
-					<td width='7%'>
-						<a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" .
-            $row['IdNumeroExp'] . "</a>" .
-            "</td>" .
-            "<input name='idsolicitud[" . $pos . "]' id='idsolicitud[" . $pos . "]' type='hidden' size='60' value='" . $row["IdSolicitudEstudio"] . "' />" .
-            "<input name='idexpediente[" . $pos . "]' id='idexpediente[" . $pos . "]' type='hidden' size='60' value='" . $row["IdNumeroExp"] . "' />" .
-            "<input name='paciente[" . $pos . "]' id='paciente[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["Paciente"]) . "' />" .
-            "<input name='examen[" . $pos . "]' id='examen[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["nombreexamen"]) . "' />" .
-            "<input name='idexamen[" . $pos . "]' id='idexamen[" . $pos . "]' type='hidden' size='60' value='" . $row["idexamen"] . "' />" .
-            "<input name='iddetalle[" . $pos . "]' id='iddetalle[" . $pos . "]' type='hidden' size='60' value='" . $row["IdDetalleSolicitud"] . "' />" .
-            "<input name='idrecepcion[" . $pos . "]' id='idrecepcion[" . $pos . "]' type='hidden' size='60' value='" . $row["IdRecepcionMuestra"] . "' />" .
-            "<input name='plantilla[" . $pos . "]' id='plantilla[" . $pos . "]' type='hidden' size='60' value='" . $row["IdPlantilla"] . "' />" .
-            "<input name='nombrearea[" . $pos . "]' id='nombrearea[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["NombreArea"]) . "' />" .
-            "<input name='procedencia[" . $pos . "]' id='procedencia[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["NombreServicio"]) . "' />" .
-            "<input name='origen[" . $pos . "]' id='origen[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["NombreSubServicio"]) . "' />" .
-            "<input name='impresion[" . $pos . "]' id='impresion[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["Impresiones"]) . "' />" .
-            "<input name='establecimiento[" . $pos . "]' id='establecimiento[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["Nombre"]) . "'/>" .
-            "<input name='FechaNac[" . $pos . "]' id='FechaNac[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["FechaNacimiento"]) . "'/>" .
-            "<input name='Sexo[" . $pos . "]' id='Sexo[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["Sexo"]) . "'/>" .
-            "<input name='IdEstandar[" . $pos . "]' id='IdEstandar[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["IdEstandar"]) . "'/>" .
-            "<input name='IdHistorial[" . $pos . "]' id='IdHistorial[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["IdHistorialClinico"]) . "'/>" .
-            "<td width='20%'>" . htmlentities($row['Paciente']) . "</td>
-					<td width='7%'>" . $row['idexamen'] . "</td>
-					<td width='20%'>" . htmlentities($row['nombreexamen']) . "</td>
-					<td width='12%'>" . htmlentities($row['NombreSubServicio']) . "</td>
-					<td width='10%'>" . htmlentities($row['NombreServicio']) . "</td>
-					<td width='20%'>" . htmlentities($row['Nombre']) . "</td>
-					<td width='10%'>" . ($row['FechaSolicitud']) . "</td>
-					<td width='10%'>" . ($row['prioridad']) . "</td>
-				</tr>";
-            $pos = $pos + 1;
+            while ($row = pg_fetch_array($consulta)) {
+                echo "<tr>
+                        <td width='5%'>" . $row['numeromuestra'] . "</td>
+                        <td width='7%'><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a></td>" .
+                        "<input name='idsolicitud[" . $pos . "]' id='idsolicitud[" . $pos . "]' type='hidden' size='60' value='" . $row["idsolicitudestudio"] . "' />" .
+                        "<input name='idexpediente[" . $pos . "]' id='idexpediente[" . $pos . "]' type='hidden' size='60' value='" . $row["idnumeroexp"] . "' />" .
+                        "<input name='paciente[" . $pos . "]' id='paciente[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["paciente"]) . "' />" .
+                        "<input name='examen[" . $pos . "]' id='examen[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["nombreexamen"]) . "' />" .
+                        "<input name='idexamen[" . $pos . "]' id='idexamen[" . $pos . "]' type='hidden' size='60' value='" . $row["idexamen"] . "' />" .
+                        "<input name='iddetalle[" . $pos . "]' id='iddetalle[" . $pos . "]' type='hidden' size='60' value='" . $row["iddetallesolicitud"] . "' />" .
+                        "<input name='idrecepcion[" . $pos . "]' id='idrecepcion[" . $pos . "]' type='hidden' size='60' value='" . $row["idrecepcionmuestra"] . "' />" .
+                        "<input name='plantilla[" . $pos . "]' id='plantilla[" . $pos . "]' type='hidden' size='60' value='" . $row["idplantilla"] . "' />" .
+                        "<input name='nombrearea[" . $pos . "]' id='nombrearea[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["nombrearea"]) . "' />" .
+                        "<input name='procedencia[" . $pos . "]' id='procedencia[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["nombreservicio"]) . "' />" .
+                        "<input name='origen[" . $pos . "]' id='origen[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["nombresubservicio"]) . "' />" .
+                        "<input name='impresion[" . $pos . "]' id='impresion[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["impresiones"]) . "' />" .
+                        "<input name='establecimiento[" . $pos . "]' id='establecimiento[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["nombre"]) . "'/>" .
+                        "<input name='FechaNac[" . $pos . "]' id='FechaNac[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["fechanacimiento"]) . "'/>" .
+                        "<input name='Sexo[" . $pos . "]' id='Sexo[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["sexo"]) . "'/>" .
+                        "<input name='IdEstandar[" . $pos . "]' id='IdEstandar[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idestandar"]) . "'/>" .
+                        "<input name='IdHistorial[" . $pos . "]' id='IdHistorial[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idhistorialclinico"]) . "'/>" .
+                        "<td width='20%'>" . htmlentities($row['paciente']) . "</td>
+                        <td width='7%'>" . $row['idexamen'] . "</td>
+                        <td width='20%'>" . htmlentities($row['nombreexamen']) . "</td>
+                        <td width='12%'>" . htmlentities($row['nombresubservicio']) . "</td>
+                        <td width='10%'>" . htmlentities($row['nombreservicio']) . "</td>
+                        <td width='20%'>" . htmlentities($row['nombre']) . "</td>
+                        <td width='10%'>" . ($row['fechasolicitud']) . "</td>
+                        <td width='10%'>" . ($row['fecharecepcion']) . "</td>
+                        <td width='10%'>" . ($row['prioridad']) . "</td>
+                    </tr>";
+                $pos = $pos + 1;
+            }
+            pg_free_result($consulta);
+            echo "<input type='hidden' name='oculto' id='text' value='" . $pos . "' />
+                </table>";
+        } else {
+            echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table>";
         }
-        pg_free_result($consulta);
-        echo "<input type='hidden' name='oculto' id='text' value='" . $pos . "' />
-			</table>";
-
-
+        
+        
         break;
 
     case 2://LLENANDO COMBO DE EMPLEADOS
@@ -243,7 +272,7 @@ switch ($opcion) {
         // echo $idsolicitud." - ".$idexamen." - ".$lugar." - ".$sexo." - ".$idedad;
         $consulta = $objdatos->MostrarResultadoGenerales($idsolicitud, $idexamen, $lugar);
         $row = pg_fetch_array($consulta);
-        $nombre = $row['NombreArea'];
+        $nombre = $row['nombrearea'];
         $proce = $row['Procedencia'];
 
         $Cuentadias = $objdatos->CalculoDias($fechanac);
@@ -261,7 +290,7 @@ switch ($opcion) {
 			<td colspan='1' align='left' width='20%'><img id='Image1' style='WIDTH: 80px; HEIGHT: 55px' height='86' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
                         <td align='center' colspan='4' width='60%' class='Estilo5'>
                             <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
-                            <p><strong>" . $row_estab['Nombre'] . "</strong></p>
+                            <p><strong>" . $row_estab['nombre'] . "</strong></p>
                             <p><strong>&Aacute;REA DE " . htmlentities($nombre) . " </strong></p>
 			</td>
                         <td colspan='1' align='right' width='20%'><img id='Image3' style='WIDTH: 110px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
@@ -273,14 +302,14 @@ switch ($opcion) {
                     	<td colspan='1' style='font:bold'><strong>Establecimiento:</strong></td>
                     	<td colspan='2' style='font:bold'>" . htmlentities($establecimiento) . "</td>
                     	<td colspan='1'style='font:bold'><strong>Fecha:</strong></td>
-                    	<td colspan='2' style='font:bold'>" . $row['Fecha'] . "<input name='suEdad' id='suEdad'  type='hidden'  value='" . $row['FechaNacimiento'] . "'/></td>
+                    	<td colspan='2' style='font:bold'>" . $row['Fecha'] . "<input name='suEdad' id='suEdad'  type='hidden'  value='" . $row['fechanacimiento'] . "'/></td>
                     </tr>
 
                     <tr>
                     	<td colspan='1' style='font:bold'><strong>NEC:</strong></td>
-			<td colspan='2' style='font:bold'>" . $row['IdNumeroExp'] . "</td></tr>
+			<td colspan='2' style='font:bold'>" . $row['idnumeroexp'] . "</td></tr>
 		    <tr>
-                        <td colspan='1' style='font:bold'><strong>Paciente:</strong></td>
+                        <td colspan='1' style='font:bold'><strong>paciente:</strong></td>
 			<td colspan='5' style='font:bold'>" . htmlentities($row['NombrePaciente']) . "</td>
                     </tr>
                     <tr>
@@ -430,7 +459,18 @@ switch ($opcion) {
         pg_free_result($consulta);
         $resultado.= "</select>";
         echo $resultado;
+        break;
+    case 9:
+        $result = $objdatos->consultarTipoSolicitud();
 
+        if ($result !== false) {
+            $jsonresponse['status'] = true;
+            $jsonresponse['data'] = pg_fetch_all($result);
+        } else {
+            $jsonresponse['status'] = false;
+        }
+
+        echo json_encode($jsonresponse);
         break;
 }
 ?>

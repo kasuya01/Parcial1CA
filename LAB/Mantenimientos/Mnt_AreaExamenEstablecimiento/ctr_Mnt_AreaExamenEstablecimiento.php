@@ -45,9 +45,22 @@ function getLabAreas($parameters) {
 
 function getAreaExamenEstablecimiento($parameters) {
 	global $mntAreaExamenEstab;
-	$result = $mntAreaExamenEstab->getAreaExamenEstablecimiento($parameters['lugar'], $parameters['post']['idarea']);
+
+	// var_dump($parameters);exit();
+
+	$result = $mntAreaExamenEstab->getAreaExamenEstablecimiento($parameters['post']['idarea'], $parameters['lugar']);
 
 	if($result !== false) {
+		/*$result = array();
+		foreach ($arr as $data) {
+			$id = $data['id'];
+			if (isset($result[$id])) {
+			    $result[$id][] = $data;
+			} else {
+			    $result[$id] = array($data);
+			}
+		}*/
+
         $jsonresponse['status'] = true;
         $jsonresponse['data']   = pg_fetch_all($result);
     } else {

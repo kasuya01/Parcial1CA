@@ -32,14 +32,13 @@ function getLabAreas(funct) {
 }
 
 function getAreaExamenEstablecimiento(funct) {
-	var cmbarea = document.getElementById('cmb-area').value;
-
+	var idarea = document.getElementById('cmb-area').value;
     jQuery.ajax({
         url: 'ctr_Mnt_AreaExamenEstablecimiento.php',
         async: true,
         dataType: 'json',
         type: 'POST',
-        data: { accion: 'getAreaExamenEstablecimiento', idarea: cmbarea },
+        data: { accion: 'getAreaExamenEstablecimiento', parameters: {idarea: idarea} },
         success: function(data) {
             funct(data);
         }

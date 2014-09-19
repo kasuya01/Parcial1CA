@@ -8,8 +8,8 @@
 ?>
 <html>
     <head>
-        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-        <title>Mantenimiento de Areas de Laboratorio</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Mantenimiento de Areas y Examenes de Laboratorio</title>
         <?php include_once $ROOT_PATH."/public/css.php";?>
         <?php include_once $ROOT_PATH."/public/js.php";?>
         <script language="JavaScript" type="text/javascript" src="ajax_Mnt_AreaExamenEstablecimiento.js"></script>
@@ -35,20 +35,30 @@
                     }
                 });
 
-                getAreaExamenEstablecimiento(function(object) {
-                    var estandar = [];
+                $('#cmb-area').on('change', function(e) {
+                    if(e.val != 0) {
+                        populateAreaExamenEstab();
+                    } else {
 
-                    if(object.status) {
-                        console.log(object);
-                        /*$.each(object.data, function(idx,val) {
-                            if (isValidCode(val.nombre_grupo, estandar)) {
-                                estandar[] = val.nombre_grupo;
-                            }
-                            console.log(estandar);
-                            //$('#cmb-area').append($("<option></option>").attr("value",val.idarea).text(val.nombrearea));
-                        });*/
                     }
                 });
+
+                function populateAreaExamenEstab() {
+                    getAreaExamenEstablecimiento(function(object) {
+                        var estandar = [];
+
+                        if(object.status) {
+                            console.log(object);
+                            /*$.each(object.data, function(idx,val) {
+                                if (isValidCode(val.nombre_grupo, estandar)) {
+                                    estandar[] = val.nombre_grupo;
+                                }
+                                console.log(estandar);
+                                //$('#cmb-area').append($("<option></option>").attr("value",val.idarea).text(val.nombrearea));
+                            });*/
+                        }
+                    });
+                }
 
                 function isValidCode(code, arrayElement){
                     return ($.inArray(code, arrayElement) > -1);
@@ -97,7 +107,9 @@
                         <div class="row">
                             <div class="col-xs-12 col-md-12" style="padding-top:10px;padding-bottom:10px;">
                                 <label style="padding-left: 15px; min-width:80px;">&Aacute;rea:</label>
-                                <select id="cmb-area"></select>
+                                <select id="cmb-area">
+                                    <option value="0" selected="selected">Seleccionar &Aacute;rea</option>
+                                </select>
                             </div>
                         </div>
                         <div class="table-responsive" style="padding: 15px 0">

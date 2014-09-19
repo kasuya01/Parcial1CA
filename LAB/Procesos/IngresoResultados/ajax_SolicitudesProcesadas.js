@@ -191,7 +191,6 @@ function LlenarComboEstablecimiento(idtipoesta)
     ajax.send("opcion=" + opcion + "&idtipoesta=" + idtipoesta);
     ajax.onreadystatechange = function()
     {
-
         if (ajax.readyState == 4) {//4 The request is complete
             if (ajax.status == 200) {//200 means no error.
                 respuesta = ajax.responseText;
@@ -1249,22 +1248,22 @@ function Cerrar()
 
 //***************************************  SOLICITUDES POR �REA *****************************
 
-function SolicitudesPorArea()
-{
-    ajax = objetoAjax();
+function SolicitudesPorArea() {
+    ajax   = objetoAjax();
     opcion = 1;
-    idarea = document.getElementById('cmbArea').value;
-    idexpediente = document.getElementById('txtexpediente').value;
-    idexamen = document.getElementById('cmbExamen').value;
-    IdEstab = document.getElementById('cmbEstablecimiento').value;
-    IdServ = document.getElementById('CmbServicio').value;
-    IdSubServ = document.getElementById('cmbSubServ').value;
+    idarea         = document.getElementById('cmbArea').value;
+    idexpediente   = document.getElementById('txtexpediente').value;
+    idexamen       = document.getElementById('cmbExamen').value;
+    IdEstab        = document.getElementById('cmbEstablecimiento').value;
+    IdServ         = document.getElementById('CmbServicio').value;
+    IdSubServ      = document.getElementById('cmbSubServ').value;
     fechasolicitud = document.getElementById('txtfechasolicitud').value;
-    PNombre = document.getElementById('PrimerNombre').value;
-    SNombre = document.getElementById('SegundoNombre').value;
-    PApellido = document.getElementById('PrimerApellido').value;
-    SApellido = document.getElementById('SegundoApellido').value;
-    TipoSolic = document.getElementById('cmbTipoSolic').value;
+    fecharecepcion = document.getElementById('txtfecharecep').value;
+    PNombre        = document.getElementById('PrimerNombre').value;
+    SNombre        = document.getElementById('SegundoNombre').value;
+    PApellido      = document.getElementById('PrimerApellido').value;
+    SApellido      = document.getElementById('SegundoApellido').value;
+    TipoSolic      = document.getElementById('cmbTipoSolic').value;
 
     ajax.open("POST", "ctrSolicitudesProcesadas.php", true);
     //muy importante este encabezado ya que hacemos uso de un formulario
@@ -1272,7 +1271,7 @@ function SolicitudesPorArea()
     //enviando los valores
     ajax.send("opcion=" + opcion + "&idarea=" + idarea + "&idexpediente=" + idexpediente + "&idexamen=" + idexamen + "&IdEstab=" + IdEstab +
             "&IdServ=" + IdServ + "&IdSubServ=" + IdSubServ + "&PNombre=" + PNombre + "&SNombre=" + SNombre + "&PApellido=" + PApellido + "&SApellido=" +
-            SApellido + "&fechasolicitud=" + fechasolicitud + "&TipoSolic=" + TipoSolic);
+            SApellido + "&fechasolicitud=" + fechasolicitud + "&fecharecepcion=" + fecharecepcion + "&TipoSolic=" + TipoSolic);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -1788,7 +1787,39 @@ function GuardarPlantillaE()
     }
 }
 
-
-
-
-
+function llenarComboTipoSolicitud() {
+    jQuery.ajaxSetup({
+        error: function(jqXHR, exception) {
+            if (jqXHR.status === 0) {
+                alert('Not connect.\n Verify Network.');
+            } else if (jqXHR.status === 404) {
+                alert('Requested page not found. [404]');
+            } else if (jqXHR.status === 500) {
+                alert('Internal Server Error [500].');
+            } else if (exception === 'parsererror') {
+                alert('Requested JSON parse failed.');
+            } else if (exception === 'timeout') {
+                alert('Time out error.');
+            } else if (exception === 'abort') {
+                alert('Ajax request aborted.');
+            } else {
+                alert('Uncaught Error.\n' + jqXHR.responseText);
+            }
+        }
+    });
+    
+    jQuery.ajax({
+        url: 'ctrSolicitudesProcesadas.php',
+        async: true,
+        dataType: 'json',
+        type: 'POST',
+        data: { opcion: 9 },
+        success: function(object) {
+            if(object.status) {
+                jQuery.each(object.data, function(idx, val) {
+                    jQuery('#cmbTipoSolic').append($("<option></option>").attr("value",val.idtiposolicitud).text(val.tiposolicitud));
+                });
+            }
+        }
+    });
+}

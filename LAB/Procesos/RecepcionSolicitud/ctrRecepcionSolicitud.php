@@ -145,7 +145,7 @@ switch ($opcion) {
                 }
                 //Registro de la recepcion
                 $query_insert = "INSERT INTO lab_recepcionmuestra(idsolicitudestudio, numeromuestra, fechacita, fecharecepcion, idusuarioreg, fechahorareg, idestablecimiento)
-                                 VALUES($idsolicitud,$numero,'$fechacita', TO_DATE(NOW()::text, 'YYYY-MM-DD'), $usuario ,date_trunc('seconds', now()), $lugar)";
+                                 VALUES($idsolicitud, $numero, '$fechacita', TO_DATE(NOW()::text, 'YYYY-MM-DD'), $usuario ,date_trunc('seconds', now()), $lugar)";
                 $result_insert = @pg_query($query_insert);
                 if (!$result_insert) {
                     echo "NN";
