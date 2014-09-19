@@ -319,12 +319,12 @@ class clsRecepcionSolicitud {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
             $query = "SELECT C.IdNumeroExp, B.IdArea AS IdArea ,B.IdExamen AS IdExamen,NombreExamen,Indicacion,FechaSolicitud
-			 FROM sec_detallesolicitudestudios AS A
-			 INNER JOIN sec_solicitudestudios AS C ON A.IdSolicitudEstudio=C.IdSolicitudEstudio
-			 INNER JOIN lab_examenes B ON A.idExamen=B.IdExamen
-			 WHERE IdServicio ='DCOLAB' AND C.IdNumeroExp='$idexpediente'
-			 AND FechaSolicitud='$fechasolicitud'
-			 ORDER BY B.IdArea";
+        			  FROM sec_detallesolicitudestudios AS A
+        			  INNER JOIN sec_solicitudestudios AS C ON A.IdSolicitudEstudio=C.IdSolicitudEstudio
+        			  INNER JOIN lab_examenes B ON A.idExamen=B.IdExamen
+        			  WHERE IdServicio ='DCOLAB' AND C.IdNumeroExp='$idexpediente'
+        			  AND FechaSolicitud='$fechasolicitud'
+                      ORDER BY B.IdArea";
 
 
             $result = @pg_query($query);
@@ -546,6 +546,19 @@ class clsRecepcionSolicitud {
                       INNER JOIN ctl_estado_servicio_diagnostico t05 ON (t05.id = t01.estado AND t05.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
                       WHERE t04.numero = '$idexpediente' AND t05.idestado = 'D' AND t02.fecha='$fechacita' AND t01.id_establecimiento = $lugar
                             AND t03.idestablecimiento = $idEstablecimiento";
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
+
+    function obtenerEstado($lugar) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query = "SELECT COUNT(id) AS numero FROM lab_proceso_establecimiento WHERE id_proceso_laboratorio = 3";
+
             $result = @pg_query($query);
             if (!$result)
                 return false;

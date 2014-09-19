@@ -58,6 +58,17 @@
 
         $con = new ConexionBD;
         if ($con->conectar() == true) {
+            $aux_query  = "SELECT COUNT(id) AS numero FROM lab_proceso_establecimiento WHERE id_proceso_laboratorio = 3";
+            $aux_result = @pg_query($aux_query);
+
+            if(pg_fetch_array($aux_result)[0] === "0") {
+                $estado_solicitud = "P";
+                $estado_detalle   = "PM";
+            } else {
+                $estado_solicitud = "R";
+                $estado_detalle   = "D";
+            }
+
             $query = "SELECT DISTINCT t03.idempleado AS idmedico,
                              t03.nombreempleado AS nombremedico,
                              t08.nombre AS origen,
@@ -104,7 +115,7 @@
                       INNER JOIN lab_tiposolicitud 			     t14 ON (t14.id = t02.idtiposolicitud)
                       INNER JOIN ctl_estado_servicio_diagnostico t15 ON (t15.id = t02.estado AND t15.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
                       WHERE t08.codigo_busqueda = 'DCOLAB' AND t04.numero = '$idexpediente'
-                            AND t15.idestado = 'P'     AND t02.id = $idsolicitud1
+                            AND t15.idestado = '$estado_solicitud'     AND t02.id = $idsolicitud1
                             AND t09.fecha = '$Nfechacita'";
 
             $result = @pg_query($query);
@@ -149,7 +160,7 @@
                              INNER JOIN ctl_atencion 			        t11 ON (t11.id = t02.id_atencion)
                              WHERE t11.codigo_busqueda = 'DCOLAB' AND t09.numero = '$idexpediente' AND t07.fecha = '$Nfechacita'
                                AND t02.id = $idsolicitud AND t01.idestablecimientoexterno = $IdEstablecimiento
-                               AND t01.estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = 'PM' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+                               AND t01.estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = '$estado_detalle' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
                              ORDER BY t05.idarea";
 
             $resultdetalle = @pg_query($querydetalle);

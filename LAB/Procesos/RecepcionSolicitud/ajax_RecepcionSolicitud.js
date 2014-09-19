@@ -583,21 +583,58 @@ function DatosCompletos()
 
 //FUNCION PARA HABILITAR BOTON Y PROCESAR LA SOLICITUD CAMPBIANDO DE ESTADO
 function HabilitarBoton(idsolicitud, posicion) {
-    //alert(idsolicitud);
-    //verificando que se haya obtenido datos de la consulta
-    idsolicitud = document.getElementById('txtidsolicitud[' + posicion + ']').value;
-    valor = document.getElementById('txtprecedencia[' + posicion + ']').value;
-    if (valor != " ")
-    {
-        //VERIFICANDO QUE LA SOLICITUD HAYA SIDO PROCESADA
-        //Cambia el estado de la solicitud
-        CambiarEstadoSolicitud('P', idsolicitud, posicion);
-        //CambiarEstadoDetalleSolicitud('TR');
-        //Habilita el boton para la impresion
-        div = document.getElementById('divoculto[' + posicion + ']');
-        div.style.display = "block";
-    }
-    else {
-        alert("No se encontraron datos que procesar...");
-    }
+    jQuery.ajaxSetup({
+        error: function(jqXHR, exception) {
+            if (jqXHR.status === 0) {
+                alert('Not connect.\n Verify Network.');
+            } else if (jqXHR.status == 404) {
+                alert('Requested page not found. [404]');
+            } else if (jqXHR.status == 500) {
+                alert('Internal Server Error [500].');
+            } else if (exception === 'parsererror') {
+                alert('Requested JSON parse failed.');
+            } else if (exception === 'timeout') {
+                alert('Time out error.');
+            } else if (exception === 'abort') {
+                alert('Ajax request aborted.');
+            } else {
+                alert('Uncaught Error.\n' + jqXHR.responseText);
+            }
+        }
+    });
+
+    jQuery.ajax({
+        url: 'ctrRecepcionSolicitud.php',
+        async: true,
+        dataType: 'json',
+        type: 'POST',
+        data: { opcion: 10 },
+        success: function(object) {
+            if(object.status) {
+                var estado;
+                
+                if(object.data[0].numero === "0") {
+                    estado = 'P';
+                } else {
+                    estado = 'R';
+                }
+
+                idsolicitud = document.getElementById('txtidsolicitud[' + posicion + ']').value;
+                valor = document.getElementById('txtprecedencia[' + posicion + ']').value;
+                if (valor != " ") {
+                    //VERIFICANDO QUE LA SOLICITUD HAYA SIDO PROCESADA
+                    //Cambia el estado de la solicitud
+                    CambiarEstadoSolicitud(estado, idsolicitud, posicion);
+                    //CambiarEstadoDetalleSolicitud('TR');
+                    //Habilita el boton para la impresion
+                    div = document.getElementById('divoculto[' + posicion + ']');
+                    div.style.display = "block";
+                } else {
+                    alert("No se encontraron datos que procesar...");
+                }
+            } else {
+                alert('Error al actualizar el estado de la Solicitud')
+            }
+        }
+    });
 }

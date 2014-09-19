@@ -26,11 +26,18 @@ switch ($opcion) {
             $query = "UPDATE sec_solicitudestudios SET estado = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = '$estado' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
                       WHERE id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB') AND id_establecimiento = $lugar AND id_expediente = (SELECT id FROM mnt_expediente WHERE numero = '$idexpediente') AND  id = $idsolicitud";
 
-            $query1 ="UPDATE sec_detallesolicitudestudios SET estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = 'PM' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-                      WHERE idsolicitudestudio = $idsolicitud AND idestablecimiento = $lugar";
-
             $result = @pg_query($query);
-            $result1 = @pg_query($query1);
+
+            $aux_query  = "SELECT COUNT(id) AS numero FROM lab_proceso_establecimiento WHERE id_proceso_laboratorio = 3";
+            $aux_result = @pg_query($aux_query);
+
+            if(pg_fetch_array($aux_result)[0] === "0") {
+                $query1 ="UPDATE sec_detallesolicitudestudios SET estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = 'PM' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+                          WHERE idsolicitudestudio = $idsolicitud AND idestablecimiento = $lugar";
+
+                $result1 = @pg_query($query1);
+            }
+
             if (!$result)
                 echo "N";
             else
@@ -236,6 +243,20 @@ switch ($opcion) {
         $idEstablecimiento = $_POST['idEstablecimiento'];
 
         $query = $object->buscarTodasSolicitudes($idexpediente, $fechacita, $lugar, $idEstablecimiento);
+
+        if($query !== false) {
+            $jsonresponse['status'] = true;
+            $jsonresponse['num_rows'] = pg_num_rows($query);
+
+            if(pg_num_rows($query) > 0)
+                $jsonresponse['data']   = pg_fetch_all($query);
+        } else {
+            $jsonresponse['status'] = false;
+        }
+        echo json_encode($jsonresponse);
+        break;
+    case 10:
+        $query = $object->obtenerEstado($lugar);
 
         if($query !== false) {
             $jsonresponse['status'] = true;

@@ -99,9 +99,9 @@ switch ($opcion) {
         }
 
         if (!empty($_POST['fechasolicitud'])) {
-            $query .= " t02.fechasolicitud = '" . $_POST['fechasolicitud'] . "' AND";
+            $query .= " t02.fecha_solicitud = '" . $_POST['fechasolicitud'] . "' AND";
         }
-        
+
         if (!empty($_POST['fecharecepcion'])) {
             $query .= " t03.fecharecepcion = '" . $_POST['fecharecepcion'] . "' AND";
         }
@@ -139,9 +139,9 @@ switch ($opcion) {
             $query_search = $query . " ORDER BY t03.fecharecepcion DESC";
         }
         //echo $query_search;
-        
+
         $consulta = $objdatos->ListadoSolicitudesPorArea($query_search);
-        
+
         echo "<table width='81%' border='1' align='center'>
                 <tr class='CobaltFieldCaptionTD'>
                     <td>Muestra </td>
@@ -198,8 +198,8 @@ switch ($opcion) {
         } else {
             echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table>";
         }
-        
-        
+
+
         break;
 
     case 2://LLENANDO COMBO DE EMPLEADOS
