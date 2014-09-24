@@ -1,4 +1,5 @@
-<?php session_start();
+<?php 
+@session_start();
 //include("../indexCitas2.php");
 include_once("../../../Conexion/ConexionBD.php");
 //$IdEstablecimiento=$_SESSION['IdEstablecimiento'];

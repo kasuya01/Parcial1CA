@@ -482,7 +482,7 @@ function Examenes(){
         mensaje +="\nIngrese el dato del subservicio"
     }
     if (mensaje !=''){
-        alert (mensaje)
+    //   alert (mensaje)
         return false;
     }
     /*
@@ -502,7 +502,7 @@ function Examenes(){
 var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
 */
 // alert (IdEstablecimiento+ ' -- ' +lugar+ ' -- ' + IdSubServicio+ ' -- ' +IdEmpleado+ ' -- ' +FechaConsulta);
-alert (Parametros)
+//alert (Parametros)
 //return false;
     var url = "../EstudiosLaboratorio/Solicitud.php?"+Parametros;
     window.open(url,"Solicitudes","fullscreen=yes, toolbar=no, scrollbars=yes");

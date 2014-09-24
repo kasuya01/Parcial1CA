@@ -8,6 +8,7 @@ $Conexion = new ConexionBD;
 $Conectar = $Conexion->conectar();
 $IdNumeroExp = $_GET["IdNumeroExp"];
 $IdEstablecimiento = $_GET["IdEstablecimiento"]; //IdEstablecimiento solicitante
+//echo 'Idestab:'.$IdEstablecimiento.'<br/>';
 $lugar = $_GET["lugar"]; //IdEstablecimiento local
 $IdSubServicio = $_GET["IdSubServicio"];
 $IdEmpleado = $_GET["IdEmpleado"];
@@ -16,6 +17,7 @@ $FechaConsulta = $_GET["FechaConsulta"];
 $IdCitaServApoyo = $_GET["IdCitaServApoyo"];
 $sexo = $_GET["Sexo"];
 $idexpediente = $_GET["idexpediente"];
+$IdHistorialClinico = $_GET["IdHistorialClinico"];
 //echo 'idexp: '.$idexpediente;
 $FechaSolicitud = $FechaConsulta;
 /* PARA OBTENER LA IP REAL DE LA PC QUE SE CONECTA */
@@ -28,17 +30,18 @@ else
     $ippc = $_SERVER['REMOTE_ADDR'];
 /* * *************************************************************** */
 $Historial = new CrearHistorialClinico;
+if (!isset( $_GET["IdHistorialClinico"])|| $IdHistorialClinico==''){
 $IdHistorialClinico = $Historial->HistorialClinico($IdNumeroExp, $IdEstablecimiento, $IdSubServicio, $IdEmpleado, $FechaConsulta, $_SESSION['Correlativo'], $ippc, $idexpediente);
-
+}
 $_SESSION["IdNumeroExp"] = $IdNumeroExp;
 $_SESSION["idexpediente"] = $idexpediente;
 $_SESSION["IdHistorialClinico"] = $IdHistorialClinico;
 $_SESSION["Fecha"] = $FechaSolicitud;
-//$_SESSION["FechaHoraReg"]=$FechaHoraReg;
+$_SESSION["FechaConsulta"]=$FechaConsulta;
 $_SESSION["IdUsuarioReg"] = $IdUsuarioReg;
 $_SESSION["IdEstablecimiento"] = $IdEstablecimiento;
 $_SESSION["lugar"] = $lugar;
-echo 'Ĺugar'.$lugar.'  idhistclin'.$IdHistorialClinico.'<br/>';
+//echo 'Ĺugar'.$lugar.'  idhistclin'.$IdHistorialClinico.'<br/>';
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -73,7 +76,7 @@ echo 'Ĺugar'.$lugar.'  idhistclin'.$IdHistorialClinico.'<br/>';
             while ($rowar = pg_fetch_array($areas)) {
                // echo 'i got here ';
 
-                $examen = $Historial->busca_mnt_area_exa_est($lugar, $rowar['id'], $sexo);
+                $examen = $Historial->busca_mnt_area_exa_est($lugar, $rowar['id'], $sexo, $IdHistorialClinico);
                 if (pg_num_rows($examen) > 0) {
                     echo "<tr><td colspan='7' class='TdAreas'><b>" . ($rowar['nombrearea']) . "</b></td></tr>";
                     while ($ResultadoExamenes = pg_fetch_array($examen)) {
@@ -104,8 +107,7 @@ echo 'Ĺugar'.$lugar.'  idhistclin'.$IdHistorialClinico.'<br/>';
                     }
                 }//fin while examenes
             }//Fin while areas
-            echo "
-            </table>
+            echo "</table>
               <input type='hidden' name='IdNumeroExp' Id='IdNumeroExp' value='".$IdNumeroExp."'>
               <input type='hidden' name='idexpediente' Id='idexpediente' value='".$idexpediente ."'>
               <input type='hidden' name='IdHistorialClinico' Id='IdHistorialClinico' value='".$IdHistorialClinico."'>

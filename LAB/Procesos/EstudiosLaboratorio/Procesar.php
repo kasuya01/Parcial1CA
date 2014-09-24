@@ -127,7 +127,8 @@
         $IdDetalleUrgentes=$_GET["IdDetallesUrgentes"];
         $IdHistorialClinico=$_GET["IdHistorialClinico"]; 
         $TipoSolicitud='S';       // echo $IdHistorialClinico.'--'.$IdDetalleUrgentes;
-        
+        //No se actualizara nada de urgente en la solicitud que ingresan de externos.
+        /*
         $recuperarData = $SolicitudLab->RecuperarData($IdHistorialClinico,$IdEstablecimiento,$TipoSolicitud);
        
         //No hay solicitud previa de urgentes
@@ -143,7 +144,7 @@
         //Todos los urgentes fueron unchecked
         if(($IdDetalleUrgentes =='' OR $IdDetalleUrgentes == null) AND ($recuperarData !='' OR $recuperarData != null)){
 	    $SolicitudLab->BorrarSolicitudUrgente($IdHistorialClinico,$IdEstablecimiento);  
-	}
+	}*/
             
    break;
 

@@ -47,7 +47,7 @@ class Paciente{
 			/*$SQL = "SELECT CONCAT_WS(' ', PrimerApellido, SegundoApellido, PrimerNombre, SegundoNombre, TercerNombre) AS Nombre
 					FROM mnt_datospaciente INNER JOIN mnt_expediente ON mnt_datospaciente.IdPaciente=mnt_expediente.IdPaciente
 					where IdNumeroExp='$IdNumeroExp'";*/
-			$SQL = "select (primer_nombre||' '||coalesce(segundo_nombre,'')||' '||coalesce(tercer_nombre,'')||' '||primer_apellido||' '||coalesce(segundo_apellido,'')) as nombre
+			$SQL = "select (primer_nombre||' '||coalesce(segundo_nombre,'')||' '||coalesce(tercer_nombre,'')||' '||primer_apellido||' '||coalesce(segundo_apellido,'')) as nombre, mp.id_sexo
                                 from mnt_paciente mp
                                 join mnt_expediente me on (mp.id=me.id_paciente)
                                 where me.id_establecimiento=$lugar
@@ -70,7 +70,7 @@ class Paciente{
 	/*Función para  Recuperar IdSolicituEstudio de la solicitud del Paciente                 */
 	/*****************************************************************************************/
 	function RecuperarIdSolicituEstudio($IdNumeroExp,$IdHistorialClinico) { 
-            echo 'idnumexp'.$IdNumeroExp. ' idhist: '.$IdHistorialClinico.'<br/>'; 
+         //   echo 'idnumexp'.$IdNumeroExp. ' idhist: '.$IdHistorialClinico.'<br/>'; 
 	$Conexion=new ConexionBD();
 	$conectar=$Conexion->conectar();	
             if($conectar==true){
@@ -86,7 +86,7 @@ class Paciente{
                            return false;
                        else {
                           $num = pg_num_rows($Resultado);  
-                          echo 'num: '.$num.'<br/>';
+                        //  echo 'num: '.$num.'<br/>';
                         if($num == 1){
                             $Datos= pg_fetch_array($Resultado);
                             return $Datos['id'];
@@ -109,16 +109,36 @@ class Paciente{
             $Conexion=new ConexionBD();
             $conectar=$Conexion->conectar();   
             if($conectar==true){
+              //  echo '<br/>Badera: '.$badera;
                 if($badera == 1) // crear la cita
                 {
-                    $InsertCit = "INSERT INTO cit_citas_serviciodeapoyo (fecha, id_solicitudestudios, idusuarioreg, fechahorareg)
-                                  VALUES (current_date,$IdSolicitudEstudio,$iduser,NOW())";
-                    echo 'inse: '.$InsertCit.'<br/>';
+                    $nextid="select nextval('cit_citas_serviciodeapoyo_idcitaservapoyo_seq')"; 
+                    $sql=  pg_query($nextid);
+                    $nextseq=  pg_fetch_array($sql);
+                    $idnext=$nextseq[0];
+                    $InsertCit = "INSERT INTO cit_citas_serviciodeapoyo (id, fecha, id_solicitudestudios, idusuarioreg, fechahorareg)
+                                  VALUES ($idnext,current_date,$IdSolicitudEstudio,$iduser,NOW())";
+                   //echo 'inse: '.$InsertCit.'<br/>';
                     $queryIns = pg_query($InsertCit);
                     if (!$queryIns)
                         return false;
-                    else
-                        return true;
+                    else{
+                        $num= "SELECT (coalesce(MAX(t01.numeromuestra),0) + 1)  
+FROM lab_recepcionmuestra        t01
+INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
+WHERE t01.fecharecepcion = current_date 
+AND t02.id_establecimiento = $LugardeAtencion";
+                        $sql2=  pg_query($num);
+                        $nmuestra=  pg_fetch_array($sql2);
+                        
+                       $remuestra= "insert into lab_recepcionmuestra (numeromuestra, fecharecepcion, idsolicitudestudio, fechacita, idestablecimiento, idusuarioreg, fechahorareg) VALUES ($nmuestra[0], current_date, $IdSolicitudEstudio, current_date, $LugardeAtencion, $iduser, NOW())";
+                       $rep=  pg_query($remuestra); 
+                       if (!$rep)
+                           return false;
+                        
+                        
+                        return $idnext;
+                    }
                      
                 }
                 else // actualizar la cita
@@ -128,16 +148,17 @@ class Paciente{
                                 where id=$IdCitaServApoyo
                                 and id_solicitudestudios=$IdSolicitudEstudio";
                     $query=pg_query($UpdateCit);
+                  //  echo $UpdateCit;
                     if (!$query)
                         return false;
                     else
-                        return true;
+                        return $IdCitaServApoyo;
                  //   mysql_query($UpdateCit) or die('La consulta fall&oacute;: ' . mysql_error());  
                 }                
             }// fin if conectar
 	}// fin function IdCitaServApoyoInsertUpdate        
 	
-        
+       
 	function FechaHoraNow($conectar){
 		if($conectar==true){
 			$SQL = "SELECT now() as Ahora";
@@ -362,13 +383,14 @@ function GuardarDatos($IdHistorialClinico,$IdNumeroExp, $idexpediente,$FechaSoli
 			//$link = mysqli_connect('localhost','labor', 'clinic0', 'siap'); 
 			
 			/*COMPROBACION DE EXAMENES YA DADOS*/
-			$resp= "select detsol.idexamen 
+			$resp1= "select detsol.idexamen 
                                 from sec_solicitudestudios  sol
                                 join sec_detallesolicitudestudios detsol on (sol.id=detsol.idsolicitudestudio)
                                 where sol.id_expediente=$idexpediente
                                 and sol.fecha_solicitud='$FechaSolicitud'
                                 and id_historial_clinico= $IdHistorialClinico
-                                and detsol.idexamen=$IdExamen";
+                                and detsol.id_conf_examen_estab=$IdExamen
+                                and estadodetalle=1";
 			/**cambio a pg$resp= "select sec_detallesolicitudestudios.IdExamen 
 					from sec_solicitudestudios
 					inner join sec_detallesolicitudestudios
@@ -379,7 +401,7 @@ function GuardarDatos($IdHistorialClinico,$IdNumeroExp, $idexpediente,$FechaSoli
 					and sec_detallesolicitudestudios.IdExamen='$IdExamen'";*/
                         //echo $resp;
                        
-                        $resp= pg_query($resp);
+                        $resp= pg_query($resp1);
                         if (@pg_num_rows($resp)<1){
 			/***************************************/
 			//if(!$row=pg_fetch_array($resp)){
@@ -466,7 +488,8 @@ left join lab_tipomuestra ltm			on (sds.idtipomuestra=ltm.id)
 left join mnt_origenmuestra mom			on (sds.idorigenmuestra=mom.id)
 where shc.id=$IdHistorialClinico
 and sse.id_atencion= (select id from ctl_atencion where codigo_busqueda='DCOLAB')
-and sse.id_establecimiento=$IdEstablecimiento";
+and sse.id_establecimiento=$IdEstablecimiento
+and estadodetalle!=8";
         $Ejecutar=pg_query($SQL);
         if (!$Ejecutar){
             return false;
@@ -723,16 +746,19 @@ function CrearNuevaSolicitudUrgente($IdHistorialClinico,$IdEstablecimiento,$IdDe
     $tamano=sizeof($Detalles);
     $Bandera='S';
         
-    $sql=   "SELECT IdNumeroExp,IdSolicitudEstudio,IdUsuarioReg 
-            FROM sec_solicitudestudios WHERE IdHistorialClinico=$IdHistorialClinico 
-            AND IdEstablecimiento=$IdEstablecimiento";
-    $Ejecutar=mysql_query($sql) or die ("Warning...: La consulta Falló ...!". mysql_error());
+    $sql=   "SELECT id_expediente, id as idsolicitudestudio, idusuarioreg
+FROM sec_solicitudestudios sse
+where id_historial_clinico=$IdHistorialClinico
+and id_establecimiento=49;$IdEstablecimiento";
+    $Ejecutar=pg_query($sql);
+    if (!$Ejecutar)
+        return false;
     
 
-    while($Answer= mysql_fetch_array($Ejecutar)){
-        $NumeroExpediente=$Answer["IdNumeroExp"];
-        $IdSolicitudEstudiosNormal=$Answer["IdSolicitudEstudio"];
-        $IdUsuarioReg=$Answer["IdUsuarioReg"];
+    while($Answer= pg_fetch_array($Ejecutar)){
+        $NumeroExpediente=$Answer["id_expediente"];
+        $IdSolicitudEstudiosNormal=$Answer["idsolicitudestudio"];
+        $IdUsuarioReg=$Answer["idusuarioreg"];
     }
     
     //Se crea la Nueva Solicitud de Estudios para los examenes URGENTES
@@ -820,9 +846,11 @@ function BorrarSolicitudUrgente($IdHistorialClinico,$IdEstablecimiento){
     $IdSolicitudEstudiosUrgente=  $this->RecuperarData($IdHistorialClinico, $IdEstablecimiento,'S');
     $IdSolicitudEstudios=  $this->RecuperarData($IdHistorialClinico, $IdEstablecimiento,'R');
     
-    $SQL=   "UPDATE sec_detallesolicitudestudios SET IdSolicitudEstudio=$IdSolicitudEstudios 
-             WHERE IdSolicitudEstudio=$IdSolicitudEstudiosUrgente AND IdEstablecimiento=$IdEstablecimiento";	  
-    $Execute = mysql_query($SQL) or die('La consulta fall&oacute;: ' . mysql_error());
+    $SQL=   "UPDATE sec_detallesolicitudestudios 
+SET idsolicitudestudio= $IdSolicitudEstudios
+WHERE idsolicitudestudio=$IdSolicitudEstudiosUrgente 
+AND id_establecimiento =$IdEstablecimiento";	  
+    $Execute = pg_query($SQL);
     
     $sql=   "DELETE from cit_citasxserviciodeapoyo WHERE IdSolicitudEstudio=$IdSolicitudEstudiosUrgente";	  
     $Ejecutar = mysql_query($sql) or die('La consulta fall&oacute;: ' . mysql_error());
@@ -913,6 +941,7 @@ values($idseq,'$FechaConsulta', $IdSubServicio, $iduser,NOW(), 'V', '$ippc', $lu
             and administrativa='N'
             order by nombrearea;";
        $result=  pg_query($query);
+       //echo '<br/>'.$query.'<br/>';
      if (!$result){
         return false;
     }
@@ -924,7 +953,7 @@ values($idseq,'$FechaConsulta', $IdSubServicio, $iduser,NOW(), 'V', '$ippc', $lu
     }
     
     
-    function busca_mnt_area_exa_est($lugar, $idarea, $idsexo){
+    function busca_mnt_area_exa_est($lugar, $idarea, $idsexo, $IdHistorialClinico){
     //$ippc=$_SERVER["REMOTE_ADDR"];
        // echo $idarea.'-area sexo-'.$idsexo.'<br/>';
        $query= "select lcee.id as idconf, nombre_examen, mnt4.id_examen_servicio_diagnostico
@@ -936,6 +965,10 @@ values($idseq,'$FechaConsulta', $IdSubServicio, $iduser,NOW(), 'V', '$ippc', $lu
             and id_establecimiento=$lugar
             and (idsexo is NULL or idsexo=$idsexo)
             and ubicacion=0
+            and lcee.id not in (select id_conf_examen_estab 
+		  from sec_solicitudestudios sse 
+		  join sec_detallesolicitudestudios sds on (sse.id =sds.idsolicitudestudio) 
+		  where id_historial_clinico=$IdHistorialClinico)
             order by nombre_examen asc;";
        $result=  pg_query($query);
      if (!$result){

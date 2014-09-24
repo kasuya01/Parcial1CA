@@ -34,16 +34,31 @@ function CerrarVentana(){
 
 function AgregarExamen(){
 	var IdHistorialClinico=document.getElementById('IdHistorialClinico').value;
-	var IdNumeroExp=document.getElementById('idexpediente').value;
+	var idexpediente=document.getElementById('idexpediente').value;
+	var IdNumeroExp=document.getElementById('IdNumeroExp').value;
 	var FechaSolicitud=document.getElementById('FechaSolicitud').value;				
 	var IdUsuarioReg=document.getElementById('IdUsuarioReg').value;				
 	var FechaHoraReg=document.getElementById('FechaHoraReg').value;	
+	var lugar=document.getElementById('lugar').value;	
+	var IdEstablecimiento=document.getElementById('IdEstablecimiento').value;	
+	var IdCitaServApoyo=document.getElementById('IdCitaServApoyo').value;	
+	var Sexo=document.getElementById('Sexo').value;	
+	var FechaConsulta=document.getElementById('FechaConsulta').value;	
+
 
 	var Parametros="?IdNumeroExp="+IdNumeroExp;
+        Parametros+="&IdEstablecimiento="+IdEstablecimiento;
+        Parametros+="&lugar="+lugar;
+        Parametros+="&IdCitaServApoyo="+IdCitaServApoyo;
 			Parametros+="&Fecha="+FechaSolicitud;
 			Parametros+="&IdUsuarioReg="+IdUsuarioReg;
 			Parametros+="&FechaHoraReg="+FechaHoraReg;
 			Parametros+="&IdHistorialClinico="+IdHistorialClinico;
+			Parametros+="&idexpediente="+idexpediente;
+			Parametros+="&Sexo="+Sexo;
+			Parametros+="&FechaConsulta="+FechaConsulta;
+			
+			
 	location.href='./Solicitud.php'+Parametros;
 
 }
@@ -101,7 +116,7 @@ function ImprimirResultados(IdHistorialClinico, idsolicitudestudio){
 	ObjetoAjax.open("POST", 'Procesar.php', true);
 	ObjetoAjax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	
-	// Declaraci�n de par�metros
+	// Declaraci�n de parametros
 	
 	var Proceso='Impresiones';
 	var param = 'Proceso='+Proceso;
@@ -295,7 +310,7 @@ function MostrarDetalle(IdHistorialClinico){
 					}//Estado == 4
 				}//On ready state
 			var Proceso='GuardarDatos';
-                        alert(' Proceso '+Proceso+' IdHistorialClinico '+IdHistorialClinico+' IdNumeroExp '+IdNumeroExp+' FechaSolicitud '+FechaSolicitud+' IdUsuarioReg '+IdUsuarioReg+' NombreExamen '+NombreExamen+' Indicacion '+Indicacion+' NombreMuestra '+NombreMuestra+' NombreOrigen '+NombreOrigen+'&idexpediente:'+idexpediente);
+                  //      alert(' Proceso '+Proceso+' IdHistorialClinico '+IdHistorialClinico+' IdNumeroExp '+IdNumeroExp+' FechaSolicitud '+FechaSolicitud+' IdUsuarioReg '+IdUsuarioReg+' IdExamen '+NombreExamen+' Indicacion '+Indicacion+' NombreMuestra '+NombreMuestra+' NombreOrigen '+NombreOrigen+'idexpediente:'+idexpediente);
                //         alert (NombreExamen)
 		ajax2.open("GET",'Procesar.php?Proceso='+Proceso+'&IdHistorialClinico='+IdHistorialClinico+'&IdNumeroExp='+IdNumeroExp+'&idexpediente='+idexpediente+'&FechaSolicitud='+FechaSolicitud+'&IdUsuarioReg='+IdUsuarioReg+'&IdExamen='+NombreExamen+'&Indicacion='+Indicacion+'&IdTipoMuestra='+NombreMuestra+'&IdOrigen='+NombreOrigen,true);	/*	ajax.onreadystatechange=function() {
 	if (ajax.readyState==4) 
@@ -320,7 +335,7 @@ function MostrarDetalle(IdHistorialClinico){
                                  // alert(' Proceso '+Proceso+' IdHistorialClinico '+IdHistorialClinico+' IdNumeroExp '+IdNumeroExp+' FechaSolicitud '+FechaSolicitud+' IdUsuarioReg '+IdUsuarioReg+' FechaHoraReg '+FechaHoraReg+' NombreExamen '+NombreExamen+' Indicacion '+Indicacion+' NombreMuestra '+NombreMuestra+' NombreOrigen '+NombreOrigen+'&idexpediente:'+idexpediente);
                                  // alert ('Qie pasa')
                               //   return false;
-                                alert ('WTFuuaaa!!')
+                            //    alert ('WTFuuaaa!!')
                               //  return false;
                                 ListaExamenes(IdHistorialClinico,IdCitaServApoyo);
 			}
@@ -358,13 +373,14 @@ function Retraso(ID){
 		var IdExamen;
 		var IdDetalle;
 		var Contar=document.getElementById('total').value;
+                var  IdHistorialClinico=document.getElementById('IdHistorialClinico').value;
+                var  IdCitaServApoyo=document.getElementById('IdCitaServApoyo').value;
 		accion=4;
 		var j=0;
 		var i=0;
-
+              
 // Comprobar todos los check box que esten chekeados,.....
 
-	
 	
 	if(Contar==1 && document.Editar.ExamenesLab.checked == true){	
         /**** Pasos para Guardar los datos***/
@@ -374,9 +390,8 @@ function Retraso(ID){
                 //Detalle=document.getElementById("Detalle"+IdExamen).value;
         // Crear Objeto Ajax
                 ObjetoAjax=NuevoAjax();			
-
                 // Hacer el Request y llamar o Dibujar el Resultado
-                ObjetoAjax.onreadystatechange = CargarContenido;
+                ObjetoAjax.onreadystatechange = CargarContenido();
                 ObjetoAjax.open("POST", 'Procesar.php', true);
                 ObjetoAjax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 
@@ -392,13 +407,16 @@ function Retraso(ID){
 	else if (Contar==1 && document.Editar.ExamenesLab.checked == false){	
             IdExamen=document.Editar.ExamenesLab.value;
             Indicacion=document.getElementById("Indicacion"+IdExamen).value;
-            Detalle=document.getElementById("Detalle"+IdExamen);
+           /* Detalle=document.getElementById("Detalle"+IdExamen);
             if (IdDetalle==null){
                 Detalle=2;
             }
             else{
                 Detalle=1;
-            }                    
+            }  */
+         
+         //Para las solicitudes diarias no se necesita la opción urgente por lo cual pondremos seteado que Detalle= normal
+         Detalle=2;
 
             if(Indicacion != ""){
                             // Crear Objeto Ajax
@@ -426,14 +444,16 @@ function Retraso(ID){
 			// Si esta checkeado entonces que Borre los datos en la base de datos...!
 				IdExamen=document.Editar.ExamenesLab[i].value;
 				Indicacion=document.getElementById("Indicacion"+IdExamen).value;
-				IdDetalle=document.getElementById("IdDetalle"+IdExamen).value;
+				IdDetalle=document.getElementById("IdDetalle"+IdExamen).value;                                
 			if (document.Editar.ExamenesLab[i].checked == true) {					
 					/**** Pasos para Guardar los datos***/
 					// Crear Objeto Ajax
 						ObjetoAjax=NuevoAjax();			
 						
 						// Hacer el Request y llamar o Dibujar el Resultado
-						ObjetoAjax.onreadystatechange = CargarContenido;
+                                                
+						ObjetoAjax.onreadystatechange = CargarContenido();
+                                             
 						ObjetoAjax.open("POST", 'Procesar.php', true);
 						ObjetoAjax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 						
@@ -441,7 +461,7 @@ function Retraso(ID){
 						
 						var Proceso='GuardarCambios';
 						var param = 'Proceso='+Proceso;
-							
+						
 						// Concatenación y Envío de Parámetros
 						param += '&IdDetalle='+IdDetalle;
 						ObjetoAjax.send(param); 
@@ -454,7 +474,7 @@ function Retraso(ID){
 						ObjetoAjax=NuevoAjax();			
 						
 						// Hacer el Request y llamar o Dibujar el Resultado
-						ObjetoAjax.onreadystatechange = CargarContenido;
+						ObjetoAjax.onreadystatechange = CargarContenido();
 						ObjetoAjax.open("POST", 'Procesar.php', true);
 						ObjetoAjax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 						
@@ -472,9 +492,20 @@ function Retraso(ID){
 				
 			}
 					
-		} // Fin For			
+		} // Fin For	
+		
+    
+                
 	}// Fin Else
-
+ ObjetoAjax.onreadystatechange=function() {
+	if (ObjetoAjax.readyState==4) 
+	{
+		 ListaExamenes(IdHistorialClinico,IdCitaServApoyo)
+	}
+  }
+//alert (parametros)
+  ObjetoAjax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+               
 	//MostrarDetalle();
  }
 
@@ -484,9 +515,9 @@ function Retraso(ID){
 
 function CargarContenido(){
   // Si se Tarda en Cargar los datos que lanze los siguientes mensajes dependiendo del caso que sea	 
-  if (ObjetoAjax.readyState==1) {                    
+  if (ObjetoAjax.readyState==1) { 
 		
-	if(accion==0)
+	if(accion==0)            
 	document.getElementById('RespuestaAjax').innerHTML = "<center><img src='loading.gif' alt='Cargando...' /><br>Cargando Resultados...! </center>";
 	else if(accion==1)
 	document.getElementById(Nombre).innerHTML = "<center><img src='loading.gif' alt='Cargando...' /><br>Cargando Resultados...! </center>";
@@ -502,8 +533,6 @@ function CargarContenido(){
   }	 // Fin Estado Cargando
 
   else if (ObjetoAjax.readyState == 4){//4 The request se Completo y vamos a cargar
-	 
-
 	  if (ObjetoAjax.status == 200){//200 Significa que vamos cargar porque el request se Realizó....!
 		  respuesta = ObjetoAjax.responseText;	
 		  /*************Dependiendo la Accion ejecutamos la Respuesta: En este caso cargar Solicitudes**************/
@@ -546,7 +575,8 @@ function CargarContenido(){
 			else if(accion==4)
 				document.getElementById("Cambios").innerHTML = "La direccion no existe";
          }
-         else{ 
+         else{
+                        
 			if(accion==0)
 				document.getElementById('RespuestaAjax').innerHTML == "Error: "+ObjetoAjax.status;
 				
@@ -576,7 +606,8 @@ function Urgente(){
     var detalles_urgente=new Array(); 
     var e=0;
     var i;       
-    //alert (largo)
+   //alert (largo) 
+    if (largo >0){
     for (i=1;i< largo;i++){
         if (document.getElementById('Detalle'+[i]).checked==true){ 
             //alert (document.getElementById('Detalle'+[i]).value)
@@ -584,10 +615,13 @@ function Urgente(){
             e++;
         }
     }
-
+    //los examenes que pueden borrarse 
+    }//fin if largo >0
     var cadena_ref=detalles_urgente.toString();// se convierte a string    
+
   //alert (cadena_ref+'--'+IdHistorialClinico);    
-  
+
+    
     //Crear Objeto Ajax
     ObjetoAjax=NuevoAjax();			
     // Hacer el Request y llamar o Dibujar el Resultado
@@ -600,6 +634,7 @@ function Urgente(){
     
     ObjetoAjax.open("GET","Procesar.php?Proceso=VerificarSolicitudUrgente"+"&IdDetallesUrgentes="+cadena_ref+"&IdHistorialClinico="+IdHistorialClinico,true);
     ObjetoAjax.send(null);
+    
     return false;
 	
  }

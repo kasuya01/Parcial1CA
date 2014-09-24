@@ -5,30 +5,33 @@ include_once("ClaseSolicitud.php"); //Agregamos el Archivo con las clases y func
 	//$_SESSION["conectar"]=$conectar;
 	$IdHistorialClinico=$_GET["IdHistorialClinico"];
         $IdCitaServApoyo=$_GET["IdCitaServApoyo"];
+       // echo '<br/>idcitaservapoyo: '.$IdCitaServApoyo;
         $IdEstablecimiento=$_SESSION["IdEstablecimiento"];//Elegido en el combo
 	$IdNumeroExp=$_SESSION["IdNumeroExp"];
 	$idexpediente=$_SESSION["idexpediente"];
         $iduser=$_SESSION["IdUsuarioReg"];
-        echo 'iduser: '.$iduser;
         $LugardeAtencion=$_SESSION["lugar"]; //Lugar de donde proviene
-	//$NombrePaciente=$Paciente->RecuperarNombre($IdEstablecimiento,$IdNumeroExp);   
-        echo 'IDEXPEDIENTE: '.$idexpediente.'<b/>';
+	//$NombrePaciente=$Paciente->RecuperarNombre($IdEstablecimiento,$IdNumeroExp);  
         $NombrePa=  $Paciente->RecuperarNombre($IdEstablecimiento,$idexpediente); 
         $rowpa=  pg_fetch_array($NombrePa);
         $NombrePaciente= $rowpa['nombre'];
+        $sexo=$rowpa['id_sexo'];
         //echo 'IdHistorialClinico:'.$IdHistorialClinico .' IdCitaServApoyo:  '.$IdCitaServApoyo.'  IdNumeroExp: '.$IdNumeroExp. '</br>';
         //exit;
         // recuperar el IdSolicituEstudio
         $IdSolicitudEstudio=$Paciente->RecuperarIdSolicituEstudio($idexpediente,$IdHistorialClinico);
         /* HACER AKI EL IF DE VERIFICACION DE IdCitaServApoyo Y ASI HACER EL INSERT O EL UPDATE*/
+        //echo '$IdCitaServApoyo'.$IdCitaServApoyo.'<br/>';
         if($IdCitaServApoyo == "")
         {
             $IdCitaServApoyo=$Paciente->IdCitaServApoyoInsertUpdate($IdSolicitudEstudio,$iduser,$IdNumeroExp,$LugardeAtencion,$IdCitaServApoyo,1);
+         
         }
         else
         {
             $IdCitaServApoyo=$Paciente->IdCitaServApoyoInsertUpdate($IdSolicitudEstudio,$iduser,$IdNumeroExp,$LugardeAtencion,$IdCitaServApoyo,0);
         }
+        
 ?>
 <html>
 <head>
@@ -62,10 +65,11 @@ include_once("ClaseSolicitud.php"); //Agregamos el Archivo con las clases y func
                         <td>Origen Muestra</td>
                         <td>Indicaci&oacute;n</td>
                         <td>Borrar</td>
-                        <td>Urgente</td>
+                     <!--   <td>Urgente</td>-->
                     </tr>";
             $i=0;
             $t=0;
+            $s=0;
             while ($Respuesta=pg_fetch_array($result)){
                 echo "<tr class='TdResultados'><td>".$Respuesta["codigo_examen"]."</td>";         
                 echo "<td>".($Respuesta["nombre_examen"]). "</td>";
@@ -73,7 +77,7 @@ include_once("ClaseSolicitud.php"); //Agregamos el Archivo con las clases y func
   		echo "<td><font color='#084B8A'><b>".($Respuesta["origenmuestra"])."</b></font></td>";
   		echo "<td><input type='text' id='Indicacion".$Respuesta['idexamen']."' name='Indicacion".$Respuesta['idexamen']."'value='". ($Respuesta["indicacion"]). "'>";                                 
                 echo "<input type='hidden' name='IdDetalle".$Respuesta['idexamen']."' Id='IdDetalle".$Respuesta['idexamen']."'value='".$Respuesta['iddetallesolicitud']."'></td>";		  echo "<td><input type='checkbox' name='ExamenesLab' value='".$Respuesta['idexamen']."'/></td>";
-                $Respuesta3=$Laboratorio->RecuperarData($IdHistorialClinico,$IdEstablecimiento,$Bandera);
+              /*  $Respuesta3=$Laboratorio->RecuperarData($IdHistorialClinico,$IdEstablecimiento,$Bandera);
                 if ($Respuesta3!=NULL || $Respuesta3!=''){
                     $buscadetsol=$Laboratorio->buscardetsol($Respuesta3);
                     while ($Respuesta4=  pg_fetch_array($buscadetsol)){
@@ -94,6 +98,7 @@ include_once("ClaseSolicitud.php"); //Agregamos el Archivo con las clases y func
                    $t++;     
                    }//fin if respuesta urgente=1                            	
 		}//fin if Respuesta3=null
+                */
                 echo "</tr>";
 		$i++;	 
                 //aqui me quede
@@ -136,6 +141,12 @@ include_once("ClaseSolicitud.php"); //Agregamos el Archivo con las clases y func
    	<input type="hidden" id="FechaSolicitud" 	 value="<?php echo $_SESSION["Fecha"]; ?>">
    	<input type="hidden" id="IdUsuarioReg" 		 value="<?php echo $_SESSION["IdUsuarioReg"]; ?>">
    	<input type="hidden" id="FechaHoraReg" 		 value="<?php echo $_SESSION["FechaHoraReg"]; ?>">
+   	<input type="hidden" id="idexpediente" 		 value="<?php echo $_SESSION["idexpediente"]; ?>">
+   	<input type="hidden" id="FechaConsulta" 		 value="<?php echo $_SESSION["FechaConsulta"]; ?>">
+   	<input type="hidden" id="IdCitaServApoyo" 		 value="<?php echo $IdCitaServApoyo; ?>">
+   	<input type="hidden" id="lugar" 		 value="<?php echo $LugardeAtencion; ?>">
+   	<input type="hidden" id="IdEstablecimiento" 		 value="<?php echo $IdEstablecimiento; ?>">
+   	<input type="hidden" id="Sexo" 		 value="<?php echo $sexo; ?>">
 
 </form>
 </body>
