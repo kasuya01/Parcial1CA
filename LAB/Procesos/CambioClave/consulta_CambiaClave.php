@@ -2,18 +2,18 @@
 $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
-include_once("clsLab_Areas.php");
+include_once("../../Mantenimientos/Lab_Areas/clsLab_Areas.php");
 //echo $lugar;
 //consulta los datos por su id
 $idarea=$_POST['idarea'];
 $objareas = new clsLab_Areas;
 $consulta=$objareas->consultarid($idarea,$lugar);
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 //valores de las consultas
-$nombre=$row['NombreArea'];
-$activo=$row['Condicion'];
+echo "nombre  ".$nombre=$row['NombreArea'];
+echo "condicion". $activo=$row['Condicion'];
 //muestra los datos consultados en los campos del formulario
-//echo $lugar."-".$idarea."-".$usuario."-".$activo;
+echo $lugar."-".$idarea."-".$usuario."-".$activo;
 ?>
 
 <form name= "frmModificar" action="" onSubmit="enviarDatos(); return false">

@@ -21,7 +21,7 @@ if (($CAMA || $Observacion || $Impresiones || $Indicacion) !='' OR ($CAMA || $Ob
 FNAC,SEXO,CODIGO,CODIGOSUMI,HABITACION,CAMA,DATESYSTEM,PROCESADO,IdDetalleSolicitud,Indicacion,
 IdTipoMuestra,IdOrigenMuestra,IdPlantilla,Observacion,Estado,IdRecepcionMuestra,NumeroMuestra) VALUES($Solicitud,'$FechaRecepcion','$IdServicio',$IdSubServicio,'$IdEmpleado','$IdNumeroExp','$Nombres','$PrimerApellido','$APELL2','$FechaNacimiento','$Sexo','$IdExamen','$CODIGOSUMI','$Impresiones',$CAMA,now(),$Bandera,$IdDetalleSolicitud,'$Indicacion',$IdTipoMuestra,$IdOrigenMuestra,'$IdPlantilla','$Observacion','$EstadoDetalle',$IdRecepcionMuestra,$NumeroMuestra)";
 
-	$queryIns = mysql_query($query1) or die('La consulta fall&oacute;:' . mysql_error());
+	$queryIns = pg_query($query1) or die('La consulta fall&oacute;:' . mysql_error());
 	return $query1;
 	}
 

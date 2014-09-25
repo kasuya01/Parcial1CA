@@ -53,7 +53,7 @@ if ($nivel==33){
 			$objeareas=new clsLab_Areas;
 			$consulta= $objeareas->consultaractivas($lugar);
 			while($row = pg_fetch_array($consulta)){
-			echo "<option value='" . $row['id']. "'>" . $row['nombrearea'] . "</option>";
+			echo "<option value='" . $row['idarea']. "'>" . $row['nombrearea'] . "</option>";
 			}
 			?>		  
           </select>
