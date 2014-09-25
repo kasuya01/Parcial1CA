@@ -5,6 +5,8 @@ if (isset($_SESSION['Correlativo'])) {
     $corr  = $_SESSION['Correlativo'];
     $lugar = $_SESSION['Lugar'];
     $area  = $_SESSION['Idarea'];
+    $ROOT_PATH = $_SESSION['ROOT_PATH'];
+    $base_url  = $_SESSION['base_url'];
     include_once("clsSolicitudesProcesadas.php");
     
     //consulta los datos por su id
@@ -37,6 +39,7 @@ if (isset($_SESSION['Correlativo'])) {
             <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
             <title>Solicitudes Procesadas</title>
             <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script>
+            <?php include_once $ROOT_PATH."/public/js.php";?>
             <!--referencias del estilo del calendario-->
             <link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
             <link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />
@@ -46,26 +49,43 @@ if (isset($_SESSION['Correlativo'])) {
             <script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
             <script language="JavaScript" type="text/javascript">
                 function MostrarSolicitudes() {
+                    var error = [];
+                    var errorMessage = "";
                     
-                    if ((document.getElementById('cmbArea').value === 0) && (document.getElementById('txtexpediente').value === "")
-                            && (document.getElementById('cmbExamen').value === 0) && (document.getElementById('cmbTipoEstab').value === 0)
-                            && (document.getElementById('cmbEstablecimiento').value === 0) && (document.getElementById('CmbServicio').value === 0)
-                            && (document.getElementById('cmbSubServ').value === 0) && (document.getElementById('PrimerNombre').value === "")
-                            && (document.getElementById('SegundoNombre').value === "") && (document.getElementById('PrimerApellido').value === "")
-                            && (document.getElementById('SegundoApellido').value === "") && (document.getElementById('txtfechasolicitud'))
-                            && (document.getElementById('cmbTipoSolic') === 0)) {
+                    if ((document.getElementById('cmbArea').value === "0") || (document.getElementById('cmbTipoEstab').value === "0") || (document.getElementById('cmbEstablecimiento').value === "0")) {
+                        if(document.getElementById('cmbArea').value === "0")
+                            error.push('Area de Laboratorio');
                         
-                        alert("Ingrese un parametro de busqueda");
-
-                    } else if (document.getElementById('cmbArea').value === 0) {
-                        alert("Debe de ingresar un Area");
-                        } else {
-                            SolicitudesPorArea();
+                        if(document.getElementById('cmbTipoEstab').value === "0")
+                            error.push('Tipo de Establecimiento');
+                        
+                        if(document.getElementById('cmbEstablecimiento').value === "0")
+                            error.push('Establecimiento');
+                        
+                        
+                        for (i = 0; i < error.length; i++) {
+                            errorMessage += error[i] + "\n";
                         }
+                        
+                        if(error.length === 1)
+                            errorMessage = "Error...\n\nEl siguiente campo es requerido: \n\n" + errorMessage;
+                        else
+                            errorMessage = "Error...\n\nLos siguientes campos son requeridos: \n\n" + errorMessage;
+                        
+                        alert(errorMessage);
+
+                    } else {
+                        jQuery('#divBusqueda').empty();
+                        jQuery('#divBusqueda').append('<center><img id="wait" src="<?php echo $base_url; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" style="color:#888888;font-weight: bold;">Buscando...</div></center>');
+                        
+                        setTimeout(function() {
+                            jQuery('#divBusqueda').empty();
+                            SolicitudesPorArea();
+                        }, 500);
+                    }
                 }
-
+                
                 function BuscarEstablecimiento(idtipoesta) {
-
                     LlenarComboEstablecimiento(idtipoesta);
                 }
 
@@ -87,6 +107,8 @@ if (isset($_SESSION['Correlativo'])) {
                     LlenarComboServicio(IdServicio);
                     //}
                 }
+                
+                llenarComboTipoSolicitud();
             </script>
 
         </head>
@@ -224,7 +246,21 @@ if (isset($_SESSION['Correlativo'])) {
                             <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Consulta</td>
                             <td  class="StormyWeatherDataTD" width="20%" >
                                 <input type="text" size="15" name="txtfechasolicitud" id="txtfechasolicitud" />
-                                <input type="button" value="..." id="trigger">aaaa/mm/dd</td> 
+                                <input type="button" value="..." id="trigger1">aaaa/mm/dd
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="StormyWeatherFieldCaptionTD" align="left" ><strong>Tipo Solicitud</strong></td>
+                            <td class="StormyWeatherDataTD">
+                                <select id="cmbTipoSolic" name="cmbTipoSolic" size="1" >
+                                    <option value="0">Seleccione un Tipo de Solicitud</option>
+                                </select>
+                            </td>
+                            <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Fecha Recepi&oacute;n</strong></td>
+                            <td  class="StormyWeatherDataTD">
+                                <input type="text" size="15" name="txtfecharecep" id="txtfecharecep"/>
+                                <input type="button" value="..." id="trigger2">aaaa/mm/dd
+                            </td>
                         </tr>
                         <tr>
                             <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong>   </td> 
@@ -242,15 +278,6 @@ if (isset($_SESSION['Correlativo'])) {
                                 <input class="MailboxInput" maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" ></td>
                         </tr>
                         <tr>
-                            <td class="StormyWeatherFieldCaptionTD" align="left" colspan="1" align="right">Tipo Solicitud</td>
-                            <td class="StormyWeatherDataTD" colspan="3">
-                                <select id="cmbTipoSolic" name="cmbTipoSolic" size="1" >
-                                    <option value="0">Seleccione un Tipo de Solicitud</option>
-                                    <option value="S">URGENTE</option>
-                                    <option value="R">NORMAL</option>
-                                </select>	
-                        </tr>
-                        <tr>
                             <td class="StormyWeatherDataTD" colspan="4" align="right">		
                                 <input type="button" name="Submit" value="Buscar Solicitudes" onClick="MostrarSolicitudes()">
                                 <input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('Proc_SolicitudesProcesadas.php')">
@@ -264,7 +291,15 @@ if (isset($_SESSION['Correlativo'])) {
                             {
                                 inputField: "txtfechasolicitud", // el ID texto 
                                 ifFormat: "%Y-%m-%d", // formato de la fecha
-                                button: "trigger"       // el ID del boton			  	  
+                                button: "trigger1"       // el ID del boton			  	  
+                            }
+                    );
+            
+                    Calendar.setup(
+                            {
+                                inputField: "txtfecharecep", // el ID texto 
+                                ifFormat: "%Y-%m-%d", // formato de la fecha
+                                button: "trigger2"       // el ID del boton			  	  
                             }
                     );
                 </script>

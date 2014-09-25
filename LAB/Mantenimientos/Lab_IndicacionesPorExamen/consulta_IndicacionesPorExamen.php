@@ -9,10 +9,10 @@ $consulta=$obj->consultarid_indicacion($idindicacion);
 $row = pg_fetch_array($consulta);
 
 //valores de las consultas
-$idexamen=$row['idexamen'];
-$nombreexamen=$row['nombreexamen'];
-$idarea=$row['idarea'];
-$nombrearea=$row['nombrearea'];
+$idexamen=$row[2];
+$nombreexamen=$row[3];
+$idarea=$row[0];
+$nombrearea=$row[1];
 $indicacion=$row['indicacion'];
 //muestra los datos consultados en los campos del formulario
 ?>
@@ -30,10 +30,10 @@ $indicacion=$row['indicacion'];
 			<?php
 			include('../Lab_Areas/clsLab_Areas.php');
 			$objeareas = new clsLab_Areas;
-			$consulta = $objeareas->c();
-			while($row = mysql_fetch_array($consulta))
+			$consulta = $objeareas->consultaractivas();
+			while($row = pg_fetch_array($consulta))
 			{
-				echo "<option value='" . $row['IdArea']. "'>" . htmlentities($row['NombreArea']) . "</option>";
+				echo "<option value='" . $row['idarea']. "'>" . htmlentities($row['nombrearea']) . "</option>";
 			}						            	
 			echo "<option value='" . $idarea . "' selected='selected'>" .htmlentities($nombrearea). "</option>";
 			?>		  
@@ -41,15 +41,14 @@ $indicacion=$row['indicacion'];
        </tr>
        <tr>
             <td class="StormyWeatherFieldCaptionTD">Examen </td>
-            <td class="StormyWeatherDataTD">
-                <select name="cmbExamen" size="1">
-                    <?php
-			$consultaex = $obj->ExamenesPorArea($idarea);
-			while($row = mysql_fetch_array($consultaex))
-			{
-				echo "<option value='" . $row['IdExamen']. "'>" . $row['NombreExamen'] . "</option>";
-			}						            	
-			echo "<option value='" . $idexamen . "' selected='selected'>" .$nombreexamen. "</option>";
+            <td class="StormyWeatherDataTD"><select name="cmbExamen" size="1">
+          <?php
+				$consultaex = $obj->ExamenesPorArea($idarea);
+				while($row = pg_fetch_array($consultaex))
+				{
+					echo "<option value='" . $row['id']. "'>" . $row['nombre_examen'] . "</option>";
+				}						            	
+				echo "<option value='" . $idexamen . "' selected='selected'>" .$nombreexamen. "</option>";
 			?>	
                 </select>
             </td>

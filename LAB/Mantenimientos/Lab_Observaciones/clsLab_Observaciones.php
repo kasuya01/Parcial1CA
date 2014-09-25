@@ -12,7 +12,7 @@ class clsLab_Observaciones
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_observaciones(observacion,idarea,tiporespuesta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod) 
+    echo "insertar--> ".$query = "INSERT INTO lab_observaciones(observacion,idarea,tiporespuesta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod) 
 	          VALUES('$observacion','$idarea','$tiporespuesta','$usuario',NOW(),'$usuario',NOW())";
      $result = @pg_query($query);
 	 
@@ -59,7 +59,7 @@ class clsLab_Observaciones
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT idarea, observacion, tiporespuesta 
+    $query = "SELECT id, observacion, tiporespuesta 
 			   FROM lab_observaciones 
                            order by id 
 			   LIMIT $RegistrosAMostrar OFFSET  $RegistrosAEmpezar";
@@ -111,10 +111,14 @@ class clsLab_Observaciones
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT lab_observaciones.observacion,lab_observaciones.tiporespuesta,
-		lab_observaciones.idarea,lab_areas.nombrearea FROM lab_observaciones 
-	        INNER JOIN lab_areas ON lab_observaciones.idarea=lab_areas.id
+    $query = "SELECT lab_observaciones.observacion,lab_observaciones.tiporespuesta,
+		lab_observaciones.idarea,ctl_area_servicio_diagnostico.nombrearea FROM lab_observaciones 
+	        INNER JOIN ctl_area_servicio_diagnostico ON lab_observaciones.idarea=ctl_area_servicio_diagnostico.id
 		WHERE lab_observaciones.id=$idobservacion";
+             
+   
+     
+     
      $result = @pg_query($query);
      if (!$result)
        return false;
@@ -142,7 +146,7 @@ class clsLab_Observaciones
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = $query." LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar ";
+	    $query = $query." LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar ";
 		 $result = @pg_query($query);
 		 if (!$result)
 		   return false;

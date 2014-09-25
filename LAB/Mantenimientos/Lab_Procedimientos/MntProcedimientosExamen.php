@@ -29,7 +29,8 @@ function Guardar(){
 }
 function LlenarComboExamen(idArea)
 {
-  LlenarExamenes(idArea);
+ // alert  (idArea);
+       LlenarExamenes(idArea);
 }
 
 function Buscar(){
@@ -77,9 +78,13 @@ if ($nivel==33){
                                         <?php
                                             $objeareas=new clsLab_Areas;
                                             $consulta= $objeareas->consultaractivas($lugar);
-                                            while($row = mysql_fetch_array($consulta)){
-                                                echo "<option value='" . $row['IdArea']. "'>" . $row['NombreArea'] . "</option>";
+                                            while($row = pg_fetch_array($consulta)){
+                                                 echo "<option value='" . $row[0]. "'>" . $row['nombrearea'] . "</option>";
+                                                 
+                                                
                                             }
+                                            
+                                            
 					?>		  
            			</select>		  
                             </td>
@@ -90,6 +95,13 @@ if ($nivel==33){
                                 <div id="divExamen">
                                     <select name="cmbExamen" id="cmbExamen" style="width:250px"> 
                                         <option value="0">--Seleccione un Examen--</option>
+                                        
+                                       <?php 
+                                           /*  $consultaex = $obj->ExamenesPorArea($lugar);
+				while($row = pg_fetch_array($consultaex)){
+                                            echo "<option value='" .$row['id']."' >". $row['nombreexamen']."</option>";
+                                                }
+				*/?> 
                                     </select>
 				</div>
                             </td>
@@ -101,7 +113,7 @@ if ($nivel==33){
                                     <option value="0" >--Seleccione Sexo--</option>
                                         <?php
                                             $consultaS= $objdatos->consultarsexo();
-                                            while($row =mysql_fetch_array($consultaS)){
+                                            while($row =pg_fetch_array($consultaS)){
                                                 echo "<option value='" . $row[0]. "'>". $row[1] . "</option>";
                                             }
                                         ?>        
@@ -115,7 +127,7 @@ if ($nivel==33){
                                     <option value="0" >--Seleccione un Rango de Edad--</option>
                                     <?php
                                         $conEdad = $objdatos->RangosEdades();
-                                        while($row = mysql_fetch_array($conEdad)){
+                                        while($row = pg_fetch_array($conEdad)){
                                             echo "<option value='" . $row[0]. "'>". $row[1] . "</option>";
                                         }
                                     ?>    

@@ -9,7 +9,7 @@ $idproce=$_POST['idproce'];
 $obj = new clsLab_Procedimientos;
 
 $consulta=$obj->consultarid($idproce,$lugar);
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 
 //valores de las consultas
 
@@ -40,7 +40,7 @@ $Fechafin=$row['FechaFin'];
 			include('../Lab_Areas/clsLab_Areas.php');
 			$objeareas=new clsLab_Areas;
 			$consulta= $objeareas->consultaractivas();
-			while($row = mysql_fetch_array($consulta)){
+			while($row = pg_fetch_array($consulta)){
 			echo "<option value='" . $row['IdArea']. "'>" .htmlentities($row['NombreArea']) . "</option>";
 			}
 			echo "<option value='" . $idarea . "' selected='selected'>" .htmlentities($nombrearea). "</option>";
@@ -54,7 +54,7 @@ $Fechafin=$row['FechaFin'];
             		<option value="0">--Seleccione un Examen--</option>";
            		<?php
 				$consultaex = $obj->ExamenesPorArea($idarea);
-				while($row = mysql_fetch_array($consultaex))
+				while($row = pg_fetch_array($consultaex))
 				{
 					echo "<option value='" . $row['IdExamen']. "'>" . $row['NombreExamen'] . "</option>";
 				}						            	

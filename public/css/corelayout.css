@@ -30,3 +30,9 @@ table thead {
     color:#888888;
     font-weight: bold;
 }
+
+.h3-table-header {
+    font-size: 1.17em;
+    font-weight: bold;
+    margin-top: 10px;
+}

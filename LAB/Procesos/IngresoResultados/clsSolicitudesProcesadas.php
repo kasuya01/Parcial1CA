@@ -88,10 +88,10 @@ class clsSolicitudesProcesadas {
     }
 
     function LlenarCmbEstablecimiento($Idtipoesta) {
+        
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $sqlText = "SELECT IdEstablecimiento,Nombre FROM ctl_establecimiento 
-                           WHERE IdTipoEstablecimiento='$Idtipoesta' ORDER BY Nombre";
+            $sqlText = "SELECT id, nombre FROM ctl_establecimiento where id_tipo_establecimiento = $Idtipoesta ORDER BY nombre";
             $dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
         }
         return $dt;
@@ -427,11 +427,12 @@ class clsSolicitudesProcesadas {
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
             $query = $query_search;
-            $result = @pg_query($query);
-            if (!$result)
+            $result = pg_query($query);
+            if (!$result) {
                 return false;
-            else
+            } else {
                 return $result;
+            }
         }
     }
 
@@ -640,8 +641,23 @@ class clsSolicitudesProcesadas {
                 return $result;
         }
     }
+    
+    function consultarTipoSolicitud() {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query = "SELECT idtiposolicitud,
+                             tiposolicitud
+                      FROM lab_tiposolicitud";
+            $result = pg_query($query);
+            
+            if (!$result) {
+                return false;
+            } else {
+                return $result;
+            }
+        }
+    }
 
 }
-
 //CLASE
 ?>

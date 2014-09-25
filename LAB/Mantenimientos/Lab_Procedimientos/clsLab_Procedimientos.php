@@ -4,21 +4,28 @@ include_once("../../../Conexion/ConexionBDLab.php");
 
 class clsLab_Procedimientos
 {
-     //CONSTRUCTOR
+           
+            
+           
+    //CONSTRUCTOR
 	 function clsLab_Procedimientos(){
 	 }	
-
-	//INSERTA UN REGISTRO          
+            
+          //INSERTA UN REGISTRO          
 	 function insertar($proce,$idarea,$idexamen,$unidades,$rangoini,$rangofin,$usuario,$lugar,$Fechaini,$Fechafin,$sexo,$redad)
 	 { 
 	   $con = new ConexionBD;
 	   if($con->conectar()==true) 
 	   {
-	    $query ="INSERT INTO lab_procedimientosporexamen
-                    (nombreprocedimiento,IdArea,IdExamen,unidades,rangoinicio,rangofin,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod,IdEstablecimiento,FechaIni,FechaFin,idsexo,idedad) 
-                    VALUES('$proce','$idarea','$idexamen','$unidades',$rangoini,$rangofin,$usuario,NOW(),$usuario,NOW(),$lugar,'$Fechaini','$Fechafin',$sexo,$redad)";
-           //echo $query; 
-            $result = @mysql_query($query);
+	 $query =/*"INSERT INTO lab_procedimientosporexamen
+                    (nombreprocedimiento,idarea,idexamen,unidades,rangoinicio,rangofin,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,fechaini,fechafin,idsexo,idrangoedad) 
+                    VALUES('$proce','$idarea','$idexamen','$unidades',$rangoini,$rangofin,$usuario,NOW(),$usuario,NOW(),$lugar,'$Fechaini','$Fechafin',$sexo,$redad)";*/
+           
+                "INSERT INTO lab_procedimientosporexamen
+                    (nombreprocedimiento,id_conf_examen_estab,unidades,rangoinicio,rangofin,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,fechaini,fechafin,idsexo,idrangoedad) 
+                    VALUES('$proce','$idexamen','$unidades',$rangoini,$rangofin,$usuario,NOW(),$usuario,NOW(),$lugar,'$Fechaini','$Fechafin',$sexo,$redad)";
+            $result = @pg_query($query);
+            
 	     if (!$result)
 	       return false;
 	     else
@@ -32,12 +39,16 @@ class clsLab_Procedimientos
 	$con = new ConexionBD;
 	if($con->conectar()==true) 
 	{
-	     $query = "UPDATE lab_procedimientosporexamen SET nombreprocedimiento='$proce',IdExamen='$idexamen', IdArea='$idarea',
-		 unidades='$unidades', rangoinicio=$rangoini , rangofin=$rangofin , IdUsuarioMod=$usuario ,FechaHoraMod=NOW(),
-		 Fechaini='$Fechaini', FechaFin='$Fechafin', idsexo=$sexo, idedad=$redad 
-		 WHERE idprocedimientoporexamen=$idproce AND IdEstablecimiento=$lugar";
-	
-	     $result = mysql_query($query);
+	 $query =/* "UPDATE lab_procedimientosporexamen SET nombreprocedimiento='$proce',idexamen='$idexamen', idarea='$idarea',
+		 unidades='$unidades', rangoinicio=$rangoini , rangofin=$rangofin , idusuariomod=$usuario ,fechahoramod=NOW(),
+		 fechaini='$Fechaini', fechafin='$Fechafin', idsexo=$sexo, idrangoedad=$redad 
+		 WHERE lab_procedimientosporexamen.id=$idproce AND idestablecimiento=$lugar";*/
+                  
+	"UPDATE lab_procedimientosporexamen SET nombreprocedimiento='$proce', id_conf_examen_estab='$idexamen',
+		 unidades='$unidades', rangoinicio=$rangoini , rangofin=$rangofin , idusuariomod=$usuario ,fechahoramod=NOW(),
+		 fechaini='$Fechaini', fechafin='$Fechafin', idsexo=$sexo, idrangoedad=$redad 
+		 WHERE lab_procedimientosporexamen.id=$idproce AND idestablecimiento=$lugar";
+	     $result = pg_query($query);
              
              //  echo "SIAP   ".$query;
 		 if (!$result)
@@ -53,9 +64,9 @@ class clsLab_Procedimientos
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "DELETE FROM lab_procedimientosporexamen WHERE idprocedimientoporexamen=$idproce 
-               AND Idestablecimiento=$lugar";
-     $result = mysql_query($query);
+     $query = "DELETE FROM lab_procedimientosporexamen WHERE id=$idproce 
+               AND idestablecimiento=$lugar";
+     $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -71,21 +82,22 @@ class clsLab_Procedimientos
          $con = new ConexionBD;
          if($con->conectar()==true)
          {
-           $query = "SELECT idsexo,sexovn FROM mnt_sexo";
-           $result = mysql_query($query);
+           $query = "SELECT id,nombre,abreviatura FROM ctl_sexo";
+           $result = pg_query($query);
            if (!$result)
              return false;
            else
              return $result;
           }
     }
+    
 
        function RangosEdades(){
          $con = new ConexionBD;
          if($con->conectar()==true)
          {
-           $query = "SELECT idedad, nombregrupoedad FROM mnt_rangoedad";
-           $result = mysql_query($query);
+           $query = "SELECT id, nombre FROM ctl_rango_edad";
+           $result = pg_query($query);
            if (!$result)
              return false;
            else
@@ -100,21 +112,21 @@ class clsLab_Procedimientos
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-	$query = "SELECT lab_examenes.IdExamen,NombreExamen,lab_procedimientosporexamen.IdProcedimientoporexamen,
-	nombreprocedimiento,unidades,rangoinicio,rangofin,
-        DATE_FORMAT(lab_procedimientosporexamen.FechaIni,'%d/%m/%Y')AS FechaIni,
-	DATE_FORMAT(lab_procedimientosporexamen.FechaFin,'%d/%m/%Y')AS FechaFin 
-        FROM lab_procedimientosporexamen 
-	INNER JOIN lab_examenes  ON lab_procedimientosporexamen.IdExamen=lab_examenes.IdExamen
-	INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen= lab_examenesxestablecimiento.IdExamen
-        INNER JOIN lab_areasxestablecimiento ON lab_areasxestablecimiento.IdArea=lab_procedimientosporexamen.IdArea
-        INNER JOIN mnt_sexo ON lab_procedimientosporexamen.idsexo = mnt_sexo.idsexo
-        INNER JOIN mnt_rangoedad ON lab_procedimientosporexamen.idedad = mnt_rangoedad.idedad
-	WHERE lab_examenesxestablecimiento.Condicion='H' AND lab_areasxestablecimiento.Condicion='H' 
-        AND lab_procedimientosporexamen.IdEstablecimiento=$lugar 
-	ORDER BY lab_examenes.IdExamen";
+        $query = "select lppe.id,mnt4.id, lcee.nombre_examen, 
+                            lppe.nombreprocedimiento, unidades,rangoinicio,rangofin, 
+                            (lppe.fechaini) AS fechaini, (lppe.fechafin)AS fechafin, 
+                            cex.id,cex.abreviatura,cre.id,cre.nombre,lppe.idsexo
+                            from mnt_area_examen_establecimiento mnt4
+                            join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen)
+                            join lab_procedimientosporexamen lppe on (lppe.id_conf_examen_estab=lcee.id)
+                            left JOIN ctl_sexo cex ON lppe.idsexo = cex.id 
+                            left JOIN ctl_rango_edad  cre ON lppe.idrangoedad = cre.id 
+                            where id_establecimiento=$lugar
+                            ORDER BY mnt4.id";
+        
+       
        // echo $query;
-	$result = mysql_query($query);
+	$result = pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -128,20 +140,21 @@ class clsLab_Procedimientos
 	   $con = new ConexionBD;
 	   if($con->conectar()==true)
 	   {
-	     $query = "SELECT idprocedimientoporexamen,lab_examenes.IdExamen,NombreExamen,lab_areas.IdArea,NombreArea,
-	     nombreprocedimiento ,unidades,rangoinicio,rangofin,
-             DATE_FORMAT(lab_procedimientosporexamen.FechaIni,'%d/%m/%Y')AS FechaIni,
-             DATE_FORMAT(lab_procedimientosporexamen.FechaFin,'%d/%m/%Y')AS FechaFin,mnt_sexo.idsexo,mnt_sexo.sexovn,
-             mnt_rangoedad.idedad,mnt_rangoedad.nombregrupoedad 
-	     FROM lab_procedimientosporexamen 
-	     INNER JOIN lab_examenes ON lab_procedimientosporexamen.IdExamen=lab_examenes.IdExamen
-	     INNER JOIN lab_areas ON lab_procedimientosporexamen.IdArea=lab_areas.IdArea
-             INNER JOIN mnt_sexo ON lab_procedimientosporexamen.idsexo = mnt_sexo.idsexo
-             INNER JOIN mnt_rangoedad ON lab_procedimientosporexamen.idedad = mnt_rangoedad.idedad	
-	     WHERE idprocedimientoporexamen=$idproce AND IdEstablecimiento=$lugar
-	     ORDER BY lab_examenes.IdExamen";
-		
-	     $result = @mysql_query($query);
+	 $query = "select casd.id,casd.nombrearea,lcee.id,
+                mnt4.id,
+             lcee.nombre_examen,
+                lppe.nombreprocedimiento,
+    unidades,rangoinicio,rangofin,
+    (lppe.fechaini) AS fechaini, (lppe.fechafin)AS fechafin, cex.id,cex.abreviatura,cre.id,cre.nombre,lppe.idsexo 
+    from ctl_area_servicio_diagnostico casd
+     join mnt_area_examen_establecimiento mnt4 on   mnt4.id_area_servicio_diagnostico=casd.id
+     join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen) 
+     join lab_procedimientosporexamen lppe on (lppe.id_conf_examen_estab=lcee.id) 
+     left JOIN ctl_sexo cex ON lppe.idsexo = cex.id 
+     left JOIN ctl_rango_edad cre ON lppe.idrangoedad = cre.id 
+     where lppe.id=$idproce AND idestablecimiento=$lugar ORDER BY mnt4.id";
+ 
+         $result = @pg_query($query);
 	     if (!$result)
 	       return false;
 	     else
@@ -155,14 +168,19 @@ class clsLab_Procedimientos
 		$con = new ConexionBD;
 	    //usamos el metodo conectar para realizar la conexion
 	    if($con->conectar()==true){
-	     $query = "SELECT lab_examenes.IdExamen,lab_examenes.NombreExamen 
-                       FROM lab_examenes 
-                       INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen= lab_examenesxestablecimiento.IdExamen
-                       WHERE lab_examenes.IdArea='$idarea'
-                       AND lab_examenesxestablecimiento.IdPlantilla='E' AND lab_examenesxestablecimiento.Condicion='H' 
-                       AND lab_examenesxestablecimiento.IdEstablecimiento=$lugar
-                       ORDER BY NombreExamen";
-		 $result = @mysql_query($query);
+	   
+              $query = 
+   "SELECT lcee.id,lcee.nombre_examen 
+                    FROM mnt_area_examen_establecimiento maees
+                    INNER JOIN lab_conf_examen_estab lcee ON maees.id= lcee.idexamen 
+                    WHERE maees.id_area_servicio_diagnostico=$idarea
+                    AND lcee.condicion='H' 
+                    AND maees.id_establecimiento=$lugar
+                    ORDER BY lcee.idexamen";
+           
+        
+                       
+		 $result = @pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -176,14 +194,24 @@ class clsLab_Procedimientos
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = "SELECT * FROM lab_procedimientosporexamen 
-                       INNER JOIN lab_examenes ON lab_procedimientosporexamen.IdExamen=lab_examenes.IdExamen
-                       INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen= lab_examenesxestablecimiento.IdExamen 
-                       INNER JOIN lab_areas ON lab_examenes.IdArea=lab_areas.IdArea
-                       INNER JOIN lab_areasxestablecimiento ON lab_areas.IdArea=lab_areasxestablecimiento.IdArea
-                       WHERE  lab_examenesxestablecimiento.Condicion='H' AND lab_areasxestablecimiento.Condicion='H' 
-                       AND lab_examenesxestablecimiento.Idplantilla='E' AND lab_areasxestablecimiento.IdEstablecimiento=$lugar";
-            $numreg = mysql_num_rows(mysql_query($query));
+$query =    "SELECT lcee.id,lcee.nombre_examen, 
+                            lppe.nombreprocedimiento, 
+                            lppe.unidades,lppe.rangoinicio, 
+                            lppe.rangofin,(lppe.fechaini)AS fechaini, 
+                            (lppe.fechafin)AS fechafin,cex.abreviatura,cre.nombre, lppe.id 
+                            from ctl_area_servicio_diagnostico casd 
+                            join mnt_area_examen_establecimiento mnt4 on mnt4.id_area_servicio_diagnostico=casd.id 
+                            join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen) 
+                            join lab_procedimientosporexamen lppe on (lppe.id_conf_examen_estab=lcee.id) 
+                            left JOIN ctl_sexo cex ON lppe.idsexo = cex.id 
+                            left JOIN ctl_rango_edad cre ON lppe.idrangoedad = cre.id 
+                            WHERE lcee.condicion='H' 
+                                    AND lcee.condicion='H' AND lcee.idplantilla=5
+                                    AND lppe.idestablecimiento=$lugar";
+                           
+
+                                        
+            $numreg = pg_num_rows(pg_query($query));
             if (!$numreg )
                return false;
             else
@@ -196,7 +224,7 @@ class clsLab_Procedimientos
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-		 $numreg = mysql_num_rows(mysql_query($query_search));
+		 $numreg = pg_num_rows(pg_query($query_search));
 		 if (!$numreg )
 		   return false;
 		 else
@@ -211,24 +239,21 @@ class clsLab_Procedimientos
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = " SELECT IdProcedimientoporexamen,lab_examenes.IdExamen,lab_examenes.NombreExamen,
-                        lab_procedimientosporexamen.nombreprocedimiento,
-                        lab_procedimientosporexamen.unidades,lab_procedimientosporexamen.rangoinicio,
-                        lab_procedimientosporexamen.rangofin,DATE_FORMAT(lab_procedimientosporexamen.FechaIni,'%d/%m/%Y')AS FechaIni,
-                        DATE_FORMAT(lab_procedimientosporexamen.FechaFin,'%d/%m/%Y')AS FechaFin,mnt_sexo.sexovn,mnt_rangoedad.nombregrupoedad  
-                        FROM lab_procedimientosporexamen 
-                        INNER JOIN lab_examenes ON lab_procedimientosporexamen.IdExamen=lab_examenes.IdExamen 
-                        INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
-                        INNER JOIN lab_areas ON lab_examenes.IdArea=lab_areas.IdArea
-                        INNER JOIN lab_areasxestablecimiento ON lab_areas.IdArea=lab_areasxestablecimiento.IdArea
-                        INNER JOIN mnt_sexo ON lab_procedimientosporexamen.idsexo = mnt_sexo.idsexo
-                        INNER JOIN mnt_rangoedad ON lab_procedimientosporexamen.idedad = mnt_rangoedad.idedad
-                        WHERE lab_examenesxestablecimiento.Condicion='H' AND lab_areasxestablecimiento.Condicion='H' 
-                        AND lab_examenesxestablecimiento.Idplantilla='E'
-                        AND lab_procedimientosporexamen.IdEstablecimiento=$lugar
-                        ORDER BY lab_examenes.IdExamen LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-            //echo $query;
-		 $result = @mysql_query($query);
+          $query = " SELECT lcee.id,lcee.nombre_examen, 
+                            lppe.nombreprocedimiento, 
+                            lppe.unidades,lppe.rangoinicio, 
+                            lppe.rangofin,(lppe.fechaini)AS fechaini, 
+                            (lppe.fechafin)AS fechafin,cex.nombre,cre.nombre, lppe.id 
+                            from ctl_area_servicio_diagnostico casd 
+                            join mnt_area_examen_establecimiento mnt4 on mnt4.id_area_servicio_diagnostico=casd.id 
+                            join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen) 
+                            join lab_procedimientosporexamen lppe on (lppe.id_conf_examen_estab=lcee.id) 
+                            left JOIN ctl_sexo cex ON lppe.idsexo = cex.id 
+                            left JOIN ctl_rango_edad cre ON lppe.idrangoedad = cre.id 
+                            WHERE lppe.idestablecimiento=$lugar 
+                            ORDER BY mnt4.id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar"; 
+            
+           $result = @pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -242,8 +267,8 @@ class clsLab_Procedimientos
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = $query_search." LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-		 $result = @mysql_query($query);
+	    $query = $query_search." LIMIT $RegistrosAMostrar  OFFSET $RegistrosAEmpezar ";
+		 $result = @pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -263,7 +288,7 @@ class clsLab_Procedimientos
 	    $query ="INSERT INTO laboratorio.lab_procedimientosporexamen
                 (nombreprocedimiento,IdArea,IdExamen,unidades,rangoinicio,rangofin,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod,IdEstablecimiento,FechaIni,FechaFin,idsexo,idedad) 
                 VALUES('$proce','$idarea','$idexamen','$unidades',$rangoini,$rangofin,$usuario,NOW(),$usuario,NOW(),$lugar,'$Fechaini','$Fechafin',$sexo,$redad)";
-		$result = @mysql_query($query);
+		$result = @pg_query($query);
 	     if (!$result)
 	       return false;
 	     else
@@ -283,7 +308,7 @@ class clsLab_Procedimientos
                        Fechaini='$Fechaini', FechaFin='$Fechafin',idsexo=$sexo,idedad=$redad 
                        WHERE idprocedimientoporexamen=$idproce AND IdEstablecimiento=$lugar";
 	       echo $query;
-	     $result = @mysql_query($query);
+	     $result = @pg_query($query);
 		 if (!$result)
 	       return false;
 	     else
@@ -299,7 +324,7 @@ class clsLab_Procedimientos
 
              $query = "DELETE FROM laboratorio.lab_procedimientosporexamen 
                  WHERE idprocedimientoporexamen=$idproce AND Idestablecimiento=$lugar";
-             $result = @mysql_query($query);
+             $result = @pg_query($query);
 
              if (!$result)
                return 0;

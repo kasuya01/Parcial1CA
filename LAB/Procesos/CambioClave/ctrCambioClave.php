@@ -18,17 +18,19 @@ switch ($opcion)
 	$nClave=$_POST['NuevaClave'];
 	$nClaveC=$_POST['NuevaClave1'];
     
-	//Obtengo el Código del empleado
+	//Obtengo el Cï¿½digo del empleado
         $Cod=$objdatos->ObtenerCodigoEmpleado($usuario,$lugar);
-        $row_Emp=mysql_fetch_array($Cod);
-		$Id=$row_Emp['IdEmpleado'];
+        $row_Emp=pg_fetch_array($Cod);
+         $Cod;
+		$Id=$row_Emp['id'];
+                $Id=$usuario;
 	// Verifica que la clave introducida se la correcta
         if ($nClave=$nClaveC){
-            //   echo "si".$Id;
+              $Id;
 			if($objdatos->VerificarClave($cActual,$Id,$lugar)==true){
 			
 				if ($objdatos->ActualizarClave($nClave,$lugar,$Id)==true){
-					echo "La Clave fue Cambiada con Exito";
+					echo "La Clave fue Cambiada con Exitoooo";
 				}
 				else
 	                echo "La clave no se pudo cambiar consulte con el administrador";

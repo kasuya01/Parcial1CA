@@ -58,7 +58,7 @@ switch ($opcion)
 			   <tr>
 			   <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
 			<!--   <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
-			   <td class='CobaltFieldCaptionTD'> IdElemento</td>
+			 <!--  <td class='CobaltFieldCaptionTD'> IdElemento</td> -->
 			   <td class='CobaltFieldCaptionTD'> Elemento Tincion</td>	   
 			   </tr>";
 
@@ -70,7 +70,7 @@ switch ($opcion)
 				<!--	<td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 					onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
-					<td> $row[0] </td>
+					<!-- <td> $row[0] </td> -->
 					<td>".htmlentities($row[1])."</td>
 					</tr>";
 		}
@@ -131,7 +131,7 @@ switch ($opcion)
 			  <tr>
 			   <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
 			<!--   <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
-			   <td class='CobaltFieldCaptionTD'> IdElemento</td>
+			 <!--   <td class='CobaltFieldCaptionTD'> IdElemento</td> -->
 			   <td class='CobaltFieldCaptionTD'> Elemento Tincion</td>	   
 			   </tr>";
 
@@ -143,7 +143,7 @@ switch ($opcion)
 				<!--	<td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 					onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
-					<td> $row[0] </td>
+					<!-- <td> $row[0] </td> -->
 					<td>".htmlentities($row[1])."</td>
 					</tr>";
 		}

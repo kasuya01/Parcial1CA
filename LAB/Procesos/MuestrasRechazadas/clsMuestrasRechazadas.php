@@ -10,11 +10,17 @@ class clsMuestrasRechazadas
 function DatosEstablecimiento($lugar){
 $con = new ConexionBD;
 	if($con->conectar()==true){			  
-		$conNom  = "SELECT 	mnt_establecimiento.IdTipoEstablecimiento,Nombre,NombreTipoEstablecimiento 
+		$conNom  = /*"SELECT 	mnt_establecimiento.IdTipoEstablecimiento,Nombre,NombreTipoEstablecimiento 
 			    FROM mnt_establecimiento 
 			    INNER JOIN mnt_tipoestablecimiento ON mnt_establecimiento.IdTipoEstablecimiento= mnt_tipoestablecimiento.IdTipoEstablecimiento
-			    WHERE IdEstablecimiento=$lugar";
-		$resul = mysql_query($conNom) or die('La consulta fall&oacute;: ' . mysql_error());
+			    WHERE IdEstablecimiento=$lugar";*/
+                
+                "SELECT 	ces.id_tipo_establecimiento,ces.nombre
+	FROM ctl_establecimiento ces 
+	INNER JOIN ctl_tipo_establecimiento ctes ON ces.id_tipo_establecimiento= ctes.id
+	WHERE ces.id=$lugar";
+                
+		$resul = pg_query($conNom) or die('La consulta fall&oacute;: ' . pg_error());
 	}
  return $resul;
 }
@@ -22,8 +28,9 @@ $con = new ConexionBD;
 function DatosArea($area){
 	$con = new ConexionBD;
 	if($con->conectar()==true){			  
-		$NomAre  = "select NombreArea,Administrativa from lab_areas where IdArea='$area'";
-		$resul = mysql_query($NomAre) or die('La consulta fall&oacute;: ' . mysql_error());
+		//$NomAre  = "select NombreArea,Administrativa from lab_areas where IdArea='$area'";
+                $NomAre  ="select nombrearea,administrativa from ctl_area_servicio_diagnostico where id=$area";
+		$resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
 	}
  return $resul;
 }
@@ -32,8 +39,9 @@ function DatosArea($area){
 function Nombre_Establecimiento($lugar){
    $con = new ConexionBD;
    if($con->conectar()==true){ 
-       	$query="SELECT Nombre FROM mnt_establecimiento WHERE IdEstablecimiento=$lugar";
-	 $result = @mysql_query($query);
+       	$query=//"SELECT Nombre FROM mnt_establecimiento WHERE IdEstablecimiento=$lugar";
+                 "SELECT nombre FROM ctl_establecimiento WHERE id=$lugar";
+	 $result = @pg_query($query);
      if (!$result)
        return false;
      else
@@ -45,8 +53,9 @@ function Nombre_Establecimiento($lugar){
 function LlenarCmbEstablecimiento($Idtipoesta){
 $con = new ConexionBD;
 	if($con->conectar()==true){
-		$sqlText= "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$Idtipoesta' ORDER BY Nombre";		
-		$dt = mysql_query($sqlText) or die('La consulta fall&oacute;:' . mysql_error());
+		//$sqlText= "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$Idtipoesta' ORDER BY Nombre";		
+		$sqlText= "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento=$Idtipoesta ORDER BY nombre";
+                $dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
 	}
 	return $dt;
 }
@@ -59,7 +68,7 @@ $con = new ConexionBD;
 			INNER JOIN mnt_subservicioxestablecimiento ON mnt_subservicio.IdSubServicio=mnt_subservicioxestablecimiento.IdSubServicio
 			WHERE mnt_subservicio.IdServicio='$IdServ' AND IdEstablecimiento=$lugar 
 			ORDER BY NombreSubServicio";		
-		$dt = mysql_query($sqlText) or die('La consulta fall&oacute;:' . mysql_error());
+		$dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
 	}
 	return $dt;
 }
@@ -69,11 +78,19 @@ function ExamenesPorArea($idarea,$lugar)
 	$con = new ConexionBD;
     //usamos el metodo conectar para realizar la conexion
 	if($con->conectar()==true){
-		 $query = "SELECT lab_examenes.IdExamen,NombreExamen FROM lab_examenes 
+		 $query = /*"SELECT lab_examenes.IdExamen,NombreExamen FROM lab_examenes 
 		       INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
 		       WHERE IdEstablecimiento = $lugar AND IdArea='$idarea'
-		       AND lab_examenesxestablecimiento.Condicion='H' ORDER BY NombreExamen ASC ";
-		 $result = @mysql_query($query);
+		       AND lab_examenesxestablecimiento.Condicion='H' ORDER BY NombreExamen ASC ";*/
+                 
+                 "SELECT lcee.id,lcee.nombre_examen 
+                    FROM mnt_area_examen_establecimiento maees
+                    INNER JOIN lab_conf_examen_estab lcee ON maees.id= lcee.idexamen 
+                    WHERE maees.id_area_servicio_diagnostico=$idarea
+                    AND maees.id_establecimiento=$lugar
+                    ORDER BY lcee.nombre_examen asc";
+                 
+		 $result = @pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -87,11 +104,14 @@ function ExamenesPorArea($idarea,$lugar)
   $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-      $query="UPDATE sec_detallesolicitudestudios SET observacion='$observacion'
-			  WHERE idsolicitudestudio=$idsolicitud AND IdExamen LIKE '%$idarea%'";
+      $query= /*"UPDATE sec_detallesolicitudestudios SET observacion='$observacion'
+			  WHERE idsolicitudestudio=$idsolicitud AND IdExamen LIKE '%$idarea%'";*/
+     
+      "UPDATE sec_detallesolicitudestudios SET observacion='$observacion'
+			  WHERE id=$idsolicitud AND idexamen LIKE '%$idarea%'";
 		  
 		  		  
-	 $result = @mysql_query($query);
+	 $result = @pg_query($query);
      if (!$result)
        return false;
      else
@@ -104,10 +124,13 @@ function ExamenesPorArea($idarea,$lugar)
   $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-      $query="UPDATE sec_detallesolicitudestudios SET observacion='$observacion'
-	      WHERE idsolicitudestudio=$idsolicitud AND IdExamen='$idexamen'";
+      $query=/*"UPDATE sec_detallesolicitudestudios SET observacion='$observacion'
+	      WHERE idsolicitudestudio=$idsolicitud AND IdExamen='$idexamen'";*/
+      
+      "UPDATE sec_detallesolicitudestudios SET observacion='$observacion'
+			  WHERE id=$idsolicitud AND idexamen= $idexamen";
 		  
-	 $result = @mysql_query($query);
+	 $result = @pg_query($query);
      if (!$result)
        return false;
      else
@@ -124,7 +147,7 @@ function ExamenesPorArea($idarea,$lugar)
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
 	     $query = $query_search;
-		 $result = @mysql_query($query);
+		 $result = @pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -164,7 +187,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
         LEFT JOIN sec_examenfisico ON sec_historial_clinico.IdHistorialClinico=sec_examenfisico.IdHistorialClinico
 	WHERE sec_solicitudestudios.IdServicio ='DCOLAB' AND sec_historial_clinico.IdNumeroExp='$idexpediente' AND sec_solicitudestudios.IdSolicitudEstudio=$idsolicitud";
 	//echo $query;
-         $result = @mysql_query($query);
+         $result = @pg_query($query);
      if (!$result)
        return false;
      else
@@ -182,7 +205,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
 		     INNER JOIN lab_examenes     ON sec_detallesolicitudestudios.IdExamen=lab_examenes.IdExamen
 		     INNER JOIN lab_tipomuestra  ON lab_tipomuestra.IdTipoMuestra=sec_detallesolicitudestudios.IdTipoMuestra
 		     WHERE idSolicitudEstudio = $idsolicitud AND IdArea='$idarea' AND EstadoDetalle='RM'";
-		$result = @mysql_query($query);
+		$result = @pg_query($query);
 	    if (!$result)
 	       return false;
 	    else
@@ -202,7 +225,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
 		WHERE idSolicitudEstudio = $idsolicitud 
 		AND IdArea='$idarea' AND lab_examenes.IdExamen='$idexamen'";
 			//echo $query;
-	$result = @mysql_query($query);
+	$result = @pg_query($query);
 	if (!$result)
 	   return false;
 	else
@@ -219,7 +242,7 @@ function CambiarEstadoSolicitud($idexpediente,$fechasolicitud,$estadosolicitud)
    $query = "UPDATE sec_solicitudestudios SET estado='$estadosolicitud'
              WHERE IdNumeroExp='$idexpediente' AND
              FechaSolicitud='$fechasolicitud' AND IdServicio='DCOLAB' ";
-     $result = @mysql_query($query);
+     $result = @pg_query($query);
      if (!$result)
        return false;
      else
@@ -239,7 +262,7 @@ function CambiarEstadoDetalle($idsolicitud,$estado,$idarea)
 	     sec_solicitudestudios.IdServicio='DCOLAB' AND sec_detallesolicitudestudios.IdExamen LIKE '%$idarea%' 
              AND sec_detallesolicitudestudios.EstadoDetalle='RM' ";
 
-   $result = @mysql_query($query);
+   $result = @pg_query($query);
      if (!$result)
        return false;
      else
@@ -260,7 +283,7 @@ function CambiarEstadoDetalle1($idsolicitud,$estado,$idexamen)
 	     WHERE sec_detallesolicitudestudios.IdSolicitudEstudio=$idsolicitud
 	     AND sec_solicitudestudios.IdServicio='DCOLAB' AND  sec_detallesolicitudestudios.IdExamen ='$idexamen'";
    
-   $result = @mysql_query($query);
+   $result = @pg_query($query);
      if (!$result)
        return false;
      else
@@ -274,7 +297,7 @@ function CambiarEstadoDetalle1($idsolicitud,$estado,$idexamen)
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
      $query = $query;
-	 $numreg = mysql_num_rows(mysql_query($query));
+	 $numreg = pg_num_rows(pg_query($query));
 	 if (!$numreg )
 	   return false;
 	 else

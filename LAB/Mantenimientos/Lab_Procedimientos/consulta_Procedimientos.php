@@ -5,29 +5,37 @@ $usuario=$_SESSION['Correlativo'];
 $area=$_SESSION['Idarea'];
 //consulta los datos por su id
 $idproce=$_POST['idproce'];
-//echo $idproce;
+ $idproce;
 $obj = new clsLab_Procedimientos;
 
+
 $consulta=$obj->consultarid($idproce,$lugar);
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 
 //valores de las consultas
-
-$idarea=$row['IdArea'];
-$nombrearea=$row['NombreArea'];
-$idexamen=$row['IdExamen'];
-$nombreexamen=$row['NombreExamen'];
-$proce=$row['nombreprocedimiento'];
+$idarea=$row[0];
+$nombrearea=$row[1];
+$idexamen=$row[2];
+$nombreexamen=$row[4];
+$proce=$row[5];
 $unidades=$row['unidades'];
 $rangoini=$row['rangoinicio'];
 $rangofin=$row['rangofin'];
-$Fechaini=$row['FechaIni'];
-$Fechafin=$row['FechaFin'];
-$idsexo=$row['idsexo'];
-$nombresexo=$row['sexovn'];
-$idedad=$row['idedad'];
-$rangoedad=$row['nombregrupoedad'];
+$Fechaini=$row['fechaini'];
+list($anio, $mes, $dia) = split('[/.-]', $Fechaini);
+$Fechaini = $anio . "/" . $mes . "/" . $dia;
+
+$Fechafin=$row['fechafin'];
+list($anio, $mes, $dia) = split('[/.-]', $Fechafin);
+$Fechafin = $anio . "/" . $mes . "/" . $dia;
+$idsexo=$row[11];
+$nombresexo=$row[12];
+$idedad=$row['id'];
+$rangoedad=$row['nombre'];
 //muestra los datos consultados en los campos del formulario
+
+
+
 ?>
 <form name= "frmModificar" action="" >
 <table width="5
@@ -45,10 +53,13 @@ $rangoedad=$row['nombregrupoedad'];
 			include('../Lab_Areas/clsLab_Areas.php');
 			$objeareas=new clsLab_Areas;
 			$consulta= $objeareas->consultaractivas();
-			while($row = mysql_fetch_array($consulta)){
-			echo "<option value='" . $row['IdArea']. "'>" .htmlentities($row['NombreArea']) . "</option>";
+			
+                        
+                        while($row = pg_fetch_array($consulta)){
+			 "<option value='" . $row[1]. "'>" .htmlentities($row[2]) . "</option>";
 			}
 			echo "<option value='" . $idarea . "' selected='selected'>" .htmlentities($nombrearea). "</option>";
+                        
 			?>		  
             		</select>		  
 		</td>
@@ -60,9 +71,9 @@ $rangoedad=$row['nombregrupoedad'];
             		<option value="0">--Seleccione un Examen--</option>";
            		<?php
 				$consultaex = $obj->ExamenesPorArea($idarea);
-				while($row = mysql_fetch_array($consultaex))
+				while($row = pg_fetch_array($consultaex))
 				{
-					echo "<option value='" . $row['IdExamen']. "'>" . $row['NombreExamen'] . "</option>";
+					echo "<option value='" . $row['id']. "'>" . $row['nombre_examen'] . "</option>";
 				}						            	
 				echo "<option value='" . $idexamen . "' selected='selected'>" .$nombreexamen. "</option>";
 			?>	
@@ -76,8 +87,8 @@ $rangoedad=$row['nombregrupoedad'];
                     <option value="0" >--Seleccione Sexo--</option>
                     <?php
                             $consultaS= $obj->consultarsexo();
-                            while($row =mysql_fetch_array($consultaS)){
-                                 echo "<option value='" . $row[0]. "'>". $row[1] . "</option>";
+                            while($row =pg_fetch_array($consultaS)){
+                                 echo "<option value='" . $row[0]. "'>". $row['nombre'] . "</option>";
 
                             }
 
@@ -93,7 +104,7 @@ $rangoedad=$row['nombregrupoedad'];
                         <option value="0" >--Seleccione un Rango de Edad--</option>
                             <?php
                                 $conEdad = $obj->RangosEdades();
-                                while($row = mysql_fetch_array($conEdad)){
+                                while($row = pg_fetch_array($conEdad)){
                                      echo "<option value='" . $row[0]. "'>". $row[1] . "</option>";
                                 }
                                 echo "<option value='" . $idedad . "' selected='selected'>" .$rangoedad. "</option>";
@@ -102,7 +113,7 @@ $rangoedad=$row['nombregrupoedad'];
                 </td>        
         </tr>
 	<tr>
-	    	<td width="17%" class="StormyWeatherFieldCaptionTD">Procedimiento 1</td>
+	    	<td width="17%" class="StormyWeatherFieldCaptionTD">Procedimiento </td>
 	    	<td width="83%" class="StormyWeatherDataTD"><input name="txtproc" type="text" id="txtproc" value="<?php echo htmlentities($proce); ?>" size="50"></td>
 	</tr>
 	<tr>
@@ -115,7 +126,7 @@ $rangoedad=$row['nombregrupoedad'];
 			<table width="200" border="0" align="center" class="StormyWeatherFormTABLE">
 			<tr>
 				<td class="StormyWeatherFieldCaptionTD">Inicio</td>
-					<input type="hidden" name="txtoculto" id="txtoculto" size="50" value="<?php echo $idproce; ?>" />
+                        <input type="hidden" name="txtoculto" id="txtoculto" size="50" value="<?php echo $idproce; ?>" />
 				<td class="StormyWeatherDataTD"><input name="txtrangoinicio" type="text" id="txtrangoini" value="<?php echo $rangoini; ?>" size="8">
 				</td>
 				<td class="StormyWeatherFieldCaptionTD">Fin </td>

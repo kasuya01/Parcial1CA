@@ -79,7 +79,7 @@ if ($nivel==33){
 					while($row = pg_fetch_array($consulta)){
 						echo "<option value='" . $row['idarea']. "'>" . $row['nombrearea'] . "</option>";
 					}
-				?>		  
+				?>
 			</select>		  
 	</td>
     </tr>

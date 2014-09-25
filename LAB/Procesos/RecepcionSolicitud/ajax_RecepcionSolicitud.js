@@ -206,23 +206,18 @@ function VerificarExistencia(idexpediente, fechacita, idEstablecimiento, omitir_
         //muy importante este encabezado ya que hacemos uso de un formulario
         ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         //enviando los valores
-        //estado="";
-        //idsolicitud="";
         ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&opcion=" + opcion + "&idEstablecimiento=" + idEstablecimiento);
         ajax.onreadystatechange = function() {
-            if (ajax.readyState == 4)
-            {	//mostrar los nuevos registros en esta capa
-                if (ajax.status == 200)
-                { //alert (ajax.responseText);
-                    if (ajax.responseText == 'D')//si existen datos para la solicitud
-                    {
-                        MostrarDatosGenerales();
-                    }
-                    else { //mueestra el mensaje de estado de la solicitud
-
+            if (ajax.readyState == 4) {	//mostrar los nuevos registros en esta capa
+                if (ajax.status == 200) { //alert (ajax.responseText);
+                    if (ajax.responseText.replace(/(\r\n|\n|\r| )/gm,'') == 'D') { //si existen datos para la solicitud
+                        MostrarDatosGenerales(idexpediente, fechacita, idEstablecimiento);
+                    } else { //mueestra el mensaje de estado de la solicitud
                         alert(ajax.responseText);
-
                     }
+                    //console.log(ajax.responseText.replace(/(\r\n|\n|\r| )/gm,'').length);
+                    //console.log(ajax.responseText.replace(/(\r\n|\n|\r| )/gm,''));
+                    //document.getElementById('divResultado').innerHTML = ajax.responseText;
                 }
             }
         }
@@ -254,11 +249,11 @@ function LlenarEstablecimiento(IdTipoEstab)
 }
 
 //FUNCION PARA RECUPERAR LOS DATOS GENERALES DE LA SOLICITUD
-function MostrarDatosGenerales() {
+function MostrarDatosGenerales(idexpediente, fechacita, idEstablecimiento) {
     //valores de los text
-    idexpediente = document.getElementById('txtidexpediente').value;
-    fechacita = document.getElementById('txtfechasolicitud').value;
-    idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
+    document.getElementById('txtidexpediente').value = idexpediente;
+    document.getElementById('txtfechasolicitud').value = fechacita;
+    // idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
 
     //alert (idEstablecimiento);
     //instanciamos el objetoAjax
@@ -401,7 +396,7 @@ function CambiarEstadoDetalleSolicitud(estado)
 
 
 function imprimiretiquetas(posicion)
-{//cambiar imprimir  etiquetas1.php  por imprimir.php
+{//cambiar imprimir  etiquetas1.php  por imprimir.ph
     idexpediente = document.getElementById('txtidexpediente').value;
     fechacita    = document.getElementById('txtfechasolicitud').value;
     idsolicitud  = document.getElementById('txtidsolicitud[' + posicion + ']').value;
@@ -452,10 +447,9 @@ function RegistrarNumeroMuestra(posicion)//Registrando Numero de Muestra asociad
         {
             if (ajax.status == 200)
             {
-
-                if (ajax.responseText != "N")
+                if (ajax.responseText.replace(/(\r\n|\n|\r| )/gm,'') != "N")
                 {
-                    if (ajax.responseText != "NN")
+                    if (ajax.responseText.replace(/(\r\n|\n|\r| )/gm,'') != "NN")
                     {
 
                         alert(ajax.responseText);
@@ -553,7 +547,7 @@ function CambiarEstadoSolicitud(estado, idsolicitud, posicion)
                 document.getElementById('divCambioEstado').style.display = "none";
                 document.getElementById('divCambioEstado').innerHTML = ajax.responseText;
                 //verificando el cambio de estado
-                if (ajax.responseText == "Y")
+                if (ajax.responseText.replace(/(\r\n|\n|\r| )/gm,'') == "Y")
                 {
                     //alert(ajax.responseText);
                     /* ****** ingresar datos temporales ********************* */
@@ -589,21 +583,58 @@ function DatosCompletos()
 
 //FUNCION PARA HABILITAR BOTON Y PROCESAR LA SOLICITUD CAMPBIANDO DE ESTADO
 function HabilitarBoton(idsolicitud, posicion) {
-    //alert(idsolicitud);
-    //verificando que se haya obtenido datos de la consulta
-    idsolicitud = document.getElementById('txtidsolicitud[' + posicion + ']').value;
-    valor = document.getElementById('txtprecedencia[' + posicion + ']').value;
-    if (valor != " ")
-    {
-        //VERIFICANDO QUE LA SOLICITUD HAYA SIDO PROCESADA
-        //Cambia el estado de la solicitud
-        CambiarEstadoSolicitud('P', idsolicitud, posicion);
-        //CambiarEstadoDetalleSolicitud('TR');
-        //Habilita el boton para la impresion
-        div = document.getElementById('divoculto[' + posicion + ']');
-        div.style.display = "block";
-    }
-    else {
-        alert("No se encontraron datos que procesar...");
-    }
+    jQuery.ajaxSetup({
+        error: function(jqXHR, exception) {
+            if (jqXHR.status === 0) {
+                alert('Not connect.\n Verify Network.');
+            } else if (jqXHR.status == 404) {
+                alert('Requested page not found. [404]');
+            } else if (jqXHR.status == 500) {
+                alert('Internal Server Error [500].');
+            } else if (exception === 'parsererror') {
+                alert('Requested JSON parse failed.');
+            } else if (exception === 'timeout') {
+                alert('Time out error.');
+            } else if (exception === 'abort') {
+                alert('Ajax request aborted.');
+            } else {
+                alert('Uncaught Error.\n' + jqXHR.responseText);
+            }
+        }
+    });
+
+    jQuery.ajax({
+        url: 'ctrRecepcionSolicitud.php',
+        async: true,
+        dataType: 'json',
+        type: 'POST',
+        data: { opcion: 10 },
+        success: function(object) {
+            if(object.status) {
+                var estado;
+                
+                if(object.data[0].numero === "0") {
+                    estado = 'P';
+                } else {
+                    estado = 'R';
+                }
+
+                idsolicitud = document.getElementById('txtidsolicitud[' + posicion + ']').value;
+                valor = document.getElementById('txtprecedencia[' + posicion + ']').value;
+                if (valor != " ") {
+                    //VERIFICANDO QUE LA SOLICITUD HAYA SIDO PROCESADA
+                    //Cambia el estado de la solicitud
+                    CambiarEstadoSolicitud(estado, idsolicitud, posicion);
+                    //CambiarEstadoDetalleSolicitud('TR');
+                    //Habilita el boton para la impresion
+                    div = document.getElementById('divoculto[' + posicion + ']');
+                    div.style.display = "block";
+                } else {
+                    alert("No se encontraron datos que procesar...");
+                }
+            } else {
+                alert('Error al actualizar el estado de la Solicitud')
+            }
+        }
+    });
 }
