@@ -48,25 +48,65 @@ function getAreaExamenEstablecimiento($parameters) {
 
 	// var_dump($parameters);exit();
 
-	$result = $mntAreaExamenEstab->getAreaExamenEstablecimiento($parameters['post']['idarea'], $parameters['lugar']);
+	$arr = $mntAreaExamenEstab->getAreaExamenEstablecimiento($parameters['post']['idarea'], $parameters['lugar']);
+	//$result = $mntAreaExamenEstab->getAreaExamenEstablecimiento($parameters['post']['idarea'], $parameters['lugar']);
 
 	if($result !== false) {
-		/*$result = array();
-		foreach ($arr as $data) {
-			$id = $data['id'];
-			if (isset($result[$id])) {
-			    $result[$id][] = $data;
-			} else {
-			    $result[$id] = array($data);
+		
+		$result = array();
+		$arr = pg_fetch_all($arr);
+		foreach ($arr as $row) {
+			$id = $row['id_area'];
+			
+			if( ! isset( $result[$id] ) ){
+				$result[$id] = array();
+				$result[$id]['id'] 	   = $id;
+				$result[$id]['codigo'] = $row['codigo_area'];
+				$result[$id]['nombre'] = $row['nombre_area'];
 			}
-		}*/
 
+
+			if( ! isset($result[$id]['grupos']) )
+				$result[$id]['grupos'] = array();
+
+			$result[$id]['grupos'] = addElementToGroups( $result[$id]['grupos'], array( $row['id_grupo'], $row['codigo_grupo'], $row['nombre_grupo']), array($row['id_examen'], $row['codigo_examen'], $row['nombre_examen'], $row['activo'] ) );
+		}
+		//var_dump($result);
         $jsonresponse['status'] = true;
-        $jsonresponse['data']   = pg_fetch_all($result);
+        $jsonresponse['data']   = $result;
     } else {
     	$jsonresponse['status'] = false;
     }
 
 	echo json_encode($jsonresponse);
 	return;
+}
+
+function addElementToGroups($groups, $newGroup, $newExam){
+	
+	if( ! isset($groups[ $newGroup[0] ]) ){
+		$groups[ $newGroup[0] ] = array('id'	   => $newGroup[0],
+										'codigo'   => $newGroup[1],
+										'nombre'   => $newGroup[2]
+									   );
+	}
+
+	if( ! isset( $groups[ $newGroup[0] ]['examenes'] ) )
+		$groups[ $newGroup[0] ]['examenes'] = array();
+
+	$groups[ $newGroup[0] ]['examenes'] = addElementToExams($groups[ $newGroup[0] ]['examenes'], $newExam);
+
+	return $groups;
+}
+
+function addElementToExams($exams, $newExam){
+	if( ! isset($exams[ $newExam[0] ]) ){
+		$exams[ $newExam[0] ] = array('id'	   => $newExam[0],
+									  'codigo' => $newExam[1],
+									  'nombre' => $newExam[2],
+									  'activo' => $newExam[3]
+									 );
+	}
+
+	return $exams;
 }
