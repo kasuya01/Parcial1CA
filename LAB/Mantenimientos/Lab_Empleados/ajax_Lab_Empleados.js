@@ -108,7 +108,7 @@ function pedirDatos(idempleado) { //CARGAR DATOS A MODIFICAR
     }
     //como hacemos uso del metodo POST
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    //enviando el codigo 
+    //enviando el codigo
     ajax.send("idempleado=" + idempleado);
 
 }
@@ -161,12 +161,13 @@ function AsignarCodigoEmpleado()
     idempleado = "";
     cargo = "";
     login = "";
+    modalidad = document.getElementById('cmbModalidad').value;
     //instanciamos el objetoAjax
     ajax = objetoAjax();
     ajax.open("POST", "ctrLab_Empleados.php", true);
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
-    ajax.send("idempleado=" + idempleado + "&idarea=" + idarea + "&nomempleado=" + escape(nomempleado) + "&cargo=" + escape(cargo) + "&login=" + login + "&Pag=" + Pag + "&opcion=" + opcion);
+    ajax.send("idempleado=" + idempleado + "&idarea=" + idarea + "&nomempleado=" + escape(nomempleado) + "&cargo=" + escape(cargo) + "&login=" + login + "&Pag=" + Pag + "&opcion=" + opcion + "&modalidad=" + modalidad);
     ajax.onreadystatechange = function() {
         if (ajax.readyState == 4)
         {	//mostrar resultados en esta capa
@@ -183,6 +184,7 @@ function show_event(Pag)
     nomempleado = "";
     cargo = "";
     login = "";
+    modalidad = document.getElementById('cmbModalidad').value;
     ajax = objetoAjax();
     ajax.open("POST", 'ctrLab_Empleados.php', true);
     ajax.onreadystatechange = function() {
@@ -193,7 +195,7 @@ function show_event(Pag)
         }
     }
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    ajax.send("idempleado=" + idempleado + "&idarea=" + idarea + "&nomempleado=" + nomempleado + "&cargo=" + cargo + "&login=" + login + "&Pag=" + Pag + "&opcion=" + opcion);
+    ajax.send("idempleado=" + idempleado + "&idarea=" + idarea + "&nomempleado=" + nomempleado + "&cargo=" + cargo + "&login=" + login + "&Pag=" + Pag + "&opcion=" + opcion + "&modalidad=" + modalidad);
 }
 
 function show_event_search(Pag)
@@ -204,6 +206,7 @@ function show_event_search(Pag)
     nomempleado = document.getElementById('txtnombre').value;
     cargo = document.getElementById('cmbCargo').value;
     login = document.getElementById('txtlogin').value;
+    modalidad = document.getElementById('cmbModalidad').value;
     ajax = objetoAjax();
     ajax.open("POST", 'ctrLab_Empleados.php', true);
     ajax.onreadystatechange = function() {
@@ -215,7 +218,7 @@ function show_event_search(Pag)
     }
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     ajax.send("idempleado=" + idempleado + "&idarea=" + idarea + "&nomempleado=" + nomempleado +
-            "&cargo=" + cargo + "&login=" + login + "&Pag=" + Pag + "&opcion=" + opcion);
+            "&cargo=" + cargo + "&login=" + login + "&Pag=" + Pag + "&opcion=" + opcion + "&modalidad=" + modalidad);
 }
 
 
@@ -251,6 +254,7 @@ function BuscarDatos()
 function Estado(idempleado, EstadoCuenta) {
 
     var opcion = 3;
+    modalidad = document.getElementById('cmbModalidad').value;
 
     ajax = objetoAjax();
     //archivo que realizar� la operacion ->actualizacion.php
@@ -259,7 +263,7 @@ function Estado(idempleado, EstadoCuenta) {
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
     // alert (idempleado+"-"+EstadoCuenta);
-    ajax.send("idempleado=" + idempleado + "&EstadoCuenta=" + EstadoCuenta + "&opcion=" + opcion);
+    ajax.send("idempleado=" + idempleado + "&EstadoCuenta=" + EstadoCuenta + "&opcion=" + opcion + "&modalidad=" + modalidad);
 
     ajax.onreadystatechange = function() {
         if (ajax.readyState == 1) {
