@@ -21,14 +21,15 @@ function LimpiarCampos(){
 	document.frmnuevo.txtnombreexamen.value="";
 	document.frmnuevo.cmbEstandar.value="0";
 	document.frmnuevo.cmbPlantilla.value="0";
-	document.frmnuevo.txtobservacion.value="";
+	//document.frmnuevo.txtobservacion.value="";
         document.frmnuevo.cmbUbicacion.value="0";
 	document.frmnuevo.cmbFormularios.value="0";
-	document.frmnuevo.cmbPrograma.value="0";
 	document.frmnuevo.cmbEstandarRep.value="0";
-        document.frmnuevo.cmbUbicacion.value="0";
-        document.frmnuevo.cmbsexo.value="0";
+        document.frmnuevo.cmbEtiqueta.value="0";
+        document.frmnuevo.cmbUrgente.value="0";
+        document.frmnuevo.cmbsexo.value="3";
         document.frmnuevo.cmbHabilitar.value="0";
+        document.frmnuevo.inidate.valie="0";
 	document.frmnuevo.txtnombreexamen.focus();
 }
 
@@ -55,11 +56,11 @@ function ValidarCampos()
 			resp= false;	
                       //alert(" 4 "+(document.getElementById('cmbPlantilla').value));
 		 }	
-  	if (document.getElementById('cmbEstandar').value == "0")
+  	/*if (document.getElementById('cmbEstandar').value == "0")
 		 {
 			resp= false;
                         //alert(" 5 "+(document.getElementById('cmbEstandar').value));
-           	 }	
+           	 }	*/
         
          if (document.getElementById('cmbUbicacion').value == "")
 		 {
@@ -112,7 +113,7 @@ if (ValidarCampos())
 	nomexamen=document.frmnuevo.txtnombreexamen.value;
 	idestandar=document.frmnuevo.cmbEstandar.value;
 	plantilla=document.frmnuevo.cmbPlantilla.value;
-	observacion=document.frmnuevo.txtobservacion.value;
+	//observacion=document.frmnuevo.txtobservacion.value;
 	ubicacion=document.frmnuevo.cmbUbicacion.value;
 	idestandarRep=document.frmnuevo.cmbEstandarRep.value;
 	idformulario=document.frmnuevo.cmbFormularios.value;
@@ -121,9 +122,9 @@ if (ValidarCampos())
 	sexo=document.frmnuevo.cmbsexo.value;
         Hab=document.frmnuevo.cmbHabilitar.value;
         tiempoprevio=document.getElementById('inidate').value;
-       
+      // alert(Hab);
 	//codempresa=document.frmnuevo.txttxtcodempresa.value;
-	alert(idestandar);
+	//alert(idestandar);
 	//alert (idPrograma+"*****"+idestandarRep);
 	
 	var opcion=1;
@@ -144,7 +145,7 @@ if (ValidarCampos())
         //alert (sexo);
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
-	ajax.send("idexamen="+idexamen+"&observacion="+observacion+"&idarea="+idarea+"&nomexamen="+nomexamen+
+	ajax.send("idexamen="+idexamen+"&idarea="+idarea+"&nomexamen="+nomexamen+
 	"&idestandar="+idestandar+"&Pag="+Pag+"&opcion="+opcion+"&plantilla="+plantilla+"&ubicacion="+ubicacion+
 	"&idformulario="+idformulario+"&idestandarRep="+idestandarRep+"&etiqueta="+etiqueta+"&urgente="+urgente+
         "&sexo="+sexo+"&Hab="+Hab+"&tiempoprevio="+tiempoprevio);
@@ -225,14 +226,14 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
 	divResultado = document.getElementById('divinicial');
 	divFormulario = document.getElementById('divFrmModificar');
 	divNuevo = document.getElementById('divFrmNuevo');
-
-	//valores de los cajas de texto
+ 
+        	//valores de los cajas de texto
 	idexamen=document.frmModificar.txtidexamen.value;
 	nomexamen=document.frmModificar.txtnombreexamen.value;
 	idarea=document.frmModificar.cmbArea.value;
 	idestandar=document.frmModificar.cmbEstandar.value;	
 	plantilla=document.frmModificar.cmbPlantilla.value;	
-	observacion=document.frmModificar.txtobservacion.value;
+	//observacion=document.frmModificar.txtobservacion.value;
 	idestandarRep=document.frmModificar.cmbEstandarRep.value;
 	idformulario=document.frmModificar.cmbConForm.value;
 	Etiqueta=document.frmModificar.cmbEtiqueta.value;
@@ -240,9 +241,9 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
         urgente=document.frmModificar.cmbUrgente.value;
         idsexo=document.frmModificar.cmbsexo.value;
         Hab=document.frmModificar.cmbHabilitar.value;
-        
+        idconf=document.frmModificar.txtidconf.value;
         Tiempo=document.frmModificar.inidate.value;
-	//alert (Hab);
+	//alert (plantilla);
 	var opcion=2;	
 	Pag=1;
 	//instanciamos el objetoAjax
@@ -253,10 +254,11 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
 	//muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
-	ajax.send("idexamen="+idexamen+"&idarea="+idarea+"&observacion="+observacion+"&nomexamen="+nomexamen+
+	ajax.send("idexamen="+idexamen+"&idarea="+idarea+"&nomexamen="+nomexamen+
 	"&idestandar="+idestandar+"&Pag="+Pag+"&opcion="+opcion+"&plantilla="+plantilla+"&ubicacion="+ubicacion+
 	"&idformulario="+idformulario+"&idestandarRep="+idestandarRep+"&Etiqueta="+Etiqueta+"&urgente="+urgente+
-        "&idsexo="+idsexo+"&Hab="+Hab+"&Tiempo="+Tiempo);
+        "&idsexo="+idsexo+"&Hab="+Hab+"&Tiempo="+Tiempo+"&idconf="+idconf);
+//+"&observacion="+observacion
 	ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
 			divResultado.style.display="block";
@@ -286,14 +288,14 @@ function BuscarDatos()
 	nomexamen=document.getElementById('txtnombreexamen').value;
 	plantilla=document.getElementById('cmbPlantilla').value;
 	idestandar=document.getElementById('cmbEstandar').value;
-	observacion=document.getElementById('txtobservacion').value;
+	//observacion=document.getElementById('txtobservacion').value;
 	idestandarRep=document.getElementById('cmbEstandarRep').value;
 	idformulario=document.getElementById('cmbFormularios').value;
 	etiqueta=document.getElementById('cmbEtiqueta').value;
         sexo=document.getElementById('cmbsexo').value;
         Hab=document.getElementById('cmbHabilitar').value;
-	//activo= document.getElementById('cmbActiva').value;
-       //alert(Hab);
+	urgente= document.getElementById('cmbUrgente').value;
+     // alert(idestandar);
          condicion="";
 	ubicacion= document.getElementById('cmbUbicacion').value;
 	//instanciamos el objetoAjax
@@ -303,10 +305,12 @@ function BuscarDatos()
 	//muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
-	ajax.send("idexamen="+idexamen+"&observacion="+observacion+"&idarea="+idarea+"&nomexamen="+nomexamen+
-	"&idestandar="+idestandar+"&Pag="+Pag+"&opcion="+opcion+"&plantilla="+plantilla+"&ubicacion="+ubicacion+
+        //"&idestandar="+idestandar+
+        //+"&observacion="+observacion
+	ajax.send("idexamen="+idexamen+"&idestandar="+idestandar+"&idarea="+idarea+"&nomexamen="+nomexamen+
+	"&Pag="+Pag+"&opcion="+opcion+"&plantilla="+plantilla+"&ubicacion="+ubicacion+
 	"&condicion="+condicion+"&idformulario="+idformulario+"&idestandarRep="+idestandarRep+"&etiqueta="+etiqueta+
-        "&sexo="+sexo+"&Hab="+Hab);	
+        "&sexo="+sexo+"&Hab="+Hab+"&urgente="+urgente);	
 	ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
 			//mostrar los nuevos registros en esta capa
@@ -321,15 +325,8 @@ function SolicitarUltimoCodigo(idarea){
 	
 	ajax=objetoAjax();
 	var opcion=5;
-	idexamen="";
-        nomexamen="";
-	idestandar="";
-	plantilla="";
-	Pag="";
-	observacion="";
-	activo="";
-	ubicacion="";
-        condicion="";
+	
+    
 	ajax.open("POST", "ctrLab_Examenes.php",true);
 	ajax.onreadystatechange=function() {
             if (ajax.readyState==4) 
@@ -340,11 +337,29 @@ function SolicitarUltimoCodigo(idarea){
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
 	
-	ajax.send("idexamen="+idexamen+"&observacion="+observacion+"&idarea="+idarea+"&nomexamen="+nomexamen+
-                "&idestandar="+idestandar+"&Pag="+Pag+"&opcion="+opcion+"&plantilla="+plantilla+"&activo="+activo+
-                "&ubicacion="+ubicacion+"&condicion="+condicion);
+	ajax.send("&idarea="+idarea+"&opcion="+opcion);
 	
 	}
+        
+        function LlenarExamenes(idarea)
+{         // alert (idarea);
+	var opcion=6;
+       //instanciamos el objetoAjax
+	ajax=objetoAjax();
+	//archivo que realizar� la operacion ->actualizacion.php
+	ajax.open("POST", "ctrLab_Examenes.php",true);
+	//muy importante este encabezado ya que hacemos uso de un formulario
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	//enviando los valores
+	ajax.send("idarea="+idarea+"&opcion="+opcion);
+	ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+			//mostrar los nuevos registros en esta capa
+			document.getElementById('divExamen').innerHTML = ajax.responseText;
+                        SolicitarUltimoCodigo(idarea);
+		}
+	}	
+}
 	
 function show_event(Pag)
 {
@@ -371,13 +386,13 @@ function show_event_search(Pag)
 	nomexamen=document.getElementById('txtnombreexamen').value;
 	plantilla=document.getElementById('cmbPlantilla').value;
 	idestandar=document.getElementById('cmbEstandar').value;
-	observacion=document.getElementById('txtobservacion').value;
+	//observacion=document.getElementById('txtobservacion').value;
 	idestandarRep=document.getElementById('cmbEstandarRep').value;
 	idformulario=document.getElementById('cmbFormularios').value;
         etiqueta=document.getElementById('cmbEtiqueta').value;
         sexo=document.getElementById('cmbsexo').value;
         Hab=document.getElementById('cmbHabilitar').value;
-	//alert(opcion+"**"+idestandarRep+"**"+idformulario);
+	urgente= document.getElementById('cmbUrgente').value;
 	//activo= document.getElementById('cmbActiva').value;
          activo="";
          condicion="";
@@ -392,10 +407,11 @@ function show_event_search(Pag)
 		 }
 	}
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	ajax.send("idexamen="+idexamen+"&observacion="+observacion+"&idarea="+idarea+"&nomexamen="+nomexamen+
+	ajax.send("idexamen="+idexamen+"&idarea="+idarea+"&nomexamen="+nomexamen+
 	"&idestandar="+idestandar+"&Pag="+Pag+"&opcion="+opcion+"&plantilla="+plantilla+"&ubicacion="+ubicacion+
 	"&condicion="+condicion+"&idformulario="+idformulario+"&idestandarRep="+idestandarRep+"&etiqueta="+etiqueta+
-        "&sexo="+sexo+"&Hab="+Hab);	
+        "&sexo="+sexo+"&Hab="+Hab+"&urgente="+urgente);	
+//+"&observacion="+observacion
 }	
 
 function Estado(idexamen,condicion){

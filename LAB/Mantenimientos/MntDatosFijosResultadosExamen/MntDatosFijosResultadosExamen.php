@@ -111,7 +111,7 @@ if ($nivel==33){
                         <td width="83%"  class="StormyWeatherDataTD">
                             <select id="cmbSexo" name="cmbSexo" size="1" >
                                
-                                <option value="3">Ninguno</option>
+                                 <option value="3">Ninguno</option>
                                  <option value="0">Ambos</option>
                                 <?php
                                     $consultaS= $objdatos->consultarsexo();
