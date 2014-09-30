@@ -44,3 +44,20 @@ function getAreaExamenEstablecimiento(funct) {
         }
     });
 }
+
+function updateRegisters() {
+    var idarea = document.getElementById('cmb-area').value;
+    jQuery.ajax({
+        url: 'ctr_Mnt_AreaExamenEstablecimiento.php',
+        type: 'post',
+        dataType: 'json',
+        async: false,
+        data: {accion: 'updateRegisters', parameters: { idarea: idarea, form: jQuery('form#lab-form').serializeArray() } },
+        success: function(data) {
+            if(data.status)
+                alert('Registros Ingresados Exitosamente...');
+            else
+                alert('Error al procesar los registros...');
+        }
+    });
+}
