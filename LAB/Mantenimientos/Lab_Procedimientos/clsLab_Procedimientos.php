@@ -140,19 +140,37 @@ class clsLab_Procedimientos
 	   $con = new ConexionBD;
 	   if($con->conectar()==true)
 	   {
-	 $query = "select casd.id,casd.nombrearea,lcee.id,
-                mnt4.id,
-             lcee.nombre_examen,
-                lppe.nombreprocedimiento,
-    unidades,rangoinicio,rangofin,
-    (lppe.fechaini) AS fechaini, (lppe.fechafin)AS fechafin, cex.id,cex.abreviatura,cre.id,cre.nombre,lppe.idsexo 
-    from ctl_area_servicio_diagnostico casd
-     join mnt_area_examen_establecimiento mnt4 on   mnt4.id_area_servicio_diagnostico=casd.id
-     join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen) 
-     join lab_procedimientosporexamen lppe on (lppe.id_conf_examen_estab=lcee.id) 
-     left JOIN ctl_sexo cex ON lppe.idsexo = cex.id 
-     left JOIN ctl_rango_edad cre ON lppe.idrangoedad = cre.id 
-     where lppe.id=$idproce AND idestablecimiento=$lugar ORDER BY mnt4.id";
+	 $query = 
+         
+         "select 
+casd.id,
+casd.nombrearea,
+lcee.id,
+mnt4.id,
+lcee.nombre_examen,
+lppe.nombreprocedimiento,
+unidades,rangoinicio,rangofin,
+(lppe.fechaini) AS fechaini, 
+(lppe.fechafin)AS fechafin, 
+CASE cex.id
+	      WHEN 1 THEN '1'
+              WHEN 2 THEN '2'
+              ELSE '3'
+              END AS sexo,
+CASE cex.abreviatura
+	      WHEN 'M' THEN 'M'
+              WHEN 'F'THEN 'F'
+              ELSE 'I'
+              END AS ABRE,
+cre.id,
+cre.nombre
+from ctl_area_servicio_diagnostico casd
+join mnt_area_examen_establecimiento mnt4 on   mnt4.id_area_servicio_diagnostico=casd.id
+join lab_conf_examen_estab lcee 	  on (mnt4.id=lcee.idexamen) 
+join lab_procedimientosporexamen lppe     on (lppe.id_conf_examen_estab=lcee.id) 
+left JOIN ctl_sexo cex                    ON lppe.idsexo = cex.id 
+left JOIN ctl_rango_edad cre              ON lppe.idrangoedad = cre.id 
+where lppe.id=$idproce AND idestablecimiento=$lugar ORDER BY mnt4.id";
  
          $result = @pg_query($query);
 	     if (!$result)
@@ -239,19 +257,34 @@ $query =    "SELECT lcee.id,lcee.nombre_examen,
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-          $query = " SELECT lcee.id,lcee.nombre_examen, 
-                            lppe.nombreprocedimiento, 
-                            lppe.unidades,lppe.rangoinicio, 
-                            lppe.rangofin,(lppe.fechaini)AS fechaini, 
-                            (lppe.fechafin)AS fechafin,cex.nombre,cre.nombre, lppe.id 
-                            from ctl_area_servicio_diagnostico casd 
-                            join mnt_area_examen_establecimiento mnt4 on mnt4.id_area_servicio_diagnostico=casd.id 
-                            join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen) 
-                            join lab_procedimientosporexamen lppe on (lppe.id_conf_examen_estab=lcee.id) 
-                            left JOIN ctl_sexo cex ON lppe.idsexo = cex.id 
-                            left JOIN ctl_rango_edad cre ON lppe.idrangoedad = cre.id 
-                            WHERE lppe.idestablecimiento=$lugar 
-                            ORDER BY mnt4.id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar"; 
+         $query = 
+        
+        "SELECT 
+lcee.id,
+lcee.nombre_examen, 
+lppe.nombreprocedimiento, 
+lppe.unidades,
+lppe.rangoinicio, 
+lppe.rangofin,
+(lppe.fechaini)AS fechaini, 
+(lppe.fechafin)AS fechafin,
+--cex.nombre,
+--cex.id,
+CASE cex.id
+	      WHEN 1 THEN 'Masculino'
+              WHEN 2 THEN 'Femenino'
+              ELSE 'Ambos'
+              END AS sexo,
+cre.nombre,
+lppe.id 
+from ctl_area_servicio_diagnostico casd 
+join mnt_area_examen_establecimiento mnt4 on mnt4.id_area_servicio_diagnostico=casd.id 
+join lab_conf_examen_estab lcee 	  on (mnt4.id=lcee.idexamen) 
+join lab_procedimientosporexamen lppe 	  on (lppe.id_conf_examen_estab=lcee.id) 
+left JOIN ctl_sexo cex 			  ON lppe.idsexo = cex.id 
+left JOIN ctl_rango_edad cre 		  ON lppe.idrangoedad = cre.id 
+WHERE 
+lppe.idestablecimiento=$lugar ORDER BY mnt4.id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
             
            $result = @pg_query($query);
 		 if (!$result)

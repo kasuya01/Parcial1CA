@@ -16,8 +16,7 @@ $Fechaini = $row[2];
 // Los delimitadores pueden ser barra, punto o guión
 
 list($anio, $mes, $dia) = split('[/.-]', $Fechaini);
-$Fechaini = $anio . "/" . $mes . "/" . $dia
-;
+$Fechaini = $anio . "/" . $mes . "/" . $dia;
 
 
 
