@@ -233,8 +233,9 @@ function CambiarEstadoDetalleSolicitud1(estado,idexamen)
 function ProcesarMuestra()
 {
    //alert("Voy a cambiar estados");
-   estado='PM'; //LOS DETALLES DE LA SOLICITUD SE LES HA PROCESADO LA MUESTRA
-   CambiarEstadoDetalleSolicitud(estado);
+   //estado='PM'; //LOS DETALLES DE LA SOLICITUD SE LES HA PROCESADO LA MUESTRA
+   estado=5;
+    CambiarEstadoDetalleSolicitud(estado);
   // window.close();
 }
 
@@ -242,8 +243,9 @@ function ProcesarMuestra1(idexamen)
 {
    //alert("Voy a cambiar estados");
  //  alert(idexamen);
-   estado='PM'; //LOS DETALLES DE LA SOLICITUD SE LES HA PROCESADO LA MUESTRA
-   CambiarEstadoDetalleSolicitud1(estado,idexamen)
+  // estado='PM'; //LOS DETALLES DE LA SOLICITUD SE LES HA PROCESADO LA MUESTRA
+   estado=5;
+    CambiarEstadoDetalleSolicitud1(estado,idexamen)
   // window.close();
 }
 
@@ -256,7 +258,8 @@ function Cerrar(){
 
 function RechazarMuestra()
 {
-   estado='RM'
+  // estado='RM'
+   estado=6
    idsolicitud=document.frmDatos.idsolicitud.value;
    idexpediente=document.frmDatos.idexpediente.value;
    fechasolicitud=document.frmDatos.fechasolicitud.value;
@@ -295,7 +298,9 @@ function RechazarMuestra()
 
 function RechazarMuestra1(idexamen)
 {
-   estado='RM'
+   //estado='RM'
+   estado=6
+   idsolicitudPadre=document.frmDatos.idsolicitudPadre.value;
    idsolicitud=document.frmDatos.idsolicitud.value;
    idexpediente=document.frmDatos.idexpediente.value;
    fechasolicitud=document.frmDatos.fechasolicitud.value;
@@ -315,7 +320,7 @@ function RechazarMuestra1(idexamen)
 	//muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
-	ajax.send("idexpediente="+idexpediente+"&idarea="+idarea+"&fechasolicitud="+fechasolicitud+"&idsolicitud="+idsolicitud+"&opcion="+opcion+"&estado="+estado+"&idexamen="+idexamen+"&observacion="+observacion);	
+	ajax.send("idexpediente="+idexpediente+"&idarea="+idarea+"&fechasolicitud="+fechasolicitud+"&idsolicitud="+idsolicitud+"&opcion="+opcion+"&estado="+estado+"&idexamen="+idexamen+"&observacion="+observacion+"&idsolicitudPadre="+idsolicitudPadre);	
 	ajax.onreadystatechange=function() 
 	{
 		if (ajax.readyState==4) 
@@ -325,6 +330,7 @@ function RechazarMuestra1(idexamen)
 				//mostrar los nuevos registros en esta capa
 				//document.getElementById('divCambioEstado').innerHTML =  
 				alert(ajax.responseText);
+                                window.close();
 										
 			}
 		}

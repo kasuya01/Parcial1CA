@@ -102,7 +102,7 @@ class clsRecepcionSolicitud {
             if($fechacita !== '') {
                 $where = $where." AND t02.fecha = '$fechacita'";
             }
-
+            
             $result = @pg_query($query.$where.$orderBy);
 
             if (!$result)
