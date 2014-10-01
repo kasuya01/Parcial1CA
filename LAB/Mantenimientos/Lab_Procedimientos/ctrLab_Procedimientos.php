@@ -321,8 +321,7 @@ switch ($opcion)
 		{ $query .= " rangofin'%%".$_POST['rangofin']."%%' AND"; }
                 
                 if (!empty($_POST['idsexo']))
-		{ $query .= "
-                    (case '".$_POST['sexo']."'	
+		{ $query .= "(case '".$_POST['sexo']."'	
                         when '1' then lppe.idsexo='".$_POST['sexo']."'
                         when '2' then lppe.idsexo='".$_POST['sexo']."'
                         when '3' then lppe.idsexo='".$_POST['sexo']."'

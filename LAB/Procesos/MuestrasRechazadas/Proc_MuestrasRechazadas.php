@@ -250,8 +250,8 @@ if ($nivel==4){
 		<td class="StormyWeatherDataTD" colspan="3">
 			<select id="cmbTipoSolic" name="cmbTipoSolic" size="1" >
 				<option value="0">Seleccione un Tipo de Solicitud</option>
-				<option value="S">URGENTE</option>
-				<option value="R">NORMAL</option>
+				<option value="1">URGENTE</option>
+				<option value="2">NORMAL</option>
 			</select>
 		</td>	
 	</tr>

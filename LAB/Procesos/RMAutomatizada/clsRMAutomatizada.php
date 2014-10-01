@@ -68,7 +68,7 @@ $con = new ConexionBD;
 			WHERE mnt_subservicio.IdServicio='$IdServ' AND IdEstablecimiento=$lugar 
 			ORDER BY NombreSubServicio";		
 		$dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());*/
-            $sqlText = "WITH tbl_servicio AS (
+        echo    $sqlText = "WITH tbl_servicio AS (
                             SELECT t02.id,
                                 CASE WHEN t02.nombre_ambiente IS NOT NULL THEN  	
                                     CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
@@ -156,7 +156,7 @@ function DatosGeneralesSolicitud($idsolicitud)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-	$query = "select sse.id, --id solicitudestudios 
+	 $query = /*"select sse.id, --id solicitudestudios 
 mem.id, --id empleado 
 mer.numero, -- numero del expediente 
 mem.nombreempleado, --nombre empleado 
@@ -186,19 +186,30 @@ left join sec_diagnosticospaciente sdp        on (shc.id=sdp.idhistorialclinico)
 left join mnt_cie10 mc                        on (mc.id=sdp.iddiagnostico1) 
 left join sec_examenfisico sef                on (sef.idhistorialclinico=shc.id) 
 where sse.id_atencion=98 
-and sdses.id=$idsolicitud";
+and sdses.id=$idsolicitud";*/
                   
-               /* "select 
+                "select 
 sse.id, --id solicitudestudios 
 mem.id, --id empleado 
-mex.numero, -- numero del expediente 
+
 mem.nombreempleado, --nombre empleado 
 ce.nombre, --establecimiento 
-CONCAT_WS(' ', pa.primer_nombre, NULL,pa.segundo_nombre,NULL,pa.primer_apellido,NULL,pa.segundo_apellido)AS paciente, 
+case WHEN id_expediente_referido is  null then 
+                                  ( mex.numero)
+                                   else (mer.numero) end as numero,
+case WHEN id_expediente_referido is  null then 
+                                  (csex.nombre)
+                                   else (csexpar.nombre) end as sexnom,                                  
+case WHEN id_expediente_referido is  null  THEN 
+	CONCAT_WS(' ', pa.primer_nombre, NULL,pa.segundo_nombre,NULL,pa.primer_apellido,NULL,pa.segundo_apellido)
+	else  
+	  CONCAT_WS(' ', par.primer_nombre, NULL,par.segundo_nombre,NULL,par.primer_apellido,NULL,par.segundo_apellido)end as paciente,
 pa.conocido_por, 
 cat.nombre, --nombre atencion 
-mc.diagnostico, sef.peso, sef.talla, age(current_date, pa.fecha_nacimiento) AS edad, 
-csex.nombre, 
+mc.diagnostico, sef.peso, sef.talla, 
+case WHEN id_expediente_referido is  null then 
+age(current_date, pa.fecha_nacimiento)
+	else age(current_date, par.fecha_nacimiento) end as edad,
 t01.nombre 
 from ctl_area_servicio_diagnostico casd 
 join mnt_area_examen_establecimiento mnt4     	on (mnt4.id_area_servicio_diagnostico=casd.id )
@@ -220,9 +231,13 @@ inner join lab_recepcionmuestra lrm 		on (sse.id=lrm.idsolicitudestudio)
 left join sec_diagnosticospaciente sdp 		on (shc.id=sdp.idhistorialclinico) 
 left join mnt_cie10 mc 				on (mc.id=sdp.iddiagnostico1) 
 left join sec_examenfisico sef 			on (sef.idhistorialclinico=shc.id) 
+LEFT  JOIN mnt_dato_referencia  mdr             on (sse.id_dato_referencia=mdr.id)
+LEFT JOIN mnt_expediente_referido mer           on (mdr.id_expediente_referido=mer.id)
+LEFT JOIN mnt_paciente_referido par   		ON (mer.id_referido=par.id) 
+left join ctl_sexo csexpar 			on (csexpar.id=par.id_sexo)  
 where sse.id_atencion=98 
-			and shc.id_numero_expediente=$idexpediente 
-			and sdses.id=$idsolicitud";*/
+			
+			and sdses.id=$idsolicitud";
          $result = @pg_query($query);
                  
                    //         echo $query;
@@ -263,12 +278,7 @@ where sse.id_atencion=98
 	$con = new ConexionBD;
    if($con->conectar()==true) 
    {
-	$query=/*"SELECT B.IdExamen,NombreExamen,TipoMuestra,Indicacion,A.Observacion 
-			FROM sec_detallesolicitudestudios AS A
-			INNER JOIN lab_examenes       	  AS B ON A.IdExamen=B.IdExamen
-			INNER JOIN lab_tipomuestra    	  AS C ON C.IdTipoMuestra=A.IdTipoMuestra
-			WHERE idSolicitudEstudio = $idsolicitud 
-			AND	IdArea='$idarea' AND B.IdExamen='$idexamen'";*/
+	 $query=
 	"select lcee.id,lcee.nombre_examen,ltm.tipomuestra,sdses.indicacion,sdses.observacion,casd.id
 		from ctl_area_servicio_diagnostico casd 
                 join mnt_area_examen_establecimiento mnt4 on mnt4.id_area_servicio_diagnostico=casd.id 
@@ -308,7 +318,7 @@ where sse.id_atencion=98
  function CambiarEstadoSolicitud($idsolicitud,$idsolicitudPadre){
   $con = new ConexionBD;
    if($con->conectar()==true){ 
-		echo $query=/*"SELECT COUNT(IdDetalleSolicitud) FROM sec_detallesolicitudestudios WHERE IdSolicitudEstudio=$idsolicitud AND (EstadoDetalle<>'RC' AND EstadoDetalle<>'RM')";*/
+		 $query=/*"SELECT COUNT(IdDetalleSolicitud) FROM sec_detallesolicitudestudios WHERE IdSolicitudEstudio=$idsolicitud AND (EstadoDetalle<>'RC' AND EstadoDetalle<>'RM')";*/
                            "SELECT COUNT(id) 
                                 FROM sec_detallesolicitudestudios 
                                 WHERE idsolicitudestudio=$idsolicitudPadre AND (estadodetalle<>7 AND estadodetalle<>6)";

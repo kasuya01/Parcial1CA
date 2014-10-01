@@ -217,17 +217,28 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
         
 
         
-"select 
+ "select 
 sse.id, --id solicitudestudios 
 mem.id, --id empleado 
-mex.numero, -- numero del expediente 
+
 mem.nombreempleado, --nombre empleado 
 ce.nombre, --establecimiento 
-CONCAT_WS(' ', pa.primer_nombre, NULL,pa.segundo_nombre,NULL,pa.primer_apellido,NULL,pa.segundo_apellido)AS paciente, 
+case WHEN id_expediente_referido is  null then 
+                                  ( mex.numero)
+                                   else (mer.numero) end as numero,
+case WHEN id_expediente_referido is  null then 
+                                  (csex.nombre)
+                                   else (csexpar.nombre) end as sexnom,                                  
+case WHEN id_expediente_referido is  null  THEN 
+	CONCAT_WS(' ', pa.primer_nombre, NULL,pa.segundo_nombre,NULL,pa.primer_apellido,NULL,pa.segundo_apellido)
+	else  
+	  CONCAT_WS(' ', par.primer_nombre, NULL,par.segundo_nombre,NULL,par.primer_apellido,NULL,par.segundo_apellido)end as paciente,
 pa.conocido_por, 
 cat.nombre, --nombre atencion 
-mc.diagnostico, sef.peso, sef.talla, age(current_date, pa.fecha_nacimiento) AS edad, 
-csex.nombre, 
+mc.diagnostico, sef.peso, sef.talla, 
+case WHEN id_expediente_referido is  null then 
+age(current_date, pa.fecha_nacimiento)
+	else age(current_date, par.fecha_nacimiento) end as edad,
 t01.nombre 
 from ctl_area_servicio_diagnostico casd 
 join mnt_area_examen_establecimiento mnt4     	on (mnt4.id_area_servicio_diagnostico=casd.id )
@@ -249,8 +260,12 @@ inner join lab_recepcionmuestra lrm 		on (sse.id=lrm.idsolicitudestudio)
 left join sec_diagnosticospaciente sdp 		on (shc.id=sdp.idhistorialclinico) 
 left join mnt_cie10 mc 				on (mc.id=sdp.iddiagnostico1) 
 left join sec_examenfisico sef 			on (sef.idhistorialclinico=shc.id) 
+LEFT  JOIN mnt_dato_referencia  mdr             on (sse.id_dato_referencia=mdr.id)
+LEFT JOIN mnt_expediente_referido mer           on (mdr.id_expediente_referido=mer.id)
+LEFT JOIN mnt_paciente_referido par   		ON (mer.id_referido=par.id) 
+left join ctl_sexo csexpar 			on (csexpar.id=par.id_sexo)  
 where sse.id_atencion=98 
-			and shc.id_numero_expediente=$idexpediente 
+			
 			and sdses.id=$idsolicitud";
         
          $result = @pg_query($query);

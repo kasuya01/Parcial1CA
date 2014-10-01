@@ -45,7 +45,8 @@ if(isset($_SESSION['Correlativo'])){
 	    if ((document.getElementById('cmbTipoEstab').value == 0) && (document.getElementById('cmbEstablecimiento').value == 0)
 		&& (document.getElementById('CmbServicio').value == 0) &&(document.getElementById('cmbArea').value == 0) 
 		&&(document.getElementById('txtexpediente').value == "") && (document.getElementById('txtfecharecep').value == "") 
-		&& (document.getElementById('PrimerNombre').value=="") && (document.getElementById('SegundoNombre').value=="") 
+		&& (document.getElementById('cmbSubServ').value == 0)
+                && (document.getElementById('PrimerNombre').value=="") && (document.getElementById('SegundoNombre').value=="") 
 		&& (document.geElementById('PrimerApellido').value=="") && (document.getElementById('SegundoApellido').value=="") 
 		&& (document.getElementById('cmbTipoSolic')==0)){
 			alert("Ingrese un parámetro de búsqueda");
@@ -242,8 +243,8 @@ if(isset($_SESSION['Correlativo'])){
 		<td class="StormyWeatherDataTD" colspan="3">
                     <select id="cmbTipoSolic" name="cmbTipoSolic" size="1" >
                         <option value="0">Seleccione un Tipo de Solicitud</option>
-			<option value="S">URGENTE</option>
-			<option value="R">NORMAL</option>
+			<option value="1">URGENTE</option>
+			<option value="2">NORMAL</option>
                     </select>
 		</td>	
             </tr>

@@ -29,42 +29,49 @@ switch ($opcion)
 	$ban=0;  
 	$fecharecep=$_POST['fecharecep'];
          include_once("clsRMAutomatizada.php");
-        $consulta=$objdatos->siesreferrido();
-       if($consulta>=0){
-           echo "NO HAY REFERIDO".$consulta;
-       $query=    "SELECT 
-sdses.id, 
+      //  $consulta=$objdatos->siesreferrido();
+      // if($consulta>=0){
+       //    echo "NO HAY REFERIDO".$consulta;
+       $query=   "SELECT sdses.id, 
 sse.id_expediente, 
 lcee.id,
-nombre_examen,
-casd.id,
+nombre_examen, 
+casd.id, 
 casd.nombrearea, 
---DATE_FORMAT( lrc.fecharecepcion, --'%d/%m/%Y') AS fecharecepcion, 
-lrc.observacion, ctl.nombre, ce.nombre,mex.numero,lrc.fecharecepcion,ce.nombre, lrc.numeromuestra,
-CONCAT_WS(' ', pa.primer_nombre, NULL,pa.segundo_nombre,NULL,pa.primer_apellido,NULL,pa.segundo_apellido)AS paciente, 
-CASE sse.idtiposolicitud
-     WHEN 1 THEN 'URGENTE'
-     WHEN 2 THEN 'NORMAL'
-     END AS prioridad,
-t01.nombre,sse.id
-from ctl_area_servicio_diagnostico casd 
-join mnt_area_examen_establecimiento mnt4     on (mnt4.id_area_servicio_diagnostico=casd.id )
-join lab_conf_examen_estab lcee 	      on (mnt4.id=lcee.idexamen) 
-INNER JOIN sec_detallesolicitudestudios sdses ON (sdses.id_conf_examen_estab=lcee.id)
-INNER JOIN sec_solicitudestudios sse          ON (sdses.idsolicitudestudio=sse.id) 
-INNER JOIN lab_recepcionmuestra lrc           ON (sse.id= lrc.idsolicitudestudio )
-INNER JOIN sec_historial_clinico shc 	      ON (sse.id_historial_clinico=shc.id )
-join mnt_aten_area_mod_estab mnt3	      ON (shc.idsubservicio=mnt3.id)
-join mnt_area_mod_estab m1		      ON (mnt3.id_area_mod_estab=m1.id)
-INNER JOIN ctl_atencion ctl 		      ON (shc.idsubservicio=ctl.id) 
-INNER JOIN ctl_establecimiento ce 	      ON (shc.idestablecimiento=ce.id )
-inner join ctl_area_atencion t01              on ( m1.id_area_atencion=t01.id) 
-INNER JOIN mnt_expediente mex                 ON shc.id_numero_expediente=mex.id 
-INNER JOIN mnt_paciente pa                    ON (mex.id_paciente=pa.id) 
-WHERE estadodetalle=5 OR estadodetalle=1 AND 
-lrc.fecharecepcion<=CURRENT_DATE 
-AND sdses.idestablecimiento= $lugar AND  ";
-           
+sdses.observacion, 
+ctl.nombre, 
+ce.nombre,
+case WHEN id_expediente_referido is  null then 
+                                  ( mex.numero)
+                                   else (mer.numero) end as numero,
+lrc.fecharecepcion,ce.nombre, lrc.numeromuestra, 
+case WHEN id_expediente_referido is  null  THEN 
+	CONCAT_WS(' ', pa.primer_nombre, NULL,pa.segundo_nombre,NULL,pa.primer_apellido,NULL,pa.segundo_apellido)
+	else  
+	  CONCAT_WS(' ', par.primer_nombre, NULL,par.segundo_nombre,NULL,par.primer_apellido,NULL,par.segundo_apellido)end as paciente,
+
+CASE sse.idtiposolicitud WHEN 1 THEN 'URGENTE' 
+			 WHEN 2 THEN 'NORMAL' 
+			 END AS prioridad,
+t01.nombre,  sse.id 
+ from ctl_area_servicio_diagnostico casd 
+INNER JOIN mnt_area_examen_establecimiento mnt4 	ON (mnt4.id_area_servicio_diagnostico=casd.id) 
+INNER JOIN lab_conf_examen_estab lcee 			ON (mnt4.id=lcee.idexamen) 
+INNER JOIN sec_detallesolicitudestudios sdses 		ON (sdses.id_conf_examen_estab=lcee.id) 
+LEFT  JOIN sec_solicitudestudios sse 			ON (sdses.idsolicitudestudio=sse.id) 
+INNER JOIN lab_recepcionmuestra lrc 			ON (sse.id= lrc.idsolicitudestudio) 
+LEFT JOIN sec_historial_clinico shc 			ON (sse.id_historial_clinico=shc.id) 
+INNER JOIN mnt_aten_area_mod_estab mnt3 		ON (shc.idsubservicio=mnt3.id) 
+INNER JOIN mnt_area_mod_estab m1 			ON (mnt3.id_area_mod_estab=m1.id) 
+INNER JOIN ctl_atencion ctl 				ON (shc.idsubservicio=ctl.id) 
+INNER JOIN ctl_establecimiento ce 			ON (shc.idestablecimiento=ce.id) 
+INNER JOIN ctl_area_atencion t01 			ON ( m1.id_area_atencion=t01.id) 
+LEFT  JOIN mnt_dato_referencia  mdr                     on (sse.id_dato_referencia=mdr.id)
+LEFT JOIN mnt_expediente_referido mer       		on (mdr.id_expediente_referido=mer.id)
+LEFT JOIN mnt_paciente_referido par   			ON (mer.id_referido=par.id) 
+INNER JOIN mnt_expediente mex 				ON (shc.id_numero_expediente=mex.id)
+INNER JOIN mnt_paciente pa 				ON (mex.id_paciente=pa.id) 
+WHERE  estadodetalle=5	AND sdses.idestablecimiento=$lugar AND ";
            
        
 
@@ -82,30 +89,58 @@ AND sdses.idestablecimiento= $lugar AND  ";
 			
 		if (!empty($_POST['idexamen']))
 			{ $query .= " lcee.id='".$_POST['idexamen']."' AND";}
-		
+                        
+		//case WHEN id_expediente_referido is null then (mex.numero) else
 		if (!empty($_POST['idexpediente']))
-			{ $query .= " sec_solicitudestudios.IdNumeroExp='".$_POST['idexpediente']."' AND";}
-		
+			{ $query .= " case WHEN id_expediente_referido is null then    
+                                (mex.numero='".$_POST['idexpediente']."') ELSE
+                                    
+                                (mer.numero='".$_POST['idexpediente']."') END AND";}
+                        
+                       
+                        
 		if (!empty($_POST['fecharecep']))
 			{$Nfecha=explode("/",$fecharecep);
 		 	//print_r($Nfecha);
                   	$Nfecharecep=$Nfecha[2]."-".$Nfecha[1]."-".$Nfecha[0]; 
-			$query .= " lab_recepcionmuestra.fecharecepcion='".$Nfecharecep."' AND";}
+			$query .= " lrc.fecharecepcion='".$Nfecharecep."' AND";}
 
 		if (!empty($_POST['PNombre']))
-			{ $query .= " mnt_datospaciente.PrimerNombre='".$_POST['PNombre']."' AND";}
+			
+                        
+                        { $query .= " case WHEN id_expediente_referido is null then    
+                                (pa.primer_nombre ilike '%%".$_POST['PNombre']."%%') ELSE
+                                    
+                                (par.primer_nombre ilike '%%".$_POST['PNombre']."%%') END AND";}
+                        
+                        
 		
 		if (!empty($_POST['SNombre']))
-			{ $query .= " mnt_datospaciente.SegundoNombre='".$_POST['SNombre']."' AND";}
+			//{ $query .= " mnt_datospaciente.SegundoNombre='".$_POST['SNombre']."' AND";}
+                    
+                     { $query .= " case WHEN id_expediente_referido is null then    
+                                (pa.segundo_nombre ilike '%%".$_POST['SNombre']."%%') ELSE
+                                    
+                                (par.segundo_nombre ilike '%%".$_POST['SNombre']."%%') END AND";}
 		
 		if (!empty($_POST['PApellido']))
-			{ $query .= " mnt_datospaciente.PrimerApellido='".$_POST['PApellido']."' AND";}
+			//{ $query .= " mnt_datospaciente.PrimerApellido='".$_POST['PApellido']."' AND";}
+                    
+                     { $query .= " case WHEN id_expediente_referido is null then    
+                                (pa.primer_apellido ilike '%%".$_POST['PApellido']."%%') ELSE
+                                    
+                                (par.primer_apellido ilike '%%".$_POST['PApellido']."%%') END AND";}
 		
 		if (!empty($_POST['SApellido']))
-			{ $query .= " mnt_datospaciente.SegundoApellido='".$_POST['SApellido']."' AND";}
+			//{ $query .= " mnt_datospaciente.SegundoApellido='".$_POST['SApellido']."' AND";}
+                    { $query .= " case WHEN id_expediente_referido is null then    
+                                (pa.segundo_apellido ilike '%%".$_POST['SApellido']."%%') ELSE
+                                    
+                                (par.segundo_apellido ilike '%%".$_POST['SApellido']."%%') END AND";}
 			
 		if (!empty($_POST['TipoSolic']))
-		{ $query .= " sec_solicitudestudios.IdTipoSolicitud='".$_POST['TipoSolic']."' AND";}	
+		{ $query .= " sse.idtiposolicitud='".$_POST['TipoSolic']."' AND";}	
+                
 		
 		if((empty($_POST['idexpediente'])) AND (empty($_POST['idarea'])) AND (empty($_POST['fecharecep'])) 
 		AND (empty($_POST['idexamen'])) AND (empty($_POST['IdEstab'])) AND (empty($_POST['IdServ'])) 
@@ -119,113 +154,15 @@ AND sdses.idestablecimiento= $lugar AND  ";
 		if ($ban==0){
 			
 			$query = substr($query ,0,strlen($query)-3);
-			echo  $query_search = $query. " ORDER BY lrc.fecharecepcion DESC";
+			 $query_search = $query. " ORDER BY lrc.fecharecepcion DESC";
 			
 		}
            
                 
                 
           
-        }else if ($consulta>=0) {
-            echo "SI HAY REFERIDO".$consulta;
-            
-            $query=    "SELECT 
-sdses.id, 
-sse.id_expediente, 
-lcee.id,
-nombre_examen,
-casd.id,
-casd.nombrearea, 
---DATE_FORMAT( lrc.fecharecepcion, --'%d/%m/%Y') AS fecharecepcion, 
-lrc.observacion, ctl.nombre, ce.nombre,mer.numero,lrc.fecharecepcion,ce.nombre, lrc.numeromuestra,
-CONCAT_WS(' ', par.primer_nombre, NULL,par.segundo_nombre,NULL,par.primer_apellido,NULL,par.segundo_apellido)AS paciente, 
-CASE sse.idtiposolicitud
-     WHEN 1 THEN 'URGENTE'
-     WHEN 2 THEN 'NORMAL'
-     END AS prioridad,
-t01.nombre
-from ctl_area_servicio_diagnostico casd 
-join mnt_area_examen_establecimiento mnt4     on (mnt4.id_area_servicio_diagnostico=casd.id )
-join lab_conf_examen_estab lcee 	      on (mnt4.id=lcee.idexamen) 
-INNER JOIN sec_detallesolicitudestudios sdses ON (sdses.id_conf_examen_estab=lcee.id)
-INNER JOIN sec_solicitudestudios sse          ON (sdses.idsolicitudestudio=sse.id) 
-left JOIN lab_recepcionmuestra lrc            ON (sse.id= lrc.idsolicitudestudio )
-left JOIN sec_historial_clinico shc 	      ON (sse.id_historial_clinico=shc.id )
-join mnt_aten_area_mod_estab mnt3	      ON (shc.idsubservicio=mnt3.id)
-join mnt_area_mod_estab m1		      ON (mnt3.id_area_mod_estab=m1.id)
-INNER JOIN ctl_atencion ctl 		      ON (shc.idsubservicio=ctl.id) 
-INNER JOIN ctl_establecimiento ce 	      ON (shc.idestablecimiento=ce.id )
-inner join ctl_area_atencion t01              on ( m1.id_area_atencion=t01.id) 
---INNER JOIN mnt_expediente mex               ON shc.id_numero_expediente=mex.id 
---INNER JOIN mnt_paciente pa                  ON (mex.id_paciente=pa.id) 
-JOIN mnt_expediente_referido mer    	      on (sse.id_expediente_referido=mer.id)
-INNER JOIN mnt_paciente_referido par          ON (mer.id_referido=par.id) 
-WHERE estadodetalle=5 OR estadodetalle=1 AND
-lrc.fecharecepcion<=CURRENT_DATE 
-AND sdses.idestablecimiento= $lugar AND  ";
-            
-             
-           if (!empty($_POST['IdEstab']))
-			{ $query .= " shc.idestablecimiento ='".$_POST['IdEstab']."' AND";}	
-			
-		if (!empty($_POST['IdServ']))
-			{ $query .= " t01.id='".$_POST['IdServ']."' AND";}
-		
-		if (!empty($_POST['IdSubServ']))
-			{ $query .= " mnt_subservicio.IdSubServicio ='".$_POST['IdSubServ']."' AND";}
-
-		if (!empty($_POST['idarea']))
-			{ $query .= " id_area_servicio_diagnostico='".$_POST['idarea']."' AND";}
-			
-		if (!empty($_POST['idexamen']))
-			{ $query .= " lcee.id='".$_POST['idexamen']."' AND";}
-		
-		if (!empty($_POST['idexpediente']))
-			{ $query .= " sec_solicitudestudios.IdNumeroExp='".$_POST['idexpediente']."' AND";}
-		
-		if (!empty($_POST['fecharecep']))
-			{$Nfecha=explode("/",$fecharecep);
-		 	//print_r($Nfecha);
-                  	$Nfecharecep=$Nfecha[2]."-".$Nfecha[1]."-".$Nfecha[0]; 
-			$query .= " lab_recepcionmuestra.fecharecepcion='".$Nfecharecep."' AND";}
-
-		if (!empty($_POST['PNombre']))
-			{ $query .= " mnt_datospaciente.PrimerNombre='".$_POST['PNombre']."' AND";}
-		
-		if (!empty($_POST['SNombre']))
-			{ $query .= " mnt_datospaciente.SegundoNombre='".$_POST['SNombre']."' AND";}
-		
-		if (!empty($_POST['PApellido']))
-			{ $query .= " mnt_datospaciente.PrimerApellido='".$_POST['PApellido']."' AND";}
-		
-		if (!empty($_POST['SApellido']))
-			{ $query .= " mnt_datospaciente.SegundoApellido='".$_POST['SApellido']."' AND";}
-			
-		if (!empty($_POST['TipoSolic']))
-		{ $query .= " sec_solicitudestudios.IdTipoSolicitud='".$_POST['TipoSolic']."' AND";}	
-		
-		if((empty($_POST['idexpediente'])) AND (empty($_POST['idarea'])) AND (empty($_POST['fecharecep'])) 
-		AND (empty($_POST['idexamen'])) AND (empty($_POST['IdEstab'])) AND (empty($_POST['IdServ'])) 
-		AND (empty($_POST['IdSubServ'])) AND (empty($_POST['idexamen'])) AND (empty($_POST['PNombre'])) 
-		AND (empty($_POST['SNombre'])) AND (empty($_POST['PApellido'])) AND (empty($_POST['SApellido']))
-		AND (empty($_POST['TipoSolic'])))
-		{
-				$ban=1;
-		}
-		
-		if ($ban==0){
-			
-			$query = substr($query ,0,strlen($query)-3);
-			ECHO  $query_search = $query. " ORDER BY lrc.fecharecepcion DESC";
-			
-		}
-           
-        }
         
-        else if($consulta<=0 ) {
-            
-            
-        }
+        
 	 
 
 
@@ -307,21 +244,21 @@ AND sdses.idestablecimiento= $lugar AND  ";
 			$row = pg_fetch_array($consulta);
 			//obteniedo los datos generales de la solicitud
 			//valores de las consultas
-                      echo "e-->". $idsolicitudPadre=$row[0];
-			$medico=$row[3];
+                        $idsolicitudPadre=$row[0];
+			$medico=$row[2];
 			$idmedico=$row[1];
-			$paciente=$row[5];
+			$paciente=$row['paciente'];
 			$edad=$row['edad'];
-			$sexo=$row[12];
+			$sexo=$row[5];
 			$precedencia=$row[13];
-			$origen=$row[7];
+			$origen=$row[8];
 			//$DatosClinicos=$row['DatosClinicos'];
 			//$fechasolicitud=$row['FechaSolicitud'];
 			//$FechaNac=$row['FechaNacimiento'];
                         $Talla=$row[10];
                         $Peso=$row[9];
-                        $Diagnostico=$row[8];
-                        $ConocidoPor=$row[6];
+                        $Diagnostico=$row[9];
+                        $ConocidoPor=$row[7];
 		//recuperando los valores del detalle de la solicitud
 		$datosexamen=$objdatos->DatosExamen($idarea,$idsolicitud,$idexamen);//cambie esta funcion
 		$imprimir="<form name='frmDatos'>
@@ -340,9 +277,13 @@ AND sdses.idestablecimiento= $lugar AND  ";
 				<td colspan='3' class='StormyWeatherDataTD'>".htmlentities($ConocidoPor)." </td>
 		    	</tr>
 			<tr>
-				<td class='StormyWeatherFieldCaptionTD'>Edad</td>
-				<td class='StormyWeatherDataTD'><div id='divsuedad'>
-          
+				
+                                
+                                    
+                                    <td class='StormyWeatherFieldCaptionTD'>Edad</td>
+				   <td class='StormyWeatherDataTD'>$edad <input name='txtedad' id='txtedad' 
+				   type='hidden' size='35' value='".$edad."' disabled='disabled' /></td>
+                                       
     				</div></td>
 				<td class='StormyWeatherFieldCaptionTD'>Sexo</td>
 				<td class='StormyWeatherDataTD'>
@@ -445,7 +386,7 @@ AND sdses.idestablecimiento= $lugar AND  ";
                                             </td>
                                     </tr>
                                     <tr>
-                                            <td colspan='4' align='center'><input type='button' name='btnRechazar'  id='btnRechazar' value='Rechazar Muestraaaa' onClick=\"RechazarMuestra1('".$idexamen."')\">
+                                            <td colspan='4' align='center'><input type='button' name='btnRechazar'  id='btnRechazar' value='Rechazar Muestra' onClick=\"RechazarMuestra1('".$idexamen."')\">
                                                     <input type='button' name='btnCerrar'  value='Cerrar' onClick='Cerrar()'>
                                             </td>
                                     </tr>
@@ -487,7 +428,7 @@ AND sdses.idestablecimiento= $lugar AND  ";
 			
 		if ($objdatos->CambiarEstadoDetalle1($idsolicitud,$estado,$idexamen,$observacion)==true)
 		{  
-                        echo "Muestra Rechazada";
+                        echo "Muestra Rechazada, ";
                         
 			if($objdatos->CambiarEstadoSolicitud($idsolicitud,$idsolicitudPadre)==true)  
 			{	
@@ -534,11 +475,11 @@ AND sdses.idestablecimiento= $lugar AND  ";
 		echo $rslts;
    	break;
 	case 7:// Llenar combo Subservicio
-   	     $rslts='';
+   	    $rslts='';
              $IdServ=$_POST['IdServicio'];
 	   //  echo $IdServ;
 	     $dtserv=$objdatos->LlenarCmbServ($IdServ,$lugar);
-	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:355px">';
+	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:375px">';
 			$rslts .='<option value="0"> Seleccione Subespecialidad </option>';
 			while ($rows =pg_fetch_array($dtserv)){
 		  	$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
@@ -546,6 +487,8 @@ AND sdses.idestablecimiento= $lugar AND  ";
 				
 	      $rslts .='</select>';
 	      echo $rslts;
+        break;	
+        
         break;	
 
  

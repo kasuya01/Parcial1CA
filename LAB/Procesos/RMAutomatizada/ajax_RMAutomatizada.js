@@ -84,11 +84,12 @@ function LlenarComboEstablecimiento(idtipoesta)
    	}
 }
 
+
 function LlenarComboServicio(IdServicio)
 {
 	ajax=objetoAjax();
 	opcion=7;
-  	ajax.open("POST","ctrRMAutomatizada.php",true);
+  	ajax.open("POST", "ctrRMAutomatizada.php",true);
 	//muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
