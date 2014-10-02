@@ -100,12 +100,7 @@ if (isset($_SESSION['Correlativo'])) {
                 }
 
                 function BuscarServicio(IdServicio) {
-                    /*if (document.getElementById('CmbServicio').value == 0){
-                     alert("Debe Seleccionar una Procedencia");
-                     } 
-                     else{*/
                     LlenarComboServicio(IdServicio);
-                    //}
                 }
                 
                 llenarComboTipoSolicitud();

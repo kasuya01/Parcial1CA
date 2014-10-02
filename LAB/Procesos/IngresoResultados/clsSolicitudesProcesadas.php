@@ -101,11 +101,6 @@ class clsSolicitudesProcesadas {
     function LlenarCmbServ($IdServ, $lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            /*$sqlText = "SELECT mnt_subservicio.IdSubServicio,mnt_subservicio.NombreSubServicio
-			   FROM mnt_subservicio 
-			   INNER JOIN mnt_subservicioxestablecimiento ON mnt_subservicio.IdSubServicio=mnt_subservicioxestablecimiento.IdSubServicio
-			   WHERE mnt_subservicio.IdServicio='$IdServ' AND IdEstablecimiento=$lugar 
-			   ORDER BY NombreSubServicio";*/
             $sqlText = "WITH tbl_servicio AS (
                             SELECT t02.id,
                                 CASE WHEN t02.nombre_ambiente IS NOT NULL THEN  	
