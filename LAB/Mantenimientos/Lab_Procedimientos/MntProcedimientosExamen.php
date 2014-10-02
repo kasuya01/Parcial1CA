@@ -7,6 +7,7 @@ $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea']; 
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
 ?>
 <html>
 <head>
@@ -22,6 +23,7 @@ $area=$_SESSION['Idarea'];
 <script type="text/javascript" src="../../../calendarstructure/calendar.js"></script>
 <script type="text/javascript" src="../../../calendarstructure/calendar-es.js"></script>
 <script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
+<?php include_once $ROOT_PATH."/public/js.php";?>
 
 <script language="JavaScript" >
 function Guardar(){
@@ -114,8 +116,9 @@ if ($nivel==33){
                                         <?php
                                             $consultaS= $objdatos->consultarsexo();
                                             while($row =pg_fetch_array($consultaS)){
-                                                echo "<option value='" . $row[0]. "'>". $row[1] . "</option>";
+                                                echo "<option value='" . $row['id']. "'>". $row['nombre'] . "</option>";
                                             }
+                                            echo "<option value='NULL'>Ambos</option>"
                                         ?>        
                                 </select>		  
 			    </td>        
