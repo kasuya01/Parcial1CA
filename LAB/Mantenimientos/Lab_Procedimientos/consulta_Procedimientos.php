@@ -1,4 +1,5 @@
 <?php session_start();
+include('../Lab_Areas/clsLab_Areas.php');
 include_once("clsLab_Procedimientos.php");
 $lugar=$_SESSION['Lugar'];
 $usuario=$_SESSION['Correlativo'];
@@ -13,11 +14,11 @@ $consulta=$obj->consultarid($idproce,$lugar);
 $row = pg_fetch_array($consulta);
 
 //valores de las consultas
-$idarea=$row[0];
-$nombrearea=$row[1];
-$idexamen=$row[2];
-$nombreexamen=$row[4];
-$proce=$row[5];
+$idarea=$row['idarea'];
+$nombrearea=$row['nombrearea'];
+$idexamen=$row['idexamen'];
+$nombreexamen=$row['nombreexamen'];
+$proce=$row['nombreprocedimiento'];
 $unidades=$row['unidades'];
 $rangoini=$row['rangoinicio'];
 $rangofin=$row['rangofin'];
@@ -26,12 +27,14 @@ list($anio, $mes, $dia) = split('[/.-]', $Fechaini);
 $Fechaini = $anio . "/" . $mes . "/" . $dia;
 
 $Fechafin=$row['fechafin'];
-list($anio, $mes, $dia) = split('[/.-]', $Fechafin);
-$Fechafin = $anio . "/" . $mes . "/" . $dia;
-$idsexo=$row[11];
-$nombresexo=$row[12];
-$idedad=$row['id'];
-$rangoedad=$row['nombre'];
+if($Fechafin !== null) {
+	list($anio, $mes, $dia) = split('[/.-]', $Fechafin);
+	$Fechafin = $anio . "/" . $mes . "/" . $dia;
+}
+$idsexo=$row['idsexo'];
+$nombresexo=$row['sexovn'];
+$idedad=$row['idedad'];
+$rangoedad=$row['nombregrupoedad'];
 //muestra los datos consultados en los campos del formulario
 
 
@@ -48,37 +51,36 @@ $rangoedad=$row['nombre'];
         	<td  width="17%" class="StormyWeatherFieldCaptionTD" width="17%">&Aacute;rea</td>
         	<td width="83%" class="StormyWeatherDataTD">
 			<select id="cmbArea" name="cmbArea" size="1" onChange="LlenarComboExamen(this.value);">
-			<option value="0" >--Seleccione un &Aacute;rea--</option>";
-			<?php
-			include('../Lab_Areas/clsLab_Areas.php');
-			$objeareas=new clsLab_Areas;
-			$consulta= $objeareas->consultaractivas();
-			
-                        
-                        while($row = pg_fetch_array($consulta)){
-			 "<option value='" . $row[1]. "'>" .htmlentities($row[2]) . "</option>";
-			}
-			echo "<option value='" . $idarea . "' selected='selected'>" .htmlentities($nombrearea). "</option>";
-                        
-			?>		  
-            		</select>		  
+				<option value="0" >--Seleccione un &Aacute;rea--</option>
+				<?php
+					$objeareas=new clsLab_Areas;
+                    $consulta= $objeareas->consultaractivas($lugar);
+                    while($row = pg_fetch_array($consulta)){
+                        if($row['idarea'] === $idarea)
+	               			echo "<option value='" . $idarea . "' selected='selected'>" .htmlentities($nombrearea). "</option>";
+	               		else
+				 			echo "<option value='" . $row['idarea']. "'>" .htmlentities($row['nombrearea']) . "</option>";
+                    }
+				?>
+           	</select>		  
 		</td>
     	</tr>
     	<tr>
         	<td width="17%" class="StormyWeatherFieldCaptionTD">Examen </td>
         	<td width="83%" class="StormyWeatherDataTD">
-                    <select id="cmbExamen" name="cmbExamen" size="1">
-            		<option value="0">--Seleccione un Examen--</option>";
-           		<?php
-				$consultaex = $obj->ExamenesPorArea($idarea);
-				while($row = pg_fetch_array($consultaex))
-				{
-					echo "<option value='" . $row['id']. "'>" . $row['nombre_examen'] . "</option>";
-				}						            	
-				echo "<option value='" . $idexamen . "' selected='selected'>" .$nombreexamen. "</option>";
-			?>	
-		    </select>
-                </td>
+                <select id="cmbExamen" name="cmbExamen" size="1">
+            		<option value="0">--Seleccione un Examen--</option>
+	           		<?php
+						$consultaex = $obj->ExamenesPorArea($idarea, $lugar);
+						while($row = pg_fetch_array($consultaex)) {
+							if($row['idexamen'] === $idexamen)
+								echo "<option value='" . $idexamen . "' selected='selected'>" .$nombreexamen. "</option>";
+							else
+								echo "<option value='" . $row['idexamen']. "'>" . $row['nombreexamen'] . "</option>";
+						}
+					?>
+		    	</select>
+            </td>
     	</tr>
        <tr>
             <td width="17%" class="StormyWeatherFieldCaptionTD">Sexo</td>
@@ -86,13 +88,18 @@ $rangoedad=$row['nombre'];
                 <select id="cmbSexo" name="cmbSexo" size="1" >
                     <option value="0" >--Seleccione Sexo--</option>
                     <?php
-                            $consultaS= $obj->consultarsexo();
-                            while($row =pg_fetch_array($consultaS)){
-                                 echo "<option value='" . $row[0]. "'>". $row['nombre'] . "</option>";
+                        $consultaS= $obj->consultarsexo();
+                        while($row =pg_fetch_array($consultaS)){
+                        	if($row['id'] === $idsexo)
+                        		echo "<option value='" . $idsexo . "' selected='selected'>" .$nombresexo. "</option>";
+                        	else
+                            	echo "<option value='" . $row['id']. "'>". $row['nombre'] . "</option>";
+                        }
 
-                            }
-
-                            echo "<option value='" . $idsexo . "' selected='selected'>" .$nombresexo. "</option>";
+                        if($idsexo === "NULL")
+                        	echo "<option value='" . $idsexo . "' selected='selected'>" .$nombresexo. "</option>";
+                        else
+                        	echo "<option value='NULL'>Ambos</option>";
                     ?>        
                 </select>		  
              </td>        
@@ -105,9 +112,11 @@ $rangoedad=$row['nombre'];
                             <?php
                                 $conEdad = $obj->RangosEdades();
                                 while($row = pg_fetch_array($conEdad)){
-                                     echo "<option value='" . $row[0]. "'>". $row[1] . "</option>";
+                                	if($row['id'] === $idedad)
+                                		echo "<option value='" . $idedad . "' selected='selected'>" .$rangoedad. "</option>";
+                                	else
+                                    	echo "<option value='" . $row['id']. "'>". $row['nombre'] . "</option>";
                                 }
-                                echo "<option value='" . $idedad . "' selected='selected'>" .$rangoedad. "</option>";
                             ?>    
                     </select>		  
                 </td>        

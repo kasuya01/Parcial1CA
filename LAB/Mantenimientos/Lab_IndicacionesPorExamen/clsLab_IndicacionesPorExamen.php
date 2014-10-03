@@ -117,7 +117,6 @@ class clsLab_IndicacionesPorExamen
                     WHERE maees.id_area_servicio_diagnostico=$idarea
                     AND lcee.condicion='H' 
                     ORDER BY lcee.idexamen";
-             
 		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
@@ -147,7 +146,7 @@ class clsLab_IndicacionesPorExamen
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	    $query = $query_search;
+            $query = $query_search;
 		 $numreg = pg_num_rows(pg_query($query));
 		 if (!$numreg )
 		   return false;
