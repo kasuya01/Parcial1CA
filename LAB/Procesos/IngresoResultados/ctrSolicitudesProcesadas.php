@@ -29,48 +29,68 @@ switch ($opcion) {
         $SApellido      = $_POST['SApellido'];
         $TipoSolic      = $_POST['TipoSolic'];
 
-        $query = "SELECT t04.idplantilla,
-                         t01.id AS iddetallesolicitud,
-			 t02.id AS idsolicitudestudio,
-                         t03.numeromuestra,
-                         t06.numero AS idnumeroexp,
-                         t03.id AS idrecepcionmuestra,
-                         t04.codigo_examen AS idexamen,
-                         t04.nombre_examen AS nombreexamen,
-                         t01.indicacion,
-                         t08.nombrearea,
-			 CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido,t07.apellido_casada) AS paciente,
-                         t11.nombre AS nombresubservicio,
-                         t13.nombre AS nombreservicio,
-                         t02.impresiones,
-                         t14.nombre,
-			 t09.id AS idhistorialclinico,
-                         TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud,
-                         TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
-                         t17.tiposolicitud AS prioridad,
-                         t07.fecha_nacimiento AS fechanacimiento,
-                         t19.nombre AS sexo,
-                         t18.idestandar
-		  FROM sec_detallesolicitudestudios          t01
-		  INNER JOIN sec_solicitudestudios           t02 ON (t02.id = t01.idsolicitudestudio)
-		  INNER JOIN lab_recepcionmuestra            t03 ON (t02.id = t03.idsolicitudestudio)
-                  INNER JOIN lab_conf_examen_estab           t04 ON (t04.id = t01.id_conf_examen_estab)
-                  INNER JOIN mnt_area_examen_establecimiento t05 ON (t05.id = t04.idexamen)
-		  INNER JOIN mnt_expediente                  t06 ON (t06.id = t02.id_expediente)
-		  INNER JOIN mnt_paciente                    t07 ON (t07.id = t06.id_paciente)
-		  INNER JOIN ctl_area_servicio_diagnostico   t08 ON (t08.id = t05.id_area_servicio_diagnostico AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-		  INNER JOIN sec_historial_clinico           t09 ON (t09.id = t02.id_historial_clinico)
-		  INNER JOIN mnt_aten_area_mod_estab         t10 ON (t10.id = t09.idsubservicio)
-		  INNER JOIN ctl_atencion                    t11 ON (t11.id = t10.id_atencion)
-                  INNER JOIN mnt_area_mod_estab              t12 ON (t12.id = t10.id_area_mod_estab)
-                  INNER JOIN ctl_area_atencion               t13 ON (t13.id = t12.id_area_atencion)
-		  INNER JOIN ctl_establecimiento             t14 ON (t14.id = t09.idestablecimiento)
-		  INNER JOIN cit_citas_serviciodeapoyo       t15 ON (t02.id = t15.id_solicitudestudios)
-                  INNER JOIN ctl_estado_servicio_diagnostico t16 ON (t16.id = t01.estadodetalle)
-                  INNER JOIN lab_tiposolicitud               t17 ON (t17.id = t02.idtiposolicitud)
-                  INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico)
-                  INNER JOIN ctl_sexo                        t19 ON (t19.id = t07.id_sexo)
-		  WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $lugar AND ";
+        $query = "WITH tbl_servicio AS (
+                    SELECT t02.id,
+                        CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
+                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
+                                 ELSE t02.nombre_ambiente
+                            END
+                        ELSE
+                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'--> ' || t01.nombre
+                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
+                            END
+                        END AS servicio 
+                    FROM  ctl_atencion                  t01 
+                    INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
+                    INNER JOIN mnt_area_mod_estab           t03 ON (t03.id = t02.id_area_mod_estab)
+                    LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
+                    LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
+                    WHERE id_area_atencion = $IdServ and t02.id_establecimiento = $lugar
+                    ORDER BY 2)
+                        --SELECT id, servicio FROM tbl_servicio WHERE servicio IS NOT NULL
+                SELECT t04.idplantilla,
+                       t01.id AS iddetallesolicitud,
+			           t02.id AS idsolicitudestudio,
+                       t03.numeromuestra,
+                       t06.numero AS idnumeroexp,
+                       t03.id AS idrecepcionmuestra,
+                       t04.codigo_examen AS idexamen,
+                       t04.nombre_examen AS nombreexamen,
+                       t01.indicacion,
+                       t08.nombrearea,
+			           CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido,t07.apellido_casada) AS paciente,
+                       t20.servicio AS nombresubservicio,
+                       t13.nombre AS nombreservicio,
+                       t02.impresiones,
+                       t14.nombre,
+			           t09.id AS idhistorialclinico,
+                       TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud,
+                       TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
+                       t17.tiposolicitud AS prioridad,
+                       t07.fecha_nacimiento AS fechanacimiento,
+                       t19.nombre AS sexo,
+                       t18.idestandar
+    		    FROM sec_detallesolicitudestudios          t01
+    		    INNER JOIN sec_solicitudestudios           t02 ON (t02.id = t01.idsolicitudestudio)
+    		    INNER JOIN lab_recepcionmuestra            t03 ON (t02.id = t03.idsolicitudestudio)
+                INNER JOIN lab_conf_examen_estab           t04 ON (t04.id = t01.id_conf_examen_estab)
+                INNER JOIN mnt_area_examen_establecimiento t05 ON (t05.id = t04.idexamen)
+    		    INNER JOIN mnt_expediente                  t06 ON (t06.id = t02.id_expediente)
+    		    INNER JOIN mnt_paciente                    t07 ON (t07.id = t06.id_paciente)
+    		    INNER JOIN ctl_area_servicio_diagnostico   t08 ON (t08.id = t05.id_area_servicio_diagnostico AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+    		    INNER JOIN sec_historial_clinico           t09 ON (t09.id = t02.id_historial_clinico)
+    		    INNER JOIN mnt_aten_area_mod_estab         t10 ON (t10.id = t09.idsubservicio)
+    		    INNER JOIN ctl_atencion                    t11 ON (t11.id = t10.id_atencion)
+                INNER JOIN mnt_area_mod_estab              t12 ON (t12.id = t10.id_area_mod_estab)
+                INNER JOIN ctl_area_atencion               t13 ON (t13.id = t12.id_area_atencion)
+    		    INNER JOIN ctl_establecimiento             t14 ON (t14.id = t09.idestablecimiento)
+    		    INNER JOIN cit_citas_serviciodeapoyo       t15 ON (t02.id = t15.id_solicitudestudios)
+                INNER JOIN ctl_estado_servicio_diagnostico t16 ON (t16.id = t01.estadodetalle)
+                INNER JOIN lab_tiposolicitud               t17 ON (t17.id = t02.idtiposolicitud)
+                INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico)
+                INNER JOIN ctl_sexo                        t19 ON (t19.id = t07.id_sexo)
+                INNER JOIN tbl_servicio                    t20 ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
+    		    WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $lugar AND ";
         $ban = 0;
 
         //VERIFICANDO LOS POST ENVIADOS

@@ -146,7 +146,7 @@ class clsLab_IndicacionesPorExamen
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = $query_search;
+            $query = $query_search;
 		 $numreg = pg_num_rows(pg_query($query));
 		 if (!$numreg )
 		   return false;
@@ -161,7 +161,7 @@ class clsLab_IndicacionesPorExamen
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	echo "pag".   $query = "select mipe.id,casd.id,casd.nombrearea,lcee.id,lcee.nombre_examen,mipe.indicacion 
+	   $query = "select mipe.id,casd.id,casd.nombrearea,lcee.id,lcee.nombre_examen,mipe.indicacion 
                                from ctl_area_servicio_diagnostico casd join mnt_area_examen_establecimiento 
                                mnt4 on mnt4.id_area_servicio_diagnostico=casd.id join lab_conf_examen_estab 
                                lcee on (mnt4.id=lcee.idexamen) 
@@ -184,7 +184,7 @@ class clsLab_IndicacionesPorExamen
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	echo  $query = $query_search." LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+	 $query = $query_search." LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
 		 $result = @pg_query($query);
 		 if (!$result)
 		   return false;

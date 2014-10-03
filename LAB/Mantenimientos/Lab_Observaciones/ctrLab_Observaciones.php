@@ -119,16 +119,16 @@ switch ($opcion)
 		
 	//VERIFICANDO LOS POST ENVIADOS
 	if (!empty($_POST['idarea']))
-		{ $query .="idarea=".$_POST['idarea']."'AND"; }
+		{ $query .="idarea=".$_POST['idarea']." AND "; }
 		
 	if (!empty($_POST['tiporespuesta']))
-		{ $query .="tiporespuesta='".$_POST['tiporespuesta']."'AND"; }
+		{ $query .="tiporespuesta='".$_POST['tiporespuesta']."'AND "; }
 	
 	if (!empty($_POST['observacion']))
-		{ $query .="observacion ilike '%'".$_POST['observacion']."%'AND";}
+		{ $query .="observacion ilike '%".$_POST['observacion']."%' AND ";}
                   	
 		 $query = substr($query ,0,strlen($query)-4);
-		$query_search = $query."ORDER  BY observacion";	
+		$query_search = $query."ORDER  BY id";	
      //  echo $query_search ;
 	//para manejo de la paginacion
 		$RegistrosAMostrar=4;
