@@ -71,8 +71,7 @@ if ($nivel==33){
                 <form name="frmnuevo" >
                     <table width="70%" border="0" align="center" class="StormyWeatherFormTABLE">
                         <tr>
-                            <td colspan="3" align="center" class="CobaltFieldCaptionTD"><strong><h3>Mantenimiento de Ex&aacute;menes de Laboratorio Cl&iacute;nico</h3></strong>
-                            </td>
+                            <td colspan="3" align="center" class="CobaltFieldCaptionTD"><strong><h3>Mantenimiento de Ex&aacute;menes de Laboratorio Cl&iacute;nico</h3></strong></td>
 			</tr>
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo del Examen</td>
@@ -117,7 +116,7 @@ if ($nivel==33){
                                             $obje=new clsLab_Examenes;
                                             $consulta= $obje->LeerPlantilla();
                                             while($row = pg_fetch_array($consulta)){
-						echo "<option value='" . $row[2]. "'>" . $row[1] . "</option>";
+						echo "<option value='" . $row[0]. "'>" . $row[1] . "</option>";
                                             }
 					?>
 				</select>
@@ -189,8 +188,8 @@ if ($nivel==33){
                             <td class="StormyWeatherFieldCaptionTD">Sexo al que se le realiza la prueba</td>
                             <td class="StormyWeatherDataTD">
                                 <select id="cmbsexo" name="cmbsexo" size="1">
-                                     <option value="3">Ninguno</option>
-                                     <option value="0">Ambos</option>
+                                     <option value="0">Ninguno</option>
+                                     <option value="4">Ambos</option>
                                     <?php
                                         $obje1=new clsLab_Examenes;
                                         $consulta= $obje1->catalogo_sexo();

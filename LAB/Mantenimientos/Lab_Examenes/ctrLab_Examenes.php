@@ -28,14 +28,20 @@ switch ($opcion)
 		$ubicacion=$_POST['ubicacion'];
 		$IdFormulario=$_POST['idformulario'];
 		$IdEstandarResp=$_POST['idestandarRep'];
-		//echo $IdEstandarResp;
+		//echo $IdEstandarResp." idPlantilla=".$plantilla;
                 $etiqueta=$_POST['etiqueta'];
                 $Urgente=$_POST['urgente'];
                 $sexo=$_POST['sexo'];
+                //echo $sexo;
+                if($sexo<>4)
+                    $idsexo=$sexo;
+                else    
+                    $idsexo='NULL';
+               // echo $idsexo;
                 $Hab=$_POST['Hab'];
                 
                 $TiempoPrevio=$_POST['tiempoprevio'];
-               //Echo $sexo."-".$idestandar."-". $Hab; 
+               //Echo $sexo."-".$idestandar."-". $Hab;  
 			
                // $cond='H';
                 if ($etiqueta=="O"){
@@ -66,7 +72,7 @@ switch ($opcion)
                  }
 
                       //  echo $IdFormulario;
-		 If ($objdatos->IngExamenxEstablecimiento($idexamen,$nomexamen,$Hab,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$TiempoPrevio,$sexo,$idestandar,$lugar)==true)
+		 If ($objdatos->IngExamenxEstablecimiento($idexamen,$nomexamen,$Hab,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$TiempoPrevio,$idsexo,$idestandar,$lugar)==true)
 		 {
                    /* if($plantilla<>1){
                            // echo  $idexamen."  ".$idarea."  ".$usuario."  ".$lugar;
@@ -93,19 +99,25 @@ switch ($opcion)
 			$IdEstandarResp=$_POST['idestandarRep'];
 			$etiqueta=$_POST['Etiqueta'];
                         $Urgente=$_POST['urgente'];
-                        $sexo=$_POST['idsexo'];
-                        $Hab=$_POST['Hab'];
-                        $TiempoPrevio=$_POST['Tiempo'];
-                        $idconf=$_POST['idconf'];
-			echo $sexo."**".$IdEstandarResp; 
-			$letra="";
+                        $sexo=$_POST['idsexo']; 
+                     //  echo $IdEstandarResp." sexo=".$sexo;
+                       if($sexo<>4)
+                            $idsexo=$sexo;
+                       else    
+                            $idsexo='NULL';
+                         //echo $idsexo;
+                            $Hab=$_POST['Hab'];
+                            $TiempoPrevio=$_POST['Tiempo'];
+                            $idconf=$_POST['idconf'];
+                            $ctlidestandar=$_POST['ctlidestandar'];
+                            $letra="";
 				
 				
 			if ($etiqueta=="O"){
 				$dato=$objdatos->obtener_letra($idarea);
-				$rowletra=mysql_fetch_array($dato);
+				$rowletra=pg_fetch_array($dato);
 				$rletra= $rowletra[0];
-//echo $rowletra[0];
+
 				if (!empty($rletra)){
                                     $num=$rletra+1;
                                     if ($num==71){
@@ -125,7 +137,7 @@ switch ($opcion)
 			 }
 			
 			// echo $idexamen."-".$lugar."-".$usuario."-".$IdFormulario."-".$IdEstandarResp."-".$plantilla."-".$letra."-".$Urgente."-".$ubicacion;
-              	If($objdatos->ActExamenxEstablecimiento($idconf,$nomexamen,$lugar,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$Hab,$TiempoPrevio,$sexo,$idestandar)==true){
+              	If($objdatos->ActExamenxEstablecimiento($idconf,$nomexamen,$lugar,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$Hab,$TiempoPrevio,$idsexo,$idestandar,$ctlidestandar)==true){
 		                                       
                          echo "Registro Actualizado";			
 		}
@@ -297,7 +309,12 @@ switch ($opcion)
 				$IdFormulario=$_POST['idformulario'];
 				$IdEstandarResp=$_POST['idestandarRep'];
                                 $etiqueta=$_POST['etiqueta'];
-				$idsexo=$_POST['sexo'];
+                                $sexo=$_POST['sexo'];
+				if($sexo<>4)
+                                    $idsexo=$sexo;
+                               else    
+                                    $idsexo='NULL';
+                                  //  echo $idsexo;
                                 $Hab=$_POST['Hab'];
                             //   echo $idestandar;
                                 //echo $etiqueta;
@@ -368,8 +385,8 @@ switch ($opcion)
                                         if (!empty($_POST['urgente']))
                                             { $query .= " lab_conf_examen_estab.urgente='".$_POST['urgente']."' AND"; }
                                             
-					if ($_POST['sexo']<>3)
-					{ if($_POST['sexo']<>0)
+					if ($_POST['sexo']<>0)
+					{ if($_POST['sexo']<>4)
                                             $query .= "  lab_conf_examen_estab.idsexo =".$_POST['sexo']." AND";
                                           else 
                                             $query .= "  lab_conf_examen_estab.idsexo IS NULL AND";
@@ -515,7 +532,12 @@ switch ($opcion)
 		$IdFormulario=$_POST['idformulario'];
 		$IdEstandarResp=$_POST['idestandarRep'];
                 $etiqueta=$_POST['etiqueta'];
-                $idsexo=$_POST['sexo'];
+                $sexo=$_POST['sexo'];
+                if($sexo<>4)
+                    $idsexo=$sexo;
+                else    
+                    $idsexo='NULL';
+               // echo $idsexo;
 			//echo $IdFormulario."--".$IdEstandarResp;
 		$conExam=$objdatos->BuscarExamen($idexamen,$lugar);
                                 

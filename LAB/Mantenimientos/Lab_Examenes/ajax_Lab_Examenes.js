@@ -27,7 +27,7 @@ function LimpiarCampos(){
 	document.frmnuevo.cmbEstandarRep.value="0";
         document.frmnuevo.cmbEtiqueta.value="0";
         document.frmnuevo.cmbUrgente.value="0";
-        document.frmnuevo.cmbsexo.value="3";
+        document.frmnuevo.cmbsexo.value="0";
         document.frmnuevo.cmbHabilitar.value="0";
         document.frmnuevo.inidate.valie="0";
 	document.frmnuevo.txtnombreexamen.focus();
@@ -122,7 +122,7 @@ if (ValidarCampos())
 	sexo=document.frmnuevo.cmbsexo.value;
         Hab=document.frmnuevo.cmbHabilitar.value;
         tiempoprevio=document.getElementById('inidate').value;
-      // alert(Hab);
+      // alert(sexo);
 	//codempresa=document.frmnuevo.txttxtcodempresa.value;
 	//alert(idestandar);
 	//alert (idPrograma+"*****"+idestandarRep);
@@ -242,8 +242,9 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
         idsexo=document.frmModificar.cmbsexo.value;
         Hab=document.frmModificar.cmbHabilitar.value;
         idconf=document.frmModificar.txtidconf.value;
+        ctlidestandar=document.frmModificar.txtctlidestandar.value;
         Tiempo=document.frmModificar.inidate.value;
-	//alert (plantilla);
+	//alert (idestandarRep);
 	var opcion=2;	
 	Pag=1;
 	//instanciamos el objetoAjax
@@ -257,7 +258,7 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
 	ajax.send("idexamen="+idexamen+"&idarea="+idarea+"&nomexamen="+nomexamen+
 	"&idestandar="+idestandar+"&Pag="+Pag+"&opcion="+opcion+"&plantilla="+plantilla+"&ubicacion="+ubicacion+
 	"&idformulario="+idformulario+"&idestandarRep="+idestandarRep+"&Etiqueta="+Etiqueta+"&urgente="+urgente+
-        "&idsexo="+idsexo+"&Hab="+Hab+"&Tiempo="+Tiempo+"&idconf="+idconf);
+        "&idsexo="+idsexo+"&Hab="+Hab+"&Tiempo="+Tiempo+"&idconf="+idconf+"&ctlidestandar="+ctlidestandar);
 //+"&observacion="+observacion
 	ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
