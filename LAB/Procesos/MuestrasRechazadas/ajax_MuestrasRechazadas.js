@@ -249,7 +249,8 @@ function CambiarEstadoDetalleSolicitud1(estado,idexamen,text,fechasolicitud,idso
 function ProcesarMuestra()
 {
    //alert("Voy a cambiar estados");
-   estado=5; //LOS DETALLES DE LA SOLICITUD SE LES HA PROCESADO LA MUESTRA
+   estado='PM'
+  //estado=5; //LOS DETALLES DE LA SOLICITUD SE LES HA PROCESADO LA MUESTRA
    CambiarEstadoDetalleSolicitud(estado);
   // window.close();
 }
@@ -262,7 +263,8 @@ function ProcesarMuestra1(idexamen)
     //alert(text);
    //alert("Voy a cambiar estados");
  //  alert(idexamen);
-   estado=5; //LOS DETALLES DE LA SOLICITUD SE LES HA PROCESADO LA MUESTRA
+ estado='PM'
+//estado=5; //LOS DETALLES DE LA SOLICITUD SE LES HA PROCESADO LA MUESTRA
    CambiarEstadoDetalleSolicitud1(estado,idexamen,text,fechasolicitud,idsolicitudPadre)
   // window.close();
 }
@@ -279,7 +281,8 @@ function Cerrar(){
 //function RechazarMuestra(idexamen)
 function RechazarMuestra()
 {
-   estado=6
+   //estado=6
+   estado='RM'
 	idsolicitud=document.frmDatos.idsolicitud.value;
        // idsolicitud1=document.frmDatos.idsolicitud1.value;
 	idexpediente=document.frmDatos.idexpediente.value;
@@ -320,7 +323,8 @@ function RechazarMuestra()
 
 function RechazarMuestra1(idexamen)
 {
-   estado=6
+   //estado=6
+   estado='PM'
    idsolicitud=document.frmDatos.idsolicitud.value;
    idexpediente=document.frmDatos.idexpediente.value;
    fechasolicitud=document.frmDatos.fechasolicitud.value;
