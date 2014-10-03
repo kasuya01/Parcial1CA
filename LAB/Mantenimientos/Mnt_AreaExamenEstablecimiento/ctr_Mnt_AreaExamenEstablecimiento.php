@@ -45,11 +45,8 @@ function getLabAreas($parameters) {
 
 function getAreaExamenEstablecimiento($parameters) {
 	global $mntAreaExamenEstab;
-
-	// var_dump($parameters);exit();
-
+	
 	$arr = $mntAreaExamenEstab->getAreaExamenEstablecimiento($parameters['post']['idarea'], $parameters['lugar']);
-	//$result = $mntAreaExamenEstab->getAreaExamenEstablecimiento($parameters['post']['idarea'], $parameters['lugar']);
 
 	if($result !== false) {
 		
@@ -69,9 +66,9 @@ function getAreaExamenEstablecimiento($parameters) {
 			if( ! isset($result[$id]['grupos']) )
 				$result[$id]['grupos'] = array();
 
-			$result[$id]['grupos'] = addElementToGroups( $result[$id]['grupos'], array( $row['id_grupo'], $row['codigo_grupo'], $row['nombre_grupo']), array($row['id_examen'], $row['codigo_examen'], $row['nombre_examen'], $row['activo'] ) );
+			$result[$id]['grupos'] = addElementToGroups( $result[$id]['grupos'], array($row['id_grupo'], $row['codigo_grupo'], $row['nombre_grupo']), array($row['id_examen'], $row['codigo_examen'], $row['nombre_examen'], $row['activo'] ) );
 		}
-		//var_dump($result);
+		
         $jsonresponse['status'] = true;
         $jsonresponse['data']   = $result;
     } else {
@@ -84,24 +81,24 @@ function getAreaExamenEstablecimiento($parameters) {
 
 function addElementToGroups($groups, $newGroup, $newExam){
 	
-	if( ! isset($groups[ $newGroup[0] ]) ){
-		$groups[ $newGroup[0] ] = array('id'	   => $newGroup[0],
+	if( ! isset($groups[ $newGroup[2] ]) ){
+		$groups[ $newGroup[2] ] = array('id'	   => $newGroup[0],
 										'codigo'   => $newGroup[1],
 										'nombre'   => $newGroup[2]
 									   );
 	}
 
-	if( ! isset( $groups[ $newGroup[0] ]['examenes'] ) )
-		$groups[ $newGroup[0] ]['examenes'] = array();
+	if( ! isset( $groups[ $newGroup[2] ]['examenes'] ) )
+		$groups[ $newGroup[2] ]['examenes'] = array();
 
-	$groups[ $newGroup[0] ]['examenes'] = addElementToExams($groups[ $newGroup[0] ]['examenes'], $newExam);
+	$groups[ $newGroup[2] ]['examenes'] = addElementToExams($groups[ $newGroup[2] ]['examenes'], $newExam);
 
 	return $groups;
 }
 
 function addElementToExams($exams, $newExam){
-	if( ! isset($exams[ $newExam[0] ]) ){
-		$exams[ $newExam[0] ] = array('id'	   => $newExam[0],
+	if( ! isset($exams[ $newExam[2] ]) ){
+		$exams[ $newExam[2] ] = array('id'	   => $newExam[0],
 									  'codigo' => $newExam[1],
 									  'nombre' => $newExam[2],
 									  'activo' => $newExam[3]
@@ -109,4 +106,28 @@ function addElementToExams($exams, $newExam){
 	}
 
 	return $exams;
+}
+
+function updateRegisters($parameters) {
+	global $mntAreaExamenEstab;
+
+	$array = array();
+    foreach ($parameters['post']['form'] as $value) {
+    	$tmp_array = explode('_',$value['value']);
+
+    	if($tmp_array[1] !== 'na') {
+    		$array['update'][] = $tmp_array[0];
+    	} else {
+    		$array['insert'][] = $tmp_array[0];
+    	}
+    }
+    //var_dump($array);exit();
+    $query = $mntAreaExamenEstab->setAreaExamenEstastablecimiento($parameters['post']['idarea'], $parameters['lugar'], $array, $parameters['usuario']);
+
+    if($query !== false) {
+        $jsonresponse['status'] = true;
+    } else {
+        $jsonresponse['status'] = false;
+    }
+    echo json_encode($jsonresponse);
 }

@@ -32,6 +32,7 @@ switch ($opcion) {
         $cond2="";
         $query="";
         $query2="";
+        $where_with="";
       //  echo $IdEstab." - ".$lugar;
         if (!empty($_POST['IdEstab'])) {
            if ($_POST['IdEstab']<>$lugar){
@@ -44,6 +45,7 @@ switch ($opcion) {
         if (!empty($_POST['IdServ'])) {
             $cond1 .= " t13.id  = " . $_POST['IdServ'] . " AND";
             $cond2 .= " t13.id  = " . $_POST['IdServ'] . " AND";
+            $where_with = "id_area_atencion = $IdServ AND ";
         }
 
         if (!empty($_POST['IdSubServ'])) {
@@ -117,7 +119,26 @@ switch ($opcion) {
             //$query_search = $query . " ORDER BY t03.fecharecepcion DESC";
         }     
        // echo $cond2;
-        $query="SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
+        $query="WITH tbl_servicio AS (
+                    SELECT t02.id,
+                        CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
+                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
+                                 ELSE t02.nombre_ambiente
+                            END
+                        ELSE
+                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'--> ' || t01.nombre
+                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
+                            END
+                        END AS servicio 
+                    FROM  ctl_atencion                  t01 
+                    INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
+                    INNER JOIN mnt_area_mod_estab           t03 ON (t03.id = t02.id_area_mod_estab)
+                    LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
+                    LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
+                    WHERE $where_with t02.id_establecimiento = $lugar
+                    ORDER BY 2)
+            
+                    SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                        t02.id AS idsolicitudestudio,
                        t04.idplantilla, 
                        t01.id AS iddetallesolicitud,
@@ -128,8 +149,8 @@ switch ($opcion) {
                        t04.nombre_examen AS nombreexamen, 
                        t01.indicacion, t08.nombrearea, 
                        CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,
-                       t07.segundo_apellido,t07.apellido_casada) AS paciente, 
-                       t11.nombre AS nombresubservicio, 
+                       t07.segundo_apellido,t07.apellido_casada) AS paciente,
+                       t20.servicio AS nombresubservicio,
                        t13.nombre AS nombreservicio, 
                        t02.impresiones, 
                        t14.nombre, 
@@ -161,6 +182,7 @@ switch ($opcion) {
             INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud) 
             INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico) 
             INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo)
+            INNER JOIN tbl_servicio t20 ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
             WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $lugar AND $cond1
         
             UNION
@@ -208,11 +230,11 @@ switch ($opcion) {
             INNER JOIN ctl_estado_servicio_diagnostico t16 ON (t16.id = t01.estadodetalle) 
             INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud) 
             INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico) 
-            INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo) 
+            INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo)
             WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $lugar AND $cond2"; 
                   
     
-       echo $query;
+       //echo $query;
        
 
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);

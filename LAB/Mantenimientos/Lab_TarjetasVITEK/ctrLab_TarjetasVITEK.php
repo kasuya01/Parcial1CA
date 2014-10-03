@@ -61,7 +61,7 @@ switch ($opcion)
 			echo "Registro Actualizado"	;	
 		}
 		else{
-			echo "No se pudo actualizar";
+			echo "No Se Pudo Actualizar, Complete Los Campos Por Favor";
 		}
 		
     break;

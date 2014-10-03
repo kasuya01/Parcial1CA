@@ -159,24 +159,20 @@ if ($nivel==4){
 				<?php
 					$db = new ConexionBD;
 					if($db->conectar()==true){
-						/*$consulta  = "SELECT mnt_servicio.IdServicio,mnt_servicio.NombreServicio 
-						FROM mnt_servicio 
-						INNER JOIN mnt_servicioxestablecimiento 
-						ON mnt_servicio.IdServicio=mnt_servicioxestablecimiento.IdServicio
-						WHERE IdTipoServicio<>'DCO' AND IdTipoServicio<>'FAR' AND IdEstablecimiento=$lugar";
-						$resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());*/
+						
 							
-                                            $consulta  = /*"SELECT mnt_servicio.IdServicio,mnt_servicio.NombreServicio 
-						FROM mnt_servicio 
-						INNER JOIN mnt_servicioxestablecimiento 
-						ON mnt_servicio.IdServicio=mnt_servicioxestablecimiento.IdServicio
-						WHERE IdTipoServicio<>'DCO' AND IdTipoServicio<>'FAR' AND IdEstablecimiento=$lugar";*/
+                                            $consulta  = "SELECT t01.id,
+                                                                 t01.nombre
+                                                          FROM ctl_area_atencion t01
+                                                          WHERE t01.id IN (
+                                                                SELECT DISTINCT id_area_atencion 
+                                                                FROM mnt_area_mod_estab WHERE id_establecimiento = $lugar)";
                                             
-                                            "SELECT mse.id,mse.nombre 
+                                           /* "SELECT mse.id,mse.nombre 
 						FROM mnt_servicio_externo mse 
 						INNER JOIN mnt_servicio_externo_establecimiento msee 
 						ON mse.id=msee.id
-						WHERE   msee.id_establecimiento=$lugar";
+						WHERE   msee.id_establecimiento=$lugar";*/
                                             
 						$resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
 						//por cada registro encontrado en la tabla me genera un <option>
@@ -254,8 +250,8 @@ if ($nivel==4){
 		<td class="StormyWeatherDataTD" colspan="3">
 			<select id="cmbTipoSolic" name="cmbTipoSolic" size="1" >
 				<option value="0">Seleccione un Tipo de Solicitud</option>
-				<option value="S">URGENTE</option>
-				<option value="R">NORMAL</option>
+				<option value="1">URGENTE</option>
+				<option value="2">NORMAL</option>
 			</select>
 		</td>	
 	</tr>
