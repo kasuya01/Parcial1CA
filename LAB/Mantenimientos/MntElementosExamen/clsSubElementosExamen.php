@@ -15,10 +15,10 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_subelementos(IdElemento,Unidad,SubElemento,rangoinicio,rangofin,FechaIni,FechaFin,IdEstablecimiento,idsexo,idedad) 
-	      VALUES($idelemento,'$unidad','$subelemento',$rangoini,$rangofin,'$Fechaini','$Fechafin',$lugar,$sexo,$redad)";
+    $query = "INSERT INTO lab_subelementos(idelemento,unidad,subelemento,rangoinicio,rangofin,fechaini,fechafin,idestablecimiento,idsexo,idedad) 
+	      VALUES($idelemento,$unidad,'$subelemento',$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad)";
   //echo $query;
-    $result = mysql_query($query);
+    $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -35,11 +35,11 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "UPDATE lab_subelementos SET subelemento='$subelemento',unidad='$unidad',rangoinicio='$rangoini',
-               rangofin='$rangofin',FechaIni='$Fechaini',FechaFin='$Fechafin',IdEstablecimiento=$lugar,
-               idsexo=$sexo,idedad=$redad WHERE IdSubElemento=$idsubelemento";
-    //echo $query; 
-     $result = mysql_query($query);
+     $query = "UPDATE lab_subelementos SET subelemento='$subelemento',unidad=$unidad,rangoinicio=$rangoini,
+               rangofin=$rangofin,fechaini=$Fechaini,fechafin=$Fechafin,idestablecimiento=$lugar,
+               idsexo=$sexo,idedad=$redad WHERE id=$idsubelemento";
+   // echo $query; 
+     $result = pg_query($query);
 	 if (!$result)
        return false;
      else
@@ -54,8 +54,8 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "DELETE FROM lab_subelementos WHERE IdSubElemento=$idsubelemento";
-     $result = mysql_query($query);
+     $query = "DELETE FROM lab_subelementos WHERE id=$idsubelemento";
+     $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -71,8 +71,8 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
          $con = new ConexionBD;
          if($con->conectar()==true)
          {
-           $query = "SELECT idsexo,sexovn FROM mnt_sexo";
-           $result = mysql_query($query);
+           $query = "SELECT id,nombre FROM ctl_sexo where id<>3";
+           $result = pg_query($query);
            if (!$result)
              return false;
            else
@@ -80,12 +80,12 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
           }
     }
 
-       function RangosEdades(){
+    function RangosEdades(){
          $con = new ConexionBD;
          if($con->conectar()==true)
          {
-           $query = "SELECT idedad, nombregrupoedad FROM mnt_rangoedad";
-           $result = mysql_query($query);
+           $query = "SELECT id, nombre FROM ctl_rango_edad";
+           $result = pg_query($query);
            if (!$result)
              return false;
            else
@@ -103,7 +103,7 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
 		FROM lab_elementos a 
 		INNER JOIN lab_subelementos b on a.IdElemento=b.IdElemento
 		WHERE a.IdElemento=$idelemento";
-	 $result = @mysql_query($query);
+	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
 	 else
@@ -116,17 +116,18 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
  {
    $con = new ConexionBD;
    if($con->conectar()==true)
-   { $query = "SELECT IdSubElemento,lab_subelementos.SubElemento,Unidad,lab_elementos.IdElemento,Elemento,
-		lab_subelementos.IdEstablecimiento,rangoinicio,rangofin,
-                DATE_FORMAT(lab_subelementos.FechaIni,'%d/%m/%Y')AS FechaIni,
-                DATE_FORMAT(lab_subelementos.FechaFin,'%d/%m/%Y')AS FechaFin,
-                mnt_sexo.idsexo,mnt_sexo.sexovn,mnt_rangoedad.idedad,mnt_rangoedad.nombregrupoedad 
-		FROM lab_elementos  
-		INNER JOIN lab_subelementos ON lab_elementos.IdElemento=lab_subelementos.IdElemento
-                INNER JOIN mnt_sexo ON lab_subelementos.idsexo = mnt_sexo.idsexo
-                INNER JOIN mnt_rangoedad ON lab_subelementos.idedad = mnt_rangoedad.idedad
-		WHERE IdSubElemento=$idsubelemento";
-     $result = @mysql_query($query);
+   { $query = "SELECT lab_subelementos.id,lab_subelementos.subelemento,unidad,lab_elementos.id,elemento,
+               lab_subelementos.idestablecimiento,rangoinicio,rangofin, 
+               to_char(lab_subelementos.fechaini,'dd/mm/YYYY')AS FechaIni, 
+               to_char(lab_subelementos.fechafin,'dd/mm/YYYY')AS FechaFin, 
+               ctl_sexo.id as idsexo,ctl_sexo.nombre as nombresexo,ctl_rango_edad.id as idedad,
+               ctl_rango_edad.nombre as nombreedad FROM lab_elementos 
+               INNER JOIN lab_subelementos ON lab_elementos.id=lab_subelementos.idelemento 
+               LEFT JOIN ctl_sexo ON lab_subelementos.idsexo = ctl_sexo.id 
+               INNER JOIN ctl_rango_edad ON lab_subelementos.idedad = ctl_rango_edad.id 
+	       WHERE lab_subelementos.id=$idsubelemento";
+   //echo $query;
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -141,7 +142,7 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
    if($con->conectar()==true)
    {
      $query = "SELECT IdElemento,Elemento,SubElemento FROM lab_elementos WHERE IdExamen='$idexamen'";
-     $result = @mysql_query($query);
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -156,7 +157,7 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
    if($con->conectar()==true)
    {
      $query = "SELECT SubElemento,Unidad FROM lab_subelementos WHERE idelemento=$idelemento";
-     $result = @mysql_query($query);
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -173,8 +174,8 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
      $query = "SELECT * FROM lab_subelementos WHERE IdElemento=$idelemento";
-	 $num = mysql_query($query) or die(mysql_error());
-	 $numreg = mysql_num_rows($num);
+	 $num = pg_query($query) or die(mysql_error());
+	 $numreg = pg_num_rows($num);
 	 if (!$numreg )
 	   return false;
 	 else
@@ -188,18 +189,20 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
         $con = new ConexionBD;
      //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT IdSubElemento,lab_subelementos.SubElemento,Unidad,lab_elementos.IdElemento,Elemento,rangoinicio,rangofin,
-	       DATE_FORMAT(lab_subelementos.FechaIni,'%d/%m/%Y')AS FechaIni,
-	       DATE_FORMAT(lab_subelementos.FechaFin,'%d/%m/%Y')AS FechaFin ,mnt_sexo.idsexo,mnt_sexo.sexovn,
-               mnt_rangoedad.idedad,mnt_rangoedad.nombregrupoedad 
-	       FROM lab_elementos 
-	       INNER JOIN lab_subelementos ON lab_elementos.IdElemento=lab_subelementos.IdElemento
-               INNER JOIN mnt_sexo ON lab_subelementos.idsexo = mnt_sexo.idsexo
-               INNER JOIN mnt_rangoedad ON lab_subelementos.idedad = mnt_rangoedad.idedad
-	       WHERE lab_elementos.IdElemento=$idelemento ORDER BY SubElemento
-	       LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-             //  echo $query;
-	 $result = mysql_query($query) or die(mysql_error());
+     $query = "SELECT lab_subelementos.id,lab_subelementos.subelemento,lab_subelementos.unidad,
+               lab_elementos.id as idelemento,elemento,rangoinicio,rangofin, 
+               to_char(lab_subelementos.fechaini,'dd/mm/YYYY')AS FechaIni, 
+               to_char(lab_subelementos.fechafin,'dd/mm/YYYY')AS FechaFin ,
+               ctl_sexo.id as idsexo,ctl_sexo.nombre As nombresexo, ctl_rango_edad.id as idedad,
+               ctl_rango_edad.nombre AS nombreedad
+               FROM lab_elementos 
+               INNER JOIN lab_subelementos ON lab_elementos.id=lab_subelementos.idelemento 
+               LEFT JOIN ctl_sexo ON lab_subelementos.idsexo = ctl_sexo.id 
+               INNER JOIN ctl_rango_edad ON lab_subelementos.idedad = ctl_rango_edad.id 
+               WHERE lab_elementos.id=$idelemento ORDER BY subelemento
+	       LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+              // echo $query;
+	 $result = pg_query($query) or die(mysql_error());
 	 if (!$result)
 	   return false;
 	 else
@@ -214,7 +217,7 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
 	     $query = $query_search;
-		 $numreg = mysql_num_rows(mysql_query($query));
+		 $numreg = pg_num_rows(pg_query($query));
 		 if (!$numreg )
 		   return false;
 		 else
@@ -229,8 +232,8 @@ function consultarpagbus($query_search,$RegistrosAEmpezar, $RegistrosAMostrar)
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = $query_search." LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
-		 $result = mysql_query($query);
+	     $query = $query_search." LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezarr";
+		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
 		 else
@@ -255,7 +258,7 @@ function insertar_labo($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fec
     $query = "INSERT INTO laboratorio.lab_subelementos(IdElemento,Unidad,SubElemento,rangoinicio,rangofin,FechaIni,FechaFin,IdEstablecimiento,idsexo,idedad)
               VALUES($idelemento,'$unidad','$subelemento',$rangoini,$rangofin,'$Fechaini','$Fechafin',$lugar,$sexo,$redad)";
     
-     $result = mysql_query($query);
+     $result = pg_query($query);
 	 if (!$result)
        return false;
      else
@@ -274,7 +277,7 @@ function insertar_labo($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fec
 	if($con2->conectarT()==true){
      $query = "UPDATE laboratorio.lab_subelementos SET subelemento='$subelemento',unidad='$unidad',rangoinicio=$rangoini,rangofin=$rangofin,
                IdEstablecimiento=$lugar,FechaIni='$Fechaini',FechaFin='$Fechafin',idsexo=$sexo,idedad=$redad WHERE IdSubElemento=$idsubelemento";
-     $result = mysql_query($query);
+     $result = pg_query($query);
 	if (!$result)
 	   return 0;
 	 else
@@ -289,7 +292,7 @@ function insertar_labo($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fec
    $con2 = new ConexionBDLab;
 	if($con2->conectarT()==true){
      $query = "DELETE FROM laboratorio.lab_subelementos WHERE IdSubElemento=$idsubelemento";
-     $result = mysql_query($query);
+     $result = pg_query($query);
 	 
      if (!$result)
        return false;

@@ -188,7 +188,6 @@ switch ($opcion)
 	  
 	  break;
 	case 7: //BUSQUEDA
-		
 		$query = "select mipe.id, casd.id,casd.nombrearea,lcee.id,lcee.nombre_examen,mipe.indicacion		
                         from ctl_area_servicio_diagnostico casd
 			join mnt_area_examen_establecimiento mnt4 on   mnt4.id_area_servicio_diagnostico=casd.id
@@ -228,7 +227,7 @@ switch ($opcion)
 		else {
 			$query_search = $query. " idservicio=98";
 		}
-		
+		echo $query_search;
 		//ENVIANDO A EJECUTAR LA BUSQUEDA!!
 		
 		//require_once("clsLab_IndicacionesPorExamen.php");
@@ -360,7 +359,7 @@ switch ($opcion)
 		else {
 			$query_search = $query. " idservicio=98";
 		}
-		
+		echo $query_search;
 		//require_once("clsLab_IndicacionesPorExamen.php");
 		////para manejo de la paginacion
 		$RegistrosAMostrar=4;

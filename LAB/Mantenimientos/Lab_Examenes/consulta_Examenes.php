@@ -4,36 +4,45 @@
     $usuario=$_SESSION['Correlativo'];
     $area=$_SESSION['Idarea'];
     //consulta los datos por su id
-    $idexamen=$_POST['idexamen'];
-   
+    $idconf=$_POST['idexamen'];
+   echo $idconf;
     $obj = new clsLab_Examenes;
-    $consulta = $obj->consultarid($idexamen,$lugar);
-    $row = mysql_fetch_array($consulta);
+    $consulta = $obj->consultarid($idconf,$lugar);
+    $row = pg_fetch_array($consulta);
 
     //valores de las consultas
-    $codexamen=$row['IdExamen'];
-    $idarea=$row['IdArea'];
-    $nombreexamen=$row['NombreExamen'];
-    $idestandar=$row['IdEstandar'];
-    $nombrearea=$row['NombreArea'];
-    $nombreestandar=$row['Descripcion'];
-    $plantilla=$row['IdPlantilla'];
-    $nomplantilla=$row['Plantilla'];
-    $observacion=$row['Observacion'];
-    $ubicacion=$row['Ubicacion'];
-    $IdPrograma=$row['IdPrograma'];
-    $IdEstandarResp=$row['IdEstandarRep'];
-    $Programa=$row['NombrePrograma'];
-    $IdFormulario=$row['IdFormulario'];
-    $NombreForm=$row['NombreFormulario'];
-    $Impresion=$row['Impresion'];
-    $Urgente=$row['Urgente'];
-    $idsexo=$row['IdSexo'];
-    $nombresexo=$row['sexovn'];
-    $Hab=$row['Condicion'];
+    $codexamen=$row['idexamen'];
+    $mntid=$row['mntid'];
+    $idarea=$row['idarea'];
+  //  $mntidarea=$row['mntidarea'];
+    $nombreexamen=$row['nombreexamen'];
+    $idestandar=$row['idestandar'];
+    $nombrearea=$row['nombrearea'];
+    $nombreestandar=$row['descripcion'];
+    $plantilla=$row['idplantilla'];
+  //  $ctlidestandar=$row['ctlidestandar'];
+    $nomplantilla=$row['plantilla'];
+   // $observacion=$row['Observacion'];
+    $ubicacion=$row['idubicacion'];
+    //$IdPrograma=$row['idPrograma'];
+    $EstandarResp=$row['estandarrep'];
+    $IdEstandarResp=$row['ctlidestandarrep'];
+   // echo $IdEstandarResp;
+    $Descestandarrep=$row['descestandarrep'];
+    $IdFormulario=$row['idformulario'];
+    $NombreForm=$row['nombreformulario'];
+    $Impresion=$row['impresion'];
+    $Urgente=$row['urgente'];
+    $idsexo=$row['idsexo'];
+    $nombresexo=$row['sexo'];
+    $Hab=$row['condicion'];
     $TiempoPrevio=$row['rangotiempoprev'];
-    
-   // echo $ubicacion;
+    if (empty($idsexo)){
+        $idsexo=4;
+        $nombresexo="Ambos";}
+  // echo $TiempoPrevio;
+        
+ //  echo  $idsexo."-".$idconf."-".$plantilla;
 //echo $idexamen."***".$lugar."****".$nombreexamen."***".$IdPrograma."***".$Programa."***".$IdFormulario."***".$NombreForm;
 //muestra los datos consultados en los campos del formulario
 
@@ -42,35 +51,54 @@
 
 <form name= "frmModificar" >
 	<input name="opcion" type="hidden" value="N" />
-	<table width="75%" border="0" align="center" class="StormyWeatherFormTABLE">
+	<table width="70%" border="0" align="center" class="StormyWeatherFormTABLE">
 	    <tr>
-		<td colspan="2" class="CobaltFieldCaptionTD" align="center"><h3><strong>Mantenimiento de Ex&aacute;menes de Laboratorio Cl&iacute;nico</strong></h3>
-		</td>
+                <td colspan="3" align="center" class="CobaltFieldCaptionTD"><strong><h3>Mantenimiento de Ex&aacute;menes de Laboratorio Cl&iacute;nico</h3></strong>
+                </td>
             </tr>      
             <tr>
 	       	<td class="StormyWeatherFieldCaptionTD">C&oacute;digo del Examen</td>
-	       	<td class="StormyWeatherDataTD"><input type="text" name="txtidexamen" value="<?php echo $idexamen; ?>" disabled="disabled" /></td>
+	       	<td class="StormyWeatherDataTD"><input type="text" name="txtidexamen" value="<?php echo $codexamen; ?>" disabled="disabled" /></td>
 	    </tr>
             <tr>
 	       	<td class="StormyWeatherFieldCaptionTD">C&oacute;digo del &Aacute;rea</td>
 	       	<td class="StormyWeatherDataTD">
-			<select name="cmbArea" size="1" disabled="disabled">			 
+			<select name="cmbArea" size="1" >			 
                             <?php
-				include('../Lab_Areas/clsLab_Areas.php');
+				/*include('../Lab_Areas/clsLab_Areas.php');
 				$objeareas = new clsLab_Areas;
 				$consulta= $objeareas->consultaractivas($lugar);
-				while($row = mysql_fetch_array($consulta))
+				while($row = pg_fetch_array($consulta))
 				{
-					echo "<option value='" . $row['IdArea']. "'>" . $row['NombreArea'] . "</option>";
-				}						            	
+					echo "<option value='" . $row['idarea']. "'>" . $row['nombrearea'] . "</option>";
+				}*/						            	
 				echo "<option value='" . $idarea . "' selected='selected'>" .htmlentities($nombrearea). "</option>";
                             ?>		  
 	          	</select>
 		</td>
 	    </tr>
+             <tr>
+                            <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo del Est&aacute;ndar</td>
+                            <td class="StormyWeatherDataTD">
+                                 <select name="cmbEstandar" id="cmbEstandar"  style="width:250px"> 
+                                     <?php
+                                       /*  $consultaex= $obj->ExamenesPorArea($mntidarea,$lugar);
+                                         while($row = pg_fetch_array($consultaex))
+				           {
+					     echo "<option value='" .$rows['id']."' >".$rows['idestandar']." - ".htmlentities($rows['descripcion'])."</option>";
+                                           }*/
+                                          echo "<option value='" . $mntid . "' selected='selected'>" . $idestandar . "-" .htmlentities($nombreestandar). "</option>"; 
+                                     ?>
+                                 </select>   
+                            </td>
+            </tr>
 	    <tr>
 	       	<td class="StormyWeatherFieldCaptionTD">Nombre del Examen </td>
-	        <td class="StormyWeatherDataTD"><input type="text" name="txtnombreexamen" size="50" value="<?php echo htmlentities($nombreexamen); ?>"/>        </td>
+	        <td class="StormyWeatherDataTD">
+                    <input type="text" name="txtnombreexamen" size="50" value="<?php echo htmlentities($nombreexamen); ?>"/>
+                    <input type="hidden" name="txtidconf" size="50" value="<?php echo $idconf ; ?>"/>
+                    <input type="hidden" name="txtctlidestandar" size="50" value="<?php echo $ctlidestandar ; ?>"/>
+                </td>
 	   </tr>
            <tr>
                 <td class="StormyWeatherFieldCaptionTD">Plantilla</td>
@@ -81,7 +109,7 @@
                             	include_once('clsLab_Examenes.php');
 				$obje=new clsLab_Examenes;
 				$consulta= $obje->LeerPlantilla();
-				while($row = mysql_fetch_array($consulta)){
+				while($row = pg_fetch_array($consulta)){
 			  		echo "<option value='" . $row[0]. "'>" .htmlentities($row[1]). "</option>";
 				}
 				echo "<option value='" . $plantilla . "' selected='selected'>" .$nomplantilla. "</option>";
@@ -90,28 +118,6 @@
 		</td>
             </tr>
             <tr>
-	        <td class="StormyWeatherFieldCaptionTD">C&oacute;digo del Est&aacute;ndar</td>
-	        <td class="StormyWeatherDataTD">
-                    <select name="cmbEstandar" size="1">
-                        <option value="0">--Seleccione un Estandar--</option>
-                            <?php
-                                include('../Lab_CodigosEstandar/clsLab_CodigosEstandar.php');
-				$obje=new clsLab_CodigosEstandar;
-				$consulta= $obje->consultar();
-				while($row = mysql_fetch_array($consulta)){
-					echo "<option value='" . $row['0']. "'>" . $row['0'].'- '.htmlentities($row['1']). "</option>";
-				}
-                             echo "<option value='" . $idestandar . "' selected='selected'>" .$idestandar .'- '.htmlentities($nombreestandar). "</option>";			
-				?>		 
-                     </select>
-                 </td>
-              </tr>
-              <tr>
-                    <td class="StormyWeatherFieldCaptionTD">Observaci&oacute;n </td>
-                    <td class="StormyWeatherDataTD"><textarea name="txtobservacion" cols="60" id="txtobservacion"><?php echo htmlentities($observacion); ?></textarea> 
-		 </td>
-	      </tr>
-	     <tr>
 	         <td class="StormyWeatherFieldCaptionTD"><strong>Solicitado en </strong></td>
 	         <td class="StormyWeatherDataTD">
                     <select id="cmbUbicacion" name="cmbUbicacion" size="1" >
@@ -137,29 +143,16 @@
                   </td>
                </tr>
                <tr>
-                  <td class="StormyWeatherFieldCaptionTD" width="40%"><strong>Programa Nacional de Salud</strong></td>
-                  <td class="StormyWeatherDataTD">
-                        <select id="cmbPrograma" name="cmbPrograma" size="1" onChange="LlenarComboFormConsulta(this.value);">
-                            <?php //echo $Programa;
-				//$obje1=new clsLab_Examenes;
-                                    $consulta= $obj->consultar_programas();
-                                    while($row = mysql_fetch_array($consulta)){
-                                        echo "<option value='" . $row['0']. "'>" .$row['1'] . "</option>";
-                                    }
-                                    if (!empty($IdPrograma))
-                                        echo "<option value='" . $IdPrograma . "' selected='selected'>".htmlentities($Programa)."</option>";	
-                                    else
-                                        echo "<option value='0' selected='selected'>Ninguno</option>";	
-                              ?>	
-                        </select>  
-                    </td>
-		</tr>
-		<tr>
                     <td width="17%" class="StormyWeatherFieldCaptionTD">Formulario para Examen</td>
-                    <td  class="StormyWeatherDataTD">
+                    <td class="StormyWeatherDataTD">
 			<div id="divFormulariosC">
                         	<select name="cmbConForm" size="1" id="cmbConForm" > ";
-                                 <?php if (!empty($IdPrograma))	
+                                 <?php 
+                                 $consulta= $obj->consultar_formularios($lugar);
+                                            while($row = pg_fetch_array($consulta)){
+                                                echo "<option value='" . $row['0']. "'>" .$row['1'] . "</option>";
+                                            }
+                                 if (!empty($IdFormulario))	
                                             echo "<option value='" . $IdFormulario . "' selected='selected'>".htmlentities($NombreForm)."</option>";
                                        else
                                             echo "<option value='0' selected='selected'>Ninguno</option>";?>
@@ -167,22 +160,23 @@
 			</div>
                     </td>
 		</tr>
+               
+               
 		<tr>
                     <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo en tabulador</td>
                     <td class="StormyWeatherDataTD">
                         <select id="cmbEstandarRep" name="cmbEstandarRep" size="1">
                             <option value="0">--Seleccione un Est&aacute;ndar--</option>
                             	<?php
-                                	$obje=new clsLab_CodigosEstandar;
-					$consulta= $obje->consultar();
-                                       while($row = mysql_fetch_array($consulta)){
-                                           echo "<option value='" . $row['0']. "'>" .$row['0'].'- '.htmlentities($row['1']). "</option>";
-                                                }
+                                	$consulta= $obj->consultar_codigospruebas();
+				while($row = pg_fetch_array($consulta)){
+					echo "<option value='" . $row['0']. "'>" . $row['1'].'- '.htmlentities($row['2']). "</option>";
+				}
                                                   $obje1=new clsLab_Examenes;
                                                   $consulta2=$obje1->Obtener_NombreEstandar($IdEstandarResp);
-                                                  $rownom= mysql_fetch_array($consulta2);
+                                                  $rownom= pg_fetch_array($consulta2);
                                                   $NombreEstandar=$rownom[0];
-                                           echo "<option value='".$IdEstandarResp."' selected='selected'>".$IdEstandarResp.'-'.htmlentities($NombreEstandar). "</option>";		
+                                           echo "<option value='".$IdEstandarResp."' selected='selected'>".$EstandarResp.'-'.htmlentities($Descestandarrep). "</option>";		
                                                 ?>	
 			</select>   
                     </td>
@@ -212,7 +206,7 @@
                     </td>
 		</tr>
                 <tr>
-                    <td class="StormyWeatherFieldCaptionTD">Examen Solicitado Urgente:</td>
+                    <td class="StormyWeatherFieldCaptionTD">Examen Solicitado en Urgente:</td>
                     <td class="StormyWeatherDataTD">
                         <select id="cmbUrgente" name="cmbUrgente" size="1">
                             <?php  
@@ -232,12 +226,13 @@
                       <td class="StormyWeatherFieldCaptionTD">Sexo al que se le realiza la prueba</td>
                       <td class="StormyWeatherDataTD">
                          <select id="cmbsexo" name="cmbsexo" size="1">
-                            <option value="0">--Seleccione--</option>
+                            
+                             <option value="4">Ambos</option>
                                 <?php
                                     $obje1=new clsLab_Examenes;
                                     $consulta= $obje1->catalogo_sexo();
-                                    while($row = mysql_fetch_array($consulta)){
-                                        echo "<option value='" . $row['0']. "'>" .$row['1'] . "</option>";
+                                    while($row = pg_fetch_array($consulta)){
+                                        echo "<option value='" . $row['id']. "'>" .$row['nombre'] . "</option>";
                                     }
                                     echo "<option value='".$idsexo."' selected='selected'>".htmlentities($nombresexo). "</option>";
                                     
