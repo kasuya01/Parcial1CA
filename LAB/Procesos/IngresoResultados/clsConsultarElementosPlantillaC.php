@@ -9,7 +9,7 @@ class clsConsultarElementosPlantillaC
 function Nombre_Establecimiento($lugar){
    $con = new ConexionBD;
    if($con->conectar()==true){ 
-       	$query="SELECT Nombre FROM mnt_establecimiento WHERE IdEstablecimiento=$lugar";
+       	$query="SELECT nombre FROM ctl_establecimiento WHERE id=$lugar";
 	 $result = @pg_query($query);
      if (!$result)
        return false;
@@ -208,10 +208,13 @@ function LeerDatos($idexamen)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT NombreArea,NombreExamen 
-			   FROM lab_examenes b
-			   INNER JOIN lab_areas AS c ON b.IdArea=c.IdArea
-			   WHERE b.IdExamen='$idexamen'";
+     $query = "SELECT nombrearea,nombre_examen 
+               FROM lab_conf_examen_estab
+               INNER JOIN mnt_area_examen_establecimiento 
+               ON mnt_area_examen_establecimiento.id=lab_conf_examen_estab.idexamen
+               INNER JOIN ctl_area_servicio_diagnostico 
+               ON ctl_area_servicio_diagnostico.id=mnt_area_examen_establecimiento.id_area_servicio_diagnostico
+               WHERE id_atencion=98 AND codigo_examen='$idexamen'";
      $result = pg_query($query);
      if (!$result)
        return false;
@@ -226,7 +229,7 @@ function LeerDatos($idexamen)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT DISTINCT lab_antibioticos.id,antibiotico 
+     $query = "SELECT DISTINCT lab_antibioticos.id as idantibiotico,antibiotico 
                FROM lab_antibioticos 
                INNER JOIN lab_antibioticosportarjeta ON lab_antibioticos.id=lab_antibioticosportarjeta.idantibiotico
                WHERE lab_antibioticosportarjeta.idtarjeta=$idtarjeta";
@@ -291,10 +294,10 @@ function LeerTarjeta($lugar)
                FROM lab_tarjetasvitek 
                WHERE idestablecimiento = $lugar AND CURRENT_DATE BETWEEN fechaini AND 
                CASE WHEN fechafin IS NULL THEN CURRENT_DATE
-	       ELSE fechafin";
+	       ELSE fechafin END";
      //echo $query; 
      $result = pg_query($query);
-     echo $query;
+     //echo $query;
      if (!$result)
        return false;
      else

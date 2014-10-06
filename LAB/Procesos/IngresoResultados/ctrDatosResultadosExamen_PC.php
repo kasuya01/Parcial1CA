@@ -20,7 +20,7 @@ switch ($opcion)
 
 	$consulta=$objdatos->LeerAntibioticos($idtarjeta);
 	 $pos=0;
-	$imprimir="<table width='60%' border='0' align='center' class='StormyWeatherFormTABLE'>
+	$imprimir="<table width='70%' border='0' align='center' class='StormyWeatherFormTABLE'>
 			<tr>
 				<td width='40%' class='StormyWeatherFieldCaptionTD'> CULTIVO CON CUENTA DE COLONIAS</td>
 				<td width='60%' class='StormyWeatherDataTD'>
@@ -34,10 +34,10 @@ switch ($opcion)
 	while($row = pg_fetch_array($consulta))//ELEMENTOS)
 	{
 	    $imprimir.="<tr>
-	    	        	<td class='StormyWeatherFieldCaptionTD'>".$row['Antibiotico']."</td>
+	    	        	<td class='StormyWeatherFieldCaptionTD'>".$row['antibiotico']."</td>
 	        	    	<td class='StormyWeatherDataTD'>
 					<input size='40' name='txtresultado[".$pos."]' type='text' id='txtresultado[".$pos."]' >
-					<input name='oidantibiotico[".$pos."]' type='hidden' id='oidantibiotico[".$pos."]' value='".$row['IdAntibiotico']."'>
+					<input name='oidantibiotico[".$pos."]' type='hidden' id='oidantibiotico[".$pos."]' value='".$row['idantibiotico']."'>
 				</td>
 			</tr>";
 		$pos=$pos+1;
@@ -69,7 +69,7 @@ switch ($opcion)
 		$cantidad=$_POST['cantidad'];
 		$resultado="P";
                 $establecimiento=$_POST['estab'];
-
+          echo $idexamen." solicitud=".$idsolicitud;
 		$Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
 		$row_estab = pg_fetch_array($Consulta_Estab);
 
@@ -146,7 +146,7 @@ switch ($opcion)
 		</tr>
 		<tr>
 			<td colspan='1'>Organismo:</td>
-			<td colspan='5'>".htmlentities($row_nombrebacteria['Bacteria'])."</td>
+			<td colspan='5'>".htmlentities($row_nombrebacteria['bacteria'])."</td>
 		</tr>
 		<tr>
                         <td colspan='1' ><strong>Cultivo con cuenta de Colonias:</strong></td>
