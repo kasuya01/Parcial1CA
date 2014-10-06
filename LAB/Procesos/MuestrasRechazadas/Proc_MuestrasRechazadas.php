@@ -53,7 +53,7 @@ function MostrarMuestrasRechazadas()
 			alert("Ingrese un parametro de busqueda");
 	 }
     else if (document.getElementById('cmbArea').value == 0){
-				alert ("Debe de ingresar un �rea");
+				alert ("Debe de ingresar un Área");
 	}
 	else{
 		MuestrasRechazadas();
@@ -64,7 +64,7 @@ function MostrarMuestrasRechazadas()
 function BuscarExamen(idarea){
 
 	if (document.getElementById('cmbArea').value == 0){
-		  alert("Debe Seleccionar una �rea");
+		  alert("Debe Seleccionar una Área");
  	} 
 	else{
 		LlenarComboExamen(idarea);

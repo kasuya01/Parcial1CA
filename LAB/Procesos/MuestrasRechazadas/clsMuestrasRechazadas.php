@@ -200,8 +200,8 @@ class clsMuestrasRechazadas {
                         ORDER BY 2)
                     select sse.id, --id solicitudestudios 
                             mem.id, --id empleado 
-                            mem.nombreempleado, --nombre empleado 
-                            ce.nombre, --establecimiento 
+                            mem.nombreempleado, --nombre empleado
+                            (SELECT nombre FROM ctl_establecimiento WHERE id = sse.id_establecimiento_externo) AS nombre_establecimiento,
                             case WHEN id_expediente_referido is  null then 
                                                               ( mex.numero)
                                                                else (mer.numero) end as numero,

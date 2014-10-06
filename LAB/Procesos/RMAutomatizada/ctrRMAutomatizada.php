@@ -33,7 +33,7 @@ switch ($opcion) {
         //  $consulta=$objdatos->siesreferrido();
         // if($consulta>=0){
         //    echo "NO HAY REFERIDO".$consulta;
-        $query = "WITH tbl_servicio AS (
+        $query =  "WITH tbl_servicio AS (
                         SELECT t02.id,
                             CASE WHEN t02.nombre_ambiente IS NOT NULL THEN  	
                                 CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
@@ -63,7 +63,9 @@ switch ($opcion) {
                     case WHEN id_expediente_referido is  null then 
                                                       ( mex.numero)
                                                        else (mer.numero) end as numero,
-                  TO_CHAR(lrc.fecharecepcion, 'DD/MM/YYYY'),ce.nombre, lrc.numeromuestra, 
+                    TO_CHAR(lrc.fecharecepcion, 'DD/MM/YYYY'),
+                    (SELECT nombre FROM ctl_establecimiento WHERE id = sse.id_establecimiento_externo) AS nombre_establecimiento,
+                    lrc.numeromuestra, 
                     case WHEN id_expediente_referido is  null  THEN 
                             CONCAT_WS(' ', pa.primer_nombre, NULL,pa.segundo_nombre,NULL,pa.primer_apellido,NULL,pa.segundo_apellido)
                             else  
@@ -72,7 +74,9 @@ switch ($opcion) {
                     CASE sse.idtiposolicitud WHEN 1 THEN 'URGENTE' 
                                              WHEN 2 THEN 'NORMAL' 
                                              END AS prioridad,
-                    t01.nombre,  sse.id ,lcee.codigo_examen
+                    t01.nombre,
+                    sse.id,
+                    lcee.codigo_examen
                     from ctl_area_servicio_diagnostico casd 
                     INNER JOIN mnt_area_examen_establecimiento mnt4 	ON (mnt4.id_area_servicio_diagnostico=casd.id) 
                     INNER JOIN lab_conf_examen_estab lcee 			ON (mnt4.id=lcee.idexamen) 
@@ -92,7 +96,9 @@ switch ($opcion) {
                     INNER JOIN mnt_expediente mex 				ON (shc.id_numero_expediente=mex.id)
                     INNER JOIN mnt_paciente pa 					ON (mex.id_paciente=pa.id)
                     
-                    WHERE  estadodetalle=(SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = 'PM')	AND sdses.idestablecimiento = $lugar AND ";
+                    WHERE  (estadodetalle=(SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = 'PM') or estadodetalle=(SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = 'D'))
+                    AND sdses.idestablecimiento = $lugar AND ";
+
 
 
 
@@ -276,6 +282,11 @@ switch ($opcion) {
 				<td colspan='4' align='center' class='CobaltFieldCaptionTD'>DATOS SOLICITUD</td>
 		   	</tr>
 			
+                        <tr>
+				<td class='StormyWeatherFieldCaptionTD'>Establecimiento</td>
+                                <td class='StormyWeatherDataTD' colspan='3'>".$row[3]."</td>
+			</tr>
+                            
 			<tr>
 				<td class='StormyWeatherFieldCaptionTD'>Paciente</td>
 				<td colspan='3' class='StormyWeatherDataTD'>" . htmlentities($paciente) . " 

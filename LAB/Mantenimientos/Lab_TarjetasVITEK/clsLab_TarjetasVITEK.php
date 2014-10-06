@@ -28,7 +28,7 @@ class clsLab_TarjetasVITEK
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-      $query = "UPDATE lab_tarjetasvitek SET nombretarjeta='$nombretarjeta',idusuariomod='$usuario', fechahoramod=NOW(),fechaini='$Fechaini',fechafin='$Fechafin' WHERE id=$idtarjeta AND idestablecimiento=$lugar";
+     $query = "UPDATE lab_tarjetasvitek SET nombretarjeta='$nombretarjeta',idusuariomod='$usuario', fechahoramod = NOW(), fechaini = $Fechaini, fechafin = $Fechafin WHERE id=$idtarjeta AND idestablecimiento=$lugar";
      $result = pg_query($query);
 	 
      if (!$result)
@@ -61,7 +61,11 @@ class clsLab_TarjetasVITEK
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-   $query = "SELECT id,nombretarjeta,fechaini,fechafin FROM  lab_tarjetasvitek
+   $query = "SELECT id,
+       nombretarjeta,
+       TO_CHAR(fechaini::timestamp, 'DD/MM/YYYY') AS fechaini,
+	TO_CHAR(fechafin::timestamp, 'DD/MM/YYYY')AS fechafin
+       FROM  lab_tarjetasvitek
 	 WHERE idestablecimiento=$lugar ORDER BY id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar  ";
      	 $result = pg_query($query);
 	 if (!$result)
@@ -76,7 +80,7 @@ function consultar($lugar){
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     echo $query = "SELECT * FROM lab_tarjetasvitek WHERE idestablecimiento=$lugar ORDER BY id  ";
+      $query = "SELECT * FROM lab_tarjetasvitek WHERE idestablecimiento=$lugar ORDER BY nombretarjeta  ";
 	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
@@ -107,8 +111,9 @@ function NumeroDeRegistros($lugar){
    if($con->conectar()==true)
    {
    $query = "SELECT id,nombretarjeta,
-                        fechaini,
-			 fechafin  FROM lab_tarjetasvitek WHERE id='$idtarjeta' AND idestablecimiento=$lugar";
+                        TO_CHAR(fechaini::timestamp, 'DD/MM/YYYY') AS fechaini,
+                        TO_CHAR(fechafin::timestamp, 'DD/MM/YYYY')AS fechafi
+                         FROM lab_tarjetasvitek WHERE id='$idtarjeta' AND idestablecimiento=$lugar";
      $result = pg_query($query);
      if (!$result)
        return false;

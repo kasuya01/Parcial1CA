@@ -12,19 +12,19 @@ $consulta = $obj->consultarid($idtarjeta, $lugar);
 $row = pg_fetch_array($consulta);
 //valores de las consultas
 $nombretarjeta = $row[1];
-$Fechaini = $row[2];
-// Los delimitadores pueden ser barra, punto o guión
-
-list($anio, $mes, $dia) = split('[/.-]', $Fechaini);
-$Fechaini = $anio . "/" . $mes . "/" . $dia;
 
 
+$Fechaini=$row['fechaini'];
+/*list($anio, $mes, $dia) = split('[/.-]', $Fechaini);
+$Fechaini = $anio . "/" . $mes . "/" . $dia;*/
 
-$Fechafin = $row[3];
-//echo $Fechaini."+++".$Fechafin;
-//muestra los datos consultados en los campos del formulario
-list($anio, $mes, $dia) = split('[/.-]', $Fechafin);
-$Fechafin = $anio . "/" . $mes . "/" . $dia;
+$Fechafin=$row['fechafi'];
+/*if($Fechafin !== null) {
+	list($anio, $mes, $dia) = split('[/.-]', $Fechafin);
+	$Fechafin = $anio . "/" . $mes . "/" . $dia;
+}*/
+
+
 ?>
 
 <form name= "frmModificar">

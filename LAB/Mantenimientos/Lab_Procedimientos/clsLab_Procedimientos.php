@@ -26,7 +26,7 @@ class clsLab_Procedimientos {
 	function actualizar( $idproce, $proce, $idarea, $idexamen, $unidades, $rangoini, $rangofin, $usuario, $lugar, $Fechaini, $Fechafin, $sexo, $redad ) {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
-			$query ="UPDATE lab_procedimientosporexamen SET nombreprocedimiento='$proce', id_conf_examen_estab ='$idexamen', unidades = '$unidades', rangoinicio=$rangoini,
+			 $query ="UPDATE lab_procedimientosporexamen SET nombreprocedimiento='$proce', id_conf_examen_estab ='$idexamen', unidades = '$unidades', rangoinicio=$rangoini,
 													rangofin=$rangofin, idusuariomod=$usuario, fechahoramod = NOW(), fechaini = $Fechaini, fechafin = $Fechafin,
 													idsexo = $sexo, idrangoedad = $redad
 		 			 WHERE lab_procedimientosporexamen.id = $idproce AND idestablecimiento = $lugar";

@@ -12,7 +12,7 @@ class clsLab_Observaciones
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    echo "insertar--> ".$query = "INSERT INTO lab_observaciones(observacion,idarea,tiporespuesta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod) 
+    $query = "INSERT INTO lab_observaciones(observacion,idarea,tiporespuesta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod) 
 	          VALUES('$observacion','$idarea','$tiporespuesta','$usuario',NOW(),'$usuario',NOW())";
      $result = @pg_query($query);
 	 
@@ -67,7 +67,7 @@ class clsLab_Observaciones
      "SELECT lb1.id, c1.idarea, observacion, tiporespuesta 
 			   FROM lab_observaciones lb1
 			   inner join ctl_area_servicio_diagnostico c1 on (c1.id=lb1.idarea)
-                           order by c1.idarea
+                           order by c1.idarea,observacion
 			   LIMIT $RegistrosAMostrar OFFSET  $RegistrosAEmpezar";
 	 $result = @pg_query($query);
 	 if (!$result)
@@ -111,8 +111,12 @@ class clsLab_Observaciones
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-    $query = "SELECT lab_observaciones.observacion,lab_observaciones.tiporespuesta,
-		lab_observaciones.idarea,ctl_area_servicio_diagnostico.nombrearea FROM lab_observaciones 
+    $query = "SELECT lab_observaciones.observacion,tiporespuesta,
+  CASE tiporespuesta WHEN 'P' THEN 'POSITIVO' 
+                                           WHEN 'N' THEN 'NEGATIVO' 
+                                           WHEN 'O' THEN 'OTRO' 
+                                           END AS tiporespuesta,  
+lab_observaciones.idarea,ctl_area_servicio_diagnostico.nombrearea FROM lab_observaciones 
 	        INNER JOIN ctl_area_servicio_diagnostico ON lab_observaciones.idarea=ctl_area_servicio_diagnostico.id
 		WHERE lab_observaciones.id=$idobservacion";
              

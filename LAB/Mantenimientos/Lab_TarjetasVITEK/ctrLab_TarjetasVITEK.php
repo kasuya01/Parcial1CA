@@ -42,18 +42,20 @@ switch ($opcion)
 		$idtarjeta=$_POST['idtarjeta']; 
 		$nombretarjeta=$_POST['nombretarjeta'];   
 		
-		if (empty($_POST['Fechaini'])){
-			$Fechaini="(NULL)";
-		}else{ 
-			$FechaI=explode('/',$_POST['Fechaini']);
-	  		$Fechaini=$FechaI[2].'/'.$FechaI[1].'/'.$FechaI[0];
-	  	}
-		if (empty($_POST['Fechafin'])){
-			$Fechafin="(NULL)";
-		}else{ 
-			$FechaF=explode('/',$_POST['Fechafin']);
-			$Fechafin=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];	
-		}
+		if ( empty( $_POST['Fechaini'] ) ) {
+		$Fechaini="NULL";
+	}else {
+		$FechaI=explode( '/', $_POST['Fechaini'] );
+		$Fechaini='\''.$FechaI[2].'-'.$FechaI[1].'-'.$FechaI[0].'\'';
+	}
+
+	if ( empty( $_POST['Fechafin'] ) ) {
+		$Fechafin="NULL";
+	}else {
+		$FechaF=explode( '/', $_POST['Fechafin'] );
+		$Fechafin='\''.$FechaF[2].'-'.$FechaF[1].'-'.$FechaF[0].'\'';
+	}
+
 		
 		If (($objdatos->actualizar($idtarjeta,$nombretarjeta,$usuario,$lugar,$Fechaini,$Fechafin)==true))//&& ($Clases->actualizar_labo($idtarjeta,$nombretarjeta,$usuario,$lugar,$Fechaini,$Fechafin)==true))
                  {
@@ -147,7 +149,8 @@ switch ($opcion)
 			  </table>";
 	break;
         case 5: //Busqueda
-			$nombretarjeta=$_POST['nombretarjeta'];
+			 $nombretarjeta=$_POST['nombretarjeta'];
+                          //echo  $_POST['Fechaini'];
 			
 			if (empty($_POST['Fechaini'])){
 				$Fechaini="(NULL)";
@@ -160,7 +163,7 @@ switch ($opcion)
 				$Fechafin="(NULL)";
 			}else{ 
 				$FechaF=explode('/',$_POST['Fechafin']);
-				$Fechafin=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];	
+				 $Fechafin=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];	
 			}
 		   $query = "SELECT id,nombretarjeta,fechaini,fechafin FROM lab_tarjetasvitek WHERE idestablecimiento=$lugar AND ";
 				
@@ -171,12 +174,18 @@ switch ($opcion)
 			if (!empty($_POST['Fechaini']))
 				{$FechaI=explode('/',$_POST['Fechaini']);
 				$Fechaini=$FechaI[2].'/'.$FechaI[1].'/'.$FechaI[0];
-				$query .= " FechaIni='".$Fechaini."' AND"; }
+				$query .= " fechaini='".$Fechaini."' AND"; }
 
 			if (!empty($_POST['Fechafin'])){
 				$FechaF=explode('/',$_POST['Fechafin']);
 				$Fechafin=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];
-				$query .= " FechaFin='".$Fechafin."' AND"; } 	
+				$query .= " fechafin='".$Fechafin."' AND"; }
+                                
+                               /* if ( !empty( $_POST['Fechaini'] ) ) { 
+		$query .= " fechaini = ".$Fechaini." AND"; }
+
+	if ( !empty( $_POST['Fechafin'] ) ) {
+		$query .= " fechafin = ".$Fechafin." AND"; }*/
 				
 			if((empty($_POST['nombretarjeta'])) and (empty($_POST['Fechaini'])) and (empty($_POST['Fechafin'])))
 			{
@@ -185,6 +194,7 @@ switch ($opcion)
 			if ($ban==0){
 		
 						$query = substr($query ,0,strlen($query)-4);
+                                               $query_search = $query. " ORDER BY nombretarjeta";
 					//echo $query;
 					//para manejo de la paginacion
 					$RegistrosAMostrar=4;
@@ -199,7 +209,7 @@ switch ($opcion)
 							 <tr>
 							 <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
 							<!-- <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
-							 <td class='CobaltFieldCaptionTD' > IdTarjeta</td>
+							<!-- <td class='CobaltFieldCaptionTD' > IdTarjeta</td> -->
 							 <td class='CobaltFieldCaptionTD'> Nombre de Tarjeta </td>
 							 <td class='CobaltFieldCaptionTD'> Fecha Inicio </td>	 
 							 <td class='CobaltFieldCaptionTD'> Fecha Finalización </td>	
@@ -213,7 +223,7 @@ switch ($opcion)
 							<!-- <td aling ='center'> 
 							<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 							onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
-							<td>".$row['id']."</td>
+							<!-- <td>".$row['id']."</td> -->
 							<td>".htmlentities($row['nombretarjeta'])." </td>
 							<td>".$row['fechaini']."</td>
 							<td>".$row['fechafin']."</td>

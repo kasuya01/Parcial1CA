@@ -115,9 +115,16 @@ switch ($opcion)
 			
     break;
     case 5://buscar
-	$query = "SELECT lb1.id,  c1.idarea, observacion, tiporespuesta FROM lab_observaciones lb1
-			inner join ctl_area_servicio_diagnostico c1 on (c1.id=lb1.idarea)
-			WHERE  ";
+	$query = "SELECT lb1.id,  
+                         c1.idarea, 
+                         observacion, tiporespuesta,
+                            CASE tiporespuesta WHEN 'P' THEN 'POSITIVO' 
+                                               WHEN 'N' THEN 'NEGATIVO' 
+                                               WHEN 'O' THEN 'OTRO' 
+                            END AS tiporespuesta1
+                     FROM lab_observaciones lb1
+		     inner join ctl_area_servicio_diagnostico c1 on (c1.id=lb1.idarea)
+		     WHERE  ";
 		
 	//VERIFICANDO LOS POST ENVIADOS
 	if (!empty($_POST['idarea']))
@@ -130,7 +137,7 @@ switch ($opcion)
 		{ $query .="observacion ilike '%".$_POST['observacion']."%' AND ";}
                   	
 		 $query = substr($query ,0,strlen($query)-4);
-		$query_search = $query."ORDER  BY id";	
+		$query_search = $query."ORDER  BY c1.idarea,observacion";	
      //  echo $query_search ;
 	//para manejo de la paginacion
 		$RegistrosAMostrar=4;
@@ -160,7 +167,7 @@ switch ($opcion)
 			<td>". $row[1] ."</td> 
 			<td>".htmlentities($row['observacion'])."</td>";
                          $resp=$row['tiporespuesta'];
-                          if ($resp=='S')
+                          if ($resp=='P')
                              echo "<td>Positivo</td>";
                           else if($resp=='N') 
                              echo "<td>Negativo</td>";	

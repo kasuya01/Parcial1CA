@@ -3,7 +3,7 @@
 include_once("clsLab_IndicacionesPorExamen.php");
 
 //consulta los datos por su id
-$idindicacion=$_POST['idindicacion'];
+ $idindicacion=$_POST['idindicacion'];
 $obj = new clsLab_IndicacionesPorExamen;
 $consulta=$obj->consultarid_indicacion($idindicacion);
 $row = pg_fetch_array($consulta);

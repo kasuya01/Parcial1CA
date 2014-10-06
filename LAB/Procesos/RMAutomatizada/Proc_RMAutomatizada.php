@@ -63,7 +63,7 @@ if (isset($_SESSION['Correlativo'])) {
 
                 function BuscarExamen(idarea) {
                     if (document.getElementById('cmbArea').value == 0) {
-                        alert("Debe Seleccionar una Area");
+                        alert("Debe Seleccionar una Área");
                     }
                     else {
                         LlenarComboExamen(idarea);
@@ -107,7 +107,7 @@ if (isset($_SESSION['Correlativo'])) {
                 <form>
                     <table  align="center" class="StormyWeatherFormTABLE"  width="83%">
                         <tr>
-                            <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3><strong>Rechazadar Muestra Automatizada por &Aacute;rea</strong></h3>		</td>
+                            <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3><strong>Rechazar Muestra Automatizada por &Aacute;rea</strong></h3>		</td>
                         </tr>
                         <tr>		
                             <td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</td>

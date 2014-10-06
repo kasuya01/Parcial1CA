@@ -29,32 +29,6 @@ switch ($opcion)
 	$TipoSolic=$_POST['TipoSolic'];
 
 	$ban=0;  
-	$query=
-       
-       /* "SELECT sdses.idsolicitudestudio,sse.id_expediente,
-lcee.id,nombre_examen,--DATE_FORMAT(
-lrc.fecharecepcion,
---'%d/%m/%Y') AS 
-fecharecepcion, sdses.observacion,
-ctl.nombre, 
-
-ce.nombre
---CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoApellido) AS 
---Paciente, 
---IF(sec_solicitudestudios.idtiposolicitud='S','URGENTE','NORMAL') AS prioridad 
-FROM sec_detallesolicitudestudios sdses
-INNER JOIN sec_solicitudestudios sse ON sdses.idsolicitudestudio=sse.id
-INNER JOIN lab_recepcionmuestra lrc ON sdses.id= lrc.idsolicitudestudio
-INNER JOIN lab_conf_examen_estab lcee ON sdses.id_conf_examen_estab=lcee.id  
-INNER JOIN mnt_area_examen_establecimiento mnt4exe ON lcee.idexamen=mnt4exe.id 
-INNER JOIN sec_historial_clinico shc ON sse.id_historial_clinico=shc.id 
-INNER JOIN ctl_atencion ctl ON shc.idsubservicio=ctl.id 
-INNER JOIN ctl_establecimiento ce ON shc.idestablecimiento=ce.id 
-INNER JOIN mnt_expediente mex ON shc.id_numero_expediente=mex.id 
-INNER JOIN mnt_paciente pa ON mex.id_paciente=pa.id
---WHERE estadodetalle='RM' 
-AND lrc.fecharecepcion<=CURRENT_DATE
-AND sdses.idestablecimiento=$lugar AND";*/
         
        $query=   "WITH tbl_servicio AS (
                         SELECT t02.id,
@@ -86,7 +60,9 @@ AND sdses.idestablecimiento=$lugar AND";*/
                     case WHEN id_expediente_referido is  null then 
                                                       ( mex.numero)
                                                        else (mer.numero) end as numero,
-                  TO_CHAR(lrc.fecharecepcion, 'DD/MM/YYYY'),ce.nombre, lrc.numeromuestra, 
+                    TO_CHAR(lrc.fecharecepcion, 'DD/MM/YYYY'),
+                    (SELECT nombre FROM ctl_establecimiento WHERE id = sse.id_establecimiento_externo) AS nombre_establecimiento,
+                    lrc.numeromuestra, 
                     case WHEN id_expediente_referido is  null  THEN 
                             CONCAT_WS(' ', pa.primer_nombre, NULL,pa.segundo_nombre,NULL,pa.primer_apellido,NULL,pa.segundo_apellido)
                             else  
@@ -95,7 +71,9 @@ AND sdses.idestablecimiento=$lugar AND";*/
                     CASE sse.idtiposolicitud WHEN 1 THEN 'URGENTE' 
                                              WHEN 2 THEN 'NORMAL' 
                                              END AS prioridad,
-                    t01.nombre,  sse.id ,lcee.codigo_examen
+                    t01.nombre,
+                    sse.id,
+                    lcee.codigo_examen
                     from ctl_area_servicio_diagnostico casd 
                     INNER JOIN mnt_area_examen_establecimiento mnt4 	ON (mnt4.id_area_servicio_diagnostico=casd.id) 
                     INNER JOIN lab_conf_examen_estab lcee 			ON (mnt4.id=lcee.idexamen) 
@@ -159,9 +137,9 @@ AND sdses.idestablecimiento=$lugar AND";*/
 			
                         
                         { $query .= " case WHEN id_expediente_referido is null then    
-                                (pa.primer_nombre ilike '%%".$_POST['PNombre']."%%') ELSE
+                                (pa.primer_nombre ilike '%".$_POST['PNombre']."%') ELSE
                                     
-                                (par.primer_nombre ilike '%%".$_POST['PNombre']."%%') END AND";}
+                                (par.primer_nombre ilike '%".$_POST['PNombre']."%') END AND";}
                         
                         
 		
@@ -169,24 +147,24 @@ AND sdses.idestablecimiento=$lugar AND";*/
 			//{ $query .= " mnt_datospaciente.SegundoNombre='".$_POST['SNombre']."' AND";}
                     
                      { $query .= " case WHEN id_expediente_referido is null then    
-                                (pa.segundo_nombre ilike '%%".$_POST['SNombre']."%%') ELSE
+                                (pa.segundo_nombre ilike '%".$_POST['SNombre']."%') ELSE
                                     
-                                (par.segundo_nombre ilike '%%".$_POST['SNombre']."%%') END AND";}
+                                (par.segundo_nombre ilike '%".$_POST['SNombre']."%') END AND";}
 		
 		if (!empty($_POST['PApellido']))
 			//{ $query .= " mnt_datospaciente.PrimerApellido='".$_POST['PApellido']."' AND";}
                     
                      { $query .= " case WHEN id_expediente_referido is null then    
-                                (pa.primer_apellido ilike '%%".$_POST['PApellido']."%%') ELSE
+                                (pa.primer_apellido ilike '%".$_POST['PApellido']."%') ELSE
                                     
-                                (par.primer_apellido ilike '%%".$_POST['PApellido']."%%') END AND";}
+                                (par.primer_apellido ilike '%".$_POST['PApellido']."%') END AND";}
 		
 		if (!empty($_POST['SApellido']))
 			//{ $query .= " mnt_datospaciente.SegundoApellido='".$_POST['SApellido']."' AND";}
                     { $query .= " case WHEN id_expediente_referido is null then    
-                                (pa.segundo_apellido ilike '%%".$_POST['SApellido']."%%') ELSE
+                                (pa.segundo_apellido ilike '%".$_POST['SApellido']."%') ELSE
                                     
-                                (par.segundo_apellido ilike '%%".$_POST['SApellido']."%%') END AND";}
+                                (par.segundo_apellido ilike '%".$_POST['SApellido']."%') END AND";}
 			
 		if (!empty($_POST['TipoSolic']))
 		{ $query .= " sse.idtiposolicitud='".$_POST['TipoSolic']."' AND";}

@@ -55,7 +55,8 @@ if ($nivel==33){
 					<td class="StormyWeatherDataTD" colspan="2" align="right">
 						<input type="submit" name="Submit" value="Guardar" onClick="Guardar()">
 						<input type="button" name="Submit" value="Buscar" onClick="BuscarCodigo();">
-						<input type="button" name="btnNuevo" id="btnNuevo" value="Cancelar" onClick="BuscandoAsociados()"></td>
+						<input type="button" name="btnNuevo" id="btnNuevo" value="Cancelar" onClick="window.location.replace('MntAntibioticos.php')"></td>
+                                                                                                                        
                 </tr>
 			</table>
 			</form>
