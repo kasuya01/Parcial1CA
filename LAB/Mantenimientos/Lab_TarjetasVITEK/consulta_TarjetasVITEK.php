@@ -13,18 +13,13 @@ $row = pg_fetch_array($consulta);
 //valores de las consultas
 $nombretarjeta = $row[1];
 
-
-$Fechaini=$row['fechaini'];
-/*list($anio, $mes, $dia) = split('[/.-]', $Fechaini);
-$Fechaini = $anio . "/" . $mes . "/" . $dia;*/
-
-$Fechafin=$row['fechafi'];
-/*if($Fechafin !== null) {
-	list($anio, $mes, $dia) = split('[/.-]', $Fechafin);
-	$Fechafin = $anio . "/" . $mes . "/" . $dia;
-}*/
-
-
+list($anio, $mes, $dia) = split('[/.-]', $Fechaini);
+$Fechaini = $anio . "/" . $mes . "/" . $dia;
+$Fechafin = $row[3];
+//echo $Fechaini."+++".$Fechafin;
+//muestra los datos consultados en los campos del formulario
+list($anio, $mes, $dia) = split('[/.-]', $Fechafin);
+$Fechafin = $anio . "/" . $mes . "/" . $dia;
 ?>
 
 <form name= "frmModificar">
@@ -34,12 +29,12 @@ $Fechafin=$row['fechafi'];
             <td colspan="2" class="CobaltFieldCaptionTD" align="center"><h3><strong>Mantenimiento de Tarjetas VITEK</strong></h3>
             </td>
         </tr>	
-        <!-- <tr>
-                <td  width="21%" class="StormyWeatherFieldCaptionTD">IdTarjeta</td>
-                <td   class="StormyWeatherDataTD"><input name="idtarjeta" id="idtarjeta" type="text" value="<?php echo $idtarjeta; ?>" disabled="disabled" /></td>
-        </tr> -->
+        <!--tr>
+            <td  width="21%" class="StormyWeatherFieldCaptionTD">IdTarjeta</td>
+            <td   class="StormyWeatherDataTD"><input name="idtarjeta" id="idtarjeta" type="text" value="<?php echo $idtarjeta; ?>" disabled="disabled" /></td>
+        </tr-->
         <tr>
-            <td   width="21%"class="StormyWeatherFieldCaptionTD">Nombre Tarjeta</td>
+        <td   width="21%" class="StormyWeatherFieldCaptionTD">Nombre Tarjeta</td>
             <td class="StormyWeatherDataTD"> <input name="nombretarjeta" id="nombretarjeta" type="text" value="<?php echo $nombretarjeta; ?>" size="40" />
                 <input name="idtarjeta" id="idtarjeta" type="hidden" value="<?php echo $idtarjeta; ?>" disabled="disabled" />
             </td>    
@@ -48,12 +43,10 @@ $Fechafin=$row['fechafi'];
             <td colspan="2" class="StormyWeatherDataTD">
                 <table width="100%" border="0" align="center" class="StormyWeatherFormTABLE">
                     <tr>
-                        <td  width="21%" class="StormyWeatherFieldCaptionTD">Fecha Inicio</TD>
-                        <td width="29%" class="StormyWeatherDataTD">
-                            <input name="txtFechainicio1" type="text" id="txtFechainicio" value="<?php echo $Fechaini; ?>" size="8" >dd/mm/aaaa</td>
-                        <td width="21%" class="StormyWeatherFieldCaptionTD">Fecha Final</D>
-                        <td width="29%" class="StormyWeatherDataTD">
-                            <input name="txtFechaFin1" type="text" id="txtFechaFin" value="<?php echo $Fechafin; ?>" size="8" >dd/mm/aaaa</td>
+                        <td  width="20%" class="StormyWeatherFieldCaptionTD">Fecha Inicio</td>
+                        <td width="30%" class="StormyWeatherDataTD"><input name="txtFechainicio1" type="text" id="txtFechainicio" value="<?php echo $Fechaini; ?>" size="8" >dd/mm/aaaa</td>
+                        <td width="20%" class="StormyWeatherFieldCaptionTD">Fecha Final</td>
+                        <td width="30%" class="StormyWeatherDataTD"><input name="txtFechaFin1" type="text" id="txtFechaFin" value="<?php echo $Fechafin; ?>" size="8" >dd/mm/aaaa</td>
                     </tr>
                 </table>
             </td>		
