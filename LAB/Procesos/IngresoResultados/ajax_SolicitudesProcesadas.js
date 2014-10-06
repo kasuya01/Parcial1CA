@@ -1170,7 +1170,7 @@ function MostrarDatos(posicion)
     Sexo = document.getElementById('Sexo[' + posicion + ']').value;
     IdEstandar = document.getElementById('IdEstandar[' + posicion + ']').value;
     IdHistorial = document.getElementById('IdHistorial[' + posicion + ']').value;
- alert ("Plnatilla="+plantilla+" Experiente="+idexpediente+" Solicitud="+idsolicitud+" idarea="+idarea+" idhistorial="+IdHistorial+" IdEstandar="+IdEstandar);
+ //alert ("Plnatilla="+plantilla+" Experiente="+idexpediente+" Solicitud="+idsolicitud+" idarea="+idarea+" idhistorial="+IdHistorial+" IdEstandar="+IdEstandar);
     //idhistorial=document.getElementById('idhistorial['+posicion+']').value;
     //alert(plantilla);
     // alert(idexamen);

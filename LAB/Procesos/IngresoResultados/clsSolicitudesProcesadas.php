@@ -269,19 +269,15 @@ class clsSolicitudesProcesadas {
     //FUNCION PARA LLAMAR EMPLEADOS DE LABORATORIOS FILTRADOS POR AREA
     function BuscarEmpleados($idarea, $lugar) {
         $con = new ConexionBD;
-        if ($con->conectar() == true) { /* $query="SELECT IdEmpleado,NombreEmpleado 
-          FROM mnt_empleados  INNER JOIN  mnt_cargoempleados
-          ON mnt_empleados.IdCargoEmpleado=mnt_cargoempleados.IdCargoEmpleado
-          WHERE mnt_cargoempleados.idservicio='DCOLAB' AND
-          IdArea='$idarea'  AND IdEstablecimiento=$lugar"; */
-            $query = "SELECT IdEmpleado, NombreEmpleado
-                 FROM mnt_empleados
-                 INNER JOIN mnt_cargoempleados ON mnt_empleados.IdCargoEmpleado = mnt_cargoempleados.IdCargoEmpleado
-                 WHERE mnt_cargoempleados.idservicio = 'DCOLAB'
-                 AND IdArea <> 'TMU'
-                 AND IdArea <> 'INF'
-                 AND IdArea <> 'REC'
-                 AND IdEstablecimiento =$lugar";
+        if ($con->conectar() == true) {
+            $query = "SELECT mnt_empleado.id, CONCAT_WS(' ',nombre,apellido)
+                 FROM mnt_empleado
+                 INNER JOIN mnt_cargoempleados ON mnt_empleado.id_cargo_empleado = mnt_cargoempleados.id
+                 WHERE mnt_cargoempleados.id_atencion = 98
+                 AND IdArea <> 13
+                 AND IdArea <> 7
+                 AND IdArea <> 14
+                 AND id_establecimiento =$lugar";
             // echo $query;
             $result = pg_query($query);
 

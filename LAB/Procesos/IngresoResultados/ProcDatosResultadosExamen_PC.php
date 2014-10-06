@@ -2,6 +2,9 @@
 $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
+
+include('clsConsultarElementosPlantillaC.php');
+$obj=new clsConsultarElementosPlantillaC;
 ?>
 <html>
 <head> 
@@ -187,13 +190,12 @@ function CargarDatos()
 							<td width="62%" class="StormyWeatherDataTD"><select id="cmbOrganismo" name="cmbOrganismo" size="1"  >
 								<option value="0" >--Seleccione una bacteria--</option>
 							<?php
-								include('clsConsultarElementosPlantillaC.php');
-								$obj=new clsConsultarElementosPlantillaC;
+								
 								$consulta_bac= $obj->LeerBacterias();
-								while($row = mysql_fetch_array($consulta_bac)){
+								while($row = pg_fetch_array($consulta_bac)){
 								echo "<option value='" . $row[0]. "'>" . $row[1] . "</option>";
 								}
-								mysql_free_result($consulta_bac);
+								pg_free_result($consulta_bac);
 							?>	
 							</select>			
 							</td>
@@ -203,12 +205,14 @@ function CargarDatos()
 							<td width="83%" class="StormyWeatherDataTD"><select id="cmbTarjeta" name="cmbTarjeta" size="1" onChange="MostrarAntibioticos();">
 								<option value="0" >-- Seleccione una tarjeta --</option>
 								<?php
-									$obj=new clsConsultarElementosPlantillaC;
+									//$obj=new clsConsultarElementosPlantillaC;
+                                                                        echo "llego";
 									$consulta= $obj->LeerTarjeta($lugar);
-									while($row = mysql_fetch_array($consulta)){
-									echo "<option value='" . $row['IdTarjeta']. "'>" . $row['NombreTarjeta'] . "</option>";
+									while($row = pg_fetch_array($consulta)){
+                                                                            printf($row);
+									echo "<option value='" . $row[0]. "'>" . $row[1] . "</option>";
 									}
-									mysql_free_result($consulta);
+									pg_free_result($consulta);
 								?>
 								</select>
 							</td>

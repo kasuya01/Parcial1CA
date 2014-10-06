@@ -405,7 +405,11 @@ function ObtenerCodigo($idarea){
       $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
     if($con->conectar()==true){
-        $query ="SELECT id,idestandar,descripcion from ctl_examen_servicio_diagnostico where id_atencion=98 order by id";
+        $query ="SELECT ctl_examen_servicio_diagnostico.id,idestandar,descripcion 
+FROM ctl_examen_servicio_diagnostico 
+INNER JOIN lab_estandarxgrupo ON lab_estandarxgrupo.id=ctl_examen_servicio_diagnostico.idgrupo
+WHERE id_atencion=98 AND ctl_examen_servicio_diagnostico.activo=TRUE AND lab_estandarxgrupo.activo=TRUE
+ORDER BY ctl_examen_servicio_diagnostico.id";
         $result = pg_query($query);
 	if (!$result)
 	   return false;
@@ -506,7 +510,7 @@ function ObtenerCodigo($idarea){
 	      $query = "SELECT mnt_area_examen_establecimiento.id,ctl_examen_servicio_diagnostico.descripcion,ctl_examen_servicio_diagnostico.idestandar
                         FROM  mnt_area_examen_establecimiento
                         INNER JOIN ctl_examen_servicio_diagnostico ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico=ctl_examen_servicio_diagnostico.id 
-                        WHERE  activo=TRUE AND mnt_area_examen_establecimiento.id_area_servicio_diagnostico=$idarea AND id_establecimiento=$lugar 
+                        WHERE  mnt_area_examen_establecimiento.activo=TRUE AND mnt_area_examen_establecimiento.id_area_servicio_diagnostico=$idarea AND id_establecimiento=$lugar 
                         ORDER BY descripcion";
               
           //  echo $query;

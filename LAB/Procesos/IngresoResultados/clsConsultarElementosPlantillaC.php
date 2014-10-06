@@ -10,7 +10,7 @@ function Nombre_Establecimiento($lugar){
    $con = new ConexionBD;
    if($con->conectar()==true){ 
        	$query="SELECT Nombre FROM mnt_establecimiento WHERE IdEstablecimiento=$lugar";
-	 $result = @mysql_query($query);
+	 $result = @pg_query($query);
      if (!$result)
        return false;
      else
@@ -34,13 +34,13 @@ function Nombre_Establecimiento($lugar){
 	      VALUES($idsolicitud,$iddetalle,'$idexamen',$idrecepcion,'$observacion','$resultado','$responsable',$usuario,NOW(),$usuario,NOW(),$codigoResultado,$lugar)";
      $query2="SELECT LAST_INSERT_ID();";
 
-     $result = mysql_query($query);
-	$result2=mysql_query($query2);
+     $result = pg_query($query);
+	$result2=pg_query($query2);
 		
-		//$idultimo= mysql_insert_id();
+		//$idultimo= pg_insert_id();
 
 	 
-     if ($row=mysql_fetch_array($result2)){
+     if ($row=pg_fetch_array($result2)){
 	$idultimo=$row[0];
 	   return $idultimo;	 
      }else{
@@ -59,13 +59,13 @@ function insertar_detalle($idresultado,$ibacteria,$idtarjeta,$cantidad,$lugar)
 			  VALUES($idresultado,$ibacteria,$idtarjeta,'$cantidad',$lugar)";
 	$query2="SELECT LAST_INSERT_ID();";
 
-     $result = mysql_query($query);
-	$result2=mysql_query($query2);
+     $result = pg_query($query);
+	$result2=pg_query($query2);
 		
-		//$idultimo= mysql_insert_id();
+		//$idultimo= pg_insert_id();
 
 	 
-     if ($row=mysql_fetch_array($result2)){
+     if ($row=pg_fetch_array($result2)){
 	$idultimo=$row[0];
 	   return $idultimo;	 
      }else{
@@ -82,7 +82,7 @@ function insertar_resultadoantibioticos($iddetalleresultado,$idantibiotico,$resu
    {
     $query = "INSERT INTO lab_resultadosportarjeta(IdDetalleResultado,IdAntibiotico,Resultado,IdEstablecimiento) 
 			  VALUES($iddetalleresultado,$idantibiotico,'$resultado',$lugar)";
-     $result = @mysql_query($query);
+     $result = pg_query($query);
 	//echo $query; 
      if (!$result)
        return false;
@@ -98,7 +98,7 @@ function insertar_resultadoantibioticos($iddetalleresultado,$idantibiotico,$resu
    $con = new ConexionBD;
    if($con->conectar()==true) //Estado RC--> Resultados Completo
   {	$query="UPDATE sec_detallesolicitudestudios SET estadodetalle='RC' WHERE IdDetalleSolicitud=$iddetalle"	;	
-     $result = @mysql_query($query);
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -112,10 +112,10 @@ function insertar_resultadoantibioticos($iddetalleresultado,$idantibiotico,$resu
    if($con->conectar()==true){ 
 	$query="SELECT  IdDetalleSolicitud,IdExamen FROM sec_detallesolicitudestudios WHERE IdSolicitudEstudio=$idsolicitud 
 			AND EstadoDetalle <>'RC' AND EstadoDetalle <>'RM'";
-	$detalle=mysql_num_rows(mysql_query($query));
+	$detalle=pg_num_rows(pg_query($query));
 	if(empty($detalle)){
 		$query="UPDATE sec_solicitudestudios SET estado='C' WHERE IdSolicitudEstudio=$idsolicitud"	;
-		$result=@mysql_query($query);		
+		$result=pg_query($query);		
 		return true;	  
     }else
 		return false;
@@ -129,7 +129,7 @@ $con = new ConexionBD;
    if($con->conectar()==true)
    {
      $query = "SELECT NombreEmpleado FROM mnt_empleados WHERE idempleado='$idempleado' and IdEstablecimiento=$lugar";
-     $result = @mysql_query($query);
+     $result = pg_query($query);
        $no="no existe";
      if (!$result)
        return $no;
@@ -147,7 +147,7 @@ function ObtenerFechaResultado($idsolicitud,$IdExamen,$lugar)
    {
       $query = "SELECT DATE_FORMAT(FechaHoraReg,'%d/%m/%Y %H:%i:%s') AS FechaResultado
 		FROM lab_resultados where IdSolicitudEstudio=$idsolicitud AND IdEstablecimiento=$lugar AND IdExamen='$IdExamen'";
-     $result = @mysql_query($query);
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -174,7 +174,7 @@ CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoAp
 			   INNER JOIN mnt_subservicio  ON mnt_subservicio.IdSubServicio=sec_historial_clinico.IdSubServicio
 			   INNER JOIN mnt_servicio  ON mnt_servicio.IdServicio= mnt_subservicio .IdServicio
 			   WHERE lab_recepcionmuestra.IdSolicitudEstudio=$idsolicitud";
-     $result = @mysql_query($query);
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -194,7 +194,7 @@ function DatosResultadoPlanCPositivo($idsolicitud,$iddetalle)
 	INNER JOIN lab_bacterias ON lab_detalleresultado.IdBacteria=lab_bacterias.IdBacteria
 	INNER JOIN lab_tarjetasvitek ON lab_detalleresultado.IdTarjeta=lab_tarjetasvitek.IdTarjeta
 	WHERE IdSolicitudEstudio=$idsolicitud AND IdDetalleSolicitud=$iddetalle";
-     $result = @mysql_query($query);
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -212,7 +212,7 @@ function LeerDatos($idexamen)
 			   FROM lab_examenes b
 			   INNER JOIN lab_areas AS c ON b.IdArea=c.IdArea
 			   WHERE b.IdExamen='$idexamen'";
-     $result = @mysql_query($query);
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -226,10 +226,11 @@ function LeerDatos($idexamen)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT DISTINCT a.IdAntibiotico,Antibiotico FROM lab_antibioticos a
-			   INNER JOIN lab_antibioticosportarjeta AS b ON a.IdAntibiotico=b.IdAntibiotico
-			   WHERE b.IdTarjeta=$idtarjeta";
-     $result = @mysql_query($query);
+     $query = "SELECT DISTINCT lab_antibioticos.id,antibiotico 
+               FROM lab_antibioticos 
+               INNER JOIN lab_antibioticosportarjeta ON lab_antibioticos.id=lab_antibioticosportarjeta.idantibiotico
+               WHERE lab_antibioticosportarjeta.idtarjeta=$idtarjeta";
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -243,8 +244,9 @@ function LeerDatos($idexamen)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT IdBacteria,Bacteria FROM lab_bacterias";
-     $result = @mysql_query($query);
+     $query = "SELECT id,bacteria FROM lab_bacterias";
+    // echo $query;
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -255,7 +257,7 @@ function LeerDatos($idexamen)
    function NombreBacteria($idbacteria)
  {
   $query = "SELECT Bacteria FROM lab_bacterias WHERE IdBacteria=$idbacteria";
-  $result = @mysql_query($query);
+  $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -268,8 +270,9 @@ function LeerDatos($idexamen)
 	$con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT IdObservacion,Observacion FROM lab_observaciones WHERE idobservacion=$idobservacion";
-     $result = @mysql_query($query);
+     $query = "SELECT IdObservacion,Observacion FROM lab_observaciones 
+               WHERE idobservacion=$idobservacion";
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -283,9 +286,15 @@ function LeerTarjeta($lugar)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT IdTarjeta,NombreTarjeta FROM lab_tarjetasvitek where IdEstablecimiento=$lugar AND CURDATE() BETWEEN FechaIni AND IF(FechaFin ='0000-00-00',CURDATE(),FechaFin)";
-     $result = @mysql_query($query);
-   //  echo $query;
+     $query = "SELECT 	id,
+               nombretarjeta
+               FROM lab_tarjetasvitek 
+               WHERE idestablecimiento = $lugar AND CURRENT_DATE BETWEEN fechaini AND 
+               CASE WHEN fechafin IS NULL THEN CURRENT_DATE
+	       ELSE fechafin";
+     //echo $query; 
+     $result = pg_query($query);
+     echo $query;
      if (!$result)
        return false;
      else
@@ -302,7 +311,7 @@ function LeerTarjeta($lugar)
    {
      $query = "SELECT IdObservacion,IdArea,Observacion FROM lab_observaciones
                WHERE IdArea='$idarea' AND TipoRespuesta='$tiporespuesta' ";
-     $result = @mysql_query($query);
+     $result = pg_query($query);
      if (!$result)
        return false;
      else

@@ -31,7 +31,7 @@ switch ($opcion)
 				<td width='40%' >ANTIBIOTICO</td>
 				<td width='60%' >INTERPRETACI&Oacute;N</td>
 			</tr>";
-	while($row = mysql_fetch_array($consulta))//ELEMENTOS)
+	while($row = pg_fetch_array($consulta))//ELEMENTOS)
 	{
 	    $imprimir.="<tr>
 	    	        	<td class='StormyWeatherFieldCaptionTD'>".$row['Antibiotico']."</td>
@@ -42,7 +42,7 @@ switch ($opcion)
 			</tr>";
 		$pos=$pos+1;
 	}
-	mysql_free_result($consulta);
+	pg_free_result($consulta);
 	$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>"	;
 	    $imprimir.="<tr>
 				<td colspan='2' class='StormyWeatherDataTD'  align='right'>
@@ -71,7 +71,7 @@ switch ($opcion)
                 $establecimiento=$_POST['estab'];
 
 		$Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
-		$row_estab = mysql_fetch_array($Consulta_Estab);
+		$row_estab = pg_fetch_array($Consulta_Estab);
 
 		$vector_valores=EXPLODE("/",$valores_antibioticos);
                 $vector_antibioticos=EXPLODE("/",$codigos_antibioticos);
@@ -82,11 +82,11 @@ switch ($opcion)
 		$datos_observacion=$objdatos->LeerObservacion($observacion);
 		$bateria=$objdatos->NombreBacteria($idbacteria);
 
-		$row_generales= mysql_fetch_array($datos_generales);
-		$row_area = mysql_fetch_array($consulta_datos);
-		$row_empleado = mysql_fetch_array($datos_empleado);
-		$row_observacion = mysql_fetch_array($datos_observacion);
-		$row_nombrebacteria= mysql_fetch_array($bateria);
+		$row_generales= pg_fetch_array($datos_generales);
+		$row_area = pg_fetch_array($consulta_datos);
+		$row_empleado = pg_fetch_array($datos_empleado);
+		$row_observacion = pg_fetch_array($datos_observacion);
+		$row_nombrebacteria= pg_fetch_array($bateria);
 
 		$imprimir="<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
 		<tr>
@@ -163,11 +163,11 @@ switch ($opcion)
                                 <td width='50%'><strong>ANTIBIOTICO</strong></td>
 				<td width='50%'><strong>INTERPRETACI&Oacute;N</strong></td>
                             </tr>";
-			mysql_free_result($consulta_datos);
-			mysql_free_result($datos_generales);
+			pg_free_result($consulta_datos);
+			pg_free_result($datos_generales);
 			$pos=0;
 
-		while($row = mysql_fetch_array($consulta))//ELEMENTOS)
+		while($row = pg_fetch_array($consulta))//ELEMENTOS)
 		{
 		$imprimir.="<tr>
 				<td width='50%'>".$row['Antibiotico']."</td>
@@ -177,7 +177,7 @@ switch ($opcion)
                             </tr>";
 				$pos=$pos+1;
 		}
-			mysql_free_result($consulta);
+			pg_free_result($consulta);
 
 
 
@@ -286,7 +286,7 @@ switch ($opcion)
 		     	  			<option value='0' >--Seleccione Observaci&oacute;n--</option>";
 
 
-	    while($row = mysql_fetch_array($consulta_ob))
+	    while($row = pg_fetch_array($consulta_ob))
 		{
 		      $imprimir.="<option value='" . $row['IdObservacion']. "'>" . $row['Observacion'] . "</option>";
 		}
@@ -311,16 +311,16 @@ switch ($opcion)
 	$establecimiento=$_POST['estab'];
 
 	$Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
-	$row_estab = mysql_fetch_array($Consulta_Estab);
+	$row_estab = pg_fetch_array($Consulta_Estab);
 
 	$datos_generales=$objdatos->MostrarDatosGenerales($idsolicitud,$lugar);
 	$datos_empleado=$objdatos->DatosEmpleado($idempleado,$lugar);
 	$consulta_datos=$objdatos->LeerDatos($idexamen);
-	$row_area= mysql_fetch_array($consulta_datos);
-	$row_generales= mysql_fetch_array($datos_generales);
-	$row_empleado = mysql_fetch_array($datos_empleado);
+	$row_area= pg_fetch_array($consulta_datos);
+	$row_generales= pg_fetch_array($datos_generales);
+	$row_empleado = pg_fetch_array($datos_empleado);
 	$datos_observacion=$objdatos->LeerObservacion($observacion);
-	$row_observacion = mysql_fetch_array($datos_observacion);
+	$row_observacion = pg_fetch_array($datos_observacion);
 	//$observacion="Resultado Negativo";
 	$imprimir="<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
 			<tr>
@@ -380,8 +380,8 @@ switch ($opcion)
                         </tr>
 			<tr>
 				<td colspan='1'><strong>Resultado</strong></td>";
-	mysql_free_result($consulta_datos);
-	mysql_free_result($datos_generales);
+	pg_free_result($consulta_datos);
+	pg_free_result($datos_generales);
 
 	switch($resultado)
 	{
