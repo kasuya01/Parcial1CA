@@ -1,9 +1,9 @@
 <?php session_start();
 include_once("../../../Conexion/ConexionBD.php");
 $db = new ConexionBD;
-$usuario=$_SESSION['Correlativo'];
-$lugar=$_SESSION['Lugar'];
-$area=$_SESSION['Idarea'];
+$usuario = $_SESSION['Correlativo'];
+$lugar   = $_SESSION['Lugar'];
+$area    = $_SESSION['Idarea'];
 
 ?>
 <html>
@@ -112,35 +112,35 @@ $area=$_SESSION['Idarea'];
         }
 
         //FUNCION PARA VERIFICAR DATOS REQUERIDOS EN RESULTADOS
-<?php
-$bandera=$_GET['var12'];
-$Pac=$_GET ['var7'];
-$IdEstandar=$_GET['var16'];
-$IdHistorial=$_GET['var17'];
-if($db->conectar()==true){
-  $condatos = "SELECT sec_examenfisico.Peso, sec_examenfisico.Talla, Diagnostico, ConocidoPor
-  FROM sec_historial_clinico
-  INNER JOIN mnt_expediente ON sec_historial_clinico.IdNumeroExp = mnt_expediente.IdNumeroExp
-  INNER JOIN mnt_datospaciente ON mnt_expediente.IdPaciente = mnt_datospaciente.IdPaciente
-  LEFT JOIN sec_diagnosticospaciente ON sec_historial_clinico.IdHistorialClinico = sec_diagnosticospaciente.IdHistorialClinico
-  LEFT JOIN mnt_cie10 ON sec_diagnosticospaciente.IdDiagnostico1 = mnt_cie10.IdCie10
-  LEFT JOIN sec_examenfisico ON sec_historial_clinico.IdHistorialClinico = sec_examenfisico.IdHistorialClinico
-  WHERE sec_historial_clinico.IdHistorialClinico=$IdHistorial
-  AND sec_historial_clinico.IdEstablecimiento =$lugar";
+        <?php
+        $bandera     = $_GET['var12'];
+        $Pac         = $_GET['var7'];
+        $IdEstandar  = $_GET['var16'];
+        $IdHistorial = $_GET['var17'];
+        if($db->conectar()==true) {
+            $condatos = "SELECT t07.peso,
+                                t07.talla,
+                                t06.diagnostico,
+                                --CONCAT_WS(' ',t03.primer_nombre,t03.segundo_nombre,t03.tercer_nombre,t03.primer_apellido,t03.segundo_apellido,t03.apellido_casada) AS conocidopor
+                         FROM sec_historial_clinico               t01
+                         INNER JOIN mnt_expediente                t02 ON (t02.id = t01.id_numero_expediente)
+                         INNER JOIN mnt_paciente                  t03 ON (t03.id = t02.id_paciente)
+                         LEFT OUTER JOIN sec_diagnosticospaciente t04 ON (t01.id = t04.idhistorialclinico)
+                         LEFT OUTER JOIN mnt_cie10                t06 ON (t06.id = t04.iddiagnostico1)
+                         LEFT OUTER JOIN sec_examenfisico         t07 ON (t01.id = t07.idhistorialclinico)
+                         WHERE t01.id = $IdHistorial AND t01.idestablecimiento = $lugar";
 
-  $resultado = mysql_query($condatos);
-  $rows = mysql_fetch_array($resultado);
+            $resultado = pg_query($condatos);
+            $rows = pg_fetch_array($resultado);
 
-  $Peso=$rows['Peso'];
-  $Talla=$rows['Talla'];
-  $Diagnostico=$rows['Diagnostico'];
-  $ConocidoPor=$rows['ConocidoPor'];
-          //echo $Peso." * ".$Talla." * ".$Diagnostico." * ".$ConocidoPor;
-}
-?>
+            $Peso=$rows['peso'];
+            $Talla=$rows['talla'];
+            $Diagnostico=$rows['diagnostico'];
+            //$ConocidoPor=$rows['conocidopor'];
+        }
+        ?>
 </script>
 </head>
-
 <body onLoad="RecogeValor();">
     <table align="center" width="100%">
         <tr>
