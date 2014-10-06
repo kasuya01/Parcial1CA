@@ -23,14 +23,14 @@ $unidades=$row['unidades'];
 $rangoini=$row['rangoinicio'];
 $rangofin=$row['rangofin'];
 $Fechaini=$row['fechaini'];
-list($anio, $mes, $dia) = split('[/.-]', $Fechaini);
-$Fechaini = $anio . "/" . $mes . "/" . $dia;
+/*list($anio, $mes, $dia) = split('[/.-]', $Fechaini);
+$Fechaini = $anio . "/" . $mes . "/" . $dia;*/
 
 $Fechafin=$row['fechafin'];
-if($Fechafin !== null) {
+/*if($Fechafin !== null) {
 	list($anio, $mes, $dia) = split('[/.-]', $Fechafin);
-	$Fechafin = $anio . "/" . $mes . "/" . $dia;
-}
+	$Fechafin = $anio . "/" . $mes . "/" . $dia;*/
+//}
 $idsexo=$row['idsexo'];
 $nombresexo=$row['sexovn'];
 $idedad=$row['idedad'];

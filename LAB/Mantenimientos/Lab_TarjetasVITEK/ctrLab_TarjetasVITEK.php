@@ -154,20 +154,16 @@ switch ($opcion) {
         }
         $query = "SELECT id,nombretarjeta,TO_CHAR(fechaini::timestamp, 'DD/MM/YYYY') AS fechaini, TO_CHAR(fechafin::timestamp, 'DD/MM/YYYY') AS fechafin FROM lab_tarjetasvitek WHERE idestablecimiento=$lugar AND ";
 
-			//VERIFICANDO LOS POST ENVIADOS
+	//VERIFICANDO LOS POST ENVIADOS
         if (!empty($_POST['nombretarjeta']))
         	{ $query .= " nombretarjeta ilike '%".$_POST['nombretarjeta']."%' AND"; }
 
-        if (!empty($_POST['Fechaini'])) { 
-        	$FechaI=explode('/',$_POST['Fechaini']);
-        	$Fechaini=$FechaI[2].'/'.$FechaI[1].'/'.$FechaI[0];
-        	$query .= " FechaIni='".$Fechaini."' AND";
+        if (!empty($_POST['Fechaini'])) {
+        	$query .= " fechaini= ".$Fechaini." AND";
     	}
 
         if (!empty($_POST['Fechafin'])) {
-        	$FechaF=explode('/',$_POST['Fechafin']);
-        	$Fechafin=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];
-        	$query .= " FechaFin='".$Fechafin."' AND";
+        	$query .= " fechafin = ".$Fechafin." AND";
         } 	
 
         if((empty($_POST['nombretarjeta'])) and (empty($_POST['Fechaini'])) and (empty($_POST['Fechafin']))) {

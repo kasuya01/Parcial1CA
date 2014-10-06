@@ -77,7 +77,7 @@ function consultarpag($RegistrosAEmpezar, $RegistrosAMostrar){
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT * FROM lab_antibioticos ORDER BY id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar  ";
+     $query = "SELECT * FROM lab_antibioticos ORDER BY antibiotico LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar  ";
 	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
@@ -91,7 +91,7 @@ function consultar(){
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT * FROM lab_antibioticos ORDER BY id";
+     $query = "SELECT * FROM lab_antibioticos ORDER BY antibiotico";
                 $result = pg_query($query);
 	 if (!$result)
 	   return false;

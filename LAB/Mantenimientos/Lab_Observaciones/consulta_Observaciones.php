@@ -13,7 +13,7 @@ $row = pg_fetch_array($consulta);
 
 //valores de las consultas
 $observacion=$row['observacion'];
-$tiporespuesta=$row['tiporespuesta'];
+$tiporespuesta=$row[1];
 $idarea=$row['idarea'];
 $nombrearea=$row['nombrearea'];
 
@@ -58,12 +58,15 @@ $nombrearea=$row['nombrearea'];
 			<option value="P" >Positivo</option>
 			<option value="N" >Negativo</option>
 			<option value="O" >Otro</option>
-			<?php
+			/*<?php
 				if ($tiporespuesta=="P"){
 				echo "<option value='P' selected='selected'> Positiva </option>";
 				}
-				else{
+				else if($tiporespuesta=="N") {
 				echo "<option value='N' selected='selected'> Negativa </option>";
+				}
+                                else{
+				echo "<option value='O' selected='selected'> Otro </option>";
 				}
 			?>
 			</select>

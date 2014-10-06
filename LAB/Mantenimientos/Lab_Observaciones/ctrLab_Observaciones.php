@@ -57,7 +57,7 @@ switch ($opcion)
 	      <tr>
 		   <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
 		 <!--  <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
-		  <!--  <td class='CobaltFieldCaptionTD'> Area</td> -->
+		    <td class='CobaltFieldCaptionTD'> Area</td> 
 		   <td class='CobaltFieldCaptionTD'> observacion </td>
                    <td class='CobaltFieldCaptionTD'> Tipo de Respuesta</td>		   
 	      </tr>";
@@ -69,7 +69,7 @@ switch ($opcion)
 			<!-- <td aling ='center'> 
 			<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 			onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
-			<!-- <td>". $row['id'] ."</td> -->
+			 <td>". $row[1] ."</td> 
 			<td>".htmlentities($row['observacion'])."</td>";
                          $resp=$row['tiporespuesta'];
                           if ($resp=='S')
@@ -115,11 +115,20 @@ switch ($opcion)
 			
     break;
     case 5://buscar
-	$query = "SELECT idarea,tiporespuesta,observacion FROM lab_observaciones WHERE ";
+	$query = "SELECT lb1.id,  
+                         c1.idarea, 
+                         observacion, tiporespuesta,
+                            CASE tiporespuesta WHEN 'P' THEN 'POSITIVO' 
+                                               WHEN 'N' THEN 'NEGATIVO' 
+                                               WHEN 'O' THEN 'OTRO' 
+                            END AS tiporespuesta1
+                     FROM lab_observaciones lb1
+		     inner join ctl_area_servicio_diagnostico c1 on (c1.id=lb1.idarea)
+		     WHERE  ";
 		
 	//VERIFICANDO LOS POST ENVIADOS
 	if (!empty($_POST['idarea']))
-		{ $query .="idarea=".$_POST['idarea']." AND "; }
+		{ $query .="c1.id=".$_POST['idarea']." AND "; }
 		
 	if (!empty($_POST['tiporespuesta']))
 		{ $query .="tiporespuesta='".$_POST['tiporespuesta']."'AND "; }
@@ -128,7 +137,7 @@ switch ($opcion)
 		{ $query .="observacion ilike '%".$_POST['observacion']."%' AND ";}
                   	
 		 $query = substr($query ,0,strlen($query)-4);
-		$query_search = $query."ORDER  BY id";	
+		$query_search = $query."ORDER  BY c1.idarea,observacion";	
      //  echo $query_search ;
 	//para manejo de la paginacion
 		$RegistrosAMostrar=4;
@@ -143,7 +152,7 @@ switch ($opcion)
 	      <tr>
 		   <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
 		  <!-- <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
-		   <!-- <td class='CobaltFieldCaptionTD'> Area</td> -->
+		    <td class='CobaltFieldCaptionTD'> Area</td>
 		   <td class='CobaltFieldCaptionTD'> observacion </td>
                    <td class='CobaltFieldCaptionTD'> Tipo de Respuesta </td>		   
 	      </tr>";
@@ -155,10 +164,10 @@ switch ($opcion)
 			<!-- <td aling ='center'> 
 			<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 			onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
-		<!-- 	<td>". $row['id'] ."</td> -->
+			<td>". $row[1] ."</td> 
 			<td>".htmlentities($row['observacion'])."</td>";
                          $resp=$row['tiporespuesta'];
-                          if ($resp=='S')
+                          if ($resp=='P')
                              echo "<td>Positivo</td>";
                           else if($resp=='N') 
                              echo "<td>Negativo</td>";	

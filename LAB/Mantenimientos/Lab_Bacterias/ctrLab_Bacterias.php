@@ -112,7 +112,7 @@ switch ($opcion)
 		//VERIFICANDO LOS POST ENVIADOS
         		if (!empty($_POST['bacteria']))
                     		{ 
-                    $query .= " bacteria ilike '%".$_POST['bacteria']."%' "; }
+                    $query .= " bacteria ilike '%".$_POST['bacteria']."%' " ; }
 		
 		$query = substr($query ,0,strlen($query)-1);
 	
@@ -120,7 +120,7 @@ switch ($opcion)
 		$RegistrosAMostrar=4;
 		$RegistrosAEmpezar=($_POST['Pag']-1)*$RegistrosAMostrar;
 		$PagAct=$_POST['Pag'];
-	
+	 $query_search = $query." ORDER BY bacteria";
 		//LAMANDO LA FUNCION DE LA CLASE 
 		$consulta= $objdatos->consultarpagbus($query,$RegistrosAEmpezar, $RegistrosAMostrar);
 

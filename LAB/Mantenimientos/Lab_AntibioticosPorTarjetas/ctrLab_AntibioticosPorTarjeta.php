@@ -31,8 +31,9 @@ switch ($opcion)
 					echo "El Registro no puede ser ingresado consulte al administrador";		
 			}
 		 }
-		 else
+		 else {
 		       echo "Los Antibioticos seleccionados ya estan asinados a la tarjeta";
+                 }
 		break;
     case 2:  //MODIFICAR      
 		If ($objdatos->actualizar($idantibioticoportarjeta,$idantibiotico,$idtarjeta,$usuario)==true)
@@ -51,7 +52,7 @@ switch ($opcion)
 		//  echo $idantibiotico."*".$idtarjeta;
                 
 		 if ($objdatos->eliminar( $idantibiotico,$idtarjeta,$lugar)==true){		
-			echo "Registro Eliminadooooo" ;					
+			echo "Registro Eliminado" ;					
 		}
 		else{
 				echo "El registro no pudo ser eliminado ";
