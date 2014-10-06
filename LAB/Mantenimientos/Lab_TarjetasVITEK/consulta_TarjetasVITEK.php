@@ -12,14 +12,8 @@ $consulta = $obj->consultarid($idtarjeta, $lugar);
 $row = pg_fetch_array($consulta);
 //valores de las consultas
 $nombretarjeta = $row[1];
-
-list($anio, $mes, $dia) = split('[/.-]', $Fechaini);
-$Fechaini = $anio . "/" . $mes . "/" . $dia;
+$Fechaini = $row[2];
 $Fechafin = $row[3];
-//echo $Fechaini."+++".$Fechafin;
-//muestra los datos consultados en los campos del formulario
-list($anio, $mes, $dia) = split('[/.-]', $Fechafin);
-$Fechafin = $anio . "/" . $mes . "/" . $dia;
 ?>
 
 <form name= "frmModificar">

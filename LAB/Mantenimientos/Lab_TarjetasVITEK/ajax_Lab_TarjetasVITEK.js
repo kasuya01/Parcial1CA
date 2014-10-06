@@ -205,6 +205,7 @@ function BuscarCodigo()
     nombretarjeta = document.frmnuevo.txtnombretarjeta.value;
     Fechaini = document.frmnuevo.txtFechainicio.value;
     Fechafin = document.frmnuevo.txtFechaFin.value;
+
     //instanciamos el objetoAjax
     ajax = objetoAjax();
     //archivo que realizar� la operacion ->actualizacion.php
