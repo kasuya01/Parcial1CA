@@ -13,7 +13,7 @@ class clsLab_AntibioticosPorTarjeta
    if($con->conectar()==true) 
    {
    
-  echo  $query = "INSERT INTO lab_antibioticosportarjeta(idantibiotico,idtarjeta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento) 
+   $query = "INSERT INTO lab_antibioticosportarjeta(idantibiotico,idtarjeta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento) 
 			  VALUES($idantibiotico,$idtarjeta,$usuario,NOW(),$usuario,NOW(),$lugar)";
     $result = @pg_query($query);
 	 
@@ -121,10 +121,15 @@ function Verificar_Antibiotico($idantibiotico,$idtarjeta,$lugar){
       /*echo $query = " select A.idantibiotico, A.idtarjeta, antibiotico from lab_antibioticosportarjeta A 
                 inner join lab_antibioticos B on A.idantibiotico=A.idtarjeta 
                 where idtarjeta=$idtarjeta" ;*/
-     $query="select lab_antibioticos.id as antibiotico_id,lab_tarjetasvitek.id,lab_antibioticos.antibiotico from lab_tarjetasvitek
-                   inner join lab_antibioticosportarjeta on lab_tarjetasvitek.id=lab_antibioticosportarjeta.idtarjeta
-                   inner join lab_antibioticos on lab_antibioticosportarjeta.idantibiotico=lab_antibioticos.id
-                   where lab_tarjetasvitek.id=$idtarjeta";
+     $query="select lab_antibioticos.id as 
+       antibiotico_id,
+       lab_tarjetasvitek.id,
+       lab_antibioticos.antibiotico 
+		           from lab_tarjetasvitek
+                   inner join lab_antibioticosportarjeta on (lab_tarjetasvitek.id=lab_antibioticosportarjeta.idtarjeta)
+                   inner join lab_antibioticos 		 on (lab_antibioticosportarjeta.idantibiotico=lab_antibioticos.id)
+                   where lab_tarjetasvitek.id=$idtarjeta 
+                   order by antibiotico";
 	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;

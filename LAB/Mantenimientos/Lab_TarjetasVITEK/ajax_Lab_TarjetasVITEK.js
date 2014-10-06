@@ -56,7 +56,7 @@ function DatosCompletos()
  //document.getElementById('divinicial').style.display="none";
  }
  }	
- }*/
+}*/
 
 function LimpiarCampos() {
     document.frmnuevo.txtnombretarjeta.value = "";
@@ -203,6 +203,8 @@ function BuscarCodigo()
     //valores de los cajas de texto
     idtarjeta = "";
     nombretarjeta = document.frmnuevo.txtnombretarjeta.value;
+    Fechaini = document.frmnuevo.txtFechainicio.value;
+    Fechafin = document.frmnuevo.txtFechaFin.value;
 
     //instanciamos el objetoAjax
     ajax = objetoAjax();
@@ -211,7 +213,7 @@ function BuscarCodigo()
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
-    ajax.send("Pag=" + Pag + "&opcion=" + opcion + "&idtarjeta=" + idtarjeta + "&nombretarjeta=" + escape(nombretarjeta));
+    ajax.send("Pag=" + Pag + "&opcion=" + opcion + "&idtarjeta=" + idtarjeta + "&nombretarjeta=" + escape(nombretarjeta) + "&Fechaini=" + Fechaini + "&Fechafin=" + Fechafin);
     ajax.onreadystatechange = function() {
         if (ajax.readyState == 4) {
             //mostrar los nuevos registros en esta capa

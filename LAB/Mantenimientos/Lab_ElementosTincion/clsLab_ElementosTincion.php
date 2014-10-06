@@ -73,7 +73,7 @@ function VerificarIntegridad($idElemTin)
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT id,elementotincion FROM lab_elementostincion ORDER BY id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar  ";
+     $query = "SELECT id,elementotincion FROM lab_elementostincion ORDER BY elementotincion LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar  ";
 	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;

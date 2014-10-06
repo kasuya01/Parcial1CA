@@ -6,7 +6,7 @@ include ("clsMuestrasRechazadas.php");
 
 //variables POST
 $opcion=$_POST['opcion'];
-$estadosolicitud=3;
+$estadosolicitud='P';
 //echo $estado;
 
 //creando los objetos de las clases
@@ -29,75 +29,76 @@ switch ($opcion)
 	$TipoSolic=$_POST['TipoSolic'];
 
 	$ban=0;  
-	$query=
-       
-       /* "SELECT sdses.idsolicitudestudio,sse.id_expediente,
-lcee.id,nombre_examen,--DATE_FORMAT(
-lrc.fecharecepcion,
---'%d/%m/%Y') AS 
-fecharecepcion, sdses.observacion,
-ctl.nombre, 
-
-ce.nombre
---CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoApellido) AS 
---Paciente, 
---IF(sec_solicitudestudios.idtiposolicitud='S','URGENTE','NORMAL') AS prioridad 
-FROM sec_detallesolicitudestudios sdses
-INNER JOIN sec_solicitudestudios sse ON sdses.idsolicitudestudio=sse.id
-INNER JOIN lab_recepcionmuestra lrc ON sdses.id= lrc.idsolicitudestudio
-INNER JOIN lab_conf_examen_estab lcee ON sdses.id_conf_examen_estab=lcee.id  
-INNER JOIN mnt_area_examen_establecimiento mnt4exe ON lcee.idexamen=mnt4exe.id 
-INNER JOIN sec_historial_clinico shc ON sse.id_historial_clinico=shc.id 
-INNER JOIN ctl_atencion ctl ON shc.idsubservicio=ctl.id 
-INNER JOIN ctl_establecimiento ce ON shc.idestablecimiento=ce.id 
-INNER JOIN mnt_expediente mex ON shc.id_numero_expediente=mex.id 
-INNER JOIN mnt_paciente pa ON mex.id_paciente=pa.id
---WHERE estadodetalle='RM' 
-AND lrc.fecharecepcion<=CURRENT_DATE
-AND sdses.idestablecimiento=$lugar AND";*/
         
-       $query=   "SELECT sdses.id, 
-sse.id_expediente, 
-lcee.id,
-nombre_examen, 
-casd.id, 
-casd.nombrearea, 
-sdses.observacion, 
-ctl.nombre, 
-ce.nombre,
-case WHEN id_expediente_referido is  null then 
-                                  ( mex.numero)
-                                   else (mer.numero) end as numero,
-lrc.fecharecepcion,ce.nombre, lrc.numeromuestra, 
-case WHEN id_expediente_referido is  null  THEN 
-	CONCAT_WS(' ', pa.primer_nombre, NULL,pa.segundo_nombre,NULL,pa.primer_apellido,NULL,pa.segundo_apellido)
-	else  
-	  CONCAT_WS(' ', par.primer_nombre, NULL,par.segundo_nombre,NULL,par.primer_apellido,NULL,par.segundo_apellido)end as paciente,
+       $query=   "WITH tbl_servicio AS (
+                        SELECT t02.id,
+                            CASE WHEN t02.nombre_ambiente IS NOT NULL THEN  	
+                                CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
+                                     ELSE t02.nombre_ambiente
+                                END
+                            ELSE
+                                CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'--> ' || t01.nombre
+                                     WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
+                                END
+                            END AS servicio 
+                        FROM  ctl_atencion 				    t01 
+                        INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
+                        INNER JOIN mnt_area_mod_estab 	   	    t03 ON (t03.id = t02.id_area_mod_estab)
+                        LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
+                        LEFT  JOIN mnt_servicio_externo 		    t05 ON (t05.id = t04.id_servicio_externo)
+                        WHERE id_area_atencion = 3 and t02.id_establecimiento = 49
+                        ORDER BY 2)
+                    SELECT sdses.id, 
+                    sse.id_expediente, 
+                    lcee.id,
+                    nombre_examen, 
+                    casd.id, 
+                    casd.nombrearea, 
+                    sdses.observacion, 
+                    tser.servicio,
+                    ce.nombre,
+                    case WHEN id_expediente_referido is  null then 
+                                                      ( mex.numero)
+                                                       else (mer.numero) end as numero,
+                    TO_CHAR(lrc.fecharecepcion, 'DD/MM/YYYY'),
+                    (SELECT nombre FROM ctl_establecimiento WHERE id = sse.id_establecimiento_externo) AS nombre_establecimiento,
+                    lrc.numeromuestra, 
+                    case WHEN id_expediente_referido is  null  THEN 
+                            CONCAT_WS(' ', pa.primer_nombre, NULL,pa.segundo_nombre,NULL,pa.primer_apellido,NULL,pa.segundo_apellido)
+                            else  
+                              CONCAT_WS(' ', par.primer_nombre, NULL,par.segundo_nombre,NULL,par.primer_apellido,NULL,par.segundo_apellido)end as paciente,
 
-CASE sse.idtiposolicitud WHEN 1 THEN 'URGENTE' 
-			 WHEN 2 THEN 'NORMAL' 
-			 END AS prioridad,
-t01.nombre,  sse.id 
- from ctl_area_servicio_diagnostico casd 
-INNER JOIN mnt_area_examen_establecimiento mnt4 	ON (mnt4.id_area_servicio_diagnostico=casd.id) 
-INNER JOIN lab_conf_examen_estab lcee 			ON (mnt4.id=lcee.idexamen) 
-INNER JOIN sec_detallesolicitudestudios sdses 		ON (sdses.id_conf_examen_estab=lcee.id) 
-LEFT  JOIN sec_solicitudestudios sse 			ON (sdses.idsolicitudestudio=sse.id) 
-INNER JOIN lab_recepcionmuestra lrc 			ON (sse.id= lrc.idsolicitudestudio) 
-LEFT JOIN sec_historial_clinico shc 			ON (sse.id_historial_clinico=shc.id) 
-INNER JOIN mnt_aten_area_mod_estab mnt3 		ON (shc.idsubservicio=mnt3.id) 
-INNER JOIN mnt_area_mod_estab m1 			ON (mnt3.id_area_mod_estab=m1.id) 
-INNER JOIN ctl_atencion ctl 				ON (shc.idsubservicio=ctl.id) 
-INNER JOIN ctl_establecimiento ce 			ON (shc.idestablecimiento=ce.id) 
-INNER JOIN ctl_area_atencion t01 			ON ( m1.id_area_atencion=t01.id) 
-LEFT  JOIN mnt_dato_referencia  mdr                     on (sse.id_dato_referencia=mdr.id)
-LEFT JOIN mnt_expediente_referido mer       		on (mdr.id_expediente_referido=mer.id)
-LEFT JOIN mnt_paciente_referido par   			ON (mer.id_referido=par.id) 
-INNER JOIN mnt_expediente mex 				ON (shc.id_numero_expediente=mex.id)
-INNER JOIN mnt_paciente pa 				ON (mex.id_paciente=pa.id) 
-WHERE  estadodetalle=6	AND sdses.idestablecimiento=$lugar AND ";
+                    CASE sse.idtiposolicitud WHEN 1 THEN 'URGENTE' 
+                                             WHEN 2 THEN 'NORMAL' 
+                                             END AS prioridad,
+                    t01.nombre,
+                    sse.id,
+                    lcee.codigo_examen
+                    from ctl_area_servicio_diagnostico casd 
+                    INNER JOIN mnt_area_examen_establecimiento mnt4 	ON (mnt4.id_area_servicio_diagnostico=casd.id) 
+                    INNER JOIN lab_conf_examen_estab lcee 			ON (mnt4.id=lcee.idexamen) 
+                    INNER JOIN sec_detallesolicitudestudios sdses 		ON (sdses.id_conf_examen_estab=lcee.id) 
+                    LEFT  JOIN sec_solicitudestudios sse 			ON (sdses.idsolicitudestudio=sse.id) 
+                    INNER JOIN lab_recepcionmuestra lrc 			ON (sse.id= lrc.idsolicitudestudio) 
+                    LEFT JOIN sec_historial_clinico shc 			ON (sse.id_historial_clinico=shc.id) 
+                    INNER JOIN mnt_aten_area_mod_estab mnt3 			ON (shc.idsubservicio=mnt3.id) 
+                    INNER JOIN mnt_area_mod_estab m1 				ON (mnt3.id_area_mod_estab=m1.id) 
+                    INNER JOIN ctl_atencion ctl 				ON (mnt3.id_atencion=ctl.id)
+                    INNER JOIN tbl_servicio tser                                ON (tser.id = mnt3.id AND tser.servicio IS NOT NULL)
+                    INNER JOIN ctl_establecimiento ce 				ON (shc.idestablecimiento=ce.id) 
+                    INNER JOIN ctl_area_atencion t01 				ON ( m1.id_area_atencion=t01.id) 
+                    LEFT  JOIN mnt_dato_referencia  mdr                         on (sse.id_dato_referencia=mdr.id)
+                    LEFT JOIN mnt_expediente_referido mer       		on (mdr.id_expediente_referido=mer.id)
+                    LEFT JOIN mnt_paciente_referido par   			ON (mer.id_referido=par.id) 
+                    INNER JOIN mnt_expediente mex 				ON (shc.id_numero_expediente=mex.id)
+                    INNER JOIN mnt_paciente pa 					ON (mex.id_paciente=pa.id)
+                    
+                    WHERE  estadodetalle=(SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = 'RM')	AND sdses.idestablecimiento = $lugar AND ";
 
 
+
+
+                        //'RM'
 		// $estadodetalle='D';  //estado en que la muestra ha sido tomada
 			/*if (!empty($_POST['IdEstab']))
 			{ $query .= " shc.id ='".$_POST['IdEstab']."' AND";}	*/
@@ -109,7 +110,7 @@ WHERE  estadodetalle=6	AND sdses.idestablecimiento=$lugar AND ";
 			{ $query .= " t01.id='".$_POST['IdServ']."' AND";}
 		
 		if (!empty($_POST['IdSubServ']))
-			{ $query .= " mnt_subservicio.IdSubServicio ='".$_POST['IdSubServ']."' AND";}
+			{ $query .= " mnt3.id ='".$_POST['IdSubServ']."' AND";}
 
 		if (!empty($_POST['idarea']))
 			{ $query .= " id_area_servicio_diagnostico='".$_POST['idarea']."' AND";}
@@ -136,9 +137,9 @@ WHERE  estadodetalle=6	AND sdses.idestablecimiento=$lugar AND ";
 			
                         
                         { $query .= " case WHEN id_expediente_referido is null then    
-                                (pa.primer_nombre ilike '%%".$_POST['PNombre']."%%') ELSE
+                                (pa.primer_nombre ilike '%".$_POST['PNombre']."%') ELSE
                                     
-                                (par.primer_nombre ilike '%%".$_POST['PNombre']."%%') END AND";}
+                                (par.primer_nombre ilike '%".$_POST['PNombre']."%') END AND";}
                         
                         
 		
@@ -146,24 +147,24 @@ WHERE  estadodetalle=6	AND sdses.idestablecimiento=$lugar AND ";
 			//{ $query .= " mnt_datospaciente.SegundoNombre='".$_POST['SNombre']."' AND";}
                     
                      { $query .= " case WHEN id_expediente_referido is null then    
-                                (pa.segundo_nombre ilike '%%".$_POST['SNombre']."%%') ELSE
+                                (pa.segundo_nombre ilike '%".$_POST['SNombre']."%') ELSE
                                     
-                                (par.segundo_nombre ilike '%%".$_POST['SNombre']."%%') END AND";}
+                                (par.segundo_nombre ilike '%".$_POST['SNombre']."%') END AND";}
 		
 		if (!empty($_POST['PApellido']))
 			//{ $query .= " mnt_datospaciente.PrimerApellido='".$_POST['PApellido']."' AND";}
                     
                      { $query .= " case WHEN id_expediente_referido is null then    
-                                (pa.primer_apellido ilike '%%".$_POST['PApellido']."%%') ELSE
+                                (pa.primer_apellido ilike '%".$_POST['PApellido']."%') ELSE
                                     
-                                (par.primer_apellido ilike '%%".$_POST['PApellido']."%%') END AND";}
+                                (par.primer_apellido ilike '%".$_POST['PApellido']."%') END AND";}
 		
 		if (!empty($_POST['SApellido']))
 			//{ $query .= " mnt_datospaciente.SegundoApellido='".$_POST['SApellido']."' AND";}
                     { $query .= " case WHEN id_expediente_referido is null then    
-                                (pa.segundo_apellido ilike '%%".$_POST['SApellido']."%%') ELSE
+                                (pa.segundo_apellido ilike '%".$_POST['SApellido']."%') ELSE
                                     
-                                (par.segundo_apellido ilike '%%".$_POST['SApellido']."%%') END AND";}
+                                (par.segundo_apellido ilike '%".$_POST['SApellido']."%') END AND";}
 			
 		if (!empty($_POST['TipoSolic']))
 		{ $query .= " sse.idtiposolicitud='".$_POST['TipoSolic']."' AND";}
@@ -223,7 +224,7 @@ WHERE  estadodetalle=6	AND sdses.idestablecimiento=$lugar AND ";
 					   "<input name='idexamen[".$pos."]' id='idexamen[".$pos."]' type='hidden' size='60' value='".$row[2]."' />".
 					   "<input name='idestablecimiento[".$pos."]' id='idestablecimiento[".$pos."]' type='hidden' size='60' value='".$IdEstab."' />".
 				  "<td width='25%'>".$row['paciente']."</td>
-				   <td width='10%'>".$row[2]."</td>
+				   <td width='10%'>".$row[17]."</td>
 				   <td width='25%'>".htmlentities($row[3])."</td>
 				   <td width='20%'>".htmlentities($row[6])."</td>
 				   <td width='15%'>".htmlentities($row[7])."</td>
