@@ -1110,20 +1110,15 @@ function validaempleado()
 }
 
 
-function IngresarResultados()
-{
-
-    if (validaempleado())
-    {
+function IngresarResultados() {
+    if (validaempleado()) {
         codigoex = document.frmnuevo.txtidexamen.value;
         fechanac = document.frmnuevo.txtFechaNac.value;
         sexo = document.frmnuevo.txtSexo.value;
         idestandar = document.frmnuevo.txtIdEstandar.value;
         idhistorial = document.frmnuevo.txtIdHistorial.value;
         CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial);
-    }
-    else
-    {
+    } else {
         alert("Ingrese el nombre de Responsable");
     }
 }

@@ -302,7 +302,7 @@ switch ($opcion) {
         $idarea = $_POST['idarea'];
         //echo $idarea;
         $resultado = "<select id='cmbEmpleados' name='cmbEmpleados' size='1'>
-                            <option value='0' >--Seleccione--</option>";
+                        <option value='0' >Seleccione...</option>";
         require_once('clsSolicitudesProcesadas.php');
         $obje = new clsSolicitudesProcesadas;
         $consulta = $obje->BuscarEmpleados($idarea, $lugar);

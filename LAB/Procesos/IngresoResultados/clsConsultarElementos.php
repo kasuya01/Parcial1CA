@@ -20,16 +20,16 @@ function Nombre_Establecimiento($lugar){
 
 }
 
-function CalculoDias($fechanac){
-     $con = new ConexionBD;
-   if($con->conectar()==true){ 
-       	$query="SELECT DATEDIFF(NOW( ),'$fechanac')";
-	 $result = @mysql_query($query);
-     if (!$result)
-       return false;
-     else
-       return $result;
-   }
+function CalculoDias($fechanac) {
+    $con = new ConexionBD;
+    if($con->conectar()==true) {
+        $query="SELECT DATEDIFF(NOW( ),'$fechanac')";
+        $result = @mysql_query($query);
+        if (!$result)
+           return false;
+        else
+           return $result;
+    }
 }
 
 function ObtenerCodigoRango($dias){
