@@ -271,34 +271,29 @@ class clsSolicitudesProcesadas {
     function BuscarEmpleados($idarea, $lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-           $query1="SELECT ctl_tipo_establecimiento.codigo 
-                    FROM ctl_establecimiento
-                    INNER JOIN ctl_tipo_establecimiento ON ctl_tipo_establecimiento.id=ctl_establecimiento.id_tipo_establecimiento
-                    WHERE ctl_establecimiento.id=$lugar";
-           $result1 = pg_query($query1);
-           $rowtipo=pg_fetch_array($result1);
-           $tipo=$rowtipo[0];
-           if ($tipo<>'H')
-               
-                $query = "SELECT mnt_empleado.id, CONCAT_WS(' ',nombre,apellido)
-                          FROM mnt_empleado
-                          INNER JOIN mnt_cargoempleados ON mnt_empleado.id_cargo_empleado = mnt_cargoempleados.id
-                          WHERE mnt_cargoempleados.id_atencion = 98
-                          AND IdArea <> 13
-                          AND IdArea <> 7
-                          AND IdArea <> 14
-                          AND id_establecimiento =$lugar";
-            
-            else
-               $query = "SELECT mnt_empleado.id, CONCAT_WS(' ',nombre,apellido)
-                         FROM mnt_empleado
-                         INNER JOIN mnt_cargoempleados ON mnt_empleado.id_cargo_empleado = mnt_cargoempleados.id
-                         WHERE mnt_cargoempleados.id_atencion = 98
-                         AND IdArea <> 13
-                         AND IdArea <> 7
-                         AND IdArea <> 14
-                         AND id_establecimiento =$lugar AND idarea=$idarea";
-            //echo $query;
+            $query = "SELECT t02.codigo 
+                      FROM ctl_establecimiento            t01
+                      INNER JOIN ctl_tipo_establecimiento t02 ON (t02.id = t01.id_tipo_establecimiento)
+                      WHERE t01.id = $lugar";
+            $result  = pg_query($query);
+            $rowtipo = pg_fetch_array($result);
+            $tipo    = $rowtipo[0];
+            $where   = "";
+
+            $query = "SELECT t01.id AS idempleado, t01.nombreempleado
+                      FROM mnt_empleado                        t01
+                      INNER JOIN mnt_cargoempleados            t02 ON (t02.id = t01.id_cargo_empleado)
+                      INNER JOIN ctl_area_servicio_diagnostico t03 ON (t03.id = t01.idarea)
+                      WHERE t02.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')
+                            AND t03.idarea NOT IN ('TMU','INF','REC') AND t01.id_establecimiento = $lugar
+                            ";
+
+            if($tipo === "H") {
+                $where = " AND t01.idarea = $idarea";
+            }
+
+            $query = $query.$where;
+
             $result = pg_query($query);
 
             if (!$result)
