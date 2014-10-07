@@ -145,8 +145,9 @@ switch ($opcion) {
                        t03.numeromuestra, 
                        t06.numero AS idnumeroexp, 
                        t03.id AS idrecepcionmuestra, 
-                       t04.id AS idexamen, 
-                       t04.nombre_examen AS nombreexamen, 
+                       t04.id AS idexamen,
+                       t04.nombre_examen AS nombreexamen,
+                       t04.codigo_examen AS codigoexamen,
                        t01.indicacion, t08.nombrearea, 
                        CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,
                        t07.segundo_apellido,t07.apellido_casada) AS paciente,
@@ -158,7 +159,7 @@ switch ($opcion) {
                        TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud, 
                        t17.tiposolicitud AS prioridad, 
                        t07.fecha_nacimiento AS fechanacimiento, 
-                       t19.nombre AS sexo, 
+                       t19.id AS sexo, 
                        t18.idestandar,
                        t02.id_establecimiento_externo,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
@@ -197,6 +198,7 @@ switch ($opcion) {
                        t03.id AS idrecepcionmuestra,
                        t04.id AS idexamen,
                        t04.nombre_examen AS nombreexamen,
+                       t04.codigo_examen AS codigoexamen,
                        t01.indicacion, t08.nombrearea,
                        CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido,
                        t07.apellido_casada) AS paciente, 
@@ -208,7 +210,7 @@ switch ($opcion) {
                        TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud, 
                        t17.tiposolicitud AS prioridad, 
                        t07.fecha_nacimiento AS fechanacimiento, 
-                       t19.nombre AS sexo, 
+                       t19.id AS sexo, 
                        t18.idestandar,
                        t02.id_establecimiento_externo,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
@@ -277,7 +279,7 @@ switch ($opcion) {
                         "<input name='IdHistorial[" . $pos . "]' id='IdHistorial[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idhistorialclinico"]) . "'/>" .
                         "<input name='referido[" . $pos . "]' id='referido[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["referido"]) . "'/>" .
                         "<td width='20%'>" . htmlentities($row['paciente']) . "</td>
-                        <td width='7%'>" . $row['idexamen'] . "</td>
+                        <td width='7%'>" . $row['codigoexamen'] . "</td>
                         <td width='20%'>" . htmlentities($row['nombreexamen']) . "</td>
                         <td width='12%'>" . htmlentities($row['nombresubservicio']) . "</td>
                         <td width='10%'>" . htmlentities($row['nombreservicio']) . "</td>

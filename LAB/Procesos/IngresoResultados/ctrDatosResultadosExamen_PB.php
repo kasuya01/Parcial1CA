@@ -11,7 +11,7 @@ $opcion=$_POST['opcion'];
 //creando los objetos de las clases
 $objdatos = new clsConsultarElementos;
 $Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
-$row_estab = mysql_fetch_array($Consulta_Estab);
+$row_estab = pg_fetch_array($Consulta_Estab);
 
 switch ($opcion) {
 	case 1:
@@ -19,204 +19,188 @@ switch ($opcion) {
 		$fechanac = $_POST['FechaNac'];
 		$sexo 	  = $_POST['Sexo'];
 	    // echo $fechanac."***".$sexo;
-		$Cuentadias = $objdatos->CalculoDias($fechanac);
-		$Cdias= mysql_fetch_array($Cuentadias);
-		$dias=$Cdias[0];
+		/*$Cuentadias = $objdatos->CalculoDias($fechanac);
+		$Cdias= pg_fetch_array($Cuentadias);
+		$dias=$Cdias[0];*/
 
-		$ConRangos=$objdatos->ObtenerCodigoRango($dias);
-		$row_rangos=  mysql_fetch_array($ConRangos);
-		$idedad=$row_rangos[0];
+		$ConRangos 	= $objdatos->ObtenerCodigoRango($fechanac);
+		$row_rangos = pg_fetch_array($ConRangos);
+		$idedad 	= $row_rangos[0];
 
-	        //   echo $idedad."***".$sexo;
+		$ConEstandar = $objdatos->Obtener_Estandar($idexamen);
+		$CodEstandar = pg_fetch_array($ConEstandar);
+		$IdEstandar  = $CodEstandar[0];
 
-	      //  if ($dias > 0) AND ($dias <=)
-		$ConEstandar=$objdatos->Obtener_Estandar($idexamen);
-		$CodEstandar= mysql_fetch_array($ConEstandar);
-		$IdEstandar=$CodEstandar[0];
-		//$print_r(CodEstandar);
-		//echo $CodEstandar[0];
-		switch ($IdEstandar){
-
+		switch ($IdEstandar) {
 			case "H50":
+				$consulta = $objdatos->LeerElementosExamen($idexamen,$lugar);
 
-			$consulta=$objdatos->LeerElementosExamen($idexamen,$lugar);
-
-			$imprimir="<table width='75%' border='0' align='center' class='StormyWeatherFormTABLE'>";
-			$imprimir.="<tr class='CobaltButton'>
-			<td width='30%'> &nbsp;</td>
-			<td width='30%' aling='center'>Resultado</td>
-			<td width='5%' aling='center'>Unidades</td>
-			<td width='30%' colspan='2'aling='center'>Control Normal </td>
-		</tr>";
-		$pos=0;
-		$posele=0;
-			   while($row = mysql_fetch_array($consulta))//ELEMENTOS
-			   {
-			   	if($row['SubElemento']=="S")
-			   		{$imprimir.="<tr>
-			   	<td colspan='5' style='font:bold' class='StormyWeatherFieldCaptionTD'>".htmlentities($row['Elemento'])."  </td>
-			   </tr>";
-			   $consulta2=$objdatos->LeerSubElementosExamen($row['IdElemento'],$lugar,$sexo,$idedad);
-						while($rowsub = mysql_fetch_array($consulta2))//SUBELEMENTOS
-						{
-							$imprimir.= "<tr>
-							<td width='30%' class='StormyWeatherDataTD'>".htmlentities($rowsub['SubElemento'])."</td>
-							<td width='30%' class='StormyWeatherDataTD'>
-								<input size='20' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]'>
-								<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['IdSubElemento']."'>
-							</td>
-							<td width='5%' class='StormyWeatherDataTD'>".htmlentities($rowsub['Unidad'])."</td>
-							<td width='30%' class='StormyWeatherDataTD'>
-								<input name='txtcontrol[".$pos."]' type='text' id='txtcontrol[".$pos."]'>
-							</td>
-							<td class='StormyWeatherDataTD'>".htmlentities($rowsub['Unidad'])."</td>
-						</tr>";
-						$pos=$pos + 1;
-					}
-					mysql_free_result($consulta2);
-					$imprimir.="<tr>
-					<td colspan='5' class='StormyWeatherDataTD'>".htmlentities($row['ObservElem'])."</td>
-				</tr>
-				<tr>
-					<td colspan='5' class='StormyWeatherDataTD'>&nbsp;</td>
-				</tr>";
-					}//del if
-					else
-					{
-						$imprimir.="<tr>
-						<td class='StormyWeatherFieldCaptionTD' style='font:bold'>".htmlentities($row['Elemento'])."</td>
-						<td class='StormyWeatherDataTD'>
-							<input size='20' name='txtresultadoele[".$posele."]' type='text' id='txtresultadoele[".$posele."]'>
-							<input name='oidelemento[".$posele."]' type='hidden' id='oidelemento[".$posele."]' value='".$row['IdElemento']."'>
-						</td>
-						<td class='StormyWeatherDataTD'>".htmlentities($row['UnidadElem'])."</td>
-						<td class='StormyWeatherDataTD' width='30%'>
-							name='txtcontrolele[".$posele."]' type='text' id='txtcontrolele[".$posele."]'>
-						</td>
-						<td width='10%' class='StormyWeatherDataTD'>".htmlentities($row['UnidadElem'])."</td>
-					</tr>";
-					$posele=$posele + 1;
-					$imprimir.= "
-					<tr>
-						<td rowspan='1' colspan='5' class='StormyWeatherDataTD'>".htmlentities($row['ObservElem'])."</td>
-					</tr>
-					<tr>
-						<td colspan='5' class='StormyWeatherDataTD'>&nbsp;</td>
-					</tr>";
-					}//else
-				}//while
-				mysql_free_result($consulta);
-
-				$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>"	;	//numero de cajas de texto dibujadas para subelementos
-				$imprimir .="<input  type='hidden' id='ocultoele' value='".$posele."'>" ; //elementos
-				$imprimir.="
-				<tr><td colspan='2'  class='StormyWeatherDataTD'>*Resultado Tabulador</td><TD colspan='3' class='StormyWeatherDataTD'>
-					<select id='cmbTabulador' name='cmbTabulador' size='1'>
-						<option value='0' >--Seleccione Resultado--</option>";
-						$conResult=$objdatos->LlenarResultados($IdEstandar);
-						while ($rows =mysql_fetch_array($conResult)){
-							$imprimir.="<option value='" . $rows[0] ."' >".$rows[0]." - ". htmlentities($rows[1])."</option>";
-						}
-						$imprimir.="</select></TD></tr>";
-
-						$imprimir.="<tr>
-						<td colspan='5'>
-							<input type='button' name='Submit' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaB()'>
-						</td>
-					</tr>
-				</table>";
-				echo $imprimir;
-				break;
-
-				default:
-
-				$consulta=$objdatos->LeerElementosExamen($idexamen,$lugar);
-
-				$imprimir="<table width='70%' border='0' align='center' class='StormyWeatherFormTABLE'>
-				<tr  class='CobaltButton' >
-					<td  >&nbsp;</td>
-					<td aling='center'>Resultado</td>
-					<td aling='center'>Unidades</td>
-					<td aling='center'>Rangos de Referencia</td>
-				</tr>";
+				$imprimir="<table width='75%' border='0' align='center' class='StormyWeatherFormTABLE'>";
+				$imprimir.="	<tr class='CobaltButton'>
+									<td width='30%'> &nbsp;</td>
+									<td width='30%' aling='center'>Resultado</td>
+									<td width='5%' aling='center'>Unidades</td>
+									<td width='30%' colspan='2'aling='center'>Control Normal </td>
+								</tr>";
 				$pos=0;
 				$posele=0;
-			while($row = mysql_fetch_array($consulta))//ELEMENTOS
-			{
-				if($row['SubElemento']=="S")
-					{   $imprimir.= "
-				<tr class='StormyWeatherFieldCaptionTD'>
-					<td colspan='4' style='font:bold'>".htmlentities($row['Elemento'])."</td>
-				</tr>";
-				$consulta2=$objdatos->LeerSubElementosExamen($row['IdElemento'],$lugar,$sexo,$idedad);
+			   	while($row = pg_fetch_array($consulta)) { //ELEMENTOS
+			   		if($row['subelemento'] === "S") {
+			   			$imprimir.="<tr>
+			   					<td colspan='5' style='font:bold' class='StormyWeatherFieldCaptionTD'>".htmlentities($row['elemento'])."</td>
+			   				</tr>";
+			   			
+			   			$consulta2=$objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
+						while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
+							$imprimir.= "<tr>
+									<td width='30%' class='StormyWeatherDataTD'>".htmlentities($rowsub['subelemento'])."</td>
+									<td width='30%' class='StormyWeatherDataTD'>
+										<input size='20' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]'>
+										<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>
+									</td>
+									<td width='5%' class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."</td>
+									<td width='30%' class='StormyWeatherDataTD'>
+										<input name='txtcontrol[".$pos."]' type='text' id='txtcontrol[".$pos."]'>
+									</td>
+									<td class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."</td>
+								</tr>";
+							$pos=$pos + 1;
+						}
+						pg_free_result($consulta2);
+						$imprimir.="<tr>
+								<td colspan='5' class='StormyWeatherDataTD'>".htmlentities($row['observelem'])."</td>
+							</tr>
+							<tr>
+								<td colspan='5' class='StormyWeatherDataTD'>&nbsp;</td>
+							</tr>";
+					} else {
+						$imprimir.="<tr>
+								<td class='StormyWeatherFieldCaptionTD' style='font:bold'>".htmlentities($row['elemento'])."</td>
+								<td class='StormyWeatherDataTD'>
+									<input size='20' name='txtresultadoele[".$posele."]' type='text' id='txtresultadoele[".$posele."]'>
+									<input name='oidelemento[".$posele."]' type='hidden' id='oidelemento[".$posele."]' value='".$row['idelemento']."'>
+								</td>
+								<td class='StormyWeatherDataTD'>".htmlentities($row['unidadelem'])."</td>
+								<td class='StormyWeatherDataTD' width='30%'>name='txtcontrolele[".$posele."]' type='text' id='txtcontrolele[".$posele."]'></td>
+								<td width='10%' class='StormyWeatherDataTD'>".htmlentities($row['unidadelem'])."</td>
+							</tr>";
+						$posele=$posele + 1;
+						$imprimir.= "<tr>
+								<td rowspan='1' colspan='5' class='StormyWeatherDataTD'>".htmlentities($row['observelem'])."</td>
+							</tr>
+							<tr>
+								<td colspan='5' class='StormyWeatherDataTD'>&nbsp;</td>
+							</tr>";
+					}
+				}
+				
+				pg_free_result($consulta);
 
-					while($rowsub = mysql_fetch_array($consulta2))//SUBELEMENTOS
-					{
+				$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>";	//numero de cajas de texto dibujadas para subelementos
+				$imprimir .="<input  type='hidden' id='ocultoele' value='".$posele."'>"; //elementos
+				$imprimir.="<tr>
+						<td colspan='2'  class='StormyWeatherDataTD'>*Resultado Tabulador</td>
+						<td colspan='3' class='StormyWeatherDataTD'>
+							<select id='cmbTabulador' name='cmbTabulador' size='1'>
+								<option value='0' >Seleccione Resultado...</option>";
+									$conResult=$objdatos->LlenarResultados($IdEstandar);
+									while ($rows =pg_fetch_array($conResult)) {
+										$imprimir.="<option value='" . $rows[0] ."' >".$rows[0]." - ". htmlentities($rows[1])."</option>";
+									}
+				$imprimir.="</select></td></tr>";
+				$imprimir.="<tr>
+						<td colspan='5'><input type='button' name='Submit' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaB()'></td>
+					</tr>
+				</table>";
+				
+				echo $imprimir;
+				break;
+			default:
+				$consulta=$objdatos->LeerElementosExamen($idexamen,$lugar);
+				$imprimir="<table width='70%' border='0' align='center' class='StormyWeatherFormTABLE'>
+					<tr  class='CobaltButton'>
+						<td>&nbsp;</td>
+						<td aling='center'>Resultado</td>
+						<td aling='center'>Unidades</td>
+						<td aling='center'>Rangos de Referencia</td>
+					</tr>";
+				$pos=0;
+				$posele=0;
+				while($row = pg_fetch_array($consulta)) { //ELEMENTOS
+					if($row['subelemento']=="S") {
 						$imprimir.= "
-						<tr>
-							<td width='30%' class='StormyWeatherDataTD'>".htmlentities($rowsub['SubElemento'])."</td>
-							<td width='25%' class='StormyWeatherDataTD'>
-								<input size='30' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]'>
-								<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['IdSubElemento']."'>
-							</td>
-							<td width='20%' align='center' class='StormyWeatherDataTD'>".htmlentities($rowsub['Unidad'])."
-								<td width='20%' align='center' class='StormyWeatherDataTD'>".$rowsub['rangoinicio']." - ".$rowsub['rangofin']."
-									<input name='txtcontrol[".$pos."]' type='hidden' id='txtcontrol[".$pos."]'>
+							<tr class='StormyWeatherFieldCaptionTD'>
+								<td colspan='4' style='font:bold'>".htmlentities($row['elemento'])."</td>
+							</tr>";
+						$consulta2=$objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
+
+						while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
+							$imprimir.= "
+								<tr>
+									<td width='30%' class='StormyWeatherDataTD'>".htmlentities($rowsub['subelemento'])."</td>
+									<td width='25%' class='StormyWeatherDataTD'>
+										<input size='30' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]'>
+										<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>
+									</td>
+									<td width='20%' align='center' class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."
+									<td width='20%' align='center' class='StormyWeatherDataTD'>".$rowsub['rangoinicio']." - ".$rowsub['rangofin']."
+										<input name='txtcontrol[".$pos."]' type='hidden' id='txtcontrol[".$pos."]'>
+									</td>
+								</tr>";
+							$pos=$pos + 1;
+						} //while interno
+						$imprimir.= "<tr>
+								<td colspan='4' class='StormyWeatherDataTD'>".htmlentities($row['observelem'])."</td>
+							</tr>
+							<tr>
+								<td colspan='4' class='StormyWeatherDataTD'>&nbsp;</td>
+							</tr>";
+					} else {
+						$imprimir.="<tr>
+								<td style='font:bold'>".htmlentities($row['elemento'])."</td>
+								<td>
+									<input name='txtresultadoele[".$posele."]' type='text' id='txtresultadoele[".$posele."]'>
+									<input name='oidelemento[".$posele."]' type='hidden' id='oidelemento[".$posele."]' value='".$row['idelemento']."'>
+								</td>
+								<td class='StormyWeatherDataTD'>".htmlentities($row['unidadelem'])."
+									<input name='txtcontrol[".$posele."]' type='hidden' id='txtcontrol[".$posele."]'>
 								</td>
 							</tr>";
-							$pos=$pos + 1;
-						}//while interno
-						$imprimir.= "<tr>
-						<td colspan='4' class='StormyWeatherDataTD'>".htmlentities($row['ObservElem'])."</td>
-					</tr>
-					<tr>
-						<td colspan='4' class='StormyWeatherDataTD'>&nbsp;</td></tr>";
-				}//if
-				else
-				{
-					$imprimir.="<tr>
-					<td style='font:bold'>".htmlentities($row['Elemento'])."</td>
-					<td>
-						<input name='txtresultadoele[".$posele."]' type='text' id='txtresultadoele[".$posele."]'>
-						<input name='oidelemento[".$posele."]' type='hidden' id='oidelemento[".$posele."]' value='".$row['IdElemento']."'>
-					</td>
-					<td class='StormyWeatherDataTD'>".htmlentities($row['UnidadElem'])."
-						<input name='txtcontrol[".$posele."]' type='hidden' id='txtcontrol[".$posele."]'>
-					</td>
-				</tr>";
-				$posele=$posele+1;
-				$imprimir.= "
-				<tr>
-					<td colspan='4' class='StormyWeatherDataTD'>".htmlentities($row['ObservElem'])."</td>
-				</tr>
-				<tr>
-					<td colspan='4' class='StormyWeatherDataTD'>&nbsp;</td></tr></table>";
-				}//else
-			}//while externo
-			mysql_free_result($consulta);
+						$posele=$posele+1;
+						$imprimir.= "
+							<tr>
+								<td colspan='4' class='StormyWeatherDataTD'>".htmlentities($row['observelem'])."</td>
+							</tr>
+							<tr>
+								<td colspan='4' class='StormyWeatherDataTD'>&nbsp;</td>
+							</tr></table>";
+					}//else
+				}//while externo
+				pg_free_result($consulta);
 				$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>"	;	//numero de cajas de texto dibujadas para subelementos
 				$imprimir .="<input  type='hidden' id='ocultoele' value='".$posele."'>" ; //elementos
 				$imprimir.="<table width='70%' border='0' align='center' class='StormyWeatherFormTABLE'>
-				<tr><td class='StormyWeatherDataTD'>*Resultado Tabulador</td><TD colspan='3' class='StormyWeatherDataTD'>
-					<select id='cmbTabulador' name='cmbTabulador' size='1'>
-						<option value='0' >--Seleccione Resultado--</option>";
-						$conResult=$objdatos->LlenarResultados($IdEstandar);
-						while ($rows =mysql_fetch_array($conResult)){
-							$imprimir.="<option value='" . $rows[0] ."' >".$rows[0]." - ".htmlentities($rows[1])."</option>";
-						}
-						$imprimir.="</select></TD></tr></table>
-						<table width='70%' border='0' align='center' class='StormyWeatherFormTABLE'>
-							<tr class='StormyWeatherDataTD'><td colspan='3' class='StormyWeatherDataTD'>
+					<tr>
+						<td class='StormyWeatherDataTD'>*Resultado Tabulador</td>
+						<td colspan='3' class='StormyWeatherDataTD'>
+							<select id='cmbTabulador' name='cmbTabulador' size='1'>
+								<option value='0' >--Seleccione Resultado--</option>";
+									$conResult=$objdatos->LlenarResultados($IdEstandar);
+									while ($rows =pg_fetch_array($conResult)) {
+										$imprimir.="<option value='" . $rows[0] ."' >".$rows[0]." - ".htmlentities($rows[1])."</option>";
+									}
+				$imprimir.="</select></td></tr></table>
+					<table width='70%' border='0' align='center' class='StormyWeatherFormTABLE'>
+						<tr class='StormyWeatherDataTD'>
+							<td colspan='3' class='StormyWeatherDataTD'>
 								<input type='button' name='Submit' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaB()'>
 							</td>
 						</tr>
 					</table>";
-					echo $imprimir;
-					break;
-				}
-
+				echo $imprimir;
 				break;
-
+		}
+		break;
    case 2://MOSTRANDO VISTA PREVIA DE LOS RESULTADOS INGRESADOS
    	$idexamen=$_POST['idexamen'];//*
    	$idsolicitud= $_POST['idsolicitud'];
@@ -238,17 +222,17 @@ switch ($opcion) {
 
 
    	$Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
-   	$row_estab = mysql_fetch_array($Consulta_Estab);
+   	$row_estab = pg_fetch_array($Consulta_Estab);
    	$ConEstandar=$objdatos->Obtener_Estandar($idexamen);
-   	$CodEstandar= mysql_fetch_array($ConEstandar);
+   	$CodEstandar= pg_fetch_array($ConEstandar);
    	$IdEstandar=$CodEstandar[0];
 
    	$Cuentadias=$objdatos->CalculoDias($fechanac);
-   	$Cdias= mysql_fetch_array($Cuentadias);
+   	$Cdias= pg_fetch_array($Cuentadias);
    	$dias=$Cdias[0];
 
    	$ConRangos=$objdatos->ObtenerCodigoRango($dias);
-   	$row_rangos=  mysql_fetch_array($ConRangos);
+   	$row_rangos=  pg_fetch_array($ConRangos);
    	$idedad=$row_rangos[0];
           // echo $idedad."***".$sexo;
 //echo $IdEstandar;
@@ -265,9 +249,9 @@ switch ($opcion) {
    		$consulta_datos=$objdatos->LeerDatos($idexamen);
    		$datos_generales=$objdatos->MostrarDatosGenerales($idsolicitud,$lugar);
    		$datos_empleado=$objdatos->DatosEmpleado($idempleado,$lugar);
-   		$row_generales= mysql_fetch_array($datos_generales);
-   		$row_area = mysql_fetch_array($consulta_datos);
-   		$row_empleado = mysql_fetch_array($datos_empleado);
+   		$row_generales= pg_fetch_array($datos_generales);
+   		$row_area = pg_fetch_array($consulta_datos);
+   		$row_empleado = pg_fetch_array($datos_empleado);
 
    		$imprimir="<table width='92%' align='center'class='StormyWeatherFormTABLE' >
    		<tr>
@@ -321,7 +305,7 @@ switch ($opcion) {
    				<td colspan='4'>".htmlentities($observacion)."</td>
    			</tr>";
    			$nomcod=$objdatos->ObtenerNombreCodigo($tab);
-   			$row_codigo= mysql_fetch_array($nomcod);
+   			$row_codigo= pg_fetch_array($nomcod);
 										// echo $row_codigo[0];
    			$imprimir.="<tr>
    			<tdcolspan='1' >Resultado Tabulador:</td>
@@ -330,8 +314,8 @@ switch ($opcion) {
    	</table>";
 
    	$imprimir.="<table width='89%' border='0' align='center' class='StormyWeatherFormTABLE'>";
-   	mysql_free_result($consulta_datos);
-   	mysql_free_result($datos_generales);
+   	pg_free_result($consulta_datos);
+   	pg_free_result($datos_generales);
    	$imprimir.="<tr class='CobaltButton'>
    	<td width='35%'></td>
    	<td width='25%'>Resultado</td>
@@ -340,33 +324,33 @@ switch ($opcion) {
    </tr>";
    $pos=0;
    $posele=0;
-			while($row = mysql_fetch_array($consulta))//ELEMENTOS
+			while($row = pg_fetch_array($consulta))//ELEMENTOS
 			{
 
-				if($row['SubElemento']=="S")
+				if($row['subelemento']=="S")
 					{   $imprimir.= "
 				<tr class='StormyWeatherFieldCaptionTD'>
-					<td colspan='5' style='font:bold'><strong>".htmlentities($row['Elemento'])."</strong></td>
+					<td colspan='5' style='font:bold'><strong>".htmlentities($row['elemento'])."</strong></td>
 				</tr>";
-				$consulta2=$objdatos->LeerSubElementosExamen($row['IdElemento'],$lugar,$sexo,$idedad);
+				$consulta2=$objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
 
-					while($rowsub = mysql_fetch_array($consulta2))//SUBELEMENTOS
+					while($rowsub = pg_fetch_array($consulta2))//SUBELEMENTOS
 					{
 						$imprimir.=
 						"<tr>
-						<td width='35%'>".htmlentities($rowsub['SubElemento'])."</td>
+						<td width='35%'>".htmlentities($rowsub['subelemento'])."</td>
 						<td width='25%'>".htmlentities($vector[$pos]).
-							"<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['IdSubElemento']."'>
+							"<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>
 						</td>
-						<td width='20%'>".htmlentities($rowsub['Unidad'])."</td>
-						<td width='40%'>".htmlentities($vector_controles[$pos])." ".htmlentities($rowsub['Unidad'])." </td>
+						<td width='20%'>".htmlentities($rowsub['unidad'])."</td>
+						<td width='40%'>".htmlentities($vector_controles[$pos])." ".htmlentities($rowsub['unidad'])." </td>
 					</tr>";
 					$pos=$pos + 1;
 				}
 
 				$imprimir.= "
 				<tr>
-					<td colspan='4'>".htmlentities($row['ObservElem'])."</td>
+					<td colspan='4'>".htmlentities($row['observelem'])."</td>
 				</tr>
 				<tr>
 					<td colspan='5'>&nbsp;</td>
@@ -375,21 +359,21 @@ switch ($opcion) {
 			else
 			{
 				$imprimir.= "<tr>
-				<td width='40%' style='font:bold' class='StormyWeatherFieldCaptionTD'><strong>".htmlentities($row['Elemento'])."</strong>
+				<td width='40%' style='font:bold' class='StormyWeatherFieldCaptionTD'><strong>".htmlentities($row['elemento'])."</strong>
 				</td>
 				<td  width='25%'>"
 					.htmlentities($vector_elementos[$posele]).
-					"<input name='oidelemento[".$posele."]' type='hidden' id='oidelemento[".$posele."]' value='".$row['IdElemento']."'>
+					"<input name='oidelemento[".$posele."]' type='hidden' id='oidelemento[".$posele."]' value='".$row['idelemento']."'>
 				</td>
-				<td width='10%'>".htmlentities($row['UnidadElem'])."</td>
+				<td width='10%'>".htmlentities($row['unidadelem'])."</td>
 				<td>"
-					.htmlentities($vector_controles_ele[$posele])."  ".htmlentities($row['UnidadElem'])."
+					.htmlentities($vector_controles_ele[$posele])."  ".htmlentities($row['unidadelem'])."
 				</td>
 			</tr>";
 			$posele=$posele+1;
 			$imprimir.= "
 			<tr>
-				<td colspan='5'>".htmlentities($row['ObservElem'])."</td>
+				<td colspan='5'>".htmlentities($row['observelem'])."</td>
 			</tr>
 			<tr>
 				<td colspan='6'>&nbsp;</td></tr>";
@@ -397,7 +381,7 @@ switch ($opcion) {
 			}
 
 		}
-		mysql_free_result($consulta);
+		pg_free_result($consulta);
                     $imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>"	;	//numero de cajas de texto dibujadas para subelementos
                     $imprimir .="<input  type='hidden' id='ocultoele' value='".$posele."'>"; //elementos
 
@@ -422,9 +406,9 @@ switch ($opcion) {
         $consulta_datos=$objdatos->LeerDatos($idexamen);
         $datos_generales=$objdatos->MostrarDatosGenerales($idsolicitud,$lugar);
         $datos_empleado=$objdatos->DatosEmpleado($idempleado,$lugar);
-        $row_generales= mysql_fetch_array($datos_generales);
-        $row_area = mysql_fetch_array($consulta_datos);
-        $row_empleado = mysql_fetch_array($datos_empleado);
+        $row_generales= pg_fetch_array($datos_generales);
+        $row_area = pg_fetch_array($consulta_datos);
+        $row_empleado = pg_fetch_array($datos_empleado);
         $nombreEmpleado=$row_empleado['NombreEmpleado'];
                        // echo $row_generales['FechaNacimiento'];
         $imprimir="<br>
@@ -483,7 +467,7 @@ switch ($opcion) {
         			<td colspan='5'>".htmlentities($observacion)."</td>
         		</tr>";
         		$nomcod=$objdatos->ObtenerNombreCodigo($tab);
-        		$row_codigo= mysql_fetch_array($nomcod);
+        		$row_codigo= pg_fetch_array($nomcod);
 							// echo $row_codigo[0];
         		$imprimir.="<tr>
         		<td>Resultado Tabulador:</td><td colspan='5'>".$row_codigo[0]."</td>
@@ -500,24 +484,24 @@ switch ($opcion) {
     </tr>";
     $pos=0;
     $posele=0;
-			while($row = mysql_fetch_array($consulta))//ELEMENTOS
+			while($row = pg_fetch_array($consulta))//ELEMENTOS
 			{
 
-				if($row['SubElemento']=="S")
+				if($row['subelemento']=="S")
 					{$imprimir.= "<tr>
-				<td colspan='4' style='font:bold'><strong>".htmlentities($row['Elemento'])."</strong></td>
+				<td colspan='4' style='font:bold'><strong>".htmlentities($row['elemento'])."</strong></td>
 			</tr>";
-			$consulta2=$objdatos->LeerSubElementosExamen($row['IdElemento'],$lugar,$sexo,$idedad);
+			$consulta2=$objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
 
-				while($rowsub = mysql_fetch_array($consulta2))//SUBELEMENTOS
+				while($rowsub = pg_fetch_array($consulta2))//SUBELEMENTOS
 				{
 					$imprimir.="<tr>
-					<td width='35%'>".htmlentities($rowsub['SubElemento'])."</td>
+					<td width='35%'>".htmlentities($rowsub['subelemento'])."</td>
 
 					<td width='25%'>".htmlentities($vector[$pos]).
-						"<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['IdSubElemento']."'>
+						"<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>
 					</td>
-					<td width='10%'>".htmlentities($rowsub['Unidad'])."</td>";
+					<td width='10%'>".htmlentities($rowsub['unidad'])."</td>";
 					if (empty($rowsub['rangoinicio']) AND empty($rowsub['rangofin']))
 						$imprimir.= "<td >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 
@@ -527,28 +511,28 @@ switch ($opcion) {
 					$pos=$pos + 1;
 				}
 				$imprimir.= "<tr>
-				<td colspan='5'>".htmlentities($row['ObservElem'])."</td>
+				<td colspan='5'>".htmlentities($row['observelem'])."</td>
 			</tr>";
 		}
 		else
 		{
 			$imprimir.= "<tr>
-			<td style='font:bold'  class='StormyWeatherFieldCaptionTD'>".htmlentities($row['Elemento'])."</td>
+			<td style='font:bold'  class='StormyWeatherFieldCaptionTD'>".htmlentities($row['elemento'])."</td>
 			<td>".htmlentities($vector_elementos[$posele]).
-				"<input name='oidelemento[".$posele."]' type='hidden' id='oidelemento[".$posele."]' value='".$row['IdElemento']."'>			  </td>
-				<td width='25%'>".htmlentities($row['UnidadElem'])."</td>
+				"<input name='oidelemento[".$posele."]' type='hidden' id='oidelemento[".$posele."]' value='".$row['idelemento']."'>			  </td>
+				<td width='25%'>".htmlentities($row['unidadelem'])."</td>
 			</tr>";
 			$posele=$posele+1;
 			$imprimir.= "<tr>
-			<td colspan='5'>".htmlentities($row['ObservElem'])."</td>
+			<td colspan='5'>".htmlentities($row['observelem'])."</td>
 		</tr>";
 	}
 
 }
 
-mysql_free_result($consulta);
-mysql_free_result($consulta_datos);
-mysql_free_result($datos_generales);
+pg_free_result($consulta);
+pg_free_result($consulta_datos);
+pg_free_result($datos_generales);
 
 			$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>"	;	//numero de cajas de texto dibujadas para subelementos
 			$imprimir .="<input  type='hidden' id='ocultoele' value='".$posele."'>" ; //elementos
