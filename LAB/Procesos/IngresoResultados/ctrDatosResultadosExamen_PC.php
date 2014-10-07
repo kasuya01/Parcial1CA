@@ -93,8 +93,8 @@ switch ($opcion)
 			<td colspan='1' align='left' width='20%'><img id='Image1' style='WIDTH: 80px; HEIGHT: 55px' height='86' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
                         <td align='center' colspan='4' width='60%' class='Estilo5'>
 				<p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
-				<p><strong>".$row_estab['Nombre']."</strong></p>
-				<p><strong>&Aacute;rea de ".htmlentities($row_area['NombreArea'])." </strong></p></td>
+				<p><strong>".$row_estab['nombre']."</strong></p>
+				<p><strong>&Aacute;rea de ".htmlentities($row_area['nombrearea'])." </strong></p></td>
                        <td colspan='1' align='right' width='20%'><img id='Image3' style='WIDTH: 110px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
 		</tr>
                 <tr>
@@ -131,11 +131,11 @@ switch ($opcion)
 		</tr>
 		<tr>
 			<td colspan='1' style='font:bold'><strong>Examen Realizado:</strong></td>
-			<td colspan='5'style='font:bold'>".htmlentities($row_area['NombreExamen'])."</td>
+			<td colspan='5'style='font:bold'>".htmlentities($row_area['nombre_examen'])."</td>
 		</tr>
                 <tr>
 			<td colspan='1'><strong>Validado Por</strong></td>
-			<td colspan='5'>".htmlentities($row_empleado['NombreEmpleado'])."</td>
+			<td colspan='5'>".htmlentities($row_empleado['empleado'])."</td>
 		</tr>
                 <tr>
 			<td colspan='6'>&nbsp;</td>
@@ -170,9 +170,9 @@ switch ($opcion)
 		while($row = pg_fetch_array($consulta))//ELEMENTOS)
 		{
 		$imprimir.="<tr>
-				<td width='50%'>".$row['Antibiotico']."</td>
+				<td width='50%'>".$row['antibiotico']."</td>
 				<td width='50%'>".htmlentities($vector_valores[$pos]).
-					"<input name='oidantibiotico[".$pos."]' type='hidden' id='oidantibiotico[".$pos."]' value='".$row['IdAntibiotico']."'>
+					"<input name='oidantibiotico[".$pos."]' type='hidden' id='oidantibiotico[".$pos."]' value='".$row['idantibiotico']."'>
 				</td>
                             </tr>";
 				$pos=$pos+1;
@@ -187,7 +187,7 @@ switch ($opcion)
 			     <tr>
 				<td>
                                     <input type='button' name='Guardar'  id='Guardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaC()'\>
-                                    <input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaC(".$idsolicitud.",\"".$idexamen."\",\"".$resultado."\",\"".$row_empleado['NombreEmpleado']."\",\"".htmlentities($row_generales['Procedencia'])."\",\"".htmlentities($row_generales['Origen'])."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_antibioticos)."\",\"".$codigos_antibioticos."\",".$idbacteria.",\"".$cantidad."\",".$idtarjeta.",\"".htmlentities($row_area['NombreArea'])."\",\"".htmlentities($establecimiento)."\") ;' />
+                                    <input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaC(".$idsolicitud.",\"".$idexamen."\",\"".$resultado."\",\"".$row_empleado['empleado']."\",\"".htmlentities($row_generales['Procedencia'])."\",\"".htmlentities($row_generales['Origen'])."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_antibioticos)."\",\"".$codigos_antibioticos."\",".$idbacteria.",\"".$cantidad."\",".$idtarjeta.",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\") ;' />
                                     <input type='button' id='btnSalir' value='cerrar' onclick='Cerrar()'
                                 </td>
 

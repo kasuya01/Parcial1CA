@@ -304,7 +304,7 @@ function LeerTarjeta($lugar)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT 	id,
+     $query = "SELECT id,
                nombretarjeta
                FROM lab_tarjetasvitek 
                WHERE idestablecimiento = $lugar AND CURRENT_DATE BETWEEN fechaini AND 
@@ -327,7 +327,8 @@ function LeerTarjeta($lugar)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT id,IdArea,observacion FROM lab_observaciones
+     $query = "SELECT id,idarea,observacion 
+               FROM lab_observaciones
                WHERE idarea=$idarea AND tiporespuesta='$tiporespuesta'";
      $result = pg_query($query);
      if (!$result)
