@@ -213,7 +213,8 @@ class clsSolicitudesProcesadas {
     function BuscarEmpleadoValidador($responsable) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "SELECT NombreEmpleado FROM mnt_empleados WHERE IdEmpleado='$responsable' ";
+            $query = "SELECT CONCAT_WS(' ',nombre,NULL,apellido) as empleado 
+                      FROM mnt_empleado WHERE id='$responsable' ";
             $result = pg_query($query);
             if (!$result)
                 return false;
@@ -270,15 +271,34 @@ class clsSolicitudesProcesadas {
     function BuscarEmpleados($idarea, $lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "SELECT mnt_empleado.id, CONCAT_WS(' ',nombre,apellido)
-                 FROM mnt_empleado
-                 INNER JOIN mnt_cargoempleados ON mnt_empleado.id_cargo_empleado = mnt_cargoempleados.id
-                 WHERE mnt_cargoempleados.id_atencion = 98
-                 AND IdArea <> 13
-                 AND IdArea <> 7
-                 AND IdArea <> 14
-                 AND id_establecimiento =$lugar";
-            // echo $query;
+           $query1="SELECT ctl_tipo_establecimiento.codigo 
+                    FROM ctl_establecimiento
+                    INNER JOIN ctl_tipo_establecimiento ON ctl_tipo_establecimiento.id=ctl_establecimiento.id_tipo_establecimiento
+                    WHERE ctl_establecimiento.id=$lugar";
+           $result1 = pg_query($query1);
+           $rowtipo=pg_fetch_array($result1);
+           $tipo=$rowtipo[0];
+           if ($tipo<>'H')
+               
+                $query = "SELECT mnt_empleado.id, CONCAT_WS(' ',nombre,apellido)
+                          FROM mnt_empleado
+                          INNER JOIN mnt_cargoempleados ON mnt_empleado.id_cargo_empleado = mnt_cargoempleados.id
+                          WHERE mnt_cargoempleados.id_atencion = 98
+                          AND IdArea <> 13
+                          AND IdArea <> 7
+                          AND IdArea <> 14
+                          AND id_establecimiento =$lugar";
+            
+            else
+               $query = "SELECT mnt_empleado.id, CONCAT_WS(' ',nombre,apellido)
+                         FROM mnt_empleado
+                         INNER JOIN mnt_cargoempleados ON mnt_empleado.id_cargo_empleado = mnt_cargoempleados.id
+                         WHERE mnt_cargoempleados.id_atencion = 98
+                         AND IdArea <> 13
+                         AND IdArea <> 7
+                         AND IdArea <> 14
+                         AND id_establecimiento =$lugar AND idarea=$idarea";
+            //echo $query;
             $result = pg_query($query);
 
             if (!$result)

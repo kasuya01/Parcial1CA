@@ -97,7 +97,7 @@ function insertar_resultadoantibioticos($iddetalleresultado,$idantibiotico,$resu
  {
    $con = new ConexionBD;
    if($con->conectar()==true) //Estado RC--> Resultados Completo
-  {	$query="UPDATE sec_detallesolicitudestudios SET estadodetalle='RC' WHERE IdDetalleSolicitud=$iddetalle"	;	
+  {	$query="UPDATE sec_detallesolicitudestudios SET estadodetalle=5 WHERE id=$iddetalle";	
      $result = pg_query($query);
      if (!$result)
        return false;
@@ -128,7 +128,8 @@ function DatosEmpleado($idempleado,$lugar)
 $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT NombreEmpleado FROM mnt_empleados WHERE idempleado='$idempleado' and IdEstablecimiento=$lugar";
+     $query = "SELECT CONCAT_WS(' ',nombre,NULL,apellido) as empleado 
+               FROM mnt_empleado WHERE id=$idempleado AND id_establecimiento=$lugar";
      $result = pg_query($query);
        $no="no existe";
      if (!$result)
@@ -161,7 +162,7 @@ function MostrarDatosGenerales($idsolicitud,$lugar)
 	$con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT distinct lab_recepcionmuestra.IdSolicitudEstudio, sec_historial_clinico.IdNumeroExp,
+    echo $query = "SELECT distinct lab_recepcionmuestra.IdSolicitudEstudio, sec_historial_clinico.IdNumeroExp,
 CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoApellido) AS NombrePaciente,
   (year(CURRENT_DATE)-year(FechaNacimiento))AS Edad,IF(Sexo=1,'Masculino','Femenino') AS Sexo,
 			   TelefonoCasa,Direccion,NombreSubServicio AS Origen,NombreServicio AS Procedencia,
@@ -174,6 +175,20 @@ CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoAp
 			   INNER JOIN mnt_subservicio  ON mnt_subservicio.IdSubServicio=sec_historial_clinico.IdSubServicio
 			   INNER JOIN mnt_servicio  ON mnt_servicio.IdServicio= mnt_subservicio .IdServicio
 			   WHERE lab_recepcionmuestra.IdSolicitudEstudio=$idsolicitud";
+    /*SELECT distinct lab_recepcionmuestra.idsolicitudestudio, sec_historial_clinico.id_numero_expediente,
+CONCAT_WS(' ',mnt_paciente.primer_nombre,mnt_paciente.segundo_nombre,mnt_paciente.tercer_nombre,mnt_paciente.primer_apellido,
+                       mnt_paciente.segundo_apellido,mnt_paciente.apellido_casada) AS paciente,
+mnt_dato_referencia.id_expediente_referido,
+CONCAT_WS(' ',mnt_paciente_referido.primer_nombre,mnt_paciente_referido.segundo_nombre,mnt_paciente_referido.tercer_nombre,mnt_paciente_referido.primer_apellido,mnt_paciente_referido.segundo_apellido,
+mnt_paciente_referido.apellido_casada) AS paciente_referido, (year(CURRENT_DATE)-year(fechanacimiento))AS Edad
+FROM lab_recepcionmuestra
+INNER JOIN sec_solicitudestudios  ON sec_solicitudestudios.id = lab_recepcionmuestra.idsolicitudestudio
+LEFT JOIN sec_historial_clinico  ON sec_historial_clinico.id = sec_solicitudestudios.id_historial_clinico
+LEFT JOIN mnt_expediente ON mnt_expediente.id = sec_historial_clinico.id_numero_expediente
+LEFT JOIN mnt_paciente  ON mnt_paciente.id=mnt_expediente.id_paciente
+LEFT JOIN mnt_dato_referencia ON mnt_dato_referencia.id=sec_solicitudestudios.id_dato_referencia
+LEFT JOIN mnt_expediente_referido ON mnt_expediente_referido.id=mnt_dato_referencia.id_expediente_referido
+LEFT JOIN mnt_paciente_referido ON mnt_paciente_referido.id=mnt_expediente_referido.id_referido*/
      $result = pg_query($query);
      if (!$result)
        return false;
@@ -214,7 +229,7 @@ function LeerDatos($idexamen)
                ON mnt_area_examen_establecimiento.id=lab_conf_examen_estab.idexamen
                INNER JOIN ctl_area_servicio_diagnostico 
                ON ctl_area_servicio_diagnostico.id=mnt_area_examen_establecimiento.id_area_servicio_diagnostico
-               WHERE id_atencion=98 AND codigo_examen='$idexamen'";
+               WHERE id_atencion=98 AND lab_conf_examen_estab.id=$idexamen";
      $result = pg_query($query);
      if (!$result)
        return false;
@@ -259,7 +274,7 @@ function LeerDatos($idexamen)
 // FUNCION PARA OBTENER EL NOMBRE DE LA BACTERIA
    function NombreBacteria($idbacteria)
  {
-  $query = "SELECT Bacteria FROM lab_bacterias WHERE IdBacteria=$idbacteria";
+  $query = "SELECT bacteria FROM lab_bacterias WHERE id=$idbacteria";
   $result = pg_query($query);
      if (!$result)
        return false;
@@ -273,8 +288,8 @@ function LeerDatos($idexamen)
 	$con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT IdObservacion,Observacion FROM lab_observaciones 
-               WHERE idobservacion=$idobservacion";
+     $query = "SELECT id,observacion FROM lab_observaciones 
+               WHERE id=$idobservacion";
      $result = pg_query($query);
      if (!$result)
        return false;
@@ -312,8 +327,8 @@ function LeerTarjeta($lugar)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT IdObservacion,IdArea,Observacion FROM lab_observaciones
-               WHERE IdArea='$idarea' AND TipoRespuesta='$tiporespuesta' ";
+     $query = "SELECT id,IdArea,observacion FROM lab_observaciones
+               WHERE idarea=$idarea AND tiporespuesta='$tiporespuesta'";
      $result = pg_query($query);
      if (!$result)
        return false;

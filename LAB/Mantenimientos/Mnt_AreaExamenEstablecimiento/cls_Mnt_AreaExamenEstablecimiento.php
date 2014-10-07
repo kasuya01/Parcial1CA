@@ -23,7 +23,7 @@ class cls_Mnt_AreaExamenEstablecimiento {
 								  	FROM lab_estandarxgrupo 		   ti01
 									INNER JOIN ctl_examen_servicio_diagnostico ti02 ON (ti01.id = ti02.idgrupo)
 									INNER JOIN ctl_atencion 		   ti03 ON (ti03.id = ti02.id_atencion)
-									WHERE ti03.codigo_busqueda = 'DCOLAB'
+									WHERE ti03.codigo_busqueda = 'DCOLAB' AND ti01.activo = true AND ti02.activo = true
 							  	) AS tp01, (
 									SELECT ti04.id AS id_area,
 										   ti04.idarea AS codigo_area,

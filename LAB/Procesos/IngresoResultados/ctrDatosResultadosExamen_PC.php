@@ -69,7 +69,7 @@ switch ($opcion)
 		$cantidad=$_POST['cantidad'];
 		$resultado="P";
                 $establecimiento=$_POST['estab'];
-          echo $idexamen." solicitud=".$idsolicitud;
+          echo " Solicitud=".$idsolicitud." empleado=".$idempleado." Examen=".$idexamen." detalle=".$iddetalle;
 		$Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
 		$row_estab = pg_fetch_array($Consulta_Estab);
 
