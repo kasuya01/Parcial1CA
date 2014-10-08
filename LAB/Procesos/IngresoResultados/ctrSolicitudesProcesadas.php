@@ -278,6 +278,7 @@ switch ($opcion) {
                         "<input name='IdEstandar[" . $pos . "]' id='IdEstandar[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idestandar"]) . "'/>" .
                         "<input name='IdHistorial[" . $pos . "]' id='IdHistorial[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idhistorialclinico"]) . "'/>" .
                         "<input name='referido[" . $pos . "]' id='referido[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["referido"]) . "'/>" .
+                        "<input name='estabext[" . $pos . "]' id='estabext[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["estabext"]) . "'/>" .
                         "<td width='20%'>" . htmlentities($row['paciente']) . "</td>
                         <td width='7%'>" . $row['codigoexamen'] . "</td>
                         <td width='20%'>" . htmlentities($row['nombreexamen']) . "</td>

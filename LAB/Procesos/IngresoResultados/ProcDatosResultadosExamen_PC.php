@@ -69,6 +69,8 @@ function CargarDatos()
 					    impresion=escape(getVars[i].substr(5));
 			  if ( getVars[i].substr(0,5) == 'var13=' )
 					    establecimiento=escape(getVars[i].substr(5));
+                            if ( getVars[i].substr(0,5) == 'var18=' )
+					    estabext=escape(getVars[i].substr(5));              
 	}
 	document.frmnuevo.txtnec.value=nec;
 	document.frmnuevo.txtarea.value=area;
@@ -102,8 +104,8 @@ function CargarDatos()
 			<td colspan="5" align="center"> <h3>DATOS GENERALES</h3></td>
                     </tr>
                     <tr>
-			<td class="StormyWeatherFieldCaptionTD" colspan="1">Establecimiento</td>
-			<td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var13'];?></td>
+			<td class="StormyWeatherFieldCaptionTD" colspan="1">Establecimiento solicitante</td>
+			<td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var18'];?></td>
                     </tr>
                     <tr>
 			<td class="StormyWeatherFieldCaptionTD" colspan="1">Procedencia</td>
@@ -187,8 +189,9 @@ function CargarDatos()
                             <table class="StormyWeatherFormTABLE" width="100%" >
                                 <tr>
                                     <td width="38%" class="StormyWeatherFieldCaptionTD">Organismos</td>
-                                    <td width="62%" class="StormyWeatherDataTD"><select id="cmbOrganismo" name="cmbOrganismo" size="1"  >
-                                        <option value="0" >--Seleccione una bacteria--</option>
+                                    <td width="62%" class="StormyWeatherDataTD">
+                                        <select id="cmbOrganismo" name="cmbOrganismo" size="1"  >
+                                            <option value="0" >--Seleccione una bacteria--</option>
                                             <?php
 								
 						$consulta_bac= $obj->LeerBacterias();
@@ -197,16 +200,16 @@ function CargarDatos()
 								}
 								pg_free_result($consulta_bac);
 							?>	
-							</select>			
-							</td>
-						</tr>
-						<tr>
-							<td width="17%" class="StormyWeatherFieldCaptionTD">Tarjeta</td>
-							<td width="83%" class="StormyWeatherDataTD"><select id="cmbTarjeta" name="cmbTarjeta" size="1" onChange="MostrarAntibioticos();">
-								<option value="0" >-- Seleccione una tarjeta --</option>
-								<?php
-									//$obj=new clsConsultarElementosPlantillaC;
-									$consulta= $obj->LeerTarjeta($lugar);
+					</select>			
+                                    </td>
+				</tr>
+				<tr>
+                                    <td width="17%" class="StormyWeatherFieldCaptionTD">Tarjeta</td>
+                                    <td width="83%" class="StormyWeatherDataTD"><select id="cmbTarjeta" name="cmbTarjeta" size="1" onChange="MostrarAntibioticos();">
+					<option value="0" >-- Seleccione una tarjeta --</option>
+					<?php
+						//$obj=new clsConsultarElementosPlantillaC;
+						$consulta= $obj->LeerTarjeta($lugar);
 									while($row = pg_fetch_array($consulta)){
 									echo "<option value='" . $row[0]. "'>" . $row[1] . "</option>";
 									}

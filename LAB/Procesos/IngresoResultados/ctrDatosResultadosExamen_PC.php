@@ -69,7 +69,7 @@ switch ($opcion)
 		$cantidad=$_POST['cantidad'];
 		$resultado="P";
                 $establecimiento=$_POST['estab'];
-          echo " Solicitud=".$idsolicitud." empleado=".$idempleado." Examen=".$idexamen." detalle=".$iddetalle;
+          //echo " Solicitud=".$idsolicitud." empleado=".$idempleado." Examen=".$idexamen." detalle=".$iddetalle." detalle=".$establecimiento;
 		$Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
 		$row_estab = pg_fetch_array($Consulta_Estab);
 
@@ -87,13 +87,13 @@ switch ($opcion)
 		$row_empleado = pg_fetch_array($datos_empleado);
 		$row_observacion = pg_fetch_array($datos_observacion);
 		$row_nombrebacteria= pg_fetch_array($bateria);
-
+                $estabext=$row_generales['estabext'];
 		$imprimir="<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
 		<tr>
 			<td colspan='1' align='left' width='20%'><img id='Image1' style='WIDTH: 80px; HEIGHT: 55px' height='86' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
                         <td align='center' colspan='4' width='60%' class='Estilo5'>
 				<p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
-				<p><strong>".$row_estab['nombre']."</strong></p>
+				<p><strong>". $establecimiento."</strong></p>
 				<p><strong>&Aacute;rea de ".htmlentities($row_area['nombrearea'])." </strong></p></td>
                        <td colspan='1' align='right' width='20%'><img id='Image3' style='WIDTH: 110px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
 		</tr>
@@ -101,33 +101,33 @@ switch ($opcion)
 			<td colspan='6'>&nbsp;</td>
 		</tr>
 		<tr>
-			<td colspan='1' style='font:bold'><strong>Establecimiento:</strong></td>
-			<td colspan='2'>".$establecimiento."</td>
-			<td colspan='1' style='font:bold'><strong>Fecha</strong></td>
-			<td colspan='2'>".$row_generales['Fecha']."</td><input name='suEdad' id='suEdad'  type='hidden'  value='".$row_generales['FechaNacimiento']."'/>
+			<td colspan='1' style='font:bold'><strong>Establecimiento solicitante:</strong></td>
+			<td colspan='2'>".$row_generales['estabext']
+                        ."</td>
+			<td colspan='1' style='font:bold'><strong>Fecha Recepción:</strong></td>
+			<td colspan='2'>".$row_generales['fecharecep']."</td>
+                            
 		</tr>
 
 		<tr>
 			<td colspan='1' style='font:bold'><strong>NEC</strong></td>
-			<td colspan='5' >".$row_generales['IdNumeroExp']."</td>
+			<td colspan='5' >".$row_generales['numero']."</td>
                 </tr>
                 <tr>
 			<td colspan='1' style='font:bold'><strong>Paciente:</strong></td>
-			<td colspan='5'>".htmlentities($row_generales['NombrePaciente'])."</td>
+			<td colspan='5'>".htmlentities($row_generales['paciente'])."</td>
 		</tr>
 		<tr>
 			<td colspan='1' style='font:bold'><strong>Edad:</strong></td>
-			<td colspan='2'><div id='divsuedad'>
-
-    			    </div></td>
+			<td colspan='2'>".$row_generales['edad']."</td>
 			<td colspan='1' style='font:bold'><strong>Sexo:</strong></td>
-			<td colspan='2'>".$row_generales['Sexo']."</td>
+			<td colspan='2'>".$row_generales['sexo']."</td>
 		</tr>
                 <tr>
 			<td colspan='1' style='font:bold'><strong>Procedencia:</strong></td>
-			<td colspan='2' style='font:bold'>".htmlentities($row_generales['Procedencia'])."</td>
+			<td colspan='2' style='font:bold'>".htmlentities($row_generales['procedencia'])."</td>
 			<td colspan='1' style='font:bold'><strong>Servicio:</strong></td>
-			<td colspan='2' style='font:bold'>".htmlentities($row_generales['Origen'])."</td>
+			<td colspan='2' style='font:bold'>".htmlentities($row_generales['subservicio'])."</td>
 		</tr>
 		<tr>
 			<td colspan='1' style='font:bold'><strong>Examen Realizado:</strong></td>
@@ -187,7 +187,7 @@ switch ($opcion)
 			     <tr>
 				<td>
                                     <input type='button' name='Guardar'  id='Guardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaC()'\>
-                                    <input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaC(".$idsolicitud.",\"".$idexamen."\",\"".$resultado."\",\"".$row_empleado['empleado']."\",\"".htmlentities($row_generales['Procedencia'])."\",\"".htmlentities($row_generales['Origen'])."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_antibioticos)."\",\"".$codigos_antibioticos."\",".$idbacteria.",\"".$cantidad."\",".$idtarjeta.",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\") ;' />
+                                    <input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaC(".$idsolicitud.",\"".$idexamen."\",\"".$resultado."\",\"".$row_empleado['empleado']."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_antibioticos)."\",\"".$codigos_antibioticos."\",".$idbacteria.",\"".$cantidad."\",".$idtarjeta.",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\") ;' />
                                     <input type='button' id='btnSalir' value='cerrar' onclick='Cerrar()'
                                 </td>
 
@@ -339,7 +339,7 @@ switch ($opcion)
 				<td colspan='1'><strong>Establecimiento Solicitante:</strong></td>
 				<td colspan='2'>".$establecimiento."</td>
 				<td colspan='1'><strong>Fecha Receoción:</strong></td>
-				<td colspan='2'>".$row_generales['Fecha']."<input name='suEdad' id='suEdad'  type='hidden'  value='".$row_generales['FechaNacimiento']."'/></td>
+				<td colspan='2'>".$row_generales['fecharecep']."<input name='suEdad' id='suEdad'  type='hidden'  value='".$row_generales['FechaNacimiento']."'/></td>
 
 			</tr>
 
