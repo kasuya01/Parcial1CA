@@ -23,15 +23,15 @@ switch ($opcion) {
 		$Cdias= pg_fetch_array($Cuentadias);
 		$dias=$Cdias[0];*/
 
-		$ConRangos 	= $objdatos->ObtenerCodigoRango($fechanac);
-		$row_rangos = pg_fetch_array($ConRangos);
-		$idedad 	= $row_rangos[0];
-
+		$ConRangos 	 = $objdatos->ObtenerCodigoRango($fechanac);
+		$row_rangos  = pg_fetch_array($ConRangos);
+		$idedad 	 = $row_rangos[0];
 		$ConEstandar = $objdatos->Obtener_Estandar($idexamen);
 		$CodEstandar = pg_fetch_array($ConEstandar);
-		$IdEstandar  = $CodEstandar[0];
+		$codigo_estandar  = $CodEstandar[0];
+		$IdEstandar	 = $CodEstandar[1];
 
-		switch ($IdEstandar) {
+		switch ($codigo_estandar) {
 			case "H50":
 				$consulta = $objdatos->LeerElementosExamen($idexamen,$lugar);
 
@@ -202,30 +202,29 @@ switch ($opcion) {
 		}
 		break;
    case 2://MOSTRANDO VISTA PREVIA DE LOS RESULTADOS INGRESADOS
-   	$idexamen=$_POST['idexamen'];//*
-   	$idsolicitud= $_POST['idsolicitud'];
-   	$idrecepcion= $_POST['idrecepcion'];
-   	$iddetalle= $_POST['iddetalle'];
-   	$observacion= $_POST['observacion'];
-   	$idempleado= $_POST['idempleado'];
-   	$valores_subelementos=$_POST['valores_subelementos'];
-   	$codigos_subelementos=$_POST['codigos_subelementos'];
-   	$valores_elementos=$_POST['valores_elementos'];
-   	$codigos_elementos=$_POST['codigos_elementos'];
-   	$controles=$_POST['controles'];
-   	$controles_ele=$_POST['controles_ele'];
-   	$establecimiento=$_POST['estab'];
-   	$tab=$_POST['tab'];
-   	$fechanac=$_POST['fechanac'];
-   	$sexo=$_POST['sexo'];
-	//echo $fechanac."-".$sexo;
+   	$idexamen			  = $_POST['idexamen'];//*
+   	$idsolicitud 		  = $_POST['idsolicitud'];
+   	$idrecepcion 		  = $_POST['idrecepcion'];
+   	$iddetalle 			  = $_POST['iddetalle'];
+   	$observacion 		  = $_POST['observacion'];
+   	$idempleado			  = $_POST['idempleado'];
+   	$valores_subelementos = $_POST['valores_subelementos'];
+   	$codigos_subelementos = $_POST['codigos_subelementos'];
+   	$valores_elementos 	  = $_POST['valores_elementos'];
+   	$codigos_elementos 	  = $_POST['codigos_elementos'];
+   	$controles 			  = $_POST['controles'];
+   	$controles_ele 		  = $_POST['controles_ele'];
+   	$establecimiento 	  = $_POST['estab'];
+   	$tab 				  = $_POST['tab'];
+   	$fechanac 			  = $_POST['fechanac'];
+   	$sexo 				  = $_POST['sexo'];
 
-
-   	$Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
-   	$row_estab = pg_fetch_array($Consulta_Estab);
-   	$ConEstandar=$objdatos->Obtener_Estandar($idexamen);
-   	$CodEstandar= pg_fetch_array($ConEstandar);
-   	$IdEstandar=$CodEstandar[0];
+   	$Consulta_Estab  = $objdatos->Nombre_Establecimiento($lugar);
+   	$row_estab   	 = pg_fetch_array($Consulta_Estab);
+   	$ConEstandar 	 = $objdatos->Obtener_Estandar($idexamen);
+   	$CodEstandar 	 = pg_fetch_array($ConEstandar);
+   	$codigo_estandar = $CodEstandar[0];
+	$IdEstandar	     = $CodEstandar[1];
 
    	$Cuentadias=$objdatos->CalculoDias($fechanac);
    	$Cdias= pg_fetch_array($Cuentadias);
@@ -234,24 +233,23 @@ switch ($opcion) {
    	$ConRangos=$objdatos->ObtenerCodigoRango($dias);
    	$row_rangos=  pg_fetch_array($ConRangos);
    	$idedad=$row_rangos[0];
-          // echo $idedad."***".$sexo;
-//echo $IdEstandar;
-   	switch ($IdEstandar){
+
+   	switch ($codigo_estandar){
 
    		case "H50":
-   		$cadena=$valores_subelementos;
-   		$vector=EXPLODE("/",$cadena);
-   		$vector_elementos=EXPLODE("/",$valores_elementos);
-   		$vector_controles=EXPLODE("/",$controles);
-   		$vector_controles_ele=EXPLODE("/",$controles_ele);
-   		$objdatos = new clsConsultarElementos;
-   		$consulta=$objdatos->LeerElementosExamen($idexamen,$lugar);
-   		$consulta_datos=$objdatos->LeerDatos($idexamen);
-   		$datos_generales=$objdatos->MostrarDatosGenerales($idsolicitud,$lugar);
-   		$datos_empleado=$objdatos->DatosEmpleado($idempleado,$lugar);
-   		$row_generales= pg_fetch_array($datos_generales);
-   		$row_area = pg_fetch_array($consulta_datos);
-   		$row_empleado = pg_fetch_array($datos_empleado);
+	   		$cadena 		  	  = $valores_subelementos;
+	   		$vector 		  	  = EXPLODE("/",$cadena);
+	   		$vector_elementos 	  = EXPLODE("/",$valores_elementos);
+	   		$vector_controles 	  = EXPLODE("/",$controles);
+	   		$vector_controles_ele = EXPLODE("/",$controles_ele);
+	   		$objdatos 			  = new clsConsultarElementos;
+	   		$consulta 			  = $objdatos->LeerElementosExamen($idexamen,$lugar);
+	   		$consulta_datos 	  = $objdatos->LeerDatos($idexamen);
+	   		$datos_generales 	  = $objdatos->MostrarDatosGenerales($idsolicitud,$lugar);
+	   		$datos_empleado 	  = $objdatos->DatosEmpleado($idempleado,$lugar);
+	   		$row_generales 		  = pg_fetch_array($datos_generales);
+	   		$row_area  			  = pg_fetch_array($consulta_datos);
+	   		$row_empleado 		  = pg_fetch_array($datos_empleado);
 
    		$imprimir="<table width='92%' align='center'class='StormyWeatherFormTABLE' >
    		<tr>

@@ -852,11 +852,9 @@ function ValidarCamposPlantillaB()
 
 
 
-function MostrarVistaPreviaPlantillaB()
-{
+function MostrarVistaPreviaPlantillaB(){
 
-    if (ValidarCamposPlantillaB())
-    {
+    if (ValidarCamposPlantillaB()) {
         opcion = 2;
         //DATOS DE ENCABEZADO DE LOS RESULTADOS
         //solicitud estudio

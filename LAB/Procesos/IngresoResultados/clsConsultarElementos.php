@@ -35,8 +35,8 @@ class clsConsultarElementos {
         if($con->conectar()==true){ 
             $query="SELECT * 
                     FROM ctl_rango_edad
-                    WHERE DATE_PART('day',AGE('$fechanac')) BETWEEN edad_minima_dias AND edad_maxima_dias
-                        AND id != 4 OR LOWER(nombre) != 'todos' AND cod_modulo = 'LAB'";
+                    WHERE (CURRENT_DATE - '$fechanac') BETWEEN edad_minima_dias AND edad_maxima_dias
+                        AND (id != 4 OR LOWER(nombre) != 'todos') AND cod_modulo = 'LAB'";
             $result = @pg_query($query);
             if (!$result)
                 return false;
@@ -48,7 +48,7 @@ class clsConsultarElementos {
     function Obtener_Estandar($idexamen){
         $con = new ConexionBD;
         if($con->conectar()==true) {
-            $query="SELECT t03.idestandar
+            $query="SELECT t03.idestandar, t03.id
             FROM lab_conf_examen_estab                 t01
             INNER JOIN mnt_area_examen_establecimiento t02 ON (t02.id = t01.idexamen)
             INNER JOIN ctl_examen_servicio_diagnostico t03 ON (t03.id = t02.id_examen_servicio_diagnostico)
@@ -78,23 +78,22 @@ function ObtenerFechaResultado($idsolicitud,$IdExamen,$lugar)
 }
 }
 
-//Funcion para llener resultados de tabulaci�n
-function LlenarResultados($IdEstandar)
-{
-  $con = new ConexionBD;
-  if($con->conectar()==true) 
-     {	$query="SELECT lab_codigosxexamen.IdResultado,Resultado
- FROM lab_codigosxexamen
- INNER JOIN lab_codigosresultados 
- ON lab_codigosxexamen.IdResultado = lab_codigosresultados.IdResultado
- WHERE lab_codigosresultados.IdResultado<> 5 AND lab_codigosxexamen.IdEstandar = '$IdEstandar'";	
- $result = pg_query($query);
- if (!$result)
-    return false;
-else
-    return $result;	   
-}
-}
+    //Funcion para llener resultados de tabulaci�n
+    function LlenarResultados($IdEstandar) {
+        $con = new ConexionBD;
+        if($con->conectar()==true) {
+            $query="SELECT t01.idresultado,
+                           t02.resultado
+                    FROM lab_codigosxexamen          t01
+                    INNER JOIN lab_codigosresultados t02 ON (t02.id = t01.idresultado)
+                    WHERE t02.id != 5 AND t01.idestandar = $IdEstandar";	
+            $result = pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;	   
+        }
+    }
 
 /*Funcion para obtener el nombre del Resultado del tabulador*/ 
 function ObtenerNombreCodigo($tab){
@@ -251,23 +250,23 @@ function MostrarDatosGenerales($idsolicitud,$lugar)
 }
 
 
-//FUNCION PARA LEER LOS DATOS DEL AREA Y EL EXAMEN
-function LeerDatos($idexamen)
-{
- $con = new ConexionBD;
- if($con->conectar()==true)
- {
-   $query = "SELECT NombreArea,NombreExamen 
-   FROM lab_examenes 
-   INNER JOIN lab_areas ON lab_examenes.IdArea=lab_areas.IdArea
-   WHERE lab_examenes.IdExamen='$idexamen'";
-   $result = @pg_query($query);
-   if (!$result)
-     return false;
- else
-     return $result;
-}
-}
+    //FUNCION PARA LEER LOS DATOS DEL AREA Y EL EXAMEN
+    function LeerDatos($idexamen) {
+        $con = new ConexionBD;
+        if($con->conectar()==true) {
+            $query = "SELECT t03.nombrearea,
+                             t01.nombre_examen AS nombreexamen
+                      FROM lab_conf_examen_estab                 t01
+                      INNER JOIN mnt_area_examen_establecimiento t02 ON (t02.id = t01.idexamen)
+                      INNER JOIN ctl_area_servicio_diagnostico   t03 ON (t03.id = t02.id_area_servicio_diagnostico)
+                      WHERE t01.id = $idexamen";
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
 
     //FUNCION PARA OBTENER ELEMENTOS DE UN EXAMEN PLANTILLA B
     function LeerElementosExamen($idexamen, $lugar) {
@@ -300,13 +299,17 @@ function LeerDatos($idexamen)
     function LeerSubElementosExamen($idelemento,$lugar,$sexo,$idedad) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-            $query = "SELECT IdSubElemento,SubElemento,Unidad,ObservSubElem,rangoinicio,rangofin  
-                      FROM lab_subelementos 
-                      WHERE idelemento=$idelemento AND lab_subelementos.IdEstablecimiento=$lugar AND 
-                        CURDATE() BETWEEN FechaIni AND 
-                        IF(lab_subelementos.FechaFin ='0000-00-00',CURDATE(),lab_subelementos.FechaFin) 
-                        AND (lab_subelementos.idsexo=$sexo OR lab_subelementos.idsexo=3) AND (idedad=4 OR idedad=$idedad)
-                      ORDER BY IdSubElemento";
+            $query = "SELECT t01.id AS idsubelemento,
+                             t01.subelemento,
+                             t01.unidad,
+                             t01.observsubelem,
+                             t01.rangoinicio,
+                             t01.rangofin  
+                      FROM lab_subelementos t01
+                      WHERE t01.idelemento = $idelemento AND t01.idestablecimiento = $lugar
+                        AND CURRENT_DATE BETWEEN t01.fechaini AND CASE WHEN fechafin IS NULL THEN CURRENT_DATE ELSE t01.fechafin END
+                        AND (t01.idsexo = $sexo OR t01.idsexo IS NULL) AND (idedad = 4 OR idedad = $idedad)
+                      ORDER BY t01.subelemento";
             $result = @pg_query($query);
             
             if (!$result)
