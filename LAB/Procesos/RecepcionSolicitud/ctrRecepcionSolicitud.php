@@ -54,12 +54,14 @@ switch ($opcion) {
         $Nfechacita = $Nfecha[2] . "-" . $Nfecha[1] . "-" . $Nfecha[0];
 
         if ($con->conectar() == true) {
-            $query = "SELECT COUNT(t01.id_solicitudestudios) AS numreg
+            echo $query = "SELECT COUNT(t01.id_solicitudestudios) AS numreg
                       FROM cit_citas_serviciodeapoyo   t01
                       INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.id_solicitudestudios)
-                      INNER JOIN sec_historial_clinico t03 ON (t03.id = t02.id_historial_clinico)
-                      INNER JOIN mnt_expediente        t04 ON (t04.id = t02.id_expediente)
-                      WHERE t01.fecha = '$Nfechacita' AND t04.numero = '$idexpediente' AND t03.idestablecimiento = $idEstablecimiento AND t02.id_establecimiento = $lugar";
+                      LEFT JOIN sec_historial_clinico t03 ON (t03.id = t02.id_historial_clinico)
+                      LEFT JOIN mnt_expediente        t04 ON (t04.id = t02.id_expediente)
+                      LEFT JOIN mnt_expediente_referido        t10 ON (t10.id = t02.id_dato_referencia)
+                      
+                      WHERE t01.fecha = '$Nfechacita' AND (t04.numero = '$idexpediente' OR t10.numero = '$idexpediente') AND t02.id_establecimiento = $lugar";
 
             $numreg = pg_fetch_array(pg_query($query));
 
@@ -70,9 +72,9 @@ switch ($opcion) {
                                             WHEN 'P' then 'En Proceso'
                                             WHEN 'C' then 'Completa'
                                         END AS estado
-				                 FROM sec_solicitudestudios                 t01
-				                 INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
-				                 INNER JOIN sec_historial_clinico           t03 ON (t03.id = t01.id_historial_clinico)
+				 FROM sec_solicitudestudios                 t01
+				 INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
+				 INNER JOIN sec_historial_clinico           t03 ON (t03.id = t01.id_historial_clinico)
                                  INNER JOIN ctl_estado_servicio_diagnostico t04 ON (t04.id = t01.estado AND t04.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
                                  INNER JOIN mnt_expediente                  t05 ON (t05.id = t01.id_expediente)
                                  INNER JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)
@@ -100,8 +102,8 @@ switch ($opcion) {
                                             WHEN 'C' then 'Completa'
         				                END AS estado
                                  FROM sec_solicitudestudios                 t01
-				                 INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
-				                 INNER JOIN sec_historial_clinico           t03 ON (t03.id = t01.id_historial_clinico)
+				 INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
+				 INNER JOIN sec_historial_clinico           t03 ON (t03.id = t01.id_historial_clinico)
                                  INNER JOIN ctl_estado_servicio_diagnostico t04 ON (t04.id = t01.estado AND t04.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
                                  INNER JOIN mnt_expediente                  t05 ON (t05.id = t01.id_expediente)
                                  INNER JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)

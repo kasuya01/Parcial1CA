@@ -70,33 +70,39 @@ class clsRecepcionSolicitud {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
 
-            $query = "SELECT t05.id AS id_expediente,
-                             t05.numero AS numero_expediente,
+            $query = "SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente, 
+                             COALESCE(t05.numero,t10.numero) AS numero_expediente,
                              TO_CHAR(t02.fecha, 'DD/MM/YYYY') AS fecha_cita,
-                             TO_CHAR(t03.fechaconsulta, 'DD/MM/YYYY') AS fecha_consulta,
-                             CONCAT_WS(' ', t07.primer_apellido, t07.segundo_apellido, t07.apellido_casada) || ', ' || CONCAT_WS(' ', t07.primer_nombre, t07.segundo_nombre, t07.tercer_nombre) AS nombre_paciente,
+                             COALESCE(TO_CHAR(t03.fechaconsulta, 'DD/MM/YYYY'),'referido') AS fecha_consulta,
+                             (CASE when (t07.primer_nombre is not null ) then  
+                             CONCAT_WS(' ', t07.primer_apellido, t07.segundo_apellido, t07.apellido_casada) || ', ' || CONCAT_WS(' ', t07.primer_nombre, t07.segundo_nombre, t07.tercer_nombre)
+                             else 
+                             CONCAT_WS(' ', t11.primer_apellido, t11.segundo_apellido, t11.apellido_casada) || ', ' || CONCAT_WS(' ', t11.primer_nombre, t11.segundo_nombre, t11.tercer_nombre) 
+                             end ) AS nombre_paciente,
                              CASE t04.idestado
                                 WHEN 'D' THEN 'Digitada'
                                 WHEN 'R' then 'Recibida'
                                 WHEN 'P' then 'En Proceso'
                                 WHEN 'C' then 'Completa'
                              END AS estado,
-                             t03.idestablecimiento AS id_establecimiento
+                             COALESCE(t03.idestablecimiento,t10.id_establecimiento) AS id_establecimiento
                       FROM sec_solicitudestudios                 t01
                       INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
-                      INNER JOIN sec_historial_clinico           t03 ON (t03.id = t01.id_historial_clinico)
+                      LEFT JOIN sec_historial_clinico           t03 ON (t03.id = t01.id_historial_clinico)
                       INNER JOIN ctl_estado_servicio_diagnostico t04 ON (t04.id = t01.estado AND t04.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-                      INNER JOIN mnt_expediente                  t05 ON (t05.id = t01.id_expediente)
+                      LEFT JOIN mnt_expediente                  t05 ON (t05.id = t01.id_expediente)
+                      LEFT JOIN mnt_expediente_referido                  t10 ON (t10.id = t01.id_dato_referencia)
                       INNER JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)
-                      INNER JOIN mnt_paciente                    t07 ON (t07.id = t05.id_paciente)";
+                      LEFT JOIN mnt_paciente                    t07 ON (t07.id = t05.id_paciente)
+                      LEFT JOIN mnt_paciente_referido                   t11 ON (t11.id = t10.id_referido)";
 
-            $where = " WHERE t01.id_establecimiento = $lugar AND t03.idestablecimiento = $idEstablecimiento
+            $where = " WHERE t01.id_establecimiento = $lugar AND (t03.idestablecimiento = $idEstablecimiento OR t10.id_establecimiento = $idEstablecimiento)
                          AND t04.idestado = 'D'              AND t06.codigo_busqueda = 'DCOLAB'";
 
             $orderBy = " ORDER BY t05.numero";
 
             if($idexpediente !== '') {
-                $where = $where." AND t05.numero = '$idexpediente'";
+                $where = $where." AND (t05.numero = '$idexpediente' OR t10.numero = '$idexpediente')";
             }
 
             if($fechacita !== '') {
@@ -246,8 +252,63 @@ class clsRecepcionSolicitud {
                       WHERE t08.codigo_busqueda = 'DCOLAB' AND t04.numero = '$idexpediente'
                             AND t15.idestado = 'D' AND t02.id = $IdSolicitud AND t09.fecha = '$fechacita' AND t02.id_establecimiento = $lugar";
             $result = @pg_query($query);
+            if (!$result){ // busqueda si el paciente es de referencia
+                $query = "
+                    SELECT t03.idempleado AS idmedico,
+                             t03.nombreempleado AS nombremedico,
+                             t08.nombre AS Origen,
+                             t02.id AS idsolicitudestudio,
+                             (SELECT nombre
+                              FROM ctl_atencion
+                              WHERE id_atencion_padre = t08.id) AS Precedencia,
+                             t04.numero AS idnumeroexp,
+                             CONCAT_WS(' ',t05.primer_nombre, t05.segundo_nombre,t05.tercer_nombre, t05.primer_apellido, t05.segundo_apellido, t05.apellido_casada) as nombrepaciente,
+                             TO_CHAR(NOW(), 'DD/MM/YYYY') as fecha,
+                             REPLACE(
+                                REPLACE(
+                                    REPLACE(
+                                        REPLACE(
+                                            REPLACE(
+                                                REPLACE(
+                                                    AGE(t05.fecha_nacimiento::timestamp)::text,
+                                                'years', 'años'),
+                                            'year', 'año'),
+                                        'mons', 'meses'),
+                                    'mon', 'mes'),
+                                'days', 'días'),
+                             'day', 'día') AS edad,
+                             t06.nombre AS sexo,
+                             --t07.id AS idsubservicio,
+                             t10.peso,
+                             t10.talla,
+                             t13.nombre,
+                             TO_CHAR(t05.fecha_nacimiento, 'DD/MM/YYYY') AS fechanacimiento,
+                             t01.id_establecimiento,
+                             t14.tiposolicitud,
+                             t12.codigo AS iddiagnostico1,
+                             t12.diagnostico
+                      FROM  sec_solicitudestudios                t01
+                      INNER JOIN mnt_dato_referencia           	 t02 ON (t02.id = t01.id_dato_referencia)
+                      LEFT  JOIN mnt_empleado                    t03 ON (t03.id = t02.id_empleado)
+                      INNER JOIN mnt_expediente_referido                  t04 ON (t04.id = t02.id_expediente_referido)
+                      LEFT  JOIN mnt_paciente_referido                    t05 ON (t05.id = t04.id_referido)
+                      INNER JOIN ctl_sexo                        t06 ON (t06.id = t05.id_sexo)
+                      --INNER JOIN mnt_aten_area_mod_estab         t07 ON (t07.id = t01.idsubservicio)
+                      INNER JOIN ctl_atencion                    t08 ON (t08.id = t01.id_atencion)
+                      LEFT JOIN cit_citas_serviciodeapoyo       t09 ON (t01.id = t09.id_solicitudestudios)
+                      LEFT  JOIN sec_examenfisico                t10 ON (t01.id = t10.idhistorialclinico)
+                      LEFT  JOIN sec_diagnosticospaciente        t11 ON (t01.id = t11.idhistorialclinico)
+                      LEFT  JOIN mnt_cie10                       t12 ON (t12.id = t11.iddiagnostico1)
+                      INNER JOIN ctl_establecimiento             t13 ON (t13.id = t01.id_establecimiento)
+                      INNER JOIN lab_tiposolicitud               t14 ON (t14.id = t01.idtiposolicitud)
+                      INNER JOIN ctl_estado_servicio_diagnostico t15 ON (t15.id = t01.estado AND t15.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+                      WHERE t08.codigo_busqueda = 'DCOLAB' AND t04.numero = '256987-2' AND t15.idestado = 'D' AND t02.id = 1 AND t09.fecha = '2014/10/01' AND t02.id_establecimiento = 49";
+            $result = @pg_query($query);
             if (!$result)
                 return false;
+            else 
+                return $result;
+            }
             else
                 return $result;
         }
