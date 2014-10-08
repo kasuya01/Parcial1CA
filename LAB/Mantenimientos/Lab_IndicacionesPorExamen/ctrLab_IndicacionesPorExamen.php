@@ -1,72 +1,66 @@
-<?php session_start();
+<?php
+
+session_start();
 include_once("clsLab_IndicacionesPorExamen.php");
 include('../Lab_Areas/clsLab_Areas.php');
-$usuario=$_SESSION['Correlativo'];
-$lugar=$_SESSION['Lugar'];
-$area=$_SESSION['Idarea'];
+$usuario = $_SESSION['Correlativo'];
+$lugar = $_SESSION['Lugar'];
+$area = $_SESSION['Idarea'];
 
-			
+
 //variables POST
-$idexamen=$_POST['idexamen'];
-$idarea=$_POST['idarea'];
-$idindicacion=$_POST['idindicacion'];
-$indicacion=$_POST['indicacion'];
-$Pag =$_POST['Pag'];
-$opcion=$_POST['opcion'];
+$idexamen = $_POST['idexamen'];
+$idarea = $_POST['idarea'];
+$idindicacion = $_POST['idindicacion'];
+$indicacion = $_POST['indicacion'];
+$Pag = $_POST['Pag'];
+$opcion = $_POST['opcion'];
 //actualiza los datos del empleados
 $objdatos = new clsLab_IndicacionesPorExamen;
-$objeareas=new clsLab_Areas;
+$objeareas = new clsLab_Areas;
 //$usuario=1;
-switch ($opcion) 
-{
+switch ($opcion) {
     case 1:  //INSERTAR	
-       // echo $indicacion;
-      if ($objdatos->insertar($idexamen,$idarea,$indicacion,$usuario)==true)
-	   {
-		   echo "Registro Agregado";
-		   
-     	}
-		else{
-			echo "No se pudo actualizar";			
-		}
-		
-		break;
-    case 2:  //MODIFICAR      
-	
-		If ($objdatos->actualizar($idexamen,$idarea,$indicacion,$idindicacion,$usuario)==true)
-		               //actualizar($indicacion,$idindicacion,$usuario)
-		{
-			echo "Registro Actualizado"	;			
-		}
-		else{
-			echo "No se pudo actualizar";
-		}
-		
-     break;
-	 case 3:  //ELIMINAR    
-		 //Vefificando Integridad de los datos
-		 if ($objdatos->eliminar($idexamen)==true){		
-			echo "Registro Eliminado" ;		
-				
-			}
-			else{
-				echo "El registro no pudo ser eliminado ";
-			}			
-		
-	break;
-	case 4:// PAGINACION
-		//echo "llevo opcion 4";
-		//para manejo de la paginacion
-		$RegistrosAMostrar=4;
-		$RegistrosAEmpezar=($_POST['Pag']-1)*$RegistrosAMostrar;
-		$PagAct=$_POST['Pag'];
-	
-		 /////LAMANDO LA FUNCION DE LA CLASE 
-		//$obje=new clsLab_IndicacionesPorExamen;
-		$consulta= $objdatos->consultarpag($RegistrosAEmpezar, $RegistrosAMostrar);
+        // echo $indicacion;
+        if ($objdatos->insertar($idexamen, $idarea, $indicacion, $usuario) == true) {
+            echo "Registro Agregado";
+        } else {
+            echo "No se pudo actualizar";
+        }
 
-		//muestra los datos consultados en la tabla
-				echo "<table border = 1 align='center' width='60%' class='StormyWeatherFormTABLE'>
+        break;
+    case 2:  //MODIFICAR      
+
+        If ($objdatos->actualizar($idexamen, $idarea, $indicacion, $idindicacion, $usuario) == true) {
+        //actualizar($indicacion,$idindicacion,$usuario)
+            echo "Registro Actualizado";
+        } else {
+            echo "No se pudo actualizar";
+        }
+
+        break;
+    case 3:  //ELIMINAR    
+        //Vefificando Integridad de los datos
+        if ($objdatos->eliminar($idexamen) == true) {
+            echo "Registro Eliminado";
+        } else {
+            echo "El registro no pudo ser eliminado ";
+        }
+
+        break;
+    case 4:// PAGINACION
+        //echo "llevo opcion 4";
+        //para manejo de la paginacion
+        $RegistrosAMostrar = 4;
+        $RegistrosAEmpezar = ($_POST['Pag'] - 1) * $RegistrosAMostrar;
+        $PagAct = $_POST['Pag'];
+
+        /////LAMANDO LA FUNCION DE LA CLASE 
+        //$obje=new clsLab_IndicacionesPorExamen;
+        $consulta = $objdatos->consultarpag($RegistrosAEmpezar, $RegistrosAMostrar);
+
+        //muestra los datos consultados en la tabla
+        echo "<table border = 1 align='center' width='60%' class='StormyWeatherFormTABLE'>
 					   <tr>
 						<td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
 						<!-- <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
@@ -75,75 +69,75 @@ switch ($opcion)
 						<td class='CobaltFieldCaptionTD'> Indicaci&oacute;n </td>	   
 					   </tr>";
 
-				while($row = pg_fetch_array($consulta)){
-                                    echo "<tr>
+        while ($row = pg_fetch_array($consulta)) {
+            echo "<tr>
 						<td aling='center'> 
                                         		<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-							onclick=\"pedirDatos('".$row[0]."')\"> </td>
+							onclick=\"pedirDatos('" . $row[0] . "')\"> </td>
 						<!-- <td aling ='center'> 
 							<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-							onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
+							onclick=\"eliminarDato('" . $row[0] . "')\"> </td> -->
 						<!-- area --> <td> $row[2] </td> 
 						<!-- examen --> <td> $row[4] </td>
-					    <!-- indicacion-->	<td>".htmlentities( $row[5])."</td>
+					    <!-- indicacion-->	<td>" . htmlentities($row[5]) . "</td>
 					</tr>";
-				}
-                                echo "</table>"; 
+        }
+        echo "</table>";
 
-		//determinando el numero de paginas
-		 $NroRegistros= $objdatos->NumeroDeRegistros();
-		 $PagAnt=$PagAct-1;
-		 $PagSig=$PagAct+1;
-		 
-		 $PagUlt=$NroRegistros/$RegistrosAMostrar;
-		 
-		 //verificamos residuo para ver si llevar� decimales
-		 $Res=$NroRegistros%$RegistrosAMostrar;
-		 //si hay residuo usamos funcion floor para que me
-		 //devuelva la parte entera, SIN REDONDEAR, y le sumamos
-		 //una unidad para obtener la ultima pagina
-		 if($Res>0) $PagUlt=floor($PagUlt)+1;
+        //determinando el numero de paginas
+        $NroRegistros = $objdatos->NumeroDeRegistros();
+        $PagAnt = $PagAct - 1;
+        $PagSig = $PagAct + 1;
 
-		 echo "<table align='center'>
+        $PagUlt = $NroRegistros / $RegistrosAMostrar;
+
+        //verificamos residuo para ver si llevar� decimales
+        $Res = $NroRegistros % $RegistrosAMostrar;
+        //si hay residuo usamos funcion floor para que me
+        //devuelva la parte entera, SIN REDONDEAR, y le sumamos
+        //una unidad para obtener la ultima pagina
+        if ($Res > 0)
+            $PagUlt = floor($PagUlt) + 1;
+
+        echo "<table align='center'>
 		       <tr>
-			   <td colspan=3 align='center'> <strong>Pagina ".$PagAct."/".$PagUlt."</strong> </td>
+			   <td colspan=3 align='center'> <strong>Pagina " . $PagAct . "/" . $PagUlt . "</strong> </td>
 			   </tr>
 			   <tr>
 			   <td>
 			   <a onclick=\"show_event('1')\">Primero</a> </td>";
-		//// desplazamiento
+        //// desplazamiento
 
-		 if($PagAct>1) 
-			 echo "<td> <a onclick=\"show_event('$PagAnt')\">Anterior</a> </td>";
-		 if($PagAct<$PagUlt)  
-			 echo "<td> <a onclick=\"show_event('$PagSig')\">Siguiente</a> </td>";
-			  if($PagUlt > 0)
-				echo "<td> <a onclick=\"show_event('$PagUlt')\">Ultimo</a></td>";
-			 echo "</tr>
+        if ($PagAct > 1)
+            echo "<td> <a onclick=\"show_event('$PagAnt')\">Anterior</a> </td>";
+        if ($PagAct < $PagUlt)
+            echo "<td> <a onclick=\"show_event('$PagSig')\">Siguiente</a> </td>";
+        if ($PagUlt > 0)
+            echo "<td> <a onclick=\"show_event('$PagUlt')\">Ultimo</a></td>";
+        echo "</tr>
 			  </table>";
-	break;
-	case 5:  //LLENAR COMBO DE EXAMENES  
-	//DIBUJANDO EL FORMULARIO NUEVAMENTE
-                $idarea=$_POST['idarea'];
-                $consultaex= $objdatos->ExamenesPorArea($idarea);
-           	//echo $idarea; 
-	  	$resultado='';
-		      $resultado = "<select id='cmbExamen' name='cmbExamen' size='1'>
+        break;
+    case 5:  //LLENAR COMBO DE EXAMENES  
+        //DIBUJANDO EL FORMULARIO NUEVAMENTE
+        $idarea = $_POST['idarea'];
+        $consultaex = $objdatos->ExamenesPorArea($idarea);
+        //echo $idarea; 
+        $resultado = '';
+        $resultado = "<select id='cmbExamen' name='cmbExamen' size='1'>
 					<option value='0'>--Seleccione un Examen--</option>";
-						
-				while($rowex = pg_fetch_array($consultaex))
-						{
-		$resultado .= "<option value='" . $rowex[0]. "'>" .htmlentities($rowex[1]) . "</option>";
-						}
-						///// FINALIZA LLENADO /////
-		$resultado .= "</select>";
-               
-                echo  $resultado;
-     
-	break;
-	
-	case 6: //DIBUJANDO EL FORMULARIO DE NUEVO
-	   $resultado= "<form name='frmnuevo'>
+
+        while ($rowex = pg_fetch_array($consultaex)) {
+            $resultado .= "<option value='" . $rowex[0] . "'>" . htmlentities($rowex[1]) . "</option>";
+        }
+        ///// FINALIZA LLENADO /////
+        $resultado .= "</select>";
+
+        echo $resultado;
+
+        break;
+
+    case 6: //DIBUJANDO EL FORMULARIO DE NUEVO
+        $resultado = "<form name='frmnuevo'>
 		        <table width='52%' border='0' align='center' class='StormyWeatherFormTABLE'>
 			    <tr>
 					<td colspan='2' class='CobaltFieldCaptionTD' align='center'><h3><strong>Mantenimiento de Indicaciones por Ex&aacute;menes de Laboratorio Cl&iacute;nico</strong></h3>
@@ -154,15 +148,14 @@ switch ($opcion)
 					<td class='StormyWeatherDataTD'>
 						<select id='cmbArea' name='cmbArea' size='1' onChange='LlenarComboExamen(this.value);'>
 						<option value='0' >--Seleccione un &Aacute;rea--</option>";
-						/////////////  LLENAR EL COMBO DE AREAS///////////
-						//include('../Lab_Areas/clsLab_Areas.php');
-						//$objeareas=new clsLab_Areas;
-						$consulta= $objeareas->consultaractivas($lugar);
-						while($row = pg_fetch_array($consulta))
-						{
-		$resultado .= "<option value='" . $row['idarea']. "'>" . $row['nombrearea'] . "</option>";
-						}
-		$resultado .= "</select>
+        /////////////  LLENAR EL COMBO DE AREAS///////////
+        //include('../Lab_Areas/clsLab_Areas.php');
+        //$objeareas=new clsLab_Areas;
+        $consulta = $objeareas->consultaractivas($lugar);
+        while ($row = pg_fetch_array($consulta)) {
+            $resultado .= "<option value='" . $row['idarea'] . "'>" . $row['nombrearea'] . "</option>";
+        }
+        $resultado .= "</select>
 					</td>
 		        </tr>
 		        <tr>
@@ -184,65 +177,57 @@ switch ($opcion)
 				</tr>
 				</table>
         </form>";
-	  echo  $resultado;
-	  
-	  break;
-	case 7: //BUSQUEDA
-		
-		$query = "select mipe.id, casd.id,casd.nombrearea,lcee.id,lcee.nombre_examen,mipe.indicacion		
+        echo $resultado;
+
+        break;
+    case 7: //BUSQUEDA
+        $query = "select mipe.id, casd.id,casd.nombrearea,lcee.id,lcee.nombre_examen,mipe.indicacion		
                         from ctl_area_servicio_diagnostico casd
 			join mnt_area_examen_establecimiento mnt4 on   mnt4.id_area_servicio_diagnostico=casd.id
 			join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen) 
 			join mnt_indicacionesporexamen mipe on (mipe.id_conf_examen_estab=lcee.id) where";
-		$ban=0;
-		//VERIFICANDO LOS POST ENVIADOS
-                if (!empty($_POST['idarea']))
-		{ $query .= " (case '".$_POST['idarea']."'
-                            when '0' then casd.id >=0
-                            else  (casd.id='".$_POST['idarea']."')end)
-                                 AND"; }
-                    
-                   // { $query .= " casd.id='".$_POST['idarea']."' AND"; }
-		
-                else{$ban=1;}
-                
-		if (!empty($_POST['idexamen']) || $_POST['idexamen']!=0)
-		{ $query .= " (case '".$_POST['idexamen']."'
-                                    when '0' then lcee.id >=0 
-                                    else  (lcee.id='".$_POST['idexamen']."') end) 
-                         AND"; }
-                    
-                   // { $query .= " mnt4.id='".$_POST['idexamen']."' AND"; }
-		
-                else{$ban=1;}
-		
-		
-		
-		if (!empty($_POST['indicacion']))
-		{ $query .= " mipe.indicacion ilike '%%".$_POST['indicacion']."%%' AND"; }
-		else{$ban=1;}
-		if ($ban==0)
-		{    $query = substr($query ,0,strlen($query)-4);
-			 $query_search = $query. " AND idservicio=98";
-		}
-		else {
-			$query_search = $query. " idservicio=98";
-		}
-		
-		//ENVIANDO A EJECUTAR LA BUSQUEDA!!
-		
-		//require_once("clsLab_IndicacionesPorExamen.php");
-		////para manejo de la paginacion
-		$RegistrosAMostrar=4;
-		$RegistrosAEmpezar=($_POST['Pag']-1)*$RegistrosAMostrar;
-		$PagAct=$_POST['Pag'];
-	
-		 /////LAMANDO LA FUNCION DE LA CLASE 
-		//$obje=new clsLab_IndicacionesPorExamen;
-		$consulta= $objdatos->consultarpagbus($query_search,$RegistrosAEmpezar, $RegistrosAMostrar);
+        $ban = 0;
+        //VERIFICANDO LOS POST ENVIADOS
+        if (!empty($_POST['idarea'])) {
+            $query .= " casd.id = ".$_POST['idarea']." AND";
+        } else {
+            $ban = 1;
+        }
 
-		//muestra los datos consultados en la tabla
-		   echo "<table border = 1 align='center'  width='60%' class='StormyWeatherFormTABLE'>
+        if (!empty($_POST['idexamen'])) {
+            $query .= " lcee.id = ".$_POST['idexamen']." AND";
+        } else {
+            $ban = 1;
+        }
+
+        if (!empty($_POST['indicacion'])) {
+            $query .= " mipe.indicacion ilike '%" . $_POST['indicacion'] . "%' AND";
+        } else {
+            $ban = 1;
+        }
+        
+        if ($ban == 0) {
+            $query = substr($query, 0, strlen($query) - 4);
+            $query_search = $query . " AND idservicio = 98";
+        } else {
+            $query_search = $query . " idservicio = 98";
+        }
+        
+        //echo $query_search;
+        //ENVIANDO A EJECUTAR LA BUSQUEDA!!
+        //require_once("clsLab_IndicacionesPorExamen.php");
+        ////para manejo de la paginacion
+        $RegistrosAMostrar = 4;
+        $RegistrosAEmpezar = ($_POST['Pag'] - 1) * $RegistrosAMostrar;
+        $PagAct = $_POST['Pag'];
+        
+        $query_search = $query_search." ORDER BY casd.nombrearea, lcee.nombre_examen";
+        /////LAMANDO LA FUNCION DE LA CLASE 
+        //$obje=new clsLab_IndicacionesPorExamen;
+        $consulta = $objdatos->consultarpagbus($query_search, $RegistrosAEmpezar, $RegistrosAMostrar);
+
+        //muestra los datos consultados en la tabla
+        echo "<table border = 1 align='center'  width='60%' class='StormyWeatherFormTABLE'>
 		        <tr>
 				<td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
 				<!--<td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
@@ -251,184 +236,156 @@ switch ($opcion)
 				<td class='CobaltFieldCaptionTD'> Indicaci&oacute;n </td>	   
 			</tr>";
 
-			while($row = pg_fetch_array($consulta)){
-		  echo "<tr>
+        while ($row = pg_fetch_array($consulta)) {
+            echo "<tr>
 		  		<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"pedirDatos('".$row[0]."')\"> </td>
+					onclick=\"pedirDatos('" . $row[0] . "')\"> </td>
 				<!-- <td aling ='center'> 
 					 <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"eliminarDato('".$row['id']."')\"> </td> -->
+					onclick=\"eliminarDato('" . $row['id'] . "')\"> </td> -->
 				<td> $row[2] </td>
 				<td> $row[4] </td>
-				<td>".htmlentities( $row[5])."</td>
+				<td>" . htmlentities($row[5]) . "</td>
 				</tr>";
-				}
-		echo "</table>"; 
+        }
+        echo "</table>";
+        
+        //determinando el numero de paginas
+        $NroRegistros = $objdatos->NumeroDeRegistrosbus($query_search);
+        $PagAnt = $PagAct - 1;
+        $PagSig = $PagAct + 1;
 
-		//determinando el numero de paginas
-		 $NroRegistros= $objdatos->NumeroDeRegistrosbus($query_search);
-		 $PagAnt=$PagAct-1;
-		 $PagSig=$PagAct+1;
-		 
-		 $PagUlt=$NroRegistros/$RegistrosAMostrar;
-		 
-		 //verificamos residuo para ver si llevar� decimales
-		 $Res=$NroRegistros%$RegistrosAMostrar;
-		 //si hay residuo usamos funcion floor para que me
-		 //devuelva la parte entera, SIN REDONDEAR, y le sumamos
-		 //una unidad para obtener la ultima pagina
-		 if($Res>0) $PagUlt=floor($PagUlt)+1;
+        $PagUlt = $NroRegistros / $RegistrosAMostrar;
 
-		 echo "<table align='center'>
+        //verificamos residuo para ver si llevar� decimales
+        $Res = $NroRegistros % $RegistrosAMostrar;
+        //si hay residuo usamos funcion floor para que me
+        //devuelva la parte entera, SIN REDONDEAR, y le sumamos
+        //una unidad para obtener la ultima pagina
+        if ($Res > 0)
+            $PagUlt = floor($PagUlt) + 1;
+
+        echo "<table align='center'>
 		       <tr>
-			   <td colspan=3 align='center'> <strong>Pagina ".$PagAct."/".$PagUlt."</strong> </td>
+			   <td colspan=3 align='center'> <strong>Pagina " . $PagAct . "/" . $PagUlt . "</strong> </td>
 			   </tr>
 			   <tr>
 			   <td>
 			   <a onclick=\"show_event_search('1')\">Primero</a> </td>";
-		//// desplazamiento
+        //// desplazamiento
 
-		 if($PagAct>1) 
-			 echo "<td> <a onclick=\"show_event_search('$PagAnt')\">Anterior</a> </td>";
-		 if($PagAct<$PagUlt)  
-			 echo "<td> <a onclick=\"show_event_search('$PagSig')\">Siguiente</a> </td>";
-			  if($PagUlt > 0)
-				echo "<td> <a onclick=\"show_event_search('$PagUlt')\">Ultimo</a></td>";
-			 echo "</tr>
+        if ($PagAct > 1)
+            echo "<td> <a onclick=\"show_event_search('$PagAnt')\">Anterior</a> </td>";
+        if ($PagAct < $PagUlt)
+            echo "<td> <a onclick=\"show_event_search('$PagSig')\">Siguiente</a> </td>";
+        if ($PagUlt > 0)
+            echo "<td> <a onclick=\"show_event_search('$PagUlt')\">Ultimo</a></td>";
+        echo "</tr>
 			  </table>";
-		
-	break;
-	case 8://PAGINACION DE BUSQUEDA
-		$query = "select mipe.id, casd.id,casd.nombrearea,lcee.id,lcee.nombre_examen,mipe.indicacion		
+        break;
+    case 8://PAGINACION DE BUSQUEDA
+        $query = "select mipe.id, casd.id,casd.nombrearea,lcee.id,lcee.nombre_examen,mipe.indicacion		
                         from ctl_area_servicio_diagnostico casd
 			join mnt_area_examen_establecimiento mnt4 on   mnt4.id_area_servicio_diagnostico=casd.id
 			join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen) 
-			join mnt_indicacionesporexamen mipe on (mipe.id_conf_examen_estab=lcee.id) where ";
-		$ban=0;
-		
-		//VERIFICANDO LOS POST ENVIADOS
-		/*if (!empty($_POST['idexamen']))
-		{ $query .= " mnt4.id='".$_POST['idexamen']."' AND"; }
-		else{$ban=1;}
-		
-		if (!empty($_POST['idarea']))
-		{ $query .= " casd.id='".$_POST['idarea']."' AND"; }
-		else{$ban=1;}
-		
-		if (!empty($_POST['indicacion']))
-		{ $query .= " mipe.indicacion='".$_POST['indicacion']."' AND"; }
-		else{$ban=1;}
-		
-		if ($ban==0)
-		{    $query = substr($query ,0,strlen($query)-4);
-			 $query_search = $query. " AND idservicio=98";
-		}
-		else {
-			$query_search = $query. " idservicio=98";
-		}*/
-                //VERIFICANDO LOS POST ENVIADOS
-                if (!empty($_POST['idarea']))
-		{ $query .= " (case '".$_POST['idarea']."'
-                            when '0' then casd.id >=0
-                            else  (casd.id='".$_POST['idarea']."')end)
-                                 AND"; }
-                    
-                   // { $query .= " casd.id='".$_POST['idarea']."' AND"; }
-		
-                else{$ban=1;}
-                
-		if (!empty($_POST['idexamen']) || $_POST['idexamen']!=0)
-		{ $query .= " (case '".$_POST['idexamen']."'
-                                    when '0' then lcee.id >=0 
-                                    else  (lcee.id='".$_POST['idexamen']."') end) 
-                         AND"; }
-                    
-                   // { $query .= " mnt4.id='".$_POST['idexamen']."' AND"; }
-		
-                else{$ban=1;}
-		
-		
-		
-		if (!empty($_POST['indicacion']))
-		{ $query .= " mipe.indicacion ilike '%%".$_POST['indicacion']."%%' AND"; }
-		else{$ban=1;}
-		if ($ban==0)
-		{    $query = substr($query ,0,strlen($query)-4);
-			 $query_search = $query. " AND idservicio=98";
-		}
-		else {
-			$query_search = $query. " idservicio=98";
-		}
-		
-		//require_once("clsLab_IndicacionesPorExamen.php");
-		////para manejo de la paginacion
-		$RegistrosAMostrar=4;
-		$RegistrosAEmpezar=($_POST['Pag']-1)*$RegistrosAMostrar;
-		$PagAct=$_POST['Pag'];
-	
-		 /////LAMANDO LA FUNCION DE LA CLASE 
-		//$obje=new clsLab_IndicacionesPorExamen;
-              
-		$consulta= $objdatos->consultarpagbus($query_search,$RegistrosAEmpezar, $RegistrosAMostrar);
+			join mnt_indicacionesporexamen mipe on (mipe.id_conf_examen_estab=lcee.id) where";
+        $ban = 0;
 
-		//muestra los datos consultados en la tabla
-				echo "<table border = 1 align='center'  width='60%' class='StormyWeatherFormTABLE'>
-					   <tr>
-					   <tr>
-					   <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-					 <!--  <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
-					   <td class='CobaltFieldCaptionTD'> Area </td>
-					   <td class='CobaltFieldCaptionTD'> Examen </td>
-					   <td class='CobaltFieldCaptionTD'> Indicaci&oacute;n </td>	   
-					   </tr>";
+        //VERIFICANDO LOS POST ENVIADOS
+        if (!empty($_POST['idarea'])) {
+            $query .= " casd.id = ".$_POST['idarea']." AND";
+        } else {
+            $ban = 1;
+        }
 
-				while($row = pg_fetch_array($consulta)){
-					echo "<tr>
-							<td aling='center'> 
-							<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-							onclick=\"pedirDatos('".$row[0]."')\"> </td>
-							<!-- <td aling ='center'> 
-							<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-							onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
-							<td> $row[2] </td>
-							<td> $row[4] </td>
-							<td>".htmlentities($row[5])."</td>
-							</tr>";
-				}
-		echo "</table>"; 
+        if (!empty($_POST['idexamen'])) {
+            $query .= " lcee.id = ".$_POST['idexamen']." AND";
+        } else {
+            $ban = 1;
+        }
 
-		//determinando el numero de paginas
-		 $NroRegistros= $obje->NumeroDeRegistrosbus($query_search);
-		 $PagAnt=$PagAct-1;
-		 $PagSig=$PagAct+1;
-		 
-		 $PagUlt=$NroRegistros/$RegistrosAMostrar;
-		 
-		 //verificamos residuo para ver si llevar� decimales
-		 $Res=$NroRegistros%$RegistrosAMostrar;
-		 //si hay residuo usamos funcion floor para que me
-		 //devuelva la parte entera, SIN REDONDEAR, y le sumamos
-		 //una unidad para obtener la ultima pagina
-		 if($Res>0) $PagUlt=floor($PagUlt)+1;
+        if (!empty($_POST['indicacion'])) {
+            $query .= " mipe.indicacion ilike '%" . $_POST['indicacion'] . "%' AND";
+        } else {
+            $ban = 1;
+        }
+        
+        if ($ban == 0) {
+            $query = substr($query, 0, strlen($query) - 4);
+            $query_search = $query . " AND idservicio = 98";
+        } else {
+            $query_search = $query . " idservicio = 98";
+        }
+        //echo $query_search;
+        //require_once("clsLab_IndicacionesPorExamen.php");
+        ////para manejo de la paginacion
+        $RegistrosAMostrar = 4;
+        $RegistrosAEmpezar = ($_POST['Pag'] - 1) * $RegistrosAMostrar;
+        $PagAct = $_POST['Pag'];
 
-	  echo "<table align='center'>
-			
-			    <tr>
-					<td colspan=3 align='center'> <strong>Pagina ".$PagAct."/".$PagUlt."</strong> </td>
-				</tr>
-				<tr>
-					<td>
-						<a onclick=\"show_event_search('1')\">Primero</a> </td>";
-		//// desplazamiento
-		 if($PagAct>1) 
-			 echo "<td> <a onclick=\"show_event_search('$PagAnt')\">Anterior</a> </td>";
-		 if($PagAct<$PagUlt)  
-			 echo "<td> <a onclick=\"show_event_search('$PagSig')\">Siguiente</a> </td>";
-			 echo "<td> <a onclick=\"show_event_search('$PagUlt')\">Ultimo</a></td>";
-			 echo "</tr>
+        $query_search = $query_search." ORDER BY casd.nombrearea, lcee.nombre_examen";
+        /////LAMANDO LA FUNCION DE LA CLASE 
+        //$obje=new clsLab_IndicacionesPorExamen;
+        $consulta = $objdatos->consultarpagbus($query_search, $RegistrosAEmpezar, $RegistrosAMostrar);
+
+        //muestra los datos consultados en la tabla
+        echo "<table border = 1 align='center'  width='60%' class='StormyWeatherFormTABLE'>
+		        <tr>
+				<td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
+				<!--<td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
+				<td class='CobaltFieldCaptionTD'> Area </td>
+				<td class='CobaltFieldCaptionTD'> Examen </td>
+				<td class='CobaltFieldCaptionTD'> Indicaci&oacute;n </td>	   
+			</tr>";
+
+        while ($row = pg_fetch_array($consulta)) {
+            echo "<tr>
+		  		<td aling='center'> 
+					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+					onclick=\"pedirDatos('" . $row[0] . "')\"> </td>
+				<!-- <td aling ='center'> 
+					 <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+					onclick=\"eliminarDato('" . $row['id'] . "')\"> </td> -->
+				<td> $row[2] </td>
+				<td> $row[4] </td>
+				<td>" . htmlentities($row[5]) . "</td>
+				</tr>";
+        }
+        echo "</table>";
+        
+        //determinando el numero de paginas
+        $NroRegistros = $objdatos->NumeroDeRegistrosbus($query_search);
+        $PagAnt = $PagAct - 1;
+        $PagSig = $PagAct + 1;
+
+        $PagUlt = $NroRegistros / $RegistrosAMostrar;
+
+        //verificamos residuo para ver si llevar� decimales
+        $Res = $NroRegistros % $RegistrosAMostrar;
+        //si hay residuo usamos funcion floor para que me
+        //devuelva la parte entera, SIN REDONDEAR, y le sumamos
+        //una unidad para obtener la ultima pagina
+        if ($Res > 0)
+            $PagUlt = floor($PagUlt) + 1;
+
+        echo "<table align='center'>
+		       <tr>
+			   <td colspan=3 align='center'> <strong>Pagina " . $PagAct . "/" . $PagUlt . "</strong> </td>
+			   </tr>
+			   <tr>
+			   <td>
+			   <a onclick=\"show_event_search('1')\">Primero</a> </td>";
+        //// desplazamiento
+
+        if ($PagAct > 1)
+            echo "<td> <a onclick=\"show_event_search('$PagAnt')\">Anterior</a> </td>";
+        if ($PagAct < $PagUlt)
+            echo "<td> <a onclick=\"show_event_search('$PagSig')\">Siguiente</a> </td>";
+        if ($PagUlt > 0)
+            echo "<td> <a onclick=\"show_event_search('$PagUlt')\">Ultimo</a></td>";
+        echo "</tr>
 			  </table>";
-	break;
+        break;
 }
-
 ?>

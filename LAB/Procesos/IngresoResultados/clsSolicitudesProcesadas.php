@@ -101,11 +101,6 @@ class clsSolicitudesProcesadas {
     function LlenarCmbServ($IdServ, $lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            /*$sqlText = "SELECT mnt_subservicio.IdSubServicio,mnt_subservicio.NombreSubServicio
-			   FROM mnt_subservicio 
-			   INNER JOIN mnt_subservicioxestablecimiento ON mnt_subservicio.IdSubServicio=mnt_subservicioxestablecimiento.IdSubServicio
-			   WHERE mnt_subservicio.IdServicio='$IdServ' AND IdEstablecimiento=$lugar 
-			   ORDER BY NombreSubServicio";*/
             $sqlText = "WITH tbl_servicio AS (
                             SELECT t02.id,
                                 CASE WHEN t02.nombre_ambiente IS NOT NULL THEN  	
@@ -218,7 +213,8 @@ class clsSolicitudesProcesadas {
     function BuscarEmpleadoValidador($responsable) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "SELECT NombreEmpleado FROM mnt_empleados WHERE IdEmpleado='$responsable' ";
+            $query = "SELECT CONCAT_WS(' ',nombre,NULL,apellido) as empleado 
+                      FROM mnt_empleado WHERE id='$responsable' ";
             $result = pg_query($query);
             if (!$result)
                 return false;
@@ -274,20 +270,30 @@ class clsSolicitudesProcesadas {
     //FUNCION PARA LLAMAR EMPLEADOS DE LABORATORIOS FILTRADOS POR AREA
     function BuscarEmpleados($idarea, $lugar) {
         $con = new ConexionBD;
-        if ($con->conectar() == true) { /* $query="SELECT IdEmpleado,NombreEmpleado 
-          FROM mnt_empleados  INNER JOIN  mnt_cargoempleados
-          ON mnt_empleados.IdCargoEmpleado=mnt_cargoempleados.IdCargoEmpleado
-          WHERE mnt_cargoempleados.idservicio='DCOLAB' AND
-          IdArea='$idarea'  AND IdEstablecimiento=$lugar"; */
-            $query = "SELECT IdEmpleado, NombreEmpleado
-                 FROM mnt_empleados
-                 INNER JOIN mnt_cargoempleados ON mnt_empleados.IdCargoEmpleado = mnt_cargoempleados.IdCargoEmpleado
-                 WHERE mnt_cargoempleados.idservicio = 'DCOLAB'
-                 AND IdArea <> 'TMU'
-                 AND IdArea <> 'INF'
-                 AND IdArea <> 'REC'
-                 AND IdEstablecimiento =$lugar";
-            // echo $query;
+        if ($con->conectar() == true) {
+            $query = "SELECT t02.codigo 
+                      FROM ctl_establecimiento            t01
+                      INNER JOIN ctl_tipo_establecimiento t02 ON (t02.id = t01.id_tipo_establecimiento)
+                      WHERE t01.id = $lugar";
+            $result  = pg_query($query);
+            $rowtipo = pg_fetch_array($result);
+            $tipo    = $rowtipo[0];
+            $where   = "";
+
+            $query = "SELECT t01.id AS idempleado, t01.nombreempleado
+                      FROM mnt_empleado                        t01
+                      INNER JOIN mnt_cargoempleados            t02 ON (t02.id = t01.id_cargo_empleado)
+                      INNER JOIN ctl_area_servicio_diagnostico t03 ON (t03.id = t01.idarea)
+                      WHERE t02.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')
+                            AND t03.idarea NOT IN ('TMU','INF','REC') AND t01.id_establecimiento = $lugar
+                            ";
+
+            if($tipo === "H") {
+                $where = " AND t01.idarea = $idarea";
+            }
+
+            $query = $query.$where;
+
             $result = pg_query($query);
 
             if (!$result)

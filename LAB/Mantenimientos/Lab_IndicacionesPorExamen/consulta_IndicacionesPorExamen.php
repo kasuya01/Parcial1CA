@@ -3,7 +3,7 @@
 include_once("clsLab_IndicacionesPorExamen.php");
 
 //consulta los datos por su id
-$idindicacion=$_POST['idindicacion'];
+ $idindicacion=$_POST['idindicacion'];
 $obj = new clsLab_IndicacionesPorExamen;
 $consulta=$obj->consultarid_indicacion($idindicacion);
 $row = pg_fetch_array($consulta);
@@ -18,15 +18,15 @@ $indicacion=$row['indicacion'];
 ?>
 
 <form name= "frmModificar" action="" >
-<table width="52%" border="0" align="center" class="StormyWeatherFormTABLE">
-		   <tr>
-				<td colspan='2' class='CobaltFieldCaptionTD' align='center'><h3><strong>Mantenimiento de Indicaciones por Ex&aacute;menes de Laboratorio Cl&iacute;nico</strong></h3>
-				</td>
-		   </tr>
-		   <tr>
+    <table width="52%" border="0" align="center" class="StormyWeatherFormTABLE">
+	<tr>
+            <td colspan='2' class='CobaltFieldCaptionTD' align='center'><h3><strong>Mantenimiento de Indicaciones por Ex&aacute;menes de Laboratorio Cl&iacute;nico</strong></h3>
+            </td>
+       </tr>
+       <tr>
             <td class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
             <td class="StormyWeatherDataTD">
-			<select name="cmbArea" size="1" onChange="LlenarComboExamen(this.value);">			 
+                <select name="cmbArea" size="1" onChange="LlenarComboExamen(this.value);">			 
 			<?php
 			include('../Lab_Areas/clsLab_Areas.php');
 			$objeareas = new clsLab_Areas;
@@ -37,9 +37,9 @@ $indicacion=$row['indicacion'];
 			}						            	
 			echo "<option value='" . $idarea . "' selected='selected'>" .htmlentities($nombrearea). "</option>";
 			?>		  
-          </select>		  </td>
-          </tr>
-          <tr>
+                </select>		  </td>
+       </tr>
+       <tr>
             <td class="StormyWeatherFieldCaptionTD">Examen </td>
             <td class="StormyWeatherDataTD"><select name="cmbExamen" size="1">
           <?php
@@ -50,9 +50,10 @@ $indicacion=$row['indicacion'];
 				}						            	
 				echo "<option value='" . $idexamen . "' selected='selected'>" .$nombreexamen. "</option>";
 			?>	
-            </select></td>
-          </tr>
-		   <tr>
+                </select>
+            </td>
+      </tr>
+      <tr>
             <td class="StormyWeatherFieldCaptionTD">Indicaci&oacute;n</td>
             <td class="StormyWeatherDataTD">
 			<input type="hidden" name="txtidindicacion" id="txtidindicacion" size="50" value="<?php echo $idindicacion; ?>" />

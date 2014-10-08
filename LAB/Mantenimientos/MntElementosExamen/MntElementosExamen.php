@@ -71,8 +71,8 @@ $area=$_SESSION['Idarea'];
                                             include('../Lab_Areas/clsLab_Areas.php');
                                             $objeareas=new clsLab_Areas;
                                             $consulta= $objeareas->consultaractivas($lugar);
-                                            while($row = mysql_fetch_array($consulta)){
-						echo "<option value='" . $row['IdArea']. "'>" . $row['NombreArea'] . "</option>";
+                                            while($row = pg_fetch_array($consulta)){
+						echo "<option value='" . $row['idarea']. "'>" . $row['nombrearea'] . "</option>";
                                             }
                                          ?>		  
 				</select>		  

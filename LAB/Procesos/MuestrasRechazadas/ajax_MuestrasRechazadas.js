@@ -132,11 +132,13 @@ function MostrarDatos(posicion)
 {
 		idexpediente=document.getElementById('idexpediente['+posicion+']').value;
 		idsolicitud=document.getElementById('idsolicitud['+posicion+']').value;
+                //idsolicitud1=document.getElementById('idsolicitud1['+posicion+']').value;
 		idarea=document.getElementById('idarea['+posicion+']').value;
 		idexamen=document.getElementById('idexamen['+posicion+']').value;
 		idestablecimiento=document.getElementById('idestablecimiento['+posicion+']').value;
 		idexpediente=trim(idexpediente);
 		idsolicitud=trim(idsolicitud);
+               // idsolicitud1=trim(idsolicitud1);
 		switch (idarea)
 		 { case "URI": 
 			ventana_secundaria = window.open("DatosSolicitudesPorArea1.php?var1="+idexpediente+
@@ -161,16 +163,19 @@ function MostrarDatos(posicion)
 function CambiarEstadoDetalleSolicitud(estado)
 {
    		idsolicitud=document.frmDatos.idsolicitud.value;
+               // idsolicitud1=document.frmDatos.idsolicitud1.value;
 		idexpediente=document.frmDatos.idexpediente.value;
 		fechasolicitud=document.frmDatos.fechasolicitud.value;
 		idarea=document.frmDatos.idarea.value;
 		idexamen="";
 		fecharecep="";
+                
 		pag="";
 		opcion=3;
 		
-		//alert(estado);
+		alert(estado);
 		idsolicitud=trim(idsolicitud);
+               // idsolicitud1=trim(idsolicitud1);
 		idexpediente=trim(idexpediente);
 		fechasolicitud=trim(fechasolicitud);
 		//instanciamos el objetoAjax
@@ -197,18 +202,22 @@ function CambiarEstadoDetalleSolicitud(estado)
 }
 
 
-function CambiarEstadoDetalleSolicitud1(estado,idexamen)
+function CambiarEstadoDetalleSolicitud1(estado,idexamen,text,fechasolicitud,idsolicitudPadre)
 {
    		idsolicitud=document.frmDatos.idsolicitud.value;
+               // idsolicitud1=document.frmDatos.idsolicitud1.value;
 		idexpediente=document.frmDatos.idexpediente.value;
 		fechasolicitud=document.frmDatos.fechasolicitud.value;
 		idarea=document.frmDatos.idarea.value;
 		fecharecep="";
 		pag="";
+                id=idsolicitudPadre;
+                textAtea=text;
 		//idexamen=document.frmDatos.// puse esto
 		opcion=3;
 		//alert(estado);
 		idsolicitud=trim(idsolicitud);
+               // idsolicitud1=trim(idsolicitud1);
 		idexpediente=trim(idexpediente);
 		fechasolicitud=trim(fechasolicitud);
 		//observacion="";
@@ -216,10 +225,11 @@ function CambiarEstadoDetalleSolicitud1(estado,idexamen)
 		ajax=objetoAjax();
 		//usando del medoto POST
 		ajax.open("POST", "ctrMuestrasRechazadas.php",true);
+                // window.close();
 		//muy importante este encabezado ya que hacemos uso de un formulario
 		ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores
-		ajax.send("idexpediente="+idexpediente+"&idarea="+idarea+"&fechasolicitud="+fechasolicitud+"&idsolicitud="+idsolicitud+"&opcion="+opcion+"&estado="+estado+"&idexamen="+idexamen+"&fecharecep="+fecharecep+"&pag="+pag);	
+		ajax.send("idexpediente="+idexpediente+"&idarea="+idarea+"&fechasolicitud="+fechasolicitud+"&idsolicitud="+idsolicitud+"&opcion="+opcion+"&estado="+estado+"&idexamen="+idexamen+"&fecharecep="+fecharecep+"&pag="+pag+"&observacion="+textAtea+"&idsolicitudPadre="+id);	
 		ajax.onreadystatechange=function() 
 		{
 			if (ajax.readyState==4) 
@@ -228,7 +238,8 @@ function CambiarEstadoDetalleSolicitud1(estado,idexamen)
 				{
 					//mostrar los nuevos registros en esta capa
 					//document.getElementById('divCambioEstado').innerHTML = ajax.responseText;	
-					alert(ajax.responseText);					
+					alert(ajax.responseText);	
+                                         window.close();
 				}
 			}
 	   }
@@ -238,17 +249,23 @@ function CambiarEstadoDetalleSolicitud1(estado,idexamen)
 function ProcesarMuestra()
 {
    //alert("Voy a cambiar estados");
-   estado='PM'; //LOS DETALLES DE LA SOLICITUD SE LES HA PROCESADO LA MUESTRA
+   estado='PM'
+  //estado=5; //LOS DETALLES DE LA SOLICITUD SE LES HA PROCESADO LA MUESTRA
    CambiarEstadoDetalleSolicitud(estado);
   // window.close();
 }
 
 function ProcesarMuestra1(idexamen)
 {
+   idsolicitudPadre=document.frmDatos.idsolicitudPadre.value;
+   text=document.frmDatos.txtobservacion.value;
+   fechasolicitud=document.frmDatos.fechasolicitud.value;
+    //alert(text);
    //alert("Voy a cambiar estados");
  //  alert(idexamen);
-   estado='PM'; //LOS DETALLES DE LA SOLICITUD SE LES HA PROCESADO LA MUESTRA
-   CambiarEstadoDetalleSolicitud1(estado,idexamen)
+ estado='PM'
+//estado=5; //LOS DETALLES DE LA SOLICITUD SE LES HA PROCESADO LA MUESTRA
+   CambiarEstadoDetalleSolicitud1(estado,idexamen,text,fechasolicitud,idsolicitudPadre)
   // window.close();
 }
 
@@ -264,8 +281,10 @@ function Cerrar(){
 //function RechazarMuestra(idexamen)
 function RechazarMuestra()
 {
+   //estado=6
    estado='RM'
 	idsolicitud=document.frmDatos.idsolicitud.value;
+       // idsolicitud1=document.frmDatos.idsolicitud1.value;
 	idexpediente=document.frmDatos.idexpediente.value;
 	fechasolicitud=document.frmDatos.fechasolicitud.value;
 	idarea=document.frmDatos.idarea.value;
@@ -273,6 +292,7 @@ function RechazarMuestra()
 	opcion=4;
 	idexamen="";
 	idsolicitud=trim(idsolicitud);
+       // idsolicitud1=trim(idsolicitud1);
 	idexpediente=trim(idexpediente);
 	fechasolicitud=trim(fechasolicitud);
 	fecharecep="";
@@ -303,7 +323,8 @@ function RechazarMuestra()
 
 function RechazarMuestra1(idexamen)
 {
-   estado='RM'
+   //estado=6
+   estado='PM'
    idsolicitud=document.frmDatos.idsolicitud.value;
    idexpediente=document.frmDatos.idexpediente.value;
    fechasolicitud=document.frmDatos.fechasolicitud.value;

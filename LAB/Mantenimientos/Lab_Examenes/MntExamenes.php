@@ -7,7 +7,10 @@ $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 $obje=new clsLab_CodigosEstandar;
-$objeareas=new clsLab_Areas;?>
+$objeareas=new clsLab_Areas;
+$obj=new clsLab_Examenes;
+ //echo $lugar;
+?>
 <html>
 <head> 
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
@@ -27,13 +30,14 @@ function Modificar()
 { 
 	enviarDatos(); 
 }
-/*function Nuevo()
-{ 
-	MostrarFormularioNuevo(); 
-}*/
+function LlenarComboExamen(idarea)
+{
+    //alert("aqui"+idarea);
+     LlenarExamenes(idarea);
+}
 function Buscar()
 { 
-	BuscarDatos(); 
+    BuscarDatos(); 
 }
 function Cancelar()
 { 	LimpiarCampos();
@@ -67,8 +71,7 @@ if ($nivel==33){
                 <form name="frmnuevo" >
                     <table width="70%" border="0" align="center" class="StormyWeatherFormTABLE">
                         <tr>
-                            <td colspan="3" align="center" class="CobaltFieldCaptionTD"><strong><h3>Mantenimiento de Ex&aacute;menes de Laboratorio Cl&iacute;nico</h3></strong>
-                            </td>
+                            <td colspan="3" align="center" class="CobaltFieldCaptionTD"><strong><h3>Mantenimiento de Ex&aacute;menes de Laboratorio Cl&iacute;nico</h3></strong></td>
 			</tr>
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo del Examen</td>
@@ -77,15 +80,27 @@ if ($nivel==33){
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo del &Aacute;rea</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbArea" name="cmbArea" size="1" onChange="AsignarIdExamen(this.value);">
+                                <select id="cmbArea" name="cmbArea" size="1"  onChange="LlenarComboExamen(this.value);">
                                     <option value="0" >--Seleccione un &Aacute;rea--</option>
                                     <?php
                                         $consulta= $objeareas->consultaractivas($lugar);
-					while($row = mysql_fetch_array($consulta)){
-                                            echo "<option value='" . $row['IdArea']. "'>" . $row['NombreArea'] . "</option>";
+					while($row = pg_fetch_array($consulta)){
+                                            echo "<option value='" . $row['idarea']. "'>" . $row['nombrearea'] . "</option>";
 					}
                                     ?>		  
 				</select>
+                            </td>
+			</tr>
+                        <tr>
+                            <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo del Est&aacute;ndar</td>
+                            <td class="StormyWeatherDataTD">
+                               <div id="divExamen">
+                                    <select name="cmbEstandar" id="cmbEstandar"  style="width:250px"> 
+                                         
+                                             <option value="0">--Seleccione un Examen--</option>
+                                              
+                                    </select>
+                               </div>
                             </td>
 			</tr>
 			<tr>
@@ -100,32 +115,12 @@ if ($nivel==33){
                                         <?php
                                             $obje=new clsLab_Examenes;
                                             $consulta= $obje->LeerPlantilla();
-                                            while($row = mysql_fetch_array($consulta)){
+                                            while($row = pg_fetch_array($consulta)){
 						echo "<option value='" . $row[0]. "'>" . $row[1] . "</option>";
                                             }
 					?>
 				</select>
                             </td>
-			</tr>
-			<tr>
-                            <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo del Est&aacute;ndar</td>
-                            <td class="StormyWeatherDataTD">
-                                <select id="cmbEstandar" name="cmbEstandar" size="1">
-                                    <option value="0">--Seleccione un Est&aacute;ndar--</option>
-					<?php
-                                            $obje=new clsLab_CodigosEstandar;
-                                            $consulta= $obje->consultar();
-                                            while($row = mysql_fetch_array($consulta)){
-                                                echo "<option value='" . $row['0']. "'>" . $row['0'].'- '.$row['1'] . "</option>";
-                                            }
-								//mysql_free_result($row);		
-					?>		 
-				</select>   
-                            </td>
-			</tr>
-			<tr>
-                            <td class="StormyWeatherFieldCaptionTD" >Obsevaci&oacute;n </td>
-                            <td class="StormyWeatherDataTD"><textarea name="txtobservacion" cols="60" id="txtobservacion"></textarea> </td>
 			</tr>
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD"><strong>Solicitado en </strong> </td>
@@ -138,29 +133,20 @@ if ($nivel==33){
 				</select>
                             </td>
 			</tr>
-			<tr>
-                            <td class="StormyWeatherFieldCaptionTD" width="40%"><strong>Programa Nacional de Salud</strong> </td>
-                            <td class="StormyWeatherDataTD">
-                                <select id="cmbPrograma" name="cmbPrograma" size="1" onChange="LlenarComboFormulario(this.value);">
-                                    <option value="0">Ninguno</option>
-                                        <?php
-                                            $obje1=new clsLab_Examenes;
-                                            $consulta= $obje1->consultar_programas();
-                                            while($row = mysql_fetch_array($consulta)){
-                                                echo "<option value='" . $row['0']. "'>" .$row['1'] . "</option>";
-                                            }
-                                        ?>	
-				</select>  
-                            </td>
-			</tr>
+			
 			<tr>
                             <td width="17%" class="StormyWeatherFieldCaptionTD">Formulario para Examen</td>
                             <td width="83%"  class="StormyWeatherDataTD">
-                                <div id="divFormularios">
-                                    <select name="cmbFormularios" id="cmbFormularios" style="width:250px"> 
+                             
+                                    <select name="cmbFormularios" id="cmbFormularios" size="1" > 
                                         <option value="0">Ninguno</option>
+                                        <?php
+                                            $consulta= $obj->consultar_formularios($lugar);
+                                            while($row = pg_fetch_array($consulta)){
+                                                echo "<option value='" . $row['0']. "'>" .$row['1'] . "</option>";
+                                            }
+                                        ?>	
                                     </select>
-				</div>
                             </td>
                        </tr>
                         <tr>
@@ -170,9 +156,9 @@ if ($nivel==33){
                                     <option value="0">--Seleccione un Est&aacute;ndar--</option>
                                         <?php
                                             $obje=new clsLab_CodigosEstandar;
-                                            $consulta= $obje->consultar();
-                                            while($row = mysql_fetch_array($consulta)){
-                                                echo "<option value='" . $row['0']. "'>" . $row['0'].'- '.$row['1'] . "</option>";
+                                            $consulta= $obj->consultar_estandar();
+                                            while($row = pg_fetch_array($consulta)){
+                                                echo "<option value='" . $row['0']. "'>" . $row['1'].'- '.$row['2'] . "</option>";
                                             }
 								//mysql_free_result($row);		
 					?>		 		
@@ -202,11 +188,12 @@ if ($nivel==33){
                             <td class="StormyWeatherFieldCaptionTD">Sexo al que se le realiza la prueba</td>
                             <td class="StormyWeatherDataTD">
                                 <select id="cmbsexo" name="cmbsexo" size="1">
-                                    <option value="0">-- Seleccione sexo --</option>
+                                     <option value="0">Ninguno</option>
+                                     <option value="4">Ambos</option>
                                     <?php
                                         $obje1=new clsLab_Examenes;
                                         $consulta= $obje1->catalogo_sexo();
-                                        while($row = mysql_fetch_array($consulta)){
+                                        while($row = pg_fetch_array($consulta)){
                                             echo "<option value='" . $row['0']. "'>" .$row['1'] . "</option>";
                                         }
 				    ?>
