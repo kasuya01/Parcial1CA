@@ -28,11 +28,18 @@ function Nombre_Establecimiento($lugar){
    //echo $resultado;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_resultados
-	      (IdSolicitudEstudio,IdDetalleSolicitud,IdExamen,IdRecepcionMuestra,     
-              Observacion,Resultado,Responsable,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod,IdCodigoResultado,IdEstablecimiento) 
+    echo$query = "INSERT INTO lab_resultados
+	      (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
+              observacion,resultado,responsable,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idcodigoresultado,idestablecimiento) 
 	      VALUES($idsolicitud,$iddetalle,'$idexamen',$idrecepcion,'$observacion','$resultado','$responsable',$usuario,NOW(),$usuario,NOW(),$codigoResultado,$lugar)";
-     $query2="SELECT LAST_INSERT_ID();";
+    
+        $query2 ="SELECT MAX(id) FROM lab_resultados";
+   // $result2 = pg_query($query2);
+    $row2=pg_fetch_array($result2);
+    $ultimo=$row2[0];
+    
+    
+    $query2="SELECT LAST_INSERT_ID();";
 
      $result = pg_query($query);
 	$result2=pg_query($query2);
@@ -146,8 +153,10 @@ function ObtenerFechaResultado($idsolicitud,$IdExamen,$lugar)
 	$con = new ConexionBD;
    if($con->conectar()==true)
    {
-      $query = "SELECT DATE_FORMAT(FechaHoraReg,'%d/%m/%Y %H:%i:%s') AS FechaResultado
-		FROM lab_resultados where IdSolicitudEstudio=$idsolicitud AND IdEstablecimiento=$lugar AND IdExamen='$IdExamen'";
+      $query = "SELECT to_char(fechahorareg,'dd/mm/YYYY HH12:MI:SS') AS fecharesultado
+                     FROM lab_resultados 
+                     WHERE idsolicitudestudio=$idsolicitud AND idestablecimiento=$lugar 
+                     AND idexamen=$IdExamen";
      $result = pg_query($query);
      if (!$result)
        return false;
@@ -370,7 +379,7 @@ function LeerTarjeta($lugar)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT id,idarea,observacion 
+     $query = "SELECT id AS idobservacion,idarea,observacion 
                FROM lab_observaciones
                WHERE idarea=$idarea AND tiporespuesta='$tiporespuesta'";
      $result = pg_query($query);
