@@ -372,9 +372,11 @@ function ImprimirPlantillaB(idsolicitud, idexamen, responsable, procedencia, ori
 function ImprimirPlantillaC(idsolicitud, idexamen, resultado, responsable, procedencia, origen, observacion, valores_antibioticos, codigos_antibioticos, idbacteria, cantidad, idtarjeta, nombrearea, estab) {
 
     ventana_secundaria = window.open("ImprimirPlantillaC.php?var1=" + idsolicitud +
-            "&var2=" + idexamen + "&var3=" + resultado +
+            "&var2=" + idexamen + 
+            "&var3=" + resultado +
             "&var4=" + encodeURIComponent(responsable) + "&var5=" + procedencia +
-            "&var6=" + escape(origen) + "&var7=" + encodeURIComponent(observacion) +
+            "&var6=" + escape(origen) +
+            "&var7=" + encodeURIComponent(observacion) +
             "&var8=" + encodeURIComponent(valores_antibioticos) +
             "&var9=" + codigos_antibioticos + "&var10=" + idbacteria +
             "&var11=" + encodeURIComponent(cantidad) + "&var12=" + idtarjeta + "&var13=" + escape(nombrearea) +
@@ -487,7 +489,7 @@ function MostrarVistaPreviaPlantillaC()
         idbacteria = document.getElementById('cmbOrganismo').value;
         //nombrearea="";
         estab = document.getElementById('txtEstablecimiento').value;
-        alert(estab);
+       // alert(estab);
         //DATOS PARA EL DETALLE DE LOS RESULTADOS
         valores_antibioticos = "";
         codigos_antibioticos = "";
@@ -1199,12 +1201,12 @@ function MostrarDatos(posicion)
                     "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+estabext, "Resultados", "width=950,height=700,menubar=no,scrollbars=yes,location=no");
             break;
         case "3":
-            alert ("Plnatilla="+plantilla+" Experiente="+idexpediente+" Solicitud="+idsolicitud+" idarea="+idarea);
+            //alert ("&estabext="+estabext);
             ventana_dos = window.open("ProcDatosResultadosExamen_PC.php?var1=" + idexpediente +
                     "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                     "&var12=" + impresion + "&var13=" + estab + "&var16=" + IdEstandar +
-                    "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext, "Resultados", "width=950,height=650,menubar=no,scrollbars=yes,location=no");
+                    "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+escape(estabext), "Resultados", "width=950,height=650,menubar=no,scrollbars=yes,location=no");
             break;
         case "4":
             ventana_dos = window.open("ProcDatosResultadosExamen_PD.php?var1=" + idexpediente +
