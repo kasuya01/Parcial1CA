@@ -9,7 +9,7 @@ class clsConsultarElementos {
    function Nombre_Establecimiento($lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true){ 
-            $query="SELECT Nombre FROM mnt_establecimiento WHERE IdEstablecimiento=$lugar";
+            $query="SELECT nombre FROM ctl_establecimiento WHERE id = $lugar";
             $result = @pg_query($query);
             if (!$result)
                 return false;
@@ -202,53 +202,70 @@ function insertar_subelementos($idresultado,$idsubelemento,$resultado,$control,$
 ////********************************************************************************************************************************//// 
 
 
-//FUNCION PARA LEER DATOS LOS EMPLEADOS
-function DatosEmpleado($idempleado,$lugar)
-{
-    $con = new ConexionBD;
-    if($con->conectar()==true)
-    {
-       $query = "SELECT NombreEmpleado FROM mnt_empleados WHERE idempleado='$idempleado' and IdEstablecimiento=$lugar";
-       $result = @pg_query($query);
-       $no="no existe";
-       if (!$result)
-         return $no;
-     else
-         return $result;
+    //FUNCION PARA LEER DATOS LOS EMPLEADOS
+    function DatosEmpleado($idempleado,$lugar) {
+        $con = new ConexionBD;
+        if($con->conectar()==true) {
+           $query = "SELECT nombreempleado FROM mnt_empleado WHERE id = $idempleado and id_establecimiento = $lugar";
+           $result = @pg_query($query);
+           $no="no existe";
+           if (!$result)
+                return $no;
+            else
+                return $result;
 
- }
-}
+        }
+    }
 
-//FUNCION PARA MOSTRAR DATOS GENERALES
-function MostrarDatosGenerales($idsolicitud,$lugar)
-{
-	$con = new ConexionBD;
- if($con->conectar()==true)
- {
-   $query = "SELECT DISTINCT  lab_recepcionmuestra.IdSolicitudEstudio, sec_historial_clinico.IdNumeroExp,
-   CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoApellido) AS NombrePaciente,
-   (year(CURRENT_DATE)-year(FechaNacimiento))AS Edad,IF(Sexo=1,'Masculino','Femenino') AS Sexo,
-   NombreSubServicio AS Origen,NombreServicio AS Procedencia,NumeroMuestra,
-   DATE_FORMAT(lab_recepcionmuestra.FechaHoraReg,'%d/%m/%Y %H:%i:%s') AS Fecha,mnt_establecimiento.Nombre,
-   DATE_FORMAT(FechaNacimiento,'%d/%m/%Y') as FechaNacimiento,Sexo AS idsexo,FechaNacimiento as fechanac
-   FROM lab_recepcionmuestra 
-   INNER JOIN sec_solicitudestudios  ON sec_solicitudestudios.IdSolicitudEstudio= lab_recepcionmuestra.IdSolicitudEstudio
-   INNER JOIN sec_historial_clinico  ON sec_historial_clinico.IdHistorialClinico=sec_solicitudestudios.IdHistorialClinico
-   INNER JOIN mnt_expediente  ON  mnt_expediente.IdNumeroExp=sec_historial_clinico.IdNumeroExp
-   INNER JOIN mnt_datospaciente  ON mnt_datospaciente.IdPaciente=mnt_expediente.IdPaciente 
-   INNER JOIN mnt_subservicio ON mnt_subservicio.IdSubServicio= sec_historial_clinico.IdSubServicio
-   INNER JOIN mnt_servicio ON mnt_servicio .IdServicio= mnt_subservicio.IdServicio
-   INNER JOIN mnt_establecimiento ON sec_historial_clinico.IdEstablecimiento=mnt_establecimiento.IdEstablecimiento
-   WHERE  lab_recepcionmuestra.IdSolicitudEstudio=$idsolicitud and sec_solicitudestudios.IdEstablecimiento=$lugar 
-   AND mnt_expediente.IdEstablecimiento=$lugar";
-   $result = @pg_query($query);
-   if (!$result)
-     return false;
- else
-     return $result;
-}
-}
-
+    //FUNCION PARA MOSTRAR DATOS GENERALES
+    function MostrarDatosGenerales($idsolicitud,$lugar) {
+        $con = new ConexionBD;
+        if($con->conectar()==true) {
+            $query = "SELECT DISTINCT t01.idsolicitudestudio,
+                             t04.numero AS idnumeroexp,
+                             CONCAT_WS(' ',t05.primer_nombre,t05.segundo_nombre,t05.tercer_nombre,t05.primer_apellido,t05.segundo_apellido,t05.apellido_casada) AS nombrepaciente,
+                             REPLACE(
+                                REPLACE(
+                                    REPLACE(
+                                        REPLACE(
+                                            REPLACE(
+                                                REPLACE(
+                                                    AGE(t05.fecha_nacimiento::timestamp)::text,
+                                                'years', 'años'),
+                                            'year', 'año'),
+                                        'mons', 'meses'),
+                                    'mon', 'mes'),
+                                'days', 'días'),
+                            'day', 'día') AS edad
+                             t10.nombre AS sexo,
+                             t08.nombre AS origen,
+                             t11.nombre AS procedencia,
+                             t01.numeromuestra,
+                             TO_CHAR(t01.fechahorareg,'DD/MM/YYYY HH:MI:SS AM') AS fecha,
+                             t09.nombre,
+                             TO_CHAR(t05.fecha_nacimiento::timestamp, 'DD/MM/YYYY') as fechanacimiento,
+                             t10.id AS idsexo,
+                             t05.fecha_nacimiento as fechanac
+                      FROM lab_recepcionmuestra          t01
+                      INNER JOIN sec_solicitudestudios   t02 ON (t02.id = t01.idsolicitudestudio)
+                      INNER JOIN sec_historial_clinico   t03 ON (t03.id = t02.id_historial_clinico)
+                      INNER JOIN mnt_expediente          t04 ON (t04.id = t03.id_expediente)
+                      INNER JOIN mnt_paciente            t05 ON (t05.id = t04.id_paciente)
+                      INNER JOIN mnt_aten_area_mod_estab t06 ON (t06.id = t03.idsubservicio)
+                      INNER JOIN mnt_area_mod_estab      t07 ON (t07.id = t06.id_area_mod_estab)
+                      INNER JOIN ctl_atencion            t08 ON (t08.id = t06.id_atencion)
+                      INNER JOIN ctl_establecimiento     t09 ON (t09.id = t03.idestablecimiento)
+                      INNER JOIN ctl_sexo                t10 ON (t10.id = t05.id_sexo)
+                      INNER JOIN ctl_area_atencion       t11 ON (t11.id = t07.id_area_atencion)
+                      WHERE  t01.idsolicitudestudio = $idsolicitud AND t02.id_establecimiento = $lugar 
+                         AND t04.id_establecimiento = $lugar";
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
 
     //FUNCION PARA LEER LOS DATOS DEL AREA Y EL EXAMEN
     function LeerDatos($idexamen) {

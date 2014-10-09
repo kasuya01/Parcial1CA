@@ -889,19 +889,16 @@ function MostrarVistaPreviaPlantillaB(){
         codigos_elementos = "";
         controles = "";
         controles_ele = "";
-        if (document.getElementById('oculto').value > 0)
-        {
-            for (i = 0; i < document.getElementById('oculto').value; i++)
-            {
+        if (document.getElementById('oculto').value > 0) {
+            for (i = 0; i < document.getElementById('oculto').value; i++) {
                 valores_subelementos += document.getElementById('txtresultadosub[' + i + ']').value + "/";
                 codigos_subelementos += document.getElementById('oidsubelemento[' + i + ']').value + "/";
                 controles += document.getElementById('txtcontrol[' + i + ']').value + "/";
             }
         }
-        if (document.getElementById('ocultoele').value > 0)
-        {
-            for (i = 0; i < document.getElementById('ocultoele').value; i++)
-            {
+        
+        if (document.getElementById('ocultoele').value > 0) {
+            for (i = 0; i < document.getElementById('ocultoele').value; i++) {
                 valores_elementos += document.getElementById('txtresultadoele[' + i + ']').value + "/";
                 codigos_elementos += document.getElementById('oidelemento[' + i + ']').value + "/";
                 controles_ele += document.getElementById('txtcontrolele[' + i + ']').value + "/";
