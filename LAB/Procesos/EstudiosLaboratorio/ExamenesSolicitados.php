@@ -12,16 +12,17 @@ include_once("ClaseSolicitud.php"); //Agregamos el Archivo con las clases y func
         $iduser=$_SESSION["IdUsuarioReg"];
         $LugardeAtencion=$_SESSION["lugar"]; //Lugar de donde proviene
 	//$NombrePaciente=$Paciente->RecuperarNombre($IdEstablecimiento,$IdNumeroExp);  
-        $NombrePa=  $Paciente->RecuperarNombre($IdEstablecimiento,$idexpediente); 
+        $NombrePa=  $Paciente->RecuperarNombre($IdEstablecimiento,$idexpediente, $IdNumeroExp); 
         $rowpa=  pg_fetch_array($NombrePa);
         $NombrePaciente= $rowpa['nombre'];
         $sexo=$rowpa['id_sexo'];
         //echo 'IdHistorialClinico:'.$IdHistorialClinico .' IdCitaServApoyo:  '.$IdCitaServApoyo.'  IdNumeroExp: '.$IdNumeroExp. '</br>';
         //exit;
         // recuperar el IdSolicituEstudio
-        $IdSolicitudEstudio=$Paciente->RecuperarIdSolicituEstudio($idexpediente,$IdHistorialClinico);
+        $IdSolicitudEstudio=$Paciente->RecuperarIdSolicituEstudio($idexpediente,$IdHistorialClinico, $IdEstablecimiento);
         /* HACER AKI EL IF DE VERIFICACION DE IdCitaServApoyo Y ASI HACER EL INSERT O EL UPDATE*/
-        //echo '$IdCitaServApoyo'.$IdCitaServApoyo.'<br/>';
+       // echo 'idsol' .$IdSolicitudEstudio;
+       // echo '$IdCitaServApoyo'.$IdCitaServApoyo.'<br/>';
         if($IdCitaServApoyo == "")
         {
             $IdCitaServApoyo=$Paciente->IdCitaServApoyoInsertUpdate($IdSolicitudEstudio,$iduser,$IdNumeroExp,$LugardeAtencion,$IdCitaServApoyo,1);
@@ -105,7 +106,7 @@ include_once("ClaseSolicitud.php"); //Agregamos el Archivo con las clases y func
             }//fin while respuesta
             echo "<tr><td colspan='6'><br><b>Total de Examenes Solicitados:". $i."</b> </td></tr></table><br>";
             
-            $Ejecutar2=$Laboratorio->impresionessoli($IdHistorialClinico);          
+            $Ejecutar2=$Laboratorio->impresionessoli($IdHistorialClinico, $IdEstablecimiento);          
             $Respuesta2=pg_fetch_array($Ejecutar2);
                     if($Respuesta2["impresiones"]==1){
                     $check="<input id='Imprimir' type='checkbox'onclick='ImprimirResultados(".$IdHistorialClinico.", ".$IdSolicitudEstudio.");' checked='checked'>";
@@ -118,7 +119,7 @@ include_once("ClaseSolicitud.php"); //Agregamos el Archivo con las clases y func
                             <tr><td align='right'>
                             <input type='button'  value='Guardar Cambios' class='boton2'  onclick='GuardarCambios();'> 
                             <input type='button' name='Agregar' value='Agregar Examen' class='boton2' onclick='AgregarExamen();'> 
-                            <input type='button' name='Terminar' value='Terminar Solitud' class='boton2' onclick='Urgente();'> 
+                            <input type='button' name='Terminar' value='Terminar Solitud' class='boton2' onclick='Urgente($IdSolicitudEstudio);'> 
                             </td></tr></table>
                             <input type='hidden' name='total' id='total' value='".$i."'>
                             <input type='hidden' id='totalurgente' value='".$t."'>    

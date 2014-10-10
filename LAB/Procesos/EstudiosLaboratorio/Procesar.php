@@ -32,7 +32,7 @@
                         $idtipo=$Respuesta['idtipo'];
                         $muestra=$Respuesta['muestra'];
                         echo '<option value= "'.$idtipo.'">'.$muestra.'</option>';
-                        
+                        /*
                         $Origenes=$SolicitudLab->ExistenciaOrigenes($idtipo);                   
 			$cuantosor= pg_fetch_array($Origenes);
                         
@@ -92,16 +92,27 @@
 	// Parametros del Detalle
         
  	$IdExamen=$_GET["IdExamen"];
-        //echo '<br>No IDEXAMEN: '.$IdExamen.'-:<br/>';
+     //   echo '<br>No IDEXAMEN: '.$IdExamen.'-:<br/>';
   	$Indicacion=$_GET["Indicacion"];
   	$IdTipoMuestra=$_GET["IdTipoMuestra"];
 	$IdOrigen=$_GET["IdOrigen"];
+         if ($IdTipoMuestra==0){
+            $IdTipoMuestra='NULL';
+        }
         if ($IdOrigen==0){
             $IdOrigen='NULL';
         }
+        if ($IdEstablecimiento!=$lugar){
+            $id_expediente_referido=$idexpediente;
+            $idexpediente='NULL';
+        }
+        else{
+            $id_expediente_referido='NULL';
+        }
         
 
-	$sol=$SolicitudLab->GuardarDatos($IdHistorialClinico,$IdNumeroExp,$idexpediente,$FechaSolicitud,$IdUsuarioReg,$IdExamen,$Indicacion,$IdTipoMuestra,$IdOrigen,$IdEstablecimiento,$lugar);
+	$sol=$SolicitudLab->GuardarDatos($IdHistorialClinico,$IdNumeroExp,$idexpediente,$FechaSolicitud,$IdUsuarioReg,$IdExamen,$Indicacion,$IdTipoMuestra,$IdOrigen,$IdEstablecimiento,$lugar, $id_expediente_referido);
+      // echo '<br\>Solicitud: -'.$sol.' -fin solicitud';
         return $sol;
         
 	 	
@@ -121,6 +132,11 @@
             
         }
 	$SolicitudLab->ActualizarIndicacion($IdDetalle,$Indicacion);
+   break;
+   
+    case "EliminarSolicitud":
+        $idsolicitud=$_POST["idsolicitud"];		 
+        $SolicitudLab->BorrarSolicitud($idsolicitud);
    break;
      
    case 'VerificarSolicitudUrgente':  

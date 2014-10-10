@@ -8,8 +8,8 @@ $Conexion = new ConexionBD;
 $Conectar = $Conexion->conectar();
 $IdNumeroExp = $_GET["IdNumeroExp"];
 $IdEstablecimiento = $_GET["IdEstablecimiento"]; //IdEstablecimiento solicitante
-//echo 'Idestab:'.$IdEstablecimiento.'<br/>';
 $lugar = $_GET["lugar"]; //IdEstablecimiento local
+//echo 'Idestab:'.$IdEstablecimiento.'<br/>Lugar:'.$lugar.'<br\>';
 $IdSubServicio = $_GET["IdSubServicio"];
 $IdEmpleado = $_GET["IdEmpleado"];
 $IdUsuarioReg = $_SESSION['Correlativo'];
@@ -17,6 +17,7 @@ $FechaConsulta = $_GET["FechaConsulta"];
 $IdCitaServApoyo = $_GET["IdCitaServApoyo"];
 $sexo = $_GET["Sexo"];
 $idexpediente = $_GET["idexpediente"];
+//echo '<br\>.Idexpediente: '.$idexpediente.' IdNumeroExp:'.$IdNumeroExp;
 $IdHistorialClinico = $_GET["IdHistorialClinico"];
 //echo 'idexp: '.$idexpediente;
 $FechaSolicitud = $FechaConsulta;
@@ -30,9 +31,9 @@ else
     $ippc = $_SERVER['REMOTE_ADDR'];
 /* * *************************************************************** */
 $Historial = new CrearHistorialClinico;
-if (!isset( $_GET["IdHistorialClinico"])|| $IdHistorialClinico==''){
-$IdHistorialClinico = $Historial->HistorialClinico($IdNumeroExp, $IdEstablecimiento, $IdSubServicio, $IdEmpleado, $FechaConsulta, $_SESSION['Correlativo'], $ippc, $idexpediente);
-}
+   if (!isset( $_GET["IdHistorialClinico"])|| $IdHistorialClinico==''){
+    $IdHistorialClinico = $Historial->HistorialClinico($IdNumeroExp, $IdEstablecimiento, $IdSubServicio, $IdEmpleado, $FechaConsulta, $_SESSION['Correlativo'], $ippc, $idexpediente, $lugar);
+    } 
 $_SESSION["IdNumeroExp"] = $IdNumeroExp;
 $_SESSION["idexpediente"] = $idexpediente;
 $_SESSION["IdHistorialClinico"] = $IdHistorialClinico;
@@ -76,7 +77,7 @@ $_SESSION["lugar"] = $lugar;
             while ($rowar = pg_fetch_array($areas)) {
                // echo 'i got here ';
 
-                $examen = $Historial->busca_mnt_area_exa_est($lugar, $rowar['id'], $sexo, $IdHistorialClinico);
+                $examen = $Historial->busca_mnt_area_exa_est($lugar, $rowar['id'], $sexo, $IdHistorialClinico, $IdEstablecimiento);
                 if (pg_num_rows($examen) > 0) {
                     echo "<tr><td colspan='7' class='TdAreas'><b>" . ($rowar['nombrearea']) . "</b></td></tr>";
                     while ($ResultadoExamenes = pg_fetch_array($examen)) {
@@ -115,6 +116,7 @@ $_SESSION["lugar"] = $lugar;
               <input type='hidden' name='IdUsuarioReg' Id='IdUsuarioReg' value='".$IdUsuarioReg."'>
               <input type='hidden' name='IdCitaServApoyo' Id='IdCitaServApoyo' value='".$IdCitaServApoyo."'>
               <input type='hidden' name='IdEstablecimiento' Id='IdEstablecimiento' value='".$IdEstablecimiento."'>
+              <input type='hidden' name='lugar' Id='lugar' value='".$lugar."'>
               <input type='hidden' name='TipoSexo' Id='TipoSexo' value='".$sexo."'>";
                 
             echo "

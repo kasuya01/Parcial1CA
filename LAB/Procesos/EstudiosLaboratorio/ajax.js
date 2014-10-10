@@ -177,6 +177,8 @@ var Origen;
 /************************************************************************************************/
 //fn pg
 function MostrarOrigen(Muestra,Examen){	
+    //alert (Muestra+'-'+ Examen)
+    //return false;
 	Nombre=Examen;
 	Origen="O"+Examen;
  	var IdMuestra=Muestra;
@@ -244,6 +246,8 @@ function MostrarDetalle(IdHistorialClinico){
 		var FechaSolicitud=document.getElementById('FechaSolicitud').value;				
 		var IdUsuarioReg=document.getElementById('IdUsuarioReg').value;				
 		var IdCitaServApoyo=document.getElementById('IdCitaServApoyo').value;	
+		var IdEstablecimiento=document.getElementById('IdEstablecimiento').value;	
+		var lugar=document.getElementById('lugar').value;	
 		
 		var Tope = document.getElementsByName('Examenes').length;
 		var suma=0;
@@ -306,13 +310,14 @@ function MostrarDetalle(IdHistorialClinico){
 						Resta--;
 						
 						Retraso(ID);
-						
+						//alert(ajax2.responseText);
 					}//Estado == 4
 				}//On ready state
 			var Proceso='GuardarDatos';
-                  //      alert(' Proceso '+Proceso+' IdHistorialClinico '+IdHistorialClinico+' IdNumeroExp '+IdNumeroExp+' FechaSolicitud '+FechaSolicitud+' IdUsuarioReg '+IdUsuarioReg+' IdExamen '+NombreExamen+' Indicacion '+Indicacion+' NombreMuestra '+NombreMuestra+' NombreOrigen '+NombreOrigen+'idexpediente:'+idexpediente);
+                     //   alert(' Proceso '+Proceso+' IdHistorialClinico '+IdHistorialClinico+' IdNumeroExp '+IdNumeroExp+' FechaSolicitud '+FechaSolicitud+' IdUsuarioReg '+IdUsuarioReg+' IdExamen '+NombreExamen+' Indicacion '+Indicacion+' NombreMuestra '+NombreMuestra+' NombreOrigen '+NombreOrigen+'idexpediente:'+idexpediente+'IdEstablecimiento'+IdEstablecimiento+'lugar'+lugar);
                //         alert (NombreExamen)
-		ajax2.open("GET",'Procesar.php?Proceso='+Proceso+'&IdHistorialClinico='+IdHistorialClinico+'&IdNumeroExp='+IdNumeroExp+'&idexpediente='+idexpediente+'&FechaSolicitud='+FechaSolicitud+'&IdUsuarioReg='+IdUsuarioReg+'&IdExamen='+NombreExamen+'&Indicacion='+Indicacion+'&IdTipoMuestra='+NombreMuestra+'&IdOrigen='+NombreOrigen,true);	/*	ajax.onreadystatechange=function() {
+		ajax2.open("GET",'Procesar.php?Proceso='+Proceso+'&IdHistorialClinico='+IdHistorialClinico+'&IdNumeroExp='+IdNumeroExp+'&idexpediente='+idexpediente+'&FechaSolicitud='+FechaSolicitud+'&IdUsuarioReg='+IdUsuarioReg+'&IdExamen='+NombreExamen+'&Indicacion='+Indicacion+'&IdTipoMuestra='+NombreMuestra+'&IdOrigen='+NombreOrigen,true);
+                /*	ajax.onreadystatechange=function() {
 	if (ajax.readyState==4) 
 	{
 		document.getElementById('Resultados').innerHTML = ajax.responseText
@@ -330,6 +335,7 @@ function MostrarDetalle(IdHistorialClinico){
 	//}//for
                         
 			// AKI CREAR LA cit_citasxserviciodeapoyo o actualizar la fecha de la cita una solo ves.
+                       // alert (BanderaExiste)
 			if(BanderaExiste !=0){
 				//Abre la hoja que muesta el detalle de la solicitud de estudios
                                  // alert(' Proceso '+Proceso+' IdHistorialClinico '+IdHistorialClinico+' IdNumeroExp '+IdNumeroExp+' FechaSolicitud '+FechaSolicitud+' IdUsuarioReg '+IdUsuarioReg+' FechaHoraReg '+FechaHoraReg+' NombreExamen '+NombreExamen+' Indicacion '+Indicacion+' NombreMuestra '+NombreMuestra+' NombreOrigen '+NombreOrigen+'&idexpediente:'+idexpediente);
@@ -504,7 +510,7 @@ function Retraso(ID){
 	}
   }
 //alert (parametros)
-  ObjetoAjax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+  //ObjetoAjax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                
 	//MostrarDetalle();
  }
@@ -516,8 +522,8 @@ function Retraso(ID){
 function CargarContenido(){
   // Si se Tarda en Cargar los datos que lanze los siguientes mensajes dependiendo del caso que sea	 
   if (ObjetoAjax.readyState==1) { 
-		
-	if(accion==0)            
+	//	alert(accion)
+	if(accion==0)    
 	document.getElementById('RespuestaAjax').innerHTML = "<center><img src='loading.gif' alt='Cargando...' /><br>Cargando Resultados...! </center>";
 	else if(accion==1)
 	document.getElementById(Nombre).innerHTML = "<center><img src='loading.gif' alt='Cargando...' /><br>Cargando Resultados...! </center>";
@@ -599,13 +605,14 @@ function CargarContenido(){
 /************************************************************************************************/
 /* 			Funcion Para Verificar si el Examen es Urgente.. Crea una Solicitud NUEVA 								*/
 /************************************************************************************************/
-function Urgente(){	
+function Urgente(idsolicitud){	
     // Definicion de Variables
     var IdHistorialClinico=document.Editar.IdHistorialClinico.value;
     var largo=document.getElementById('totalurgente').value;
     var detalles_urgente=new Array(); 
     var e=0;
     var i;       
+     ObjetoAjax=NuevoAjax();	
    //alert (largo) 
     if (largo >0){
     for (i=1;i< largo;i++){
@@ -615,15 +622,41 @@ function Urgente(){
             e++;
         }
     }
+     }//fin if largo >0
+    var cuantos = document.getElementById('total').value;
+    //alert(cuantos)
+    if (cuantos ==0){
+                //Detalle=document.getElementById("Detalle"+IdExamen).value;
+        // Crear Objeto Ajax
+               	var eliminar = confirm("No ha seleccionado ningún examen, desea eliminar la solicitud")
+              //  alert (eliminar)
+                if (eliminar) {			
+                   	
+                // Hacer el Request y llamar o Dibujar el Resultado
+                ObjetoAjax.open("POST", 'Procesar.php', true);
+                ObjetoAjax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+
+                // Declaración de parámetros
+
+                var Proceso='EliminarSolicitud';
+                var param = 'Proceso='+Proceso;
+
+                // Concatenación y Envío de Parámetros          
+                param += '&idsolicitud='+idsolicitud;
+                ObjetoAjax.send(param); 
+               //  return false;
+                }
+                else {
+                    return false;
+                }
+    }
     //los examenes que pueden borrarse 
-    }//fin if largo >0
+   
     var cadena_ref=detalles_urgente.toString();// se convierte a string    
 
   //alert (cadena_ref+'--'+IdHistorialClinico);    
 
-    
-    //Crear Objeto Ajax
-    ObjetoAjax=NuevoAjax();			
+    		
     // Hacer el Request y llamar o Dibujar el Resultado
     ObjetoAjax.onreadystatechange = function(){
         if(ObjetoAjax.readyState==4){
