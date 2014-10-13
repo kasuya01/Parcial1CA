@@ -48,12 +48,12 @@ if ($nivel==33){
         <td class="StormyWeatherDataTD">
             <input type="hidden" name="txtidobservacion" id="txtidobservacion" disabled="disabled" />
 			<select id="cmbArea" name="cmbArea" size="1">
-			<option value="0" >--Seleccione un &Aacute;--</option>
+			<option value="0" >--Seleccione un &Aacute;rea--</option>
 			<?php
 			$objeareas=new clsLab_Areas;
 			$consulta= $objeareas->consultaractivas($lugar);
 			while($row = pg_fetch_array($consulta)){
-			echo "<option value='" . $row['id']. "'>" . $row['nombrearea'] . "</option>";
+			echo "<option value='" . $row['idarea']. "'>" . $row['nombrearea'] . "</option>";
 			}
 			?>		  
           </select>

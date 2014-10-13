@@ -22,14 +22,14 @@ $nombrearea=$_GET['var13'];
 $establecimiento=$_GET['var14'];
 
 $Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
-$row_estab = mysql_fetch_array($Consulta_Estab);
+$row_estab = pg_fetch_array($Consulta_Estab);
 
 ?>
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <title>Resultados de Examenes de Laboratorio </title>
-<script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script> 
+<script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script>
 <!--<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">-->
 
@@ -41,7 +41,7 @@ function calc_edad()
 //alert (fecnac2);
   var suEdades=calcular_edad(fecnac2);
  // alert(suEdades);
-       
+
   document.getElementById("divsuedad").innerHTML=suEdades;
 }
 
@@ -64,41 +64,41 @@ function calc_edad()
 </head>
 
 <body>
-<?php 
+<?php
 
 	$datos_generales=$obj->MostrarDatosGenerales($idsolicitud,$lugar);
-	$row_generales= mysql_fetch_array($datos_generales);
+	$row_generales= pg_fetch_array($datos_generales);
 	$consulta_datos=$obj->LeerDatos($idexamen);
-	$row_area= mysql_fetch_array($consulta_datos);
+	$row_area= pg_fetch_array($consulta_datos);
 	$bateria=$obj->NombreBacteria($idbacteria);
-	$row_nombrebacteria= mysql_fetch_array($bateria);
+	$row_nombrebacteria= pg_fetch_array($bateria);
 	$consulta=$obj->LeerAntibioticos($idtarjeta);
 	$vector_valores=EXPLODE("/",$valores_antibioticos);
-    $vector_antibioticos=EXPLODE("/",$codigos_antibioticos);
+        $vector_antibioticos=EXPLODE("/",$codigos_antibioticos);
 	//$obj = new clsConsultarElementosPlantillaC;
-    $tamano_vector=count($vector_valores);
-	$tamano_vectoantibiotico=count($vector_antibioticos); 
+        $tamano_vector=count($vector_valores);
+	$tamano_vectoantibiotico=count($vector_antibioticos);
         $FechaRes=$obj->ObtenerFechaResultado($idsolicitud,$idexamen,$lugar);
-	$row_fecha=mysql_fetch_array($FechaRes);
+	$row_fecha=pg_fetch_array($FechaRes);
 
-  
+
   $posele=0;
   $ban=0;
 	//$datos_empleado=$obj->DatosEmpleado($idempleado);
 	//$row_empleado = mysql_fetch_array($datos_empleado);
 	//$datos_observacion=$obj->LeerObservacion($observacion);
 	//$row_observacion = mysql_fetch_array($datos_observacion);
-$nombre=$row_area['NombreArea'];
+$nombre=$row_area['nombrearea'];
 ?>
 	<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE' cellspacing="0">
             <tr>
                 <td colspan="1" align="left" width="20%"><img id="Image1" style="WIDTH: 80px; HEIGHT: 55px" height="86" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
                 <td align="center" colspan="4" width="60%" ><span class="Estilo6">
                     <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
-                    <p><strong><?php echo $row_estab['Nombre'] ?></strong></p>
+                    <p><strong><?php echo $row_estab['nombre'] ?></strong></p>
                     <p><strong>&Aacute;REA DE <?php echo htmlentities($nombrearea)?> </strong></p></span>
                 </td>
-                <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.gif" width="210" name="Image3"></td>
+                <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
             </tr>
             <tr>
 		<td colspan='6'>&nbsp;</td>
@@ -107,42 +107,36 @@ $nombre=$row_area['NombreArea'];
 		<td colspan='1' class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
 		<td colspan='2' class="Estilo6"><?php echo $establecimiento?></td>
 		<td colspan='1' class="Estilo5"><strong>Fecha Resultado:</strong></td>
-	  	<td colspan='2' class="Estilo6" colspan='1'><?php echo $row_fecha['FechaResultado']?></td>
-			<input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row_generales['FechaNacimiento']?>>
+	  	<td colspan='2' class="Estilo6" colspan='1'><?php echo $row_fecha['fecharesultado']?></td>
+			
             </tr>
-           
+
             <tr>
             	<td colspan='1' class="Estilo5" ><strong>NEC</strong></td>
-              	<td colspan='5' class="Estilo7" ><?php echo $row_generales['IdNumeroExp']?></td>
+              	<td colspan='5' class="Estilo7" ><?php echo $row_generales['numero']?></td>
             </tr>
-            <tr>     
+            <tr>
 		<td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
-            	<td colspan='5' class="Estilo6"><?php echo htmlentities($row_generales['NombrePaciente'])?></td>
+            	<td colspan='5' class="Estilo6"><?php echo htmlentities($row_generales['paciente'])?></td>
             </tr>
             <tr>
 		<td colspan='1' class="Estilo5"><strong>Edad:</strong></td>
-		<td colspan='2' class="Estilo6">
-                    <div id="divsuedad">
-        		<script language="JavaScript" type="text/javascript">
-               			calc_edad();
-          		</script>
-    		    </div>
-                </td>
+		<td colspan='2' class="Estilo6"><?php echo $row_generales['edad']?></td>
 		<td colspan='1' class="Estilo5"><strong>Sexo:</strong></td>
-		<td colspan='2' class="Estilo6"><?php echo $row_generales['Sexo'];?></td>
+		<td colspan='2' class="Estilo6"><?php echo $row_generales['sexo'];?></td>
             </tr>
-             <tr>	
+             <tr>
 		<td colspan='1' class="Estilo5"><strong>Procedencia:</strong></td>
-		<td colspan='2' class="Estilo6" ><?php echo htmlentities($row_generales['Procedencia']);?></td>
+		<td colspan='2' class="Estilo6" ><?php echo htmlentities($row_generales['procedencia']);?></td>
 		<td colspan='1' class="Estilo5"><strong>Servicio:</strong></td>
-		<td colspan='2' class="Estilo6"><?php echo htmlentities($origen);?></td>
+		<td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['subservicio']);?></td>
             </tr>
             <tr>
 		<td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
-	  	<td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['NombreExamen']);?></td>
-            </tr>				 
-            
-            	
+	  	<td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['nombre_examen']);?></td>
+            </tr>
+
+
             <tr>
             	<td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>
 		<td colspan='5' class="Estilo6"><?php echo $responsable;?></td>
@@ -153,10 +147,10 @@ $nombre=$row_area['NombreArea'];
            <tr>
                 <td colspan='1' class="Estilo5"><strong>Rsultado:</strong></td>
                 <td colspan='2' class="Estilo5"><?php echo "Positivo"?></td>
-           </tr> 
+           </tr>
            <tr>
                 <td colspan='1' class="Estilo5"><strong>Organismo:</strong></td>
-                <td colspan='5' class="Estilo5"><?php echo htmlentities($row_nombrebacteria['Bacteria']); ?></td>			 
+                <td colspan='5' class="Estilo5"><?php echo htmlentities($row_nombrebacteria['bacteria']); ?></td>
            </tr>
            <tr>
                 <td colspan='1' class="Estilo5"><strong>Cultivo con Cuenta de Colonias:</strong></td>
@@ -164,11 +158,11 @@ $nombre=$row_area['NombreArea'];
            </tr>
            <tr>
 		<td colspan='6'>&nbsp;</td>
-            </tr>             
+            </tr>
             <tr>
                 <td colspan='6'>
                     <table width='60%' border='0' align='left' class='StormyWeatherFormTABLE' cellspacing="0">
-                       
+
                         <tr><td colspan='4'>&nbsp;</td></tr>
                         <tr>
                            <td colspan='4'>
@@ -177,40 +171,38 @@ $nombre=$row_area['NombreArea'];
                                         <td colspan='1' class="Estilo5"><strong>ANTIBIOTICO</strong></td>
                                         <td colspan='2' class="Estilo5"><strong>INTERPRETACI&Oacute;N</strong>
                                         </td>
-                                    </tr>	
+                                    </tr>
                                     <?php	//mysql_free_result($consulta_datos);
-                                                    mysql_free_result($datos_generales);
+                                                    pg_free_result($datos_generales);
                                                     $pos=0;
 
-                                    while($row = mysql_fetch_array($consulta))//ELEMENTOS)
+                                    while($row = pg_fetch_array($consulta))//ELEMENTOS)
                                     {?>
                                     <tr>
-                                        <td colspan='1' class="Estilo5"><?php echo $row['Antibiotico']?></td>
+                                        <td colspan='1' class="Estilo5"><?php echo $row['antibiotico']?></td>
                                         <td colspan='2' class="Estilo5"><?php echo htmlentities($vector_valores[$pos])?>
                                                 <input name='oidantibiotico[".$pos."]' type='hidden' id='oidantibiotico[<?php $pos ?>]' value='<?php $row['IdAntibiotico']?>'>
                                         </td>
 
                                     </tr>
-                                        <?php $pos=$pos+1;		
+                                        <?php $pos=$pos+1;
                                     }
-                                    mysql_free_result($consulta);?>
+                                    pg_free_result($consulta);?>
                                 </table>
-                           </td> 
+                           </td>
                         </tr>
                     </table>
                 </td>
             </tr>
         </table>
-        
+
         <div id="boton">
-            <table align='center' border="0"> 
+            <table align='center' border="0">
                 <tr>
                     <td colspan="7" align="center" >
                         <input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
                         <input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar() ;"/>
                     </td>
                 </tr>
-            </table>   
+            </table>
          </div>
-
-	

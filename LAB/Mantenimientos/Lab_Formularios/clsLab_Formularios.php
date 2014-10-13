@@ -33,11 +33,13 @@ class clsLab_Formularios {
                       INNER JOIN mnt_formulariosxestablecimiento t02 ON (t01.id = t02.idformulario)
                       WHERE t01.nombreformulario ILIKE '$nombre' AND t02.id_atencion = $atencion AND t02.idestablecimiento = $establecimiento";
             $result = @pg_query($query);
-            
-            if (!$result)
-                return false;
+            if ($result)
+                if(pg_num_rows($result) > 0)
+                    return true;
+                else
+                    return false;
             else
-                return true;
+                return false;
         }
     }
 

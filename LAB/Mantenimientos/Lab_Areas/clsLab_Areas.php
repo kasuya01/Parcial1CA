@@ -7,8 +7,9 @@ class clsLab_Areas {
 
     var $ultimoregistroinsertado_lab_areas = 0;
 
-    //constructor	
+    //constructor
     function clsLab_Areas() {
+
     }
 
     /* Función para ingresar un área */
@@ -16,7 +17,7 @@ class clsLab_Areas {
     function insertar($idarea, $nombrearea, $usuario, $tipo, $lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "INSERT INTO ctl_area_servicio_diagnostico(idarea,nombrearea,idusuarioreg,fechahorareg, administrativa,id_atencion) 
+            $query = "INSERT INTO ctl_area_servicio_diagnostico(idarea,nombrearea,idusuarioreg,fechahorareg, administrativa,id_atencion)
 			VALUES('$idarea','$nombrearea','$usuario', (SELECT date_trunc('seconds',(SELECT now()))), '$tipo', (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))";
 
             $result = @pg_query($query);
@@ -153,11 +154,13 @@ class clsLab_Areas {
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
             $query = "SELECT t01.id AS idarea, t01.nombrearea
-                           FROM ctl_area_servicio_diagnostico t01
-                           INNER JOIN lab_areasxestablecimiento t02 ON (t01.id = t02.idarea)
-                           WHERE t02.condicion = 'H' AND t01.administrativa = 'N' 
-                            AND t02.idestablecimiento = $lugar 
-                           ORDER BY nombrearea";
+                      FROM ctl_area_servicio_diagnostico t01
+                      WHERE t01.id IN (
+                        SELECT idarea
+                        FROM lab_areasxestablecimiento 
+                        WHERE condicion = 'H'  AND idestablecimiento = $lugar)
+                        AND t01.administrativa = 'N'
+                      ORDER BY nombrearea";
             $result = @pg_query($query);
             if (!$result)
                 return false;
@@ -229,7 +232,7 @@ class clsLab_Areas {
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
             $query = "SELECT t01.idarea,
-                             t01.nombrearea, 
+                             t01.nombrearea,
                              t02.condicion,
                              t01.administrativa
                       FROM ctl_area_servicio_diagnostico t01
@@ -250,7 +253,7 @@ class clsLab_Areas {
     function consultarid($idarea, $lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "SELECT t01.idarea, 
+            $query = "SELECT t01.idarea,
                              t01.nombrearea,
                              t01.administrativa,
                              t02.condicion,
@@ -291,6 +294,46 @@ class clsLab_Areas {
                 return false;
             else
                 return $numreg;
+        }
+    }
+
+    public function getLabAreas($idEstablecimiento, $idAtencion) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query = "SELECT t01.id,
+                             t01.idarea,
+                             t01.nombrearea,
+                             t01.administrativa,
+                             COALESCE(t02.condicion, 'I') AS estado
+                      FROM ctl_area_servicio_diagnostico        t01
+                      LEFT OUTER JOIN lab_areasxestablecimiento t02 ON (t01.id = t02.idarea AND t02.idestablecimiento = $idEstablecimiento)
+                      WHERE t01.id_atencion = $idAtencion";
+
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
+
+    public function updateAreaEstablecimiento($idEstablecimiento, $areas) {
+        $con = new ConexionBD;
+        $areas = implode(",",$areas);
+
+        if ($con->conectar() == true) {
+            if($areas !== "") {
+                $query = "UPDATE lab_areasxestablecimiento SET condicion = 'H' WHERE idarea IN ($areas) AND idestablecimiento = $idEstablecimiento;
+                          UPDATE lab_areasxestablecimiento SET condicion = 'I' WHERE idarea NOT IN ($areas) AND idestablecimiento = $idEstablecimiento;";
+            } else {
+                $query = "UPDATE lab_areasxestablecimiento SET condicion = 'I' WHERE idestablecimiento = $idEstablecimiento";
+            }
+
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
         }
     }
 

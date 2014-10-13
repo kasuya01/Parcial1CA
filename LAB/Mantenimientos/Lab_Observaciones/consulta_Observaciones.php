@@ -13,8 +13,8 @@ $row = pg_fetch_array($consulta);
 
 //valores de las consultas
 $observacion=$row['observacion'];
-$tiporespuesta=$row['tiporespuesta'];
-$idarea=$row['id'];
+$tiporespuesta=$row[1];
+$idarea=$row['idarea'];
 $nombrearea=$row['nombrearea'];
 
 //muestra los datos consultados en los campos del formulario
@@ -43,7 +43,7 @@ $nombrearea=$row['nombrearea'];
 			$objeareas=new clsLab_Areas;
 			$consulta= $objeareas->consultaractivas($lugar);
 			while($row = pg_fetch_array($consulta)){
-			echo "<option value='" . $row['id']. "'>" . htmlentities($row['nombrearea']) . "</option>";
+			echo "<option value='" . $row['idarea']. "'>" . htmlentities($row['nombrearea']) . "</option>";
 			}
 			echo "<option value='" . $idarea . "' selected='selected'>" . htmlentities($nombrearea). "</option>";
 			?>		  
@@ -58,12 +58,15 @@ $nombrearea=$row['nombrearea'];
 			<option value="P" >Positivo</option>
 			<option value="N" >Negativo</option>
 			<option value="O" >Otro</option>
-			<?php
+			/*<?php
 				if ($tiporespuesta=="P"){
 				echo "<option value='P' selected='selected'> Positiva </option>";
 				}
-				else{
+				else if($tiporespuesta=="N") {
 				echo "<option value='N' selected='selected'> Negativa </option>";
+				}
+                                else{
+				echo "<option value='O' selected='selected'> Otro </option>";
 				}
 			?>
 			</select>

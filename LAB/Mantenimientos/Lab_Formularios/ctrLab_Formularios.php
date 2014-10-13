@@ -11,12 +11,12 @@ $opcion = $_POST['opcion'];
 $objdatos = new clsLab_Formularios;
 
 switch ($opcion) {
-    case 1:  //INSERTAR	
+    case 1:  //INSERTAR
         $Formulario = $_POST['Formulario'];
         $IdPrograma = $_POST['IdPrograma'];
-        
+
         if(!$objdatos->verifyUnique($Formulario, $IdPrograma, $lugar)) {
-        
+
             $IdForm = $objdatos->insertar($Formulario, $usuario);
             if ($IdForm != 0) {
                 if ($objdatos->IngFormularioxEstablecimiento($IdForm, $IdPrograma, $lugar, 'H', $usuario) == true) {
@@ -29,7 +29,7 @@ switch ($opcion) {
             echo "Error...\nEl Formulario: $Formulario ya ha sido registrado en el programa seleccionado, por favor ingrese otro formulario.";
         }
         break;
-    case 2:  //MODIFICAR   
+    case 2:  //MODIFICAR
         $IdFormulario = $_POST['IdFormulario'];
         $Formulario = $_POST['Formulario'];
         $IdPrograma = $_POST['IdPrograma'];
@@ -41,9 +41,9 @@ switch ($opcion) {
         }
 
         break;
-    case 3:  //ELIMINAR 
+    case 3:  //ELIMINAR
         $IdFormulario = $_POST['IdFormulario'];
-        //if (($objdatos->eliminar($IdPrograma)==true) && ($Clases->eliminar_labo($IdPrograma)==true)){		
+        //if (($objdatos->eliminar($IdPrograma)==true) && ($Clases->eliminar_labo($IdPrograma)==true)){
         if ($objdatos->eliminar($IdFormulario) == true) {
             echo "Registro Eliminado";
         } else {
@@ -57,7 +57,7 @@ switch ($opcion) {
         $RegistrosAEmpezar = ($_POST['Pag'] - 1) * $RegistrosAMostrar;
         $PagAct = $_POST['Pag'];
 
-        //LAMANDO LA FUNCION DE LA CLASE 
+        //LAMANDO LA FUNCION DE LA CLASE
         $consulta = $objdatos->consultarpag($RegistrosAEmpezar, $RegistrosAMostrar, $lugar);
         if($objdatos->NumeroDeRegistros($lugar) > 0) {
             //muestra los datos consultados en la tabla
@@ -66,14 +66,14 @@ switch ($opcion) {
                         <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
                         <td aling='center' class='CobaltFieldCaptionTD'> Habilitado</td>
                         <!--td class='CobaltFieldCaptionTD'> IdFormulario</td-->
-                        <td class='CobaltFieldCaptionTD'> Formulario </td>	
-                        <td class='CobaltFieldCaptionTD'> Programa de Salud </td>		
+                        <td class='CobaltFieldCaptionTD'> Formulario </td>
+                        <td class='CobaltFieldCaptionTD'> Programa de Salud </td>
                     </tr>";
 
             while ($row = pg_fetch_array($consulta)) {
                 echo "<tr>
-                        <td aling='center'> 
-                            <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+                        <td aling='center'>
+                            <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\"
                             onclick=\"pedirDatos('" . $row[0] . "')\"> </td>
                         <td class='CobaltDataTD' style='text-decoration:underline;cursor:pointer;' " .
                         "onclick='Estado(\"" . $row[0] . "\",\"" . $row[2] . "\")'>" . $row[3] . "</td>
@@ -139,32 +139,32 @@ switch ($opcion) {
         if ($_POST['cmbFormulario'] != 0) {
             $query .= " t02.id_atencion = " . $_POST['cmbFormulario'] . " AND";
         }
-        
+
         $query = substr($query, 0, strlen($query) - 3);
-        
+
         //para manejo de la paginacion
         $RegistrosAMostrar = 4;
         $RegistrosAEmpezar = ($_POST['Pag'] - 1) * $RegistrosAMostrar;
         $PagAct = $_POST['Pag'];
 
-        //LAMANDO LA FUNCION DE LA CLASE 
+        //LAMANDO LA FUNCION DE LA CLASE
         $consulta = $objdatos->consultarpagbus($query, $RegistrosAEmpezar, $RegistrosAMostrar);
         $NroRegistros = $objdatos->NumeroDeRegistrosbus($query);
-        
+
         if($NroRegistros > 0) {
             //muestra los datos consultados en la tabla
             echo "<table border = 1 align='center' class='estilotabla'>
                     <tr>
                         <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
                         <td aling='center' class='CobaltFieldCaptionTD'> Habilitado</td>
-                        <td class='CobaltFieldCaptionTD'> IdFormulario</td>
-                        <td class='CobaltFieldCaptionTD'> Formulario </td>	   
+                        <td class='CobaltFieldCaptionTD'>Formulario</td>
+                        <td class='CobaltFieldCaptionTD'>Programa de Salud</td>	   
                     </tr>";
 
             while ($row = pg_fetch_array($consulta)) {
                 echo "<tr>
-                        <td aling='center'> 
-                            <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+                        <td aling='center'>
+                            <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\"
                             onclick=\"pedirDatos('" . $row[0] . "')\"> </td>
                         <td class='CobaltDataTD' style='text-decoration:underline;cursor:pointer;' " .
                         "onclick='Estado(\"" . $row[0] . "\",\"" . $row[2] . "\")'>" . $row[3] . "</td>
@@ -174,7 +174,7 @@ switch ($opcion) {
                     </tr>";
             }
             echo "</table>";
-        
+
             $PagAnt = $PagAct - 1;
             $PagSig = $PagAct + 1;
 

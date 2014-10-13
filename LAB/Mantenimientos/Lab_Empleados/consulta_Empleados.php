@@ -19,6 +19,8 @@ $nombrearea      = $row['nombrearea'];
 $idcargoempleado = $row['idcargoempleado'];
 $cargo           = $row['cargo'];
 $login           = $row['login'];
+$idmodalidad     = $row['idmodalidad'];
+$nombremodalidad = $row['nombremodalidad'];
 //muestra los datos consultados en los campos del formulario
 ?>
 
@@ -47,6 +49,25 @@ $login           = $row['login'];
                     echo "<option value='" . $idarea . "' selected='selected'>" . htmlentities($nombrearea) . "</option>";
                     ?>		  
                 </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="StormyWeatherFieldCaptionTD"> Modalidad de Contrato</td>
+            <td class="StormyWeatherDataTD">
+                <select id="cmbModalidad" name="cmbModalidad" size="1" >
+                    <?php
+                        $objeareas = new clsLab_Empleados;
+                        $consulta = $objeareas->consultarModalidad($lugar);
+                        while ($row = pg_fetch_array($consulta)) {
+                            
+                            if($row[0] == $idmodalidad)
+                                echo "<option value='" . $idmodalidad . "' selected='selected'>" . htmlentities($nombremodalidad) . "</option>";
+                            else
+                                echo "<option value='" . $row[0] . "'>" . htmlentities($row[1]) . "</option>";
+                        }
+                        //echo "<option value='" . $idmodalidad . "' selected='selected'>" . htmlentities($nombremodalidad) . "</option>";
+                    ?>        
+                </select>        
             </td>
         </tr>
         <tr>

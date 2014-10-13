@@ -13,13 +13,13 @@ $responsable=$_GET['var8'];
 $sexo=$_GET['var9'];
 $idedad=$_GET['var10'];
 $IdEstabExt=$_GET['var11'];
-//echo $IdEstabExt; 
+//echo $IdEstabExt;
 ?>
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
 <title>Resultados de Examenes de Laboratorio </title>
-<script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script> 
+<script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script>
 <!--<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">-->
 <script language="JavaScript">
@@ -52,7 +52,7 @@ $IdEstabExt=$_GET['var11'];
 </head>
 
 <body>
-<?php 
+<?php
 include_once("clsSolicitudesProcesadas.php");
 $objdatos = new clsSolicitudesProcesadas;
 $Consulta_Estab=$objdatos->Nombre_Establecimiento($IdEstabExt);
@@ -73,8 +73,8 @@ $nombre=$row['NombreArea'];
            <tr>
                <td colspan='1' align="left" width='20%'><img id="Image1" style="WIDTH: 80px; HEIGHT: 55px" height="86" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
                <td align="center" colspan='4' width='60%'><img id="Image2" style="WIDTH: 100px; HEIGHT: 55px" height="86" src="../../../Imagenes/INS.png" width="210" name="Image2"></td>
-               <td colspan='1' align="right" width='20%'><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.gif" width="210" name="Image3"></td>
-           </tr> 
+               <td colspan='1' align="right" width='20%'><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
+           </tr>
            <tr>
                 <td colspan='1'>&nbsp;&nbsp;&nbsp;</td>
                 <td colspan='4' align='center' class="Estilo6">
@@ -87,7 +87,7 @@ $nombre=$row['NombreArea'];
 	    </tr>
             <tr>
 	        <td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;</td>
-               
+
             </tr>
 	    <tr>
 		<td colspan='1' class="Estilo5"><strong>Establecimiento:</strong></td>
@@ -101,7 +101,7 @@ $nombre=$row['NombreArea'];
 		<td colspan='1' class="Estilo7"><?php echo$row['IdNumeroExp'];?></td>
 		<td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
 		<td colspan='3' class="Estilo6"><?php echo htmlentities($row['NombrePaciente'])?></td>
-				
+
 	    <tr>
 		<td colspan='1' class="Estilo5"><strong>Edad:</strong></td>
 		<td colspan='1' class="Estilo6">
@@ -112,15 +112,15 @@ $nombre=$row['NombreArea'];
                      </div>
                 </td>
 		<td colspan='1' class="Estilo5"><strong>Sexo:</strong></td>
-		<td colspan='3' class="Estilo6"><?php echo $row['Sexo']?></td>					
-	    </tr>	
+		<td colspan='3' class="Estilo6"><?php echo $row['Sexo']?></td>
+	    </tr>
 	    <tr>
 		<td colspan='1' class="Estilo5"><strong>Procedencia:</strong></td>
 		<td colspan='1' class="Estilo6"><?php echo htmlentities($row['Procedencia'])?></td>
 		<td colspan='1' class="Estilo5"><strong>Servicio:</strong></td>
 		<td colspan='3' class="Estilo6"><?php echo htmlentities($row['Origen'])?></td>
             </tr>
-                            <?php 
+                            <?php
 				$consulta_empleado=$objdatos->BuscarEmpleadoValidador($responsable);
 				$fila_empleado = mysql_fetch_array($consulta_empleado);
 				$consulta2=$objdatos->MostrarDatosFijosPlantillaA($IdExamen,$lugar,$sexo,$idedad);
@@ -135,7 +135,7 @@ $nombre=$row['NombreArea'];
             </tr>
             <tr>
 		<td colspan='6' align='center' class="Estilo6" ><strong>DETALLE DE RESULTADOS</strong></td>
-            </tr>        
+            </tr>
             <tr>
                 <td colspan='6'>
                     <table width="100%"  align="center" border="1" cellspacing="0" class="StormyWeatherFormTABLE">
@@ -147,7 +147,7 @@ $nombre=$row['NombreArea'];
                                     <!--	<td align="center">Lectura</td>
                                             <td align="center">Interpretaci&oacute;n</td>-->
                             <td align="center" class="Estilo5"><strong>Observaci&oacute;n</strong></td>
-                        </tr>	
+                        </tr>
                         <tr>
                             <td align="center" class="Estilo5"><?php echo htmlentities($fila['NombreExamen'])?></td>
                             <td align="center" class="Estilo5"><?php echo htmlentities($resultado)?></td>
@@ -155,24 +155,24 @@ $nombre=$row['NombreArea'];
                             <td align="center" class="Estilo5"><?php echo htmlentities($fila['Unidades']) ?></td>
                        <?php }else{?>
                            <td  align="center">&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                       <?php } ?>  
+                       <?php } ?>
                             <td align="center" class="Estilo5"><?php echo $fila['RangoInicio']." - ".$fila['RangoFin']?></td>
                                                 <!--<td align="justify"><?php //echo htmlentities($lectura)?></td>
                                                 <td align="justify"><?php //echo htmlentities($interpretacion)?></td>-->
-                       <?php if (!empty($observacion)){ ?>    
+                       <?php if (!empty($observacion)){ ?>
                             <td align="justify" class="Estilo5"><?php echo htmlentities($observacion)?></td>
                        <?php }else{?>
                             <td  align="center" >&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                       <?php } ?>  
-                        </tr> 
-                       
-                       
+                       <?php } ?>
+                        </tr>
+
+
                       </table>
                   </td>
               </tr>
                <tr>
                   <td colspan="6" align="center" >
-                      <div id="boton">	
+                      <div id="boton">
                           <input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
                           <input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar() ;" />
                       </div>

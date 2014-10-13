@@ -74,7 +74,7 @@ function VerificarIntegridad($idCanTin)
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "select * from lab_cantidadestincion order by id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar  ";
+     $query = "select * from lab_cantidadestincion order by cantidadtincion LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar  ";
 	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;
