@@ -117,6 +117,7 @@ $area    = $_SESSION['Idarea'];
         $Pac         = $_GET['var7'];
         $IdEstandar  = $_GET['var16'];
         $IdHistorial = $_GET['var17'];
+        $nombreEstab = $_GET['var17'];
         if($db->conectar()==true) {
             $condatos = "SELECT t07.peso,
                                 t07.talla,
@@ -153,7 +154,7 @@ $area    = $_SESSION['Idarea'];
                             </tr>
                             <tr>
                                 <td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
-                                <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var13'];?></td>
+                                <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var18'];?></td>
                             </tr>
                             <tr>          	
                                 <td class="StormyWeatherFieldCaptionTD" >NEC</td>
@@ -168,7 +169,7 @@ $area    = $_SESSION['Idarea'];
                                     <input type="hidden" name="txtarea" id="txtarea"  />
                                     <input type="hidden" name="txtprocedencia" id="txtprocedencia" />
                                     <input type="hidden" name="txtorigen" id="txtorigen" />
-                                    <input type="hidden" name="txtEstablecimiento" id="txtEstablecimiento" value="<?php echo $_GET['var13']?>" />
+                                    <input type="hidden" name="txtEstablecimiento" id="txtEstablecimiento" value="<?php echo $_GET['var18']?>" />
                                     <input type="hidden" name="txtFechaNac" id="txtFechaNac" value="<?php echo $_GET['var14']?>" />
                                     <input type="hidden" name="txtSexo" id="txtSexo" value="<?php echo $_GET['var15']?>" />
                                     <input type="hidden" name="txtIdEstandar" id="txtIdEstandar" value="<?php echo $_GET['var16']?>" />

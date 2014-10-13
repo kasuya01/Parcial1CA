@@ -66,8 +66,7 @@ function isWhitespace(charToCheck) {
 }
 
 //Esta funcion mandan a llamar
-function calc_edad()
-{
+function calc_edad() {
     var fecnac1 = document.getElementById("suEdad").value;
     var fecnac2 = fecnac1.substring(0, 10);
     var suEdades = calcular_edad(fecnac2);
@@ -364,7 +363,7 @@ function ImprimirPlantillaB(idsolicitud, idexamen, responsable, procedencia, ori
             "&var5=" + escape(origen) + "&var6=" + escape(observacion) + "&var7=" + encodeURIComponent(valores_subelementos) +
             "&var8=" + codigos_subelementos + "&var9=" + escape(valores_elementos) +
             "&var10=" + codigos_elementos + "&var11=" + encodeURIComponent(controles) +
-            "&var12=" + controles_ele + "&var13=" + escape(nombrearea) +
+            "&var12=" + controles_ele + "&var13=" + nombrearea +
             "&var14=" + escape(establecimiento) + "&var15=" + escape(responsable) +
             "&var16=" + sexo + "&var17=" + idedad, "ImprimirB", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
 }
@@ -913,10 +912,10 @@ function MostrarVistaPreviaPlantillaB(){
         //enviando los valores
         //ajax.send("opcion="+opcion+"&idexamen="+idexamen);
         ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idsolicitud=" + idsolicitud + "&idrecepcion=" + idrecepcion +
-                "&iddetalle=" + iddetalle + "&observacion=" + escape(observacion) + "&idempleado=" + idempleado + "&procedencia=" + escape(procedencia) +
+                "&iddetalle=" + iddetalle + "&observacion=" + observacion + "&idempleado=" + idempleado + "&procedencia=" + escape(procedencia) +
                 "&origen=" + escape(origen) + "&valores_subelementos=" + encodeURIComponent(valores_subelementos) + "&codigos_subelementos=" + codigos_subelementos +
                 "&valores_elementos=" + encodeURIComponent(valores_elementos) + "&codigos_elementos=" + codigos_elementos + "&controles=" + encodeURIComponent(controles) +
-                "&controles_ele=" + encodeURIComponent(controles_ele) + "&estab=" + escape(estab) + "&tab=" + tab + "&fechanac=" + fechanac + "&sexo=" + sexo);
+                "&controles_ele=" + encodeURIComponent(controles_ele) + "&estab=" + estab + "&tab=" + tab + "&fechanac=" + fechanac + "&sexo=" + sexo);
         ajax.onreadystatechange = function()
         {
             if (ajax.readyState == 4)
@@ -1201,7 +1200,7 @@ function MostrarDatos(posicion)
                     "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                     "&var12=" + impresion + "&var13=" + estab + "&var16=" + IdEstandar +
-                    "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+escape(estabext), "Resultados", "width=950,height=650,menubar=no,scrollbars=yes,location=no");
+                    "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext, "Resultados", "width=950,height=650,menubar=no,scrollbars=yes,location=no");
             break;
         case "4":
             ventana_dos = window.open("ProcDatosResultadosExamen_PD.php?var1=" + idexpediente +
