@@ -50,6 +50,10 @@ if ($nivel==4){
 var miPopup
 function fillEstablecimiento(idtipoEstab){
   accion=8;
+        idext=document.getElementById('IdEstablecimientoExterno').value;
+        if (idext == '' || idext==null || idext=='""'){
+            idext=0;
+        }
   
 	if(idtipoEstab==0){ 
 	  alert("Seleccione un tipo de establecimiento!");
@@ -69,6 +73,35 @@ function fillEstablecimiento(idtipoEstab){
 	
 	  var param = 'Proceso=fillEstab';
 	  param += '&idtipoEstab='+idtipoEstab;
+	  param += '&idext='+idext;
+          
+	  sendReq.send(param);  	
+	}
+}
+
+function fillTipoEstablecimiento(idest){
+  accion=12;
+  
+	if(idest==0){ 
+	  return false;
+	} else{
+		  
+	  if (window.XMLHttpRequest) {
+		sendReq = new XMLHttpRequest();
+	  } else if(window.ActiveXObject) {
+		sendReq = new ActiveXObject("Microsoft.XMLHTTP");
+	  } else{
+	  	alert("no pudo crearse el objeto")
+	  }
+         // alert ('filltipoestablecimiento:'+idest)
+
+	  sendReq.onreadystatechange = procesaEsp;
+	  sendReq.open("POST", 'ajax_recepcion.php', true);
+	  sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+	
+	  var param = 'Proceso=fillTipoEstab';
+	  param += '&idestab='+idest;
+       //   alert (param)
 	  sendReq.send(param);  	
 	}
 }
@@ -98,6 +131,7 @@ function fillservicio(idserv){
    }
 
 }
+
 
 function fillMed(idSubEsp){
   accion=1;
@@ -233,9 +267,15 @@ accion=5;
 
 function searchpac(){
 accion=6;
-
+    
 	nec=document.getElementById('txtexp').value;
+	idext=document.getElementById('IdEstablecimientoExterno').value;
+        
 	
+        if (idext == '' || idext==null || idext=='""'){
+            idext=0;
+        }
+       // alert(nec+' - '+idext)
 	if(!IsNumeric(document.getElementById('txtexp').value)){
 		alert('Por favor solo introduzca numeros en este campo') 
 		document.getElementById('txtexp').focus();
@@ -260,7 +300,9 @@ accion=6;
 	  sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	
 	  var param = 'Proceso=searchpac';
-	  param += '&nec='+nec;
+	  param += '&nec='+nec+'&idext='+idext;
+        //  param += '&idext='+idext;
+         // alert (param)
 	  sendReq.send(param);
 }
  
@@ -311,7 +353,7 @@ function abreVentana(nec){ //datospacfisttime
     miPopup.focus(); 
 } 
 
-function MostrarDatos(nec){
+function MostrarDatos(nec, idext){
 accion=10;
 	  sendReq.onreadystatechange = procesaEsp;
 	  sendReq.open("POST", 'ajax_recepcion.php', true);
@@ -319,19 +361,22 @@ accion=10;
 	
 	  var param = 'Proceso=DatosPaciente';
 	  param +='&nec='+nec;
+	  param +='&idext='+idext;
+         // alert('Param: '+param)
 	  sendReq.send(param);
 
 }// fin MostrarDatos
 
 function NoEncontrado(nec)
 {
-    accion=11;
+        accion=11;
 	  sendReq.onreadystatechange = procesaEsp;
 	  sendReq.open("POST", 'ajax_recepcion.php', true);
 	  sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	
 	  var param = 'Proceso=DatosPaciente';
 	  param +='&nec='+nec;
+	  param +='&idext=0';
 	  sendReq.send(param);    
 }
 
@@ -413,6 +458,7 @@ function procesaEsp(){
 				}else{document.getElementById('btnguardar').style.visibility='visible';}}
 			break;
 		case 6:
+                      //  alert ('respuesta:'+respuesta)
 			if(respuesta == 2)
                         {
                             //alert("No hay registros de este paciente debe ingresar los datos");
@@ -421,8 +467,12 @@ function procesaEsp(){
                             NoEncontrado(nec);
                         }else{
                             nec=document.getElementById('txtexp').value;
+                            idext=document.getElementById('IdEstablecimientoExterno').value;
+                                if (idext == ''){
+                                    idext=0;
+                                }
                             //alert(nec);
-                            MostrarDatos(nec);
+                            MostrarDatos(nec, idext);
                             }
 			break;
 		case 7:
@@ -438,14 +488,30 @@ function procesaEsp(){
 		case 10:
 		  	document.getElementById('DatosPaciente').innerHTML = respuesta;
                         document.getElementById('lyLaboratorio').style.display="block"; //
-                        document.getElementById('cmbTipoEstab').focus();
+                       // document.getElementById('cmbTipoEstab').focus();
+                        
+                        idext=document.getElementById('IdEstablecimientoExterno').value;
+        
+	
+                        if (idext == '' || idext==null || idext=='""'){
+                            document.getElementById('cmbTipoEstab').focus();
+                        }
+                        else{
+                        //    alert('filltipoestablecimiento')
+                            fillTipoEstablecimiento(idext)
+                        }
                         //document.getElementById('cmbTipoEstab').focus();style.display="block"  enable = true
                         break;
 		case 11:
+                    //alert ('case11')
 		  	document.getElementById('DatosPaciente').innerHTML = respuesta;
                         document.getElementById('lyLaboratorio').style.display="none";
                         //document.getElementById('cmbTipoEstab').focus();disabled = true
                         break;
+                case 12:
+		  	document.getElementById('lyTipoEstab').innerHTML = respuesta;
+                        document.getElementById('cmbTipoEstab').focus();
+			break;
 		}		
 	}else {
 	  alert('Se han presentado problemas en la petición');
@@ -454,17 +520,18 @@ function procesaEsp(){
 } 
 
 //pegar el correlativo del paciente externo para la busqueda y prescribir los examenes
-function pegarExp(IdExpediente,IdCitaServApoyo,IdEstablecimientoExterno){
-    document.getElementById("txtexp").value = IdExpediente;
+function pegarExp(IdExpediente,IdCitaServApoyo,IdEstablecimientoExterno,IdNumeroExpRef){
+    //alert(IdExpediente+'-'+IdCitaServApoyo+' -'+IdEstablecimientoExterno+' '+IdNumeroExpRef)
+//    document.getElementById("txtexp").value = IdExpediente;
     document.getElementById("IdCitaServApoyo").value = IdCitaServApoyo;
     document.getElementById("IdEstablecimientoExterno").value = IdEstablecimientoExterno;
+    document.getElementById("txtexp").value = IdNumeroExpRef;
     searchpac();
 }
 
 
 function Examenes(){
     // POP UP DE EXAMENES DE LABORATORIO
-
     var IdNumeroExp = document.getElementById("IdNumeroExp").value;
     var IdEstablecimiento = document.getElementById("cmbEstablecimiento").value;// establecimiento que solicita el estudio
     var lugar = document.getElementById("lugar").value;
@@ -474,12 +541,23 @@ function Examenes(){
     var IdCitaServApoyo = document.getElementById("IdCitaServApoyo").value;
     var Sexo = document.getElementById("tiposexo").value;
     var idexpediente = document.getElementById("idexpediente").value;
+    var mensaje="";
+    if (FechaConsulta==''){
+        mensaje +="Ingrese el dato de la Fecha de la consulta ";
+    }   
+    if (IdSubServicio==0){
+        mensaje +="\nIngrese el dato del subservicio"
+    }
+    if (mensaje !=''){
+       alert (mensaje)
+        return false;
+    }
     /*
     var IdHistorialClinico = document.getElementById("IdHistorialClinico").value;
     var IdSubEspecialidad = document.getElementById("IdSubEspecialidad").value;
     var IdUsuarioReg = document.getElementById("IdUsuarioReg").value;
     var FechaHoraReg = document.getElementById("FechaHoraReg").value;*/
-    var Parametros="?IdNumeroExp="+IdNumeroExp;
+    var Parametros="IdNumeroExp="+IdNumeroExp;
             Parametros+="&IdEstablecimiento="+IdEstablecimiento;
             Parametros+="&lugar="+lugar;
             Parametros+="&IdSubServicio="+IdSubServicio;
@@ -491,9 +569,9 @@ function Examenes(){
 var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
 */
 // alert (IdEstablecimiento+ ' -- ' +lugar+ ' -- ' + IdSubServicio+ ' -- ' +IdEmpleado+ ' -- ' +FechaConsulta);
-alert (Parametros)
-return false;
-    var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
+//alert (Parametros)
+//return false;
+    var url = "../EstudiosLaboratorio/Solicitud.php?"+Parametros;
     window.open(url,"Solicitudes","fullscreen=yes, toolbar=no, scrollbars=yes");
 }
 
@@ -502,7 +580,7 @@ return false;
 
 <body text="#000000" class="CobaltPageBody" onLoad="frmdatosexpediente.txtexp.focus();">
 
-<link href="../../../css/paginalab.css" rel="stylesheet" type="text/css" />
+<!--<link href="../../../css/paginalab.css" rel="stylesheet" type="text/css" />-->
 <form name="frmdatosexpediente" action="" method="post">	
 <table border = 1 class="CobaltFormTABLE" cellspacing="0" cellpadding="3" align="center">
 	<tr>
@@ -536,6 +614,7 @@ return false;
             <tr>	
                     <td class="StormyWeatherFieldCaptionTD" >Tipo Establecimiento</td>
                     <td class="StormyWeatherDataTD">
+                         <div id="lyTipoEstab">
                             <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:350px"  onFocus="fillEstablecimiento(this.value)">
                                     <?php //  <option value="0" selected="selected">--Seleccione un tipo de Establecimiento--</option>
                                     $tipoest=$recepcion->tipoestactual($lugar);
@@ -557,6 +636,7 @@ return false;
                                             }*/
                                     ?>
                             </select>
+                        </div>
                     </td>
             </tr>
             <tr>

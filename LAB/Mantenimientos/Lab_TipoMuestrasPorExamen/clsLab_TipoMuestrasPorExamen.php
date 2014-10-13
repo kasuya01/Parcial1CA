@@ -82,13 +82,13 @@ and idtipomuestra =$idtipomuestra";
  $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-      $query = "SELECT lte.id as idtipomuestraporexamen,lte.idexamen, lex.idexamen as codexamen, tipomuestra,lte.idtipomuestra
-            FROM lab_tipomuestraporexamen lte
-            INNER JOIN lab_examenes lex  ON lte.idexamen=lex.id
-            INNER JOIN lab_tipomuestra ltm ON ltm.id=lte.idtipomuestra
-            WHERE lte.idexamen=$idexamen
-                and lte.habilitado=true
-                order by tipomuestra;" ;
+             $query = "select lte.id as idtipomuestraporexamen, lte.idexamen, cex.idestandar as codexamen, tipomuestra, lte.idtipomuestra
+              from lab_tipomuestraporexamen lte
+              join ctl_examen_servicio_diagnostico cex on (cex.id=lte.idexamen)
+              join lab_tipomuestra  ltm on (ltm.id=lte.idtipomuestra)
+              where cex.id=$idexamen
+              and lte.habilitado=true
+              order by tipomuestra;" ;
 	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
@@ -103,13 +103,13 @@ and idtipomuestra =$idtipomuestra";
 	$con = new ConexionBD;
     //usamos el metodo conectar para realizar la conexion
     if($con->conectar()==true){
-     $query = "SELECT lab_examenes.id,nombreexamen 
-                FROM lab_examenes 
-                INNER JOIN lab_examenesxestablecimiento ON lab_examenes.id=lab_examenesxestablecimiento.idexamen
-                WHERE idarea=$idarea
-                AND lab_examenesxestablecimiento.Condicion='H' 
-                AND IdEstablecimiento=$lugar 
-                ORDER BY nombreexamen";
+     $query = "select mnt4.id, descripcion, lex.id as idexamen
+            from ctl_examen_servicio_diagnostico  lex
+            join mnt_area_examen_establecimiento mnt4 on (lex.id=mnt4.id_examen_servicio_diagnostico)
+            where id_area_servicio_diagnostico=$idarea
+            and id_establecimiento=$lugar
+            and activo=true
+            order by descripcion";
      $result = pg_query($query);
    //  echo 'query'.$query.'<br/>';
      if (!$result)

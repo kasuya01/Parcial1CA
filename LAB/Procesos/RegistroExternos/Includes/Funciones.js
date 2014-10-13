@@ -26,6 +26,9 @@ function xmlhttp(){
 function Limpiar(){
 	window.location.replace('Busqueda.php');
 }
+function LimpiarConExpe(nec){
+	window.location.replace('Busqueda.php?nec='+nec);
+}
 
 function NoCero(ct){
 //ct = id del textbox
@@ -92,17 +95,30 @@ function GuardarInformacionExterna(){
 	var IdEstablecimientoExterno = document.getElementById('EstablecimientoExterno').value;
 	//var IdEstablecimiento = document.getElementById('Establecimiento').value;
 	var PrimerApellido = document.getElementById('PrimerApellido_Name').value;
+	var SegundoApellido = document.getElementById('SegundoApellido_Name').value;
+	var CasadaApellido = document.getElementById('CasadaApellido_Name').value;
 	var PrimerNombre = document.getElementById('PrimerNombre_Name').value;
+	var SegundoNombre = document.getElementById('SegundoNombre_Name').value;
+	var TercerNombre = document.getElementById('TercerNombre_Name').value;
 	var FechaNacimiento = document.getElementById('FechaNacimiento_Name').value;
 	var Sexo_Name = document.getElementById('Sexo_Name').value;
 	var NombreMadre = document.getElementById('NombreMadre_Name').value;
+	var NombrePadre = document.getElementById('NombrePadre_Name').value;
+	var NombreResponsable = document.getElementById('NombreResponsable_Name').value;
 	var LugardeAtencion = document.getElementById('LugarAtencion').value;
 	var IdNumeroExpRef = document.getElementById('NumeroExpediente_Referencia').value;
-        var IdNumeroExp = document.getElementById('NEC').value;
-        
+        var IdNumeroExp = document.getElementById('nec').value;
+        var idnumeroexpediente = document.getElementById('idnumeroexpediente').value;
+        var idpacienteref = document.getElementById('idpacienteref').value;
+       // alert(FechaNacimiento)
+      //  alert (idpacienteref)
+        if(idpacienteref==''){
+            idpacienteref=0;
+        }
         //alert ('Sexo_Name '+Sexo_Name+' IdEstablecimiento '+IdEstablecimientoExterno+' LugardeAtencion '+LugardeAtencion+' IdNumeroExpRef: '+IdNumeroExpRef+' IdNumeroExp '+IdNumeroExp);
 	if(IdNumeroExp==""){ // si el campo esta vacio es un paciente nuevo que se va a registrar
                 IdNumeroExp = 0; // se le coloca 0 para saber que es nuevo
+                idnumeroexpediente = 0; // se le coloca 0 para saber que es nuevo
 		
 	}        
         
@@ -129,13 +145,7 @@ function GuardarInformacionExterna(){
 		document.getElementById('NombreMadre_Name').focus();
 		return false;
 	}
-	
-      /*  if(document.getElementById('IdNumeroExpRef').value==0){
-		alert(".: Error: No puede dejar Numero de Expediente de Referencia en blanco");
-		document.getElementById('IdNumeroExpRef').focus();
-		return false;
-	}*/
-        
+       
 	
 	
 	document.getElementById('GetInfor').disabled=true;
@@ -146,19 +156,24 @@ function GuardarInformacionExterna(){
 		if(ajax.readyState==1){
 			A.innerHTML = "<div align='center'>GUARDANDO . . .</div>";
 		}
+               // alert(ajax.readyState)
 		if(ajax.readyState==4){
 		    	var respuesta = ajax.responseText.split('~');
                         var IdExpediente = respuesta[0];
                         var IdCitaServApoyo = respuesta[1];
+                        var IdNumeroExpRef = respuesta[2];
                         //A.innerHTML = ajax.responseText
 
                         //alert(ajax.responseText);
-                        window.opener.pegarExp(IdExpediente,IdCitaServApoyo,IdEstablecimientoExterno);
+                       // alert(IdExpediente+' - '+IdCitaServApoyo+' - '+IdNumeroExpRef+' '+IdEstablecimientoExterno)
+                       // return false;
+                        window.opener.pegarExp(IdExpediente,IdCitaServApoyo,IdEstablecimientoExterno, IdNumeroExpRef);
                         window.close();                     
 		}
 	}
+//alert("IdEstablecimientoExterno="+IdEstablecimientoExterno+"&LugardeAtencion="+LugardeAtencion+"&PrimerApellido="+PrimerApellido+"&SegundoApellido="+SegundoApellido+"&CasadaApellido="+CasadaApellido+"&PrimerNombre="+PrimerNombre+"&SegundoNombre="+SegundoNombre+"&TercerNombre="+TercerNombre+"&FechaNacimiento="+FechaNacimiento+"&Sexo_Name="+Sexo_Name+"&NombreMadre="+NombreMadre+"&NombrePadre="+NombrePadre+"&NombreResponsable="+NombreResponsable+"&IdNumeroExpRef="+IdNumeroExpRef+"&IdNumeroExp="+idnumeroexpediente+"&idpacienteref="+idpacienteref)
 
-ajax.open("GET","respuesta.php?Bandera=4&IdEstablecimientoExterno="+IdEstablecimientoExterno+"&LugardeAtencion="+LugardeAtencion+"&PrimerApellido="+PrimerApellido+"&PrimerNombre="+PrimerNombre+"&FechaNacimiento="+FechaNacimiento+"&Sexo_Name="+Sexo_Name+"&NombreMadre="+NombreMadre+"&IdNumeroExpRef="+IdNumeroExpRef+"&IdNumeroExp="+IdNumeroExp,true);
+ajax.open("GET","respuesta.php?Bandera=4&IdEstablecimientoExterno="+IdEstablecimientoExterno+"&LugardeAtencion="+LugardeAtencion+"&PrimerApellido="+PrimerApellido+"&SegundoApellido="+SegundoApellido+"&CasadaApellido="+CasadaApellido+"&PrimerNombre="+PrimerNombre+"&SegundoNombre="+SegundoNombre+"&TercerNombre="+TercerNombre+"&FechaNacimiento="+FechaNacimiento+"&Sexo_Name="+Sexo_Name+"&NombreMadre="+NombreMadre+"&NombrePadre="+NombrePadre+"&NombreResponsable="+NombreResponsable+"&IdNumeroExpRef="+IdNumeroExpRef+"&IdNumeroExp="+idnumeroexpediente+"&idpacienteref="+idpacienteref,true);
 		ajax.send(null);
 		return false;
 		
@@ -166,7 +181,7 @@ ajax.open("GET","respuesta.php?Bandera=4&IdEstablecimientoExterno="+IdEstablecim
 
 function Enviodatos(){
 	var A = document.getElementById('Datos');
-	var Expediente = $('NEC').value;
+	var Expediente = $('nec').value;
 	var IdEstablecimientoExterno = document.getElementById('EstablecimientoExterno').value;
 	var LugardeAtencion = document.getElementById('LugarAtencion').value;
         var IdNumeroExpRef = 0;
@@ -184,12 +199,22 @@ function VerificarExistente(){
 	var C = document.getElementById('Externo');
 	var D = document.getElementById('Busqueda');
 //var PrimerNombre_Name = document.getElementById('PrimerNombre_Name');
-        var NEC = document.getElementById('NEC').value;
+        var NEC = document.getElementById('nec').value;
+        var idnumeroexpediente = document.getElementById('idnumeroexpediente').value;
         var PrimerNombre = document.getElementById('PrimerNombre').value;
+        var SegundoNombre = document.getElementById('SegundoNombre').value;
+        var TercerNombre = document.getElementById('TercerNombre').value;
         var PrimerApellido = document.getElementById('PrimerApellido').value;
+        var SegundoApellido = document.getElementById('SegundoApellido').value;
+        var CasadaApellido = document.getElementById('CasadaApellido').value;
         var FechaNacimiento = document.getElementById('FechaNacimiento').value;
         var Sexo = document.getElementById('Sexo').value;
+        var id_sexo = document.getElementById('id_sexo').value;
         var NombreMadre = document.getElementById('NombreMadre').value;
+        var NombrePadre = document.getElementById('NombrePadre').value;
+        var NombreResponsable = document.getElementById('NombreResponsable').value;
+        var Edad = document.getElementById('edad').value;
+       // alert(FechaNacimiento)
         //var IdEstablecimientoExterno = document.getElementById('IdEstablecimientoExterno').value;
 	//alert("nombre: "+PrimerNombre+ "  NEC: "+ NEC );
 	if(document.getElementById('EstablecimientoExterno').value==""){
@@ -200,34 +225,59 @@ function VerificarExistente(){
         
 	D.style.display = "none";
 	C.style.display = "inline";
-	
         document.getElementById('PrimerNombre_Name').value = PrimerNombre;
+        document.getElementById('SegundoNombre_Name').value = SegundoNombre;
+        document.getElementById('TercerNombre_Name').value = TercerNombre;
         document.getElementById('PrimerApellido_Name').value = PrimerApellido;
+        document.getElementById('SegundoApellido_Name').value = SegundoApellido;
+        document.getElementById('CasadaApellido_Name').value = CasadaApellido;
         document.getElementById('FechaNacimiento_Name').value = FechaNacimiento;
-        document.getElementById('Sexo_Name').value = Sexo;
+        document.getElementById('Sexo_Name').value = id_sexo;
         document.getElementById('NombreMadre_Name').value = NombreMadre;
-	document.getElementById('PrimerApellido_Name').focus();	
+        document.getElementById('NombrePadre_Name').value = NombrePadre;
+        document.getElementById('NombreResponsable_Name').value = NombreResponsable;
+	document.getElementById('NumeroExpediente_Referencia').value=NEC;
+	document.getElementById('NumeroExpediente_Referencia').value=NEC;
+	document.getElementById('Edad').value=Edad;
+	document.getElementById('Edadini').value=Edad;
+	document.getElementById('PrimerApellido_Name').focus();		
 }
 
 function esEdadValida(edad){
+    edadfin=edad.value
+    edadini=document.getElementById('Edadini').value;
+    if (edadfin!=edadini) {
+        if (edad != undefined && edad.value != "" ){
 
-if (edad != undefined && edad.value != "" ){
-   var annios  =  parseInt(edad.value);
-      if (annios > 120)
-	  {
-         alert("Verifique la edad del paciente");
-         return false;
+       var annios  =  parseInt(edad.value);
+          if (annios > 120)
+              {
+             alert("Verifique la edad del paciente");
+             document.getElementById('Edad').value=""
+             return false;
+          }
+            var fecha=new Date();
+            var diames=fecha.getDate();
+            if (diames<10){diames="0"+diames}
+            var mes=fecha.getMonth() +1 ;
+            if (mes<10){mes="0"+mes}
+            var ano=fecha.getFullYear();
+            var annio=ano-annios;
+            FechaCalculada=annio+"-"+mes+"-"+diames;
+            document.getElementById("FechaNacimiento_Name").value=FechaCalculada;
+            document.getElementById('Edadini').value=edadfin
+
+        return true;
+          }
       }
-	var fecha=new Date();
-	var diames=fecha.getDate();
-	if (diames<10){diames="0"+diames}
-	var mes=fecha.getMonth() +1 ;
-	if (mes<10){mes="0"+mes}
-	var ano=fecha.getFullYear();
-	var annio=ano-annios;
-	FechaCalculada=annio+"/"+mes+"/"+diames;
-	document.getElementById("FechaNacimiento_Name").value=FechaCalculada;
-	
-    return true;
+      if (edadfin==''){
+          document.getElementById('Edad').value=edadini
       }
+      
+}
+
+function limpiarcampoedad(campo){
+    document.getElementById(campo).value=''
+    /*$(campo).attr('placeholder','');*/
+        
 }
