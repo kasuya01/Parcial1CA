@@ -412,6 +412,7 @@ function Retraso(ID){
 	}
 	else if (Contar==1 && document.Editar.ExamenesLab.checked == false){	
             IdExamen=document.Editar.ExamenesLab.value;
+                IdDetalle=document.getElementById("IdDetalle"+IdExamen).value;
             Indicacion=document.getElementById("Indicacion"+IdExamen).value;
            /* Detalle=document.getElementById("Detalle"+IdExamen);
             if (IdDetalle==null){
@@ -422,7 +423,7 @@ function Retraso(ID){
             }  */
          
          //Para las solicitudes diarias no se necesita la opción urgente por lo cual pondremos seteado que Detalle= normal
-         Detalle=2;
+         Detalle=1;
 
             if(Indicacion != ""){
                             // Crear Objeto Ajax
@@ -606,13 +607,14 @@ function CargarContenido(){
 /* 			Funcion Para Verificar si el Examen es Urgente.. Crea una Solicitud NUEVA 								*/
 /************************************************************************************************/
 function Urgente(idsolicitud){	
+  //  alert (idsolicitud)
     // Definicion de Variables
     var IdHistorialClinico=document.Editar.IdHistorialClinico.value;
     var largo=document.getElementById('totalurgente').value;
     var detalles_urgente=new Array(); 
     var e=0;
     var i;       
-     ObjetoAjax=NuevoAjax();	
+ 	
    //alert (largo) 
     if (largo >0){
     for (i=1;i< largo;i++){
@@ -624,29 +626,33 @@ function Urgente(idsolicitud){
     }
      }//fin if largo >0
     var cuantos = document.getElementById('total').value;
-    //alert(cuantos)
+   //  alert('Cuantos: '+cuantos+' - '+largo+' - '+IdHistorialClinico)
+    
     if (cuantos ==0){
+       
                 //Detalle=document.getElementById("Detalle"+IdExamen).value;
         // Crear Objeto Ajax
                	var eliminar = confirm("No ha seleccionado ningún examen, desea eliminar la solicitud")
               //  alert (eliminar)
                 if (eliminar) {			
-                   	
+                   //	alert('IR a eliminar'+ idsolicitud)
                 // Hacer el Request y llamar o Dibujar el Resultado
-                ObjetoAjax.open("POST", 'Procesar.php', true);
-                ObjetoAjax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-
-                // Declaración de parámetros
-
-                var Proceso='EliminarSolicitud';
-                var param = 'Proceso='+Proceso;
-
-                // Concatenación y Envío de Parámetros          
-                param += '&idsolicitud='+idsolicitud;
-                ObjetoAjax.send(param); 
-               //  return false;
+                ObjetoAjax2=NuevoAjax();	
+                
+                ObjetoAjax2.onreadystatechange = function(){
+                    if(ObjetoAjax2.readyState==4){
+                  //      alert('Oajax2: '+ObjetoAjax2.responseText);
+                       
+                   //****     window.close();
+                    }
                 }
-                else {
+                // Declaración de parámetros
+                ObjetoAjax2.open("GET", 'Procesar.php?Proceso=EliminarSolicitud'+'&idsolicitud='+idsolicitud, true);
+                ObjetoAjax2.send(null); 
+                
+                
+                }
+                else{
                     return false;
                 }
     }
@@ -656,16 +662,16 @@ function Urgente(idsolicitud){
 
   //alert (cadena_ref+'--'+IdHistorialClinico);    
 
-    		
+        ObjetoAjax=NuevoAjax();		
     // Hacer el Request y llamar o Dibujar el Resultado
     ObjetoAjax.onreadystatechange = function(){
         if(ObjetoAjax.readyState==4){
-            //alert(ObjetoAjax.responseText);
+        //    alert('RT: '+ObjetoAjax.responseText);
             window.close();
         }
     }
     
-    ObjetoAjax.open("GET","Procesar.php?Proceso=VerificarSolicitudUrgente"+"&IdDetallesUrgentes="+cadena_ref+"&IdHistorialClinico="+IdHistorialClinico,true);
+    ObjetoAjax.open("GET","Procesar.php?Proceso=VerificarSolicitudUrgente"+"&IdDetallesUrgentes="+cadena_ref+"&IdHistorialClinico="+IdHistorialClinico+"&cuantos="+cuantos+"&idsolicitud="+idsolicitud,true);
     ObjetoAjax.send(null);
     
     return false;

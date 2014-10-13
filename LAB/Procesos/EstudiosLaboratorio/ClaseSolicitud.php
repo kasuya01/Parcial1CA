@@ -742,13 +742,16 @@ function BorrarSolicitud($idsolicitud){
 where idsolicitudestudio=$idsolicitud";
                 $Ejecutar=  pg_query($SQL);
                 $cant=  pg_fetch_array($Ejecutar);
-                if ($cant==0){
+                if ($cant[0]==0){
+                $SQL0= "delete from lab_recepcionmuestra where idsolicitudestudio=$idsolicitud";
+                $Ejecutar0=  pg_query($SQL0);
                 $SQL1="delete from cit_citas_serviciodeapoyo 
                         where id_solicitudestudios=$idsolicitud";
-                $Ejecutar=  pg_query($SQL1);
-                $SQL="delete  from sec_solicitudestudios 
+                $Ejecutar1=  pg_query($SQL1);
+                $SQL2="delete  from sec_solicitudestudios 
                         where id=$idsolicitud";
-                $Ejecutar=  pg_query($SQL);
+                $Ejecutar2=  pg_query($SQL2);
+              //  echo 'Eju: '.$SQL2;
                 
                 }
                 

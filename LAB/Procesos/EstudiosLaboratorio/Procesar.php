@@ -131,18 +131,32 @@
             $cambioEstado=$SolicitudLab->ActualizarSolicitud($IdDetalle, $Detalle);
             
         }
-	$SolicitudLab->ActualizarIndicacion($IdDetalle,$Indicacion);
+	$St=$SolicitudLab->ActualizarIndicacion($IdDetalle,$Indicacion);
+        echo $St. '-'.$IdDetalle.'-'.$Indicacion;
    break;
    
-    case "EliminarSolicitud":
-        $idsolicitud=$_POST["idsolicitud"];		 
-        $SolicitudLab->BorrarSolicitud($idsolicitud);
+   case "EliminarSolicitud":
+      // var_dump('Holaaa!! ');
+        $idsolicitud=$_GET["idsolicitud"];		 
+        $bs=$SolicitudLab->BorrarSolicitud($idsolicitud);
+       // echo 'ids: '.$idsolicitud;
+       // echo 'BS: '.$bs.' -idsol- '.$idsolicitud;
    break;
      
    case 'VerificarSolicitudUrgente':  
         $IdDetalleUrgentes=$_GET["IdDetallesUrgentes"];
         $IdHistorialClinico=$_GET["IdHistorialClinico"]; 
-        $TipoSolicitud='S';       // echo $IdHistorialClinico.'--'.$IdDetalleUrgentes;
+        $TipoSolicitud='S';  
+        //echo 'TS: '.$TipoSolicitud;
+        /*$idsolicitud=$_GET["idsolicitud"];
+        $cuantos=$_GET["cuantos"];
+        if ($cuantos==0){
+            $bs=$SolicitudLab->BorrarSolicitud($idsolicitud);
+        }*/
+           break;
+
+
+// echo $IdHistorialClinico.'--'.$IdDetalleUrgentes;
         //No se actualizara nada de urgente en la solicitud que ingresan de externos.
         /*
         $recuperarData = $SolicitudLab->RecuperarData($IdHistorialClinico,$IdEstablecimiento,$TipoSolicitud);
@@ -162,7 +176,6 @@
 	    $SolicitudLab->BorrarSolicitudUrgente($IdHistorialClinico,$IdEstablecimiento);  
 	}*/
             
-   break;
 
 break;  
 }  
