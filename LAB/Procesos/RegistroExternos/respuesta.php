@@ -14,11 +14,7 @@ break;
 
 case 2:
     $Busqueda=$_GET['q'];
-   /* $querySelect="select IdEstablecimiento,Nombre
-                    from mnt_establecimiento
-                    where Nombre like '%$Busqueda%'
-                    and IdEstablecimiento <> ".$_SESSION["Lugar"];*/
-    $querySelect="select *
+    $querySelect="select id, replace(nombre, '\"', '') as nombre
                 from ctl_establecimiento
                 where nombre ilike '%$Busqueda%'
                 and id != ".$_SESSION["Lugar"];
@@ -51,18 +47,6 @@ or (concat_ws(' ',primer_apellido,segundo_apellido, apellido_casada,primer_nombr
 and id_establecimiento_origen=$IdEstablecimientoExterno
 and numero ilike '%$numexpediente%'
 order by 3";
-    /*
-   //  * (((array[upper(primer_nombre), upper(segundo_nombre), upper(primer_apellido),upper(segundo_apellido)])::varchar[] && (regexp_split_to_array(upper('".$Busqueda."'), E'\\\s+'):: varchar[])) = true)
-     *'
-    select mnte.IdNumeroExp, concat_ws(' ',mntd.PrimerApellido,mntd.SegundoApellido,mntd.PrimerNombre,mntd.SegundoNombre, mntd.TercerNombre)as Paciente, NombreMadre
-    from mnt_expediente mnte
-    inner join mnt_datospaciente mntd on mntd.IdPaciente=mnte.IdPaciente
-    where (concat_ws(' ',mntd.PrimerApellido,mntd.SegundoApellido,mntd.PrimerNombre,mntd.SegundoNombre, mntd.TercerNombre) like '%$Busqueda%'
-    or IdNumeroExp like '%$Busqueda%')
-    and mnte.IdNumeroExp not like '%*%' and mnte.IdNumeroExp not like '%-%' 
-     */
-
-    //echo $querySelect;
             $resp=pg_query($querySelect);
     if($row=pg_fetch_array($resp)){
     do{
@@ -127,13 +111,6 @@ order by 3";
     break;
 
 case 4:
-    /*
-     * &IdEstablecimientoExterno="+IdEstablecimientoExterno+"&Establecimiento="+IdEstablecimiento+
-     * "&PrimerApellido="+PrimerApellido+"&PrimerNombre="+PrimerNombre+"&FechaNacimiento="+FechaNacimiento+
-     * "&Sexo_Name="+Sexo_Name+"&NombreMadre="+NombreMadre+"&IdNumeroExpRef="+IdNumeroExpRef
-     */
-    //echo "estas en el case 4";
-    // CAPTURA DE LOS DATOS 
     $IdEstablecimientoExterno=$_GET['IdEstablecimientoExterno'];
     $LugardeAtencion=$_GET['LugardeAtencion'];
     $PrimerApellido=(empty($_GET['PrimerApellido'])) ? 'NULL' : "'" . pg_escape_string($_GET['PrimerApellido']) . "'";
@@ -164,10 +141,6 @@ case 4:
     $IdNumeroExp=$_GET['IdNumeroExp'];
     $idpacienteref=$_GET['idpacienteref'];
     $iduser=$_SESSION["Correlativo"]; //usuario logeado de mnt_usuario
- //   (empty($_POST['v_numexpediente'])) ? 'NULL' : "'" . pg_escape_string($_POST['v_numexpediente']) . "'";
-    
-    // SI ES PACIENTE EXTERNO SE REGISTRAR AL PACIENTE EN LAS mnt_datospaciente y en mnt_expediente
-    // CON EL IDUSUARIO = 100 YA QUE NO SE CREO EN ESDOMED SINO EN OTRO SERVICO EN ESTE CASO LABORATORIO.
     if($IdNumeroExp == 0)
     {
         $nextseqpr="SELECT nextval('mnt_paciente_referido_id_seq') as idpacreferido;";
@@ -216,16 +189,6 @@ values ($seqexp,$IdNumeroExpRef, $seqpr, $LugardeAtencion,$IdEstablecimientoExte
         $res=  pg_query($updaexpref);
     }
 
-        
-
- // SI EL PACIENTE ESTA REGISTRADO SOLO AGREGAR LA CITA EN cit_citasxserviciodeapoyo
-       /* $nextseqct="SELECT nextval('cit_citas_serviciodeapoyo_idcitaservapoyo_seq') as idcitservapoyo;";
-        $queryct= pg_query($nextseqct);
-        $fetchseqct= @pg_fetch_array($queryct);
-        $seqct= $fetchseqct['idcitservapoyo'];
-         $InsertCit = "INSERT INTO cit_citas_serviciodeapoyo (id, fecha,  idusuarioreg, fechahorareg) VALUES ($seqct,current_date,$iduser,NOW())";
-                   //echo 'inse: '.$InsertCit.'<br/>';
-                    $queryIns = pg_query($InsertCit);*/
     $nextid="select nextval('cit_citas_serviciodeapoyo_idcitaservapoyo_seq')"; 
     $sql=  pg_query($nextid);
     $nextseq=  pg_fetch_array($sql);
@@ -234,14 +197,6 @@ values ($seqexp,$IdNumeroExpRef, $seqpr, $LugardeAtencion,$IdEstablecimientoExte
                                   VALUES ($idnext,current_date,$iduser,NOW())";
                    //echo 'inse: '.$InsertCit.'<br/>';
                     $queryIns = pg_query($InsertCit);
-        
-//        $InsertCit = "INSERT INTO cit_citasxserviciodeapoyo
-//            (Fecha, IdUsuarioReg, FechaHoraReg, IdNumeroExp, IdEstablecimiento, IdNumeroExpExterno, IdEstablecimientoExterno)
-//        VALUES 
-//            (CURDATE(),$iduser,NOW(), '$IdNumeroExp',$LugardeAtencion, '$IdNumeroExpRef', $IdEstablecimientoExterno)";
-        //$queryIns = 
-     //   mysql_query($InsertCit);
-    
         echo $IdNumeroExp.'~'.$idnext.'~'.$_GET['IdNumeroExpRef'];
 
 break;

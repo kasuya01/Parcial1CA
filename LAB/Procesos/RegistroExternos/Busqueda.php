@@ -5,8 +5,6 @@ include_once("../../../Conexion/ConexionBD.php");
 //$IdEstablecimiento=$_SESSION['IdEstablecimiento'];
 $LugardeAtencion=$_SESSION['Lugar'];
 $nec=$_GET['nec'];
-//echo $nec;
-//echo "lugar de atencion" . $LugardeAtencion;
 ?>
 <html>
 <head>
@@ -17,8 +15,6 @@ $nec=$_GET['nec'];
 	<script type="text/javascript" src="scripts/prototype.js"></script>
 	<script type="text/javascript" src="scripts/autocomplete.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles/autocomplete.css" />
-<!--  
-<link rel="stylesheet" type="text/css" href="../../Webstyle/Themes/Cobalt/Style.css">-->
 </head>
 
 <body class="MailboxPageBody">
