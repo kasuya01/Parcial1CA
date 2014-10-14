@@ -43,7 +43,7 @@ function CalculoDias($Conectar,$fechanac){
      //$con = new ConexionBD;
    if($Conectar==true){ 
        	$query="SELECT DATEDIFF(NOW( ),'$fechanac')";
-	 $result = @mysql_query($query);
+	 $result = @pg_query($query);
      if (!$result)
        return false;
      else
@@ -56,7 +56,7 @@ function CalculoDias($Conectar,$fechanac){
      if($Conectar==true){  
        $query="SELECT * FROM mnt_rangoedad WHERE $dias BETWEEN edadini AND edadfin
             AND idedad <>4";
-        $result = @mysql_query($query);
+        $result = @pg_query($query);
          if (!$result)
             return false;
          else
@@ -71,7 +71,7 @@ function CalculoDias($Conectar,$fechanac){
 	function RecuperarNombre($Conectar,$IdNumeroExp,$IdSolicitudEstudio) { 
 		if($Conectar==true){
 							
-			$SQL = "SELECT CONCAT_WS(' ', PrimerApellido, SegundoApellido, PrimerNombre, SegundoNombre, TercerNombre) AS Nombre,
+			$SQL = /*"SELECT CONCAT_WS(' ', PrimerApellido, SegundoApellido, PrimerNombre, SegundoNombre, TercerNombre) AS Nombre,
                                 NombreSubServicio AS Origen,
                                 NombreServicio AS Procedencia, mnt_empleados.NombreEmpleado AS Medico, mnt_establecimiento.Nombre AS Establecimiento,
                                 Sexo,FechaNacimiento
@@ -83,11 +83,101 @@ function CalculoDias($Conectar,$fechanac){
                                 INNER JOIN mnt_subservicio ON mnt_subservicio.IdSubServicio= sec_historial_clinico.IdSubServicio
                                 INNER JOIN mnt_servicio  ON mnt_servicio.IdServicio= mnt_subservicio.IdServicio
                                 INNER JOIN mnt_establecimiento ON sec_historial_clinico.IdEstablecimiento=mnt_establecimiento.IdEstablecimiento
-                                WHERE mnt_expediente.IdNumeroExp='$IdNumeroExp' AND IdSolicitudEstudio='$IdSolicitudEstudio'";
+                                WHERE mnt_expediente.IdNumeroExp='$IdNumeroExp' AND IdSolicitudEstudio='$IdSolicitudEstudio'";*/
+                                
+                                
+                                "WITH tbl_servicio AS (
+                        SELECT t02.id,
+                            CASE WHEN t02.nombre_ambiente IS NOT NULL THEN  	
+                                CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
+                                     ELSE t02.nombre_ambiente
+                                END
+                            ELSE
+                                CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'--> ' || t01.nombre
+                                     WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
+                                END
+                            END AS servicio 
+                        FROM  ctl_atencion 				    t01 
+                        INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
+                        INNER JOIN mnt_area_mod_estab 	   	    t03 ON (t03.id = t02.id_area_mod_estab)
+                        LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
+                        LEFT  JOIN mnt_servicio_externo 		    t05 ON (t05.id = t04.id_servicio_externo)
+                        WHERE id_area_atencion = 3 and t02.id_establecimiento = 49
+                        ORDER BY 2)
+                    select 
+                            mem.nombreempleado as medico,
+                            (SELECT nombre FROM ctl_establecimiento WHERE id = sse.id_establecimiento_externo) AS nombre_establecimiento,
+                            case WHEN id_expediente_referido is  null then 
+                                                              ( mex.numero)
+                                                               else (mer.numero) end as numero,
+                            case WHEN id_expediente_referido is  null then 
+                                                              (csex.nombre)
+                                                               else (csexpar.nombre) end as sexo,                                  
+                            case WHEN id_expediente_referido is  null  THEN 
+                                    CONCAT_WS(' ', pa.primer_nombre, NULL,pa.segundo_nombre,NULL,pa.primer_apellido,NULL,pa.segundo_apellido)
+                                    else  
+                                      CONCAT_WS(' ', par.primer_nombre, NULL,par.segundo_nombre,NULL,par.primer_apellido,NULL,par.segundo_apellido)end as paciente,
+                           tser.servicio,
+                            case WHEN id_expediente_referido is  null then 
+                                REPLACE(
+                                    REPLACE(
+                                        REPLACE(
+                                            REPLACE(
+                                                REPLACE(
+                                                    REPLACE(
+                                                        AGE(pa.fecha_nacimiento::timestamp)::text,
+                                                    'years', 'años'),
+                                                'year', 'año'),
+                                            'mons', 'meses'),
+                                        'mon', 'mes'),
+                                    'days', 'días'),
+                                 'day', 'día') 
+                            else 
+                                REPLACE(
+                                    REPLACE(
+                                        REPLACE(
+                                            REPLACE(
+                                                REPLACE(
+                                                    REPLACE(
+                                                        AGE(par.fecha_nacimiento::timestamp)::text,
+                                                    'years', 'años'),
+                                                'year', 'año'),
+                                            'mons', 'meses'),
+                                        'mon', 'mes'),
+                                    'days', 'días'),
+                                 'day', 'día') end AS edad,
+                            t01.nombre as procedencia
+                    from ctl_area_servicio_diagnostico casd 
+                    join mnt_area_examen_establecimiento mnt4     on (mnt4.id_area_servicio_diagnostico=casd.id )
+                    join lab_conf_examen_estab lcee 	      	  on (mnt4.id=lcee.idexamen) 
+                    INNER JOIN sec_detallesolicitudestudios sdses ON (sdses.id_conf_examen_estab=lcee.id)
+                    INNER JOIN sec_solicitudestudios sse          ON (sdses.idsolicitudestudio=sse.id) 
+                    INNER JOIN lab_recepcionmuestra lrc           ON (sse.id= lrc.idsolicitudestudio )
+                    INNER JOIN sec_historial_clinico shc 	  ON (sse.id_historial_clinico=shc.id )
+                    inner join mnt_empleado mem 		  on (shc.id_empleado=mem.id) 
+                    inner join mnt_expediente mex 		  on (shc.id_numero_expediente=mex.id) 
+                    inner join mnt_paciente pa 			  on (mex.id_paciente=pa.id) 
+                    inner join ctl_sexo csex 			  on (csex.id=pa.id_sexo) 
+                    inner join mnt_aten_area_mod_estab mnt3 	  on (shc.idsubservicio=mnt3.id) 
+                    inner join mnt_area_mod_estab m1 		  on (mnt3.id_area_mod_estab=m1.id) 
+                    inner join ctl_atencion cat 		  on (mnt3.id_atencion=cat.id)
+                    inner join tbl_servicio tser                  on (tser.id = mnt3.id AND tser.servicio IS NOT NULL)
+                    inner join ctl_establecimiento ce 		  on (shc.idestablecimiento=ce.id ) 
+                    inner join ctl_area_atencion t01 		  on ( m1.id_area_atencion=t01.id) 
+                    inner join lab_recepcionmuestra lrm 	  on (sse.id=lrm.idsolicitudestudio) 
+                    left join sec_diagnosticospaciente sdp 	  on (shc.id=sdp.idhistorialclinico) 
+                    left join mnt_cie10 mc 			  on (mc.id=sdp.iddiagnostico1) 
+                    left join sec_examenfisico sef 		  on (sef.idhistorialclinico=shc.id) 
+                    LEFT  JOIN mnt_dato_referencia  mdr           on (sse.id_dato_referencia=mdr.id)
+                    LEFT JOIN mnt_expediente_referido mer         on (mdr.id_expediente_referido=mer.id)
+                    LEFT JOIN mnt_paciente_referido par   	  ON (mer.id_referido=par.id) 
+                    left join ctl_sexo csexpar 			  on (csexpar.id=par.id_sexo)  
+                    where  case WHEN id_expediente_referido is null then (mex.numero='$IdNumeroExp') 
+                    ELSE (mer.numero='$IdNumeroExp') END  and sse.id=$IdSolicitudEstudio";
                         
                        // echo $SQL;
 			
-                                $Resultado = mysql_query($SQL) or die('La consulta fall&oacute;: ' . mysql_error());
+                                $Resultado = pg_query($SQL) or die('La consulta fall&oacute;: ' . pg_error());
 			
                                 return $Resultado;		
 		}
@@ -134,7 +224,7 @@ class Laboratorio{
 	 
 		if($Conectar==true){
 			/**** Consultar General***/
-			$SQL = "select  DATE_FORMAT(FechaSolicitud,'%e/ %m / %Y') as FechaSolicitud,
+			$SQL = /*"select  DATE_FORMAT(FechaSolicitud,'%e/ %m / %Y') as FechaSolicitud,
 							case 1 when Estado='D' then 'No Procesada' 
 					               when Estado='P' then 'No Completada'
 								   when Estado='R' then 'No Procesada(Solicitud Recibida)' 
@@ -149,13 +239,66 @@ class Laboratorio{
 			   				   ON sec_historial_clinico.IdSubEspecialidad= mnt_subespecialidad.IdSubEspecialidad
 					WHERE sec_historial_clinico.IdNumeroExp='$IdNumeroExp' AND 
 						  sec_solicitudestudios.IdServicio='DCOLAB'
-					ORDER BY Fecha desc LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";		
+					ORDER BY Fecha desc LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";	*/
+                                
+                                "select 
+                            mem.nombreempleado as medico,
+                            (SELECT nombre FROM ctl_establecimiento WHERE id = sse.id_establecimiento_externo) AS nombre_establecimiento,
+                            case WHEN id_expediente_referido is  null then 
+                                                              ( mex.numero)
+                                                               else (mer.numero) end as numero,
+                            case WHEN id_expediente_referido is  null then 
+                                                              (csex.nombre)
+                                                               else (csexpar.nombre) end as sexo,                                  
+                            case WHEN id_expediente_referido is  null  THEN 
+                                    CONCAT_WS(' ', pa.primer_nombre, NULL,pa.segundo_nombre,NULL,pa.primer_apellido,NULL,pa.segundo_apellido)
+                                    else  
+                                      CONCAT_WS(' ', par.primer_nombre, NULL,par.segundo_nombre,NULL,par.primer_apellido,NULL,par.segundo_apellido)end as paciente,
+                             t01.nombre as procedencia,
+                             CASE sse.estado 
+				 WHEN 1  THEN 'Diditada' 
+                                 WHEN 2  THEN 'No Procesada(Solicitud Recibida)' 
+                                 WHEN 3  THEN 'No Completada'
+                                 WHEN 4  THEN 'Completa'
+                                 WHEN 5  THEN 'Procesar Muestra'
+                                 WHEN 6  THEN 'Muestra Rechazada'
+                                 WHEN 7  THEN 'Resultado Completo'
+                            END AS estado,  
+				TO_CHAR(lrc.fecharecepcion, 'DD/MM/YYYY') as fecharecepcion,
+				lcee.codigo_examen
+                    from ctl_area_servicio_diagnostico casd 
+                    join mnt_area_examen_establecimiento mnt4     on (mnt4.id_area_servicio_diagnostico=casd.id )
+                    join lab_conf_examen_estab lcee 	      	  on (mnt4.id=lcee.idexamen) 
+                    INNER JOIN sec_detallesolicitudestudios sdses ON (sdses.id_conf_examen_estab=lcee.id)
+                    INNER JOIN sec_solicitudestudios sse          ON (sdses.idsolicitudestudio=sse.id) 
+                    INNER JOIN lab_recepcionmuestra lrc           ON (sse.id= lrc.idsolicitudestudio )
+                    INNER JOIN sec_historial_clinico shc 	  ON (sse.id_historial_clinico=shc.id )
+                    inner join mnt_empleado mem 		  on (shc.id_empleado=mem.id) 
+                    inner join mnt_expediente mex 		  on (shc.id_numero_expediente=mex.id) 
+                    inner join mnt_paciente pa 			  on (mex.id_paciente=pa.id) 
+                    inner join ctl_sexo csex 			  on (csex.id=pa.id_sexo) 
+                    inner join mnt_aten_area_mod_estab mnt3 	  on (shc.idsubservicio=mnt3.id) 
+                    inner join mnt_area_mod_estab m1 		  on (mnt3.id_area_mod_estab=m1.id) 
+                    inner join ctl_atencion cat 		  on (mnt3.id_atencion=cat.id)
+                   -- inner join tbl_servicio tser                  on (tser.id = mnt3.id AND tser.servicio IS NOT NULL)
+                    inner join ctl_establecimiento ce 		  on (shc.idestablecimiento=ce.id ) 
+                    inner join ctl_area_atencion t01 		  on ( m1.id_area_atencion=t01.id) 
+                    inner join lab_recepcionmuestra lrm 	  on (sse.id=lrm.idsolicitudestudio) 
+                    left join sec_diagnosticospaciente sdp 	  on (shc.id=sdp.idhistorialclinico) 
+                    left join mnt_cie10 mc 			  on (mc.id=sdp.iddiagnostico1) 
+                    left join sec_examenfisico sef 		  on (sef.idhistorialclinico=shc.id) 
+                    LEFT  JOIN mnt_dato_referencia  mdr           on (sse.id_dato_referencia=mdr.id)
+                    LEFT JOIN mnt_expediente_referido mer         on (mdr.id_expediente_referido=mer.id)
+                    LEFT JOIN mnt_paciente_referido par   	  ON (mer.id_referido=par.id) 
+                    left join ctl_sexo csexpar 			  on (csexpar.id=par.id_sexo)  
+                    where  case WHEN id_expediente_referido is null then (mex.numero='$IdNumeroExp') 
+                    ELSE (mer.numero='$IdNumeroExp') END  ORDER BY fecharecepcion desc LIMIT $RegistrosAMostrar offset  $RegistrosAEmpezar";
 			
 			
 			
-			$Ejecutar = mysql_query($SQL) or die('La consulta fall&oacute;: ' . mysql_error());
+			$Ejecutar = pg_query($SQL) or die('La consulta fall&oacute;: ' . pg_error());
 	
-			 $SQL2 = "select  DATE_FORMAT(FechaSolicitud,'%e/ %m / %Y') as FechaSolicitud,
+			 $SQL2 = /*"select  DATE_FORMAT(FechaSolicitud,'%e/ %m / %Y') as FechaSolicitud,
 							case 1 when Estado='D' then 'No Procesada' 
 					               when Estado='P' then 'No Completada'
 								   when Estado='R' then 'No Procesada(Solicitud Recibida)' 
@@ -168,8 +311,61 @@ class Laboratorio{
   							   INNER JOIN mnt_subespecialidad
 			   				   ON sec_historial_clinico.IdSubEspecialidad= mnt_subespecialidad.IdSubEspecialidad
 					WHERE sec_historial_clinico.IdNumeroExp='$IdNumeroExp' AND 
-						  sec_solicitudestudios.IdServicio='DCOLAB' ";	
-		   	$Ejecutar2 = mysql_query($SQL2);
+						  sec_solicitudestudios.IdServicio='DCOLAB' ";	*/
+                                 "select 
+                            mem.nombreempleado as medico,
+                            (SELECT nombre FROM ctl_establecimiento WHERE id = sse.id_establecimiento_externo) AS nombre_establecimiento,
+                            case WHEN id_expediente_referido is  null then 
+                                                              ( mex.numero)
+                                                               else (mer.numero) end as numero,
+                            case WHEN id_expediente_referido is  null then 
+                                                              (csex.nombre)
+                                                               else (csexpar.nombre) end as sexo,                                  
+                            case WHEN id_expediente_referido is  null  THEN 
+                                    CONCAT_WS(' ', pa.primer_nombre, NULL,pa.segundo_nombre,NULL,pa.primer_apellido,NULL,pa.segundo_apellido)
+                                    else  
+                                      CONCAT_WS(' ', par.primer_nombre, NULL,par.segundo_nombre,NULL,par.primer_apellido,NULL,par.segundo_apellido)end as paciente,
+                             t01.nombre as procedencia,
+                             CASE sse.estado 
+				 WHEN 1  THEN 'Diditada' 
+                                 WHEN 2  THEN 'No Procesada(Solicitud Recibida)' 
+                                 WHEN 3  THEN 'No Completada'
+                                 WHEN 4  THEN 'Completa'
+                                 WHEN 5  THEN 'Procesar Muestra'
+                                 WHEN 6  THEN 'Muestra Rechazada'
+                                 WHEN 7  THEN 'Resultado Completo'
+                            END AS estado,  
+				TO_CHAR(lrc.fecharecepcion, 'DD/MM/YYYY') as fecharecepcion,
+				lcee.codigo_examen
+                    from ctl_area_servicio_diagnostico casd 
+                    join mnt_area_examen_establecimiento mnt4     on (mnt4.id_area_servicio_diagnostico=casd.id )
+                    join lab_conf_examen_estab lcee 	      	  on (mnt4.id=lcee.idexamen) 
+                    INNER JOIN sec_detallesolicitudestudios sdses ON (sdses.id_conf_examen_estab=lcee.id)
+                    INNER JOIN sec_solicitudestudios sse          ON (sdses.idsolicitudestudio=sse.id) 
+                    INNER JOIN lab_recepcionmuestra lrc           ON (sse.id= lrc.idsolicitudestudio )
+                    INNER JOIN sec_historial_clinico shc 	  ON (sse.id_historial_clinico=shc.id )
+                    inner join mnt_empleado mem 		  on (shc.id_empleado=mem.id) 
+                    inner join mnt_expediente mex 		  on (shc.id_numero_expediente=mex.id) 
+                    inner join mnt_paciente pa 			  on (mex.id_paciente=pa.id) 
+                    inner join ctl_sexo csex 			  on (csex.id=pa.id_sexo) 
+                    inner join mnt_aten_area_mod_estab mnt3 	  on (shc.idsubservicio=mnt3.id) 
+                    inner join mnt_area_mod_estab m1 		  on (mnt3.id_area_mod_estab=m1.id) 
+                    inner join ctl_atencion cat 		  on (mnt3.id_atencion=cat.id)
+                   -- inner join tbl_servicio tser                  on (tser.id = mnt3.id AND tser.servicio IS NOT NULL)
+                    inner join ctl_establecimiento ce 		  on (shc.idestablecimiento=ce.id ) 
+                    inner join ctl_area_atencion t01 		  on ( m1.id_area_atencion=t01.id) 
+                    inner join lab_recepcionmuestra lrm 	  on (sse.id=lrm.idsolicitudestudio) 
+                    left join sec_diagnosticospaciente sdp 	  on (shc.id=sdp.idhistorialclinico) 
+                    left join mnt_cie10 mc 			  on (mc.id=sdp.iddiagnostico1) 
+                    left join sec_examenfisico sef 		  on (sef.idhistorialclinico=shc.id) 
+                    LEFT  JOIN mnt_dato_referencia  mdr           on (sse.id_dato_referencia=mdr.id)
+                    LEFT JOIN mnt_expediente_referido mer         on (mdr.id_expediente_referido=mer.id)
+                    LEFT JOIN mnt_paciente_referido par   	  ON (mer.id_referido=par.id) 
+                    left join ctl_sexo csexpar 			  on (csexpar.id=par.id_sexo)  
+                    where  case WHEN id_expediente_referido is null then (mex.numero='$IdNumeroExp') 
+                    ELSE (mer.numero='$IdNumeroExp') END  ORDER BY fecharecepcion desc LIMIT $RegistrosAMostrar offset  $RegistrosAEmpezar";
+		
+		   	$Ejecutar2 = pg_query($SQL2);
 			$NroRegistros=mysql_num_rows($Ejecutar2);			
 	 		
 			
@@ -184,7 +380,7 @@ class Laboratorio{
 						      <td class='StormyWeatherFieldCaptionTD'  nowrap><strong>Estado Solicitud&nbsp;</strong></td>
   		 			      </tr>";
 						  
-			while ($Resultado = mysql_fetch_array($Ejecutar)){
+			while ($Resultado = pg_fetch_array($Ejecutar)){
 			echo "<tr>
 			      <td class='StormyWeatherFieldCaptionTD'>
   			     <a  href='javascript:MostrarDetalleSolicitud(\"".$Resultado[5]."\", \"".$Resultado[0]."\") '>".$Resultado[0]."</td>
@@ -194,7 +390,7 @@ class Laboratorio{
 			    </tr>";
 
 			  } // Fin While Scar Datos
-			  mysql_free_result($Ejecutar); // Liberar memoria usada por consulta.
+			  pg_free_result($Ejecutar); // Liberar memoria usada por consulta.
 
 		} //Fin If Conectar
 			echo"
@@ -236,7 +432,7 @@ class Laboratorio{
 						group by lab_examenes.IdArea order by lab_examenes.IdArea";
 											  
 
-			$Ejecutar = mysql_query($SQL) or die('La consulta Fall&oacute;: ' . mysql_error());
+			$Ejecutar = pg_query($SQL) or die('La consulta Fall&oacute;: ' . pg_error());
 
 			echo "<div class='outer'> 
 					  <div class='inner' >        
@@ -249,7 +445,7 @@ class Laboratorio{
 			      </tr>";
 			$Count=0;
 			
-			while ($Resultado = mysql_fetch_array($Ejecutar)){
+			while ($Resultado = pg_fetch_array($Ejecutar)){
  	  		   echo "<tr>
 			   		   <td class='SaladFieldCaptionTD'>".htmlentities ($Resultado[1])."</td>
 			           <td class='SaladFieldCaptionTD' align='center'>".$Resultado[2]."</td>
@@ -268,7 +464,7 @@ class Laboratorio{
 
 			  } // Fin While Sacar Datos
 			  
-			  mysql_free_result($Ejecutar); // Liberar memoria usada por consulta.
+			  pg_free_result($Ejecutar); // Liberar memoria usada por consulta.
 			  if($Count==0)
 				echo "<tr><td class='SaladFieldCaptionTD' colspan='4'>&nbsp; </td></tr>"."
 				 	 </tr><td class='SaladColumnTD' colspan='4'>No se Encontro Ningun Registro Procesado...!</td></tr></table>";
@@ -296,7 +492,7 @@ class Laboratorio{
 	function ResultadosExamen($IdSolicitudEstudio,$IdArea,$Sexo,$idedad,$Conectar,$IdEstab,$lugar) { 
                                                 
 	// Esta Consulta muestra todos los examenes que tienen un resultado
-	$SQL = "SELECT lab_resultados.IdExamen,lab_resultados.IdRecepcionMuestra, lab_examenesxestablecimiento.IdPlantilla,
+	$SQL = /*"SELECT lab_resultados.IdExamen,lab_resultados.IdRecepcionMuestra, lab_examenesxestablecimiento.IdPlantilla,
                 lab_resultados.Resultado,Lectura,lab_resultados.Interpretacion,lab_resultados.Observacion,NombreExamen,
 		lab_areas.NombreArea,lab_resultados.IdRecepcionMuestra,Unidades,RangoInicio,RangoFin, 	
 		lab_examenesxestablecimiento.IdPlantilla,lab_estadosdetallesolicitud.Descripcion,lab_resultados.Interpretacion,
@@ -316,7 +512,32 @@ class Laboratorio{
                 AND IF(lab_datosfijosresultado.FechaFin='0000-00-00',CURDATE(),lab_datosfijosresultado.FechaFin) 
                 AND lab_datosfijosresultado.IdEstablecimiento=$lugar 
                 AND lab_resultados.IdSolicitudEstudio='$IdSolicitudEstudio' 
-                AND lab_examenes.IdArea='$IdArea'";
+                AND lab_examenes.IdArea='$IdArea'";*/
+                
+                "SELECT	lr.idexamen,			  
+lr.idrecepcionmuestra,			
+lr.resultado,lectura,			
+lr.interpretacion,			
+lr.observacion,				
+idrecepcionmuestra			
+FROM lab_resultados lr
+INNER JOIN ctl_examen_servicio_diagnostico cesd ON lr.idexamen=cesd.id	
+INNER JOIN lab_conf_examen_estab lcee 		ON cesd.id=lcee.idexamen		
+INNER JOIN lab_datosfijosresultado 	ldf	ON ldf.id_conf_examen_estab=lcee.id
+INNER JOIN mnt_area_examen_establecimiento mnt4 ON (mnt4.id=lcee.idexamen) 
+INNER JOIN ctl_area_servicio_diagnostico casd   ON (mnt4.id_area_servicio_diagnostico=casd.id) 
+INNER JOIN sec_detallesolicitudestudios sdse on sdse.id=lr.iddetallesolicitud
+WHERE (ldf.idsexo=$Sexo OR ldf.idsexo=3) 
+AND (ldf.idedad=4 OR ldf.idedad=$idedad) 
+AND DATE_FORMAT(lr.FechaHoraReg, '%Y/%m/%d') 
+BETWEEN lab_datosfijosresultado.FechaIni 
+AND IF(ldf.fechafin='0000-00-00',CURDATE(),ldf.fechafin) 
+AND ldf.idestablecimiento=$lugar 
+AND lr.idsolicitudestudio=$IdSolicitudEstudio 
+AND casd.id=$IdArea";
+                
+                
+                
                    // echo $SQL;
 	// Esta Consulta muestra todos los examenes que no fueron Procesados
 	$SQL2="SELECT lab_examenes.IdExamen,NombreExamen,Descripcion,sec_detallesolicitudestudios.Observacion
@@ -328,12 +549,12 @@ class Laboratorio{
 			Order By lab_examenes.IdExamen";
 		// Si la Conexion es Buena, entonces ejecutamos la consulta (17-1 Parametros de la Consulta)
 		if($Conectar==true){							  
-			$Aceptados = mysql_query($SQL) or die('La consulta Fall&oacute;: ' . mysql_error());
-			$Rechazados = mysql_query($SQL2) or die('La consulta Fall&oacute;: ' . mysql_error());
+			$Aceptados = pg_query($SQL) or die('La consulta Fall&oacute;: ' . pg_error());
+			$Rechazados = pg_query($SQL2) or die('La consulta Fall&oacute;: ' . pg_error());
 			$Count=0;
 
 		 //	 Impresion de resultados segun la plantilla
-			while ($Resultado = mysql_fetch_array($Aceptados)){
+			while ($Resultado = pg_fetch_array($Aceptados)){
 	
 				if($Resultado[2]=='A'){
 					$ResultadoPlantillaA[]=$Resultado;					
@@ -386,7 +607,7 @@ class Laboratorio{
 						  <td class='SaladColumnTD'  colspan='1' nowrap><font><strong>Causa Rechazo</strong></font> </td>
 					  </tr>";		
 					  
-			while ($ResultadosRechazados = mysql_fetch_array($Rechazados)){
+			while ($ResultadosRechazados = pg_fetch_array($Rechazados)){
 				echo " 
 						   <tr>
 							   <td class='SaladFieldCaptionTD'> ".$ResultadosRechazados['IdExamen']."</td>
@@ -450,8 +671,8 @@ class Laboratorio{
 
 			$Count=0;
 			
-			  mysql_free_result($Aceptados); //  Liberar memoria usada por consulta.
-  			  mysql_free_result($Rechazados); // Liberar memoria usada por consulta.
+			  pg_free_result($Aceptados); //  Liberar memoria usada por consulta.
+  			  pg_free_result($Rechazados); // Liberar memoria usada por consulta.
 		} //Fin If Conectar
 
 
@@ -723,8 +944,8 @@ class Laboratorio{
                         
 		// Verificamos las funciones y ejecutamos	
 		if($Conectar==true){						  
-		   $ValidarElementos = mysql_query($SQLElementos) or die('La consulta fall&oacute;: ' . mysql_error());		
-	 	   $TieneElementos = mysql_fetch_array($ValidarElementos);
+		   $ValidarElementos = pg_query($SQLElementos) or die('La consulta fall&oacute;: ' . pg_error());		
+	 	   $TieneElementos = pg_fetch_array($ValidarElementos);
 	   
 		
 		
@@ -733,10 +954,10 @@ class Laboratorio{
 	/******************************************************************************************************/
 			
 		if($TieneElementos['SubElemento']=='S'){				
-			$DetalleResultado = mysql_query($SQL) or die('La consulta fall&oacute;: ' . mysql_error());
-			$DetalleResultado2 = mysql_query($SQL) or die('La consulta fall&oacute;: ' . mysql_error());//paralelo
-			$ConsultaElementos= mysql_query($SQL2) or die('La consulta fall&oacute;: ' . mysql_error());
-			while($VectorElementos = mysql_fetch_array($ConsultaElementos)){
+			$DetalleResultado = pg_query($SQL) or die('La consulta fall&oacute;: ' . pg_error());
+			$DetalleResultado2 = pg_query($SQL) or die('La consulta fall&oacute;: ' . pg_error());//paralelo
+			$ConsultaElementos= pg_query($SQL2) or die('La consulta fall&oacute;: ' . pg_error());
+			while($VectorElementos = pg_fetch_array($ConsultaElementos)){
 						$Elementos[]=$VectorElementos[1];
 						$NombreExamen[]=$VectorElementos[2];
 			}	
@@ -754,9 +975,9 @@ class Laboratorio{
 				
 				$Element='';
 				$i=0;
-				$Resultado= mysql_fetch_array($DetalleResultado2);//inicio
-				while($Resultados= mysql_fetch_array($DetalleResultado)){
-					$Resultado= mysql_fetch_array($DetalleResultado2);//posicion+1
+				$Resultado= pg_fetch_array($DetalleResultado2);//inicio
+				while($Resultados= pg_fetch_array($DetalleResultado)){
+					$Resultado= pg_fetch_array($DetalleResultado2);//posicion+1
                                           $gion='-';
                                      //if(empty($Resultados['RangoInicio'])){$Resultados['RangoInicio']='';$gion='';}
                                      //if(empty($Resultados['RangoFin'])){$Resultados['RangoFin']='';$gion='';}
@@ -828,25 +1049,25 @@ class Laboratorio{
 					ON lab_examenes.IdExamen=lab_resultados.IdExamen
 				WHERE sec_detallesolicitudestudios.IdDetalleSolicitud=$IdDetalleSolicitud";			
 				
-		$RespuestaNombre=mysql_query($SQLNombre) or die('La consulta fall&oacute;: ' . mysql_error());
-		$Elementos= mysql_query($SQL1) or die('La consulta fall&oacute;: ' . mysql_error());
-		$NombreExamen=mysql_fetch_array($RespuestaNombre);
+		$RespuestaNombre=pg_query($SQLNombre) or die('La consulta fall&oacute;: ' . pg_error());
+		$Elementos= pg_query($SQL1) or die('La consulta fall&oacute;: ' . pg_error());
+		$NombreExamen=pg_fetch_array($RespuestaNombre);
 			$tabla='<table with="100%" align="center">';		
 					echo "<div class='outer'> 
 						  <div class='inner' >";  
 				echo "
 						<br><br> <h3 align='center'>Resultados del Examen ----> ".htmlentities($NombreExamen[0])."<-----</h3>";
 			
-	while ($row=mysql_fetch_array($Elementos)){
+	while ($row=pg_fetch_array($Elementos)){
 				$IdElemento=$row["IdElemento"];
 				$Elemento=$row["Elemento"];
 				$IdResultado=$row["IdResultado"];
 				$ObservElem=$row["ObservElem"];
 				
 			$SQL2="select * from lab_detalleresultado where IdElemento=".$IdElemento." and IdResultado=".$IdResultado;
-				$resp=mysql_query($SQL2) or die('La consulta fall&oacute;: ' . mysql_error());
+				$resp=pg_query($SQL2) or die('La consulta fall&oacute;: ' . pg_error());
 				
-				if($RespElemento=mysql_fetch_array($resp)){
+				if($RespElemento=pg_fetch_array($resp)){
 				/*Si la respuesta esta en el Elemento*/
 					$Control=$RespElemento["Resultado"];
 					$Resultado=$RespElemento["Observacion"];
@@ -873,13 +1094,13 @@ class Laboratorio{
 					on lab_elementos.IdElemento=lab_subelementos.IdElemento
 					where lab_elementos.IdElemento=".$IdElemento." and lab_detalleresultado.IdResultado=".$IdResultado;
 					
-					$RespSubElemento=mysql_query($SQL3) or die('La consulta fall&oacute;: ' . mysql_error());
+					$RespSubElemento=pg_query($SQL3) or die('La consulta fall&oacute;: ' . pg_error());
 				
 				//$tabla.='<tr><td colspan="4">Elemento</td></tr>';
 				$tabla.='<tr class="CobaltFieldCaptionTD"><td colspan="3">'.htmlentities($Elemento).'</td></tr>';
 				$tabla.='<tr><td >&nbsp;</td><td ><strong>Resultado</strong></td>
 							<td><strong>Control</strong></td></tr>';
-					while($ResulSubElemento=mysql_fetch_array($RespSubElemento)){
+					while($ResulSubElemento=pg_fetch_array($RespSubElemento)){
 						$NombreSubElemento=$ResulSubElemento["SubElemento"];
 						$Resultado=$ResulSubElemento["Resultado"];
 						$Control=$ResulSubElemento["Observacion"];
@@ -945,12 +1166,12 @@ class Laboratorio{
 								   ON lab_examenes.IdExamen= lab_resultados.IdExamen
                WHERE lab_resultados.IdDetalleSolicitud=$IdDetalleSolicitud";	 
 			 
-			$Antibioticos = mysql_query($SQL) or die('La consulta Fall&oacute;: ' . mysql_error());	
+			$Antibioticos = pg_query($SQL) or die('La consulta Fall&oacute;: ' . pg_error());	
 			$Count=0;
 			if($Resultado=='N' or $Resultado=='O' ){
 				if($Resultado=='N'){
-						 $Resultado = mysql_query($SQL2) or die('La consulta Fall&oacute;: ' . mysql_error());	
-						 $Negativo = mysql_fetch_array($Resultado);
+						 $Resultado = pg_query($SQL2) or die('La consulta Fall&oacute;: ' . pg_error());	
+						 $Negativo = pg_fetch_array($Resultado);
 						 echo "<div class='outer'> 
 							  <div class='inner' >";  
   	
@@ -971,8 +1192,8 @@ class Laboratorio{
 				}
 
 				if ($Resultado=='O'){
-						 $Resultado = mysql_query($SQL2) or die('La consulta Fall&oacute;: ' . mysql_error());	
-						 $Negativo = mysql_fetch_array($Resultado);
+						 $Resultado = pg_query($SQL2) or die('La consulta Fall&oacute;: ' . pg_error());	
+						 $Negativo = pg_fetch_array($Resultado);
 						 echo "<div class='outer'> 
 							  <div class='inner' >";  
   	
@@ -995,7 +1216,7 @@ class Laboratorio{
 
 
 			}else{
-				while ($Resultado = mysql_fetch_array($Antibioticos)){
+				while ($Resultado = pg_fetch_array($Antibioticos)){
 	
 					if($Count==0){
 						echo "<div class='outer'> 
@@ -1069,10 +1290,10 @@ class Laboratorio{
  		// Resultado NEGATIVO
 		
 			 
-			$Resultados = mysql_query($SQL) or die('La consulta Fall&oacute;: ' . mysql_error());	
+			$Resultados = pg_query($SQL) or die('La consulta Fall&oacute;: ' . pg_error());	
 			$Count=0;
 
-			while ($Resultado = mysql_fetch_array($Resultados)){
+			while ($Resultado = pg_fetch_array($Resultados)){
 	
 					if($Count==0){
 						echo "<div class='outer'> 
@@ -1119,10 +1340,10 @@ class Laboratorio{
 	              WHERE lab_resultados.IdDetalleSolicitud=$IdDetalleSolicitud     
 		      ORDER BY lab_procedimientosporexamen.idprocedimientoporexamen asc";
 			
-		$Resultados = mysql_query($SQL) or die('La consulta Fall&oacute;: ' . mysql_error());	
+		$Resultados = pg_query($SQL) or die('La consulta Fall&oacute;: ' . pg_error());	
 			$Count=0;
 
-			while ($Resultado = mysql_fetch_array($Resultados)){ 
+			while ($Resultado = pg_fetch_array($Resultados)){ 
 		
 				if($Count==0){
 					echo "<div class='outer'> 
@@ -1259,11 +1480,11 @@ class Imagenologia{
 			WHERE sec_historial_clinico.IdNumeroExp='$IdNumeroExp' AND 
 			      sec_solicitudestudios.IdServicio='DCORX'
 				  ORDER BY FechaSolicitud desc";		  
-			$Ejecutar2 = mysql_query($SQL2);
+			$Ejecutar2 = pg_query($SQL2);
 			$NroRegistros=mysql_num_rows($Ejecutar2);	
 				  
 		if($Conexion==true){						  
-		   $Solicitudes = mysql_query($SQL) or die('La consulta fall&oacute;: ' . mysql_error());		
+		   $Solicitudes = pg_query($SQL) or die('La consulta fall&oacute;: ' . pg_error());		
 	 	   echo "<div  class='outer3'> 
 					  <div class='inner' >    
 						  <h3 align='center'>SOLICITUDES DE ESTUDIOS DE IMAGENOLOGIA</h3><br><br><br>
@@ -1275,7 +1496,7 @@ class Imagenologia{
 						      <td class='SaladColumnTD'  nowrap><strong>Estado Solicitud&nbsp;</strong></td>
   		 			      </tr>";
 						  
-			while ($Resultado = mysql_fetch_array($Solicitudes)){
+			while ($Resultado = pg_fetch_array($Solicitudes)){
 				echo "<tr>
 				      <td class='SaladFieldCaptionTD'>
   					  <a  href='javascript: DetalleSolicitudRx(\"".$Resultado['IdSolicitudEstudio']."\",\"".
@@ -1287,7 +1508,7 @@ class Imagenologia{
 				    </tr>";
 
 			  } // Fin While Sacar Datos
-			  mysql_free_result($Solicitudes); // Liberar memoria usada por consulta.		
+			  pg_free_result($Solicitudes); // Liberar memoria usada por consulta.		
 		} // Fin Conexion
 	
 			echo"<tr>
@@ -1328,10 +1549,10 @@ class Imagenologia{
 					  </tr>";	
 				
 		if($Conexion==true){						  
-		   $Solicitudes = mysql_query($SQL) or die('La consulta fall&oacute;: ' . mysql_error());		
+		   $Solicitudes = pg_query($SQL) or die('La consulta fall&oacute;: ' . pg_error());		
 		   $Count=0;
    		   $Count2=0;
-		   while ($Resultado = mysql_fetch_array($Solicitudes)){
+		   while ($Resultado = pg_fetch_array($Solicitudes)){
 				echo " <tr>";
 				if($Resultado['EstadoDetalle']=='A')		   
 								echo "<td class='SaladFieldCaptionTD'> <a  href='javascript: ResultadosRx(\"".
@@ -1387,10 +1608,10 @@ class Imagenologia{
 				  </tr>";	
 	
 	if($Conexion==true){						  
-		   $ResultadosSQL = mysql_query($SQL) or die('La consulta fall&oacute;: ' . mysql_error());		
+		   $ResultadosSQL = pg_query($SQL) or die('La consulta fall&oacute;: ' . pg_error());		
       
 
-		while ($Resultado = mysql_fetch_array($ResultadosSQL)){
+		while ($Resultado = pg_fetch_array($ResultadosSQL)){
 				echo "<tr>
 				      <td class='SaladFieldCaptionTD'>".$Resultado['IdExamen']."</td>
 				      <td class='SaladFieldCaptionTD'  colspan='2' align='justify'>".$Resultado['LecturaPlaca']."</td>
@@ -1398,7 +1619,7 @@ class Imagenologia{
 				    </tr>";
 
 			  } // Fin While Sacar Datos
-			  mysql_free_result($ResultadosSQL); // Liberar memoria usada por consulta.		
+			  pg_free_result($ResultadosSQL); // Liberar memoria usada por consulta.		
 		} // Fin Conexion
 					  
 		echo "<tr><td class='SaladFieldCaptionTD' colspan='4' nowrap> . </td></tr>				   				

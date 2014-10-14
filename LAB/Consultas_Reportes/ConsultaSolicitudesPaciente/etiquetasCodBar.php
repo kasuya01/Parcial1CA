@@ -78,7 +78,7 @@ $objdatos = new clsRecepcionSolicitud;
 //recuperando los valores del detalle de la solicitud
 $consultadetalle=$objdatos->VinetasRecepcion($idexpediente,$Nfechacita,$idsolicitud);
 
-while($fila = mysql_fetch_array($consultadetalle)){
+while($fila = pg_fetch_array($consultadetalle)){
 	if ($fila[6]=="G"){
 	  $codigo= $idsolicitud."-".$fila[10];
 	  $codigo1= $idsolicitud."&nbsp;&nbsp;&nbsp;".$fila[10];
@@ -149,7 +149,7 @@ while($fila = mysql_fetch_array($consultadetalle)){
 	<?php
 	}
 }	
-mysql_free_result($consultadetalle);
+pg_free_result($consultadetalle);
     ?>
 </form>
 </body>

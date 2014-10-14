@@ -169,7 +169,7 @@ function calcular_edad(fecha){
 }
 
 //FUNCION PARA BUSCAR DATOS DE LA SOLICITUD
-function BuscarDatos()
+function BuscarDatos1()
 {	
 		opcion=1;
 		IdEstab=document.getElementById('cmbEstablecimiento').value;

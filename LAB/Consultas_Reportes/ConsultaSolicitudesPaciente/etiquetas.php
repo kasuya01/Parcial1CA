@@ -66,7 +66,7 @@ $objdatos = new clsSolicitudesPorPaciente;
 
 $consultadetalle=$objdatos->VinetasRecepcion($idexpediente,$idsolicitud);
 
-while($fila = mysql_fetch_array($consultadetalle)){
+while($fila = pg_fetch_array($consultadetalle)){
 		if ($fila[6]=="G"){
 			$codigo= $idsolicitud."-".$fila[10];
 			$codigo1= $idsolicitud."&nbsp;&nbsp;&nbsp;".$fila[10];
