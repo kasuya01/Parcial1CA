@@ -54,6 +54,43 @@ AND idtipomuestra=$idtipomuestra";
 			return $result;
 	}
   }
+ //Fn PG
+ //FUNCION QUE DESHABILITAR LAS MUESTRA ASOCIADAS AL EXAMEN
+  function deshabilitar_tm($idexamen, $usuario){
+	$con = new ConexionBD;
+	if($con->conectar()==true)
+	{ $query="update lab_tipomuestraporexamen
+                    set habilitado=false, 
+                    idusuariomod= $usuario,
+                    fechahoramod= NOW() 
+                    where idexamen=$idexamen;";
+		$result = pg_query($query);
+		if (!$result)
+			return false;
+		else
+			return $result;
+	}
+  }
+ //Fn PG
+ //aCTUALIZA EL ESTADO DE LA MUESTRA PARA HABILITAR SOLAMENTE LAS SELECCIONADAS
+  function actualizarmuestra($idexamen, $idtipomuestra,$iduser){
+	$con = new ConexionBD;
+	if($con->conectar()==true)
+	{ 
+	 $query=" update lab_tipomuestraporexamen
+                    set habilitado=true,
+                    idusuariomod=$iduser,
+                    fechahoramod=NOW()
+                    where idexamen=$idexamen
+                    and idtipomuestra=$idtipomuestra;";
+		$result = pg_query($query);
+               // echo $query;
+		if (!$result)
+			return false;
+		else
+			return $result;
+	}
+  }
 //Fn PG  
 function Eliminar($idexamen,$idtipomuestra, $usuario)
 {
@@ -82,13 +119,19 @@ and idtipomuestra =$idtipomuestra";
  $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-             $query = "select lte.id as idtipomuestraporexamen, lte.idexamen, cex.idestandar as codexamen, tipomuestra, lte.idtipomuestra
+            /* $query = "select lte.id as idtipomuestraporexamen, lte.idexamen, cex.idestandar as codexamen, tipomuestra, lte.idtipomuestra
               from lab_tipomuestraporexamen lte
               join ctl_examen_servicio_diagnostico cex on (cex.id=lte.idexamen)
               join lab_tipomuestra  ltm on (ltm.id=lte.idtipomuestra)
               where cex.id=$idexamen
               and lte.habilitado=true
-              order by tipomuestra;" ;
+              order by tipomuestra" ;*/
+            $query="select lte.id as idtipomuestraporexamen, lte.idexamen, lce.codigo_examen as codexamen, tipomuestra, lte.idtipomuestra
+                    from lab_tipomuestraporexamen 	lte
+                    join lab_conf_examen_estab 	lce on (lce.id= lte.idexamen)
+                    join lab_tipomuestra 		ltm on (ltm.id= lte.idtipomuestra)
+                    where lce.id=$idexamen
+                    and lte.habilitado=true";
 	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
@@ -103,15 +146,16 @@ and idtipomuestra =$idtipomuestra";
 	$con = new ConexionBD;
     //usamos el metodo conectar para realizar la conexion
     if($con->conectar()==true){
-     $query = "select mnt4.id, descripcion, lex.id as idexamen
-            from ctl_examen_servicio_diagnostico  lex
-            join mnt_area_examen_establecimiento mnt4 on (lex.id=mnt4.id_examen_servicio_diagnostico)
-            where id_area_servicio_diagnostico=$idarea
-            and id_establecimiento=$lugar
-            and activo=true
-            order by descripcion";
+     $query = "select mnt4.id, nombre_examen, lex.id as idexamen 
+                from lab_conf_examen_estab lex
+                join mnt_area_examen_establecimiento mnt4 on (lex.idexamen = mnt4.id)
+                where condicion='H'
+                and mnt4.activo=true
+                and id_establecimiento=$lugar
+                and id_area_servicio_diagnostico=$idarea
+                order by nombre_examen";
      $result = pg_query($query);
-   //  echo 'query'.$query.'<br/>';
+     //echo 'query'.$query.'<br/>';
      if (!$result)
 	   return false;
      else

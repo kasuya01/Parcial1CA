@@ -79,12 +79,12 @@ if ($nivel==33){
     <tr>
         <td class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
         <td class="StormyWeatherDataTD">
-            <select id="cmbArea" name="cmbArea" size="1" onChange="  LlenarExamenes(this.value);">
+            <select id="cmbArea" name="cmbArea" size="1" onChange="LlenarExamenes(this.value);">
                 <option value="0" >--Seleccione un &Aacute;rea--</option>
                     <?php
 			
 			while($row = pg_fetch_array($consulta)){
-			echo "<option value='" . $row['id']. "'>" . $row['nombrearea'] . "</option>";
+			echo "<option value='" . $row['idarea']. "'>" . $row['nombrearea'] . "</option>";
 			}
 			pg_free_result($row);		
                     ?>		  
