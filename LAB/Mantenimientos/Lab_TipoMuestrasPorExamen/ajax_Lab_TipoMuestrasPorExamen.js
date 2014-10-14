@@ -55,7 +55,8 @@ function Guardar()
                 if (i==(list2.options.length-1)){
                     fin=1;
                 }
-                    InsertarRegistro(combo.value,list2.options[i].value, comboarea, fin);
+            //    alert(i+' fin:'+fin)
+                    InsertarRegistro(combo.value,list2.options[i].value, comboarea, fin, i);
             }
         }
         else{
@@ -84,19 +85,20 @@ function BuscandoAsociados()
 	}
 }
 
-function InsertarRegistro(idexamen,idtipomuestra, idarea, fin)
+function InsertarRegistro(idexamen,idtipomuestra, idarea, fin, i)
 {
-  // alert ('emtrp '+idexamen+ 'idtipomuestra'+idtipomuestra)
+   //alert ('Insertar Registro idexamen'+idexamen+ 'idtipomuestra'+idtipomuestra)
 	opcion=1;
 	Pag="";
 	idarea="";
 	ajax=objetoAjax();
 	ajax.open("POST", "ctrLab_TipoMuestrasPorExamen.php",true);
+     //   alert( ajax.onreadystatechange)
 	ajax.onreadystatechange=function() 
 	{
 
 		if (ajax.readyState==4) {
-             //       alert ('Response Text:'+ajax.responseText+':Fin')
+                //    alert ('Response Text:'+ajax.responseText+':Fin')
                     if (fin==1){
                         alert(ajax.responseText);
                     }
@@ -109,7 +111,7 @@ function InsertarRegistro(idexamen,idtipomuestra, idarea, fin)
 		}
 	}
          ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	ajax.send("idexamen="+idexamen+"&idtipomuestra="+idtipomuestra+"&opcion="+opcion+"&Pag="+Pag+"&idarea="+idarea);
+	ajax.send("idexamen="+idexamen+"&idtipomuestra="+idtipomuestra+"&opcion="+opcion+"&Pag="+Pag+"&idarea="+idarea+"&i="+i);
 
 }
 //Fn PG
@@ -128,6 +130,7 @@ function Eliminar()
 	ajax=objetoAjax();
 	ajax.open("POST", "ctrLab_TipoMuestrasPorExamen.php",true);
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+       // alert(combo+'-'+dato)
 	ajax.send("idexamen="+combo+"&idtipomuestra="+dato+"&opcion="+opcion);
 	ajax.onreadystatechange=function() 
 	{
@@ -153,6 +156,7 @@ function AgregarItemsLista()
    var combo=document.getElementById('cmbExamen');
    var list1 = document.getElementById('ListMuestras');
    var list2 = document.getElementById('ListAsociados');
+   var muestras="";
    // C�digo para ver cual son los que hay que eliminar de un select e incluirlos en el otro. 
 	if (combo.value != 0)
 	{
@@ -165,7 +169,20 @@ function AgregarItemsLista()
                     { 
                         if (list1.options[i].value == list2.options[j].value) 
 			{ 
-                            encontrado = true; 
+                      /*      var x = document.getElementById("mySelect").selectedIndex;
+    var y = document.getElementById("mySelect").options;
+    alert("Index: " + y[x].index + " is " + y[x].text);*/
+                            encontrado = true;
+                            if (muestras==""){
+                                muestras=list1.options[i].text;
+                            }
+                            else{
+                                 muestras=muestras+','+list1.options[i].text;
+                            }
+                           
+                        //    alert (list1.options[i].value+'-'+i+list1.options[i].text)
+                            //muestras= muestras+document.getElementById('cmbExamen').selectedOptions[1].text
+                            
 			} 
 			j++; 
                     } 
@@ -174,9 +191,12 @@ function AgregarItemsLista()
 						texto[texto.length] = list1.options[i].text; 
 						valor[valor.length] = list1.options[i].value; 
 					} 
-					else{alert("La Muestra ya esta asociado..")}
 			} 
 		} 
+                if (encontrado==true){
+                    alert("La(s) Muestra(s) "+muestras+" ya esta(n) asociada(s)..")
+                }
+                
 		   // Eliminamos de uno y lo incluimos en el otro. 
 		for (h=texto.length-1;h>=0;h--) 
 		{ 
