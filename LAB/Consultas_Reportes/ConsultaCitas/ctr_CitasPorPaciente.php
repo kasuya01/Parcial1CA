@@ -122,7 +122,7 @@ switch ($opcion)
 						<td>Establecimiento</td>
 					</tr>";    
 				$pos=0;
-			while ($row = mysql_fetch_array($consulta))
+			while ($row = pg_fetch_array($consulta))
 			{ 
 			$imprimir .="<tr>
 						<td  width='8%'>".$row['Fecha']."</td>
@@ -138,7 +138,7 @@ switch ($opcion)
 				$pos=$pos + 1;
 			}
 		
-			mysql_free_result($consulta);
+			pg_free_result($consulta);
 		
 		$imprimir .= "<input type='hidden' name='oculto' id='text' value='".$pos."' /> 
 			</table>";
@@ -154,7 +154,7 @@ switch ($opcion)
 		$rslts = '<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:250px">';
 		$rslts .='<option value="0"> Seleccione Examen </option>';
 			
-		while ($rows =mysql_fetch_array($dtExam)){
+		while ($rows =pg_fetch_array($dtExam)){
 			$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 		}
 				
@@ -170,7 +170,7 @@ switch ($opcion)
                	$dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
               	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:375px">';
 		$rslts .='<option value="0"> Seleccione Establecimiento </option>';
-               while ($rows =mysql_fetch_array( $dtIdEstab)){
+               while ($rows =pg_fetch_array( $dtIdEstab)){
 		  $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 	       }
 				
@@ -183,7 +183,7 @@ switch ($opcion)
 	     $dtserv=$objdatos->LlenarCmbServ($IdServ,$lugar);
 	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:375px">';
 			$rslts .='<option value="0"> Seleccione Subespecialidad </option>';
-			while ($rows =mysql_fetch_array($dtserv)){
+			while ($rows =pg_fetch_array($dtserv)){
 		  	$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 	       		}
 				

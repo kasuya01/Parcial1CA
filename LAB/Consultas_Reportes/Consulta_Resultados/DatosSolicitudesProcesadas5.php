@@ -25,7 +25,7 @@ $objdatos = new clsSolicitudesProcesadas;
 
 //recuperando los valores generales de la solicitud
 $consulta=$objdatos->DatosGeneralesSolicitud($idexpediente);
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 //obteniedo los datos generales de la solicitud
 //valores de las consultas
 $medico=$row['NombreMedico'];
@@ -103,7 +103,7 @@ $consultadetalle=$objdatos->DatosDetalleSolicitud($idarea,$idsolicitud);
 	   </tr>
 <?php
 $pos=0;
-while($fila = mysql_fetch_array($consultadetalle)){
+while($fila = pg_fetch_array($consultadetalle)){
 	?>      <tr>
 			<td> <?php echo $fila['IdExamen'] ; ?>  </td>
 			<td> <?php echo $fila['NombreExamen'] ; ?>  </td>			

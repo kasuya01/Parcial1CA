@@ -55,8 +55,8 @@ switch ($opcion)
 			INNER JOIN mnt_servicio ON mnt_subservicio.IdServicio=mnt_servicio.IdServicio
 			INNER JOIN mnt_establecimiento ON sec_historial_clinico.IdEstablecimiento=mnt_establecimiento.IdEstablecimiento
 			WHERE  ";  
-			
-			if (!empty($_POST['IdEstab']))
+                        
+                if (!empty($_POST['IdEstab']))
 			{ $query .= " sec_historial_clinico.IdEstablecimiento ='".$_POST['IdEstab']."' AND";}	
 				
 			if (!empty($_POST['IdServ']))
@@ -76,7 +76,7 @@ switch ($opcion)
 			
 			/*if (!empty($_POST['fecharecep']))
 			{ $query .= " lab_recepcionmuestra.fecharecepcion='".$_POST['fecharecep']."' AND";}*/
-                        if (!empty($_POST['fecharecep']))
+                       if (!empty($_POST['fecharecep']))
 			{$Nfecha=explode("/",$fecharecep);
 		 	//print_r($Nfecha);
                   	$Nfecharecep=$Nfecha[2]."-".$Nfecha[1]."-".$Nfecha[0]; 
@@ -93,6 +93,9 @@ switch ($opcion)
 			
 			if (!empty($_POST['SApellido']))
 			{ $query .= " mnt_datospaciente.SegundoApellido='".$_POST['SApellido']."' AND";}
+                
+                        
+        
 		
 			if((empty($_POST['idexpediente'])) AND (empty($_POST['idarea'])) AND (empty($_POST['fecharecep'])) AND (empty($_POST['IdEstab'])) AND (empty($_POST['IdServ'])) AND (empty($_POST['IdSubServ'])) AND (empty($_POST['PNombre'])) AND (empty($_POST['SNombre'])) AND (empty($_POST['PApellido'])) AND (empty($_POST['SApellido'])) AND (empty($_POST['idexamen'])))
 			{
@@ -102,7 +105,7 @@ switch ($opcion)
 		
 			if ($ban==0){
 				$query = substr($query ,0,strlen($query)-3);
-				$query_search = $query." GROUP BY IdSolicitudEstudio ORDER BY lab_recepcionmuestra.FechaRecepcion DESC";
+				$query_search = $query."ORDER BY lrc.fecharecepcion DESC"; //" GROUP BY IdSolicitudEstudio ORDER BY lab_recepcionmuestra.FechaRecepcion DESC";
 			}
 		
 			//echo $query_search;
@@ -122,25 +125,32 @@ switch ($opcion)
 				</tr>";    
 		$pos=0;
 		
-		while ($row = mysql_fetch_array($consulta))
+		while ($row = pg_fetch_array($consulta))
 			{
-			$Estado=$row['Estado'];
+			$Estado=$row['estado'];
 			$Proceso="DetalleResultado";
 			echo "<tr>
-					<td>".$row['FechaRecepcion']."</td>
-					<td>".$row['NumeroMuestra']."</td>";
+					<td>".$row['fecharecepcion']."</td>
+					<td>".$row['numeromuestra']."</td>";
 				if(($Estado=="Completa")||($Estado=="En Proceso")){
 			echo  "		<td>
-						<a style ='text-decoration:underline;cursor:pointer;' onclick='javascript:window.open(\"Resultados/ResultadosEstudios.php?IdNumeroExp=".$row['IdNumeroExp']."&IdSolicitudEstudio=".$row['IdSolicitudEstudio']."&FechaRecepcion=".$row['FechaRecepcion']."&pag=1&Proceso=".$Proceso."&IdArea=".$row['IdArea']."&FechaSolicitud=".$row['FechaSolicitud']."&IdEstab=".$IdEstab."&lugar=".$lugar."&Flag=1\")'>".$row['IdNumeroExp']."</a></td>
-					<td width='25%'>".htmlentities($row['Paciente'])."</td>";
+						<a style ='text-decoration:underline;cursor:pointer;' 
+                                                onclick='javascript:window.open(\"Resultados/ResultadosEstudios.php?IdNumeroExp=".$row['numeroexpediente'].
+                                                "&IdSolicitudEstudio=".$row['idsolicitud']. //IdSolicitudEstudio
+                                                "&FechaRecepcion=".$row['fecharecepcion']. //FechaRecepcion
+                                                "&pag=1&Proceso=".$Proceso."&IdArea=".$row['idarea']. //IdArea
+                                                "&FechaSolicitud=".$row['FechaSolicitud']. //FechaSolicitud
+                                                "&IdEstab=".$IdEstab.
+                                                "&lugar=".$lugar."&Flag=1\")'>".$row['numeroexpediente']."</a></td>
+					<td width='25%'>".htmlentities($row['paciente'])."</td>";
 				}else{
-						echo "<td>".$row['IdNumeroExp']."</td>
-						      <td width='25%'>".htmlentities($row['Paciente'])."</td>";
+						echo "<td>".$row['numeroexpediente']."</td>
+						      <td width='25%'>".htmlentities($row['paciente'])."</td>";
 					}
 			
-					echo	"<td>".$row['NombreSubServicio']."</td>
-						<td width='10%'>".htmlentities($row['NombreServicio'])."</td>
-			 			<td width='15%'>".htmlentities($row['Nombre'])."</td>
+					echo	"<td>".$row['nombreservicio']."</td>
+						<td width='10%'>".htmlentities($row['nombreprocedencia'])."</td>
+			 			<td width='15%'>".htmlentities($row['nombreestablecimiento'])."</td>
 						<td>$Estado</td>";
 				
 			
@@ -149,7 +159,7 @@ switch ($opcion)
 			$pos=$pos + 1;
 			}
 			
-			mysql_free_result($consulta);
+			pg_free_result($consulta);
 			
 		"<input type='hidden' name='oculto' id='text' value='".$pos."' /> 
 				</table>";
@@ -164,7 +174,7 @@ switch ($opcion)
 		$rslts = '<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:250px">';
 		$rslts .='<option value="0"> Seleccione Examen </option>';
 			
-		while ($rows =mysql_fetch_array($dtExam)){
+		while ($rows =pg_fetch_array($dtExam)){
 			$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 		}
 				
@@ -181,7 +191,7 @@ switch ($opcion)
             	$dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
               	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:375px">';
 		$rslts .='<option value="0"> Seleccione Establecimiento </option>';
-               while ($rows =mysql_fetch_array( $dtIdEstab)){
+               while ($rows =pg_fetch_array( $dtIdEstab)){
 		  $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 	       }
 				
@@ -195,7 +205,7 @@ switch ($opcion)
 	     $dtserv=$objdatos->LlenarCmbServ($IdServ,$lugar);
 	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:375px">';
 			$rslts .='<option value="0"> Seleccione Subespecialidad </option>';
-			while ($rows =mysql_fetch_array($dtserv)){
+			while ($rows =pg_fetch_array($dtserv)){
 		  	$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 	       		}
 				

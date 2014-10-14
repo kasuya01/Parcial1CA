@@ -9,7 +9,7 @@ $nivel=$_SESSION['NIVEL'];
 //consulta los datos por su id
 /*$obj = new clsSolicitudesPorPaciente;
 $consulta=$obj->DatosEstablecimiento($lugar);
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 //valores de las consultas
 $tipo=$row[0];
 $nombrEstab=$row[1];

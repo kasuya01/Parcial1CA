@@ -30,16 +30,17 @@ $IdEstab=$_REQUEST['IdEstab'];
 $lugar=$_REQUEST['lugar'];
 //$Establecimiento=$_REQUEST['Establecimiento'];  
 $Nombre=$Paciente->RecuperarNombre($Conectar,$IdNumeroExp,$IdSolicitudEstudio);
-$Rows = mysql_fetch_array($Nombre);
-$Sexo=$Rows['Sexo'];
-$fechanac=$Rows['FechaNacimiento'];
+$Rows = pg_fetch_array($Nombre);
+$Sexo=$Rows['sexo'];
+$dias=$Rows['edad'];//fecha de nacimiento
 //echo $Rows['Sexo']."##".$Rows['FechaNacimiento'];
+
  $Cuentadias=$Paciente->CalculoDias($Conectar,$fechanac);
- $Cdias= mysql_fetch_array($Cuentadias);
+ $Cdias= pg_fetch_array($Cuentadias);
  $dias=$Cdias[0];
 	
  $ConRangos=$Paciente->ObtenerCodigoRango($Conectar,$dias);
- $row_rangos=  mysql_fetch_array($ConRangos);
+ $row_rangos=  pg_fetch_array($ConRangos);
  $idedad=$row_rangos[0];  
  //echo $dias."--".$Sexo."--". $idedad;
 //echo $Sexo."##".$idedad."##".$IdSolicitudEstudio."##".$IdEstab."##".$lugar;
@@ -49,19 +50,19 @@ $fechanac=$Rows['FechaNacimiento'];
 			<tr>
 			<td width='50%'><h2>No.Expediente: ".$IdNumeroExp."	
 								<br>
-								Paciente: ".$Rows['Nombre']."
+								Paciente: ".$Rows['paciente']."
 								<br>
 								Fecha Recepcion: ".$FechaRecepcion."
 								</h2>
 													
 				</td>
-				<td width='50%'><h2>	Establecimiento:".$Rows['Establecimiento']."
+				<td width='50%'><h2>	Establecimiento:".$Rows['nombre_establecimiento']."
                                                         <br>
-							Procedencia: ".$Rows['Procedencia']."
+							Procedencia: ".$Rows['procedencia']."
 								<br>
-								Origen: ".$Rows['Origen']."
+								Origen: ".$Rows['servicio']."
 								<br>
-								M&eacute;dico: ".$Rows['Medico']."
+								M&eacute;dico: ".$Rows['medico']."
 								</h2> 								
 				</td>
 				
