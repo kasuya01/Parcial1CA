@@ -48,7 +48,7 @@ function getAreaExamenEstablecimiento($parameters) {
 	
 	$arr = $mntAreaExamenEstab->getAreaExamenEstablecimiento($parameters['post']['idarea'], $parameters['lugar']);
 
-	if($result !== false) {
+	if($arr !== false) {
 		
 		$result = array();
 		$arr = pg_fetch_all($arr);
