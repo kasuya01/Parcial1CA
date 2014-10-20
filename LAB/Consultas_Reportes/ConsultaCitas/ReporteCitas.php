@@ -151,7 +151,7 @@ $objdatos = new clsCitasPorPaciente;
 		
              $consulta1=$objdatos->BuscarCitasPaciente($query_search); 
 			 
-			$row1 = mysql_fetch_array($consulta1);?>
+			$row1 = pg_fetch_array($consulta1);?>
  <table width="100%" border="0" align='center'>
 			<tr>
 				<td colspan="7" align="center"><h3><strong>REPORTE DE CITAS PROGRAMADAS
@@ -175,7 +175,7 @@ $objdatos = new clsCitasPorPaciente;
 		<td width="30%" class="StormyWeatherDataTD" style="color:#000000; font:bold"><h4><strong>Establecimiento</strong><h4></td>
 	</tr>    
    <?php $pos=0;
-    while ($row = mysql_fetch_array($consulta))
+    while ($row = pg_fetch_array($consulta))
 	{ ?>
 	<tr>
 		<td width="8%"><?php echo $row['Fecha']; ?></td>
@@ -189,7 +189,7 @@ $objdatos = new clsCitasPorPaciente;
 	$pos=$pos + 1;
 	}
 	
-	mysql_free_result($consulta);?>
+	pg_free_result($consulta);?>
 	
    <input type="hidden" name="oculto" id="text" value='".$pos."' /> 
 </table>

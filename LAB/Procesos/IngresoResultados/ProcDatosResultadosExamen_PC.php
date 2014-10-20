@@ -188,6 +188,10 @@ function CargarDatos()
                             <div id="divResPositivo" style="display:none" >
                                 <table class="StormyWeatherFormTABLE" width="100%" >
                                     <tr>
+                                        <td class="StormyWeatherFieldCaptionTD">Observación:</td>
+                                        <td class="StormyWeatherDataTD"><textarea name="txtobservacion" type="text" id="txtobservacion" size="50" cols="50"></textarea></td>
+                                    </tr>
+                                    <tr>
                                         <td width="35%" class="StormyWeatherFieldCaptionTD">Organismos</td>
                                         <td width="65%" class="StormyWeatherDataTD">
                                             <select id="cmbOrganismo" name="cmbOrganismo" size="1"  >

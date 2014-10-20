@@ -15,28 +15,44 @@ $objdatos = new clsLab_TipoMuestrasPorExamen;
 switch ($opcion) 
 {
 	case 1:  //INSERTAR	
-			$idexamen=$_POST['idexamen'];
-			$idtipomuestra=$_POST['idtipomuestra'];
-	        $cant=$objdatos->Verificar_Muestra($idexamen,$idtipomuestra);
-		    $cantidad=pg_fetch_array($cant);
+        //    echo 'Case1';
+            $idexamen=$_POST['idexamen'];
+            $idtipomuestra=$_POST['idtipomuestra'];
+            $actual=$_POST['i'];
+            $cant=$objdatos->Verificar_Muestra($idexamen,$idtipomuestra);
+            $cantidad=pg_fetch_array($cant);
+          //  echo '<br/>Actual:'.$actual;
+            if ($actual==0){
+                $objdatos->deshabilitar_tm($idexamen, $usuario);
+            }
 		//	echo 'cant: '.$cantidad[0]. ' |idtipomuestra:'.$idtipomuestra;
-			if ($cantidad[0]==0){
-				if ($objdatos->insertar($idexamen,$idtipomuestra,$usuario)==true)
-				{
-					echo "Datos Ingresados";		   
-					//echo "Datos Ingresados".$idexamen.' /'.$idtipomuestra;		   
-				}
-				else{
-				//echo $idexamen.$idtipomuestra;
-					echo "El Registro no puede ser ingresado consulte al administrador";	
-				}
-			}
-			ELSE 
-			    echo "Ya existen los elementos seleccionados";
+            if ($cantidad[0]==0){
+                    if ($objdatos->insertar($idexamen,$idtipomuestra,$usuario)==true)
+                    {
+                            echo "Datos Ingresados";		   
+                            //echo "Datos Ingresados".$idexamen.' /'.$idtipomuestra;		   
+                    }
+                    else{
+                    //echo $idexamen.$idtipomuestra;
+                            echo "El Registro no puede ser ingresado consulte al administrador";	
+                    }
+            }
+            ELSE {
+              // echo 'élse';
+                if ($objdatos->actualizarmuestra($idexamen,$idtipomuestra,$usuario)==true)
+                    {
+                            echo "Ya existe la muestra seleccionada para este examen";		   
+                    }
+                    else{
+                    //echo $idexamen.$idtipomuestra;
+                            echo "El Registro no puede ser actualizado consulte al administrador";	
+                    }
+          //      echo "Ya existe la muestra seleccionada para este examen";
+            }
 		break;
 	case 2:  //LLENAR LISTA
 	//DIBUJANDO EL FORMULARIO NUEVAMENTE
-		$resultado= "<select name='ListAsociados' id='ListAsociados' size='8' multiple>";
+		$resultado= "<select name='ListAsociados' id='ListAsociados' size='8' multiple >";
 							//LLENANDO LISTA DE MUESTRAS ASOCIADOS
 		//$obj=new clsLab_TipoMuestrasPorExamen;
 		$consulta_a= $objdatos->consultarasociados($idexamen);
@@ -62,7 +78,7 @@ switch ($opcion)
 	case 5:  //LLENAR COMBO DE EXAMENES  
 	//DIBUJANDO EL FORMULARIO NUEVAMENTE
 		$idarea=$_POST['idarea'];
-            
+          //  echo 'idearea<br\>'.$idarea.'-fin<br\>';
 		$resultado= "<select id='cmbExamen' name='cmbExamen' size='1'onchange='BuscandoAsociados();' >";
 					//// LLENAR EL COMBO ////
 				$consultaex= $objdatos->ExamenesPorArea($idarea,$lugar);
@@ -72,7 +88,7 @@ switch ($opcion)
 				while($rowex = pg_fetch_array($consultaex))
 				{
                                   
-		 $resultado .= "<option value='" . $rowex['id']. "'>" . $rowex['nombreexamen'] . "</option>";
+		 $resultado .= "<option value='" . $rowex['idexamen']. "'>" . $rowex['nombre_examen'] . "</option>";
 				}
 			  ///// FINALIZA LLENADO /////
 		$resultado.= "</select>";

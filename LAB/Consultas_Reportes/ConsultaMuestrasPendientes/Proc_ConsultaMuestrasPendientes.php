@@ -8,10 +8,10 @@ $nivel=$_SESSION['NIVEL'];
 //consulta los datos por su id
 $obj = new clsConsultaMuestrasPendientes;
 $consulta=$obj->DatosEstablecimiento($lugar);
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 
 $ConArea=$obj->DatosArea($area);
-$rowArea = mysql_fetch_array($ConArea);
+$rowArea = pg_fetch_array($ConArea);
 
 //valores de las consultas
 $tipo=$row[0];
@@ -103,125 +103,139 @@ if ($nivel==33){
   </tr>
 <tr>		
 	<td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</td>
-	<td class="StormyWeatherDataTD"><select name="cmbTipoEstab" id="cmbTipoEstab" style="width:406pxpx" onChange="BuscarEstablecimiento(this.value)">
-        	<option value="0" >Seleccione un Tipo de Establecimiento</option>
-		<?php
-			$db = new ConexionBD;
-			if($db->conectar()==true){
-				$consulta  = "SELECT IdTipoEstablecimiento,NombreTipoEstablecimiento FROM mnt_tipoestablecimiento ORDER BY NombreTipoEstablecimiento";
-				$resultado = mysql_query($consulta) or die('La consulta fall&oacute;: ' . mysql_error());
-				//por cada registro encontrado en la tabla me genera un <option>
-				while ($rows = mysql_fetch_array($resultado)){
-					echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
-				}
-				echo '<option value="'. $tipo .'" selected="selected">' .htmlentities($nomtipo). '</option>';
-			}
-		?>
-        	</select>
-	</td>
-        <td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
-        <td class="StormyWeatherDataTD" >
-		<div id="divEstablecimiento">
-			<select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px"> <option value="0" >Seleccione un Establecimiento</option>
-			<?php echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
-                         include_once("../../../Conexion/ConexionBD.php");
-			$con = new ConexionBD;
-			if($con->conectar()==true){			  
-			 	$consulta  = "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento where IdTipoEstablecimiento='$tipo' ORDER BY Nombre";
-				$resultado = @mysql_query($consulta) or die('La consulta fall&oacute;: ' . @mysql_error());
-				//por cada registro encontrado en la tabla me genera un <option>
-				while ($rows = @mysql_fetch_array($resultado)){
-					echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]). '</option>';
-				}
-                        }
-			?>	
-			</select>
-		</div>
-	</td>
-</tr>
-<tr>	
-	<td class="StormyWeatherFieldCaptionTD">Procedencia</td>
-	<td class="StormyWeatherDataTD">
-		<select name="CmbServicio" id="CmbServicio" style="width:375px" onChange="BuscarServicio(this.value)" >
-			<option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
+		<td class="StormyWeatherDataTD"><select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)">
+        	<option value="0">Seleccione un Tipo de Establecimiento</option>
 			<?php
 				$db = new ConexionBD;
 				if($db->conectar()==true){
-					$consulta  = "SELECT mnt_servicio.IdServicio,mnt_servicio.NombreServicio FROM mnt_servicio 
-							INNER JOIN mnt_servicioxestablecimiento 
-							ON mnt_servicio.IdServicio=mnt_servicioxestablecimiento.IdServicio
-							WHERE IdTipoServicio<>'DCO' AND IdTipoServicio<>'FAR' AND IdEstablecimiento=$lugar";
-							$resultado = mysql_query($consulta) or die('La consulta fall&oacute;: ' . mysql_error());
-										
-							//por cada registro encontrado en la tabla me genera un <option>
-							while ($rows = mysql_fetch_array($resultado)){
-								echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
-							}
+					$consulta  = "SELECT id,nombre FROM ctl_tipo_establecimiento ORDER BY nombre";
+					$resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
+					//por cada registro encontrado en la tabla me genera un <option>
+					while ($rows = pg_fetch_array($resultado)){
+						echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
+					}
+						echo '<option value="'. $tipo .'" selected="selected">' .htmlentities($nomtipo). '</option>';
 				}
+			?>
+        	</select>
+		</td>
+        	<td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
+        	<td class="StormyWeatherDataTD" >
+				<div id="divEstablecimiento">
+					<select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px">
+						<option value="0" >Seleccione un Establecimiento</option>
+				<?php 
+				  echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
+		              	include_once("../../../Conexion/ConexionBD.php");
+					$con = new ConexionBD;
+					if($con->conectar()==true){			  
+						//$consulta  = "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$tipo' ORDER BY Nombre";
+                                                $consulta  = "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento='$tipo' ORDER BY nombre";
+						$resultado = @pg_query($consulta) or die('La consulta fall&oacute;: ' . @pg_error());
+						//por cada registro encontrado en la tabla me genera un <option>
+						while ($rows = @pg_fetch_array($resultado)){
+							echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]). '</option>';
+						}
+		            }
+				?>	
+					</select>
+				</div>
+		</td>
+	</tr>
+	<tr>	
+		<td class="StormyWeatherFieldCaptionTD">Procedencia</td>
+		<td class="StormyWeatherDataTD">
+			<select name="CmbServicio" id="CmbServicio" style="width:355px" onChange="BuscarServicio(this.value)" >
+				<option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
+				<?php
+					$db = new ConexionBD;
+					if($db->conectar()==true){
+						
+							
+                                            $consulta  = "SELECT t01.id,
+                                                                 t01.nombre
+                                                          FROM ctl_area_atencion t01
+                                                          WHERE t01.id IN (
+                                                                SELECT DISTINCT id_area_atencion 
+                                                                FROM mnt_area_mod_estab WHERE id_establecimiento = $lugar)";
+                                            
+                                           /* "SELECT mse.id,mse.nombre 
+						FROM mnt_servicio_externo mse 
+						INNER JOIN mnt_servicio_externo_establecimiento msee 
+						ON mse.id=msee.id
+						WHERE   msee.id_establecimiento=$lugar";*/
+                                            
+						$resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
+						//por cada registro encontrado en la tabla me genera un <option>
+						while ($rows = pg_fetch_array($resultado)){
+							echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
+						}
+					}
 				?>
-                       		</select>
-	</td>
-	<td class="StormyWeatherFieldCaptionTD">Servicio</td>
-	<td class="StormyWeatherDataTD">
-		<div id="divsubserv">
-			<select name="cmbSubServ" id="cmbSubServ" style="width:375px" >
-        			<option value="0" selected="selected"> Seleccione un Servicio </option>
-        		</select>
-		</div>
-	</td>
-</tr>
-<tr>
-	<td class="StormyWeatherFieldCaptionTD" style="font-weight:bold" width="20%">
-		<b>&Aacute;rea de Laboratorio </b>
-	</td>
-	
-    	<td class="StormyWeatherDataTD" width="8%" >
-		 <select id="cmbArea" name="cmbArea" size="1" onChange="BuscarExamen(this.value)">
-			<option value="0" >--Seleccione un &Aacute;rea--</option>
-			<?php
-			include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
-			$objeareas=new clsLab_Areas;
-			$consulta= $objeareas->consultaractivas($lugar);
-			while($row = mysql_fetch_array($consulta)){
-			        echo "<option value='" . $row['IdArea']. "'>" . htmlentities($row['NombreArea']) . "</option>";
-			}
-			echo '<option value="'.$area1.'" selected="selected">'.htmlentities($nomarea).'</option>';
-			?>		  
-          	</select> 
-	</td>
-	<td  class="StormyWeatherFieldCaptionTD">Examen </td>
-   	<td  class="StormyWeatherDataTD"  style="width:205px">
-		<div id="divExamen">
-			<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:250px"> 
-				<option value="0"> Seleccione Examen </option>
 			</select>
-		</div>
-	</td> 
-</tr>
-<tr>
+		</td>
+		<td class="StormyWeatherFieldCaptionTD">Servicio</td>
+		<td class="StormyWeatherDataTD">
+			<div id="divsubserv">
+				<select name="cmbSubServ" id="cmbSubServ" style="width:375px" >
+					<option value="0" selected="selected"> Seleccione un Servicio </option>
+				</select>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="StormyWeatherFieldCaptionTD" width="22%" style="font-weight:bold">
+			<b>&Aacute;rea de Laboratorio </b>
+		</td>
+		<td class="StormyWeatherDataTD" colspan="1" width="11%">
+			<select id="cmbArea" name="cmbArea" size="1"  onChange="BuscarExamen(this.value)">
+                            <!--<option value="0" >--Seleccione un &Aacute;rea--</option>-->
+				<?php
+				include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
+				$objeareas=new clsLab_Areas;
+				$consulta= $objeareas->consultaractivas($lugar);
+				while($row = pg_fetch_array($consulta)){
+			        echo "<option value='" . $row['idarea']. "'>" . htmlentities($row['nombrearea']) . "</option>";
+				}
+				echo '<option value="'.$area1.'" selected="selected">'.htmlentities($nomarea).'</option>';
+				?>		  
+			</select> 
+		</td>
+		<td  class="StormyWeatherFieldCaptionTD">Examen </td>
+   		<td  class="StormyWeatherDataTD"  style="width:205px">
+			<div id="divExamen">
+				<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:250px"> 
+					<option value="0"> Seleccione Examen </option>
+				</select>
+			</div>
+		</td> 
 		
-	<td class="StormyWeatherFieldCaptionTD" width="9%">Expediente</td>
-	<td class="StormyWeatherDataTD" width="4%" ><input type="text" size="24" name="txtexpediente" id="txtexpediente" /></td>
-	<td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Recepi&oacute;n</td>
-	<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="15" name="txtfecharecep" id="txtfecharecep" />
-		<input type="button" value="..." id="trigger">dd/mm/aaaa
-	</td>
-</tr>
-<tr>
-	<td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong>   </td> 
-	<td class="StormyWeatherDataTD" >
-		<input class="MailboxInput" maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre"></td> 
-	<td class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Nombre</strong>   </td> <td class="StormyWeatherDataTD">
-	        <input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre"></td> 
-</tr>
-<tr>
-	<td class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Apellido</strong></td> 
-		    <td class="StormyWeatherDataTD">
+	</tr>
+	<tr>
+		
+		<td class="StormyWeatherFieldCaptionTD"  >Expediente</td>
+		<td  class="StormyWeatherDataTD" width="5%" ><input type="text" size="24" name="txtexpediente" id="txtexpediente" />
+		</td>
+		<td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Recepi&oacute;n</td>
+		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="15" name="txtfecharecep" id="txtfecharecep" />
+			<input type="button" value="..." id="trigger">dd/mm/aaaa
+		</td>
+	</tr>
+	<tr>
+		<td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong>   </td> 
+		<td class="StormyWeatherDataTD" >
+			<input class="MailboxInput" maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre"></td> 
+		<td class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Nombre</strong>   </td> <td class="StormyWeatherDataTD">
+			<input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre"></td> 
+	</tr>
+	<tr>
+		<td class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Apellido</strong></td> 
+		<td class="StormyWeatherDataTD">
 			<input class="MailboxInput" maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido"></td> 
-		    <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Apellido</strong></td> 
-		    <td class="StormyWeatherDataTD" >
-			<input class="MailboxInput" maxlength="35" size="28" name="SegundoApellido_Name" id="SegundoApellido" ></td>
-</tr>
+		<td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Apellido</strong></td> 
+		<td class="StormyWeatherDataTD" >
+			<input class="MailboxInput" maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" ></td>
+	</tr>
   <tr>
 	<td  class="StormyWeatherDataTD" colspan="4" align="right">
 		<input type="button" name="Submit" value="Buscar Ex&aacute;menes" 

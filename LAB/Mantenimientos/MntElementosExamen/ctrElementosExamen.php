@@ -6,7 +6,7 @@ include_once("clsElementosExamen.php");
 include('../Lab_Areas/clsLab_Areas.php');
 $objdatos = new clsElementosExamen;
 $objeareas=new clsLab_Areas;
-$Clases = new clsLabor_ElementosExamen;
+//$Clases = new clsLabor_ElementosExamen;
 
 //variables POST
 $opcion=$_POST['opcion'];
@@ -76,7 +76,7 @@ switch ($opcion)
                     <tr>
                         <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
 			<td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td>
-			<td class='CobaltFieldCaptionTD'> C&oacute;digo Examen </td>
+			<td class='CobaltFieldCaptionTD'> Examen </td>
 			<td class='CobaltFieldCaptionTD'> Elemento </td>
 			<td class='CobaltFieldCaptionTD'> Unidad </td>
 			<td class='CobaltFieldCaptionTD'> Observación</td>
@@ -92,7 +92,7 @@ switch ($opcion)
 				<td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 					onclick=\"eliminarDato('".$row['idelemento']."')\"> </td>
-				<td>".$row['idexamen']."</td>
+				<td>".$row['nombre_examen']."</td>
 				<td>".htmlentities($row['elemento'])."</td>";
 				if (empty($row['unidadelem']))
 					echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
@@ -158,6 +158,7 @@ switch ($opcion)
 		$idarea=$_POST['idarea'];
 		$idexamen=$_POST['idexamen'];
 		$nomelemento=$_POST['elemento'];
+                //echo $lugar;
 		//$unidadele=$_POST['unidadele'];	
 		//$observacionele=$_POST['observacionele'];
                 $unidadele=(empty($_POST['unidadele'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidadele']) . "'";
@@ -166,7 +167,7 @@ switch ($opcion)
 		$Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
 		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
                 
-		$query = "SELECT lab_elementos.id,lab_conf_examen_estab.codigo_examen as idexamen,unidadelem,observelem,subelemento,elemento,
+		$query = "SELECT lab_elementos.id,lab_conf_examen_estab.codigo_examen as idexamen,lab_conf_examen_estab.nombre_examen,unidadelem,observelem,subelemento,elemento,
                           lab_conf_examen_estab.nombre_examen,mnt_area_examen_establecimiento.id_area_servicio_diagnostico as idarea,
                          (CASE WHEN subelemento='S' 
                          THEN 'SI' 
@@ -180,38 +181,42 @@ switch ($opcion)
                          INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
 			 WHERE lab_conf_examen_estab.condicion='H' 
 			 AND lab_areasxestablecimiento.condicion='H' AND lab_conf_examen_estab.idplantilla=2 
-			 AND lab_elementos.IdEstablecimiento=$lugar AND";
+			 AND lab_elementos.idestablecimiento=$lugar AND";
+                
+               /* SELECT nombrearea, 
+                lab_elementos.idestablecimiento,*/
+                
 		//$ban1=0;
 		$ban=0;
 
 		//VERIFICANDO LOS POST ENVIADOS
 		if (!empty($_POST['idarea']))
-		{ $query .= " mnt_area_examen_establecimiento.id_area_servicio_diagnostico='".$_POST['idarea']."' AND"; }
+		{ $query .= " mnt_area_examen_establecimiento.id_area_servicio_diagnostico=".$_POST['idarea']." AND"; }
 		
 		if (!empty($_POST['idexamen']))
-		{ $query .= " lab_conf_examen_estab.codigo_examen='".$_POST['idexamen']."' AND"; }
+		{ $query .= " lab_conf_examen_estab.id=".$_POST['idexamen']." AND"; }
 					
 		if (!empty($_POST['elemento']))
-		{ $query .= " Elemento='".$_POST['elemento']."' AND"; }
+		{ $query .= " TRANSLATE(elemento,'ÁÉÍÓÚáéíóú','AEIOUaeiou') ilike '%".$_POST['elemento']."%' AND"; }
 		
 		if (!empty($_POST['unidadele']))
-		{ $query .= " UnidadElem ='".$_POST['unidadele']."' AND"; }
+		{ $query .= " unidadelem ilike '".$_POST['unidadele']."' AND"; }
 		
 		if (!empty($_POST['observacionele']))
-		{ $query .= " ObservElem ='".$_POST['observacionele']."' AND"; }
+		{ $query .= " observelem ilike '".$_POST['observacionele']."' AND"; }
 		
 		if (!empty($_POST['subelemento']))
-		{ $query .= " SubElemento='".$_POST['subelemento']."' AND"; }
+		{ $query .= " subelemento = '".$_POST['subelemento']."' AND"; }
 		
 		if (!empty($_POST['Fechaini']))
 		{ 	$FechaI=explode('/',$_POST['Fechaini']);
 			$Fechaini=$FechaI[2].'/'.$FechaI[1].'/'.$FechaI[0];
-			$query .= " FechaIni='".$Fechaini."' AND"; }
+			$query .= " fechaini='".$Fechaini."' AND"; }
 
 		if (!empty($_POST['Fechafin'])){
 			$FechaF=explode('/',$_POST['Fechafin']);
 	  		$Fechafin=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];
-			$query .= " FechaFin=".$Fechafin." AND"; } 			
+			$query .= " fechafin=".$Fechafin." AND"; } 			
      //  else{$ban=1;}
 		if((empty($_POST['idarea'])) and (empty($_POST['idexamen'])) and (empty($_POST['elemento'])) and (empty($_POST['unidadele'])) and (empty($_POST['observacionele'])) and (empty($_POST['subelemento'])) and (empty($_POST['Fechafin'])) and (empty($_POST['Fechaini'])))
 		{
@@ -223,7 +228,7 @@ switch ($opcion)
 			 
 		}
 		else {
-                        $query = substr($query ,0,strlen($query)-6);
+                        $query = substr($query ,0,strlen($query)-4);
 			$query_search = $query. " ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,lab_elementos.id";
 		}	
 	//echo $query_search;
@@ -242,7 +247,7 @@ switch ($opcion)
 		      <tr>
 			    <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
 			    <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td>
-			    <td class='CobaltFieldCaptionTD'> C&oacute;digo Examen </td>
+			    <td class='CobaltFieldCaptionTD'>  Examen </td>
 			    <td class='CobaltFieldCaptionTD'> Elemento </td>
 				<td class='CobaltFieldCaptionTD'> Unidad </td>
 				<td class='CobaltFieldCaptionTD'> Observación</td>
@@ -258,7 +263,7 @@ switch ($opcion)
 			    <td aling ='center'> 
 				<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 				onclick=\"eliminarDato('".$row['id']."')\"> </td>
-			    <td>".$row['idexamen']."</td>
+			    <td>".$row['nombre_examen']."</td>
 			    <td>".htmlentities($row['elemento'])."</td>";
 			    
 				if (empty($row['unidadelem']))
@@ -324,7 +329,7 @@ switch ($opcion)
 		$observacionele=$_POST['observacionele'];
 		$subelemento=$_POST['subelemento'];
 		
-		$query = "SELECT lab_elementos.id,lab_conf_examen_estab.codigo_examen as idexamen,unidadelem,observelem,subelemento,elemento,
+		$query = "SELECT lab_elementos.id,lab_conf_examen_estab.codigo_examen as idexamen,lab_conf_examen_estab.nombre_examen,unidadelem,observelem,subelemento,elemento,
                           lab_conf_examen_estab.nombre_examen,mnt_area_examen_establecimiento.id_area_servicio_diagnostico as idarea,
                          (CASE WHEN subelemento='S' 
                          THEN 'SI' 
@@ -338,7 +343,7 @@ switch ($opcion)
                          INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
 			 WHERE lab_conf_examen_estab.condicion='H' 
 			 AND lab_areasxestablecimiento.condicion='H' AND lab_conf_examen_estab.idplantilla=2 
-			 AND lab_elementos.IdEstablecimiento=$lugar AND";
+			 AND lab_elementos.idestablecimiento=$lugar AND";
 		//$ban1=0;
 		$ban=0;
 
@@ -350,16 +355,16 @@ switch ($opcion)
 		{ $query .= " lab_conf_examen_estab.codigo_examen='".$_POST['idexamen']."' AND"; }
 					
 		if (!empty($_POST['elemento']))
-		{ $query .= " elemento='".$_POST['elemento']."' AND"; }
+		{ $query .= " elemento ilike'%".$_POST['elemento']."%' AND"; }
 		
 		if (!empty($_POST['unidadele']))
-		{ $query .= " unidadelem ='".$_POST['unidadele']."' AND"; }
+		{ $query .= " unidadelem ilike'%".$_POST['unidadele']."%' AND"; }
 		
 		if (!empty($_POST['observacionele']))
-		{ $query .= " observelem ='".$_POST['observacionele']."' AND"; }
+		{ $query .= " observelem ilike'%".$_POST['observacionele']."%' AND"; }
 		
 		if (!empty($_POST['subelemento']))
-		{ $query .= " subelemento='".$_POST['subelemento']."' AND"; }
+		{ $query .= " subelemento ilike'%".$_POST['subelemento']."%' AND"; }
 		
 	
 		
@@ -372,6 +377,10 @@ switch ($opcion)
 			 $query_search = $query. " ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,lab_elementos.id ";
 			 
 		}
+		else {
+                        $query = substr($query ,0,strlen($query)-4);
+			$query_search = $query. " ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,lab_elementos.id";
+		}	
 	
 	
 		//echo $ban;
@@ -391,7 +400,7 @@ switch ($opcion)
 		      <tr>
 			   <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
 			   <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td>
-			   <td class='CobaltFieldCaptionTD'> C&oacute;digo Examen </td>
+			   <td class='CobaltFieldCaptionTD'> Examen </td>
 			   <td class='CobaltFieldCaptionTD'> Elemento </td>
 			    <td class='CobaltFieldCaptionTD'> Unidad </td>
 				<td class='CobaltFieldCaptionTD'> Observación</td>
@@ -407,7 +416,7 @@ switch ($opcion)
 			   <td aling ='center'> 
 				<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 				onclick=\"eliminarDato('".$row['id']."')\"> </td>
-			   <td>".$row['idexamen']."</td>
+			   <td>".$row['nombre_examen']."</td>
 			   <td>".htmlentities($row['elemento'])."</td>";
 			   
 			    if (empty($row['unidadelem']))
