@@ -369,18 +369,23 @@ function ImprimirPlantillaB(idsolicitud, idexamen, responsable, procedencia, ori
             "&var16=" + sexo + "&var17=" + idedad, "ImprimirB", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
 }
 
-function ImprimirPlantillaC(idsolicitud, idexamen, resultado, responsable, procedencia, origen, observacion, valores_antibioticos, codigos_antibioticos, idbacteria, cantidad, idtarjeta, nombrearea, estab) {
+function ImprimirPlantillaC(idsolicitud, idexamen, resultado, responsable, procedencia, origen, observacion, valores_antibioticos, codigos_antibioticos, idbacteria, cantidad, idtarjeta, nombrearea, estab,idobservacion) {
 
     ventana_secundaria = window.open("ImprimirPlantillaC.php?var1=" + idsolicitud +
             "&var2=" + idexamen + 
             "&var3=" + resultado +
-            "&var4=" + encodeURIComponent(responsable) + "&var5=" + procedencia +
+            "&var4=" + encodeURIComponent(responsable) + 
+            "&var5=" + procedencia +
             "&var6=" + escape(origen) +
             "&var7=" + encodeURIComponent(observacion) +
             "&var8=" + encodeURIComponent(valores_antibioticos) +
-            "&var9=" + codigos_antibioticos + "&var10=" + idbacteria +
-            "&var11=" + encodeURIComponent(cantidad) + "&var12=" + idtarjeta + "&var13=" + escape(nombrearea) +
-            "&var14=" + escape(estab), "ImprimirC", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
+            "&var9=" + codigos_antibioticos + 
+            "&var10=" + idbacteria +
+            "&var11=" + encodeURIComponent(cantidad) + 
+            "&var12=" + idtarjeta + 
+            "&var13=" + escape(nombrearea) +
+            "&var14=" + escape(estab) +
+            "&var15=" + idobservacion, "ImprimirC", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
 }
 
 function ImprimirPlantillaCN(idsolicitud, idexamen, idarea, resultado, responsable, procedencia, origen, observacion) {
@@ -474,9 +479,9 @@ function MostrarVistaPreviaPlantillaC()
         idrecepcion = document.getElementById('txtidrecepcion').value;
         //detallesolicitud
         iddetalle = document.getElementById('txtiddetalle').value;
-
+        observacion = document.getElementById('txtobservacion').value;
         //observacion
-        observacion = document.getElementById('cmbObservacion').value;
+        idobservacion = document.getElementById('cmbObservacion').value;
         //responsable(idempleado)
         idempleado = document.getElementById('cmbEmpleados').value;
         //idarea="";
@@ -509,7 +514,8 @@ function MostrarVistaPreviaPlantillaC()
                 "&idrecepcion=" + idrecepcion + "&iddetalle=" + iddetalle + "&observacion=" + observacion +
                 "&idempleado=" + idempleado + "&valores_antibioticos=" + escape(valores_antibioticos) +
                 "&codigos_antibioticos=" + codigos_antibioticos + "&idtarjeta=" + idtarjeta +
-                "&idbacteria=" + idbacteria + "&cantidad=" + encodeURIComponent(cantidad) + "& estab=" + estab);
+                "&idbacteria=" + idbacteria + "&cantidad=" + encodeURIComponent(cantidad) +
+                "&estab=" + estab+"&idobservacion=" + idobservacion);
         ajax.onreadystatechange = function()
         {
             if (ajax.readyState == 4)
@@ -548,8 +554,9 @@ function GuardarResultadosPlantillaC()
     idexamen = document.getElementById('txtidexamen').value;
 
     //observacion
-    observacion = document.getElementById('cmbObservacion').value;
-
+    idobservacion = document.getElementById('cmbObservacion').value;
+   // alert (idobservacion);
+    observacion = document.getElementById('txtobservacion').value;
     //responsable(idempleado)
     idempleado = document.getElementById('cmbEmpleados').value;
 
@@ -583,7 +590,7 @@ function GuardarResultadosPlantillaC()
             "&iddetalle=" + iddetalle + "&observacion=" + encodeURIComponent(observacion) + "&idempleado=" + idempleado + "&valores_antibioticos=" +
             encodeURIComponent(valores_antibioticos) + "&codigos_antibioticos=" + codigos_antibioticos + "&idtarjeta=" + idtarjeta +
             "&tiporespuesta=" + tiporespuesta + "&idarea=" + idarea + "&nombrearea=" + escape(nombrearea) + "&resultado=" + resultado +
-            "&idbacteria=" + idbacteria + "&cantidad=" + encodeURIComponent(cantidad));
+            "&idbacteria=" + idbacteria + "&cantidad=" + encodeURIComponent(cantidad)+"&idobservacion="+idobservacion);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -696,6 +703,7 @@ function PreviosNegativos()
         idsolicitud = document.frmnuevo.txtidsolicitud.value;
         idempleado = document.frmnuevo.cmbEmpleados.value;
         observacion = document.frmnuevo.cmbObservacion.value;
+        idobservacion = document.getElementById('cmbObservacion').value;
         resultado = document.frmnuevo.cmbResultado.value;
         estab = document.frmnuevo.txtEstablecimiento.value;
         //alert(estab);	
@@ -713,7 +721,7 @@ function PreviosNegativos()
         ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idtarjeta=" + idtarjeta + "&tiporespuesta=" + tiporespuesta +
                 "&idarea=" + idarea + "&idsolicitud=" + idsolicitud + "&idempleado=" + idempleado + "&observacion=" + encodeURIComponent(observacion) +
-                "&resultado=" + resultado + "&estab=" + estab);
+                "&resultado=" + resultado + "&estab=" + estab +"&idobservacion=" +idobservacion);
         ajax.onreadystatechange = function()
         {
             if (ajax.readyState == 4)
@@ -747,14 +755,15 @@ function GuardarResultadosNegativosPlantillaC()
     //idexamen
     idexamen = document.getElementById('txtidexamen').value;
     //observacion
-    observacion = document.getElementById('cmbObservacion').value;
+    observacion = document.getElementById('txtobservacion').value;
+    idobservacion = document.getElementById('cmbObservacion').value;
     resultado = document.getElementById('cmbResultado').value;
     idempleado = document.getElementById('cmbEmpleados').value;
 
     ajax.open("POST", "ctrDatosResultadosExamen_PC.php", true);
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     ajax.send("opcion=" + opcion + "&idsolicitud=" + idsolicitud + "&idrecepcion=" + idrecepcion + "&iddetalle=" + iddetalle +
-            "&idexamen=" + idexamen + "&observacion=" + escape(observacion) + "&resultado=" + resultado + "&idempleado=" + idempleado);
+            "&idexamen=" + idexamen + "&observacion=" + escape(observacion) + "&resultado=" + resultado + "&idempleado=" + idempleado + "&idobservacion="+ idobservacion);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)

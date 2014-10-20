@@ -34,7 +34,7 @@ class clsElementosExamen
      $query = "UPDATE lab_elementos SET elemento='$nomelemento' , subelemento='$subelemento',unidadelem=$unidadele, 
 		 observelem=$observacionele,idusuariomod='$usuario', fechahoramod=NOW(),fechaini=$Fechaini, 
 		 fechafin=$Fechafin WHERE id=$idelemento AND idestablecimiento=$lugar";
-    // echo $query;
+     //echo $query;
     $result = pg_query($query);
 	 if (!$result)
        return false;
@@ -231,7 +231,7 @@ function consultar($lugar){
                AND lab_conf_examen_estab.idplantilla=2 AND lab_elementos.idestablecimiento=$lugar
                ORDER BY lab_elementos.id_conf_examen_estab
                LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
-      //  echo $query;
+       // echo $query;
      
 	 $result = pg_query($query);
 	 if (!$result)
@@ -258,7 +258,7 @@ function consultar($lugar){
 //**********************************FIN FUNCIONES PARA MANEJO DE PAGINACION*****************************************/
  
 }//CLASE
-
+/*
 class clsLabor_ElementosExamen
 {
 	//INSERTA UN REGISTRO          
@@ -313,5 +313,5 @@ class clsLabor_ElementosExamen
 	}
 
 
-}
+}*/
 ?>

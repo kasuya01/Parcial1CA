@@ -227,15 +227,13 @@ function IngExamenxEstablecimiento($idexamen,$nomexamen,$Hab,$usuario,$IdFormula
      //$query = "SELECT * FROM lab_examenes WHERE idexamen='$idexamen'";
 	  $query = "SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.codigo_examen as idexamen, 
                     lab_conf_examen_estab.nombre_examen as nombreexamen, ctl_area_servicio_diagnostico.nombrearea,
-                    lab_plantilla.id as idplantilla,
-                    ctl_examen_servicio_diagnostico.idestandar, 
+                    lab_plantilla.id as idplantilla,ctl_examen_servicio_diagnostico.idestandar, 
                     (CASE WHEN lab_conf_examen_estab.ubicacion=0 THEN 'Todas las Procedencias' 
                     WHEN lab_conf_examen_estab.ubicacion=1 THEN 'Hospitalización y Emergencia' 
                     WHEN lab_conf_examen_estab.ubicacion=4 THEN 'Laboratorio' END ) AS Ubicacion, lab_conf_examen_estab.ubicacion as idubicacion,
-                    (SELECT id 
-                    FROM ctl_examen_servicio_diagnostico 
+                    (SELECT id FROM ctl_examen_servicio_diagnostico 
                     WHERE lab_conf_examen_estab.idestandarrep=ctl_examen_servicio_diagnostico.id) AS ctlidestandarrep, 
-                    (SELECT idestandar 
+                    (SELECT idestandar
                     FROM ctl_examen_servicio_diagnostico 
                     WHERE lab_conf_examen_estab.idestandarrep=ctl_examen_servicio_diagnostico.id) AS estandarrep, 
                     (SELECT descripcion FROM ctl_examen_servicio_diagnostico 
@@ -256,7 +254,7 @@ function IngExamenxEstablecimiento($idexamen,$nomexamen,$Hab,$usuario,$IdFormula
                     INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
                     LEFT JOIN cit_programacion_exams ON lab_conf_examen_estab.id=cit_programacion_exams.id_examen_establecimiento 
                     WHERE lab_areasxestablecimiento.condicion='H' AND lab_areasxestablecimiento.idestablecimiento=$lugar 
-                        AND lab_conf_examen_estab.id=$idexamen";
+                    AND lab_conf_examen_estab.id=$idexamen";
           
         // echo $query;
      $result = pg_query($query);
