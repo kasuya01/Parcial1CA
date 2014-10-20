@@ -50,34 +50,37 @@ function CargarDatos()
 	var getVars = query.split(/&/);
 	for ( i = 0; i < getVars.length; i++)
 	{         if ( getVars[i].substr(0,5) == 'var1=' )//loops through this array and extract each name and value
-	                        nec = getVars[i].substr(5);
-				if ( getVars[i].substr(0,5) == 'var2=' )
-							examen = getVars[i].substr(5);
-				if ( getVars[i].substr(0,5) == 'var3=' )
-							codigoex = getVars[i].substr(5);
-				if ( getVars[i].substr(0,5) == 'var4=' )
-							area = getVars[i].substr(5);
-			        if ( getVars[i].substr(0,5) == 'var5=' )
-							iddetallesol = getVars[i].substr(5);
-			        if ( getVars[i].substr(0,5) == 'var6=' )
-						    idsolicitudsol= getVars[i].substr(5);	
-			        if ( getVars[i].substr(0,5) == 'var7=' )
-			 			    paciente= getVars[i].substr(5);
-			        if ( getVars[i].substr(0,5) == 'var8=' )
-						    idrecepcionsol = getVars[i].substr(5);
-			        if ( getVars[i].substr(0,5) == 'var9=' )
-							nombrearea= getVars[i].substr(5);
-			        if ( getVars[i].substr(0,5) == 'var10=' )
-					    procedencia=escape(getVars[i].substr(5));
-			        if ( getVars[i].substr(0,5) == 'var11=' )
-					    origen=escape(getVars[i].substr(5));
-			        if ( getVars[i].substr(0,5) == 'var12=' )
-					    impresion=escape(getVars[i].substr(5));
-				if ( getVars[i].substr(0,5) == 'var13=' )
-					    establecimiento=escape(getVars[i].substr(5));
-                                if ( getVars[i].substr(0,5) == 'var14=' )
-                                            IdEstandar=escape(getVars[i].substr(5));   
+	               nec = getVars[i].substr(5);
+		  if ( getVars[i].substr(0,5) == 'var2=' )
+                       examen = getVars[i].substr(5);
+	  	  if ( getVars[i].substr(0,5) == 'var3=' )
+		       codigoex = getVars[i].substr(5);
+		  if ( getVars[i].substr(0,5) == 'var4=' )
+                       area = getVars[i].substr(5);
+		  if ( getVars[i].substr(0,5) == 'var5=' )
+                       iddetallesol = getVars[i].substr(5);
+		  if ( getVars[i].substr(0,5) == 'var6=' )
+                       idsolicitudsol= getVars[i].substr(5);	
+		  if ( getVars[i].substr(0,5) == 'var7=' )
+                       paciente= getVars[i].substr(5);
+		  if ( getVars[i].substr(0,5) == 'var8=' )
+                       idrecepcionsol = getVars[i].substr(5);
+		  if ( getVars[i].substr(0,5) == 'var9=' )
+                       nombrearea= getVars[i].substr(5);
+		  if ( getVars[i].substr(0,5) == 'var10=' )
+                       procedencia=escape(getVars[i].substr(5));
+		  if ( getVars[i].substr(0,5) == 'var11=' )
+		       origen=escape(getVars[i].substr(5));
+		  if ( getVars[i].substr(0,5) == 'var12=' )
+		       impresion=escape(getVars[i].substr(5));
+		  if ( getVars[i].substr(0,5) == 'var13=' )
+		       establecimiento=escape(getVars[i].substr(5));
+                  if ( getVars[i].substr(0,5) == 'var14=' )
+                       IdEstandar=escape(getVars[i].substr(5)); 
+                  if ( getVars[i].substr(0,5) == 'var18=' )
+                       estabext=escape(getVars[i].substr(5));              
 	}
+	
 	document.frmnuevo.txtnec.value=nec;
 	document.frmnuevo.txtarea.value=area;
 	document.frmnuevo.txtpaciente.value=paciente;
@@ -95,6 +98,7 @@ function CargarDatos()
  
 	$bandera=$_GET['var12'];
         $IdEstandar=$_GET['var14'];
+       
 ?>
 </script>
 </head>
@@ -109,7 +113,7 @@ function CargarDatos()
     	<tr class="CobaltButton" ><td colspan="4" align="center"> <h3>DATOS GENERALES</h3></td></tr>
 	<tr>
 		  <td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
-		  <td class="StormyWeatherDataTD"><?php echo $_GET['var13'];?></td>
+		  <td class="StormyWeatherDataTD"><?php echo $_GET['var18']." ESTANDAR". $_GET['var14'];?></td>
 	</tr>	    
  	<tr>
 		  <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
@@ -151,29 +155,29 @@ function CargarDatos()
             
         </td>
     </tr>
-	<tr>
-	    <td width="30%" class="StormyWeatherFieldCaptionTD">*Validado Por</td>
+    <tr>
+        <td width="30%" class="StormyWeatherFieldCaptionTD">*Validado Por</td>
         <td width="70%" class="StormyWeatherDataTD">
-			 <div id="divEncargado">
-			 <select id="cmbEmpleados" name="cmbEmpleados" size="1" >
-			 <option value="0" >--Seleccione Empleado--</option>
-			 </select>
-			 </div>
-		</td>
+            <div id="divEncargado">
+                <select id="cmbEmpleados" name="cmbEmpleados" size="1" >
+                    <option value="0" >--Seleccione Empleado--</option>
+		</select>
+            </div>
+	</td>
     </tr>
-	<tr>
+    <tr>
         <td width="30%" class="StormyWeatherFieldCaptionTD">Elemento Encontrado </td>
         <td width="70%" class="StormyWeatherDataTD">
-		    <select id="cmbElemento" name="cmbElemento" size="1" >
-			<option value="0" >--Seleccione Elemento--</option>
-			<?php
-				include('clsPlantillaD.php');
-				$obj=new clsPlantillaD;
-				$consulta_bac= $obj->LeerElementosTincion();
-				while($row = mysql_fetch_array($consulta_bac)){
-				echo "<option value='" . $row[0]. "'>" . $row[1] . "</option>";
-				}
-				mysql_free_result($consulta_bac);
+            <select id="cmbElemento" name="cmbElemento" size="1" >
+                <option value="0" >--Seleccione Elemento--</option>
+                    <?php
+                        include('clsPlantillaD.php');
+                        $obj=new clsPlantillaD;
+			$consulta_bac= $obj->LeerElementosTincion();
+			while($row = pg_fetch_array($consulta_bac)){
+                            echo "<option value='" . $row['id']. "'>" . $row['elementotincion'] . "</option>";
+			}
+			pg_free_result($consulta_bac);
 			?>	
 			</select>	
 		</td>
@@ -186,10 +190,10 @@ function CargarDatos()
 		   	<?php
 				$obj=new clsPlantillaD;
 				$consulta_bac= $obj->LeerCantidadTincion();
-				while($row = mysql_fetch_array($consulta_bac)){
+				while($row = pg_fetch_array($consulta_bac)){
 				echo "<option value='" . $row[0]. "'>" . $row[1] . "</option>";
 				}
-				mysql_free_result($consulta);
+				pg_free_result($consulta);
 			?>	
 			</select>
 		</td>
@@ -202,13 +206,14 @@ function CargarDatos()
 				<?php 
                                 $db = new ConexionBD;
                                 if($db->conectar()==true){
-					$consulta = "SELECT lab_codigosxexamen.IdResultado,Resultado
-                        FROM lab_codigosxexamen
-                        INNER JOIN lab_codigosresultados 
-                        ON lab_codigosxexamen.IdResultado = lab_codigosresultados.IdResultado
-                        WHERE lab_codigosresultados.IdResultado<> 5 AND lab_codigosxexamen.IdEstandar = '$IdEstandar'";
-                                        $resultado = mysql_query($consulta);
-					while ($rows = mysql_fetch_array($resultado)){
+					$consulta = "SELECT idresultado,resultado 
+                                                     FROM lab_codigosxexamen
+                                                     INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id = lab_codigosxexamen.idestandar 
+                                                     INNER JOIN lab_codigosresultados ON lab_codigosresultados.id = lab_codigosxexamen.idresultado
+                                                     WHERE ctl_examen_servicio_diagnostico.idestandar='$IdEstandar'";
+                                        echo $consulta;
+                                        $resultado = pg_query($consulta);
+					while ($rows = pg_fetch_array($resultado)){
 						echo '<option value="' . $rows[0] . '">' . $rows[0] . '  -  ' . $rows[1] . '</option>'; 
 					}
 //or die('La consulta fall&oacute;: ' mysql_error());
