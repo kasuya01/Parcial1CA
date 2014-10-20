@@ -44,11 +44,14 @@ else{
 <script language="JavaScript" type="text/javascript">
 function MostrarSolicitudesPendientes()
 {
-	if ((document.getElementById('cmbArea').value == 0) && (document.getElementById('txtexpediente').value == "")&& (document.getElementById('txtfecharecep').value == "")&& (document.getElementById('CmbServicio').value == 0))
+	if ((document.getElementById('cmbArea').value == 0) 
+                && (document.getElementById('txtexpediente').value == "")
+                && (document.getElementById('txtfecharecep').value == "")
+                && (document.getElementById('CmbServicio').value == 0))
 			alert("Ingrese al menos un parámetro de búsqueda");
 	else  
 		MuestrasPendientes();
-    
+               // alert("llega");
 }
 
 function BuscarEstablecimiento(idtipoesta){
@@ -159,11 +162,7 @@ if ($nivel==33){
                                                                 SELECT DISTINCT id_area_atencion 
                                                                 FROM mnt_area_mod_estab WHERE id_establecimiento = $lugar)";
                                             
-                                           /* "SELECT mse.id,mse.nombre 
-						FROM mnt_servicio_externo mse 
-						INNER JOIN mnt_servicio_externo_establecimiento msee 
-						ON mse.id=msee.id
-						WHERE   msee.id_establecimiento=$lugar";*/
+                                       
                                             
 						$resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
 						//por cada registro encontrado en la tabla me genera un <option>

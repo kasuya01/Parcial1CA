@@ -5,7 +5,7 @@ $area=$_SESSION['Idarea'];
 include ("clsSolicitudesPorPaciente.php");
 
 //variables POST
-$opcion=$_POST['opcion'];
+$opcion= $_POST['opcion'];
 
 //creando los objetos de las clases
 $objdatos = new clsSolicitudesPorPaciente;
@@ -13,74 +13,8 @@ $objdatos = new clsSolicitudesPorPaciente;
 switch ($opcion) 
 {
   	case 1:  
-		/*$idexpediente=$_POST['idexpediente'];
-	//$idsolicitud=$_POST['idsolicitud'];
-		$primernombre=$_POST['primernombre'];
-		$segundonombre=$_POST['segundonombre'];
-		$primerapellido=$_POST['primerapellido'];
-		$segundoapellido=$_POST['segundoapellido'];
 		
-		$fechaconsulta=$_POST['fechaconsulta'];
-		$IdEstab=$_POST['IdEstab'];
-		$IdServ=$_POST['IdServ'];
-		$IdSubServ=$_POST['IdSubServ'];
-			
-	
-		$query = "SELECT mnt_empleados.IdEmpleado AS IdMedico,NombreEmpleado AS NombreMedico,NombreSubServicio AS Origen,NombreServicio AS Procedencia, mnt_expediente.IdNumeroExp AS IdNumeroExp,CONCAT_WS(' ',PrimerApellido,NULL,SegundoApellido,',',PrimerNombre,NULL,SegundoNombre) AS NombrePaciente,	DATE_FORMAT(FechaSolicitud,'%e/ %m / %Y') AS FechaSolicitud,sec_solicitudestudios.IdSolicitudEstudio, 
-		CASE sec_solicitudestudios.Estado 
-			WHEN 'D' THEN 'Digitada'
-			WHEN 'R' THEN 'Recibida'
-			WHEN 'P' THEN 'En Proceso'    
-			WHEN 'C' THEN 'Completa' END AS Estado,mnt_establecimiento.Nombre
-		FROM sec_historial_clinico 
-		INNER JOIN sec_solicitudestudios   ON sec_historial_clinico.IdHistorialClinico= sec_solicitudestudios.IdHistorialClinico
-		INNER JOIN mnt_empleados  ON sec_historial_clinico.IdEmpleado=mnt_empleados.IdEmpleado
-		INNER JOIN mnt_expediente ON sec_historial_clinico.IdNumeroExp= mnt_expediente.IdNumeroExp
-		INNER JOIN mnt_datospaciente ON mnt_expediente.IdPaciente=mnt_datospaciente.IdPaciente  
-		INNER JOIN mnt_subservicio ON mnt_subservicio.IdSubServicio= sec_historial_clinico.IdSubServicio
-		INNER JOIN mnt_servicio ON mnt_servicio.IdServicio= mnt_subservicio.IdServicio
-		INNER JOIN mnt_establecimiento ON sec_historial_clinico.IdEstablecimiento=mnt_establecimiento.IdEstablecimiento
-		WHERE sec_solicitudestudios.IdServicio ='DCOLAB' AND";
-		$ban=0;	
-	
-		//VERIFICANDO LOS POST ENVIADOS
-		if (!empty($_POST['IdEstab']))
-		{ $query .= " sec_historial_clinico.IdEstablecimiento ='".$_POST['IdEstab']."' AND";}	
-				
-		if (!empty($_POST['IdServ']))
-		{ $query .= " mnt_subservicio.IdServicio ='".$_POST['IdServ']."' AND";}
-			
-		if (!empty($_POST['IdSubServ']))
-		{ $query .= " mnt_subservicio.IdSubServicio ='".$_POST['IdSubServ']."' AND";}
-				
-		if (!empty($_POST['idexpediente']))
-		{ $query .= " sec_solicitudestudios.IdNumeroExp='".$_POST['idexpediente']."' AND";}
-			
-		if (!empty($_POST['primerapellido']))
-		{ $query .= " mnt_datospaciente.PrimerApellido='".$_POST['primerapellido']."' AND";}
-					
-		if (!empty($_POST['segundoapellido']))
-		{ $query .= " mnt_datospaciente.SegundoApellido='".$_POST['segundoapellido']."' AND";}
-				
-		if (!empty($_POST['primernombre']))
-		{ $query .= " mnt_datospaciente.PrimerNombre='".$_POST['primernombre']."' AND";}
-				
-		if (!empty($_POST['segundonombre']))
-		{ $query .= " mnt_datospaciente.SegundoNombre='".$_POST['segundonombre']."' AND";}
-					
-		if (!empty($_POST['fechaconsulta']))
-		{ $Nfecha=explode("/",$fechaconsulta);
-		  //print_r($Nfecha);
-                   $Nfechacon=$Nfecha[2]."-".$Nfecha[1]."-".$Nfecha[0]; 
-		   $query .= " sec_solicitudestudios.FechaSolicitud='".$Nfechacon."' AND";}
-                        		
-			
-		if((empty($_POST['idexpediente'])) and (empty($_POST['primerapellido'])) and (empty($_POST['segundoapellido'])) and (empty($_POST['primernombre'])) and (empty($_POST['segundonombre'])) and (empty($_POST['fechaconsulta'])) AND (empty($_POST['IdEstab'])) AND (empty($_POST['IdServ'])) AND (empty($_POST['IdSubServ'])))
-		{
-			$ban=1;
-		}*/
-    
-    $ban = 0;
+        $ban = 0;
         $IdEstab        = $_POST['IdEstab'];
         $IdServ         = $_POST['IdServ'];
         $IdSubServ      = $_POST['IdSubServ'];
@@ -88,91 +22,101 @@ switch ($opcion)
         $idexamen       = $_POST['idexamen'];
         $idexpediente   = $_POST['idexpediente'];
         $fechasolicitud = $_POST['fechasolicitud'];
-        $fecharecepcion = $_POST['fecharecepcion'];
-        $PNombre        = $_POST['PNombre'];
-        $SNomre         = $_POST['SNombre'];
-        $PApellido      = $_POST['PApellido'];
-        $SApellido      = $_POST['SApellido'];
+        $fecharecepcion = $_POST['fecha'];
+        $PNombre        = $_POST['primernombre'];
+        $SNomre         = $_POST['segundonombre'];
+        $PApellido      = $_POST['primerapellido'];
+        $SApellido      = $_POST['segundoapellido'];
         $TipoSolic      = $_POST['TipoSolic'];
         $cond1="";
         $cond2="";
         $query="";
         $query2="";
         $where_with="";
+        
+         $idexpediente="'".$idexpediente."'";
+         $cond0="and";
+        
+        
+        
+        
       //  echo $IdEstab." - ".$lugar;
         if (!empty($_POST['IdEstab'])) {
            if ($_POST['IdEstab']<>$lugar){
-               $cond1 .= " t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " AND";
-               $cond2 .= " t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " AND";
+               $cond1 .=$cond0. "  t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " ";
+               $cond2 .=$cond0. "  t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " ";
            }
           
         }
 
         if (!empty($_POST['IdServ'])) {
-            $cond1 .= " t13.id  = " . $_POST['IdServ'] . " AND";
-            $cond2 .= " t13.id  = " . $_POST['IdServ'] . " AND";
+            $cond1 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . " ";
+            $cond2 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . " ";
             $where_with = "id_area_atencion = $IdServ AND ";
         }
 
         if (!empty($_POST['IdSubServ'])) {
-            $cond1 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
-            $cond2 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
+            $cond1 .= $cond0." t10.id = " . $_POST['IdSubServ'] . " ";
+            $cond2 .= $cond0." t10.id = " . $_POST['IdSubServ'] . " ";
         }
 
         if (!empty($_POST['idarea'])) {
-            $cond1 .= " t08.id = " . $_POST['idarea'] . " AND";
-            $cond2 .= " t08.id = " . $_POST['idarea'] . " AND";
+            $cond1 .= " and t08.id = " . $_POST['idarea'] . " ";
+            $cond2 .= " and t08.id = " . $_POST['idarea'] . " ";
         }
 
         if (!empty($_POST['idexpediente'])) {
-            $cond1 .= " t06.numero = '" . $_POST['idexpediente'] . "' AND";
-            $cond2 .= " t06.numero = '" . $_POST['idexpediente'] . "' AND";
+          $idexpediente="'".$idexpediente."'";
+            
+            $cond1 .= "and t06.numero = '".$_POST['idexpediente'] ."'    ";
+            $cond2 .= "and t06.numero = '".$_POST['idexpediente'] ."'   ";
         }
 
         if (!empty($_POST['idexamen'])) {
-             $cond1 .= " t04.id = " . $_POST['idexamen'] . " AND";
-             $cond2 .= " t04.id = " . $_POST['idexamen'] . " AND";
+             $cond1 .= " and t04.id = " . $_POST['idexamen'] . " ";
+             $cond2 .= " and t04.id = " . $_POST['idexamen'] . " ";
         }
 
         if (!empty($_POST['fechasolicitud'])) {
-             $cond1 .= " t02.fecha_solicitud = '" . $_POST['fechasolicitud'] . "' AND";
-             $cond2 .= " t02.fecha_solicitud = '" . $_POST['fechasolicitud'] . "' AND";
+             $cond1 .= " and t02.fecha_solicitud = '" . $_POST['fechasolicitud'] . "' ";
+             $cond2 .= " and  t02.fecha_solicitud = '" . $_POST['fechasolicitud'] . "' ";
         }
 
-        if (!empty($_POST['fecharecepcion'])) {
-             $cond1 .= " t03.fecharecepcion = '" . $_POST['fecharecepcion'] . "' AND";
-             $cond2 .= " t03.fecharecepcion = '" . $_POST['fecharecepcion'] . "' AND";
+        if (!empty($_POST['fecha'])) {
+             $cond1 .= " and t03.fecharecepcion = '".$_POST['fecha']."'       ";
+             $cond2 .= " and t03.fecharecepcion = '".$_POST['fecha']."'       ";
         }
 
-        if (!empty($_POST['PNombre'])) {
-            $cond1 .= " t07.primer_nombre ILIKE '" . $_POST['PNombre'] . "%' AND";
-            $cond2 .= " t07.primer_nombre ILIKE '" . $_POST['PNombre'] . "%' AND";
+        if (!empty($_POST['primernombre'])) {
+          
+            $cond1 .= " and t07.primer_nombre  ILIKE  '".$_POST['primernombre']."%'      ";
+            $cond2 .= " and  t07.primer_nombre ILIKE  '".$_POST['primernombre']."%'      ";
         }
 
-        if (!empty($_POST['SNombre'])) {
-            $cond1 .= " t07.segundo_nombre ILIKE '" . $_POST['SNombre'] . "%' AND";
-            $cond2 .= " t07.segundo_nombre ILIKE '" . $_POST['SNombre'] . "%' AND";
+        if (!empty($_POST['segundonombre'])) {
+             $cond1 .= " and t07.segundo_nombre  ILIKE '". $_POST['segundonombre'] ."%'       ";
+             $cond2 .= " and t07.segundo_nombre  ILIKE '". $_POST['segundonombre'] ."%'       ";
         }
 
-        if (!empty($_POST['PApellido'])) {
-            $cond1 .= " t07.primer_apellido ILIKE '" . $_POST['PApellido'] . "%' AND";
-            $cond2 .= " t07.primer_apellido ILIKE '" . $_POST['PApellido'] . "%' AND";
+        if (!empty($_POST['primerapellido'])) {
+            $cond1 .= " and  t07.primer_apellido ILIKE '".$_POST['primerapellido']."%'         ";
+            $cond2 .="  and  t07.primer_apellido ILIKE '".$_POST['primerapellido']."%'         ";
         }
 
-        if (!empty($_POST['SApellido'])) {
-            $cond1 .= " t07.segundo_apellido ILIKE '" . $_POST['SApellido'] . "%' AND";
-            $cond2 .= " t07.segundo_apellido ILIKE '" . $_POST['SApellido'] . "%' AND";
+        if (!empty($_POST['segundoapellido'])) {
+            $cond1 .=" and t07.segundo_apellido ILIKE '".$_POST['segundoapellido']."%'       ";
+            $cond2 .=" and t07.segundo_apellido ILIKE '".$_POST['segundoapellido']."%'       ";
         }
 
         if (!empty($_POST['TipoSolic'])) {
-            $cond1 .= " t17.idtiposolicitud = '" . $_POST['TipoSolic'] . "' AND";
-            $cond2 .= " t17.idtiposolicitud = '" . $_POST['TipoSolic'] . "' AND";
+            $cond1 .= " and t17.idtiposolicitud = '".$_POST['TipoSolic']."'  ";
+            $cond2 .= " and t17.idtiposolicitud = '".$_POST['TipoSolic']."'  ";
         }
 
-        if ((empty($_POST['idexpediente'])) AND ( empty($_POST['idarea'])) AND ( empty($_POST['fechasolicitud']))
+        if ((empty($_POST['idexpediente'])) AND ( empty($_POST['idarea'])) AND ( empty($_POST['fecha']))
                 AND ( empty($_POST['IdEstab'])) AND ( empty($_POST['IdServ'])) AND ( empty($_POST['IdSubServ']))
-                AND ( empty($_POST['PNombre'])) AND ( empty($_POST['SNombre'])) AND ( empty($_POST['PApellido']))
-                AND ( empty($_POST['SApellido'])) AND ( empty($_POST['idexamen'])) AND ( empty($_POST['TipoSolic']))) {
+                AND ( empty($_POST['primernombre'])) AND ( empty($_POST['segundonombre'])) AND ( empty($_POST['primerapellido']))
+                AND ( empty($_POST['segundoapellido'])) AND ( empty($_POST['idexamen'])) AND ( empty($_POST['TipoSolic']))) {
             $ban = 1;
         }
         
@@ -183,6 +127,8 @@ switch ($opcion)
             
           //  echo $query1;
            // $query_search = 
+            //echo $cond1;
+            //echo $cond2;
         }     
        // echo $cond2;
          $query="WITH tbl_servicio AS (
@@ -203,98 +149,70 @@ switch ($opcion)
                     LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
                     WHERE $where_with t02.id_establecimiento = $lugar
                     ORDER BY 2)
-            
-                    SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
-                       t01.id ,
-                       t02.id AS idsolicitudestudio,
-                       t04.idplantilla, 
-                       t01.id AS iddetallesolicitud,
-                       t03.numeromuestra, 
-                       t06.numero AS idnumeroexp, 
-                       t03.id AS idrecepcionmuestra, 
-                       t04.codigo_examen AS idexamen, 
-                       t04.nombre_examen AS nombreexamen, 
-                       t01.indicacion, t08.nombrearea, 
-                       CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,
-                       t07.segundo_apellido,t07.apellido_casada) AS paciente,
-                       t20.servicio AS nombresubservicio,
-                       t13.nombre AS nombreservicio, 
-                       t02.impresiones, 
-                       t14.nombre, 
-                       t09.id AS idhistorialclinico,
-                       TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud, 
-                       t17.tiposolicitud AS prioridad, 
-                       t07.fecha_nacimiento AS fechanacimiento, 
-                       t19.nombre AS sexo, 
-                       t18.idestandar,
-                       t02.id_establecimiento_externo,
-                       (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-                        t01.observacion,
-                        CASE t02.estado 
-			WHEN 1 THEN 'Digitada'
-			WHEN 2 THEN 'Recibida'
-			WHEN 3 THEN 'En Proceso'    
-			WHEN 4 THEN 'Completa' END AS estado
+                 SELECT t01.id,
+                t02.id, 
+                TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
+                t06.numero AS idnumeroexp, 
+                CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,
+                t07.segundo_apellido,t07.apellido_casada) AS paciente,
+                t20.servicio AS nombresubservicio,
+                t13.nombre AS nombreservicio, 
+                t14.nombre, 
+                TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud, 
+                (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
+                CASE t01.estadodetalle 
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada'
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='R') THEN 'Recibida'
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='P') THEN 'En Proceso'    
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' END AS estado,
+            TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta
             FROM sec_detallesolicitudestudios t01 
             INNER JOIN sec_solicitudestudios t02                ON (t02.id = t01.idsolicitudestudio) 
-            INNER JOIN lab_recepcionmuestra t03                 ON (t02.id = t03.idsolicitudestudio) 
+            INNER JOIN lab_recepcionmuestra t03                 ON (t03.idsolicitudestudio=t02.id) 
             INNER JOIN lab_conf_examen_estab t04                ON (t04.id = t01.id_conf_examen_estab) 
             INNER JOIN mnt_area_examen_establecimiento t05      ON (t05.id = t04.idexamen) 
             INNER JOIN mnt_expediente t06                       ON (t06.id = t02.id_expediente) 
             INNER JOIN mnt_paciente t07                         ON (t07.id = t06.id_paciente) 
             INNER JOIN ctl_area_servicio_diagnostico t08        ON (t08.id = t05.id_area_servicio_diagnostico 
-            AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) 
+            AND t08.id_atencion =(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) 
             INNER JOIN sec_historial_clinico t09                ON (t09.id = t02.id_historial_clinico) 
             INNER JOIN mnt_aten_area_mod_estab t10              ON (t10.id = t09.idsubservicio) 
             INNER JOIN ctl_atencion t11                         ON (t11.id = t10.id_atencion) 
             INNER JOIN mnt_area_mod_estab t12                   ON (t12.id = t10.id_area_mod_estab) 
             INNER JOIN ctl_area_atencion t13                    ON (t13.id = t12.id_area_atencion) 
             INNER JOIN ctl_establecimiento t14                  ON (t14.id = t09.idestablecimiento) 
-            INNER JOIN cit_citas_serviciodeapoyo t15            ON (t02.id = t15.id_solicitudestudios) 
+            INNER JOIN cit_citas_serviciodeapoyo t15            ON (t15.id_solicitudestudios=t02.id) 
             INNER JOIN ctl_estado_servicio_diagnostico t16      ON (t16.id = t01.estadodetalle) 
             INNER JOIN lab_tiposolicitud t17                    ON (t17.id = t02.idtiposolicitud) 
             INNER JOIN ctl_examen_servicio_diagnostico t18      ON (t18.id = t05.id_examen_servicio_diagnostico) 
-            INNER JOIN ctl_sexo t19                             ON (t19.id = t07.id_sexo)
-            INNER JOIN tbl_servicio t20                         ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
-            WHERE  t02.id_establecimiento = $lugar
-            AND $cond1
+	   INNER JOIN tbl_servicio t20                         ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
+            WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+            --AND (t16.idestado = 'D')  
+            AND t02.id_establecimiento = $lugar
+            $cond1
         
             UNION
 
-            SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
-                   t01.id ,
-                   t02.id AS idsolicitudestudio,
-                   t04.idplantilla, 
-                   t01.id AS iddetallesolicitud,
-                   t03.numeromuestra,
-                   t06.numero AS idnumeroexp,
-                   t03.id AS idrecepcionmuestra,
-                   t04.codigo_examen AS idexamen,
-                   t04.nombre_examen AS nombreexamen,
-                   t01.indicacion, t08.nombrearea,
-                   CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido,
-                   t07.apellido_casada) AS paciente, 
-                   t11.nombre AS nombresubservicio, 
-                   t13.nombre AS nombreservicio, 
-                   t02.impresiones, 
-                   t14.nombre,
-                   t09.id AS idhistorialclinico, 
-                   TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud, 
-                   t17.tiposolicitud AS prioridad, 
-                   t07.fecha_nacimiento AS fechanacimiento, 
-                   t19.nombre AS sexo, 
-                   t18.idestandar,
-                   t02.id_establecimiento_externo,
-                   (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-            t01.observacion,
-            CASE t02.estado 
-			WHEN 1 THEN 'Digitada'
-			WHEN 2 THEN 'Recibida'
-			WHEN 3 THEN 'En Proceso'    
-			WHEN 4 THEN 'Completa' END AS estado
-                FROM sec_detallesolicitudestudios t01 
-            INNER JOIN sec_solicitudestudios t02                    ON (t02.id = t01.idsolicitudestudio) 
-            INNER JOIN lab_recepcionmuestra t03                     ON (t02.id = t03.idsolicitudestudio) 
+            SELECT t01.id,
+            t02.id, 
+            TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
+            t06.numero AS idnumeroexp,
+            CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido,
+            t07.apellido_casada) AS paciente, 
+            t11.nombre AS nombresubservicio, 
+            t13.nombre AS nombreservicio, 
+            t14.nombre,
+            TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud, 
+            (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
+            CASE t01.estadodetalle 
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada'
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='R') THEN 'Recibida'
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='P') THEN 'En Proceso'    
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' END AS estado,
+            TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta
+            FROM sec_detallesolicitudestudios t01 
+            INNER JOIN sec_solicitudestudios t02                    	    ON (t02.id = t01.idsolicitudestudio) 
+            INNER JOIN lab_recepcionmuestra t03                     ON (t03.idsolicitudestudio=t02.id) 
             INNER JOIN lab_conf_examen_estab t04                    ON (t04.id = t01.id_conf_examen_estab) 
             INNER JOIN mnt_area_examen_establecimiento t05          ON (t05.id = t04.idexamen)
             INNER JOIN mnt_dato_referencia t09                      ON t09.id=t02.id_dato_referencia 
@@ -307,29 +225,30 @@ switch ($opcion)
             INNER JOIN mnt_area_mod_estab t12                       ON (t12.id = t10.id_area_mod_estab) 
             INNER JOIN ctl_area_atencion t13                        ON (t13.id = t12.id_area_atencion) 
             INNER JOIN ctl_establecimiento t14                      ON (t14.id = t09.id_establecimiento)
-            INNER JOIN cit_citas_serviciodeapoyo t15                ON (t02.id = t15.id_solicitudestudios) 
+            INNER JOIN cit_citas_serviciodeapoyo t15                ON (t15.id_solicitudestudios=t02.id) 
             INNER JOIN ctl_estado_servicio_diagnostico t16          ON (t16.id = t01.estadodetalle) 
-            INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud) 
-            INNER JOIN ctl_examen_servicio_diagnostico t18          ON (t18.id = t05.id_examen_servicio_diagnostico) 
-            INNER JOIN ctl_sexo t19                                 ON (t19.id = t07.id_sexo)
-            WHERE t02.id_establecimiento = $lugar 
-                AND $cond2"; 
-              
-				
-		
+            INNER JOIN lab_tiposolicitud t17 			    ON (t17.id = t02.idtiposolicitud) 
+            WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+            --AND  (t16.idestado = 'D') 
+            AND t02.id_establecimiento = $lugar 
+                $cond2"; 
+    
+    
+    
 	     //echo $query_search;
 		$consulta=$objdatos->BuscarSolicitudesPaciente($query); 
 		
 		$NroRegistros= $objdatos->NumeroDeRegistros($query);				
-     $imprimir="<table width='96%' border='0' align='center'>
+     echo"<table width='96%' border='0' align='center'>
 	        <tr>
 			<td colspan='7' align='center' ><h3><strong>TOTAL DE SOLICITUDES: ".$NroRegistros."</strong></h3></td>
 		</tr>
 		<tr>
 		</table> "; 
-    $imprimir.="<table width='95%' border='1' align='center'>
-			<tr class='CobaltFieldCaptionTD'>
-				<td>Fecha Recepci&oacute;n</td>
+   
+     echo "<table width='81%' border='1' align='center'>
+                <tr class='CobaltFieldCaptionTD'>
+			<td>Fecha Recepci&oacute;n</td>
 				<td>NEC </td>
 				<td>Nombre Paciente</td>
 					<td>Origen</td>
@@ -337,54 +256,47 @@ switch ($opcion)
 					<td>Establecimiento</td>
 					<td>Estado Solicitud</td>
 					<td>Fecha Consulta</td>
-				</tr>";    
-				$pos=0;
-				while ($row = pg_fetch_array($consulta))
-				{ 
-					//$Idsolic=$row['IdSolicitudEstudio'];
-                                         $Idsolic=$row[1];
-					$fecha=$objdatos->BuscarRecepcion($Idsolic);
-					$recepcion= pg_fetch_array($fecha);
-					$fechacita=$objdatos->BuscarCita($Idsolic);
-					$cita= pg_fetch_array($fechacita);
-					if (!empty($recepcion)){
-			$imprimir.="<tr>
-					<td width='9%'>".$recepcion['fecharecepcion']."</td>";
-						}else{ 		
-		$imprimir.="<tr>
-						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-						}
-		   $imprimir .="<td width='7%'>
-							<a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(".$pos.");'>".
-							$row['IdNumeroExp']."</a>". 
-							"<input name='idsolicitud[".$pos."]' id='idsolicitud[".$pos."]' type='hidden' size='60' value='".$row[1]."' />".
-							"<input name='idexpediente[".$pos."]' id='idexpediente[".$pos."]' type='hidden' size='60' value='".$row['idnumeroexp']."' /></td>".
-							"<input name='idestablecimiento[".$pos."]' id='idestablecimiento[".$pos."]' type='hidden' size='60' value='".$IdEstab."' /></td>".
-					   "<td width='25%'>".htmlentities($row['paciente'])."</td>
-						<td width='15%'>".htmlentities($row['nombresubservicio'])."</td>
-						<td width='12%'>".htmlentities($row['nombreservicio'])."</td>
-						<td width='15%'>".htmlentities($row['estabext'])."</td>
-						<td width='9%'>".$row['estado']."</td>
-						<td width='12%'>".$row['FechaSolicitud']."</td>
-				    </tr>";
-					$pos=$pos + 1;
-				}
-				
-				pg_free_result($consulta);
-				
-			$imprimir .= "<input type='hidden' name='oculto' id='text' value='".$pos."' /> 
-	
-			    </table>";
-	
-			echo $imprimir;
+                    </tr>";
+        if(pg_num_rows($consulta)){
+            $pos = 0;
+
+            while ($row = pg_fetch_array($consulta)) {
+                echo "<tr>
+				   <td width='8%'>".$row['fecharecepcion']."</td>
+				   <td width='10%'>
+					   <a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(".$pos.");'>".
+					   $row['idnumeroexp']."</a>". 
+					   "</td>". 
+                                           "<input name='idsolicitud[".$pos."]' id='idsolicitud[".$pos."]' type='hidden' size='60' value='".$row[0]."' />".
+					   "<input name='idexpediente[".$pos."]' id='idexpediente[".$pos."]' type='hidden' size='60' value='".$row['idnumeroexp']."' />".
+					   "<input name='idestablecimiento[".$pos."]' id='idestablecimiento[".$pos."]' type='hidden' size='60' value='".$IdEstab."' />".
+				  "<td width='25%'>".$row['paciente']."</td>
+				  <td width='15%'>".htmlentities($row['nombresubservicio'])."</td>
+				   <td width='15%'>".htmlentities($row['nombreservicio'])."</td>
+                                   <td width='20%'>".htmlentities($row['estabext'])."</td>
+				   <td width='15%'>".$row['estado']."</td>
+                                   <td width='15%'>".$row['fecchaconsulta']."</td>
+				  
+                                      
+				 </tr>";
+                
+              
+                $pos = $pos + 1;
+            }
+            pg_free_result($consulta);
+            echo "<input type='hidden' name='oculto' id='text' value='" . $pos . "' />
+                </table>";
+        } else {
+            echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table>";
+        }
 	
 	break;
     	
 	case 2:  // solicitud estudios
-		$idexpediente=$_POST['idexpediente'];
-		$idsolicitud=$_POST['idsolicitud'];
-		$IdEstablecimiento=$POST['idestablecimiento'];
-		echo $IdEstablecimiento;
+		$idexpediente       =$_POST['idexpediente'];
+		$idsolicitud        =$_POST['idsolicitud'];
+		$IdEstablecimiento  =$POST['idestablecimiento'];
+		$IdEstablecimiento;
 		include_once("clsSolicitudesPorPaciente.php");
 		//recuperando los valores generales de la solicitud
 		
@@ -392,64 +304,82 @@ switch ($opcion)
 		$row = pg_fetch_array($consulta);
 		//obteniedo los datos generales de la solicitud
 		//valores de las consultas
-		$medico=$row['NombreMedico'];
-		$idmedico=$row['IdMedico'];
-		$paciente=$row['NombrePaciente'];
-		$edad=$row['Edad'];
-		$sexo=$row['Sexo'];
-		$precedencia=$row['Precedencia'];
-		$origen=$row['Origen'];
+                $idsolicitudPadre=$row[0];
+		$medico=$row['medico'];
+		$idmedico=$row[1];
+		$paciente=$row['paciente'];
+		$edad=$row['edad'];
+		$sexo=$row['sexo'];
+		$precedencia=$row['nombreservicio'];
+		$origen=$row['nombresubservicio'];
 		$DatosClinicos=$row['DatosClinicos'];
-		$Estado=$row['Estado'];
+		$Estado=$row['estado'];
 		$fechasolicitud=$row['FechaSolicitud'];
                 $FechaNac=$row['FechaNacimiento'];
 		//recuperando los valores del detalle de la solicitud
-		$consultadetalle=$objdatos->DatosDetalleSolicitud($idexpediente,$idsolicitud);
-		$estadosolicitud=$objdatos->EstadoSolicitud($idexpediente,$idsolicitud);
-		$estado=pg_fetch_array($estadosolicitud);
+		$consultadetalle=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar);
+		//$estadosolicitud=$objdatos->EstadoSolicitud($idexpediente,$idsolicitud);
+		//$estado=pg_fetch_array($estadosolicitud);
 		
 		
 		$imprimir="<form name='frmDatos'>
-		<table width='55%' border='0' align='center'>
+		<table width='50%' border='0' align='center'>
 			<tr>
 				<td  colspan='4'>&nbsp;&nbsp;&nbsp;&nbsp</td>
 			</tr>
 			<tr>
 				<td colspan='4' align='center' class='CobaltFieldCaptionTD'>
 					<h3><strong>DATOS SOLICITUD</strong></h3>
-				</td>
-			</tr>
-			<tr> 
-				<td>Establecimiento</td>
-				<td colspan='3'>".htmlentities($row['Nombre'])."</td>
 			</tr>
 			<tr>
-				<td>Procedencia</td>
-				<td>".htmlentities($precedencia)."</td>
-				<td>Origen</td>
-				<td>".htmlentities($origen)."
+				<td class='StormyWeatherFieldCaptionTD'>Establecimiento</td>
+                                <td class='StormyWeatherDataTD' colspan='3'>".$row['estabext']."</td>
+			</tr>
+		        <tr>
+				<td class='StormyWeatherFieldCaptionTD'>Paciente</td>
+				<td colspan='3' class='StormyWeatherDataTD'>".htmlentities($paciente)." 
+                        	     <input name='txtpaciente' id='txtpaciente' type='hidden' size='' value=$paciente disabled='disabled' /></td>
+                        </tr>
+                        <tr>
+				<td class='StormyWeatherFieldCaptionTD'>Conocido por</td>
+				<td colspan='3' class='StormyWeatherDataTD'>".htmlentities($ConocidoPor)." 
+			     		<input name='txtpaciente' id='txtpaciente' type='hidden' size='70' value='".$paciente."' disabled='disabled' /></td>
+		   	</tr>
+			<tr>
+				<td class='StormyWeatherFieldCaptionTD'>Edad</td>
+				<td class='StormyWeatherDataTD'>".htmlentities($edad)." 
+			     		<input name='txtpaciente' id='txtpaciente1' type='hidden' size='35' value='".$edad."' disabled='disabled' /></td>
+				
+                                    </div>
+                                </td>
+				<td class='StormyWeatherFieldCaptionTD'>Sexo</td>
+				<td class='StormyWeatherDataTD'>$sexo<input type='hidden' name='txtsexo' value='".$sexo."' disabled='disabled' /></td>
+                        </tr>
+                        <tr>
+				<td class='StormyWeatherFieldCaptionTD'>Procedencia</td>
+				<td class='StormyWeatherDataTD'>$precedencia <input name='txtprecedencia' id='txtprecedencia' 
+				type='hidden' size='35' value='".$precedencia."' disabled='disabled' /></td>
+				<td class='StormyWeatherFieldCaptionTD'>Origen</td>
+				<td class='StormyWeatherDataTD'>".htmlentities($origen)."
+					<input name='txtorigen' id='txtorigen'  type='hidden' size='35' value='".$origen."' disabled='disabled' />
+                                        <input name='idsolicitudPadre' id='idsolicitudPadre'  type='hidden' size='40' value='".$idsolicitudPadre."' disabled='disabled' />
 					<input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled' />
 					<input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled' />
 					<input name='fechasolicitud' id='fechasolicitud'  type='hidden' size='40' value='".$fechasolicitud."' disabled='disabled' />
-					<input name='suEdad' id='suEdad'  type='hidden' size='40' value='".$FechaNac."' disabled='disabled' /></td>
-			</tr>
-			<tr>
-				<td>Medico</td>
-				<td colspan='3'>".htmlentities($medico)."</td>
-			</tr>
-			<tr>
-				<td>Paciente</td>
-				<td colspan='3'>".htmlentities($paciente)."</td>
-			</tr>
-			<tr>
-				<td>Edad</td>
-				<td><div id='divsuedad'>
-          
-    			    </div></td>
-				<td>Sexo</td>
-				<td>".$sexo."</td>
-			</tr>
-		</table>
+					<input name='idarea' id='idarea'  type='hidden' size='40' value='".$idarea."' disabled='disabled' />
+					<input name='suEdad' id='suEdad'  type='hidden' size='40' value='".$FechaNac."' disabled='disabled' />
+				</td>
+                        </tr>
+                        <tr>
+				<td class='StormyWeatherFieldCaptionTD'>M&eacute;dico</td>
+				<td colspan='3' class='StormyWeatherDataTD'>".htmlentities($medico)."
+					<input name='txtmedico' id='txtmedico'  type='hidden' size='70' value='".$medico."' disabled='disabled' /></td>
+                        </tr>
+                        <tr>
+                                <td class='StormyWeatherFieldCaptionTD'>Diagnostico</td>
+                                <td colspan='3' class='StormyWeatherDataTD'>". $Diagnostico."</td>
+                        </tr>
+                        <tr>
 		
 
 		<table width='55%' border='0' align='center'>
@@ -468,17 +398,18 @@ switch ($opcion)
 			   		</tr>";
 			$pos=0;
 			while($fila = pg_fetch_array($consultadetalle)){
+                     $estado=$fila['estado'];
 	      		  $imprimir .= "<tr>
-						<td width='10%'>".$fila['IdExamen']."</td>
-						<td width='39%'>".htmlentities($fila['NombreExamen'])."</td>	
-                				<td width='7%'>".$fila['IdArea']."</td>";	
-                 		if (!empty($fila['Indicacion'])){     				
-			   	   $imprimir .="<td width='20%'>".htmlentities($fila['Indicacion'])."</td>";
-		 	           $imprimir .="<td width='21%'>".$fila['Estado']."</td>	
+						<td width='10%'>".$fila['codigo_examen']."</td>
+						<td width='39%'>".htmlentities($fila['nombre_examen'])."</td>	
+                				<td width='7%'>".$fila['codigo_area']."</td>";	
+                 		if (!empty($fila['indicacion'])){     				
+			   	   $imprimir .="<td width='20%'>".htmlentities($fila['indicacion'])."</td>";
+		 	           $imprimir .="<td width='21%'>".$fila['estado']."</td>	
 		     	                 </tr>";
                 		}else{
 	                   	   $imprimir .="<td>&nbsp;&nbsp;&nbsp;&nbsp</td>
-			                        <td>".$fila['Estado']."</td>
+			                        <td>".$fila['estado']."</td>
                                         </tr>";	
 				}
              		}
@@ -495,9 +426,13 @@ switch ($opcion)
 			<tr >
 				<td align='center'>
 					<input type='button' name='btnImprimirSol' id='btnImprimirSol' value='Imprimir Solicitud' onClick='ImprimirSolicitud()'>";
-					if($estado['Estado']=='R' OR $estado['Estado']=='P'){
+				 "eee   ".$estado['estado'];
+         
+                        
+                        //'R'  'P'
+                            if($estado['estado']=='R' OR $estado['estado']=='E'){
 					  
-						$imprimir .="<input type='button' name='btnImprimir'  id=btnImprimir' value='Imprimir Vi&ntilde;etas' onClick='ImprimirExamenes();'/>";}
+						$imprimir .="<input type='button' name='btnImprimir'  id=btnImprimir' value='Imprimir Vi&ntilde;etas' onClick='ImprimirExamenes()'/>";}
 					else{
 						$imprimir .="<input type='button' name='btnImprimir' disabled='enabled' id=btnImprimir' value='Imprimir Vi&ntilde;etas' onClick='ImprimirExamenes();'/>";
 					}
@@ -511,8 +446,8 @@ switch ($opcion)
 	 
    	break;
    	case 3:
-   		$idexpediente=$_POST['idexpediente'];
-		$idsolicitud=$_POST['idsolicitud'];
+   		$idexpediente   =$_POST['idexpediente'];
+		$idsolicitud    =$_POST['idsolicitud'];
 		
   	 include_once("clsSolicitudesPorPaciente.php");
 		//recuperando los valores generales de la solicitud
@@ -521,61 +456,80 @@ switch ($opcion)
 		$row = pg_fetch_array($consulta);
 		//obteniedo los datos generales de la solicitud
 		//valores de las consultas
-		$medico=$row['NombreMedico'];
-		$idmedico=$row['IdMedico'];
-		$paciente=$row['NombrePaciente'];
-		$edad=$row['Edad'];
-		$sexo=$row['Sexo'];
-		$precedencia=$row['Precedencia'];
-		$origen=$row['Origen'];
-		$DatosClinicos=$row['DatosClinicos'];
-		$Estado=$row['Estado'];
-		$fechasolicitud=$row['FechaSolicitud'];
-		 $FechaNac=$row['FechaNacimiento'];
+                $idsolicitudPadre=$row[0];
+		$medico         =$row['medico'];
+		$idmedico       =$row[1];
+		$paciente       =$row['paciente'];
+		$edad           =$row['edad'];
+		$sexo           =$row['sexo'];
+		$precedencia    =$row['nombreservicio'];
+		$origen         =$row['nombresubservicio'];
+		$DatosClinicos  =$row['DatosClinicos'];
+		$Estado         =$row['Estado'];
+		$fechasolicitud =$row['FechaSolicitud'];
+                $FechaNac       =$row['FechaNacimiento'];
 		//recuperando los valores del detalle de la solicitud
-		$consultadetalle=$objdatos->DatosDetalleSolicitud($idexpediente,$idsolicitud);
+		$consultadetalle=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar);
+		//recuperando los valores del detalle de la solicitud
+		//$consultadetalle=$objdatos->DatosDetalleSolicitud($idexpediente,$idsolicitud);
 		$imprimir="<form name='frmDatos'>
-    		<table width='80%' border='0' align='center'>
-		<tr>
-			<td colspan='4' align='center' class='CobaltFieldCaptionTD'><h3><strong>DATOS SOLICITUD</strong></h3></td>
-		</tr>
-		<tr>
-			<td>Establecimiento</td>
-			<td>".htmlentities($row['Nombre'])."</td>
-		</tr>
-		<tr>
-			<td>Procedencia: </td>
-			<td>".htmlentities($precedencia)."</td>
-			<td>Origen: </td>
-			<td>".htmlentities($origen)."
-				<input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled' />
-				<input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled' />
-				<input name='fechasolicitud' id='fechasolicitud'  type='hidden' size='40' value='".$fechasolicitud."' disabled='disabled' />
-				<input name='suEdad' id='suEdad'  type='hidden' size='40' value='".$FechaNac."' disabled='disabled' />
-			</td>
-		</tr>
-		<tr>
-	    		<td></td>
-	    		<td></td>
-	    		<td></td>
-	    		<td></td>
-		</tr>
-		<tr>
-			<td>Medico: </td>
-		    	<td colspan='3'>".htmlentities($medico)."</td>
-		</tr>
-		<tr>
-	    		<td>Paciente: </td>
-		    	<td colspan='3'>".htmlentities($paciente)."</td>
-		</tr>
-		<tr>
-			<td>Edad: </td>
-		    	<td><div id='divsuedad'>
-          
-    			    </div></td>
-		    	<td>Sexo: </td>
-		    	<td>".$sexo."</td>
-		</tr>
+		<table width='50%' border='0' align='center'>
+			<tr>
+				<td  colspan='4'>&nbsp;&nbsp;&nbsp;&nbsp</td>
+			</tr>
+			<tr>
+				<td colspan='4' align='center' class='CobaltFieldCaptionTD'>
+					<h3><strong>DATOS SOLICITUD</strong></h3>
+			</tr>
+			<tr>
+				<td class='StormyWeatherFieldCaptionTD'>Establecimiento</td>
+                                <td class='StormyWeatherDataTD' colspan='3'>".$row['estabext']."</td>
+			</tr>
+		        <tr>
+				<td class='StormyWeatherFieldCaptionTD'>Paciente</td>
+				<td colspan='3' class='StormyWeatherDataTD'>".htmlentities($paciente)." 
+                        	     <input name='txtpaciente' id='txtpaciente' type='hidden' size='' value=$paciente disabled='disabled' /></td>
+                        </tr>
+                        <tr>
+				<td class='StormyWeatherFieldCaptionTD'>Conocido por</td>
+				<td colspan='3' class='StormyWeatherDataTD'>".htmlentities($ConocidoPor)." 
+			     		<input name='txtpaciente' id='txtpaciente' type='hidden' size='70' value='".$paciente."' disabled='disabled' /></td>
+		   	</tr>
+			<tr>
+				<td class='StormyWeatherFieldCaptionTD'>Edad</td>
+				<td class='StormyWeatherDataTD'>".htmlentities($edad)." 
+			     		<input name='txtpaciente' id='txtpaciente1' type='hidden' size='35' value='".$edad."' disabled='disabled' /></td>
+				
+                                    </div>
+                                </td>
+				<td class='StormyWeatherFieldCaptionTD'>Sexo</td>
+				<td class='StormyWeatherDataTD'>$sexo<input type='hidden' name='txtsexo' value='".$sexo."' disabled='disabled' /></td>
+                        </tr>
+                        <tr>
+				<td class='StormyWeatherFieldCaptionTD'>Procedencia</td>
+				<td class='StormyWeatherDataTD'>$precedencia <input name='txtprecedencia' id='txtprecedencia' 
+				type='hidden' size='35' value='".$precedencia."' disabled='disabled' /></td>
+				<td class='StormyWeatherFieldCaptionTD'>Origen</td>
+				<td class='StormyWeatherDataTD'>".htmlentities($origen)."
+					<input name='txtorigen' id='txtorigen'  type='hidden' size='35' value='".$origen."' disabled='disabled' />
+                                        <input name='idsolicitudPadre' id='idsolicitudPadre'  type='hidden' size='40' value='".$idsolicitudPadre."' disabled='disabled' />
+					<input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled' />
+					<input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled' />
+					<input name='fechasolicitud' id='fechasolicitud'  type='hidden' size='40' value='".$fechasolicitud."' disabled='disabled' />
+					<input name='idarea' id='idarea'  type='hidden' size='40' value='".$idarea."' disabled='disabled' />
+					<input name='suEdad' id='suEdad'  type='hidden' size='40' value='".$FechaNac."' disabled='disabled' />
+				</td>
+                        </tr>
+                        <tr>
+				<td class='StormyWeatherFieldCaptionTD'>M&eacute;dico</td>
+				<td colspan='3' class='StormyWeatherDataTD'>".htmlentities($medico)."
+					<input name='txtmedico' id='txtmedico'  type='hidden' size='70' value='".$medico."' disabled='disabled' /></td>
+                        </tr>
+                        <tr>
+                                <td class='StormyWeatherFieldCaptionTD'>Diagnostico</td>
+                                <td colspan='3' class='StormyWeatherDataTD'>". $Diagnostico."</td>
+                        </tr>
+                        <tr>
 		  
 	    	</table>
 		
@@ -597,16 +551,16 @@ switch ($opcion)
 		$pos=0;
 		while($fila = pg_fetch_array($consultadetalle)){
 		  $imprimir .= "<tr>
-			    		<td>".$fila['IdExamen']."</td>
-			    		<td>".htmlentities($fila['NombreExamen'])."</td>	
-					<td>".$fila['IdArea']."</td>";	
-                	if (!empty($fila['Indicacion'])){     				
-		   	   $imprimir .="<td>".htmlentities($fila['Indicacion'])."</td>";
-		           $imprimir .="<td>".$fila['Estado']."</td>	
+			    		<td>".$fila['codigo_examen']."</td>
+			    		<td>".htmlentities($fila['nombre_examen'])."</td>	
+					<td>".$fila['codigo_area']."</td>";	
+                	if (!empty($fila['indicacion'])){     				
+		   	   $imprimir .="<td>".htmlentities($fila['indicacion'])."</td>";
+		           $imprimir .="<td>".$fila['estado']."</td>	
 	      			</tr>";
                 	}else{
 			   $imprimir .="<td>&nbsp;&nbsp;&nbsp;&nbsp</td>
-					<td>".$fila['Estado']."</td>
+					<td>".$fila['estado']."</td>
                      		</tr>";	
 				}
                      $pos=$pos + 1;

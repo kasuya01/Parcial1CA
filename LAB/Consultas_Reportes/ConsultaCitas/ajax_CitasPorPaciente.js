@@ -132,11 +132,11 @@ function LlenarComboExamen(idarea)
 
 
 //FUNCION PARA BUSCAR DATOS DE LA SOLICITUD
-function BuscarDatos()
-{	
+function BuscarDatoscitas()
+{	//alert("llega");
 		opcion=1;
 		idexpediente=document.getElementById('txtexpediente').value;
-		fecha=document.getElementById('txtfecha').value;
+		fecha=document.getElementById('txtfecharecep').value;
 		primernombre=document.getElementById('PrimerNombre').value;
 		segundonombre=document.getElementById('SegundoNombre').value;
 		primerapellido=document.getElementById('PrimerApellido').value;
@@ -188,7 +188,7 @@ function MostrarDatos(posicion)
 	//primerapellido="";
 	//segundoapellido="";
 	//especialidad="";
-	ajax.open("POST", "ctr_	CitasPorPaciente.php",true);
+	ajax.open("POST", "ctr_CitasPorPaciente.php",true);
 		  //muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		  //enviando los valores
@@ -254,7 +254,7 @@ function VistaPrevia()
 {
 
  idexpediente=document.getElementById('txtexpediente').value;
-		fecha=document.getElementById('txtfecha').value;
+		fecha=document.getElementById('txtfecharecep').value;
 		primernombre=document.getElementById('PrimerNombre').value;
 		segundonombre=document.getElementById('SegundoNombre').value;
 		primerapellido=document.getElementById('PrimerApellido').value;

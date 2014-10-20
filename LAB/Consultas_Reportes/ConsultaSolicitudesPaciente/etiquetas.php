@@ -82,8 +82,9 @@ while($fila = pg_fetch_array($consultadetalle)){
 					</td>
 				</tr>
 				<tr>
-					<td colspan="3" align="left" CELLPADDING="0" CELLSPACING="0"><img align="center" style="width: 100px; height: 25px;" src="/siap1/Laboratorio/Barcode2/barcode_img.php?num=<?php echo($codigo1) ?>&type=code128&imgtype=png"
-						 alt="PNG: <?php echo($codigo1) ?>" title="PNG:<?php echo($codigo1) ?>"></td>
+					<!-- <td colspan="3" align="left" CELLPADDING="0" CELLSPACING="0"><img align="center" style="width: 100px; height: 25px;" src="/siap1/Laboratorio/Barcode2/barcode_img.php?num=<?php echo($codigo1) ?>&type=code128&imgtype=png" -->
+					<td colspan="3" align="left" CELLPADDING="0" CELLSPACING="0"><img align="center" style="width: 100px; height: 25px;" src="../../../Barcode2/barcode_img.php?num=<?php echo($codigo) ?>&type=code128&imgtype=png"	
+                                       alt="PNG: <?php echo($codigo1) ?>" title="PNG:<?php echo($codigo1) ?>"></td>
 				</tr>
 				<tr>
 					<td colspan="1" align="center" CELLPADDING="0" CELLSPACING="0"><span class="Estilo12"><?php echo $fila[7];?></span></td>
@@ -114,8 +115,8 @@ while($fila = pg_fetch_array($consultadetalle)){
 		 		</tr>
 				<tr>
 					<td colspan="3" align="left" CELLPADDING="0" CELLSPACING="0">
-						<img align="center" style="width: 100px; height: 25px;" src="/siap1/Laboratorio/Barcode2/barcode_img.php?num=<?php echo($codigo1) ?>&type=code128&imgtype=png"
-						 alt="PNG: <?php echo($codigo) ?>" title="PNG:<?php echo($codigo) ?>">
+						<img align="center" style="width: 100px; height: 25px;" src="../../../Barcode2/barcode_img.php?num=<?php echo($codigo) ?>&type=code128&imgtype=png"
+                                                     accesskey="" alt="PNG: <?php echo($codigo) ?>" title="PNG:<?php echo($codigo) ?>">
 					</td>
 				</tr>
 				<tr>

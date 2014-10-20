@@ -36,12 +36,20 @@ $nomtipo=$row[2];
 <script language="JavaScript" type="text/javascript">
 function MostrarBusqueda()
 {
-	 if ((document.getElementById('txtexpediente').value == "") && (document.getElementById('txtfecha').value == "")&&(document.getElementById('PrimerNombre').value == "")&&(document.getElementById('SegundoNombre').value == "")&&(document.getElementById('PrimerApellido').value == "")&&(document.getElementById('SegundoApellido').value == "") && (document.getElementById('cmbEstablecimiento').value ==0) && (document.getElementById('CmbServicio').value == 0) && (document.getElementById('cmbSubServ').value ==0)) {
+	 if ((document.getElementById('txtexpediente').value == "") 
+                 && (document.getElementById('txtfecharecep').value == "")
+                 &&(document.getElementById('PrimerNombre').value == "")
+                 &&(document.getElementById('SegundoNombre').value == "")
+                 &&(document.getElementById('PrimerApellido').value == "")
+                 &&(document.getElementById('SegundoApellido').value == "")
+                 && (document.getElementById('cmbEstablecimiento').value ==0)
+                 && (document.getElementById('CmbServicio').value == 0)
+                 && (document.getElementById('cmbSubServ').value ==0)) {
 	   alert("Ingrese un parametro de busqueda");
 	 //  document.getElementById('txtexpediente').focus();
 	   }
 	 else{	 
-	   BuscarDatos();
+	   BuscarDatoscitas();
 	   }
 }
 
@@ -210,8 +218,9 @@ Consulta de Citas por Paciente</strong></h3></td>
 		<td class="StormyWeatherDataTD" >
 			<input class="MailboxInput" maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" ></td>
 	</tr>
-
- 	<tr>
+  <tr>
+	
+        
 		<td  class="StormyWeatherDataTD" colspan="4" align="right">
 			<input type="button" id="btnbuscar" value="Buscar Citas" onClick="MostrarBusqueda();">
 			<input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('CitasPorPaciente.php')">
@@ -222,7 +231,7 @@ Consulta de Citas por Paciente</strong></h3></td>
 <script type="text/javascript">
 		Calendar.setup(
 		    {
-		      inputField  : "txtfecha",         // el ID texto 
+		      inputField  : "txtfecharecep",         // el ID texto 
 		      ifFormat    : "%d/%m/%Y",    // formato de la fecha
 		      button      : "trigger"       // el ID del boton			  	  
 		    }

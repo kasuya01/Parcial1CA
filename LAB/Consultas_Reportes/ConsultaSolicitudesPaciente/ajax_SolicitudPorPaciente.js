@@ -169,8 +169,9 @@ function calcular_edad(fecha){
 }
 
 //FUNCION PARA BUSCAR DATOS DE LA SOLICITUD
-function BuscarDatos1()
-{	
+function BuscarDatospaciente()
+    
+{	ajax=objetoAjax();
 		opcion=1;
 		IdEstab=document.getElementById('cmbEstablecimiento').value;
 		IdServ=document.getElementById('CmbServicio').value;
@@ -181,9 +182,9 @@ function BuscarDatos1()
 		primerapellido=document.getElementById('PrimerApellido').value;
 		segundoapellido=document.getElementById('SegundoApellido').value;
 		//especialidad=document.getElementById('cmbEspecialidad').value;
-		fechaconsulta=document.getElementById('txtfechaconsulta').value;
+		fechaconsulta=document.getElementById('txtfecharecep').value;
 		
-		ajax=objetoAjax();
+		
 		//archivo que realizar� la operacion ->actualizacion.php
 		ajax.open("POST", "ctrLab_SolicitudesPorPaciente.php",true);
 		//muy importante este encabezado ya que hacemos uso de un formulario
