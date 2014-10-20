@@ -162,13 +162,7 @@ if ($nivel==33){
                                                                 SELECT DISTINCT id_area_atencion 
                                                                 FROM mnt_area_mod_estab WHERE id_establecimiento = $lugar)";
                                             
-                                           /* "SELECT mse.id,mse.nombre 
-						FROM mnt_servicio_externo mse 
-						INNER JOIN mnt_servicio_externo_establecimiento msee 
-						ON mse.id=msee.id
-						WHERE   msee.id_establecimiento=$lugar";*/
-                                            
-						$resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
+                                            $resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
 						//por cada registro encontrado en la tabla me genera un <option>
 						while ($rows = pg_fetch_array($resultado)){
 							echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 

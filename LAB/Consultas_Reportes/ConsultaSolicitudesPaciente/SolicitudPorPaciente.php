@@ -40,15 +40,18 @@ function MostrarBusqueda()
             &&(document.getElementById('SegundoNombre').value == "")
             &&(document.getElementById('PrimerApellido').value == "")
             &&(document.getElementById('SegundoApellido').value == "")
-            &&(document.getElementById('txtfechaconsulta').value == 0)
+            &&(document.getElementById('txtfecharecep').value == 0)
             && (document.getElementById('cmbEstablecimiento').value == 0) 
             && (document.getElementById('CmbServicio').value == 0) 
             && (document.getElementById('cmbSubServ').value == 0) ) {
 	   alert("Ingrese un parmetro de busqueda");
 	  // document.getElementById('txtexpediente').focus();
+          //txtfecharecep
 	   }
-    	 else{	 
-	     BuscarDatos1();}
+    	 else{
+	     BuscarDatospaciente(); 
+             
+         }
 }
 
 function ImprimirExamenes()
@@ -200,7 +203,7 @@ if ($nivel==33){
 			</div>
 		</td>
 	</tr>
-	
+
 	<tr>
 		
 		<td class="StormyWeatherFieldCaptionTD"  >Expediente</td>
@@ -226,7 +229,7 @@ if ($nivel==33){
 		<td class="StormyWeatherDataTD" >
 			<input class="MailboxInput" maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" ></td>
 	</tr>
-			<tr>
+  <tr>
 				<td  class="StormyWeatherDataTD" colspan="4" align="right">
 					<input type="button" id="btnbuscar" value="Buscar Solicitudes" onClick="MostrarBusqueda();">
 					<input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('SolicitudPorPaciente.php')">

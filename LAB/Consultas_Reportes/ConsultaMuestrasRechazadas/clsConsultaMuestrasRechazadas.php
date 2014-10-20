@@ -10,8 +10,7 @@ class clsConsultaMuestrasRechazadas
 function Nombre_Establecimiento($lugar){
    $con = new ConexionBD;
    if($con->conectar()==true){ 
-       	$query=//"SELECT Nombre FROM mnt_establecimiento WHERE IdEstablecimiento=$lugar";
-                "SELECT nombre FROM ctl_establecimiento WHERE id=$lugar";
+       	$query="SELECT nombre FROM ctl_establecimiento WHERE id=$lugar";
 	 $result = @pg_query($query);
      if (!$result)
        return false;
@@ -25,8 +24,7 @@ function Nombre_Establecimiento($lugar){
  function DatosArea($area){
 	$con = new ConexionBD;
 	if($con->conectar()==true){			  
-		$NomAre  = //"select NombreArea,Administrativa from lab_areas where IdArea='$area'";
-                         "select nombrearea,administrativa from ctl_area_servicio_diagnostico where id=$area";
+		$NomAre  = "select nombrearea,administrativa from ctl_area_servicio_diagnostico where id=$area";
 		$resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
 	}
  return $resul;
@@ -35,12 +33,7 @@ function Nombre_Establecimiento($lugar){
 function DatosEstablecimiento($lugar){
 $con = new ConexionBD;
 	if($con->conectar()==true){			  
-		$conNom  = /*"SELECT 	mnt_establecimiento.IdTipoEstablecimiento,Nombre,NombreTipoEstablecimiento 
-			    FROM mnt_establecimiento 
-			    INNER JOIN mnt_tipoestablecimiento ON mnt_establecimiento.IdTipoEstablecimiento= mnt_tipoestablecimiento.IdTipoEstablecimiento
-			    WHERE IdEstablecimiento=$lugar";*/
-                        
-                        "SELECT t02.id AS idtipoestablecimiento,
+		$conNom  = "SELECT t02.id AS idtipoestablecimiento,
                               t01.nombre,
                               t02.nombre AS nombretipoestablecimiento
                         FROM ctl_establecimiento t01
@@ -54,8 +47,7 @@ $con = new ConexionBD;
 function LlenarCmbEstablecimiento($Idtipoesta){
 $con = new ConexionBD;
 	if($con->conectar()==true){
-		$sqlText= //"SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$Idtipoesta' ORDER BY Nombre";		
-                        "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento=$Idtipoesta ORDER BY nombre";
+		$sqlText=  "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento=$Idtipoesta ORDER BY nombre";
                         $dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
 	}
 	return $dt;
@@ -64,14 +56,7 @@ $con = new ConexionBD;
 function LlenarCmbServ($IdServ,$lugar){
 $con = new ConexionBD;
 	if($con->conectar()==true){
-		$sqlText= /*"SELECT mnt_subservicio.IdSubServicio,mnt_subservicio.NombreSubServicio
-			FROM mnt_subservicio 
-			INNER JOIN mnt_subservicioxestablecimiento ON mnt_subservicio.IdSubServicio=mnt_subservicioxestablecimiento.IdSubServicio
-			WHERE mnt_subservicio.IdServicio='$IdServ' AND IdEstablecimiento=$lugar 
-			ORDER BY NombreSubServicio";	*/
-                        
-                        
-                        "WITH tbl_servicio AS (
+		$sqlText=  "WITH tbl_servicio AS (
                             SELECT t02.id,
                                 CASE WHEN t02.nombre_ambiente IS NOT NULL THEN  	
                                     CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
@@ -100,12 +85,7 @@ function ExamenesPorArea($idarea,$lugar)
 	$con = new ConexionBD;
     //usamos el metodo conectar para realizar la conexion
 	if($con->conectar()==true){
-		 $query = /*"SELECT lab_examenes.IdExamen,NombreExamen FROM lab_examenes 
-		       INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
-		       WHERE IdEstablecimiento = $lugar AND IdArea='$idarea'
-		       AND lab_examenesxestablecimiento.Condicion='H' ORDER BY NombreExamen ASC ";*/
-                         
-                         "SELECT lcee.id,lcee.nombre_examen 
+		 $query = "SELECT lcee.id,lcee.nombre_examen 
                     FROM mnt_area_examen_establecimiento maees
                     INNER JOIN lab_conf_examen_estab lcee ON maees.id= lcee.idexamen 
                     WHERE maees.id_area_servicio_diagnostico=$idarea
@@ -126,9 +106,7 @@ function ExamenesPorArea($idarea,$lugar)
   $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-      $query=/*"UPDATE sec_detallesolicitudestudios SET observacion='$observacion'
-			  WHERE idsolicitudestudio=$idsolicitud AND IdExamen LIKE '%$idarea%'";*/
-               "UPDATE sec_detallesolicitudestudios SET observacion='$observacion'
+      $query="UPDATE sec_detallesolicitudestudios SET observacion='$observacion'
 			  WHERE id=$idsolicitud AND idexamen LIKE '%$idarea%'";
 		  
 		  		  
