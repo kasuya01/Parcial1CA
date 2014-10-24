@@ -13,6 +13,11 @@ $objdatos = new clsSolicitudesPorPaciente;
 switch ($opcion) 
 {
   	case 1:  
+            
+            $pag=$_POST['pag'];
+	$registros = 20;
+	$pag =$_POST['pag'];
+	$inicio = ($pag-1) * $registros;
 		
         $ban = 0;
         $IdEstab        = $_POST['IdEstab'];
@@ -48,17 +53,19 @@ switch ($opcion)
            }
           
         }
+        
+        if (!empty($_POST['IdSubServ'])) {
+            $cond1 .= $cond0." t10.id = " . $_POST['IdSubServ'] . "    ";
+            $cond2 .= $cond0." t10.id = " . $_POST['IdSubServ'] . "   ";
+        }
 
         if (!empty($_POST['IdServ'])) {
-            $cond1 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . " ";
-            $cond2 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . " ";
+            $cond1 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . "     ";
+            $cond2 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . "     ";
             $where_with = "id_area_atencion = $IdServ AND ";
         }
 
-        if (!empty($_POST['IdSubServ'])) {
-            $cond1 .= $cond0." t10.id = " . $_POST['IdSubServ'] . " ";
-            $cond2 .= $cond0." t10.id = " . $_POST['IdSubServ'] . " ";
-        }
+        
 
         if (!empty($_POST['idarea'])) {
             $cond1 .= " and t08.id = " . $_POST['idarea'] . " ";
@@ -127,7 +134,7 @@ switch ($opcion)
             
           //  echo $query1;
            // $query_search = 
-            //echo $cond1;
+           //echo $cond1;
             //echo $cond2;
         }     
        // echo $cond2;
@@ -230,13 +237,20 @@ switch ($opcion)
             INNER JOIN lab_tiposolicitud t17 			    ON (t17.id = t02.idtiposolicitud) 
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
             --AND  (t16.idestado = 'D') 
-            AND t02.id_establecimiento = $lugar 
-                $cond2"; 
-    
+            AND t02.id_establecimiento = $lugar $cond2   order by fecharecepcion desc "; 
+    $consulta=$objdatos->BuscarSolicitudesPaciente($query); 
+         
+         $RegistrosAMostrar=5;
+	$RegistrosAEmpezar=($_POST['pag']-1)*$RegistrosAMostrar;
+	$PagAct=$_POST['pag'];
+				
+	$consulta=$objdatos->consultarpag($query,$RegistrosAEmpezar,$RegistrosAMostrar);
+	$NroRegistros= $objdatos->NumeroDeRegistros($query);
+				
     
     
 	     //echo $query_search;
-		$consulta=$objdatos->BuscarSolicitudesPaciente($query); 
+		
 		
 		$NroRegistros= $objdatos->NumeroDeRegistros($query);				
      echo"<table width='96%' border='0' align='center'>
@@ -282,6 +296,11 @@ switch ($opcion)
                 
               
                 $pos = $pos + 1;
+                
+                
+                
+                
+              
             }
             pg_free_result($consulta);
             echo "<input type='hidden' name='oculto' id='text' value='" . $pos . "' />
@@ -290,6 +309,47 @@ switch ($opcion)
             echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table>";
         }
 	
+        
+                    //determinando el numero de paginas
+	$PagAnt=$PagAct-1;
+	$PagSig=$PagAct+1;
+				 
+	$PagUlt=$NroRegistros/$RegistrosAMostrar;
+				 
+	//verificamos residuo para ver si llevar� decimales
+	$Res=$NroRegistros%$RegistrosAMostrar;
+	//si hay residuo usamos funcion floor para que me
+	//devuelva la parte entera, SIN REDONDEAR, y le sumamos
+	//una unidad para obtener la ultima pagina
+	 if($Res>0) $PagUlt=floor($PagUlt)+1;
+	    echo "<table align='center'>
+		       <tr>
+				<td colspan=3 align='center'> <strong>Pagina ".$PagAct."/".$PagUlt."</strong> </td>
+	               </tr>
+		       <tr>
+				<td><a onclick=\"BuscarDatos('1')\">Primero</a> </td>";
+				//// desplazamiento
+
+	if($PagAct>1) 
+	 		 echo "<td> <a onclick=\"BuscarDatospaciente('$PagAnt')\">Anterior</a> </td>";
+	 if($PagAct<$PagUlt)  
+			 echo "<td> <a onclick=\"BuscarDatospaciente('$PagSig')\">Siguiente</a> </td>";
+		 	 echo "<td> <a onclick=\"BuscarDatospaciente('$PagUlt')\">Ultimo</a></td></tr>
+                 </table>";
+	   echo "<table align='center'>
+			<tr align='center'><td  colspan='2' width='25%'>";
+		 $numPags ='';
+			 for ($i=1 ; $i<=$PagUlt; $i++){
+				 if ($pag == $i)
+					 $numPags .= "<a >$pag</a>";
+							
+				 else
+					 $numPags .= "<a  href='javascript: BuscarDatospaciente(".$i.")'>$i</a>&nbsp;";
+			 }
+				 echo $numPags."</td></tr>
+		</table>";
+        
+        
 	break;
     	
 	case 2:  // solicitud estudios

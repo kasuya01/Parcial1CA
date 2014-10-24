@@ -458,7 +458,7 @@ FROM sec_detallesolicitudestudios t01
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-   $query = $query_search ." LIMIT $RegistrosAEmpezar, $RegistrosAMostrar";
+   $query = $query_search ." LIMIT $RegistrosAMostrar  OFFSET $RegistrosAEmpezar";
      $result = @pg_query($query);
 	 if (!$result)
 	   return false;

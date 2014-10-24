@@ -87,7 +87,7 @@ $cond2="";
         $query="";
         $query2="";
         $where_with="";
-
+        $cond0="and";
  
          
          if (!empty($_GET['var7'])) {
@@ -97,17 +97,18 @@ $cond2="";
            }
           
         }
-            
+              if (!empty($_GET['var9'])) {
+            $cond1 .= $cond0." t10.id = " . $_GET['var9'] . " ";
+            $cond2 .= $cond0." t10.id = " . $_GET['var9'] . " ";
+        }   
+        
         if (!empty($_GET['var8'])) {
-            $cond1 .=$cond0 ."  t13.id  = " . $_GET['var8'] . " ";
-            $cond2 .=$cond0 ."  t13.id  = " . $_GET['var8'] . " ";
+            $cond1 .=$cond0 ."  t13.id  = " . $_GET['var8'] . "     ";
+            $cond2 .=$cond0 ."  t13.id  = " . $_GET['var8'] . "     ";
             $where_with = "id_area_atencion = ".$_GET['var8']."  AND ";
         }
             
-        if (!empty($_GET['var9'])) {
-            $cond1 .= $cond0." t10.id = " . $_GET['var9'] . " ";
-            $cond2 .= $cond0." t10.id = " . $_GET['var9'] . " ";
-        }
+       
 
        
 

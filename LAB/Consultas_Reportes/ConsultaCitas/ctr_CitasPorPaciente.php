@@ -53,17 +53,19 @@ switch ($opcion)
            }
           
         }
+        
+        if (!empty($_POST['IdSubServ'])) {
+            $cond1 .= $cond0." t10.id = " . $_POST['IdSubServ'] . "     ";
+            $cond2 .= $cond0." t10.id = " . $_POST['IdSubServ'] . "     ";
+        }
 
         if (!empty($_POST['IdServ'])) {
-            $cond1 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . " ";
-            $cond2 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . " ";
+            $cond1 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . "     ";
+            $cond2 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . "     ";
             $where_with = "id_area_atencion = $IdServ AND ";
         }
 
-        if (!empty($_POST['IdSubServ'])) {
-            $cond1 .= $cond0." t10.id = " . $_POST['IdSubServ'] . " ";
-            $cond2 .= $cond0." t10.id = " . $_POST['IdSubServ'] . " ";
-        }
+        
 
         if (!empty($_POST['idarea'])) {
             $cond1 .= " and t08.id = " . $_POST['idarea'] . " ";

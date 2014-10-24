@@ -6,7 +6,7 @@ include ("clsSolicitudesPorServicioPeriodo.php");
 
 //variables POST
 
-$opcion=$_POST['opcion'];
+ $opcion=$_POST['opcion'];
 
 //creando los objetos de las clases
 $objdatos = new clsSolicitudesPorServicioPeriodo;
@@ -15,85 +15,211 @@ $objdatos = new clsSolicitudesPorServicioPeriodo;
 switch ($opcion) 
 {
   case 1:  
-    $IdEstab=$_POST['IdEstab'];
+       
+      $ban = 0;
+       /* $IdEstab        = $_POST['IdEstab'];
+        $IdServ         = $_POST['IdServ'];
+        echo "".$IdSubServ      = $_POST['IdSubServ'];
+        $idexpediente   = $_POST['idexpediente'];
+        $fechasolicitud = $_POST['fechasolicitud'];
+        $fecharecepcion = $_POST['fecha'];
+        $TipoSolic      = $_POST['TipoSolic'];
+        $fechainicio    =$_POST['fechainicio'];
+	$fechafin       =$_POST['fechafin'];
+	echo "ee".$medico=$_POST['medico'];*/
+        
+        $IdEstab=$_POST['IdEstab'];
 	$IdServ=$_POST['IdServ'];
  	$IdSubServ=$_POST['IdSubServ'];
-	$fechainicio=$_POST['fechainicio'];
+        $fechainicio=$_POST['fechainicio'];
 	$fechafin=$_POST['fechafin'];
 	$medico=$_POST['medico'];
-		
-	$pag=$_POST['pag'];
+        $cond1="";
+        $cond2="";
+        $query="";
+        $query2="";
+        $where_with="";
+        
+     
+         $cond0="and";
+         
+         $pag=$_POST['pag'];
 	$registros = 20;
 	$pag =$_POST['pag'];
 	$inicio = ($pag-1) * $registros;
+        
+        
+        
+        
+      //  echo $IdEstab." - ".$lugar;
+        if (!empty($_POST['IdEstab'])) {
+           if ($_POST['IdEstab']<>$lugar){
+               $cond1 .=$cond0. "  t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " ";
+               $cond2 .=$cond0. "  t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " ";
+           }
+          
+        }
+        
+        if (!empty($_POST['IdSubServ'])) {
+            $cond1 .= $cond0." t10.id = " . $_POST['IdSubServ'] . "    ";
+            $cond2 .= $cond0." t10.id = " . $_POST['IdSubServ'] . "   ";
+        }
 
-   	$query = "SELECT  sec_historial_clinico.IdNumeroExp, 
-	sec_solicitudestudios.IdSolicitudEstudio,
-	DATE_FORMAT(sec_solicitudestudios.FechaSolicitud ,'%e/ %m / %Y') AS FechaSolicitud,
-	mnt_subservicio.NombreSubServicio AS origen, mnt_servicio.NombreServicio AS procedencia,
-	mnt_empleados.NombreEmpleado AS medico, 
-	CONCAT_WS(' ',PrimerApellido,NULL,SegundoApellido,',',PrimerNombre,NULL,SegundoNombre) AS NombrePaciente,
-	CASE sec_solicitudestudios.Estado 
-		WHEN 'D' THEN 'Digitada'
-		WHEN 'R' THEN 'Recibida'
-		WHEN 'P' THEN 'En Proceso'    
-		WHEN 'C' THEN 'Completa' END AS Estado,
-	mnt_establecimiento.Nombre
-	FROM sec_historial_clinico 
-	INNER JOIN sec_solicitudestudios ON sec_historial_clinico.IdHistorialClinico=sec_solicitudestudios.IdHistorialClinico
-	INNER JOIN mnt_subservicio ON sec_historial_clinico.IdSubServicio=mnt_subservicio.IdSubServicio
-	INNER JOIN mnt_servicio ON mnt_subservicio.IdServicio= mnt_servicio.IdServicio 
-	INNER JOIN mnt_empleados ON sec_historial_clinico.IdEmpleado= mnt_empleados.IdEmpleado
-	INNER JOIN mnt_expediente ON sec_solicitudestudios.IdNumeroExp= mnt_expediente.IdNumeroExp
-	INNER JOIN mnt_datospaciente ON mnt_expediente.IdPaciente= mnt_datospaciente.IdPaciente
-	INNER JOIN mnt_establecimiento ON sec_historial_clinico.IdEstablecimiento= mnt_establecimiento.IdEstablecimiento
-	WHERE  sec_solicitudestudios.IdServicio ='DCOLAB' 
-        AND sec_detallesolicitudestudios.IdEstablecimiento=$lugar AND";
-		$ban=0;
-	//VERIFICANDO LOS POST ENVIADOS
+        if (!empty($_POST['IdServ'])) {
+            $cond1 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . "     ";
+            $cond2 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . "     ";
+            $where_with = "id_area_atencion = $IdServ AND ";
+        }
+        
+        if (!empty($_POST['medico']))
+		{ $cond1 .= "   and t24.id='".$_POST['medico']."' ";
+                  $cond2 .= "   and t24.id='".$_POST['medico']."' ";
+                }
 	
-	if (!empty($_POST['IdEstab']))
-		{ $query .= " sec_historial_clinico.IdEstablecimiento ='".$_POST['IdEstab']."' AND";}	
-			
-	if (!empty($_POST['IdServ']))
-		{ $query .= " mnt_subservicio.IdServicio ='".$_POST['IdServ']."' AND";}
-		
-	if (!empty($_POST['IdSubServ']))
-	{ $query .= " sec_historial_clinico.IdSubservicio='".$_POST['IdSubServ']."' AND";}
-		
-	if (!empty($_POST['medico']))
-		{ $query .= " sec_historial_clinico.IdEmpleado='".$_POST['medico']."' AND";}
-	
-	if ((!empty($_POST['fechainicio'])) and (!empty($_POST['fechafin'])))
+               
+                
+                 if ((!empty($_POST['fechainicio'])) and (!empty($_POST['fechafin'])))
 	{ $Nfechaini=explode("/",$fechainicio);
 	  $Nfechafin=explode("/",$fechafin);
 		 	//print_r($Nfecha);
         $Nfechaini=$Nfechaini[2]."-".$Nfechaini[1]."-".$Nfechaini[0]; 
 		$Nfechafin=$Nfechafin[2]."-".$Nfechafin[1]."-".$Nfechafin[0]; 
-		$query .= " sec_solicitudestudios.FechaSolicitud BETWEEN '".$Nfechaini."' AND '".$Nfechafin."' ";}
-
-	if((empty($_POST['especialidad'])) and (empty($_POST['medico'])) and (empty($_POST['fechainicio'])) 
+		$cond1 .= " and     t02.fecha_solicitud BETWEEN '".$Nfechaini."'     AND     '".$Nfechafin."'    ";
+                $cond2 .= " and     t02.fecha_solicitud BETWEEN '".$Nfechaini."'     AND     '".$Nfechafin."'    ";
+                
+        }
+                
+                
+      if((empty($_POST['especialidad'])) and (empty($_POST['medico'])) and (empty($_POST['fechainicio'])) 
 	and (empty($_POST['fechafin'])) and (empty($_POST['IdEstab'])) and (empty($_POST['IdServ'])))
 	{
 		$ban=1;
 	}
-			
-	if ($ban==0)
-	{   $query = substr($query ,0,strlen($query)-1);
-		$query_search = $query. " ORDER BY PrimerApellido";
-	}
+           if ($ban == 0) {
+
+            $cond1 = substr($cond1, 0, strlen($query) - 3);
+            $cond2 = substr($cond2, 0, strlen($query) - 3);
+            
+          //  echo $query1;
+           // $query_search = 
+           //$cond1;
+          // echo $cond2;
+        }     
+       $query="WITH tbl_servicio AS (
+                    SELECT t02.id,
+                        CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
+                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
+                                 ELSE t02.nombre_ambiente
+                            END
+                        ELSE
+                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'--> ' || t01.nombre
+                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
+                            END
+                        END AS servicio 
+                    FROM  ctl_atencion                  t01 
+                    INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
+                    INNER JOIN mnt_area_mod_estab           t03 ON (t03.id = t02.id_area_mod_estab)
+                    LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
+                    LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
+                    WHERE  t02.id_establecimiento = 49
+                    ORDER BY 2)
+            
+                    SELECT 
+                    t01.id,
+		   t13.nombre AS nombreservicio, 
+		   t19.nombre AS sexo,
+                   t24.nombreempleado as medico,
+                   CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido,
+                   t07.apellido_casada) AS paciente,
+                   (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
+                   t11.nombre AS nombresubservicio,
+                  CASE t01.estadodetalle 
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada'
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='R') THEN 'Recibida'
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='P') THEN 'En Proceso'    
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' END AS estado,
+		  t06.numero as expediente,
+                  TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud
+	    FROM sec_detallesolicitudestudios t01 
+            INNER JOIN sec_solicitudestudios t02 		ON (t02.id = t01.idsolicitudestudio) 
+            INNER JOIN lab_recepcionmuestra t03 		ON (t02.id = t03.idsolicitudestudio) 
+            INNER JOIN lab_conf_examen_estab t04 		ON (t04.id = t01.id_conf_examen_estab) 
+            INNER JOIN mnt_area_examen_establecimiento t05 	ON (t05.id = t04.idexamen) 
+            INNER JOIN mnt_expediente t06 			ON (t06.id = t02.id_expediente) 
+            INNER JOIN mnt_paciente t07 			ON (t07.id = t06.id_paciente) 
+            INNER JOIN ctl_area_servicio_diagnostico t08 	ON (t08.id = t05.id_area_servicio_diagnostico 
+            AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) 
+            INNER JOIN sec_historial_clinico t09 		ON (t09.id = t02.id_historial_clinico) 
+            INNER JOIN mnt_aten_area_mod_estab t10 		ON (t10.id = t09.idsubservicio) 
+            INNER JOIN ctl_atencion t11 			ON (t11.id = t10.id_atencion) 
+            INNER JOIN mnt_area_mod_estab t12 			ON (t12.id = t10.id_area_mod_estab) 
+            INNER JOIN ctl_area_atencion t13 			ON (t13.id = t12.id_area_atencion) 
+            INNER JOIN ctl_establecimiento t14 			ON (t14.id = t09.idestablecimiento) 
+            INNER JOIN cit_citas_serviciodeapoyo t15 		ON (t02.id = t15.id_solicitudestudios) 
+            INNER JOIN ctl_estado_servicio_diagnostico t16 	ON (t16.id = t01.estadodetalle) 
+            INNER JOIN lab_tiposolicitud t17 			ON (t17.id = t02.idtiposolicitud) 
+            INNER JOIN ctl_examen_servicio_diagnostico t18 	ON (t18.id = t05.id_examen_servicio_diagnostico) 
+            INNER JOIN ctl_sexo t19 				ON (t19.id = t07.id_sexo)
+            INNER JOIN tbl_servicio t20 			ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
+            left join sec_diagnosticospaciente t21	        on (t09.id=t21.idhistorialclinico)
+            left join mnt_cie10 t22                             on (t22.id=t21.iddiagnostico1)
+	    left join sec_examenfisico t23 		        on (t23.idhistorialclinico=t09.id)
+            inner join mnt_empleado t24 		        on (t09.id_empleado=t24.id)
+            inner join ctl_area_servicio_diagnostico t25        on (t25.id=t05.id_area_servicio_diagnostico)
+            WHERE t01.idestablecimiento=$lugar  $cond1 
+
+UNION
+
+            SELECT t01.id,
+                   t13.nombre AS nombreservicio, 
+		   t19.nombre AS sexo,
+                   t24.nombreempleado as medico,
+                   CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido,
+                   t07.apellido_casada) AS paciente, 
+                  (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
+		   t11.nombre AS nombresubservicio, 
+		CASE t01.estadodetalle 
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada'
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='R') THEN 'Recibida'
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='P') THEN 'En Proceso'    
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' END AS estado,
+			t06.numero as expediente,
+			TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud
+FROM sec_detallesolicitudestudios t01 
+            INNER JOIN sec_solicitudestudios t02 		ON (t02.id = t01.idsolicitudestudio) 
+            INNER JOIN lab_recepcionmuestra t03 		ON (t02.id = t03.idsolicitudestudio) 
+            INNER JOIN lab_conf_examen_estab t04	 	ON (t04.id = t01.id_conf_examen_estab) 
+            INNER JOIN mnt_area_examen_establecimiento t05  	ON (t05.id = t04.idexamen)
+            INNER JOIN mnt_dato_referencia t09 			ON t09.id=t02.id_dato_referencia 
+            INNER JOIN mnt_expediente_referido t06 		ON (t06.id = t09.id_expediente_referido) 
+            INNER JOIN mnt_paciente_referido t07 		ON (t07.id = t06.id_referido) 
+            INNER JOIN ctl_area_servicio_diagnostico t08 	ON (t08.id = t05.id_area_servicio_diagnostico 
+            AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) 
+            INNER JOIN mnt_aten_area_mod_estab t10 		ON (t10.id = t09.id_aten_area_mod_estab) 
+            INNER JOIN ctl_atencion t11 			ON (t11.id = t10.id_atencion) 
+            INNER JOIN mnt_area_mod_estab t12 			ON (t12.id = t10.id_area_mod_estab) 
+            INNER JOIN ctl_area_atencion t13 			ON (t13.id = t12.id_area_atencion) 
+            INNER JOIN ctl_establecimiento t14 			ON (t14.id = t09.id_establecimiento)
+	    INNER JOIN ctl_examen_servicio_diagnostico t18 	ON (t18.id = t05.id_examen_servicio_diagnostico) 
+            INNER JOIN ctl_sexo t19 				ON (t19.id = t07.id_sexo)
+            left join sec_diagnosticospaciente t21	        on (t09.id=t21.idhistorialclinico)
+            left join mnt_cie10 t22                             on (t22.id=t21.iddiagnostico1)
+	    left join sec_examenfisico t23 		        on (t23.idhistorialclinico=t09.id)
+             inner join mnt_empleado t24 		        on (t09.id_empleado=t24.id)
+             inner join ctl_area_servicio_diagnostico t25      on (t25.id=t05.id_area_servicio_diagnostico)
+             where t01.idestablecimiento= $lugar  $cond2 order by fechasolicitud desc ";
 		
 		
 		//echo $query_search;
-        $consulta=$objdatos->BuscarSolicitudesEspecialidad($query_search); 
+         $consulta=$objdatos->BuscarSolicitudesEspecialidad($query); 
 
         /*  ----------Datos para  Pacgianción----------------*/
-	$RegistrosAMostrar=20;
+	$RegistrosAMostrar=10;
 	$RegistrosAEmpezar=($_POST['pag']-1)*$RegistrosAMostrar;
 	$PagAct=$_POST['pag'];
 				
-	$consulta=$objdatos->consultarpag($query_search,$RegistrosAEmpezar,$RegistrosAMostrar);
-	$NroRegistros= $objdatos->NumeroDeRegistros($query_search);
+	$consulta=$objdatos->consultarpag($query,$RegistrosAEmpezar,$RegistrosAMostrar);
+	$NroRegistros= $objdatos->NumeroDeRegistros($query);
 				
  $imprimir="<table width='92%' border='0' align='center'>
 	            <tr>
@@ -115,25 +241,25 @@ $imprimir.="<table width='95%' border='1' align='center'>
 					<td>Estado Solicitud</td>
 	    	   </tr>";    
  	$pos=0;
-        while ($row = mysql_fetch_array($consulta))
+        while ($row = pg_fetch_array($consulta))
 	{ 
     $imprimir .="<tr>
-					<td width='%'>".$row['FechaSolicitud']."</td>
-					<td width='7%'>".$row['IdNumeroExp']."</td>". 
-						"<input name='idsolicitud[".$pos."]' id='idsolicitud[".$pos."]' type='hidden' size='60' value='".$row["IdSolicitudEstudio"]."' />".
-						"<input name='idexpediente[".$pos."]' id='idexpediente[".$pos."]' type='hidden' size='60' value='".$row["IdNumeroExp"]."' />".
-					"<td width='20%'>".$row['NombrePaciente']."</td>
+					<td width='%'>".$row['fechasolicitud']."</td>
+					<td width='7%'>".$row['expediente']."</td>". 
+						"<input name='idsolicitud[".$pos."]' id='idsolicitud[".$pos."]' type='hidden' size='60' value='".$row[1]."' />".
+						"<input name='idexpediente[".$pos."]' id='idexpediente[".$pos."]' type='hidden' size='60' value='".$row['expediente']."' />".
+					"<td width='20%'>".$row['paciente']."</td>
 			    	 <td width='18%'>".htmlentities($row['medico'])."</td>
-			    	 <td width='10%'>".htmlentities($row['origen'])."</td>
-			    	 <td width='10%'>".htmlentities($row['procedencia'])."</td>
-			    	 <td width='15%'>".htmlentities($row['Nombre'])."</td>	
-			    	 <td width='10%'>".$row['Estado']."</td>
+			    	 <td width='10%'>".htmlentities($row['nombresubservicio'])."</td>
+			    	 <td width='10%'>".htmlentities($row['nombreservicio'])."</td>
+			    	 <td width='15%'>".htmlentities($row['estabext'])."</td>	
+			    	 <td width='10%'>".$row['estado']."</td>
 	            </tr>";
 
 	$pos=$pos + 1;
 	}
 	
-	mysql_free_result($consulta);
+	pg_free_result($consulta);
 	
    	$imprimir .= "<input type='hidden' name='oculto' id='text' value='".$pos."' /> 
    
@@ -188,7 +314,7 @@ $imprimir.="<table width='95%' border='1' align='center'>
 		//recuperando los valores generales de la solicitud
 		
 		$consulta=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud);
-		$row = mysql_fetch_array($consulta);
+		$row = pg_fetch_array($consulta);
 		//obteniedo los datos generales de la solicitud
 		//valores de las consultas
 		$medico=$row['NombreMedico'];
@@ -253,7 +379,7 @@ $imprimir.="<table width='95%' border='1' align='center'>
 		   		<td> Estado </td>
 		   	</tr>";
 		$pos=0;
-	while($fila = mysql_fetch_array($consultadetalle)){
+	while($fila = pg_fetch_array($consultadetalle)){
           $imprimir .= "<tr>
 				<td>".$fila['IdExamen']."</td>
 				<td>".htmlentities($fila['NombreExamen'])."</td>	
@@ -270,7 +396,7 @@ $imprimir.="<table width='95%' border='1' align='center'>
                   $pos=$pos + 1;
         }
 
-mysql_free_result($consultadetalle);
+pg_free_result($consultadetalle);
 
  $imprimir .= "<input type='hidden' name='oculto' id='oculto' value='".$pos."' />
 		</table>
@@ -296,36 +422,36 @@ mysql_free_result($consultadetalle);
                  
 		$rslts='';
 		$IdSubServicio=$_POST['idsubservicio'];
-		$dttipo=$objdatos->ObtenerServicio($IdSubServicio);
-               	$row=mysql_fetch_array($dttipo);
-                $Servicio=$row[0];
+		//$dttipo=$objdatos->ObtenerServicio($IdSubServicio);
+              //  echo $dttipo;
+              // 	$row=pg_fetch_array($dttipo);
+               // $Servicio=$row[0];
 		//echo $IdSubServicio;
-                if ($Servicio=='EXTREF' OR $Servicio=='CONEXT'){
+              /*  if ($Servicio=='EXTREF' OR $Servicio=='CONEXT'){
 			$dtMed=$objdatos->LlenarMedico($IdSubServicio,$lugar);	
 		
 			$rslts = '<select name="cboMedicos" id="cboMedicos" class="MailboxSelect" style="width:250px">';
 			$rslts .='<option value="0">--Seleccione Medico--</option>';
 			
-			while ($rows =mysql_fetch_array($dtMed)){
+			while ($rows =pg_fetch_array($dtMed)){
 			$rslts.= '<option value="' . $rows[1] .'" >'. htmlentities($rows[0]).'</option>';
 			}
 				
 			$rslts .= '</select>';
 			echo $rslts;
                 }
-		else{
-			$dtmed=$objdatos->LlenarCmbMedicos($lugar);
+		else{*/
+			$dtmed=$objdatos->LlenarCmbMedicos($IdSubServicio);
 			$rslts = '<select name="cmbMedico" id="cmbMedico"  style="width:350px">';
-				$rslts .='<option value="0">--Seleccione un Servicio--</option>';
-				while ($rows =mysql_fetch_array($dtmed)){
-					$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
-				}
+				$rslts .='<option value="0">--Seleccione un Medico--</option>';
+				while ($rows =pg_fetch_array($dtmed)){
+					$rslts.= '<option value="' . $rows['idemp'] .'" >'. $rows['nombre'].'</option>';
+				//}
 			$rslts .='</select>';
 			echo $rslts;
 
 		}
 	
-	 
 	 
 	 
 	
@@ -378,7 +504,7 @@ mysql_free_result($consultadetalle);
 		//	ECHO $query_search;
              $consulta1=$objdatos->BuscarSolicitudesEspecialidad($query_search); 
 			 
-			$row1 = mysql_fetch_array($consulta1);
+			$row1 = pg_fetch_array($consulta1);
   	$imprimir=" <table width='90%' border='0' align='center'>
 		    <tr>
 			<td colspan='7' align='center'><h3><strong>REPORTE DE SOLICITUDES POR ESPECIALIDAD
@@ -403,7 +529,7 @@ mysql_free_result($consultadetalle);
 			<td>Estado Solicitud</td>
 		    </tr>";    
  	$pos=0;
-    	while ($row = mysql_fetch_array($consulta))
+    	while ($row = pg_fetch_array($consulta))
 	{ 
 	$imprimir .="<tr>
 			  <td width='11%'>".$row['FechaSolicitud']."</td>
@@ -418,7 +544,7 @@ mysql_free_result($consultadetalle);
 		$pos=$pos + 1;
 	}
 	
-	mysql_free_result($consulta);
+	pg_free_result($consulta);
 	
    	$imprimir .= "<input type='hidden' name='oculto' id='text' value='".$pos."' /> 
    
@@ -442,7 +568,7 @@ mysql_free_result($consultadetalle);
             	$dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
               	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:375px" >';
 		$rslts .='<option value="0"> Seleccione Establecimiento </option>';
-               while ($rows =mysql_fetch_array( $dtIdEstab)){
+               while ($rows =pg_fetch_array( $dtIdEstab)){
 		  $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 	       }
 				
@@ -456,7 +582,7 @@ mysql_free_result($consultadetalle);
 	     $dtserv=$objdatos->LlenarCmbServ($IdServ,$lugar);
 	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:375px" onChange="BuscarMedicos(this.value)">';
 			$rslts .='<option value="0"> Seleccione Subespecialidad </option>';
-			while ($rows =mysql_fetch_array($dtserv)){
+			while ($rows =pg_fetch_array($dtserv)){
 		  	$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 	       		}
 				

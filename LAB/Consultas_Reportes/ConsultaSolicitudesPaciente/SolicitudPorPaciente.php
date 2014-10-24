@@ -34,7 +34,8 @@ $nomtipo=$row[2];
 <script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
 <script language="JavaScript" type="text/javascript">
 function MostrarBusqueda()
-{
+{ IdServ=document.getElementById('CmbServicio').value;
+    
 	 if ((document.getElementById('txtexpediente').value == "") 
             &&(document.getElementById('PrimerNombre').value == "")
             &&(document.getElementById('SegundoNombre').value == "")
@@ -49,8 +50,8 @@ function MostrarBusqueda()
           //txtfecharecep
 	   }
     	 else{
-	     BuscarDatospaciente(); 
-             
+	     BuscarDatospaciente(1); 
+             //alert ("si"+IdServ);
          }
 }
 
