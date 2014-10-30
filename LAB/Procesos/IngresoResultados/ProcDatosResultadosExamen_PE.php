@@ -117,7 +117,7 @@ LlenarComboResponsable(area);
 	$bandera=$_GET['var12'];
          $IdEstandar=$_GET['var16'];
         $IdHistorial=$_GET['var17'];
-            if($db->conectar()==true){
+            /*if($db->conectar()==true){
               $condatos = "SELECT sec_examenfisico.Peso, sec_examenfisico.Talla, Diagnostico, ConocidoPor
                          FROM sec_historial_clinico
                          INNER JOIN mnt_expediente ON sec_historial_clinico.IdNumeroExp = mnt_expediente.IdNumeroExp
@@ -128,15 +128,15 @@ LlenarComboResponsable(area);
                          WHERE sec_historial_clinico.IdHistorialClinico=$IdHistorial
                          AND sec_historial_clinico.IdEstablecimiento =$lugar";
 
-              $resultado = mysql_query($condatos);
-              $rows = mysql_fetch_array($resultado);
+              $resultado = pg_query($condatos);
+              $rows = pg_fetch_array($resultado);
 
               $Peso=$rows['Peso'];
               $Talla=$rows['Talla'];
               $Diagnostico=$rows['Diagnostico'];
               $ConocidoPor=$rows['ConocidoPor'];
               //echo $Peso." * ".$Talla." * ".$Diagnostico." * ".$ConocidoPor;
-          }
+          }*/
 ?>
 </script>
 </head>

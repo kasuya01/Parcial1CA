@@ -135,7 +135,24 @@ class Paciente{
             $Conexion=new ConexionBD();
             $conectar=$Conexion->conectar();   
             if($conectar==true){
-              //  echo '<br/>Badera: '.$badera;
+                $recep="select * from lab_recepcionmuestra where idsolicitudestudio=$IdSolicitudEstudio";
+                $sql3=  pg_query($recep);
+                $rec=  pg_num_rows($sql3);
+                if ($rec==0){
+                $num= "SELECT (coalesce(MAX(t01.numeromuestra),0) + 1)  
+FROM lab_recepcionmuestra        t01
+INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
+WHERE t01.fecharecepcion = current_date 
+AND t02.id_establecimiento = $LugardeAtencion";
+                $sql2=  pg_query($num);
+                $nmuestra=  pg_fetch_array($sql2);
+
+                $remuestra= "insert into lab_recepcionmuestra (numeromuestra, fecharecepcion, idsolicitudestudio, fechacita, idestablecimiento, idusuarioreg, fechahorareg) VALUES ($nmuestra[0], current_date, $IdSolicitudEstudio, current_date, $LugardeAtencion, $iduser, NOW())";
+                 $rep=  pg_query($remuestra); 
+                       if (!$rep)
+                           return false;
+                }
+               // echo '<br/>Badera: '.$badera;
                 if($badera == 1) // crear la cita
                 {
                     $nextid="select nextval('cit_citas_serviciodeapoyo_idcitaservapoyo_seq')"; 
@@ -149,20 +166,6 @@ class Paciente{
                     if (!$queryIns)
                         return false;
                     else{
-                        $num= "SELECT (coalesce(MAX(t01.numeromuestra),0) + 1)  
-FROM lab_recepcionmuestra        t01
-INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
-WHERE t01.fecharecepcion = current_date 
-AND t02.id_establecimiento = $LugardeAtencion";
-                        $sql2=  pg_query($num);
-                        $nmuestra=  pg_fetch_array($sql2);
-                        
-                       $remuestra= "insert into lab_recepcionmuestra (numeromuestra, fecharecepcion, idsolicitudestudio, fechacita, idestablecimiento, idusuarioreg, fechahorareg) VALUES ($nmuestra[0], current_date, $IdSolicitudEstudio, current_date, $LugardeAtencion, $iduser, NOW())";
-                       $rep=  pg_query($remuestra); 
-                       if (!$rep)
-                           return false;
-                        
-                        
                         return $idnext;
                     }
                      
@@ -170,11 +173,11 @@ AND t02.id_establecimiento = $LugardeAtencion";
                 else // actualizar la cita
                 {
                     $UpdateCit = "update cit_citas_serviciodeapoyo 
-                                set fecha=current_date
-                                where id=$IdCitaServApoyo
-                                and id_solicitudestudios=$IdSolicitudEstudio";
+                                set fecha=current_date,
+                                id_solicitudestudios=$IdSolicitudEstudio
+                                where id=$IdCitaServApoyo";
                     $query=pg_query($UpdateCit);
-                   // echo $UpdateCit;
+                //    echo $UpdateCit;
                     if (!$query)
                         return false;
                     else

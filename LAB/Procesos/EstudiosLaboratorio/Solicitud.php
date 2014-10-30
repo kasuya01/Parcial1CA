@@ -59,7 +59,7 @@ $_SESSION["lugar"] = $lugar;
     <body>
         <table width="100%">
             <tr>
-                <td><img src="../../../Imagenes/paisanito.gif"  /></td>
+                <td><img src="../../../Imagenes/paisanito.png"  width="124" height="80" /></td>
                 <td width="80%" align="center" class="TdTitulo1"><strong>SOLICITUD A LABORATORIO CLINICO</strong></td>
             </tr>
         </table>

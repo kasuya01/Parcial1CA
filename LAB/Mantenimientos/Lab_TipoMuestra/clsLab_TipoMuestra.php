@@ -78,7 +78,7 @@ class clsLab_TipoMuestra
      $query = "UPDATE lab_tipomuestra
                 set habilitado=false, 
                 idusuariomod=$usuario,
-                fechamod=now()
+                fechahoramod=now()
                 where id=$idtipo";
      $result = @pg_query($query);
 	 
