@@ -117,9 +117,61 @@
                       WHERE t08.codigo_busqueda = 'DCOLAB' AND t04.numero = '$idexpediente'
                             AND t15.idestado = '$estado_solicitud'     AND t02.id = $idsolicitud1
                             AND t09.fecha = '$Nfechacita'";
-
-            $result = @pg_query($query);
-            $row = pg_fetch_array($result);
+                $result = @pg_query($query);
+                if (pg_num_rows($result)==0){ // busqueda si el paciente es de referencia
+                echo $query = "
+                    SELECT DISTINCT t03.idempleado AS idmedico,
+                             t03.nombreempleado AS nombremedico,
+                             t08.nombre AS origen,
+                             t02.id AS idsolicitudestudio,
+                             (SELECT nombre
+                              FROM ctl_atencion
+                              WHERE id = t08.id_atencion_padre) AS precedencia,
+                             t04.numero AS idnumeroexp,
+                             CONCAT_WS(' ',t05.primer_nombre, t05.segundo_nombre,t05.tercer_nombre, t05.primer_apellido, t05.segundo_apellido, t05.apellido_casada) as nombrepaciente,
+                             REPLACE(
+                                REPLACE(
+                                    REPLACE(
+                                        REPLACE(
+                                            REPLACE(
+                                                REPLACE(
+                                                    AGE(t05.fecha_nacimiento::timestamp)::text,
+                                                'years', 'años'),
+                                            'year', 'año'),
+                                        'mons', 'meses'),
+                                    'mon', 'mes'),
+                                'days', 'días'),
+                             'day', 'día') AS edad,
+                             t06.nombre AS sexo,
+                             t13.nombre,
+                             TO_CHAR(t05.fecha_nacimiento, 'DD/MM/YYYY') AS fechanacimiento,
+                             t01.idestablecimiento,
+                             t10.peso,
+                             t10.talla,
+                             t12.diagnostico,
+                             t05.conocido_por AS conocidopor
+                      FROM  sec_historial_clinico 			     t01
+                      INNER JOIN sec_solicitudestudios 		     t02 ON (t01.id = t02.id_historial_clinico)
+                      LEFT  JOIN mnt_empleado 				     t03 ON (t03.id = t01.id_empleado)
+                      LEFT JOIN mnt_expediente 			     t04 ON (t04.id = t01.id_numero_expediente)
+                      LEFT JOIN mnt_expediente_referencia            t20 ON (t20.id = t02.id_expediente_referido)
+                      LEFT  JOIN mnt_paciente 				     t05 ON (t05.id = t04.id_paciente)
+                      INNER JOIN ctl_sexo 				         t06 ON (t06.id = t05.id_sexo)
+                      INNER JOIN mnt_aten_area_mod_estab 		 t07 ON (t07.id = t01.idsubservicio)
+                      INNER JOIN ctl_atencion 			         t08 ON (t08.id = t02.id_atencion)
+                      INNER JOIN cit_citas_serviciodeapoyo 		 t09 ON (t02.id = t09.id_solicitudestudios)
+                      LEFT  JOIN sec_examenfisico 			     t10 ON (t01.id = t10.idhistorialclinico)
+                      LEFT  JOIN sec_diagnosticospaciente 		 t11 ON (t01.id = t11.idhistorialclinico)
+                      LEFT  JOIN mnt_cie10 				         t12 ON (t12.id = t11.iddiagnostico1)
+                      INNER JOIN ctl_establecimiento 			 t13 ON (t13.id = t01.idestablecimiento)
+                      INNER JOIN lab_tiposolicitud 			     t14 ON (t14.id = t02.idtiposolicitud)
+                      INNER JOIN ctl_estado_servicio_diagnostico t15 ON (t15.id = t02.estado AND t15.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+                      WHERE t08.codigo_busqueda = 'DCOLAB' AND (t04.numero = '$idexpediente' OR t20.numero = '$idexpediente')
+                            AND t15.idestado = '$estado_solicitud'     AND t02.id = $idsolicitud1
+                            AND t09.fecha = '$Nfechacita'";
+                $result = @pg_query($query);
+            }
+            
 
             //valores de las consultas
             $medico            = $row['nombremedico'];
