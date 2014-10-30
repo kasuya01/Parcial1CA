@@ -32,6 +32,7 @@ switch ($opcion)
                 $etiqueta=$_POST['etiqueta'];
                 $Urgente=$_POST['urgente'];
                 $sexo=$_POST['sexo'];
+                $metodologias_sel=$_POST['metodologias_sel'];
                 //echo $sexo;
                 if($sexo<>4)
                     $idsexo=$sexo;
@@ -72,8 +73,16 @@ switch ($opcion)
                  }
 
                       //  echo $IdFormulario;
-		 If ($objdatos->IngExamenxEstablecimiento($idexamen,$nomexamen,$Hab,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$TiempoPrevio,$idsexo,$idestandar,$lugar)==true)
+		 If ($objdatos->IngExamenxEstablecimiento($idexamen,$nomexamen,$Hab,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$TiempoPrevio,$idsexo,$idestandar,$lugar,$metodologias_sel)==true)
 		 {
+                     /*
+                      * Ingresar metodologías seleccionadas
+                      */
+                     
+                     
+                     
+                     
+                     
                    /* if($plantilla<>1){
                            // echo  $idexamen."  ".$idarea."  ".$usuario."  ".$lugar;
                           if($objdatos->AgregarDatosFijos($idexamen,$idarea,$usuario,$lugar)==true)
@@ -100,6 +109,7 @@ switch ($opcion)
 			$etiqueta=$_POST['Etiqueta'];
                         $Urgente=$_POST['urgente'];
                         $sexo=$_POST['idsexo']; 
+                        $metodologias_sel=$_POST['metodologias_sel'];
                      //  echo $IdEstandarResp." sexo=".$sexo;
                        if($sexo<>4)
                             $idsexo=$sexo;
@@ -135,11 +145,16 @@ switch ($opcion)
                             $num=71;
                             $letra=$etiqueta;
 			 }
-			
+
 			// echo $idexamen."-".$lugar."-".$usuario."-".$IdFormulario."-".$IdEstandarResp."-".$plantilla."-".$letra."-".$Urgente."-".$ubicacion;
-              	If($objdatos->ActExamenxEstablecimiento($idconf,$nomexamen,$lugar,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$Hab,$TiempoPrevio,$idsexo,$idestandar,$ctlidestandar)==true){
-		                                       
-                         echo "Registro Actualizado";			
+              	If($objdatos->ActExamenxEstablecimiento($idconf,$nomexamen,$lugar,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$Hab,$TiempoPrevio,$idsexo,$idestandar,$ctlidestandar,$metodologias_sel)==true){
+                    /*
+                     * creando arreglo de elementos seleccionados
+                     */
+                    
+
+                    echo "Registro Actualizado";
+                   		
 		}
 		else{
                          echo "No se pudo actualizar en Registro";

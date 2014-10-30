@@ -17,7 +17,6 @@ $Nfechacita = $Nfecha[2] . "/" . $Nfecha[1] . "/" . $Nfecha[0];
 $estado     = 'D';
 $idEstablecimiento = $_POST['idEstablecimiento'];
 
-//echo $idEstablecimiento;
 $arraysolic  = array();
 $arraypiloto = array();
 $i   = 0;
