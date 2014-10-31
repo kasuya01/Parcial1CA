@@ -145,10 +145,10 @@ class clsRMAutomatizada {
 
     //FUNCION PARA DEVOLVER DATOS DE LA SOLICITUD QUE HA DE SER PROCESADA
     //DATOS GENERALES DE LA SOLICITUD
-    function DatosGeneralesSolicitud($idsolicitud) {
+    function DatosGeneralesSolicitud($idsolicitudP,$idexpediente) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "WITH tbl_servicio AS (
+              $query = /*"WITH tbl_servicio AS (
                         SELECT t02.id,
                             CASE WHEN t02.nombre_ambiente IS NOT NULL THEN  	
                                 CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
@@ -241,7 +241,136 @@ class clsRMAutomatizada {
                     left join ctl_sexo csexpar 			  on (csexpar.id=par.id_sexo)  
                     where sse.id_atencion=98 
 			
-			and sdses.id=$idsolicitud";
+			and sdses.id=$idsolicitud";*/
+                   
+                   
+                   "WITH tbl_servicio AS (
+                    SELECT t02.id,
+                        CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
+                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
+                                 ELSE t02.nombre_ambiente
+                            END
+                        ELSE
+                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'--> ' || t01.nombre
+                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
+                            END
+                        END AS servicio 
+                    FROM  ctl_atencion                  t01 
+                    INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
+                    INNER JOIN mnt_area_mod_estab           t03 ON (t03.id = t02.id_area_mod_estab)
+                    LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
+                    LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
+                    WHERE  t02.id_establecimiento = 49
+                    ORDER BY 2)
+            
+                    SELECT t02.id,
+		   t13.nombre AS nombreservicio, 
+		   t19.nombre AS sexo,
+                 t24.nombreempleado as medico,
+                   CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido,
+                   t07.apellido_casada) AS paciente,
+                   t07.conocido_por as conocodidox,
+                    REPLACE(
+                                    REPLACE(
+                                        REPLACE(
+                                            REPLACE(
+                                                REPLACE(
+                                                    REPLACE(
+                                                        AGE(t07.fecha_nacimiento::timestamp)::text,
+                                                    'years', 'años'),
+                                                'year', 'año'),
+                                            'mons', 'meses'),
+                                        'mon', 'mes'),
+                                    'days', 'días'),
+                                 'day', 'día') as edad,
+                                 (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
+                 t11.nombre AS nombresubservicio,
+                  t22.diagnostico AS diagnostico,
+                   t23.peso as peso,
+                    t23.talla as peso
+                   
+                   
+		   
+            FROM sec_detallesolicitudestudios t01 
+            INNER JOIN sec_solicitudestudios t02 		ON (t02.id = t01.idsolicitudestudio) 
+            INNER JOIN lab_recepcionmuestra t03 		ON (t02.id = t03.idsolicitudestudio) 
+            INNER JOIN lab_conf_examen_estab t04 		ON (t04.id = t01.id_conf_examen_estab) 
+            INNER JOIN mnt_area_examen_establecimiento t05 	ON (t05.id = t04.idexamen) 
+            INNER JOIN mnt_expediente t06 			ON (t06.id = t02.id_expediente) 
+            INNER JOIN mnt_paciente t07 			ON (t07.id = t06.id_paciente) 
+            INNER JOIN ctl_area_servicio_diagnostico t08 	ON (t08.id = t05.id_area_servicio_diagnostico 
+            AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) 
+            INNER JOIN sec_historial_clinico t09 		ON (t09.id = t02.id_historial_clinico) 
+            INNER JOIN mnt_aten_area_mod_estab t10 		ON (t10.id = t09.idsubservicio) 
+            INNER JOIN ctl_atencion t11 			ON (t11.id = t10.id_atencion) 
+            INNER JOIN mnt_area_mod_estab t12 			ON (t12.id = t10.id_area_mod_estab) 
+            INNER JOIN ctl_area_atencion t13 			ON (t13.id = t12.id_area_atencion) 
+            INNER JOIN ctl_establecimiento t14 			ON (t14.id = t09.idestablecimiento) 
+            INNER JOIN cit_citas_serviciodeapoyo t15 		ON (t02.id = t15.id_solicitudestudios) 
+            INNER JOIN ctl_estado_servicio_diagnostico t16 	ON (t16.id = t01.estadodetalle) 
+            INNER JOIN lab_tiposolicitud t17 			ON (t17.id = t02.idtiposolicitud) 
+            INNER JOIN ctl_examen_servicio_diagnostico t18 	ON (t18.id = t05.id_examen_servicio_diagnostico) 
+            INNER JOIN ctl_sexo t19 				ON (t19.id = t07.id_sexo)
+            INNER JOIN tbl_servicio t20 			ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
+            left join sec_diagnosticospaciente t21	        on (t09.id=t21.idhistorialclinico)
+            left join mnt_cie10 t22                             on (t22.id=t21.iddiagnostico1)
+	    left join sec_examenfisico t23 		        on (t23.idhistorialclinico=t09.id)
+            inner join mnt_empleado t24 		        on (t09.id_empleado=t24.id) 
+            
+            WHERE  t01.id=$idsolicitudP and  t06.numero='$idexpediente'
+
+UNION
+
+            SELECT t02.id,
+                   t13.nombre AS nombreservicio, 
+		   t19.nombre AS sexo,
+                   t24.nombreempleado as medico,
+                   CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido,
+                   t07.apellido_casada) AS paciente, 
+                   t07.primer_nombre,
+                    REPLACE(
+                                    REPLACE(
+                                        REPLACE(
+                                            REPLACE(
+                                                REPLACE(
+                                                    REPLACE(
+                                                        AGE(t07.fecha_nacimiento::timestamp)::text,
+                                                    'years', 'años'),
+                                                'year', 'año'),
+                                            'mons', 'meses'),
+                                        'mon', 'mes'),
+                                    'days', 'días'),
+                                 'day', 'día') as edad,
+                   
+                   
+		   (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
+		   t11.nombre AS nombresubservicio, 
+		   t22.diagnostico AS diagnostico,
+                   t23.peso as peso,
+                    t23.talla as talla
+            FROM sec_detallesolicitudestudios t01 
+            INNER JOIN sec_solicitudestudios t02 		ON (t02.id = t01.idsolicitudestudio) 
+            INNER JOIN lab_recepcionmuestra t03 		ON (t02.id = t03.idsolicitudestudio) 
+            INNER JOIN lab_conf_examen_estab t04	 	ON (t04.id = t01.id_conf_examen_estab) 
+            INNER JOIN mnt_area_examen_establecimiento t05  	ON (t05.id = t04.idexamen)
+            INNER JOIN mnt_dato_referencia t09 			ON t09.id=t02.id_dato_referencia 
+            INNER JOIN mnt_expediente_referido t06 		ON (t06.id = t09.id_expediente_referido) 
+            INNER JOIN mnt_paciente_referido t07 		ON (t07.id = t06.id_referido) 
+            INNER JOIN ctl_area_servicio_diagnostico t08 	ON (t08.id = t05.id_area_servicio_diagnostico 
+            AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) 
+            INNER JOIN mnt_aten_area_mod_estab t10 		ON (t10.id = t09.id_aten_area_mod_estab) 
+            INNER JOIN ctl_atencion t11 			ON (t11.id = t10.id_atencion) 
+            INNER JOIN mnt_area_mod_estab t12 			ON (t12.id = t10.id_area_mod_estab) 
+            INNER JOIN ctl_area_atencion t13 			ON (t13.id = t12.id_area_atencion) 
+            INNER JOIN ctl_establecimiento t14 			ON (t14.id = t09.id_establecimiento)
+	    INNER JOIN ctl_examen_servicio_diagnostico t18 	ON (t18.id = t05.id_examen_servicio_diagnostico) 
+            INNER JOIN ctl_sexo t19 				ON (t19.id = t07.id_sexo)
+            left join sec_diagnosticospaciente t21	        on (t09.id=t21.idhistorialclinico)
+            left join mnt_cie10 t22                             on (t22.id=t21.iddiagnostico1)
+	    left join sec_examenfisico t23 		        on (t23.idhistorialclinico=t09.id)
+             inner join mnt_empleado t24 		        on (t09.id_empleado=t24.id) 
+            
+            WHERE   t01.id=$idsolicitudP and  t06.numero='$idexpediente'";
             $result = @pg_query($query);
 
             //         echo $query;
@@ -271,18 +400,23 @@ class clsRMAutomatizada {
         }
     }
 
-    function DatosExamen($idarea, $idsolicitud, $idexamen) {
+    function DatosExamen( $idsolicitudP ) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "select lcee.id,lcee.nombre_examen,ltm.tipomuestra,sdses.indicacion,sdses.observacion,casd.id
+             $query = "select lcee.codigo_examen,
+                            lcee.nombre_examen,
+                            ltm.tipomuestra,
+                            sdses.indicacion,
+                            sdses.observacion,
+                            casd.id
 		from ctl_area_servicio_diagnostico casd 
-                join mnt_area_examen_establecimiento mnt4 on mnt4.id_area_servicio_diagnostico=casd.id 
-                join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen) 
-                INNER JOIN sec_detallesolicitudestudios sdses ON sdses.id_conf_examen_estab=lcee.id
-                inner join lab_tipomuestra ltm on ltm.id=sdses.idtipomuestra
-            where sdses.id=$idsolicitud 
-            AND casd.id=$idarea
-            AND lcee.id=$idexamen";
+                join mnt_area_examen_establecimiento mnt4       on mnt4.id_area_servicio_diagnostico=casd.id 
+                join lab_conf_examen_estab lcee                 on (mnt4.id=lcee.idexamen) 
+                INNER JOIN sec_detallesolicitudestudios sdses   ON sdses.id_conf_examen_estab=lcee.id
+                inner join lab_tipomuestra ltm                  on ltm.id=sdses.idtipomuestra
+            where sdses.id=$idsolicitudP 
+           -- AND casd.id=$idarea
+          --  AND lcee.id=$idexamen";
 
             $result = @pg_query($query);
             if (!$result)
@@ -348,7 +482,7 @@ class clsRMAutomatizada {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
 
-            $query =  "UPDATE sec_detallesolicitudestudios 
+             $query =  "UPDATE sec_detallesolicitudestudios 
              SET estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = '$estado'),
 	     observacion='$observacion'
             WHERE sec_detallesolicitudestudios.id=$idsolicitud ";

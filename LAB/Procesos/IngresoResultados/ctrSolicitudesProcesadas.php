@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 $usuario = $_SESSION['Correlativo'];
 $lugar   = $_SESSION['Lugar'];
@@ -253,10 +252,13 @@ switch ($opcion) {
                     <td>Fecha Recepcion</td>
                     <td>Prioridad</td>
                 </tr>";
+     //   echo '<br/>'.$query.'<br/>';
         if(pg_num_rows($consulta)){
             $pos = 0;
 
             while ($row = pg_fetch_array($consulta)) {
+                $consmet=$objdatos->CantMetodologia($row["idexamen"]);
+             //   echo 'Consmet: '.$consmet;
                 echo "<tr>
                         <td width='5%'>" . $row['numeromuestra'] . "</td>
                         <td width='7%'><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a></td>" .
@@ -264,6 +266,7 @@ switch ($opcion) {
                         "<input name='idexpediente[" . $pos . "]' id='idexpediente[" . $pos . "]' type='hidden' size='60' value='" . $row["idnumeroexp"] . "' />" .
                         "<input name='paciente[" . $pos . "]' id='paciente[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["paciente"]) . "' />" .
                         "<input name='examen[" . $pos . "]' id='examen[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["nombreexamen"]) . "' />" .
+                        "<input name='cant_metodologia[" . $pos . "]' id='cant_metodologia[" . $pos . "]' type='hidden' size='60' value='" . $consmet . "' />" .
                         "<input name='idexamen[" . $pos . "]' id='idexamen[" . $pos . "]' type='hidden' size='60' value='" . $row["idexamen"] . "' />" .
                         "<input name='iddetalle[" . $pos . "]' id='iddetalle[" . $pos . "]' type='hidden' size='60' value='" . $row["iddetallesolicitud"] . "' />" .
                         "<input name='idrecepcion[" . $pos . "]' id='idrecepcion[" . $pos . "]' type='hidden' size='60' value='" . $row["idrecepcionmuestra"] . "' />" .
@@ -361,22 +364,33 @@ switch ($opcion) {
         $observacion = $_POST['observacion'];
         $responsable = $_POST['responsable'];
         $nombrearea = $_POST['nombrearea'];
+        $proce = $_POST['procedencia'];
+        $origen = $_POST['origen'];
         $establecimiento = $_POST['establecimiento'];
         $fechanac = $_POST['fechanac'];
         $sexo = $_POST['sexo'];
+        $idmetodologia = $_POST['cmbmetodologia'];
+        $txtnec = $_POST['nec'];
 
         $Consulta_Estab = $objdatos->Nombre_Establecimiento($lugar);
         $row_estab = pg_fetch_array($Consulta_Estab);
 
-        // echo $idsolicitud." - ".$idexamen." - ".$lugar." - ".$sexo." - ".$idedad;
+        //Buscar Datos Paciente
+        
+         echo $idsolicitud." - ".$idexamen." - ".$lugar." - ".$sexo." - ".$idedad;
         $consulta = $objdatos->MostrarResultadoGenerales($idsolicitud, $idexamen, $lugar);
         $row = pg_fetch_array($consulta);
         $nombre = $row['nombrearea'];
-        $proce = $row['Procedencia'];
+        $id_establecimiento_externo = $row['id_establecimiento_externo'];
+        $idhistoref = $row['idhistoref'];
+        $datospaciente=$objdatos->MostrarDatosPersona($idsolicitud, $lugar, $id_establecimiento_externo, $txtnec, $idhistoref);
+        $rowpa = pg_fetch_array($datospaciente);
+        
+    //    $proce = $row['procedencia'];
 
-        $Cuentadias = $objdatos->CalculoDias($fechanac);
-        $Cdias = pg_fetch_array($Cuentadias);
-        $dias = $Cdias[0];
+       // $Cuentadias = $objdatos->CalculoDias($fechanac);
+        //$Cdias = pg_fetch_array($Cuentadias);
+        $dias = $rowpa['dias'];
 
         $ConRangos = $objdatos->ObtenerCodigoRango($dias);
         $row_rangos = pg_fetch_array($ConRangos);
@@ -390,7 +404,7 @@ switch ($opcion) {
                         <td align='center' colspan='4' width='60%' class='Estilo5'>
                             <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
                             <p><strong>" . $row_estab['nombre'] . "</strong></p>
-                            <p><strong>&Aacute;REA DE " . htmlentities($nombre) . " </strong></p>
+                            <p><strong>&Aacute;REA DE " . $nombre . " </strong></p>
 			</td>
                         <td colspan='1' align='right' width='20%'><img id='Image3' style='WIDTH: 110px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
                     </tr>
@@ -399,45 +413,46 @@ switch ($opcion) {
                     </tr>
                     <tr>
                     	<td colspan='1' style='font:bold'><strong>Establecimiento:</strong></td>
-                    	<td colspan='2' style='font:bold'>" . htmlentities($establecimiento) . "</td>
+                    	<td colspan='2' style='font:bold'>" . $establecimiento . "</td>
                     	<td colspan='1'style='font:bold'><strong>Fecha:</strong></td>
-                    	<td colspan='2' style='font:bold'>" . $row['Fecha'] . "<input name='suEdad' id='suEdad'  type='hidden'  value='" . $row['fechanacimiento'] . "'/></td>
+                    	<td colspan='2' style='font:bold'>" . $row['fecharecepcion'] . "<input name='suEdad' id='suEdad'  type='hidden'  value='" . $rowpa['fecha_nacimiento'] . "'/></td>
                     </tr>
 
                     <tr>
                     	<td colspan='1' style='font:bold'><strong>NEC:</strong></td>
-			<td colspan='2' style='font:bold'>" . $row['idnumeroexp'] . "</td></tr>
+			<td colspan='2' style='font:bold'>" . $txtnec . "</td></tr>
 		    <tr>
                         <td colspan='1' style='font:bold'><strong>paciente:</strong></td>
-			<td colspan='5' style='font:bold'>" . htmlentities($row['NombrePaciente']) . "</td>
+			<td colspan='5' style='font:bold'>" . $rowpa['nombre'] . "</td>
                     </tr>
                     <tr>
 			<td colspan='1' style='font:bold'><strong>Edad:</strong></td>
-			<td colspan='2' style='font:bold'>
-                            <div id='divsuedad'>
-                            </div></td>
+			<td colspan='2' style='font:bold'>".$rowpa['edad']."
+                            
+                           <!-- <div id='divsuedad'>
+                            </div>--></td>
 			<td colspan='1' style='font:bold'><strong>Sexo:</strong></td>
-			<td colspan='2' style='font:bold'>" . $row['Sexo'] . "</td>
+			<td colspan='2' style='font:bold'>" . $rowpa['sexo'] . "</td>
                     </tr>
                      </tr>
                     	<td colspan='1'style='font:bold'><strong>Procedencia:</strong></td>
-                    	<td colspan='2''>" . htmlentities($row['Procedencia']) . "</td>
+                    	<td colspan='2''>" . $proce . "</td>
                     	<td colspan='1' style='font:bold'><strong>Servicio:</strong></td>
-			<td colspan='2'>" . htmlentities($row['Origen']) . "</td>
+			<td colspan='2'>" . $origen . "</td>
                     </tr>
                     <tr>";
         $consulta_empleado = $objdatos->BuscarEmpleadoValidador($responsable, $lugar);
         $fila_empleado = pg_fetch_array($consulta_empleado); //$fila_empleado['NombreEmpleado'].
         $Imprimir.="
                     	<td  colspan='1' style='font:bold'><strong>Validado Por: </strong></td>
-			<td  colspan='5' style='font:bold'>" . htmlentities($fila_empleado['NombreEmpleado']) . "</td>
+			<td  colspan='5' style='font:bold'>" . $fila_empleado['empleado'] . "</td>
                     </tr>
                     <tr>
                         <td colspan='1'>Resultado Tabulador:</td>";
         $nomcod = $objdatos->ObtenerNombreCodigo($cod);
         $row_codigo = pg_fetch_array($nomcod);
 
-        $Imprimir.="<td colspan='5'>" . $row_codigo[0] . "</td>
+        $Imprimir.="<td colspan='5'>" . $row_codigo['resultado'] . "</td>
 	            </tr>
 		    <tr>
 			<td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;</td>
@@ -451,26 +466,29 @@ switch ($opcion) {
                         </tr>
                         <tr >
                             <td align='center'>Prueba Realizada </td>
+                            <td align='center'>Metodología </td>
                             <td align='center'>Resultado</td>
                             <td align='center'>Unidades</td>
                             <td align='center'>Rangos Normales </td>
                             <td align='center'>Lectura</td>
 			    <td align='center'>Interpretaci&oacute;n</td>
 			    <td align='center'>Observaci&oacute;n</td>
-			</tr>";
+			</tr>
+                        <tr><td colspan='7'><hr style='width:90%'></td></tr>";
 
         //MOSTRAR DATOS FIJOS Y RESULTADOS DIGITADOS
-        $consulta2 = $objdatos->MostrarDatosFijosPlantillaA($idexamen, $lugar, $sexo, $idedad);
+        $consulta2 = $objdatos->MostrarDatosFijosPlantillaA($idexamen, $lugar, $sexo, $idedad, $idmetodologia);
         $fila = pg_fetch_array($consulta2);
 
         $Imprimir.="<tr>
-                            <td align='center' style='font:bold'><strong>" . htmlentities($fila['NombreExamen']) . "</strong></td>
-			    <td align='center'>" . htmlentities($resultado) . "</td>
-			    <td align='center'>" . htmlentities($fila['Unidades']) . "</td>
-			    <td align='center'>" . $fila['RangoInicio'] . " - " . $fila['RangoFin'] . "</td>
-			    <td align='center'>" . htmlentities($lectura) . "</td>
-			    <td align='center'>" . htmlentities($interpretacion) . "</td>
-			    <td align='center'>" . htmlentities($observacion) . "</td>
+                            <td align='center' style='font:bold'><strong>" . $fila['nombre_examen'] . "</strong></td>
+                            <td align='center' style='font:bold'><strong>" . $fila['nombre_metodologia'] . "</strong></td>
+			    <td align='center'>" . $resultado . "</td>
+			    <td align='center'>" . $fila['unidades'] . "</td>
+			    <td align='center'>" . $fila['rangoinicio'] . " - " . $fila['rangofin'] . "</td>
+			    <td align='center'>" . $lectura . "</td>
+			    <td align='center'>" . $interpretacion . "</td>
+			    <td align='center'>" . $observacion . "</td>
 			</tr>";
         $Imprimir.="<tr>
                             <td>&nbsp;</td>
@@ -570,6 +588,169 @@ switch ($opcion) {
         }
 
         echo json_encode($jsonresponse);
+        break;
+        
+    case 10://LLENANDO COMBO DE Metodologia
+        $idexamen = $_POST['idexamen'];
+      //  echo 'idexamen: '.$idexamen.'--<br\>';
+        $consulta = $objdatos->BuscarMetodologia($idexamen);
+        $cant=  pg_num_rows($consulta);
+        if ($cant>0){
+           
+        $resultado2 = "<select id='cmbmetodologia' name='cmbmetodologia' size='1'>";
+            if ($cant>1){
+                $resultado2 .="<option value='0' selected>Seleccione...</option>";
+            }
+        while ($row = pg_fetch_array($consulta)) {
+            $resultado2 .="<option value='" . $row['idexamet'] . "'>" . $row['nombre_metodologia'] . "</option> ";
+        }
+        pg_free_result($consulta);
+        $resultado2.= "</select>";
+        $resultado2.= "<input type='hidden' id='cant_metodologia' name='cant_metodologia' value='".$cant."'>   ";
+        
+        }
+        else{
+            $resultado2=$cant;
+        }
+        echo $resultado2;
+        break;
+              
+    case 11://LLENANDO COMBO DE Empleado que emite resultado final
+        $idarea = $_POST['idarea'];
+        //echo $idarea;
+        $resultado = "<select id='cmbEmpleadosfin' name='cmbEmpleadosfin' size='1'>
+                        <option value='0' >Seleccione...</option>";
+        require_once('clsSolicitudesProcesadas.php');
+        $obje = new clsSolicitudesProcesadas;
+        $consulta = $obje->BuscarEmpleados($idarea, $lugar);
+        while ($row = pg_fetch_array($consulta)) {
+            $resultado .="<option value='" . $row[0] . "'>" . htmlentities($row[1]) . "</option>";
+        }
+        pg_free_result($consulta);
+        $resultado.= "</select>";
+        echo $resultado;
+        break;
+        
+    case 12://Ingresando los resultados de la boleta.
+         // $idexamen = $_POST['idexamen'];
+        $idsolicitud = $_POST['idsolicitud'];
+        $iddetalle = $_POST['iddetalle'];
+        $idrecepcion = $_POST['idrecepcion'];
+        $val = $_POST['val'];
+        if ($val==1){
+            $v_resultfin = $_POST['v_resultfin'];
+            $v_obseresultfin = $_POST['v_obseresultfin'];
+            $cmbEmpleadosfin = $_POST['cmbEmpleadosfin'];
+            $d_resultfin = $_POST['d_resultfin'];
+        }
+        $cantidadnum=$_POST['cantidadnum'];
+        $flag=0;
+        
+        if ($cantidadnum>0) {
+	for ($i=1; $i<=$cantidadnum; $i++){
+		$hdnidexamen_ = $_POST['hdnidexamen_'.$i];
+		$hdnIdMetodologia_ = $_POST['hdnIdMetodologia_'.$i];
+		$hdnResp_ = $_POST['hdnResp_'.$i];
+		$hdnFecProc_ =  (empty($_POST['hdnFecProc_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnFecProc_'.$i]) . "'";
+		//$hdnFecResu_ = $_POST['hdnFecResu_'.$i];
+		$hdnFecResu_ =  (empty($_POST['hdnFecResu_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnFecResu_'.$i]) . "'";
+		//$hdnIdPosResult_ =  (empty($_POST['hdnIdPosResult_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnIdPosResult_'.$i]) . "'";
+		$hdnResult_ =  (empty($_POST['hdnResult_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnResult_'.$i]) . "'";
+		//$hdnLectura_ =  (empty($_POST['hdnLectura_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnLectura_'.$i]) . "'";
+	//	$hdnInterpreta_ =  (empty($_POST['hdnInterpreta_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnInterpreta_'.$i]) . "'";
+		$hdnObserva_=  (empty($_POST['hdnObserva_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnObserva_'.$i]) . "'";
+		$hdnCodResult_ = $_POST['hdnCodResult_'.$i];
+                                
+                $verifica = $objdatos->BuscarResultado($idexamen, $idsolicitud, $iddetalle, $lugar);
+                // echo $verifica[0];
+                if ($verifica == 0) {
+                    $verdadero = $objdatos->InsertarResultadoPlantillaAM($hdnidexamen_, $hdnIdMetodologia_, $hdnResp_, $hdnFecProc_, $hdnFecResu_, $hdnResult_, $hdnObserva_, $hdnCodResult_, $idsolicitud, $usuario, $iddetalle, $idrecepcion, $lugar);
+                    
+
+                    if ($verdadero != 0) {
+                        echo "Datos Guardados";
+                        if (($objdatos->CambiarEstadoDetalle($iddetalle) == true) && ($objdatos->CambiarEstadoSolicitud($idsolicitud) == true)) {
+                            echo " Correctamente";
+                        }
+                    } else {
+                        echo "Error al momento de guardar resultados. Por favor revisar informaci&oacute;n.";
+                        $flag=1;
+                    }
+                } else {
+                    echo "Ya Existe un Resultado para esta prueba";
+                }
+		//$hdnIdProce_ = $_POST['hdnIdProce_'.$i];
+		//$hdnMarReac_ = $_POST['hdnMarReac_'.$i];
+		//$hdnMarReac_ = (empty($_POST['hdnMarcReac_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnMarcReac_'.$i]) . "'";
+		//$hdnLecExa_ = $_POST['hdnLecExa_'.$i];
+		//$hdnLecExa_ = (empty($_POST['hdnLectExa_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnLectExa_'.$i]) . "'";
+		//$examenid= $objeto->crearDetalleResultado($hdnIdpruebaest_,$hdnFecProc_, $hdnFecResu_, $hdnIdPosResult_, $hdnPosResult_,$hdnIdPosObser_,		$hdnPosObser_, $hdnIdTipoRes_,$hdnIdProce_, $hdnMarReac_,$hdnLecExa_, $i_idemppl, $idestabres, $i_iddetorden);
+		
+		}
+	}
+	$estorden=0;
+        //Si valido los datos ingresara aca porque val=1;
+        if ($val==1)
+	{
+		$v_resultfin=$_POST['v_resultfin'];
+		$v_obseresultfin=$_POST['v_obseresultfin'];
+		$cmbEmpleadosfin=$_POST['cmbEmpleadosfin'];
+		$d_resultfin=$_POST['d_resultfin'];
+		$v_interpretacion==$_POST['v_interpretacion'];
+		$v_lectura==$_POST['v_lectura'];
+		//en caso que sea seguimiento el empleado sera i_idemppl, que normalmente es el que tomo la muestra
+		
+	
+		if ($i_estresultfin==1)
+		{
+			$i_idestdetord=5;
+		}
+		else{
+			$i_idestdetord=3;
+		}
+		
+		$v_obserrecep=(empty($_POST['v_obseresultfin'])) ? 'NULL' : "'" . pg_escape_string($_POST['v_obseresultfin']) . "'";
+		if ($objeto->crearResultPrueba($idestabres, $v_resultfin,$v_obserrecep, $i_idemppl,$i_idestdetord, $i_iddetorden, $i_idordenlab, $estorden)==false){
+				echo "<font color=red><center>Error al momento de validar resultado. Por favor revisar informaci&oacute;n.</center></font>";
+				$flag=1;
+			}
+	}
+	else
+	{
+		if ($objeto->crearResultPendiente($i_iddetorden, $i_idordenlab)==false){
+				echo "<font color=red><center>Error al momento de Ingresar resultado. Por favor revisar informaci&oacute;n.</center></font>";
+				$flag=1;
+			}
+	}
+        
+        
+    //    $resultado = $_POST['resultado'];
+      //  $lectura = $_POST['lectura'];
+       // $observacion = $_POST['observacion'];
+       // $responsable = $_POST['responsable'];
+     //   $idrecepcion = $_POST['idrecepcion'];
+      // $interpretacion = $_POST['interpretacion'];
+      //  $codigo = $_POST['codigo'];
+        //echo $codigo;
+        //$idexpediente=$_POST['idexpediente'];
+        $verifica = $objdatos->BuscarResultado($idexamen, $idsolicitud, $iddetalle, $lugar);
+        // echo $verifica[0];
+        if ($verifica == 0) {
+            $verdadero = $objdatos->InsertarResultadoPlantillaA($idexamen, $idsolicitud, $iddetalle, $resultado, $lectura, $observacion, $responsable, $lectura, $idrecepcion, $interpretacion, $observacion, $usuario, $codigo, $lugar);
+
+            if ($verdadero != 0) {
+                echo "Datos Guardados";
+                if (($objdatos->CambiarEstadoDetalle($iddetalle) == true) && ($objdatos->CambiarEstadoSolicitud($idsolicitud) == true)) {
+                    echo " Correctamente";
+                }
+            } else {
+                echo "No guardo";
+            }
+        } else {
+            echo "Ya Existe un Resultado para esta prueba";
+        }
+        //Cambia estado del detalle de la solicitud
+
         break;
 }
 ?>

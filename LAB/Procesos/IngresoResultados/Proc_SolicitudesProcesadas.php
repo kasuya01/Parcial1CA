@@ -47,6 +47,8 @@ if (isset($_SESSION['Correlativo'])) {
             <script type="text/javascript" src="../../../calendarstructure/calendar.js"></script>
             <script type="text/javascript" src="../../../calendarstructure/calendar-es.js"></script>
             <script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
+            <script type="text/javascript" src="../../../public/datepicker/date.js"></script>
+            <script type="text/javascript" src="../../../public/datepicker/jquery.ui.datepicker-es.js"></script>
             <script language="JavaScript" type="text/javascript">
                 function MostrarSolicitudes() {
                     var error = [];

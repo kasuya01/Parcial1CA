@@ -112,13 +112,15 @@ function LlenarComboServicio(IdServicio)
 function MostrarDatos(posicion)
 {
     idexpediente = document.getElementById('idexpediente[' + posicion + ']').value;
-    idsolicitud = document.getElementById('idsolicitud[' + posicion + ']').value;
+    //idsolicitud = document.getElementById('idsolicitud[' + posicion + ']').value;
+    idsolicitudP=document.getElementById('idsolicitudP[' + posicion + ']').value;
     idarea = document.getElementById('idarea[' + posicion + ']').value;
     idexamen = document.getElementById('idexamen[' + posicion + ']').value;
     idexpediente = trim(idexpediente);
     idsolicitud = trim(idsolicitud);
+    //idsolicitudP = trim(idsolicitudP);
     ventana_secundaria = window.open("DatosSolicitudesPorArea1.php?var1=" + idexpediente +
-            "&var2=" + idarea + "&var3=" + idsolicitud + "&var4=" + idexamen, "Datos1", "width=850,height=475,menubar=no,scrollbars=yes");
+            "&var2=" + idarea + "&var3=" + idsolicitud  +  "&var4=" + idexamen, "Datos1", "width=850,height=475,menubar=no,scrollbars=yes");
 
 }
 
@@ -130,6 +132,7 @@ function LlenarComboExamen(idarea)
     //alert(idarea);
     idexpediente = "";
     idsolicitud = "";
+   // idsolicitudP = "";
     iddetalle = "";
     idexamen = "";
     estado = "";
@@ -141,7 +144,7 @@ function LlenarComboExamen(idarea)
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
-    ajax.send("idexpediente=" + idexpediente + "&idarea=" + idarea + "&fechasolicitud=" + fechasolicitud + "&idsolicitud=" + idsolicitud + "&opcion=" + opcion + "&estado=" + estado + "&idexamen=" + idexamen);
+    ajax.send("idexpediente=" + idexpediente + "&idarea=" + idarea + "&fechasolicitud=" + fechasolicitud + "&idsolicitud=" + idsolicitud + + "&idsolicitudP=" + idsolicitudP + "&opcion=" + opcion + "&estado=" + estado + "&idexamen=" + idexamen);
     ajax.onreadystatechange = function()
     {
 
@@ -160,16 +163,18 @@ function LlenarComboExamen(idarea)
 function CambiarEstadoDetalleSolicitud(estado)
 {
     idsolicitud = document.frmDatos.idsolicitud.value;
+   // idsolicitudP = document.frmDatos.idsolicitudP.value;
     idexpediente = document.frmDatos.idexpediente.value;
     fechasolicitud = document.frmDatos.fechasolicitud.value;
     idarea = document.frmDatos.idarea.value;
-    idexamen = "";
+    idexamen = document.frmDatos.idexamen.value;
     fecharecep = "";
 
     opcion = 3;
 
     //alert(estado);
     idsolicitud = trim(idsolicitud);
+   // idsolicitudP = trim(idsolicitudP);
     idexpediente = trim(idexpediente);
     fechasolicitud = trim(fechasolicitud);
     //instanciamos el objetoAjax
@@ -199,6 +204,7 @@ function CambiarEstadoDetalleSolicitud(estado)
 function CambiarEstadoDetalleSolicitud1(estado, idexamen)
 {
     idsolicitud = document.frmDatos.idsolicitud.value;
+    //idsolicitudP = document.frmDatos.idsolicitudP.value;
     idexpediente = document.frmDatos.idexpediente.value;
     fechasolicitud = document.frmDatos.fechasolicitud.value;
     idarea = document.frmDatos.idarea.value;
@@ -208,6 +214,7 @@ function CambiarEstadoDetalleSolicitud1(estado, idexamen)
     opcion = 3;
     //alert(estado);
     idsolicitud = trim(idsolicitud);
+    //idsolicitudP = trim(idsolicitudP);
     idexpediente = trim(idexpediente);
     fechasolicitud = trim(fechasolicitud);
     //observacion="";
@@ -218,7 +225,7 @@ function CambiarEstadoDetalleSolicitud1(estado, idexamen)
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
-    ajax.send("idexpediente=" + idexpediente + "&idarea=" + idarea + "&fechasolicitud=" + fechasolicitud + "&idsolicitud=" + idsolicitud + "&opcion=" + opcion + "&estado=" + estado + "&idexamen=" + idexamen + "&fecharecep=" + fecharecep);
+    ajax.send("idexpediente=" + idexpediente + "&idarea=" + idarea + "&fechasolicitud=" + fechasolicitud + "&idsolicitud=" + idsolicitud   +"&opcion=" + opcion + "&estado=" + estado + "&idexamen=" + idexamen + "&fecharecep=" + fecharecep);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -264,13 +271,16 @@ function RechazarMuestra()
      estado='RM'
     //estado = 6
     idsolicitud = document.frmDatos.idsolicitud.value;
+   // idsolicitudP = document.frmDatos.idsolicitudP.value;
     idexpediente = document.frmDatos.idexpediente.value;
     fechasolicitud = document.frmDatos.fechasolicitud.value;
     idarea = document.frmDatos.idarea.value;
     observacion = document.frmDatos.txtobservacion.value;
+    idexamen = document.frmDatos.idexamen.value;
     opcion = 4;
-    idexamen = "";
+    idexamen=trim(idexamen);
     idsolicitud = trim(idsolicitud);
+    //idsolicitudP = trim(idsolicitudP);
     idexpediente = trim(idexpediente);
     fechasolicitud = trim(fechasolicitud);
     fecharecep = "";
@@ -305,6 +315,7 @@ function RechazarMuestra1(idexamen)
     //estado = 6
     idsolicitudPadre = document.frmDatos.idsolicitudPadre.value;
     idsolicitud = document.frmDatos.idsolicitud.value;
+   // idsolicitudP= document.frmDatos.idsolicitudP.value;
     idexpediente = document.frmDatos.idexpediente.value;
     fechasolicitud = document.frmDatos.fechasolicitud.value;
     idarea = document.frmDatos.idarea.value;
@@ -312,6 +323,7 @@ function RechazarMuestra1(idexamen)
     opcion = 4;
 
     idsolicitud = trim(idsolicitud);
+    //idsolicitudP = trim(idsolicitudP);
     idexpediente = trim(idexpediente);
     fechasolicitud = trim(fechasolicitud);
 
@@ -351,20 +363,20 @@ function MostrarObservacion() {
     }
 }
 
-function CargarDatosFormulario(idexpediente, idsolicitud, idarea)
+function CargarDatosFormulario( idexpediente,idarea ,idexamen, idsolicitud )
 {
     ajax = objetoAjax();
     opcion = 2;
     fechasolicitud = "";
     estado = "";
-    idexamen = "";
+    //idexamen = "";
     fecharecep = "";
 
     ajax.open("POST", "ctrRMAutomatizada.php", true);
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
-    ajax.send("opcion=" + opcion + "&estado=" + estado + "&idarea=" + idarea + "&fechasolicitud=" + fechasolicitud + "&idexpediente=" + idexpediente + "&idsolicitud=" + idsolicitud + "&idexamen=" + idexamen + "&fecharecep=" + fecharecep);
+    ajax.send("opcion=" + opcion + "&estado=" + estado + "&idarea=" + idarea + "&fechasolicitud=" + fechasolicitud + "&idexpediente=" + idexpediente + "&idsolicitud=" + idsolicitud +  "&idexamen=" + idexamen + "&fecharecep=" + fecharecep);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -377,7 +389,7 @@ function CargarDatosFormulario(idexpediente, idsolicitud, idarea)
     }
 }
 
-function CargarDatosFormulario1(idexpediente, idsolicitud, idarea, idexamen)
+function CargarDatosFormulario1(idexpediente,idexamen, idarea , idsolicitud  )
 {
     ajax = objetoAjax();
     opcion = 2;
@@ -390,7 +402,7 @@ function CargarDatosFormulario1(idexpediente, idsolicitud, idarea, idexamen)
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
-    ajax.send("opcion=" + opcion + "&estado=" + estado + "&idarea=" + idarea + "&fechasolicitud=" + fechasolicitud + "&idexpediente=" + idexpediente + "&idsolicitud=" + idsolicitud + "&idexamen=" + idexamen + "&fecharecep=" + fecharecep);
+    ajax.send("opcion=" + opcion + "&estado=" + estado + "&idarea=" + idarea + "&fechasolicitud=" + fechasolicitud + "&idexpediente=" + idexpediente + "&idsolicitud=" + idsolicitud  + "&idexamen=" + idexamen + "&fecharecep=" + fecharecep);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -539,6 +551,7 @@ function MuestrasRechazadas()
     TipoSolic = document.getElementById('cmbTipoSolic').value;
     //idexpediente="";
     idsolicitud = "";
+    idsolicitudP="";
     estado = "";
     fechasolicitud = "";
 
@@ -548,7 +561,7 @@ function MuestrasRechazadas()
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
     ajax.send("opcion=" + opcion + "&estado=" + estado + "&fechasolicitud=" + fechasolicitud + "&idarea=" + idarea +
-            "&idexpediente=" + idexpediente + "&idsolicitud=" + idsolicitud + "&idexamen=" + idexamen + "&fecharecep=" + fecharecep +
+            "&idexpediente=" + idexpediente + "&idsolicitud=" + idsolicitud  + "&idsolicitudP=" + idsolicitudP + "&idexamen=" + idexamen + "&fecharecep=" + fecharecep +
             "&IdEstab=" + IdEstab + "&IdServ=" + IdServ + "&IdSubServ=" + IdSubServ + "&PNombre=" + PNombre + "&SNombre=" + SNombre +
             "&PApellido=" + PApellido + "&SApellido=" + SApellido + "&TipoSolic=" + TipoSolic);
     ajax.onreadystatechange = function()

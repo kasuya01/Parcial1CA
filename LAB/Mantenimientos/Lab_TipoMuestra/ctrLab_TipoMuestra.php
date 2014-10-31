@@ -85,7 +85,7 @@ switch ($opcion)
 					<td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 					onclick=\"eliminarDato('".$row['id']."')\"> </td>
-					<td>".htmlentities($row['tipomuestra'])."</td>
+					<td>".$row['tipomuestra']."</td>
 					</tr>";
 		}
 		echo "</table>"; 

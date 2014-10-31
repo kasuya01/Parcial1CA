@@ -17,7 +17,8 @@ switch($Proceso){
 	case 'fillEstab':
              $rslts='';
 		$Idtipo=$_POST['idtipoEstab'];
-             $dtIdEstab=$recepcion->LlenarCmbEstablecimiento($Idtipo, $lugar);
+		$idext=$_POST['idext'];
+             $dtIdEstab=$recepcion->LlenarCmbEstablecimiento($Idtipo, $lugar,$idext);
               $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:350px">';
               $rows=  pg_fetch_array($dtIdEstab);
                $rslts.= '<option value="' . $rows['idestablecimiento'] .'" >'. $rows['nombre'].'</option>';
@@ -30,6 +31,26 @@ switch($Proceso){
 		echo $rslts;
              
         break;
+    //Busqueda de Tipo de Establecimiento cuando es externo
+        case 'fillTipoEstab':
+             $rslts='';
+		$Idestab=$_POST['idestab'];
+             $dtIdEstab=$recepcion->tipoestactual($Idestab);
+              $rslts = '<select name="cmbTipoEstab" id="cmbTipoEstab" style="width:350px"  onFocus="fillEstablecimiento(this.value)">';
+              $rows=  pg_fetch_array($dtIdEstab);
+              // $rslts.= '<option value="' . $rows['idestablecimiento'] .'" >'. $rows['nombre'].'</option>';
+               $rslts.= '<option value="' . $rows['idtipoestablecimiento'] . '" selected="selected" >' . $rows['nombretipoestablecimiento'] . '</option>';
+          
+		//$rslts .='<option value="0">--Seleccione Establecimiento--</option>';
+               /*while ($rows =pg_fetch_array( $dtIdEstab)){
+		  $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
+	       }*/
+				
+		$rslts .= '</select>';
+		echo $rslts;
+             
+        break;
+    
 	case 'fillServicio':
 	      $rslts='';
               $IdServ=$_POST['idserv'];
@@ -37,8 +58,8 @@ switch($Proceso){
 	      $dtserv=$recepcion->LlenarCmbServ($IdServ,$lugar);
 	      	$rslts = '<select name="cmbSubServ" id="cmbSubServ" onChange="fillMed(this.value)" style="width:350px">';
 			$rslts .='<option value="0">--Seleccione Subespecialidad--</option>';
-			while ($rows =mysql_fetch_array($dtserv)){
-		  	$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
+			while ($rows =pg_fetch_array($dtserv)){
+		  	$rslts.= '<option value="' . $rows['id'] .'" >'. $rows['servicio'].'</option>';
 	       }
 				
 		$rslts .='</select>';
@@ -48,10 +69,18 @@ switch($Proceso){
         case 'fillMed':
  		$rslts='';
                $idSubEsp=$_POST['idSubEsp'];
-              // echo $idSubEsp; 
-               $dttipo=$recepcion->ObtenerServicio($idSubEsp);
-               $row=mysql_fetch_array($dttipo);
-               $Servicio=$row[0];
+               //echo $idSubEsp; 
+               $dtmed=$recepcion->LlenarCmbMed($idSubEsp,$lugar);
+               $rslts = '<select name="cmbMedico" id="cmbMedico"  style="width:350px">';
+				$rslts .='<option value="0">--selecione un M&eacute;dico--</option>';
+				while ($rows =pg_fetch_array($dtmed)){
+					$rslts.= '<option value="'.$rows['idemp'].'" >'. $rows['nombre'].'</option>';
+				}
+                                $rslts .='</select>';
+			echo $rslts;
+            /*  $dttipo=$recepcion->ObtenerServicio($idSubEsp);
+               $row=pg_fetch_array($dttipo);
+               $Servicio=$row['id_atencion'];
   //echo $Servicio;
              if ($Servicio=='CONREF' OR $Servicio=='CONEXT'){
 	      		$dtmed=$recepcion->LlenarCmbMed($idSubEsp,$lugar);
@@ -73,7 +102,7 @@ switch($Proceso){
 			$rslts .='</select>';
 			echo $rslts;
 
-		}
+		}*/
        
         break;
 	
@@ -217,12 +246,14 @@ switch($Proceso){
 	
 	echo $rslts;	
 	break;
-	
+	//case PG
 	case 'searchpac':
 	//Funcion ya en postgres
 	$nec=$_POST['nec'];
-	$NecEncontrado=$recepcion->ValidarExpediente($nec);
-			
+	$idext=$_POST['idext'];
+      //  echo 'idext'.$idext.'<br\>';
+	$NecEncontrado=$recepcion->ValidarExpediente($nec, $idext);
+		
 	if($NecEncontrado > 0){
 		echo 0;
 	}else{
@@ -299,13 +330,17 @@ switch($Proceso){
         
     case 'DatosPaciente':
         $nec = $_POST['nec'];
-        $DatosPaciente=$recepcion->DatosPaciente($nec);
+        $idext = $_POST['idext'];
+      //  echo '<br/><br/>IDEXT: '.$idext.'<br/>';
+        $DatosPaciente=$recepcion->DatosPaciente($nec, $idext);
         //echo "  datos paciente ". count($DatosPaciente);
         //mysql_fetch_row($DatosPaciente);
         $nec = "'".$nec."'";
-        if(count($DatosPaciente) != 1 )
+       // echo ' DatosPac: '.$DatosPaciente;
+
+        if($DatosPaciente !=0 )
         {
-        
+    //    echo 'entroooooooooo a if';
 	$rslts='</br><form name="" action="" method="post">
         <table border = 1 class="CobaltFormTABLE" cellspacing="0" cellpadding="3" align="center">
               <tr>
@@ -317,6 +352,7 @@ switch($Proceso){
                       <td class="StormyWeatherFieldCaptionTD">Expediente</td>
                       <td class="StormyWeatherDataTD">
                               <input id="IdNumeroExp" class="CobaltInput" style="width:188px; height:20px" size="26" value="'.$DatosPaciente["numero"].'" >
+                              <input type="hidden" id="idexpediente" name="idexpediente" value="'.$DatosPaciente["idexpediente"].'">
                       </td> 
               </tr>
               <tr>
@@ -335,7 +371,7 @@ switch($Proceso){
                       <td class="StormyWeatherFieldCaptionTD">Sexo</td>
                       <td class="StormyWeatherDataTD">
                               <input id="sexo" name ="sexo" class="CobaltInput" style="width:188px; height:20px" size="26" value="'.$DatosPaciente["sexoconv"].'" >
-                              <input id="tiposexo" type="hidden" class="CobaltInput" style="width:188px; height:20px" size="26" value="'.$DatosPaciente["sexo"].'" >    
+                              <input id="tiposexo" type="hidden" class="CobaltInput" style="width:188px; height:20px" size="26" value="'.$DatosPaciente["id_sexo"].'" >    
                       </td> 
               </tr>
               <tr>
@@ -348,6 +384,7 @@ switch($Proceso){
       </form>';
         }
     else{
+        //echo 'Entro al else';
          $rslts='</br><form name="" action="" method="post">
         <table border = 1 class="CobaltFormTABLE" cellspacing="0" cellpadding="3" align="center">
               <tr>
