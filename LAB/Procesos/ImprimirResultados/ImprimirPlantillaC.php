@@ -52,99 +52,102 @@ function calc_edad()
 <body>
 <?php
 $Catidad=$obj->ObtenerCantidadResultados($idsolicitud,$iddetalle);
-$row_cantidad=mysql_fetch_array($Catidad);
+$row_cantidad=pg_fetch_array($Catidad);
+
+    // $row_cantidad[0];
+
 //echo $row_cantidad[0];
 	if ($row_cantidad[0]==1){
+          //  echo "--->> 1";
 		$tipo=$obj->ObtenerResultado($idsolicitud,$iddetalle);
-		$row_tipo=mysql_fetch_array($tipo);
-		$Resultado=$row_tipo['Resultado'];
+		$row_tipo=pg_fetch_array($tipo);
+		$Resultado=$row_tipo['resultado'];
+                
 
 		If($Resultado=='P'){
+                    
+                   // echo " if";
 			$Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
-			$row_estab = mysql_fetch_array($Consulta_Estab);
+			$row_estab = pg_fetch_array($Consulta_Estab);
 			$datos_generales=$obj->MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar);
-			$row_generales= mysql_fetch_array($datos_generales);
+			$row_generales= pg_fetch_array($datos_generales);
 			$consulta_area=$obj->LeerDatos($idexamen);
-			$row_area= mysql_fetch_array($consulta_area);
+			$row_area= pg_fetch_array($consulta_area);
 			$consulta_datos=$obj->DatosResultadoPlanCPositivo($idsolicitud,$iddetalle);
-			$row_datos= mysql_fetch_array($consulta_datos);
+			$row_datos= pg_fetch_array($consulta_datos);
 			$consulta=$obj->LeerResultadosAntibioticos($idsolicitud,$iddetalle);
 
 
 		  	$ban=0;
 
-			$nombre=$row_area['NombreArea'];
+			$nombre=$row_area['nombrearea'];
 			?>
 			<table width='100%' border='0' align='center' cellspacing="0">
                             <tr>
                                 <td colspan="1" align="left" width="20%"><img id="Image1" style="WIDTH: 80px; HEIGHT: 55px" height="86" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
                                 <td align="center" colspan="4" width="60%" class="Estilo6">
                                     <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
-			            <p><strong><?php echo $row_estab['Nombre'] ?></strong></p>
-                                    <p><strong>ÁREA DE <?php echo htmlentities($row_area['NombreArea'])?> </strong></p></td>
+			            <p><strong><?php echo $row_estab['nombre'] ?></strong></p>
+                                    <p><strong>ÁREA DE <?php echo htmlentities($row_area['nombrearea'])?> </strong></p></td>
                                 <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
 				</tr>
 				<tr>
 					<td colspan='1' class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
-					<td colspan='2' class="Estilo6"><?php echo $row_generales['Nombre']?></td>
+					<td colspan='1' class="Estilo6"><?php echo $row_generales['estabext']?></td>
 					<td colspan='1' class="Estilo5"><strong>Fecha Resultado:</strong></td>
-			  		<td colspan='2' class="Estilo6"><?php echo $row_generales['Fecha']?></td>
+			  		<td colspan='2' class="Estilo6"><?php echo $row_generales['fecharecepcion']?></td>
 				</tr>
 
 				<tr>
 					<td colspan='1' class="Estilo5"><strong>NEC:</strong></td>
-			  		<td colspan='5' class="Estilo7"><?php echo $row_generales['IdNumeroExp']?></td>
+			  		<td colspan='2' class="Estilo7"><?php echo $row_generales['idnumeroexp']?></td>
                                 </tr>
                                 <tr>
 					<td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
-					<td colspan='5' class="Estilo6"><?php echo htmlentities($row_generales['NombrePaciente'])?></td>
-						<input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row_generales['FechaNacimiento']?>>
+					<td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['paciente'])?></td>
+						
 				</tr>
 				<tr>
 					<td colspan='1' class="Estilo5"><strong>Edad:</strong></td>
-			  		<td colspan='2' class="Estilo6"><div id="divsuedad">
-		        			<script language="JavaScript" type="text/javascript">
-		        				calc_edad();
-		        			</script>
-		    	  		   	</div>
+			  		<td colspan='1' class="Estilo6"><?php echo htmlentities($row_generales['edad'])?></td>
 					</td>
 
 					<td colspan='1' class="Estilo5"><strong>Sexo:</strong></td>
-			  		<td colspan='2' class="Estilo6"><?php echo $row_generales['Sexo'];?></td>
+			  		<td colspan='2' class="Estilo6"><?php echo $row_generales['sexo'];?></td>
 				</tr>
 				<tr>
 					<td colspan='1' class="Estilo5"><strong>Procedencia:</strong></td>
-					<td colspan='1' class="Estilo6"><?php echo htmlentities($row_generales['Procedencia']);?></td>
+					<td colspan='1' class="Estilo6"><?php echo htmlentities($row_generales['nombreservicio']);?></td>
 
 					<td colspan='1' class="Estilo5"><strong>Servicio:</strong></td>
-					<td colspan='2' class="Estilo6" width='6%'><?php echo htmlentities($row_generales['Origen']);?></td>
+					<td colspan='2' class="Estilo6" ><?php echo htmlentities($row_generales['nombresubservicio']);?></td>
 				</tr>
 				<tr>
 					<td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
-			  		<td colspan='4' class="Estilo6"><?php echo htmlentities($row_area['NombreExamen']);?></td>
+			  		<td colspan='2' class="Estilo6"><?php echo htmlentities($row_area['nombre_examen']);?></td>
 				</tr>
                                 <tr>
 					<td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>
-					<td colspan='4' class="Estilo6"><?php echo $row_generales['NombreEmpleado'];?></td>
+					<td colspan='2' class="Estilo6"><?php echo $row_generales['empleado'];?></td>
 				</tr>
                                 <tr>
-                                        <td colspan="6">&nbsp;</td>
+                                        <td >&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="6">
+                                    <td colspan="2">
                                         <table width="75%" border="0" align="left" cellspacing="0" >
 
                                         <tr>
                                                 <td colspan='1' class="Estilo5"><strong>Resultado:</strong></td>
-                                                <td colspan='4' class="Estilo6"><?php echo "Positivo"?></td>
+                                                <td colspan='2' class="Estilo6"><?php echo "Positivo"?></td>
                                         </tr>
                                         <tr>
                                                 <td colspan='1' class="Estilo5" ><strong>Organismo:</strong></td>
-                                                <td colspan='4' class="Estilo6"><?php echo htmlentities($row_datos['Bacteria']); ?></td>
+                                                <td colspan='4' class="Estilo6"><?php echo htmlentities($row_datos['bacteria']); ?></td>
                                         </tr>
                                         <tr>
                                                 <td class="Estilo5" colspan="1" style="font:bold" ><strong>Cultivo con Cuenta de Colonias:</strong></td>
-                                                <td class="Estilo5" colspan="5"><?php echo htmlentities($row_datos['Cantidad'])?></td>
+                                                <td class="Estilo5" colspan="5"><?php echo htmlentities($row_datos['cantidad'])?></td>
 
                                         <tr>
                                                 <td colspan='6'>&nbsp;</td>
@@ -158,20 +161,20 @@ $row_cantidad=mysql_fetch_array($Catidad);
                                                                     <td class="Estilo5" colspan="2" style='font:bold'  ><strong>INTERPRETACI&Oacute;N</strong>
                                                                     </td>
                                                             </tr>
-                                                                    <?php	mysql_free_result($datos_generales);
+                                                                    <?php	pg_free_result($datos_generales);
                                                                             $pos=0;
 
-                                                            while($row = mysql_fetch_array($consulta))//ELEMENTOS)
+                                                            while($row = pg_fetch_array($consulta))//ELEMENTOS)
                                                             {?>
                                                             <tr>
-                                                                    <td colspan="2" class="Estilo5"><?php echo htmlentities($row['Antibiotico'])?></td>
-                                                                    <td colspan="2" class="Estilo5"><?php echo htmlentities($row['Resultado'])?>
+                                                                    <td colspan="2" class="Estilo5"><?php echo htmlentities($row['antibiotico'])?></td>
+                                                                    <td colspan="2" class="Estilo5"><?php echo htmlentities($row['resultado'])?>
                                                                     </td>
                                                                     <td width='60%'>&nbsp; </td>
                                                             </tr>
                                                             <?php
                                                             }
-                                                            mysql_free_result($consulta);?>
+                                                            pg_free_result($consulta);?>
                                                             <tr>
                                                                     <td colspan="7" align="center" >
                                                                             <div id="boton">
@@ -191,20 +194,22 @@ $row_cantidad=mysql_fetch_array($Catidad);
 
 		<?php
 		}else{
+                    
+                  // echo "dentro del if-  else";
 	//	     $total= $row_cantidad[0];
           //           $cont=1;
 
                         // echo $idsolicitud."-".$iddetalle."-".$lugar;
 			$Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
-			$row_estab = mysql_fetch_array($Consulta_Estab);
+			$row_estab = pg_fetch_array($Consulta_Estab);
 			$datos_generales=$obj->MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar);
 					//$datos_empleado=$obj->DatosEmpleado($idempleado);
 			$consulta_datos=$obj->LeerDatos($idexamen);
-			$row_area= mysql_fetch_array($consulta_datos);
-			$row_generales= mysql_fetch_array($datos_generales);
-		        $Observ= $obj->ObtenerObservacion($idsolicitud,$iddetalle,$lugar);
-		        $row_observ= mysql_fetch_array($Observ);
-		        $Observacion=$row_observ['Observacion'];
+			$row_area= pg_fetch_array($consulta_datos);
+			$row_generales= pg_fetch_array($datos_generales);
+		        $Observ= $obj->ObtenerObservacion($idsolicitud,$iddetalle);
+		        $row_observ= pg_fetch_array($Observ);
+		        $Observacion=$row_observ['observacion'];
 			$nombre=$row_area['NombreArea'];
 			?>
 
@@ -215,8 +220,8 @@ $row_cantidad=mysql_fetch_array($Catidad);
                                             <td colspan="1" align="left" width="20%"><img id="Image1" style="WIDTH: 80px; HEIGHT: 55px" height="86" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
                                             <td align="center" colspan="4" width="60%" class="Estilo6">
                                                 <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO </strong></p>
-                                                <p><strong><?php echo $row_estab['Nombre'] ?></strong></p>
-						<p><strong>ÁREA DE <?php echo htmlentities($row_area['NombreArea'])?> </strong></p>
+                                                <p><strong><?php echo $row_estab['nombre'] ?></strong></p>
+						<p><strong>ÁREA DE <?php echo htmlentities($row_area['nombrearea'])?> </strong></p>
                                             </td>
                                             <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
 					</tr>
@@ -225,53 +230,50 @@ $row_cantidad=mysql_fetch_array($Catidad);
                                         </tr>
 					<tr>
                                             <td colspan="1" class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
-                                            <td colspan="2" class="Estilo6"><?php echo $row_generales['Nombre']?></td>
+                                            <td colspan="2" class="Estilo6"><?php echo $row_generales['estabext']?></td>
                                             <td colspan="1" class="Estilo5"><strong>Fecha Resultado:</strong></td>
-                                            <td colspan="2" class="Estilo6"><?php echo $row_generales['Fecha']?></td>
+                                            <td colspan="2" class="Estilo6"><?php echo $row_generales['fecharecepcion']?></td>
 						<input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row_generales['FechaNacimiento']?>>
 					</tr>
 					<tr>
                                             <td colspan="1" class="Estilo5"><strong>NEC</strong></td>
-                                            <td colspan="2" class="Estilo7"><?php echo $row_generales['IdNumeroExp']?></td>
+                                            <td colspan="2" class="Estilo7"><?php echo $row_generales['idnumeroexp']?></td>
                                         </tr>
                                         <tr>
                                             <td colspan="1" class="Estilo5"><strong>Paciente:</strong></td>
-                                            <td colspan="2" class="Estilo6"><?php echo htmlentities($row_generales['NombrePaciente'])?></td>
+                                            <td colspan="2" class="Estilo6"><?php echo htmlentities($row_generales['paciente'])?></td>
 					</tr>
 					<tr>
                                             <td colspan="1" class="Estilo5"><strong>Edad:</strong></td>
-                                            <td colspan="2" class="Estilo6">
-                                                <div id="divsuedad">
-                                                    <script language="JavaScript" type="text/javascript">
-		        				calc_edad();
-                                                    </script>
-                                                </div>
+                                            <td colspan="2" class="Estilo6"><?php echo htmlentities($row_generales['edad'])?></td>
                                             </td>
 
                                             <td colspan="1" class="Estilo5"><strong>Sexo:</strong></td>
-                                            <td colspan="2" class="Estilo6"><?php echo $row_generales['Sexo']?></td>
+                                            <td colspan="2" class="Estilo6"><?php echo $row_generales['sexo']?></td>
 					</tr>
 					<tr>
                                             <td colspan="1" class="Estilo5"><strong>Procedencia:</strong></td>
-                                            <td colspan="2"class="Estilo6"><?php echo htmlentities($row_generales['Procedencia'])?></td>
+                                            <td colspan="2"class="Estilo6"><?php echo htmlentities($row_generales['nombreservicio'])?></td>
 
                                             <td colspan="1" class="Estilo5"><strong>Origen:</strong></td>
-                                            <td colspan="2" class="Estilo6"><?php echo htmlentities($row_generales['Origen'])?></td>
+                                            <td colspan="2" class="Estilo6"><?php echo htmlentities($row_generales['nombresubservicio'])?></td>
 					</tr>
 					<tr>
                                             <td colspan="1" class="Estilo5"><strong>Examen Realizado:</strong></td>
-                                            <td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['NombreExamen'])?></td>
+                                            <td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['nombre_examen'])?></td>
 					</tr>
 					<tr>
                                             <td colspan="1" class="Estilo5"><strong>Validado Por:</strong></td>
-                                            <td colspan='5' class="Estilo6"><?php echo $row_generales['NombreEmpleado']; ?></td>
+                                            <td colspan='5' class="Estilo6"><?php echo $row_generales['empleado']; ?></td>
 					</tr>
 					<tr>
                                             <td colspan="1" class="Estilo5"><strong>Resultado:</strong></td>
-						<?php 	mysql_free_result($consulta_datos);
-							mysql_free_result($datos_generales);
-
+						<?php 	pg_free_result($consulta_datos);
+							pg_free_result($datos_generales);
+                                                            //echo "eeerr".$Resultado;
 							switch($Resultado)
+                                                        
+                                                        
 							{
 								case "N";?>
 									<td colspan='5' class="Estilo6">NEGATIVO</td>
@@ -306,73 +308,73 @@ $row_cantidad=mysql_fetch_array($Catidad);
 		<?php }
 	}
 	else{//Mas de un resultado
+        //
+        //echo "mas de un resulrado";
 		// echo $row_cantidad[0];
 		 $tipo=$obj->ObtenerResultadoxId($idsolicitud,$iddetalle);
-		 while( $row_tipo=mysql_fetch_array($tipo)){
+		 while( $row_tipo=pg_fetch_array($tipo)){
 			If($row_tipo[1]=='P'){
 			//echo $row_tipo[0];
+                            $row_tipo[0];
+                            //$Conmi="and t26.id="+$row_tipo[0];
 				$Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
-				$row_estab = mysql_fetch_array($Consulta_Estab);
-				$datos_generales=$obj->MostrarDatosGeneralesxId($idsolicitud,$iddetalle,$lugar,$row_tipo[0]);
-				$row_generales= mysql_fetch_array($datos_generales);
+				$row_estab = pg_fetch_array($Consulta_Estab);
+				$datos_generales=$obj->MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar);
+				$row_generales= pg_fetch_array($datos_generales);
 				$consulta_area=$obj->LeerDatos($idexamen);
-				$row_area= mysql_fetch_array($consulta_area);
+				$row_area= pg_fetch_array($consulta_area);
 				//echo $row_tipo[0]."***".$idsolicitud."***".$iddetalle;
 				$consulta_datos=$obj->DatosResultadoPlanCPositivoxId($idsolicitud,$iddetalle,$row_tipo[0]);
-				$row_datos= mysql_fetch_array($consulta_datos);
+				$row_datos= pg_fetch_array($consulta_datos);
 				//echo $row_datos[0];
-				$consulta=$obj->LeerResultadosAntibioticosxId($idsolicitud,$iddetalle,$row_tipo[0]);
+				$consulta=$obj->LeerResultadosAntibioticosxId($idsolicitud,$iddetalle);
 
 				$posele=0;
 		  	$ban=0;
 
-			$nombre=$row_area['NombreArea'];
+			//$nombre=$row_area['nombre_area'];
 			?>
 			<table width="100%" border="0" align="center" class="StormyWeatherFormTABLE">
                             <tr>
                                 <td colspan="1" align="left" width="20%"><img id="Image1" style="WIDTH: 80px; HEIGHT: 55px" height="86" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
                                 <td align="center" colspan="4" width="60%" class="Estilo6">
                                     <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
-			            <p><strong><?php echo $row_estab['Nombre'] ?></strong></p>
-                                    <p><strong>&Aacute;rea de <?php echo htmlentities($row_area['NombreArea'])?> </strong></p></td>
+			            <p><strong><?php echo $row_estab['nombre'] ?></strong></p>
+                                    <p><strong>&Aacute;rea de <?php echo htmlentities($row_area['nombrearea'])?> </strong></p></td>
                                 <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
                             </tr>
                             <tr>
 				<td colspan="1" class="Estilo5"><strong>Establecimiento:</strong></td>
-				<td colspan="2" class="Estilo6"><?php echo $row_generales['Nombre']?></td>
+				<td colspan="2" class="Estilo6"><?php echo $row_generales['estabext']?></td>
 				<td colspan="1" class="Estilo5"><strong>Fecha:</strong></td>
-                                <td colspan="2" class="Estilo6"><?php echo $row_generales['Fecha']?></td>
+                                <td colspan="2" class="Estilo6"><?php echo $row_generales['fecharecepcion']?></td>
                             </tr>
                             <tr>
 				<td colspan="1" class="Estilo5"><strong>NEC:</strong></td>
-                                <td colspan="2" class="Estilo6"><?php echo $row_generales['IdNumeroExp']?></td>
+                                <td colspan="2" class="Estilo6"><?php echo $row_generales['idnumeroexp']?></td>
                             </tr>
                             <tr>
 				<td colspan="1" class="Estilo5"><strong>Paciente:</strong></td>
-				<td colspan="2" class="Estilo6"><?php echo htmlentities($row_generales['NombrePaciente'])?></td>
-					<input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row_generales['FechaNacimiento']?>>
+				<td colspan="2" class="Estilo6"><?php echo htmlentities($row_generales['paciente'])?></td>
+					<input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row_generales['edad']?>>
                             </tr>
                             <tr>
 				<td colspan="1" class="Estilo5"><strong>Edad:</strong></td>
-                                <td colspan="2" class="Estilo6">
-                                    <div id="divsuedad">
-		        		<script language="JavaScript" type="text/javascript">
-		        				calc_edad();
-		        		</script>
-                                    </div>
+                               <td colspan="2" class="Estilo6"><?php echo htmlentities($row_generales['edad'])?></td>
+                                    
 				</td>
 				<td colspan="1" class="Estilo5"><strong>Sexo:</strong></td>
-			  	<td colspan="2" class="Estilo6"><?php echo $row_generales['Sexo'];?></td>
+			  	<td colspan="2" class="Estilo6"><?php echo $row_generales['sexo'];?></td>
                             </tr>
                             <tr>
                                 <td colspan="1" class="Estilo5"><strong>Procedencia:</strong></td>
-				<td colspan="2" class="Estilo6" width='38%'><?php echo htmlentities($row_generales['Procedencia']);?></td>
+				<td colspan="2" class="Estilo6" width='38%'><?php echo htmlentities($row_generales['nombreservicio']);?></td>
 				<td colspan="1" class="Estilo5"><strong>Servicio:</strong></td>
-				<td colspan="2" class="Estilo6" width='6%'><?php echo htmlentities($row_generales['Origen']);?></td>
+				<td colspan="2" class="Estilo6" width='6%'><?php echo htmlentities($row_generales['nombresubservicio']);?></td>
                             </tr>
                             <tr>
 				<td colspan="1" class="Estilo5"><strong>Examen Realizado:</strong></td>
-                                <td colspan="5" class="Estilo6"><?php echo htmlentities($row_area['NombreExamen']);?></td>
+                                <td colspan="5" class="Estilo6"><?php echo htmlentities($row_area['nombre_examen']);?></td>
                             </tr>
                             <tr>
 				<td colspan="1" class="Estilo5"><strong>Resultado:</strong></td>
@@ -380,7 +382,7 @@ $row_cantidad=mysql_fetch_array($Catidad);
                             </tr>
                             <tr>
 				<td colspan="1" class="Estilo5"><strong>Validado Por:</strong></td>
-				<td colspan="5" class="Estilo6"><?php echo $row_generales['NombreEmpleado'];?></td>
+				<td colspan="5" class="Estilo6"><?php echo $row_generales['empleado'];?></td>
                             </tr>
                             <tr>
                                 <td colspan="6">&nbsp;</td>
@@ -396,17 +398,27 @@ $row_cantidad=mysql_fetch_array($Catidad);
                                             <td colspan="1" class="Estilo5"><strong>Resultado:</strong></td>
                                             <td colspan="5" class="Estilo6"><?php echo "Positivo"?></td>
                                         </tr>
+                                            <?php	pg_free_result($datos_generales);
+							$pos=0;
+
+						while($row = pg_fetch_array($consulta))//ELEMENTOS)
+						{?>
+                                        
                                         <tr>
                                             <td colspan="1" class="Estilo5" >Organismo:</td>
-                                            <td colspan="5" class="Estilo6"><?php echo htmlentities($row_generales['Bacteria']); ?></td>
+                                            <td colspan="5" class="Estilo6"><?php echo htmlentities($row['bacteria']); ?></td>
                                         </tr>
                                         <tr>
                                             <td colspan="1" class="Estilo5">CULTIVO CON CUENTA DE COLONIAS</td>
-                                            <td colspan="5" class="Estilo5"><?php echo htmlentities($row_generales['Cantidad'])?></td>
+                                            <td colspan="5" class="Estilo5"><?php echo htmlentities($row['cantidad'])?></td>
 					</tr>
                                         <tr>
                                             <td colspan='6'>&nbsp;</td>
                                         </tr>
+                                         <?php
+						}
+
+						pg_free_result($consulta);?>
                                         <tr>
                                              <td colspan='6'>
                                                 <table width="100%" border="0" align="left" cellspacing="0" >
@@ -415,21 +427,21 @@ $row_cantidad=mysql_fetch_array($Catidad);
                                                         <td colspan="2" class="Estilo5"  ><strong>INTERPRETACI&Oacute;N</strong>
                                                         </td>
                                                     </tr>
-						<?php	mysql_free_result($datos_generales);
+						<?php	pg_free_result($datos_generales);
 							$pos=0;
 
-						while($row = mysql_fetch_array($consulta))//ELEMENTOS)
+						while($row = pg_fetch_array($consulta))//ELEMENTOS)
 						{?>
                                                     <tr>
-                                                        <td width='46%'><?php echo htmlentities($row['Antibiotico'])?></td>
-                                                        <td width='54%'><?php echo htmlentities($row['Resultado'])?>
+                                                        <td width='46%'><?php echo htmlentities($row['antibiotico'])?></td>
+                                                        <td width='54%'><?php echo htmlentities($row['resultado'])?>
                                                         </td>
 
                                                     </tr>
                                             <?php
 						}
 
-						mysql_free_result($consulta);?>
+						pg_free_result($consulta);?>
                                                 </table>
                                              </td>
                                         </tr>

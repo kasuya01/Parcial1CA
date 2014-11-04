@@ -53,13 +53,13 @@ include_once("clsImprimirResultado.php");
 $obj = new clsImprimirResultado;
 
 	$Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
-	$row_estab = mysql_fetch_array($Consulta_Estab);
+	$row_estab = pg_fetch_array($Consulta_Estab);
 
 	if ($idexamen=="COA006"){
 		$consulta_datos=$obj->LeerDatos($idexamen);
 		$datos_generales=$obj->MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar);
-		$row_generales= mysql_fetch_array($datos_generales);
-		$row_area = mysql_fetch_array($consulta_datos);
+		$row_generales= pg_fetch_array($datos_generales);
+		$row_area = pg_fetch_array($consulta_datos);
 	?>
 	<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
 		<tr>
@@ -122,8 +122,8 @@ $obj = new clsImprimirResultado;
 			<td colspan='1' class="Estilo5"><strong>Observacion:<strong></td>
 			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_generales['Observacion'])?></td>
 		</tr>
-			<?php mysql_free_result($consulta_datos);
-			      mysql_free_result($datos_generales);
+			<?php pg_free_result($consulta_datos);
+			      pg_free_result($datos_generales);
 			      $consulta=$obj->LeerProcesoExamen($idsolicitud,$iddetalle);
 			?>
 		<tr>
@@ -135,7 +135,7 @@ $obj = new clsImprimirResultado;
 					<td class="Estilo5"colspan='2' > Control Diario </td>
 				</tr>
 					<?php	$pos=0;
-					while($row = mysql_fetch_array($consulta))//ELEMENTOS
+					while($row = pg_fetch_array($consulta))//ELEMENTOS
 					{?>
 				<tr>
 					<td class="Estilo5"  width='25%'align='left'><?PHP echo htmlentities($row['NombreProcedimiento'])?></td>
@@ -146,7 +146,7 @@ $obj = new clsImprimirResultado;
 				</tr>
 					<?php $pos=$pos + 1;
 					}
-						mysql_free_result($consulta);?>
+						pg_free_result($consulta);?>
 			</table>
 		</tr>
 		<tr>
@@ -164,8 +164,8 @@ $obj = new clsImprimirResultado;
 	$consulta_datos=$obj->LeerDatos($idexamen);
 	$datos_generales=$obj->MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar);
 
-	$row_generales= mysql_fetch_array($datos_generales);
-	$row_area = mysql_fetch_array($consulta_datos);
+	$row_generales= pg_fetch_array($datos_generales);
+	$row_area = pg_fetch_array($consulta_datos);
 
 
 	?>
@@ -238,8 +238,8 @@ $obj = new clsImprimirResultado;
                 </tr>
 		<tr>
                     <td colspan='6'>
-			<?php mysql_free_result($consulta_datos);
-			      mysql_free_result($datos_generales);
+			<?php pg_free_result($consulta_datos);
+			      pg_free_result($datos_generales);
 			      $consulta=$obj->LeerProcesoExamen($idsolicitud,$iddetalle);
 
 	        ?>
@@ -251,7 +251,7 @@ $obj = new clsImprimirResultado;
 					<td class="Estilo5" width='30%' align='center'><strong> Rango </strong></td>
 				</tr>
 					<?php $pos=0;
-				while($row = mysql_fetch_array($consulta))//ELEMENTOS
+				while($row = pg_fetch_array($consulta))//ELEMENTOS
 					{  ?>
 				<tr>
 					<td width='25%' align='left' class="Estilo5"><?php echo htmlentities($row['NombreProcedimiento'])?></td>
@@ -264,7 +264,7 @@ $obj = new clsImprimirResultado;
                                 </tr>
 					<?php  $pos=$pos + 1;
 					}
-					mysql_free_result($consulta);?>
+					pg_free_result($consulta);?>
                                 </tr>
 
                             </table>

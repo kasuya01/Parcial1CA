@@ -129,22 +129,15 @@ function LlenarComboExamen(idarea)
 {
     // alert(idarea);
     ajax = objetoAjax();
-    //alert(idarea);
-    idexpediente = "";
-    idsolicitud = "";
-   // idsolicitudP = "";
-    iddetalle = "";
-    idexamen = "";
-    estado = "";
+    
+    
     opcion = 5;
 
-    fechasolicitud = "";
-
-    ajax.open("POST", "ctrRMAutomatizada.php", true);
+      ajax.open("POST", "ctrRMAutomatizada.php", true);
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
-    ajax.send("idexpediente=" + idexpediente + "&idarea=" + idarea + "&fechasolicitud=" + fechasolicitud + "&idsolicitud=" + idsolicitud + + "&idsolicitudP=" + idsolicitudP + "&opcion=" + opcion + "&estado=" + estado + "&idexamen=" + idexamen);
+    ajax.send("opcion="+opcion+"&idarea="+idarea);
     ajax.onreadystatechange = function()
     {
 

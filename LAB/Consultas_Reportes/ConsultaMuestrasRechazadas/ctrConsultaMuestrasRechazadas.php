@@ -123,7 +123,7 @@ switch ($opcion)
            // $query_search = 
         }     
        // echo $cond2;
-        echo  $query="WITH tbl_servicio AS (
+          $query="WITH tbl_servicio AS (
                     SELECT t02.id,
                         CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente

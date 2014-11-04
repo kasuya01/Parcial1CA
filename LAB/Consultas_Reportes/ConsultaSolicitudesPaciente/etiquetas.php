@@ -67,69 +67,93 @@ $objdatos = new clsSolicitudesPorPaciente;
 $consultadetalle=$objdatos->VinetasRecepcion($idexpediente,$idsolicitud);
 
 while($fila = pg_fetch_array($consultadetalle)){
-		if ($fila[6]=="G"){
-			$codigo= $idsolicitud."-".$fila[10];
-			$codigo1= $idsolicitud."&nbsp;&nbsp;&nbsp;".$fila[10];
+ 
+    
+    
+ //impresion
+    //if ($fila[7]=="G"){
+        
+        
+                            //echo "esto es dentro del if";
+                    //idestablecimiento 10 
+			$codigo= $idsolicitud."-".$fila[2];
+			$codigo1= $idsolicitud."&nbsp;&nbsp;&nbsp;".$fila[3];
 		?>    
 			<table width="30" border = "0" class="estilotabla">
 		 		<tr align="center">
 		   			<td  colspan="1" align="left" CELLPADDING="0" CELLSPACING="0">
-						<span class="Estilo5"><?php echo $fila[2];?></span>
+                                            <span class="Estilo5"><?php echo $fila[0];?></span>
+                                                                        
+						<span class="Estilo5"><?php echo $fila[6];?></span> 
 					</td> 
 					<td  colspan="1" align="left" CELLPADDING="0" CELLSPACING="0">&nbsp;&nbsp;&nbsp;</td>
 					<td  colspan="1" align="left" CELLPADDING="0" CELLSPACING="0">
-						<span class="Estilo5"><?php echo "M=".$fila[4];?></span>
+                                                                
+                                            <span class="Estilo5"><?php echo"M=".$fila[1];?></span>
 					</td>
 				</tr>
 				<tr>
 					<!-- <td colspan="3" align="left" CELLPADDING="0" CELLSPACING="0"><img align="center" style="width: 100px; height: 25px;" src="/siap1/Laboratorio/Barcode2/barcode_img.php?num=<?php echo($codigo1) ?>&type=code128&imgtype=png" -->
-					<td colspan="3" align="left" CELLPADDING="0" CELLSPACING="0"><img align="center" style="width: 100px; height: 25px;" src="../../../Barcode2/barcode_img.php?num=<?php echo($codigo) ?>&type=code128&imgtype=png"	
+					
+                                   <!-- <td colspan="3" align="left" CELLPADDING="0" CELLSPACING="0"><img align="center" style="width: 100px; height: 25px;" src="/siap1/Laboratorio/Barcode2/barcode_img.php?num=<?php echo($codigo1) ?>&type=code128&imgtype=png"
+						 alt="PNG: <?php echo($codigo1) ?>" title="PNG:<?php echo($codigo1) ?>"></td> -->
+                                    
+                                    <td colspan="3" align="left" CELLPADDING="0" CELLSPACING="0"><img align="center" style="width: 100px; height: 25px;" src="../../../Barcode2/barcode_img.php?num=<?php echo($codigo1) ?>&type=code128&imgtype=png"	
                                        alt="PNG: <?php echo($codigo1) ?>" title="PNG:<?php echo($codigo1) ?>"></td>
 				</tr>
-				<tr>
-					<td colspan="1" align="center" CELLPADDING="0" CELLSPACING="0"><span class="Estilo12"><?php echo $fila[7];?></span></td>
-					<td colspan="1" align="left" CELLPADDING="0" CELLSPACING="0">&nbsp;&nbsp;&nbsp;</td>
-					<td colspan="1" align="left" CELLPADDING="0" CELLSPACING="0"><span class="Estilo12"><?php echo $fila[11];?></span></td>
+				<tr>                                                                               
+					<td colspan="1" align="center" CELLPADDING="0" CELLSPACING="0"><span class="Estilo12"><?php echo $fila[4];?></span></td>
+					<td colspan="1" align="left" CELLPADDING="0" CELLSPACING="0">&nbsp;&nbsp;&nbsp;</td>     
+					<td colspan="1" align="left" CELLPADDING="0" CELLSPACING="0"><span class="Estilo12"><?php echo $fila[7];?></span></td>
 				</tr>
 			</table>
 		
 			<br>
+                        
 		
 		<?php
-		}
-		else{
-			$codigo= $idsolicitud."-".$fila[10]."-".$fila[9];
-			$codigo1= $idsolicitud."&nbsp;&nbsp;&nbsp;".$fila[10];
+		 
+                
+                   // }
+                
+		/*else{     
+                                   // echo "esto es dentro del else";
+
+                                            //idestablecimiento     estanadar 
+			$codigo= $idsolicitud."-".$fila[12]."-".$fila[10];
+			$codigo1= $idsolicitud."&nbsp;&nbsp;&nbsp;".$fila[12];
 			 // echo $codigo;
 			?>
 			<table width="30" border = "0"  class="estilotabla">
 		 		<tr align="center">
+                                    
 		   			<td colspan="1" align="left" CELLPADDING="0" CELLSPACING="0">
-						<span class="Estilo5"><?php echo $fila[2];?></span>
+                                        <span class="Estilo5"><?php echo $fila[4];?></span>
+                                        <span class="Estilo5"><?php echo $fila[3];?></span>
 					</td> 
 					<td colspan="1" align="left" CELLPADDING="0" CELLSPACING="0">&nbsp;&nbsp;&nbsp;</td>
 					<td colspan="1" align="left" CELLPADDING="0" CELLSPACING="0">
-						<span class="Estilo5"><?php echo "M=".$fila[4];?></span>
+						<span class="Estilo5"><?php echo "M=".$fila[5];?></span>
 					</td>
 					
 		 		</tr>
 				<tr>
 					<td colspan="3" align="left" CELLPADDING="0" CELLSPACING="0">
-						<img align="center" style="width: 100px; height: 25px;" src="../../../Barcode2/barcode_img.php?num=<?php echo($codigo) ?>&type=code128&imgtype=png"
+						<img align="center" style="width: 100px; height: 25px;" src="../../../Barcode2/barcode_img.php?num=<?php echo($codigo1) ?>&type=code128&imgtype=png"
                                                      accesskey="" alt="PNG: <?php echo($codigo) ?>" title="PNG:<?php echo($codigo) ?>">
 					</td>
 				</tr>
 				<tr>
-					<td colspan="1" align="left" CELLPADDING="0" CELLSPACING="0"><span class="Estilo5"><?php echo $fila[7];?></span></td>
+					<td colspan="1" align="left" CELLPADDING="0" CELLSPACING="0"><span class="Estilo5"><?php echo $fila[8];?></span></td>
 					<td colspan="1" align="left" CELLPADDING="0" CELLSPACING="0">&nbsp;&nbsp;&nbsp;</td>
-					<td colspan="1" CELLPADDING="0" CELLSPACING="0"><span class="Estilo5"><?php echo $fila[9];?></span></td>
+					<td colspan="1" CELLPADDING="0" CELLSPACING="0"><span class="Estilo5"><?php echo $fila[10];?></span></td>
 				</tr>
 			</table>
 		<br>
 		<br>
 			
 	<?php
-	}
+	}*/
 }	
    ?>
 </form>

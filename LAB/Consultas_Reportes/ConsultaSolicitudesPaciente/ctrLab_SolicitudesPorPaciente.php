@@ -156,7 +156,7 @@ switch ($opcion)
                     LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
                     WHERE $where_with t02.id_establecimiento = $lugar
                     ORDER BY 2)
-                 SELECT t01.id,
+                 SELECT 
                 t02.id, 
                 TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                 t06.numero AS idnumeroexp, 
@@ -167,40 +167,35 @@ switch ($opcion)
                 t14.nombre, 
                 TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud, 
                 (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-                CASE t01.estadodetalle 
+                CASE t02.estado 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada'
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='R') THEN 'Recibida'
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='P') THEN 'En Proceso'    
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' END AS estado,
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' 
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
             TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta
-            FROM sec_detallesolicitudestudios t01 
-            INNER JOIN sec_solicitudestudios t02                ON (t02.id = t01.idsolicitudestudio) 
+            FROM sec_solicitudestudios t02                
             INNER JOIN lab_recepcionmuestra t03                 ON (t03.idsolicitudestudio=t02.id) 
-            INNER JOIN lab_conf_examen_estab t04                ON (t04.id = t01.id_conf_examen_estab) 
-            INNER JOIN mnt_area_examen_establecimiento t05      ON (t05.id = t04.idexamen) 
-            INNER JOIN mnt_expediente t06                       ON (t06.id = t02.id_expediente) 
+	    INNER JOIN mnt_expediente t06                       ON (t06.id = t02.id_expediente) 
             INNER JOIN mnt_paciente t07                         ON (t07.id = t06.id_paciente) 
-            INNER JOIN ctl_area_servicio_diagnostico t08        ON (t08.id = t05.id_area_servicio_diagnostico 
-            AND t08.id_atencion =(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) 
-            INNER JOIN sec_historial_clinico t09                ON (t09.id = t02.id_historial_clinico) 
+	    INNER JOIN sec_historial_clinico t09                ON (t09.id = t02.id_historial_clinico) 
             INNER JOIN mnt_aten_area_mod_estab t10              ON (t10.id = t09.idsubservicio) 
             INNER JOIN ctl_atencion t11                         ON (t11.id = t10.id_atencion) 
             INNER JOIN mnt_area_mod_estab t12                   ON (t12.id = t10.id_area_mod_estab) 
             INNER JOIN ctl_area_atencion t13                    ON (t13.id = t12.id_area_atencion) 
             INNER JOIN ctl_establecimiento t14                  ON (t14.id = t09.idestablecimiento) 
             INNER JOIN cit_citas_serviciodeapoyo t15            ON (t15.id_solicitudestudios=t02.id) 
-            INNER JOIN ctl_estado_servicio_diagnostico t16      ON (t16.id = t01.estadodetalle) 
             INNER JOIN lab_tiposolicitud t17                    ON (t17.id = t02.idtiposolicitud) 
-            INNER JOIN ctl_examen_servicio_diagnostico t18      ON (t18.id = t05.id_examen_servicio_diagnostico) 
-	   INNER JOIN tbl_servicio t20                         ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
+            INNER JOIN tbl_servicio t20                         ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-            --AND (t16.idestado = 'D')  
-            AND t02.id_establecimiento = $lugar
-            $cond1
+            AND t02.id_establecimiento = $lugar $cond1
+            
         
-            UNION
+           UNION
 
-            SELECT t01.id,
+            SELECT 
             t02.id, 
             TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
             t06.numero AS idnumeroexp,
@@ -211,34 +206,34 @@ switch ($opcion)
             t14.nombre,
             TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud, 
             (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-            CASE t01.estadodetalle 
+            CASE t02.estado 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada'
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='R') THEN 'Recibida'
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='P') THEN 'En Proceso'    
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' END AS estado,
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' 
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
             TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta
-            FROM sec_detallesolicitudestudios t01 
-            INNER JOIN sec_solicitudestudios t02                    	    ON (t02.id = t01.idsolicitudestudio) 
+            FROM sec_solicitudestudios t02                    	   
             INNER JOIN lab_recepcionmuestra t03                     ON (t03.idsolicitudestudio=t02.id) 
-            INNER JOIN lab_conf_examen_estab t04                    ON (t04.id = t01.id_conf_examen_estab) 
-            INNER JOIN mnt_area_examen_establecimiento t05          ON (t05.id = t04.idexamen)
             INNER JOIN mnt_dato_referencia t09                      ON t09.id=t02.id_dato_referencia 
             INNER JOIN mnt_expediente_referido t06                  ON (t06.id = t09.id_expediente_referido) 
             INNER JOIN mnt_paciente_referido t07                    ON (t07.id = t06.id_referido) 
-            INNER JOIN ctl_area_servicio_diagnostico t08            ON (t08.id = t05.id_area_servicio_diagnostico 
-            AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) 
             INNER JOIN mnt_aten_area_mod_estab t10                  ON (t10.id = t09.id_aten_area_mod_estab) 
             INNER JOIN ctl_atencion t11                             ON (t11.id = t10.id_atencion) 
             INNER JOIN mnt_area_mod_estab t12                       ON (t12.id = t10.id_area_mod_estab) 
             INNER JOIN ctl_area_atencion t13                        ON (t13.id = t12.id_area_atencion) 
             INNER JOIN ctl_establecimiento t14                      ON (t14.id = t09.id_establecimiento)
             INNER JOIN cit_citas_serviciodeapoyo t15                ON (t15.id_solicitudestudios=t02.id) 
-            INNER JOIN ctl_estado_servicio_diagnostico t16          ON (t16.id = t01.estadodetalle) 
             INNER JOIN lab_tiposolicitud t17 			    ON (t17.id = t02.idtiposolicitud) 
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-            --AND  (t16.idestado = 'D') 
-            AND t02.id_establecimiento = $lugar $cond2   order by fecharecepcion desc "; 
-    $consulta=$objdatos->BuscarSolicitudesPaciente($query); 
+            AND t02.id_establecimiento =$lugar $cond2   order by fecharecepcion desc  ";
+                 
+                 
+                 
+                 
+     $consulta=$objdatos->BuscarSolicitudesPaciente($query); 
          
          $RegistrosAMostrar=5;
 	$RegistrosAEmpezar=($_POST['pag']-1)*$RegistrosAMostrar;
@@ -310,6 +305,7 @@ switch ($opcion)
         }
 	
         
+        
                     //determinando el numero de paginas
 	$PagAnt=$PagAct-1;
 	$PagSig=$PagAct+1;
@@ -348,6 +344,8 @@ switch ($opcion)
 			 }
 				 echo $numPags."</td></tr>
 		</table>";
+                                 
+                                 
         
         
 	break;
@@ -362,6 +360,7 @@ switch ($opcion)
 		
 		$consulta=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar);
 		$row = pg_fetch_array($consulta);
+                //$Estado1=$row['estado1'];
 		//obteniedo los datos generales de la solicitud
 		//valores de las consultas
                 $idsolicitudPadre=$row[0];
@@ -373,7 +372,7 @@ switch ($opcion)
 		$precedencia=$row['nombreservicio'];
 		$origen=$row['nombresubservicio'];
 		$DatosClinicos=$row['DatosClinicos'];
-		$Estado=$row['estado'];
+                $Estado=$row['estado'];
 		$fechasolicitud=$row['FechaSolicitud'];
                 $FechaNac=$row['FechaNacimiento'];
 		//recuperando los valores del detalle de la solicitud
@@ -383,7 +382,7 @@ switch ($opcion)
 		
 		
 		$imprimir="<form name='frmDatos'>
-		<table width='50%' border='0' align='center'>
+		<table width='70%' border='0' align='center'>
 			<tr>
 				<td  colspan='4'>&nbsp;&nbsp;&nbsp;&nbsp</td>
 			</tr>
@@ -442,7 +441,7 @@ switch ($opcion)
                         <tr>
 		
 
-		<table width='55%' border='0' align='center'>
+		<table width='70%' border='0' align='center'>
 			<tr>
 				<td colspan='4'  class='CobaltFieldCaptionTD' align='center'>ESTUDIOS SOLICITADO</td>
 			</tr>
@@ -450,15 +449,15 @@ switch ($opcion)
 				<td>
 					<table border = 1 align='center' class='estilotabla'>
 			   		<tr>
-						<td width='10%'> IdExamen</td>
-						<td width='39%'> Examen </td>
-						<td width='7%'> IdArea </td>
-						<td width='20%'> Indicacion Medica </td>
-						<td width='21%'> Estado </td>
+						<td class='CobaltFieldCaptionTD' width='10%'> IdExamen</td>
+						<td class='CobaltFieldCaptionTD' width='39%'> Examen </td>
+						<td class='CobaltFieldCaptionTD' width='7%'> IdArea </td>
+						<td class='CobaltFieldCaptionTD' width='20%'> Indicacion Medica </td>
+						<td  class='CobaltFieldCaptionTD'width='21%'> Estado </td>
 			   		</tr>";
 			$pos=0;
 			while($fila = pg_fetch_array($consultadetalle)){
-                     $estado=$fila['estado'];
+                
 	      		  $imprimir .= "<tr>
 						<td width='10%'>".$fila['codigo_examen']."</td>
 						<td width='39%'>".htmlentities($fila['nombre_examen'])."</td>	
@@ -477,6 +476,12 @@ switch ($opcion)
 			pg_free_result($consultadetalle);
 			
  	//$imprimir .= "<i/nput type='hidden' name='oculto' id='oculto' value='".$pos."' />
+                        
+                        
+                        $consulta=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar);
+		$row = pg_fetch_array($consulta);
+                 $Estado1=$row['estado1'];
+                        
 	 $imprimir .="</table>
 	<div id='divImpresion' style='display:block' >
 		<table>
@@ -486,14 +491,17 @@ switch ($opcion)
 			<tr >
 				<td align='center'>
 					<input type='button' name='btnImprimirSol' id='btnImprimirSol' value='Imprimir Solicitud' onClick='ImprimirSolicitud()'>";
-				 "eee   ".$estado['estado'];
+			//	echo"---> estado1--->". $estado['estado1'];
          
-                        
+                         $Estado1;
                         //'R'  'P'
-                            if($estado['estado']=='R' OR $estado['estado']=='E'){
-					  
+                            if(($Estado1=='Recibida') OR ($Estado1 =='En Proceso')){
+                                            
+                                                    //echo " si esta entrando ";
 						$imprimir .="<input type='button' name='btnImprimir'  id=btnImprimir' value='Imprimir Vi&ntilde;etas' onClick='ImprimirExamenes()'/>";}
-					else{
+                                                
+                                                else{
+                                               // echo "no esta entrando ";
 						$imprimir .="<input type='button' name='btnImprimir' disabled='enabled' id=btnImprimir' value='Imprimir Vi&ntilde;etas' onClick='ImprimirExamenes();'/>";
 					}
 				$imprimir .="</td>
@@ -533,7 +541,7 @@ switch ($opcion)
 		//recuperando los valores del detalle de la solicitud
 		//$consultadetalle=$objdatos->DatosDetalleSolicitud($idexpediente,$idsolicitud);
 		$imprimir="<form name='frmDatos'>
-		<table width='50%' border='0' align='center'>
+		<table width='80%' border='0' align='center'>
 			<tr>
 				<td  colspan='4'>&nbsp;&nbsp;&nbsp;&nbsp</td>
 			</tr>

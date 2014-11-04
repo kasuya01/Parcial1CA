@@ -65,13 +65,13 @@ function isWhitespace(charToCheck) {
 
 ///////////////////////////////***********************************/////////////////////////////////
 //Esta funcion mandan a llamar
-function calc_edad()
+/*function calc_edad()
 {
   var fecnac1=document.getElementById("suEdad").value;
   var fecnac2=fecnac1.substring(0,10);
   var suEdades=calcular_edad(fecnac2);
   document.getElementById("divsuedad").innerHTML=suEdades;
-}
+}*/
 
 
 //funcion para calculo de edad
@@ -170,7 +170,7 @@ function calcular_edad(fecha){
 }
 
 //FUNCION PARA BUSCAR DATOS DE LA SOLICITUD
-function BuscarDatos()
+function BuscarDatos(pag)
 {	
 		opcion=1;
 		IdEstab=document.getElementById('cmbEstablecimiento').value;
@@ -181,7 +181,7 @@ function BuscarDatos()
 		segundonombre=document.getElementById('SegundoNombre').value;
 		primerapellido=document.getElementById('PrimerApellido').value;
 		segundoapellido=document.getElementById('SegundoApellido').value;
-		fechaconsulta=document.getElementById('txtfechaconsulta').value;
+		fechaconsulta=document.getElementById('txtfecharecep').value;
 		//alert (IdEstab);
 		ajax=objetoAjax();
 		//archivo que realizar� la operacion ->actualizacion.php
@@ -189,7 +189,7 @@ function BuscarDatos()
 		//muy importante este encabezado ya que hacemos uso de un formulario
 		ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores
-		ajax.send("idexpediente="+idexpediente+"&opcion="+opcion+"&primernombre="+escape(primernombre)+"&segundonombre="+escape(segundonombre)+"&primerapellido="+escape(primerapellido)+"&segundoapellido="+escape(segundoapellido)+"&fechaconsulta="+fechaconsulta+"&IdEstab="+IdEstab+"&IdServ="+IdServ+"&IdSubServ="+IdSubServ);
+		ajax.send("idexpediente="+idexpediente+"&opcion="+opcion+"&primernombre="+escape(primernombre)+"&segundonombre="+escape(segundonombre)+"&primerapellido="+escape(primerapellido)+"&segundoapellido="+escape(segundoapellido)+"&fechaconsulta="+fechaconsulta+"&IdEstab="+IdEstab+"&IdServ="+IdServ+"&IdSubServ="+IdSubServ+"&pag="+pag);
 		ajax.onreadystatechange=function() {
 			if (ajax.readyState==4) {
 				//mostrar los nuevos registros en esta capa
@@ -221,7 +221,7 @@ function CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento)
 		{	 if (ajax.status == 200)
 			{  //mostrar los nuevos registros en esta capa
 			  document.getElementById('divSolicitud').innerHTML = ajax.responseText;
-			  calc_edad();
+			 // calc_edad();
 			}
 	    }
 	}
@@ -253,6 +253,7 @@ function CargarDatosFormularioSolicitud(idexpediente,idsolicitud,idestablecimien
 
 function LlenarComboExamen(idarea)
 {
+      //alert ("qqq");
  	ajax=objetoAjax();
 	opcion=5;
    	ajax.open("POST", "ctrAgregarExamen.php",true);
@@ -274,8 +275,10 @@ function LlenarComboExamen(idarea)
    	}
 }
 
-function LlenarComboMuestra(IdExamen)
+function LlenarComboMuestra1(IdExamen)
+         
 {
+     // alerrt ("siii"+IdExamen);
 	ajax=objetoAjax();
 	opcion=8;
 	ajax.open("POST", "ctrAgregarExamen.php",true);
@@ -295,8 +298,10 @@ function LlenarComboMuestra(IdExamen)
    	}
 }
 
-function LlenarComboOrigen(IdTipo){
-	ajax=objetoAjax();
+function LlenarComboOrigen1(IdTipo){
+	
+        //alert(IdTipo);
+        ajax=objetoAjax();
 	opcion=9;
 	ajax.open("POST", "ctrAgregarExamen.php",true);
   	//muy importante este encabezado ya que hacemos uso de un formulario
@@ -391,7 +396,8 @@ function GuardarExamen()
 	ajax=objetoAjax();
 	opcion=10;
 	//DATOS DE ENCABEZADO DE LOS RESULTADOS
-		
+		//idsoli
+                idsoli=document.getElementById('txtidsoli').value;
 		idsolicitud=document.getElementById('txtidsolicitud').value;
 		idExamen=document.getElementById('cmbExamen').value;
 		indicacion=document.getElementById('txtindicacion').value;
@@ -403,12 +409,14 @@ function GuardarExamen()
                // alert(tipoMuestra+"**"+OrigenMuestra);
 		//alert(idsolicitud+"%%"+IdEmpleado+"%%"+tipoMuestra);
 		ajax.open("POST", "ctrAgregarExamen.php",true);
-		                  
+    //alert(IdEmpleado);
+    
+    
 		//muy importante este encabezado ya que hacemos uso de un formulario
 		ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores
 		ajax.send("opcion="+opcion+"&idsolicitud="+idsolicitud+"&idExamen="+idExamen+"&indicacion="+escape(indicacion)+"&tipoMuestra="+
-		tipoMuestra+"&Observacion="+escape(Observacion)+"&IdEmpleado="+IdEmpleado+"&IdEstab="+IdEstab+"&OrigenMuestra="+OrigenMuestra);
+		tipoMuestra+"&Observacion="+escape(Observacion)+"&IdEmpleado="+IdEmpleado+"&IdEstab="+IdEstab+"&OrigenMuestra="+OrigenMuestra+"&idsoli="+idsoli);
 		ajax.onreadystatechange=function() 
 		{
 			if (ajax.readyState==4) 
@@ -416,7 +424,8 @@ function GuardarExamen()
 				{  //mostrar los nuevos registros en esta capa
 				 	alert(ajax.responseText);
 					//CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento)
-				}
+                                         window.close();
+                                }
 		     }
 		}
 		//idrecepcion	

@@ -58,17 +58,17 @@ function calc_edad()
 	 $obj = new clsImprimirResultado;
 
 	$Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
-	$row_estab = mysql_fetch_array($Consulta_Estab);
+	$row_estab = pg_fetch_array($Consulta_Estab);
 	$ConEstandar=$obj->Obtener_Estandar($idexamen);
-	$CodEstandar= mysql_fetch_array($ConEstandar);
+	$CodEstandar= pg_fetch_array($ConEstandar);
 	$IdEstandar=$CodEstandar[0];
 
           $Cuentadias=$obj->CalculoDias($fechanac);
-          $Cdias= mysql_fetch_array($Cuentadias);
+          $Cdias= pg_fetch_array($Cuentadias);
           $dias=$Cdias[0];
 
           $ConRangos=$obj->ObtenerCodigoRango($dias);
-          $row_rangos=  mysql_fetch_array($ConRangos);
+          $row_rangos=  pg_fetch_array($ConRangos);
           $idedad=$row_rangos[0];
         //echo  $idedad."   ".$sexo;
 	//echo $IdEstandar;
@@ -80,8 +80,8 @@ function calc_edad()
 		$consulta_datos=$obj->LeerDatos($idexamen);
 		$datos_generales=$obj->MostrarResultadoGenerales($idsolicitud,$idexamen,$lugar);
 
-		$row_generales= mysql_fetch_array($datos_generales);
-		$row_area = mysql_fetch_array($consulta_datos);
+		$row_generales= pg_fetch_array($datos_generales);
+		$row_area = pg_fetch_array($consulta_datos);
 		?>
 		<table width='100%' align='center' class ='StormyWeatherFormTABLE' >
 		 <tr>
@@ -148,8 +148,8 @@ function calc_edad()
 		</table>
 
 		<table width='100%' border='0' align='center' >
-			<?php mysql_free_result($consulta_datos);
-			mysql_free_result($datos_generales);?>
+			<?php pg_free_result($consulta_datos);
+			pg_free_result($datos_generales);?>
 			<tr >
 				<td width='35%' class="Estilo5"></td>
 				<td width='25%' class="Estilo5">Resultado</td>
@@ -158,7 +158,7 @@ function calc_edad()
 			</tr>
 				<?php $pos=0;
 			 	$posele=0;
-			while($row = mysql_fetch_array($consulta))//ELEMENTOS
+			while($row = pg_fetch_array($consulta))//ELEMENTOS
 			{
 				if($row['SubElemento']=='S')
 				{ ?>
@@ -168,7 +168,7 @@ function calc_edad()
 				<?php	 //echo  $idedad."   ".$sexo;
                                 $consulta2=$obj->LeerSubElementosExamen($idsolicitud,$iddetalle,$row['IdElemento'],$lugar,$idedad,$sexo);
                                                          //LeerSubElementosExamen($idsolicitud,$iddetalle,$idelemento,$lugar,$idedad,$sexo)
-				while($rowsub = mysql_fetch_array($consulta2))//SUBELEMENTOS
+				while($rowsub = pg_fetch_array($consulta2))//SUBELEMENTOS
 				{?>
 			<tr>
 				<td width='35%' class="Estilo6"><?php echo htmlentities($rowsub['SubElemento'])?></td>
@@ -188,7 +188,7 @@ function calc_edad()
 			<tr>
 				<?php
                     $consulta3=$obj->ResulatdoElementoExamen($idsolicitud,$iddetalle,$row['IdElemento']);
-					$rowele = mysql_fetch_array($consulta3);
+					$rowele = pg_fetch_array($consulta3);
 
 				  // echo htmlentities($rowele['Resultado']);
 				  ?>
@@ -209,7 +209,7 @@ function calc_edad()
 			<?php	}
 
 			}// del while
-			mysql_free_result($consulta);?>
+			pg_free_result($consulta);?>
 			<tr>
 				<td colspan="7" align="center">
 					<div id="boton1"><input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
@@ -224,8 +224,8 @@ function calc_edad()
 		$consulta=$obj->LeerElementosExamen($idexamen,$iddetalle,$lugar);
 	  	$consulta_datos=$obj->LeerDatos($idexamen);
 	  	$datos_generales=$obj->MostrarResultadoGenerales($idsolicitud,$idexamen,$lugar);
-                $row_generales= mysql_fetch_array($datos_generales);
-	  	$row_area = mysql_fetch_array($consulta_datos);
+                $row_generales= pg_fetch_array($datos_generales);
+	  	$row_area = pg_fetch_array($consulta_datos);
 		?>
 	  	<table width="100%" border="0" align="center" cellspacing="0" >
                     <tr>
@@ -297,7 +297,7 @@ function calc_edad()
                                 </tr>
                                 <?php $pos=0;
                                       $posele=0;
-                    while($row = mysql_fetch_array($consulta))//ELEMENTOS
+                    while($row = pg_fetch_array($consulta))//ELEMENTOS
                     {
                             if($row['SubElemento']=="S")
                             {   ?>
@@ -308,7 +308,7 @@ function calc_edad()
                                             $consulta2=$obj->LeerSubElementosExamen($idsolicitud,$iddetalle,$row['IdElemento'],$lugar,$idedad,$sexo);
                                              //echo  $idedad."   ".$sexo;
 
-                                while($rowsub = mysql_fetch_array($consulta2)){//SUBELEMENTOS
+                                while($rowsub = pg_fetch_array($consulta2)){//SUBELEMENTOS
                                 ?>
                                <tr>
                                     <td width='35%' class="Estilo5"><?php echo htmlentities($rowsub['SubElemento'])?></td>
@@ -346,9 +346,9 @@ function calc_edad()
 
                     }
 
-                            mysql_free_result($consulta);
-                            mysql_free_result($consulta_datos);
-                            mysql_free_result($datos_generales);
+                            pg_free_result($consulta);
+                            pg_free_result($consulta_datos);
+                            pg_free_result($datos_generales);
                             ?>
                             </table>
                         </td>

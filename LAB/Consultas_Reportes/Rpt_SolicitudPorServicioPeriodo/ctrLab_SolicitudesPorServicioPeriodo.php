@@ -105,7 +105,7 @@ switch ($opcion)
            //$cond1;
           // echo $cond2;
         }     
-       $query="WITH tbl_servicio AS (
+        $query="WITH tbl_servicio AS (
                     SELECT t02.id,
                         CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
@@ -137,7 +137,10 @@ switch ($opcion)
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada'
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='R') THEN 'Recibida'
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='P') THEN 'En Proceso'    
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' END AS estado,
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' 
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
 		  t06.numero as expediente,
                   TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud
 	    FROM sec_detallesolicitudestudios t01 
@@ -182,7 +185,10 @@ UNION
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada'
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='R') THEN 'Recibida'
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='P') THEN 'En Proceso'    
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' END AS estado,
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' 
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
 			t06.numero as expediente,
 			TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud
 FROM sec_detallesolicitudestudios t01 
@@ -239,8 +245,10 @@ $imprimir.="<table width='95%' border='1' align='center'>
 					<td>Procedencia</td>
 					<td>Establecimiento</td>
 					<td>Estado Solicitud</td>
-	    	   </tr>";    
- 	$pos=0;
+	    	   </tr>"; 
+if(pg_num_rows($consulta)){
+                    $pos = 0;
+ 	
         while ($row = pg_fetch_array($consulta))
 	{ 
     $imprimir .="<tr>
@@ -304,6 +312,11 @@ $imprimir.="<table width='95%' border='1' align='center'>
 			 }
 				 echo $numPags."</td></tr>
 		</table>";
+                                 
+                                 } else {
+             $imprimir .="<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table>";
+                echo $imprimir;
+                                 }
 
 	break;
     	

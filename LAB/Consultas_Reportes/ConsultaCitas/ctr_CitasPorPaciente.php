@@ -248,8 +248,9 @@ switch ($opcion)
 						<td>Procedencia</td>
 						<td>Establecimiento</td>
 					</tr>";    
-			
-                        $pos=0;
+		if(pg_num_rows($consulta)){
+                    $pos = 0;
+                        
 			while ($row = pg_fetch_array($consulta))
 			{ 
 			$imprimir .="<tr>
@@ -264,7 +265,8 @@ switch ($opcion)
 						<td  width='25%'>".htmlentities($row['estabext'])."</td>
 					</tr>";
 				$pos=$pos + 1;
-			}
+			} 
+                        
 		
 			pg_free_result($consulta);
 		
@@ -272,7 +274,12 @@ switch ($opcion)
 			</table>";
 		echo $imprimir;
 			
-
+         } else {
+             $imprimir .="<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table>";
+                echo $imprimir;
+             
+         }
+                
 	break;
 	case 5://LLENANDO COMBO DE Examenes
 		$rslts='';

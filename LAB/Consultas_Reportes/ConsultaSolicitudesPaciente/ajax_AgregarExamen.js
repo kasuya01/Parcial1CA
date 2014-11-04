@@ -64,13 +64,13 @@ function isWhitespace(charToCheck) {
 }
 ///////////////////////////////***********************************/////////////////////////////////
 //Esta funcion mandan a llamar
-function calc_edad()
+/*function calc_edad()
 {
   var fecnac1=document.getElementById("suEdad").value;
   var fecnac2=fecnac1.substring(0,10);
   var suEdades=calcular_edad(fecnac2);
   document.getElementById("divsuedad").innerHTML=suEdades;
-}
+}*/
 
 
 //funcion para calculo de edad
@@ -223,7 +223,7 @@ function CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento)
 		{	 if (ajax.status == 200)
 			{  //mostrar los nuevos registros en esta capa
 			  document.getElementById('divSolicitud').innerHTML = ajax.responseText;
-			  calc_edad();
+			 // calc_edad();
 			 }
 	     }
 	}
