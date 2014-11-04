@@ -52,10 +52,11 @@ function calc_edad()
 include_once("clsImprimirResultado.php");
 $objdatos = new clsImprimirResultado;
 $Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
-$row_estab = mysql_fetch_array($Consulta_Estab);
-$consulta=$objdatos->MostrarResultadoGenerales($idsolicitud,$IdExamen,$lugar);
-$row = mysql_fetch_array($consulta);
-$nombre=$row['NombreArea'];
+$row_estab = pg_fetch_array($Consulta_Estab);
+//$consulta=$objdatos->MostrarResultadoGenerales($idsolicitud,$IdExamen,$lugar);
+$consulta=$objdatos->MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar);
+$row = pg_fetch_array($consulta);
+$nombre=$row['nombre_area'];
 
 ?>
 <table align="center" width="100%">
@@ -68,7 +69,7 @@ $nombre=$row['NombreArea'];
 				<td colspan="1" align="left" width="20%"><img id="Image1" style="WIDTH: 80px; HEIGHT: 55px" height="86" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
                                 <td align="center" colspan="4" width="60%" class="Estilo6">
 					<p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
-					<p><strong><?php echo $row_estab['Nombre'] ?></strong></p>
+					<p><strong><?php echo $row_estab['nombre'] ?></strong></p>
 					<p><strong>ÁREA DE <?php echo $nombre; ?> </strong></p>
 				</td>
                                 <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
@@ -78,47 +79,43 @@ $nombre=$row['NombreArea'];
 			</tr>
 			<tr>
 				<td colspan="1" class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
-				<td colspan="2" class="Estilo6"><?php echo htmlentities($row['Nombre']);?></td>
+				<td colspan="2" class="Estilo6"><?php echo htmlentities($row['estabext']);?></td>
 				<td colspan="1" class="Estilo5"><strong>Fecha Resultado:</strong></td>
-				<td colspan="2" class="Estilo6"><?php echo $row['Fecha'];?></td>
+				<td colspan="2" class="Estilo6"><?php echo $row['fecharecepcion'];?></td>
 				<input name='suEdad' id='suEdad' type='hidden'  value=<?php echo $row['FechaNacimiento']?>>
 			</tr>
 
 			<tr>
 				<td colspan="1" class="Estilo5"><strong>NEC</strong></td>
-				<td colspan="5" class="Estilo7"><?php echo $row['IdNumeroExp'];?></td>
+				<td colspan="5" class="Estilo7"><?php echo $row['idnumeroexp'];?></td>
                         </tr>
                         <tr>
 
 				<td colspan="1" class="Estilo5"><strong>Paciente:</strong></td>
-				<td colspan="5" class="Estilo6"><?php echo htmlentities($row['NombrePaciente'])?></td>
+				<td colspan="5" class="Estilo6"><?php echo htmlentities($row['paciente'])?></td>
 			</tr>
 			<tr>
 				<td colspan="1" class="Estilo5"><strong>Edad:</strong></td>
-				<td colspan="2" class="Estilo6"><div id="divsuedad">
-        				<script language="JavaScript" type="text/javascript">
-               					calc_edad();
-          				</script>
-    		   		    </div>
+				<td colspan="2" class="Estilo6"><?php echo htmlentities($row['edad'])?></td>
 				</td>
 
 				<td colspan="1" class="Estilo5"><strong>Sexo:</strong></td>
-				<td colspan="2" class="Estilo6"><?php echo $row['Sexo']?></td>
+				<td colspan="5" class="Estilo6"><?php echo $row['sexo']?></td>
 			</tr>
 
 			<?php
-				$consulta2=$objdatos->MostrarDatosFijosPlantillaA($IdExamen,$lugar,$idsolicitud);
-				$fila = mysql_fetch_array($consulta2);
+				$consulta2=$objdatos->MostrarDatosFijosPlantillaA($IdExamen,$lugar,$iddetalle);
+				$fila = pg_fetch_array($consulta2);
 			?>
                         <tr>
 				<td colspan="1" class="Estilo5"><strong>Procedencia:</strong></td>
-				<td colspan="2" class="Estilo6"><?php echo htmlentities($row['Procedencia'])?></td>
+				<td colspan="2" class="Estilo6"><?php echo htmlentities($row['nombreservicio'])?></td>
 				<td colspan="1" class="Estilo5"><strong>Servicio:</strong></td>
-				<td colspan="2" class="Estilo6"><?php echo htmlentities($row['Origen'])?></td>
+				<td colspan="2" class="Estilo6"><?php echo htmlentities($row['nombresubservicio'])?></td>
 			</tr>
 			<tr>
 				<td  colspan='1' class="Estilo5"><strong>Validado Por: </strong></td>
-				<td  colspan='5' class="Estilo6"><?php echo htmlentities($row['NombreEmpleado'])?></td>
+				<td  colspan='5' class="Estilo6"><?php echo htmlentities($row['empleado'])?></td>
 			</tr>
 			<tr>
 				<td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;</td>
@@ -139,13 +136,13 @@ $nombre=$row['NombreArea'];
                                             <td align="center" class="Estilo5"><strong>Observaci&oacute;n</strong></td>
                                     </tr>
                                     <tr>
-                                            <td align="left" class="Estilo5"><?php echo htmlentities($fila['NombreExamen'])?></td>
-                                            <td align="center" class="Estilo5"><?php echo htmlentities($row['Resultado'])?></td>
-                                            <td align="center" class="Estilo5"><?php echo htmlentities($fila['Unidades']) ?></td>
-                                            <td align="center" class="Estilo5"><?php echo $fila['RangoInicio']."-".$fila['RangoFin']?></td>
-                                            <td align="justify" class="Estilo5"><?php echo htmlentities($row['Lectura'])?></td>
-                                            <td align="justify" class="Estilo5"><?php echo htmlentities($row['Interpretacion'])?></td>
-                                            <td align="justify" class="Estilo5"><?php echo htmlentities($row['Observacion'])?></td>
+                                            <td align="left" class="Estilo5"><?php echo htmlentities($fila['nombre_examen'])?></td>
+                                            <td align="center" class="Estilo5"><?php echo htmlentities($row['resultado'])?></td>
+                                            <td align="center" class="Estilo5"><?php echo htmlentities($fila['unidades']) ?></td>
+                                            <td align="center" class="Estilo5"><?php echo $fila['rangoinicio']."-".$fila['rangofin']?></td>
+                                            <td align="justify" class="Estilo5"><?php echo htmlentities($row['lectura'])?></td>
+                                            <td align="justify" class="Estilo5"><?php echo htmlentities($row['interpretacion'])?></td>
+                                            <td align="justify" class="Estilo5"><?php echo htmlentities($row['observacion'])?></td>
                                     </tr>
                                 </table>
 			  </td>

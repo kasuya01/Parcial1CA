@@ -236,7 +236,7 @@ function LlenarComboExamen(idarea)
 }
 
 //FUNCION PARA BUSCAR DATOS DE LA SOLICITUD
-function BuscarDatos()
+function BuscarDatos(pag)
 {	
 	opcion=1;
 	IdEstab=document.getElementById('cmbEstablecimiento').value;
@@ -247,7 +247,7 @@ function BuscarDatos()
 	segundonombre=document.getElementById('SegundoNombre').value;
 	primerapellido=document.getElementById('PrimerApellido').value;
 	segundoapellido=document.getElementById('SegundoApellido').value;
-	fecharecep=document.getElementById('txtfechaRecep').value;
+	fecharecep=document.getElementById('txtfecharecep').value;
 	//instanciamos el objetoAjax
 	ajax=objetoAjax();
 	//archivo que realizar� la operacion ->actualizacion.php
@@ -257,7 +257,7 @@ function BuscarDatos()
 	//enviando los valores
 	ajax.send("idexpediente="+idexpediente+"&opcion="+opcion+"&primernombre="+escape(primernombre)+
 	"&segundonombre="+escape(segundonombre)+"&primerapellido="+escape(primerapellido)+"&segundoapellido="+escape(segundoapellido)+
-	"&fecharecep="+fecharecep+"&IdEstab="+IdEstab+"&IdServ="+IdServ+"&IdSubServ="+IdSubServ);
+	"&fecharecep="+fecharecep+"&IdEstab="+IdEstab+"&IdServ="+IdServ+"&IdSubServ="+IdSubServ+"&pag="+pag);
 
 	ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
@@ -273,7 +273,7 @@ function MostrarDatos(posicion)
 		idexpediente=document.getElementById('idexpediente['+posicion+']').value;
 		idsolicitud=document.getElementById('idsolicitud['+posicion+']').value;
 		idexpediente=trim(idexpediente);
-		IdEstablecimiento=document.getElementById('IdEstablecimiento['+posicion+']').value;
+		IdEstablecimiento=document.getElementById('idestablecimiento['+posicion+']').value;
 		//alert(IdEstablecimiento);
 		idsolicitud=trim(idsolicitud);
 		CargarDatosFormulario(idexpediente,idsolicitud,IdEstablecimiento);
@@ -281,7 +281,9 @@ function MostrarDatos(posicion)
  }
 
  function CargarDatosFormulario(idexpediente,idsolicitud,IdEstablecimiento)
-{
+ 
+{         
+        
 	ajax=objetoAjax();
 	opcion=3;
 	//alert(IdEstablecimiento);
@@ -305,41 +307,61 @@ ajax.send("opcion="+opcion+"&idexpediente="+idexpediente+"&idsolicitud="+idsolic
 
 function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,idexamen,sexo,fechanac)
 {
+    
+  //alert(iddetalle);
+  //alert(idsolicitud);
+    //alert(idplantilla);
+    //alert(idexpediente);
+   // alert(idarea);
+    //alert(idexamen);
+    //alert(sexo);
+   // alert(fechanac);
+    
    switch (idplantilla)
-	{ 	case "A":
-                     // alert(idarea);
+	{ 	case "1":   //"A": 
+               //alert(idarea);
+                  // alert("la plantilla es 1");
 			if (idarea=="QUI" || idarea=="HEM" || idarea=="INM"){
 				ventana_secundaria = window.open("ImprimirPlantillaA1.php?var1="+iddetalle+
                                 "&var2="+idsolicitud+"&var3="+idplantilla+"&var4="+idexpediente+
-                                "&var5="+idarea+"&var6="+sexo+"&var7="+fechanac,
+                                "&var5="+idarea+"&var6="+idexamen+"&var7="+fechanac,
                                 "Impresion","width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
 					 //calc_edad();
+                                        // alert("dentro del if");
+                                         
 			}
 			else{
 				ventana_secundaria = window.open("ImprimirPlantillaA.php?var1="+iddetalle+
                                 "&var2="+idsolicitud+"&var3="+idplantilla+"&var4="+idexpediente+
                                 "&var5="+idarea+"&var6="+idexamen+"&var7="+sexo+"&var8="+fechanac,
                                 "Impresion","width=1150,ccc=800,menubar=no,scrollbars=yes,location=no");
-                                       
+                                     //  alert("dentro del else");
 			}
 	      	break;
-	  	case "B":
-		  	
+	  	case   "2":  //"B":  
+		  	//alert("la plantilla es 2");
                                 ventana_secundaria = window.open("ImprimirPlantillaB.php?var1="+iddetalle+"&var2="+idsolicitud+
                                    "&var3="+idplantilla+"&var4="+idexpediente+"&var5="+idarea+"&var6="+idexamen+
                                    "&var7="+sexo+"&var8="+fechanac,"Impresion","width=1150,height=1150,menubar=no,scrollbars=yes,location=no");
 	  	break;
-	  	case "C":
+	  	case   "3":   //"C":  
+                     //alert("la plantilla es 3");
 	  			ventana_secundaria = window.open("ImprimirPlantillaC.php?var1="+iddetalle+"&var2="+idsolicitud+
                                    "&var3="+idplantilla+"&var4="+idexpediente+"&var5="+idarea+"&var6="+idexamen,
                                    "Impresion","width=1150,ccc=800,menubar=no,scrollbars=yes,location=no");
+                                   
+                                   
+                                  
+                                   
 	  	break;
-	  	case "D":
+	  	case "4":
+                   // alert("la plantilla es 4");
 				ventana_secundaria = window.open("ImprimirPlantillaD.php?var1="+iddetalle+"&var2="+idsolicitud+
                                    "&var3="+idplantilla+"&var4="+idexpediente+"&var5="+idarea+"&var6="+idexamen,
                                    "Impresion","width=1150,ccc=800,menubar=no,scrollbars=yes,location=no");
 	  	break;
-	 	case "E":
+	 	case   "5":  //"E":
+                            //alert("la plantilla es 5");
 		 		ventana_secundaria = window.open("ImprimirPlantillaE.php?var1="+iddetalle+"&var2="+idsolicitud+
                                    "&var3="+idplantilla+"&var4="+idexpediente+"&var5="+idarea+"&var6="+idexamen+
                                    "&var7="+sexo+"&var8="+fechanac,"Impresion","width=1150,height=550,menubar=no,scrollbars=yes,location=no");

@@ -7,6 +7,8 @@ $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 $nivel=$_SESSION['NIVEL'];
 
+
+
 ?>
 <html>
 <head>
@@ -26,25 +28,25 @@ $nivel=$_SESSION['NIVEL'];
 	//echo $usuario."##".$idsolicitud;
 	$obj = new clsAgregarExamen;
 	$ConEmp=$obj->ObtenerCodigoTecnico($usuario);
-	$rowEmp=mysql_fetch_array($ConEmp);
+	$rowEmp=pg_fetch_array($ConEmp);
 	$CodEmpleado=$rowEmp[0];
 	//echo $CodEmpleado;
 	
 	$conEst=$obj->DatosEstablecimiento($idestablecimiento);
-	$rowEst = mysql_fetch_array($conEst);
+	$rowEst = pg_fetch_array($conEst);
 	$tipo=$rowEst[0];
 	$nombrEstab=$rowEst[1];
 	$nomtipo=$rowEst[2];
 	
 	$consulta=$obj->DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar);
-	$row = mysql_fetch_array($consulta);
+	$row = pg_fetch_array($consulta);
 	
 	
 //valores de las consultas
 
 	//obteniedo los datos generales de la solicitud
 	//valores de las consultas
-	$medico=$row['NombreMedico'];
+	/*$medico=$row['NombreMedico'];
 	$idmedico=$row['IdMedico'];
 	$paciente=$row['NombrePaciente'];
 	$edad=$row['Edad'];
@@ -54,7 +56,20 @@ $nivel=$_SESSION['NIVEL'];
 	$DatosClinicos=$row['DatosClinicos'];
 	$Estado=$row['Estado'];
 	$fechasolicitud=$row['FechaSolicitud'];
-	$FechaNac=$row['FechaNacimiento'];
+	$FechaNac=$row['FechaNacimiento'];*/
+        
+                $idsolicitudPadre=$row[0];
+		$medico=$row['medico'];
+		$idempleadop=$row['idempleado'];
+		$paciente=$row['paciente'];
+		$edad=$row['edad'];
+		$sexo=$row['sexo'];
+		$precedencia=$row['nombreservicio'];
+		$origen=$row['nombresubservicio'];
+		$DatosClinicos=$row['DatosClinicos'];
+		$Estado=$row['estado'];
+		$fechasolicitud=$row['FechaSolicitud'];
+                $FechaNac=$row['FechaNacimiento'];
 	//recuperando los valores del detalle de la solicitud
 	$consultadetalle=$obj->DatosDetalleSolicitud($idexpediente,$idsolicitud,$lugar);
 ?>
@@ -66,13 +81,14 @@ $nivel=$_SESSION['NIVEL'];
 			<tr>
 				  <td width="6%" class="StormyWeatherFieldCaptionTD">Establecimiento Solicitante</td>
 				  <td width="12%" class="StormyWeatherDataTD"><?php echo $nombrEstab;?></td> 
-				  <input type="hidden" name="txtidsolicitud" id="txtidsolicitud" value="<?php echo $idsolicitud ?>"/>
-				  <input type="hidden" name="txtempleado" id="txtempleado" value="<?php echo $CodEmpleado ?>"/>
+                                  <input type="hidden" name="txtidsolicitud" id="txtidsolicitud" value="<?php echo $idsolicitud ?>"/>
+                                  <input type="hidden" name="txtidsoli" id="txtidsoli" value="<?php echo $idsolicitudPadre ?>"/>
+                                  <input type="hidden" name="txtempleado" id="txtempleado" value="<?php echo $idempleadop ?>"/>
                                   <input type="hidden" name="txtIdEstablecimiento" id="txtIdEstablecimiento" value="<?php echo $idestablecimiento ?>"/>
 			</tr>	    
 		 	<tr>
 				  <td width="6%" class="StormyWeatherFieldCaptionTD">Procedencia</td>
-				  <td width="12%" class="StormyWeatherDataTD"><?php echo $procedencia;?></td>
+				  <td width="12%" class="StormyWeatherDataTD"><?php echo $precedencia;?></td>
 				  </tr>
 				   <tr>
 				  <td width="6%" class="StormyWeatherFieldCaptionTD">Servicio</td>
@@ -86,21 +102,24 @@ $nivel=$_SESSION['NIVEL'];
 		        <td width="6%" class="StormyWeatherFieldCaptionTD">Área</td>
 		        <td width="12%" class="StormyWeatherDataTD">
                             <select id="cmbArea" name="cmbArea" size="1"  onChange="LlenarComboExamen(this.value)">
-                                <option value="0" >--Seleccione Área--</option>
+                               <!-- <option value="0" >--Seleccione Área--</option> -->
                                     <?php
-                                        $conArea= $obj->ConsultarAreas();
-                                        while($row = mysql_fetch_array($conArea)){
-                                            echo "<option value='" . $row[0]. "'>" . $row[1] . "</option>";
-					}
-					mysql_free_result($consulta_bac);
-				    ?>	
+				include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
+				$objeareas=new clsLab_Areas;
+				$consulta= $objeareas->consultaractivas($lugar);
+				while($row = pg_fetch_array($consulta)){
+			        echo "<option value='" . $row['idarea']. "'>" . htmlentities($row['nombrearea']) . "</option>";
+				}
+				echo '<option value="'.$area1.'" selected="selected">'.htmlentities("--Seleccione Área--").'</option>';
+				?>
                             </select></td>
 			</tr>
+                        
 			<tr>
                             <td width="6%" class="StormyWeatherFieldCaptionTD">Examen</td>
                             <td width="12%" class="StormyWeatherDataTD">
                                 <div id="divExamen">
-                                    <select id="cmbExamen" name="cmbExamen" size="1" onchange="LlenarComboMuestra(this.value)">
+                                    <select id="cmbExamen" name="cmbExamen" size="1" onchange="LlenarComboMuestra1(this.value)">
 					<option value="0" >--Seleccione Examen--</option>
                                     </select>
 				</div>	
@@ -110,7 +129,7 @@ $nivel=$_SESSION['NIVEL'];
 				<td width="6%" class="StormyWeatherFieldCaptionTD">Tipo Muestra</td>
 		        <td width="12%" class="StormyWeatherDataTD">
 					<div id="divMuestra">
-						<select id="cmbMuestra" name="cmbMuestra" size="1" onchange="LlenarComboOrigen(this.value)">
+						<select id="cmbMuestra" name="cmbMuestra" size="1" onchange="LlenarComboOrigen1(this.value)">
 							<option value="0" >--Seleccione Tipo de Muestra--</option>
 						</select>
 					</div>	

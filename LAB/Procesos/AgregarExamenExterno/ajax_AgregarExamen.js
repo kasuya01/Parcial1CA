@@ -276,6 +276,7 @@ function LlenarComboExamen(idarea)
 
 function LlenarComboMuestra(IdExamen)
 {
+    //alert(IdExamen);
 	ajax=objetoAjax();
 	opcion=8;
 	ajax.open("POST", "ctrAgregarExamen.php",true);
