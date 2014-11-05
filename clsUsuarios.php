@@ -14,7 +14,7 @@ class clsUsuarios {
     function validarexistencia($login, $password) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "SELECT count(*)
+             $query = "SELECT count(*)
               FROM fos_user_user t01 
               WHERE t01.username ='$login' AND t01.password = md5('$password') AND t01.modulo = 'LAB'";
 

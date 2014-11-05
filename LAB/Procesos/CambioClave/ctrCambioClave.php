@@ -30,7 +30,7 @@ switch ($opcion)
 			if($objdatos->VerificarClave($cActual,$Id,$lugar)==true){
 			
 				if ($objdatos->ActualizarClave($nClave,$lugar,$Id)==true){
-					echo "La Clave fue Cambiada con Exitoooo";
+					echo "La Clave Fue Cambiada Con Exito";
 				}
 				else
 	                echo "La clave no se pudo cambiar consulte con el administrador";

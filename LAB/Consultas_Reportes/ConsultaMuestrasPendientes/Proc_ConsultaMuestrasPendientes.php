@@ -4,6 +4,8 @@ $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 $nivel=$_SESSION['NIVEL'];
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
  include_once("clsConsultaMuestrasPendientes.php"); 
 //consulta los datos por su id
 $obj = new clsConsultaMuestrasPendientes;
@@ -32,6 +34,8 @@ else{
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 <title>Recepcion de Muestras Pendientes de Procesar &Aacute;rea de Laboratorio</title>
+<?php include_once $ROOT_PATH."/public/js.php";?>
+
 <script language="JavaScript" type="text/javascript" src="ajax_ConsultaMuestrasPendientes.js"></script>
 <!--referencias del estilo del calendario-->
 <link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
@@ -49,9 +53,19 @@ function MostrarSolicitudesPendientes()
                 && (document.getElementById('txtfecharecep').value == "")
                 && (document.getElementById('CmbServicio').value == 0))
 			alert("Ingrese al menos un parámetro de búsqueda");
-	else  
+	/*else  
 		MuestrasPendientes();
-               // alert("llega");
+               // alert("llega");*/
+                    
+                     else {
+                        jQuery('#divBusqueda').empty();
+                        jQuery('#divBusqueda').append('<center><img id="wait" src="<?php echo $base_url; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" style="color:#888888;font-weight: bold;">Buscando...</div></center>');
+                        
+                        setTimeout(function() {
+                            jQuery('#divBusqueda').empty();
+                            MuestrasPendientes();
+                        }, 500);
+                    }
 }
 
 function BuscarEstablecimiento(idtipoesta){
