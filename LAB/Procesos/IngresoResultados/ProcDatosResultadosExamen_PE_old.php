@@ -52,99 +52,102 @@ function VerResultados()
    {    alert("Complete la Informacion Requerida");   }
 }
 
- function RecogeValor() {
-            var vtmp=location.search;
-            var vtmp2 = vtmp.substring(1,vtmp.length);
-            //alert(vtmp2);
-            var query = unescape(top.location.search.substring(1));
-            var getVars = query.split(/&/);
-            
-            for ( i = 0; i < getVars.length; i++) {
-                if ( getVars[i].substr(0,5) == 'var1=' )//loops through this array and extract each name and value
-                    nec = getVars[i].substr(5);
-                if ( getVars[i].substr(0,5) == 'var2=' )
-                   examen = getVars[i].substr(5);
-                if ( getVars[i].substr(0,5) == 'var3=' )
-                   codigoex = getVars[i].substr(5);
-                if ( getVars[i].substr(0,5) == 'var4=' )
-                   area = getVars[i].substr(5);
-                if ( getVars[i].substr(0,5) == 'var5=' )
-                   iddetallesol = getVars[i].substr(5);
-                if ( getVars[i].substr(0,5) == 'var6=' )
-                  idsolicitudsol= getVars[i].substr(5);	
-                if ( getVars[i].substr(0,5) == 'var7=' )
-                  paciente= getVars[i].substr(5);
-                if ( getVars[i].substr(0,5) == 'var8=' )
-                  idrecepcionsol = getVars[i].substr(5);
-                if ( getVars[i].substr(0,5) == 'var9=' )
-                  nombrearea= getVars[i].substr(5);
-                if ( getVars[i].substr(0,5) == 'var10=' )
-                  procedencia=escape(getVars[i].substr(5));
-                if ( getVars[i].substr(0,5) == 'var11=' )
-                  origen=escape(getVars[i].substr(5));
-                if ( getVars[i].substr(0,5) == 'var12=' )
-                  impresion=escape(getVars[i].substr(5));
-                if ( getVars[i].substr(0,5) == 'var13=' )
-                  establecimiento=escape(getVars[i].substr(5));
-                if ( getVars[i].substr(0,5) == 'var14=' )
-                  FechaNac=escape(getVars[i].substr(5)); 
-                if ( getVars[i].substr(0,5) == 'var15=' )
-                  Sexo=escape(getVars[i].substr(5)); 
-                if ( getVars[i].substr(0,5) == 'var16=' )
-                    IdEstandar=escape(getVars[i].substr(5));
-                if ( getVars[i].substr(0,5) == 'var17=' )
-                    IdHistorial=escape(getVars[i].substr(5));
-            }
-            
-            document.frmnuevo.txtnec.value=nec;
-            document.frmnuevo.txtarea.value=area;
-            document.frmnuevo.txtpaciente.value=paciente;
-            document.frmnuevo.txtexamen.value=examen;
-            document.frmnuevo.txtidsolicitud.value=idsolicitudsol;
-            document.frmnuevo.txtiddetalle.value=iddetallesol;
-            document.frmnuevo.txtidexamen.value=codigoex;
-            document.frmnuevo.txtidrecepcion.value=idrecepcionsol;
-            document.frmnuevo.txtnombrearea.value=nombrearea;
+function RecogeValor()
+{
+var vtmp=location.search;
+var vtmp2 = vtmp.substring(1,vtmp.length);
+//alert(vtmp2);
+var query = unescape(top.location.search.substring(1));
+var getVars = query.split(/&/);
+for ( i = 0; i < getVars.length; i++)
+{                 if ( getVars[i].substr(0,5) == 'var1=' )//loops through this array and extract each name and value
+                         nec = getVars[i].substr(5);
+		  if ( getVars[i].substr(0,5) == 'var2=' )
+			 examen = getVars[i].substr(5);
+		  if ( getVars[i].substr(0,5) == 'var3=' )
+			 codigoex = getVars[i].substr(5);
+		   if ( getVars[i].substr(0,5) == 'var4=' )
+                        idarea = getVars[i].substr(5);
+                     //alert(area);
+		  if ( getVars[i].substr(0,5) == 'var5=' )
+			 iddetallesol = getVars[i].substr(5);
+		  if ( getVars[i].substr(0,5) == 'var6=' )
+			 idsolicitudsol= getVars[i].substr(5);	
+		  if ( getVars[i].substr(0,5) == 'var7=' )
+			 paciente= getVars[i].substr(5);
+		  if ( getVars[i].substr(0,5) == 'var8=' )
+			 idrecepcionsol = getVars[i].substr(5);
+		  if ( getVars[i].substr(0,5) == 'var9=' )
+			 nombrearea= getVars[i].substr(5);
+		  if ( getVars[i].substr(0,5) == 'var10=' )
+			 procedencia=escape(getVars[i].substr(5));
+		  if ( getVars[i].substr(0,5) == 'var11=' )
+			 origen=escape(getVars[i].substr(5));
+		  if ( getVars[i].substr(0,5) == 'var12=' )
+			 impresion=escape(getVars[i].substr(5));
+		  if ( getVars[i].substr(0,5) == 'var13=' )
+			 establecimiento=escape(getVars[i].substr(5));
+                  if ( getVars[i].substr(0,5) == 'var14=' )
+		         FechaNac=escape(getVars[i].substr(5)); 
+                  if ( getVars[i].substr(0,5) == 'var15=' )
+		         Sexo=escape(getVars[i].substr(5));
+                  if ( getVars[i].substr(0,5) == 'var16=' )
+                        IdEstandar=escape(getVars[i].substr(5));   
+                  if ( getVars[i].substr(0,5) == 'var17=' )
+                        IdHistorial=escape(getVars[i].substr(5));   
+						
+	}
+document.frmnuevo.txtnec.value=nec;
+document.frmnuevo.txtarea.value=idarea;
+document.frmnuevo.txtpaciente.value=paciente;
+document.frmnuevo.txtexamen.value=examen;
+document.frmnuevo.txtidsolicitud.value=idsolicitudsol;
+document.frmnuevo.txtiddetalle.value=iddetallesol;
+document.frmnuevo.txtidexamen.value=codigoex;
+document.frmnuevo.txtidrecepcion.value=idrecepcionsol;
+document.frmnuevo.txtnombrearea.value=nombrearea;
+//alert(area);
 
-            LlenarComboResponsable(area);
+codarea=document.getElementById('txtidarea').value;
+alert (codarea);
+//LlenarComboResponsable(codarea);
+//CargarElementosExamen(codigoex);
 
-        }
+}
 
 //FUNCION PARA VERIFICAR DATOS REQUERIDOS EN RESULTADOS
-
-</script>
 <?php   
-        
+ 
 	$bandera=$_GET['var12'];
         $IdEstandar=$_GET['var16'];
         $IdHistorial=$_GET['var17'];
-        $codarea=$_GET['var4'];
-        
-        if($db->conectar()==true){
-         
-                 $condatos = "SELECT sec_examenfisico.peso, sec_examenfisico.talla, diagnostico,conocido_por
-                              FROM sec_historial_clinico
-                              INNER JOIN mnt_expediente ON sec_historial_clinico.id_numero_expediente = mnt_expediente.id
-                              INNER JOIN mnt_paciente ON mnt_expediente.id_paciente = mnt_paciente.id
-                              LEFT  JOIN sec_diagnosticospaciente ON sec_historial_clinico.id = sec_diagnosticospaciente.idhistorialclinico
-                              LEFT JOIN mnt_cie10 ON sec_diagnosticospaciente.iddiagnostico1 = mnt_cie10.id
-                              LEFT JOIN sec_examenfisico ON sec_historial_clinico.id = sec_examenfisico.idhistorialclinico
-                              WHERE sec_historial_clinico.id=$IdHistorial
-                              AND sec_historial_clinico.idestablecimiento =$lugar";
+        $idarea=$_GET['var4'];
+        echo $_GET['var4'];
+            if($db->conectar()==true){
+              $condatos = "SELECT sec_examenfisico.Peso, sec_examenfisico.Talla, Diagnostico, ConocidoPor
+                         FROM sec_historial_clinico
+                         INNER JOIN mnt_expediente ON sec_historial_clinico.IdNumeroExp = mnt_expediente.IdNumeroExp
+                         INNER JOIN mnt_datospaciente ON mnt_expediente.IdPaciente = mnt_datospaciente.IdPaciente
+                         LEFT JOIN sec_diagnosticospaciente ON sec_historial_clinico.IdHistorialClinico = sec_diagnosticospaciente.IdHistorialClinico
+                         LEFT JOIN mnt_cie10 ON sec_diagnosticospaciente.IdDiagnostico1 = mnt_cie10.IdCie10
+                         LEFT JOIN sec_examenfisico ON sec_historial_clinico.IdHistorialClinico = sec_examenfisico.IdHistorialClinico
+                         WHERE sec_historial_clinico.IdHistorialClinico=$IdHistorial
+                         AND sec_historial_clinico.IdEstablecimiento =$lugar";
 
               $resultado = pg_query($condatos);
               $rows = pg_fetch_array($resultado);
 
-              $Peso=$rows['peso'];
-              $Talla=$rows['talla'];
-              $Diagnostico=$rows['diagnostico'];
-              $ConocidoPor=$rows['conocido_por'];
+              $Peso=$rows['Peso'];
+              $Talla=$rows['Talla'];
+              $Diagnostico=$rows['Diagnostico'];
+              $ConocidoPor=$rows['ConocidoPor'];
               //echo $Peso." * ".$Talla." * ".$Diagnostico." * ".$ConocidoPor;
           }
 ?>
+</script>
 </head>
 
-<body onLoad="RecogeValor();">
+<body onLoad="RecogeValor();LlenarComboResponsable(<?php echo $_GET['var4'];?>);">
 <table align="center" width="100%">
 <tr>
 
@@ -159,7 +162,7 @@ function VerResultados()
 	</tr>
 	<tr>
 		<td class="StormyWeatherFieldCaptionTD">Establecimiento Solicitante</td>
-		<td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var18'];?></td>
+		<td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var13'];?></td>
 	</tr>
 	<tr>
 		<td class="StormyWeatherFieldCaptionTD">Procedencia</td>
@@ -169,7 +172,7 @@ function VerResultados()
 	</tr>
 	<tr>
             <td class="StormyWeatherFieldCaptionTD">NEC</td>
-            <td class="StormyWeatherDataTD"><?php echo $_GET['var1'] ?></td>
+            <td class="StormyWeatherDataTD"><?php echo $_GET['var1']; ?></td>
             <td class="StormyWeatherFieldCaptionTD">No. Order</td>
             <td class="StormyWeatherDataTD"><?php echo $_GET['var6'];?>
                     <input type="hidden" name="txtnec" id="txtnec" disabled="disabled" />
@@ -177,12 +180,13 @@ function VerResultados()
 		    <input type="hidden" name="txtiddetalle" id="txtiddetalle" />
 		    <input type="hidden" name="txtidexamen" id="txtidexamen" />
 		    <input type="hidden" name="txtidrecepcion" id="txtidrecepcion" />
-		    <input type="hidden" name="txtarea" id="txtarea" />
+		    <input type="text" name="txtidarea" id="txtidarea" value="<?php echo $_GET['var4']; ?>"/>
 		    <input type="hidden" name="txtprocedencia" id="txtprocedencia" />
 		    <input type="hidden" name="txtorigen" id="txtorigen" />
 		    <input type="hidden" name="txtestablecimiento" id="txtestablecimiento" value="<?php echo $_GET['var13']?>"/>
                     <input type="hidden" name="txtFechaNac" id="txtFechaNac" value="<?php echo $_GET['var14']?>" />
                     <input type="hidden" name="txtSexo" id="txtSexo" value="<?php echo $_GET['var15']?>" />
+              
             </td>
         </tr>
 	<tr>
@@ -211,9 +215,12 @@ function VerResultados()
                          
                    ?></td>
                <td class="StormyWeatherFieldCaptionTD" width="25%">Talla</td>
-               <td class="StormyWeatherDataTD"><?php 
+               <td class="StormyWeatherDataTD">
+                   <?php 
                     if(!empty($Talla))
-                        echo htmlentities($Talla)." cm";?></td>
+                        echo htmlentities($Talla)." cm";
+                    ?>
+               </td>
         </tr>
 	
 	<tr>

@@ -76,6 +76,10 @@ function CargarDatos()
 		  if ( getVars[i].substr(0,5) == 'var13=' )
 		       establecimiento=escape(getVars[i].substr(5));
                   if ( getVars[i].substr(0,5) == 'var14=' )
+		       fechanac=escape(getVars[i].substr(5));
+                   if ( getVars[i].substr(0,5) == 'var14=' )
+		       sexo=escape(getVars[i].substr(5)); 
+                  if ( getVars[i].substr(0,5) == 'var16=' )
                        IdEstandar=escape(getVars[i].substr(5)); 
                   if ( getVars[i].substr(0,5) == 'var18=' )
                        estabext=escape(getVars[i].substr(5));              
@@ -97,7 +101,8 @@ function CargarDatos()
 <?php   
  
 	$bandera=$_GET['var12'];
-        $IdEstandar=$_GET['var14'];
+        $IdEstandar=$_GET['var16'];
+        //echo $IdEstandar;
        
 ?>
 </script>
@@ -112,76 +117,76 @@ function CargarDatos()
 <table width="70%" border="0" align="center" class="StormyWeatherFormTABLE">
     	<tr class="CobaltButton" ><td colspan="4" align="center"> <h3>DATOS GENERALES</h3></td></tr>
 	<tr>
-		  <td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
-		  <td class="StormyWeatherDataTD"><?php echo $_GET['var18']." ESTANDAR". $_GET['var14'];?></td>
+		<td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
+		<td class="StormyWeatherDataTD"><?php echo $_GET['var18'];?></td>
 	</tr>	    
  	<tr>
-		  <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
-		  <td class="StormyWeatherDataTD"><?php echo $_GET['var10'];?></td>
-		  </tr>
-		   <tr>
-		  <td class="StormyWeatherFieldCaptionTD">Origen</td>
-		  <td class="StormyWeatherDataTD"><?php echo $_GET['var11'];?></td>
-		  </tr>
+		<td class="StormyWeatherFieldCaptionTD">Procedencia</td>
+		<td class="StormyWeatherDataTD"><?php echo $_GET['var10'];?></td>
+	</tr>
 	<tr>
-        <td width="30%" class="StormyWeatherFieldCaptionTD">NEC</td>
-	    <td width="70%" class="StormyWeatherDataTD"><?php echo $_GET['var1'] ?>
-		    <input type="hidden" name="txtnec" id="txtnec" disabled="disabled" />
-		    <input type="hidden" name="txtidsolicitud" id="txtidsolicitud" />
-			<input type="hidden" name="txtiddetalle" id="txtiddetalle" />
-			<input type="hidden" name="txtidexamen" id="txtidexamen" />
-			<input type="hidden" name="txtidrecepcion" id="txtidrecepcion" />
-			<input type="hidden" name="txtarea" id="txtarea" >
-			<input type="hidden" name="txtprocedencia" id="txtprocedencia" />
-			<input type="hidden" name="txtorigen" id="txtorigen" />
-			<input type="hidden" name="txtestablecimiento" id="txtestablecimiento" value="<?php echo $_GET['var13'];?>" />	
-                        <input type="hidden" name="txtIdEstandar" id="txtIdEstandar" value="<?php echo $_GET['var14']?>" />
-	    </td>
+		<td class="StormyWeatherFieldCaptionTD">Origen</td>
+		<td class="StormyWeatherDataTD"><?php echo $_GET['var11'];?></td>
+	</tr>
+	<tr>
+                <td width="30%" class="StormyWeatherFieldCaptionTD">NEC</td>
+                <td width="70%" class="StormyWeatherDataTD"><?php echo $_GET['var1'] ?>
+                            <input type="hidden" name="txtnec" id="txtnec" disabled="disabled" />
+                            <input type="hidden" name="txtidsolicitud" id="txtidsolicitud" />
+                            <input type="hidden" name="txtiddetalle" id="txtiddetalle" />
+                            <input type="hidden" name="txtidexamen" id="txtidexamen" />
+                            <input type="hidden" name="txtidrecepcion" id="txtidrecepcion" />
+                            <input type="hidden" name="txtarea" id="txtarea" >
+                            <input type="hidden" name="txtprocedencia" id="txtprocedencia" />
+                            <input type="hidden" name="txtorigen" id="txtorigen" />
+                            <input type="hidden" name="txtestablecimiento" id="txtestablecimiento" value="<?php echo $_GET['var13'];?>" />	
+                            <input type="hidden" name="txtIdEstandar" id="txtIdEstandar" value="<?php echo $_GET['var16']?>" />
+                </td>
 	</tr>
 	<tr>
 		<td width="30%" class="StormyWeatherFieldCaptionTD">Paciente</td>
 		<td width="70%" class="StormyWeatherDataTD"> <?php echo $_GET['var7'] ?>
-		<input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" /></td>
+                    <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" /></td>
 	</tr>
 	<tr>
-        <td width="30%" class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
-        <td width="70%" class="StormyWeatherDataTD"><?php echo $_GET['var9'] ?>
-		   <input type="hidden" name="txtnombrearea" id="txtnombrearea" disabled="disabled" size="60" />  </td>
-    </tr>
-    <tr>
-        <td width="30%" class="StormyWeatherFieldCaptionTD">Examen </td>
-        <td width="70%" class="StormyWeatherDataTD"><?php echo $_GET['var2'] ?>
-            <input type="hidden" name="txtexamen" id="txtexamen" disabled="disabled" size="60" />
-            
-        </td>
-    </tr>
-    <tr>
-        <td width="30%" class="StormyWeatherFieldCaptionTD">*Validado Por</td>
-        <td width="70%" class="StormyWeatherDataTD">
-            <div id="divEncargado">
-                <select id="cmbEmpleados" name="cmbEmpleados" size="1" >
-                    <option value="0" >--Seleccione Empleado--</option>
-		</select>
-            </div>
-	</td>
-    </tr>
-    <tr>
-        <td width="30%" class="StormyWeatherFieldCaptionTD">Elemento Encontrado </td>
-        <td width="70%" class="StormyWeatherDataTD">
-            <select id="cmbElemento" name="cmbElemento" size="1" >
-                <option value="0" >--Seleccione Elemento--</option>
-                    <?php
-                        include('clsPlantillaD.php');
-                        $obj=new clsPlantillaD;
-			$consulta_bac= $obj->LeerElementosTincion();
-			while($row = pg_fetch_array($consulta_bac)){
-                            echo "<option value='" . $row['id']. "'>" . $row['elementotincion'] . "</option>";
-			}
-			pg_free_result($consulta_bac);
-			?>	
-			</select>	
-		</td>
-    </tr>		  
+                <td width="30%" class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
+                <td width="70%" class="StormyWeatherDataTD"><?php echo $_GET['var9'] ?>
+		    <input type="hidden" name="txtnombrearea" id="txtnombrearea" disabled="disabled" size="60" />  </td>
+        </tr>
+        <tr>
+            <td width="30%" class="StormyWeatherFieldCaptionTD">Examen </td>
+            <td width="70%" class="StormyWeatherDataTD"><?php echo $_GET['var2'] ?>
+                <input type="hidden" name="txtexamen" id="txtexamen" disabled="disabled" size="60" />
+
+            </td>
+        </tr>
+        <tr>
+            <td width="30%" class="StormyWeatherFieldCaptionTD">*Validado Por</td>
+            <td width="70%" class="StormyWeatherDataTD">
+                <div id="divEncargado">
+                    <select id="cmbEmpleados" name="cmbEmpleados" size="1" >
+                        <option value="0" >--Seleccione Empleado--</option>
+                    </select>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td width="30%" class="StormyWeatherFieldCaptionTD">Elemento Encontrado </td>
+            <td width="70%" class="StormyWeatherDataTD">
+                <select id="cmbElemento" name="cmbElemento" size="1" >
+                    <option value="0" >--Seleccione Elemento--</option>
+                        <?php
+                            include('clsPlantillaD.php');
+                            $obj=new clsPlantillaD;
+                            $consulta_bac= $obj->LeerElementosTincion();
+                            while($row = pg_fetch_array($consulta_bac)){
+                                echo "<option value='" . $row['id']. "'>" . $row['elementotincion'] . "</option>";
+                            }
+                            pg_free_result($consulta_bac);
+                            ?>	
+                            </select>	
+                    </td>
+        </tr>		  
 	<tr>
 		<td width="20%" class="StormyWeatherFieldCaptionTD">Cantidad</td>
 		<td width="80%" class="StormyWeatherDataTD">
@@ -206,7 +211,7 @@ function CargarDatos()
 				<?php 
                                 $db = new ConexionBD;
                                 if($db->conectar()==true){
-					$consulta = "SELECT idresultado,resultado 
+					echo $consulta = "SELECT idresultado,resultado 
                                                      FROM lab_codigosxexamen
                                                      INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id = lab_codigosxexamen.idestandar 
                                                      INNER JOIN lab_codigosresultados ON lab_codigosresultados.id = lab_codigosxexamen.idresultado

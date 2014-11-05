@@ -46,27 +46,27 @@ function CargarDatos()
 	{         if ( getVars[i].substr(0,5) == 'var1=' )//loops through this array and extract each name and value
 	                        nec = getVars[i].substr(5);
 			  if ( getVars[i].substr(0,5) == 'var2=' )
-							examen = getVars[i].substr(5);
+				examen = getVars[i].substr(5);
 			  if ( getVars[i].substr(0,5) == 'var3=' )
-							codigoex = getVars[i].substr(5);
+				codigoex = getVars[i].substr(5);
 			  if ( getVars[i].substr(0,5) == 'var4=' )
-							area = getVars[i].substr(5);
+				area = getVars[i].substr(5);
 			  if ( getVars[i].substr(0,5) == 'var5=' )
-							iddetallesol = getVars[i].substr(5);
+				iddetallesol = getVars[i].substr(5);
 			  if ( getVars[i].substr(0,5) == 'var6=' )
-						    idsolicitudsol= getVars[i].substr(5);	
+				idsolicitudsol= getVars[i].substr(5);	
 			  if ( getVars[i].substr(0,5) == 'var7=' )
-						    paciente= getVars[i].substr(5);
+				paciente= getVars[i].substr(5);
 			  if ( getVars[i].substr(0,5) == 'var8=' )
-						    idrecepcionsol = getVars[i].substr(5);
+				idrecepcionsol = getVars[i].substr(5);
 			  if ( getVars[i].substr(0,5) == 'var9=' )
-					    nombrearea= getVars[i].substr(5);
+				nombrearea= getVars[i].substr(5);
 			  if ( getVars[i].substr(0,5) == 'var10=' )
-					    procedencia=escape(getVars[i].substr(5));
-		     if ( getVars[i].substr(0,5) == 'var11=' )
-					    origen=escape(getVars[i].substr(5));	
-			 if ( getVars[i].substr(0,5) == 'var12=' )
-					    impresion=escape(getVars[i].substr(5));
+				procedencia=escape(getVars[i].substr(5));
+                          if ( getVars[i].substr(0,5) == 'var11=' )
+                                origen=escape(getVars[i].substr(5));	
+			  if ( getVars[i].substr(0,5) == 'var12=' )
+                                impresion=escape(getVars[i].substr(5));
 			  if ( getVars[i].substr(0,5) == 'var13=' )
 					    establecimiento=escape(getVars[i].substr(5));
                             if ( getVars[i].substr(0,5) == 'var18=' )

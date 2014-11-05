@@ -61,20 +61,20 @@ switch ($opcion) {
 
         //muestra los datos consultados en la tabla
         echo "<table border = 1 align='center' width='60%' class='StormyWeatherFormTABLE'>
-					   <tr>
-						<td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-						<!-- <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
-						<td class='CobaltFieldCaptionTD'> Area </td>
-						<td class='CobaltFieldCaptionTD'> Examen </td> 
-						<td class='CobaltFieldCaptionTD'> Indicaci&oacute;n </td>	   
-					   </tr>";
+                <tr>
+                    <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
+                    <!-- <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
+                    <td class='CobaltFieldCaptionTD'> Area </td>
+                    <td class='CobaltFieldCaptionTD'> Examen </td> 
+                    <td class='CobaltFieldCaptionTD'> Indicaci&oacute;n </td>	   
+		</tr>";
 
         while ($row = pg_fetch_array($consulta)) {
-            echo "<tr>
-						<td aling='center'> 
-                                        		<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-							onclick=\"pedirDatos('" . $row[0] . "')\"> </td>
-						<!-- <td aling ='center'> 
+          echo "<tr>
+                    <td aling='center'> 
+                	<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+			onclick=\"pedirDatos('" . $row[0] . "')\"> </td>
+			<!-- <td aling ='center'> 
 							<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 							onclick=\"eliminarDato('" . $row[0] . "')\"> </td> -->
 						<!-- area --> <td> $row[2] </td> 
@@ -181,11 +181,12 @@ switch ($opcion) {
 
         break;
     case 7: //BUSQUEDA
-        $query = "select mipe.id, casd.id,casd.nombrearea,lcee.id,lcee.nombre_examen,mipe.indicacion		
-                        from ctl_area_servicio_diagnostico casd
-			join mnt_area_examen_establecimiento mnt4 on   mnt4.id_area_servicio_diagnostico=casd.id
-			join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen) 
-			join mnt_indicacionesporexamen mipe on (mipe.id_conf_examen_estab=lcee.id) where";
+        $query = "SELECT mipe.id, casd.id,casd.nombrearea,lcee.id,lcee.nombre_examen,mipe.indicacion		
+                  FROM ctl_area_servicio_diagnostico casd
+		  JOIN mnt_area_examen_establecimiento mnt4 ON  mnt4.id_area_servicio_diagnostico=casd.id
+		  JOIN lab_conf_examen_estab lcee ON (mnt4.id=lcee.idexamen) 
+		  JOIN mnt_indicacionesporexamen mipe ON (mipe.id_conf_examen_estab=lcee.id) 
+                  WHERE lcee.condicion='H' AND";
         $ban = 0;
         //VERIFICANDO LOS POST ENVIADOS
         if (!empty($_POST['idarea'])) {
@@ -285,11 +286,12 @@ switch ($opcion) {
 			  </table>";
         break;
     case 8://PAGINACION DE BUSQUEDA
-        $query = "select mipe.id, casd.id,casd.nombrearea,lcee.id,lcee.nombre_examen,mipe.indicacion		
-                        from ctl_area_servicio_diagnostico casd
-			join mnt_area_examen_establecimiento mnt4 on   mnt4.id_area_servicio_diagnostico=casd.id
-			join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen) 
-			join mnt_indicacionesporexamen mipe on (mipe.id_conf_examen_estab=lcee.id) where";
+        $query = "SELECT mipe.id, casd.id,casd.nombrearea,lcee.id,lcee.nombre_examen,mipe.indicacion		
+                  FROM ctl_area_servicio_diagnostico casd
+		  JOIN mnt_area_examen_establecimiento mnt4 ON mnt4.id_area_servicio_diagnostico=casd.id
+		  JOIN lab_conf_examen_estab lcee ON (mnt4.id=lcee.idexamen) 
+		  JOIN mnt_indicacionesporexamen mipe ON (mipe.id_conf_examen_estab=lcee.id) 
+                  WHERE lcee.condicion='H' AND";
         $ban = 0;
 
         //VERIFICANDO LOS POST ENVIADOS

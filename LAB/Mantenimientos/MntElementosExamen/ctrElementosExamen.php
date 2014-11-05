@@ -347,28 +347,35 @@ switch ($opcion)
 		//$ban1=0;
 		$ban=0;
 
-		//VERIFICANDO LOS POST ENVIADOS
 		if (!empty($_POST['idarea']))
 		{ $query .= " mnt_area_examen_establecimiento.id_area_servicio_diagnostico=".$_POST['idarea']." AND"; }
 		
 		if (!empty($_POST['idexamen']))
-		{ $query .= " lab_conf_examen_estab.codigo_examen='".$_POST['idexamen']."' AND"; }
+		{ $query .= " lab_conf_examen_estab.id=".$_POST['idexamen']." AND"; }
 					
 		if (!empty($_POST['elemento']))
-		{ $query .= " elemento ilike'%".$_POST['elemento']."%' AND"; }
+		{ $query .= " TRANSLATE(elemento,'ÁÉÍÓÚáéíóú','AEIOUaeiou') ilike '%".$_POST['elemento']."%' AND"; }
 		
 		if (!empty($_POST['unidadele']))
-		{ $query .= " unidadelem ilike'%".$_POST['unidadele']."%' AND"; }
+		{ $query .= " unidadelem ilike '".$_POST['unidadele']."' AND"; }
 		
 		if (!empty($_POST['observacionele']))
-		{ $query .= " observelem ilike'%".$_POST['observacionele']."%' AND"; }
+		{ $query .= " observelem ilike '".$_POST['observacionele']."' AND"; }
 		
 		if (!empty($_POST['subelemento']))
-		{ $query .= " subelemento ilike'%".$_POST['subelemento']."%' AND"; }
+		{ $query .= " subelemento = '".$_POST['subelemento']."' AND"; }
 		
-	
-		
-     		if((empty($_POST['idarea'])) and (empty($_POST['idexamen'])) and (empty($_POST['elemento'])) and (empty($_POST['unidadele'])) and (empty($_POST['observacionele'])) and (empty($_POST['subelemento'])) and (empty($_POST['Fechaini'])) and (empty($_POST['Fechafin'])))
+		if (!empty($_POST['Fechaini']))
+		{ 	$FechaI=explode('/',$_POST['Fechaini']);
+			$Fechaini=$FechaI[2].'/'.$FechaI[1].'/'.$FechaI[0];
+			$query .= " fechaini='".$Fechaini."' AND"; }
+
+		if (!empty($_POST['Fechafin'])){
+			$FechaF=explode('/',$_POST['Fechafin']);
+	  		$Fechafin=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];
+			$query .= " fechafin=".$Fechafin." AND"; } 			
+     //  else{$ban=1;}
+		if((empty($_POST['idarea'])) and (empty($_POST['idexamen'])) and (empty($_POST['elemento'])) and (empty($_POST['unidadele'])) and (empty($_POST['observacionele'])) and (empty($_POST['subelemento'])) and (empty($_POST['Fechafin'])) and (empty($_POST['Fechaini'])))
 		{
 			$ban=1;
 		}

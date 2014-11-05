@@ -261,6 +261,8 @@ function show_event(Pag)
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	ajax.send("idarea="+idarea+"&opcion="+opcion+"&idexamen="+idexamen+"&idindicacion="+idindicacion+"&Pag="+Pag+"&indicacion="+escape(indicacion));
 }
+
+
 function show()
 {
 	show_event(1);

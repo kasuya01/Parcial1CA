@@ -118,7 +118,7 @@ switch ($opcion) {
           //  echo $query1;
             //$query_search = $query . " ORDER BY t03.fecharecepcion DESC";
         }     
-       // echo $cond2;
+        //echo $cond2;
         $query="WITH tbl_servicio AS (
                     SELECT t02.id,
                         CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
@@ -303,7 +303,7 @@ switch ($opcion) {
 
     case 2://LLENANDO COMBO DE EMPLEADOS
         $idarea = $_POST['idarea'];
-        //echo $idarea;
+       // echo $idarea;
         $resultado = "<select id='cmbEmpleados' name='cmbEmpleados' size='1'>
                         <option value='0' >Seleccione...</option>";
         require_once('clsSolicitudesProcesadas.php');
@@ -315,7 +315,8 @@ switch ($opcion) {
         pg_free_result($consulta);
         $resultado.= "</select>";
         echo $resultado;
-        break;
+    
+    break;
     case 3://GUARDANDO DATOS DE RESULTADOS Y MOSTANDO LISTA ACTUALIZADA PLANTILLA "A"
         //Guardando Resultados
         $idexamen = $_POST['idexamen'];

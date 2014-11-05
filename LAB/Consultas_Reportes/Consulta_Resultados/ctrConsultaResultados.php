@@ -108,7 +108,7 @@ switch ($opcion)
 				$query_search = $query."ORDER BY lrc.fecharecepcion DESC"; //" GROUP BY IdSolicitudEstudio ORDER BY lab_recepcionmuestra.FechaRecepcion DESC";
 			}
 		
-			//echo $query_search;
+			echo $query_search;
 			
 			$consulta=$objdatos->ListadoResultadosPorArea($query_search);     
 		// $consulta=$objdatos->ListadoResultadosPorArea($idarea,$idexpediente);

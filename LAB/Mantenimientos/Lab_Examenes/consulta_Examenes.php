@@ -5,7 +5,7 @@
     $area=$_SESSION['Idarea'];
     //consulta los datos por su id
     $idconf=$_POST['idexamen'];
-   echo $idconf;
+   //echo $idconf;
     $obj = new clsLab_Examenes;
     $consulta = $obj->consultarid($idconf,$lugar);
     $row = pg_fetch_array($consulta);

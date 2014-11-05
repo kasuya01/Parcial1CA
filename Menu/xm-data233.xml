@@ -28,9 +28,9 @@
 	   <item labelText="Imprimir Resultado" url="../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/>
       </menu>
       <sep/>
-		<menu labelText="REPORTES">
+            <menu labelText="REPORTES">
 			<item labelText="Imprimir Resultado" url="../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/>
-		</menu> <sep/>
+            </menu> <sep/>
         <menu labelText="CITAS">
 		<item labelText="Citas de Laboratorio" url="../LAB/Procesos/CitasServicio/busquedaexp.php"/>
 	</menu> <sep/>        
