@@ -5,6 +5,8 @@ if (isset($_SESSION['Correlativo'])) {
     $lugar = $_SESSION['Lugar'];
     $area = $_SESSION['Idarea'];
     $nivel = $_SESSION['NIVEL'];
+    $ROOT_PATH = $_SESSION['ROOT_PATH'];
+    $base_url  = $_SESSION['base_url'];
     include_once("clsRMAutomatizada.php");
     $obj = new clsRMAutomatizada;
     $consulta = $obj->DatosEstablecimiento($lugar);
@@ -33,6 +35,7 @@ if (isset($_SESSION['Correlativo'])) {
             <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
             <title>Muestras Automatizadas Rechazadas por &Aacute;rea</title>
             <script language="JavaScript" type="text/javascript" src="ajax_RMAutomatizada.js"></script>
+            <?php include_once $ROOT_PATH."/public/js.php";?>
             <!--referencias del estilo del calendario-->
             <link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
             <link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />
@@ -56,9 +59,22 @@ if (isset($_SESSION['Correlativo'])) {
                     else if (document.getElementById('cmbArea').value == 0) {
                         alert("Debe de ingresar un Área");
                     }
-                    else {
+                   /* else {
                         MuestrasRechazadas();
+                    }*/  
+                        else {
+                        jQuery('#divBusqueda').empty();
+                        jQuery('#divBusqueda').append('<center><img id="wait" src="<?php echo $base_url; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" style="color:#888888;font-weight: bold;">Buscando...</div></center>');
+                        
+                        setTimeout(function() {
+                            jQuery('#divBusqueda').empty();
+                            MuestrasRechazadas();
+                        }, 500);
                     }
+        
+        
+        
+        
                 }
 
                 function BuscarExamen(idarea) {

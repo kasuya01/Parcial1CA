@@ -4,6 +4,8 @@ $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 $nivel=$_SESSION['NIVEL'];
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
 include_once("clsAgregarExamen.php"); 
 //consulta los datos por su id
 $obj = new clsAgregarExamen;
@@ -18,6 +20,7 @@ $nomtipo=$row[2];
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">    
 <title>Solicitudes Por Paciente</title>
+<?php include_once $ROOT_PATH."/public/js.php";?>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <script language="JavaScript" type="text/javascript" src="ajax_AgregarExamen.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
@@ -45,9 +48,21 @@ function MostrarBusqueda()
 	   alert("Ingrese un parmetro de busqueda");
 	   document.getElementById('txtexpediente').focus();
 	   }
-    	 else{	 
+    	/* else{	 
+             
+             
 	     BuscarDatos(1);
-         }
+         }*/
+        
+        else {
+                        jQuery('#divBusqueda').empty();
+                        jQuery('#divBusqueda').append('<center><img id="wait" src="<?php echo $base_url; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" style="color:#888888;font-weight: bold;">Buscando...</div></center>');
+                        
+                        setTimeout(function() {
+                            jQuery('#divBusqueda').empty();
+                             BuscarDatos(1);
+                        }, 500);
+                    }
         
    //   alert  (document.getElementById('txtfecharecep').value ==0)
         

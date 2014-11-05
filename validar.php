@@ -79,7 +79,7 @@ $password = htmlentities($_POST['txtpassword']);
    }
    else
    {
-	//header("Location: ../Laboratorio/login.php");
+	header("Location: ../Laboratorio/login.php");
    }
 
 

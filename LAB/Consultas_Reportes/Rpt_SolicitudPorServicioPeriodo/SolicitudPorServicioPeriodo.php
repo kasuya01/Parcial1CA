@@ -4,6 +4,8 @@ $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 $nivel=$_SESSION['NIVEL'];
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
 include_once("clsSolicitudesPorServicioPeriodo.php"); 
 //consulta los datos por su id
 $obj = new clsSolicitudesPorServicioPeriodo;
@@ -18,6 +20,7 @@ $nomtipo=$row[2];
 <head>
 <title>Consulta Solicitudes Por Sub-Servicio</title>
 <!--<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1" />-->
+<?php include_once $ROOT_PATH."/public/js.php";?>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <script language="JavaScript" type="text/javascript" src="ajax_SolicitudPorServicioPeriodo.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
@@ -38,8 +41,19 @@ function MostrarBusqueda()
 	{
 		alert("¡Complete el rango de las fechas!");
 	}
-	else 
-		BuscarDatos(1);
+	/*else 
+		BuscarDatos(1);*/
+        
+        else {
+                        jQuery('#divBusqueda').empty();
+                        jQuery('#divBusqueda').append('<center><img id="wait" src="<?php echo $base_url; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" style="color:#888888;font-weight: bold;">Buscando...</div></center>');
+                        
+                        setTimeout(function() {
+                            jQuery('#divBusqueda').empty();
+                            BuscarDatos(1);
+                        }, 500);
+                    }
+        
 }
 
 function BuscarMedicos(idsubservicio){
