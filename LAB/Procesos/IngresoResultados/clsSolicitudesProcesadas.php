@@ -65,6 +65,7 @@ class clsSolicitudesProcesadas {
                     where cod_modulo='LAB'
                     and $dias BETWEEN edad_minima_dias AND edad_maxima_dias
                     AND id != 4";
+            //echo $query;
             $result = @pg_query($query);
             if (!$result)
                 return false;
@@ -141,7 +142,10 @@ class clsSolicitudesProcesadas {
                 and (current_date between fechaini and (case when fechafin is null then current_date else fechafin end))
                 and (ldf.idsexo is null or ldf.idsexo=$sexo)
                 and (idedad=4 or idedad=$idedad)
-                and id_metodologia=$idmetodologia";
+                and  (case $idmetodologia
+			when 0 then id_metodologia>0
+			else id_metodologia=$idmetodologia
+			end)";
            //   echo $query;
             $result = @pg_query($query);
             if (!$result)
@@ -218,7 +222,7 @@ class clsSolicitudesProcesadas {
     function BuscarEmpleadoValidador($responsable, $lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "select CONCAT_WS(' ',nombre,apellido) as empleado  
+            $query = "select nombreempleado as empleado  
                 from mnt_empleado
                  where id=$responsable
                  and id_establecimiento=$lugar;";
@@ -243,7 +247,6 @@ class clsSolicitudesProcesadas {
                 return $result;
         }
     }
-
     function ObtenerFechaResultado1($IdSolicitud, $IdExamen, $lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
@@ -411,13 +414,32 @@ where sse.id=$idsolicitud
 and sds.id_conf_examen_estab=$idexamen
 and sse.id_establecimiento=$lugar;";
             $result = @pg_query($query);
-             //  echo '<br\>'.$query.'<br\>';
+           //    echo '<br\>'.$query.'<br\>';
             if (!$result)
                 return false;
             else
                 return $result;
         }
     }
+    //Fn Pg
+    function MostrarDatoslabresultado($idexamen, $lugar, $idsolicitud, $iddetalle) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query="select *, idempleado as empleado from lab_resultados
+where idsolicitudestudio=$idsolicitud
+and iddetallesolicitud=$iddetalle
+and idestablecimiento=$lugar;";
+            $result = @pg_query($query);
+           // $filares = pg_fetch_array($result);
+              // echo '<br\>'.$filares['idempleado'].'<br\>';
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
+    
+    
     //Fn_pg
     //Funcion utilizado para obtener los datos de la persona
     //FUNCION PARA MOSTRAR LOS DATOS GENERALES DE LA SOLICITUD PROCESADA
@@ -448,6 +470,7 @@ select * from tbl_datos_paciente
 where numero='$nec' 
 and idestab=$id_establecimiento_externo
 and idhistoref=$idhistoref;";
+           // echo '<br>'.$query.'<br><br>';
             $result = @pg_query($query);
             if (!$result)
                 return false;
@@ -625,9 +648,9 @@ function CantMetodologia($idexamen) {
                         from lab_resultados
                         where  idsolicitudestudio=$idsolicitud
                         and iddetallesolicitud=$iddetalle";
-            // echo $query;
-            $result = pg_fetch_array(pg_query($query));
-            ;
+           
+            $result = pg_query($query);
+             
             if (!$result)
                 return false;
             else
@@ -662,13 +685,14 @@ function CantMetodologia($idexamen) {
   function InsertarResultadoPlantillaAM($hdnidexamen_, $hdnIdMetodologia_, $hdnResp_, $hdnFecProc_, $hdnFecResu_, $hdnResult_, $hdnObserva_, $hdnCodResult_, $idsolicitud, $usuario, $iddetalle, $idrecepcion, $lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $nextid="select nextval('lab_resultados_id_seq')"; 
+            $nextid="select nextval('lab_resultado_metodologia_id_seq')"; 
             $sql=  pg_query($nextid);
             $nextseq=  pg_fetch_array($sql);
             $idnext=$nextseq[0];
 
-            $query = "insert into lab_resultado_metodologia (id, id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, resultado, observacion, idusuarioreg, fechahorareg, fecha_realizacion, fecha resultado)
-values ($idnext,$hdnIdMetodologia_, $iddetalle, $hdnCodResult_, $hdnResult_,$hdnObserva_, $hdnResp_, current_date, $hdnFecProc_, $hdnFecResu_);";
+            $query = "insert into lab_resultado_metodologia (id, id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, resultado, observacion, idusuarioreg, fechahorareg, fecha_realizacion, fecha_resultado, id_empleado)
+values ($idnext,$hdnIdMetodologia_, $iddetalle, $hdnCodResult_, $hdnResult_,$hdnObserva_, $usuario, NOW(), $hdnFecProc_, $hdnFecResu_, $hdnResp_);";
+          //  echo $query;
        //     $query2 = "SELECT LAST_INSERT_ID();";
 
             $result = pg_query($query);
@@ -680,24 +704,25 @@ values ($idnext,$hdnIdMetodologia_, $iddetalle, $hdnCodResult_, $hdnResult_,$hdn
                 return $idnext;
         }
     }
-   }
+   
     //Fn Pg
     //Fn para ingresar en lab_resultado final
     
     //FUNCION PARA GUARDAR RESULTADOS
-    function InsertarResultadoPlantillaAF($hdnidexamen_, $hdnIdMetodologia_, $hdnResp_, $hdnFecProc_, $hdnFecResu_, $hdnResult_, $hdnObserva_, $hdnCodResult_, $idsolicitud, $usuario, $iddetalle, $idrecepcion, $lugar) {
+    function InsertarResultadoPlantillaAF($idsolicitud, $iddetalle,$idrecepcion, $v_resultfin, $v_lectura, $v_interpretacion, $v_obserrecep, $lugar, $usuario, $idexamen, $cmbEmpleadosfin, $d_resultfin) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $nextid="select nextval('lab_resultado_metodologia_id_seq')"; 
+            $nextid="select nextval('lab_resultados_id_seq')"; 
             $sql=  pg_query($nextid);
             $nextseq=  pg_fetch_array($sql);
             $idnext=$nextseq[0];
 
-            $query = "insert into lab_resultado_metodologia (id, id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, resultado, observacion, idusuarioreg, fechahorareg, fecha_realizacion, fecha resultado)
-values ($idnext,$hdnIdMetodologia_, $iddetalle, $hdnCodResult_, $hdnResult_,$hdnObserva_, $hdnResp_, current_date, $hdnFecProc_, $hdnFecResu_);";
+            $query = "insert into lab_resultados (id, idsolicitudestudio, iddetallesolicitud, idrecepcionmuestra, resultado, lectura, interpretacion, observacion, idestablecimiento, idusuarioreg, fechahorareg, idexamen, idempleado, fecha_resultado)  values ($idnext, $idsolicitud, $iddetalle, $idrecepcion, $v_resultfin, $v_lectura,$v_interpretacion, $v_obserrecep, $lugar, $usuario, NOW(), $idexamen, $cmbEmpleadosfin, $d_resultfin)";
+            
+         //   echo '<br/>'.$query;
        //     $query2 = "SELECT LAST_INSERT_ID();";
 
-            $result = pg_query($query);
+            $result = @pg_query($query);
          //   $result2 = pg_query($query2);
 
             if (!$result)
@@ -749,7 +774,6 @@ values ($idnext,$hdnIdMetodologia_, $iddetalle, $hdnCodResult_, $hdnResult_,$hdn
             }
         }
     }
-    p
 
     //FUNCION PARA CAMBIAR EL ESTADO DEL DETALLLE DE LA SOLICITUD
     function CambiarEstadoDetalle($iddetalle) {
@@ -769,11 +793,23 @@ values ($idnext,$hdnIdMetodologia_, $iddetalle, $hdnCodResult_, $hdnResult_,$hdn
     function CambiarEstadoSolicitud($idsolicitud) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "SELECT IdDetalleSolicitud,IdExamen FROM sec_detallesolicitudestudios WHERE IdSolicitudEstudio=$idsolicitud AND EstadoDetalle <>'RC' AND EstadoDetalle <>'RM' ";
+            $query = "select id, id_conf_examen_estab 
+                    from sec_detallesolicitudestudios
+                    where idsolicitudestudio=$idsolicitud
+                    and estadodetalle in (select id 
+                                            from ctl_estado_servicio_diagnostico 
+                                            where idestado not in ('RC', 'RM'));";
+       //    echo '<br>cantidad'.$query.'<br>';                            
             $detalle = pg_num_rows(pg_query($query));
-            if (empty($detalle)) {
-                $query = "UPDATE sec_solicitudestudios SET estado='C' WHERE IdSolicitudEstudio=$idsolicitud";
+          //  echo '<br>empty(detalle) '.$detalle.'<br>';
+            if ($detalle==0) {
+                $query = "UPDATE sec_solicitudestudios 
+                          SET estado=(select id 
+                                from ctl_estado_servicio_diagnostico 
+                                where idestado ='C') 
+                          WHERE id=$idsolicitud";
                 $result = @pg_query($query);
+             //   echo '<br>Actualizo porque entro: '.$query.'<br>';
                 return true;
             } else
                 return false;

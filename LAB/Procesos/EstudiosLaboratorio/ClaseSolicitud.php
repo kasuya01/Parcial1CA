@@ -989,7 +989,7 @@ class CrearHistorialClinico{
     function HistorialClinico($IdNumeroExp,$IdEstablecimiento,$IdSubServicio,$IdEmpleado,$FechaConsulta,$iduser,$ippc, $idexpediente, $lugar){
     //$ippc=$_SERVER["REMOTE_ADDR"];
         if ($IdEstablecimiento==$lugar){
-            $seq= "SELECT nextval('sec_historial_clinico_idhistorialclinico_seq');";
+            $seq= "SELECT nextval('sec_historial_clinico_id_seq');";
             $res=  pg_query($seq);
             $row=  pg_fetch_row($res);
             $idseq=$row[0];

@@ -65,9 +65,15 @@ function ValidarCampos()
 		 {
 			resp= false;		
 		 }
-         if (document.frmnuevo.cant_metodologia!="0"){
-             if (document.frmnuevo.cmbmetodologia==0){
+         if (document.frmnuevo.cant_metodologia.value!="0"){
+             if (document.frmnuevo.cmbmetodologia.value==0){
                         resp=false;
+             }
+         if (document.frmnuevo.fecha_reporte.value == ""){
+             resp=false
+             }
+         if (document.frmnuevo.fecha_realizacion.value == ""){
+                resp=false
              }
          }
          
@@ -263,6 +269,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Conocido Por</td>
                             <td colspan="3" class="StormyWeatherDataTD"><?php echo $ConocidoPor;?>
+                            <input type="hidden" id="conocido_por" name="conocido_por" value="<?php echo $ConocidoPor;?>">
                                
                             </td>
 			</tr>
@@ -322,13 +329,13 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                             </td>
                         </tr>
                          <tr>
-                            <td class="StormyWeatherFieldCaptionTD">Fecha Realización </td>
+                            <td class="StormyWeatherFieldCaptionTD">*Fecha Realización </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
                                 <input type="text" class="datepicker" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" />
                             </td>
-                             <td class="StormyWeatherFieldCaptionTD">Fecha Reporte </td>
+                             <td class="StormyWeatherFieldCaptionTD" width="196 px">*Fecha Reporte </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="datepicker" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />
+                                <input type="text" class="datepicker" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  /> 
                             </td>
                         </tr>
                         <tr>
@@ -468,10 +475,10 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
 
                          
                 <p><center><br />
+<!--                        <div id="responde2" style="display: block">-->
                                 <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="enviarDatosResult(1,0);" >Guardar</button>
-                                <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="cancelaResult();">Cancelar</button>
-                                <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="VerResultados();">Vista Previa</button>
-                                
+                                <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="Cerrar();">Cancelar</button>
+                  
                                 </center></p>
                         </div>
                             </center>
@@ -484,9 +491,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                          <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="ValidarResultado();" title="Validar y Finalizar">Validar</button>
 	<button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="enviarDatosResult(0,0);" title="Guardar sin validar">Guardar</button>
        
-	<a href='/url/analitica/analisis/consultar/buscar.php' style="cursor:pointer; text-decoration:none">
-            <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="enviarDatosResult(0,0);" title="Guardar sin validar">Ver Resultados</button>
-							<button type="button" align="center" class="fg-button ui-state-default ui-corner-all" title="Regresar a Inicio">Regresar</button></a>
+		<button type="button" align="center" class="fg-button ui-state-default ui-corner-all" title="Regresar a Inicio"  onclick="Cerrar();">Regresar</button>
 	
 	</center>  
                           </div>
@@ -508,6 +513,12 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
     <tr>
         <td>
             <div  id="divresultado" style="display:none"></div>
+        </td>
+    </tr>
+    </tr>
+    <tr>
+        <td>
+            <div  id="divresultado2" style="display:none"></div>
         </td>
     </tr>
    </table>

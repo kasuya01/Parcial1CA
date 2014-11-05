@@ -322,21 +322,21 @@ function GuardarResultadosPlantillaA()
         {
             if (ajax.status == 200)
             {  //mostrar los nuevos registros en esta capa
-                alert(ajax.responseText);
+                //alert(ajax.responseText);
                 document.getElementById('btnGuardar').style.visibility = 'hidden';
             }
         }
     }
 
 }
-
-function ImprimirPlantillaA(idsolicitud, idexamen, resultado, lectura, interpretacion, observacion, responsable, sexo, idedad) {
+//Fn Pg
+function ImprimirPlantillaA(idsolicitud, idexamen, resultado, f_resultado, lectura, interpretacion, observacion, responsable, sexo, idedad, txtnec, proce, origen, iddetalle) {
 
     ventana_secundaria = window.open("ImprimirPlantillaA.php?var1=" + idsolicitud +
             "&var2=" + idexamen + "&var3=" +
             "&var3=" + encodeURIComponent(resultado) + "&var4=" + escape(lectura) +
             "&var5=" + escape(interpretacion) + "&var6=" + escape(observacion) +
-            "&var7=" + responsable + "&var8=" + sexo + "&var9=" + idedad, "ImprimirA", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
+            "&var7=" + responsable + "&var8=" + sexo + "&var9=" + idedad+ "&var10=" + f_resultado+ "&var11=" + txtnec+ "&var12=" + proce+ "&var13=" + origen+ "&var14=" + iddetalle, "ImprimirA", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
 }
 
 //function ImprimirPlantillaA1(idsolicitud,idarea,responsable,valores_resultados,codigos_resultados,valores_lecturas,valores_inter,valores_obser,cod_examen,establecimiento,sexo,idedad){
@@ -846,12 +846,16 @@ function agregaresultado(act)
         txtnec=document.frmnuevo.txtnec.value;
         txtexamen=document.frmnuevo.txtexamen.value;
     }
+    else{
+            alert('No ha ingresado los campos obligatorios')
+            return false;
+	}
     var cant_campos=document.getElementById('cant_campos').value;
     var num_campos=document.getElementById('num_campos').value;
     var valor_numexdetorde=parseInt(num_campos)+1;
     var id_camposexorde=cant_campos=parseInt(num_campos)+1;
     var cant=$('#addresultado >tbody >tr').length;
-    alert (cant)
+   // alert (cant)
     var html = '';
     if (cant == 2){
             masunresultado(1)
@@ -884,7 +888,7 @@ function agregaresultado(act)
 		
 		//html += '<td  style="word-wrap:break-word;">' + interpretacion + '<input type="hidden" id="hdnInterpreta_'+id_camposexorde+'" name="hdnInterpreta_" value="'+interpretacion+'"></td>';		
 		html += '<td  style="word-wrap:break-word;">' + observacion + '<input type="hidden" id="hdnObserva_'+id_camposexorde+'" name="hdnObserva_" value="'+observacion+'"></td>';		
-		html += '<td  style="word-wrap:break-word;">' + codresult_txt + '<input type="hidden" id="hdnCodResult_'+id_camposexorde+'" name="hdnCodResult_" value="'+codresult_txt+'"><input type="hidden" id="hdnTxtCodResult_'+id_camposexorde+'" name="hdnTxtCodResult_" value="'+codresult+'"></td>';
+		html += '<td  style="word-wrap:break-word;">' + codresult_txt + '<input type="hidden" id="hdnCodResult_'+id_camposexorde+'" name="hdnCodResult_" value="'+codresult+'"><input type="hidden" id="hdnTxtCodResult_'+id_camposexorde+'" name="hdnTxtCodResult_" value="'+codresult_txt+'"></td>';
                 
                 html += '<td align="center"><input type="hidden" id="hdn_numexOrd'+id_camposexorde+'" name="hdn_numexOrd" value="'+valor_numexdetorde+'"/>'+
 				'<input type="hidden" id="hdnIdCamposexOrd_'+id_camposexorde+'" name="hdnIdCamposexOrd[]" value="'+id_camposexorde +'" />'+
@@ -892,22 +896,13 @@ function agregaresultado(act)
     
         html += '</table>';
         html += '</td></tr>';
-        
-        var date_o = new Date();
- 
-        var date_hours = date_o.getHours() < 10 ? "0" + date_o.getHours() : date_o.getHours();
-
-        var date_mins = date_o.getMinutes() < 10 ? "0" + date_o.getMinutes() : date_o.getMinutes();
-
-        alert("'" + date_hours + ":" + date_mins + "'")
-
 
         $('#addresultado').append(html);
         document.getElementById('cant_campos').value=id_camposexorde;
 	document.getElementById('num_campos').value=id_camposexorde;
         
         document.getElementById('fecha_realizacion').value="";
-        document.getElementById('fecha_reporte').value="";
+        document.getElementById('fecha_reporte').value=document.getElementById('fecha_reporteaux').value;
         document.getElementById('txtresultado').value="";
         //document.getElementById('txtlectura').value="";
       //  document.getElementById('txtinterpretacion').value="";
@@ -988,6 +983,7 @@ else
  
 	$('#valresult').css('display','');
 	$('#responde').css('display','none');
+	$('#divresultado2').css('display','none');
             if (cant==3){
              document.getElementById('v_resultfin').value=document.getElementById('hdnResult_1').value;
         document.getElementById('cmbEmpleadosfin').value=document.getElementById('hdnResp_1').value;
@@ -1116,7 +1112,7 @@ if ((document.getElementById('cantele'))!= null){
   //registro.php
   if (paso==0){
       //opcion = 4;
-      parametros=parametros+"&opcion="+12;
+     // parametros=parametros+"&opcion="+12;
 	//ajax.open("POST", "../ingresar/registro.php",true);
         ajax.open("POST", "ctrSolicitudesProcesadas.php", true);
         
@@ -1136,7 +1132,10 @@ if ((document.getElementById('cantele'))!= null){
             {  //mostrar los nuevos registros en esta capa
                 document.getElementById('divresultado').style.display = "block";
                 document.getElementById('divresultado').innerHTML = ajax.responseText;
-                calc_edad();
+               // calc_edad();
+           //    alert (parametros)
+           if (val==1)
+                VerResultados2(parametros);
                 //alert(ajax.responseText);
             }
 	}
@@ -1144,11 +1143,52 @@ if ((document.getElementById('cantele'))!= null){
 
   ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
   //enviando los valores
-  ajax.send(parametros)
+  ajax.send(parametros+"&opcion="+12)
 
 }//fin enviarDatos
 
+//Fn Pg para ver los resultados cuando es plantilla A2
 
+function VerResultados2(parametros)
+{
+    ajax = objetoAjax();
+    opcion = 13;
+    
+    parametros=parametros+"&nombrearea="+document.frmnuevo.txtnombrearea.value;
+    parametros=parametros+"&procedencia="+document.frmnuevo.txtprocedencia.value;
+    parametros=parametros+"&origen="+document.frmnuevo.txtorigen.value;
+    parametros=parametros+"&establecimiento="+document.frmnuevo.txtEstablecimiento.value;
+    parametros=parametros+"&fechanac="+document.frmnuevo.txtFechaNac.value;
+    parametros=parametros+"&sexo="+document.frmnuevo.txtSexo.value;
+    parametros=parametros+"&txtnec="+document.frmnuevo.txtnec.value;
+    parametros=parametros+"&txtpaciente="+document.frmnuevo.txtpaciente.value;
+    parametros=parametros+"&conocido_por="+document.frmnuevo.txtpaciente.value;
+    parametros=parametros+"&idexamen="+document.frmnuevo.txtidexamen.value;
+  //  parametros=parametros+"&opcion="+13;
+    ajax.open("POST", "ctrSolicitudesProcesadas.php", true);
+    //ajax.open("POST", "ctrSolicitudesProcesadas.php", true);
+    //muy importante este encabezado ya que hacemos uso de un formulario
+    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    //enviando los valores
+    //alert (codresult);
+    // alert (fechanac+"--"+&sexo);
+    //alert (parametros)
+    ajax.send(parametros+"&opcion="+13);
+    ajax.onreadystatechange = function()
+    {
+        if (ajax.readyState == 4)
+        {
+            if (ajax.status == 200)
+            {  //mostrar los nuevos registros en esta capa
+                $('#valresult').css('display','none');
+                document.getElementById('divresultado2').style.display = "block";
+                document.getElementById('divresultado2').innerHTML = ajax.responseText;
+              //  calc_edad();
+            }
+        }
+    }
+
+}//fin mostrarresultados plantillaA2
 
 
 
@@ -1589,7 +1629,7 @@ function MostrarDatos(posicion)
                         "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+estabext, "Resultados", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
             }
             else {
-                alert(cant_metodologia)
+              //  alert(cant_metodologia)
                 if (cant_metodologia==0){
                 ventana_secundaria = window.open("ProcDatosResultadosExamen_PA.php?var1=" + idexpediente +
                         "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
