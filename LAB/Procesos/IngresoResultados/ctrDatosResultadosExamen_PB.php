@@ -18,14 +18,9 @@ switch ($opcion) {
 		$idexamen = $_POST['idexamen'];
 		$fechanac = $_POST['FechaNac'];
 		$sexo 	  = $_POST['Sexo'];
-	    // echo $fechanac."***".$sexo;
-		/*$Cuentadias = $objdatos->CalculoDias($fechanac);
-		$Cdias= pg_fetch_array($Cuentadias);
-		$dias=$Cdias[0];*/
-
-		$ConRangos 	 = $objdatos->ObtenerCodigoRango($fechanac);
+                $ConRangos   = $objdatos->ObtenerCodigoRango($fechanac);
 		$row_rangos  = pg_fetch_array($ConRangos);
-		$idedad 	 = $row_rangos[0];
+		$idedad      = $row_rangos[0];
 		$ConEstandar = $objdatos->Obtener_Estandar($idexamen);
 		$CodEstandar = pg_fetch_array($ConEstandar);
 		$codigo_estandar  = $CodEstandar[0];
@@ -203,29 +198,29 @@ switch ($opcion) {
 		break;
    	case 2: //MOSTRANDO VISTA PREVIA DE LOS RESULTADOS INGRESADOS
    		//var_dump($_POST);
-	   	$idexamen			  = $_POST['idexamen'];//*
-	   	$idsolicitud 		  = $_POST['idsolicitud'];
-	   	$idrecepcion 		  = $_POST['idrecepcion'];
-	   	$iddetalle 			  = $_POST['iddetalle'];
-	   	$observacion 		  = $_POST['observacion'];
-	   	$idempleado			  = $_POST['idempleado'];
+	   	$idexamen	      = $_POST['idexamen'];//*
+	   	$idsolicitud 	      = $_POST['idsolicitud'];
+	   	$idrecepcion 	      = $_POST['idrecepcion'];
+	   	$iddetalle 	      = $_POST['iddetalle'];
+	   	$observacion 	      = $_POST['observacion'];
+	   	$idempleado	      = $_POST['idempleado'];
 	   	$valores_subelementos = $_POST['valores_subelementos'];
 	   	$codigos_subelementos = $_POST['codigos_subelementos'];
-	   	$valores_elementos 	  = $_POST['valores_elementos'];
-	   	$codigos_elementos 	  = $_POST['codigos_elementos'];
-	   	$controles 			  = $_POST['controles'];
-	   	$controles_ele 		  = $_POST['controles_ele'];
-	   	$establecimiento 	  = $_POST['estab'];
-	   	$tab 				  = $_POST['tab'];
-	   	$fechanac 			  = $_POST['fechanac'];
-	   	$sexo 				  = $_POST['sexo'];
+	   	$valores_elementos    = $_POST['valores_elementos'];
+	   	$codigos_elementos    = $_POST['codigos_elementos'];
+	   	$controles 	      = $_POST['controles'];
+	   	$controles_ele 	      = $_POST['controles_ele'];
+	   	$establecimiento      = $_POST['estab'];
+	   	$tab 		      = $_POST['tab'];
+	   	$fechanac 	      = $_POST['fechanac'];
+	   	$sexo 		      = $_POST['sexo'];
 
 	   	$Consulta_Estab  = $objdatos->Nombre_Establecimiento($lugar);
 	   	$row_estab   	 = pg_fetch_array($Consulta_Estab);
 	   	$ConEstandar 	 = $objdatos->Obtener_Estandar($idexamen);
 	   	$CodEstandar 	 = pg_fetch_array($ConEstandar);
 	   	$codigo_estandar = $CodEstandar[0];
-		$IdEstandar	     = $CodEstandar[1];
+		$IdEstandar	 = $CodEstandar[1];
 
 	   	/*$Cuentadias=$objdatos->CalculoDias($fechanac);
 	   	$Cdias= pg_fetch_array($Cuentadias);
@@ -251,7 +246,7 @@ switch ($opcion) {
 		   		$row_area  			  = pg_fetch_array($consulta_datos);
 		   		$row_empleado 		  = pg_fetch_array($datos_empleado);
 
-	   			$imprimir="<table width='92%' align='center'class='StormyWeatherFormTABLE' >
+	   			$imprimir="<table width='92%' align='center' >
 				   		<tr>
 				   			<td colspan='1' align='left' width='20%'><img id='Image1' style='width: auto; height: 55px;' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
 				   			<td align='center' colspan='4' width='60%' class='Estilo5'>
@@ -301,17 +296,16 @@ switch ($opcion) {
 	   			
 	   			$nomcod = $objdatos->ObtenerNombreCodigo($tab);
 	   			$row_codigo = pg_fetch_array($nomcod);
+                                 $imprimir.="<tr>
+		        			<td>Resultado Tabulador:</td><td colspan='5'>".$row_codigo[0]."</td>
+		        		</tr>
+		        	</table>";
+	   			
 
-	   			$imprimir.="<tr>
-	   						<tdcolspan='1' >Resultado Tabulador:</td>
-	   						<td colspan='4'>".$row_codigo[0]."</td>
-				   		</tr>
-	   				</table>";
-
-			   	$imprimir.="<table width='89%' border='0' align='center' class='StormyWeatherFormTABLE'>";
+			   	$imprimir.="<table width='92%' border='0' align='center' >";
 			   	pg_free_result($consulta_datos);
 			   	pg_free_result($datos_generales);
-			   	$imprimir.="<tr class='CobaltButton'>
+			   	$imprimir.="<tr >
 			   			<td width='35%'></td>
 			   			<td width='25%'>Resultado</td>
 			   			<td width='20%'>Unidades</td>
@@ -324,7 +318,7 @@ switch ($opcion) {
 				while($row = pg_fetch_array($consulta)) { //ELEMENTOS
 					if($row['subelemento']=="S") {
 						$imprimir.= "
-							<tr class='StormyWeatherFieldCaptionTD'>
+							<tr >
 								<td colspan='5' style='font:bold'><strong>".htmlentities($row['elemento'])."</strong></td>
 							</tr>";
 						$consulta2 = $objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
@@ -351,7 +345,7 @@ switch ($opcion) {
 							</tr>";
 					} else {
 						$imprimir.= "<tr>
-								<td width='40%' style='font:bold' class='StormyWeatherFieldCaptionTD'><strong>".htmlentities($row['elemento'])."</strong></td>
+								<td width='40%' style='font:bold' ><strong>".htmlentities($row['elemento'])."</strong></td>
 								<td  width='25%'>".htmlentities($vector_elementos[$posele])."<input name='oidelemento[".$posele."]' type='hidden' id='oidelemento[".$posele."]' value='".$row['idelemento']."'></td>
 								<td width='10%'>".htmlentities($row['unidadelem'])."</td>
 								<td>".htmlentities($vector_controles_ele[$posele])."  ".htmlentities($row['unidadelem'])."</td>

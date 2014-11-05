@@ -38,7 +38,7 @@ function Nombre_Establecimiento($lugar){
                    $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen  AND activo = true";
                    //AND id_metodologia IS NULL
                    $result = pg_query($query);
-                   if($result && pg_num_rows($result) > 0) {
+                   if($result && pg_num_rows($result) == 1) {
                       $row_exam_metod = pg_fetch_array($result);
                       $id_exam_metod = $row_exam_metod[0];
                       $id_exam_metod;

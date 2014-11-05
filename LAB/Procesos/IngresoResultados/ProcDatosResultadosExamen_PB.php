@@ -61,6 +61,8 @@ $area    = $_SESSION['Idarea'];
             var getVars = query.split(/&/);
             
             for ( i = 0; i < getVars.length; i++) {
+                //console.log('getVars[i].substr(0,5) == var4=' + getVars[i].substr(0,5) == 'var4=');
+                //console.log('getVars[i].substr(5)' + getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'var1=' )//loops through this array and extract each name and value
                     nec = getVars[i].substr(5);
                 if ( getVars[i].substr(0,5) == 'var2=' )
@@ -68,7 +70,7 @@ $area    = $_SESSION['Idarea'];
                 if ( getVars[i].substr(0,5) == 'var3=' )
                    codigoex = getVars[i].substr(5);
                 if ( getVars[i].substr(0,5) == 'var4=' )
-                   area = getVars[i].substr(5);
+                   area = getVars[i].substr(5); 
                 if ( getVars[i].substr(0,5) == 'var5=' )
                    iddetallesol = getVars[i].substr(5);
                 if ( getVars[i].substr(0,5) == 'var6=' )
@@ -105,8 +107,8 @@ $area    = $_SESSION['Idarea'];
             document.frmnuevo.txtiddetalle.value=iddetallesol;
             document.frmnuevo.txtidexamen.value=codigoex;
             document.frmnuevo.txtidrecepcion.value=idrecepcionsol;
-            document.frmnuevo.txtnombrearea.value=nombrearea;
-
+            //document.frmnuevo.txtnombrearea.value=nombrearea;
+            nombrearea=escape(document.frmnuevo.txtnombrearea.value=nombrearea)
             LlenarComboResponsable(area);
 
         }
@@ -117,12 +119,14 @@ $area    = $_SESSION['Idarea'];
         $Pac         = $_GET['var7'];
         $IdEstandar  = $_GET['var16'];
         $IdHistorial = $_GET['var17'];
-        $nombreEstab = $_GET['var17'];
+       // $idarea      = $_GET['idarea'];
+       // echo $idarea."-".$_GET['var3'];
+      //  $nombreEstab = $_GET['var17'];
+       
         if($db->conectar()==true) {
             $condatos = "SELECT t07.peso,
                                 t07.talla,
-                                t06.diagnostico,
-                                --CONCAT_WS(' ',t03.primer_nombre,t03.segundo_nombre,t03.tercer_nombre,t03.primer_apellido,t03.segundo_apellido,t03.apellido_casada) AS conocidopor
+                                t06.diagnostico
                          FROM sec_historial_clinico               t01
                          INNER JOIN mnt_expediente                t02 ON (t02.id = t01.id_numero_expediente)
                          INNER JOIN mnt_paciente                  t03 ON (t03.id = t02.id_paciente)
@@ -166,7 +170,7 @@ $area    = $_SESSION['Idarea'];
                                     <input type="hidden" name="txtiddetalle" id="txtiddetalle" />
                                     <input type="hidden" name="txtidexamen" id="txtidexamen" />
                                     <input type="hidden" name="txtidrecepcion" id="txtidrecepcion" />
-                                    <input type="hidden" name="txtarea" id="txtarea"  />
+                                    <input type="hidden" name="txtarea" id="txtarea" value="<?php echo $_GET['var4']?>"/>
                                     <input type="hidden" name="txtprocedencia" id="txtprocedencia" />
                                     <input type="hidden" name="txtorigen" id="txtorigen" />
                                     <input type="hidden" name="txtEstablecimiento" id="txtEstablecimiento" value="<?php echo $_GET['var18']?>" />

@@ -424,7 +424,7 @@ case 5://LLENANDO COMBO DE Examenes
             	$dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
               	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:375px">';
 		$rslts .='<option value="0"> Seleccione Establecimiento </option>';
-               while ($rows =mysql_fetch_array( $dtIdEstab)){
+               while ($rows =pg_fetch_array( $dtIdEstab)){
 		  $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 	       }
 				

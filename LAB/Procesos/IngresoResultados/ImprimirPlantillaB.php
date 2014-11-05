@@ -86,7 +86,7 @@ $idedad               = $_GET['var17'];
     ?>
                  <div  id="divImpresion1" >
                     <form name="frmimpresion1" >
-                        <table width='90%' align='center' class ='StormyWeatherFormTABLE'  cellspacing="0">
+                        <table width='100%' align='center' class ='StormyWeatherFormTABLE'  cellspacing="0">
                             <tr>
                                 <td colspan="1" align="left" width="20%"><img id="Image1" style='width: auto; height: 55px;' src="../../../Imagenes/escudo.png" name="Image1"></td>
                                 <td align="center" colspan="4" width="60%" class="Estilo6">
@@ -100,22 +100,24 @@ $idedad               = $_GET['var17'];
                                 <td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;</td>
                             </tr>
                             <tr>
-                               <td colspan='1' class="Estilo6"><strong>Establecimiento Solicitante:</strong></td>
+                               <td colspan='1' class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
                                <td colspan='2' class="Estilo6"><?php echo $_GET['var14']?></td>
-                               <td colspan='1' class="Estilo6"><strong>Fecha Resultado:</strong></td>
+                               <td colspan='1' class="Estilo5"><strong>Fecha Resultado:</strong></td>
                                <td colspan='2' class="Estilo6"><?php echo $row_fecha['fecharesultado']?></td>
                                <input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row_generales['fechanacimiento']?>>
                             </tr>
                             <tr>
-                               <td colspan='1' class="Estilo6"><strong>N&uacute;mero de Expediente:</strong></td>
-                               <td colspan='1' class="Estilo6"><?php echo $row_generales['idnumeroexp']?></td>
+                               <td colspan='1' class="Estilo5"><strong>N&uacute;mero de Expediente:</strong></td>
+                               <td colspan='2' class="Estilo6"><?php echo $row_generales['idnumeroexp']?></td>
+                               <td colspan='1' class="Estilo5" ><strong>Fecha Recepción:</strong></td>
+                               <td colspan='2' class="Estilo6" ><?php echo $row_generales['fecha']?></td>
                             </tr>
                             <tr>
-                               <td colspan='1' class="Estilo6"><strong>Paciente:</strong></td>
+                               <td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
                                <td colspan='2' class="Estilo6"><?php echo $row_generales['nombrepaciente']?></td>
                             </tr>
                             <tr>
-                                <td colspan='1' class="Estilo6"><strong>Edad:</strong></td>
+                                <td colspan='1' class="Estilo5"><strong>Edad:</strong></td>
                                 <td colspan='2' class="Estilo6">
                                     <div id="divsuedad">
                                        <script language="JavaScript" type="text/javascript">
@@ -146,7 +148,7 @@ $idedad               = $_GET['var17'];
                             </tr>
                             <tr>
                                 <td colspan='6'>
-                                    <table width='90%' border='0' align='center' class='StormyWeatherFormTABLE' cellspacing="0">
+                                    <table width='100%' border='0' align='center' class='StormyWeatherFormTABLE' cellspacing="0">
                                         <?php pg_free_result($consulta_datos);
                                               pg_free_result($datos_generales);?>
                                         <tr class='CobaltButton'>
@@ -163,7 +165,7 @@ $idedad               = $_GET['var17'];
                                                 if($row['subelemento']=='S') {
                                         ?>
                                                     <tr class='StormyWeatherFieldCaptionTD'>
-                                                        <td colspan='5' class="Estilo6"><?php echo htmlentities($row['elemento'])?></td>
+                                                        <td colspan='5' class="Estilo6"><strong><?php echo htmlentities($row['elemento'])?></strong></td>
                                                     </tr>
                                                 <?php
                                                     $consulta2 = $obj->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);

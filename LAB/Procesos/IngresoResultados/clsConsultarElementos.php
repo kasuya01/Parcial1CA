@@ -99,7 +99,7 @@ class clsConsultarElementos {
 function ObtenerNombreCodigo($tab){
  $con = new ConexionBD;
  if($con->conectar()==true) 
-  {	$query=" SELECT Resultado FROM lab_codigosresultados WHERE IdResultado=$tab ";	
+  {	$query=" SELECT resultado FROM lab_codigosresultados WHERE id=$tab ";	
 $result = pg_query($query);
 if (!$result)
     return false;
@@ -151,8 +151,8 @@ else
     function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$responsable,$usuario,$tab,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-            $query = "INSERT INTO lab_resultados (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
-                                                  observacion,idempleado,idusuarioreg,fechahorareg,idestablecimiento) 
+           $query = "INSERT INTO lab_resultados (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
+                      observacion,idempleado,idusuarioreg,fechahorareg,idestablecimiento) 
                       VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,'$observacion',$responsable,$usuario,NOW(),$lugar)
                       RETURNING id";
 
@@ -160,10 +160,10 @@ else
 
             if ($row = pg_fetch_array($result)) {
 
-                $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen AND id_metodologia IS NULL AND activo = true";
+                $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen AND activo = true";
                 $result = pg_query($query);
 
-                if($result && pg_num_rows($result) > 0) {
+                if($result && pg_num_rows($result) == 1) {
                     $row_exam_metod = pg_fetch_array($result);
 
                     $id_exam_metod = $row_exam_metod[0];
@@ -180,7 +180,7 @@ else
                         return false;
                     }
                 } else {
-                    return false; 
+                    return false; // Aqui va la logica si hay mas de una metodologia en el examen
                 }
             } else {
                 return false;
@@ -242,7 +242,7 @@ else
     function MostrarDatosGenerales($idsolicitud,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-            $query = "SELECT DISTINCT t01.idsolicitudestudio,
+           $query = "SELECT DISTINCT t01.idsolicitudestudio,
                              CASE WHEN t02.id_historial_clinico IS NOT NULL
                                  THEN t04.numero
                                  ELSE t13.numero

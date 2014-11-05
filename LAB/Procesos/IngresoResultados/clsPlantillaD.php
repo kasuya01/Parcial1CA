@@ -66,27 +66,28 @@ function ObtenerNombreCodigo($tab){
 
 //FUNCION PARA VALIDAR QUE NO EXISTA ESE ELEMENTO DE TINCION EN EL RESULTADO
 function ValidacionElemento($idresultado,$idelemento)
- {
+{
    $con = new ConexionBD;
    if($con->conectar()==true)
-  {	$query="SELECT COUNT(IdResultado) FROM lab_detalleresultado WHERE IdResultado=$idresultado AND IdElemento=$idelemento";	
-     $result = pg_query($query);
+   {	$query="SELECT COUNT(idresultado) 
+                FROM lab_detalleresultado 
+                WHERE idresultado=$idresultado AND idelemento=$idelemento";	
+        $result = pg_query($query);
 	
-     if (!$result)
-       {return false;}
-     else
-		{
-			$row= pg_fetch_array($result);
-			return $row[0];				
-		}	      
-   }
+        if (!$result)
+          {return false;}
+        else{
+            $row= pg_fetch_array($result);
+            return $row[0];				
+         }	      
+    }
  }
 
 //FUNCION PARA ELIMINAR ELEMENTO DE TINCION DEL DETALLE DE RESULTADOS
 function EliminarElementoDetalle($idresultado,$idelemento)
- {
-   $con = new ConexionBD;
-   if($con->conectar()==true)
+{
+  $con = new ConexionBD;
+  if($con->conectar()==true)
   {	$query="DELETE FROM lab_detalleresultado 
                 WHERE  idresultado=$idresultado AND idelemento=$idelemento";	
      $result = pg_query($query);
@@ -94,7 +95,7 @@ function EliminarElementoDetalle($idresultado,$idelemento)
        return false;
      else
        return true;	   
-   }
+  }
  }
  
 // funcion para leer las cantidades de tincion
@@ -146,7 +147,7 @@ $con = new ConexionBD;
                    $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen  AND activo = true";
                    //AND id_metodologia IS NULL
                    $result = pg_query($query);
-                   if($result && pg_num_rows($result) > 0) {
+                   if($result && pg_num_rows($result) == 1) {
                       $row_exam_metod = pg_fetch_array($result);
                       $id_exam_metod = $row_exam_metod[0];
                       $id_exam_metod;
@@ -162,7 +163,7 @@ $con = new ConexionBD;
                                 return false;
                             }
                         } else {
-                            return false; 
+                            return false; // Aqui va la logica si hay mas de una metodologia en el examen
                         }
                     } else {
                         return false;

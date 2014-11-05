@@ -24,7 +24,7 @@
      <menu labelText="MANTENIMIENTOS">
          <menu labelText="EXÁMENES">
             <item labelText="Exámenes" url="../LAB/Mantenimientos/Lab_Examenes/MntExamenes.php"/>
-			<item labelText="Estándares de Laboratorio" url="../LAB/Mantenimientos/Lab_CodigosEstandar/MntCodigosEstandar.php"/>
+			<!--<item labelText="Estándares de Laboratorio" url="../LAB/Mantenimientos/Lab_CodigosEstandar/MntCodigosEstandar.php"/>-->
 			<item labelText="Indicaciones por Examen" url="../LAB/Mantenimientos/Lab_IndicacionesPorExamen/MntIndicacionesPorExamen.php"/>
 			<item labelText="Procedimientos de Exámenes (Plantilla E)" url="../LAB/Mantenimientos/Lab_Procedimientos/MntProcedimientosExamen.php"/>
 			<item labelText="Datos Fijos de resultados de Exámenes (Plantilla A)" url="../LAB/Mantenimientos/MntDatosFijosResultadosExamen/MntDatosFijosResultadosExamen.php"/>

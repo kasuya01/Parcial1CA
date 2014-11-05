@@ -403,7 +403,7 @@ function ImprimirPlantillaD(idsolicitud, idexamen, idresultado, idempleado, esta
 }
 
 function ImprimirPlantillaE(idsolicitud, idexamen, responsable, procedencia, origen, cometarios, valores, codigos, observacion, estab, sexo, idedad) {
-//alert (idarea);
+//alert (idedad);
     ventana_secundaria = window.open("ImprimirPlantillaE.php?var1=" + idsolicitud +
             "&var2=" + idexamen + "&var3=" + responsable +
             "&var4=" + procedencia + "&var5=" + origen +
@@ -1002,7 +1002,7 @@ function GuardarResultadosPlantillaB()
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
     ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idsolicitud=" + idsolicitud + "&idrecepcion=" + idrecepcion +
-            "&iddetalle=" + iddetalle + "&observacion=" + escape(observacion) + "&idempleado=" + idempleado + "&procedencia=" + procedencia + "&origen=" + origen + "&valores_subelementos=" +
+            "&iddetalle=" + iddetalle + "&observacion=" + observacion + "&idempleado=" + idempleado + "&procedencia=" + procedencia + "&origen=" + origen + "&valores_subelementos=" +
             encodeURIComponent(valores_subelementos) + "&codigos_subelementos=" + codigos_subelementos + "&valores_elementos=" + encodeURIComponent(valores_elementos) +
             "&codigos_elementos=" + codigos_elementos + "&controles=" + encodeURIComponent(controles) + "&controles_ele=" + encodeURIComponent(controles_ele) + "&tab=" + tab);
     ajax.onreadystatechange = function()
@@ -1177,7 +1177,7 @@ function MostrarDatos(posicion)
     //idhistorial=document.getElementById('idhistorial['+posicion+']').value;
     //alert(plantilla);
     // alert(idexamen);
-    // alert(idarea+"**" +plantilla);
+     //alert(idarea+"**" +plantilla);
     switch (plantilla)
     {
         case "1":
@@ -1197,7 +1197,8 @@ function MostrarDatos(posicion)
             }
             break;
         case "2":
-            ventana_dos = window.open("ProcDatosResultadosExamen_PB.php?var1=" + idexpediente +
+           // alert (idarea);
+                ventana_dos = window.open("ProcDatosResultadosExamen_PB.php?var1=" + idexpediente +
                     "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                     "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
@@ -1205,26 +1206,25 @@ function MostrarDatos(posicion)
             break;
         case "3":
             //alert ("&estabext="+estabext);
-            ventana_dos = window.open("ProcDatosResultadosExamen_PC.php?var1=" + idexpediente +
+                ventana_dos = window.open("ProcDatosResultadosExamen_PC.php?var1=" + idexpediente +
                     "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
-                    "&var12=" + impresion + "&var13=" + estab + "&var16=" + IdEstandar +
-                    "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext, "Resultados", "width=950,height=650,menubar=no,scrollbars=yes,location=no");
+                    "&var12=" + impresion + "&var13=" + estab + "&var16=" + IdEstandar + "&var17=" + IdHistorial +
+                    "&referido=" + referido+ "&var18="+estabext, "Resultados", "width=950,height=650,menubar=no,scrollbars=yes,location=no");
             break;
         case "4":
-            ventana_dos = window.open("ProcDatosResultadosExamen_PD.php?var1=" + idexpediente +
+                ventana_dos = window.open("ProcDatosResultadosExamen_PD.php?var1=" + idexpediente +
                     "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
-                    "&var12=" + impresion + "&var13=" + estab + "&var14=" + IdEstandar + "&var16=" + IdEstandar +
+                    "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac+ "&var15=" + Sexo +"&var16=" + IdEstandar +
                     "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext, "Resultados", "width=950,height=700,menubar=no,scrollbars=yes");
             break;
         case "5":
-            //alert(nombrearea);
-            ventana_dos = window.open("ProcDatosResultadosExamen_PE.php?var1=" + idexpediente +
+                ventana_dos = window.open("ProcDatosResultadosExamen_PE.php?var1=" + idexpediente +
                     "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                     "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
-                    "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext, "Resultados", "width=950,height=950,menubar=no,scrollbars=yes");
+                    "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+estabext, "Resultados", "width=950,height=950,menubar=no,scrollbars=yes");
             break;
     }
 

@@ -60,7 +60,7 @@ function IngExamenxEstablecimiento($idexamen,$nomexamen,$Hab,$usuario,$IdFormula
                                 WHERE id_examen_establecimiento=$idconf ";
                  $tot = pg_num_rows(pg_query($query_tiempo));
                 // $tot=$result_tiempo[0];
-                 echo $tot; 
+                // echo $tot; 
                  if($tot > 0){
                      $sqlText ="UPDATE cit_programacion_exams
                                  SET rangotiempoprev=$TiempoPrevio

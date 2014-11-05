@@ -8,7 +8,7 @@ include_once("clsImprimirResultado.php");
 //consulta los datos por su id
 $obj = new clsImprimirResultado;
 $consulta=$obj->DatosEstablecimiento($lugar);
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 //valores de las consultas
 $tipo=$row[0];
 $nombrEstab=$row[1];
@@ -106,10 +106,11 @@ if ($nivel==4){
 								<?php
 								$db = new ConexionBD;
 								if($db->conectar()==true){
-									$consulta  = "SELECT IdTipoEstablecimiento,NombreTipoEstablecimiento FROM mnt_tipoestablecimiento ORDER BY NombreTipoEstablecimiento";
-									$resultado = mysql_query($consulta) or die('La consulta fall&oacute;: ' . mysql_error());
+									$consulta  = "SELECT id, nombre
+                                                                                      FROM ctl_tipo_establecimiento ORDER BY nombre";
+									$resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
 									//por cada registro encontrado en la tabla me genera un <option>
-									while ($rows = mysql_fetch_array($resultado)){
+									while ($rows = pg_fetch_array($resultado)){
 										echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
 									}
 									echo '<option value="'. $tipo .'" selected="selected">' .htmlentities($nomtipo). '</option>';
@@ -126,10 +127,10 @@ if ($nivel==4){
 									include_once("../../../Conexion/ConexionBD.php");
 									$con = new ConexionBD;
 									if($con->conectar()==true){			  
-										$consulta  = "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento where IdTipoEstablecimiento='$tipo' ORDER BY Nombre";
-										$resultado = @mysql_query($consulta) or die('La consulta fall&oacute;: ' . @mysql_error());
+										$consulta  = "SELECT id, nombre FROM ctl_establecimiento where id_tipo_establecimiento = $tipo ORDER BY nombre";
+										$resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . @pg_error());
 										//por cada registro encontrado en la tabla me genera un <option>
-										while ($rows = @mysql_fetch_array($resultado)){
+										while ($rows = pg_fetch_array($resultado)){
 											echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]). '</option>';
 										}
 									}
@@ -146,9 +147,12 @@ if ($nivel==4){
 									<?php
 									$db = new ConexionBD;
 									if($db->conectar()==true){
-										$consulta  = "SELECT mnt_servicio.IdServicio,mnt_servicio.NombreServicio FROM mnt_servicio INNER JOIN mnt_servicioxestablecimiento 
-								                ON  mnt_servicio.IdServicio=mnt_servicioxestablecimiento.IdServicio
-										WHERE IdTipoServicio<>'DCO' AND IdTipoServicio<>'FAR' AND IdEstablecimiento=$lugar";
+										$consulta  = "SELECT t01.id,
+                                                                                              t01.nombre
+                                                                                              FROM ctl_area_atencion t01
+                                                                                              WHERE t01.id IN (
+                                                                SELECT DISTINCT id_area_atencion 
+                                                                FROM mnt_area_mod_estab WHERE id_establecimiento =$lugar";
 										$resultado = mysql_query($consulta) or die('La consulta fall&oacute;: ' . mysql_error());
 															
 												//por cada registro encontrado en la tabla me genera un <option>

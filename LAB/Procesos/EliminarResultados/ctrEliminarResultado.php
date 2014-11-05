@@ -15,82 +15,155 @@ $objdatos = new clsEliminarResultado;
 //echo $idexpediente;
 switch ($opcion) 
 {
-  	case 1:  
-		
-		$idexpediente=$_POST['idexpediente'];
+  	case 1: 
+                $ban=0;
+		$IdEstab=$_POST['IdEstab'];
+		$IdServ=$_POST['IdServ'];
+ 		$IdSubServ=$_POST['IdSubServ'];
+                $idexpediente=$_POST['idexpediente'];
 		$primernombre=$_POST['primernombre'];
 		$segundonombre=$_POST['segundonombre'];
 		$primerapellido=$_POST['primerapellido'];
 		$segundoapellido=$_POST['segundoapellido'];
 		$fecharecep=$_POST['fecharecep'];
-		$IdEstab=$_POST['IdEstab'];
-		$IdServ=$_POST['IdServ'];
- 		$IdSubServ=$_POST['IdSubServ'];
+		$cond1="";
+                $cond2="";
+                $condf1="";
+                $condf2="";
+                $where_with="";
+             //  echo $IdEstab;
+                if (!empty($_POST['IdEstab'])) {
+                    if ($_POST['IdEstab']<>$lugar){
+                        $cond1 .= " t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " AND";
+                        $cond2 .= " t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " AND";
+                    }
+                    else{
+                         $cond1 .= " t02.id_establecimiento = " . $_POST['IdEstab'] . " AND";
+                         $cond2 .= " t02.id_establecimiento = " . $_POST['IdEstab'] . " AND";
+                    }
+                   
+                 }
 
-		$query = "SELECT mnt_empleados.IdEmpleado AS IdMedico,NombreEmpleado AS NombreMedico,NombreSubServicio AS Origen,NombreServicio AS Procedencia, mnt_expediente.IdNumeroExp as IdNumeroExp,CONCAT_WS(' ',PrimerApellido,NULL,SegundoApellido,',',PrimerNombre,NULL,SegundoNombre) AS NombrePaciente,DATE_FORMAT(FechaSolicitud,'%e/ %m / %Y') AS FechaSolicitud,sec_solicitudestudios.IdSolicitudEstudio,
-		CASE sec_solicitudestudios.Estado 
-		WHEN 'D' THEN 'Digitada'
-		WHEN 'R' THEN 'Recibida'
-		WHEN 'P' THEN 'En Proceso'    
-		WHEN 'C' THEN 'Completa' END AS Estado,mnt_establecimiento.Nombre
-		FROM sec_historial_clinico 
-		INNER JOIN sec_solicitudestudios   ON sec_historial_clinico.IdHistorialClinico= sec_solicitudestudios.IdHistorialClinico
-		INNER JOIN mnt_empleados  ON sec_historial_clinico.IDEmpleado= mnt_empleados.IdEmpleado
-		INNER JOIN mnt_expediente  ON sec_historial_clinico.IdNumeroExp= mnt_expediente.IdNumeroExp
-		INNER JOIN mnt_datospaciente ON mnt_expediente.IdPaciente=mnt_datospaciente.IdPaciente  
-		INNER JOIN mnt_subservicio ON mnt_subservicio.IdSubServicio= sec_historial_clinico.IdSubServicio
-		INNER JOIN mnt_servicio ON mnt_servicio.IdServicio= mnt_subservicio.IdServicio
-		INNER JOIN lab_recepcionmuestra ON sec_solicitudestudios.IdSolicitudEstudio=lab_recepcionmuestra.IdSolicitudEstudio
-		INNER JOIN mnt_establecimiento ON sec_historial_clinico.IdEstablecimiento=mnt_establecimiento.IdEstablecimiento
-		WHERE sec_solicitudestudios.IdServicio ='DCOLAB' AND";
-		$ban=0;	
+                 if (!empty($_POST['IdServ'])) {
+                     $cond1 .= " t13.id  = " . $_POST['IdServ'] . " AND";
+                     $cond2 .= " t13.id  = " . $_POST['IdServ'] . " AND";
+                     $where_with = "id_area_atencion = $IdServ AND ";
+                 }
 
-		//VERIFICANDO LOS POST ENVIADOS
-			
-		if (!empty($_POST['idexpediente']))
-		{ $query .= " sec_solicitudestudios.IdNumeroExp='".$_POST['idexpediente']."' AND";}
-		
-		if (!empty($_POST['primerapellido']))
-		{ $query .= " mnt_datospaciente.PrimerApellido='".$_POST['primerapellido']."' AND";}
-				
-		if (!empty($_POST['segundoapellido']))
-		{ $query .= " mnt_datospaciente.SegundoApellido='".$_POST['segundoapellido']."' AND";}
-				
-		if (!empty($_POST['primernombre']))
-		{ $query .= " mnt_datospaciente.PrimerNombre='".$_POST['primernombre']."' AND";}
-			
-		if (!empty($_POST['segundonombre']))
-		{ $query .= " mnt_datospaciente.SegundoNombre='".$_POST['segundonombre']."' AND";}
+                 if (!empty($_POST['IdSubServ'])) {
+                     $cond1 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
+                     $cond2 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
+                 }
+                 
+                 if (!empty($_POST['idexpediente'])) {
+                    $cond1 .= " t06.numero = '" . $_POST['idexpediente'] . "' AND";
+                    $cond2 .= " t06.numero = '" . $_POST['idexpediente'] . "' AND";
+                 }
+                 
+                 if (!empty($_POST['PNombre'])) {
+                    $cond1 .= " t07.primer_nombre ILIKE '" . $_POST['primernombre'] . "%' AND";
+                    $cond2 .= " t07.primer_nombre ILIKE '" . $_POST['primernombre'] . "%' AND";
+                }
 
-		if (!empty($_POST['IdEstab']))
-		{ $query .= " sec_historial_clinico.IdEstablecimiento ='".$_POST['IdEstab']."' AND";}	
-			
-		if (!empty($_POST['IdServ']))
-		{ $query .= " mnt_subservicio.IdServicio ='".$_POST['IdServ']."' AND";}
-		
-		if (!empty($_POST['IdSubServ']))
-		{ $query .= " mnt_subservicio.IdSubServicio ='".$_POST['IdSubServ']."' AND";}
-				
-						
-		if (!empty($_POST['fecharecep']))
-			{$Nfecha=explode("/",$fecharecep);
-		 	//print_r($Nfecha);
-                  	$Nfecharecep=$Nfecha[2]."-".$Nfecha[1]."-".$Nfecha[0]; 
-		$query .= " lab_recepcionmuestra.fecharecepcion='".$Nfecharecep."' AND";}
-		
-		if((empty($_POST['idexpediente'])) AND (empty($_POST['primerapellido'])) AND (empty($_POST['segundoapellido'])) AND (empty($_POST['primernombre'])) AND (empty($_POST['segundonombre']))AND (empty($_POST['IdEstab'])) AND (empty($_POST['IdServ'])) AND (empty($_POST['IdSubServ'])) AND (empty($_POST['fecharecep'])))
+                if (!empty($_POST['SNombre'])) {
+                    $cond1 .= " t07.segundo_nombre ILIKE '" . $_POST['segundonombre'] . "%' AND";
+                    $cond2 .= " t07.segundo_nombre ILIKE '" . $_POST['segundonombre'] . "%' AND";
+                }
+
+                if (!empty($_POST['PApellido'])) {
+                    $cond1 .= " t07.primer_apellido ILIKE '" . $_POST['primerapellido'] . "%' AND";
+                    $cond2 .= " t07.primer_apellido ILIKE '" . $_POST['primerapellido'] . "%' AND";
+                }
+
+                if (!empty($_POST['SApellido'])) {
+                    $cond1 .= " t07.segundo_apellido ILIKE '" . $_POST['segundoapellido'] . "%' AND";
+                    $cond2 .= " t07.segundo_apellido ILIKE '" . $_POST['segundoapellido'] . "%' AND";
+                }
+                 if((empty($_POST['idexpediente'])) AND (empty($_POST['primerapellido'])) AND (empty($_POST['segundoapellido'])) 
+                         AND (empty($_POST['primernombre'])) AND (empty($_POST['segundonombre']))AND (empty($_POST['IdEstab'])) 
+                         AND (empty($_POST['IdServ'])) AND (empty($_POST['IdSubServ'])) AND (empty($_POST['fecharecep'])))
 		{
 				$ban=1;
 		}
 			
 		if ($ban==0)
-		{   $query = substr($query ,0,strlen($query)-3);
-		    $query_search = $query. " ORDER BY IdSolicitudEstudio DESC";
+		{   
+                    $condf1 = substr($cond1, 0, strlen($cond1) - 3);
+                    $condf2 = substr($cond2, 0, strlen($cond2) - 3);
 		}
-		//echo $query_search;
+               // echo "COND1=".$condf1;
+	 $query = "WITH tbl_servicio AS (
+                    SELECT t02.id,
+                        CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
+                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
+                                 ELSE t02.nombre_ambiente
+                            END
+                        ELSE
+                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'--> ' || t01.nombre
+                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
+                            END
+                        END AS servicio 
+                    FROM  ctl_atencion                  t01 
+                    INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
+                    INNER JOIN mnt_area_mod_estab           t03 ON (t03.id = t02.id_area_mod_estab)
+                    LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
+                    LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
+                    WHERE $where_with t02.id_establecimiento = $lugar
+                    ORDER BY 2)
+            
+                SELECT DISTINCT t02.id AS idsolicitudestudio, TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
+                t03.numeromuestra, t06.numero AS idnumeroexp, t03.id AS idrecepcionmuestra, 
+                CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido, t07.segundo_apellido,
+                t07.apellido_casada) AS paciente, t20.servicio AS nombresubservicio, t13.nombre AS nombreservicio, t02.impresiones,
+                t14.nombre, t09.id AS idhistorialclinico, TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud, 
+                t17.tiposolicitud AS prioridad, t07.fecha_nacimiento AS fechanacimiento, t19.id AS sexo,
+                t02.id_establecimiento_externo, (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
+                false AS referido,(SELECT descripcion FROM ctl_estado_servicio_diagnostico WHERE id=t02.estado) AS estado ,t02.id_expediente
+                FROM sec_solicitudestudios t02  
+                INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio) 
+                INNER JOIN mnt_expediente t06 ON (t06.id = t02.id_expediente) 
+                INNER JOIN mnt_paciente t07 ON (t07.id = t06.id_paciente) 
+                INNER JOIN sec_historial_clinico t09 ON (t09.id = t02.id_historial_clinico) 
+                INNER JOIN mnt_aten_area_mod_estab t10 ON (t10.id = t09.idsubservicio) 
+                INNER JOIN ctl_atencion t11 ON (t11.id = t10.id_atencion) 
+                INNER JOIN mnt_area_mod_estab t12 ON (t12.id = t10.id_area_mod_estab) 
+                INNER JOIN ctl_area_atencion t13 ON (t13.id = t12.id_area_atencion) 
+                INNER JOIN ctl_establecimiento t14 ON (t14.id = t09.idestablecimiento) 
+                INNER JOIN cit_citas_serviciodeapoyo t15 ON (t02.id = t15.id_solicitudestudios) 
+                INNER JOIN ctl_estado_servicio_diagnostico t16 ON (t16.id = t02.estado) 
+                INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud) 
+                INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo) 
+                INNER JOIN tbl_servicio t20 ON (t20.id = t10.id AND t20.servicio IS NOT NULL) 
+                WHERE t16.idestado = 'P' OR t16.idestado = 'C' AND t02.id_establecimiento = $lugar AND $condf1
+        
+                UNION
+
+                SELECT DISTINCT t02.id AS idsolicitudestudio,TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,  
+                t03.numeromuestra, t06.numero AS idnumeroexp, t03.id AS idrecepcionmuestra, 
+                CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido, t07.apellido_casada) AS paciente, 
+                t11.nombre AS nombresubservicio, t13.nombre AS nombreservicio, t02.impresiones, t14.nombre, t09.id AS idhistorialclinico,
+                TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud, t17.tiposolicitud AS prioridad,
+                t07.fecha_nacimiento AS fechanacimiento, t19.id AS sexo, t02.id_establecimiento_externo, 
+                (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext, true AS referido,
+                (SELECT descripcion FROM ctl_estado_servicio_diagnostico WHERE id=t02.estado) AS estado,t02.id_dato_referencia 
+                FROM  sec_solicitudestudios t02
+                INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio) 
+                INNER JOIN mnt_dato_referencia t09 ON t09.id=t02.id_dato_referencia 
+                INNER JOIN mnt_expediente_referido t06 ON (t06.id = t09.id_expediente_referido) 
+                INNER JOIN mnt_paciente_referido t07 ON (t07.id = t06.id_referido) 
+                INNER JOIN mnt_aten_area_mod_estab t10 ON (t10.id = t09.id_aten_area_mod_estab) 
+                INNER JOIN ctl_atencion t11 ON (t11.id = t10.id_atencion) 
+                INNER JOIN mnt_area_mod_estab t12 ON (t12.id = t10.id_area_mod_estab) 
+                INNER JOIN ctl_area_atencion t13 ON (t13.id = t12.id_area_atencion) 
+                INNER JOIN ctl_establecimiento t14 ON (t14.id = t09.id_establecimiento) 
+                INNER JOIN cit_citas_serviciodeapoyo t15 ON (t02.id = t15.id_solicitudestudios) 
+                INNER JOIN ctl_estado_servicio_diagnostico t16 ON (t16.id = t02.estado) 
+                INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud) 
+                INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo) 
+                WHERE t16.idestado = 'P' OR t16.idestado = 'C' AND t02.id_establecimiento = $lugar AND $condf2";
 		
-		$consulta=$objdatos->BuscarSolicitudesPaciente($query_search); 
-		$NroRegistros= $objdatos->NumeroDeRegistros($query_search);				
+		$consulta=$objdatos->BuscarSolicitudesPaciente($query); 
+		$NroRegistros= $objdatos->NumeroDeRegistros($query);				
 
      $imprimir="<table width='85%' border='0' align='center'>
 			<tr>
@@ -109,13 +182,13 @@ switch ($opcion)
 				<td>Fecha Consulta</td>
 			</tr>";    
 		$pos=0;
-		while ($row = mysql_fetch_array($consulta))
+		while ($row = pg_fetch_array($consulta))
 		{ 
-			$Idsolic=$row['IdSolicitudEstudio'];
+			$Idsolic=$row['idsolicitudestudio'];
 			$fecha=$objdatos->BuscarRecepcion($Idsolic);
-			$recepcion= mysql_fetch_array($fecha);
+			$recepcion= pg_fetch_array($fecha);
 			$fechacita=$objdatos->BuscarCita($Idsolic);
-			$cita= mysql_fetch_array($fechacita);
+			$cita= pg_fetch_array($fechacita);
 			if (!empty($recepcion)){
             $imprimir .="<tr>
 				<td>".$recepcion['0']."</td>";
@@ -124,21 +197,21 @@ switch ($opcion)
 				<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 			}
 			
-	           $imprimir .="<td><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(".$pos.");'>".$row['IdNumeroExp']."</a>". 
-					"<input name='idsolicitud[".$pos."]' id='idsolicitud[".$pos."]' type='hidden' size='60' value='".$row["IdSolicitudEstudio"]."' />".
-					"<input name='idexpediente[".$pos."]' id='idexpediente[".$pos."]' type='hidden' size='60' value='".$row["IdNumeroExp"]."' /></td>".
-				"<td>".htmlentities($row['NombrePaciente'])."</td>
-				 <td>".htmlentities($row['Origen'])."</td>
-				 <td>".htmlentities($row['Procedencia'])."</td>
-				 <td>".htmlentities($row['Nombre'])."</td>
-				 <td>".$row['Estado']."</td>
-				 <td>".$row['FechaSolicitud']."</td>
+	           $imprimir .="<td><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(".$pos.");'>".$row['idnumeroexp']."</a>". 
+					"<input name='idsolicitud[".$pos."]' id='idsolicitud[".$pos."]' type='hidden' size='60' value='".$row["idsolicitudestudio"]."' />".
+					"<input name='idexpediente[".$pos."]' id='idexpediente[".$pos."]' type='hidden' size='60' value='".$row["id_expediente"]."' /></td>".
+				"<td>".htmlentities($row['paciente'])."</td>
+				 <td>".htmlentities($row['nombresubservicio'])."</td>
+				 <td>".htmlentities($row['nombreservicio'])."</td>
+				 <td>".htmlentities($row['estabext'])."</td>
+				 <td>".$row['estado']."</td>
+				 <td>".$row['fechasolicitud']."</td>
 			</tr>";
 
 				$pos=$pos + 1;
 			}
 			
-			mysql_free_result($consulta);
+			PG_free_result($consulta);
 			
 		$imprimir .= "<input type='hidden' name='oculto' id='text' value='".$pos."' /> 
   
@@ -149,285 +222,150 @@ switch ($opcion)
 		
 	break;
     	
-	case 2:  // solicitud estudios
-		$idexpediente=$_POST['idexpediente'];
-		$idsolicitud=$_POST['idsolicitud'];
-		//recuperando los valores generales de la solicitud
-		
-		$consulta=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud);
-		$row = mysql_fetch_array($consulta);
-		//obteniedo los datos generales de la solicitud
-		//valores de las consultas
-		$medico=$row['NombreMedico'];
-		$idmedico=$row['IdMedico'];
-		$paciente=$row['NombrePaciente'];
-		$edad=$row['Edad'];
-		$sexo=$row['Sexo'];
-		$precedencia=$row['Precedencia'];
-		$origen=$row['Origen'];
-		$DatosClinicos=$row['DatosClinicos'];
-		$Estado=$row['Estado'];
-		$fechasolicitud=$row['FechaSolicitud'];
-		$fecharecep=$row['FechaRecepcion'];
-		//recuperando los valores del detalle de la solicitud
-		$consultadetalle=$objdatos->DatosDetalleSolicitud($idexpediente,$idsolicitud);
-		$estadosolicitud=$objdatos->EstadoSolicitud($idexpediente,$idsolicitud);
-		$estado=mysql_fetch_array($estadosolicitud);
-		
-		
-		$imprimir="
-	<form name='frmDatos'>
-			<table width='60%' border='0' align='center'>
-				<tr>
-					<td  colspan='4'>&nbsp;&nbsp;&nbsp;&nbsp</td>
-				</tr>
-				<tr>
-					<td colspan='4' align='center' class='CobaltFieldCaptionTD'>
-						<h3><strong>DATOS SOLICITUD</strong></h3>
-					</td>
-				</tr>
-				<tr>
-					<td>Procedencia</td>
-					<td>".$precedencia."</td>
-					<td>Origen</td>
-					<td>".$origen."
-						<input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled' />
-						<input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled'/>
-						<input name='fechasolicitud' id='fechasolicitud'  type='hidden' size='40' value='".$fechasolicitud."' disabled='disabled' /></td>
-				</tr>
-				
-				<tr>
-					<td>Medico</td>
-					<td colspan='2'>".htmlentities($medico)."</td>
-					<td>Fecha Recepcion</td>
-					<td >".$fecharecep."</td>
-				</tr>
-				<tr>
-					<td>Paciente</td>
-					<td colspan='3'>".htmlentities($paciente)."</td>
-				</tr>
-				<tr>
-					<td>Edad</td>
-					<td>". $edad."</td>
-					<td>Sexo</td>
-					<td>".$sexo."</td>
-					<td>Fecha Recepcion</td>
-					<td >".$fecharecep."</td>
-				</tr>
-			</table>
-			<table width='60%' border='0' align='center'>
-				<tr>
-					<td colspan='4'  class='CobaltFieldCaptionTD' align='center'>ESTUDIOS SOLICITADO</td>
-				</tr>
-				<tr>
-					<td>
-						<table border = 1 align='center' class='estilotabla'>
-						<tr>
-							<td> IdExamen</td>
-							<td> Examen </td>
-							<td> IdArea </td>
-							<td> Indicacion Medica </td>
-							<td> Estado </td>
-				                </tr>
-					<td>
-				</tr>";
-			$pos=0;
-		while($fila = mysql_fetch_array($consultadetalle)){
-                  $imprimir .= "<tr>";
-					if (($fila['Estado'])=="Resultado Completo"){
-					 // $detalle=$fila['IdDetalleSolicitud'];
-			   $imprimir .="<td><a style ='text-decoration:underline;cursor:pointer;' onclick='EliminarDatos(".$pos.");'>".$fila['IdExamen']."</a></td>";
-		           $imprimir .="<td>".htmlentities($fila['NombreExamen'])."</td>	
-					<td>".$fila['IdArea']."</td>";	
-						if (!empty($fila['Indicacion'])){     				
-			   $imprimir .="<td>".htmlentities($fila['Indicacion'])."</td>";
-		           $imprimir .="<td>".$fila['Estado']."</td>
-			        </tr>";
-						}else{
-		           $imprimir .="<td>&nbsp;&nbsp;&nbsp;&nbsp</td>
-			                <td>".$fila['Estado']."</td>";
-						}
-					}else{
-			   $imprimir .="<td>".$fila['IdExamen']."</td>
-			                <td>".htmlentities($fila['NombreExamen'])."</td>	
-					<td>".$fila['IdArea']."</td>";	
-						if (!empty($fila['Indicacion'])){     				
-			   $imprimir .="<td>".htmlentities($fila['Indicacion'])."</td>";
-		           $imprimir .="<td>".$fila['Estado']."</td>
-							
-		                </tr>";
-						}else{
-	                   $imprimir .="<td>&nbsp;&nbsp;&nbsp;&nbsp</td>
-			                <td>".$fila['Estado']."</td>
-                                </tr>";	
-						}//else de indicacion
-					}// del else de estado
-              $pos=$pos + 1;
-				
-		}// del while
-
-		mysql_free_result($consultadetalle);
-			
- //$imprimir .= "<i/nput type='hidden' name='oculto' id='oculto' value='".$pos."' />
-           $imprimir .="</table>
-		<div id='divImpresion' style='display:block' >
-			<table>
-				<tr>
-					<p></p>
-				</tr>
-				<tr>
-					<td align='center'>
-						<input type='button' name='btnImprimirSol' id='btnImprimirSol' value='Imprimir Solicitud' onClick='ImprimirSolicitud()'>";
-						if($estado['Estado']=='R' OR $estado['Estado']=='P'){
-								$imprimir .="<input type='button' name='btnImprimir'  id=btnImprimir' value='Imprimir Vi&ntilde;etas' onClick='ImprimirExamenes();'/>";}
-						else{
-								$imprimir .="<input type='button' name='btnImprimir' disabled='enabled' id=btnImprimir' value='Imprimir Vi&ntilde;etas' onClick='ImprimirExamenes();'/>";
-						}
-			$imprimir .="</td>
-				</tr>
-				<tr>
-					<p></p>
-				</tr>
-			</table>
-		</div>
-	</form>";
-     echo $imprimir;
+	case 2:  
 	 
-	 
-   break;
-   case 3:
+        break;
+        case 3:
 		//recuperando los valores generales de la solicitud
 		$idexpediente=$_POST['idexpediente'];
 		$idsolicitud=$_POST['idsolicitud'];
 		$consulta=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar);
-		$row = mysql_fetch_array($consulta);
+		$row = pg_fetch_array($consulta);
+              //  echo $idexpediente;
 		//obteniedo los datos generales de la solicitud
-		$medico=$row['NombreMedico'];
-		$idmedico=$row['IdMedico'];
-		$paciente=$row['NombrePaciente'];
-		$edad=$row['Edad'];
-		$sexo=$row['Sexo'];
-		$precedencia=$row['Precedencia'];
-		$origen=$row['Origen'];
-		$DatosClinicos=$row['DatosClinicos'];
-		$Estado=$row['Estado'];
-		$fechasolicitud=$row['FechaSolicitud'];
-		$fecharecep=$row['FechaRecepcion'];
+		$medico=$row['medico'];
+		//$idmedico=$row['id_empleado'];
+		$paciente=$row['paciente'];
+		$edad=$row['edad'];
+		$sexo=$row['sexo'];
+		$precedencia=$row['procedencia'];
+		$origen=$row['subservicio'];
+		//$DatosClinicos=$row['DatosClinicos'];
+		//$Estado=$row['estado'];
+		//$fechasolicitud=$row['fechasolicitud'];
+		$fecharecep=$row['fecharecep'];
 		//recuperando los valores del detalle de la solicitud
-		$consultadetalle=$objdatos->DatosDetalleSolicitud($idexpediente,$idsolicitud);
+		$consultadetalle=$objdatos->DatosDetalleSolicitud($idsolicitud);
 		$imprimir="<form name='frmDatos'>
 		<table width='55%' border='0' align='center'>
-		<tr>
-			<td colspan='4' align='center' class='CobaltFieldCaptionTD'><h3><strong>DATOS SOLICITUD</strong></h3></td>
-		</tr>
-		<tr><td>Establecimiento:</td>
-			<td colspan='3'>".$row['Nombre']."</td>
-		</tr>
-		<tr>
-			<td>Procedencia: </td>
-			<td>".$precedencia."</td>
-			<td>Origen: </td>
-			<td>".htmlentities($origen)."
-				<input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled' />
-				<input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled' />
-				<input name='fechasolicitud' id='fechasolicitud'  type='hidden' size='40' value='".$fechasolicitud."' disabled='disabled' />
-			</td>
-		</tr>
-		<tr>
-		    <td>Medico: </td>
-		    <td >".htmlentities($medico)."</td>
-			<td>Fecha Recepcion</td>
-			<td >".$fecharecep."</td>
-		</tr>
-		<tr>
-			<td>Paciente: </td>
-		    <td colspan='3'>".htmlentities($paciente)."</td>
-		</tr>
-		<tr>
-		    <td>Edad: </td>
-		    <td>". $edad."</td>
-		    <td>Sexo: </td>
-		    <td>".$sexo."</td>
-		</tr>
+                    <tr>
+                            <td colspan='4' align='center' class='CobaltFieldCaptionTD'><h3><strong>DATOS SOLICITUD</strong></h3></td>
+                    </tr>
+                    <tr>    <td>Establecimiento:</td>
+                            <td colspan='3'>".$row['estabext']."</td>
+                    </tr>
+                    <tr>
+                            <td>Procedencia: </td>
+                            <td>".$precedencia."</td>
+                            <td>Origen: </td>
+                            <td>".htmlentities($origen)."
+                                    <input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled' />
+                                    <input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled' />
+
+                            </td>
+                    </tr>
+                    <tr>
+                            <td>Medico: </td>
+                            <td >".htmlentities($medico)."</td>
+                            <td>Fecha Recepcion</td>
+                            <td >".$fecharecep."</td>
+                    </tr>
+                    <tr>
+                            <td>Paciente: </td>
+                            <td colspan='3'>".htmlentities($paciente)."</td>
+                    </tr>
+                    <tr>
+                        <td>Edad: </td>
+                        <td>". $edad."</td>
+                        <td>Sexo: </td>
+                        <td>".$sexo."</td>
+                    </tr>
 		</table>
 		
 		<table width='90%' border='0' align='center'>
-		<tr>
-			<td colspan='4' align='center'>ESTUDIOS SOLICITADO</td>
-		</tr>
-		<tr>
-			<td>
-				<table border = 1 align='center' class='estilotabla'>
-				<tr>
-					<td> Eliminar</td>
-					<td> IdExamen</td>
-					<td> Examen </td>
-					<td> IdArea </td>
-					<td> Indicacion Medica </td>
-					<td> Estado </td>
-			   </tr>";
-			$pos=0;
-	while($fila = mysql_fetch_array($consultadetalle)){
- $imprimir .= "<tr>";
-		if($fila['Estado']=="Resultado Completo"){ 	
-       $imprimir .="<td><img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" onclick=\"EliminarDatos('".$fila['IdDetalleSolicitud']."','".$fila['IdSolicitudEstudio']."','".$fila['IdPlantilla']."','$idexpediente')\"></td>
-					<td>".htmlentities($fila['IdExamen'])."</td>
-					<td>".htmlentities($fila['NombreExamen'])."	
-						<input name='iddetalle[".$pos."]' type='hidden' id='iddetalle[".$pos."]' value='".$fila['IdDetalleSolicitud']."'>
-						<input name='idsolicitud[".$pos."]' type='hidden' id='idsolicitud[".$pos."]' value='".$fila['IdSolicitudEstudio']."'>
-						<input name='idplantilla[".$pos."]' type='hidden' id='idplantilla[".$pos."]' value='".$fila['IdPlantilla']."'>				</td>	
-					<td>".$fila['IdArea']."</td>";	
-					if (!empty($fila['Indicacion'])){     				
-		$imprimir .="<td>".htmlentities($fila['Indicacion'])."</td>";
-		$imprimir .="<td>".$fila['Estado']."</td>
-					<td>".$fila['IdDetalleSolicitud']."</td>
-			</tr>";
-		}else{
-	    $imprimir .="<td>&nbsp;&nbsp;&nbsp;&nbsp</td>
-	 				 <td>".$fila['Estado']."</td>
-			</tr>";	
-		}             }
-		else{
-	    $imprimir .="<td>".$fila['IdExamen']."</td>
-	        		<td>".htmlentities($fila['NombreExamen'])."</td>	
-					<td>".$fila['IdArea']."</td>";	
-			if (!empty($fila['Indicacion'])){     				
-		$imprimir .="<td>".htmlentities($fila['Indicacion'])."</td>";
-		$imprimir .="<td>".$fila['Estado']."</td>
-			</tr>";
-			}else{
-		$imprimir .="<td>&nbsp;&nbsp;&nbsp;&nbsp</td>
-		  			 <td>".$fila['Estado']."</td>
-                     <td>".$fila['IdPlantilla']."</td>
-			</tr>";	
-			 
-							}
-				}
-				$pos=$pos + 1;
-				
-}
+                    <tr>
+                            <td colspan='4' align='center'>ESTUDIOS SOLICITADO</td>
+                    </tr>
+                    <tr>
+                            <td>
+                                <table border = 1 align='center' class='estilotabla'>
+                                    <tr>
+                                            <td> Eliminar</td>
+                                            <td> Código</td>
+                                            <td> Examen </td>
+                                            <td> IdArea </td>
+                                            <td> Indicacion Medica </td>
+                                            <td> Estado </td>
+                                    </tr>";
+                            $pos=0;
+     while($fila = pg_fetch_array($consultadetalle)){
+                //print "\$fila = " . $fila['idplantilla'] . "\n";
+                //print_r($fila);
+              //  echo $fila['idplantilla'];
+                $imprimir .= "<tr>";
+         if($fila['estado']=="Resultado Completo")  { 	
+                    $imprimir .="<td><img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" onclick=\"EliminarDatos('".$fila['iddetallesolicitud']."','".$fila['idsolicitudestudio']."','".$idexpediente."','".$fila['idplantilla']."')\"></td>
+                                 <td>".htmlentities($fila['idestandar'])."</td>
+                                 <td>".htmlentities($fila['nombre_examen'])."	
+                                    <input name='iddetalle[".$pos."]' type='hidden' id='iddetalle[".$pos."]' value='".$fila['iddetallesolicitud']."'>
+                                    <input name='idsolicitud[".$pos."]' type='hidden' id='idsolicitud[".$pos."]' value='".$fila['idsolicitudestudio']."'>
+                                    <input name='idexpediente[".$pos."]' type='hidden' id='idexpediente[".$pos."]' value='".$idexpediente."'></td>
+                                    <input name='idplantilla[".$pos."]' type='hidden' id='idplantilla[".$pos."]' value='".$fila['idplantilla']."'></td>    
+                                 <td>".$fila['idarea']."</td>";	
+                if (!empty($fila['indicacion']))     				
+                    $imprimir .="<td>".htmlentities($fila['indicacion'])."</td>";
+                else
+                    $imprimir .="<td>&nbsp;&nbsp;&nbsp;&nbsp</td>";
+                    
+                    $imprimir .="<td>".$fila['estado']."</td>";
+                    $imprimir .="</tr>";
+                
+                
+       }
+       /*else{
+                    $imprimir .="<td>".$fila['idestandar']."</td>
+                                 <td>".htmlentities($fila['nombre_examen'])."</td>	
+                                 <td>".$fila['idarea']."</td>";	
+                        if (!empty($fila['indicacion'])){     				
+                    $imprimir .="<td>".htmlentities($fila['indicacion'])."</td>";
+                        
+                    $imprimir .="<td>".$fila['estado']."</td>
+                            </tr>";
+                        }else{
+                     $imprimir .="<td>&nbsp;&nbsp;&nbsp;&nbsp</td>
+                                  <td>".$fila['estado']."</td>
+                                  <td>".$fila['idplantilla']."</td>
+                            </tr>";	
+
+                        }
+                 }  */
+                    $pos=$pos + 1;
+
+            }
 
 
 
- $imprimir .= "<input type='hidden' name='oculto' id='oculto' value='".$pos."' />
+     $imprimir .= "<input type='hidden' name='oculto' id='oculto' value='".$pos."' />
 			</table>
 			
 			</form>";
      echo $imprimir;
-     mysql_free_result($consultadetalle);
+    pg_free_result($consultadetalle);
   
   break;
   case 4:
 
 	include_once("clsEliminarResultado.php");
 		$iddetalle=$_POST['iddetalle'];
-		$idplantilla=$_POST['idplantilla'];
+		$idexpediente=$_POST['idexpediente'];
 		$idsolicitud=$_POST['idsolicitud'];
-	
+                $idplantilla=$_POST['idplantilla'];
+                //echo " idsolicitud=".$idsolicitud." iddetalle=".$iddetalle." idplantilla=$idplantilla".
 		$dato=$objdatos->VerificaDetalle($idsolicitud,$iddetalle);
-			 if ($dato == 1){	
+			 if ($dato == 1){
+                          //  echo "entro".$idplantilla;
 				switch($idplantilla){
-					case 'A':
+					case 1:
 						if ($objdatos->EliminarResultado($idsolicitud,$iddetalle) == 1){
 							//if (($objdatos->CambiarEstadoDetalle($iddetalle)==true)&&($objdatos->CambiarEstadoSolicitud($idsolicitud)==true))
 							if (($objdatos->ActualizarEstadoDetalle($iddetalle)==true)&&($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true)){
@@ -437,64 +375,83 @@ switch ($opcion)
 							echo "No se pudo eliminar el registro";
 						}
 							//echo "ENTRO A";
-                     break;	
-					 case 'B':
-					 case 'D':
-					 case 'E':
-                                                //  echo $idsolicitud."--".$iddetalle;
+                                         break;	
+					 case 2:
+					 case 4:
+					 case 5:
+                                                 echo $iddetalle;
 						 $r=$objdatos->ObtenerIdResultado($idsolicitud,$iddetalle);
-						 $result=mysql_fetch_array($r);
+						 $result=pg_fetch_array($r);
 						 $idresultado=$result[0];
-						 if($dr=$objdatos->EliminarDetalleResultado($idresultado)==1){
-							if ($objdatos->EliminarResultado($idsolicitud,$iddetalle) == 1){
-								if (($objdatos->ActualizarEstadoDetalle($iddetalle)==true)||($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true))
-								    echo "Resultado Eliminado";
-							}
-						}
-						else{
-							echo "No se pudo eliminar el registro";
-						}
+                                                // echo $idresultado;
+                                                 if($dr=$objdatos->EliminarResultadoMetodologia($iddetalle)==1){
+                                                     
+                                                     if($dr=$objdatos->EliminarDetalleResultado($idresultado)==1){
+                                                        
+                                                         if ($objdatos->EliminarResultado($idsolicitud,$iddetalle) == 1){
+                                                             
+                                                               if (($objdatos->ActualizarEstadoDetalle($iddetalle)==true)||($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true))
+                                                                      echo "Resultado Eliminado";
+                                                         }
+                                                         else 
+                                                             echo "No se pudo eliminar el registro";
+                                                     }
+                                                     else
+                                                         echo "No se pudo eliminar el registro";
+                                                 }
+                                                 else
+                                                         echo "No se pudo eliminar el registro";
+                                                 
 						  
 					  // echo "ENTRO B,D,E";
 					 break; 	
-					 case 'C':
+					 case 3:
 								
-								$r=$objdatos->ObtenerIdResultado($idsolicitud,$iddetalle);
+						$r=$objdatos->ObtenerIdResultado($idsolicitud,$iddetalle);
 								//$idresultado=$result['IdResultado'];
 								
-							 while($result = mysql_fetch_array($r)){
-							    $idresultado=$result['IdResultado'];
-							//	echo $idresultado;
+						while($result = pg_fetch_array($r)){
+						    $idresultado=$result['id'];
+								//echo $idresultado;
 								//$tr=$objetos->ObtenerTipoResultado($idresultado);
 								//$tipo=mysql_fetch_array($tr);
-								$TipoResultado=$result['Resultado'];
-								//echo $TipoResultado;
+					            $TipoResultado=$result['resultado'];
+								echo " tipo=".$TipoResultado;
 								switch($TipoResultado){
 								case 'P':
 						//	 while($result = mysql_fetch_array($r)){
-									$idresultado=$result['IdResultado'];
+									$idresultado=$result['id'];
 									$det=$objdatos->ObtenerIdDetalleRes($idresultado);
-									$detalle=mysql_fetch_array($det);
+									$detalle=pg_fetch_array($det);
 									$iddetalleres=$detalle[0];
 						 //		echo $idsolicitud."-".$iddetalle."-".$idresultado."-". $iddetalleres;
-									if($dr=$objdatos->EliminarResultadoTarjeta($iddetalleres)==1){
-										if($dr=$objdatos->EliminarDetalleResultado($idresultado)==1){
-											if ($objdatos->EliminarResultado($idsolicitud,$iddetalle) == 1){
-												if (($objdatos->ActualizarEstadoDetalle($iddetalle)==true)||($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true))
-													echo "Resultado Eliminado";
-											}
-										}
-									}
-									else{
-										echo "No se pudo eliminar el registro";
-										}
+                                                                      if($dr=$objdatos->EliminarResultadoMetodologia($iddetalle)==1){  
+                                                                            if($dr=$objdatos->EliminarResultadoTarjeta($iddetalleres)==1){
+                                                                                if($dr=$objdatos->EliminarDetalleResultado($idresultado)==1){
+                                                                                    if ($objdatos->EliminarResultado($idsolicitud,$iddetalle) == 1){
+                                                                                        if (($objdatos->ActualizarEstadoDetalle($iddetalle)==true)||($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true))
+                                                                                            echo "Resultado Eliminado";
+                                                                                        }
+                                                                                        else
+                                                                                            echo "No se pudo eliminar el registro";
+                                                                                    }
+                                                                                    else
+                                                                                        echo "No se pudo eliminar el registro";
+									    }else
+                                                                                 echo "No se pudo eliminar el registro";
+                                                                       }
+								     else
+									 echo "No se pudo eliminar el registro";
+									
 							
 								break;
 								case 'N':
 								case 'O':
-										if ($objdatos->EliminarResultado($idsolicitud,$iddetalle) == 1){	 
+										if($dr=$objdatos->EliminarResultadoMetodologia($iddetalle)==1){  
+                                                                                    if ($objdatos->EliminarResultado($idsolicitud,$iddetalle) == 1){	 
 											if (($objdatos->ActualizarEstadoDetalle($iddetalle)==true)||($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true)){
 												echo "Resultado Eliminado";}
+                                                                                    }            
 											
 										}else{
 											echo "No se pudo eliminar el registro";
@@ -537,7 +494,7 @@ case 5://LLENANDO COMBO DE Examenes
             	$dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
               	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:375px">';
 		$rslts .='<option value="0"> Seleccione Establecimiento </option>';
-               while ($rows =mysql_fetch_array( $dtIdEstab)){
+               while ($rows =pg_fetch_array( $dtIdEstab)){
 		  $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 	       }
 				
@@ -551,7 +508,7 @@ case 5://LLENANDO COMBO DE Examenes
 	     $dtserv=$objdatos->LlenarCmbServ($IdServ,$lugar);
 	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:375px">';
 			$rslts .='<option value="0"> Seleccione Subespecialidad </option>';
-			while ($rows =mysql_fetch_array($dtserv)){
+			while ($rows =pg_fetch_array($dtserv)){
 		  	$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 	       		}
 				

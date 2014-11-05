@@ -246,7 +246,7 @@ class clsLab_Procedimientos {
 						LEFT OUTER JOIN ctl_sexo				   cex  ON (cex.id  = lppe.idsexo)
 						LEFT OUTER JOIN ctl_rango_edad  		   cre  ON (cre.id  = lppe.idrangoedad)
 						WHERE lcee.condicion = 'H' AND laxe.condicion = 'H' AND lpla.idplantilla = 'E' AND lppe.idestablecimiento = $lugar
-						ORDER BY lcee.codigo_examen, lppe.nombreprocedimiento LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+						ORDER BY lcee.codigo_examen, lppe.id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
 
 			$result = @pg_query( $query );
 			if ( !$result )
