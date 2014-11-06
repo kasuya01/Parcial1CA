@@ -1,17 +1,18 @@
 <?php session_start();
+include_once("clsSolicitudesProcesadas.php");
 $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 
-$IdSolicitud=$_GET['var1'];
-$IdExamen=$_GET['var2'];
-$resultado=$_GET['var3'];
-$lectura=$_GET['var4'];
-$interpretacion=$_GET['var5'];
-$observacion=$_GET['var6'];
-$responsable=$_GET['var7'];
+$idsolicitud=$_GET['var1'];
+$idexamen=$_GET['var2'];
 $sexo=$_GET['var8'];
 $idedad=$_GET['var9'];
+$d_resultado=$_GET['var10'];
+$txtnec=$_GET['var11'];
+$proce=$_GET['var12'];
+$origen=$_GET['var13'];
+$iddetalle=$_GET['var14'];
 //echo $sexo."***".$idedad;
 ?>
 <html>
@@ -53,18 +54,32 @@ function calc_edad()
 
 <body>
 <?php
-include_once("clsSolicitudesProcesadas.php");
 $objdatos = new clsSolicitudesProcesadas;
 $Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
-$row_estab = mysql_fetch_array($Consulta_Estab);
+$row_estab = pg_fetch_array($Consulta_Estab);
 //echo $sexo."***".$idedad."***".$IdSolicitud."***".$IdExamen;
-$consulta=$objdatos->MostrarResultadoGenerales($IdSolicitud,$IdExamen,$lugar,$sexo,$idedad);
-$row = mysql_fetch_array($consulta);
-$nombre=$row['NombreArea'];
-$Consulta_fecha=$objdatos->ObtenerFechaResultado1($IdSolicitud,$IdExamen,$lugar);
-$rowfecha = mysql_fetch_array($Consulta_fecha);
-$fechares=$rowfecha[0];
- //echo $fechares;
+$consulta=$objdatos->MostrarResultadoGenerales($idsolicitud,$idexamen,$lugar);
+$row = pg_fetch_array($consulta);
+$nombre = $row['nombrearea'];
+$id_establecimiento_externo = $row['id_establecimiento_externo'];
+$idhistoref = $row['idhistoref'];
+$Consulta_Estab2=$objdatos->Nombre_Establecimiento($id_establecimiento_externo);
+$row_estab2 = pg_fetch_array($Consulta_Estab2);
+$datpac=$objdatos->MostrarDatosPersona($idsolicitud, $lugar, $id_establecimiento_externo, $txtnec, $idhistoref);
+$rowpa = pg_fetch_array($datpac);
+$consultares = $objdatos->MostrarDatoslabresultado($idexamen, $lugar, $idsolicitud, $iddetalle);
+        $filares = pg_fetch_array($consultares);
+       // echo '<br\>'.$filares['idempleado'].'<br\>';
+        $d_resultfin=$filares['d_resultfin'];
+//$Consulta_fecha=$objdatos->ObtenerFechaResultado1($IdSolicitud,$IdExamen,$lugar);
+//$rowfecha = mysql_fetch_array($Consulta_fecha);
+$fechares=$filares['fecha_resultado'];
+$resultado=$filares['resultado'];
+$lectura=$filares['lectura'];
+$interpretacion=$filares['interpretacion'];
+$observacion=$filares['observacion'];
+$responsable=$filares['idempleado'];
+ //echo 'emp:'.$responsable;
 ?>
 <div  id="divImpresion" >
     <form name="frmimpresion" >
@@ -73,7 +88,7 @@ $fechares=$rowfecha[0];
                 <td colspan="1" align="left" width="20%"><img id="Image1" style="WIDTH: 80px; HEIGHT: 55px" height="86" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
                 <td align="center" colspan="4" width="60%" class="Estilo6">
                     <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
-                    <p><strong><?php echo $row_estab['Nombre'] ?></strong></p>
+                    <p><strong><?php echo $row_estab['nombre'] ?></strong></p>
                     <p><strong>&Aacute;REA DE <?php echo $nombre; ?> </strong></p>
 		</td>
                 <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
@@ -83,52 +98,51 @@ $fechares=$rowfecha[0];
             </tr>
             <tr>
                 <td colspan="1" class="Estilo5"><strong>Establecimiento:</strong></td>
-		<td colspan="2" class="Estilo6"><?php echo htmlentities($row['Nombre']);?></td>
-		<td colspan="1" class="Estilo5"><strong>Fecha:</strong></td>
-		<td colspan="2" class="Estilo6"><?php echo $fechares;?></td>
+		<td colspan="2" class="Estilo6"><?php echo $row_estab2['nombre'];?></td>
+		<td colspan="1" class="Estilo5"><strong>Fecha Recepción:</strong></td>
+		<td colspan="2" class="Estilo6"><?php echo $row['fecharecepcion'];?></td>
                     <input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row['FechaNacimiento']?>>
             </tr>
             <tr>
             	<td colspan="1" class="Estilo5"><strong>NEC:</strong></td>
-		<td colspan="2" class="Estilo7"><?php echo$row['IdNumeroExp'];?></td>
+		<td colspan="2" class="Estilo7"><?php echo $txtnec;?></td>
+            	<td colspan="1" class="Estilo5"><strong>Fecha Resultado:</strong></td>
+		<td colspan="2" class="Estilo6"><?php echo $fechares;?></td>
             </tr>
             <tr>
 		<td colspan="1" class="Estilo5"><strong>Paciente:</strong></td>
-		<td colspan="2" class="Estilo6"><?php echo htmlentities($row['NombrePaciente'])?></td>
+		<td colspan="2" class="Estilo6"><?php echo  $rowpa['nombre'];?></td>
             </tr>
             <tr>
 		<td colspan="1" class="Estilo5"><strong>Edad:</strong></td>
 		<td colspan="2" class="Estilo6">
-                    <div id="divsuedad">
-                        <script language="JavaScript" type="text/javascript">
-                            calc_edad();
-                        </script>
-                    </div>
+                   <?php echo  $rowpa['edad'];?>
                 </td>
 		<td colspan="1" class="Estilo5"><strong>Sexo:</strong></td>
-		<td colspan="2" class="Estilo6"><?php echo $row['Sexo']?></td>
+		<td colspan="2" class="Estilo6"><?php echo  $rowpa['sexo'];?></td>
 	     </tr>
              <tr>
 		<td colspan="1" class="Estilo5"><strong>Procedencia:</strong></td>
-		<td colspan="2" class="Estilo6"><?php echo htmlentities($row['Procedencia'])?></td>
+		<td colspan="2" class="Estilo6"><?php echo $proce?></td>
 		<td colspan="1" class="Estilo5"><strong>Servicio:</strong></td>
-		<td colspan="2" class="Estilo6"><?php echo htmlentities($row['Origen'])?></td>
+		<td colspan="2" class="Estilo6"><?php echo $origen;?></td>
              </tr>
                             <?php
-				$consulta_empleado=$objdatos->BuscarEmpleadoValidador($responsable);
-				$fila_empleado = mysql_fetch_array($consulta_empleado);
-				$consulta2=$objdatos->MostrarDatosFijosPlantillaA($IdExamen,$lugar,$sexo,$idedad);
-				$fila = mysql_fetch_array($consulta2);
+                                 
+                                $consulta_empleado = $objdatos->BuscarEmpleadoValidador($responsable, $lugar);
+                                $fila_empleado = pg_fetch_array($consulta_empleado);
+                                $consulta2 = $objdatos->MostrarDatosFijosPlantillaA($idexamen, $lugar, $sexo, $idedad, 0);
+                $fila = pg_fetch_array($consulta2);
                             ?>
              <tr>
 		<td  colspan='1' class="Estilo5"><strong>Validado Por: </strong></td>
-		<td  colspan='5' class="Estilo6"><?php echo htmlentities($fila_empleado['NombreEmpleado'])?></td>
+		<td  colspan='5' class="Estilo6"><?php echo $fila_empleado['empleado'];?></td>
              </tr>
              <tr>
                  <td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;</td>
              </tr>
              <tr>
-                  <td colspan='6' align='center' class="Estilo5"><strong>DETALLE DE RESULTADOS</strong></td>
+                  <td colspan='6' align='center' class="Estilo5"><strong><hr>DETALLE DE RESULTADOS</strong></td>
              </tr>
              <tr>
                 <td colspan='6'>
@@ -143,26 +157,26 @@ $fechares=$rowfecha[0];
                             <td align="center" class="Estilo5"><strong>Observación</strong></td>
                         </tr>
                         <tr>
-                            <td align="left" class="Estilo5"><?php echo htmlentities($fila['NombreExamen'])?></td>
-                            <td align="center" class="Estilo5"><?php echo htmlentities($resultado)?></td>
+                            <td align="left" class="Estilo5"><?php echo $fila['nombre_examen'];?></td>
+                            <td align="center" class="Estilo5"><?php echo $resultado?></td>
                      <?php if (!empty($fila['Unidades'])){ ?>
-                            <td align="center" class="Estilo5"><?php echo htmlentities($fila['Unidades']) ?></td>
+                            <td align="center" class="Estilo5"><?php echo $fila['unidades'] ?></td>
                      <?php }else{?>
                             <td  align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                      <?php }  ?>
-                            <td align="center" class="Estilo5"><?php echo $fila['RangoInicio']." - ".$fila['RangoFin']?></td>
+                            <td align="center" class="Estilo5"><?php echo $fila['rangoinicio']." - ".$fila['RangoFin']?></td>
                      <?php if (!empty($lectura)){ ?>
-                            <td align="justify" class="Estilo5"><?php echo htmlentities($lectura)?></td>
+                            <td align="justify" class="Estilo5"><?php echo $lectura?></td>
                      <?php }else{?>
                             <td  align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                      <?php }
                             if (!empty($lectura)){    ?>
-                            <td align="justify" class="Estilo5"><?php echo htmlentities($interpretacion)?></td>
+                            <td align="justify" class="Estilo5"><?php echo $interpretacion?></td>
                      <?php }else{?>
                             <td align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                      <?php }
                             if (!empty($observacion)){ ?>
-                            <td align="justify" class="Estilo5"><?php echo htmlentities($observacion)?></td>
+                            <td align="justify" class="Estilo5"><?php echo $observacion?></td>
                      <?php }else{?>
                             <td  align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                      <?php } ?>
@@ -175,6 +189,7 @@ $fechares=$rowfecha[0];
             <table align="center">
                 <tr>
                     <td colspan="6" align="center" >
+                        <br><br>
                         <input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
                         <input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar() ;" />
                     </td>
