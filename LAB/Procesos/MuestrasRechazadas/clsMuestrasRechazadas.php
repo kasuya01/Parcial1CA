@@ -9,7 +9,108 @@ class clsMuestrasRechazadas {
     function clsMuestrasRechazadas() {
         
     }
+    
+        function contaridresultado($idsolicitud,$idsolicitudPadre) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            
+             $NomAre = "SELECT COUNT(id) 
+		        FROM lab_resultados   where  idsolicitudestudio=$idsolicitudPadre
+                        and iddetallesolicitud=$idsolicitud";
+            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+        }
+        return $resul;
+    }
 
+             function idresultado($idsolicitud,$idsolicitudPadre) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            
+             $NomAre = "select id from lab_resultados where  idsolicitudestudio=$idsolicitudPadre
+                        and iddetallesolicitud=$idsolicitud ";
+            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+        }
+        return $resul;
+    }
+    
+    //select id  from lab_detalleresultado where idresultado=6;
+    function id_detalleresultado($idresulta) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            
+            $NomAre = "select id  from lab_detalleresultado where idresultado=$idresulta ";
+            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+        }
+        return $resul;
+    }
+    
+    
+    function idexmen_metodologia($idsolicitud,$idsolicitudPadre) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            
+            $NomAre = "select * from  lab_examen_metodologia
+                    where id_conf_exa_estab=(select id_conf_examen_estab from sec_detallesolicitudestudios where id=$idsolicitud and idsolicitudestudio=$idsolicitudPadre) ";
+            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+        }
+        return $resul;
+    }
+    
+    
+    function idempleado($idsolicitud,$idsolicitudPadre) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            
+          $NomAre = "select idempleado from lab_resultados
+            where idsolicitudestudio=$idsolicitudPadre    and iddetallesolicitud=$idsolicitud  
+            and idexamen=(select id_conf_examen_estab from sec_detallesolicitudestudios where id=$idsolicitud and idsolicitudestudio=$idsolicitudPadre)";
+            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+        }
+        return $resul;
+    }
+    
+    
+    
+    function inseresul_metodologia($idexmen_metodologia,$id_detalleresultado,$estado,$observacion,$usuario,$id_empleado )
+           {
+   $con = new ConexionBD;
+   if($con->conectar()==true) 
+   {
+     $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia,
+					id_detalleresultado,
+					resultado,
+					observacion,
+					idusuarioreg,
+					fechahorareg,
+					idusuariomod,
+					fechahoramod,
+                                        fecha_realizacion,id_empleado) 
+VALUES($idexmen_metodologia,
+	$id_detalleresultado,
+	'$estado',
+	'$observacion',
+	$usuario,
+	NOW(),
+	'$usuario',
+	NOW(),
+        current_date,
+        $id_empleado)";
+     $result = pg_query($query);
+	 
+     if (!$result)
+       return false;
+     else
+       return true;	   
+   }
+ }
+                
+                
+                
+                
+                
+                
+  
+    
     function DatosEstablecimiento($lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
@@ -180,103 +281,7 @@ class clsMuestrasRechazadas {
     function DatosGeneralesSolicitud($idexpediente, $idsolicitud) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = /*"WITH tbl_servicio AS (
-                        SELECT t02.id,
-                            CASE WHEN t02.nombre_ambiente IS NOT NULL THEN  	
-                                CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
-                                     ELSE t02.nombre_ambiente
-                                END
-                            ELSE
-                                CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'--> ' || t01.nombre
-                                     WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
-                                END
-                            END AS servicio 
-                        FROM  ctl_atencion 				    t01 
-                        INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
-                        INNER JOIN mnt_area_mod_estab 	   	    t03 ON (t03.id = t02.id_area_mod_estab)
-                        LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
-                        LEFT  JOIN mnt_servicio_externo 		    t05 ON (t05.id = t04.id_servicio_externo)
-                        WHERE id_area_atencion = 3 and t02.id_establecimiento = 49
-                        ORDER BY 2)
-                    select sse.id, --id solicitudestudios 
-                            mem.id, --id empleado 
-                            mem.nombreempleado, --nombre empleado
-                            (SELECT nombre FROM ctl_establecimiento WHERE id = sse.id_establecimiento_externo) AS nombre_establecimiento,
-                            case WHEN id_expediente_referido is  null then 
-                                                              ( mex.numero)
-                                                               else (mer.numero) end as numero,
-                            case WHEN id_expediente_referido is  null then 
-                                                              (csex.nombre)
-                                                               else (csexpar.nombre) end as sexnom,                                  
-                            case WHEN id_expediente_referido is  null  THEN 
-                                    CONCAT_WS(' ', pa.primer_nombre, NULL,pa.segundo_nombre,NULL,pa.primer_apellido,NULL,pa.segundo_apellido)
-                                    else  
-                                      CONCAT_WS(' ', par.primer_nombre, NULL,par.segundo_nombre,NULL,par.primer_apellido,NULL,par.segundo_apellido)end as paciente,
-                            pa.conocido_por, 
-                            --cat.nombre, nombre atencion
-                            tser.servicio,
-                            mc.diagnostico, sef.peso, sef.talla, 
-                            case WHEN id_expediente_referido is  null then 
-                            ---
-                                REPLACE(
-                                    REPLACE(
-                                        REPLACE(
-                                            REPLACE(
-                                                REPLACE(
-                                                    REPLACE(
-                                                        AGE(pa.fecha_nacimiento::timestamp)::text,
-                                                    'years', 'años'),
-                                                'year', 'año'),
-                                            'mons', 'meses'),
-                                        'mon', 'mes'),
-                                    'days', 'días'),
-                                 'day', 'día') 
-                            else 
-                                REPLACE(
-                                    REPLACE(
-                                        REPLACE(
-                                            REPLACE(
-                                                REPLACE(
-                                                    REPLACE(
-                                                        AGE(par.fecha_nacimiento::timestamp)::text,
-                                                    'years', 'años'),
-                                                'year', 'año'),
-                                            'mons', 'meses'),
-                                        'mon', 'mes'),
-                                    'days', 'días'),
-                                 'day', 'día') end AS edad,
-                            t01.nombre 
-                    from ctl_area_servicio_diagnostico casd 
-                    join mnt_area_examen_establecimiento mnt4     on (mnt4.id_area_servicio_diagnostico=casd.id )
-                    join lab_conf_examen_estab lcee 	      	  on (mnt4.id=lcee.idexamen) 
-                    INNER JOIN sec_detallesolicitudestudios sdses ON (sdses.id_conf_examen_estab=lcee.id)
-                    INNER JOIN sec_solicitudestudios sse          ON (sdses.idsolicitudestudio=sse.id) 
-                    INNER JOIN lab_recepcionmuestra lrc           ON (sse.id= lrc.idsolicitudestudio )
-                    INNER JOIN sec_historial_clinico shc 	  ON (sse.id_historial_clinico=shc.id )
-                    inner join mnt_empleado mem 		  on (shc.id_empleado=mem.id) 
-                    inner join mnt_expediente mex 		  on (shc.id_numero_expediente=mex.id) 
-                    inner join mnt_paciente pa 			  on (mex.id_paciente=pa.id) 
-                    inner join ctl_sexo csex 			  on (csex.id=pa.id_sexo) 
-                    inner join mnt_aten_area_mod_estab mnt3 	  on (shc.idsubservicio=mnt3.id) 
-                    inner join mnt_area_mod_estab m1 		  on (mnt3.id_area_mod_estab=m1.id) 
-                    inner join ctl_atencion cat 		  on (mnt3.id_atencion=cat.id)
-                    inner join tbl_servicio tser                  on (tser.id = mnt3.id AND tser.servicio IS NOT NULL)
-                    inner join ctl_establecimiento ce 		  on (shc.idestablecimiento=ce.id ) 
-                    inner join ctl_area_atencion t01 		  on ( m1.id_area_atencion=t01.id) 
-                    inner join lab_recepcionmuestra lrm 	  on (sse.id=lrm.idsolicitudestudio) 
-                    left join sec_diagnosticospaciente sdp 	  on (shc.id=sdp.idhistorialclinico) 
-                    left join mnt_cie10 mc 			  on (mc.id=sdp.iddiagnostico1) 
-                    left join sec_examenfisico sef 		  on (sef.idhistorialclinico=shc.id) 
-                    LEFT  JOIN mnt_dato_referencia  mdr           on (sse.id_dato_referencia=mdr.id)
-                    LEFT JOIN mnt_expediente_referido mer         on (mdr.id_expediente_referido=mer.id)
-                    LEFT JOIN mnt_paciente_referido par   	  ON (mer.id_referido=par.id) 
-                    left join ctl_sexo csexpar 			  on (csexpar.id=par.id_sexo)  
-                    where sse.id_atencion=98 
-			
-			and sdses.id=$idsolicitud";*/
-                    
-                    
-                    "WITH tbl_servicio AS (
+            $query ="WITH tbl_servicio AS (
                     SELECT t02.id,
                         CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
@@ -475,18 +480,18 @@ UNION
             $detalle = pg_fetch_array(pg_query($query));
             if ($detalle[0] == 0) {
                 $query1 = /* "UPDATE sec_solicitudestudios SET estado='C' WHERE IdSolicitudEstudio=$idsolicitud"; */
-                        "UPDATE sec_solicitudestudios SET estado=(SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado ='C'),
-                       fecha_solicitud= now(),
-                         fechahorareg=current_timestamp
+                        "UPDATE sec_solicitudestudios SET estado=(SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado ='C')
+                         --fecha_solicitud= now(),
+                         --fechahorareg=current_timestamp
                     WHERE id=$idsolicitudPadre";
                 $result = pg_query($query1);
                 return true;
             }
             if ($detalle[0] >= 1) {
-                $query1 = /* "UPDATE sec_solicitudestudios SET estado='P' WHERE IdSolicitudEstudio=$idsolicitud"; */
-                        "UPDATE sec_solicitudestudios SET estado=(SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado ='P'),
-                        fecha_solicitud= now(),
-                            fechahorareg=current_timestamp
+                 $query1 = /* "UPDATE sec_solicitudestudios SET estado='P' WHERE IdSolicitudEstudio=$idsolicitud"; */
+                        "UPDATE sec_solicitudestudios SET estado=(SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado ='P')
+                            --fecha_solicitud= now(),
+                            --fechahorareg=current_timestamp
                          WHERE id=$idsolicitudPadre";
                 $result = pg_query($query1);
                 return true;
@@ -495,10 +500,10 @@ UNION
     }
 
     //FUNCION PARA CAMBIAR EL ESTADO DE PROCESADO AL DETALLE DE LA SOLICITUD
-    function CambiarEstadoDetalle($idsolicitud, $estado, $idarea, $observacion) {
+    function CambiarEstadoDetalle($idsolicitud, $estado, $observacion) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = /*   "UPDATE sec_detallesolicitudestudios ,sec_solicitudestudios 
+             $query = /*   "UPDATE sec_detallesolicitudestudios ,sec_solicitudestudios 
                       SET sec_detallesolicitudestudios.estadodetalle=$estado,sec_detallesolicitudestudios.observacion=' '
                       WHERE sec_detallesolicitudestudios.idsolicitudestudio=$idsolicitud AND
                       sec_solicitudestudios.id_atencion=98 AND sec_detallesolicitudestudios.idexamen LIKE '%$idarea%'

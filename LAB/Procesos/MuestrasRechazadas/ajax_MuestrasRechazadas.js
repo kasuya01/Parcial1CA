@@ -173,7 +173,7 @@ function CambiarEstadoDetalleSolicitud(estado)
 		pag="";
 		opcion=3;
 		
-		alert(estado);
+		//alert(estado);
 		idsolicitud=trim(idsolicitud);
                // idsolicitud1=trim(idsolicitud1);
 		idexpediente=trim(idexpediente);
@@ -204,6 +204,7 @@ function CambiarEstadoDetalleSolicitud(estado)
 
 function CambiarEstadoDetalleSolicitud1(estado,idexamen,text,fechasolicitud,idsolicitudPadre)
 {
+      //alert(idexamen);
    		idsolicitud=document.frmDatos.idsolicitud.value;
                // idsolicitud1=document.frmDatos.idsolicitud1.value;
 		idexpediente=document.frmDatos.idexpediente.value;
@@ -215,7 +216,8 @@ function CambiarEstadoDetalleSolicitud1(estado,idexamen,text,fechasolicitud,idso
                 textAtea=text;
 		//idexamen=document.frmDatos.// puse esto
 		opcion=3;
-		//alert(estado);
+		//alert(idsolicitud);
+                
 		idsolicitud=trim(idsolicitud);
                // idsolicitud1=trim(idsolicitud1);
 		idexpediente=trim(idexpediente);
@@ -223,6 +225,12 @@ function CambiarEstadoDetalleSolicitud1(estado,idexamen,text,fechasolicitud,idso
 		//observacion="";
 		//instanciamos el objetoAjax
 		ajax=objetoAjax();
+                
+                
+                //alert("estado "+idsolicitudPadre);
+                
+                
+                
 		//usando del medoto POST
 		ajax.open("POST", "ctrMuestrasRechazadas.php",true);
                 // window.close();
@@ -257,6 +265,7 @@ function ProcesarMuestra()
 
 function ProcesarMuestra1(idexamen)
 {
+    //alert(idexamen)
    idsolicitudPadre=document.frmDatos.idsolicitudPadre.value;
    text=document.frmDatos.txtobservacion.value;
    fechasolicitud=document.frmDatos.fechasolicitud.value;
@@ -391,7 +400,7 @@ function CargarDatosFormulario(idexpediente,idsolicitud,idarea,idexamen)
 		{	 if (ajax.status == 200)
 			{  //mostrar los nuevos registros en esta capa
 			  document.getElementById('divFormulario').innerHTML = ajax.responseText;
-			  calc_edad();
+			 // calc_edad();
 			 }
 	     }
 	}
@@ -425,13 +434,13 @@ function CargarDatosFormulario1(idexpediente,idsolicitud,idarea,idexamen)
 }
 
 //Esta funcion mandan a llamar
-function calc_edad()
+/*function calc_edad()
 {
   var fecnac1=document.getElementById("suEdad").value;
   var fecnac2=fecnac1.substring(0,10);
   var suEdades=calcular_edad(fecnac2);
   document.getElementById("divsuedad").innerHTML=suEdades;
-}
+}*/
 
 
 //funcion para calculo de edad
