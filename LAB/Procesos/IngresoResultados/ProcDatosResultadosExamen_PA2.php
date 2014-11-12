@@ -15,7 +15,7 @@ $db = new ConexionBD;
 <style type="text/css">
 			*{ font-size:12px; font-family:verdana; }
 			h1 { font-size:22px; }
-			input { width:250px; border: 2px solid #CCC; line-height:20px;height:20px; border-radius:3px; padding:5px; }
+			input { width:250px; border: 2px solid #CCC; line-height:20px;height:20px; border-radius:3px; padding:2px; }
 		</style>
 <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script> 
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">

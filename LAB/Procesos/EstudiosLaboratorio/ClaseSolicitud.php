@@ -269,9 +269,7 @@ function CantiMuestra($IdExamen){
 	    $SQL2="select ltm.id as idtipo, tipomuestra as muestra, lte.id
                     from lab_tipomuestraporexamen  lte
                     join lab_tipomuestra ltm on (lte.idtipomuestra=ltm.id)
-                    where lte.idexamen=(select lcee.id
-                    from lab_conf_examen_estab lcee
-                    where lcee.id=$IdExamen)
+                    where lte.idexamen=$IdExamen
                         order by tipomuestra ASC;";  
             $result=  pg_query($SQL2);
             if (!$result){

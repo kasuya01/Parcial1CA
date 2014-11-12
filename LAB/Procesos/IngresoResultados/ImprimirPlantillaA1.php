@@ -14,6 +14,8 @@ $codigos_examenes=$_GET['var9'];
 $establecimiento=$_GET['var10'];
 $sexo=$_GET['var11'];
 $idedad=$_GET['var12'];
+$examen_metodologia =$_GET['var13'];
+$txtnec =$_GET['var14'];
 //echo $sexo."###".$idedad;
 //echo $idsolicitud."-".$idarea."-".$idempleado."-".$valores_resultados."-".$codigos_resultados."-".$valores_lecturas."-".$valores_inter."-".$valores_obser."-".$codigos_examenes;
 //echo $codigos_examenes;
@@ -23,22 +25,6 @@ $idedad=$_GET['var12'];
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <title>Resultados de Examenes de Laboratorio </title>
 <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script>
-<!--<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
-<link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">-->
-
-<script language="JavaScript">
-function calc_edad()
-{
-  var fecnac1=document.getElementById("suEdad").value;
-  var fecnac2=fecnac1.substring(0,10);
-//alert (fecnac2);
-  var suEdades=calcular_edad(fecnac2);
- // alert(suEdades);
-
-  document.getElementById("divsuedad").innerHTML=suEdades;
-}
-</script>
-
 <style type="text/css">
 <!--
 @media print{
@@ -60,10 +46,18 @@ function calc_edad()
 include_once("clsSolicitudesProcesadas.php");
   $objdatos = new clsSolicitudesProcesadas;
   $Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
-  $row_estab = mysql_fetch_array($Consulta_Estab);
-  $consulta1=$objdatos->MostrarResultadoGenerales1($idsolicitud,$idarea,$lugar);
-  $row = mysql_fetch_array($consulta1);
-  $nombre=$row['NombreArea'];
+  $row_estab = pg_fetch_array($Consulta_Estab);
+  
+  $consulta1=$objdatos->MostrarResultadoGeneralesPA1($idsolicitud,$lugar,$area);
+  $row = pg_fetch_array($consulta1);
+  $nombre=$row['nombrearea'];
+  $id_establecimiento_externo = $row['id_establecimiento_externo'];
+  $idhistoref = $row['idhistoref'];
+  $Consulta_Estab2=$objdatos->Nombre_Establecimiento($id_establecimiento_externo);
+$row_estab2 = pg_fetch_array($Consulta_Estab2);
+  $datpac=$objdatos->MostrarDatosPersona($idsolicitud, $lugar, $id_establecimiento_externo, $txtnec, $idhistoref);
+  
+$rowpa = pg_fetch_array($datpac);
   //$vector_resultados=explode("/",$valores_resultados);
   //$vector_codigos=explode("/",$codigos_resultados);
  // $vector_lecturas=explode("/",$valores_lecturas);
@@ -71,6 +65,7 @@ include_once("clsSolicitudesProcesadas.php");
   //$vector_obser=explode("/",$valores_obser);
   //$vector_examenes=explode("/",$codigos_examenes);
   $consulta=$objdatos->DatosExamenesImprimir($idsolicitud,$idarea,$lugar,$sexo,$idedad);
+  
   $FechaRes=$objdatos->ObtenerFechaResultado($idsolicitud,$idarea,$lugar);
   $row_fecha=mysql_fetch_array($FechaRes);
 

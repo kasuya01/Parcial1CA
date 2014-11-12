@@ -157,7 +157,7 @@ $responsable=$filares['idempleado'];
                             <td align="center" class="Estilo5"><strong>Observación</strong></td>
                         </tr>
                         <tr>
-                            <td align="left" class="Estilo5"><?php echo $fila['nombre_examen'];?></td>
+                            <td align="left" class="Estilo5"><?php echo $fila['nombre_reporta'];?></td>
                             <td align="center" class="Estilo5"><?php echo $resultado?></td>
                      <?php if (!empty($fila['Unidades'])){ ?>
                             <td align="center" class="Estilo5"><?php echo $fila['unidades'] ?></td>

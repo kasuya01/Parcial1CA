@@ -223,6 +223,7 @@ function LlenarComboServicio(IdServicio)
 
 ///////////////////////////////////////***********************//////////////////////////////////////
 //FUNCION PARA GUARDAR RESULTADOS
+//Fn pg Plantilla A
 function GuardarResultados()
 {
     idsolicitud = document.frmnuevo.txtidsolicitud.value;
@@ -237,6 +238,8 @@ function GuardarResultados()
     procedencia = document.frmnuevo.txtprocedencia.value;
     origen = document.frmnuevo.txtorigen.value;
     codigo = document.frmnuevo.cmbResultado2.value;
+    fecha_realizacion = document.frmnuevo.fecha_realizacion.value;
+    fecha_reporte = document.frmnuevo.fecha_reporte.value;
     opcion = 3;
 
 
@@ -245,7 +248,7 @@ function GuardarResultados()
     ajax.send("opcion=" + opcion + "&idsolicitud=" + idsolicitud + "&iddetalle=" + iddetalle + "&idexamen=" + idexamen +
             "&idrecepcion=" + idrecepcion + "&resultado=" + encodeURIComponent(resultado) + "&lectura=" + escape(lectura) +
             "&interpretacion=" + escape(interpretacion) + "&observacion=" + escape(observacion) +
-            "&responsable=" + escape(responsable) + "&procedencia=" + procedencia + "&origen=" + origen + "&codigo=" + codigo);
+            "&responsable=" + escape(responsable) + "&procedencia=" + procedencia + "&origen=" + origen + "&codigo=" + codigo+ "&fecha_realizacion=" + fecha_realizacion+ "&fecha_reporte=" + fecha_reporte);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -270,9 +273,13 @@ function GuardarResultadosPlantillaA()
     //idrecepcion	
     idrecepcion = document.getElementById('txtidrecepcion').value;
     //detallesolicitud
-    iddetalle = document.getElementById('txtiddetalle').value;
+   // iddetalle = document.getElementById('txtiddetalle').value;
     idarea = document.getElementById('txtarea').value;
     idempleado = document.getElementById('cmbEmpleados').value;
+    fecha_realizacion = document.getElementById('fecha_realizacion').value;
+    fecha_reporte = document.getElementById('fecha_reporte').value;
+    idempleado = document.getElementById('cmbEmpleados').value;
+    txtidrecepcion = document.getElementById('txtidrecepcion').value;
 
     //DATOS PARA EL DETALLE DE LOS RESULTADOS
 
@@ -282,6 +289,7 @@ function GuardarResultadosPlantillaA()
     //	valores_inter="";
     valores_obser = "";
     codigos_examenes = "";
+    examen_metodologia = "";
     tabuladores = "";
 
     if (document.getElementById('oculto').value > 0)
@@ -293,7 +301,9 @@ function GuardarResultadosPlantillaA()
             //valores_lecturas += document.getElementById('txtlectura['+i+']').value +"/" ;
             //valores_inter+= document.getElementById('txtinter['+i+']').value +"/" ;
             valores_obser += document.getElementById('txtobser[' + i + ']').value + "/";
+          
             codigos_examenes += document.getElementById('oidexamen[' + i + ']').value + "/";
+            examen_metodologia += document.getElementById('oidexametodologia[' + i + ']').value + "/";
             tabuladores += document.getElementById('txttab[' + i + ']').value + "/";
         }
     }
@@ -308,12 +318,14 @@ function GuardarResultadosPlantillaA()
             "&iddetalle=" + iddetalle +
             "&idarea=" + idarea +
             "&idempleado=" + idempleado +
+            "&txtidrecepcion=" + txtidrecepcion +
             "&valores_resultados=" + encodeURIComponent(valores_resultados) +
             "&codigos_resultados=" + codigos_resultados +
             //"&valores_lecturas="+encodeURIComponent(valores_lecturas)+
             //"&valores_inter="+encodeURIComponent(valores_inter)+
             "&valores_obser=" + encodeURIComponent(valores_obser) +
-            "&codigos_examenes=" + codigos_examenes + "&tabuladores=" + tabuladores);
+            "&codigos_examenes=" + codigos_examenes +
+            "&examen_metodologia=" + examen_metodologia+ "&tabuladores=" + tabuladores+"&fecha_realizacion="+fecha_realizacion+"&fecha_reporte="+fecha_reporte);
     //muy importante este encabezado ya que hacemos uso de un formulario
 
     ajax.onreadystatechange = function()
@@ -322,8 +334,10 @@ function GuardarResultadosPlantillaA()
         {
             if (ajax.status == 200)
             {  //mostrar los nuevos registros en esta capa
-                //alert(ajax.responseText);
+                alert(ajax.responseText);
                 document.getElementById('btnGuardar').style.visibility = 'hidden';
+                document.getElementById('btningresar').style.visibility = 'hidden';
+                document.getElementById('divexamen').style.display = "none";;
             }
         }
     }
@@ -340,7 +354,7 @@ function ImprimirPlantillaA(idsolicitud, idexamen, resultado, f_resultado, lectu
 }
 
 //function ImprimirPlantillaA1(idsolicitud,idarea,responsable,valores_resultados,codigos_resultados,valores_lecturas,valores_inter,valores_obser,cod_examen,establecimiento,sexo,idedad){
-function ImprimirPlantillaA1(idsolicitud, idarea, responsable, valores_resultados, codigos_resultados, valores_obser, cod_examen, establecimiento, sexo, idedad) {
+function ImprimirPlantillaA1(idsolicitud, idarea, responsable, valores_resultados, codigos_resultados, valores_obser, cod_examen, establecimiento, sexo, idedad, examen_metodologia, txtnec) {
 //lert (sexo+" edad "+idedad);
     ventana_secundaria = window.open("ImprimirPlantillaA1.php?var1=" + idsolicitud +
             "&var2=" + idarea + "&var3=" + escape(responsable) +
@@ -352,7 +366,9 @@ function ImprimirPlantillaA1(idsolicitud, idarea, responsable, valores_resultado
             "&var9=" + codigos_examenes +
             "&var10=" + escape(establecimiento) +
             "&var11=" + sexo +
-            "&var12=" + idedad, "ImprimirA1", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
+            "&var12=" + idedad+
+            "&var13=" + examen_metodologia+
+            "&var14=" + txtnec , "ImprimirA1", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
 }
 
 function ImprimirPlantillaB(idsolicitud, idexamen, responsable, procedencia, origen, observacion, valores_subelementos, codigos_subelementos, valores_elementos, codigos_elementos, controles, controles_ele, nombrearea, establecimiento, responsable, sexo, idedad) {
@@ -492,7 +508,7 @@ function MostrarVistaPreviaPlantillaC()
         //idbacteria="";
         idbacteria = document.getElementById('cmbOrganismo').value;
         //nombrearea="";
-        estab = document.getElementById('txtEstablecimiento').value;
+        estab = document.getElementById('txtEstablecimiento').value;       
        // alert(estab);
         //DATOS PARA EL DETALLE DE LOS RESULTADOS
         valores_antibioticos = "";
@@ -785,12 +801,11 @@ function GuardarResultadosNegativosPlantillaC()
 
 
 
-//FUNCION PARA MOSTRAR RESULTADOS
-function MostrarResultadoExamen(idsolicitud, iddetalle, idarea, idexamen, resultado, lectura, interpretacion, observacion, responsable, nombrearea, procedencia, origen, impresion, establecimiento, codigo, fechanac, sexo, cmbmetodologia, nec)
+//FUNCION PARA MOSTRAR RESULTADOS  Plantilla A
+function MostrarResultadoExamen(idsolicitud, iddetalle, idarea, idexamen, resultado, lectura, interpretacion, observacion, responsable, nombrearea, procedencia, origen, impresion, establecimiento, codigo, fechanac, sexo, cmbmetodologia, nec, fecha_realizacion, fecha_reporta)
 {
     ajax = objetoAjax();
     opcion = 4;
-
     ajax.open("POST", "ctrSolicitudesProcesadas.php", true);
     //ajax.open("POST", "ctrSolicitudesProcesadas.php", true);
     //muy importante este encabezado ya que hacemos uso de un formulario
@@ -803,7 +818,7 @@ function MostrarResultadoExamen(idsolicitud, iddetalle, idarea, idexamen, result
             "&resultado=" + encodeURIComponent(resultado) + "&lectura=" + encodeURIComponent(lectura) + "&interpretacion=" + encodeURIComponent(interpretacion) +
             "&observacion=" + encodeURIComponent(observacion) + "&responsable=" + responsable + "&nombrearea=" + nombrearea +
             "&procedencia=" + procedencia + "&origen=" + origen + "&impresion=" + impresion + "&establecimiento=" + establecimiento + "&codigo=" + codigo +
-            "&fechanac=" + fechanac + "&sexo=" + sexo+"&cmbmetodologia="+cmbmetodologia+"&nec="+nec);
+            "&fechanac=" + fechanac + "&sexo=" + sexo+"&cmbmetodologia="+cmbmetodologia+"&nec="+nec+"&fecha_realizacion="+fecha_realizacion+"&fecha_reporta="+fecha_reporta);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -812,7 +827,24 @@ function MostrarResultadoExamen(idsolicitud, iddetalle, idarea, idexamen, result
             {  //mostrar los nuevos registros en esta capa
                 document.getElementById('divresultado').style.display = "block";
                 document.getElementById('divresultado').innerHTML = ajax.responseText;
-                calc_edad();
+                
+                
+                
+                
+            
+        document.getElementById('fecha_realizacion').value="";
+        document.getElementById('fecha_reporte').value=document.getElementById('fecha_reporteaux').value;
+        document.getElementById('txtresultado').value="";
+        //document.getElementById('txtlectura').value="";
+      //  document.getElementById('txtinterpretacion').value="";
+        document.getElementById('txtcomentario').value="";
+        document.getElementById('txtlectura').value="";
+        document.getElementById('txtinterpretacion').value="";
+        document.getElementById('cmbResultado2').value=0
+        document.getElementById('cmbEmpleados').value=0
+        document.getElementById('cmbEmpleadosfin').value=0
+                
+                //calc_edad();
             }
         }
     }
@@ -921,11 +953,16 @@ function agregaresultado(act)
         document.getElementById('v_obseresultfin').value="";
         document.getElementById('txtlecturafin').value="";
         document.getElementById('txtinterpretacionfin').value="";
-        $("#cmbmetodologia option[value='0']").attr('selected', 'selected');
-        $("#cmbEmpleados option[value='0']").attr('selected', 'selected');
-        $("#cmbResultado2 option[value='0']").attr('selected', 'selected');
-        $("#cmbEmpleados2 option[value='0']").attr('selected', 'selected');
-        $("#cmbEmpleadosfin option[value='0']").attr('selected', 'selected');
+       // $("#cmbmetodologia option[value='0']").attr('selected', 'selected');
+        document.getElementById('cmbmetodologia').value=0
+        //$("#cmbEmpleados option[value='0']").attr('selected', 'selected');
+        document.getElementById('cmbEmpleados').value=0
+        //$("#cmbResultado2 option[value='0']").attr('selected', 'selected');
+        document.getElementById('cmbResultado2').value=0
+        //$("#cmbEmpleados2 option[value='0']").attr('selected', 'selected');
+       // document.getElementById('cmbEmpleados2').value=0
+       // $("#cmbEmpleadosfin option[value='0']").attr('selected', 'selected');
+        document.getElementById('cmbEmpleadosfin').value=0
         $('#responde').css('display','');
 }
 
@@ -1493,7 +1530,7 @@ function LlenarComboMetodologia(idexamen, area)
 
 }
 
-function CargarExamenes(idsolicitud, idarea, fechanac, sexo, idestandar, idhistorial)
+function CargarExamenes(idsolicitud, idarea, fechanac, sexo, idestandar, idhistorial, fecha_realizacion, fecha_reporte, txtnec)
 {
     ajax = objetoAjax();
     FechaNac = fechanac;
@@ -1507,7 +1544,7 @@ function CargarExamenes(idsolicitud, idarea, fechanac, sexo, idestandar, idhisto
     // alert (FechaNac+" - "+Sexo+" - "+idhistorial);
     //alert("historial="+idhistorial);
     ajax.send("opcion=" + opcion + "&idsolicitud=" + idsolicitud + "&idarea=" + idarea +
-            "&FechaNac=" + FechaNac + "&Sexo=" + Sexo + "&IdEstandar=" + idestandar + "&idhistorial=" + idhistorial);
+            "&FechaNac=" + FechaNac + "&Sexo=" + Sexo + "&IdEstandar=" + idestandar + "&idhistorial=" + idhistorial+ "&fecha_realizacion=" + fecha_realizacion+ "&fecha_reporte=" + fecha_reporte+ "&txtnec=" + txtnec);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -1580,8 +1617,14 @@ function IngresarResultados() {
 
 function IngresarTodosResultados()
 {
-
-    if (validaempleado())
+    resp=true;
+    if (document.frmnuevo.fecha_reporte.value == ""){
+             resp=false
+             }
+         if (document.frmnuevo.fecha_realizacion.value == ""){
+                resp=false
+             }
+    if (validaempleado() && resp)
     {
         idsolicitud = document.frmnuevo.txtidsolicitud.value;
         idarea = document.frmnuevo.txtarea.value;
@@ -1589,12 +1632,15 @@ function IngresarTodosResultados()
         sexo = document.frmnuevo.txtSexo.value;
         idestandar = document.frmnuevo.txtIdEstandar.value;
         idhistorial = document.frmnuevo.txtIdHistorial.value;
-        // alert(fechanac+" - "+sexo);
-        CargarExamenes(idsolicitud, idarea, fechanac, sexo, idestandar, idhistorial);
+        fecha_realizacion = document.frmnuevo.fecha_realizacion.value;
+        fecha_reporte = document.frmnuevo.fecha_reporte.value;
+        fecha_reporte = document.frmnuevo.fecha_reporte.value;
+        txtnec = document.frmnuevo.txtnec.value;
+        CargarExamenes(idsolicitud, idarea, fechanac, sexo, idestandar, idhistorial, fecha_realizacion, fecha_reporte, txtnec);
     }
     else
     {
-        alert("Ingrese el nombre de Responsable");
+        alert("Por favor ingrese los campos obligatorios(*)");
     }
 }
 
@@ -1627,6 +1673,8 @@ function MostrarDatos(posicion)
     //alert(plantilla);
     // alert(idexamen);
      //alert(idarea+"**" +plantilla);
+     posicion_x=(screen.width/2)-(450/2); 
+     posicion_y=(screen.height/2)-(350/2); 
     switch (plantilla)
     {
         case "1":
@@ -1635,7 +1683,7 @@ function MostrarDatos(posicion)
                         "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                         "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                         "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
-                        "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+estabext, "Resultados", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
+                        "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+estabext, "Resultados", "width=1200,height=700,menubar=no,scrollbars=yes,location=no");
             }
             else {
               //  alert(cant_metodologia)
@@ -1644,14 +1692,14 @@ function MostrarDatos(posicion)
                         "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                         "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                         "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
-                        "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext, "Resultados", "width=80%,ccc=700,menubar=no,scrollbars=yes,location=no");
+                        "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext, "Resultados", "width=1200,height=700,scrollbars=yes,location=no");
                 }
                 else{
                    ventana_secundaria = window.open("ProcDatosResultadosExamen_PA2.php?var1=" + idexpediente +
                         "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                         "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                         "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
-                        "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext, "Resultados", "width=80%,ccc=700,menubar=no,scrollbars=yes,location=no"); 
+                        "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext, "Resultados", "width=1200,height=700,scrollbars=yes,location=no"); 
                 }
             }
             break;
@@ -1767,6 +1815,10 @@ function MostrarVistaPreviaPlantillaA1()
         estab = document.getElementById('txtEstablecimiento').value;
         fechanac = document.getElementById('txtFechaNac').value;
         sexo = document.getElementById('txtSexo').value;
+        dias = document.getElementById('dias').value;
+        txtnec = document.getElementById('txtnec').value;
+        fecha_realizacion = document.getElementById('fecha_realizacion').value;
+        fecha_reporte = document.getElementById('fecha_reporte').value;
         //DATOS PARA EL DETALLE DE LOS RESULTADOS
 
         valores_resultados = "";
@@ -1775,6 +1827,7 @@ function MostrarVistaPreviaPlantillaA1()
         valores_inter = "";
         valores_obser = "";
         codigos_examenes = "";
+        examen_metodologia = "";
 
         if (document.getElementById('oculto').value > 0)
         {
@@ -1786,6 +1839,7 @@ function MostrarVistaPreviaPlantillaA1()
                 //valores_inter+= document.getElementById('txtinter['+i+']').value +"/" ;
                 valores_obser += document.getElementById('txtobser[' + i + ']').value + "/";
                 codigos_examenes += document.getElementById('oidexamen[' + i + ']').value + "/";
+                examen_metodologia += document.getElementById('oidexametodologia[' + i + ']').value + "/";
             }
         }
 
@@ -1808,7 +1862,8 @@ function MostrarVistaPreviaPlantillaA1()
                 //"&valores_inter="+encodeURIComponent(valores_inter)+
                 "&valores_obser=" + encodeURIComponent(valores_obser) +
                 "&codigos_examenes=" + escape(codigos_examenes) +
-                "&estab=" + estab + "&fechanac=" + fechanac + "&sexo=" + sexo);
+                "&examen_metodologia=" + escape(examen_metodologia) +
+                "&estab=" + estab + "&fechanac=" + fechanac + "&sexo=" + sexo+ "&dias=" + dias+ "&txtnec=" + txtnec+ "&fecha_realizacion=" + fecha_realizacion+ "&fecha_reporte=" + fecha_reporte);
         ajax.onreadystatechange = function()
         {
             if (ajax.readyState == 4)
@@ -1817,7 +1872,7 @@ function MostrarVistaPreviaPlantillaA1()
                 {  //mostrar los nuevos registros en esta capa
                     document.getElementById('divresultado').style.display = "block";
                     document.getElementById('divresultado').innerHTML = ajax.responseText;
-                    calc_edad();
+                    //calc_edad();
                 }
             }
         }

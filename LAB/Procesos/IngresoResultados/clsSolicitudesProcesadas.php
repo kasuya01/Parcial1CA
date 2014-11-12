@@ -48,7 +48,7 @@ class clsSolicitudesProcesadas {
     function CalculoDias($fechanac) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "SELECT DATEDIFF(NOW( ),'$fechanac')";
+            $query = "select date (current_date)  - date ($fechanac) as dias";
             //  echo $query;
             $result = @pg_query($query);
             if (!$result)
@@ -132,21 +132,21 @@ class clsSolicitudesProcesadas {
     function MostrarDatosFijosPlantillaA($idexamen, $lugar, $sexo, $idedad, $idmetodologia) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "select lce.id  as idexamen, codigo_examen, nombre_examen, unidades, rangoinicio, rangofin,nombre_metodologia, id_metodologia
+            $query = "select lce.id  as idexamen, codigo_examen, nombre_examen, unidades, rangoinicio, rangofin,nombre_metodologia, id_metodologia, nombre_reporta
                 from lab_datosfijosresultado 	ldf
                 join lab_conf_examen_estab	lce on (lce.id = ldf.id_conf_examen_estab)
                 join lab_examen_metodologia 	lem on (lce.id = lem.id_conf_exa_estab)
-                join lab_metodologia		lme on (lme.id = lem.id_metodologia)
+                left join lab_metodologia		lme on (lme.id = lem.id_metodologia)
                 where idestablecimiento=$lugar
                 and id_conf_examen_estab=$idexamen
                 and (current_date between fechaini and (case when fechafin is null then current_date else fechafin end))
                 and (ldf.idsexo is null or ldf.idsexo=$sexo)
                 and (idedad=4 or idedad=$idedad)
                 and  (case $idmetodologia
-			when 0 then id_metodologia>0
+			when 0 then (id_metodologia>0 or id_metodologia is null)
 			else id_metodologia=$idmetodologia
 			end)";
-           //   echo $query;
+            //  echo $query;
             $result = @pg_query($query);
             if (!$result)
                 return false;
@@ -154,28 +154,35 @@ class clsSolicitudesProcesadas {
                 return $result;
         }
     }
-
-    function DatosExamenes($idsolicitud, $idarea, $lugar, $sexo, $idedad) {
+//Fn PG
+    function DatosExamenes($idsolicitud, $idarea, $lugar, $sexo, $idedad, $idestab) {
         //echo $idsolicitud;
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
-            $query = "SELECT  sec_detallesolicitudestudios.IdDetalleSolicitud,
-                            sec_detallesolicitudestudios.IdExamen,lab_examenes.NombreExamen,
-                            lab_datosfijosresultado.Unidades,lab_datosfijosresultado.RangoInicio, 
-                            lab_datosfijosresultado.RangoFin,lab_examenes.IdArea,lab_examenes.IdEstandar   
-                            FROM sec_detallesolicitudestudios 
-                            INNER JOIN lab_examenes on sec_detallesolicitudestudios.IdExamen=lab_examenes.IdExamen
-                            INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
-                            INNER JOIN lab_datosfijosresultado on sec_detallesolicitudestudios.IdExamen=lab_datosfijosresultado.IdExamen
-                            WHERE EstadoDetalle='PM' AND IdSolicitudEstudio=$idsolicitud AND sec_detallesolicitudestudios.IdExamen LIKE'$idarea%'and 		
-                            lab_examenesxestablecimiento.IdPlantilla='A'  
-                            AND lab_datosfijosresultado.IdEstablecimiento=$lugar
-                            AND CURDATE() BETWEEN lab_datosfijosresultado.FechaIni AND IF(lab_datosfijosresultado.FechaFin  = '0000-00-00',CURDATE(),lab_datosfijosresultado.FechaFin) 
-                            AND (lab_datosfijosresultado.idsexo=$sexo OR lab_datosfijosresultado.idsexo=3) AND (idedad=4 OR idedad=$idedad)
-                            ORDER BY NombreExamen";
+            $query = "select sse.id as idsolicitudestudio, sds.id as iddetallesolicitud, sse.id_establecimiento_externo, 
+id_area_servicio_diagnostico, sds.id_conf_examen_estab,nombre_examen, id_area_servicio_diagnostico as idarea, ces.idestandar,
+ldf.unidades, ldf.rangoinicio, ldf.rangofin, lem.id as idexametodologia, nombre_reporta
+            from sec_solicitudestudios 		sse
+            join sec_detallesolicitudestudios	sds on (sse.id=sds.idsolicitudestudio)
+            join lab_conf_examen_estab		lex on (lex.id=sds.id_conf_examen_estab)
+            join mnt_area_examen_establecimiento	mae on (mae.id=lex.idexamen)
+            join ctl_examen_servicio_diagnostico	ces on (ces.id=mae.id_examen_servicio_diagnostico)
+            left join lab_datosfijosresultado 	ldf on (lex.id=ldf.id_conf_examen_estab)
+            join lab_examen_metodologia 	lem on (lex.id=lem.id_conf_exa_estab)
+            where sse.id=$idsolicitud
+            and id_area_servicio_diagnostico=$idarea
+            and estadodetalle=5 
+            and idplantilla=1
+            and ldf.idestablecimiento=$idestab
+            and (current_date between fechaini and (case when fechafin is null then current_date else (fechafin - 1) end))
+            and (ldf.idsexo is null or ldf.idsexo=$sexo)
+                            and (idedad=4 or idedad=$idedad)
+            and sse.id_establecimiento=$lugar
+            and lem.activo=true
+            order by nombre_examen;";
 
-            //echo $query;
+            //echo '<br><br>---'.$query.'---s<br><br>';
             $result = @pg_query($query);
             if (!$result)
                 return false;
@@ -331,6 +338,23 @@ class clsSolicitudesProcesadas {
                 return $result;
         }
     }
+   // Fn PG
+     //Funcion para llener resultados de tabulación
+    function BuscarExaMetodologia($idexamen) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query = "select *, lem.id as idexamet  
+                    from lab_examen_metodologia lem
+                    where id_conf_exa_estab=$idexamen
+                    and activo=true;";
+            $result =@pg_query($query);
+           // echo 'query: '.$query;
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
 // Fn PG
      //Funcion para llener resultados de tabulación
     function BuscarResultados($idestandar) {
@@ -400,10 +424,9 @@ class clsSolicitudesProcesadas {
         INNER JOIN ctl_establecimiento ON sec_historial_clinico.IdEstablecimiento=ctl_establecimiento.IdEstablecimiento
 	WHERE sec_detallesolicitudestudios.IdExamen='$idexamen' AND lab_recepcionmuestra.IdSolicitudEstudio=$idsolicitud 
         AND sec_solicitudestudios.IdEstablecimiento=$lugar AND mnt_expediente.IdEstablecimiento=$lugar";*/
-            $query="
-select sse.id as idsolicitudestudio, nombrearea, numeromuestra, fecharecepcion, lrm.fechahorareg as fecha,
+            $query="select sse.id as idsolicitudestudio, nombrearea, numeromuestra, fecharecepcion, lrm.fechahorareg as fecha,
 (case when id_historial_clinico is not null then id_historial_clinico	
-      else id_dato_referencia end)as idhistoref, id_historial_clinico, id_dato_referencia, sse.id_establecimiento_externo
+      else id_dato_referencia end)as idhistoref, id_historial_clinico, id_dato_referencia, sse.id_establecimiento_externo, id_area_servicio_diagnostico
 from sec_solicitudestudios 		sse
 join sec_detallesolicitudestudios	sds on (sse.id=sds.idsolicitudestudio)
 join lab_recepcionmuestra		lrm on (sse.id=lrm.idsolicitudestudio)
@@ -421,6 +444,37 @@ and sse.id_establecimiento=$lugar;";
                 return $result;
         }
     }
+    
+    
+    //Fn_pg
+    //FUNCION PARA MOSTRAR LOS DATOS GENERALES DE LA SOLICITUD PROCESADA
+    function MostrarResultadoGeneralesPA1($idsolicitud, $lugar, $idarea) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query="select sse.id as idsolicitudestudio, nombrearea, numeromuestra, fecharecepcion, lrm.fechahorareg as fecha,
+(case when id_historial_clinico is not null then id_historial_clinico	
+      else id_dato_referencia end)as idhistoref, id_historial_clinico, id_dato_referencia, sse.id_establecimiento_externo, id_area_servicio_diagnostico
+            from sec_solicitudestudios 		sse
+            join sec_detallesolicitudestudios	sds on (sse.id=sds.idsolicitudestudio)
+            join lab_recepcionmuestra		lrm on (sse.id=lrm.idsolicitudestudio)
+            join lab_conf_examen_estab		lex on (lex.id=sds.id_conf_examen_estab)
+            join mnt_area_examen_establecimiento	mae on (mae.id=lex.idexamen)
+            join ctl_area_servicio_diagnostico	cas on (cas.id=mae.id_area_servicio_diagnostico)
+            where sse.id=$idsolicitud
+            and id_area_servicio_diagnostico=$idarea
+            and sse.id_establecimiento=$lugar;";
+            $result = @pg_query($query);
+           //    echo '<br\>'.$query.'<br\>';
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }//fin MostrarResultadosGeneralesPA1
+    
+    
+    
+    
     //Fn Pg
     function MostrarDatoslabresultado($idexamen, $lugar, $idsolicitud, $iddetalle) {
         $con = new ConexionBD;
@@ -692,7 +746,7 @@ function CantMetodologia($idexamen) {
 
             $query = "insert into lab_resultado_metodologia (id, id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, resultado, observacion, idusuarioreg, fechahorareg, fecha_realizacion, fecha_resultado, id_empleado)
 values ($idnext,$hdnIdMetodologia_, $iddetalle, $hdnCodResult_, $hdnResult_,$hdnObserva_, $usuario, NOW(), $hdnFecProc_, $hdnFecResu_, $hdnResp_);";
-          //  echo $query;
+               //echo $query;
        //     $query2 = "SELECT LAST_INSERT_ID();";
 
             $result = pg_query($query);

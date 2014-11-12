@@ -325,19 +325,65 @@ switch ($opcion) {
         $idexamen = $_POST['idexamen'];
         $idsolicitud = $_POST['idsolicitud'];
         $iddetalle = $_POST['iddetalle'];
-        $resultado = $_POST['resultado'];
-        $lectura = $_POST['lectura'];
-        $observacion = $_POST['observacion'];
+        //$resultado = $_POST['resultado'];
+        $resultado = (empty($_POST['resultado'])) ? 'NULL' : "'" . pg_escape_string($_POST['resultado']) . "'";
+        //$lectura = $_POST['lectura'];
+        $lectura = (empty($_POST['lectura'])) ? 'NULL' : "'" . pg_escape_string($_POST['lectura']) . "'";
+      //$observacion = $_POST['observacion'];
+        $observacion = (empty($_POST['observacion'])) ? 'NULL' : "'" . pg_escape_string($_POST['observacion']) . "'";
         $responsable = $_POST['responsable'];
         $idrecepcion = $_POST['idrecepcion'];
-        $interpretacion = $_POST['interpretacion'];
+        //$interpretacion = $_POST['interpretacion'];
+        $interpretacion = (empty($_POST['interpretacion'])) ? 'NULL' : "'" . pg_escape_string($_POST['interpretacion']) . "'";
         $codigo = $_POST['codigo'];
+        //$fecha_realizacion = $_POST['fecha_realizacion'];
+        $fecha_realizacion = (empty($_POST['fecha_realizacion'])) ? 'NULL' : "'" . pg_escape_string($_POST['fecha_realizacion']) . "'";
+        $fecha_reporte = (empty($_POST['fecha_reporte'])) ? 'NULL' : "'" . pg_escape_string($_POST['fecha_reporte']) . "'";
+        //fecha_reporte = $_POST['fecha_reporte'];
         //echo $codigo;
         //$idexpediente=$_POST['idexpediente'];
-        $verifica = $objdatos->BuscarResultado($idexamen, $idsolicitud, $iddetalle, $lugar);
+        $cantingresados=0;
+        $flag=0;
+        $verifica = @pg_num_rows($objdatos->BuscarResultado($idexamen, $idsolicitud, $iddetalle, $lugar));
+        $idmetodologia=@pg_fetch_array($objdatos->BuscarExaMetodologia($idexamen));
         // echo $verifica[0];
         if ($verifica == 0) {
-            $verdadero = $objdatos->InsertarResultadoPlantillaA($idexamen, $idsolicitud, $iddetalle, $resultado, $lectura, $observacion, $responsable, $lectura, $idrecepcion, $interpretacion, $observacion, $usuario, $codigo, $lugar);
+            $verdadero = $objdatos->InsertarResultadoPlantillaAM($idexamen, $idmetodologia['idexamet'], $responsable, $fecha_realizacion, $fecha_reporte, $resultado, $observacion, $codigo, $idsolicitud, $usuario, $iddetalle, $idrecepcion, $lugar) ;
+            
+            if ($verdadero != 0) {
+                $cantingresados++;
+                if ($objdatos->InsertarResultadoPlantillaAF($idsolicitud, $iddetalle,$idrecepcion, $resultado, $lectura, $interpretacion, $observacion, $lugar, $usuario, $idexamen, $responsable, $fecha_reporte)==false){
+                    echo "Error al momento de validar resultado. Por favor revisar informaci&oacute;n.";
+                    $flag=1;
+                }
+                else{
+                    if (($objdatos->CambiarEstadoDetalle($iddetalle) == true) && ($objdatos->CambiarEstadoSolicitud($idsolicitud) == true)) {
+                            echo "<center> Resultados de Solicitud Completa. </center>";
+                        }
+                }
+              //  echo "<center>Datos Guardados</center>";
+
+            } else {
+                echo "<center>Error al momento de guardar resultados. Por favor revisar informaci&oacute;n.</center>";
+                $flag=1;
+            }
+            
+            if ($flag==0){	
+                    if ($cantingresados>0){
+	echo "Registro grabado correctamente";
+                    }
+                    else{
+                        echo "No se ha ingresado ningún resultado";
+                    }
+	}
+
+	else{
+		echo "Error de grabacion";
+	}
+            
+            
+         /*   
+            $verdadero = $objdatos->InsertarResultadoPlantillaA($idexamen, $idsolicitud, $iddetalle, $resultado, $lectura, $observacion, $responsable, $lectura, $idrecepcion, $interpretacion, $observacion, $usuario, $codigo, $lugar, $fecha_realizacion, $fecha_reporte);
 
             if ($verdadero != 0) {
                // echo "Datos Guardados";
@@ -346,7 +392,7 @@ switch ($opcion) {
                 }
             } else {
                 echo "No guardo";
-            }
+            }*/
         } else {
             echo "Ya Existe un Resultado para esta prueba";
         }
@@ -354,8 +400,9 @@ switch ($opcion) {
 
         break;
 
-    case 4: //MOSTRAR PREVIAMENTE LOS RESULTADOS
+    case 4: //MOSTRAR PREVIAMENTE LOS RESULTADOS  //Plantilla A
         $idsolicitud = $_POST['idsolicitud'];
+        $iddetalle = $_POST['iddetalle'];
         $cod = $_POST['codigo'];
 
         $idexamen = $_POST['idexamen'];
@@ -372,13 +419,15 @@ switch ($opcion) {
         $sexo = $_POST['sexo'];
         $idmetodologia = $_POST['cmbmetodologia'];
         $txtnec = $_POST['nec'];
+        $fecha_realizacion = $_POST['fecha_realizacion'];
+        $fecha_reporta = $_POST['fecha_reporta'];
 
         $Consulta_Estab = $objdatos->Nombre_Establecimiento($lugar);
         $row_estab = pg_fetch_array($Consulta_Estab);
-
+        
         //Buscar Datos Paciente
         
-         echo $idsolicitud." - ".$idexamen." - ".$lugar." - ".$sexo." - ".$idedad;
+       //  echo $idsolicitud." - ".$idexamen." - ".$lugar." - ".$sexo." - ".$idedad;
         $consulta = $objdatos->MostrarResultadoGenerales($idsolicitud, $idexamen, $lugar);
         $row = pg_fetch_array($consulta);
         $nombre = $row['nombrearea'];
@@ -410,18 +459,20 @@ switch ($opcion) {
                         <td colspan='1' align='right' width='20%'><img id='Image3' style='WIDTH: 110px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
                     </tr>
                     <tr>
-                        <td colspan='6' align='center'></td>
+                        <td colspan='6' align='center'><hr><br></td>
                     </tr>
                     <tr>
                     	<td colspan='1' style='font:bold'><strong>Establecimiento:</strong></td>
                     	<td colspan='2' style='font:bold'>" . $establecimiento . "</td>
-                    	<td colspan='1'style='font:bold'><strong>Fecha:</strong></td>
+                    	<td colspan='1'style='font:bold'><strong>Fecha Recepción:</strong></td>
                     	<td colspan='2' style='font:bold'>" . $row['fecharecepcion'] . "<input name='suEdad' id='suEdad'  type='hidden'  value='" . $rowpa['fecha_nacimiento'] . "'/></td>
                     </tr>
 
                     <tr>
                     	<td colspan='1' style='font:bold'><strong>NEC:</strong></td>
-			<td colspan='2' style='font:bold'>" . $txtnec . "</td></tr>
+			<td colspan='2' style='font:bold'>" . $txtnec . "</td>
+                            <td colspan='1' style='font:bold'><strong>Fecha Reporte:</strong></td>
+			<td colspan='2' style='font:bold'>" . $fecha_reporta . "</td></tr>
 		    <tr>
                         <td colspan='1' style='font:bold'><strong>paciente:</strong></td>
 			<td colspan='5' style='font:bold'>" . $rowpa['nombre'] . "</td>
@@ -435,7 +486,7 @@ switch ($opcion) {
 			<td colspan='1' style='font:bold'><strong>Sexo:</strong></td>
 			<td colspan='2' style='font:bold'>" . $rowpa['sexo'] . "</td>
                     </tr>
-                     </tr>
+                     <tr>
                     	<td colspan='1'style='font:bold'><strong>Procedencia:</strong></td>
                     	<td colspan='2''>" . $proce . "</td>
                     	<td colspan='1' style='font:bold'><strong>Servicio:</strong></td>
@@ -466,8 +517,11 @@ switch ($opcion) {
                             <td colspan='6' align='center' >&nbsp;DETALLE DE RESULTADOS</td>
                         </tr>
                         <tr >
-                            <td align='center'>Prueba Realizada </td>
-                            <td align='center'>Metodología </td>
+                            <td align='center'>Prueba Realizada </td>";
+        if ($idmetodologia!=0){
+            $Imprimir.="<td align='center'>Metodología </td>";
+        }
+        $Imprimir.="                    
                             <td align='center'>Resultado</td>
                             <td align='center'>Unidades</td>
                             <td align='center'>Rangos Normales </td>
@@ -482,8 +536,12 @@ switch ($opcion) {
         $fila = pg_fetch_array($consulta2);
 
         $Imprimir.="<tr>
-                            <td align='center' style='font:bold'><strong>" . $fila['nombre_examen'] . "</strong></td>
-                            <td align='center' style='font:bold'><strong>" . $fila['nombre_metodologia'] . "</strong></td>
+                            <td align='center' style='font:bold'><strong>" . $fila['nombre_reporta'] . "</strong></td>";
+        if ($idmetodologia!=0){
+            $Imprimir.="<td align='center' style='font:bold'><strong>" . $fila['nombre_metodologia'] . "</strong></td>";
+        }
+        $Imprimir.="   
+                            
 			    <td align='center'>" . $resultado . "</td>
 			    <td align='center'>" . $fila['unidades'] . "</td>
 			    <td align='center'>" . $fila['rangoinicio'] . " - " . $fila['rangofin'] . "</td>
@@ -509,9 +567,10 @@ switch ($opcion) {
 			</tr>
                         <tr>
                             <td colspan='7' align='center' >
-				<input type='submit' id='btnGuardar' value='Guardar Resultados' Onclick='GuardarResultados();' />
-				<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . htmlentities($resultado) . "\", \"" . htmlentities($lectura) . "\",\"" . htmlentities($interpretacion) . "\",\"" . htmlentities($observacion) . "\",\"" . $responsable . "\",\"" . $sexo . "\",\"" . $idedad . "\") ;'>
-				<input type='submit' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' />
+                            <button type='button' id='btnGuardar' align='center' class='fg-button ui-state-default ui-corner-all' title='Guardar Resultados'  onclick='GuardarResultados();'>Guardar Resultados</button>
+                            <button type='button' id='Imprimir' name='Imprimir' align='center' class='fg-button ui-state-default ui-corner-all' title='Imprimir'  onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $resultado . "\",\"" . $fecha_reporta . "\", \"" . $lectura . "\",\"" . $interpretacion . "\",\"" . $observacion . "\",\"" . $responsable . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec . "\",\"" . $proce . "\",\"" . $origen . "\",\"" . $iddetalle . "\") ;'>Imprimir</button>
+                            
+                            <button type='button' id='btnSalir' align='center' class='fg-button ui-state-default ui-corner-all' title='Cerrar'  onclick='Cerrar();'>Cerrar</button>
                             </td>
 			</tr>
 			</table>";
@@ -919,7 +978,7 @@ switch ($opcion) {
 			    <td align='center'>Observaci&oacute;n</td>
 			</tr>
                     <tr>
-                            <td align='center' style='font:bold'><strong>".$fila['nombre_examen']."</strong></td>
+                            <td align='center' style='font:bold'><strong>".$fila['nombre_reporta']."</strong></td>
 			    <td align='center'>".$v_resultfin."</td>
 			    <td align='center'>".$fila['unidades']."</td>
 			    <td align='justify'>".$fila['rangoinicio']." - ".$fila['rangofin']."</td>
