@@ -60,22 +60,22 @@ switch ($opcion)
                     $cond2 .= " t06.numero = '" . $_POST['idexpediente'] . "' AND";
                  }
                  
-                 if (!empty($_POST['PNombre'])) {
+                 if (!empty($_POST['primernombre'])) {
                     $cond1 .= " t07.primer_nombre ILIKE '" . $_POST['primernombre'] . "%' AND";
                     $cond2 .= " t07.primer_nombre ILIKE '" . $_POST['primernombre'] . "%' AND";
                 }
 
-                if (!empty($_POST['SNombre'])) {
+                if (!empty($_POST['segundonombre'])) {
                     $cond1 .= " t07.segundo_nombre ILIKE '" . $_POST['segundonombre'] . "%' AND";
                     $cond2 .= " t07.segundo_nombre ILIKE '" . $_POST['segundonombre'] . "%' AND";
                 }
 
-                if (!empty($_POST['PApellido'])) {
+                if (!empty($_POST['primerapellido'])) {
                     $cond1 .= " t07.primer_apellido ILIKE '" . $_POST['primerapellido'] . "%' AND";
                     $cond2 .= " t07.primer_apellido ILIKE '" . $_POST['primerapellido'] . "%' AND";
                 }
 
-                if (!empty($_POST['SApellido'])) {
+                if (!empty($_POST['segundoapellido'])) {
                     $cond1 .= " t07.segundo_apellido ILIKE '" . $_POST['segundoapellido'] . "%' AND";
                     $cond2 .= " t07.segundo_apellido ILIKE '" . $_POST['segundoapellido'] . "%' AND";
                 }
