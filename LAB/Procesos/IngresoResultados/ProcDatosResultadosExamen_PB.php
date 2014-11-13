@@ -13,6 +13,8 @@ $area    = $_SESSION['Idarea'];
     <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script> 
     <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
     <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+    <link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
     <script language="JavaScript" >
         function Guardar() {
             GuardarResultadosPlantillaB();
@@ -178,6 +180,7 @@ $area    = $_SESSION['Idarea'];
                                     <input type="hidden" name="txtSexo" id="txtSexo" value="<?php echo $_GET['var15']?>" />
                                     <input type="hidden" name="txtIdEstandar" id="txtIdEstandar" value="<?php echo $_GET['var16']?>" />
                                     <input type="hidden" name="txtIdHistorial" id="txtIdHistorial" value="<?php echo $_GET['var17']?>" />
+                                    
                                 </td>
                             </tr>
                             <tr>
@@ -235,18 +238,29 @@ $area    = $_SESSION['Idarea'];
                             </tr>
                             <tr>
                                 <td class="StormyWeatherFieldCaptionTD">Observaci&oacute;n </td>
-                                <td class="StormyWeatherDataTD"colspan="4">
+                                <td class="StormyWeatherDataTD" colspan="4">
                                     <textarea name="txtobservacion" cols="60" id="txtobservacion"></textarea>
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="StormyWeatherFieldCaptionTD">Fecha y hora inicio Proceso</td>
+                                <td class="StormyWeatherDataTD">
+                                        <input type="text" class="datepicker" id="v_resultfin"  name="txtresultrealiza" size="15">										
+                                </td>
+                            
+                                <td class="StormyWeatherFieldCaptionTD">Fecha Resultado</td>
+                                <td class="StormyWeatherDataTD" colspan="2">
+                                        <input type="text" class="datepicker" name="txtresultfin" id="d_resultfin" size="15"  value="<?php echo date("Y-m-d h:m"); ?>"  />	
+                                </td>
+                            </tr>
                             <?php 
-                            if ($bandera==1){
+                          if ($bandera==1){
                                 ?>
-                                <tr>
-                                    <td colspan="4"  class="StormyWeatherDataTD" align="center" style="color:#DD0000; font:bold">
-                                        <h3>El m&eacute;dico ha solicitado la impresi&oacute;n de este Resultado </h3>
-                                    </td>
-                                </tr>
+                            <tr>
+                                 <td colspan="4"  class="StormyWeatherDataTD" align="center" style="color:#DD0000; font:bold">
+                                       <h3>El m&eacute;dico ha solicitado la impresi&oacute;n de este Resultado </h3>
+                                  </td>
+                            </tr>
                                 <?php 
                             }?>
                             <tr>
@@ -272,5 +286,13 @@ $area    = $_SESSION['Idarea'];
         </td>
     </tr>
 </table>
+<script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon-i18n.min.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-es.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-sliderAccess.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/script.js">
+</script>     
 </body>
 </html>

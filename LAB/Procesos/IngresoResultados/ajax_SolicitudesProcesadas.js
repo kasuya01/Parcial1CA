@@ -1272,6 +1272,8 @@ function MostrarVistaPreviaPlantillaB(){
         tab = document.getElementById('cmbTabulador').value;
         fechanac = document.getElementById('txtFechaNac').value;
         sexo = document.getElementById('txtSexo').value;
+        fecharealiz = document.getElementById('txtresultrealiza').value;
+        fecharesultado=document.getElementById('txtfresultado').value;
         // alert (idsolicitud+"-"+idrecepcion+"-"+iddetalle+"-"+idexamen+"-"+observacion+"-"+estab);
         // alert (fechanac+"-"+sexo);
         //DATOS PARA EL DETALLE DE LOS RESULTADOS
@@ -1309,7 +1311,8 @@ function MostrarVistaPreviaPlantillaB(){
                 "&iddetalle=" + iddetalle + "&observacion=" + observacion + "&idempleado=" + idempleado + "&procedencia=" + escape(procedencia) +
                 "&origen=" + escape(origen) + "&valores_subelementos=" + encodeURIComponent(valores_subelementos) + "&codigos_subelementos=" + codigos_subelementos +
                 "&valores_elementos=" + encodeURIComponent(valores_elementos) + "&codigos_elementos=" + codigos_elementos + "&controles=" + encodeURIComponent(controles) +
-                "&controles_ele=" + encodeURIComponent(controles_ele) + "&estab=" + estab + "&tab=" + tab + "&fechanac=" + fechanac + "&sexo=" + sexo);
+                "&controles_ele=" + encodeURIComponent(controles_ele) + "&estab=" + estab + "&tab=" + tab + "&fechanac=" + fechanac + "&sexo=" + sexo+
+                "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado);
         ajax.onreadystatechange = function()
         {
             if (ajax.readyState == 4)
@@ -1354,7 +1357,8 @@ function GuardarResultadosPlantillaB()
     procedencia = document.getElementById('txtprocedencia').value;
     origen = document.getElementById('txtorigen').value;
     tab = document.getElementById('cmbTabulador').value;
-
+    fecharealiz = document.getElementById('txtresultrealiza').value;
+    fecharesultado=document.getElementById('txtfresultado').value;
     //DATOS PARA EL DETALLE DE LOS RESULTADOS
     valores_subelementos = "";
     codigos_subelementos = "";
@@ -1389,7 +1393,8 @@ function GuardarResultadosPlantillaB()
     ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idsolicitud=" + idsolicitud + "&idrecepcion=" + idrecepcion +
             "&iddetalle=" + iddetalle + "&observacion=" + observacion + "&idempleado=" + idempleado + "&procedencia=" + procedencia + "&origen=" + origen + "&valores_subelementos=" +
             encodeURIComponent(valores_subelementos) + "&codigos_subelementos=" + codigos_subelementos + "&valores_elementos=" + encodeURIComponent(valores_elementos) +
-            "&codigos_elementos=" + codigos_elementos + "&controles=" + encodeURIComponent(controles) + "&controles_ele=" + encodeURIComponent(controles_ele) + "&tab=" + tab);
+            "&codigos_elementos=" + codigos_elementos + "&controles=" + encodeURIComponent(controles) + "&controles_ele=" + encodeURIComponent(controles_ele) + "&tab=" + tab +
+            "&fecharealiz="+ fecharealiz + "&fecharesultado="+fecharesultado);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -1523,12 +1528,13 @@ function CargarExamenes(idsolicitud, idarea, fechanac, sexo, idestandar, idhisto
 
 
 //FUNCION PARA CARGAR LOS ELEMENTOS Y SUBELEMENTOS DE UN EXAMEN
-function CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial)
+function CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial,fecharealiz,fecharesultado)
 {
     ajax = objetoAjax();
     idexamen = codigoex;
     FechaNac = fechanac;
     Sexo = sexo;
+    
     opcion = 1;
 
     //alert("Entro a cargar otros datos, opcion: "+opcion+"examen "+idexamen);
@@ -1536,7 +1542,9 @@ function CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
-    ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&FechaNac=" + FechaNac + "&Sexo=" + Sexo + "&idestandar=" + idestandar + "&idhistorial=" + idhistorial);
+    ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&FechaNac=" + FechaNac + "&Sexo=" + Sexo + 
+            "&idestandar=" + idestandar + "&idhistorial=" + idhistorial+"&fecharealiz="+fecharealiz+
+              "&fecharesultado="+fecharesultado);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)

@@ -18,6 +18,10 @@ switch ($opcion) {
 		$idexamen = $_POST['idexamen'];
 		$fechanac = $_POST['FechaNac'];
 		$sexo 	  = $_POST['Sexo'];
+                $fecharealiz=$_POST['fecharealiz'];
+                $fecharesultado=$_POST['fecharesultado'];
+                
+               // echo $fecharealiz."-".$fecharesultado;
                 $ConRangos   = $objdatos->ObtenerCodigoRango($fechanac);
 		$row_rangos  = pg_fetch_array($ConRangos);
 		$idedad      = $row_rangos[0];
@@ -25,7 +29,7 @@ switch ($opcion) {
 		$CodEstandar = pg_fetch_array($ConEstandar);
 		$codigo_estandar  = $CodEstandar[0];
 		$IdEstandar	 = $CodEstandar[1];
-
+               
 		switch ($codigo_estandar) {
 			case "H50":
 				$consulta = $objdatos->LeerElementosExamen($idexamen,$lugar);
@@ -61,6 +65,7 @@ switch ($opcion) {
 								</tr>";
 							$pos=$pos + 1;
 						}
+                                                     
 						pg_free_result($consulta2);
 						$imprimir.="<tr>
 								<td colspan='5' class='StormyWeatherDataTD'>".htmlentities($row['observelem'])."</td>
@@ -69,7 +74,7 @@ switch ($opcion) {
 								<td colspan='5' class='StormyWeatherDataTD'>&nbsp;</td>
 							</tr>";
 					} else {
-						$imprimir.="<tr>
+					$imprimir.="<tr>
 								<td class='StormyWeatherFieldCaptionTD' style='font:bold'>".htmlentities($row['elemento'])."</td>
 								<td class='StormyWeatherDataTD'>
 									<input size='20' name='txtresultadoele[".$posele."]' type='text' id='txtresultadoele[".$posele."]'>
@@ -79,6 +84,7 @@ switch ($opcion) {
 								<td class='StormyWeatherDataTD' width='30%'><input name='txtcontrolele[".$posele."]' type='text' id='txtcontrolele[".$posele."]'></td>
 								<td width='10%' class='StormyWeatherDataTD'>".htmlentities($row['unidadelem'])."</td>
 							</tr>";
+                                               
 						$posele=$posele + 1;
 						$imprimir.= "<tr>
 								<td rowspan='1' colspan='5' class='StormyWeatherDataTD'>".htmlentities($row['observelem'])."</td>
@@ -90,9 +96,11 @@ switch ($opcion) {
 				}
 				
 				pg_free_result($consulta);
-
+                                $imprimir.= "  <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
+                                                <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
 				$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>";	//numero de cajas de texto dibujadas para subelementos
 				$imprimir .="<input  type='hidden' id='ocultoele' value='".$posele."'>"; //elementos
+                                 
 				$imprimir.="<tr>
 						<td colspan='2'  class='StormyWeatherDataTD'>*Resultado Tabulador</td>
 						<td colspan='3' class='StormyWeatherDataTD'>
@@ -103,6 +111,7 @@ switch ($opcion) {
 										$imprimir.="<option value='" . $rows[0] ."' >".$rows[0]." - ". htmlentities($rows[1])."</option>";
 									}
 				$imprimir.="</select></td></tr>";
+                                
 				$imprimir.="<tr>
 						<td colspan='5'><input type='button' name='Submit' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaB()'></td>
 					</tr>
@@ -171,7 +180,10 @@ switch ($opcion) {
 							</tr></table>";
 					}//else
 				}//while externo
+                                
 				pg_free_result($consulta);
+                                 $imprimir.= "  <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
+                                                <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
 				$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>"	;	//numero de cajas de texto dibujadas para subelementos
 				$imprimir .="<input  type='hidden' id='ocultoele' value='".$posele."'>" ; //elementos
 				$imprimir.="<table width='70%' border='0' align='center' class='StormyWeatherFormTABLE'>
@@ -214,17 +226,15 @@ switch ($opcion) {
 	   	$tab 		      = $_POST['tab'];
 	   	$fechanac 	      = $_POST['fechanac'];
 	   	$sexo 		      = $_POST['sexo'];
-
+                $fecharealiz=$_POST['fecharealiz'];
+                $fecharesultado=$_POST['fecharesultado'];
+                // echo $fecharealiz."-".$fecharesultado;
 	   	$Consulta_Estab  = $objdatos->Nombre_Establecimiento($lugar);
 	   	$row_estab   	 = pg_fetch_array($Consulta_Estab);
 	   	$ConEstandar 	 = $objdatos->Obtener_Estandar($idexamen);
 	   	$CodEstandar 	 = pg_fetch_array($ConEstandar);
 	   	$codigo_estandar = $CodEstandar[0];
 		$IdEstandar	 = $CodEstandar[1];
-
-	   	/*$Cuentadias=$objdatos->CalculoDias($fechanac);
-	   	$Cdias= pg_fetch_array($Cuentadias);
-	   	$dias=$Cdias[0];*/
 
 	   	$ConRangos=$objdatos->ObtenerCodigoRango($fechanac);
 	   	$row_rangos=  pg_fetch_array($ConRangos);
@@ -237,13 +247,14 @@ switch ($opcion) {
 		   		$vector_elementos 	  = EXPLODE("/",$valores_elementos);
 		   		$vector_controles 	  = EXPLODE("/",$controles);
 		   		$vector_controles_ele = EXPLODE("/",$controles_ele);
-		   		$objdatos 			  = new clsConsultarElementos;
-		   		$consulta 			  = $objdatos->LeerElementosExamen($idexamen,$lugar);
+		   		$objdatos 		  = new clsConsultarElementos;
+		   		$consulta 		  = $objdatos->LeerElementosExamen($idexamen,$lugar);
 		   		$consulta_datos 	  = $objdatos->LeerDatos($idexamen);
 		   		$datos_generales 	  = $objdatos->MostrarDatosGenerales($idsolicitud,$lugar);
 		   		$datos_empleado 	  = $objdatos->DatosEmpleado($idempleado,$lugar);
+                                //$datos_rep                =$objdatos->NombreResultado($idexamen);
 		   		$row_generales 		  = pg_fetch_array($datos_generales);
-		   		$row_area  			  = pg_fetch_array($consulta_datos);
+		   		$row_area  		  = pg_fetch_array($consulta_datos);
 		   		$row_empleado 		  = pg_fetch_array($datos_empleado);
 
 	   			$imprimir="<table width='92%' align='center' >
@@ -266,7 +277,8 @@ switch ($opcion) {
 				   			<td colspan='1'><strong>N&uacute;mero de Expediente:</strong></td>
 				   			<td colspan='2'>".$row_generales['idnumeroexp']."</td>
 				   		</tr>
-			   			<tr> <td colspan='1'><strong>Paciente:</strong></td>
+			   			<tr>    
+                                                        <td colspan='1'><strong>Paciente:</strong></td>
 			   				<td colspan='5'>".$row_generales['nombrepaciente']."</td>
 			   			</tr>
 		   				<tr>
@@ -367,6 +379,8 @@ switch ($opcion) {
 				pg_free_result($consulta);
 	            $imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>"	;	//numero de cajas de texto dibujadas para subelementos
 	            $imprimir .="<input  type='hidden' id='ocultoele' value='".$posele."'>"; //elementos
+                    $imprimir.="<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' value='".$fecharealiz."'>
+                                 <input type='hidden' name='txtfresultado' id='txtfresultado' value='".$fecharesultado."' />";
 	            $imprimir .="<td colspan='3' align='right'>
 			                    <input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaB()'>
 			                    <input type='button' name='Imprimir'  id='Imprimir' value='Imprimir'
@@ -463,52 +477,50 @@ switch ($opcion) {
 		    	$pos    = 0;
 		    	$posele = 0;
 				
-				while($row = pg_fetch_array($consulta)) { //ELEMENTOS
-					if($row['subelemento']=="S") {
-						$imprimir.= "<tr>
-								<td colspan='4' style='font:bold'><strong>".htmlentities($row['elemento'])."</strong></td>
-							</tr>";
+            while($row = pg_fetch_array($consulta)) { //ELEMENTOS
+                if($row['subelemento']=="S") {
+			$imprimir.= "<tr>
+					<td colspan='4' style='font:bold'><strong>".htmlentities($row['elemento'])."</strong></td>
+		  		     </tr>";
+					$consulta2 = $objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
+		    while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
+  			 $imprimir.="<tr>
+					<td width='35%'>".htmlentities($rowsub['subelemento'])."</td>
+					<td width='25%'>".htmlentities($vector[$pos])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>
+					<td width='10%'>".htmlentities($rowsub['unidad'])."</td>";
+			if (empty($rowsub['rangoinicio']) AND empty($rowsub['rangofin']))
+			    $imprimir.= "<td >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+			else
+			    $imprimir.= "<td width='15%'>".$rowsub['rangoinicio']." - ".$rowsub['rangofin']."</td> ";
+			  $imprimir.="</tr>";
+					$pos = $pos + 1;
+		    }
 						
-						$consulta2 = $objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
-
-						while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
-							$imprimir.="<tr>
-									<td width='35%'>".htmlentities($rowsub['subelemento'])."</td>
-									<td width='25%'>".htmlentities($vector[$pos])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>
-									<td width='10%'>".htmlentities($rowsub['unidad'])."</td>";
-							
-							if (empty($rowsub['rangoinicio']) AND empty($rowsub['rangofin']))
-								$imprimir.= "<td >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-							else
-								$imprimir.= "<td width='15%'>".$rowsub['rangoinicio']." - ".$rowsub['rangofin']."</td> ";
-							
-							$imprimir.="</tr>";
-							$pos = $pos + 1;
-						}
-						
-						$imprimir.= "<tr>
-								<td colspan='5'>".htmlentities($row['observelem'])."</td>
-							</tr>";
-					} else {
-						$imprimir.= "<tr>
-								<td style='font:bold'  class='StormyWeatherFieldCaptionTD'>".htmlentities($row['elemento'])."</td>
-								<td>".htmlentities($vector_elementos[$posele])."<input name='oidelemento[".$posele."]' type='hidden' id='oidelemento[".$posele."]' value='".$row['idelemento']."'>			  </td>
-								<td width='25%'>".htmlentities($row['unidadelem'])."</td>
-							</tr>";
+			 $imprimir.= "<tr>
+			 		 <td colspan='5'>".htmlentities($row['observelem'])."</td>
+				      </tr>";
+		}else {
+			$imprimir.= "<tr>
+			 		 <td style='font:bold'  class='StormyWeatherFieldCaptionTD'>".htmlentities($row['elemento'])."</td>
+					 <td>".htmlentities($vector_elementos[$posele])."<input name='oidelemento[".$posele."]' type='hidden' id='oidelemento[".$posele."]' value='".$row['idelemento']."'>			  </td>
+					 <td width='25%'>".htmlentities($row['unidadelem'])."</td>
+				     </tr>";
 						
 						$posele = $posele+1;
 						$imprimir.= "<tr>
 								<td colspan='5'>".htmlentities($row['observelem'])."</td>
 							</tr>";
-					}
-				}
+		 }
+	    }
 
-				pg_free_result($consulta);
-				pg_free_result($consulta_datos);
-				pg_free_result($datos_generales);
+		pg_free_result($consulta);
+		pg_free_result($consulta_datos);
+		pg_free_result($datos_generales);
 
 				$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>"	;	//numero de cajas de texto dibujadas para subelementos
 				$imprimir .="<input  type='hidden' id='ocultoele' value='".$posele."'>" ; //elementos
+                                 $imprimir.="<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' value='".$fecharealiz."'>
+                                             <input type='hidden' name='txtfresultado' id='txtfresultado' value='".$fecharesultado."' />";
 				$imprimir.="<tr>
 							<td colspan='5' align='center' >
 								<input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaB()'>
@@ -546,9 +558,11 @@ switch ($opcion) {
 		$vector_controles 	  = EXPLODE("/",$controles);
 		$vector_controles_ele = EXPLODE("/",$controles_ele);
 		$tab 				  = $_POST['tab'];
-  		
+  		$fecharealiz=$_POST['fecharealiz'];
+                $fecharesultado=$_POST['fecharesultado'];
+                echo $fecharealiz."-".$fecharesultado;
   		//VALIDANDO QUE LA INFORMACION ESTE COMPLETA:
-		$ultimo = $objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$idempleado,$usuario,$tab,$lugar);
+		$ultimo = $objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$idempleado,$usuario,$tab,$fecharealiz,$fecharesultado,$lugar);
 		$pos = 0;
 		$posele = 0;
 		$ban = 0;
