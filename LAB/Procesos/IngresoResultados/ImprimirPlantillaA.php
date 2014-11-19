@@ -152,10 +152,11 @@ $responsable=$filares['idempleado'];
                             <td align="center" class="Estilo5"><strong>Resultado</strong></td>
                             <td align="center" class="Estilo5"><strong>Unidades</strong></td>
                             <td align="center" class="Estilo5"><strong>Rangos Normales</strong> </td>
-                            <td align="center" class="Estilo5"><strong>Lectura</strong></td>
-                            <td align="center" class="Estilo5"><strong>Interpretación</strong></td>
-                            <td align="center" class="Estilo5"><strong>Observación</strong></td>
+                            <td align="justify" class="Estilo5"><strong>Lectura</strong></td>
+                            <td align="justify" class="Estilo5"><strong>Interpretación</strong></td>
+                            <td align="justify" class="Estilo5"><strong>Observación</strong></td>
                         </tr>
+                        <tr><td colspan="7"><hr></td><tr/>
                         <tr>
                             <td align="left" class="Estilo5"><?php echo $fila['nombre_reporta'];?></td>
                             <td align="center" class="Estilo5"><?php echo $resultado?></td>

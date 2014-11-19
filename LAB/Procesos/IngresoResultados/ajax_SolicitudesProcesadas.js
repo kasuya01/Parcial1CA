@@ -230,18 +230,17 @@ function GuardarResultados()
     iddetalle = document.frmnuevo.txtiddetalle.value;
     idexamen = document.frmnuevo.txtidexamen.value;
     idrecepcion = document.frmnuevo.txtidrecepcion.value;
-    resultado = document.frmnuevo.txtresultado.value;
-    lectura = document.frmnuevo.txtlectura.value;
-    interpretacion = document.frmnuevo.txtinterpretacion.value;
-    observacion = document.frmnuevo.txtcomentario.value;
-    responsable = document.frmnuevo.cmbEmpleados.value;
+    resultado = document.getElementById('resultado_').value;
+    lectura = document.getElementById('lectura_').value;
+    interpretacion = document.getElementById('interpretacion_').value;
+    observacion = document.getElementById('observacion_').value;
+    responsable = document.getElementById('idempleado_').value;
     procedencia = document.frmnuevo.txtprocedencia.value;
     origen = document.frmnuevo.txtorigen.value;
-    codigo = document.frmnuevo.cmbResultado2.value;
-    fecha_realizacion = document.frmnuevo.fecha_realizacion.value;
-    fecha_reporte = document.frmnuevo.fecha_reporte.value;
+    codigo = document.getElementById('codresultado_').value;
+    fecha_realizacion = document.getElementById('fecha_realiza_').value;
+    fecha_reporte = document.getElementById('fecha_reporte_').value;
     opcion = 3;
-
 
     ajax.open("POST", "ctrSolicitudesProcesadas.php", true);
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -354,7 +353,7 @@ function ImprimirPlantillaA(idsolicitud, idexamen, resultado, f_resultado, lectu
 }
 
 //function ImprimirPlantillaA1(idsolicitud,idarea,responsable,valores_resultados,codigos_resultados,valores_lecturas,valores_inter,valores_obser,cod_examen,establecimiento,sexo,idedad){
-function ImprimirPlantillaA1(idsolicitud, idarea, responsable, valores_resultados, codigos_resultados, valores_obser, cod_examen, establecimiento, sexo, idedad, examen_metodologia, txtnec) {
+function ImprimirPlantillaA1(idsolicitud, idarea, responsable, valores_resultados, codigos_resultados, valores_obser, cod_examen, establecimiento, sexo, idedad, examen_metodologia, txtnec, fecha_reporte , procedencia, origen) {
 //lert (sexo+" edad "+idedad);
     ventana_secundaria = window.open("ImprimirPlantillaA1.php?var1=" + idsolicitud +
             "&var2=" + idarea + "&var3=" + escape(responsable) +
@@ -368,7 +367,10 @@ function ImprimirPlantillaA1(idsolicitud, idarea, responsable, valores_resultado
             "&var11=" + sexo +
             "&var12=" + idedad+
             "&var13=" + examen_metodologia+
-            "&var14=" + txtnec , "ImprimirA1", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
+            "&var15=" + fecha_reporte+
+            "&var16=" + procedencia+
+            "&var17=" + origen+
+            "&var14=" + txtnec , "ImprimirA1", "width=700,ccc=500,menubar=no,scrollbars=yes,location=no");
 }
 
 function ImprimirPlantillaB(idsolicitud, idexamen, responsable, procedencia, origen, observacion, valores_subelementos, codigos_subelementos, valores_elementos, codigos_elementos, controles, controles_ele, nombrearea, establecimiento, responsable, sexo, idedad) {
@@ -1070,15 +1072,17 @@ function enviarDatosResult(val, paso){
  if (val==1)
  {
  v_resultfin=document.getElementById('v_resultfin').value;
+ d_resultfin=document.getElementById('d_resultfin').value;
+ cmbEmpleadosfin=document.getElementById('cmbEmpleadosfin').value;
  parametros=parametros+"&v_resultfin="+document.getElementById('v_resultfin').value;
  parametros=parametros+"&v_obseresultfin="+document.getElementById('v_obseresultfin').value;
  parametros=parametros+"&cmbEmpleadosfin="+document.getElementById('cmbEmpleadosfin').value;
  parametros=parametros+"&d_resultfin="+document.getElementById('d_resultfin').value;
  parametros=parametros+"&v_interpretacion="+document.getElementById('txtinterpretacionfin').value;
  parametros=parametros+"&v_lectura="+document.getElementById('txtlecturafin').value;
-	if (v_resultfin=="")
+	if (v_resultfin=="" || d_resultfin=="" || cmbEmpleadosfin==0)
 	{
-		alert ("No ha ingresado el resultado final para poder validar y guardar");
+		alert ("Revise que ha ingresado información en Resultado, Fecha Resultado y Persona que valido por favor");
 		return false;
 	}
 /*	//consultar cuantas pruebas de seguimiento tiene
@@ -1820,7 +1824,7 @@ function MostrarVistaPreviaPlantillaA1()
         fecha_realizacion = document.getElementById('fecha_realizacion').value;
         fecha_reporte = document.getElementById('fecha_reporte').value;
         //DATOS PARA EL DETALLE DE LOS RESULTADOS
-
+        
         valores_resultados = "";
         codigos_resultados = "";
         valores_lecturas = "";

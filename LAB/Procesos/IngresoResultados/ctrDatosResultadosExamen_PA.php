@@ -46,12 +46,12 @@ switch ($opcion)
 	$imprimir="";
 
 	$consulta=$objdatos->DatosExamenes($idsolicitud,$idarea,$lugar,$sexo,$idedad, $lugar);
-
+        if (pg_num_rows($consulta) >0){
 	echo "<table width='65%'  align='center' border='0' class='StormyWeatherFormTABLE'><tr>";
 	$pos=0;
 	 while($row = pg_fetch_array($consulta))
 	 {
-	    $imprimir= "<table width='75%'  align='center' border='0' class='StormyWeatherFormTABLE'>
+	    $imprimir= "
                             <tr class='CobaltButton'>
                                 <td width='30%' class='StormyWeatherFieldCaptionTD'>Prueba Realizada </td>
 				<td width='35%' class='StormyWeatherDataTD'>".$row['nombre_examen']."
@@ -103,6 +103,13 @@ switch ($opcion)
 						</td>
 					</tr>
 		</table>";
+        }
+        else{
+            echo '<center><br><br><h1><img src="../../../Imagenes/warning.png" valign="middle"/>'
+            . 'Los resultados de los examenes de '.$rowpa['nombre'].', en esta área ya fueron ingresados.</h1> ';
+            echo " <button type='submit' class='fg-button ui-state-default ui-corner-all' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' />Cerrar</button></center>";
+                                        
+        }
        //echo $imprimir;
 
    break;
@@ -278,7 +285,7 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
                                       <td colspan='6' align='center' >
                                       <input  type='hidden' id='oculto' value='".$pos."'>
                                       <button type='submit' class='fg-button ui-state-default ui-corner-all' id='btnGuardar' value='Guardar Resultados' Onclick='GuardarResultadosPlantillaA();' />Guardar Resultados</button>
-                                      <button type='button' class='fg-button ui-state-default ui-corner-all'  name='Imprimir'  id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaA1(".$idsolicitud.",\"".$idarea."\",\"".$responsable."\", \"".$valores_resultados."\",\"".$codigos_resultados."\",\"".$valores_obser."\",\"".$codigos_examenes."\",\"".$establecimiento."\",\"".$sexo."\",\"".$idedad."\",\"".$examen_metodologia."\",,\"".$txtnec."\") ;'>Imprimir</button>
+                                      <button type='button' class='fg-button ui-state-default ui-corner-all'  name='Imprimir'  id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaA1(".$idsolicitud.",\"".$idarea."\",\"".$responsable."\", \"".$valores_resultados."\",\"".$codigos_resultados."\",\"".$valores_obser."\",\"".$codigos_examenes."\",\"".$establecimiento."\",\"".$sexo."\",\"".$idedad."\",\"".$examen_metodologia."\",\"".$txtnec."\",\"".$fecha_reporte."\",\"".$procedencia."\",\"".$origen."\") ;'>Imprimir</button>
                                                     <button type='submit' class='fg-button ui-state-default ui-corner-all' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' />Cerrar</button>
                                             </td>
                                 </tr>

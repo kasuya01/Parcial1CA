@@ -1,9 +1,12 @@
 <?php session_start();
 include_once("../../../Conexion/ConexionBD.php");
+include ("clsSolicitudesProcesadas.php");
 $db = new ConexionBD;
 $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
+$objdatos = new clsSolicitudesProcesadas;
+
 ?>
 <html>
 <head>
@@ -99,15 +102,23 @@ document.frmnuevo.referido.value=referido;
 LlenarComboResponsable(area);
 //alert(area);
 }
+</script>
+</head>
 
-//FUNCION PARA VERIFICAR DATOS REQUERIDOS EN RESULTADOS
+
+
 <?php  
+//FUNCION PARA VERIFICAR DATOS REQUERIDOS EN RESULTADOS
 //$nombrearea=$_GET['var9'];
 $examen=$_GET['var2'];
 $bandera=$_GET['var12'];
 $IdEstandar=$_GET['var16'];
 $IdHistorial=$_GET['var17'];
 $referido=$_GET['referido'];
+$iddetallesolicitud=$_GET['var5'];
+$idsolicitud=$_GET['var6'];
+$idarea=$_GET['var4'];
+
 if (!$IdHistorial){
     
 $condatos=$objdatos->condatos($IdHistorial, $lugar);
@@ -143,9 +154,10 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
 //$IdEstandar=$_GET['var16'];
 //$IdHistorial=$_GET['var17'];
 //echo $examen;
+  $cant=$objdatos->buscarAnteriores($idsolicitud,$iddetallesolicitud, $idarea);
+if (pg_num_rows($cant)>0){
 ?>
-</script>
-</head>
+
 
 <body onLoad="RecogeValor();">
 <table align="center" width="100%">
@@ -299,6 +311,16 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
 	</td>
 </tr>
 </table>
+    
+<?php
+}
+else{
+ echo '<center><br><br><h1><img src="../../../Imagenes/warning.png" valign="middle"/>'
+            . 'Los resultados de los examenes de la persona '.$rowpa['nombre'].', en esta área ya fueron ingresados.</h1> ';
+            echo " <button type='submit' class='fg-button ui-state-default ui-corner-all' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' />Cerrar</button></center>";
+               
+}
+?>
 </body>
  <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>

@@ -177,7 +177,9 @@ LlenarComboMetodologia(idexamen, area);
 //alert(area);
 }
 </script>
+</head>
 
+<body onLoad="RecogeValor();">
 <?php  
 //FUNCION PARA VERIFICAR DATOS REQUERIDOS EN RESULTADOS
 $bandera=$_GET['var12'];
@@ -187,6 +189,10 @@ $IdEstandar=$_GET['var16'];
 $IdHistorial=$_GET['var17'];
 $solicitud=$_GET['var6'];
 $referido=$_GET['referido'];
+$iddetallesolicitud=$_GET['var5'];
+$idarea=$_GET['var4'];
+$cant=$objdatos->buscarAnterioresPUnica($solicitud,$iddetallesolicitud, $idarea);
+if (pg_num_rows($cant)>0){
 if (!$IdHistorial){
     
 $condatos=$objdatos->condatos($IdHistorial, $lugar);
@@ -220,9 +226,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
   }
 ?>
 
-</head>
 
-<body onLoad="RecogeValor();">
     
   
 			
@@ -421,6 +425,15 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
         </td>
     </tr>
    </table>
+  <?php
+}
+else{
+ echo '<center><br><br><h1><img src="../../../Imagenes/warning.png" valign="middle"/>'
+            . 'Los resultados de los examenes de la persona '.$rowpa['nombre'].', en esta área ya fueron ingresados.</h1> ';
+            echo " <button type='submit' class='fg-button ui-state-default ui-corner-all' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' />Cerrar</button></center>";
+               
+}
+?>
  <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>

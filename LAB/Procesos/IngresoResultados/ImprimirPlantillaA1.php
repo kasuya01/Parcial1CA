@@ -16,6 +16,9 @@ $sexo=$_GET['var11'];
 $idedad=$_GET['var12'];
 $examen_metodologia =$_GET['var13'];
 $txtnec =$_GET['var14'];
+$fechareporte =$_GET['var15'];
+$procedencia =$_GET['var16'];
+$origen =$_GET['var17'];
 //echo $sexo."###".$idedad;
 //echo $idsolicitud."-".$idarea."-".$idempleado."-".$valores_resultados."-".$codigos_resultados."-".$valores_lecturas."-".$valores_inter."-".$valores_obser."-".$codigos_examenes;
 //echo $codigos_examenes;
@@ -48,7 +51,7 @@ include_once("clsSolicitudesProcesadas.php");
   $Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
   $row_estab = pg_fetch_array($Consulta_Estab);
   
-  $consulta1=$objdatos->MostrarResultadoGeneralesPA1($idsolicitud,$lugar,$area);
+  $consulta1=$objdatos->MostrarResultadoGeneralesPA1($idsolicitud,$lugar,$idarea);
   $row = pg_fetch_array($consulta1);
   $nombre=$row['nombrearea'];
   $id_establecimiento_externo = $row['id_establecimiento_externo'];
@@ -65,9 +68,9 @@ $rowpa = pg_fetch_array($datpac);
   //$vector_obser=explode("/",$valores_obser);
   //$vector_examenes=explode("/",$codigos_examenes);
   $consulta=$objdatos->DatosExamenesImprimir($idsolicitud,$idarea,$lugar,$sexo,$idedad);
-  
-  $FechaRes=$objdatos->ObtenerFechaResultado($idsolicitud,$idarea,$lugar);
-  $row_fecha=mysql_fetch_array($FechaRes);
+ //$rowdet=  pg_fetch_array($consulta);
+ // $FechaRes=$objdatos->ObtenerFechaResultado($idsolicitud,$idarea,$lugar);
+  //$row_fecha=pg_fetch_array($FechaRes);
 
 ?>
 	<table width='85%' align='center' class='StormyWeatherFormTABLE'>
@@ -75,8 +78,8 @@ $rowpa = pg_fetch_array($datpac);
                      <td colspan="1" align="left" width="20%"><img id="Image1" style="WIDTH: 80px; HEIGHT: 55px" height="86" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
                 <td align="center" colspan="4" width="60%" class="Estilo6">
 			<p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
-			<p><strong><?php echo $row_estab['Nombre'] ?></strong></p>
-			<p><strong>ÁREA DE <?php echo htmlentities($row['NombreArea'])?></strong></p>
+			<p><strong><?php echo $row_estab['nombre'] ?></strong></p>
+			<p><strong>ÁREA DE <?php echo $nombre; ?></strong></p>
                     </td>
                     <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
 		</tr>
@@ -85,46 +88,44 @@ $rowpa = pg_fetch_array($datpac);
 		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
-			<td colspan='2' class="Estilo6"><?php echo htmlentities($_GET['var10'])?></td>
+			<td colspan='2' class="Estilo6"><?php echo $_GET['var10']?></td>
 			<td colspan='1' class="Estilo5"><strong>Fecha Resultado:</strong></td>
-			<td colspan='2' class="Estilo6"'><?php echo $row_fecha['FechaResultado']?></td>
+			<td colspan='2' class="Estilo6"'><?php echo $fechareporte;?></td>
 		</tr>
 
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>NEC:</strong></td>
-			<td colspan='5' class="Estilo7"><?php echo $row['IdNumeroExp']?></td>
+			<td colspan='5' class="Estilo7"><?php echo $txtnec;?></td>
                 </tr>
 
                 <tr>
 			<td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
-			<td colspan='5' class="Estilo6"><?php echo htmlentities($row['NombrePaciente'])?></td>
+			<td colspan='5' class="Estilo6"><?php echo $rowpa['nombre']?></td>
 
                             <input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row['FechaNacimiento']?>>
 		<tr>
 
 			<td colspan='1' class="Estilo5"><strong>Edad:</strong></td>
 			<td colspan='2' class="Estilo6">
-                            <div id="divsuedad">
-                                <script language="JavaScript" type="text/javascript">
-                                                    calc_edad();
-                                </script>
-                            </div></td>
+                           <?php echo  $rowpa['edad'];?></td>
 			<td colspan='1' class="Estilo5"><strong>Sexo:</strong></td>
-			<td colspan='2' class="Estilo6"><?php echo $row['Sexo']?></td>
+			<td colspan='2' class="Estilo6"><?php echo $rowpa['sexo']?></td>
 		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Procedencia:</strong></td>
-			<td colspan='2' class="Estilo6"><?php echo htmlentities($row['Procedencia'])?></td>
+			<td colspan='2' class="Estilo6"><?php echo $procedencia;?></td>
 			<td colspan='1' class="Estilo5"><strong>Servicio:</strong></td>
-			<td colspan='2' class="Estilo6"><?php echo htmlentities($row['Origen'])?></td>
+			<td colspan='2' class="Estilo6"><?php echo $origen?></td>
 
 		</tr>
 		<tr>
-			<?php $consulta_empleado=$objdatos->BuscarEmpleadoValidador($idempleado);
-                              $fila_empleado = mysql_fetch_array($consulta_empleado);//$fila_empleado['NombreEmpleado'].
+			<?php 
+                            $consulta_empleado = $objdatos->BuscarEmpleadoValidador($idempleado, $lugar);
+                            $fila_empleado = pg_fetch_array($consulta_empleado);
+                          //  $fila_empleado = mysql_fetch_array($consulta_empleado);//$fila_empleado['NombreEmpleado'].
 			?>
 			<td  colspan='1' class="Estilo5"><strong>Validado Por: </strong></td>
-			<td  colspan='5' class="Estilo6"><?php echo htmlentities($fila_empleado['NombreEmpleado'])?></td>
+			<td  colspan='5' class="Estilo6"><?php echo $fila_empleado['empleado']?></td>
 		</tr>
 		<tr>
 			<td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;</td>
@@ -146,19 +147,19 @@ $rowpa = pg_fetch_array($datpac);
 
 		</tr>
 			<?php $pos=0;
-		while($rowdet = mysql_fetch_array($consulta)){?>
+		while($rowdet = pg_fetch_array($consulta)){?>
 		<tr>
-			<td class="Estilo6" align="justify"><?php echo htmlentities($rowdet['NombreExamen'])?></td>
+			<td class="Estilo6" align="justify"><?php echo $rowdet['nombre_reporta']?></td>
 		<?php
                     //  echo $rowdet['IdDetalleSolicitud'] ."vector".$vector_codigos[$pos];
 		//if ($rowdet['IdDetalleSolicitud']== $vector_codigos[$pos]){
-		?>     	<td class='Estilo6' align='center'><?php echo htmlentities($rowdet['Resultado'])?></td>
-			<td class='Estilo6' align='center'><?php echo htmlentities($rowdet['Unidades'])?></td>
-			<td class='Estilo6' align='center'><?php echo $rowdet['RangoInicio']."-".$rowdet['RangoFin']?></td>
+		?>     	<td class='Estilo6' align='center'><?php echo $rowdet['resultado']?></td>
+			<td class='Estilo6' align='center'><?php echo $rowdet['unidades']?></td>
+			<td class='Estilo6' align='center'><?php echo $rowdet['rangoinicio']."-".$rowdet['rangofin']?></td>
 			<!--<td class='Estilo6' align='justify'><?php //echo htmlentities($vector_lecturas[$pos])?></td>
 		        <td class='Estilo6' align='justify'><?php //echo htmlentities($vector_inter[$pos])?></td>-->
 		        <td class='Estilo6' align='center'><?php echo $rowdet['observacion']?></td>
-                        <td class='Estilo6' align='center'><?php echo $rowdet['FechaResultado']?></td>
+                        <td class='Estilo6' align='center'><?php echo $rowdet['fecharesultado']?></td>
 		</tr>
 		<?php
 		     // }

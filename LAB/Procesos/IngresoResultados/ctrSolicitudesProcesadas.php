@@ -358,13 +358,13 @@ switch ($opcion) {
                 }
                 else{
                     if (($objdatos->CambiarEstadoDetalle($iddetalle) == true) && ($objdatos->CambiarEstadoSolicitud($idsolicitud) == true)) {
-                            echo "<center> Resultados de Solicitud Completa. </center>";
+                            echo " Resultados de Solicitud Completa. ";
                         }
                 }
               //  echo "<center>Datos Guardados</center>";
 
             } else {
-                echo "<center>Error al momento de guardar resultados. Por favor revisar informaci&oacute;n.</center>";
+                echo "Error al momento de guardar resultados. Por favor revisar información.";
                 $flag=1;
             }
             
@@ -472,7 +472,9 @@ switch ($opcion) {
                     	<td colspan='1' style='font:bold'><strong>NEC:</strong></td>
 			<td colspan='2' style='font:bold'>" . $txtnec . "</td>
                             <td colspan='1' style='font:bold'><strong>Fecha Reporte:</strong></td>
-			<td colspan='2' style='font:bold'>" . $fecha_reporta . "</td></tr>
+			<td colspan='2' style='font:bold'>" . $fecha_reporta . "
+                        <input type='hidden' id='fecha_reporte_' name='fecha_reporte_' value='" . $fecha_reporta . "'/>
+                        <input type='hidden' id='fecha_realiza_' name='fecha_realiza_' value='" . $fecha_realizacion . "'/></td></tr>
 		    <tr>
                         <td colspan='1' style='font:bold'><strong>paciente:</strong></td>
 			<td colspan='5' style='font:bold'>" . $rowpa['nombre'] . "</td>
@@ -497,14 +499,15 @@ switch ($opcion) {
         $fila_empleado = pg_fetch_array($consulta_empleado); //$fila_empleado['NombreEmpleado'].
         $Imprimir.="
                     	<td  colspan='1' style='font:bold'><strong>Validado Por: </strong></td>
-			<td  colspan='5' style='font:bold'>" . $fila_empleado['empleado'] . "</td>
+			<td  colspan='5' style='font:bold'>" . $fila_empleado['empleado'] . "
+                            <input type='hidden' id='idempleado_' name='idempleado_' value='" . $responsable . "'/></td>
                     </tr>
                     <tr>
                         <td colspan='1'>Resultado Tabulador:</td>";
         $nomcod = $objdatos->ObtenerNombreCodigo($cod);
         $row_codigo = pg_fetch_array($nomcod);
 
-        $Imprimir.="<td colspan='5'>" . $row_codigo['resultado'] . "</td>
+        $Imprimir.="<td colspan='5'>" . $row_codigo['resultado'] . "<input type='hidden' id='codresultado_' name='codresultado_' value='" . $cod . "'/></td>
 	            </tr>
 		    <tr>
 			<td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;</td>
@@ -542,12 +545,12 @@ switch ($opcion) {
         }
         $Imprimir.="   
                             
-			    <td align='center'>" . $resultado . "</td>
+			    <td align='center'>" . $resultado . "<input type='hidden' id='resultado_' name='resultado_' value='" . $resultado . "'/></td>
 			    <td align='center'>" . $fila['unidades'] . "</td>
 			    <td align='center'>" . $fila['rangoinicio'] . " - " . $fila['rangofin'] . "</td>
-			    <td align='center'>" . $lectura . "</td>
-			    <td align='center'>" . $interpretacion . "</td>
-			    <td align='center'>" . $observacion . "</td>
+			    <td align='center'>" . $lectura . "<input type='hidden' id='lectura_' name='lectura_' value='" . $lectura . "'/></td>
+			    <td align='center'>" . $interpretacion . "<input type='hidden' id='interpretacion_' name='interpretacion_' value='" . $interpretacion . "'/></td>
+			    <td align='center'>" . $observacion . "<input type='hidden' id='observacion_' name='observacion_' value='" . $observacion . "'/></td>
 			</tr>";
         $Imprimir.="<tr>
                             <td>&nbsp;</td>
