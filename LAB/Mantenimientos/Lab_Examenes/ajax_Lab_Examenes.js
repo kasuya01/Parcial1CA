@@ -30,8 +30,13 @@ function LimpiarCampos(){
         document.frmnuevo.cmbsexo.value="0";
         document.frmnuevo.cmbHabilitar.value="0";
         document.frmnuevo.metodologias_sel.value="";
+        document.frmnuevo.text_metodologias_sel.value="";
+        
         document.frmnuevo.inidate.valie="0";
 	document.frmnuevo.txtnombreexamen.focus();
+        
+        bj1 = document.frmnuevo.add_metodologia;
+            obj1.disabled = true;
 }
 
 function ValidarCampos()
@@ -124,6 +129,7 @@ if (ValidarCampos())
         Hab=document.frmnuevo.cmbHabilitar.value;
         tiempoprevio=document.getElementById('inidate').value;
         metodologias_sel=frmnuevo.metodologias_sel.value;
+        text_metodologias_sel=frmnuevo.text_metodologias_sel.value;
       // alert(sexo);
 	//codempresa=document.frmnuevo.txttxtcodempresa.value;
 	//alert(idestandar);
@@ -150,7 +156,7 @@ if (ValidarCampos())
 	ajax.send("idexamen="+idexamen+"&idarea="+idarea+"&nomexamen="+nomexamen+
 	"&idestandar="+idestandar+"&Pag="+Pag+"&opcion="+opcion+"&plantilla="+plantilla+"&ubicacion="+ubicacion+
 	"&idformulario="+idformulario+"&idestandarRep="+idestandarRep+"&etiqueta="+etiqueta+"&urgente="+urgente+
-        "&sexo="+sexo+"&Hab="+Hab+"&tiempoprevio="+tiempoprevio+"&metodologias_sel="+metodologias_sel);
+        "&sexo="+sexo+"&Hab="+Hab+"&tiempoprevio="+tiempoprevio+"&metodologias_sel="+metodologias_sel+"&text_metodologias_sel="+text_metodologias_sel);
    }
 
 else{
@@ -247,7 +253,8 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
         ctlidestandar=document.frmModificar.txtctlidestandar.value;
         Tiempo=document.frmModificar.inidate.value;
         metodologias_sel=frmModificar.metodologias_sel.value;
-	//alert (metodologias_sel);
+        text_metodologias_sel=frmModificar.text_metodologias_sel.value;
+	//alert (text_metodologias_sel);
 	var opcion=2;	
 	Pag=1;
 	//instanciamos el objetoAjax
@@ -261,7 +268,7 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
 	ajax.send("idexamen="+idexamen+"&idarea="+idarea+"&nomexamen="+nomexamen+
 	"&idestandar="+idestandar+"&Pag="+Pag+"&opcion="+opcion+"&plantilla="+plantilla+"&ubicacion="+ubicacion+
 	"&idformulario="+idformulario+"&idestandarRep="+idestandarRep+"&Etiqueta="+Etiqueta+"&urgente="+urgente+
-        "&idsexo="+idsexo+"&Hab="+Hab+"&Tiempo="+Tiempo+"&idconf="+idconf+"&ctlidestandar="+ctlidestandar+"&metodologias_sel="+metodologias_sel);
+        "&idsexo="+idsexo+"&Hab="+Hab+"&Tiempo="+Tiempo+"&idconf="+idconf+"&ctlidestandar="+ctlidestandar+"&metodologias_sel="+metodologias_sel+"&text_metodologias_sel="+text_metodologias_sel);
 //+"&observacion="+observacion
 	ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
