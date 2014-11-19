@@ -38,8 +38,19 @@
     $Hab=$row['condicion'];
     $TiempoPrevio=$row['rangotiempoprev'];
     $metodologias=$row['metodologias'];
+    $metodologias_text=$row['metodologias_text'];
+    
+    
+    /*
+     * quitar signos raros en la cadena de texto de la consulta CONCAT
+     */
     $metodologias = str_replace('{','',$metodologias);
     $metodologias = str_replace('}','',$metodologias);
+    
+    $metodologias_text = str_replace('{','',$metodologias_text);
+    $metodologias_text = str_replace('}','',$metodologias_text);
+    $metodologias_text = str_replace('"','',$metodologias_text);
+    
     if (empty($idsexo)){
         $idsexo=4;
         $nombresexo="Ambos";}
@@ -273,7 +284,8 @@
                     <td nowrap class="StormyWeatherFieldCaptionTD">Metodologías</td>
                     <td class="StormyWeatherDataTD">
                         <input type="hidden" name="metodologias_sel" id="metodologias_sel" value="<?php print $metodologias; ?>">
-                        <input type="button" value="..." name="add_metodologia" id="add_metodologia" onclick="popup('consulta_metodologias.php?form=frmModificar&metodologias_sel='+frmModificar.metodologias_sel.value+'&id_examen=<?php print $idconf; ?>');"/>
+                        <input type="hidden" name="text_metodologias_sel" id="text_metodologias_sel" value="<?php print $metodologias_text; ?>">
+                        <input type="button" value="..." name="add_metodologia" id="add_metodologia" onclick="popup('consulta_metodologias.php?form=frmModificar&metodologias_sel='+frmModificar.metodologias_sel.value+'&id_examen=<?php print $idconf; ?>'+'&text_metodologias_sel='+frmModificar.text_metodologias_sel.value);"/>
                 </tr>
 		<tr>
                     <td colspan="2" align="right" class="StormyWeatherDataTD">

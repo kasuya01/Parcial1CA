@@ -8,7 +8,7 @@ class clsLab_Examenes
     }	
 
     //INSERTA UN REGISTRO          
-    function IngExamenxEstablecimiento($idexamen,$nomexamen,$Hab,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$TiempoPrevio,$sexo,$idestandar,$lugar,$metodologias_sel){
+    function IngExamenxEstablecimiento($idexamen,$nomexamen,$Hab,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$TiempoPrevio,$sexo,$idestandar,$lugar,$metodologias_sel,$text_metodologias_sel){
 
         $con = new ConexionBD;
        if($con->conectar()==true) 
@@ -35,13 +35,13 @@ class clsLab_Examenes
         * crear examen - metodologias
         */
         $aMetodologias = explode(',',$metodologias_sel); 
-        
+        $aMetodologias_text = explode(',',$text_metodologias_sel); 
 
         /*
          * actualizar o crear examen metodología
          */
-        for ($i=0;$i<count($aMetodologias);$i++){
-            $sql="INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin) VALUES ($ultimo, $aMetodologias[$i], true, NOW(), NULL)";
+        for ($i=0;$i<count($aMetodologias)-1;$i++){
+            $sql="INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin,nombre_reporta) VALUES ($ultimo, $aMetodologias[$i], true, NOW(), NULL, '$aMetodologias_text[$i]')";
             pg_query($sql);           
         }
         if ($i==0){ // si no se han seleccionado metodologias
@@ -64,19 +64,19 @@ class clsLab_Examenes
     }
 
     //ACTUALIZA UN REGISTRO
-     function ActExamenxEstablecimiento($idconf,$nomexamen,$lugar,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$Hab,$TiempoPrevio,$idsexo,$idestandar,$ctlidestandar,$metodologias_sel)
+     function ActExamenxEstablecimiento($idconf,$nomexamen,$lugar,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$Hab,$TiempoPrevio,$idsexo,$idestandar,$ctlidestandar,$metodologias_sel,$text_metodologias_sel)
 
      {
                $con = new ConexionBD;
                if($con->conectar()==true) 
                {
-                      $query="UPDATE lab_conf_examen_estab 
+                    $query="UPDATE lab_conf_examen_estab 
                               SET idusuariomod=$usuario,fechahoramod=NOW(),idformulario=$IdFormulario,
                               idestandarrep=$IdEstandarResp,IdPlantilla=$plantilla,impresion='$letra 
                               urgente=$Urgente,ubicacion=$ubicacion,condicion='$Hab',nombre_examen='$nomexamen',idsexo=$idsexo
                               WHERE lab_conf_examen_estab.id=$idconf";
                     //echo $query;
-                     $result = pg_query($query);
+                    $result = pg_query($query);
 /*=======
 //ACTUALIZA UN REGISTRO
  function ActExamenxEstablecimiento($idconf,$nomexamen,$lugar,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$Hab,$TiempoPrevio,$idsexo,$idestandar,$ctlidestandar)
@@ -111,6 +111,8 @@ class clsLab_Examenes
                */     
                      $aMetodologias = explode(',',$metodologias_sel);
                      
+                     $aMetodologias_text = explode(',',$text_metodologias_sel);
+                     
                     /*
                     * actualizar las metodoligas del examen
                     */
@@ -138,18 +140,24 @@ class clsLab_Examenes
                             $sql="UPDATE lab_examen_metodologia SET activo=false WHERE id_conf_exa_estab=$idconf AND id_metodologia is not null";
                             $upd = pg_query($sql);
                         }
-                    } else {
+                    } else { //cuando se seleccionan las metodologias
+                        /*
+                         * inactivar la opcion default de lab_examen_metodologia
+                         */
                         $sql="UPDATE lab_examen_metodologia SET activo=false,fecha_fin=NOW() WHERE id_conf_exa_estab=$idconf AND fecha_fin is null";
                         $upd = pg_query($sql);
                         
+                        /*
+                         * 
+                         */
                         $sql="SELECT * FROM lab_examen_metodologia WHERE id_conf_exa_estab=$idconf and id_metodologia is not NULL";
                         $con = pg_query($sql);
                         
                         for ($i=0;$i<count($aMetodologias)-1;$i++){
-                           $sql="UPDATE lab_examen_metodologia SET activo=true,fecha_inicio=NOW(),fecha_fin=NULL WHERE id_conf_exa_estab=$idconf AND id_metodologia=$aMetodologias[$i]";
+                           $sql="UPDATE lab_examen_metodologia SET activo=true,fecha_inicio=NOW(),fecha_fin=NULL,nombre_reporta='$aMetodologias_text[$i]' WHERE id_conf_exa_estab=$idconf AND id_metodologia=$aMetodologias[$i]";
                            $upd = pg_query($sql) or die('La consulta fall&oacute;: ' . pg_error());
-                           if ($upd){
-                               $sql="INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin) VALUES ($idconf, $aMetodologias[$i], true, NOW(), NULL)";
+                           if ($upd){ //si no existía la metodologia guardada para este examen se debe crear
+                               $sql="INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin,nombre_reporta) VALUES ($idconf, $aMetodologias[$i], true, NOW(), NULL,'$aMetodologias_text[$i]')";
                                pg_query($sql);
                            }
                         }  
@@ -158,9 +166,9 @@ class clsLab_Examenes
                     
                         
 
-                     $query_tiempo="SELECT * FROM cit_programacion_exams 
+                    $query_tiempo="SELECT * FROM cit_programacion_exams 
                                     WHERE id_examen_establecimiento=$idconf ";
-                     $tot = pg_num_rows(pg_query($query_tiempo));
+                    $tot = pg_num_rows(pg_query($query_tiempo));
                     // $tot=$result_tiempo[0];
                      //echo $tot; 
                      if($tot > 0){
@@ -329,7 +337,7 @@ class clsLab_Examenes
    if($con->conectar()==true)
    {
      //$query = "SELECT * FROM lab_examenes WHERE idexamen='$idexamen'";
-	  $query = "SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.codigo_examen as idexamen, 
+	 $query = "SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.codigo_examen as idexamen, 
                     lab_conf_examen_estab.nombre_examen as nombreexamen, ctl_area_servicio_diagnostico.nombrearea,
                     lab_plantilla.id as idplantilla,ctl_examen_servicio_diagnostico.idestandar, 
                     (CASE WHEN lab_conf_examen_estab.ubicacion=0 THEN 'Todas las Procedencias' 
@@ -352,7 +360,12 @@ class clsLab_Examenes
                         FROM lab_examen_metodologia em
                         LEFT JOIN lab_metodologia m ON m.id = em.id_metodologia
                         WHERE em.id_conf_exa_estab = $idexamen AND em.activo=true AND em.id_metodologia is not null
-                        GROUP BY em.id_conf_exa_estab) as metodologias
+                        GROUP BY em.id_conf_exa_estab) as metodologias,
+                    (SELECT ARRAY_AGG(em.nombre_reporta) metodologia
+                        FROM lab_examen_metodologia em
+                        LEFT JOIN lab_metodologia m ON m.id = em.id_metodologia
+                        WHERE em.id_conf_exa_estab = $idexamen AND em.activo=true AND em.id_metodologia is not null
+                        GROUP BY em.id_conf_exa_estab) as metodologias_text
                     FROM lab_conf_examen_estab 
                     INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
                     INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
@@ -674,6 +687,23 @@ ORDER BY ctl_examen_servicio_diagnostico.id";
                         WHERE m.activa IS TRUE
                         GROUP BY m.id, em.id_metodologia
                         ORDER BY m.nombre_metodologia";
+             
+		 $result = pg_query($query);
+		 if (!$result)
+		   return false;
+		 else
+		   return $result;
+	   }
+	 }
+         
+         function prueba_lab($id_examen){
+            /*
+            * Julio Castillo
+            */
+            $con = new ConexionBD;
+	    //usamos el metodo conectar para realizar la conexion
+	    if($con->conectar()==true){
+	      $query = "SELECT nombre_examen as nombre_prueba FROM lab_conf_examen_estab WHERE id=$id_examen";
              
 		 $result = pg_query($query);
 		 if (!$result)

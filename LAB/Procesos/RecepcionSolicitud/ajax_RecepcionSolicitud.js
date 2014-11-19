@@ -394,18 +394,29 @@ function CambiarEstadoDetalleSolicitud(estado)
 
 }
 
-
 function imprimiretiquetas(posicion)
+{//cambiar imprimir  etiquetas1.php  por imprimir.php
+	idexpediente=document.getElementById('txtidexpediente').value;
+	idsolicitud=document.getElementById('txtidsolicitud[' + posicion + ']').value;
+		
+	
+	//alert idexpediente;
+	ventana_secundaria = window.open("../../Consultas_Reportes/ConsultaSolicitudesPaciente/etiquetas.php?var1="+idexpediente+"&var2="+idsolicitud,"etiquetas",										"width=500,height=600,menubar=no,location=no,scrollbars=yes") ;
+		
+}
+/*function imprimiretiquetas(posicion)
 {//cambiar imprimir  etiquetas1.php  por imprimir.ph
     idexpediente = document.getElementById('txtidexpediente').value;
     fechacita    = document.getElementById('txtfechasolicitud').value;
     idsolicitud  = document.getElementById('txtidsolicitud[' + posicion + ']').value;
     idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
     //alert (idexpediente+' *** '+fechacita+' *** '+idsolicitud+' *** '+idEstablecimiento);
+    
+    
     ventana_secundaria = window.open("etiquetas.php?var1=" + idexpediente +
             "&var2=" + fechacita + "&var3=" + idsolicitud + "&var4=" + idEstablecimiento, "etiquetas",
             "width=400,height=600,menubar=no,location=no,scrollbars=yes");
-}
+}*/
 
 function EnviarDatosSolicitud(posicion)
 {
