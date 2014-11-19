@@ -75,6 +75,9 @@ function ValidarCampos()
          if (document.frmnuevo.fecha_realizacion.value == ""){
                 resp=false
              }
+          if (document.frmnuevo.cmbResultado2.value == 0){
+                resp=false
+             }
          }
          
      
@@ -176,7 +179,13 @@ LlenarComboMetodologia(idexamen, area);
 }
 </script>
 
+</head>
+
+<body onLoad="RecogeValor();">
+    
+
 <?php  
+
 //FUNCION PARA VERIFICAR DATOS REQUERIDOS EN RESULTADOS
 $bandera=$_GET['var12'];
 /*$fechanac=$_GET['var14'];
@@ -185,6 +194,10 @@ $IdEstandar=$_GET['var16'];
 $IdHistorial=$_GET['var17'];
 $solicitud=$_GET['var6'];
 $referido=$_GET['referido'];
+$idarea=$_GET['var4'];
+$iddetallesolicitud=$_GET['var5'];
+$cant=$objdatos->buscarAnterioresPUnica($solicitud,$iddetallesolicitud, $idarea);
+if (pg_num_rows($cant)>0){
 if (!$IdHistorial){
     
 $condatos=$objdatos->condatos($IdHistorial, $lugar);
@@ -218,10 +231,6 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
   }
 ?>
 
-</head>
-
-<body onLoad="RecogeValor();">
-    
   
 			
 <table align="center" width="100%">
@@ -436,11 +445,11 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                         </td>
                 </tr>
                 <tr>
-                    <td>Lectura</td>
+                    <td><b>Lectura</b></td>
                     <td  colspan="3"><textarea name="txtlecturafin" cols="100" id="txtlecturafin"></textarea></td>
                 </tr>
                         <tr>
-                            <td>Interpretaci&oacute;n</td>
+                            <td><b>Interpretaci&oacute;n</b></td>
                             <td  colspan="3"><textarea name="txtinterpretacionfin" cols="100" id="txtinterpretacionfin"></textarea></td>
                         </tr>
                 <tr>
@@ -489,7 +498,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                          <div id="responde" style="display: none">
 	<center>
                          <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="ValidarResultado();" title="Validar y Finalizar">Validar</button>
-	<button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="enviarDatosResult(0,0);" title="Guardar sin validar">Guardar</button>
+	<!--<button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="enviarDatosResult(0,0);" title="Guardar sin validar">Guardar</button>-->
        
 		<button type="button" align="center" class="fg-button ui-state-default ui-corner-all" title="Regresar a Inicio"  onclick="Cerrar();">Regresar</button>
 	
@@ -522,6 +531,15 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
         </td>
     </tr>
    </table>
+   <?php
+}
+else{
+ echo '<center><br><br><h1><img src="../../../Imagenes/warning.png" valign="middle"/>'
+            . 'Los resultados de los examenes de la persona '.$rowpa['nombre'].', en esta área ya fueron ingresados.</h1> ';
+            echo " <button type='submit' class='fg-button ui-state-default ui-corner-all' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' />Cerrar</button></center>";
+               
+}
+?>
  <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>

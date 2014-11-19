@@ -575,6 +575,7 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
     window.open(url,"Solicitudes","fullscreen=yes, toolbar=no, scrollbars=yes");
 }
 
+
 </script>
 </head>
 
@@ -591,7 +592,7 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
 	<tr>
 		<td class="StormyWeatherFieldCaptionTD" align="center">Expediente</td>
 		<td class="StormyWeatherDataTD">
-			<input id="txtexp" class="CobaltInput" style="width:188px; height:20px" size="26" >
+			<input id="txtexp" class="CobaltInput" style="width:188px; height:20px" size="26"  >
                         <input type="hidden" id="IdCitaServApoyo">
                         <input type="hidden" id="IdEstablecimientoExterno">
                         <input type="button" value="Verificar" id="btnverificar" onClick="searchpac();">
