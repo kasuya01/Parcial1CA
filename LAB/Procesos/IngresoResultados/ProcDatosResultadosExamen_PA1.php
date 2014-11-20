@@ -119,7 +119,7 @@ $iddetallesolicitud=$_GET['var5'];
 $idsolicitud=$_GET['var6'];
 $idarea=$_GET['var4'];
 
-if (!$IdHistorial){
+if ($referido!="t"){
     
 $condatos=$objdatos->condatos($IdHistorial, $lugar);
 
@@ -137,7 +137,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                      AND sec_historial_clinico.IdEstablecimiento =$lugar";
 
         $resultado = mysql_query($condatos);*/
-	$rows = pg_fetch_array($resultado);
+	$rows = pg_fetch_array($condatos);
         
         $Peso=$rows['Peso'];
         $Talla=$rows['Talla'];
