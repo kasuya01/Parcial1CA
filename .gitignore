@@ -1,6 +1,9 @@
 #Archivos de conexion a la base de datos
 Conexion/*
 
+#Omitiendo Reportes
+Reportes/*
+
 #Archivos Thumbs
 Thumbs.db
 
