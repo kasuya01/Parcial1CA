@@ -1,8 +1,28 @@
 <?php session_start();
+include_once("../../../Conexion/ConexionBD.php");
+$db = new ConexionBD;
 $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 
+$nec = $_GET['var1']; 
+ $examen = $_GET['var2'];
+ $codigoex = $_GET['var3'];
+ $area= $_GET['var4'];		   
+ $iddetallesol = $_GET['var5'];  
+ $idsolicitud = $_GET['var6']; 
+ $paciente = $_GET['var7'];
+ $idrecepcionsol = $_GET['var8'];
+ $nombrearea =$_GET['var9'];
+ $procedencia = $_GET['var10'];
+ $origen = $_GET['var11'];
+ $impresion = $_GET['var12'];
+ $establecimiento = $_GET['var13'];
+ $fechanac = $_GET['var14'];
+ $sexo = $_GET['var15'];
+ $IdEstandar = $_GET['var16'];
+ $IdHistorial = $_GET['var17'];
+ $estabext = $_GET['var18'];
 include('clsConsultarElementosPlantillaC.php');
 $obj=new clsConsultarElementosPlantillaC;
 ?>
@@ -13,6 +33,8 @@ $obj=new clsConsultarElementosPlantillaC;
 <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+<link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+<link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
 <script language="JavaScript" >
 function Guardar(){
    	IngresarRegistro();
@@ -37,7 +59,7 @@ function salir()
 
 function CargarDatos()
 {
-  var vtmp=location.search;
+ /* var vtmp=location.search;
 	var vtmp2 = vtmp.substring(1,vtmp.length);
 	//alert(vtmp2);
 	var query = unescape(top.location.search.substring(1));
@@ -68,9 +90,11 @@ function CargarDatos()
 			  if ( getVars[i].substr(0,5) == 'var12=' )
                                 impresion=escape(getVars[i].substr(5));
 			  if ( getVars[i].substr(0,5) == 'var13=' )
-					    establecimiento=escape(getVars[i].substr(5));
-                            if ( getVars[i].substr(0,5) == 'var18=' )
-					    estabext=escape(getVars[i].substr(5));              
+                                establecimiento=escape(getVars[i].substr(5));
+                          if ( getVars[i].substr(0,5) == 'var18=' )
+                                estabext=escape(getVars[i].substr(5));  
+                          if ( getVars[i].substr(0,5) == 'var17=' )
+                            IdHistorial=escape(getVars[i].substr(5));
 	}
 	document.frmnuevo.txtnec.value=nec;
 	document.frmnuevo.txtarea.value=area;
@@ -81,12 +105,32 @@ function CargarDatos()
 	document.frmnuevo.txtidexamen.value=codigoex;
 	document.frmnuevo.txtidrecepcion.value=idrecepcionsol;
 	//document.frmnuevo.txtnombrearea.value=nombrearea;
-	nombrearea=escape(document.frmnuevo.txtnombrearea.value=nombrearea);
+	nombrearea=escape(document.frmnuevo.txtnombrearea.value=nombrearea);*/
 	LlenarComboResponsable(area);
 }
 <?php   
  
-	$bandera=$_GET['var12'];				    
+	$bandera=$_GET['var12'];
+        
+        if($db->conectar()==true) {
+           $condatos = "SELECT t07.peso,t07.talla,t06.sct_name_es AS diagnostico,especificacion,conocido_por
+                        FROM sec_historial_clinico               t01
+                        INNER JOIN mnt_expediente                t02 ON (t02.id = t01.id_numero_expediente)
+                        INNER JOIN mnt_paciente                  t03 ON (t03.id = t02.id_paciente)
+                        LEFT OUTER JOIN sec_diagnostico_paciente t04 ON (t01.id = t04.id_historial_clinico)
+                        LEFT OUTER JOIN mnt_snomed_cie10         t06 ON (t06.id = t04.id_snomed)
+                        LEFT OUTER JOIN sec_signos_vitales       t07 ON (t01.id = t07.id_historial_clinico)
+                        WHERE t01.id = $IdHistorial AND t01.idestablecimiento = $lugar";
+
+            $resultado = pg_query($condatos);
+            $rows = pg_fetch_array($resultado);
+
+            $Peso=$rows['peso'];
+            $Talla=$rows['talla'];
+            $Diagnostico=$rows['diagnostico'];
+            $Especificacion=$rows['especificacion'];
+            $ConocidoPor=$rows['conocido_por'];
+        }
 ?>
 </script>
 <?php 
