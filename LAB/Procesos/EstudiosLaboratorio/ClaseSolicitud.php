@@ -135,7 +135,24 @@ class Paciente{
             $Conexion=new ConexionBD();
             $conectar=$Conexion->conectar();   
             if($conectar==true){
-              //  echo '<br/>Badera: '.$badera;
+                $recep="select * from lab_recepcionmuestra where idsolicitudestudio=$IdSolicitudEstudio";
+                $sql3=  pg_query($recep);
+                $rec=  pg_num_rows($sql3);
+                if ($rec==0){
+                $num= "SELECT (coalesce(MAX(t01.numeromuestra),0) + 1)  
+FROM lab_recepcionmuestra        t01
+INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
+WHERE t01.fecharecepcion = current_date 
+AND t02.id_establecimiento = $LugardeAtencion";
+                $sql2=  pg_query($num);
+                $nmuestra=  pg_fetch_array($sql2);
+
+                $remuestra= "insert into lab_recepcionmuestra (numeromuestra, fecharecepcion, idsolicitudestudio, fechacita, idestablecimiento, idusuarioreg, fechahorareg) VALUES ($nmuestra[0], current_date, $IdSolicitudEstudio, current_date, $LugardeAtencion, $iduser, NOW())";
+                 $rep=  pg_query($remuestra); 
+                       if (!$rep)
+                           return false;
+                }
+               // echo '<br/>Badera: '.$badera;
                 if($badera == 1) // crear la cita
                 {
                     $nextid="select nextval('cit_citas_serviciodeapoyo_idcitaservapoyo_seq')"; 
@@ -149,20 +166,6 @@ class Paciente{
                     if (!$queryIns)
                         return false;
                     else{
-                        $num= "SELECT (coalesce(MAX(t01.numeromuestra),0) + 1)  
-FROM lab_recepcionmuestra        t01
-INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
-WHERE t01.fecharecepcion = current_date 
-AND t02.id_establecimiento = $LugardeAtencion";
-                        $sql2=  pg_query($num);
-                        $nmuestra=  pg_fetch_array($sql2);
-                        
-                       $remuestra= "insert into lab_recepcionmuestra (numeromuestra, fecharecepcion, idsolicitudestudio, fechacita, idestablecimiento, idusuarioreg, fechahorareg) VALUES ($nmuestra[0], current_date, $IdSolicitudEstudio, current_date, $LugardeAtencion, $iduser, NOW())";
-                       $rep=  pg_query($remuestra); 
-                       if (!$rep)
-                           return false;
-                        
-                        
                         return $idnext;
                     }
                      
@@ -170,11 +173,11 @@ AND t02.id_establecimiento = $LugardeAtencion";
                 else // actualizar la cita
                 {
                     $UpdateCit = "update cit_citas_serviciodeapoyo 
-                                set fecha=current_date
-                                where id=$IdCitaServApoyo
-                                and id_solicitudestudios=$IdSolicitudEstudio";
+                                set fecha=current_date,
+                                id_solicitudestudios=$IdSolicitudEstudio
+                                where id=$IdCitaServApoyo";
                     $query=pg_query($UpdateCit);
-                   // echo $UpdateCit;
+                //    echo $UpdateCit;
                     if (!$query)
                         return false;
                     else
@@ -266,9 +269,7 @@ function CantiMuestra($IdExamen){
 	    $SQL2="select ltm.id as idtipo, tipomuestra as muestra, lte.id
                     from lab_tipomuestraporexamen  lte
                     join lab_tipomuestra ltm on (lte.idtipomuestra=ltm.id)
-                    where lte.idexamen=(select lcee.id
-                    from lab_conf_examen_estab lcee
-                    where lcee.id=$IdExamen)
+                    where lte.idexamen=$IdExamen
                         order by tipomuestra ASC;";  
             $result=  pg_query($SQL2);
             if (!$result){
@@ -986,7 +987,7 @@ class CrearHistorialClinico{
     function HistorialClinico($IdNumeroExp,$IdEstablecimiento,$IdSubServicio,$IdEmpleado,$FechaConsulta,$iduser,$ippc, $idexpediente, $lugar){
     //$ippc=$_SERVER["REMOTE_ADDR"];
         if ($IdEstablecimiento==$lugar){
-            $seq= "SELECT nextval('sec_historial_clinico_idhistorialclinico_seq');";
+            $seq= "SELECT nextval('sec_historial_clinico_id_seq');";
             $res=  pg_query($seq);
             $row=  pg_fetch_row($res);
             $idseq=$row[0];

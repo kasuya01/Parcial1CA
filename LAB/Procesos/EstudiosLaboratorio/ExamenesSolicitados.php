@@ -3,6 +3,7 @@ include_once("ClaseSolicitud.php"); //Agregamos el Archivo con las clases y func
 	$Paciente= new Paciente;   
 	$Laboratorio= new SolicitudLaboratorio; 	
 	//$_SESSION["conectar"]=$conectar;
+        $conectar=1;
 	$IdHistorialClinico=$_GET["IdHistorialClinico"];
         $IdCitaServApoyo=$_GET["IdCitaServApoyo"];
        // echo '<br/>idcitaservapoyo: '.$IdCitaServApoyo;

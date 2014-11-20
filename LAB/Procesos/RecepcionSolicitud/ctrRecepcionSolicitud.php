@@ -23,12 +23,19 @@ switch ($opcion) {
         $idsolicitud  = $_POST['idsolicitud'];
 
         if ($con->conectar() == true) {
-            $query = "UPDATE sec_solicitudestudios SET estado = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = '$estado' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-                      WHERE id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB') AND id_establecimiento = $lugar AND 
-                            (id_expediente = (SELECT (CASE WHEN e.id is null THEN er.id ELSE e.id END) AS id FROM (SELECT id,numero FROM mnt_expediente WHERE numero = '$idexpediente') e
+            
+            /*$query = "UPDATE sec_solicitudestudios SET estado = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = '$estado' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+                        WHERE id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB') AND 
+                        id_establecimiento = $lugar AND 
+                        (id_expediente = (SELECT (CASE WHEN e.id is null THEN er.id ELSE e.id END) AS id FROM (SELECT id,numero FROM mnt_expediente WHERE numero = '$idexpediente') e
                             FULL OUTER JOIN (SELECT id,numero FROM mnt_expediente_referido  WHERE numero = '$idexpediente') er ON e.numero = er.numero) OR
                             id_dato_referencia = (SELECT (CASE WHEN e.id is null THEN er.id ELSE e.id END) AS id FROM (SELECT id,numero FROM mnt_expediente WHERE numero = '$idexpediente') e
                             FULL OUTER JOIN (SELECT id,numero FROM mnt_expediente_referido  WHERE numero = '$idexpediente') er ON e.numero = er.numero)) AND  id = $idsolicitud";
+            */
+            $query = "UPDATE sec_solicitudestudios SET estado = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = '$estado' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+                        WHERE id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB') AND 
+                        id_establecimiento = $lugar AND 
+                         id = $idsolicitud";
 
             $result = @pg_query($query);
 
@@ -63,12 +70,13 @@ switch ($opcion) {
                       INNER JOIN sec_solicitudestudios      t02 ON (t02.id = t01.id_solicitudestudios)
                       LEFT JOIN sec_historial_clinico       t03 ON (t03.id = t02.id_historial_clinico)
                       LEFT JOIN mnt_expediente              t04 ON (t04.id = t02.id_expediente)
-                      LEFT JOIN mnt_expediente_referido     t10 ON (t10.id = t02.id_dato_referencia)
+                      LEFT JOIN mnt_dato_referencia	    t10 ON (t10.id = t02.id_dato_referencia)
+                      LEFT JOIN mnt_expediente_referido     t11 ON (t11.id = t10.id_expediente_referido)
                       
-                      WHERE t01.fecha = '$Nfechacita' AND (t04.numero = '$idexpediente' OR t10.numero = '$idexpediente') AND t02.id_establecimiento = $lugar";
+                      WHERE t01.fecha = '$Nfechacita' AND (t04.numero = '$idexpediente' OR t11.numero = '$idexpediente') AND t02.id_establecimiento = $lugar";
 
             $numreg = pg_fetch_array(pg_query($query.' GROUP BY t10.id'));
-
+            
             if ($numreg[0] == 1) {//verificando existencia de datos para los parametros de la busqueda no referido
                 if ($numreg['referido']=='f'){
                     $query_estado = "SELECT CASE t04.idestado
@@ -85,7 +93,7 @@ switch ($opcion) {
                                      INNER JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)
                                      WHERE t05.numero = '$idexpediente' AND t02.fecha = '$Nfechacita' AND  t01.id_establecimiento = $lugar
                                            AND t03.idestablecimiento = $idEstablecimiento AND t06.codigo_busqueda = 'DCOLAB'";
-                } else {
+                } else { // verificar existencia para datos de referencia
                     $query_estado = "SELECT CASE t04.idestado
                                             WHEN 'D' THEN 'Digitada'
                                             WHEN 'R' then 'Recibida'
@@ -94,12 +102,13 @@ switch ($opcion) {
                                         END AS estado
 				 FROM sec_solicitudestudios                 t01
 				 INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
-				 
                                  INNER JOIN ctl_estado_servicio_diagnostico t04 ON (t04.id = t01.estado AND t04.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-                                 INNER JOIN mnt_expediente_referido         t05 ON (t05.id_referido = t01.id_dato_referencia)
+                                 LEFT JOIN mnt_expediente                  t05 ON (t05.id = t01.id_expediente)                                 
                                  INNER JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)
-				 WHERE t05.numero = '$idexpediente' AND t02.fecha = '$Nfechacita' AND  t01.id_establecimiento = $lugar
-                                       AND t05.id_establecimiento = $idEstablecimiento AND t06.codigo_busqueda = 'DCOLAB'";
+                                 LEFT JOIN mnt_dato_referencia	    t10 ON (t10.id = t01.id_dato_referencia)
+                                 LEFT JOIN mnt_expediente_referido     t11 ON (t11.id = t10.id_expediente_referido)                                
+				 WHERE (t05.numero = '$idexpediente' OR t11.numero = '$idexpediente') AND t02.fecha = '$Nfechacita' AND  t01.id_establecimiento = $lugar
+                                       AND t10.id_establecimiento = $idEstablecimiento AND t06.codigo_busqueda = 'DCOLAB'";
                 }
                 
                 $result = @pg_query($query_estado);

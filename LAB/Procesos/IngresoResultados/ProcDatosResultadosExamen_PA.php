@@ -12,9 +12,42 @@ $db = new ConexionBD;
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <title>Resultados de Examenes de Laboratorio </title>
+<style type="text/css">
+			*{ font-size:12px; font-family:verdana; }
+			h1 { font-size:22px; }
+			input { width:250px; border: 2px solid #CCC; line-height:20px;height:20px; border-radius:3px; padding:2px; }
+		</style>
 <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script> 
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+<link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+<link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+
+   
+
+  
+<!--
+<script type="text/javascript" src="../../../public/datepicker/dp/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../../../public/datepicker/dp/jquery-ui.min.js"></script>
+<script type="text/javascript" src="../../../public/datepicker/dp/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="../../../public/datepicker/dp/jquery-ui-timepicker-addon-i18n.min.js"></script>
+<script type="text/javascript" src="../../../public/datepicker/dp/jquery-ui-sliderAccess.js"></script>
+
+
+<script type="text/javascript" src="../../../public/js/jquery.js"></script>
+<script language = "javascript" type="application/x-javascript" src="../../../public/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.js">
+<script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/i18n/jquery-ui-timepicker-es.js"></script>
+ <script type="text/javascript" src="../../../public/datepicker/jquery-ui.js"></script>
+<script language = "javascript" type="application/x-javascript" src="../../../public/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.js">
+<script type="text/javascript" src="../../../public/datepicker/date.js"></script>
+<script type="text/javascript" src="../../../public/datepicker/jquery.ui.datepicker-es.js"></script>
+
+
+</script>
+-->
+
+
 <script language="JavaScript" >
 function Guardar(){
    	GuardarResultados();
@@ -32,6 +65,18 @@ function ValidarCampos()
 		 {
 			resp= false;		
 		 }
+         if (document.frmnuevo.cant_metodologia!="0"){
+             if (document.frmnuevo.cmbmetodologia==0){
+                        resp=false;
+             }
+         if (document.frmnuevo.fecha_reporte.value == ""){
+             resp=false
+             }
+         if (document.frmnuevo.fecha_realizacion.value == ""){
+                resp=false
+             }
+         }
+         
      
   return resp;
 }
@@ -57,8 +102,12 @@ function VerResultados()
 	codresult=document.frmnuevo.cmbResultado2.value;
         fechanac=document.frmnuevo.txtFechaNac.value;
         sexo=document.frmnuevo.txtSexo.value;
+        cmbmetodologia=document.frmnuevo.cmbmetodologia.value;
+        txtnec=document.frmnuevo.txtnec.value;
+        fecha_realizacion=document.frmnuevo.fecha_realizacion.value;
+        fecha_reporta=document.frmnuevo.fecha_reporte.value;
         
-	MostrarResultadoExamen(idsolicitud,iddetalle,idarea,idexamen,resultado,lectura,interpretacion,observacion,responsable,nombrearea,procedencia,origen,impresion,establecimiento,codresult,fechanac,sexo);
+	MostrarResultadoExamen(idsolicitud,iddetalle,idarea,idexamen,resultado,lectura,interpretacion,observacion,responsable,nombrearea,procedencia,origen,impresion,establecimiento,codresult,fechanac,sexo, cmbmetodologia, txtnec, fecha_realizacion, fecha_reporta);
 	
     }else
     {    alert("Complete la Informacion Requerida");   }
@@ -72,6 +121,7 @@ var query = unescape(top.location.search.substring(1));
 var getVars = query.split(/&/);
 for ( i = 0; i < getVars.length; i++)
 	{
+           // alert(getVars[i]+' - '+getVars[i].substr(0,5))
 		if ( getVars[i].substr(0,5) == 'var1=' )//loops through this array and extract each name and value
           	     	nec = getVars[i].substr(5);
 		if ( getVars[i].substr(0,5) == 'var2=' )
@@ -105,7 +155,9 @@ for ( i = 0; i < getVars.length; i++)
                 if ( getVars[i].substr(0,5) == 'var16=' )
                         IdEstandar=escape(getVars[i].substr(5));   
                 if ( getVars[i].substr(0,5) == 'var17=' )
-                        IdHistorial=escape(getVars[i].substr(5));    
+                        IdHistorial=escape(getVars[i].substr(5));  
+                if ( getVars[i].substr(0,5) == 'referido=' )
+                        referido=escape(getVars[i].substr(5)); 
                     
 		}
 document.frmnuevo.txtnec.value=nec;
@@ -117,12 +169,17 @@ document.frmnuevo.txtiddetalle.value=iddetalle;
 document.frmnuevo.txtidexamen.value=idexamen;
 document.frmnuevo.txtidrecepcion.value=idrecepcion;
 document.frmnuevo.txtnombrearea.value=nombrearea;
+document.frmnuevo.referido.value=referido;
 //document.frmnuevo.txtEstablecimiento.value=establecimiento;
-LlenarComboResponsable(area);
+LlenarComboMetodologia(idexamen, area);
+
+
 //alert(area);
 }
 </script>
+</head>
 
+<body onLoad="RecogeValor();">
 <?php  
 //FUNCION PARA VERIFICAR DATOS REQUERIDOS EN RESULTADOS
 $bandera=$_GET['var12'];
@@ -130,6 +187,18 @@ $bandera=$_GET['var12'];
 $idexamen=$_GET['var3'];*/
 $IdEstandar=$_GET['var16'];
 $IdHistorial=$_GET['var17'];
+$solicitud=$_GET['var6'];
+$referido=$_GET['referido'];
+$iddetallesolicitud=$_GET['var5'];
+$idarea=$_GET['var4'];
+$cant=$objdatos->buscarAnterioresPUnica($solicitud,$iddetallesolicitud, $idarea);
+if (pg_num_rows($cant)>0){
+if (!$IdHistorial){
+    
+$condatos=$objdatos->condatos($IdHistorial, $lugar);
+
+/*
+
   if($db->conectar()==true){
         $condatos = "SELECT sec_examenfisico.Peso, sec_examenfisico.Talla, Diagnostico, ConocidoPor
                      FROM sec_historial_clinico
@@ -141,25 +210,33 @@ $IdHistorial=$_GET['var17'];
                      WHERE sec_historial_clinico.IdHistorialClinico=$IdHistorial
                      AND sec_historial_clinico.IdEstablecimiento =$lugar";
 
-        $resultado = mysql_query($condatos);
-	$rows = mysql_fetch_array($resultado);
+        $resultado = mysql_query($condatos);*/
+	$rows = pg_fetch_array($resultado);
         
         $Peso=$rows['Peso'];
         $Talla=$rows['Talla'];
         $Diagnostico=$rows['Diagnostico'];
         $ConocidoPor=$rows['ConocidoPor'];
   }
+  else{
+      $Peso='-';
+      $Talla='-';
+      $Diagnostico='-';
+      $ConocidoPor='-';
+  }
 ?>
 
-</head>
 
-<body onLoad="RecogeValor();">
+    
+  
+			
 <table align="center" width="100%">
     <tr>
         <td>
             <div  id="divFrmNuevo" style="display:block" >
                 <form name="frmnuevo" method="get" action="ProcDatosResultadosExamen_PA.php" enctype="multipart/form-data">
                     <table width="70%" border="0" align="center" class="StormyWeatherFormTABLE">
+                        
                         <tr>
                             <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3>INGRESO DE RESULTADOS</h3></td>
                         </tr>
@@ -178,26 +255,27 @@ $IdHistorial=$_GET['var17'];
 			 	<input type="hidden" name="txtidexamen" id="txtidexamen" />
 			 	<input type="hidden" name="txtidrecepcion" id="txtidrecepcion" />
 			 	<input type="hidden" name="txtarea" id="txtarea" />
-			 	<input type="hidden" name="txtprocedencia" id="txtprocedencia" />
-			 	<input type="hidden" name="txtorigen" id="txtorigen" />
+			 	<input type="hidden" name="txtprocedencia" id="txtprocedencia" value="<?php echo $_GET['var10']?>"/>
+			 	<input type="hidden" name="txtorigen" id="txtorigen"  value="<?php echo $_GET['var11']?>"/>
 			 	<input type="hidden" name="txtimpresion" id="txtimpresion" value="<?php echo $_GET['var12']?>"/>
 				<input type="hidden" name="txtEstablecimiento" id="txtEstablecimiento" value="<?php echo $_GET['var13']?>" />
                                 <input type="hidden" name="txtFechaNac" id="txtFechaNac" value="<?php echo $_GET['var14']?>" />
                                 <input type="hidden" name="txtSexo" id="txtSexo" value="<?php echo $_GET['var15']?>" />
                                 <input type="hidden" name="txtIdEstandar" id="txtIdEstandar" value="<?php echo $_GET['var16']?>" />
                                 <input type="hidden" name="txtIdHistorial" id="txtIdHistorial" value="<?php echo $_GET['var17']?>" />
+                                <input type="hidden" name="referido" id="referido" value="<?php echo $_GET['referido']?>" />
                             </td>
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Paciente</td>
-                            <td colspan="3" class="StormyWeatherDataTD"><?php echo htmlentities($_GET['var7']);?>
+                            <td colspan="3" class="StormyWeatherDataTD"><?php echo $_GET['var7'];?>
                                 <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
                             </td>
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Conocido Por</td>
-                            <td colspan="3" class="StormyWeatherDataTD"><?php echo htmlentities($ConocidoPor);?>
-                                <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
+                            <td colspan="3" class="StormyWeatherDataTD"><?php echo $ConocidoPor;?>
+                               
                             </td>
 			</tr>
                         <tr>
@@ -208,14 +286,13 @@ $IdHistorial=$_GET['var17'];
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
-                            <td class="StormyWeatherDataTD" colspan="3"> <?php echo htmlentities($_GET['var9']) ;?>
+                            <td class="StormyWeatherDataTD" colspan="3"> <?php echo $_GET['var9'] ;?>
                                 <input type="hidden" name="txtnombrearea" id="txtnombrearea" disabled="disabled" size="60" />
                             </td>
                         </tr>
                          <tr>
                             <td class="StormyWeatherFieldCaptionTD">Diagnostico</td>
-                            <td colspan="3" class="StormyWeatherDataTD"><?php echo htmlentities($Diagnostico);?>
-                                <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
+                            <td colspan="3" class="StormyWeatherDataTD"><?php echo $Diagnostico;?>
                             </td>
 			</tr>
                         <tr>
@@ -223,19 +300,46 @@ $IdHistorial=$_GET['var17'];
                             <td class="StormyWeatherDataTD">
                                 <?php  
                                    if (!empty($Peso)) 
-                                        echo htmlentities($Peso);?>
+                                        echo $Peso;?>
                             </td>
                             <td class="StormyWeatherFieldCaptionTD">Talla</td>
                             <td class="StormyWeatherDataTD">
                                 <?php  
                                     if(!empty($Talla))
-                                        echo htmlentities($Talla);?>
+                                        echo $Talla;?>
                             </td>
                         </tr>
+                       
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Examen </td>
-                            <td  colspan="3" class="StormyWeatherDataTD"> <?php echo htmlentities($_GET['var2']);?>
+                            <td  colspan="3" class="StormyWeatherDataTD"> <?php echo $_GET['var2'];?>
                                 <input type="hidden" name="txtexamen" id="txtexamen" disabled="disabled" size="60"  />
+                                 <input type="hidden" id="num_campos" name="num_campos" value="0" />
+                                    <input type="hidden" id="cant_campos" name="cant_campos" value="0" />                
+                            </td>
+                        </tr>
+                        <tr id="metodo" >
+                            <td class="StormyWeatherFieldCaptionTD">*Metodologia</td>
+                            <td class="StormyWeatherDataTD" colspan="3">
+                                  <div id="divMetodologia">
+                                    <select id="cmbmetodologia" name="cmbmetodologia" size="1">
+                                        <option value="0" >--Seleccione Metodologia--</option>
+                                    </select>
+                                                        
+                                      <input type='hidden' id='cant_metodologia' name='cant_metodologia' value='0'>  
+                                         
+                                </div>
+                               
+                            </td>
+                        </tr>
+                         <tr>
+                            <td class="StormyWeatherFieldCaptionTD">Fecha Realización </td>
+                            <td  colspan="1" class="StormyWeatherDataTD"> 
+                                <input type="text" class="datepicker" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" />
+                            </td>
+                             <td class="StormyWeatherFieldCaptionTD">Fecha Reporte </td>
+                            <td  colspan="1" class="StormyWeatherDataTD"> 
+                                <input type="text" class="datepicker" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  /><input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  /> 
                             </td>
                         </tr>
                         <tr>
@@ -271,22 +375,15 @@ $IdHistorial=$_GET['var17'];
                             <td  class="StormyWeatherFieldCaptionTD">*Resultado Tabulador</td>
                             <td  class="StormyWeatherDataTD" colspan="3">
 				<select id="cmbResultado2" name="cmbResultado2" size="1">
-					<option value="0" >--Seleccione Resultado--</option>
-					<?php 
-                                                //$db = new ConexionBD;
-						if($db->conectar()==true){
-							$consulta = "SELECT lab_codigosxexamen.IdResultado,Resultado
-                                                             FROM `lab_codigosxexamen`
-                                                             INNER JOIN lab_codigosresultados 
-                                                             ON lab_codigosxexamen.IdResultado = lab_codigosresultados.IdResultado
-                                                             WHERE lab_codigosresultados.IdResultado <>5 AND lab_codigosxexamen.IdEstandar = '$IdEstandar'";
-							$resultado = mysql_query($consulta);
-							while ($rows = mysql_fetch_array($resultado)){
-								echo '<option value="' . $rows[0] . '">' . $rows[0] . '  -  ' . $rows[1] . '</option>'; 
-                                                        }
-
-						}
-					?>
+                                <option value="0" >--Seleccione Resultado--</option>
+                              
+                                <?php 
+                                $resscod=$objdatos->BuscarResultados($IdEstandar);
+                               
+                                while ($rows = pg_fetch_array($resscod)){
+                                        echo '<option value="' . $rows['idresultado'] . '">' . $rows['idresultado'] . '  -  ' . $rows['resultado'] . '</option>'; 
+                                }
+                                ?>
 				</select>
                             </td>
                         </tr>
@@ -300,13 +397,26 @@ $IdHistorial=$_GET['var17'];
                         <tr>
                             <?php 
                           }?>
-                            <td colspan="4" class="StormyWeatherDataTD">
-				<input type="button" name="Submit" value="Vista Previa Resultados" Onclick="VerResultados() ;"> 
+                            <td colspan="4"  class="StormyWeatherDataTD"><center>
+                                <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="VerResultados();">Ver Resultado </button>
+<!--                                <input type="button" name="add" value="Agregar Resultado" Onclick="AddResultado() ;"> -->
+                        </center>
                             </td>
                         </tr>
-                    </table>
+                        
+                        </table>
+                    
                 </form>
             </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+             <div id="divEncargado1" style="display:none">
+                                    <select id="cmbEmpleadosfin" name="cmbEmpleadosfin" size="1">
+                                        <option value="0" >--Seleccione Empleado--</option>
+                                    </select>
+                                </div>
         </td>
     </tr>
     <tr>
@@ -315,6 +425,22 @@ $IdHistorial=$_GET['var17'];
         </td>
     </tr>
    </table>
+  <?php
+}
+else{
+ echo '<center><br><br><h1><img src="../../../Imagenes/warning.png" valign="middle"/>'
+            . 'Los resultados de los examenes de la persona '.$rowpa['nombre'].', en esta área ya fueron ingresados.</h1> ';
+            echo " <button type='submit' class='fg-button ui-state-default ui-corner-all' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' />Cerrar</button></center>";
+               
+}
+?>
+ <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
+                <script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>
+                <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon-i18n.min.js"></script>
+                <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-es.js"></script>
+                <script type="text/javascript" src="../../../public/datepicker/jquery-ui-sliderAccess.js"></script>
+                <script type="text/javascript" src="../../../public/datepicker/script.js"></script>    
     
 </body>
 </html>

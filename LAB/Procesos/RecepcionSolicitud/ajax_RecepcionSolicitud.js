@@ -206,7 +206,7 @@ function VerificarExistencia(idexpediente, fechacita, idEstablecimiento, omitir_
         //muy importante este encabezado ya que hacemos uso de un formulario
         ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         //enviando los valores
-
+        
         ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&opcion=" + opcion + "&idEstablecimiento=" + idEstablecimiento);
         ajax.onreadystatechange = function() {
             if (ajax.readyState == 4) {	//mostrar los nuevos registros en esta capa
