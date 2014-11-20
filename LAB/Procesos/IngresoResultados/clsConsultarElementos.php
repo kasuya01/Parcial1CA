@@ -155,7 +155,7 @@ else
                       observacion,idempleado,idusuarioreg,fechahorareg,idestablecimiento,fecha_resultado) 
                       VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,'$observacion',$responsable,$usuario,NOW(),$lugar,'$fecharesultado')
                       RETURNING id";
-           echo $query;
+          // echo $query;
             $result = pg_query($query);
 
             if ($row = pg_fetch_array($result)) {
@@ -168,7 +168,7 @@ else
 
                     $id_exam_metod = $row_exam_metod[0];
 
-                    echo $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, idusuarioreg, fechahorareg,fecha_realizacion,fecha_resultado)
+                    $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, idusuarioreg, fechahorareg,fecha_realizacion,fecha_resultado)
                               VALUES($id_exam_metod, $iddetalle, $tab, $usuario, NOW(),'$fecharealiz','$fecharesultado')";
 
                     $result = pg_query($query);
@@ -193,7 +193,7 @@ else
     function insertar_elementos($idresultado,$idelemento,$resultado,$control_ele,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-            $query = "INSERT INTO lab_detalleresultado(idresultado, idelemento, resultado, observacion, idestablecimiento) 
+          echo  $query = "INSERT INTO lab_detalleresultado(idresultado, idelemento, resultado, observacion, idestablecimiento) 
                       VALUES($idresultado,$idelemento,'$resultado','$control_ele',$lugar)";
             
             $result = @pg_query($query);
@@ -209,7 +209,7 @@ else
     function insertar_subelementos($idresultado,$idsubelemento,$resultado,$control,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-            $query = "INSERT INTO lab_detalleresultado(idresultado,idsubelemento,resultado,observacion,idestablecimiento) 
+          echo  $query = "INSERT INTO lab_detalleresultado(idresultado,idsubelemento,resultado,observacion,idestablecimiento) 
                       VALUES($idresultado,$idsubelemento,'$resultado','$control',$lugar)";
             
             $result = @pg_query($query);
@@ -325,12 +325,12 @@ else
     function LeerDatos($idexamen) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-            $query = "SELECT t03.nombrearea,
-                             t01.nombre_examen AS nombreexamen
-                      FROM lab_conf_examen_estab                 t01
-                      INNER JOIN mnt_area_examen_establecimiento t02 ON (t02.id = t01.idexamen)
-                      INNER JOIN ctl_area_servicio_diagnostico   t03 ON (t03.id = t02.id_area_servicio_diagnostico)
-                      WHERE t01.id = $idexamen";
+         $query = "SELECT t03.nombrearea,t04.nombre_reporta 
+                     FROM lab_conf_examen_estab                 t01
+                     INNER JOIN mnt_area_examen_establecimiento t02 ON (t02.id = t01.idexamen)
+                     INNER JOIN ctl_area_servicio_diagnostico   t03 ON (t03.id = t02.id_area_servicio_diagnostico)
+                     INNER JOIN lab_examen_metodologia t04 ON ( t04.id_conf_exa_estab = t01.id)
+                     WHERE t01.id = $idexamen";
             $result = @pg_query($query);
             if (!$result)
                 return false;

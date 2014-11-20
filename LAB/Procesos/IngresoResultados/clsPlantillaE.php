@@ -339,7 +339,7 @@ function insertar_elemento($idresultado,$idproceso,$resultadodetalle,$observacio
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    echo $query = "INSERT INTO lab_detalleresultado(idresultado,idproceso,resultado,observacion ) 
+     $query = "INSERT INTO lab_detalleresultado(idresultado,idproceso,resultado,observacion ) 
 	      VALUES($idresultado,$idproceso,$resultadodetalle,$observacion)";
      $result = pg_query($query);
 	 
@@ -365,7 +365,7 @@ function LeerProcesoExamen($idexamen,$lugar,$sexo,$idedad)
             AND CASE WHEN fechafin IS NULL THEN CURRENT_DATE ELSE lab_procedimientosporexamen.fechafin END
             AND (lab_procedimientosporexamen.idsexo=$sexo OR lab_procedimientosporexamen.idsexo IS NULL)
             AND (lab_procedimientosporexamen.idrangoedad=$idedad OR lab_procedimientosporexamen.idrangoedad=4)";
-  // echo $query;
+   echo $query;
 	
 	 $result = @pg_query($query);
 	 

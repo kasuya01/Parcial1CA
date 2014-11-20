@@ -1414,7 +1414,7 @@ function GuardarResultadosPlantillaB()
 //FUNCION LLENAR COMBO DE RESPONSABLES
 function LlenarComboResponsable(idarea)
 {
-   // alert('llego aqui')
+    //alert(idarea)
     ajax = objetoAjax();
     opcion = 2;
     ajax.open("POST", "ctrSolicitudesProcesadas.php", true);
@@ -1436,7 +1436,7 @@ function LlenarComboResponsable(idarea)
         }
     }
     
-   LlenarComboResponsable2(idarea);
+   //LlenarComboResponsable2(idarea);
 
 }
 //Fn PG
@@ -1534,7 +1534,6 @@ function CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial
     idexamen = codigoex;
     FechaNac = fechanac;
     Sexo = sexo;
-    
     opcion = 1;
 
     //alert("Entro a cargar otros datos, opcion: "+opcion+"examen "+idexamen);
@@ -1542,8 +1541,8 @@ function CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
-    ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&FechaNac=" + FechaNac + "&Sexo=" + Sexo + 
-            "&idestandar=" + idestandar + "&idhistorial=" + idhistorial+"&fecharealiz="+fecharealiz+
+    ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&FechaNac=" + FechaNac + "&Sexo=" + Sexo +
+              "&idestandar=" + idestandar + "&idhistorial=" + idhistorial+"&fecharealiz="+fecharealiz+
               "&fecharesultado="+fecharesultado);
     ajax.onreadystatechange = function()
     {
@@ -1579,7 +1578,10 @@ function IngresarResultados() {
         sexo = document.frmnuevo.txtSexo.value;
         idestandar = document.frmnuevo.txtIdEstandar.value;
         idhistorial = document.frmnuevo.txtIdHistorial.value;
-        CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial);
+        fecharealiz = document.frmnuevo.txtresultrealiza.value;
+        fecharesultado=document.frmnuevo.txtresultfin.value;
+        //alert (fecharealiz+'-'+fecharesultado);
+        CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial,fecharealiz,fecharesultado);
     } else {
         alert("Ingrese el nombre de Responsable");
     }
@@ -1847,10 +1849,13 @@ function GuardarPlantillaD()
     //DATOS DE ENCABEZADO DE LOS RESULTADOS
     //solicitud estudio
     idsolicitud = document.getElementById('txtidsolicitud').value;
+   // alert(idsolicitud);
     //idrecepcion	
     idrecepcion = document.getElementById('txtidrecepcion').value;
+   // alert(idrecepcion);
     //detallesolicitud
     iddetalle = document.getElementById('txtiddetalle').value;
+   // alert(idrecepcion);
     procedencia = document.getElementById('txtprocedencia').value;
     origen = document.getElementById('txtorigen').value;
     //idexamen
@@ -1864,6 +1869,12 @@ function GuardarPlantillaD()
     idcantidad = document.getElementById('cmbCantidad').value;
     tab = document.getElementById('cmbResultado2').value;
     idestandar = document.getElementById('txtIdEstandar').value;
+   //alert(idestandar);
+    fecharealiz = document.getElementById('txtresultrealiza').value;
+    //alert(fecharealiz);
+    fecharesultado = document.getElementById('txtresultfin').value;
+     //alert(idestandar+"FECHA REALIZA"+fecharealiz+" FECHA RESULTADO "+fecharesultado);
+    //alert("FECHA REALIZA"+fecharealiz+" FECHA RESULTADO "+fecharesultado);
     //alert (tab);
     idresultado = 0;
     //alert ("tabulador"+tab+"IdSoli"+idsolicitud);
@@ -1874,16 +1885,10 @@ function GuardarPlantillaD()
         //muy importante este encabezado ya que hacemos uso de un formulario
         ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         //enviando los valores
-        ajax.send("opcion=" + opcion +
-                "&idsolicitud=" + idsolicitud +
-                "&idrecepcion=" + idrecepcion +
-                "&iddetalle=" + iddetalle +
-                "&idexamen=" + idexamen +
-                "&idempleado=" + idempleado +
-                "&idelemento=" + idelemento +
-                "&idcantidad=" + idcantidad +
-                "&idresultado=" + idresultado +
-                "&tab=" + tab);
+        ajax.send("opcion=" + opcion + "&idsolicitud=" + idsolicitud + "&idrecepcion=" + idrecepcion +
+                "&iddetalle=" + iddetalle + "&idexamen=" + idexamen + "&idempleado=" + idempleado +
+                "&idelemento=" + idelemento + "&idcantidad=" + idcantidad + "&idresultado=" + idresultado +
+                "&tab=" + tab + "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado);
         ajax.onreadystatechange = function()
         {
             if (ajax.readyState == 4)
@@ -1924,6 +1929,9 @@ function GuardarElemento()
     idcantidad = document.getElementById('cmbCantidad').value;
     idresultado = document.getElementById('oresultado').value;
     tab = document.getElementById('cmbResultado2').value;
+   // fecharealiz = document.getElementById('txtresultrealiza').value;
+    //alert(fecharealiz);
+    //fecharesultado = document.getElementById('txtresultfin').value;
     //alert (tab+"opc=2");
     if (validarplantillaD())
     {
@@ -1932,9 +1940,14 @@ function GuardarElemento()
         //muy importante este encabezado ya que hacemos uso de un formulario
         ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         //enviando los valores
-        ajax.send("opcion=" + opcion + "&idsolicitud=" + idsolicitud + "&idrecepcion=" + idrecepcion
+       /* ajax.send("opcion=" + opcion + "&idsolicitud=" + idsolicitud + "&idrecepcion=" + idrecepcion
                 + "&iddetalle=" + iddetalle + "&idexamen=" + idexamen + "&idempleado=" + idempleado
-                + "&idelemento=" + idelemento + "&idcantidad=" + idcantidad + "&idresultado=" + idresultado + "&tab" + tab);
+                + "&idelemento=" + idelemento + "&idcantidad=" + idcantidad + "&idresultado=" + idresultado 
+                + "&tab" + tab + "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado);*/
+         ajax.send("opcion=" + opcion + "&idsolicitud=" + idsolicitud + "&idrecepcion=" + idrecepcion
+                + "&iddetalle=" + iddetalle + "&idexamen=" + idexamen + "&idempleado=" + idempleado
+                + "&idelemento=" + idelemento + "&idcantidad=" + idcantidad + "&idresultado=" + idresultado 
+                + "&tab" + tab);
         ajax.onreadystatechange = function()
         {
             if (ajax.readyState == 4)
@@ -1978,6 +1991,8 @@ function validarplantillaD()
     {
         resp = false;
     }
+    
+    
     return resp;
 }
 
@@ -2090,6 +2105,8 @@ function IngresarResultadosPlantillaE()
         codigoex = document.frmnuevo.txtidexamen.value;
         fechanac = document.frmnuevo.txtFechaNac.value;
         sexo = document.frmnuevo.txtSexo.value;
+        fecharealiz = document.frmnuevo.txtresultrealiza.value;
+        fecharesultado=document.frmnuevo.txtresultfin.value;
         //alert(codigoex);
         CargarProcesosExamen(codigoex, fechanac, sexo);
     }
@@ -2099,7 +2116,7 @@ function IngresarResultadosPlantillaE()
     }
 }
 
-function CargarProcesosExamen(codigoex, fechanac, sexo)
+function CargarProcesosExamen(codigoex, fechanac, sexo,fecharealiz,fecharesultado)
 {
     ajax = objetoAjax();
     idexamen = codigoex;
@@ -2112,7 +2129,9 @@ function CargarProcesosExamen(codigoex, fechanac, sexo)
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
 
-    ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&observacion=" + observacion + "&fechanac=" + fechanac + "&sexo=" + sexo);
+    ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&observacion=" + observacion +
+             "&fechanac=" + fechanac + "&sexo=" + sexo + "&fecharealiz=" + fecharealiz + 
+             "&fecharesultado="+fecharesultado);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)

@@ -126,16 +126,14 @@ $area    = $_SESSION['Idarea'];
       //  $nombreEstab = $_GET['var17'];
        
         if($db->conectar()==true) {
-            $condatos = "SELECT t07.peso,
-                                t07.talla,
-                                t06.diagnostico
-                         FROM sec_historial_clinico               t01
-                         INNER JOIN mnt_expediente                t02 ON (t02.id = t01.id_numero_expediente)
-                         INNER JOIN mnt_paciente                  t03 ON (t03.id = t02.id_paciente)
-                         LEFT OUTER JOIN sec_diagnosticospaciente t04 ON (t01.id = t04.idhistorialclinico)
-                         LEFT OUTER JOIN mnt_cie10                t06 ON (t06.id = t04.iddiagnostico1)
-                         LEFT OUTER JOIN sec_examenfisico         t07 ON (t01.id = t07.idhistorialclinico)
-                         WHERE t01.id = $IdHistorial AND t01.idestablecimiento = $lugar";
+           $condatos = "SELECT t07.peso,t07.talla,t06.sct_name_es AS diagnostico,especificacion,conocido_por
+                        FROM sec_historial_clinico               t01
+                        INNER JOIN mnt_expediente                t02 ON (t02.id = t01.id_numero_expediente)
+                        INNER JOIN mnt_paciente                  t03 ON (t03.id = t02.id_paciente)
+                        LEFT OUTER JOIN sec_diagnostico_paciente t04 ON (t01.id = t04.id_historial_clinico)
+                        LEFT OUTER JOIN mnt_snomed_cie10         t06 ON (t06.id = t04.id_snomed)
+                        LEFT OUTER JOIN sec_signos_vitales       t07 ON (t01.id = t07.id_historial_clinico)
+                        WHERE t01.id = $IdHistorial AND t01.idestablecimiento = $lugar";
 
             $resultado = pg_query($condatos);
             $rows = pg_fetch_array($resultado);
@@ -143,7 +141,8 @@ $area    = $_SESSION['Idarea'];
             $Peso=$rows['peso'];
             $Talla=$rows['talla'];
             $Diagnostico=$rows['diagnostico'];
-            //$ConocidoPor=$rows['conocidopor'];
+            $Especificacion=$rows['especificacion'];
+            $ConocidoPor=$rows['conocido_por'];
         }
         ?>
 </script>
@@ -202,6 +201,12 @@ $area    = $_SESSION['Idarea'];
                                 </td>
                             </tr>
                             <tr>
+                                <td class="StormyWeatherFieldCaptionTD">Datos Clinicos</td>
+                                <td colspan="3" class="StormyWeatherDataTD"><?php echo $Especificacion;?>
+                                    <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
+                                </td>
+                            </tr>
+                            <tr>
                                 <td class="StormyWeatherFieldCaptionTD">Peso</td>
                                 <td class="StormyWeatherDataTD">
                                     <?php 
@@ -245,12 +250,12 @@ $area    = $_SESSION['Idarea'];
                             <tr>
                                 <td class="StormyWeatherFieldCaptionTD">Fecha y hora inicio Proceso</td>
                                 <td class="StormyWeatherDataTD">
-                                        <input type="text" class="datepicker" id="v_resultfin"  name="txtresultrealiza" size="15">										
+                                        <input type="text" class="datepicker" id="txtresultrealiza"  name="txtresultrealiza" size="15">										
                                 </td>
                             
                                 <td class="StormyWeatherFieldCaptionTD">Fecha Resultado</td>
-                                <td class="StormyWeatherDataTD" colspan="2">
-                                        <input type="text" class="datepicker" name="txtresultfin" id="d_resultfin" size="15"  value="<?php echo date("Y-m-d h:m"); ?>"  />	
+                                <td class="StormyWeatherDataTD">
+                                        <input type="text" class="datepicker" name="txtresultfin" id="txtresultfin" size="15"  value="<?php echo date("Y-m-d h:m"); ?>"  />	
                                 </td>
                             </tr>
                             <?php 

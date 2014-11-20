@@ -114,7 +114,7 @@ function calc_edad()
 		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5" style='font:bold'><strong>Examen Realizado:</strong></td>
-			<td colspan='5' class="Estilo6" style='font:bold'><?php echo htmlentities($row_area['nombre_examen'])?></td>
+			<td colspan='5' class="Estilo6" style='font:bold'><?php echo htmlentities($row_area['nombre_reporta'])?></td>
 		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5" style='font:bold'><strong>Validado Por:</strong></td>

@@ -22,12 +22,12 @@ switch ($opcion) {
                 $fecharesultado=$_POST['fecharesultado'];
                 
                // echo $fecharealiz."-".$fecharesultado;
-                $ConRangos   = $objdatos->ObtenerCodigoRango($fechanac);
-		$row_rangos  = pg_fetch_array($ConRangos);
-		$idedad      = $row_rangos[0];
-		$ConEstandar = $objdatos->Obtener_Estandar($idexamen);
-		$CodEstandar = pg_fetch_array($ConEstandar);
-		$codigo_estandar  = $CodEstandar[0];
+                $ConRangos       = $objdatos->ObtenerCodigoRango($fechanac);
+		$row_rangos      = pg_fetch_array($ConRangos);
+		$idedad          = $row_rangos[0];
+		$ConEstandar     = $objdatos->Obtener_Estandar($idexamen);
+		$CodEstandar     = pg_fetch_array($ConEstandar);
+		$codigo_estandar = $CodEstandar[0];
 		$IdEstandar	 = $CodEstandar[1];
                
 		switch ($codigo_estandar) {
@@ -36,18 +36,18 @@ switch ($opcion) {
 
 				$imprimir="<table width='75%' border='0' align='center' class='StormyWeatherFormTABLE'>";
 				$imprimir.="	<tr class='CobaltButton'>
-									<td width='30%'> &nbsp;</td>
-									<td width='30%' aling='center'>Resultado</td>
-									<td width='5%' aling='center'>Unidades</td>
-									<td width='30%' colspan='2'aling='center'>Control Normal </td>
-								</tr>";
+                                                    <td width='30%'> &nbsp;</td>
+                                                    <td width='30%' aling='center'>Resultado</td>
+                                                    <td width='5%' aling='center'>Unidades</td>
+                                                    <td width='30%' colspan='2'aling='center'>Control Normal </td>
+						</tr>";
 				$pos=0;
 				$posele=0;
 			   	while($row = pg_fetch_array($consulta)) { //ELEMENTOS
 			   		if($row['subelemento'] === "S") {
-			   			$imprimir.="<tr>
-			   					<td colspan='5' style='font:bold' class='StormyWeatherFieldCaptionTD'>".htmlentities($row['elemento'])."</td>
-			   				</tr>";
+			   	$imprimir.="<tr>
+			   			<td colspan='5' style='font:bold' class='StormyWeatherFieldCaptionTD'>".htmlentities($row['elemento'])."</td>
+                                    	</tr>";
 			   			
 			   			$consulta2=$objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
 						while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
@@ -228,7 +228,7 @@ switch ($opcion) {
 	   	$sexo 		      = $_POST['sexo'];
                 $fecharealiz=$_POST['fecharealiz'];
                 $fecharesultado=$_POST['fecharesultado'];
-                // echo $fecharealiz."-".$fecharesultado;
+               // echo $fecharealiz."-".$fecharesultado;
 	   	$Consulta_Estab  = $objdatos->Nombre_Establecimiento($lugar);
 	   	$row_estab   	 = pg_fetch_array($Consulta_Estab);
 	   	$ConEstandar 	 = $objdatos->Obtener_Estandar($idexamen);
@@ -256,7 +256,7 @@ switch ($opcion) {
 		   		$row_generales 		  = pg_fetch_array($datos_generales);
 		   		$row_area  		  = pg_fetch_array($consulta_datos);
 		   		$row_empleado 		  = pg_fetch_array($datos_empleado);
-
+                                echo $row_area['nombre_reporta'];
 	   			$imprimir="<table width='92%' align='center' >
 				   		<tr>
 				   			<td colspan='1' align='left' width='20%'><img id='Image1' style='width: auto; height: 55px;' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
@@ -295,7 +295,7 @@ switch ($opcion) {
 			   			</tr>
 			   			<tr>
 			   				<td colspan='1'><strong>Examen Realizado:</strong></td>
-			   				<td colspan='5'>".htmlentities($row_area['nombreexamen'])."</td>
+			   				<td colspan='5'>".htmlentities($row_area['nombre_reporta'])."</td>
 			   			</tr>
 			   			<tr>
 			   				<td colspan='1'><strong>Validado Por:</strong></td>
@@ -402,7 +402,7 @@ switch ($opcion) {
 		        $datos_generales  = $objdatos->MostrarDatosGenerales($idsolicitud,$lugar);
 		        $datos_empleado   = $objdatos->DatosEmpleado($idempleado,$lugar);
 		        $row_generales 	  = pg_fetch_array($datos_generales);
-		        $row_area 		  = pg_fetch_array($consulta_datos);
+		        $row_area 	  = pg_fetch_array($consulta_datos);
 		        $row_empleado 	  = pg_fetch_array($datos_empleado);
 		        $nombreEmpleado   = $row_empleado['nombreempleado'];
 
@@ -560,9 +560,11 @@ switch ($opcion) {
 		$tab 				  = $_POST['tab'];
   		$fecharealiz=$_POST['fecharealiz'];
                 $fecharesultado=$_POST['fecharesultado'];
-                echo $fecharealiz."-".$fecharesultado;
+               //
+               //  echo $fecharealiz."-".$fecharesultado;
   		//VALIDANDO QUE LA INFORMACION ESTE COMPLETA:
 		$ultimo = $objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$idempleado,$usuario,$tab,$fecharealiz,$fecharesultado,$lugar);
+              //  echo $ultimo;
 		$pos = 0;
 		$posele = 0;
 		$ban = 0;
