@@ -193,8 +193,10 @@ $iddetallesolicitud=$_GET['var5'];
 $idarea=$_GET['var4'];
 $cant=$objdatos->buscarAnterioresPUnica($solicitud,$iddetallesolicitud, $idarea);
 if (pg_num_rows($cant)>0){
-if (!$IdHistorial){
-    
+   //  echo $referido.'<br>';
+if ($referido!="t"){
+  
+   // echo $IdHistorial.' -- lugar: '.$lugar; 
 $condatos=$objdatos->condatos($IdHistorial, $lugar);
 
 /*
@@ -211,12 +213,12 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                      AND sec_historial_clinico.IdEstablecimiento =$lugar";
 
         $resultado = mysql_query($condatos);*/
-	$rows = pg_fetch_array($resultado);
+	$rows = pg_fetch_array($condatos);
         
-        $Peso=$rows['Peso'];
-        $Talla=$rows['Talla'];
-        $Diagnostico=$rows['Diagnostico'];
-        $ConocidoPor=$rows['ConocidoPor'];
+        $Peso=$rows['peso'];
+        $Talla=$rows['talla'];
+        $Diagnostico=$rows['diagnostico'];
+        $ConocidoPor=$rows['conocidoPor'];
   }
   else{
       $Peso='-';
