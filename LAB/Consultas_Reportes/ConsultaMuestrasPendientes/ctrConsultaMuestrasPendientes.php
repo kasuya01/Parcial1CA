@@ -240,7 +240,7 @@ switch ($opcion)
             INNER JOIN ctl_sexo t19                                 ON (t19.id = t07.id_sexo)
             WHERE (t16.idestado = 'D') 
             AND t02.id_establecimiento = $lugar 
-                AND $cond2"; 
+                AND $cond2";  
                   
   //  $query . " ORDER BY t03.fecharecepcion DESC";
       //echo $query;

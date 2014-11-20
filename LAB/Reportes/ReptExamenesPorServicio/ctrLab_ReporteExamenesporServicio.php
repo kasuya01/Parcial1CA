@@ -14,7 +14,7 @@ $obj = new clsReporteExamenesporServicio;
 switch ($opcion) 
 {
 	case 1: 
-  		$procedencia=$_POST['procedencia'];
+  		 $procedencia=$_POST['procedencia'];
 		$fechainicio=$_POST['fechainicio'];
 		$fechafin=$_POST['fechafin'];
 		$subservicio=$_POST['subservicio'];
@@ -25,139 +25,220 @@ switch ($opcion)
 		$arrayidareas = array();
 		$arrayareas = array();
 		$cadena="";
-	
-                $consulta=$obj->LeerAreas($lugar);
-		$NroRegistros= $obj->NumeroDeRegistros($lugar);
-		while ($rowareas=mysql_fetch_array($consulta)){
-			$arrayidareas[$j]=$rowareas[0];
-			$arrayareas[$j]=$rowareas[1];
-			$arraynombres[$j]="AREA".$j;
-			$j++;
-		}
-	
-		for ($i=0;$i<$NroRegistros;$i++){
-		   $cadena=$cadena."sum(if(lab_areas.IdArea='$arrayidareas[$i]',1,0)) AS AREA$i,";
-		}
-
-		//print_r($arraynombres);	
-		$query = "SELECT $cadena NombreSubServicio as origen,
-			sum(if(sec_detallesolicitudestudios.IdExamen<>'',1,0)) AS total ,mnt_servicio.IdServicio, mnt_servicio.NombreServicio 
-			FROM sec_detallesolicitudestudios 
-			INNER JOIN lab_resultados ON sec_detallesolicitudestudios.IdDetalleSolicitud=lab_resultados.IdDetalleSolicitud 
-			INNER JOIN lab_examenes ON sec_detallesolicitudestudios.IdExamen=lab_examenes.IdExamen 
-			INNER JOIN lab_examenesxestablecimiento ON lab_examenesxestablecimiento.IdExamen=lab_examenes.IdExamen 
-			INNER JOIN lab_areas ON lab_examenes.IdArea=lab_areas.IdArea 
-			INNER JOIN lab_areasxestablecimiento ON lab_areas.IdArea=lab_areasxestablecimiento.IdArea
-			INNER JOIN sec_solicitudestudios ON sec_detallesolicitudestudios.IdSolicitudEstudio=sec_solicitudestudios.IdSolicitudEstudio 
-			INNER JOIN sec_historial_clinico ON sec_solicitudestudios.IdHistorialClinico=sec_historial_clinico.IdHistorialClinico 
-			INNER JOIN mnt_subservicio ON sec_historial_clinico.IdSubServicio=mnt_subservicio.IdSubServicio 
-			INNER JOIN mnt_servicio ON mnt_subservicio.IdServicio=mnt_servicio.IdServicio
-			INNER JOIN mnt_establecimiento ON sec_historial_clinico.IdEstablecimiento=mnt_establecimiento.IdEstablecimiento
-			WHERE sec_detallesolicitudestudios.EstadoDetalle='RC' AND lab_areasxestablecimiento.Condicion='H' 
-			AND lab_areasxestablecimiento.IdEstablecimiento=$lugar AND";
-
-		$ban=0;
+                $cond1="";
+                $cond2="";
+                $query="";
+                $cond0="and";
+                
+                
+                $ban=0;
 		//VERIFICANDO LOS POST ENVIADOS
 		if ((!empty($_POST['fechainicio'])) and (!empty($_POST['fechafin'])))
-		{ $query .= " (lab_resultados.FechaHoraReg >='".$ffechaini."' AND lab_resultados.FechaHoraReg <='".$ffechafin."') AND";}
+		{ $cond1.= " AND  (t02 .fechahorareg >='".$ffechaini."' AND t02 .fechahorareg <='".$ffechafin."')    AND     ";
+                  $cond2.= " AND  (t02 .fechahorareg >='".$ffechaini."' AND t02 .fechahorareg <='".$ffechafin."')    AND     ";
+                }
 			
 		if (!empty($_POST['procedencia']))
-		{ $query .= " mnt_subservicio.IdServicio='".$_POST['procedencia']."' AND";}
+		{ $cond1 .=" id_area_atencion='".$_POST['procedencia']."' AND";
+                  $cond2 .= " id_area_atencion='".$_POST['procedencia']."' AND";
+                }
 		
 		if (!empty($_POST['subservicio']))
-		{ $query .= " sec_historial_clinico.IdSubServicio='".$_POST['subservicio']."' AND";}
+		{ $cond1 .= " t10.id='".$_POST['subservicio']."' AND";
+                  $cond2 .=" t10.id='".$_POST['subservicio']."' AND";
+                }
 				
 		if((empty($_POST['procedencia'])) and (empty($_POST['subservicio'])) and (empty($_POST['fechainicio'])) and (empty($_POST['fechafin'])))
 		{
 			$ban=1;
 		}
-				
-		if ($ban==0)
-		{   $query = substr($query ,0,strlen($query)-3);
-                    $query_search = $query. " GROUP BY sec_historial_clinico.IdSubServicio
-                    ORDER BY sec_historial_clinico.IdSubServicio";
+	
+                $consulta=$obj->LeerAreas($lugar);
+		$NroRegistros= $obj->NumeroDeRegistros($lugar);
+		while ($rowareas=pg_fetch_array($consulta)){
+			$arrayidareas[$j]=$rowareas[0];
+                        $arrayareas[$j]=$rowareas[1];
+			$arraynombres[$j]="AREA".$j;
+			$j++;
 		}
-			
+	
+		for ($i=0;$i<$NroRegistros;$i++){
+		   $cadena=$cadena.//"sum(if(t05.id='$arrayidareas[$i]',1,0)) AS AREA$i,";
+                     "SUM (CASE WHEN t05.id=$arrayidareas[$i] THEN 1 else 0 END )AS AREA$i,";
+		
+                  
+                   
+                }
+                    if ($ban == 0) {
+
+            $cond1 = substr($cond1, 0, strlen($query) - 3);
+            $cond2 = substr($cond2, 0, strlen($query) - 3);
+            
+          //  echo $query1;
+           // $query_search = 
+            //echo $cond1;
+            //echo $cond2;
+        }     
+       // echo $cond2;
+		//print_r($arraynombres);	
+		  $query ="select   
+                        $cadena  
+                        t13.nombre as servicio, 
+                        t14.nombre as establecimiento, 
+                        t11.nombre as subservicio,
+                        SUM (CASE WHEN t01.id_conf_examen_estab<>1 THEN 1 else 0 END )AS total
+                        FROM sec_detallesolicitudestudios           t01 
+                        INNER JOIN   lab_resultados                 t02 	ON (t01.id=t02.iddetallesolicitud) 
+                        INNER JOIN lab_conf_examen_estab            t03 	ON (t01.id_conf_examen_estab=t03.id) 
+                        INNER JOIN mnt_area_examen_establecimiento  t04 	ON (t04.id=t03.idexamen) 
+                        INNER JOIN ctl_area_servicio_diagnostico    t05 	ON (t05.id=t04.id_area_servicio_diagnostico) 
+                        INNER JOIN lab_areasxestablecimiento        t06 	ON (t06.idarea=t05.id) 
+                        INNER JOIN sec_solicitudestudios            t07 	ON (t07.id=t01.idsolicitudestudio) 
+                        left JOIN sec_historial_clinico             t08 	ON (t07.id_historial_clinico=t08.id)
+                        INNER JOIN  mnt_aten_area_mod_estab         t10 	ON (t10.id = t08.idsubservicio) 
+                        INNER JOIN  ctl_atencion                    t11 	ON (t11.id = t10.id_atencion) 
+                        INNER JOIN  mnt_area_mod_estab              t12 	ON (t12.id = t10.id_area_mod_estab) 
+                        INNER JOIN   ctl_area_atencion              t13 	ON (t13.id = t12.id_area_atencion) 
+                        INNER JOIN ctl_establecimiento              t14 	ON (t14.id = t08.idestablecimiento) 
+                        WHERE t01.estadodetalle=(select id from ctl_estado_servicio_diagnostico where idestado='RC') 
+                        AND (t06.condicion='H') 
+                        AND (t06.idestablecimiento=$lugar) $cond1
+                                GROUP BY   
+                                        t13.nombre, 
+                                        t14.nombre, 
+                                        t11.nombre 
+        union 
+                        select 
+                        $cadena  
+                        t13.nombre as servicio, 
+                        t14.nombre as establecimiento, 
+                        t11.nombre as subservicio,
+                        SUM (CASE WHEN t01.id_conf_examen_estab<>1 THEN 1 else 0 END )AS total
+                        from sec_detallesolicitudestudios           t01 
+                        INNER JOIN   lab_resultados                 t02 	ON (t01.id=t02.iddetallesolicitud) 
+                        INNER JOIN lab_conf_examen_estab            t03 	ON (t01.id_conf_examen_estab=t03.id) 
+                        INNER JOIN mnt_area_examen_establecimiento  t04 	ON (t04.id=t03.idexamen) 
+                        INNER JOIN ctl_area_servicio_diagnostico    t05 	ON (t05.id=t04.id_area_servicio_diagnostico) 
+                        INNER JOIN lab_areasxestablecimiento        t06 	ON (t06.idarea=t05.id) 
+                        INNER JOIN sec_solicitudestudios            t07 	ON (t07.id=t01.idsolicitudestudio) 
+                        left join mnt_dato_referencia               t08		on (t07.id_dato_referencia=t08.id)		
+                        INNER JOIN  mnt_aten_area_mod_estab         t10 	ON (t10.id = t08.id_aten_area_mod_estab) 
+                        INNER JOIN  ctl_atencion                    t11 	ON (t11.id = t10.id_atencion) 
+                        INNER JOIN  mnt_area_mod_estab              t12 	ON (t12.id = t10.id_area_mod_estab) 
+                        INNER JOIN   ctl_area_atencion              t13 	ON (t13.id = t12.id_area_atencion) 
+                        INNER JOIN ctl_establecimiento              t14 	ON (t14.id = t08.id_establecimiento) 
+                        WHERE t01.estadodetalle=(select id from ctl_estado_servicio_diagnostico where idestado='RC') 
+                        AND (t06.condicion='H') 
+                        AND (t06.idestablecimiento=$lugar) $cond2
+                                GROUP BY   
+                                        t13.nombre, 
+                                        t14.nombre, 
+                                        t11.nombre";
+
 		//echo $query_search;
-		$consulta=$obj->BuscarExamenesporSubServicio($query_search);
+		$consulta=$obj->BuscarExamenesporSubServicio($query);
 					
-	if (!empty($_POST['procedencia'])){// reporte de una especialidad especificada
+	if (!empty($_POST['procedencia']))
+{// reporte de una especialidad especificada
+    //echo "dentro del if ";
 		//GENERACION DE EXCEL
 		$NombreExcel="Rep_pruebas_por_servicio".'_'.date('d_m_Y__h_i_s A');
 	      	$nombrearchivo = "../../../Reportes/".$NombreExcel.".ods";
 		//echo $nombrearchivo;
 	       	$punteroarchivo = fopen($nombrearchivo, "w+") or die("El archivo de reporte no pudo crearse");
+                
 			//***********************
+                //prodecencia  
 	      	$consultaSubServicios=$obj->consultaSubservicios($procedencia);
-	       	$consultaServicios=$obj->NombreServicio($procedencia);
+                //servicio 
+                $consultaServicios=$obj->NombreServicio($procedencia);
 	       	$consultaAreas=$obj->consultarareas($lugar);
 	
-	       	$rowServicio = mysql_fetch_array($consultaServicios);
+	       	$rowServicio = pg_fetch_array($consultaServicios);
 		$FechaI=explode('-',$_POST['fechainicio']);
 		$FechaF=explode('-',$_POST['fechafin']);
 		$FechaI2=$FechaI[2].'/'.$FechaI[1].'/'.$FechaI[0];
 		$FechaF2=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];
-	      echo"<table width='100%' hight='10%' align='center'>
+       echo"<table width='100%' hight='10%' align='center'>
 	           <tr>
 	       		<td colspan='28' align='center'>
                             <a href='".$nombrearchivo."'><H5>DESCARGAR REPORTE EXCEL <img src='../../../Imagenes/excel.gif'></H5></a>
                         </td>
-	           </tr>";
-         $imprimir="<tr>
-                        <td colspan='28' align='center'><h3>REGISTRO DE EXAMENES PRACTICADOS A LOS DIFERENTES SERVICIOS SEPARADOS POR SECCION</h3></td>
-                    </tr>
-                    <tr>
-			<td colspan='28' align='center' ><h4>PROCEDENCIA:".$rowServicio['NombreServicio']."</h4></td>
-                    </tr>
-                    <tr>
-			<td colspan='28' align='center'><h4>PERIODO DEL:  ".$FechaI2." AL ".$FechaF2."</h4></td>
-                    </tr>
-                    </table>";
-        $imprimir.="<table width='90%' border='1' align='center' >
-		    <tr style='background:#BBBEC9'>
-			<td class='CobaltFieldCaptionTD' width='20%'><strong>Servicio</strong></td>";
-		while ($rowarea=mysql_fetch_array($consultaAreas)){
-	    $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>".htmlentities($rowarea['NombreArea'])."</strong></td>";
+	           </tr> ";
+                $imprimir="<tr>
+                                <td colspan='28' align='center'><h3>REGISTRO DE EXAMENES PRACTICADOS A LOS DIFERENTES SERVICIOS SEPARADOS POR SECCION</h3></td>
+                            </tr>
+                            <tr>
+                                <td colspan='28' align='center' ><h4>PROCEDENCIA:".$rowServicio['servicio']."</h4></td>
+                            </tr>
+                            <tr>
+                                <td colspan='28' align='center'><h4>PERIODO DEL:  ".$FechaI2." AL ".$FechaF2."</h4></td>
+                            </tr>
+            </table>";
+        
+        //otra tabla 
+$imprimir.="<table width='90%' border='1' align='center' >
+                                <tr style='background:#BBBEC9'>
+                                <td class='CobaltFieldCaptionTD' width='20%'><strong>Servicio</strong></td>";
+		while ($rowarea=pg_fetch_array($consultaAreas))
+                        {
+                             $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>".htmlentities($rowarea['nombrearea'])."</strong></td>";
 			}
-	    $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>TOTAL</strong></td></tr>";
-		while ($row = mysql_fetch_array($consulta)){
-	 $imprimir.="<tr>
-			<td width='10%'>".$row['origen']."</td>";
-			for($x=0;$x<$NroRegistros;$x++){ 	
-	    $imprimir.="<td width='10%'>".$row[$arraynombres[$x]]."</td>";
-			}
-	    $imprimir.="<td width='14%'><strong>".$row['total']."</strong></td>
-		    </tr>";
+                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>TOTAL</strong></td></tr>";
+		
+   if(pg_num_rows($consulta))
+           {     //echo "dentro";            
+               while ($row = pg_fetch_array($consulta))
+                {
+                   $ser=$row['subservicio'];
+                 // echo "nada". $a1=$row['area1'];
+                 // echo  $ser;
+                   
+                     $imprimir.="<tr>
+                                                <td width='10%'>".$row['subservicio']."</td>";
+                                        for($x=0;$x<$NroRegistros;$x++)
+                                        { 	
+                                           
+                                            $area='area'.$x;
+                                            $imprimir.="<td width='10%'>".$row[$area]."</td>";
+                                        }
+                                            $imprimir.="<td width='14%'><strong>".$row['total']."</strong></td>
+                                </tr>";
 		}
-    $imprimir.="</table>";
+                
+           }else { //echo "nada";
+             $imprimir .="<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado reeeesultados...</span></td></tr></table>";
+                //echo $imprimir;
+             
+         }  
+           
+           
+$imprimir.="</table>";
+    
+    
+    
 			
 		//CIERRE DE ARCHIVO EXCEL
 	    fwrite($punteroarchivo,$imprimir);
 	    fclose($punteroarchivo);
 		//************************/ 
 	      echo $imprimir;
-	}
-	else{ //reporte de todas las especialidades
+}
+
+
+// LAS 3 PROCEDENCIAS
+
+else{ //reporte de todas las especialidades
  			 //  GENERACION DE EXCEL
+    //echo "dentro del else";
 		$j=0;
 		$i=0;
 		$arrayidareas = array();
 		$arrayareas = array();
 		$cadena="";
 		
-		$consulta=$obj->LeerAreas($lugar);
-		$NroRegistros= $obj->NumeroDeRegistros($lugar);
-                
-		while ($rowareas=mysql_fetch_array($consulta)){
-			$arrayidareas[$j]=$rowareas[0];
-			$arrayareas[$j]=$rowareas[1];
-			$arraynombres[$j]="AREA".$j;
-			$j++;
-		}
 		
-		for ($i=0;$i<$NroRegistros;$i++){
-			$cadena=$cadena."sum(if(lab_areas.IdArea='$arrayidareas[$i]',1,0)) AS AREA$i,";
-		}
+		
 			
      		$NombreExcel="Rep_General_de_pruebas_por_servicio".'_'.date('d_m_Y__h_i_s A');
     		$nombrearchivo = "../../../Reportes/".$NombreExcel.".ods";
@@ -168,80 +249,327 @@ switch ($opcion)
 		$FechaI2=$FechaI[2].'/'.$FechaI[1].'/'.$FechaI[0];
 		$FechaF2=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];
 		$imprimir1="<table width='100%' hight='10%' align='center'>
-				<tr>
-					<td colspan='5' align='center'><a href='".$nombrearchivo."'><H5>DESCARGAR REPORTE EXCEL <img src='../../../Imagenes/excel.gif'></H5></a></td>
-				</tr>
-				<tr>
-					<td colspan='25' align='center'><h3>REGISTRO DE EXAMENES PRACTCADOS A LOS DIFERENTES SERVICIOS SEPARADOS POR SECCION</h3></td>
-				</tr>
-				<tr>
-					<td colspan='25' align='center'><h3>PERIODO DEL:  ".$FechaI2." AL ".$FechaF2."</h3></td>
-				</tr>
+                                        <tr>
+                                                <td colspan='5' align='center'><a href='".$nombrearchivo."'><H5>DESCARGAR REPORTE EXCEL <img src='../../../Imagenes/excel.gif'></H5></a></td>
+                                        </tr>
+                                        <tr>
+                                                <td colspan='25' align='center'><h3>REGISTRO DE EXAMENES PRACTCADOS A LOS DIFERENTES SERVICIOS SEPARADOS POR SECCION</h3></td>
+                                        </tr>
+                                        <tr>
+                                                <td colspan='25' align='center'><h3>PERIODO DEL:  ".$FechaI2." AL ".$FechaF2."</h3></td>
+                                        </tr>
                             </table>";
 		echo $imprimir1;
 		fwrite($punteroarchivo,$imprimir1);
 		$consultaSubServicio=$obj->consultaTodosServicios($lugar); 
-		while($rowServicio=mysql_fetch_array($consultaSubServicio)){
-		$imprimir="<table colspan='21' width='100%' hight='10%' align='center'>
-	        	   <tr>
-				<td colspan='25' align='center' ><h3>PROCEDENCIA: ".$rowServicio['NombreServicio']."</h3></td>
-			   </tr>
-                           </table>";
-				//$servicio=$rowServicio['IdServicio'];
-			$cantidad=$obj->cantidadxservicio($rowServicio['IdServicio'],$ffechaini,$ffechafin,$lugar);
-			if ($cantidad>0){
+ 
+                //*********ConsultaExterna********
+                $ConsultaExterna=$obj->ConsultaExterna();
+                $row = pg_fetch_array($ConsultaExterna);
+                 $servicio=$row[0];
+                 $nomServicio=$row[1];
+                 
+                 
+                 $imprimir="<table colspan='21' width='100%' hight='10%' align='center'>
+                                    <tr>
+                                        <td colspan='25' align='center' ><h3>PROCEDENCIA: ".$nomServicio."</h3></td>
+                                    </tr>
+                            </table>";
+                
+                $cantidad1=$obj->cantidadxservicio1($servicio,$ffechaini,$ffechafin,$lugar);
+                $cantidad2=$obj->cantidadxservicio2($servicio,$ffechaini,$ffechafin,$lugar);
+                
+                if($cantidad1 >0 or  $cantidad2 > 0)
+                                {
+                                                $cantidad=1;
+                                                 $cantidadcon=$cantidad;
+            
+                                }
+                                else {
+                                    $cantidad=0;
+                                                 $cantidadcon=$cantidad;
+                                }
+                        
+                 
+               $consulta=$obj->LeerAreas($lugar);
+		$NroRegistros= $obj->NumeroDeRegistros($lugar);
+		while ($rowareas=pg_fetch_array($consulta))
+                {
+			$arrayidareas[$j]=$rowareas[0];
+                        $arrayareas[$j]=$rowareas[1];
+			$arraynombres[$j]="AREA".$j;
+			$j++;
+		}
+	
+		for ($i=0;$i<$NroRegistros;$i++)
+                {
+		   $cadena=$cadena.//"sum(if(t05.id='$arrayidareas[$i]',1,0)) AS AREA$i,";
+                     "SUM (CASE WHEN t05.id=$arrayidareas[$i] THEN 1 else 0 END )AS AREA$i,";
+		}
+                                
+                                
+                                
+    if ($cantidadcon>0  )
+    {
+            
+                            //echo "cantidad mayor ";
 			//echo $servicio."-".$ffechaini."-".$ffechafin;
-					$consulta=$obj->subserviciosxservicio($rowServicio['IdServicio'],$ffechaini,$ffechafin,$cadena,$lugar);
-		    			$imprimir.="<table width='100%' border='1' align='center'>
-						<tr style='background:#BBBEC9'>
-							<td class='CobaltFieldCaptionTD'><strong>Servicio</strong></td>";
-					$consultaAreas=$obj->consultarareas($lugar);
-					while (	$rowarea=mysql_fetch_array($consultaAreas)){
-			    	    		$imprimir.="<td class='CobaltFieldCaptionTD'><strong>".htmlentities($rowarea['NombreArea'])."</strong></td>";}
-				   		$imprimir.="<td class='CobaltFieldCaptionTD'><strong>TOTAL</strong></td>
-						</tr>";
-					//$consulta=$obj->BuscarExamenesporSubServicio($query_search);	
-					while ($row = mysql_fetch_array($consulta)){
-			     	$imprimir.="<tr>
-						<td width='10%'>".$row['origen']."</td>";
-	             
-		  			for($x=0;$x<$NroRegistros;$x++){ 	
-			            $imprimir.="<td width='10%'>".$row[$arraynombres[$x]]."</td>";
-	              	       
-					}
-		              	    $imprimir.="<td width='14%'><strong>".$row['total']."</strong></td>
-		                           </tr>";
-				   	
-					}
-				$imprimir.="</table>
-				<br><br>"; 
-				//CIERRE DE ARCHIVO EXCEL
-			}
+		$consulta=$obj->subserviciosxservicio($cadena,$servicio,$ffechaini,$ffechafin,$lugar);
+        while ($row = pg_fetch_array($consulta))
+                                
+                {
+                      $consultaAreas=$obj->consultarareas($lugar);
+                            $imprimir.="<table width='90%' border='1' align='center' >
+                                                    <tr style='background:#BBBEC9'>
+                                                    <td class='CobaltFieldCaptionTD' width='20%'><strong>Servicio</strong></td>";
+                                        while ($rowarea=pg_fetch_array($consultaAreas))
+                                    {
+                                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>".htmlentities($rowarea['nombrearea'])."</strong></td>";
+                                    }
+                                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>TOTAL</strong></td></tr>";
+                                    $ser=$row['subservicio'];
+                                            // echo  $ser;
+                            $imprimir.="<tr>
+                                        <td width='10%'>".$row['subservicio']."</td>";
+                                        for($x=0;$x<$NroRegistros;$x++)
+                                        { 	
+                                           $area='area'.$x;
+                                            $imprimir.="<td width='10%'>".$row[$area]."</td>";
+                                        }
+                                            $imprimir.="<td width='14%'><strong>".$row['total']."</strong></td>
+                                        </tr>";
+                    $pos=$pos + 1;
+                                            
+                }      
+                    pg_free_result($consulta);
+                    $imprimir .= "<input type='hidden' name='oculto' id='text' value='".$pos."' /> 
+			</table>";
+                        echo $imprimir;
+    }else {
+                 $consultaAreas=$obj->consultarareas($lugar);
+                             $imprimir.="<table width='90%' border='1' align='center' >
+                                                    <tr style='background:#BBBEC9'>
+                                                    <td class='CobaltFieldCaptionTD' width='20%'><strong>Servicio</strong></td>";
+                                        while ($rowarea=pg_fetch_array($consultaAreas))
+                                    {
+                                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>".htmlentities($rowarea['nombrearea'])."</strong></td>";
+                                    }
+                                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>TOTAL</strong></td></tr>";
+                                
+             $imprimir.= "<table width='90%' border='1' align='center' >
+                          <tr style='background:#BBBEC9'> <tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table>";
+           
+             echo  $imprimir;  
+          }
+    
+    
+            // ******Emergencia********
+                               $Emergencia=$obj->Emergencia();
+                $row = pg_fetch_array($Emergencia);
+                 $servicio=$row[0];
+                 $nomServicio=$row[1];
+                 
+                   echo $imprimir="<br>";
+                  $imprimir="<table colspan='21' width='100%' hight='10%' align='center'>
+                                    <tr>
+                                        <td colspan='25' align='center' ><h3>PROCEDENCIA: ".$nomServicio."</h3></td>
+                                    </tr>
+                            </table>";
+               // echo $imprimir;
+                $cantidad1=$obj->cantidadxservicio1($servicio,$ffechaini,$ffechafin,$lugar);
+                $cantidad2=$obj->cantidadxservicio2($servicio,$ffechaini,$ffechafin,$lugar);
+                
+                if($cantidad1 >0 or  $cantidad2 > 0)
+                                {
+                                                $cantidad=1;
+                                                 $cantidademer=$cantidad;
+            
+                                }
+                                else {
+                                    $cantidad=0;
+                                                 $cantidademer=$cantidad;
+                                }
+                                
+                                    //echo $cantidademer;
+                 $consulta=$obj->LeerAreas($lugar);
+		$NroRegistros= $obj->NumeroDeRegistros($lugar);
+		while ($rowareas=pg_fetch_array($consulta))
+                {
+			$arrayidareas[$j]=$rowareas[0];
+                        $arrayareas[$j]=$rowareas[1];
+			$arraynombres[$j]="AREA".$j;
+			$j++;
+		}
+	
+		for ($i=0;$i<$NroRegistros;$i++)
+                {
+		   $cadena=$cadena.//"sum(if(t05.id='$arrayidareas[$i]',1,0)) AS AREA$i,";
+                     "SUM (CASE WHEN t05.id=$arrayidareas[$i] THEN 1 else 0 END )AS AREA$i,";
+		}
+                                
+               //echo $cantidademer;                 
+    if ($cantidademer >0) 
+      {
+       // echo "dento del if emergencia";
+                                $consulta=$obj->subserviciosxservicio($cadena,$servicio,$ffechaini,$ffechafin,$lugar);
+        while ($row = pg_fetch_array($consulta))
+                                
+                {
+            //echo "ingresa";
+                      $consultaAreas=$obj->consultarareas($lugar);
+                            $imprimir.="<table width='90%' border='1' align='center' >
+                                                    <tr style='background:#BBBEC9'>
+                                                    <td class='CobaltFieldCaptionTD' width='20%'><strong>Servicio</strong></td>";
+                                        while ($rowarea=pg_fetch_array($consultaAreas))
+                                    {
+                                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>".htmlentities($rowarea['nombrearea'])."</strong></td>";
+                                    }
+                                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>TOTAL</strong></td></tr>";
+                                    $ser=$row['subservicio'];
+                                            // echo  $ser;
+                            $imprimir.="<tr>
+                                        <td width='10%'>".$row['subservicio']."</td>";
+                                        for($x=0;$x<$NroRegistros;$x++)
+                                        { 	
+                                           $area='area'.$x;
+                                            $imprimir.="<td width='10%'>".$row[$area]."</td>";
+                                        }
+                                            $imprimir.="<td width='14%'><strong>".$row['total']."</strong></td>
+                                        </tr>";
+                    $pos=$pos + 1;
+                         echo $imprimir;                   
+                } 
+        
+                              //  echo $imprimir;
+    }else { 
+           // echo "dentro del else emergencia";                      //$cantidademer;
+            $consultaAreas=$obj->consultarareas($lugar);
+                             $imprimir.="<table width='90%' border='1' align='center' >
+                                                    <tr style='background:#BBBEC9'>
+                                                    <td class='CobaltFieldCaptionTD' width='20%'><strong>Servicio</strong></td>";
+                                        while ($rowarea=pg_fetch_array($consultaAreas))
+                                    {
+                                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>".htmlentities($rowarea['nombrearea'])."</strong></td>";
+                                    }
+                                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>TOTAL</strong></td></tr>";
+                                
+             $imprimir.= "<table width='90%' border='1' align='center' >
+                          <tr style='background:#BBBEC9'> <tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table>";
+           
+             echo  $imprimir;  
+           }
+                            
+                           
+                            
+                            
+                             //  ConsultaHospitalizacion     
+                $consultaHospitalizacion=$obj->consultaHospitalizacion();
+                $row = pg_fetch_array($consultaHospitalizacion);
+                 $servicio=$row[0];
+                 $nomServicio=$row[1];
+                 
+                    echo $imprimir="<br>";
+                    $imprimir="<table colspan='21' width='100%' hight='10%' align='center'>
+                                    <tr>
+                                        <td colspan='25' align='center' ><h3>PROCEDENCIA: ".$nomServicio."</h3></td>
+                                    </tr>
+                            </table>";
+                 
+                //echo $imprimir;
+                    $cantidad1=$obj->cantidadxservicio1($servicio,$ffechaini,$ffechafin,$lugar);
+                    $cantidad2=$obj->cantidadxservicio2($servicio,$ffechaini,$ffechafin,$lugar);
+                    $serviciohos=$cantidad;
+                    
+                                if($cantidad1 >0 or  $cantidad2 > 0)
+                                {
+                                                $cantidad=1;
+                                                 $cantidadhos=$cantidad;
+            
+                                }
+                                else {
+                                    $cantidad=0;
+                                                $cantidadhos=$cantidad;
+                                }
+                            
+ if ($cantidadhos >0) 
+   {
+                                    
+                    $consulta=$obj->subserviciosxservicio($cadena,$servicio,$ffechaini,$ffechafin,$lugar);
+        while ($row = pg_fetch_array($consulta))
+                                
+                {
+                      $consultaAreas=$obj->consultarareas($lugar);
+                            $imprimir.="<table width='90%' border='1' align='center' >
+                                                    <tr style='background:#BBBEC9'>
+                                                    <td class='CobaltFieldCaptionTD' width='20%'><strong>Servicio</strong></td>";
+                                        while ($rowarea=pg_fetch_array($consultaAreas))
+                                    {
+                                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>".htmlentities($rowarea['nombrearea'])."</strong></td>";
+                                    }
+                                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>TOTAL</strong></td></tr>";
+                                    $ser=$row['subservicio'];
+                                            // echo  $ser;
+                            $imprimir.="<tr>
+                                        <td width='10%'>".$row['subservicio']."</td>";
+                                        for($x=0;$x<$NroRegistros;$x++)
+                                        { 	
+                                           $area='area'.$x;
+                                            $imprimir.="<td width='10%'>".$row[$area]."</td>";
+                                        }
+                                            $imprimir.="<td width='14%'><strong>".$row['total']."</strong></td>
+                                        </tr>";
+                    $pos=$pos + 1;
+                                            
+                }
+        
+        
+                                        echo $imprimir;
+   }else {
+                                  //$cantidadhos;
+                                    $consultaAreas=$obj->consultarareas($lugar);
+                             $imprimir.="<table width='90%' border='1' align='center' >
+                                                    <tr style='background:#BBBEC9'>
+                                                    <td class='CobaltFieldCaptionTD' width='20%'><strong>Servicio</strong></td>";
+                                        while ($rowarea=pg_fetch_array($consultaAreas))
+                                    {
+                                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>".htmlentities($rowarea['nombrearea'])."</strong></td>";
+                                    }
+                                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>TOTAL</strong></td></tr>";
+                                
+             $imprimir.= "<table width='90%' border='1' align='center' >
+                          <tr style='background:#BBBEC9'> <tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table>";
+           
+             echo  $imprimir;
+         }            
+                            
+                            
+                            
 		//fwrite($punteroarchivo,$imprimir1);
-		echo $imprimir;	
+		//echo $imprimir;	
 
 		//***********************			
-		fwrite($punteroarchivo,$imprimir);
+		//fwrite($punteroarchivo,$imprimir);
 		
-		}	//while principal	 
+//}	//while principal	
+       // echo $imprimir;	
 	fclose($punteroarchivo);
-	}//else
+}//else
 	break;
     
 	
 	  
     case 3://LLENANDO COMBO subservicio
-	
+                    
 		$rslts='';
 		$proce=$_POST['proce'];
-		//echo $IdSubEsp;
-		$dtMed=$obj->LlenarSubServ($proce);	
+		//echo $proce;
+		$dtMed=$obj->LlenarSubServ($proce,$lugar);	
 		
 		$rslts = '<select name="cboMedicos" id="cmbSubServicio" class="MailboxSelect" style="width:250px">';
 		$rslts .='<option value="0">--Seleccione un Servicio--</option>';
 			
-		while ($rows =mysql_fetch_array($dtMed)){
-			$rslts.= '<option value="' . $rows[1] .'" >'. htmlentities($rows[0]).'</option>';
+		while ($rows =pg_fetch_array($dtMed)){
+			$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 		}
 				
 		$rslts .= '</select>';
@@ -295,7 +623,7 @@ switch ($opcion)
 			ECHO $query_search;
              $consulta1=$objdatos->BuscarSolicitudesEspecialidad($query_search); 
 			 
-			$row1 = mysql_fetch_array($consulta1);
+			$row1 = pg_fetch_array($consulta1);
   $imprimir=" <table width='90%' higth='10%' border='0' align='center'>
               <tr>
                     <td colspan='7' align='center'><h3><strong>REPORTE DE SOLICITUDES POR ESPECIALIDAD
@@ -321,7 +649,7 @@ switch ($opcion)
 				<td>Estado Solicitud</td>
 		    </tr>";    
  $pos=0;
-    while ($row = mysql_fetch_array($consulta))
+    while ($row = pg_fetch_array($consulta))
 	{ 
 $imprimir .="<tr>
 		   <td width='11%'>".$row['FechaSolicitud']."</td>
@@ -338,7 +666,7 @@ $imprimir .="<tr>
 	$pos=$pos + 1;
 	}
 	
-	mysql_free_result($consulta);
+	pg_free_result($consulta);
 	
    $imprimir .= "<input type='hidden' name='oculto' id='text' value='".$pos."' /> 
    

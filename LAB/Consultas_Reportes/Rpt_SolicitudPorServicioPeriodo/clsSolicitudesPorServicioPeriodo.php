@@ -267,13 +267,46 @@ function LlenarCmbMedicos($idSubEsp)
 			   WHERE  mnt_empleados.IdEstablecimiento=$lugar  AND IdTipoEmpleado='MED' AND IdEmpleado<>'MED0000'
 			   ORDER BY mnt_empleados.NombreEmpleado";*/
                         
-                         "select mem.id as idemp, (nombre||' '||apellido) as nombre, idempleado  
+                         "select mem.id as idemp, nombreempleado as nombre, idempleado  
 from mnt_empleado_especialidad_estab empest
 join mnt_empleado mem on (empest.id_empleado=mem.id)
 where id_aten_area_mod_estab=$idSubEsp";
-		$dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
+                $dt=  pg_query($sqlText);
+                if (!$dt)
+                    return false;
+                else
+                    return $dt;
+                
+		//$dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
 	}
-	return $dt;
+//	return $dt;
+}
+
+/*select count (mem.id) as cantidad
+from mnt_empleado_especialidad_estab empest 
+join mnt_empleado mem on (empest.id_empleado=mem.id) where id_aten_area_mod_estab=39*/
+
+function cantidadMedicos($idSubEsp)
+ {//echo $IdSub;
+	$con = new ConexionBD;
+	if($con->conectar()==true){
+		$sqlText= /*"SELECT mnt_empleados.IdEmpleado,mnt_empleados.NombreEmpleado 
+			   FROM mnt_empleados 
+			   WHERE  mnt_empleados.IdEstablecimiento=$lugar  AND IdTipoEmpleado='MED' AND IdEmpleado<>'MED0000'
+			   ORDER BY mnt_empleados.NombreEmpleado";*/
+                        
+                         "select count (mem.id) as cantidad
+                            from mnt_empleado_especialidad_estab empest 
+                            join mnt_empleado mem on (empest.id_empleado=mem.id) where id_aten_area_mod_estab=$idSubEsp";
+                $dt=  pg_query($sqlText);
+                if (!$dt)
+                    return false;
+                else
+                    return $dt;
+                
+		//$dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
+	}
+//	return $dt;
 }
 
 	
