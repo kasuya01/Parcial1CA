@@ -183,7 +183,8 @@ function BuscarDatospaciente(pag)
 		segundoapellido=document.getElementById('SegundoApellido').value;
 		//especialidad=document.getElementById('cmbEspecialidad').value;
 		fechaconsulta=document.getElementById('txtfecharecep').value;
-          //  alert(IdServ);
+         // alert(IdServ);
+         //  alert(IdSubServ);
 		
 		//archivo que realizar� la operacion ->actualizacion.php
 		ajax.open("POST", "ctrLab_SolicitudesPorPaciente.php",true);
@@ -210,7 +211,8 @@ function CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento)
 		
 		especialidad=0;
 		
-	//	ALERT(idsolicitud);
+	
+        //alert(idsolicitud);
 	ajax.open("POST", "ctrLab_SolicitudesPorPaciente.php",true);
 		  //muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
@@ -340,7 +342,7 @@ function MostrarDatos(posicion)
 		idexpediente=trim(idexpediente);
 		idsolicitud=trim(idsolicitud);
 		CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento);
-		
+		//aca
   
  }
 

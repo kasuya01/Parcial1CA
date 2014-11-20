@@ -1,0 +1,23 @@
+<table width='100%' hight='10%' align='center'>
+                                        <tr>
+                                                <td colspan='5' align='center'><a href='../../../Reportes/Rep_General_de_pruebas_por_servicio_17_11_2014__10_03_33 AM.ods'><H5>DESCARGAR REPORTE EXCEL <img src='../../../Imagenes/excel.gif'></H5></a></td>
+                                        </tr>
+                                        <tr>
+                                                <td colspan='25' align='center'><h3>REGISTRO DE EXAMENES PRACTCADOS A LOS DIFERENTES SERVICIOS SEPARADOS POR SECCION</h3></td>
+                                        </tr>
+                                        <tr>
+                                                <td colspan='25' align='center'><h3>PERIODO DEL:  20/11/2014 AL 20/11/2014</h3></td>
+                                        </tr>
+                            </table><table colspan='21' width='100%' hight='10%' align='center'>
+                                    <tr>
+                                        <td colspan='25' align='center' ><h3>PROCEDENCIA: Consulta Externa</h3></td>
+                                    </tr>
+                            </table><table colspan='21' width='100%' hight='10%' align='center'>
+                                    <tr>
+                                        <td colspan='25' align='center' ><h3>PROCEDENCIA: Emergencia</h3></td>
+                                    </tr>
+                            </table><table colspan='21' width='100%' hight='10%' align='center'>
+                                    <tr>
+                                        <td colspan='25' align='center' ><h3>PROCEDENCIA: Hospitalización</h3></td>
+                                    </tr>
+                            </table>

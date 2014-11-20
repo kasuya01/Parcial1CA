@@ -1,3 +1,8 @@
+<?php session_start();
+$usuario=$_SESSION['Correlativo'];
+$lugar=$_SESSION['Lugar'];
+$area=$_SESSION['Idarea'];
+?>
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
@@ -178,7 +183,7 @@ $objdatos = new clsConsultaMuestrasRechazadas;
                     INNER JOIN mnt_area_mod_estab           t03 ON (t03.id = t02.id_area_mod_estab)
                     LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
                     LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
-                    WHERE $where_with t02.id_establecimiento = 49
+                    WHERE $where_with t02.id_establecimiento = $lugar
                     ORDER BY 2)
             
                     SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
@@ -229,7 +234,7 @@ $objdatos = new clsConsultaMuestrasRechazadas;
             INNER JOIN ctl_sexo t19                             ON (t19.id = t07.id_sexo)
             INNER JOIN tbl_servicio t20                         ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
             WHERE (t16.idestado = 'RM')  
-            
+            AND t02.id_establecimiento = $lugar
             AND $cond1
         
             UNION
@@ -281,8 +286,8 @@ $objdatos = new clsConsultaMuestrasRechazadas;
             INNER JOIN ctl_examen_servicio_diagnostico t18          ON (t18.id = t05.id_examen_servicio_diagnostico) 
             INNER JOIN ctl_sexo t19                                 ON (t19.id = t07.id_sexo)
             WHERE (t16.idestado = 'RM') 
-            
-                AND $cond2"; 
+            AND t02.id_establecimiento = $lugar 
+                AND $cond2";  
 
 	?>
  <table width="100%" border="0" align='center'>

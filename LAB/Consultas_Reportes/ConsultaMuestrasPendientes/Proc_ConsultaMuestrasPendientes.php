@@ -210,7 +210,7 @@ if ($nivel==33){
 				while($row = pg_fetch_array($consulta)){
 			        echo "<option value='" . $row['idarea']. "'>" . htmlentities($row['nombrearea']) . "</option>";
 				}
-				echo '<option value="'.$area1.'" selected="selected">'.htmlentities($nomarea).'</option>';
+				echo '<option value="'.$area1.'" selected="selected">'.htmlentities("--Seleccione Área--").'</option>';
 				?>		  
 			</select> 
 		</td>
