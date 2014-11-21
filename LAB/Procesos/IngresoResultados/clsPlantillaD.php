@@ -131,42 +131,41 @@ $con = new ConexionBD;
 
 ////**********************************************************************************************************************************************////
 //INSERTA RESULTADOS   ENCABEZADO
- function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$responsable,$usuario,$tab,$lugar)
- {
+ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$responsable,$usuario,$tab,$fecharealiz,$fecharesultado,$lugar)
+ {                           
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-   $query = "INSERT INTO lab_resultados
-                 (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
-              idempleado,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento
-              ) 
-			  VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$responsable,
-			  $usuario,NOW(),$usuario,NOW(),$lugar)RETURNING id";
-     $result = pg_query($query);
-	 if ($row = pg_fetch_array($result)) {
-                   $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen  AND activo = true";
+       $query = "INSERT INTO lab_resultados
+                (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
+                idempleado,idusuarioreg,fechahorareg,idestablecimiento,fecha_resultado) 
+	        VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$responsable,$usuario,NOW(),$lugar,'$fecharesultado')RETURNING id";
+              
+        $result = pg_query($query);
+        if($row = pg_fetch_array($result)) {
+                 $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen  AND activo = true";
                    //AND id_metodologia IS NULL
-                   $result = pg_query($query);
-                   if($result && pg_num_rows($result) == 1) {
-                      $row_exam_metod = pg_fetch_array($result);
-                      $id_exam_metod = $row_exam_metod[0];
-                      $id_exam_metod;
-                      $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, idusuarioreg, fechahorareg)
-                                VALUES($id_exam_metod, $iddetalle, $tab, $usuario, NOW())";
+                 $result = pg_query($query);
+            if($result && pg_num_rows($result) == 1) {
+                    $row_exam_metod = pg_fetch_array($result);
+                    $id_exam_metod = $row_exam_metod[0];
+                    $id_exam_metod;
+                  $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado)
+                                  VALUES($id_exam_metod, $iddetalle, $tab, $usuario, NOW(),'$fecharealiz','$fecharesultado')";
+                        
+                    $result = pg_query($query);
 
-                            $result = pg_query($query);
-
-                            if($result) {
-                                $idultimo = $row[0];
-                                return $idultimo;
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            return false; // Aqui va la logica si hay mas de una metodologia en el examen
-                        }
-                    } else {
+                    if($result) {
+                        $idultimo = $row[0];
+                        return $idultimo;
+                    }else{
                         return false;
+                    }
+            }else{
+                            return false; // Aqui va la logica si hay mas de una metodologia en el examen
+            }
+        }else {
+            return false;
                     }
  }
  }
@@ -229,14 +228,15 @@ function ObtenerFechaResultado($idsolicitud,$IdExamen,$lugar)
 	$con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT TO_CHAR(fechahorareg,'dd/mm/YYYY HH12:MI:SS') AS FechaResultado
+      $query = "SELECT TO_CHAR(fecha_resultado,'dd/mm/YYYY HH12:MI:SS') AS FechaResultado
 		FROM lab_resultados where idsolicitudestudio=$idsolicitud AND idestablecimiento=$lugar 
                 AND IdExamen=$IdExamen";
-     $result = pg_query($query);
-     if (!$result)
-       return false;
-     else
-       return $result;
+     
+      $result = pg_query($query);
+      if (!$result)
+        return false;
+      else
+        return $result;
     }
 }
 
@@ -331,11 +331,13 @@ function LeerDatos($idexamen)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT nombrearea,nombre_examen 
+          $query = "SELECT nombrearea,nombre_reporta 
                     FROM lab_conf_examen_estab 
                     INNER JOIN mnt_area_examen_establecimiento ON mnt_area_examen_establecimiento.id=lab_conf_examen_estab.idexamen
                     INNER JOIN ctl_area_servicio_diagnostico ON ctl_area_servicio_diagnostico.id = mnt_area_examen_establecimiento.id_area_servicio_diagnostico
+                    INNER JOIN lab_examen_metodologia ON ( lab_examen_metodologia.id_conf_exa_estab = lab_conf_examen_estab.id)
                     WHERE lab_conf_examen_estab.id=$idexamen";
+     
      $result = pg_query($query);
      if (!$result)
        return false;

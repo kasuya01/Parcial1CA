@@ -25,14 +25,17 @@ switch ($opcion)
 	$idcantidad= $_POST['idcantidad'];
 	$idresultado= $_POST['idresultado'];
 	$tab=$_POST['tab'];
+        $fecharealiz=$_POST['fecharealiz'];
+        $fecharesultado=$_POST['fecharesultado'];
+        echo $fecharealiz." - ".$fecharesultado;
 	//echo $idsolicitud."tab".$tab."detalle".$iddetalle;
 
 	//$usuario=1;
 	//$usuario=$_SESSION['correlativo'];
 	$resultado="";
    	//guardandolos datos generales del resultado
-	  $ultimo= $obj->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$idempleado,$usuario,$tab,$lugar);
-         echo $ultimo;
+	  $ultimo= $obj->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$idempleado,$usuario,$tab,$fecharealiz,$fecharesultado,$lugar);
+         echo $ultimo;                      
 	//guardando el detalle del resultado
 	$obj->insertar_elemento($ultimo,$idelemento,$idcantidad,$lugar);
              
@@ -59,7 +62,8 @@ switch ($opcion)
 							<td> $row[1] </td>
 							</tr>";
 				}
-
+                                 $resultado.= "  <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
+                                                <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
 	$resultado.="</table>";
 
 	echo $resultado;
@@ -70,6 +74,9 @@ switch ($opcion)
 	$idelemento= $_POST['idelemento'];
 	$idcantidad= $_POST['idcantidad'];
 	$idresultado= $_POST['idresultado'];
+        //echo $idresultado; 
+        //$fecharealiz=$_POST['fecharealiz'];
+        //$fecharesultado=$_POST['fecharesultado'];
 	//$tab= $_POST['tab'];
 	//echo $tab;
 	$resultado="";
@@ -123,7 +130,7 @@ switch ($opcion)
 	$row_estab = pg_fetch_array($Consulta_Estab);
 
 	$consulta=$obj->MostrarElementosAgregados($idresultado);
-    $consulta_datos=$obj->LeerDatos($idexamen);
+        $consulta_datos=$obj->LeerDatos($idexamen);
 	$datos_generales=$obj->MostrarDatosGenerales($idsolicitud);
 	$datos_empleado=$obj->DatosEmpleado($idempleado);
 	$row_generales= pg_fetch_array($datos_generales);
@@ -175,14 +182,14 @@ switch ($opcion)
                     </tr>
                     <tr>
 			<td colspan='1'><strong>Examen Realizado:</strong></td>
-			<td colspan='2'>".htmlentities($row_area['nombre_examen'])."</td>
+			<td colspan='2'>".htmlentities($row_area['nombre_reporta'])."</td>
                     </tr>
                     <tr>
 			<td colspan='1' ><strong>Validado Por:</strong></td>
 			<td colspan='5'>".htmlentities($row_empleado['nombreempleado'])."</td>
                     </tr>";
 				$nomcod=$obj->ObtenerNombreCodigo($tab);
-                                         $row_codigo= pg_fetch_array($nomcod);
+                                     $row_codigo= pg_fetch_array($nomcod);
 										// echo $row_codigo[0];
        $resultado.="<tr>
                         <td colspan='1'>Resultado Tabulador:</td><td colspan='4'>".$row_codigo[0]."</td>
