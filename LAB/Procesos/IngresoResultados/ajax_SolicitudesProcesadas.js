@@ -1477,7 +1477,7 @@ function LlenarComboResponsable(idarea)
         }
     }
     
-   //LlenarComboResponsable2(idarea);
+   LlenarComboResponsable2(idarea);
 
 }
 //Fn PG
