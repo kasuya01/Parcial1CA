@@ -221,7 +221,7 @@ if (isset($_SESSION['Correlativo'])) {
 				while($row = pg_fetch_array($consulta)){
 			        echo "<option value='" . $row['idarea']. "'>" . htmlentities($row['nombrearea']) . "</option>";
 				}
-				echo '<option value="'.$area1.'" selected="selected">'.htmlentities("--Seleccione Área--").'</option>';
+				echo '<option value="'.$area1.'" selected="selected">'.htmlentities($nomarea).'</option>';
 				?>
                                 </select>
                             </td>

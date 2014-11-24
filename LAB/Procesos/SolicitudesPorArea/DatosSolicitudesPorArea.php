@@ -95,117 +95,109 @@ function calc_edad()
 	
 	$objdatos = new clsSolicitudesPorArea;
 	//recuperando los valores generales de la solicitud
-		$consulta=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar);
-		$row = mysql_fetch_array($consulta);
+		$consulta=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud);
+		$row = pg_fetch_array($consulta);
 		//obteniedo los datos generales de la solicitud
 		//valores de las consultas
-		$medico=$row['NombreMedico'];
-		$idmedico=$row['IdMedico'];
-		$paciente=$row['NombrePaciente'];
-		//$edad=$row['Edad'];
-		//$edad=$objdatos->calcular_edad($row['FechaNacimiento']);
-		$sexo=$row['Sexo'];
-		$precedencia=$row['Precedencia'];
-		$origen=$row['Origen'];
-                $Peso=$row['Peso'];
-                $Talla=$row['Talla'];
-                $Diagnostico=$row['Diagnostico'];
-		$FRecepcion=$row['FechaRecepcion'];
-                $ConocidoPor=$row['ConocidoPor'];
-  // echo $FRecepcion;
-		$Nfecha=explode("-",$FRecepcion);
-	//print_r($Nfecha);
-                $Nfecharecep=$Nfecha[2]."/".$Nfecha[1]."/".$Nfecha[0];
-
-                $Establecimiento=$row['Nombre'];  
-		//$DatosClinicos=$row['DatosClinicos'];
-		$fechasolicitud=$row['FechaSolicitud'];
-		$muestra=$row['NumeroMuestra'];
-		//recuperando los valores del detalle de la solicitud
-		$consultadetalle=$objdatos->DatosDetalleSolicitud($idarea,$idsolicitud,$idtipo);?>
-	<form name='frmDatos' onload='alert("si");'>
-	    <table width='80%' border='0' align='center' >
-		<tr>
-			<td colspan='6' align='center' class='CobaltFieldCaptionTD'>DATOS SOLICITUD</td>
-		</tr>
-                <tr>
-			<td colspan="2">Establecimiento Solicitante:</td>
-			<td colspan="4"><?php echo $Establecimiento?></td>
-		</tr>
-                <tr>
-                     <td>No.Muestra:</td>
-                     <td><?php echo $muestra?></td>
-                     <td>No.Orden: </td>
-                     <td><?php echo$idsolicitud ?></td>
-                    
-		   
-		    <td>Fecha Recepci&oacute;n: </td>
-		    <td ><?php echo $Nfecharecep?></td>
-			<input name="suEdad" id="suEdad"  type="hidden" value="<?php echo $row['FechaNacimiento'] ?>"/>
 		
-                </tr>
+		
                 
-		<tr>
-			<td>Paciente: </td>
-                        <td colspan="3" ><?php echo htmlentities($paciente)?> </td>
-                        <td>NEC</td>
-			<td><?php echo $idexpediente?></td>
-		</tr>
-                <tr>
-                        <td>Conocido por: </td>
-                        <td colspan="3" ><?php echo htmlentities($ConocidoPor)?> </td>
-                </tr>
-                <tr>
-			<td>Edad:</td>
-			<td colspan="1"> 
-				<div id="divsuedad">
-	          		<script language="JavaScript" type="text/javascript">
-	               			calc_edad();
-	          		</script>
-	    		</div>
-			</td>
-			<td >Sexo:</td>
-			<td ><?php echo $sexo?></td>
-		</tr>
-                <tr>
-		    <td>Procedencia:</td>
-		    <td colspan="1"><?php echo $precedencia?></td>
-		    <td>Origen:</td>
-		    <td colspan="1"><?php echo htmlentities($origen) ?>
-			<input name="idsolicitud" id="idsolicitud"  type="hidden" value="<?php $idsolicitud ?>"/>
-			<input name="idexpediente" id="idexpediente"  type="hidden" value="<?php $idexpediente ?>"/>
-			<input name="fechasolicitud" id="fechasolicitud"  type="hidden" value="<?php $fechasolicitud ?>"/>
-			<input name="idarea" id="idarea"  type="hidden" value="<?php $idarea ?>"/>	
-					
-                    </td>
-		</tr>
+        $idsolicitudPadre = $row[0];
+        $medico         = $row['medico'];
+        $idmedico       = $row[1];
+        $paciente       = $row['paciente'];
+        $edad           = $row['edad'];
+        $sexo           = $row['sexo'];
+        $precedencia    = $row['nombreservicio'];
+        $origen         = $row['nombresubservicio'];
+        //$DatosClinicos=$row['DatosClinicos'];
+        //$fechasolicitud=$row['FechaSolicitud'];
+        //$FechaNac=$row['FechaNacimiento'];
+        $Talla          = $row['talla'];
+        $Peso           = $row['peso'];
+        $Diagnostico    = $row['diagnostico'];
+        $ConocidoPor    = $row['conocidox'];
+                
+                
+		//recuperando los valores del detalle de la solicitud
+		$consultadetalle=$objdatos->DatosDetalleSolicitud($idsolicitud);?>
+	<?php
+                $imprimir = "<form name='frmDatos'>
+                    <table width='85%' border='0' align='center' class='StormyWeatherFormTABLE'>
+			<tr>
+				<td colspan='4' align='center' class='CobaltFieldCaptionTD'>DATOS SOLICITUD</td>
+		   	</tr>
+			
+                        <tr>
+				<td class='StormyWeatherFieldCaptionTD'>Establecimiento</td>
+                                <td class='StormyWeatherDataTD' colspan='3'>".$row['estabext']."</td>
+			</tr>
+                            
+			<tr>
+				<td class='StormyWeatherFieldCaptionTD'>Paciente</td>
+				<td colspan='3' class='StormyWeatherDataTD'>" . htmlentities($paciente) . " 
+				     <input name='txtpaciente' id='txtpaciente' type='hidden' size='70' value='" . $paciente . "' disabled='disabled' /></td>
+		    	</tr>
+                        <tr>
+				<td class='StormyWeatherFieldCaptionTD'>Conocido por</td>
+				<td colspan='3' class='StormyWeatherDataTD'>" . htmlentities($ConocidoPor) . " </td>
+		    	</tr>
+			<tr>
+				
+                                
+                                    
+                                    <td class='StormyWeatherFieldCaptionTD'>Edad</td>
+				   <td class='StormyWeatherDataTD'>$edad <input name='txtedad' id='txtedad' 
+				   type='hidden' size='35' value='" . $edad . "' disabled='disabled' /></td>
+                                       
+    				</div></td>
+				<td class='StormyWeatherFieldCaptionTD'>Sexo</td>
+				<td class='StormyWeatherDataTD'>
+				$sexo<input type='hidden' name='txtsexo' value='" . $sexo . "' disabled='disabled' /></td>
+		    	</tr>
+                        <tr>
+				<td class='StormyWeatherFieldCaptionTD'>Procedencia</td>
+				<td class='StormyWeatherDataTD'>$precedencia <input name='txtprecedencia' id='txtprecedencia' 
+				type='hidden' size='35' value='" . $precedencia . "' disabled='disabled' /></td>
+				<td class='StormyWeatherFieldCaptionTD'>Origen</td>
+				<td class='StormyWeatherDataTD'>" . htmlentities($origen) . "
+                                    <input name='txtorigen' id='txtorigen'  type='hidden' size='35' value='" . $origen . "' disabled='disabled' />
+                                    
+                                    <input name='idsolicitudPadre' id='idsolicitudPadre'  type='hidden' size='40' value='" . $idsolicitudPadre . "' disabled='disabled' />
+                                    <input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='" . $idsolicitud . "' disabled='disabled' />
+                                    <input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='" . $idexpediente . "' disabled='disabled' />
+                                    <input name='fechasolicitud' id='fechasolicitud'  type='hidden' size='40' value='" . $fechasolicitud . "' disabled='disabled' />
+                                    <input name='idarea' id='idarea'  type='hidden' size='40' value='" . $idarea . "' disabled='disabled' />
+                                    <input name='suEdad' id='suEdad'  type='hidden' size='40' value='" . $FechaNac . "' disabled='disabled' />
+				</td>
+		        </tr>
+			<tr>
+				<td class='StormyWeatherFieldCaptionTD'>M&eacute;dico</td>
+				<td colspan='3' class='StormyWeatherDataTD'>" . htmlentities($medico) . "
+					<input name='txtmedico' id='txtmedico'  type='hidden' size='70' value='" . $medico . "' disabled='disabled' /></td>
+		        </tr>
+                        <tr>
+                                <td class='StormyWeatherFieldCaptionTD'>Diagnostico</td>
+                                <td colspan='3' class='StormyWeatherDataTD'>&nbsp;&nbsp;&nbsp;" . $Diagnostico . "</td>
+                        </tr>
+                        <tr>
+                                <td class='StormyWeatherFieldCaptionTD'>Peso</td>";
+        if (!empty($Peso))
+            $imprimir .= "<td class='StormyWeatherDataTD'>&nbsp;&nbsp;&nbsp;" . $Peso . "&nbsp;&nbsp;Kg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+        else
+            $imprimir .= "<td class='StormyWeatherDataTD'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+
+        $imprimir .="<td class='StormyWeatherFieldCaptionTD'>Talla</td>";
+        if (!empty($Talla))
+            $imprimir .="<td class='StormyWeatherDataTD'>&nbsp;&nbsp;&nbsp;" . $Talla . "&nbsp;&nbsp;mts.</td>";
+        else
+            $imprimir .= "<td class='StormyWeatherDataTD'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+       
 		
-		
-		
-		<tr>
-			<td>M&eacute;dico:</td>
-			<td colspan="5"><?php echo htmlentities($medico)?></td>
-		</tr>
-		 <tr>
-                        <td>Diagnostico:</td>
-                        <td colspan="4"><?php echo htmlentities($Diagnostico); ?></td>
-                </tr>
-                <tr>
-                        <td>Peso:</td>
-                        <? if(!empty($peso)){?>
-                             <td><?php echo htmlentities($Peso); ?>&nbsp;&nbsp;Kg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                      <?php }else{ ?>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                      <?php }   ?>   
-                        <td>Talla:</td>
-                     <? if(!empty($Talla)){?>
-                        <td><?php echo htmlentities($Talla); ?>&nbsp;&nbsp;mts.</td>
-                     <?php }else{ ?>
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                      <?php }   ?>       
-                </tr>   
-		
-            </table>
+            $imprimir.="</table>";
+            
+            echo $imprimir;
+        ?>
 
 	   <table width='95%' border='0' align='center'>
 	   <tr>
@@ -222,13 +214,13 @@ function calc_edad()
 		       </tr>
 <?php
             $pos=0;
-		while($fila = mysql_fetch_array($consultadetalle)){?>
+		while($fila = pg_fetch_array($consultadetalle)){?>
 			<tr>
-                            <td  width="10%"><?php echo $fila['IdExamen']?></td>
-                            <td width="53%"><?php echo htmlentities($fila['NombreExamen'])?></td>	
-                            <td width="14%"><?php echo htmlentities($fila['TipoMuestra'])?></td>	
-			<?php if (!empty($fila['Indicacion'])){?>    				
-                            <td width="23%"><?php echo htmlentities($fila['Indicacion'])?></td>
+                            <td  width="10%"><?php echo $fila[0]?></td>
+                            <td width="53%"><?php echo htmlentities($fila[1])?></td>	
+                            <td width="14%"><?php echo htmlentities($fila[2])?></td>	
+			<?php if (!empty($fila[3])){?>    				
+                            <td width="23%"><?php echo htmlentities($fila[4])?></td>
 			</tr>
                         <?php }else{?>
                              <td width="23%">&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -237,7 +229,7 @@ function calc_edad()
             $pos=$pos + 1;
             }
 
-mysql_free_result($consultadetalle);?>
+pg_free_result($consultadetalle);?>
 
  <input type='hidden' name='oculto' id='oculto' value='<?php echo $pos ?>' />
 			</table>
@@ -273,7 +265,7 @@ mysql_free_result($consultadetalle);?>
 		<tr>
 			<td>Observacion</td>
 			<td colspan="3">
-				<textarea cols="60" rows="2" id="txtobservacion" name="txtobservacion" > </textarea>
+				<textarea cols="60" rows="2" id="txtobservacion" name="txtobservacion" <span style="color: #0000FF;background-color:#87CEEB;"> </textarea>
 			</td>
 		</tr>
 	</table>

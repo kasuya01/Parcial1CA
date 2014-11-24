@@ -197,7 +197,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
 			INNER JOIN lab_tipomuestra    	  AS C ON C.IdTipoMuestra=A.IdTipoMuestra
 			WHERE idSolicitudEstudio = $idsolicitud 
 			AND	IdArea='$idarea' AND B.IdExamen='$idexamen'";
-	$result = @mysql_query($query);
+	$result = @pg_query($query);
 	if (!$result)
 	   return false;
 	else
@@ -206,15 +206,19 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
  }
  
 //FUNCION PARA CAMBIAR EL ESTADO DE LA SOLICITUD
-function CambiarEstadoSolicitud($idexpediente,$idsolicitud,$estadosolicitud)
+function CambiarEstadoSolicitud($idsolicitud,$estadosolicitud)
  {
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-   $query = "UPDATE sec_solicitudestudios SET estado='$estadosolicitud'
+   $query = /*"UPDATE sec_solicitudestudios SET estado='$estadosolicitud'
 			 WHERE IdNumeroExp='$idexpediente' AND
-			 IdSolicitudEstudio='$idsolicitud' AND IdServicio='DCOLAB' ";
-     $result = @mysql_query($query);
+			 IdSolicitudEstudio='$idsolicitud' AND IdServicio='DCOLAB' ";*/
+           
+                         "UPDATE sec_solicitudestudios SET estado=$estadosolicitud
+			 WHERE id=(select idsolicitudestudio from sec_detallesolicitudestudios where id =$idsolicitud)";
+           
+     $result = @pg_query($query);
      if (!$result)
        return false;
      else
