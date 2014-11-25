@@ -10,7 +10,7 @@
 		  overlapHack="true">
    <menu>
       <menu labelText="PROCESOS">
-            <item labelText="Recepción de Solicitudes por Área" url="../LAB/Procesos/SolicitudesPorArea/Proc_SolicitudesPorArea.php"/>-->
+           <!-- <item labelText="Recepción de Solicitudes por Área" url="../LAB/Procesos/SolicitudesPorArea/Proc_SolicitudesPorArea.php"/>-->
 	    <item labelText="Ingreso de Resultados" url="../LAB/Procesos/IngresoResultados/Proc_SolicitudesProcesadas.php"/>
 	    <!--item labelText="Ingreso de Resultados Pendientes" url="../LAB/Procesos/SolicitudesPendientes/Proc_SolicitudesProcesadasPendientes.php"/-->
 	    <item labelText="Muestras Rechazadas" url="../LAB/Procesos/MuestrasRechazadas/Proc_MuestrasRechazadas.php"/>
