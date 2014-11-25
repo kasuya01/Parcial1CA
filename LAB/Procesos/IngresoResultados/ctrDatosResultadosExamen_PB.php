@@ -43,47 +43,47 @@ switch ($opcion) {
 						</tr>";
 				$pos=0;
 				$posele=0;
-			   	while($row = pg_fetch_array($consulta)) { //ELEMENTOS
-			   		if($row['subelemento'] === "S") {
+			while($row = pg_fetch_array($consulta)) { //ELEMENTOS
+                            if($row['subelemento'] === "S") {
 			   	$imprimir.="<tr>
 			   			<td colspan='5' style='font:bold' class='StormyWeatherFieldCaptionTD'>".htmlentities($row['elemento'])."</td>
-                                    	</tr>";
+                                            </tr>";
 			   			
 			   			$consulta2=$objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
 						while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
-							$imprimir.= "<tr>
-									<td width='30%' class='StormyWeatherDataTD'>".htmlentities($rowsub['subelemento'])."</td>
-									<td width='30%' class='StormyWeatherDataTD'>
-										<input size='20' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]'>
-										<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>
-									</td>
-									<td width='5%' class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."</td>
-									<td width='30%' class='StormyWeatherDataTD'>
-										<input name='txtcontrol[".$pos."]' type='text' id='txtcontrol[".$pos."]'>
-									</td>
-									<td class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."</td>
-								</tr>";
+				$imprimir.= "<tr>
+						<td width='30%' class='StormyWeatherDataTD'>".htmlentities($rowsub['subelemento'])."</td>
+						<td width='30%' class='StormyWeatherDataTD'>
+                                                    <input size='20' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]'>
+                                                    <input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>
+						</td>
+						<td width='5%' class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."</td>
+						<td width='30%' class='StormyWeatherDataTD'>
+							<input name='txtcontrol[".$pos."]' type='text' id='txtcontrol[".$pos."]'>
+						</td>
+						<td class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."</td>
+                                            </tr>";
 							$pos=$pos + 1;
 						}
                                                      
 						pg_free_result($consulta2);
-						$imprimir.="<tr>
-								<td colspan='5' class='StormyWeatherDataTD'>".htmlentities($row['observelem'])."</td>
-							</tr>
-							<tr>
-								<td colspan='5' class='StormyWeatherDataTD'>&nbsp;</td>
-							</tr>";
-					} else {
-					$imprimir.="<tr>
-								<td class='StormyWeatherFieldCaptionTD' style='font:bold'>".htmlentities($row['elemento'])."</td>
-								<td class='StormyWeatherDataTD'>
-									<input size='20' name='txtresultadoele[".$posele."]' type='text' id='txtresultadoele[".$posele."]'>
-									<input name='oidelemento[".$posele."]' type='hidden' id='oidelemento[".$posele."]' value='".$row['idelemento']."'>
-								</td>
-								<td class='StormyWeatherDataTD'>".htmlentities($row['unidadelem'])."</td>
-								<td class='StormyWeatherDataTD' width='30%'><input name='txtcontrolele[".$posele."]' type='text' id='txtcontrolele[".$posele."]'></td>
-								<td width='10%' class='StormyWeatherDataTD'>".htmlentities($row['unidadelem'])."</td>
-							</tr>";
+				$imprimir.="<tr>
+						<td colspan='5' class='StormyWeatherDataTD'>".htmlentities($row['observelem'])."</td>
+                                            </tr>
+                                            <tr>
+                                            	<td colspan='5' class='StormyWeatherDataTD'>&nbsp;</td>
+                                            </tr>";
+                            } else {
+				$imprimir.="<tr>
+                                                <td class='StormyWeatherFieldCaptionTD' style='font:bold'>".htmlentities($row['elemento'])."</td>
+						<td class='StormyWeatherDataTD'>
+                                                    <input size='20' name='txtresultadoele[".$posele."]' type='text' id='txtresultadoele[".$posele."]'>
+                                                    <input name='oidelemento[".$posele."]' type='hidden' id='oidelemento[".$posele."]' value='".$row['idelemento']."'>
+						</td>
+						<td class='StormyWeatherDataTD'>".htmlentities($row['unidadelem'])."</td>
+						<td class='StormyWeatherDataTD' width='30%'><input name='txtcontrolele[".$posele."]' type='text' id='txtcontrolele[".$posele."]'></td>
+						<td width='10%' class='StormyWeatherDataTD'>".htmlentities($row['unidadelem'])."</td>
+					</tr>";
                                                
 						$posele=$posele + 1;
 						$imprimir.= "<tr>
@@ -92,8 +92,8 @@ switch ($opcion) {
 							<tr>
 								<td colspan='5' class='StormyWeatherDataTD'>&nbsp;</td>
 							</tr>";
-					}
-				}
+                            }
+			}
 				
 				pg_free_result($consulta);
                                 $imprimir.= "  <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
@@ -110,11 +110,11 @@ switch ($opcion) {
 									while ($rows =pg_fetch_array($conResult)) {
 										$imprimir.="<option value='" . $rows[0] ."' >".$rows[0]." - ". htmlentities($rows[1])."</option>";
 									}
-				$imprimir.="</select></td></tr>";
+				            $imprimir.="</select></td></tr>";
                                 
 				$imprimir.="<tr>
 						<td colspan='5'><input type='button' name='Submit' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaB()'></td>
-					</tr>
+					    </tr>
 				</table>";
 				
 				echo $imprimir;
@@ -256,7 +256,7 @@ switch ($opcion) {
 		   		$row_generales 		  = pg_fetch_array($datos_generales);
 		   		$row_area  		  = pg_fetch_array($consulta_datos);
 		   		$row_empleado 		  = pg_fetch_array($datos_empleado);
-                                echo $row_area['nombre_reporta'];
+                                $row_area['nombre_reporta'];
 	   			$imprimir="<table width='92%' align='center' >
 				   		<tr>
 				   			<td colspan='1' align='left' width='20%'><img id='Image1' style='width: auto; height: 55px;' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
@@ -447,7 +447,7 @@ switch ($opcion) {
 		        		</tr>
 		        		<tr>
 		        			<td colspan='1'><strong>Examen Realizado:</strong></td>
-		        			<td colspan='5'>".htmlentities($row_area['nombreexamen'])."</td>
+		        			<td colspan='5'>".htmlentities($row_area['nombre_reporta'])."</td>
 		        		</tr>
 
 		        		<tr>
@@ -525,7 +525,7 @@ switch ($opcion) {
 							<td colspan='5' align='center' >
 								<input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaB()'>
 								<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir'
-									Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['origen'])."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities( $establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\") ;'>
+									Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['origen'])."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\") ;'>
 								<input type='button' id='btnSalir' value='Cerrar' onclick='Cerrar()'>
 							</td>
 						</tr>

@@ -5,7 +5,7 @@ $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 
-$nec = $_GET['var1']; 
+/*$nec = $_GET['var1']; 
  $examen = $_GET['var2'];
  $codigoex = $_GET['var3'];
  $area= $_GET['var4'];		   
@@ -22,7 +22,7 @@ $nec = $_GET['var1'];
  $sexo = $_GET['var15'];
  $IdEstandar = $_GET['var16'];
  $IdHistorial = $_GET['var17'];
- $estabext = $_GET['var18'];
+ $estabext = $_GET['var18'];*/
 include('clsConsultarElementosPlantillaC.php');
 $obj=new clsConsultarElementosPlantillaC;
 ?>
@@ -57,59 +57,65 @@ function salir()
  { Cerrar(); }
 
 
-function CargarDatos()
-{
- /* var vtmp=location.search;
-	var vtmp2 = vtmp.substring(1,vtmp.length);
-	//alert(vtmp2);
-	var query = unescape(top.location.search.substring(1));
-	var getVars = query.split(/&/);
-	for ( i = 0; i < getVars.length; i++)
-	{         if ( getVars[i].substr(0,5) == 'var1=' )//loops through this array and extract each name and value
-	                        nec = getVars[i].substr(5);
-			  if ( getVars[i].substr(0,5) == 'var2=' )
-				examen = getVars[i].substr(5);
-			  if ( getVars[i].substr(0,5) == 'var3=' )
-				codigoex = getVars[i].substr(5);
-			  if ( getVars[i].substr(0,5) == 'var4=' )
-				area = getVars[i].substr(5);
-			  if ( getVars[i].substr(0,5) == 'var5=' )
-				iddetallesol = getVars[i].substr(5);
-			  if ( getVars[i].substr(0,5) == 'var6=' )
-				idsolicitudsol= getVars[i].substr(5);	
-			  if ( getVars[i].substr(0,5) == 'var7=' )
-				paciente= getVars[i].substr(5);
-			  if ( getVars[i].substr(0,5) == 'var8=' )
-				idrecepcionsol = getVars[i].substr(5);
-			  if ( getVars[i].substr(0,5) == 'var9=' )
-				nombrearea= getVars[i].substr(5);
-			  if ( getVars[i].substr(0,5) == 'var10=' )
-				procedencia=escape(getVars[i].substr(5));
-                          if ( getVars[i].substr(0,5) == 'var11=' )
-                                origen=escape(getVars[i].substr(5));	
-			  if ( getVars[i].substr(0,5) == 'var12=' )
-                                impresion=escape(getVars[i].substr(5));
-			  if ( getVars[i].substr(0,5) == 'var13=' )
-                                establecimiento=escape(getVars[i].substr(5));
-                          if ( getVars[i].substr(0,5) == 'var18=' )
-                                estabext=escape(getVars[i].substr(5));  
-                          if ( getVars[i].substr(0,5) == 'var17=' )
-                            IdHistorial=escape(getVars[i].substr(5));
-	}
-	document.frmnuevo.txtnec.value=nec;
-	document.frmnuevo.txtarea.value=area;
-	document.frmnuevo.txtpaciente.value=paciente;
-	document.frmnuevo.txtexamen.value=examen;
-	document.frmnuevo.txtidsolicitud.value=idsolicitudsol;
-	document.frmnuevo.txtiddetalle.value=iddetallesol;
-	document.frmnuevo.txtidexamen.value=codigoex;
-	document.frmnuevo.txtidrecepcion.value=idrecepcionsol;
-	//document.frmnuevo.txtnombrearea.value=nombrearea;
-	nombrearea=escape(document.frmnuevo.txtnombrearea.value=nombrearea);*/
-	LlenarComboResponsable(area);
-}
+function RecogeValor() {
+            var vtmp=location.search;
+            var vtmp2 = vtmp.substring(1,vtmp.length);
+            //alert(vtmp2);
+            var query = unescape(top.location.search.substring(1));
+            var getVars = query.split(/&/);
+            
+            for ( i = 0; i < getVars.length; i++) {
+                if ( getVars[i].substr(0,5) == 'var1=' )//loops through this array and extract each name and value
+                    nec = getVars[i].substr(5);
+                if ( getVars[i].substr(0,5) == 'var2=' )
+                   examen = getVars[i].substr(5);
+                if ( getVars[i].substr(0,5) == 'var3=' )
+                   codigoex = getVars[i].substr(5);
+                if ( getVars[i].substr(0,5) == 'var4=' )
+                   area = getVars[i].substr(5);
+                if ( getVars[i].substr(0,5) == 'var5=' )
+                   iddetallesol = getVars[i].substr(5);
+                if ( getVars[i].substr(0,5) == 'var6=' )
+                  idsolicitudsol= getVars[i].substr(5);	
+                if ( getVars[i].substr(0,5) == 'var7=' )
+                  paciente= getVars[i].substr(5);
+                if ( getVars[i].substr(0,5) == 'var8=' )
+                  idrecepcionsol = getVars[i].substr(5);
+                if ( getVars[i].substr(0,5) == 'var9=' )
+                  nombrearea= getVars[i].substr(5);
+                if ( getVars[i].substr(0,5) == 'var10=' )
+                  procedencia=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'var11=' )
+                  origen=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'var12=' )
+                  impresion=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'var13=' )
+                  establecimiento=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'var14=' )
+                  FechaNac=escape(getVars[i].substr(5)); 
+                if ( getVars[i].substr(0,5) == 'var15=' )
+                  Sexo=escape(getVars[i].substr(5)); 
+                if ( getVars[i].substr(0,5) == 'var16=' )
+                    IdEstandar=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'var17=' )
+                    IdHistorial=escape(getVars[i].substr(5));
+            }
+            
+            document.frmnuevo.txtnec.value=nec;
+            document.frmnuevo.txtarea.value=area;
+            document.frmnuevo.txtpaciente.value=paciente;
+            document.frmnuevo.txtexamen.value=examen;
+            document.frmnuevo.txtidsolicitud.value=idsolicitudsol;
+            document.frmnuevo.txtiddetalle.value=iddetallesol;
+            document.frmnuevo.txtidexamen.value=codigoex;
+            document.frmnuevo.txtidrecepcion.value=idrecepcionsol;
+            document.frmnuevo.txtnombrearea.value=nombrearea;
+
+            LlenarComboResponsable(area);
+
+        }
 <?php   
- 
+        $IdHistorial=$_GET['var17'];
 	$bandera=$_GET['var12'];
         
         if($db->conectar()==true) {
@@ -137,7 +143,7 @@ function CargarDatos()
 //$nombrearea=nombrearea;?>
 </head>
 
-<body onLoad="CargarDatos();">
+<body onLoad="RecogeValor();">
 <table align="center" width="100%">
 <tr>
     <td>
@@ -180,6 +186,35 @@ function CargarDatos()
 				<input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" /></td>
                     </tr>
                     <tr>
+                        <td class="StormyWeatherFieldCaptionTD">Conocido Por</td>
+                        <td colspan="3" class="StormyWeatherDataTD"><?php echo $ConocidoPor;?>
+                            <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="StormyWeatherFieldCaptionTD">Diagnostico</td>
+                        <td colspan="3" class="StormyWeatherDataTD"><?php echo $Diagnostico;?> </td>
+                   </tr>
+                   <tr>
+                        <td class="StormyWeatherFieldCaptionTD">Datos Clinicos</td>
+                        <td colspan="3" class="StormyWeatherDataTD"><?php echo $Especificacion;?>
+                            <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
+                        </td>
+                   </tr>
+                   <tr>
+                        <td class="StormyWeatherFieldCaptionTD" width="25%">Peso</td>
+                        <td class="StormyWeatherDataTD" width="25%">
+                              <?php if (!empty($Peso))
+                                       echo htmlentities($Peso)." Kg";
+
+                              ?>
+                        </td>
+                        <td class="StormyWeatherFieldCaptionTD" width="25%">Talla</td>
+                        <td class="StormyWeatherDataTD"><?php 
+                               if(!empty($Talla))
+                                   echo htmlentities($Talla)." cm";?></td>
+                   </tr>
+                    <tr>
 			<td width="35%" colspan="1" class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
             		<td width="65%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var9'] ?>
 			  <input type="hidden" name="txtnombrearea" id="txtnombrearea" disabled="disabled">
@@ -189,6 +224,16 @@ function CargarDatos()
             		<td width="35%" colspan="1"  class="StormyWeatherFieldCaptionTD">Examen</td>
             		<td width="65%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var2'] ?>
             			<input type="hidden" name="txtexamen" id="txtexamen" disabled="disabled" size="60" /></td>
+                    </tr>
+                    <tr>
+                        <td class="StormyWeatherFieldCaptionTD">Fecha y hora inicio Proceso</td>
+                        <td class="StormyWeatherDataTD">
+                            <input type="text" class="datepicker" id="txtresultrealiza"  name="txtresultrealiza" size="15">										
+                        </td>
+                        <td class="StormyWeatherFieldCaptionTD">Fecha Resultado</td>
+                        <td class="StormyWeatherDataTD" colspan="2">
+                            <input type="text" class="datepicker" name="txtresultfin" id="txtresultfin" size="15"  value="<?php echo date("Y-m-d h:m"); ?>"/>	
+                        </td>
                     </tr>
                     <tr>
 			<td width="35%" colspan="1"  class="StormyWeatherFieldCaptionTD">*Validado Por</td>
@@ -235,6 +280,7 @@ function CargarDatos()
                                         <td class="StormyWeatherFieldCaptionTD">Observación:</td>
                                         <td class="StormyWeatherDataTD"><textarea name="txtobservacion" type="text" id="txtobservacion" size="50" cols="50"></textarea></td>
                                     </tr>
+                                   
                                     <tr>
                                         <td width="35%" class="StormyWeatherFieldCaptionTD">Organismos</td>
                                         <td width="65%" class="StormyWeatherDataTD">
@@ -275,7 +321,8 @@ function CargarDatos()
 	if ($bandera==1){
 	?>
 		<tr>
-			<td colspan="5"  class="StormyWeatherDataTD" align="center" style="color:#DD0000; font:bold"><h3>El m&eacute;dico ha solicitado la impresi&oacute;n de este Resultado </h3></td>
+			<td colspan="5"  class="StormyWeatherDataTD" align="center" style="color:#DD0000; font:bold">
+                            <h3>El m&eacute;dico ha solicitado la impresi&oacute;n de este Resultado </h3></td>
 		</tr>
 		  <?php 
 	}?>
@@ -302,5 +349,13 @@ function CargarDatos()
  </tr>
 
 </table>
+     <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon-i18n.min.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-es.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-sliderAccess.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/script.js">
+</script>  
 </body>
 </html>

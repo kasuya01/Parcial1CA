@@ -132,7 +132,7 @@ if ($IdEstandar=="H15"){
 		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
-			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['nombre_examen'])?></td>
+			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['nombre_reporta'])?></td>
 		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Observacion:<strong></td>
@@ -238,7 +238,7 @@ if ($IdEstandar=="H15"){
 		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
-			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['nombre_examen'])?></td>
+			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['nombre_reporta'])?></td>
 		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>

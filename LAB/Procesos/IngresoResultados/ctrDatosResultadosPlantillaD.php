@@ -27,7 +27,7 @@ switch ($opcion)
 	$tab=$_POST['tab'];
         $fecharealiz=$_POST['fecharealiz'];
         $fecharesultado=$_POST['fecharesultado'];
-        echo $fecharealiz." - ".$fecharesultado;
+        //echo $fecharealiz." - ".$fecharesultado;
 	//echo $idsolicitud."tab".$tab."detalle".$iddetalle;
 
 	//$usuario=1;

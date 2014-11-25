@@ -4,7 +4,7 @@ $db = new ConexionBD;
 $usuario = $_SESSION['Correlativo'];
 $lugar   = $_SESSION['Lugar'];
 $area    = $_SESSION['Idarea'];
-
+//echo $lugar
 ?>
 <html>
 <head>
@@ -255,13 +255,13 @@ function VerResultados()
         <tr>
                 <td class="StormyWeatherFieldCaptionTD">Fecha y hora inicio Proceso</td>
                 <td class="StormyWeatherDataTD">
-                     <input type="text" class="datepicker" id="v_resultfin"  name="txtresultrealiza" size="15">										
+                     <input type="text" class="datepicker" id="txtresultrealiza"  name="txtresultrealiza" size="15">										
                 </td>
                             
-                                <td class="StormyWeatherFieldCaptionTD">Fecha Resultado</td>
-                                <td class="StormyWeatherDataTD" colspan="2">
-                                        <input type="text" class="datepicker" name="txtresultfin" id="d_resultfin" size="15"  value="<?php echo date("Y-m-d h:m"); ?>"  />	
-                                </td>
+                <td class="StormyWeatherFieldCaptionTD">Fecha Resultado</td>
+                <td class="StormyWeatherDataTD" colspan="2">
+                    <input type="text" class="datepicker" name="txtresultfin" id="txtresultfin" size="15"  value="<?php echo date("Y-m-d h:m"); ?>"  />	
+                </td>
         </tr>
 	   <?php 
       if ($bandera==1){
@@ -269,8 +269,8 @@ function VerResultados()
 	<tr>
 		<td colspan="4" align="center" class="StormyWeatherDataTD" style="color:#DD0000; font:bold">
 		    <h3>El m&eacute;dico ha solicitado la impresi&oacute;n de este Resultado </h3>
-				</td>
-			</tr>
+		</td>
+	</tr>
 		  <?php 
 		  }?>
 	<tr>

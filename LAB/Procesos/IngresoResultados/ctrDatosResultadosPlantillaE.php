@@ -4,8 +4,6 @@ $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 
-
-
 //variables POST
 $opcion=$_POST['opcion'];
 
@@ -22,7 +20,10 @@ case 1:
 	$observacion= $_POST['observacion'];
         $fechanac=$_POST['fechanac'];
         $sexo=$_POST['sexo'];
-
+        
+        $fecharealiz=$_POST['fecharealiz'];
+        $fecharesultado=$_POST['fecharesultado'];
+      //  echo $fecharealiz." - ".$fecharesultado;
         $ConEstandar=$obj->Obtener_Estandar($idexamen);
 	$CodEstandar= pg_fetch_array($ConEstandar);
 	$codigo_estandar  = $CodEstandar[0];
@@ -68,6 +69,8 @@ case 1:
 					$pos=$pos + 1;
 				}
 				pg_free_result($consulta);
+                                $imprimir.= "  <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
+                                                <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
 				$imprimir.="
 				<tr><td class='StormyWeatherFieldCaptionTD'>*Resultado Tabulador</td>
 					<TD colspan='3' class='StormyWeatherDataTD'>
@@ -126,7 +129,10 @@ case 1:
 				</tr>";
 					$pos=$pos + 1;
 					}
-					pg_free_result($consulta);
+                                        pg_free_result($consulta);
+                                          $imprimir.= "<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
+                                                       <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
+					
 					$imprimir.="
 				<tr><td class='StormyWeatherFieldCaptionTD'>*Resultado Tabulador</td>
 					<TD colspan='3' class='StormyWeatherDataTD'>
@@ -145,7 +151,7 @@ case 1:
 					</td>
 				</tr>
 				<tr>
-					<td colspan='5' >&nbsp;</td>
+					<td colspan='5'>&nbsp;</td>
 				</tr>
 		   </table>";
 		echo $imprimir;
@@ -155,6 +161,8 @@ case 1:
 break;
 
 case 2://vista Previa de Resultado
+                $fecharealiz=$_POST['fecharealiz'];
+                $fecharesultado=$_POST['fecharesultado'];
 		$Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
 		$row_estab = pg_fetch_array($Consulta_Estab);
 		$idexamen=$_POST['idexamen'];//*
@@ -219,7 +227,7 @@ case 2://vista Previa de Resultado
                                 <tr>
 					<td colspan='1' style='font:bold'>NEC</td>
 					<td colspan='5'>".$row_generales['numero']."</td>
-                               </tr>
+                                </tr>
 				<tr>
 					<td colspan='1' style='font:bold'><strong>Paciente:</strong></td>
 					<td colspan='5'>".htmlentities($row_generales['paciente'])."</td>
@@ -237,7 +245,6 @@ case 2://vista Previa de Resultado
 					<td colspan='2' style='font:bold'>".htmlentities($row_generales['subservicio'])."</td>
 				</tr>
 				<tr>
-				<tr>
 					<td style='font:bold'><strong>Validado Por:</strong></td>
 					<td colspan='5'>".htmlentities($row_empleado['empleado'])."</td>
 				</tr>
@@ -254,23 +261,24 @@ case 2://vista Previa de Resultado
 				$nomcod=$obj->ObtenerNombreCodigo($tab);
                                 $row_codigo= pg_fetch_array($nomcod);
 								//	echo $row_codigo[0];
-   $imprimir.=" <tr><td style='font:bold' >Resultado Tabulador:</td><td colspan='3'>".$row_codigo[0]."</td></tr>";
+                   $imprimir.=" <tr><td style='font:bold' >Resultado Tabulador:</td><td colspan='3'>".$row_codigo[0]."</td></tr>";
 				$consulta=$obj->LeerProcesoExamen($idexamen,$lugar,$sexo,$idedad);
 
 				$imprimir.="
-				<tr><td colspan='6'>
+				<tr>
+                                    <td colspan='6'>
 					<table width='100%' border='0' align='center'  >
-					<tr >
+                                            <tr >
 						<td > Prueba </td>
 						<td > Resultado </td>
 						<td > Unidades </td>
 						<td colspan='2' > Control Diario </td>
-					</tr>";
+                                            </tr>";
 					$pos=0;
 
 					while($row = pg_fetch_array($consulta))//ELEMENTOS
 					{
-			    $imprimir.="<tr>
+                                $imprimir.="<tr>
 						<td>".htmlentities($row['nombreprocedimiento'])."</td>
 						<td align='center'>
 							<input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['id']."'>".htmlentities($vector_respuesta[$pos]).
@@ -278,23 +286,26 @@ case 2://vista Previa de Resultado
 						<td>".$row['unidades']."</td>
 						<td align='center'>".htmlentities($vector_comentarios[$pos])."</td>
 						<td>".htmlentities($row['unidades'])."</td>
-					</tr>";
+                                            </tr>";
 					  $pos=$pos + 1;
 					}
 					pg_free_result($consulta);
-                                        // echo $idedad;	    
-	                     $imprimir.="<tr>
+                                        // echo $idedad;
+                                        $imprimir.= "  <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
+                                                       <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
+                                $imprimir.="<tr>
 						<td colspan='4' align='rigth'>
 							<input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarPlantillaE()'>
 							<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaE(".$idsolicitud.",\"".$idexamen."\",\"".$row_empleado['empleado']."\",\"".$procedencia."\",\"".$row_generales['subservicio']."\",\"".$comentarios."\",\"".$valores."\",\"".$codigos."\",\"".$observacion."\",\"".htmlentities($establecimiento)."\",\"".$sexo."\",\"".$idedad."\") ;'>
 							<input type='button' id='btnSalir' value='cerrar' onclick='Cerrar()'>
 						</td>                                                                                                                                                                                                      
-					</tr>
-					</table></td>
+                                            </tr>
+					</table>
+                                    </td>
 				</tr>";
-	$imprimir.="</table>";
+                $imprimir.="</table>";
 
-   echo $imprimir;
+         echo $imprimir;
 
 }else{
 
@@ -352,7 +363,7 @@ case 2://vista Previa de Resultado
 			</tr>
 			<tr>
                             <td colspan='1' style='font:bold'><strong>Examen Realizado:</strong></td>
-                            <td colspan='5' style='font:bold'>".htmlentities($row_area['nombre_examen'])."</td>
+                            <td colspan='5' style='font:bold'>".htmlentities($row_area['nombre_reporta'])."</td>
 			</tr>
 			<tr>
                             <td colspan='1'><strong>Validado Por:</strong></td>
@@ -401,6 +412,8 @@ case 2://vista Previa de Resultado
                                                   $pos=$pos + 1;
                         }
                                 pg_free_result($consulta);
+                                $imprimir.= "  <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
+                                                <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
                    $imprimir.="</table>
                             <td>
                         </tr>
@@ -425,6 +438,10 @@ case 2://vista Previa de Resultado
 	$observacion= $_POST['observacion'];
 	$idempleado= $_POST['idempleado'];
 	$tab=$_POST['tab'];
+        $fecharealiz=$_POST['fecharealiz'];
+        $fecharesultado=$_POST['fecharesultado'];
+        
+       // echo $fecharealiz." - ".$fecharesultado;
 	//echo "SOLIC".$idsolicitud."*RECEP= ".$idrecepcion."*DETALLE= ".$iddetalle."*observ= ".$observacion."*Empleado= ".$idempleado."* tab=".$tab ;
 
 	$codigos= $_POST['codigos'];
@@ -440,7 +457,7 @@ case 2://vista Previa de Resultado
 		//$tamano_vectorcomentario=count($vector_comentarios);
 
 	   //VALIDANDO QUE LA INFORMACION ESTE COMPLETA:
-	$ultimo= $obj->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$idempleado,$usuario,$tab,$lugar);
+	$ultimo= $obj->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$idempleado,$usuario,$tab,$fecharealiz,$fecharesultado,$lugar);
 //echo $ultimo;
 		$pos=0;
 		$ban=0;

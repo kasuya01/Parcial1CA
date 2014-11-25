@@ -382,7 +382,7 @@ function ImprimirPlantillaB(idsolicitud, idexamen, responsable, procedencia, ori
             "&var8=" + codigos_subelementos + "&var9=" + escape(valores_elementos) +
             "&var10=" + codigos_elementos + "&var11=" + encodeURIComponent(controles) +
             "&var12=" + controles_ele + "&var13=" + nombrearea +
-            "&var14=" + escape(establecimiento) + "&var15=" + escape(responsable) +
+            "&var14=" + establecimiento + "&var15=" + escape(responsable) +
             "&var16=" + sexo + "&var17=" + idedad, "ImprimirB", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
 }
 
@@ -441,13 +441,15 @@ function MostrarAntibioticos()
     opcion = 1;
     idexamen = document.frmnuevo.txtidexamen.value;
     idtarjeta = document.frmnuevo.cmbTarjeta.value;
-
+   // fecharealiz = document.frmnuevo.txtresultrealiza.value;
+    //fecharesultado = document.frmnuevo.txtfresultado.value;
+    //alert (fecharealiz+" * "+fecharesultado);
     ajax.open("POST", "ctrDatosResultadosExamen_PC.php", true);
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idtarjeta=" + idtarjeta);
+    ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idtarjeta=" + idtarjeta );
 
-
+//+ "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -512,6 +514,9 @@ function MostrarVistaPreviaPlantillaC()
         //nombrearea="";
         estab = document.getElementById('txtEstablecimiento').value;       
        // alert(estab);
+        fecharealiz = document.getElementById('txtresultrealiza').value;
+        fecharesultado=document.getElementById('txtfresultado').value;
+        alert (fecharealiz+" * "+fecharesultado)
         //DATOS PARA EL DETALLE DE LOS RESULTADOS
         valores_antibioticos = "";
         codigos_antibioticos = "";
@@ -532,7 +537,7 @@ function MostrarVistaPreviaPlantillaC()
                 "&idempleado=" + idempleado + "&valores_antibioticos=" + escape(valores_antibioticos) +
                 "&codigos_antibioticos=" + codigos_antibioticos + "&idtarjeta=" + idtarjeta +
                 "&idbacteria=" + idbacteria + "&cantidad=" + encodeURIComponent(cantidad) +
-                "&estab=" + estab+"&idobservacion=" + idobservacion);
+                "&estab=" + estab+"&idobservacion=" + idobservacion + "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado);
         ajax.onreadystatechange = function()
         {
             if (ajax.readyState == 4)
@@ -1730,7 +1735,7 @@ function MostrarDatos(posicion)
                 ventana_dos = window.open("ProcDatosResultadosExamen_PC.php?var1=" + idexpediente +
                     "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
-                    "&var12=" + impresion + "&var13=" + estab + "&var16=" + IdEstandar + "&var17=" + IdHistorial +
+                    "&var12=" + impresion + "&var13=" + estab +"&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar + "&var17=" + IdHistorial +
                     "&referido=" + referido+ "&var18="+estabext, "Resultados", "width=950,height=650,menubar=no,scrollbars=yes,location=no");
             break;
         case "4":
@@ -2166,8 +2171,8 @@ function IngresarResultadosPlantillaE()
         sexo = document.frmnuevo.txtSexo.value;
         fecharealiz = document.frmnuevo.txtresultrealiza.value;
         fecharesultado=document.frmnuevo.txtresultfin.value;
-        //alert(codigoex);
-        CargarProcesosExamen(codigoex, fechanac, sexo);
+     //   alert(fecharealiz+" - "+fecharesultado);
+        CargarProcesosExamen(codigoex, fechanac, sexo,fecharealiz,fecharesultado);
     }
     else
     {
@@ -2181,7 +2186,7 @@ function CargarProcesosExamen(codigoex, fechanac, sexo,fecharealiz,fecharesultad
     idexamen = codigoex;
 
     opcion = 1;
-
+    //alert(fecharealiz+" - "+fecharesultado);
     observacion = document.getElementById('txtobservacion').value;
     ajax.open("POST", "ctrDatosResultadosPlantillaE.php", true);
     //muy importante este encabezado ya que hacemos uso de un formulario
@@ -2239,7 +2244,9 @@ function MostrarVistaPreviaPlantillaE()
         tab = document.getElementById('cmbTabulador').value;
         fechanac = document.getElementById('txtFechaNac').value;
         sexo = document.getElementById('txtSexo').value;
-
+        fecharealiz = document.getElementById('txtresultrealiza').value;
+        fecharesultado=document.getElementById('txtfresultado').value;
+        //alert (fecharesultado);
         //DATOS PARA EL DETALLE DE LOS RESULTADOS
         valores = "";
         codigos = "";
@@ -2267,7 +2274,7 @@ function MostrarVistaPreviaPlantillaE()
         //enviando los valores
         ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idsolicitud=" + idsolicitud + "&observacion=" + escape(observacion) +
                 "&idempleado=" + idempleado + "&valores=" + encodeURIComponent(valores) + "&codigos=" + codigos + "&comentarios=" + encodeURIComponent(comentarios) +
-                "&estab=" + estab + "&tab=" + tab + "&fechanac=" + fechanac + "&sexo=" + sexo);
+                "&estab=" + estab + "&tab=" + tab + "&fechanac=" + fechanac + "&sexo=" + sexo + "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado);
         ajax.onreadystatechange = function()
         {
             if (ajax.readyState == 4)
@@ -2301,6 +2308,8 @@ function GuardarPlantillaE()
     observacion = document.getElementById('txtobservacion').value;
     idempleado = document.getElementById('cmbEmpleados').value;
     tab = document.getElementById('cmbTabulador').value;
+    fecharealiz = document.getElementById('txtresultrealiza').value;
+    fecharesultado=document.getElementById('txtfresultado').value;
     //DATOS PARA EL DETALLE DE LOS RESULTADOS
     valores = "";
     codigos = "";
@@ -2320,8 +2329,9 @@ function GuardarPlantillaE()
     //enviando los valores
     //alert(tab);
     ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idsolicitud=" + idsolicitud + "&idrecepcion=" + idrecepcion +
-            "&iddetalle=" + iddetalle + "&observacion=" + encodeURIComponent(observacion) + "&idempleado=" + idempleado
-            + "&valores=" + encodeURIComponent(valores) + "&codigos=" + codigos + "&comentarios=" + encodeURIComponent(comentarios) + "&tab=" + tab);
+            "&iddetalle=" + iddetalle + "&observacion=" + encodeURIComponent(observacion) + "&idempleado=" + idempleado +
+            "&valores=" + encodeURIComponent(valores) + "&codigos=" + codigos + "&comentarios=" + encodeURIComponent(comentarios) + "&tab=" + tab +
+            "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)

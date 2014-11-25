@@ -93,7 +93,7 @@ function CargarDatos(){
  
 	$bandera=$_GET['var12'];
         $IdEstandar=$_GET['var16'];
-        echo $_GET['var4']; 
+       // echo $_GET['var4']; 
         //echo $IdEstandar;
         //$db = new ConexionBD;
         /*if($db->conectar()==true) {
