@@ -139,10 +139,10 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
         $resultado = mysql_query($condatos);*/
 	$rows = pg_fetch_array($condatos);
         
-        $Peso=$rows['Peso'];
-        $Talla=$rows['Talla'];
-        $Diagnostico=$rows['Diagnostico'];
-        $ConocidoPor=$rows['ConocidoPor'];
+        $Peso=$rows['peso'];
+        $Talla=$rows['talla'];
+        $Diagnostico=$rows['diagnostico'];
+        $ConocidoPor=$rows['conocido_por'];
   }
   else{
       $Peso='-';
