@@ -278,12 +278,13 @@ function CambiarEstadoDetalleSolicitud(estado,idtipo,idexpediente,idarea,idsolic
 //function RechazarMuestra(idexamen)
 function RechazarMuestra(idtipo,idexpediente,idarea,idsolicitud,fechasolicitud,observacion)
 {
-    estado='RM'
+        estado='RM'
   	opcion=4;
 	idexamen="";
         idsolicitud=trim(idsolicitud);
 	idexpediente=trim(idexpediente);
 	fechasolicitud=trim(fechasolicitud);
+        //alert(idexpediente);
 		//instanciamos el objetoAjax
 	ajax=objetoAjax();
 		//usando del medoto POST
@@ -371,6 +372,7 @@ function CargarDatosFormulario(idexpediente,idsolicitud,idarea,idtipo)
 	estado="";
 	idexamen="";
 	pag="";
+        
 	ajax.open("POST", "ctrSolicitudesPorArea.php",true);
 		  //muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");

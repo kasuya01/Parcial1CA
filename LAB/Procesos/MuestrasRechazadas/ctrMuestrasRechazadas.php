@@ -100,8 +100,8 @@ switch ($opcion)
         }
 
         if (!empty($_POST['TipoSolic'])) {
-            $cond1 .= " t17.idtiposolicitud = '" . $_POST['TipoSolic'] . "' AND";
-            $cond2 .= " t17.idtiposolicitud = '" . $_POST['TipoSolic'] . "' AND";
+            $cond1 .= " t02.idtiposolicitud = '" . $_POST['TipoSolic'] . "' AND";
+            $cond2 .= " t02.idtiposolicitud = '" . $_POST['TipoSolic'] . "' AND";
         }
 
         if ((empty($_POST['idexpediente'])) AND ( empty($_POST['idarea'])) AND ( empty($_POST['fechasolicitud']))

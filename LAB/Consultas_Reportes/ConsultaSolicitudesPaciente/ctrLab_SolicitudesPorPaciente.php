@@ -176,19 +176,19 @@ switch ($opcion)
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
             TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta
-            FROM sec_solicitudestudios t02                
-            INNER JOIN lab_recepcionmuestra t03                 ON (t03.idsolicitudestudio=t02.id) 
-	    INNER JOIN mnt_expediente t06                       ON (t06.id = t02.id_expediente) 
-            INNER JOIN mnt_paciente t07                         ON (t07.id = t06.id_paciente) 
-	    INNER JOIN sec_historial_clinico t09                ON (t09.id = t02.id_historial_clinico) 
-            INNER JOIN mnt_aten_area_mod_estab t10              ON (t10.id = t09.idsubservicio) 
-            INNER JOIN ctl_atencion t11                         ON (t11.id = t10.id_atencion) 
-            INNER JOIN mnt_area_mod_estab t12                   ON (t12.id = t10.id_area_mod_estab) 
-            INNER JOIN ctl_area_atencion t13                    ON (t13.id = t12.id_area_atencion) 
-            INNER JOIN ctl_establecimiento t14                  ON (t14.id = t09.idestablecimiento) 
-            INNER JOIN cit_citas_serviciodeapoyo t15            ON (t15.id_solicitudestudios=t02.id) 
-            INNER JOIN lab_tiposolicitud t17                    ON (t17.id = t02.idtiposolicitud) 
-            INNER JOIN tbl_servicio t20                         ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
+            FROM sec_solicitudestudios              t02                
+            INNER JOIN lab_recepcionmuestra         t03      ON (t03.idsolicitudestudio=t02.id) 
+	    INNER JOIN mnt_expediente               t06      ON (t06.id = t02.id_expediente) 
+            INNER JOIN mnt_paciente                 t07      ON (t07.id = t06.id_paciente) 
+	    INNER JOIN sec_historial_clinico        t09      ON (t09.id = t02.id_historial_clinico) 
+            INNER JOIN mnt_aten_area_mod_estab      t10      ON (t10.id = t09.idsubservicio) 
+            INNER JOIN ctl_atencion                 t11      ON (t11.id = t10.id_atencion) 
+            INNER JOIN mnt_area_mod_estab           t12      ON (t12.id = t10.id_area_mod_estab) 
+            INNER JOIN ctl_area_atencion            t13      ON (t13.id = t12.id_area_atencion) 
+            INNER JOIN ctl_establecimiento          t14      ON (t14.id = t09.idestablecimiento) 
+            INNER JOIN cit_citas_serviciodeapoyo    t15      ON (t15.id_solicitudestudios=t02.id) 
+            INNER JOIN lab_tiposolicitud            t17      ON (t17.id = t02.idtiposolicitud) 
+            INNER JOIN tbl_servicio                 t20      ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
             AND t02.id_establecimiento = $lugar $cond1
             
@@ -215,18 +215,18 @@ switch ($opcion)
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
             TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta
-            FROM sec_solicitudestudios t02                    	   
-            INNER JOIN lab_recepcionmuestra t03                     ON (t03.idsolicitudestudio=t02.id) 
-            INNER JOIN mnt_dato_referencia t09                      ON t09.id=t02.id_dato_referencia 
-            INNER JOIN mnt_expediente_referido t06                  ON (t06.id = t09.id_expediente_referido) 
-            INNER JOIN mnt_paciente_referido t07                    ON (t07.id = t06.id_referido) 
-            INNER JOIN mnt_aten_area_mod_estab t10                  ON (t10.id = t09.id_aten_area_mod_estab) 
-            INNER JOIN ctl_atencion t11                             ON (t11.id = t10.id_atencion) 
-            INNER JOIN mnt_area_mod_estab t12                       ON (t12.id = t10.id_area_mod_estab) 
-            INNER JOIN ctl_area_atencion t13                        ON (t13.id = t12.id_area_atencion) 
-            INNER JOIN ctl_establecimiento t14                      ON (t14.id = t09.id_establecimiento)
-            INNER JOIN cit_citas_serviciodeapoyo t15                ON (t15.id_solicitudestudios=t02.id) 
-            INNER JOIN lab_tiposolicitud t17 			    ON (t17.id = t02.idtiposolicitud) 
+            FROM sec_solicitudestudios              t02                    	   
+            INNER JOIN lab_recepcionmuestra         t03         ON (t03.idsolicitudestudio=t02.id) 
+            INNER JOIN mnt_dato_referencia          t09         ON t09.id=t02.id_dato_referencia 
+            INNER JOIN mnt_expediente_referido      t06         ON (t06.id = t09.id_expediente_referido) 
+            INNER JOIN mnt_paciente_referido        t07         ON (t07.id = t06.id_referido) 
+            INNER JOIN mnt_aten_area_mod_estab      t10         ON (t10.id = t09.id_aten_area_mod_estab) 
+            INNER JOIN ctl_atencion                 t11         ON (t11.id = t10.id_atencion) 
+            INNER JOIN mnt_area_mod_estab           t12         ON (t12.id = t10.id_area_mod_estab) 
+            INNER JOIN ctl_area_atencion            t13         ON (t13.id = t12.id_area_atencion) 
+            INNER JOIN ctl_establecimiento          t14         ON (t14.id = t09.id_establecimiento)
+            INNER JOIN cit_citas_serviciodeapoyo    t15         ON (t15.id_solicitudestudios=t02.id) 
+            INNER JOIN lab_tiposolicitud            t17 	ON (t17.id = t02.idtiposolicitud) 
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
             AND t02.id_establecimiento =$lugar $cond2   order by fecharecepcion desc  ";
                  
