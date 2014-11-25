@@ -441,9 +441,9 @@ function MostrarAntibioticos()
     opcion = 1;
     idexamen = document.frmnuevo.txtidexamen.value;
     idtarjeta = document.frmnuevo.cmbTarjeta.value;
-   // fecharealiz = document.frmnuevo.txtresultrealiza.value;
-    //fecharesultado = document.frmnuevo.txtfresultado.value;
-    //alert (fecharealiz+" * "+fecharesultado);
+    fecharealiz = document.frmnuevo.txtresultrealiza.value;
+    fecharesultado = document.frmnuevo.txtfresultado.value;
+    alert (fecharealiz+" * "+fecharesultado);
     ajax.open("POST", "ctrDatosResultadosExamen_PC.php", true);
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 

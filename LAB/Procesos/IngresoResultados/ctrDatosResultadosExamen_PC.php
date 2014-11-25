@@ -61,10 +61,13 @@ switch ($opcion)
    		$idexamen=$_POST['idexamen'];
 		$idsolicitud= $_POST['idsolicitud'];
 		$idempleado= $_POST['idempleado'];
+               
                 $fecharealiz=$_POST['fecharealiz'];
                 $fecharesultado=$_POST['fecharesultado'];
+                
 		$idrecepcion= $_POST['idrecepcion'];
 		$iddetalle= $_POST['iddetalle'];
+                
 		$observacion= $_POST['observacion'];
                 $idobservacion= ($_POST['idobservacion']==0) ? 'NULL' : "'" . pg_escape_string($_POST['idobservacion']) . "'";
                 //echo $idobservacion;
