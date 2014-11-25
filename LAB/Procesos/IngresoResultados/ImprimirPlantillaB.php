@@ -136,7 +136,7 @@ $idedad               = $_GET['var17'];
                             </tr>
                             <tr>
                                 <td colspan='1' class="Estilo6"><strong>Examen Realizado:</strong></td>
-                                <td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['nombreexamen'])?></td>
+                                <td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['nombre_reporta'])?></td>
                             </tr>
                             <tr>
                                 <td colspan='1' class="Estilo6"><strong>Validado Por:</strong></td>
@@ -290,7 +290,7 @@ $idedad               = $_GET['var17'];
                             </tr>
                             <tr>
                                 <td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
-                                <td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['nombreexamen'])?></td>
+                                <td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['nombre_reporta'])?></td>
                             </tr>
                             <tr>
                                 <td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>

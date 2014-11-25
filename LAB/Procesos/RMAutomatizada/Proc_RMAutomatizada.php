@@ -216,15 +216,13 @@ if (isset($_SESSION['Correlativo'])) {
                                     <option value="0" >Seleccione un &Aacute;rea</option>
                                     <?php
                                     include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
-                                    $objeareas = new clsLab_Areas;
-                                    $consulta = $objeareas->consultaractivas($lugar);
-                                    while ($row = pg_fetch_array($consulta)) {
-                                        if ($area1 === $row['idarea'])
-                                            echo '<option value="' . $area1 . '" selected="selected">' . htmlentities($nomarea) . '</option>';
-                                        else
-                                            echo "<option value='" . $row['idarea'] . "'>" . htmlentities($row['nombrearea']) . "</option>";
-                                    }
-                                    ?>
+				$objeareas=new clsLab_Areas;
+				$consulta= $objeareas->consultaractivas($lugar);
+				while($row = pg_fetch_array($consulta)){
+			        echo "<option value='" . $row['idarea']. "'>" . htmlentities($row['nombrearea']) . "</option>";
+				}
+				echo '<option value="'.$area1.'" selected="selected">'.htmlentities($nomarea).'</option>';
+				?>
                                 </select>
                             </td>
                             <td  class="StormyWeatherFieldCaptionTD">Examen </td>

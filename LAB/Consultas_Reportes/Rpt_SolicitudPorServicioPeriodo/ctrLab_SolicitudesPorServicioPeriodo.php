@@ -105,26 +105,7 @@ switch ($opcion)
            //$cond1;
           // echo $cond2;
         }     
-        $query="WITH tbl_servicio AS (
-                    SELECT t02.id,
-                        CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
-                                 ELSE t02.nombre_ambiente
-                            END
-                        ELSE
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'--> ' || t01.nombre
-                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
-                            END
-                        END AS servicio 
-                    FROM  ctl_atencion                  t01 
-                    INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
-                    INNER JOIN mnt_area_mod_estab           t03 ON (t03.id = t02.id_area_mod_estab)
-                    LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
-                    LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
-                    WHERE  t02.id_establecimiento = 49
-                    ORDER BY 2)
-            
-                    SELECT 
+        $query="SELECT 
                     t01.id,
 		   t13.nombre AS nombreservicio, 
 		   t19.nombre AS sexo,
@@ -163,12 +144,12 @@ switch ($opcion)
             INNER JOIN lab_tiposolicitud t17 			ON (t17.id = t02.idtiposolicitud) 
             INNER JOIN ctl_examen_servicio_diagnostico t18 	ON (t18.id = t05.id_examen_servicio_diagnostico) 
             INNER JOIN ctl_sexo t19 				ON (t19.id = t07.id_sexo)
-            INNER JOIN tbl_servicio t20 			ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
-            left join sec_diagnosticospaciente t21	        on (t09.id=t21.idhistorialclinico)
-            left join mnt_cie10 t22                             on (t22.id=t21.iddiagnostico1)
-	    left join sec_examenfisico t23 		        on (t23.idhistorialclinico=t09.id)
-            inner join mnt_empleado t24 		        on (t09.id_empleado=t24.id)
-            inner join ctl_area_servicio_diagnostico t25        on (t25.id=t05.id_area_servicio_diagnostico)
+           -- INNER JOIN tbl_servicio t20 			ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
+            left join sec_diagnostico_paciente 		t21 on (t21.id_historial_clinico=t09.id) 
+            left join mnt_snomed_cie10 			t22 on (t22.id=t21.id_snomed) 
+            left join sec_signos_vitales 			t23 on (t23.id_historial_clinico=t09.id) 
+            left join mnt_empleado 				t24 on (t09.id_empleado=t24.id)
+            inner join ctl_area_servicio_diagnostico 	t25 on (t25.id=t05.id_area_servicio_diagnostico) 
             WHERE t01.idestablecimiento=$lugar  $cond1 
 
 UNION
@@ -208,12 +189,12 @@ FROM sec_detallesolicitudestudios t01
             INNER JOIN ctl_establecimiento t14 			ON (t14.id = t09.id_establecimiento)
 	    INNER JOIN ctl_examen_servicio_diagnostico t18 	ON (t18.id = t05.id_examen_servicio_diagnostico) 
             INNER JOIN ctl_sexo t19 				ON (t19.id = t07.id_sexo)
-            left join sec_diagnosticospaciente t21	        on (t09.id=t21.idhistorialclinico)
-            left join mnt_cie10 t22                             on (t22.id=t21.iddiagnostico1)
-	    left join sec_examenfisico t23 		        on (t23.idhistorialclinico=t09.id)
-             inner join mnt_empleado t24 		        on (t09.id_empleado=t24.id)
-             inner join ctl_area_servicio_diagnostico t25      on (t25.id=t05.id_area_servicio_diagnostico)
-             where t01.idestablecimiento= $lugar  $cond2 order by fechasolicitud desc ";
+            left join sec_diagnostico_paciente 		t21 on (t21.id_historial_clinico=t09.id) 
+            left join mnt_snomed_cie10 			t22 on (t22.id=t21.id_snomed) 
+            left join sec_signos_vitales 			t23 on (t23.id_historial_clinico=t09.id) 
+            left join mnt_empleado 				t24 on (t09.id_empleado=t24.id)
+            inner join ctl_area_servicio_diagnostico 	t25 on (t25.id=t05.id_area_servicio_diagnostico) 
+            where t01.idestablecimiento= $lugar  $cond2 order by fechasolicitud desc ";
 		
 		
 		//echo $query_search;
@@ -453,19 +434,42 @@ pg_free_result($consultadetalle);
 			$rslts .= '</select>';
 			echo $rslts;
                 }
+               * <select name="cboMedicos" id="cboMedicos" class="MailboxSelect" style="width:250px"> 
+						<option value="0">--Seleccione Un  Medico--</option>
+					</select>
 		else{*/
+                
+                
+                $consulta=$objdatos->cantidadMedicos($IdSubServicio);
+                $row = pg_fetch_array($consulta);
+                $cantidad=$row['cantidad'];
+                //echo $cantidad;
+                
+                if ($cantidad==0){
+                    $dtmed=$objdatos->LlenarCmbMedicos($IdSubServicio);
+			$rslts = '<select name="cboMedicos" id="cboMedicos"  style="width:350px">';
+				$rslts .='<option value="0">--NO HAY MEDICOS--</option>';
+				while ($rows =pg_fetch_array($dtmed)){
+					$rslts.= '<option value="' . $rows['idemp'] .'" >'. $rows['nombre'].'</option>';
+				//}
+		}
+                $rslts .='</select>';
+			echo $rslts;
+                    
+                }else {
+                
 			$dtmed=$objdatos->LlenarCmbMedicos($IdSubServicio);
-			$rslts = '<select name="cmbMedico" id="cmbMedico"  style="width:350px">';
+			$rslts = '<select name="cboMedicos" id="cboMedicos"  style="width:350px">';
 				$rslts .='<option value="0">--Seleccione un Medico--</option>';
 				while ($rows =pg_fetch_array($dtmed)){
 					$rslts.= '<option value="' . $rows['idemp'] .'" >'. $rows['nombre'].'</option>';
 				//}
-			$rslts .='</select>';
+		}
+                $rslts .='</select>';
 			echo $rslts;
 
-		}
 	
-	 
+                }
 	 
 	
    break;	

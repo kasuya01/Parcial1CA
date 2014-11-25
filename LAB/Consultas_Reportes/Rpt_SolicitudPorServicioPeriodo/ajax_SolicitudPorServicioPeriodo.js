@@ -156,50 +156,18 @@ function BuscarDatos(pag)
 {	opcion=1;
     
                 
-    if ((document.getElementById('CmbServicio').value != "")){
+   
         
-        //alert("fechas");
+        
+        
         IdEstab=document.getElementById('cmbEstablecimiento').value;
 		IdServ=document.getElementById('CmbServicio').value;
                 IdSubServ=document.getElementById('cmbSubServ').value;
 		fechainicio=document.getElementById('txtfechainicio').value;
 		fechafin=document.getElementById('txtfechafin').value;
-		//medico=document.getElementById('cmbMedico').value; 
+		medico=document.getElementById('cboMedicos').value; 
                 
-       // alert (IdServ);
-		//instanciamos el objetoAjax
-		ajax=objetoAjax();
-		//archivo que realizara la operacion ->actualizacion.php
-		ajax.open("POST", "ctrLab_SolicitudesPorServicioPeriodo.php",true);
-		//muy importante este encabezado ya que hacemos uso de un formulario
-		ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-		//enviando los valores
-		ajax.send("&IdEstab="+IdEstab+"&IdServ="+IdServ+"&IdSubServ="+IdSubServ+"&opcion="+opcion+"&fechainicio="+fechainicio+"&fechafin="+fechafin+/*"&medico="+medico+*/"&pag="+pag);
-		ajax.onreadystatechange=function() {
-			if (ajax.readyState==4) {
-				//mostrar los nuevos registros en esta capa
-				document.getElementById('divBusqueda').innerHTML = ajax.responseText;
-				//alert(ajax.responseText);
-			}
-	}	
-	
-        
-    }
     
-    
-	//alert (pag);
-             if ((document.getElementById('cmbMedico').value != "")){
-                 
-                 //alert ("medico");
-                	
-                IdEstab=document.getElementById('cmbEstablecimiento').value;
-		IdServ=document.getElementById('CmbServicio').value;
-                IdSubServ=document.getElementById('cmbSubServ').value;
-		fechainicio=document.getElementById('txtfechainicio').value;
-		fechafin=document.getElementById('txtfechafin').value;
-		medico=document.getElementById('cmbMedico').value; 
-                
-       // alert (medico);
 		//instanciamos el objetoAjax
 		ajax=objetoAjax();
 		//archivo que realizara la operacion ->actualizacion.php
@@ -215,8 +183,12 @@ function BuscarDatos(pag)
 				//alert(ajax.responseText);
 			}
 	}	
-                 
-             }
+	
+        
+    
+    
+    
+	
 		
 		
 	
@@ -238,30 +210,20 @@ function BuscarDatos(pag)
 
 function VistaPrevia()
 {
-                 if ((document.getElementById('CmbServicio').value != "")){
+                 
     
 		IdEstab=document.getElementById('cmbEstablecimiento').value;
 		IdServ=document.getElementById('CmbServicio').value;
 		IdSubServ=document.getElementById('cmbSubServ').value;
 		fechainicio=document.getElementById('txtfechainicio').value;
 		fechafin=document.getElementById('txtfechafin').value;
-		//medico=document.getElementById('cmbMedico').value;
+		medico=document.getElementById('cboMedicos').value;
 		//alert (meeeeeedico);
-		ventana_secundaria = window.open("ReporteEspecialidades.php?var1="+IdSubServ+"&var2="+fechainicio+
-			"&var3="+fechafin+/*"&var4="+medico+*/"&var5="+IdEstab+"&var6="+IdServ,"Vista","width=1250,height=575,menubar=no,scrollbars=yes") ;
-  
-                 }
-                 IdEstab=document.getElementById('cmbEstablecimiento').value;
-		IdServ=document.getElementById('CmbServicio').value;
-		IdSubServ=document.getElementById('cmbSubServ').value;
-		fechainicio=document.getElementById('txtfechainicio').value;
-		fechafin=document.getElementById('txtfechafin').value;
-		medico=document.getElementById('cmbMedico').value;
-		//alert (medico);
 		ventana_secundaria = window.open("ReporteEspecialidades.php?var1="+IdSubServ+"&var2="+fechainicio+
 			"&var3="+fechafin+"&var4="+medico+"&var5="+IdEstab+"&var6="+IdServ,"Vista","width=1250,height=575,menubar=no,scrollbars=yes") ;
   
-                 
+                
+                
                  
     }
  

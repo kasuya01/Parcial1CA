@@ -86,47 +86,68 @@ function Duplos($IdSolicitudEstudio,$IdSubServicio){
 	return($resp);
 }
 
-
-function ValidarExpediente($nec){
+//Fn PG
+function ValidarExpediente($nec, $lugar){
 	$con = new ConexionBD;
 	if($con->conectar()==true){
-		$query_Search= 	"SELECT e.idnumeroexp, if(d.SegundoApellido is null and d.SegundoNombre is null, CONCAT(d.PrimerApellido,', ',d.PrimerNombre),
-if(d.SegundoApellido is not null and d.SegundoNombre is not null,CONCAT(d.PrimerApellido,' ',d.SegundoApellido,', ',d.PrimerNombre,' ',d.SegundoNombre),
-if(d.SegundoNombre is null, CONCAT(d.PrimerApellido,' ',d.SegundoApellido,', ',d.PrimerNombre),CONCAT(d.PrimerApellido,', ',d.PrimerNombre,' ',d.SegundoNombre)))) as Nombre
-FROM mnt_datospaciente d INNER JOIN mnt_expediente e on e.idpaciente=d.idpaciente WHERE e.idnumeroexp ='".$nec."'";
-	$query = mysql_query($query_Search) or die('La consulta fallo&oacute;: ' . mysql_error());
+		$query_Search= 	"SELECT e.numero, e.id, concat_ws (' ',d.primer_apellido,d.segundo_apellido, d.apellido_casada,',', d.primer_nombre, d.segundo_nombre, d.tercer_nombre) as nombre
+                                FROM mnt_paciente d
+                                join  mnt_expediente e on (d.id= e.id_paciente)
+                                where e.numero='$nec'
+                                and id_establecimiento=$lugar";
+	$query = pg_query($query_Search);
+        //echo $query;
+        if (!$query)
+            return false;
+        else
+            return $query;
 	
 	}
-	return $query;
+        
 }
-
+//FN PG
 function MostrarDetalleSolicitudes($nec,$idestablecimiento){
 	$con = new ConexionBD;
 	if($con->conectar()==true){
-		$query_Search = "select se.IdNumeroExp, se.IdSolicitudEstudio,se.FechaSolicitud,
-(Select NombreServicio from mnt_servicio where IdServicio=se.IdServicio) as Servicio,se.IdServicio 
-from sec_solicitudestudios se inner join sec_detallesolicitudestudios ds on se.IdSolicitudEstudio=ds.IdSolicitudEstudio 
-where IdNumeroExp='".$nec."' and se.estado='D' and se.idtiposolicitud='R' and se.idestablecimiento=$idestablecimiento group by se.IdSolicitudEstudio";
-
-		$valret = mysql_query($query_Search) or die('La consulta fall&oacute;: ' . mysql_error());
-		
+		$query_Search = "select mex.numero, mex.id as idexpediente, sse.id as idsolicitudestudio, 
+                    sse.fecha_solicitud, nombre, sse.estado, sse.estado, sse.idtiposolicitud, 
+                    sse.id_establecimiento, cat.codigo_busqueda
+                        from sec_solicitudestudios sse
+                        join mnt_expediente mex 		on (mex.id=sse.id_expediente)
+                        join ctl_atencion cat			on (cat.id=sse.id_atencion)
+                        where sse.id_expediente=$nec
+                        and sse.estado=1 --D:digitado=1
+                        and sse.idtiposolicitud=2 --R:Normal=2
+                        and sse.id_establecimiento=$idestablecimiento";
+		//$valret = mysql_query($query_Search) or die('La consulta fall&oacute;: ' . mysql_error());
+            $valret=  pg_query($query_Search);
+            //echo $query_Search;
+            if (!$valret)
+                return false;
+            else
+                return $valret;	
 	}
-	return $valret;
+	
 }
-
+//Fn PG
 function ListExamenesTiempoPrev($idsolicitudestudio,$IdEstablecimiento){
 	$con = new ConexionBD;
 	if($con->conectar()==true){
-		$query_Search = "select ds.IdExamen,(select NombreExamen from lab_examenes le where le.IdExamen=ds.IdExamen) as NombreExam, pe.RangoTiempoPrev 
-                                from sec_detallesolicitudestudios ds 
-                                inner join cit_programacionxexams pe on pe.idexam=ds.idexamen 
-                                inner join sec_solicitudestudios so on ds.idsolicitudestudio=so.idsolicitudestudio
-                                inner join sec_historial_clinico hi on so.idhistorialclinico=hi.idhistorialclinico
-                                where ds.IdSolicitudEstudio=".$idsolicitudestudio." and hi.idestablecimiento=$IdEstablecimiento";
-			//echo $query_Search;
-	$valret = mysql_query($query_Search) or die('La consulta 2 fall&oacute;: ' . mysql_error());
-	}
-	return $valret;
+		$query_Search = "select  lce.id as idexamen, nombre_examen as nombreexam, rangotiempoprev, sds.id as iddetalle
+from sec_detallesolicitudestudios sds
+join lab_conf_examen_estab lce		on (lce.id = sds.id_conf_examen_estab)
+join cit_programacion_exams cpe 	on (cpe.id_examen_establecimiento = sds.id_conf_examen_estab)
+join sec_solicitudestudios sse		on (sse.id = sds.idsolicitudestudio)
+join sec_historial_clinico shc		on (shc.id = sse.id_historial_clinico)
+where sds.idsolicitudestudio= $idsolicitudestudio"
+                        . " and shc.idestablecimiento=$IdEstablecimiento";
+	$valret=  pg_query($query_Search);
+        if (!$valret){
+            return false;
+        }
+        else 
+            return $valret;
+        }
 }
 
 function MaxTiempoPrevdeExamenes($idsolicitudestudio,$IdEstablecimiento){
@@ -293,11 +314,11 @@ function ObtenerSubServicio($IdSolicitud,$Fecha){
 }//ObtenerSubServicio
 
 function FechaServer(){
-        $SQL ="SELECT now()";
-        $db = mysql_query($SQL) or die('La consulta Fall&oacute;:' . mysql_error());
-        $vareturn = mysql_fetch_array($db);
+        $SQL ="select to_char(current_timestamp, 'YYYY-MM-DD HH24:MI:SS') as fecha";
+        $db = pg_query($SQL);
+        $vareturn = pg_fetch_array($db);
    
-    return $vareturn[0];
+    return $vareturn['fecha'];
 }
  
 }//Clase

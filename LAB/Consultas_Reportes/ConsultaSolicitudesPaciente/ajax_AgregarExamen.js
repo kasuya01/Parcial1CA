@@ -182,6 +182,8 @@ function BuscarDatos2()
 		segundoapellido=document.getElementById('SegundoApellido').value;
 		//especialidad=document.getElementById('cmbEspecialidad').value;
 		fechaconsulta=document.getElementById('txtfechaconsulta').value;
+                
+               
 		
 		ajax=objetoAjax();
 		//archivo que realizar� la operacion ->actualizacion.php

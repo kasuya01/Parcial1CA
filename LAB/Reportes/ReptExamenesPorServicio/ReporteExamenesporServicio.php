@@ -90,14 +90,22 @@ if ($nivel==33){
 					include_once("../../../Conexion/ConexionBD.php");
 					$con = new ConexionBD;
 					if($con->conectar()==true){			  
-						$consulta  = "SELECT IdServicio,NombreServicio FROM mnt_servicio 
-						WHERE IdTipoServicio<>'DCO' AND IdTipoServicio<>'FAR' ";
-						$resultado = @mysql_query($consulta) or die('La consulta fall&oacute;: ' . @mysql_error());
+						$consulta  = /*"SELECT IdServicio,NombreServicio FROM mnt_servicio 
+						WHERE IdTipoServicio<>'DCO' AND IdTipoServicio<>'FAR' ";*/
+                                                        
+                                                        "SELECT t01.id,
+                                                                 t01.nombre
+                                                          FROM ctl_area_atencion t01
+                                                          WHERE t01.id IN (
+                                                                SELECT DISTINCT id_area_atencion 
+                                                                FROM mnt_area_mod_estab WHERE id_establecimiento = $lugar)";
+                                                        
+						$resultado = @pg_query($consulta) or die('La consulta fall&oacute;: ' . @pg_error());
 						//por cada registro encontrado en la tabla me genera un <option>
-					while ($rows = @mysql_fetch_array($resultado)){
+					while ($rows = @pg_fetch_array($resultado)){
 						echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]). '</option>';
 					}
-					@mysql_free_result($consulta); // Liberar memoria usada por consulta.
+					@pg_free_result($consulta); // Liberar memoria usada por consulta.
 					}
 					?>
               </select>

@@ -161,9 +161,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-	    $query = 
-                 
-                 "WITH tbl_servicio AS (
+	      $query = "WITH tbl_servicio AS (
                     SELECT t02.id,
                         CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
@@ -186,7 +184,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
                     t02.id,
 		   t13.nombre AS nombreservicio, 
 		   t19.nombre AS sexo,
-                 t24.nombreempleado as medico,
+                   t24.nombreempleado as medico,
                    CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido,
                    t07.apellido_casada) AS paciente,
                    t07.conocido_por as conocodidox,
@@ -205,13 +203,13 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
                                  'day', 'día') as edad,
                                  (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
                  t11.nombre AS nombresubservicio,
-                  t22.diagnostico AS diagnostico,
-                   t23.peso as peso,
-                    t23.talla as talla,
-                    t04.nombre_examen as nombre_examen,
-                   t04.codigo_examen as codigo_examen,
-                   t25.idarea as codigo_area,
-                   t25.nombrearea as nombre_area,
+                 t22.sct_name_es AS diagnostico,
+                 t23.peso as peso,
+                 t23.talla as talla,
+                 t04.nombre_examen as nombre_examen,
+                 t04.codigo_examen as codigo_examen,
+                 t25.idarea as codigo_area,
+                 t25.nombrearea as nombre_area,
                     CASE t01.estadodetalle 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada'
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='R') THEN 'Recibida'
@@ -233,32 +231,35 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
                         t01.idempleado as idempleado
                    
 		   
-            FROM sec_detallesolicitudestudios t01 
-            INNER JOIN sec_solicitudestudios t02 		ON (t02.id = t01.idsolicitudestudio) 
-            INNER JOIN lab_recepcionmuestra t03 		ON (t02.id = t03.idsolicitudestudio) 
-            INNER JOIN lab_conf_examen_estab t04 		ON (t04.id = t01.id_conf_examen_estab) 
-            INNER JOIN mnt_area_examen_establecimiento t05 	ON (t05.id = t04.idexamen) 
-            INNER JOIN mnt_expediente t06 			ON (t06.id = t02.id_expediente) 
-            INNER JOIN mnt_paciente t07 			ON (t07.id = t06.id_paciente) 
-            INNER JOIN ctl_area_servicio_diagnostico t08 	ON (t08.id = t05.id_area_servicio_diagnostico 
+            FROM sec_detallesolicitudestudios           t01 
+            INNER JOIN sec_solicitudestudios            t02 	ON (t02.id = t01.idsolicitudestudio) 
+            INNER JOIN lab_recepcionmuestra             t03 	ON (t02.id = t03.idsolicitudestudio) 
+            INNER JOIN lab_conf_examen_estab            t04 	ON (t04.id = t01.id_conf_examen_estab) 
+            INNER JOIN mnt_area_examen_establecimiento  t05 	ON (t05.id = t04.idexamen) 
+            INNER JOIN mnt_expediente                   t06 	ON (t06.id = t02.id_expediente) 
+            INNER JOIN mnt_paciente                     t07 	ON (t07.id = t06.id_paciente) 
+            INNER JOIN ctl_area_servicio_diagnostico    t08 	ON (t08.id = t05.id_area_servicio_diagnostico 
             AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) 
-            INNER JOIN sec_historial_clinico t09 		ON (t09.id = t02.id_historial_clinico) 
-            INNER JOIN mnt_aten_area_mod_estab t10 		ON (t10.id = t09.idsubservicio) 
-            INNER JOIN ctl_atencion t11 			ON (t11.id = t10.id_atencion) 
-            INNER JOIN mnt_area_mod_estab t12 			ON (t12.id = t10.id_area_mod_estab) 
-            INNER JOIN ctl_area_atencion t13 			ON (t13.id = t12.id_area_atencion) 
-            INNER JOIN ctl_establecimiento t14 			ON (t14.id = t09.idestablecimiento) 
-            INNER JOIN cit_citas_serviciodeapoyo t15 		ON (t02.id = t15.id_solicitudestudios) 
-            INNER JOIN ctl_estado_servicio_diagnostico t16 	ON (t16.id = t01.estadodetalle) 
-            INNER JOIN lab_tiposolicitud t17 			ON (t17.id = t02.idtiposolicitud) 
-            INNER JOIN ctl_examen_servicio_diagnostico t18 	ON (t18.id = t05.id_examen_servicio_diagnostico) 
-            INNER JOIN ctl_sexo t19 				ON (t19.id = t07.id_sexo)
-            INNER JOIN tbl_servicio t20 			ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
-            left join sec_diagnosticospaciente t21	        on (t09.id=t21.idhistorialclinico)
-            left join mnt_cie10 t22                             on (t22.id=t21.iddiagnostico1)
-	    left join sec_examenfisico t23 		        on (t23.idhistorialclinico=t09.id)
-            inner join mnt_empleado t24 		        on (t09.id_empleado=t24.id)
-            inner join ctl_area_servicio_diagnostico t25      on (t25.id=t05.id_area_servicio_diagnostico)
+            INNER JOIN sec_historial_clinico            t09 	ON (t09.id = t02.id_historial_clinico) 
+            INNER JOIN mnt_aten_area_mod_estab          t10 	ON (t10.id = t09.idsubservicio) 
+            INNER JOIN ctl_atencion                     t11 	ON (t11.id = t10.id_atencion) 
+            INNER JOIN mnt_area_mod_estab               t12 	ON (t12.id = t10.id_area_mod_estab) 
+            INNER JOIN ctl_area_atencion                t13 	ON (t13.id = t12.id_area_atencion) 
+            INNER JOIN ctl_establecimiento              t14 	ON (t14.id = t09.idestablecimiento) 
+            INNER JOIN cit_citas_serviciodeapoyo        t15 	ON (t02.id = t15.id_solicitudestudios) 
+            INNER JOIN ctl_estado_servicio_diagnostico  t16 	ON (t16.id = t01.estadodetalle) 
+            INNER JOIN lab_tiposolicitud                t17 	ON (t17.id = t02.idtiposolicitud) 
+            INNER JOIN ctl_examen_servicio_diagnostico  t18 	ON (t18.id = t05.id_examen_servicio_diagnostico) 
+            INNER JOIN ctl_sexo                         t19 	ON (t19.id = t07.id_sexo)
+            --INNER JOIN tbl_servicio                     t20     ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
+            
+            left  join sec_diagnostico_paciente		t21     on (t21.id_historial_clinico=t09.id)
+            left join mnt_snomed_cie10 			t22	on (t22.id=t21.id_snomed)
+            left join sec_signos_vitales                t23 	on (t23.id_historial_clinico=t09.id)
+            left  join mnt_empleado 			t24 	on (t09.id_empleado=t24.id)
+
+
+            inner join ctl_area_servicio_diagnostico     t25   on (t25.id=t05.id_area_servicio_diagnostico)
             
             WHERE  t02.id=$idsolicitud and  t06.numero='$idexpediente'
 
@@ -288,10 +289,10 @@ UNION
                    
 		   (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
 		   t11.nombre AS nombresubservicio, 
-		   t22.diagnostico AS diagnostico,
+		   t22.sct_name_es AS diagnostico,
                    t23.peso as peso,
-                    t23.talla as talla,
-                    t04.nombre_examen as nombre_examen,
+                   t23.talla as talla,
+                   t04.nombre_examen as nombre_examen,
                    t04.codigo_examen as codigo_examen,
                    t25.idarea as codigo_area,
                    t25.nombrearea as nombre_area,
@@ -315,28 +316,31 @@ UNION
 
 			t01.indicacion as indicacion,
                         t01.idempleado  as idempleado
-            FROM sec_detallesolicitudestudios t01 
-            INNER JOIN sec_solicitudestudios t02 		ON (t02.id = t01.idsolicitudestudio) 
-            INNER JOIN lab_recepcionmuestra t03 		ON (t02.id = t03.idsolicitudestudio) 
-            INNER JOIN lab_conf_examen_estab t04	 	ON (t04.id = t01.id_conf_examen_estab) 
-            INNER JOIN mnt_area_examen_establecimiento t05  	ON (t05.id = t04.idexamen)
-            INNER JOIN mnt_dato_referencia t09 			ON t09.id=t02.id_dato_referencia 
-            INNER JOIN mnt_expediente_referido t06 		ON (t06.id = t09.id_expediente_referido) 
-            INNER JOIN mnt_paciente_referido t07 		ON (t07.id = t06.id_referido) 
-            INNER JOIN ctl_area_servicio_diagnostico t08 	ON (t08.id = t05.id_area_servicio_diagnostico 
+            FROM sec_detallesolicitudestudios           t01 
+            INNER JOIN sec_solicitudestudios            t02 	ON (t02.id = t01.idsolicitudestudio) 
+            INNER JOIN lab_recepcionmuestra             t03 	ON (t02.id = t03.idsolicitudestudio) 
+            INNER JOIN lab_conf_examen_estab            t04	ON (t04.id = t01.id_conf_examen_estab) 
+            INNER JOIN mnt_area_examen_establecimiento  t05  	ON (t05.id = t04.idexamen)
+            INNER JOIN mnt_dato_referencia              t09 	ON t09.id=t02.id_dato_referencia 
+            INNER JOIN mnt_expediente_referido          t06 	ON (t06.id = t09.id_expediente_referido) 
+            INNER JOIN mnt_paciente_referido            t07 	ON (t07.id = t06.id_referido) 
+            INNER JOIN ctl_area_servicio_diagnostico    t08 	ON (t08.id = t05.id_area_servicio_diagnostico 
             AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) 
-            INNER JOIN mnt_aten_area_mod_estab t10 		ON (t10.id = t09.id_aten_area_mod_estab) 
-            INNER JOIN ctl_atencion t11 			ON (t11.id = t10.id_atencion) 
-            INNER JOIN mnt_area_mod_estab t12 			ON (t12.id = t10.id_area_mod_estab) 
-            INNER JOIN ctl_area_atencion t13 			ON (t13.id = t12.id_area_atencion) 
-            INNER JOIN ctl_establecimiento t14 			ON (t14.id = t09.id_establecimiento)
-	    INNER JOIN ctl_examen_servicio_diagnostico t18 	ON (t18.id = t05.id_examen_servicio_diagnostico) 
-            INNER JOIN ctl_sexo t19 				ON (t19.id = t07.id_sexo)
-            left join sec_diagnosticospaciente t21	        on (t09.id=t21.idhistorialclinico)
-            left join mnt_cie10 t22                             on (t22.id=t21.iddiagnostico1)
-	    left join sec_examenfisico t23 		        on (t23.idhistorialclinico=t09.id)
-             inner join mnt_empleado t24 		        on (t09.id_empleado=t24.id)
-             inner join ctl_area_servicio_diagnostico t25      on (t25.id=t05.id_area_servicio_diagnostico)
+            INNER JOIN mnt_aten_area_mod_estab          t10 	ON (t10.id = t09.id_aten_area_mod_estab) 
+            INNER JOIN ctl_atencion                     t11 	ON (t11.id = t10.id_atencion) 
+            INNER JOIN mnt_area_mod_estab               t12 	ON (t12.id = t10.id_area_mod_estab) 
+            INNER JOIN ctl_area_atencion                t13 	ON (t13.id = t12.id_area_atencion) 
+            INNER JOIN ctl_establecimiento              t14 	ON (t14.id = t09.id_establecimiento)
+	    INNER JOIN ctl_examen_servicio_diagnostico  t18 	ON (t18.id = t05.id_examen_servicio_diagnostico) 
+            INNER JOIN ctl_sexo                         t19 	ON (t19.id = t07.id_sexo)
+            
+            left  join sec_diagnostico_paciente		t21     on (t21.id_historial_clinico=t09.id)
+            left join mnt_snomed_cie10 			t22	on (t22.id=t21.id_snomed)
+            left join sec_signos_vitales                t23 	on (t23.id_historial_clinico=t09.id)
+            left  join mnt_empleado 			t24 	on (t09.id_empleado=t24.id)
+            
+            
+            inner join ctl_area_servicio_diagnostico    t25   on (t25.id=t05.id_area_servicio_diagnostico)
             
             WHERE   t02.id=$idsolicitud and  t06.numero='$idexpediente'  order by codigo_area";
                 

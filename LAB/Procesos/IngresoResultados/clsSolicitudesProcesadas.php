@@ -955,15 +955,16 @@ values ($idnext,$hdnIdMetodologia_, $iddetalle, $hdnCodResult_, $hdnResult_,$hdn
     function condatos($idhistorialclinico, $lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query="select sef.peso, sef.talla, diagnostico, conocido_por
-                    from sec_historial_clinico 	shc 
-                    join mnt_expediente  		mex on (mex.id = shc.id_numero_expediente)
-                    join mnt_paciente 		mpa on (mpa.id = mex.id_paciente)
-                    left join sec_diagnosticospaciente	sdp on (shc.id = sdp.idhistorialclinico)
-                    left join mnt_cie10		cie on (cie.id = sdp.iddiagnostico1)
-                    left join sec_examenfisico	sef on (shc.id= sef.idhistorialclinico)
+            $query="select sef.peso, sef.talla, (sct_name_es ||', ' ||especificacion) as diagnostico, conocido_por 
+                    from sec_historial_clinico shc 
+                    join mnt_expediente mex on (mex.id = shc.id_numero_expediente) 
+                    join mnt_paciente mpa on (mpa.id = mex.id_paciente) 
+                    left join sec_diagnostico_paciente sdp on (shc.id= sdp.id_historial_clinico)
+                    left join mnt_snomed_cie10 mns	on (mns.id= sdp.id_snomed)
+                    left join sec_signos_vitales sef on (shc.id = sef.id_historial_clinico)
                     where shc.id=$idhistorialclinico
                     and shc.idestablecimiento=$lugar";
+             //echo $query;
              $result = pg_query($query);
             if (!$result) {
                 return false;
@@ -972,7 +973,7 @@ values ($idnext,$hdnIdMetodologia_, $iddetalle, $hdnCodResult_, $hdnResult_,$hdn
             }
         }
 }
-//Fn PG
+//Fn PG  //Para quimica
 //Buscar si existen solicitudes anteriores con ese mismo detalle.
    function buscarAnteriores($idsolicitud,$iddetallesolicitud, $idarea){
          $con = new ConexionBD;

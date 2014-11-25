@@ -88,7 +88,7 @@ $con = new ConexionBD;
 function LlenarCmbTipoMuestra($IdExamen){
 $con = new ConexionBD;
 	if($con->conectar()==true){
-		  $sqlText= /*"SELECT lab_tipomuestra.IdTipoMuestra,lab_tipomuestra.TipoMuestra
+		 $sqlText= /*"SELECT lab_tipomuestra.IdTipoMuestra,lab_tipomuestra.TipoMuestra
 			   FROM lab_tipomuestraporexamen 
 			   INNER JOIN lab_tipomuestra ON lab_tipomuestraporexamen.IdTipoMuestra=lab_tipomuestra.IdTipoMuestra
 			   WHERE IdExamen='$IdExamen'";*/
@@ -97,7 +97,7 @@ $con = new ConexionBD;
 		inner join  lab_tipomuestra t02 on (t01.idtipomuestra=t02.id)
 		where idexamen=$IdExamen";*/
                           
-                          "select  t01.idtipomuestra, t02.tipomuestra 
+                          "select distinct t01.idtipomuestra, t02.tipomuestra 
 		from lab_tipomuestraporexamen  t01
 		left join  lab_tipomuestra t02 on (t01.idtipomuestra=t02.id)
 		left join lab_conf_examen_estab t03 on (t03.id=t01.idexamen)
@@ -360,27 +360,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-	 $query = /*"SELECT DISTINCT mnt_empleados.IdEmpleado AS IdMedico,NombreEmpleado AS NombreMedico,NombreSubServicio AS Origen,
-		  DatosClinicos,NombreServicio AS Precedencia, mnt_expediente.IdNumeroExp, 
-                  CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoApellido) AS NombrePaciente,
-		  sec_solicitudestudios .FechaSolicitud,(year(CURRENT_DATE)-year(FechaNacimiento))AS Edad,
-                  IF (Sexo=1,'Masculino','Femenino') AS Sexo, sec_solicitudestudios .estado AS Estado,mnt_establecimiento.Nombre,
-		  DATE_FORMAT(FechaNacimiento,'%d/%m/%Y') AS FechaNacimiento,sec_historial_clinico.IdEstablecimiento
-		  FROM sec_historial_clinico 
-		  INNER JOIN sec_solicitudestudios  ON sec_historial_clinico.IdHistorialClinico= sec_solicitudestudios.IdHistorialClinico
-		  INNER JOIN mnt_empleados ON sec_historial_clinico.IDEmpleado= mnt_empleados.IdEmpleado
-		  INNER JOIN mnt_expediente ON sec_historial_clinico.IdNumeroExp= mnt_expediente.IdNumeroExp
-		  INNER JOIN mnt_datospaciente ON mnt_expediente.IdPaciente=mnt_datospaciente.IdPaciente  
-		  INNER JOIN mnt_subservicio  ON mnt_subservicio.IdSubServicio= sec_historial_clinico.IdSubServicio
-		  INNER JOIN mnt_servicio  ON mnt_servicio.IdServicio= mnt_subservicio.IdServicio
-		  INNER JOIN mnt_establecimiento ON sec_historial_clinico.IdEstablecimiento=mnt_establecimiento.IdEstablecimiento
-		  WHERE sec_solicitudestudios.IdServicio ='DCOLAB'
-                  AND sec_solicitudestudios.IdEstablecimiento=$lugar 
-                  AND sec_historial_clinico.IdNumeroExp='$idexpediente'
-		  AND sec_solicitudestudios .IdSolicitudEstudio=$idsolicitud";*/
-                
-                
-                "WITH tbl_servicio AS (
+	  $query ="WITH tbl_servicio AS (
                     SELECT t02.id,
                         CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
@@ -403,7 +383,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
                     t02.id,
 		   t13.nombre AS nombreservicio, 
 		   t19.nombre AS sexo,
-                 t24.nombreempleado as medico,
+                  t24.nombreempleado as medico,
                    CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido,
                    t07.apellido_casada) AS paciente,
                    t07.conocido_por as conocodidox,
@@ -422,7 +402,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
                                  'day', 'día') as edad,
                                  (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
                  t11.nombre AS nombresubservicio,
-                  t22.diagnostico AS diagnostico,
+                  t22.sct_name_es AS diagnostico,
                    t23.peso as peso,
                     t23.talla as talla,
                     t04.nombre_examen as nombre_examen,
@@ -461,12 +441,12 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
             INNER JOIN lab_tiposolicitud t17 			ON (t17.id = t02.idtiposolicitud) 
             INNER JOIN ctl_examen_servicio_diagnostico t18 	ON (t18.id = t05.id_examen_servicio_diagnostico) 
             INNER JOIN ctl_sexo t19 				ON (t19.id = t07.id_sexo)
-            INNER JOIN tbl_servicio t20 			ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
-            left join sec_diagnosticospaciente t21	        on (t09.id=t21.idhistorialclinico)
-            left join mnt_cie10 t22                             on (t22.id=t21.iddiagnostico1)
-	    left join sec_examenfisico t23 		        on (t23.idhistorialclinico=t09.id)
-            inner join mnt_empleado t24 		        on (t09.id_empleado=t24.id)
-            inner join ctl_area_servicio_diagnostico t25      on (t25.id=t05.id_area_servicio_diagnostico)
+          
+            left  join sec_diagnostico_paciente		t21     on (t21.id_historial_clinico=t09.id)
+                left join mnt_snomed_cie10 			t22	on (t22.id=t21.id_snomed)
+                left join sec_signos_vitales  			t23 	on (t23.id_historial_clinico=t09.id)
+                left  join mnt_empleado 			t24 	on (t09.id_empleado=t24.id) 
+                inner join ctl_area_servicio_diagnostico t25      on (t25.id=t05.id_area_servicio_diagnostico)
             
             WHERE  t02.id=$idsolicitud and  t06.numero='$idexpediente'
 
@@ -496,7 +476,7 @@ UNION
                    
 		   (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
 		   t11.nombre AS nombresubservicio, 
-		   t22.diagnostico AS diagnostico,
+		   t22.sct_name_es AS diagnostico,
                    t23.peso as peso,
                     t23.talla as talla,
                     t04.nombre_examen as nombre_examen,
@@ -530,11 +510,11 @@ UNION
             INNER JOIN ctl_establecimiento t14 			ON (t14.id = t09.id_establecimiento)
 	    INNER JOIN ctl_examen_servicio_diagnostico t18 	ON (t18.id = t05.id_examen_servicio_diagnostico) 
             INNER JOIN ctl_sexo t19 				ON (t19.id = t07.id_sexo)
-            left join sec_diagnosticospaciente t21	        on (t09.id=t21.idhistorialclinico)
-            left join mnt_cie10 t22                             on (t22.id=t21.iddiagnostico1)
-	    left join sec_examenfisico t23 		        on (t23.idhistorialclinico=t09.id)
-             inner join mnt_empleado t24 		        on (t09.id_empleado=t24.id)
-             inner join ctl_area_servicio_diagnostico t25      on (t25.id=t05.id_area_servicio_diagnostico)
+            left  join sec_diagnostico_paciente		t21     on (t21.id_historial_clinico=t09.id)
+            left join mnt_snomed_cie10 			t22	on (t22.id=t21.id_snomed)
+            left join sec_signos_vitales  			t23 	on (t23.id_historial_clinico=t09.id)
+            left  join mnt_empleado 			t24 	on (t09.id_empleado=t24.id) 
+            inner join ctl_area_servicio_diagnostico t25      on (t25.id=t05.id_area_servicio_diagnostico)
             
             WHERE   t02.id=$idsolicitud and  t06.numero='$idexpediente'";
                 

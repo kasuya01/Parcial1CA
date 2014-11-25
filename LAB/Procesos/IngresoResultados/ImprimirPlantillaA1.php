@@ -88,7 +88,7 @@ $rowpa = pg_fetch_array($datpac);
 		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
-			<td colspan='2' class="Estilo6"><?php echo $_GET['var10']?></td>
+                        <td colspan='2' class="Estilo6"><?php echo utf8_encode($_GET['var10'])?></td>
 			<td colspan='1' class="Estilo5"><strong>Fecha Resultado:</strong></td>
 			<td colspan='2' class="Estilo6"'><?php echo $fechareporte;?></td>
 		</tr>
@@ -130,6 +130,7 @@ $rowpa = pg_fetch_array($datpac);
 		<tr>
 			<td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;</td>
 		</tr>
+                 <tr><td colspan="6"><hr></td></tr>
 		<tr>
 			<td colspan='6' align='center' class="Estilo6"><strong>DETALLE DE RESULTADOS</strong></td>
 		</tr>
@@ -146,6 +147,7 @@ $rowpa = pg_fetch_array($datpac);
                         <td align='center' class='Estilo5'><strong>Fecha Resultado</strong></td>
 
 		</tr>
+                <tr><td colspan="6"><hr></td></tr>
 			<?php $pos=0;
 		while($rowdet = pg_fetch_array($consulta)){?>
 		<tr>

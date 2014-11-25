@@ -100,8 +100,8 @@ switch ($opcion)
         }
 
         if (!empty($_POST['TipoSolic'])) {
-            $cond1 .= " t17.idtiposolicitud = '" . $_POST['TipoSolic'] . "' AND";
-            $cond2 .= " t17.idtiposolicitud = '" . $_POST['TipoSolic'] . "' AND";
+            $cond1 .= " t02.idtiposolicitud = '" . $_POST['TipoSolic'] . "' AND";
+            $cond2 .= " t02.idtiposolicitud = '" . $_POST['TipoSolic'] . "' AND";
         }
 
         if ((empty($_POST['idexpediente'])) AND ( empty($_POST['idarea'])) AND ( empty($_POST['fechasolicitud']))
@@ -284,7 +284,7 @@ switch ($opcion)
 					   "<input name='idsolicitud[".$pos."]' id='idsolicitud[".$pos."]' type='hidden' size='60' value='".$row[1]."' />".
 					   "<input name='idexpediente[".$pos."]' id='idexpediente[".$pos."]' type='hidden' size='60' value='".$row['idnumeroexp']."' />".
 					   "<input name='idarea[".$pos."]' id='idarea[".$pos."]' type='hidden' size='60' value='".$idarea."' />".
-					   "<input name='idexamen[".$pos."]' id='idexamen[".$pos."]' type='hidden' size='60' value='".$row['id']."' />".
+					   "<input name='idexamen[".$pos."]' id='idexamen[".$pos."]' type='hidden' size='60' value='".$row['idexamen']."' />".
 					   "<input name='idestablecimiento[".$pos."]' id='idestablecimiento[".$pos."]' type='hidden' size='60' value='".$IdEstab."' />".
 				  "<td width='25%'>".$row['paciente']."</td>
 				   <td width='10%'>".$row['idexamen']."</td>
@@ -313,13 +313,13 @@ switch ($opcion)
    
    case 2:
 		 $idexpediente=$_POST['idexpediente'];
-		 $idsolicitud=$_POST['idsolicitud'];
+		$idsolicitud=$_POST['idsolicitud'];
 		 $idarea=$_POST['idarea'];
-		echo $idsolicitudP=$_POST['idsolicitudP'];           
+		 $idsolicitudP=$_POST['idsolicitudP'];           
   //$establecimiento=$_POST['establecimiento'];
 			//echo $idexpediente."**".$idsolicitud;
 		/*if ($idarea=="URI" or $idarea=="BAT" OR $idarea=="TMU" ){  */
-	 $idexamen=$_POST['idexamen'];		
+              $idexamen=$_POST['idexamen'];		
          
 			include_once("clsMuestrasRechazadas.php");
 			//recuperando los valores generales de la solicitud
@@ -520,135 +520,130 @@ pg_free_result($datosexamen);
    break;
     	
   case 3: //procezar muestra
-	$idexpediente=$_POST['idexpediente'];
-	$idsolicitud=$_POST['idsolicitud'];
-        $idarea=$_POST['idarea'];
-	$estado=$_POST['estado'];
-	$fechasolicitud=$_POST['fechasolicitud'];
-	$idexamen=$_POST['idexamen'];
-	$fecharecep=$_POST['fecharecep'];
-        $observacion=$_POST['observacion'];
-        $idsolicitudPadre=$_POST['idsolicitudPadre'];
+	$idexpediente   =$_POST['idexpediente'];
+	$idsolicitud    =$_POST['idsolicitud'];
+        $idarea         =$_POST['idarea'];
+	$estado         =$_POST['estado'];
+	$fechasolicitud =$_POST['fechasolicitud'];
+	$idexamen       =$_POST['idexamen'];
+	$fecharecep     =$_POST['fecharecep'];
+       $observacion     =$_POST['observacion'];
+       $idsolicitudPadre=$_POST['idsolicitudPadre'];
+      include_once("clsMuestrasRechazadas.php");
+			//recuperando los valores generales de la solicitud
+		
       
+      $consulta=$objdatos->contaridresultado($idsolicitud,$idsolicitudPadre);
+            $row = pg_fetch_array($consulta);
+            $contaridresultado=$row[0];
+            
+if ($contaridresultado>0) 
+              //if ($idresulta>0) 
+    {
+                        
+           $consulta=$objdatos->idresultado($idsolicitud,$idsolicitudPadre);
+            $row = pg_fetch_array($consulta);
+             $idresulta=$row[0];
+             
     
-  
-  // echo $idsolicitud;
- // echo $estado;
-  //echo $idexamen;
-        
-        
-      //  asta a ca!!
-        
-        /*
-   
-     if ($idarea=="URI" or $idarea=="BAT" ){   
-	   /* if ($objdatos->CambiarEstadoDetalle1($idsolicitud,$estado,$idexamen)==true)   
+           // echo "si hay resultados!!    ";
+            
+            $consulta=$objdatos->id_detalleresultado($idresulta);
+            $row = pg_fetch_array($consulta);
+            $id_detalleresultado=$row[0];  //aca esta la falla.
+           
+            $consulta1=$objdatos->idexmen_metodologia($idsolicitud,$idsolicitudPadre);
+            $row = pg_fetch_array($consulta1);
+            $idexmen_metodologia=$row[0];
+           
+            $consulta1=$objdatos->idempleado($idsolicitud,$idsolicitudPadre);
+            $row = pg_fetch_array($consulta1);
+            $id_empleado=$row[0];
+           
+           //$idexmen_metodologia;
+          // $id_detalleresultado;
+         //  $usuario;
+        //   $id_empleado
+              
+            
+            if ($objdatos->CambiarEstadoDetalle($idsolicitud,$estado,$observacion)==true)   
 		{
-		//actualizar en la tabla de recepcion
-		  if($objdatos->CambiarEstadoSolicitud($idexpediente,$fechasolicitud,$estadosolicitud)==true)
-			{
-			 	 echo "Solicitud Procesada..";
-			}
+                    echo "Muestra Procesada ";
+				//CambiarEstadoSolicitudProceso3
+			if($objdatos->CambiarEstadoSolicitudProceso3($idexpediente,$fechasolicitud,$estadosolicitud,$idsolicitudPadre)==true)
+				{       echo ", Solicitud  Fue cambiada De Estado..";
+                                    if($objdatos->inseresul_metodologia($idexmen_metodologia,$id_detalleresultado,$estado,$observacion,$usuario,$id_empleado)==true)
+                                        {
+                                                //echo "insertado";
+                                        } 
+                                }
+                                 
+                                else
+                                    {
+					echo "No Se Pudo Actualizar La Solicitud";
+				    }
 		}
-		else{
-			echo "Solicitud No fue cambiada de Estado..";
-		}*/
-	/*   }
-	   else{
-               */
-		/*if ($objdatos->CambiarEstadoDetalle($idsolicitud,$estado,$idarea)==true)   
-		  {
-			echo "Muestras Recibidas.";	
-			if($objdatos->CambiarEstadoSolicitud($idexpediente,$fechasolicitud,$estadosolicitud)==true)
-				{
-				 //echo "Solicitud Procesada..";
-				 }
-				 else{
-					echo "Solicitud No fue cambiada de Estado..";
-				 }
-		}*/
-				//else{
-			//echo "No se pudo actualizar";
-               //--
-               
-            /*   if ($objdatos->CambiarEstadoDetalle1($idsolicitud,$estado,$idexamen,$observacion)==true)   
+    }
+    
+    
+    else {
+            // echo "no hay resultados    ";
+        
+                if ($objdatos->CambiarEstadoDetalle($idsolicitud,$estado,$observacion)==true)   
 		{
-		//actualizar en la tabla de recepcion
-		  if($objdatos->CambiarEstadoSolicitud($idexpediente,$fechasolicitud,$estadosolicitud)==true)
-			{
-			 	 echo "Muestra Procesada..";
-                                 
-                                 
-			}
-		}
-		else{
-			echo "Solicitud No fue cambiada de Estado..";
-		}
-               
-               
-		}
-		//}*/
-        
-        
-      
-		if ($objdatos->CambiarEstadoDetalle($idsolicitud,$estado,$idarea,$observacion)==true)   
-		  {
                     echo "Muestra Procesada ";
 				//CambiarEstadoSolicitudProceso3
 			if($objdatos->CambiarEstadoSolicitudProceso3($idexpediente,$fechasolicitud,$estadosolicitud,$idsolicitudPadre)==true)
 				{
-                                     echo ", Solicitud  Fue cambiada De Estado..";
-				 }
-				 else{
-					
-				 }
+                                        echo ", Solicitud  Fue cambiada De Estado..";
+                                }
+                            else
+                              {
+			         echo "No Se Pudo Actualizar La Solicitud";
+                              }
 		}
-				//else{
-			//echo "No se pudo actualizar";
+        }
 		
-		//}
-	 break;
+	break;
                 
                 
-	 break;
-	 
-	  case 4:// Rechazar Muestra
-			$idexpediente=$_POST['idexpediente'];
-			$idsolicitud=$_POST['idsolicitud'];
-			$idarea=$_POST['idarea'];
-			echo "estado --> ".$estado=$_POST['estado'];
-			$fechasolicitud=$_POST['fechasolicitud'];
-			$idexamen=$_POST['idexamen'];
-			$fecharecep=$_POST['fecharecep'];
-			$observacion=$_POST['observacion'];
-			if ($idarea=="URI" or $idarea=="BAT"){   
+case 4:// Rechazar Muestra // se ah quitado esta opcion
+			$idexpediente   =$_POST['idexpediente'];
+			$idsolicitud    =$_POST['idsolicitud'];
+			$idarea         =$_POST['idarea'];
+			$estado         =$_POST['estado'];
+			$fechasolicitud =$_POST['fechasolicitud'];
+			$idexamen       =$_POST['idexamen'];
+			$fecharecep     =$_POST['fecharecep'];
+			$observacion    =$_POST['observacion'];
+			if ($idarea=="URI" or $idarea=="BAT")
+                        {   
 				if ($objdatos->CambiarEstadoDetalle1($idsolicitud,$estado,$idexamen)==true)   
 				{
 					if($objdatos->MarcarObservacionRechazado1($idsolicitud,$idexamen,$observacion)==true)
 					{
-						echo "Muestra Rechazadaaaaaaa";
+						echo "Muestra Rechazada";
 					}
 				}
 			}
-		   else{
+		 else{
 				if ($objdatos->CambiarEstadoDetalle($idsolicitud,$estado,$idarea)==true)   
 				{
 		     		
 				//actualizar en la tabla de recepcion
 					if($objdatos->MarcarObservacionRechazado($idsolicitud,$idarea,$observacion)==true)
 					{
-					echo "Muestras Rechazada";
+                                                echo "Muestras Rechazada";
 					}	
 				}
 		//else{
 			//echo "No se pudo actualizar";
-			}
+                    }
 		
 	break;
 	case 5://LLENANDO COMBO DE Examenes
-		$rslts='';
-		
-		$idarea=$_POST['idarea'];
+		$rslts  ='';
+		$idarea =$_POST['idarea'];
 		//echo $IdSubEsp;
 		$dtExam=$objdatos-> ExamenesPorArea($idarea,$lugar);	
 		
@@ -663,8 +658,8 @@ pg_free_result($datosexamen);
 		echo $rslts;
 	break;
 	case 6:// Llenar Combo Establecimiento
-		$rslts='';
-		$Idtipoesta=$_POST['idtipoesta'];
+		$rslts      ='';
+		$Idtipoesta =$_POST['idtipoesta'];
               // echo $Idtipoesta;
             	$dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
               	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:375px">';
@@ -677,14 +672,15 @@ pg_free_result($datosexamen);
 		echo $rslts;
    	break;
 	case 7:// Llenar combo Subservicio
-   	     $rslts='';
+   	     $rslts ='';
              $IdServ=$_POST['IdServicio'];
 	   //  echo $IdServ;
 	     $dtserv=$objdatos->LlenarCmbServ($IdServ,$lugar);
 	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:375px">';
 			$rslts .='<option value="0"> Seleccione Subespecialidad </option>';
-			while ($rows =pg_fetch_array($dtserv)){
-		  	$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
+			while ($rows =pg_fetch_array($dtserv))
+                        {
+                                $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 	       		}
 				
 	      $rslts .='</select>';
@@ -692,7 +688,7 @@ pg_free_result($datosexamen);
         break;	
 
 
-   break;
+  
 }
 
 ?>

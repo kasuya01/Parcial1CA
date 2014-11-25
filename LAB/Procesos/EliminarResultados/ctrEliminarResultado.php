@@ -379,7 +379,7 @@ switch ($opcion)
 					 case 2:
 					 case 4:
 					 case 5:
-                                                 echo $iddetalle;
+                                               //  echo $iddetalle;
 						 $r=$objdatos->ObtenerIdResultado($idsolicitud,$iddetalle);
 						 $result=pg_fetch_array($r);
 						 $idresultado=$result[0];
@@ -416,7 +416,7 @@ switch ($opcion)
 								//$tr=$objetos->ObtenerTipoResultado($idresultado);
 								//$tipo=mysql_fetch_array($tr);
 					            $TipoResultado=$result['resultado'];
-								echo " tipo=".$TipoResultado;
+								//echo " tipo=".$TipoResultado;
 								switch($TipoResultado){
 								case 'P':
 						//	 while($result = mysql_fetch_array($r)){

@@ -16,7 +16,8 @@ switch ($opcion)
   case 1:  //MOSTRANDO ANTIBIOTICOS ASOCIADOS A LA PLANTILLA
 	$idtarjeta=$_POST['idtarjeta'];
 	$idexamen=$_POST['idexamen'];
-
+       /* $fecharealiz=$_POST['fecharealiz'];
+        $fecharesultado=$_POST['fecharesultado'];*/
 
 	$consulta=$objdatos->LeerAntibioticos($idtarjeta);
 	$pos=0;
@@ -43,14 +44,15 @@ switch ($opcion)
 		$pos=$pos+1;
 	}
 	pg_free_result($consulta);
-	$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>"	;
+	$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>";
+                     
 	    $imprimir.="<tr>
 				<td width='100%' colspan='2' class='StormyWeatherDataTD'  align='right'>
 				<input type='button' name='Submit' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaC()'>
 				</td>
 			</tr>
 	           </table>";
-
+               
 	echo $imprimir;
 
    break;
@@ -59,8 +61,13 @@ switch ($opcion)
    		$idexamen=$_POST['idexamen'];
 		$idsolicitud= $_POST['idsolicitud'];
 		$idempleado= $_POST['idempleado'];
+               
+                $fecharealiz=$_POST['fecharealiz'];
+                $fecharesultado=$_POST['fecharesultado'];
+                
 		$idrecepcion= $_POST['idrecepcion'];
 		$iddetalle= $_POST['iddetalle'];
+                
 		$observacion= $_POST['observacion'];
                 $idobservacion= ($_POST['idobservacion']==0) ? 'NULL' : "'" . pg_escape_string($_POST['idobservacion']) . "'";
                 //echo $idobservacion;
@@ -71,7 +78,8 @@ switch ($opcion)
 		$cantidad=$_POST['cantidad'];
 		$resultado="P";
                 $establecimiento=$_POST['estab'];
-               // echo $observacion." - ".$idobservacion;
+                
+                echo $fecharealiz." - ".$fecharesultado;
           //echo " Solicitud=".$idsolicitud." empleado=".$idempleado." Examen=".$idexamen." detalle=".$iddetalle." detalle=".$establecimiento;
 		$Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
 		$row_estab = pg_fetch_array($Consulta_Estab);
@@ -187,7 +195,8 @@ switch ($opcion)
                            }
                                    pg_free_result($consulta);
 
-
+                                    $imprimir.= "  <input type='text' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
+                                                <input type='text' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
 
                             $imprimir.="<tr>
                                            <td colspan='6'>&nbsp;</td>

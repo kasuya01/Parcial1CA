@@ -198,7 +198,7 @@ $idarea=$_GET['var4'];
 $iddetallesolicitud=$_GET['var5'];
 $cant=$objdatos->buscarAnterioresPUnica($solicitud,$iddetallesolicitud, $idarea);
 if (pg_num_rows($cant)>0){
-if (!$IdHistorial){
+if ($referido!="t"){
     
 $condatos=$objdatos->condatos($IdHistorial, $lugar);
 
@@ -216,7 +216,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                      AND sec_historial_clinico.IdEstablecimiento =$lugar";
 
         $resultado = mysql_query($condatos);*/
-	$rows = pg_fetch_array($resultado);
+	$rows = pg_fetch_array($condatos);
         
         $Peso=$rows['Peso'];
         $Talla=$rows['Talla'];
