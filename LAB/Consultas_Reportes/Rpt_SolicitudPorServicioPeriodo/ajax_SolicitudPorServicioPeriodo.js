@@ -153,18 +153,21 @@ function LlenarComboExamen(idarea)
 
 //FUNCION PARA BUSCAR DATOS DE LA SOLICITUD
 function BuscarDatos(pag)
-{	
-	//alert (pag);
-	if (DatosCompletos())
-	{	
-		opcion=1;
-		IdEstab=document.getElementById('cmbEstablecimiento').value;
+{	opcion=1;
+    
+                
+   
+        
+        
+        
+        IdEstab=document.getElementById('cmbEstablecimiento').value;
 		IdServ=document.getElementById('CmbServicio').value;
-		IdSubServ=document.getElementById('cmbSubServ').value;
+                IdSubServ=document.getElementById('cmbSubServ').value;
 		fechainicio=document.getElementById('txtfechainicio').value;
 		fechafin=document.getElementById('txtfechafin').value;
-		medico=document.getElementById('cboMedicos').value;
-		
+		medico=document.getElementById('cboMedicos').value; 
+                
+    
 		//instanciamos el objetoAjax
 		ajax=objetoAjax();
 		//archivo que realizara la operacion ->actualizacion.php
@@ -180,10 +183,17 @@ function BuscarDatos(pag)
 				//alert(ajax.responseText);
 			}
 	}	
-	}
-	else{
-		alert("Complete los datos para la busqueda");
-	}
+	
+        
+    
+    
+    
+	
+		
+		
+	
+ 
+	
 }
 
 
@@ -200,17 +210,22 @@ function BuscarDatos(pag)
 
 function VistaPrevia()
 {
+                 
+    
 		IdEstab=document.getElementById('cmbEstablecimiento').value;
 		IdServ=document.getElementById('CmbServicio').value;
 		IdSubServ=document.getElementById('cmbSubServ').value;
 		fechainicio=document.getElementById('txtfechainicio').value;
 		fechafin=document.getElementById('txtfechafin').value;
 		medico=document.getElementById('cboMedicos').value;
-		//alert (medico);
+		//alert (meeeeeedico);
 		ventana_secundaria = window.open("ReporteEspecialidades.php?var1="+IdSubServ+"&var2="+fechainicio+
 			"&var3="+fechafin+"&var4="+medico+"&var5="+IdEstab+"&var6="+IdServ,"Vista","width=1250,height=575,menubar=no,scrollbars=yes") ;
   
- }
+                
+                
+                 
+    }
  
 /* function CargarDatosFormulario(especialidad,fechainicio,fechafin,medico)
 {
@@ -245,7 +260,8 @@ function VistaPrevia()
 
 function LlenarComboMedico(idsubservicio)
 {
-  // alert(idsubservicio);
+   //alert("llega"+idsubservicio);
+  
 	ajax=objetoAjax();
   
     opcion=3;

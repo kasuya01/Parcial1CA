@@ -231,15 +231,17 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
  }
  
 //FUNCION PARA CAMBIAR EL ESTADO DE LA SOLICITUD
-function CambiarEstadoSolicitud($idexpediente,$idsolicitud,$estadosolicitud)
+function CambiarEstadoSolicitud($idsolicitud,$estadosolicitud)
  {
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-   $query = "UPDATE sec_solicitudestudios SET estado='$estadosolicitud'
+   echo $query = /*"UPDATE sec_solicitudestudios SET estado='$estadosolicitud'
 			 WHERE IdNumeroExp='$idexpediente' AND
-			 IdSolicitudEstudio='$idsolicitud' AND IdServicio='DCOLAB' ";
-     $result = @mysql_query($query);
+			 IdSolicitudEstudio='$idsolicitud' AND IdServicio='DCOLAB' ";*/
+           "UPDATE sec_solicitudestudios SET estado=$estadosolicitud
+         WHERE id=(select idsolicitudestudio from sec_detallesolicitudestudios where id =$idsolicitud)";
+     $result = @pg_query($query);
      if (!$result)
        return false;
      else

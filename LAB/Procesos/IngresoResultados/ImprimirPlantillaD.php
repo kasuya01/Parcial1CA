@@ -55,73 +55,70 @@ function calc_edad()
 <?php
 
         $Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
-        $row_estab = mysql_fetch_array($Consulta_Estab);
+        $row_estab = pg_fetch_array($Consulta_Estab);
 
 	$consulta=$obj->MostrarElementosAgregados($idresultado);
     	$consulta_datos=$obj->LeerDatos($idexamen);
 	$datos_generales=$obj->MostrarDatosGenerales($idsolicitud);
 	$datos_empleado=$obj->DatosEmpleado($idempleado);
-	$row_generales= mysql_fetch_array($datos_generales);
-	$row_area = mysql_fetch_array($consulta_datos);
-	$row_empleado = mysql_fetch_array($datos_empleado);
+	$row_generales= pg_fetch_array($datos_generales);
+	$row_area = pg_fetch_array($consulta_datos);
+	$row_empleado = pg_fetch_array($datos_empleado);
         $FechaRes=$obj->ObtenerFechaResultado($idsolicitud,$idexamen,$lugar);
-	$row_fecha=mysql_fetch_array($FechaRes);
+	$row_fecha=pg_fetch_array($FechaRes);
 
 	//echo $IdSolicitud."-".$IdExamen."-".$Idresultado."-".$IdArea;
 ?>
 
 	<table width='100%' align='center' class='StormyWeatherFormTABLE' cellspacing="0">
 		<tr>
-			<td colspan="1" align="left" width="20%"><img id="Image1" style="WIDTH: 80px; HEIGHT: 55px" height="86" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
+			<td colspan="1" align="left" width="20%"><img id="Image1" style="width: auto; height: 55px;" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
                         <td width="60%" align='center' colspan='4' class='Estilo6'>
 				<span class="Estilo6"><p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
-				<p><strong><?php echo $row_estab['Nombre'] ?></strong></p>
-				<p><strong>&Aacute;REA DE <?php echo htmlentities($row_area['NombreArea'])?> </strong></p></span>
+				<p><strong><?php echo $row_estab['nombre'] ?></strong></p>
+				<p><strong>&Aacute;REA DE <?php echo htmlentities($row_area['nombrearea'])?> </strong></p></span>
 			</td>
-                        <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
+                        <td colspan="1" align="right" width="20%"><img id="Image3" style="width: auto; height: 55px;" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
 		</tr>
                 <tr>
                     <td colspan="6" align='center' >&nbsp;&nbsp;&nbsp;</td>
 		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5" style='font:bold' ><strong>Establecimiento Solicitante:</strong></td>
-			<td colspan='2' class="Estilo6"><?php echo $establecimiento?></td>
+			<td colspan='2' class="Estilo6"><?php echo $row_generales['estabext']?></td>
 			<td colspan='1' class="Estilo5" style='font:bold'><strong>Fecha Resultado:</strong></td>
-			<td colspan='2' class="Estilo6"><?php echo $row_fecha['FechaResultado']?></td>
-                            <input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row_generales['FechaNacimiento']?>>
+			<td colspan='2' class="Estilo6"><?php echo $row_fecha['fecharesultado']?></td>
+                           
 		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5" style='font:bold'><strong>NEC</strong></td>
-			<td colspan='5' class="Estilo7"><?php echo $row_generales['IdNumeroExp']?></td>
+			<td colspan='2' class="Estilo7"><?php echo $row_generales['numero']?></td>
+                        <td colspan='1' class="Estilo5" ><strong>Fecha Recepción:</strong></td>
+                        <td colspan='2' class="Estilo6" ><?php echo $row_generales['fecharecep']?></td>
                 </tr>
                 <tr>
 			<td colspan='1' class="Estilo5" style='font:bold'><strong>Paciente</strong></td>
-			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_generales['NombrePaciente'])?></td>
+			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_generales['paciente'])?></td>
 		</tr>
-		<tr>
-
-			<td colspan='1' class="Estilo5" style='font:bold'><strong>Edad:</strong></td>
-			<td colspan='2' class="Estilo6"><div id="divsuedad">
-        			<script language="JavaScript" type="text/javascript">
-               				calc_edad();
-          			</script>
-    		   		</div></td>
+		<tr>    
+                        <td colspan='1' class="Estilo5" style='font:bold'><strong>Edad:</strong></td>
+			<td colspan='2' class="Estilo6"><?php echo $row_generales['edad']?></td>
 			<td colspan='1' class="Estilo5" style='font:bold'><strong>Sexo:</strong></td>
-			<td colspan='2' class="Estilo6"><?php echo $row_generales['Sexo']?></td>
+			<td colspan='2' class="Estilo6"><?php echo $row_generales['sexo']?></td>
 		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5" style='font:bold'><strong>Procedencia:</strong></td>
-			<td colspan='2' class="Estilo6" style='font:bold'><?php echo htmlentities($row_generales['Procedencia'])?></td>
+			<td colspan='2' class="Estilo6" style='font:bold'><?php echo htmlentities($row_generales['procedencia'])?></td>
 			<td colspan='1' class="Estilo5" style='font:bold'><strong>Servicio:</strong></td>
-			<td colspan='2' class="Estilo6" style='font:bold' colspan='2'><?php echo $row_generales['Origen']?></td>
+			<td colspan='2' class="Estilo6" style='font:bold' colspan='2'><?php echo $row_generales['subservicio']?></td>
 		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5" style='font:bold'><strong>Examen Realizado:</strong></td>
-			<td colspan='5' class="Estilo6" style='font:bold'><?php echo htmlentities($row_area['NombreExamen'])?></td>
+			<td colspan='5' class="Estilo6" style='font:bold'><?php echo htmlentities($row_area['nombre_reporta'])?></td>
 		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5" style='font:bold'><strong>Validado Por:</strong></td>
-			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_empleado['NombreEmpleado'])?></td>
+			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_empleado['nombreempleado'])?></td>
 		</tr>
 		<tr>
 			<td colspan='6'>&nbsp;&nbsp;&nbsp;&nbsp</td>
@@ -136,16 +133,16 @@ function calc_edad()
 					<td width='50%' class="Estilo5" aling='center' ><strong>Cantidad</strong>
 					</td>
                                     </tr>
-			<?php while($row = mysql_fetch_array($consulta)){
+			<?php while($row = pg_fetch_array($consulta)){
 				?>
                                     <tr>
                                     	<td width='50%' class="Estilo6" ><?php echo $row[0]?></td>
 					<td width='50%' class="Estilo6"><?php echo $row[1]?></td>
                                     </tr>
 				<?php	}
-						mysql_free_result($consulta);
-						mysql_free_result($consulta_datos);
-						mysql_free_result($datos_generales);?>
+						pg_free_result($consulta);
+						pg_free_result($consulta_datos);
+						pg_free_result($datos_generales);?>
 				</table>
 			</td>
                         <td colspan='1'>&nbsp;</td>

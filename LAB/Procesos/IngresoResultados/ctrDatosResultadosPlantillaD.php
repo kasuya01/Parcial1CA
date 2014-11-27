@@ -25,15 +25,20 @@ switch ($opcion)
 	$idcantidad= $_POST['idcantidad'];
 	$idresultado= $_POST['idresultado'];
 	$tab=$_POST['tab'];
+        $fecharealiz=$_POST['fecharealiz'];
+        $fecharesultado=$_POST['fecharesultado'];
+        //echo $fecharealiz." - ".$fecharesultado;
 	//echo $idsolicitud."tab".$tab."detalle".$iddetalle;
 
 	//$usuario=1;
 	//$usuario=$_SESSION['correlativo'];
 	$resultado="";
    	//guardandolos datos generales del resultado
-	 $ultimo= $obj->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$idempleado,$usuario,$tab,$lugar);
+	  $ultimo= $obj->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$idempleado,$usuario,$tab,$fecharealiz,$fecharesultado,$lugar);
+         echo $ultimo;                      
 	//guardando el detalle del resultado
 	$obj->insertar_elemento($ultimo,$idelemento,$idcantidad,$lugar);
+             
 	$obj->CambiarEstadoDetalle($iddetalle);
 	$obj->CambiarEstadoSolicitud($idsolicitud);
 	//consultando los resultados ingresados
@@ -48,7 +53,7 @@ switch ($opcion)
 				<td aling='center' >Cantidad</td>
 				</tr>
 				<tr>";
-	while($row = mysql_fetch_array($consulta)){
+	while($row = pg_fetch_array($consulta)){
 			$resultado.= "<tr>
 							<td aling ='center'>
 							<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
@@ -57,7 +62,8 @@ switch ($opcion)
 							<td> $row[1] </td>
 							</tr>";
 				}
-
+                                 $resultado.= "  <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
+                                                <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
 	$resultado.="</table>";
 
 	echo $resultado;
@@ -68,6 +74,9 @@ switch ($opcion)
 	$idelemento= $_POST['idelemento'];
 	$idcantidad= $_POST['idcantidad'];
 	$idresultado= $_POST['idresultado'];
+        //echo $idresultado; 
+        //$fecharealiz=$_POST['fecharealiz'];
+        //$fecharesultado=$_POST['fecharesultado'];
 	//$tab= $_POST['tab'];
 	//echo $tab;
 	$resultado="";
@@ -90,7 +99,7 @@ switch ($opcion)
 			<td aling='center' >Cantidad</td>
 				</tr>
 				<tr>";
-		while($row = mysql_fetch_array($consulta)){
+		while($row = pg_fetch_array($consulta)){
 				$resultado.= "<tr>
 							<td aling ='center'>
 								<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
@@ -99,7 +108,7 @@ switch ($opcion)
 							<td> $row[1] </td>
 						</tr>";
 					}
-			mysql_free_result($consulta);
+			pg_free_result($consulta);
 
 		$resultado.="</table>";
 
@@ -118,75 +127,72 @@ switch ($opcion)
 	$tab= $_POST['tab'];
 	//echo $tab;
 	$Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
-	$row_estab = mysql_fetch_array($Consulta_Estab);
+	$row_estab = pg_fetch_array($Consulta_Estab);
 
 	$consulta=$obj->MostrarElementosAgregados($idresultado);
-    $consulta_datos=$obj->LeerDatos($idexamen);
+        $consulta_datos=$obj->LeerDatos($idexamen);
 	$datos_generales=$obj->MostrarDatosGenerales($idsolicitud);
 	$datos_empleado=$obj->DatosEmpleado($idempleado);
-	$row_generales= mysql_fetch_array($datos_generales);
-	$row_area = mysql_fetch_array($consulta_datos);
-	$row_empleado = mysql_fetch_array($datos_empleado);
+	$row_generales= pg_fetch_array($datos_generales);
+	$row_area = pg_fetch_array($consulta_datos);
+	$row_empleado = pg_fetch_array($datos_empleado);
 
    $resultado ="
-		<table width='0%' border='0' align='center' class='StormyWeatherFormTABLE'>
+		<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
                     <tr>
                         <td colspan='6'>&nbsp;</td>
                     </tr>
                     <tr>
-                        <td colspan='1' align='left' width='20%'><img id='Image1' style='WIDTH: 80px; HEIGHT: 55px' height='86' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
+                        <td colspan='1' align='left' width='20%'><img id='Image1' style='width: auto; height: 55px;' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
                         <td align='center' colspan='4' width='60%' class='Estilo5'>
                             <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
-                            <p><strong>".$row_estab['Nombre']."</strong></p>
-                            <p><strong>&Aacute;REA DE ".htmlentities($row_area['NombreArea'])." </strong></p>
+                            <p><strong>".$row_estab['nombre']."</strong></p>
+                            <p><strong>&Aacute;REA DE ".htmlentities($row_area['nombrearea'])." </strong></p>
 			</td>
-                        <td colspan='1' align='right' width='20%'><img id='Image3' style='WIDTH: 110px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
+                        <td colspan='1' align='right' width='20%'><img id='Image3' style='width: auto; height: 55px;' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
                     </tr>
                     <tr>
 			<td colspan='6'>&nbsp;</td>
                     </tr>
                     <tr>
-                    	<td style='font:bold'><strong>Establecimiento Solicitante:</strong></td>
-                    	<td>".$establecimiento."</td>
-			<td style='font:bold'><strong>Fecha Recepción:</strong></td>
-			<td>".$row_generales['Fecha']."</td><input name='suEdad' id='suEdad'  type='hidden'  value='".$row_generales['FechaNacimiento']."'/>
+                    	<td colspan='1' ><strong>Establecimiento Solicitante:</strong></td>
+                    	<td colspan='2' >".$row_generales['estabext']."</td>
+			<td colspan='1' ><strong>Fecha Recepción:</strong></td>
+			<td colspan='2' >".$row_generales['fecharecep']."</td>
                     </tr>
                     <tr>
-			<td style='font:bold'><strong>NEC</strong></td>
-			<td>".$row_generales['IdNumeroExp']."</td>
+			<td colspan='1' ><strong>NEC</strong></td>
+			<td colspan='2' >".$row_generales['numero']."</td>
                     </tr>
                     <tr>
-			<td style='font:bold'><strong>Paciente:</strong></td>
-			<td>".htmlentities($row_generales['NombrePaciente'])."</td>
+			<td colspan='1' ><strong>Paciente:</strong></td>
+			<td colspan='5' >".htmlentities($row_generales['paciente'])."</td>
                     </tr>
                     <tr>
-			<td style='font:bold'><strong>Edad:</strong></td>
-			<td><div id='divsuedad'>
-
-                            </div>
-                        </td>
-                        <td style='font:bold'><strong>Sexo:</strong></td>
-			<td>".$row_generales['Sexo']."</td>
+			<td colspan='1'><strong>Edad:</strong></td>
+			<td colspan='2'>".$row_generales['edad']."</td>
+                        <td colspan='1'><strong>Sexo:</strong></td>
+			<td colspan='2'>".$row_generales['sexo']."</td>
                     </tr>
                     <tr>
-			<td style='font:bold'><strong>Procedencia:</strong></td>
-			<td style='font:bold'>".htmlentities($row_generales['Procedencia'])."</td>
-			<td style='font:bold'><strong>Servicio:</strong></td>
-			<td style='font:bold' colspan='2'>".$row_generales['Origen']."</td>
+			<td colspan='1'><strong>Procedencia:</strong></td>
+			<td colspan='2'>".htmlentities($row_generales['procedencia'])."</td>
+			<td colspan='1'><strong>Servicio:</strong></td>
+			<td colspan='2'>".$row_generales['subservicio']."</td>
                     </tr>
                     <tr>
-			<td style='font:bold'><strong>Examen Realizado:</strong></td>
-			<td colspan='5'style='font:bold'>".htmlentities($row_area['NombreExamen'])."</td>
+			<td colspan='1'><strong>Examen Realizado:</strong></td>
+			<td colspan='2'>".htmlentities($row_area['nombre_reporta'])."</td>
                     </tr>
                     <tr>
-			<td style='font:bold'><strong>Validado Por:</strong></td>
-			<td colspan='5'>".htmlentities($row_empleado['NombreEmpleado'])."</td>
+			<td colspan='1' ><strong>Validado Por:</strong></td>
+			<td colspan='5'>".htmlentities($row_empleado['nombreempleado'])."</td>
                     </tr>";
 				$nomcod=$obj->ObtenerNombreCodigo($tab);
-                                         $row_codigo= mysql_fetch_array($nomcod);
+                                     $row_codigo= pg_fetch_array($nomcod);
 										// echo $row_codigo[0];
        $resultado.="<tr>
-                        <td style='font:bold' >Resultado Tabulador:</td><td colspan='4'>".$row_codigo[0]."</td>
+                        <td colspan='1'>Resultado Tabulador:</td><td colspan='4'>".$row_codigo[0]."</td>
                     </tr>
                     <tr>
 			<td colspan='6'>&nbsp;</td>
@@ -195,32 +201,31 @@ switch ($opcion)
 			<td colspan='1'>&nbsp;</td>
                         <td colspan='4' aling='center' >
                         	<table width='100%' border='0'aling='center' cellspacing='0' >
-                                	<tr>
-						<td  aling='center' ><strong>Elemento de Tinci&oacute;n</strong>
-						</td>
-						<td  aling='center' ><strong>Cantidad</strong>
-						</td>
-					</tr>";
-						while($row = mysql_fetch_array($consulta)){
-						$resultado.= "
-					<tr>
-						<td>$row[0]</td>
-						<td>$row[1]</td>
-					</tr>";
-						}
-						mysql_free_result($consulta);
-						mysql_free_result($consulta_datos);
-						mysql_free_result($datos_generales);
-		     $resultado.="</table>
-                          </td>
-                          <td colspan='1'>&nbsp;</td>
-                    </tr>";
-		$resultado.="			<tr>
-				<td coslpan='6' aling='center'>
-					<input type='submit' id='btnImprimir' value='Imprimir' Onclick='ImprimirPlantillaD(".$idsolicitud.",\"".$idexamen."\",".$idresultado.",\"".$idempleado."\",\"".$establecimiento."\") ;' />
-					<input type='button' id='btnSalir' value='Cerrar' onclick='Cerrar()'>
-				</td>
-			</tr>
+                                    <tr>
+                                        <td  aling='center' ><strong>Elemento de Tinci&oacute;n</strong>
+					</td>
+					<td  aling='center' ><strong>Cantidad</strong>
+					</td>
+                                    </tr>";
+			while($row = pg_fetch_array($consulta)){
+	$resultado.= "              <tr>
+					<td>$row[0]</td>
+					<td>$row[1]</td>
+                                    </tr>";
+			}
+			pg_free_result($consulta);
+			pg_free_result($consulta_datos);
+			pg_free_result($datos_generales);
+                   $resultado.="</table>
+                       </td>
+                       <td colspan='1'>&nbsp;</td>
+                   </tr>";
+       $resultado.="<tr>
+			<td coslpan='6' aling='center'>
+				<input type='submit' id='btnImprimir' value='Imprimir' Onclick='ImprimirPlantillaD(".$idsolicitud.",\"".$idexamen."\",".$idresultado.",\"".$idempleado."\",\"".$establecimiento."\") ;' />
+				<input type='button' id='btnSalir' value='Cerrar' onclick='Cerrar()'>
+			</td>
+                    </tr>
 		</table>";
 	echo $resultado;
    break;
@@ -241,7 +246,7 @@ switch ($opcion)
 				<td aling='center' class='CobaltFieldCaptionTD'>Cantidad</td>
 				</tr>
 				<tr>";
-	while($row = mysql_fetch_array($consulta)){
+	while($row = pg_fetch_array($consulta)){
 			$resultado.= "<tr>
 							<td aling ='center'>
 							<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
@@ -250,7 +255,7 @@ switch ($opcion)
 							<td> $row[1] </td>
 							</tr>";
 				}
-				mysql_free_result($consulta);
+				pg_free_result($consulta);
 
 	$resultado.="</table>";
 	echo $resultado;

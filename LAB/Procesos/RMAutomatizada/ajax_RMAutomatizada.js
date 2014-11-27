@@ -129,22 +129,15 @@ function LlenarComboExamen(idarea)
 {
     // alert(idarea);
     ajax = objetoAjax();
-    //alert(idarea);
-    idexpediente = "";
-    idsolicitud = "";
-   // idsolicitudP = "";
-    iddetalle = "";
-    idexamen = "";
-    estado = "";
+    
+    
     opcion = 5;
 
-    fechasolicitud = "";
-
-    ajax.open("POST", "ctrRMAutomatizada.php", true);
+      ajax.open("POST", "ctrRMAutomatizada.php", true);
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
-    ajax.send("idexpediente=" + idexpediente + "&idarea=" + idarea + "&fechasolicitud=" + fechasolicitud + "&idsolicitud=" + idsolicitud + + "&idsolicitudP=" + idsolicitudP + "&opcion=" + opcion + "&estado=" + estado + "&idexamen=" + idexamen);
+    ajax.send("opcion="+opcion+"&idarea="+idarea);
     ajax.onreadystatechange = function()
     {
 
@@ -410,20 +403,20 @@ function CargarDatosFormulario1(idexpediente,idexamen, idarea , idsolicitud  )
             if (ajax.status == 200)
             {  //mostrar los nuevos registros en esta capa
                 document.getElementById('divFormulario').innerHTML = ajax.responseText;
-                calc_edad();
+              //  calc_edad();
             }
         }
     }
 }
 
 //Esta funcion mandan a llamar
-function calc_edad()
+/*function calc_edad()
 {
     var fecnac1 = document.getElementById("suEdad").value;
     var fecnac2 = fecnac1.substring(0, 10);
     var suEdades = calcular_edad(fecnac2);
     document.getElementById("divsuedad").innerHTML = suEdades;
-}
+}*/
 
 
 //funcion para calculo de edad

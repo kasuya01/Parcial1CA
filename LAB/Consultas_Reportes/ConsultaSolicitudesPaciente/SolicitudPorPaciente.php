@@ -4,6 +4,8 @@ $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 $nivel=$_SESSION['NIVEL'];
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
  include_once("clsSolicitudesPorPaciente.php"); 
 //consulta los datos por su id
 $obj = new clsSolicitudesPorPaciente;
@@ -21,6 +23,7 @@ $nomtipo=$row[2];
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 <title>Solicitudes Por Paciente</title>
+<?php include_once $ROOT_PATH."/public/js.php";?>
 <script language="JavaScript" type="text/javascript" src="ajax_SolicitudPorPaciente.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
@@ -34,21 +37,34 @@ $nomtipo=$row[2];
 <script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
 <script language="JavaScript" type="text/javascript">
 function MostrarBusqueda()
-{
+{ IdServ=document.getElementById('CmbServicio').value;
+    
 	 if ((document.getElementById('txtexpediente').value == "") 
             &&(document.getElementById('PrimerNombre').value == "")
             &&(document.getElementById('SegundoNombre').value == "")
             &&(document.getElementById('PrimerApellido').value == "")
             &&(document.getElementById('SegundoApellido').value == "")
-            &&(document.getElementById('txtfechaconsulta').value == 0)
+            &&(document.getElementById('txtfecharecep').value == 0)
             && (document.getElementById('cmbEstablecimiento').value == 0) 
             && (document.getElementById('CmbServicio').value == 0) 
             && (document.getElementById('cmbSubServ').value == 0) ) {
 	   alert("Ingrese un parmetro de busqueda");
 	  // document.getElementById('txtexpediente').focus();
+          //txtfecharecep
 	   }
-    	 else{	 
-	     BuscarDatos1();}
+    	 /*else{
+	     BuscarDatospaciente(1); 
+             //alert ("si"+IdServ);
+         }*/
+        else {
+                        jQuery('#divBusqueda').empty();
+                        jQuery('#divBusqueda').append('<center><img id="wait" src="<?php echo $base_url; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" style="color:#888888;font-weight: bold;">Buscando...</div></center>');
+                        
+                        setTimeout(function() {
+                            jQuery('#divBusqueda').empty();
+                            BuscarDatospaciente(1);
+                        }, 500);
+                    }
 }
 
 function ImprimirExamenes()
@@ -200,7 +216,7 @@ if ($nivel==33){
 			</div>
 		</td>
 	</tr>
-	
+
 	<tr>
 		
 		<td class="StormyWeatherFieldCaptionTD"  >Expediente</td>
@@ -226,7 +242,7 @@ if ($nivel==33){
 		<td class="StormyWeatherDataTD" >
 			<input class="MailboxInput" maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" ></td>
 	</tr>
-			<tr>
+  <tr>
 				<td  class="StormyWeatherDataTD" colspan="4" align="right">
 					<input type="button" id="btnbuscar" value="Buscar Solicitudes" onClick="MostrarBusqueda();">
 					<input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('SolicitudPorPaciente.php')">

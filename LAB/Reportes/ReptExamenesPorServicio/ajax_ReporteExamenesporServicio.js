@@ -101,6 +101,7 @@ function BuscarDatos(pag)
 		//idsolicitud="";
 		//idsubespecialidad="";
 		//instanciamos el objetoAjax
+                //alert(subservicio);
 		ajax=objetoAjax();
 		//archivo que realizar� la operacion ->actualizacion.php
 		ajax.open("POST", "ctrLab_ReporteExamenesporServicio.php",true);

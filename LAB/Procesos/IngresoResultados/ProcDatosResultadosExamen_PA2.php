@@ -15,7 +15,7 @@ $db = new ConexionBD;
 <style type="text/css">
 			*{ font-size:12px; font-family:verdana; }
 			h1 { font-size:22px; }
-			input { width:250px; border: 2px solid #CCC; line-height:20px;height:20px; border-radius:3px; padding:5px; }
+			input { width:250px; border: 2px solid #CCC; line-height:20px;height:20px; border-radius:3px; padding:2px; }
 		</style>
 <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script> 
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
@@ -65,9 +65,18 @@ function ValidarCampos()
 		 {
 			resp= false;		
 		 }
-         if (document.frmnuevo.cant_metodologia!="0"){
-             if (document.frmnuevo.cmbmetodologia==0){
+         if (document.frmnuevo.cant_metodologia.value!="0"){
+             if (document.frmnuevo.cmbmetodologia.value==0){
                         resp=false;
+             }
+         if (document.frmnuevo.fecha_reporte.value == ""){
+             resp=false
+             }
+         if (document.frmnuevo.fecha_realizacion.value == ""){
+                resp=false
+             }
+          if (document.frmnuevo.cmbResultado2.value == 0){
+                resp=false
              }
          }
          
@@ -170,7 +179,13 @@ LlenarComboMetodologia(idexamen, area);
 }
 </script>
 
+</head>
+
+<body onLoad="RecogeValor();">
+    
+
 <?php  
+
 //FUNCION PARA VERIFICAR DATOS REQUERIDOS EN RESULTADOS
 $bandera=$_GET['var12'];
 /*$fechanac=$_GET['var14'];
@@ -179,7 +194,11 @@ $IdEstandar=$_GET['var16'];
 $IdHistorial=$_GET['var17'];
 $solicitud=$_GET['var6'];
 $referido=$_GET['referido'];
-if (!$IdHistorial){
+$idarea=$_GET['var4'];
+$iddetallesolicitud=$_GET['var5'];
+$cant=$objdatos->buscarAnterioresPUnica($solicitud,$iddetallesolicitud, $idarea);
+if (pg_num_rows($cant)>0){
+if ($referido!="t"){
     
 $condatos=$objdatos->condatos($IdHistorial, $lugar);
 
@@ -197,7 +216,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                      AND sec_historial_clinico.IdEstablecimiento =$lugar";
 
         $resultado = mysql_query($condatos);*/
-	$rows = pg_fetch_array($resultado);
+	$rows = pg_fetch_array($condatos);
         
         $Peso=$rows['Peso'];
         $Talla=$rows['Talla'];
@@ -212,10 +231,6 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
   }
 ?>
 
-</head>
-
-<body onLoad="RecogeValor();">
-    
   
 			
 <table align="center" width="100%">
@@ -263,6 +278,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Conocido Por</td>
                             <td colspan="3" class="StormyWeatherDataTD"><?php echo $ConocidoPor;?>
+                            <input type="hidden" id="conocido_por" name="conocido_por" value="<?php echo $ConocidoPor;?>">
                                
                             </td>
 			</tr>
@@ -322,13 +338,13 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                             </td>
                         </tr>
                          <tr>
-                            <td class="StormyWeatherFieldCaptionTD">Fecha Realización </td>
+                            <td class="StormyWeatherFieldCaptionTD">*Fecha Realización </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
                                 <input type="text" class="datepicker" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" />
                             </td>
-                             <td class="StormyWeatherFieldCaptionTD">Fecha Reporte </td>
+                             <td class="StormyWeatherFieldCaptionTD" width="196 px">*Fecha Reporte </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="datepicker" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />
+                                <input type="text" class="datepicker" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  /> 
                             </td>
                         </tr>
                         <tr>
@@ -429,11 +445,11 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                         </td>
                 </tr>
                 <tr>
-                    <td>Lectura</td>
+                    <td><b>Lectura</b></td>
                     <td  colspan="3"><textarea name="txtlecturafin" cols="100" id="txtlecturafin"></textarea></td>
                 </tr>
                         <tr>
-                            <td>Interpretaci&oacute;n</td>
+                            <td><b>Interpretaci&oacute;n</b></td>
                             <td  colspan="3"><textarea name="txtinterpretacionfin" cols="100" id="txtinterpretacionfin"></textarea></td>
                         </tr>
                 <tr>
@@ -468,10 +484,10 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
 
                          
                 <p><center><br />
+<!--                        <div id="responde2" style="display: block">-->
                                 <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="enviarDatosResult(1,0);" >Guardar</button>
-                                <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="cancelaResult();">Cancelar</button>
-                                <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="VerResultados();">Vista Previa</button>
-                                
+                                <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="Cerrar();">Cancelar</button>
+                  
                                 </center></p>
                         </div>
                             </center>
@@ -482,11 +498,9 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                          <div id="responde" style="display: none">
 	<center>
                          <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="ValidarResultado();" title="Validar y Finalizar">Validar</button>
-	<button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="enviarDatosResult(0,0);" title="Guardar sin validar">Guardar</button>
+	<!--<button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="enviarDatosResult(0,0);" title="Guardar sin validar">Guardar</button>-->
        
-	<a href='/url/analitica/analisis/consultar/buscar.php' style="cursor:pointer; text-decoration:none">
-            <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="enviarDatosResult(0,0);" title="Guardar sin validar">Ver Resultados</button>
-							<button type="button" align="center" class="fg-button ui-state-default ui-corner-all" title="Regresar a Inicio">Regresar</button></a>
+		<button type="button" align="center" class="fg-button ui-state-default ui-corner-all" title="Regresar a Inicio"  onclick="Cerrar();">Regresar</button>
 	
 	</center>  
                           </div>
@@ -510,7 +524,22 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
             <div  id="divresultado" style="display:none"></div>
         </td>
     </tr>
+    </tr>
+    <tr>
+        <td>
+            <div  id="divresultado2" style="display:none"></div>
+        </td>
+    </tr>
    </table>
+   <?php
+}
+else{
+ echo '<center><br><br><h1><img src="../../../Imagenes/warning.png" valign="middle"/>'
+            . 'Los resultados de los examenes de la persona '.$rowpa['nombre'].', en esta área ya fueron ingresados.</h1> ';
+            echo " <button type='submit' class='fg-button ui-state-default ui-corner-all' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' />Cerrar</button></center>";
+               
+}
+?>
  <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>

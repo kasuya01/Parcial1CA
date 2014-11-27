@@ -102,8 +102,8 @@ switch ($opcion) {
         }
 
         if (!empty($_POST['TipoSolic'])) {
-            $cond1 .= " t17.idtiposolicitud = '" . $_POST['TipoSolic'] . "' AND";
-            $cond2 .= " t17.idtiposolicitud = '" . $_POST['TipoSolic'] . "' AND";
+            $cond1 .= " t02.idtiposolicitud = '" . $_POST['TipoSolic'] . "' AND";
+            $cond2 .= " t02.idtiposolicitud = '" . $_POST['TipoSolic'] . "' AND";
         }
 
         if ((empty($_POST['idexpediente'])) AND ( empty($_POST['idarea'])) AND ( empty($_POST['fechasolicitud']))
@@ -118,8 +118,7 @@ switch ($opcion) {
             $cond1 = substr($cond1, 0, strlen($query) - 3);
             $cond2 = substr($cond2, 0, strlen($query) - 3);
             
-          //  echo $query1;
-            //$query_search = $query . " ORDER BY t03.fecharecepcion DESC";
+          
         }     
        // echo $cond2;
         $query="WITH tbl_servicio AS (
@@ -133,11 +132,11 @@ switch ($opcion) {
                                  WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
                             END
                         END AS servicio 
-                    FROM  ctl_atencion                  t01 
+                    FROM  ctl_atencion                              t01 
                     INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
-                    INNER JOIN mnt_area_mod_estab           t03 ON (t03.id = t02.id_area_mod_estab)
+                    INNER JOIN mnt_area_mod_estab                   t03 ON (t03.id = t02.id_area_mod_estab)
                     LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
-                    LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
+                    LEFT  JOIN mnt_servicio_externo                 t05 ON (t05.id = t04.id_servicio_externo)
                     WHERE $where_with t02.id_establecimiento = $lugar
                     ORDER BY 2)
             
@@ -167,27 +166,27 @@ switch ($opcion) {
                        t02.id_establecimiento_externo,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
                         t01.observacion
-            FROM sec_detallesolicitudestudios t01 
-            INNER JOIN sec_solicitudestudios t02                ON (t02.id = t01.idsolicitudestudio) 
-            INNER JOIN lab_recepcionmuestra t03                 ON (t02.id = t03.idsolicitudestudio) 
-            INNER JOIN lab_conf_examen_estab t04                ON (t04.id = t01.id_conf_examen_estab) 
-            INNER JOIN mnt_area_examen_establecimiento t05      ON (t05.id = t04.idexamen) 
-            INNER JOIN mnt_expediente t06                       ON (t06.id = t02.id_expediente) 
-            INNER JOIN mnt_paciente t07                         ON (t07.id = t06.id_paciente) 
-            INNER JOIN ctl_area_servicio_diagnostico t08        ON (t08.id = t05.id_area_servicio_diagnostico 
+            FROM sec_detallesolicitudestudios           t01 
+            INNER JOIN sec_solicitudestudios            t02     ON (t02.id = t01.idsolicitudestudio) 
+            INNER JOIN lab_recepcionmuestra             t03     ON (t02.id = t03.idsolicitudestudio) 
+            INNER JOIN lab_conf_examen_estab            t04     ON (t04.id = t01.id_conf_examen_estab) 
+            INNER JOIN mnt_area_examen_establecimiento  t05     ON (t05.id = t04.idexamen) 
+            INNER JOIN mnt_expediente                   t06     ON (t06.id = t02.id_expediente) 
+            INNER JOIN mnt_paciente                     t07     ON (t07.id = t06.id_paciente) 
+            INNER JOIN ctl_area_servicio_diagnostico    t08     ON (t08.id = t05.id_area_servicio_diagnostico 
             AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) 
-            INNER JOIN sec_historial_clinico t09                ON (t09.id = t02.id_historial_clinico) 
-            INNER JOIN mnt_aten_area_mod_estab t10              ON (t10.id = t09.idsubservicio) 
-            INNER JOIN ctl_atencion t11                         ON (t11.id = t10.id_atencion) 
-            INNER JOIN mnt_area_mod_estab t12                   ON (t12.id = t10.id_area_mod_estab) 
-            INNER JOIN ctl_area_atencion t13                    ON (t13.id = t12.id_area_atencion) 
-            INNER JOIN ctl_establecimiento t14                  ON (t14.id = t09.idestablecimiento) 
-            INNER JOIN cit_citas_serviciodeapoyo t15            ON (t02.id = t15.id_solicitudestudios) 
-            INNER JOIN ctl_estado_servicio_diagnostico t16      ON (t16.id = t01.estadodetalle) 
-            INNER JOIN lab_tiposolicitud t17                    ON (t17.id = t02.idtiposolicitud) 
-            INNER JOIN ctl_examen_servicio_diagnostico t18      ON (t18.id = t05.id_examen_servicio_diagnostico) 
-            INNER JOIN ctl_sexo t19                             ON (t19.id = t07.id_sexo)
-            INNER JOIN tbl_servicio                             t20 ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
+            INNER JOIN sec_historial_clinico            t09     ON (t09.id = t02.id_historial_clinico) 
+            INNER JOIN mnt_aten_area_mod_estab          t10     ON (t10.id = t09.idsubservicio) 
+            INNER JOIN ctl_atencion                     t11     ON (t11.id = t10.id_atencion) 
+            INNER JOIN mnt_area_mod_estab               t12     ON (t12.id = t10.id_area_mod_estab) 
+            INNER JOIN ctl_area_atencion                t13     ON (t13.id = t12.id_area_atencion) 
+            INNER JOIN ctl_establecimiento              t14     ON (t14.id = t09.idestablecimiento) 
+            INNER JOIN cit_citas_serviciodeapoyo        t15     ON (t02.id = t15.id_solicitudestudios) 
+            INNER JOIN ctl_estado_servicio_diagnostico  t16     ON (t16.id = t01.estadodetalle) 
+            INNER JOIN lab_tiposolicitud                t17     ON (t17.id = t02.idtiposolicitud) 
+            INNER JOIN ctl_examen_servicio_diagnostico  t18     ON (t18.id = t05.id_examen_servicio_diagnostico) 
+            INNER JOIN ctl_sexo                         t19     ON (t19.id = t07.id_sexo)
+            INNER JOIN tbl_servicio                     t20     ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
             WHERE ((t16.idestado = 'PM') OR (t16.idestado = 'D')) 
             AND t02.id_establecimiento = $lugar
             AND $cond1
@@ -220,26 +219,26 @@ switch ($opcion) {
                    t02.id_establecimiento_externo,
                    (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
                     t01.observacion
-                FROM sec_detallesolicitudestudios t01 
-            INNER JOIN sec_solicitudestudios t02                ON (t02.id = t01.idsolicitudestudio) 
-            INNER JOIN lab_recepcionmuestra t03                 ON (t02.id = t03.idsolicitudestudio) 
-            INNER JOIN lab_conf_examen_estab t04                ON (t04.id = t01.id_conf_examen_estab) 
-            INNER JOIN mnt_area_examen_establecimiento t05      ON (t05.id = t04.idexamen)
-            INNER JOIN mnt_dato_referencia t09                  ON t09.id=t02.id_dato_referencia 
-            INNER JOIN mnt_expediente_referido t06              ON (t06.id = t09.id_expediente_referido) 
-            INNER JOIN mnt_paciente_referido t07                ON (t07.id = t06.id_referido) 
-            INNER JOIN ctl_area_servicio_diagnostico t08        ON (t08.id = t05.id_area_servicio_diagnostico 
+                FROM sec_detallesolicitudestudios       t01 
+            INNER JOIN sec_solicitudestudios            t02     ON (t02.id = t01.idsolicitudestudio) 
+            INNER JOIN lab_recepcionmuestra             t03     ON (t02.id = t03.idsolicitudestudio) 
+            INNER JOIN lab_conf_examen_estab            t04     ON (t04.id = t01.id_conf_examen_estab) 
+            INNER JOIN mnt_area_examen_establecimiento  t05     ON (t05.id = t04.idexamen)
+            INNER JOIN mnt_dato_referencia              t09     ON t09.id=t02.id_dato_referencia 
+            INNER JOIN mnt_expediente_referido          t06     ON (t06.id = t09.id_expediente_referido) 
+            INNER JOIN mnt_paciente_referido            t07     ON (t07.id = t06.id_referido) 
+            INNER JOIN ctl_area_servicio_diagnostico    t08     ON (t08.id = t05.id_area_servicio_diagnostico 
             AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) 
-            INNER JOIN mnt_aten_area_mod_estab t10              ON (t10.id = t09.id_aten_area_mod_estab) 
-            INNER JOIN ctl_atencion t11                         ON (t11.id = t10.id_atencion) 
-            INNER JOIN mnt_area_mod_estab t12                   ON (t12.id = t10.id_area_mod_estab) 
-            INNER JOIN ctl_area_atencion t13                    ON (t13.id = t12.id_area_atencion) 
-            INNER JOIN ctl_establecimiento t14                  ON (t14.id = t09.id_establecimiento)
-            INNER JOIN cit_citas_serviciodeapoyo t15            ON (t02.id = t15.id_solicitudestudios) 
-            INNER JOIN ctl_estado_servicio_diagnostico t16      ON (t16.id = t01.estadodetalle) 
-            INNER JOIN lab_tiposolicitud t17                    ON (t17.id = t02.idtiposolicitud) 
-            INNER JOIN ctl_examen_servicio_diagnostico t18      ON (t18.id = t05.id_examen_servicio_diagnostico) 
-            INNER JOIN ctl_sexo t19                             ON (t19.id = t07.id_sexo)
+            INNER JOIN mnt_aten_area_mod_estab          t10     ON (t10.id = t09.id_aten_area_mod_estab) 
+            INNER JOIN ctl_atencion                     t11     ON (t11.id = t10.id_atencion) 
+            INNER JOIN mnt_area_mod_estab               t12     ON (t12.id = t10.id_area_mod_estab) 
+            INNER JOIN ctl_area_atencion                t13     ON (t13.id = t12.id_area_atencion) 
+            INNER JOIN ctl_establecimiento              t14     ON (t14.id = t09.id_establecimiento)
+            INNER JOIN cit_citas_serviciodeapoyo        t15     ON (t02.id = t15.id_solicitudestudios) 
+            INNER JOIN ctl_estado_servicio_diagnostico  t16     ON (t16.id = t01.estadodetalle) 
+            INNER JOIN lab_tiposolicitud                t17     ON (t17.id = t02.idtiposolicitud) 
+            INNER JOIN ctl_examen_servicio_diagnostico  t18     ON (t18.id = t05.id_examen_servicio_diagnostico) 
+            INNER JOIN ctl_sexo                         t19     ON (t19.id = t07.id_sexo)
             WHERE ((t16.idestado = 'PM') OR (t16.idestado = 'D')) 
             AND t02.id_establecimiento = $lugar 
             AND $cond2"; 
@@ -271,10 +270,12 @@ switch ($opcion) {
 			<td>Fecha Recepci&oacute;n</td>
 			<td>Prioridad</td>
                     </tr>";
-        if(pg_num_rows($consulta)){
+        if(pg_num_rows($consulta))
+        {
             $pos = 0;
 
-            while ($row = pg_fetch_array($consulta)) {
+            while ($row = pg_fetch_array($consulta)) 
+            {
                 echo "<tr>
                            <td width='7%'>" . $row['numeromuestra'] . "</td>
                            <td width='8%'><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" .$row['idnumeroexp'] . "</a></td>
@@ -298,9 +299,10 @@ switch ($opcion) {
             pg_free_result($consulta);
             echo "<input type='hidden' name='oculto' id='text' value='" . $pos . "' />
                 </table>";
-        } else {
-            echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table>";
-        }
+        } else 
+            {
+                 echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table>";
+            }
 
 
         break;
@@ -429,16 +431,8 @@ switch ($opcion) {
 					</tr>";
         $pos = 0;
         while ($fila = pg_fetch_array($datosexamen)) {
-            /* $imprimir.="<tr>
-              <td>".$fila['IdExamen']."</td>
-              <td>".htmlentities($fila['NombreExamen'])."</td>
-              <td>".htmlentities($fila['TipoMuestra'])."</td>";
-              if (!empty($fila['Indicacion'])){
-              $imprimir .="<td>".htmlentities($fila['Indicacion'])."</td>";
-              }
-              else */
-
-            $imprimir .= "<tr>
+            
+             $imprimir .= "<tr>
                                         <td>" . $fila[0] . "</td>
                                         <td>" . htmlentities($fila[1]) . "</td>	
                                         <td>" . htmlentities($fila[2]) . "</td>";
@@ -477,28 +471,18 @@ switch ($opcion) {
         echo $imprimir;
         break;
 
-    case 3:
+   case 3: // fue descartado este opcion 
         $idexpediente      = $_POST['idexpediente'];
          $idsolicitud      = $_POST['idsolicitud'];
         $estado            = $_POST['estado'];
         $fechasolicitud    = $_POST['fechasolicitud'];
         $idexamen          = $_POST['idexamen'];
         $observacion       = '';
-        /*  if (($objdatos->CambiarEstadoDetalle1($idsolicitud,$estado,$idexamen,$observacion)==true)&&($objdatos->CambiarEstadoSolicitud($idsolicitud)==true))
-          {  echo "Solicitud Procesada..";
-          //actualizar en la tabla de recepcion
-          //  if($objdatos->CambiarEstadoSolicitud($idexpediente,$fechasolicitud,$estadosolicitud)==true)
-          /*if($objdatos->CambiarEstadoSolicitud($idsolicitud)==true)
-          {
-          echo "Solicitud Procesada..";
-          } */
-        /* }
-          else{
-          echo "Solicitud No fue cambiada de Estado..";
-          } */
+       
 
         break;
     case 4:// Rechazar Muestra
+        
         $idsolicitud      = $_POST['idsolicitud'];
         $estado           = $_POST['estado'];
         $idexamen         = $_POST['idexamen'];
@@ -508,21 +492,115 @@ switch ($opcion) {
         $idarea           = $_POST['idarea'];
 
         //echo "Sol=".$idsolicitud." examen=".$idexamen." obser=".$observacion;
+        
+        
+            $consulta=$objdatos->contaridresultado($idsolicitud,$idsolicitudPadre);
+            $row = pg_fetch_array($consulta);
+            $contaridresultado=$row[0];
+            
+if ($contaridresultado>0) 
+{
+        //echo  "si !!    ";
+        
+            $consulta=$objdatos->idresultado($idsolicitud,$idsolicitudPadre);
+            $row = pg_fetch_array($consulta);
+            $idresulta=$row[0];
+            
+            $consulta=$objdatos->id_detalleresultado($idresulta);
+            $row = pg_fetch_array($consulta);
+            $id_detalleresultado=$row[0]; 
+           
+            if ($id_detalleresultado=='')
+            {
+                
+               // echo "amedias ";
+                
+                
+                         if ($objdatos->CambiarEstadoDetalle1($idsolicitud, $estado, $idexamen, $observacion) == true) 
+                {
+                                            echo "Muestra Rechazada, ";
 
-
-        if ($objdatos->CambiarEstadoDetalle1($idsolicitud, $estado, $idexamen, $observacion) == true) {
+                        if ($objdatos->CambiarEstadoSolicitud($idsolicitud, $idsolicitudPadre) == true) 
+                        {              echo "El Estado Solicitud fue Modificado";
+                                if($objdatos->MarcarObservacionRechazado1($idsolicitud,$idexamen,$observacion)==true)
+                                    {
+                                        echo "Muestra Rechazada";
+                                    } 
+                        }
+                }
+                
+            }
+            // termina el if interno 
+            
+  else { // else interno 
+                    echo "si hay resultado"; 
+            $consulta=$objdatos->id_detalleresultado($idresulta);
+            $row = pg_fetch_array($consulta);
+            $id_detalleresultado=$row[0];
+           
+            $consulta1=$objdatos->idexmen_metodologia($idsolicitud,$idsolicitudPadre);
+            $row = pg_fetch_array($consulta1);
+            $idexmen_metodologia=$row[0];
+           
+            $consulta1=$objdatos->idempleado($idsolicitud,$idsolicitudPadre);
+            $row = pg_fetch_array($consulta1);
+            $id_empleado=$row[0];
+            
+            $consulta1=$objdatos->idresultadometodologia($idexmen_metodologia,$id_detalleresultado,$id_empleado);
+            $row = pg_fetch_array($consulta1);
+            $idresultadometodologia=$row[0];
+           
+           if ($objdatos->CambiarEstadoDetalle1($idsolicitud, $estado, $idexamen, $observacion) == true)
+       {
             echo "Muestra Rechazada, ";
 
-            if ($objdatos->CambiarEstadoSolicitud($idsolicitud, $idsolicitudPadre) == true) {
-                echo "El Estado Solicitud fue Modificado";
-                /* if($objdatos->MarcarObservacionRechazado1($idsolicitud,$idexamen,$observacion)==true)
-                  {
-                  echo "Muestra Rechazada";
-                  } */
-            }
-        }
+            if ($objdatos->CambiarEstadoSolicitud($idsolicitud, $idsolicitudPadre) == true) 
+                    {
+                        echo "El Estado Solicitud fue Modificado";
+                         if($objdatos->MarcarObservacionRechazado1($idsolicitud,$idexamen,$observacion)==true)
+                             echo "Muestra Rechazada";
+                                
+                        
+                      if($objdatos->eliminarsultadometodologia($idresultadometodologia)==true) 
+                                             {
+                                                echo "se elimino";
+                                             }
+                            
+                    }
+         }
+           
+                
+                
+    }// fin else interno 
+              
+            
+              
+          
+}// termina el if primero
+        
+        
+        
+ else 
+   {
+        //echo "no hay resultado";
+        
+        if ($objdatos->CambiarEstadoDetalle1($idsolicitud, $estado, $idexamen, $observacion) == true) 
+           {
+                    echo "Muestra Rechazada, ";
+
+             if ($objdatos->CambiarEstadoSolicitud($idsolicitud, $idsolicitudPadre) == true) 
+                {
+                     echo "El Estado Solicitud fue Modificado";
+                     if($objdatos->MarcarObservacionRechazado1($idsolicitud,$idexamen,$observacion)==true)
+                           echo "Muestra Rechazada";
+                }
+           }
+    }
+
+        
 
         break;
+        
     case 5:  //LLENAR COMBO DE EXAMENES  
         $rslts = '';
 

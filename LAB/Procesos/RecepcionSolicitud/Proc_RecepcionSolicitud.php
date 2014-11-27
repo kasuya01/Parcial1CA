@@ -96,7 +96,7 @@ if (isset($_SESSION['Correlativo'])) {
                         if(object.num_rows > 0) {
                             jQuery.each(object.data, function(idx,val) {
                                 html = html + '<tr>\
-                                                <td><a href="#" onclick="VerificarExistencia('+val.numero_expediente+', \''+val.fecha_cita+'\', '+val.id_establecimiento+', true);return false;" style="padding-left:7px;">'+val.numero_expediente+'</a></td>\
+                                                <td><a href="#" onclick="VerificarExistencia('+' \''+val.numero_expediente+'\', \''+val.fecha_cita+'\', '+val.id_establecimiento+', true);return false;" style="padding-left:7px;">'+val.numero_expediente+'</a></td>\
                                                 <td>'+val.fecha_consulta+'</td>\
                                                 <td>'+val.fecha_cita+'</td>\
                                                 <td>'+val.nombre_paciente+'</td>\

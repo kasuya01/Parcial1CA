@@ -10,8 +10,8 @@ class clsPlantillaD
 function Nombre_Establecimiento($lugar){
    $con = new ConexionBD;
    if($con->conectar()==true){ 
-       	$query="SELECT Nombre FROM mnt_establecimiento WHERE IdEstablecimiento=$lugar";
-	 $result = @mysql_query($query);
+       	$query="SELECT nombre FROM ctl_establecimiento WHERE id=$lugar";
+	 $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -24,8 +24,8 @@ function Nombre_Establecimiento($lugar){
 function ObtenerNombreCodigo($tab){
  	 $con = new ConexionBD;
 	 if($con->conectar()==true) 
-	 {	$query=" SELECT Resultado FROM lab_codigosresultados WHERE IdResultado=$tab ";	
-	     $result = mysql_query($query);
+	 {	$query=" SELECT resultado FROM lab_codigosresultados WHERE id=$tab ";	
+	     $result = pg_query($query);
 	     if (!$result)
 	       return false;
 	     else
@@ -38,8 +38,8 @@ function ObtenerNombreCodigo($tab){
  {
    $con = new ConexionBD;
    if($con->conectar()==true) //Estado RC--> Resultados Completo
-  {	$query="UPDATE sec_detallesolicitudestudios SET estadodetalle='RC' WHERE IdDetalleSolicitud=$iddetalle"	;	
-     $result = @mysql_query($query);
+  {	$query="UPDATE sec_detallesolicitudestudios SET estadodetalle=7 WHERE id=$iddetalle"	;	
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -50,49 +50,52 @@ function ObtenerNombreCodigo($tab){
  function CambiarEstadoSolicitud($idsolicitud){
   $con = new ConexionBD;
    if($con->conectar()==true){ 
-	$query="SELECT  IdDetalleSolicitud,IdExamen FROM sec_detallesolicitudestudios 
-			WHERE IdSolicitudEstudio=$idsolicitud and EstadoDetalle <>'RC' and EstadoDetalle <>'RM'";
-	$detalle=mysql_num_rows(mysql_query($query));
+	$query="SELECT id,idexamen 
+                FROM sec_detallesolicitudestudios WHERE idsolicitudestudio=$idsolicitud 
+		AND EstadoDetalle <> 7 AND EstadoDetalle <> 6";
+	$detalle=pg_num_rows(pg_query($query));
 	if(empty($detalle)){
-		$query="UPDATE sec_solicitudestudios SET estado='C' WHERE IdSolicitudEstudio=$idsolicitud"	;
-		$result=@mysql_query($query);		
+		$query="UPDATE sec_solicitudestudios SET estado= 4 WHERE id=$idsolicitud"	;
+		$result=pg_query($query);		
 		return true;	  
     }else
 		return false;
    }
    }
 
- 
+
 //FUNCION PARA VALIDAR QUE NO EXISTA ESE ELEMENTO DE TINCION EN EL RESULTADO
 function ValidacionElemento($idresultado,$idelemento)
- {
+{
    $con = new ConexionBD;
    if($con->conectar()==true)
-  {	$query="SELECT COUNT(IdResultado) FROM lab_detalleresultado WHERE IdResultado=$idresultado AND IdElemento=$idelemento";	
-     $result = @mysql_query($query);
+   {	$query="SELECT COUNT(idresultado) 
+                FROM lab_detalleresultado 
+                WHERE idresultado=$idresultado AND idelemento=$idelemento";	
+        $result = pg_query($query);
 	
-     if (!$result)
-       {return false;}
-     else
-		{
-			$row= mysql_fetch_array($result);
-			return $row[0];				
-		}	      
-   }
+        if (!$result)
+          {return false;}
+        else{
+            $row= pg_fetch_array($result);
+            return $row[0];				
+         }	      
+    }
  }
 
 //FUNCION PARA ELIMINAR ELEMENTO DE TINCION DEL DETALLE DE RESULTADOS
 function EliminarElementoDetalle($idresultado,$idelemento)
- {
-   $con = new ConexionBD;
-   if($con->conectar()==true)
-  {	$query="DELETE FROM lab_detalleresultado WHERE  IdResultado=$idresultado AND IdElemento=$idelemento";	
-     $result = @mysql_query($query);
+{
+  $con = new ConexionBD;
+  if($con->conectar()==true)
+  {	$query="DELETE FROM lab_detalleresultado 
+                WHERE  idresultado=$idresultado AND idelemento=$idelemento";	
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
        return true;	   
-   }
+  }
  }
  
 // funcion para leer las cantidades de tincion
@@ -101,8 +104,8 @@ function LeerCantidadTincion()
 $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT IdCantidadesTincion,CantidadTincion FROM lab_cantidadestincion";
-     $result = @mysql_query($query);
+     $query = "SELECT id,cantidadtincion FROM lab_cantidadestincion";
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -117,8 +120,8 @@ function LeerElementosTincion()
 $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT IdElementosTincion,ElementoTincion FROM lab_elementostincion";
-     $result = @mysql_query($query);
+     $query = "SELECT id,elementotincion FROM lab_elementostincion";
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -128,24 +131,43 @@ $con = new ConexionBD;
 
 ////**********************************************************************************************************************************************////
 //INSERTA RESULTADOS   ENCABEZADO
- function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$responsable,$usuario,$tab,$lugar)
- {
+ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$responsable,$usuario,$tab,$fecharealiz,$fecharesultado,$lugar)
+ {                           
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_resultados
-	         (IdSolicitudEstudio,IdDetalleSolicitud,IdExamen,IdRecepcionMuestra,     
-              Responsable,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod,IdCodigoResultado,IdEstablecimiento) 
-			  VALUES($idsolicitud,$iddetalle,'$idexamen',$idrecepcion,'$responsable',
-			  $usuario,NOW(),$usuario,NOW(),$tab,$lugar)";
-     $result = @mysql_query($query);
-	 
-     if (!$result)
-       return false;
-     else
-       $idultimo= @mysql_insert_id();
-	   return $idultimo;	   
-   }
+       $query = "INSERT INTO lab_resultados
+                (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
+                idempleado,idusuarioreg,fechahorareg,idestablecimiento,fecha_resultado) 
+	        VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$responsable,$usuario,NOW(),$lugar,'$fecharesultado')RETURNING id";
+              
+        $result = pg_query($query);
+        if($row = pg_fetch_array($result)) {
+                 $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen  AND activo = true";
+                   //AND id_metodologia IS NULL
+                 $result = pg_query($query);
+            if($result && pg_num_rows($result) == 1) {
+                    $row_exam_metod = pg_fetch_array($result);
+                    $id_exam_metod = $row_exam_metod[0];
+                    $id_exam_metod;
+                  $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado)
+                                  VALUES($id_exam_metod, $iddetalle, $tab, $usuario, NOW(),'$fecharealiz','$fecharesultado')";
+                        
+                    $result = pg_query($query);
+
+                    if($result) {
+                        $idultimo = $row[0];
+                        return $idultimo;
+                    }else{
+                        return false;
+                    }
+            }else{
+                            return false; // Aqui va la logica si hay mas de una metodologia en el examen
+            }
+        }else {
+            return false;
+                    }
+ }
  }
 // INSERTAR DETALLE DE LOS RESULTADOS POR ELEMENTOS Y SUBELEMENTOS
 //ELEMENTOS
@@ -154,9 +176,9 @@ function insertar_elemento($ultimo,$idelemento,$idcantidad,$lugar)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_detalleresultado(IdResultado,IdElemento,IdCantidad,IdEstablecimiento) 
-			  VALUES($ultimo,$idelemento,$idcantidad,$lugar)";
-     $result = @mysql_query($query);
+     $query = "INSERT INTO lab_detalleresultado(idresultado,idelemento,idcantidad,idestablecimiento) 
+	      VALUES($ultimo,$idelemento,$idcantidad,$lugar)";
+     $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -171,11 +193,12 @@ function MostrarElementosAgregados($idresultado)
 $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query ="SELECT ElementoTincion,CantidadTincion FROM lab_detalleresultado AS a
-			 INNER JOIN lab_elementostincion AS b ON a.IdElemento=b.IdElementosTincion
-			 INNER JOIN lab_cantidadestincion AS c ON c.IdCantidadesTincion=a.IdCantidad
-			 WHERE idResultado=$idresultado" ;
-   $result = @mysql_query($query);
+   $query ="SELECT elementotincion,cantidadTincion 
+                 FROM lab_detalleresultado 
+                 INNER JOIN lab_elementostincion  ON lab_detalleresultado.idelemento=lab_elementostincion.id
+                 INNER JOIN lab_cantidadestincion ON lab_cantidadestincion.id=lab_detalleresultado.idcantidad 
+                 WHERE idresultado=$idresultado" ;
+         $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -190,8 +213,8 @@ function DatosEmpleado($idempleado)
 $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT NombreEmpleado FROM mnt_empleados WHERE idempleado='$idempleado'";
-     $result = @mysql_query($query);
+    $query = "SELECT nombreempleado FROM mnt_empleado WHERE id=$idempleado";
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -205,13 +228,15 @@ function ObtenerFechaResultado($idsolicitud,$IdExamen,$lugar)
 	$con = new ConexionBD;
    if($con->conectar()==true)
    {
-      $query = "SELECT DATE_FORMAT(FechaHoraReg,'%d/%m/%Y %H:%i:%s') AS FechaResultado
-		FROM lab_resultados where IdSolicitudEstudio=$idsolicitud AND IdEstablecimiento=$lugar AND IdExamen='$IdExamen'";
-     $result = @mysql_query($query);
-     if (!$result)
-       return false;
-     else
-       return $result;
+      $query = "SELECT TO_CHAR(fecha_resultado,'dd/mm/YYYY HH12:MI:SS') AS FechaResultado
+		FROM lab_resultados where idsolicitudestudio=$idsolicitud AND idestablecimiento=$lugar 
+                AND IdExamen=$IdExamen";
+     
+      $result = pg_query($query);
+      if (!$result)
+        return false;
+      else
+        return $result;
     }
 }
 
@@ -222,22 +247,76 @@ function MostrarDatosGenerales($idsolicitud)
 	$con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT DISTINCT lab_recepcionmuestra.IdSolicitudEstudio, sec_historial_clinico.IdNumeroExp,
-			   CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoApellido) AS NombrePaciente,
-			   (year(CURRENT_DATE)-year(FechaNacimiento))AS Edad,
-			   IF(Sexo=1,'Masculino','Femenino') AS Sexo,
-			   TelefonoCasa,Direccion,NombreSubServicio AS Origen,NombreServicio AS Procedencia,
-			   NumeroMuestra,
-			 DATE_FORMAT(lab_recepcionmuestra.FechaHoraReg,'%d/%m/%Y %H:%i:%s') AS Fecha,DATE_FORMAT(mnt_datospaciente.FechaNacimiento,'%d/%m/%Y') as FechaNacimiento
-			   FROM lab_recepcionmuestra 
-			   INNER JOIN sec_solicitudestudios ON sec_solicitudestudios.IdSolicitudEstudio=lab_recepcionmuestra .IdSolicitudEstudio
-			   INNER JOIN sec_historial_clinico  ON sec_historial_clinico.IdHistorialClinico=sec_solicitudestudios.IdHistorialClinico
-			   INNER JOIN mnt_expediente ON mnt_expediente.IdNumeroExp=sec_historial_clinico.IdNumeroExp
-			   INNER JOIN mnt_datospaciente  ON mnt_datospaciente.IdPaciente=mnt_expediente.IdPaciente 
-			   INNER JOIN mnt_subservicio  ON mnt_subservicio.IdSubServicio= sec_historial_clinico.IdSubServicio
-			   INNER JOIN mnt_servicio  ON mnt_servicio.IdServicio= mnt_subservicio.IdServicio
-			   WHERE lab_recepcionmuestra.IdSolicitudEstudio=$idsolicitud";
-     $result = @mysql_query($query);
+     $query = "SELECT lab_recepcionmuestra.idsolicitudestudio, 
+             (CASE WHEN sec_solicitudestudios.id_historial_clinico IS NULL THEN 
+             (mnt_expediente_referido.numero)
+             ELSE (mnt_expediente.numero) end) as numero,
+             (CASE WHEN sec_solicitudestudios.id_historial_clinico IS NULL THEN 
+             CONCAT_WS(' ',mnt_paciente_referido.primer_nombre,mnt_paciente_referido.segundo_nombre,mnt_paciente_referido.tercer_nombre,mnt_paciente_referido.primer_apellido,mnt_paciente_referido.segundo_apellido,
+             mnt_paciente_referido.apellido_casada) 
+             ELSE CONCAT_WS(' ',mnt_paciente.primer_nombre,mnt_paciente.segundo_nombre,mnt_paciente.tercer_nombre,mnt_paciente.primer_apellido,
+             mnt_paciente.segundo_apellido,mnt_paciente.apellido_casada) end) as paciente,
+            (CASE WHEN sec_solicitudestudios.id_historial_clinico IS NULL THEN 
+                (REPLACE(
+                    REPLACE(
+                        REPLACE(
+                            REPLACE(
+                                REPLACE(
+                                    REPLACE(
+                                        AGE(mnt_paciente_referido.fecha_nacimiento::timestamp)::text,
+                                    'years', 'años'),
+                                'year', 'año'),
+                            'mons', 'meses'),
+                        'mon', 'mes'),
+                    'days', 'días'),
+                'day', 'día'))
+            ELSE (
+                REPLACE(
+                    REPLACE(
+                        REPLACE(
+                            REPLACE(
+                                REPLACE(
+                                    REPLACE(
+                                        AGE(mnt_paciente.fecha_nacimiento::timestamp)::text,
+                                    'years', 'años'),
+                                'year', 'año'),
+                            'mons', 'meses'),
+                        'mon', 'mes'),
+                    'days', 'días'),
+                'day', 'día')) end) as edad,
+            (CASE WHEN sec_solicitudestudios.id_historial_clinico IS NULL THEN 
+                (SELECT nombre from ctl_sexo WHERE id=mnt_paciente_referido.id_sexo)
+            ELSE (SELECT nombre from ctl_sexo WHERE id=mnt_paciente.id_sexo) end) AS sexo,
+
+            CASE WHEN mnt_aten_area_mod_estab.nombre_ambiente IS NOT NULL THEN  	
+                CASE WHEN id_servicio_externo_estab IS NOT NULL THEN mnt_servicio_externo.abreviatura ||'-->' ||mnt_aten_area_mod_estab.nombre_ambiente
+                    ELSE mnt_aten_area_mod_estab.nombre_ambiente
+                END
+            ELSE
+                CASE WHEN id_servicio_externo_estab IS NOT NULL THEN mnt_servicio_externo.abreviatura ||'--> ' || ctl_atencion.nombre
+                    WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=ctl_atencion.nombre) THEN ctl_atencion.nombre
+                END
+            END AS subservicio ,
+            ctl_area_atencion.nombre AS procedencia,to_char(lab_recepcionmuestra.fechahorareg,'dd/mm/YYYY HH12:MI:SS' ) AS fecharecep,
+            (SELECT nombre FROM ctl_establecimiento WHERE id=sec_solicitudestudios.id_establecimiento_externo) AS estabext
+            FROM lab_recepcionmuestra
+            INNER JOIN sec_solicitudestudios                ON sec_solicitudestudios.id = lab_recepcionmuestra.idsolicitudestudio
+            LEFT JOIN sec_historial_clinico                 ON sec_historial_clinico.id = sec_solicitudestudios.id_historial_clinico
+            LEFT JOIN mnt_expediente                        ON mnt_expediente.id = sec_historial_clinico.id_numero_expediente
+            LEFT JOIN mnt_paciente                          ON mnt_paciente.id=mnt_expediente.id_paciente
+            LEFT JOIN mnt_dato_referencia                   ON mnt_dato_referencia.id=sec_solicitudestudios.id_dato_referencia
+            LEFT JOIN mnt_expediente_referido               ON mnt_expediente_referido.id=mnt_dato_referencia.id_expediente_referido
+            LEFT JOIN mnt_paciente_referido                 ON mnt_paciente_referido.id=mnt_expediente_referido.id_referido
+            INNER JOIN ctl_sexo                             ON (ctl_sexo.id = mnt_paciente.id_sexo OR ctl_sexo.id =mnt_paciente_referido.id_sexo)
+            INNER JOIN mnt_aten_area_mod_estab              ON (mnt_aten_area_mod_estab.id = mnt_dato_referencia.id_aten_area_mod_estab 
+            OR mnt_aten_area_mod_estab.id= sec_historial_clinico.idsubservicio)
+            INNER JOIN mnt_area_mod_estab                   ON (mnt_area_mod_estab.id = mnt_aten_area_mod_estab.id_area_mod_estab)
+            LEFT  JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab .id_servicio_externo_estab)
+            LEFT  JOIN mnt_servicio_externo 		ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo)
+            INNER JOIN ctl_area_atencion                    ON ctl_area_atencion.id=mnt_area_mod_estab.id_area_atencion
+            INNER JOIN ctl_atencion                         ON ctl_atencion.id=mnt_aten_area_mod_estab.id_atencion
+            WHERE lab_recepcionmuestra.IdSolicitudEstudio=$idsolicitud";
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -252,11 +331,14 @@ function LeerDatos($idexamen)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT NombreArea,NombreExamen 
-			   FROM lab_examenes AS b
-			   INNER JOIN lab_areas AS c ON b.IdArea=c.IdArea
-			   WHERE b.IdExamen='$idexamen'";
-     $result = @mysql_query($query);
+          $query = "SELECT nombrearea,nombre_reporta 
+                    FROM lab_conf_examen_estab 
+                    INNER JOIN mnt_area_examen_establecimiento ON mnt_area_examen_establecimiento.id=lab_conf_examen_estab.idexamen
+                    INNER JOIN ctl_area_servicio_diagnostico ON ctl_area_servicio_diagnostico.id = mnt_area_examen_establecimiento.id_area_servicio_diagnostico
+                    INNER JOIN lab_examen_metodologia ON ( lab_examen_metodologia.id_conf_exa_estab = lab_conf_examen_estab.id)
+                    WHERE lab_conf_examen_estab.id=$idexamen";
+     
+     $result = pg_query($query);
      if (!$result)
        return false;
      else
@@ -275,7 +357,7 @@ function LeerDatos($idexamen)
    {
      $query = "UPDATE lab_elementos SET nombreExamen='$nomelemento', idestandar='$idestandar', idarea='$idarea', 	
 			   IdPlantilla='$plantilla' WHERE idelemento='$idelemento'";
-     $result = @mysql_query($query);
+     $result = pg_query($query);
 	 if (!$result)
        return false;
      else
@@ -286,6 +368,6 @@ function LeerDatos($idexamen)
 
  
  
-  
+
 }//CLASE
 ?>

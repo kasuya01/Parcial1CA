@@ -10,10 +10,10 @@ $objareas = new clsLab_Areas;
 $consulta=$objareas->consultarid($idarea,$lugar);
 $row = pg_fetch_array($consulta);
 //valores de las consultas
-echo "nombre  ".$nombre=$row['NombreArea'];
-echo "condicion". $activo=$row['Condicion'];
+ $nombre=$row['nombrearea'];
+ $activo=$row['condicion'];
 //muestra los datos consultados en los campos del formulario
-echo $lugar."-".$idarea."-".$usuario."-".$activo;
+ $lugar."-".$idarea."-".$usuario."-".$activo;
 ?>
 
 <form name= "frmModificar" action="" onSubmit="enviarDatos(); return false">

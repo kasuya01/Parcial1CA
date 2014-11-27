@@ -8,10 +8,10 @@ include_once("clsSolicitudesPorArea.php");
 //consulta los datos por su id
 $obj = new clsSolicitudesPorArea;
 $consulta=$obj->DatosEstablecimiento($lugar);
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 //echo $area;
 $ConArea=$obj->DatosArea($area);
-$rowArea = mysql_fetch_array($ConArea);
+$rowArea = pg_fetch_array($ConArea);
 //valores de las consultas
 $tipo=$row[0];
 $nombrEstab=$row[1];
@@ -21,8 +21,11 @@ if ($tipoarea=='S'){
   $area1=0;
   $nomarea="Seleccione un Area";}
 else{ 
+    
 	$area1=$area;
-	$nomarea=$rowArea[0];}
+	$nomarea=$rowArea[0];
+        
+}
 
 /***************/
 
@@ -60,6 +63,7 @@ function MostrarSolicitudes()
 			alert ("Debe de ingresar un Área");
 		}
                 else{
+                  
 			SolicitudesPorArea();}
 	}
 }
@@ -118,19 +122,20 @@ function BuscarServicio(IdServicio){
                         <td class="StormyWeatherDataTD">
                             <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)">
                                 <option value="0" >Seleccione un Tipo de Establecimiento</option>
+                               
+                                
                                 <?php
-                                    $db = new ConexionBD;
-                                    if($db->conectar()==true){
-                                            $consulta  = "SELECT IdTipoEstablecimiento,NombreTipoEstablecimiento 
-                                                          FROM mnt_tipoestablecimiento ORDER BY NombreTipoEstablecimiento";
-                                            $resultado = mysql_query($consulta) or die('La consulta fall&oacute;: ' . mysql_error());
-                                            //por cada registro encontrado en la tabla me genera un <option>
-                                            while ($rows = mysql_fetch_array($resultado)){
-                                                echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
-                                            }
-                                                echo '<option value="'. $tipo .'" selected="selected">' .htmlentities($nomtipo). '</option>';
-                                    }
-                                ?>
+				$db = new ConexionBD;
+				if($db->conectar()==true){
+					$consulta  = "SELECT id,nombre FROM ctl_tipo_establecimiento ORDER BY nombre";
+					$resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
+					//por cada registro encontrado en la tabla me genera un <option>
+					while ($rows = pg_fetch_array($resultado)){
+						echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
+					}
+						echo '<option value="'. $tipo .'" selected="selected">' .htmlentities($nomtipo). '</option>';
+				}
+			?>
                             </select>
                         </td>
                         <td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
@@ -139,20 +144,19 @@ function BuscarServicio(IdServicio){
                                 <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px"> 
                                     <option value="0" >Seleccione un Establecimiento</option>
                                         <?php 
-                                            echo'<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
-                                            include_once("../../../Conexion/ConexionBD.php");
-                                            $con = new ConexionBD;
-                                            if($con->conectar()==true){			  
-                                                $consulta  = "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento 
-                                                              WHERE IdTipoEstablecimiento='$tipo' ORDER BY Nombre";
-                                                $resultado = @mysql_query($consulta) or die('La consulta fall&oacute;: ' . @mysql_error());
-                                                                        //por cada registro encontrado en la tabla me genera un <option>
-                                                while ($rows = @mysql_fetch_array($resultado)){
-                                                        echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]). '</option>';
-                                                }
-
-                                                    //@mysql_free_result($consulta); // Liberar memoria usada por consulta.
-                                            }?>	
+				  echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
+		              	include_once("../../../Conexion/ConexionBD.php");
+					$con = new ConexionBD;
+					if($con->conectar()==true){			  
+						//$consulta  = "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$tipo' ORDER BY Nombre";
+                                                $consulta  = "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento='$tipo' ORDER BY nombre";
+						$resultado = @pg_query($consulta) or die('La consulta fall&oacute;: ' . @pg_error());
+						//por cada registro encontrado en la tabla me genera un <option>
+						while ($rows = @pg_fetch_array($resultado)){
+							echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]). '</option>';
+						}
+		            }
+				?>
                                 </select>
                             </div>
                         </td>
@@ -163,20 +167,26 @@ function BuscarServicio(IdServicio){
                             <select name="CmbServicio" id="CmbServicio" style="width:355px" onChange="BuscarServicio(this.value)" >
                                 <option value="0" selected="selected" align="center">Seleccione Procedencia</option>
                                 <?php
-                                    $db = new ConexionBD;
-                                    if($db->conectar()==true){
-                                        $consulta  = "SELECT mnt_servicio.IdServicio,mnt_servicio.NombreServicio FROM mnt_servicio 
-                                                      INNER JOIN mnt_servicioxestablecimiento 
-                                                      ON mnt_servicio.IdServicio=mnt_servicioxestablecimiento.IdServicio
-                                                      WHERE IdTipoServicio<>'DCO' AND IdTipoServicio<>'FAR' AND IdEstablecimiento=$lugar";
-                                        $resultado = mysql_query($consulta) or die('La consulta fall&oacute;: ' . mysql_error());
-
-                                        //por cada registro encontrado en la tabla me genera un <option>
-                                        while ($rows = mysql_fetch_array($resultado)){
-                                                echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
-                                        }
-                                    }
-                                ?>
+					$db = new ConexionBD;
+					if($db->conectar()==true){
+						
+							
+                                            $consulta  = "SELECT t01.id,
+                                                                 t01.nombre
+                                                          FROM ctl_area_atencion t01
+                                                          WHERE t01.id IN (
+                                                                SELECT DISTINCT id_area_atencion 
+                                                                FROM mnt_area_mod_estab WHERE id_establecimiento = $lugar)";
+                                            
+                                           
+                                            
+						$resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
+						//por cada registro encontrado en la tabla me genera un <option>
+						while ($rows = pg_fetch_array($resultado)){
+							echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
+						}
+					}
+				?>
                              </select>
                         </td>
                         <td class="StormyWeatherFieldCaptionTD">Servicio</td>
@@ -194,15 +204,14 @@ function BuscarServicio(IdServicio){
                                 <select id="cmbArea" name="cmbArea" size="1" width="11%" onChange="BuscarExamen(this.value)" >
                                 <!--<option value="0" selected="selected">Seleccione un &Aacute;rea</option>-->
                                 <?php
-                                    include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
-                                    $objeareas=new clsLab_Areas;
-                                    $consulta= $objeareas->consultaractivas($lugar);
-                                    while($row = mysql_fetch_array($consulta)){
-                                        echo "<option value='" . $row['IdArea']. "'>" . htmlentities($row['NombreArea']) . "</option>";
-                                    }
-                                        echo '<option value="'.$area1.'" selected="selected">'.htmlentities($nomarea).'</option>';
-                                //mysql_free_result($consulta);
-                                ?>		  
+				include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
+				$objeareas=new clsLab_Areas;
+				$consulta= $objeareas->consultaractivas($lugar);
+				while($row = pg_fetch_array($consulta)){
+			        echo "<option value='" . $row['idarea']. "'>" . htmlentities($row['nombrearea']) . "</option>";
+				}
+				echo '<option value="'.$area1.'" selected="selected">'.htmlentities($nomarea).'</option>';
+				?>		  
                                 </select> 
                         </td>
                         <td  class="StormyWeatherFieldCaptionTD">Examen </td>
@@ -243,8 +252,8 @@ function BuscarServicio(IdServicio){
                         <td class="StormyWeatherDataTD" colspan="3">
                             <select id="cmbTipoSolic" name="cmbTipoSolic" size="1" >
                                 <option value="0">Seleccione un Tipo de Solicitud</option>
-                                <option value="S">URGENTE</option>
-                                <option value="R">NORMAL</option>
+                                <option value="1">URGENTE</option>
+                                <option value="2">NORMAL</option>
                             </select>
                         </td>							
                     </tr>

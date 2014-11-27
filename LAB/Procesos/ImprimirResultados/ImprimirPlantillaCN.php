@@ -17,7 +17,7 @@ $observacion=$_GET['var8'];
 $establecimiento=$_GET['var9'];
 
 $Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
-$row_estab = mysql_fetch_array($Consulta_Estab);
+$row_estab = pg_fetch_array($Consulta_Estab);
 ?>
 <html>
 <head>
@@ -49,11 +49,11 @@ $row_estab = mysql_fetch_array($Consulta_Estab);
 	$datos_generales=$obj->MostrarDatosGenerales($idsolicitud,$lugar);
 	//$datos_empleado=$obj->DatosEmpleado($idempleado);
 	$consulta_datos=$obj->LeerDatos($idexamen);
-	$row_area= mysql_fetch_array($consulta_datos);
-	$row_generales= mysql_fetch_array($datos_generales);
-	//$row_empleado = mysql_fetch_array($datos_empleado);
+	$row_area= pg_fetch_array($consulta_datos);
+	$row_generales= pg_fetch_array($datos_generales);
+	//$row_empleado = pg_fetch_array($datos_empleado);
 	//$datos_observacion=$obj->LeerObservacion($observacion);
-	//$row_observacion = mysql_fetch_array($datos_observacion);
+	//$row_observacion = pg_fetch_array($datos_observacion);
 	$nombre=$row_area['NombreArea'];
 ?>
 <table align="center" width="100%">
@@ -109,8 +109,8 @@ $row_estab = mysql_fetch_array($Consulta_Estab);
 			</tr>
 			<tr>
 				 <td style='font:bold'><strong>Resultado</strong></td>
-					<?php 	mysql_free_result($consulta_datos);
-						mysql_free_result($datos_generales);
+					<?php 	pg_free_result($consulta_datos);
+						pg_free_result($datos_generales);
 
 						 switch($resultado)
 						{

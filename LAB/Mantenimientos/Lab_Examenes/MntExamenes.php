@@ -43,7 +43,15 @@ function Cancelar()
 { 	LimpiarCampos();
 	show_event(1);
 }
-
+function popup(URL) {
+        myWindow=window.open(URL, '" + "', 'scrollbars=yes, width=700, height=500, left=100, top = 100');
+    }
+    function habilitar_metodologia(obj){
+        if(obj.value !== "") {
+            obj1 = document.getElementById('add_metodologia');
+            obj1.disabled = false;
+        }
+    }
 </script>
 </head>
 <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" onLoad="show_event(1);">
@@ -105,7 +113,7 @@ if ($nivel==33){
 			</tr>
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD" >Nombre del Examen </td>
-                            <td class="StormyWeatherDataTD"><input type="text" id="txtnombreexamen" name="txtnombreexamen" size="50" /></td>
+                            <td class="StormyWeatherDataTD"><input type="text" id="txtnombreexamen" name="txtnombreexamen" size="50" onblur="habilitar_metodologia(this);"/></td>
 			</tr>
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD" >Plantilla</td>
@@ -214,6 +222,18 @@ if ($nivel==33){
                             <td nowrap class="StormyWeatherFieldCaptionTD">Tiempo Previo para <br>entrega de resultado(en dias)&nbsp;</td>
                             <td class="StormyWeatherDataTD">
                                 <input id="inidate" name="inidate" class="CobaltInput" style="width:28px; height:20px;" maxlength=3 onkeypress='return isNumberKey(event);' ></td>
+                        </tr>
+                        <tr>
+                        <td nowrap class="StormyWeatherFieldCaptionTD">Metodologías</td>
+                        <td class="StormyWeatherDataTD">
+                            <input type="hidden" name="metodologias_sel" id="metodologias_sel">
+                            <input type="hidden" name="text_metodologias_sel" id="text_metodologias_sel">
+                            <input type="button" value="..." name="add_metodologia" id="add_metodologia" disabled="disabled" onclick="
+                                popup('consulta_metodologias.php?form=frmnuevo&metodologias_sel='+document.getElementById('metodologias_sel').value+
+                                        '&text_metodologias_sel='+document.getElementById('text_metodologias_sel').value+
+                                        '&nombre='+document.getElementById('txtnombreexamen').value);"/>
+                        </td>
+                        
                         </tr>
                          <tr> 
                             <td colspan="2" align="right" class="StormyWeatherDataTD">

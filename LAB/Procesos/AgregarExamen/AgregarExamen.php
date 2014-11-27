@@ -4,11 +4,13 @@ $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 $nivel=$_SESSION['NIVEL'];
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
 include_once("clsAgregarExamen.php"); 
 //consulta los datos por su id
 $obj = new clsAgregarExamen;
 $consulta=$obj->DatosEstablecimiento($lugar);
-$row = mysql_fetch_array($consulta);
+$row = pg_fetch_array($consulta);
 //valores de las consultas
 $tipo=$row[0];
 $nombrEstab=$row[1];
@@ -18,6 +20,7 @@ $nomtipo=$row[2];
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">    
 <title>Solicitudes Por Paciente</title>
+<?php include_once $ROOT_PATH."/public/js.php";?>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <script language="JavaScript" type="text/javascript" src="ajax_AgregarExamen.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
@@ -33,12 +36,37 @@ $nomtipo=$row[2];
 <script language="JavaScript" type="text/javascript">
 function MostrarBusqueda()
 {
-	 if ((document.getElementById('txtexpediente').value == "") &&(document.getElementById('PrimerNombre').value == "")&&(document.getElementById('SegundoNombre').value == "")&&(document.getElementById('PrimerApellido').value == "")&&(document.getElementById('SegundoApellido').value == "")&&(document.getElementById('txtfechaconsulta').value == 0)&& (document.getElementById('cmbEstablecimiento').value == 0) && (document.getElementById('CmbServicio').value == 0) && (document.getElementById('cmbSubServ').value == 0) ) {
+	if ((document.getElementById('txtexpediente').value == "") 
+            &&(document.getElementById('PrimerNombre').value == "")
+            &&(document.getElementById('SegundoNombre').value == "")
+            &&(document.getElementById('PrimerApellido').value == "")
+            &&(document.getElementById('SegundoApellido').value == "")
+            &&(document.getElementById('txtfecharecep').value == 0)
+            && (document.getElementById('cmbEstablecimiento').value == 0) 
+            && (document.getElementById('CmbServicio').value == 0) 
+            && (document.getElementById('cmbSubServ').value == 0) ) {
 	   alert("Ingrese un parmetro de busqueda");
-	  // document.getElementById('txtexpediente').focus();
+	   document.getElementById('txtexpediente').focus();
 	   }
-    	 else{	 
-	     BuscarDatos();}
+    	/* else{	 
+             
+             
+	     BuscarDatos(1);
+         }*/
+        
+        else {
+                        jQuery('#divBusqueda').empty();
+                        jQuery('#divBusqueda').append('<center><img id="wait" src="<?php echo $base_url; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" style="color:#888888;font-weight: bold;">Buscando...</div></center>');
+                        
+                        setTimeout(function() {
+                            jQuery('#divBusqueda').empty();
+                             BuscarDatos(1);
+                        }, 500);
+                    }
+        
+   //   alert  (document.getElementById('txtfecharecep').value ==0)
+        
+        
 }
 
 function ImprimirExamenes()
@@ -100,7 +128,7 @@ if ($nivel==33){
 if ($nivel==4){
         include_once ('../../../PaginaPrincipal/index_laboratorio42.php');}    
 ?><br>
-<table align="center" width="100%">
+<table align="center" width="80%">
 <tr>
 	<td>
 		<div  id="divInicial" >
@@ -114,104 +142,117 @@ if ($nivel==4){
 			</tr>
 			<tr>		
 				<td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</td>
-				<td class="StormyWeatherDataTD"><select name="cmbTipoEstab" id="cmbTipoEstab" style="width:406px" onChange="BuscarEstablecimiento(this.value)">
-					<option value="0" >Seleccione un Tipo de Establecimiento</option>
-					<?php
-						$db = new ConexionBD;
-						if($db->conectar()==true){
-							$consulta  = "SELECT IdTipoEstablecimiento,NombreTipoEstablecimiento FROM mnt_tipoestablecimiento ORDER BY NombreTipoEstablecimiento";
-							$resultado = mysql_query($consulta) or die('La consulta fall&oacute;: ' . mysql_error());
-							//por cada registro encontrado en la tabla me genera un <option>
-							while ($rows = mysql_fetch_array($resultado)){
-								echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
-							}
-							echo '<option value="'. $tipo .'" selected="selected">' .htmlentities($nomtipo). '</option>';
+		<td class="StormyWeatherDataTD"><select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)">
+        	<option value="0">Seleccione un Tipo de Establecimiento</option>
+			<?php
+				$db = new ConexionBD;
+				if($db->conectar()==true){
+					$consulta  = "SELECT id,nombre FROM ctl_tipo_establecimiento ORDER BY nombre";
+					$resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
+					//por cada registro encontrado en la tabla me genera un <option>
+					while ($rows = pg_fetch_array($resultado)){
+						echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
+					}
+						echo '<option value="'. $tipo .'" selected="selected">' .htmlentities($nomtipo). '</option>';
+				}
+			?>
+        	</select>
+		</td>
+        	<td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
+        	<td class="StormyWeatherDataTD" >
+				<div id="divEstablecimiento">
+					<select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px">
+						<option value="0" >Seleccione un Establecimiento</option>
+				<?php 
+				  echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
+		              	include_once("../../../Conexion/ConexionBD.php");
+					$con = new ConexionBD;
+					if($con->conectar()==true){			  
+						//$consulta  = "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$tipo' ORDER BY Nombre";
+                                                $consulta  = "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento='$tipo' ORDER BY nombre";
+						$resultado = @pg_query($consulta) or die('La consulta fall&oacute;: ' . @pg_error());
+						//por cada registro encontrado en la tabla me genera un <option>
+						while ($rows = @pg_fetch_array($resultado)){
+							echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]). '</option>';
 						}
-					?>
+		            }
+				?>	
 					</select>
-				</td>
-				<td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
-				<td class="StormyWeatherDataTD" >
-					<div id="divEstablecimiento">
-						<select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px">
-							<option value="0" >Seleccione un Establecimiento</option>
-							<?php echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
-								include_once("../../../Conexion/ConexionBD.php");
-								$con = new ConexionBD;
-									if($con->conectar()==true){			  
-										$consulta  = "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento where IdTipoEstablecimiento='$tipo' ORDER BY Nombre";
-										$resultado = @mysql_query($consulta) or die('La consulta fall&oacute;: ' . @mysql_error());
-										//por cada registro encontrado en la tabla me genera un <option>
-										while ($rows = @mysql_fetch_array($resultado)){
-											echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]). '</option>';
-										}
-									}
-							?>	
-						</select>
-					</div>
-				</td>
-			</tr>
-			<tr>	
-				<td class="StormyWeatherFieldCaptionTD">Procedencia</td>
-				<td class="StormyWeatherDataTD">
-					<select name="CmbServicio" id="CmbServicio" style="width:375px" onChange="BuscarServicio(this.value)" >
-						<option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
-						<?php
-							$db = new ConexionBD;
-							if($db->conectar()==true){
-								$consulta  = "SELECT mnt_servicio.IdServicio,mnt_servicio.NombreServicio FROM mnt_servicio 
-								INNER JOIN mnt_servicioxestablecimiento 
-								ON mnt_servicio.IdServicio=mnt_servicioxestablecimiento.IdServicio
-								WHERE IdTipoServicio<>'DCO' AND IdTipoServicio<>'FAR' AND IdEstablecimiento=$lugar";
-								$resultado = mysql_query($consulta) or die('La consulta fall&oacute;: ' . mysql_error());
-													
-								//por cada registro encontrado en la tabla me genera un <option>
-								while ($rows = mysql_fetch_array($resultado)){
-									echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
-								}
-							}
-							?>
-							</select>
-				</td>
-				<td class="StormyWeatherFieldCaptionTD">Servicio</td>
-				<td class="StormyWeatherDataTD">
-					<div id="divsubserv">
-						<select name="cmbSubServ" id="cmbSubServ" style="width:375px" >
-							<option value="0" selected="selected"> Seleccione un Servicio </option>
-						</select>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td class="StormyWeatherFieldCaptionTD" >Expediente</td>
-				<td class="StormyWeatherDataTD"><input type="text" size="20" name="txtexpediente" id="txtexpediente" />
-				</td>
-				<td class="StormyWeatherFieldCaptionTD">Fecha Consulta:</td>
-				<td class="StormyWeatherDataTD">
-					<input type="text" name="txtfechaconsulta" id="txtfechaconsulta" />
-					<input name="button" type="button" id="trigger"  value="...">dd/mm/aaaa</td>
-			</tr>
-			<tr>
-				<td class="StormyWeatherFieldCaptionTD" align="left" ><strong>Primer Nombre&nbsp;:</strong>   </td> 
-				<td class="StormyWeatherDataTD" >
-						<input class="MailboxInput" maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre"></td> 
-				<td class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Nombre:</strong>   </td> 
-				<td class="StormyWeatherDataTD">
-					<input  maxlength="35" name="SegundoNombre" size="28" id="SegundoNombre"></td> 
-					
-			</tr>
-			<tr>
-				<td class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Apellido:</strong></td> 
-				<td class="StormyWeatherDataTD">
-					<input class="MailboxInput" maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido"></td> 
-				<td class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Apellido:</strong></td> 
-				<td class="StormyWeatherDataTD" >
-					<input class="MailboxInput" maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" ></td>
-			</tr>
+				</div>
+		</td>
+	</tr>
+	<tr>	
+		<td class="StormyWeatherFieldCaptionTD">Procedencia</td>
+		<td class="StormyWeatherDataTD">
+			<select name="CmbServicio" id="CmbServicio" style="width:355px" onChange="BuscarServicio(this.value)" >
+				<option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
+				<?php
+					$db = new ConexionBD;
+					if($db->conectar()==true){
+						
+							
+                                            $consulta  = "SELECT t01.id,
+                                                                 t01.nombre
+                                                          FROM ctl_area_atencion t01
+                                                          WHERE t01.id IN (
+                                                                SELECT DISTINCT id_area_atencion 
+                                                                FROM mnt_area_mod_estab WHERE id_establecimiento = $lugar)";
+                                            
+                                           /* "SELECT mse.id,mse.nombre 
+						FROM mnt_servicio_externo mse 
+						INNER JOIN mnt_servicio_externo_establecimiento msee 
+						ON mse.id=msee.id
+						WHERE   msee.id_establecimiento=$lugar";*/
+                                            
+						$resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
+						//por cada registro encontrado en la tabla me genera un <option>
+						while ($rows = pg_fetch_array($resultado)){
+							echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
+						}
+					}
+				?>
+			</select>
+		</td>
+		<td class="StormyWeatherFieldCaptionTD">Servicio</td>
+		<td class="StormyWeatherDataTD">
+			<div id="divsubserv">
+				<select name="cmbSubServ" id="cmbSubServ" style="width:375px" >
+					<option value="0" selected="selected"> Seleccione un Servicio </option>
+				</select>
+			</div>
+		</td>
+	</tr>
+	
+	<tr>
+		
+		<td class="StormyWeatherFieldCaptionTD"  >Expediente</td>
+		<td  class="StormyWeatherDataTD" width="5%" ><input type="text" size="24" name="txtexpediente" id="txtexpediente" />
+		</td>
+		<td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Recepi&oacute;n</td>
+		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="15" name="txtfecharecep" id="txtfecharecep" />
+			<input type="button" value="..." id="trigger">dd/mm/aaaa
+		</td>
+	</tr>
+	<tr>
+		<td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong>   </td> 
+		<td class="StormyWeatherDataTD" >
+			<input class="MailboxInput" maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre"></td> 
+		<td class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Nombre</strong>   </td> <td class="StormyWeatherDataTD">
+			<input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre"></td> 
+	</tr>
+	<tr>
+		<td class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Apellido</strong></td> 
+		<td class="StormyWeatherDataTD">
+			<input class="MailboxInput" maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido"></td> 
+		<td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Apellido</strong></td> 
+		<td class="StormyWeatherDataTD" >
+			<input class="MailboxInput" maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" ></td>
+	</tr>
+  
 			<tr>
 				<td class="StormyWeatherDataTD" colspan="4" align="right">
 					<input type="button" id="btnbuscar" value="Buscar Solicitudes" onClick="MostrarBusqueda();">
-					<input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('SolicitudPorPaciente.php')">
+					<input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('AgregarExamen.php')">
 				</td>
 			</tr>
 			</table>

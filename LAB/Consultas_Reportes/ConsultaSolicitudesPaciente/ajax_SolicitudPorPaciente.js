@@ -64,13 +64,13 @@ function isWhitespace(charToCheck) {
 }
 ///////////////////////////////***********************************/////////////////////////////////
 //Esta funcion mandan a llamar
-function calc_edad()
+/*function calc_edad()
 {
   var fecnac1=document.getElementById("suEdad").value;
   var fecnac2=fecnac1.substring(0,10);
   var suEdades=calcular_edad(fecnac2);
   document.getElementById("divsuedad").innerHTML=suEdades;
-}
+}*/
 
 
 //funcion para calculo de edad
@@ -169,8 +169,9 @@ function calcular_edad(fecha){
 }
 
 //FUNCION PARA BUSCAR DATOS DE LA SOLICITUD
-function BuscarDatos1()
-{	
+function BuscarDatospaciente(pag)
+    
+{	ajax=objetoAjax();
 		opcion=1;
 		IdEstab=document.getElementById('cmbEstablecimiento').value;
 		IdServ=document.getElementById('CmbServicio').value;
@@ -181,15 +182,16 @@ function BuscarDatos1()
 		primerapellido=document.getElementById('PrimerApellido').value;
 		segundoapellido=document.getElementById('SegundoApellido').value;
 		//especialidad=document.getElementById('cmbEspecialidad').value;
-		fechaconsulta=document.getElementById('txtfechaconsulta').value;
+		fechaconsulta=document.getElementById('txtfecharecep').value;
+         // alert(IdServ);
+         //  alert(IdSubServ);
 		
-		ajax=objetoAjax();
 		//archivo que realizar� la operacion ->actualizacion.php
 		ajax.open("POST", "ctrLab_SolicitudesPorPaciente.php",true);
 		//muy importante este encabezado ya que hacemos uso de un formulario
 		ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores
-		ajax.send("idexpediente="+idexpediente+"&opcion="+opcion+"&primernombre="+escape(primernombre)+"&segundonombre="+escape(segundonombre)+"&primerapellido="+escape(primerapellido)+"&segundoapellido="+escape(segundoapellido)+"&fechaconsulta="+fechaconsulta+"&IdEstab="+IdEstab+"&IdServ="+IdServ+"&IdSubServ="+IdSubServ);
+		ajax.send("idexpediente="+idexpediente+"&opcion="+opcion+"&primernombre="+escape(primernombre)+"&segundonombre="+escape(segundonombre)+"&primerapellido="+escape(primerapellido)+"&segundoapellido="+escape(segundoapellido)+"&fechaconsulta="+fechaconsulta+"&IdEstab="+IdEstab+"&IdServ="+IdServ+"&IdSubServ="+IdSubServ+"&pag="+pag);
 		ajax.onreadystatechange=function() {
 			if (ajax.readyState==4) {
 				//mostrar los nuevos registros en esta capa
@@ -209,7 +211,8 @@ function CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento)
 		
 		especialidad=0;
 		
-	//	ALERT(idsolicitud);
+	
+        //alert(idsolicitud);
 	ajax.open("POST", "ctrLab_SolicitudesPorPaciente.php",true);
 		  //muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
@@ -223,7 +226,7 @@ function CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento)
 		{	 if (ajax.status == 200)
 			{  //mostrar los nuevos registros en esta capa
 			  document.getElementById('divSolicitud').innerHTML = ajax.responseText;
-			  calc_edad();
+			  //calc_edad();
 			 }
 	     }
 	}
@@ -254,7 +257,7 @@ function CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento)
 		{	 if (ajax.status == 200)
 			{  //mostrar los nuevos registros en esta capa
 			     document.getElementById('divFormulario').innerHTML = ajax.responseText;
-				calc_edad();
+				//calc_edad();
 			 }
 	     }
 	}
@@ -339,7 +342,7 @@ function MostrarDatos(posicion)
 		idexpediente=trim(idexpediente);
 		idsolicitud=trim(idsolicitud);
 		CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento);
-		
+		//aca
   
  }
 

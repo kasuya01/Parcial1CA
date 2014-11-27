@@ -1,3 +1,8 @@
+<?php session_start();
+$usuario=$_SESSION['Correlativo'];
+$lugar=$_SESSION['Lugar'];
+$area=$_SESSION['Idarea'];
+?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -78,76 +83,7 @@ $query_search="";
 $ban=0;
 $objdatos = new clsConsultaMuestrasPendientes;
 
-/* $query = "SELECT sec_solicitudestudios.IdSolicitudEstudio,NumeroMuestra,sec_solicitudestudios.IdNumeroExp, lab_examenes.IdExamen,
-		nombreexamen,Indicacion,lab_recepcionmuestra.FechaRecepcion,mnt_subservicio.NombreSubServicio,mnt_servicio.NombreServicio,
-		mnt_establecimiento.Nombre,CONCAT_WS(' ',PrimerApellido,NULL,SegundoApellido,',',PrimerNombre,NULL,SegundoNombre) AS NombrePaciente
-		FROM sec_detallesolicitudestudios  
-		INNER JOIN sec_solicitudestudios ON sec_detallesolicitudestudios.IdSolicitudEstudio=sec_solicitudestudios.IdSolicitudEstudio 
-		INNER JOIN lab_recepcionmuestra ON sec_detallesolicitudestudios.IdSolicitudEstudio= lab_recepcionmuestra.IdSolicitudEstudio 
-		INNER JOIN lab_examenes   ON sec_detallesolicitudestudios.IdExamen= lab_examenes.IdExamen
-		INNER JOIN lab_areas 	ON  lab_examenes.IdArea=lab_areas.IdArea
-		INNER JOIN sec_historial_clinico ON sec_solicitudestudios.IdHistorialClinico=sec_historial_clinico.IdHistorialClinico
-		INNER JOIN mnt_subservicio ON sec_historial_clinico.IdSubServicio=mnt_subservicio.IdSubServicio
-		INNER JOIN mnt_servicio ON mnt_subservicio.IdServicio=mnt_servicio.IdServicio
-		INNER JOIN mnt_establecimiento ON sec_historial_clinico.IdEstablecimiento=mnt_establecimiento.IdEstablecimiento
-		INNER JOIN mnt_expediente ON sec_historial_clinico.IdNumeroExp=mnt_expediente.IdNumeroExp
-		INNER JOIN mnt_datospaciente ON mnt_expediente.IdPaciente=mnt_datospaciente.IdPaciente
-		WHERE estadodetalle='D' AND  lab_recepcionmuestra.FechaRecepcion<CURRENT_DATE AND ";
-
-	  //estado en que la muestra ha sido tomada
-		if (!empty($_GET['var4']))
-		{ $query .= " sec_historial_clinico.IdEstablecimiento ='".$_GET['var4']."' AND";}	
-			
-		if (!empty($_GET['var5']))
-		{ $query .= " mnt_subservicio.IdServicio ='".$_GET['var5']."' AND";}
-		
-		if (!empty($_GET['var6']))
-		{ $query .= " mnt_subservicio.IdSubServicio ='".$_GET['var6']."' AND";}
-
-		if (!empty($_GET['var1']))
-		{ $query .= " lab_areas.IdArea='".$_GET['var1']."' AND";}	
-
-		if (!empty($_GET['var7']))
-		{ $query .= " lab_examenes.IdExamen='".$_GET['var7']."' AND";}	
-		
-		if (!empty($_GET['var2']))
-		{ $query .= " sec_solicitudestudios.IdNumeroExp='".$_GET['var2']."' AND";}
-		
-		/*if (!empty($_GET['var3']))
-		{ $query .= " lab_recepcionmuestra.FechaRecepcion='".$_GET['var3']."' AND";}*/
-               /* if (!empty($_GET['var3']))
-		{$Nfecha=explode("/",$_GET['var3']);
-		//print_r($Nfecha);
-                $Nfecharecep=$Nfecha[2]."-".$Nfecha[1]."-".$Nfecha[0]; 
-		$query .= " lab_recepcionmuestra.fecharecepcion='".$Nfecharecep."' AND";}
-		
-		if (!empty($_GET['var8']))
-		{ $query .= " mnt_datospaciente.PrimerNombre='".$_GET['var8']."' AND";}
-		
-		if (!empty($_GET['var9']))
-		{ $query .= " mnt_datospaciente.SegundoNombre='".$_GET['var9']."' AND";}
-		
-		if (!empty($_GET['var10']))
-		{ $query .= " mnt_datospaciente.PrimerApellido='".$_GET['var10']."' AND";}
-		
-		if (!empty($_GET['var11']))
-		{ $query .= " mnt_datospaciente.SegundoApellido='".$_GET['var11']."' AND";}
-		
-		if((empty($_GET['var2'])) AND (empty($_GET['var1'])) AND (empty($_GET['var3'])) AND (empty($_GET['var4'])) AND (empty($_GET['var5'])) AND (empty($_GET['var6'])) AND (empty($_GET['var8'])) AND (empty($_GET['var9'])) AND (empty($_GET['var10'])) AND (empty($_GET['var11'])) AND (empty($_GET['var7'])))
-		{
-			$ban=1;
-		}
-		
-		if ($ban==0){
-			
-			$query = substr($query ,0,strlen($query)-3);
-			$query_search = $query." ORDER BY lab_recepcionmuestra.FechaRecepcion DESC";
-			
-		}
-	//echo $query_search;
-                * 
-                */
-$cond1="";
+        $cond1="";
         $cond2="";
         $query="";
         $query2="";
@@ -246,7 +182,7 @@ $cond1="";
                     INNER JOIN mnt_area_mod_estab           t03 ON (t03.id = t02.id_area_mod_estab)
                     LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
                     LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
-                    WHERE $where_with t02.id_establecimiento = 49
+                    WHERE $where_with t02.id_establecimiento = $lugar
                     ORDER BY 2)
             
                     SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
@@ -297,7 +233,7 @@ $cond1="";
             INNER JOIN ctl_sexo t19                             ON (t19.id = t07.id_sexo)
             INNER JOIN tbl_servicio t20                         ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
             WHERE (t16.idestado = 'D')  
-            
+            AND t02.id_establecimiento = $lugar
             AND $cond1
         
             UNION
@@ -349,8 +285,8 @@ $cond1="";
             INNER JOIN ctl_examen_servicio_diagnostico t18          ON (t18.id = t05.id_examen_servicio_diagnostico) 
             INNER JOIN ctl_sexo t19                                 ON (t19.id = t07.id_sexo)
             WHERE (t16.idestado = 'D') 
-            
-                AND $cond2"; 
+            AND t02.id_establecimiento = $lugar 
+                AND $cond2";  
                   
 	
 	 // $consulta=$objdatos->ListadoSolicitudesPorArea($query_search);  

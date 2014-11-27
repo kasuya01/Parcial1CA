@@ -15,7 +15,7 @@ $db = new ConexionBD;
 <style type="text/css">
 			*{ font-size:12px; font-family:verdana; }
 			h1 { font-size:22px; }
-			input { width:250px; border: 2px solid #CCC; line-height:20px;height:20px; border-radius:3px; padding:5px; }
+			input { width:250px; border: 2px solid #CCC; line-height:20px;height:20px; border-radius:3px; padding:2px; }
 		</style>
 <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script> 
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
@@ -69,6 +69,12 @@ function ValidarCampos()
              if (document.frmnuevo.cmbmetodologia==0){
                         resp=false;
              }
+         if (document.frmnuevo.fecha_reporte.value == ""){
+             resp=false
+             }
+         if (document.frmnuevo.fecha_realizacion.value == ""){
+                resp=false
+             }
          }
          
      
@@ -98,8 +104,10 @@ function VerResultados()
         sexo=document.frmnuevo.txtSexo.value;
         cmbmetodologia=document.frmnuevo.cmbmetodologia.value;
         txtnec=document.frmnuevo.txtnec.value;
+        fecha_realizacion=document.frmnuevo.fecha_realizacion.value;
+        fecha_reporta=document.frmnuevo.fecha_reporte.value;
         
-	MostrarResultadoExamen(idsolicitud,iddetalle,idarea,idexamen,resultado,lectura,interpretacion,observacion,responsable,nombrearea,procedencia,origen,impresion,establecimiento,codresult,fechanac,sexo, cmbmetodologia, txtnec);
+	MostrarResultadoExamen(idsolicitud,iddetalle,idarea,idexamen,resultado,lectura,interpretacion,observacion,responsable,nombrearea,procedencia,origen,impresion,establecimiento,codresult,fechanac,sexo, cmbmetodologia, txtnec, fecha_realizacion, fecha_reporta);
 	
     }else
     {    alert("Complete la Informacion Requerida");   }
@@ -169,7 +177,9 @@ LlenarComboMetodologia(idexamen, area);
 //alert(area);
 }
 </script>
+</head>
 
+<body onLoad="RecogeValor();">
 <?php  
 //FUNCION PARA VERIFICAR DATOS REQUERIDOS EN RESULTADOS
 $bandera=$_GET['var12'];
@@ -179,8 +189,14 @@ $IdEstandar=$_GET['var16'];
 $IdHistorial=$_GET['var17'];
 $solicitud=$_GET['var6'];
 $referido=$_GET['referido'];
-if (!$IdHistorial){
-    
+$iddetallesolicitud=$_GET['var5'];
+$idarea=$_GET['var4'];
+$cant=$objdatos->buscarAnterioresPUnica($solicitud,$iddetallesolicitud, $idarea);
+if (pg_num_rows($cant)>0){
+   //  echo $referido.'<br>';
+if ($referido!="t"){
+  
+   // echo $IdHistorial.' -- lugar: '.$lugar; 
 $condatos=$objdatos->condatos($IdHistorial, $lugar);
 
 /*
@@ -197,12 +213,12 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                      AND sec_historial_clinico.IdEstablecimiento =$lugar";
 
         $resultado = mysql_query($condatos);*/
-	$rows = pg_fetch_array($resultado);
+	$rows = pg_fetch_array($condatos);
         
-        $Peso=$rows['Peso'];
-        $Talla=$rows['Talla'];
-        $Diagnostico=$rows['Diagnostico'];
-        $ConocidoPor=$rows['ConocidoPor'];
+        $Peso=$rows['peso'];
+        $Talla=$rows['talla'];
+        $Diagnostico=$rows['diagnostico'];
+        $ConocidoPor=$rows['conocidoPor'];
   }
   else{
       $Peso='-';
@@ -212,9 +228,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
   }
 ?>
 
-</head>
 
-<body onLoad="RecogeValor();">
     
   
 			
@@ -327,7 +341,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                             </td>
                              <td class="StormyWeatherFieldCaptionTD">Fecha Reporte </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="datepicker" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />
+                                <input type="text" class="datepicker" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  /><input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  /> 
                             </td>
                         </tr>
                         <tr>
@@ -386,124 +400,25 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                             <?php 
                           }?>
                             <td colspan="4"  class="StormyWeatherDataTD"><center>
-                                <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="agregaresultado('0');">Agregar Resultado </button>
+                                <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="VerResultados();">Ver Resultado </button>
 <!--                                <input type="button" name="add" value="Agregar Resultado" Onclick="AddResultado() ;"> -->
                         </center>
                             </td>
                         </tr>
                         
                         </table>
-                    <table width="100%" border="0" align="center">
-                        <tr><td colspan="4">
-		<div id = 'masunoresultado' style="display: none;"><br/>
-			<table id="addresultado" name="addresult" cellpadding="0" cellspacing="0" border="1" id="table" class="ui-state-default" style="table-layout:fixed;font-size:89%; color: #000000" width="100%">
-				<tr>	
-					<td colspan="11" style="text-align:center;">
-						Resultados Obtenidos
-					</td>
-				</tr>
-				<tr class="CobaltFieldCaptionTD">
-					<th width="10%" title="Examen"><h3>Examen</h3></th>
-					<th width="13%" title="Metodologia"><h3>Metodologia</h3></th>
-					<th width="6%" title="Fecha Realiza"><h3>Fecha Realizaci&oacute;n</h3></th>
-					<th width="6%" title="Fecha Resultado"><h3>Fecha Resultado</h3></th>
-					<th width="10%" title="Responsable"><h3>Responsable</h3></th>
-					<th  width="10%" title="Resultado"><h3>Resultado</h3></th>
-					<th  width="10%" title="lectura"><h3>Lectura</h3></th>
-					<th  width="10%" title="Interpreta"><h3>Interpretacion</h3></th>
-					<th  width="12%" title="Observacion"><h3>Observaci&oacute;n</h3></th>
-					<th  width="8%" title="Tabulador"><h3>Tabulador</h3></th>
-					<th  width="5%" title="Eliminar"><h3>Elim.</h3></th>
-					
-				</tr>
-			</table>
-                                </div>
-
-                                </td>
-                        </tr>	
-                        
-                        <tr><td colspan="4"><center>
-                        <div id="valresult" style="display:none; width: 70%;">
-                                <br/>
-                        <fieldset><legend>Validar Prueba <small> <?php echo $_GET['var2'];?></small></legend>
-                <table align="left" width="100%" border="0"cellpadding="2" >
-                <tr>
-                        <td width="20%"><b>Resultado Final:</b></td>
-                        <td colspan="1">
-                                <input type="text" id="v_resultfin" name="v_resultfin" style="width:100%">										
-                        </td>
-                        <td width="20%" align="right"><b>F. Emisión Resultado final:</b></td>
-                        <td colspan="1">
-                                 <input type="text" class="datepicker" name="d_resultfin" id="d_resultfin" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />	
-                        </td>
-                </tr>
-                <tr>
-                        <td><b>Observaci&oacute;n Final:</b></td>
-                        <td colspan="4">
-                                <input type="text" id="v_obseresultfin" name="v_obseresultfin" style="width:100%">										
-                        </td>
-                </tr>	
-                 <tr>
-                        <td><b>Valido Resultado:</b></td>
-                        <td colspan="4">
-                                <div id="divEncargado1">
+                    
+                </form>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+             <div id="divEncargado1" style="display:none">
                                     <select id="cmbEmpleadosfin" name="cmbEmpleadosfin" size="1">
                                         <option value="0" >--Seleccione Empleado--</option>
                                     </select>
-                                </div>										
-                        </td>
-                </tr>
-             <!--   <tr>
-                        <td><b>Validaci&oacute;n Prueba:</b></td>
-                        <td colspan="4">
-                                <select id="i_estresultfin" name="i_estresultfin" style="width:100%"> 
-                                        <option value="1" selected><b><i>Aceptada</i></b></option> 
-                                        <option value="0"><b><i>Rechazada</i></b></option> 
-                        </select>										
-                        </td>
-                </tr>
--->
-               
-                </table>
-                </fieldset>
-
-                         
-                <p><center><br />
-                                <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="enviarDatosResult(1,0);" >Guardar</button>
-                                <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="cancelaResult();">Cancelar</button>
-                                <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="VerResultados();">Vista Previa</button>
-                                
-                                </center></p>
-                        </div>
-                            </center>
-                </td></tr>
-                        
-                 <tr>    
-                     <td colspan="6" align="center">
-                         <div id="responde" style="display: none">
-	<center>
-                         <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="ValidarResultado();" title="Validar y Finalizar">Validar</button>
-	<button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="enviarDatosResult(0,0);" title="Guardar sin validar">Guardar</button>
-       
-	<a href='/url/analitica/analisis/consultar/buscar.php' style="cursor:pointer; text-decoration:none">
-            <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="enviarDatosResult(0,0);" title="Guardar sin validar">Ver Resultados</button>
-							<button type="button" align="center" class="fg-button ui-state-default ui-corner-all" title="Regresar a Inicio">Regresar</button></a>
-	
-	</center>  
-                          </div>
-                          
-                         
-                         
-                     </td>
-                     
-                 </tr>
-                        
-                        
-                        
-                        
-                  </table>
-                </form>
-            </div>
+                                </div>
         </td>
     </tr>
     <tr>
@@ -512,6 +427,15 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
         </td>
     </tr>
    </table>
+  <?php
+}
+else{
+ echo '<center><br><br><h1><img src="../../../Imagenes/warning.png" valign="middle"/>'
+            . 'Los resultados de los examenes de la persona '.$rowpa['nombre'].', en esta área ya fueron ingresados.</h1> ';
+            echo " <button type='submit' class='fg-button ui-state-default ui-corner-all' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' />Cerrar</button></center>";
+               
+}
+?>
  <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>

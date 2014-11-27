@@ -1,3 +1,8 @@
+<?php session_start();
+$usuario=$_SESSION['Correlativo'];
+$lugar=$_SESSION['Lugar'];
+$area=$_SESSION['Idarea'];
+?>
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
@@ -79,156 +84,7 @@ include_once("clsConsultaMuestrasRechazadas.php");
 
 $objdatos = new clsConsultaMuestrasRechazadas;
 
-/*$query=/*"SELECT sec_solicitudestudios.IdSolicitudEstudio,lab_recepcionmuestra.NumeroMuestra,sec_solicitudestudios.IdNumeroExp,lab_examenes.IdExamen,
-		lab_examenes.NombreExamen,Indicacion,DATE_FORMAT(lab_recepcionmuestra.FechaRecepcion,'%e/ %m / %Y') AS 	
-		FechaRecepcion,sec_detallesolicitudestudios.observacion,mnt_subservicio.NombreSubServicio,mnt_servicio.NombreServicio,
-		mnt_establecimiento.Nombre,CONCAT_WS(' ',PrimerApellido,NULL,SegundoApellido,',',PrimerNombre,NULL,SegundoNombre) AS NombrePaciente 
-	FROM sec_detallesolicitudestudios  
-	INNER JOIN sec_solicitudestudios ON sec_detallesolicitudestudios.IdSolicitudEstudio=sec_solicitudestudios.IdSolicitudEstudio 
-	INNER JOIN lab_recepcionmuestra  ON sec_detallesolicitudestudios.IdSolicitudEstudio=lab_recepcionmuestra.IdSolicitudEstudio 
-	INNER JOIN lab_examenes  ON sec_detallesolicitudestudios.IdExamen= lab_examenes.IdExamen
-	INNER JOIN lab_areas 	 ON  lab_examenes.IdArea=lab_areas.IdArea
-	INNER JOIN sec_historial_clinico ON sec_solicitudestudios.IdHistorialClinico=sec_historial_clinico.IdHistorialClinico
-	INNER JOIN mnt_subservicio ON sec_historial_clinico.IdSubServicio=mnt_subservicio.IdSubServicio
-	INNER JOIN mnt_servicio ON mnt_subservicio.IdServicio=mnt_servicio.IdServicio
-	INNER JOIN mnt_establecimiento ON sec_historial_clinico.IdEstablecimiento=mnt_establecimiento.IdEstablecimiento
-	INNER JOIN mnt_expediente ON sec_historial_clinico.IdNumeroExp=mnt_expediente.IdNumeroExp
-	INNER JOIN mnt_datospaciente ON mnt_expediente.IdPaciente=mnt_datospaciente.IdPaciente
-	WHERE estadodetalle='RM' AND lab_recepcionmuestra.FechaRecepcion<=CURRENT_DATE AND";*/
-      /* " WITH tbl_servicio AS (
-                        SELECT t02.id,
-                            CASE WHEN t02.nombre_ambiente IS NOT NULL THEN  	
-                                CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
-                                     ELSE t02.nombre_ambiente
-                                END
-                            ELSE
-                                CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'--> ' || t01.nombre
-                                     WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
-                                END
-                            END AS servicio 
-                        FROM  ctl_atencion 				    t01 
-                        INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
-                        INNER JOIN mnt_area_mod_estab 	   	    t03 ON (t03.id = t02.id_area_mod_estab)
-                        LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
-                        LEFT  JOIN mnt_servicio_externo 		    t05 ON (t05.id = t04.id_servicio_externo)
-                        WHERE id_area_atencion = 3 and t02.id_establecimiento = 49
-                        ORDER BY 2)
-                    SELECT sdses.id, 
-                    sse.id_expediente, 
-                    lcee.id,
-                    nombre_examen, 
-                    casd.id, 
-                    casd.nombrearea, 
-                    sdses.observacion, 
-                    tser.servicio,
-                    ce.nombre,
-                    case WHEN id_expediente_referido is  null then 
-                                                      ( mex.numero)
-                                                       else (mer.numero) end as numero,
-                    TO_CHAR(lrc.fecharecepcion, 'DD/MM/YYYY'),
-                    (SELECT nombre FROM ctl_establecimiento WHERE id = sse.id_establecimiento_externo) AS nombre_establecimiento,
-                    lrc.numeromuestra, 
-                    case WHEN id_expediente_referido is  null  THEN 
-                            CONCAT_WS(' ', pa.primer_nombre, NULL,pa.segundo_nombre,NULL,pa.primer_apellido,NULL,pa.segundo_apellido)
-                            else  
-                              CONCAT_WS(' ', par.primer_nombre, NULL,par.segundo_nombre,NULL,par.primer_apellido,NULL,par.segundo_apellido)end as paciente,
-
-                    CASE sse.idtiposolicitud WHEN 1 THEN 'URGENTE' 
-                                             WHEN 2 THEN 'NORMAL' 
-                                             END AS prioridad,
-                    t01.nombre,
-                    sse.id,
-                    lcee.codigo_examen
-                    from ctl_area_servicio_diagnostico casd 
-                    INNER JOIN mnt_area_examen_establecimiento mnt4 	ON (mnt4.id_area_servicio_diagnostico=casd.id) 
-                    INNER JOIN lab_conf_examen_estab lcee 			ON (mnt4.id=lcee.idexamen) 
-                    INNER JOIN sec_detallesolicitudestudios sdses 		ON (sdses.id_conf_examen_estab=lcee.id) 
-                    LEFT  JOIN sec_solicitudestudios sse 			ON (sdses.idsolicitudestudio=sse.id) 
-                    INNER JOIN lab_recepcionmuestra lrc 			ON (sse.id= lrc.idsolicitudestudio) 
-                    LEFT JOIN sec_historial_clinico shc 			ON (sse.id_historial_clinico=shc.id) 
-                    INNER JOIN mnt_aten_area_mod_estab mnt3 			ON (shc.idsubservicio=mnt3.id) 
-                    INNER JOIN mnt_area_mod_estab m1 				ON (mnt3.id_area_mod_estab=m1.id) 
-                    INNER JOIN ctl_atencion ctl 				ON (mnt3.id_atencion=ctl.id)
-                    INNER JOIN tbl_servicio tser                                ON (tser.id = mnt3.id AND tser.servicio IS NOT NULL)
-                    INNER JOIN ctl_establecimiento ce 				ON (shc.idestablecimiento=ce.id) 
-                    INNER JOIN ctl_area_atencion t01 				ON ( m1.id_area_atencion=t01.id) 
-                    LEFT  JOIN mnt_dato_referencia  mdr                         on (sse.id_dato_referencia=mdr.id)
-                    LEFT JOIN mnt_expediente_referido mer       		on (mdr.id_expediente_referido=mer.id)
-                    LEFT JOIN mnt_paciente_referido par   			ON (mer.id_referido=par.id) 
-                    INNER JOIN mnt_expediente mex 				ON (shc.id_numero_expediente=mex.id)
-                    INNER JOIN mnt_paciente pa 					ON (mex.id_paciente=pa.id)
-                    
-                    WHERE  estadodetalle=(SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = 'RM')	AND";
-
-		$ban=0;
-			//VERIFICANDO LOS POST ENVIADOS
-	// $estadodetalle='D';  //estado en que la muestra ha sido tomada
-	if (!empty($_GET['var4']))
-		{ $query .= " shc.idestablecimiento ='".$_GET['var4']."' AND";}	
-			
-		if (!empty($_GET['var5']))
-		{ $query .= " t01.id ='".$_GET['var5']."' AND";}
-		
-		if (!empty($_GET['var6']))
-		{ $query .= " mnt3.id ='".$_GET['var6']."' AND";}
-	
-		if (!empty($_GET['var1']))
-		{ $query .= " id_area_servicio_diagnostico='".$_GET['var1']."' AND";}
- 
-		if (!empty($_GET['var7']))
-		{ $query .= " lcee.id='".$_GET['var7']."' AND";}
-                
-                
-		
-		if (!empty($_GET['var2']))
-		//{ $query .= " sec_solicitudestudios.IdNumeroExp='".$_GET['var2']."' AND";}
-                
-                { $query .= " case WHEN id_expediente_referido is null then    
-                                (mex.numero='".$_GET['var2']."') ELSE
-                                    
-                                (mer.numero='".$_GET['var2']."') END AND";}
-		
-		if (!empty($_GET['var3']))
-		{$Nfecha=explode("/",$_GET['var3']);
-		//print_r($Nfecha);
-                $Nfecharecep=$Nfecha[2]."-".$Nfecha[1]."-".$Nfecha[0]; 
-		$query .= " lrc.fecharecepcion='".$Nfecharecep."' AND";}
-                
-                if (!empty($_GET['var8'])){
-                      { $query .= " case WHEN id_expediente_referido is null then    
-                                (pa.primer_nombre ilike '%".$_GET['var8']."%') ELSE
-                                    
-                                (par.primer_nombre ilike '%".$_GET['var8']."%') END AND";}
-                    
-                }
-                
-                if (!empty($_GET['var9'])){
-                    
-                    { $query .= " case WHEN id_expediente_referido is null then    
-                                (pa.segundo_nombre ilike '%".$_GET['var9']."%') ELSE
-                                    
-                                (par.segundo_nombre ilike '%".$_GET['var9']."%') END AND";}
-                }
-                
-                if (!empty($_GET['var10'])){
-                    
-                    { $query .= " case WHEN id_expediente_referido is null then    
-                                (pa.primer_apellido ilike '%".$_GET['var10']."%') ELSE
-                                    
-                                (par.primer_apellido ilike '%".$_GET['var10']."%') END AND";}
-                }
-                
-                if(!empty($_GET['var11'])){
-                    
-                     { $query .= " case WHEN id_expediente_referido is null then    
-                                (pa.segundo_apellido ilike '%".$_GET['var11']."%') ELSE
-                                    
-                                (par.segundo_apellido ilike '%".$_GET['var11']."%') END AND";}
-                }
-		
-		/*if (!empty($_GET['var3']))
-		{ $query .= " lab_recepcionmuestra.FechaRecepcion='".$_GET['var3']."' AND";}*/
-$cond1="";
+        $cond1="";
         $cond2="";
         $query="";
         $query2="";
@@ -327,7 +183,7 @@ $cond1="";
                     INNER JOIN mnt_area_mod_estab           t03 ON (t03.id = t02.id_area_mod_estab)
                     LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
                     LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
-                    WHERE $where_with t02.id_establecimiento = 49
+                    WHERE $where_with t02.id_establecimiento = $lugar
                     ORDER BY 2)
             
                     SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
@@ -378,7 +234,7 @@ $cond1="";
             INNER JOIN ctl_sexo t19                             ON (t19.id = t07.id_sexo)
             INNER JOIN tbl_servicio t20                         ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
             WHERE (t16.idestado = 'RM')  
-            
+            AND t02.id_establecimiento = $lugar
             AND $cond1
         
             UNION
@@ -430,24 +286,9 @@ $cond1="";
             INNER JOIN ctl_examen_servicio_diagnostico t18          ON (t18.id = t05.id_examen_servicio_diagnostico) 
             INNER JOIN ctl_sexo t19                                 ON (t19.id = t07.id_sexo)
             WHERE (t16.idestado = 'RM') 
-            
-                AND $cond2"; 
-                  
+            AND t02.id_establecimiento = $lugar 
+                AND $cond2";  
 
-
-///////////////////
-		
-		
-	
-		
-		//if ($ban==0){
-			
-				//$query = substr($query ,0,strlen($query)-3);
-				//$query_search = $query. "ORDER BY lrc.fecharecepcion DESC";//" order by NumeroMuestra";
-			
-		//}
-	//echo $query_search;
-	
 	?>
  <table width="100%" border="0" align='center'>
 			<tr>

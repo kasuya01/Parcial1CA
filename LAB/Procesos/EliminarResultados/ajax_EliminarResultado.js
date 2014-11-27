@@ -201,23 +201,24 @@ function BuscarDatos()
 	}
 }
 
-function EliminarDatos(iddetalle,idsolicitud,idplantilla,idexpediente)
+function EliminarDatos(iddetalle,idsolicitud,idexpediente,idplantilla)
 {
 	ajax=objetoAjax();
 	opcion=4;
 		pag="";
+               // alert(iddetalle+"-"+idsolicitud+"-"+idexpediente+"-"+idplantilla);
 		// especialidad=0;
 		// fechaconsulta="";
 	//alert(idplantilla);
-        var eliminar = confirm("De verdad desea eliminar este dato?")
+        var eliminar = confirm("De verdad desea eliminar este dato?");
 	if ( eliminar ) {
             ajax=objetoAjax();
             ajax.open("POST", "ctrEliminarResultado.php",true);
                       //muy importante este encabezado ya que hacemos uso de un formulario
             ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                       //enviando los valores
-            //alert(iddetalle+"*solic"+idsolicitud);
-            ajax.send("opcion="+opcion+"&iddetalle="+iddetalle+"&idsolicitud="+idsolicitud+"&idplantilla="+idplantilla+"&idexpediente="+idexpediente+"&pag="+pag);
+            //alert(iddetalle+"-"+idsolicitud+"-"+idplantilla);
+            ajax.send("opcion="+opcion+"&iddetalle="+iddetalle+"&idsolicitud="+idsolicitud+"&idexpediente="+idexpediente+"&pag="+pag+"&idplantilla="+idplantilla);
             ajax.onreadystatechange=function() 
             {
                     if (ajax.readyState==4) 
@@ -232,7 +233,7 @@ function EliminarDatos(iddetalle,idsolicitud,idplantilla,idexpediente)
 }
 
 
- function CargarDatosFormularioSolicitud(idexpediente,idsolicitud)
+function CargarDatosFormularioSolicitud(idexpediente,idsolicitud)
 {
 	ajax=objetoAjax();
 	opcion=3;
@@ -282,11 +283,11 @@ function Cerrar(){
 }
 
 function ImprimirSolicitud(){
-idexpediente=document.frmDatos.idexpediente.value;
-idsolicitud=document.frmDatos.idsolicitud.value;
-		
-ventana_secundaria = window.open("SolicitudEstudiosPaciente.php?var1="+idexpediente+
-				 "&var2="+idsolicitud,"solicitud",							"width=800,height=700,menubar=no,location=no,scrollbars=yes") 
+    idexpediente=document.frmDatos.idexpediente.value;
+    idsolicitud=document.frmDatos.idsolicitud.value;
+
+    ventana_secundaria = window.open("SolicitudEstudiosPaciente.php?var1="+idexpediente+
+                                     "&var2="+idsolicitud,"solicitud",							"width=800,height=700,menubar=no,location=no,scrollbars=yes") 
 }
 
 function Imprimir1(){

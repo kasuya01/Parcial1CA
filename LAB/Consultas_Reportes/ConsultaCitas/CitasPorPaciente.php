@@ -4,6 +4,8 @@ $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 $nivel=$_SESSION['NIVEL'];
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
 include_once("clsCitasPorPaciente.php"); 
 //consulta los datos por su id
 $obj = new clsCitasPorPaciente;
@@ -22,6 +24,7 @@ $nomtipo=$row[2];
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 <title>Cosulta Citas Programadas</title>
+<?php include_once $ROOT_PATH."/public/js.php";?>
 <script language="JavaScript" type="text/javascript" src="ajax_CitasPorPaciente.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
@@ -36,13 +39,30 @@ $nomtipo=$row[2];
 <script language="JavaScript" type="text/javascript">
 function MostrarBusqueda()
 {
-	 if ((document.getElementById('txtexpediente').value == "") && (document.getElementById('txtfecha').value == "")&&(document.getElementById('PrimerNombre').value == "")&&(document.getElementById('SegundoNombre').value == "")&&(document.getElementById('PrimerApellido').value == "")&&(document.getElementById('SegundoApellido').value == "") && (document.getElementById('cmbEstablecimiento').value ==0) && (document.getElementById('CmbServicio').value == 0) && (document.getElementById('cmbSubServ').value ==0)) {
+	 if ((document.getElementById('txtexpediente').value == "") 
+                 && (document.getElementById('txtfecharecep').value == "")
+                 &&(document.getElementById('PrimerNombre').value == "")
+                 &&(document.getElementById('SegundoNombre').value == "")
+                 &&(document.getElementById('PrimerApellido').value == "")
+                 &&(document.getElementById('SegundoApellido').value == "")
+                 && (document.getElementById('cmbEstablecimiento').value ==0)
+                 && (document.getElementById('CmbServicio').value == 0)
+                 && (document.getElementById('cmbSubServ').value ==0)) {
 	   alert("Ingrese un parametro de busqueda");
 	 //  document.getElementById('txtexpediente').focus();
 	   }
-	 else{	 
-	   BuscarDatos();
-	   }
+	/* else{	 
+	   BuscarDatoscitas();
+	   }*/
+        else {
+                        jQuery('#divBusqueda').empty();
+                        jQuery('#divBusqueda').append('<center><img id="wait" src="<?php echo $base_url; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" style="color:#888888;font-weight: bold;">Buscando...</div></center>');
+                        
+                        setTimeout(function() {
+                            jQuery('#divBusqueda').empty();
+                            BuscarDatoscitas();
+                        }, 500);
+                    }
 }
 
 function ImprimirExamenes()
@@ -210,8 +230,9 @@ Consulta de Citas por Paciente</strong></h3></td>
 		<td class="StormyWeatherDataTD" >
 			<input class="MailboxInput" maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" ></td>
 	</tr>
-
- 	<tr>
+  <tr>
+	
+        
 		<td  class="StormyWeatherDataTD" colspan="4" align="right">
 			<input type="button" id="btnbuscar" value="Buscar Citas" onClick="MostrarBusqueda();">
 			<input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('CitasPorPaciente.php')">
@@ -222,7 +243,7 @@ Consulta de Citas por Paciente</strong></h3></td>
 <script type="text/javascript">
 		Calendar.setup(
 		    {
-		      inputField  : "txtfecha",         // el ID texto 
+		      inputField  : "txtfecharecep",         // el ID texto 
 		      ifFormat    : "%d/%m/%Y",    // formato de la fecha
 		      button      : "trigger"       // el ID del boton			  	  
 		    }

@@ -20,7 +20,8 @@ $cantidad=$_GET['var11'];
 $idtarjeta=$_GET['var12'];
 $nombrearea=$_GET['var13'];
 $establecimiento=$_GET['var14'];
-
+$idobservacion=$_GET['var15'];
+//echo $idobservacion;
 $Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
 $row_estab = pg_fetch_array($Consulta_Estab);
 
@@ -82,38 +83,40 @@ function calc_edad()
 	$row_fecha=pg_fetch_array($FechaRes);
 
 
-  $posele=0;
-  $ban=0;
+        $posele=0;
+        $ban=0;
 	//$datos_empleado=$obj->DatosEmpleado($idempleado);
 	//$row_empleado = mysql_fetch_array($datos_empleado);
 	//$datos_observacion=$obj->LeerObservacion($observacion);
 	//$row_observacion = mysql_fetch_array($datos_observacion);
-$nombre=$row_area['nombrearea'];
+    $nombre=$row_area['nombrearea'];
 ?>
 	<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE' cellspacing="0">
             <tr>
-                <td colspan="1" align="left" width="20%"><img id="Image1" style="WIDTH: 80px; HEIGHT: 55px" height="86" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
-                <td align="center" colspan="4" width="60%" ><span class="Estilo6">
+                <td colspan="1" align="left" width="20%"><img id="Image1" style="width: auto; height: 55px;" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
+                <td align="center" colspan="4" width="60%" ><span class="Estilo5">
                     <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
                     <p><strong><?php echo $row_estab['nombre'] ?></strong></p>
-                    <p><strong>&Aacute;REA DE <?php echo htmlentities($nombrearea)?> </strong></p></span>
+                    <p><strong>&Aacute;REA DE <?php echo htmlentities($row_area['nombrearea'])?> </strong></p></span>
                 </td>
-                <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
+                <td colspan="1" align="right" width="20%"><img id="Image3" style="width: auto; height: 55px;" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
             </tr>
             <tr>
 		<td colspan='6'>&nbsp;</td>
             </tr>
             <tr>
 		<td colspan='1' class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
-		<td colspan='2' class="Estilo6"><?php echo $establecimiento?></td>
+		<td colspan='2' class="Estilo6"><?php echo $row_generales['estabext']?></td>
 		<td colspan='1' class="Estilo5"><strong>Fecha Resultado:</strong></td>
 	  	<td colspan='2' class="Estilo6" colspan='1'><?php echo $row_fecha['fecharesultado']?></td>
 			
             </tr>
 
             <tr>
-            	<td colspan='1' class="Estilo5" ><strong>NEC</strong></td>
-              	<td colspan='5' class="Estilo7" ><?php echo $row_generales['numero']?></td>
+            	<td colspan='1' class="Estilo5" ><strong>Expediente:</strong></td>
+              	<td colspan='2' class="Estilo7" ><?php echo $row_generales['numero']?></td>
+                <td colspan='1' class="Estilo5" ><strong>Fecha Recepción:</strong></td>
+                <td colspan='2' class="Estilo6" ><?php echo $row_generales['fecharecep']?></td>
             </tr>
             <tr>
 		<td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
@@ -149,6 +152,10 @@ $nombre=$row_area['nombrearea'];
                 <td colspan='2' class="Estilo5"><?php echo "Positivo"?></td>
            </tr>
            <tr>
+                <td colspan='1' class="Estilo5"><strong>Observación:</strong></td>
+                <td colspan='5' class="Estilo5"><?php echo $observacion ?></td>
+           </tr>
+           <tr>
                 <td colspan='1' class="Estilo5"><strong>Organismo:</strong></td>
                 <td colspan='5' class="Estilo5"><?php echo htmlentities($row_nombrebacteria['bacteria']); ?></td>
            </tr>
@@ -163,9 +170,10 @@ $nombre=$row_area['nombrearea'];
                 <td colspan='6'>
                     <table width='60%' border='0' align='left' class='StormyWeatherFormTABLE' cellspacing="0">
 
-                        <tr><td colspan='4'>&nbsp;</td></tr>
                         <tr>
-                           <td colspan='4'>
+                            <td colspan='4'>&nbsp;</td></tr>
+                        <tr>
+                            <td colspan='4'>
                                 <table width="100%" border="0" align="left" cellspacing="0" >
                                     <tr>
                                         <td colspan='1' class="Estilo5"><strong>ANTIBIOTICO</strong></td>

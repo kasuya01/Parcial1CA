@@ -12,7 +12,7 @@
 		<menu labelText="PROCESOS">
                         <item labelText="Ingresar Solicitud" url="../../../LAB/Procesos/Recepcion/RecepcionLab.php"/>
 			<item labelText="Recepción de Solicitudes" url="../../../LAB/Procesos/RecepcionSolicitud/Proc_RecepcionSolicitud.php"/>
-			<!--<item labelText="Recepción de Solicitudes por Área" url="../../../LAB/Procesos/SolicitudesPorArea/Proc_SolicitudesPorArea.php"/>-->
+			<!--<item labelText="Recepción de Solicitudes en Área" url="../../../LAB/Procesos/SolicitudesPorArea/Proc_SolicitudesPorArea.php"/>-->
 			<item labelText="Ingreso de Resultados" url="../../../LAB/Procesos/IngresoResultados/Proc_SolicitudesProcesadas.php"/>
 			<!--item labelText="Ingreso de Resultados Pendientes" url="../../../LAB/Procesos/SolicitudesPendientes/Proc_SolicitudesProcesadasPendientes.php"/-->
 			<!--<item labelText="Muestras Pendientes de Procesar" url="../../../LAB/Procesos/MuestrasPendientes/Proc_MuestrasPendientes.php"/>-->	 
@@ -36,7 +36,7 @@
 			</menu>	
 			<menu labelText="EXÁMENES">
 				<item labelText="Exámenes" url="../../Mantenimientos/Lab_Examenes/MntExamenes.php"/>
-				<item labelText="Estándares de Laboratorio" url="../../Mantenimientos/Lab_CodigosEstandar/MntCodigosEstandar.php"/>
+				<!--<item labelText="Estándares de Laboratorio" url="../../Mantenimientos/Lab_CodigosEstandar/MntCodigosEstandar.php"/>-->
 				<item labelText="Indicaciones por Examen" url="../../Mantenimientos/Lab_IndicacionesPorExamen/MntIndicacionesPorExamen.php"/>
 				<item labelText="Procedimientos de Exámenes (Plantilla E)" url="../../Mantenimientos/Lab_Procedimientos/MntProcedimientosExamen.php"/>
 				<item labelText="Datos Fijos de resultados de Exámenes (Plantilla A)" url="../../Mantenimientos/MntDatosFijosResultadosExamen/MntDatosFijosResultadosExamen.php"/>

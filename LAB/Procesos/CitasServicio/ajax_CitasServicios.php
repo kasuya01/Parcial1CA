@@ -8,6 +8,7 @@ $citaserv = new clsCitasServicio;
 $con = new ConexionBD;
 
 $IdUsuarioReg=$_SESSION['iduser'];
+//$lugar = $_SESSION['Lugar'];
 	if(isset($_POST['Proceso'])){
 		$Proceso = $_POST['Proceso'];
 	}else{
@@ -15,6 +16,8 @@ $IdUsuarioReg=$_SESSION['iduser'];
 	}
 $IdEstablecimiento = $_SESSION['Lugar'];
 $fechareg = $citaserv->FechaServer();
+$idexp=$_POST['id_exp'];
+//echo $idexp.' - '.$IdEstablecimiento.' - '.$_POST['Proceso'];
 
 switch($Proceso){
 	
@@ -23,7 +26,7 @@ switch($Proceso){
 	case 'busquedaexp'://busqueda de los datos del paciente en base al numero de expediente, ya que al otorgar la cita del servicio de apoyo TODO paciente debe poseer un numero de expediente clinico
 	$rslt='';
 	
-	$dtSub=$citaserv->ValidarExpediente($_POST['id_exp']);
+	$dtSub=$citaserv->ValidarExpediente($idexp, $IdEstablecimiento);
 			
 	$rslt = "<table border='1' cellpadding='4' class='StormyWeatherFormTABLE'>".
 					"<tr>".
@@ -32,25 +35,22 @@ switch($Proceso){
 					"</tr>";
 	
 								
-	while ($row =mysql_fetch_array($dtSub)){
+	while ($row =pg_fetch_array($dtSub)){
 					
-		$rslt .="<tr>".
-				"<td class='StormyWeatherDataTD' align='center'>".
-				'<a class="MailboxDataLink" href="javascript: mostrardetalle(\''.$row[0].'\',\''.$IdEstablecimiento.'\')">'.
-//'<a class="StormyWeatherDataLink" href="javascript: IngresoExamenes()">'.
-				''.$row[0].'</a></td>'.
-				"<td class='StormyWeatherDataTD'> $row[1] </td>".
-				"</tr>";
+		$rslt .="<tr><td class='StormyWeatherDataTD' align='center'>";
+                $rslt .="<a class=\"MailboxDataLink\" href=\"javascript:mostrardetalle(".$row['id'].", $IdEstablecimiento)\">".$row['numero']."</a></td>";
+		$rslt .="<td class='StormyWeatherDataTD'>".$row['nombre']."</td></tr>";
 	}
-
+        
 	echo $rslt;
+	//echo $idexp.' - '.$IdEstablecimiento;
 	break;
 	
 	case 'mostrardetalle'://genera el detalle de la(s) solicitud(es) que tiene asignado un paciente en base a su seguimiento clinico
 	$rslt='';
 	
 	$dtSub=$citaserv->MostrarDetalleSolicitudes($_POST['id_exp'],$IdEstablecimiento);
-	$totalRegs= mysql_numrows($dtSub);
+	$totalRegs= pg_num_rows($dtSub);
 	
 	if($totalRegs > 0){	 
 	
@@ -63,14 +63,14 @@ switch($Proceso){
 			'<td nowrap class="StormyWeatherFieldCaptionTD"><strong>Dar Cita del Servicio de Apoyo</strong></td>'.
 			'</tr>';
 									
-		while ($row =mysql_fetch_array($dtSub)){
+		while ($row =pg_fetch_array($dtSub)){
 					
 			$rslt.='<tr>'.
-					'<td class="StormyWeatherDataTD" align="center"> '.$row[0].' </td>'.
-					'<td class="StormyWeatherDataTD" align="center"> '.$row[2].' </td>'.
+					'<td class="StormyWeatherDataTD" align="center"> '.$row['numero'].' </td>'.
+					'<td class="StormyWeatherDataTD" align="center"> '.$row['fecha_solicitud'].' </td>'.
 					'<td class="StormyWeatherDataTD" align="center">'.
-					'<a class="StormyWeatherDataLink" href="javascript: darcita(\''.$row[1].'\',\''.$row[4].'\',\''.$_POST['id_exp'].'\')">'.
-					'&nbsp;'.$row[3].'</a></td>'.
+					'<a class="StormyWeatherDataLink" href="javascript:darcita('.$row[2].',\''.$row[9].'\','.$_POST['id_exp'].')">'.
+					'&nbsp;'.$row['nombre'].'</a></td>'.
 					'</tr>'.
 					'<tr>';
 		}
@@ -125,7 +125,7 @@ switch($Proceso){
 				<tr><td colspan="5" height="5"><hr></td></tr>';
 				
 				
-				while ($row=mysql_fetch_array($dtSub)){
+				while ($row=pg_fetch_array($dtSub)){
 					$rslt.='<tr align="left">'.
 								'<td>'.htmlentities($row["NombreExam"]).'</td>';
 				}

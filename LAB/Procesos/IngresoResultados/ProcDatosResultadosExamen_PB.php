@@ -13,6 +13,8 @@ $area    = $_SESSION['Idarea'];
     <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script> 
     <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
     <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+    <link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
     <script language="JavaScript" >
         function Guardar() {
             GuardarResultadosPlantillaB();
@@ -61,6 +63,8 @@ $area    = $_SESSION['Idarea'];
             var getVars = query.split(/&/);
             
             for ( i = 0; i < getVars.length; i++) {
+                //console.log('getVars[i].substr(0,5) == var4=' + getVars[i].substr(0,5) == 'var4=');
+                //console.log('getVars[i].substr(5)' + getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'var1=' )//loops through this array and extract each name and value
                     nec = getVars[i].substr(5);
                 if ( getVars[i].substr(0,5) == 'var2=' )
@@ -68,7 +72,7 @@ $area    = $_SESSION['Idarea'];
                 if ( getVars[i].substr(0,5) == 'var3=' )
                    codigoex = getVars[i].substr(5);
                 if ( getVars[i].substr(0,5) == 'var4=' )
-                   area = getVars[i].substr(5);
+                   area = getVars[i].substr(5); 
                 if ( getVars[i].substr(0,5) == 'var5=' )
                    iddetallesol = getVars[i].substr(5);
                 if ( getVars[i].substr(0,5) == 'var6=' )
@@ -105,8 +109,8 @@ $area    = $_SESSION['Idarea'];
             document.frmnuevo.txtiddetalle.value=iddetallesol;
             document.frmnuevo.txtidexamen.value=codigoex;
             document.frmnuevo.txtidrecepcion.value=idrecepcionsol;
-            document.frmnuevo.txtnombrearea.value=nombrearea;
-
+            //document.frmnuevo.txtnombrearea.value=nombrearea;
+            nombrearea=escape(document.frmnuevo.txtnombrearea.value=nombrearea)
             LlenarComboResponsable(area);
 
         }
@@ -117,19 +121,19 @@ $area    = $_SESSION['Idarea'];
         $Pac         = $_GET['var7'];
         $IdEstandar  = $_GET['var16'];
         $IdHistorial = $_GET['var17'];
-        $nombreEstab = $_GET['var17'];
+       // $idarea      = $_GET['idarea'];
+       // echo $idarea."-".$_GET['var3'];
+      //  $nombreEstab = $_GET['var17'];
+       
         if($db->conectar()==true) {
-            $condatos = "SELECT t07.peso,
-                                t07.talla,
-                                t06.diagnostico,
-                                --CONCAT_WS(' ',t03.primer_nombre,t03.segundo_nombre,t03.tercer_nombre,t03.primer_apellido,t03.segundo_apellido,t03.apellido_casada) AS conocidopor
-                         FROM sec_historial_clinico               t01
-                         INNER JOIN mnt_expediente                t02 ON (t02.id = t01.id_numero_expediente)
-                         INNER JOIN mnt_paciente                  t03 ON (t03.id = t02.id_paciente)
-                         LEFT OUTER JOIN sec_diagnosticospaciente t04 ON (t01.id = t04.idhistorialclinico)
-                         LEFT OUTER JOIN mnt_cie10                t06 ON (t06.id = t04.iddiagnostico1)
-                         LEFT OUTER JOIN sec_examenfisico         t07 ON (t01.id = t07.idhistorialclinico)
-                         WHERE t01.id = $IdHistorial AND t01.idestablecimiento = $lugar";
+           $condatos = "SELECT t07.peso,t07.talla,t06.sct_name_es AS diagnostico,especificacion,conocido_por
+                        FROM sec_historial_clinico               t01
+                        INNER JOIN mnt_expediente                t02 ON (t02.id = t01.id_numero_expediente)
+                        INNER JOIN mnt_paciente                  t03 ON (t03.id = t02.id_paciente)
+                        LEFT OUTER JOIN sec_diagnostico_paciente t04 ON (t01.id = t04.id_historial_clinico)
+                        LEFT OUTER JOIN mnt_snomed_cie10         t06 ON (t06.id = t04.id_snomed)
+                        LEFT OUTER JOIN sec_signos_vitales       t07 ON (t01.id = t07.id_historial_clinico)
+                        WHERE t01.id = $IdHistorial AND t01.idestablecimiento = $lugar";
 
             $resultado = pg_query($condatos);
             $rows = pg_fetch_array($resultado);
@@ -137,7 +141,8 @@ $area    = $_SESSION['Idarea'];
             $Peso=$rows['peso'];
             $Talla=$rows['talla'];
             $Diagnostico=$rows['diagnostico'];
-            //$ConocidoPor=$rows['conocidopor'];
+            $Especificacion=$rows['especificacion'];
+            $ConocidoPor=$rows['conocido_por'];
         }
         ?>
 </script>
@@ -166,7 +171,7 @@ $area    = $_SESSION['Idarea'];
                                     <input type="hidden" name="txtiddetalle" id="txtiddetalle" />
                                     <input type="hidden" name="txtidexamen" id="txtidexamen" />
                                     <input type="hidden" name="txtidrecepcion" id="txtidrecepcion" />
-                                    <input type="hidden" name="txtarea" id="txtarea"  />
+                                    <input type="hidden" name="txtarea" id="txtarea" value="<?php echo $_GET['var4']?>"/>
                                     <input type="hidden" name="txtprocedencia" id="txtprocedencia" />
                                     <input type="hidden" name="txtorigen" id="txtorigen" />
                                     <input type="hidden" name="txtEstablecimiento" id="txtEstablecimiento" value="<?php echo $_GET['var18']?>" />
@@ -174,6 +179,7 @@ $area    = $_SESSION['Idarea'];
                                     <input type="hidden" name="txtSexo" id="txtSexo" value="<?php echo $_GET['var15']?>" />
                                     <input type="hidden" name="txtIdEstandar" id="txtIdEstandar" value="<?php echo $_GET['var16']?>" />
                                     <input type="hidden" name="txtIdHistorial" id="txtIdHistorial" value="<?php echo $_GET['var17']?>" />
+                                    
                                 </td>
                             </tr>
                             <tr>
@@ -191,6 +197,12 @@ $area    = $_SESSION['Idarea'];
                             <tr>
                                 <td class="StormyWeatherFieldCaptionTD">Diagnostico</td>
                                 <td colspan="3" class="StormyWeatherDataTD"><?php echo htmlentities($Diagnostico);?>
+                                    <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="StormyWeatherFieldCaptionTD">Datos Clinicos</td>
+                                <td colspan="3" class="StormyWeatherDataTD"><?php echo $Especificacion;?>
                                     <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
                                 </td>
                             </tr>
@@ -231,18 +243,29 @@ $area    = $_SESSION['Idarea'];
                             </tr>
                             <tr>
                                 <td class="StormyWeatherFieldCaptionTD">Observaci&oacute;n </td>
-                                <td class="StormyWeatherDataTD"colspan="4">
+                                <td class="StormyWeatherDataTD" colspan="4">
                                     <textarea name="txtobservacion" cols="60" id="txtobservacion"></textarea>
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="StormyWeatherFieldCaptionTD">Fecha y hora inicio Proceso</td>
+                                <td class="StormyWeatherDataTD">
+                                        <input type="text" class="datepicker" id="txtresultrealiza"  name="txtresultrealiza" size="15">										
+                                </td>
+                            
+                                <td class="StormyWeatherFieldCaptionTD">Fecha Resultado</td>
+                                <td class="StormyWeatherDataTD">
+                                        <input type="text" class="datepicker" name="txtresultfin" id="txtresultfin" size="15"  value="<?php echo date("Y-m-d h:m"); ?>"  />	
+                                </td>
+                            </tr>
                             <?php 
-                            if ($bandera==1){
+                          if ($bandera==1){
                                 ?>
-                                <tr>
-                                    <td colspan="4"  class="StormyWeatherDataTD" align="center" style="color:#DD0000; font:bold">
-                                        <h3>El m&eacute;dico ha solicitado la impresi&oacute;n de este Resultado </h3>
-                                    </td>
-                                </tr>
+                            <tr>
+                                 <td colspan="4"  class="StormyWeatherDataTD" align="center" style="color:#DD0000; font:bold">
+                                       <h3>El m&eacute;dico ha solicitado la impresi&oacute;n de este Resultado </h3>
+                                  </td>
+                            </tr>
                                 <?php 
                             }?>
                             <tr>
@@ -268,5 +291,13 @@ $area    = $_SESSION['Idarea'];
         </td>
     </tr>
 </table>
+<script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon-i18n.min.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-es.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-sliderAccess.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/script.js">
+</script>     
 </body>
 </html>

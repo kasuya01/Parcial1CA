@@ -64,13 +64,13 @@ function isWhitespace(charToCheck) {
 }
 ///////////////////////////////***********************************/////////////////////////////////
 //Esta funcion mandan a llamar
-function calc_edad()
+/*function calc_edad()
 {
   var fecnac1=document.getElementById("suEdad").value;
   var fecnac2=fecnac1.substring(0,10);
   var suEdades=calcular_edad(fecnac2);
   document.getElementById("divsuedad").innerHTML=suEdades;
-}
+}*/
 
 
 //funcion para calculo de edad
@@ -169,7 +169,7 @@ function calcular_edad(fecha){
 }
 
 //FUNCION PARA BUSCAR DATOS DE LA SOLICITUD
-function BuscarDatos()
+function BuscarDatos2()
 {	
 		opcion=1;
 		IdEstab=document.getElementById('cmbEstablecimiento').value;
@@ -182,6 +182,8 @@ function BuscarDatos()
 		segundoapellido=document.getElementById('SegundoApellido').value;
 		//especialidad=document.getElementById('cmbEspecialidad').value;
 		fechaconsulta=document.getElementById('txtfechaconsulta').value;
+                
+               
 		
 		ajax=objetoAjax();
 		//archivo que realizar� la operacion ->actualizacion.php
@@ -223,7 +225,7 @@ function CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento)
 		{	 if (ajax.status == 200)
 			{  //mostrar los nuevos registros en esta capa
 			  document.getElementById('divSolicitud').innerHTML = ajax.responseText;
-			  calc_edad();
+			 // calc_edad();
 			 }
 	     }
 	}

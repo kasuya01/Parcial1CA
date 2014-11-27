@@ -75,7 +75,7 @@ class clsLab_Formularios {
     function actualizar($IdFormulario, $Formulario, $usuario) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "UPDATE mnt_formularios SET nombreformulario='$Formulario', idusuariomod = $usuario, fechahoramod = (SELECT date_trunc('seconds',(SELECT now()))) WHERE id = '$IdFormulario'";
+          echo  $query = "UPDATE mnt_formularios SET nombreformulario='$Formulario', idusuariomod = $usuario, fechahoramod = (SELECT date_trunc('seconds',(SELECT now()))) WHERE id = '$IdFormulario'";
             $result = pg_query($query);
 
             if (!$result)

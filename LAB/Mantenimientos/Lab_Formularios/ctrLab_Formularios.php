@@ -119,7 +119,7 @@ switch ($opcion) {
         break;
     case 5:  //buscar
         $Formulario = $_POST['Formulario'];
-        $IdPrograma = $_POST['IdPrograma'];
+        $IdPrograma = $_POST['cmbFormulario'];
 
         $query = "SELECT t01.id AS idformulario,
                          t01.nombreformulario,

@@ -4,6 +4,9 @@ $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 $nivel=$_SESSION['NIVEL'];
+ $ROOT_PATH = $_SESSION['ROOT_PATH'];
+ $base_url  = $_SESSION['base_url'];
+ 
  include_once("clsMuestrasRechazadas.php"); 
 //consulta los datos por su id
 $obj = new clsMuestrasRechazadas;
@@ -32,6 +35,7 @@ else{
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 <title>Muestras Rechazadas por &Aacute;rea</title>
 <script language="JavaScript" type="text/javascript" src="ajax_MuestrasRechazadas.js"></script>
+<?php include_once $ROOT_PATH."/public/js.php";?>
 <!--referencias del estilo del calendario-->
 <link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
 <link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />
@@ -55,9 +59,17 @@ function MostrarMuestrasRechazadas()
     else if (document.getElementById('cmbArea').value == 0){
 				alert ("Debe de ingresar un Área");
 	}
-	else{
-		MuestrasRechazadas();
-	}
+	   else {
+                        jQuery('#divBusqueda').empty();
+                        jQuery('#divBusqueda').append('<center><img id="wait" src="<?php echo $base_url; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" style="color:#888888;font-weight: bold;">Buscando...</div></center>');
+                        
+                        setTimeout(function() {
+                            jQuery('#divBusqueda').empty();
+                            MuestrasRechazadas();
+                        }, 500);
+                    }
+		
+	
    
 }
 
@@ -168,11 +180,7 @@ if ($nivel==4){
                                                                 SELECT DISTINCT id_area_atencion 
                                                                 FROM mnt_area_mod_estab WHERE id_establecimiento = $lugar)";
                                             
-                                           /* "SELECT mse.id,mse.nombre 
-						FROM mnt_servicio_externo mse 
-						INNER JOIN mnt_servicio_externo_establecimiento msee 
-						ON mse.id=msee.id
-						WHERE   msee.id_establecimiento=$lugar";*/
+                                           
                                             
 						$resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
 						//por cada registro encontrado en la tabla me genera un <option>
@@ -206,8 +214,8 @@ if ($nivel==4){
 				while($row = pg_fetch_array($consulta)){
 			        echo "<option value='" . $row['idarea']. "'>" . htmlentities($row['nombrearea']) . "</option>";
 				}
-				echo '<option value="'.$area1.'" selected="selected">'.htmlentities($nomarea).'</option>';
-				?>		  
+				echo '<option value="'.$area1.'" selected="selected">'.htmlentities("--Seleccione Área--").'</option>';
+				?>			  
 			</select> 
 		</td>
 		<td  class="StormyWeatherFieldCaptionTD">Examen </td>

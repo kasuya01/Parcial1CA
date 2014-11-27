@@ -269,9 +269,7 @@ function CantiMuestra($IdExamen){
 	    $SQL2="select ltm.id as idtipo, tipomuestra as muestra, lte.id
                     from lab_tipomuestraporexamen  lte
                     join lab_tipomuestra ltm on (lte.idtipomuestra=ltm.id)
-                    where lte.idexamen=(select lcee.id
-                    from lab_conf_examen_estab lcee
-                    where lcee.id=$IdExamen)
+                    where lte.idexamen=$IdExamen
                         order by tipomuestra ASC;";  
             $result=  pg_query($SQL2);
             if (!$result){
@@ -989,7 +987,7 @@ class CrearHistorialClinico{
     function HistorialClinico($IdNumeroExp,$IdEstablecimiento,$IdSubServicio,$IdEmpleado,$FechaConsulta,$iduser,$ippc, $idexpediente, $lugar){
     //$ippc=$_SERVER["REMOTE_ADDR"];
         if ($IdEstablecimiento==$lugar){
-            $seq= "SELECT nextval('sec_historial_clinico_idhistorialclinico_seq');";
+            $seq= "SELECT nextval('sec_historial_clinico_id_seq');";
             $res=  pg_query($seq);
             $row=  pg_fetch_row($res);
             $idseq=$row[0];

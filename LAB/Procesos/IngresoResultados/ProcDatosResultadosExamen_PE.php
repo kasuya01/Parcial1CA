@@ -1,10 +1,10 @@
 <?php session_start();
 include_once("../../../Conexion/ConexionBD.php");
 $db = new ConexionBD;
-$usuario=$_SESSION['Correlativo'];
-$lugar=$_SESSION['Lugar'];
-$area=$_SESSION['Idarea'];
-
+$usuario = $_SESSION['Correlativo'];
+$lugar   = $_SESSION['Lugar'];
+$area    = $_SESSION['Idarea'];
+//echo $lugar
 ?>
 <html>
 <head>
@@ -13,6 +13,8 @@ $area=$_SESSION['Idarea'];
 <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script> 
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+<link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+<link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
 <script language="JavaScript" >
 function Guardar(){
    	GuardarResultados();
@@ -52,93 +54,96 @@ function VerResultados()
    {    alert("Complete la Informacion Requerida");   }
 }
 
-function RecogeValor()
-{
-var vtmp=location.search;
-var vtmp2 = vtmp.substring(1,vtmp.length);
-//alert(vtmp2);
-var query = unescape(top.location.search.substring(1));
-var getVars = query.split(/&/);
-for ( i = 0; i < getVars.length; i++)
-{                 if ( getVars[i].substr(0,5) == 'var1=' )//loops through this array and extract each name and value
-                         nec = getVars[i].substr(5);
-		  if ( getVars[i].substr(0,5) == 'var2=' )
-			 examen = getVars[i].substr(5);
-		  if ( getVars[i].substr(0,5) == 'var3=' )
-			 codigoex = getVars[i].substr(5);
-		  if ( getVars[i].substr(0,5) == 'var4=' )
-			 area = getVars[i].substr(5);
-		  if ( getVars[i].substr(0,5) == 'var5=' )
-			 iddetallesol = getVars[i].substr(5);
-		  if ( getVars[i].substr(0,5) == 'var6=' )
-			 idsolicitudsol= getVars[i].substr(5);	
-		  if ( getVars[i].substr(0,5) == 'var7=' )
-			 paciente= getVars[i].substr(5);
-		  if ( getVars[i].substr(0,5) == 'var8=' )
-			 idrecepcionsol = getVars[i].substr(5);
-		  if ( getVars[i].substr(0,5) == 'var9=' )
-			 nombrearea= getVars[i].substr(5);
-		  if ( getVars[i].substr(0,5) == 'var10=' )
-			 procedencia=escape(getVars[i].substr(5));
-		  if ( getVars[i].substr(0,5) == 'var11=' )
-			 origen=escape(getVars[i].substr(5));
-		  if ( getVars[i].substr(0,5) == 'var12=' )
-			 impresion=escape(getVars[i].substr(5));
-		  if ( getVars[i].substr(0,5) == 'var13=' )
-			 establecimiento=escape(getVars[i].substr(5));
-                  if ( getVars[i].substr(0,5) == 'var14=' )
-		         FechaNac=escape(getVars[i].substr(5)); 
-                  if ( getVars[i].substr(0,5) == 'var15=' )
-		         Sexo=escape(getVars[i].substr(5));
-                  if ( getVars[i].substr(0,5) == 'var16=' )
-                        IdEstandar=escape(getVars[i].substr(5));   
-                  if ( getVars[i].substr(0,5) == 'var17=' )
-                        IdHistorial=escape(getVars[i].substr(5));   
-						
-	}
-document.frmnuevo.txtnec.value=nec;
-document.frmnuevo.txtarea.value=area;
-document.frmnuevo.txtpaciente.value=paciente;
-document.frmnuevo.txtexamen.value=examen;
-document.frmnuevo.txtidsolicitud.value=idsolicitudsol;
-document.frmnuevo.txtiddetalle.value=iddetallesol;
-document.frmnuevo.txtidexamen.value=codigoex;
-document.frmnuevo.txtidrecepcion.value=idrecepcionsol;
-document.frmnuevo.txtnombrearea.value=nombrearea;
+ function RecogeValor() {
+            var vtmp=location.search;
+            var vtmp2 = vtmp.substring(1,vtmp.length);
+            //alert(vtmp2);
+            var query = unescape(top.location.search.substring(1));
+            var getVars = query.split(/&/);
+            
+            for ( i = 0; i < getVars.length; i++) {
+                if ( getVars[i].substr(0,5) == 'var1=' )//loops through this array and extract each name and value
+                    nec = getVars[i].substr(5);
+                if ( getVars[i].substr(0,5) == 'var2=' )
+                   examen = getVars[i].substr(5);
+                if ( getVars[i].substr(0,5) == 'var3=' )
+                   codigoex = getVars[i].substr(5);
+                if ( getVars[i].substr(0,5) == 'var4=' )
+                   area = getVars[i].substr(5);
+                if ( getVars[i].substr(0,5) == 'var5=' )
+                   iddetallesol = getVars[i].substr(5);
+                if ( getVars[i].substr(0,5) == 'var6=' )
+                  idsolicitudsol= getVars[i].substr(5);	
+                if ( getVars[i].substr(0,5) == 'var7=' )
+                  paciente= getVars[i].substr(5);
+                if ( getVars[i].substr(0,5) == 'var8=' )
+                  idrecepcionsol = getVars[i].substr(5);
+                if ( getVars[i].substr(0,5) == 'var9=' )
+                  nombrearea= getVars[i].substr(5);
+                if ( getVars[i].substr(0,5) == 'var10=' )
+                  procedencia=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'var11=' )
+                  origen=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'var12=' )
+                  impresion=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'var13=' )
+                  establecimiento=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'var14=' )
+                  FechaNac=escape(getVars[i].substr(5)); 
+                if ( getVars[i].substr(0,5) == 'var15=' )
+                  Sexo=escape(getVars[i].substr(5)); 
+                if ( getVars[i].substr(0,5) == 'var16=' )
+                    IdEstandar=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'var17=' )
+                    IdHistorial=escape(getVars[i].substr(5));
+            }
+            
+            document.frmnuevo.txtnec.value=nec;
+            document.frmnuevo.txtarea.value=area;
+            document.frmnuevo.txtpaciente.value=paciente;
+            document.frmnuevo.txtexamen.value=examen;
+            document.frmnuevo.txtidsolicitud.value=idsolicitudsol;
+            document.frmnuevo.txtiddetalle.value=iddetallesol;
+            document.frmnuevo.txtidexamen.value=codigoex;
+            document.frmnuevo.txtidrecepcion.value=idrecepcionsol;
+            document.frmnuevo.txtnombrearea.value=nombrearea;
 
-LlenarComboResponsable(area);
-//CargarElementosExamen(codigoex);
+            LlenarComboResponsable(area);
 
-}
+        }
 
 //FUNCION PARA VERIFICAR DATOS REQUERIDOS EN RESULTADOS
+
+</script>
 <?php   
- 
+        
 	$bandera=$_GET['var12'];
-         $IdEstandar=$_GET['var16'];
+        $IdEstandar=$_GET['var16'];
         $IdHistorial=$_GET['var17'];
-            /*if($db->conectar()==true){
-              $condatos = "SELECT sec_examenfisico.Peso, sec_examenfisico.Talla, Diagnostico, ConocidoPor
-                         FROM sec_historial_clinico
-                         INNER JOIN mnt_expediente ON sec_historial_clinico.IdNumeroExp = mnt_expediente.IdNumeroExp
-                         INNER JOIN mnt_datospaciente ON mnt_expediente.IdPaciente = mnt_datospaciente.IdPaciente
-                         LEFT JOIN sec_diagnosticospaciente ON sec_historial_clinico.IdHistorialClinico = sec_diagnosticospaciente.IdHistorialClinico
-                         LEFT JOIN mnt_cie10 ON sec_diagnosticospaciente.IdDiagnostico1 = mnt_cie10.IdCie10
-                         LEFT JOIN sec_examenfisico ON sec_historial_clinico.IdHistorialClinico = sec_examenfisico.IdHistorialClinico
-                         WHERE sec_historial_clinico.IdHistorialClinico=$IdHistorial
-                         AND sec_historial_clinico.IdEstablecimiento =$lugar";
+        $codarea=$_GET['var4'];
+        
+        if($db->conectar()==true){
+         
+                   $condatos = "SELECT t07.peso,t07.talla,t06.sct_name_es AS diagnostico,especificacion,conocido_por
+                                FROM sec_historial_clinico               t01
+                                INNER JOIN mnt_expediente                t02 ON (t02.id = t01.id_numero_expediente)
+                                INNER JOIN mnt_paciente                  t03 ON (t03.id = t02.id_paciente)
+                                LEFT OUTER JOIN sec_diagnostico_paciente t04 ON (t01.id = t04.id_historial_clinico)
+                                LEFT OUTER JOIN mnt_snomed_cie10               t06 ON (t06.id = t04.id_snomed)
+                                LEFT OUTER JOIN sec_signos_vitales         t07 ON (t01.id = t07.id_historial_clinico)
+                                WHERE t01.id = $IdHistorial AND t01.idestablecimiento =$lugar";
 
               $resultado = pg_query($condatos);
               $rows = pg_fetch_array($resultado);
 
-              $Peso=$rows['Peso'];
-              $Talla=$rows['Talla'];
-              $Diagnostico=$rows['Diagnostico'];
-              $ConocidoPor=$rows['ConocidoPor'];
+              $Peso=$rows['peso'];
+              $Talla=$rows['talla'];
+              $Diagnostico=$rows['diagnostico'];
+              $ConocidoPor=$rows['conocido_por'];
+              $Especificacion=$rows['especificacion'];
               //echo $Peso." * ".$Talla." * ".$Diagnostico." * ".$ConocidoPor;
-          }*/
+          }
 ?>
-</script>
 </head>
 
 <body onLoad="RecogeValor();">
@@ -156,7 +161,7 @@ LlenarComboResponsable(area);
 	</tr>
 	<tr>
 		<td class="StormyWeatherFieldCaptionTD">Establecimiento Solicitante</td>
-		<td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var13'];?></td>
+		<td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var18'];?></td>
 	</tr>
 	<tr>
 		<td class="StormyWeatherFieldCaptionTD">Procedencia</td>
@@ -201,6 +206,12 @@ LlenarComboResponsable(area);
                </td>
 	</tr>
         <tr>
+                <td class="StormyWeatherFieldCaptionTD">Datos Clinicos</td>
+                <td colspan="3" class="StormyWeatherDataTD"><?php echo $Especificacion;?>
+                        <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
+                </td>
+        </tr>
+        <tr>
                <td class="StormyWeatherFieldCaptionTD" width="25%">Peso</td>
                <td class="StormyWeatherDataTD" width="25%">
                    <?php if (!empty($Peso))
@@ -241,14 +252,25 @@ LlenarComboResponsable(area);
 			  <textarea name="txtobservacion" cols="60" id="txtobservacion"></textarea>
 		</td>
 	</tr>
+        <tr>
+                <td class="StormyWeatherFieldCaptionTD">Fecha y hora inicio Proceso</td>
+                <td class="StormyWeatherDataTD">
+                     <input type="text" class="datepicker" id="txtresultrealiza"  name="txtresultrealiza" size="15">										
+                </td>
+                            
+                <td class="StormyWeatherFieldCaptionTD">Fecha Resultado</td>
+                <td class="StormyWeatherDataTD" colspan="2">
+                    <input type="text" class="datepicker" name="txtresultfin" id="txtresultfin" size="15"  value="<?php echo date("Y-m-d h:m"); ?>"  />	
+                </td>
+        </tr>
 	   <?php 
       if ($bandera==1){
 	 ?>
 	<tr>
 		<td colspan="4" align="center" class="StormyWeatherDataTD" style="color:#DD0000; font:bold">
 		    <h3>El m&eacute;dico ha solicitado la impresi&oacute;n de este Resultado </h3>
-				</td>
-			</tr>
+		</td>
+	</tr>
 		  <?php 
 		  }?>
 	<tr>
@@ -256,6 +278,14 @@ LlenarComboResponsable(area);
 		</td>
 	</tr>
 	</table>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon-i18n.min.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-es.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-sliderAccess.js"></script>
+    <script type="text/javascript" src="../../../public/datepicker/script.js">
+</script>  
 </form>
 </div>
 </td>

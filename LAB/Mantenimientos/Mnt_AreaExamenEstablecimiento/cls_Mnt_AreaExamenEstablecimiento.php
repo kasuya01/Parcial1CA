@@ -85,13 +85,13 @@ class cls_Mnt_AreaExamenEstablecimiento {
             	if (!$result1 || !$result2)
 	                return false;
 	            else
-	                return $result;
+	                return $result1;
 
             } else {
             	if (!$result1)
 	                return false;
 	            else
-	                return $result;
+	                return $result1;
             }
         }
     }

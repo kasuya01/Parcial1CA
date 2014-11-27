@@ -17,7 +17,6 @@ $Nfechacita = $Nfecha[2] . "/" . $Nfecha[1] . "/" . $Nfecha[0];
 $estado     = 'D';
 $idEstablecimiento = $_POST['idEstablecimiento'];
 
-//echo $idEstablecimiento;
 $arraysolic  = array();
 $arraypiloto = array();
 $i   = 0;
@@ -92,7 +91,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
 		</tr>
                 <tr>
                     <td class='StormyWeatherFieldCaptionTD'>Diagnostico </td>
-                    <td colspan='3' class='StormyWeatherDataTD'>" . htmlentities($row['diagnostico']) . "</td>
+                    <td colspan='3' class='StormyWeatherDataTD'>" . htmlentities($row['sct_name_es']) . "</td>
 		</tr>
 		<tr>
                     <td class='StormyWeatherFieldCaptionTD'>Peso</td>

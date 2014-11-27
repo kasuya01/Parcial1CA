@@ -66,7 +66,7 @@ class clsConsultarElementos {
     function ObtenerFechaResultado($idsolicitud,$IdExamen,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-            $query = "SELECT TO_CHAR(fechahorareg,'DD/MM/YYYY HH:MI:SS AM') AS fecharesultado
+            $query = "SELECT TO_CHAR(fecha_resultado,'DD/MM/YYYY HH:MI:SS AM') AS fecharesultado
                       FROM lab_resultados
                       WHERE idsolicitudestudio = $idsolicitud AND idestablecimiento = $lugar AND idexamen = $IdExamen";
             $result = @pg_query($query);
@@ -99,7 +99,7 @@ class clsConsultarElementos {
 function ObtenerNombreCodigo($tab){
  $con = new ConexionBD;
  if($con->conectar()==true) 
-  {	$query=" SELECT Resultado FROM lab_codigosresultados WHERE IdResultado=$tab ";	
+  {	$query=" SELECT resultado FROM lab_codigosresultados WHERE id=$tab ";	
 $result = pg_query($query);
 if (!$result)
     return false;
@@ -148,28 +148,28 @@ else
 
 ////************************************************************************************************************************************////
 //INSERTA RESULTADOS   ENCABEZADO
-    function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$responsable,$usuario,$tab,$lugar) {
+    function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$responsable,$usuario,$tab,$fecharealiz,$fecharesultado,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-            $query = "INSERT INTO lab_resultados (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
-                                                  observacion,idempleado,idusuarioreg,fechahorareg,idestablecimiento) 
-                      VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,'$observacion',$responsable,$usuario,NOW(),$lugar)
+           $query = "INSERT INTO lab_resultados (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
+                      observacion,idempleado,idusuarioreg,fechahorareg,idestablecimiento,fecha_resultado) 
+                      VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,'$observacion',$responsable,$usuario,NOW(),$lugar,'$fecharesultado')
                       RETURNING id";
-
+          // echo $query;
             $result = pg_query($query);
 
             if ($row = pg_fetch_array($result)) {
 
-                $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen AND id_metodologia IS NULL AND activo = true";
+                $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen AND activo = true";
                 $result = pg_query($query);
 
-                if($result && pg_num_rows($result) > 0) {
+                if($result && pg_num_rows($result) == 1) {
                     $row_exam_metod = pg_fetch_array($result);
 
                     $id_exam_metod = $row_exam_metod[0];
 
-                    $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, idusuarioreg, fechahorareg)
-                              VALUES($id_exam_metod, $iddetalle, $tab, $usuario, NOW())";
+                    $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, idusuarioreg, fechahorareg,fecha_realizacion,fecha_resultado)
+                              VALUES($id_exam_metod, $iddetalle, $tab, $usuario, NOW(),'$fecharealiz','$fecharesultado')";
 
                     $result = pg_query($query);
 
@@ -180,7 +180,7 @@ else
                         return false;
                     }
                 } else {
-                    return false; 
+                    return false; // Aqui va la logica si hay mas de una metodologia en el examen
                 }
             } else {
                 return false;
@@ -209,7 +209,7 @@ else
     function insertar_subelementos($idresultado,$idsubelemento,$resultado,$control,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-            $query = "INSERT INTO lab_detalleresultado(idresultado,idsubelemento,resultado,observacion,idestablecimiento) 
+          $query = "INSERT INTO lab_detalleresultado(idresultado,idsubelemento,resultado,observacion,idestablecimiento) 
                       VALUES($idresultado,$idsubelemento,'$resultado','$control',$lugar)";
             
             $result = @pg_query($query);
@@ -242,7 +242,7 @@ else
     function MostrarDatosGenerales($idsolicitud,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-            $query = "SELECT DISTINCT t01.idsolicitudestudio,
+          $query = "SELECT DISTINCT t01.idsolicitudestudio,
                              CASE WHEN t02.id_historial_clinico IS NOT NULL
                                  THEN t04.numero
                                  ELSE t13.numero
@@ -311,7 +311,8 @@ else
                       LEFT OUTER JOIN mnt_expediente_referido  t13 ON (t13.id = t12.id_expediente_referido)
                       LEFT OUTER JOIN mnt_paciente_referido    t14 ON (t14.id = t13.id_referido)
                       WHERE  t01.idsolicitudestudio = $idsolicitud AND t02.id_establecimiento = $lugar 
-                         AND CASE WHEN t02.id_historial_clinico IS NOT NULL THEN t04.id_establecimiento ELSE t13.id_establecimiento END = $lugar";
+                      AND CASE WHEN t02.id_historial_clinico IS NOT NULL THEN t04.id_establecimiento 
+                      ELSE t13.id_establecimiento END = $lugar";
             $result = @pg_query($query);
             if (!$result)
                 return false;
@@ -324,12 +325,12 @@ else
     function LeerDatos($idexamen) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-            $query = "SELECT t03.nombrearea,
-                             t01.nombre_examen AS nombreexamen
-                      FROM lab_conf_examen_estab                 t01
-                      INNER JOIN mnt_area_examen_establecimiento t02 ON (t02.id = t01.idexamen)
-                      INNER JOIN ctl_area_servicio_diagnostico   t03 ON (t03.id = t02.id_area_servicio_diagnostico)
-                      WHERE t01.id = $idexamen";
+         $query = "SELECT t03.nombrearea,t04.nombre_reporta 
+                     FROM lab_conf_examen_estab                 t01
+                     INNER JOIN mnt_area_examen_establecimiento t02 ON (t02.id = t01.idexamen)
+                     INNER JOIN ctl_area_servicio_diagnostico   t03 ON (t03.id = t02.id_area_servicio_diagnostico)
+                     INNER JOIN lab_examen_metodologia t04 ON ( t04.id_conf_exa_estab = t01.id)
+                     WHERE t01.id = $idexamen";
             $result = @pg_query($query);
             if (!$result)
                 return false;
