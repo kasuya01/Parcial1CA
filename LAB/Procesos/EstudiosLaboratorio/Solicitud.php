@@ -18,7 +18,7 @@ $IdCitaServApoyo = $_GET["IdCitaServApoyo"];
 $sexo = $_GET["Sexo"];
 $idexpediente = $_GET["idexpediente"];
 //echo '<br\>.Idexpediente: '.$idexpediente.' IdNumeroExp:'.$IdNumeroExp;
-$IdHistorialClinico = $_GET["IdHistorialClinico"];
+//$IdHistorialClinico = $_GET["IdHistorialClinico"];
 //echo 'idexp: '.$idexpediente;
 $FechaSolicitud = $FechaConsulta;
 /* PARA OBTENER LA IP REAL DE LA PC QUE SE CONECTA */

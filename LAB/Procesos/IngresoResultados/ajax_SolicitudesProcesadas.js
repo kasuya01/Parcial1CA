@@ -442,12 +442,12 @@ function MostrarAntibioticos()
     idexamen = document.frmnuevo.txtidexamen.value;
     idtarjeta = document.frmnuevo.cmbTarjeta.value;
     fecharealiz = document.frmnuevo.txtresultrealiza.value;
-    fecharesultado = document.frmnuevo.txtfresultado.value;
-    alert (fecharealiz+" * "+fecharesultado);
+    fecharesultado = document.frmnuevo.txtresultfin.value;
+    //alert (fecharealiz+" * "+fecharesultado);
     ajax.open("POST", "ctrDatosResultadosExamen_PC.php", true);
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idtarjeta=" + idtarjeta );
+    ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idtarjeta=" + idtarjeta+ "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado );
 
 //+ "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado
     ajax.onreadystatechange = function()
@@ -515,8 +515,8 @@ function MostrarVistaPreviaPlantillaC()
         estab = document.getElementById('txtEstablecimiento').value;       
        // alert(estab);
         fecharealiz = document.getElementById('txtresultrealiza').value;
-        fecharesultado=document.getElementById('txtfresultado').value;
-        alert (fecharealiz+" * "+fecharesultado)
+        fecharesultado =document.getElementById('txtresultfin').value;
+        //alert (fecharealiz+" ** "+fecharesultado)
         //DATOS PARA EL DETALLE DE LOS RESULTADOS
         valores_antibioticos = "";
         codigos_antibioticos = "";
@@ -588,8 +588,10 @@ function GuardarResultadosPlantillaC()
 
     resultado = document.getElementById('cmbResultado').value;
     cantidad = document.getElementById('txtcantidad').value;
+    fecharealiz = document.getElementById('txtresultrealiza').value;
+    fecharesultado =document.getElementById('txtresultfin').value;
     nombrearea = "";
-
+   //alert (fecharealiz+" ** "+fecharesultado)
     //hasta aqui todos los datos estan bien
     //DATOS PARA EL DETALLE DE LOS RESULTADOS
     valores_antibioticos = "";
@@ -612,7 +614,8 @@ function GuardarResultadosPlantillaC()
             "&iddetalle=" + iddetalle + "&observacion=" + encodeURIComponent(observacion) + "&idempleado=" + idempleado + "&valores_antibioticos=" +
             encodeURIComponent(valores_antibioticos) + "&codigos_antibioticos=" + codigos_antibioticos + "&idtarjeta=" + idtarjeta +
             "&tiporespuesta=" + tiporespuesta + "&idarea=" + idarea + "&nombrearea=" + escape(nombrearea) + "&resultado=" + resultado +
-            "&idbacteria=" + idbacteria + "&cantidad=" + encodeURIComponent(cantidad)+"&idobservacion="+idobservacion);
+            "&idbacteria=" + idbacteria + "&cantidad=" + encodeURIComponent(cantidad)+"&idobservacion=" + idobservacion + 
+            "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -1488,7 +1491,7 @@ function LlenarComboResponsable(idarea)
 //Fn PG
 //FUNCION LLENAR COMBO DE RESPONSABLES
 function LlenarComboResponsable2(idarea)
-{
+{// alert(idarea);
     ajax2 = objetoAjax();
     opcion = 11;
     ajax2.open("POST", "ctrSolicitudesProcesadas.php", true);
@@ -2345,6 +2348,8 @@ function GuardarPlantillaE()
         }
     }
 }
+
+
 
 function llenarComboTipoSolicitud() {
     jQuery.ajaxSetup({

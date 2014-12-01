@@ -25,7 +25,7 @@
 	   <item labelText="Consulta Solicitudes por Paciente" url= "../LAB/Consultas_Reportes/ConsultaSolicitudesPaciente/SolicitudPorPaciente.php"/>
 	   <item labelText="Consulta Muestras Rechazadas" url= "../LAB/Consultas_Reportes/ConsultaMuestrasRechazadas/Proc_ConsultaMuestrasRechazadas.php"/>
 	   <item labelText="Consulta Muestras Pendientes" url= "../LAB/Consultas_Reportes/ConsultaMuestrasPendientes/Proc_ConsultaMuestrasPendientes.php"/>
-	   <item labelText="Imprimir Resultado" url="../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/>
+	   
       </menu>
       <sep/>
             <menu labelText="REPORTES">
