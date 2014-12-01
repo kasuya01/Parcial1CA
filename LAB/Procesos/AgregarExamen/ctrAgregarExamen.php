@@ -246,12 +246,16 @@ switch ($opcion)
 		
 		
 		$NroRegistros= $objdatos->NumeroDeRegistros($query);				
-     echo"<table width='96%' border='0' align='center'>
-	        <tr>
-			<td colspan='7' align='center' ><h3><strong>TOTAL DE SOLICITUDES: ".$NroRegistros."</strong></h3></td>
-		</tr>
-		<tr>
-		</table> "; 
+   
+      echo "<table width='35%' border='0'  align='center'>
+        	<center>
+           
+            
+<tr><td colspan='11'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES: :".$NroRegistros."</h3></span></td></tr>
+            </center>
+	</table> "; 
+     
+     
    
      echo "<table width='95%' border='1' align='center'>
                 <tr class='CobaltFieldCaptionTD'>
@@ -270,7 +274,7 @@ switch ($opcion)
             while ($row = pg_fetch_array($consulta)) {
                 echo "<tr>
 				   <td width='8%'>".$row['fecharecepcion']."</td>
-				   <td width='10%'>
+				   <td width='8%'><span style='color: #0101DF;'>
 					   <a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(".$pos.");'>".
 					   $row['idnumeroexp']."</a>". 
 					   "</td>". 

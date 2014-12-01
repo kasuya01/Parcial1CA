@@ -452,13 +452,14 @@ $imprimir="<form name='frmDatos'>
 		$estado=$_POST['estado'];
 		$idexpediente=$_POST['idexpediente'];
 		$estadosolicitud="P";
+               
 	        $observacion="";
-		if ($objdatos->CambiarEstadoDetalle($idsolicitud,$estado,$idarea,$idtipo,$observacion)==true)   
+		if ($objdatos->CambiarEstadoDetalle($idsolicitud,$estado,$observacion)==true)   
 		  { //$objdatos->IngresarRecepcionArea($idarea,$idsolicitud,)           
 			echo "Muestras Recibidas.";	
-			if($objdatos->CambiarEstadoSolicitud($idexpediente,$idsolicitud,$estadosolicitud)==true)
+			if($objdatos->CambiarEstadoSolicitud($idsolicitud,$estadosolicitud)==true)
 			{
-				 //echo "Solicitud Procesada..";
+				 echo "Solicitud No fue cambiada de Estado..";
 			 }
 			else{
 					echo "Solicitud No fue cambiada de Estado..";
@@ -475,12 +476,15 @@ $imprimir="<form name='frmDatos'>
 		$estado=$_POST['estado'];
 		$idsolicitud=$_POST['idsolicitud'];
 		$estadosolicitud='P';
+                $estadosolicitud6="RM";
 		$observacion;
 	//	$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$responsable,$usuario,$tab,$lugar);
 		
 		if ($objdatos->CambiarEstadoDetalle($idsolicitud,$estado,$observacion)==true){
-			if($objdatos->CambiarEstadoSolicitud($idsolicitud,$estadosolicitud)==true){
-				echo "Muestras Rechazada";
+			
+                    echo "Muestras Rechazada";
+                    if($objdatos->CambiarEstadoSolicitud($idsolicitud,$estadosolicitud,$estadosolicitud6)==true){
+			echo "Solicitud  fue cambiada de Estado..";	
 			}
 			//echo "Muestras Rechazada";
 		}
