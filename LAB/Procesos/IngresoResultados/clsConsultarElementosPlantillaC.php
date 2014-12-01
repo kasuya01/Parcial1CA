@@ -22,44 +22,45 @@ function Nombre_Establecimiento($lugar){
 
 ////**********************************************************************************************************************************************////
 //INSERTA RESULTADOS   ENCABEZADO
- function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$responsable,$usuario,$codigoResultado,$lugar,$idobservacion)
- {
+function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$responsable,$usuario,$codigoResultado,$lugar,$idobservacion)
+{
    $con = new ConexionBD;
    //echo $resultado;
-   if($con->conectar()==true) 
-   {
-       $query = "INSERT INTO lab_resultados
+    if($con->conectar()==true) 
+    {
+        $query = "INSERT INTO lab_resultados
 	       (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
                observacion,resultado,idempleado,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,id_observacion) 
 	       VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,
                '$observacion','$resultado',$responsable,$usuario,NOW(),$usuario,NOW(),$lugar,$idobservacion)RETURNING id";
+       echo $query;
                 $result = pg_query($query);
-                if ($row = pg_fetch_array($result)) {
-                   $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen  AND activo = true";
-                   //AND id_metodologia IS NULL
-                   $result = pg_query($query);
-                   if($result && pg_num_rows($result) == 1) {
-                      $row_exam_metod = pg_fetch_array($result);
-                      $id_exam_metod = $row_exam_metod[0];
-                      $id_exam_metod;
-                      $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, idusuarioreg, fechahorareg)
-                                     VALUES($id_exam_metod, $iddetalle, $codigoResultado, $usuario, NOW())";
+                
+                if($row = pg_fetch_array($result)) {
+                    $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen  AND activo = true";
+                    //AND id_metodologia IS NULL
+                    $result = pg_query($query);
+                    if($result && pg_num_rows($result) == 1) {
+                        $row_exam_metod = pg_fetch_array($result);
+                        $id_exam_metod = $row_exam_metod[0];
+                        $id_exam_metod;
+                        $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado)
+                                  VALUES($id_exam_metod, $iddetalle, $tab, $usuario, NOW(),'$fecharealiz','$fecharesultado')";
+                        
+                        $result = pg_query($query);
 
-                            $result = pg_query($query);
-
-                            if($result) {
-                                $idultimo = $row[0];
-                                return $idultimo;
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            return false; 
-                        }
-                    } else {
-                        return false;
-                    }
-                }
+                        if($result) {
+                            $idultimo = $row[0];
+                            return $idultimo;
+                        }else
+                            return false;
+                    
+                    }else
+                        return false; // Aqui va la logica si hay mas de una metodologia en el examen
+            
+                }else 
+                    return false;
+    }
     
 
 
@@ -76,7 +77,7 @@ function Nombre_Establecimiento($lugar){
          return false;
 	}  
    }*/
- }
+}
 
 // INSERTAR DETALLE DE LOS RESULTADOS 
 function insertar_detalle($idresultado,$ibacteria,$idtarjeta,$cantidad,$lugar)

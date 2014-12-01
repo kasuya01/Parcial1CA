@@ -167,7 +167,7 @@ $con = new ConexionBD;
         }else {
             return false;
                     }
- }
+    }
  }
 // INSERTAR DETALLE DE LOS RESULTADOS POR ELEMENTOS Y SUBELEMENTOS
 //ELEMENTOS
