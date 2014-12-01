@@ -322,7 +322,7 @@ NOMBRE PACIENTE</strong><h4></td>
 		<td width="25%" ><?php echo $row['paciente'];?></td>
 		<td width="6%" align="center"><?php echo $row['idexamen'];?></td>
 		<td width="18%"><?php echo htmlentities($row['nombreexamen']);?></td>
-		<td width='12%' align="center"><?php echo htmlentities($row['nombreservicio']); ?></td>
+		<td width='12%' align="center"><?php echo htmlentities($row['nombresubservicio']); ?></td>
 		<td width='10%' align="center"><?php echo htmlentities($row['nombreservicio']); ?></td>
 		<td width='12%' align="center"><?php echo htmlentities($row['estabext']); ?></td>
 		<td width="8%"><?php echo $row['fecharecepcion'];?></td>

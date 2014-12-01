@@ -249,15 +249,17 @@ switch ($opcion)
       //echo $query;
         $consulta=$objdatos->ListadoSolicitudesPorArea($query);  
 	$NroRegistros= $objdatos->NumeroDeRegistros($query);
- 	echo "<table width='100%' border='0' align='center'>
-              <tr>
-		    <td colspan='7' align='center' ><h3><strong>TOTAL DE MUESTRAS RECHAZADAS:".$NroRegistros."</strong></h3></td>
-	      </tr>
-	      <tr>
-	            <td colspan='7' align='center' style='color:#990000; font:bold'><a style ='text-decoration:underline;cursor:pointer; font:bold; size:36' onclick='VistaPrevia();'>IMPRIMIR REPORTE</a></td>	
-	      </tr>
-	      </table> "; 
-       
+ 	echo  "<table width='35%' border='0'  align='center'>
+          <center>
+                <tr>
+                        <td colspan='11' align='center' ><span style='color: #0101DF;'> <h3> TOTAL DE MUESTRAS RECHAZADAS:".$NroRegistros."</h3></span></td>
+                </tr>
+                <tr>
+			<td colspan='7' align='center' style='color:#990000; font:bold'><a style ='text-decoration:underline;cursor:pointer; font:bold; size:36' onclick='VistaPrevia();'>IMPRIMIR REPORTE</a></td>	
+		</tr>
+          </center>
+	</table> ";
+        
 
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);
 

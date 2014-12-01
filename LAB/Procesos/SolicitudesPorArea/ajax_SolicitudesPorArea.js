@@ -268,7 +268,8 @@ function CambiarEstadoDetalleSolicitud(estado,idtipo,idexpediente,idarea,idsolic
 				{
 					//mostrar los nuevos registros en esta capa
 					//document.getElementById('divCambioEstado').innerHTML = ajax.responseText;	
-					alert(ajax.responseText);					
+					alert(ajax.responseText);
+                                        window.close();
 				}
 			}
 	   }
@@ -304,7 +305,8 @@ function RechazarMuestra(idtipo,idexpediente,idarea,idsolicitud,fechasolicitud,o
 				{
 					//mostrar los nuevos registros en esta capa
 					//document.getElementById('divCambioEstado').innerHTML = ajax.responseText;	
-					alert(ajax.responseText);					
+					alert(ajax.responseText);
+                                        window.close();
 				}
 			}
 	    }

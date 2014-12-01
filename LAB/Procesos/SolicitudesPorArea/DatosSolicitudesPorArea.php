@@ -220,7 +220,7 @@ function calc_edad()
                             <td width="53%"><?php echo htmlentities($fila[1])?></td>	
                             <td width="14%"><?php echo htmlentities($fila[2])?></td>	
 			<?php if (!empty($fila[3])){?>    				
-                            <td width="23%"><?php echo htmlentities($fila[4])?></td>
+                            <td width="23%"><?php echo htmlentities($fila[3])?></td>
 			</tr>
                         <?php }else{?>
                              <td width="23%">&nbsp;&nbsp;&nbsp;&nbsp;</td>
