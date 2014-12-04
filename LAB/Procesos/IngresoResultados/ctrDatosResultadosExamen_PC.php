@@ -16,9 +16,9 @@ switch ($opcion)
   case 1:  //MOSTRANDO ANTIBIOTICOS ASOCIADOS A LA PLANTILLA
 	$idtarjeta=$_POST['idtarjeta'];
 	$idexamen=$_POST['idexamen'];
-       /* $fecharealiz=$_POST['fecharealiz'];
-        $fecharesultado=$_POST['fecharesultado'];*/
-
+        $fecharealiz=$_POST['fecharealiz'];
+        $fecharesultado=$_POST['fecharesultado'];
+     //  echo $fecharealiz." * ".$fecharesultado;
 	$consulta=$objdatos->LeerAntibioticos($idtarjeta);
 	$pos=0;
 	$imprimir="<table width='70%' border='0' align='center' class='StormyWeatherFormTABLE'>
@@ -44,6 +44,8 @@ switch ($opcion)
 		$pos=$pos+1;
 	}
 	pg_free_result($consulta);
+        $imprimir.= "<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
+                     <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."'/>";
 	$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>";
                      
 	    $imprimir.="<tr>
@@ -79,7 +81,7 @@ switch ($opcion)
 		$resultado="P";
                 $establecimiento=$_POST['estab'];
                 
-                echo $fecharealiz." - ".$fecharesultado;
+              //  echo $fecharealiz." - ".$fecharesultado;
           //echo " Solicitud=".$idsolicitud." empleado=".$idempleado." Examen=".$idexamen." detalle=".$iddetalle." detalle=".$establecimiento;
 		$Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
 		$row_estab = pg_fetch_array($Consulta_Estab);
@@ -242,53 +244,53 @@ switch ($opcion)
 		$tamano_vectoantibiotico=count($vector_antibioticos);
                 //echo "Examen=".$idexamen." - soli=".$idsolicitud." - empleado=".$idempleado." - idrecepcion=".$idrecepcion." - iddetalle=".$iddetalle." - observacion=".$observacion." - resultado=".$resultado;
 
-  $posele=0;
-  $ban=0;
-  //echo $v_id_elementos[1];
-  if ($resultado=="P")
-  {
-	$codigoResultado=4;
-	$ultimo= $objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion);
-	if ($ultimo != "")
-	{
-		$idresultado=$ultimo;
-		//insertando el detalle
-		$iddetalleresultado=$objdatos->insertar_detalle($idresultado,$idbacteria,$idtarjeta,$cantidad,$lugar);
+                $posele=0;
+                $ban=0;
+                //echo $v_id_elementos[1];
+                if ($resultado=="P")
+                {
+                      $codigoResultado=4;
+                      $ultimo= $objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion);
+                      if ($ultimo != "")
+                      {
+                              $idresultado=$ultimo;
+                              //insertando el detalle
+                              $iddetalleresultado=$objdatos->insertar_detalle($idresultado,$idbacteria,$idtarjeta,$cantidad,$lugar);
 
-		//insertando el detalle de resultados de la tarjeta asociada
-		if (($tamano_vector-1)>0)
-		{
-			for ($i=0; $i < $tamano_vector-1 ; $i++) //INSERTANDO ANTIBIOTICOS
-			{
-				if ($objdatos->insertar_resultadoantibioticos($iddetalleresultado,$vector_antibioticos[$i],$vector_valores[$i],$lugar)==false)
-				 {
-					 $ban=1;
-				 }
-				$posele=$posele+1;
-			}
+                              //insertando el detalle de resultados de la tarjeta asociada
+                              if (($tamano_vector-1)>0)
+                              {
+                                      for ($i=0; $i < $tamano_vector-1 ; $i++) //INSERTANDO ANTIBIOTICOS
+                                      {
+                                              if ($objdatos->insertar_resultadoantibioticos($iddetalleresultado,$vector_antibioticos[$i],$vector_valores[$i],$lugar)==false)
+                                               {
+                                                       $ban=1;
+                                               }
+                                              $posele=$posele+1;
+                                      }
 
-		}
-		if($ban==0){
-			//actualiza el estado del detalle de la solicitud para indicar que el resultado esta completo para el examen
+                              }
+                              if($ban==0){
+                                      //actualiza el estado del detalle de la solicitud para indicar que el resultado esta completo para el examen
 
-			echo "Datos Guardados";
+                                      echo "Datos Guardados";
 
 
-			if (($objdatos->CambiarEstadoDetalle($iddetalle)==true)&&($objdatos->CambiarEstadoSolicitud($idsolicitud)==true))
-			{
-				echo " Correctamente";
-			}
+                                      if (($objdatos->CambiarEstadoDetalle($iddetalle)==true)&&($objdatos->CambiarEstadoSolicitud($idsolicitud)==true))
+                                      {
+                                              echo " Correctamente";
+                                      }
 
-		}
-		else
-		{
+                              }
+                              else
+                              {
 
-			echo "Los resultados no pueden ser guardados consulte al Administrador...";
-		}
-    }
+                                      echo "Los resultados no pueden ser guardados consulte al Administrador...";
+                              }
+                  }
 
-  }
-  else{ echo "Los resultados no pueden ser guardados consulte al Administrador...";}
+                }
+                else{ echo "Los resultados no pueden ser guardados consulte al Administrador...";}
    break;
 
 

@@ -247,13 +247,16 @@ switch ($opcion) {
       //echo $query;
        $consulta=$objdatos->ListadoSolicitudesPorArea($query);  
 	$NroRegistros= $objdatos->NumeroDeRegistros($query);
-  echo "<table width='92%' border='0' align='center'>
-        	<tr>
-			<td colspan='7' align='center' ><h3><strong>TOTAL DE EXAMENES RECHAZADOS:".$NroRegistros."</strong></h3></td>
-		</tr>
-		<tr>
+  
+echo "<table width='35%' border='0'  align='center'>
+        	<center>
+           
+            
+<tr><td colspan='11'><span style='color: #0101DF;'> <h3> TOTAL DE EXAMENES RECHAZADOS:".$NroRegistros."</h3></span></td></tr>
+            </center>
 	</table> "; 
-
+  
+  
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);
 
         echo "<table width='81%' border='1' align='center'>
@@ -278,7 +281,8 @@ switch ($opcion) {
             {
                 echo "<tr>
                            <td width='7%'>" . $row['numeromuestra'] . "</td>
-                           <td width='8%'><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" .$row['idnumeroexp'] . "</a></td>
+                           <td width='8%'><span style='color: #0101DF;'>
+                           <a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" .$row['idnumeroexp'] . "</a></td>
                            <input name='idsolicitudP[" . $pos . "]' id='idsolicitudP[" . $pos . "]' type='hidden' size='60' value='" . $row[1] . "' />" .
                             "<input name='idsolicitud[" . $pos . "]' id='idsolicitud[" . $pos . "]' type='hidden' size='60' value='" . $row[1] . "' />" .
                            "<input name='idexpediente[" . $pos . "]' id='idexpediente[" . $pos . "]' type='hidden' size='60' value='" . $row['idnumeroexp'] . "' />" .
@@ -436,7 +440,7 @@ switch ($opcion) {
                                         <td>" . $fila[0] . "</td>
                                         <td>" . htmlentities($fila[1]) . "</td>	
                                         <td>" . htmlentities($fila[2]) . "</td>";
-            if (!empty($fila['Indicacion'])) {
+            if (!empty($fila[3])) {
                 $imprimir .="<td>" . htmlentities($fila[3]) . "</td>";
             } else
                 $imprimir .="<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td>
@@ -458,7 +462,7 @@ switch ($opcion) {
                                     <tr>
                                             <td>Observacion</td>
                                             <td colspan='3'>
-                                                    <textarea cols='60' rows='2' name='txtobservacion'>" . htmlentities($fila['Observacion']) . "</textarea>
+                                                    <textarea cols='60' rows='2' name='txtobservacion' <span style='color: #0000FF;background-color:#87CEEB;'> " . htmlentities($fila['Observacion']) . "</textarea>
                                             </td>
                                     </tr>
                                     <tr>

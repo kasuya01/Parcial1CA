@@ -248,11 +248,17 @@ switch ($opcion)
       //echo $query;
          $consulta=$objdatos->ListadoSolicitudesPorArea($query);  
 		   $NroRegistros= $objdatos->NumeroDeRegistros($query);
-		echo "<table width='95%' border='0' align='center'>
-                        <tr>
-			    <td colspan='7' align='center' ><h3><strong>TOTAL DE EXAMENES RECHAZADOS:".$NroRegistros."</strong></h3></td>
-			</tr>
-                      </table> "; 
+		
+                
+                echo "<table width='35%' border='0'  align='center'>
+        	<center>
+           
+            
+<tr><td colspan='11'><span style='color: #0101DF;'> <h3> TOTAL DE EXAMENES RECHAZADOS:".$NroRegistros."</h3></span></td></tr>
+            </center>
+	</table> "; 
+                
+                
 
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);
 
@@ -276,7 +282,7 @@ switch ($opcion)
             while ($row = pg_fetch_array($consulta)) {
                 echo "<tr>
 				   <td width='8%'>".$row['numeromuestra']."</td>
-				   <td width='10%'>
+				   <td width='8%'><span style='color: #0101DF;'>
 					   <a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(".$pos.");'>".
 					   $row['idnumeroexp']."</a>". 
 					   "</td>". 
@@ -448,7 +454,7 @@ switch ($opcion)
                                         <td>".$fila[0]."</td>
                                         <td>".htmlentities($fila[1])."</td>	
                                         <td>".htmlentities($fila[2])."</td>";	
-                         if (!empty($fila['Indicacion'])){     								
+                         if (!empty($fila[3])){     								
                            $imprimir .="<td>".htmlentities($fila[3])."</td>";
                           }
                          else
@@ -492,7 +498,7 @@ pg_free_result($datosexamen);
 		<tr>
 			<td>Observacion: </td>
 			<td colspan='0'>
-			<textarea cols='60' rows='2' name='txtobservacion'>".htmlentities($fila['Observacion'])."</textarea>
+			<textarea cols='60' rows='2' name='txtobservacion' <span style='color: #0000FF;background-color:#87CEEB;'>".htmlentities($fila['Observacion'])."</textarea>
          			</td>
                         
 		</tr>

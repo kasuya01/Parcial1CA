@@ -208,14 +208,16 @@ FROM sec_detallesolicitudestudios t01
 	$consulta=$objdatos->consultarpag($query,$RegistrosAEmpezar,$RegistrosAMostrar);
 	$NroRegistros= $objdatos->NumeroDeRegistros($query);
 				
- $imprimir="<table width='92%' border='0' align='center'>
-	            <tr>
-					<td colspan='7' align='center' ><h3><strong>TOTAL DE SOLICITUDES:".$NroRegistros."</strong></h3></td>
-		    	</tr>
-		    	<tr>
-		    		 <td colspan='7' align='center' style='color:#990000; font:bold'><a style ='text-decoration:underline;cursor:pointer; font:bold; size:36' onclick='VistaPrevia();'>IMPRIMIR REPORTE</a></td>			 
-		  	    </tr>
-	        </table> "; 
+ $imprimir= "<table width='35%' border='0'  align='center'>
+        	<center>
+           
+            
+<tr><td colspan='11'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES:".$NroRegistros."</h3></span></td></tr>
+            </center>
+	</table> "; 
+  
+ 
+ 
 $imprimir.="<table width='95%' border='1' align='center'>
                 <tr class='CobaltFieldCaptionTD'>
 					<td>Fecha Solicitud </td>

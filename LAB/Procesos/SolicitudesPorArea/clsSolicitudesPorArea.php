@@ -395,22 +395,57 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
  }
  
 //FUNCION PARA CAMBIAR EL ESTADO DE LA SOLICITUD
-function CambiarEstadoSolicitud($idsolicitud,$estadosolicitud)
+function CambiarEstadoSolicitud($idsolicitud,$estadosolicitud,$estadosolicitud6)
  {
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = /*"UPDATE sec_solicitudestudios SET estado='$estadosolicitud'
+        $query6= "SELECT COUNT(id) 
+		FROM sec_detallesolicitudestudios sdse
+                WHERE idsolicitudestudio=(select idsolicitudestudio from sec_detallesolicitudestudios where id=$idsolicitud)
+                AND (estadodetalle <> (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado ='RM'))";
+       // si retorna 0 muestra sera =6
+       
+     $detalle = pg_fetch_array(pg_query($query6));
+            if ($detalle[0] == 0) {
+                $query1 = "UPDATE sec_solicitudestudios SET estado=(select id from ctl_estado_servicio_diagnostico where idestado='$estadosolicitud6')
+	    WHERE id=(select idsolicitudestudio from sec_detallesolicitudestudios where id =$idsolicitud)";
+                $result = pg_query($query1);
+                return true;
+            }
+            
+       
+       
+       
+        $query56="SELECT COUNT(id) 
+		FROM sec_detallesolicitudestudios sdse
+                WHERE idsolicitudestudio=(select idsolicitudestudio from sec_detallesolicitudestudios where id=$idsolicitud)
+                AND 
+                (estadodetalle <> (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado ='PM')
+                AND estadodetalle <> (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado ='RM'))";
+       // si retorna 0 muestra sera =3
+       
+        $detalle = pg_fetch_array(pg_query($query56));
+            if ($detalle[0] == 0) {
+                $query1 = "UPDATE sec_solicitudestudios SET estado=(select id from ctl_estado_servicio_diagnostico where idestado='$estadosolicitud')
+	    WHERE id=(select idsolicitudestudio from sec_detallesolicitudestudios where id =$idsolicitud)";
+                $result = pg_query($query1);
+                return true;
+            }
+       
+       
+       
+    /*$query1 = /*"UPDATE sec_solicitudestudios SET estado='$estadosolicitud'
 			 WHERE IdNumeroExp='$idexpediente' AND
 			 IdSolicitudEstudio='$idsolicitud' AND IdServicio='DCOLAB' ";*/
            
-           "UPDATE sec_solicitudestudios SET estado=(select id from ctl_estado_servicio_diagnostico where idestado='$estadosolicitud')
+           /*"UPDATE sec_solicitudestudios SET estado=(select id from ctl_estado_servicio_diagnostico where idestado='$estadosolicitud')
 	    WHERE id=(select idsolicitudestudio from sec_detallesolicitudestudios where id =$idsolicitud)";
      $result = @pg_query($query);
      if (!$result)
        return false;
      else
-       return true;	   
+       return true;	   */
    }
  }
  
