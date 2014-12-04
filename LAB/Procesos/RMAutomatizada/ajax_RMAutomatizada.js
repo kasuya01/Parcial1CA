@@ -360,16 +360,16 @@ function CargarDatosFormulario( idexpediente,idarea ,idexamen, idsolicitud )
 {
     ajax = objetoAjax();
     opcion = 2;
-    fechasolicitud = "";
+    
     estado = "";
     //idexamen = "";
-    fecharecep = "";
+    //fecharecep = "";
 
     ajax.open("POST", "ctrRMAutomatizada.php", true);
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
-    ajax.send("opcion=" + opcion + "&estado=" + estado + "&idarea=" + idarea + "&fechasolicitud=" + fechasolicitud + "&idexpediente=" + idexpediente + "&idsolicitud=" + idsolicitud +  "&idexamen=" + idexamen + "&fecharecep=" + fecharecep);
+    ajax.send("opcion=" + opcion + "&estado=" + estado + "&idarea=" + idarea + "&idexpediente=" + idexpediente + "&idsolicitud=" + idsolicitud +  "&idexamen=" + idexamen + "&fecharecep=" + fecharecep);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)

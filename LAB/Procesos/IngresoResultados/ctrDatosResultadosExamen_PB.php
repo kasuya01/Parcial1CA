@@ -379,7 +379,7 @@ switch ($opcion) {
 				pg_free_result($consulta);
 	            $imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>"	;	//numero de cajas de texto dibujadas para subelementos
 	            $imprimir .="<input  type='hidden' id='ocultoele' value='".$posele."'>"; //elementos
-                    $imprimir.="<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' value='".$fecharealiz."'>
+                    $imprimir .="<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' value='".$fecharealiz."'>
                                  <input type='hidden' name='txtfresultado' id='txtfresultado' value='".$fecharesultado."' />";
 	            $imprimir .="<td colspan='3' align='right'>
 			                    <input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaB()'>

@@ -42,7 +42,7 @@ switch ($opcion)
         $idexamen       = $_POST['idexamen'];
         $idexpediente   = $_POST['idexpediente'];
         $fechasolicitud = $_POST['fechasolicitud'];
-        $fecharecepcion = $_POST['fecharecepcion'];
+      //  $fecharecepcion = $_POST['fecharecepcion'];
         $PNombre        = $_POST['PNombre'];
         $SNomre         = $_POST['SNombre'];
         $PApellido      = $_POST['PApellido'];
@@ -138,7 +138,7 @@ switch ($opcion)
           
         }     
        // echo $cond2;
-         $query="WITH tbl_servicio AS (
+       $query="WITH tbl_servicio AS (
                     SELECT t02.id,
                         CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
@@ -182,7 +182,7 @@ switch ($opcion)
                        t18.idestandar,
                        t02.id_establecimiento_externo,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-                        t01.observacion
+                        t01.observacion,t01.idtipomuestra
             FROM sec_detallesolicitudestudios           t01 
             INNER JOIN sec_solicitudestudios            t02     ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra             t03     ON (t02.id = t03.idsolicitudestudio) 
@@ -236,7 +236,7 @@ switch ($opcion)
                    t18.idestandar,
                    t02.id_establecimiento_externo,
                    (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-                    t01.observacion
+                    t01.observacion,t01.idtipomuestra 
                 FROM sec_detallesolicitudestudios       t01 
             INNER JOIN sec_solicitudestudios            t02     ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra             t03     ON (t02.id = t03.idsolicitudestudio) 
@@ -273,11 +273,11 @@ switch ($opcion)
         	<center>
            
             
-<tr><td colspan='11'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES A PROCESAR:".$NroRegistros."</h3></span></td></tr>
+<tr><td colspan='11'  align='center'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES A PROCESAR:".$NroRegistros."</h3></span></td></tr>
             </center>
 	</table> "; 
 
-        $consulta = $objdatos->ListadoSolicitudesPorArea($query);
+      //  $consulta = $objdatos->ListadoSolicitudesPorArea($query);
 
         echo "<table width='81%' border='1' align='center'>
                 <tr class='CobaltFieldCaptionTD'>
@@ -293,34 +293,38 @@ switch ($opcion)
 			<td>Fecha Recepci&oacute;n</td>
 			<td>Prioridad</td>
                         
-                    </tr>";
+                </tr>";
         if(pg_num_rows($consulta))
         {
             $pos = 0;
 
             while ($row = pg_fetch_array($consulta)) 
             { 
-                echo "<tr>
-					<td width='7%'>".$row['numeromuestra']."</td>
-					<td width='8%'><span style='color: #0101DF;'>
-					<a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(".$pos.");'>".
-					$row['idnumeroexp']."</span></a>". 
-					"<input name='idsolicitud[".$pos."]' id='idsolicitud[".$pos."]' type='hidden' size='60' value='".$row[1]."' />".
-					"<input name='idexpediente[".$pos."]' id='idexpediente[".$pos."]' type='hidden' size='60' value='".$row["idnumeroexp"]."' />".
-			   		"<input name='idarea[".$pos."]' id='idarea[".$pos."]' type='hidden' size='60' value='".$idarea."' />".
-			    		"<input name='idtipo[".$pos."]' id='idtipo[".$pos."]' type='hidden' size='60' value='".$row["IdTipoMuestra"]."' />".
-			     		"<input name='idexamen[".$pos."]' id='idexamen[".$pos."]' type='hidden' size='60' value='".$row['idexamen']."' /></td>
-					<td width='25%'>".htmlentities($row['paciente'])."</td>	 
-					<td width='8%'>".$row['idexamen']."</td>
-					<td width='22%'>" . htmlentities($row['nombreexamen']) . "</td>
-                                        <td width='18%'>" . htmlentities($row['observacion']) . "</td>
-                                        <td width='15%'>" . htmlentities($row['nombresubservicio']) . "</td>
-                                        <td width='10%'>" . htmlentities($row['nombreservicio']) . "</td>
-                                        <td width='20%'>" . htmlentities($row['estabext']) . "</td>
-                                        <td width='20%'>" . $row['fecharecepcion'] . "</td>
-                                        <td width='10%'>" . ($row['prioridad']) . "</td>";
+          echo "<tr>
+			<td width='7%'>".$row['numeromuestra']."</td>
+			<td width='8%'><span style='color: #0101DF;'>
+                            <a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(".$pos.");'>".
+				$row['idnumeroexp']."</span></a>". 
+				"<input name='idsolicitud[".$pos."]' id='idsolicitud[".$pos."]' type='hidden' size='60' value='".$row[1]."' />".
+				"<input name='idexpediente[".$pos."]' id='idexpediente[".$pos."]' type='hidden' size='60' value='".$row["idnumeroexp"]."' />".
+				"<input name='idarea[".$pos."]' id='idarea[".$pos."]' type='hidden' size='60' value='".$idarea."' />".
+                                "<input name='idtipo[".$pos."]' id='idtipo[".$pos."]' type='hidden'   size='60' value='".$row["idtipomuestra"]."' />".
+			     	"<input name='idexamen[".$pos."]' id='idexamen[".$pos."]' type='hidden' size='60' value='".$row['idexamen']."' />
+                        </td>
+			<td width='25%'>".htmlentities($row['paciente'])."</td>	 
+			<td width='8%'>".$row['idexamen']."</td>
+			<td width='22%'>" . htmlentities($row['nombreexamen']) . "</td>";
+               if (!empty($row['observacion'])) 
+                    echo"    <td width='18%'>" . htmlentities($row['observacion']) . "</td>";
+               else
+                  echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+                  echo "<td width='15%'>" . htmlentities($row['nombresubservicio']) . "</td>
+                        <td width='10%'>" . htmlentities($row['nombreservicio']) . "</td>
+                        <td width='20%'>" . htmlentities($row['estabext']) . "</td>
+                        <td width='20%'>" . $row['fecharecepcion'] . "</td>
+                        <td width='10%'>" . ($row['prioridad']) . "</td>";
 					
-			echo"</tr>";
+	   echo"</tr>";
                 
                 
                 

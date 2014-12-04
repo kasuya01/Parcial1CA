@@ -33,7 +33,7 @@ if (isset($_SESSION['Correlativo'])) {
             <!--<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />-->
             <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
             <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
-            <title>Muestras Automatizadas Rechazadas por &Aacute;rea</title>
+            <title>Rechazar Muestras en &Aacute;rea</title>
             <script language="JavaScript" type="text/javascript" src="ajax_RMAutomatizada.js"></script>
             <?php include_once $ROOT_PATH."/public/js.php";?>
             <!--referencias del estilo del calendario-->
@@ -123,7 +123,7 @@ if (isset($_SESSION['Correlativo'])) {
                 <form>
                     <table  align="center" class="StormyWeatherFormTABLE"  width="83%">
                         <tr>
-                            <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3><strong>Rechazar Muestra Automatizada por &Aacute;rea</strong></h3>		</td>
+                            <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3><strong>Rechazar Muestra en &Aacute;rea </strong></h3></td>
                         </tr>
                         <tr>		
                             <td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</td>

@@ -4,8 +4,8 @@ $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 $nivel=$_SESSION['NIVEL'];
- $ROOT_PATH = $_SESSION['ROOT_PATH'];
- $base_url  = $_SESSION['base_url'];
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
  
  include_once("clsMuestrasRechazadas.php"); 
 //consulta los datos por su id
@@ -33,7 +33,7 @@ else{
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
-<title>Muestras Rechazadas por &Aacute;rea</title>
+<title>Reactivar Muestras Rechazadas</title>
 <script language="JavaScript" type="text/javascript" src="ajax_MuestrasRechazadas.js"></script>
 <?php include_once $ROOT_PATH."/public/js.php";?>
 <!--referencias del estilo del calendario-->
@@ -119,7 +119,7 @@ if ($nivel==4){
 <form>
 <table  align="center" class="StormyWeatherFormTABLE"  width="97%">
 	<tr>
-		<td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3><strong>Muestras rechazadas por &Aacute;rea</strong></h3>
+		<td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3><strong>Reactivar Muestras rechazadas</strong></h3>
 		</td>
 	</tr>
 	<tr>		
@@ -150,8 +150,7 @@ if ($nivel==4){
 		              	include_once("../../../Conexion/ConexionBD.php");
 					$con = new ConexionBD;
 					if($con->conectar()==true){			  
-						//$consulta  = "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$tipo' ORDER BY Nombre";
-                                                $consulta  = "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento='$tipo' ORDER BY nombre";
+						$consulta  = "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento='$tipo' ORDER BY nombre";
 						$resultado = @pg_query($consulta) or die('La consulta fall&oacute;: ' . @pg_error());
 						//por cada registro encontrado en la tabla me genera un <option>
 						while ($rows = @pg_fetch_array($resultado)){
@@ -265,8 +264,7 @@ if ($nivel==4){
 	</tr>
 	<tr>
 		<td  class="StormyWeatherDataTD" colspan="4" align="right">
-			<input type="button" name="Submit" value="Buscar Solicitudes" 
-        onClick="MostrarMuestrasRechazadas()">
+			<input type="button" name="Submit" value="Buscar Solicitudes" onClick="MostrarMuestrasRechazadas()">
 			<input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('Proc_MuestrasRechazadas.php')">
 		</td>
 	<tr>

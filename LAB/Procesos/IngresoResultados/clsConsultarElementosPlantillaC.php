@@ -22,7 +22,7 @@ function Nombre_Establecimiento($lugar){
 
 ////**********************************************************************************************************************************************////
 //INSERTA RESULTADOS   ENCABEZADO
-function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$responsable,$usuario,$codigoResultado,$lugar,$idobservacion)
+function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$responsable,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado)
 {
    $con = new ConexionBD;
    //echo $resultado;
@@ -30,9 +30,9 @@ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$obs
     {
         $query = "INSERT INTO lab_resultados
 	       (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
-               observacion,resultado,idempleado,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,id_observacion) 
+               observacion,resultado,idempleado,idusuarioreg,fechahorareg,idestablecimiento,id_observacion,fecha_resultado) 
 	       VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,
-               '$observacion','$resultado',$responsable,$usuario,NOW(),$usuario,NOW(),$lugar,$idobservacion)RETURNING id";
+               '$observacion','$resultado',$responsable,$usuario,NOW(),$lugar,$idobservacion,'$fecharesultado')RETURNING id";
        echo $query;
                 $result = pg_query($query);
                 
@@ -44,8 +44,8 @@ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$obs
                         $row_exam_metod = pg_fetch_array($result);
                         $id_exam_metod = $row_exam_metod[0];
                         $id_exam_metod;
-                        $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado)
-                                  VALUES($id_exam_metod, $iddetalle, $tab, $usuario, NOW(),'$fecharealiz','$fecharesultado')";
+                        $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
+                                  VALUES($id_exam_metod, $iddetalle, $codigoResultado, $usuario, NOW(),'$fecharealiz','$fecharesultado',$responsable)";
                         
                         $result = pg_query($query);
 
@@ -193,7 +193,7 @@ function ObtenerFechaResultado($idsolicitud,$IdExamen,$lugar)
 	$con = new ConexionBD;
    if($con->conectar()==true)
    {
-      $query = "SELECT TO_CHAR(fechahorareg,'dd/mm/YYYY HH12:MI:SS') AS fecharesultado
+      $query = "SELECT TO_CHAR(fecha_resultado,'dd/mm/YYYY HH12:MI:SS') AS fecharesultado
                 FROM lab_resultados 
                 WHERE idsolicitudestudio=$idsolicitud AND idestablecimiento=$lugar 
                 AND idexamen=$IdExamen";
