@@ -157,7 +157,7 @@ class clsLab_Areas {
                       FROM ctl_area_servicio_diagnostico t01
                       WHERE t01.id IN (
                         SELECT idarea
-                        FROM lab_areasxestablecimiento 
+                        FROM lab_areasxestablecimiento
                         WHERE condicion = 'H'  AND idestablecimiento = $lugar)
                         AND t01.administrativa = 'N'
                       ORDER BY nombrearea";
@@ -307,7 +307,8 @@ class clsLab_Areas {
                              COALESCE(t02.condicion, 'I') AS estado
                       FROM ctl_area_servicio_diagnostico        t01
                       LEFT OUTER JOIN lab_areasxestablecimiento t02 ON (t01.id = t02.idarea AND t02.idestablecimiento = $idEstablecimiento)
-                      WHERE t01.id_atencion = $idAtencion";
+                      WHERE t01.id_atencion = $idAtencion
+                      ORDER BY t01.nombrearea";
 
             $result = @pg_query($query);
             if (!$result)
