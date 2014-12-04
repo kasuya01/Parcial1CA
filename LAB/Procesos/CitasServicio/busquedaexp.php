@@ -4,7 +4,7 @@ $nivel = $_SESSION['NIVEL'];
 $corr = $_SESSION['Correlativo'];
 $lugar = $_SESSION['Lugar'];
 $area = $_SESSION['Idarea'];
-echo $nivel;
+//echo $nivel;
 if ($nivel == 1) {
     include_once ('../../../PaginaPrincipal/index_laboratorio2.php');
 }
@@ -93,7 +93,8 @@ if ($nivel == 33) {
             }
 
             function  mostrardetalle(idexp,establecimiento) {//recibe el numero de expediente para que se muestre el detalle de este
-                accion = 2;               
+                accion = 2; 
+                //alert ('llega aqui')
 
                 sendReq.open("POST", 'ajax_CitasServicios.php', true);
                 sendReq.onreadystatechange = procesaSearch;
@@ -102,7 +103,7 @@ if ($nivel == 33) {
 
                 var param = 'Proceso=mostrardetalle';
                 param += '&id_exp=' + idexp + '&establecimiento=' + establecimiento;
-               // alert (param)
+               // alert (' llega: ' +param)
                 sendReq.send(param);
             }
 
@@ -110,28 +111,68 @@ if ($nivel == 33) {
                 accion = 3;
 
                 comprobar(idsolicitudestudio, idservicio, idexp);
+//                sendReq.open("POST", 'ajax_CitasServicios.php', true);
+//                sendReq.onreadystatechange = procesaSearch;
+//                sendReq.setRequestHeader('Content-Type',
+//                        'application/x-www-form-urlencoded');
                 sendReq.open("POST", 'ajax_CitasServicios.php', true);
-                sendReq.onreadystatechange = procesaSearch;
+                //alert(sendReq.onreadystatechange)
+              //  sendReq.onreadystatechange = procesaSearch;
+                    sendReq.onreadystatechange = function()
+                    {
+                        alert (sendReq.readyState)
+                        if (sendReq.readyState == 4) {//4 The request is complete
+                            alert(sendReq.status)
+                            if (sendReq.status == 200) {//200 means no error.
+                               
+                                respuesta = sendReq.responseText;
+                                alert('respuesta: '+respuesta)
+                                return false;
+                                //document.getElementById('divsubserv').innerHTML = respuesta;
+                            }
+                        }
+                    }
                 sendReq.setRequestHeader('Content-Type',
                         'application/x-www-form-urlencoded');
-
                 var param = 'Proceso=darcita';
-                param += '&idsolicitudestudio=' + idsolicitudestudio + '&idservicio='
-                        + idservicio + '&id_exp=' + idexp;
-                alert (param)
-                sendReq.send(param);
+                param += '&idsolicitudestudio=' + idsolicitudestudio + '&idservicio=' + idservicio+'&id_exp='+idexp;
+                
+              
+              //  var param = 'Proceso=darcita';
+              //  param += '&idsolicitudestudio=' + idsolicitudestudio + '&idservicio='+ idservicio + '&id_exp=' + idexp;
+              //  alert ('darcita:'+param)
+                 sendReq.send(param);
+               // sendReq.send('Proceso='+'darcita'+'&idsolicitudestudio=' + idsolicitudestudio + '&idservicio='
+                     //   + idservicio + '&id_exp=' + idexp);
             }
 
             function comprobar(idsolicitudestudio, idservicio, idexp) {
+               // alert ('Llego a comprobar')
                 sendReq.open("POST", 'ajax_CitasServicios.php', true);
                 sendReq.onreadystatechange = procesaSearch;
                 sendReq.setRequestHeader('Content-Type',
                         'application/x-www-form-urlencoded');
-
                 var param = 'Proceso=comprobar';
                 param += '&idsolicitudestudio=' + idsolicitudestudio + '&idservicio='
                         + idservicio + '&id_exp=' + id_exp;
+                
+//                alert ('comprobar: '+sendReq.onreadystatechange)
+//                sendReq.onreadystatechange = function()
+//                {
+//                    alert(sendReq.status)
+//                    if (sendReq.readyState == 4) {//4 The request is complete
+//                        alert(sendReq.status)
+//                        if (sendReq.status == 200) {//200 means no error.
+//
+//                            respuesta = sendReq.responseText;
+//                            alert ('comprobar: '+respuesta)
+//                            return respuesta
+//                            //sendReq.onreadystatechange = procesaSearch;
+//                        }
+//                    }
+//                }
                 sendReq.send(param);
+                
             }
         // function  prueba(){//funcion que recibe el id de solicitud de estudio, el servicio, y el numero de expediente para ser enviados a otro proceso
             // accion=4;
@@ -151,7 +192,7 @@ if ($nivel == 33) {
                 if (sendReq.readyState == 4) {
                     if (sendReq.status == 200) {
                         respuesta = sendReq.responseText;
-                        alert(respuesta+' - '+accion);
+                        alert('respuesta: '+respuesta+' -accion: '+accion);
                         switch (accion) {
                             case 1:
                                 document.getElementById('divrespuesta').innerHTML =
