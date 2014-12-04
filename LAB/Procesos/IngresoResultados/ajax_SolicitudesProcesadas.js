@@ -2345,6 +2345,47 @@ function GuardarPlantillaE()
         }
     }
 }
+//Fn Pg
+//Funcion revisa si fecha seleccionada es mayor que la actual
+function valfechasolicita(obj){
+ //fecha0=document.getElementById('d_fechatoma').value;
+fecha1=obj.value;
+var fecha_actual = new Date() ;
+	var dia = fecha_actual.getDate()  
+	var mes = fecha_actual.getMonth() + 1  
+	var anio = fecha_actual.getFullYear()  
+	var hora = fecha_actual.getHours()
+        var minu = fecha_actual.getMinutes()
+	
+	if (mes<10)
+		mes='0'+mes
+	if (dia<10)
+		dia='0'+dia
+        if (hora<10)
+            hora = '0'+hora
+        if (minu<10)
+            minu = '0'+minu
+        
+	
+	fechact=parseInt(anio+""+mes+""+dia+""+hora+""+minu);
+
+//var f0 = fecha0.split('-');
+//var fechaPri = parseInt(f0[0]+f0[1]+f0[2]);
+hola=fecha1.split(/[- :]/);
+var fecha2 = parseInt(f2[0]+f2[1]+f2[2]);
+var f2 = fecha1.split('-');
+var fecha2 = parseInt(f2[0]+f2[1]+f2[2]);
+
+
+    if (fecha1!="" && fecha2>fechact)
+    {
+    alert ('La fecha de Solicitud de examen es mayor que la fecha actual')
+    document.getElementById('d_fechasolicitud').value=""
+    return false;
+    }
+}
+
+
 
 function llenarComboTipoSolicitud() {
     jQuery.ajaxSetup({

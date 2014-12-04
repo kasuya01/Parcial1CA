@@ -5,7 +5,7 @@ $usuario   = $_SESSION['Correlativo'];
 $lugar     = $_SESSION['Lugar'];
 $area      = $_SESSION['Idarea'];
 ?>
-<script language="JavaScript" type="text/javascript" src="ajax_RecepcinSolicitud.js"></script>
+<script language="JavaScript" type="text/javascript" src="ajax_RecepcionSolicitud.js"></script>
 <script language="JavaScript" ></script>
 <?php
 //variables POST
