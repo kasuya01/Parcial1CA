@@ -252,7 +252,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
                 t11.nombre AS nombresubservicio, 
                 t22.sct_name_es AS diagnostico, 
                 t23.peso as peso, 
-                t23.talla as talla 
+                t23.talla as talla,t02.fecha_solicitud as fechasolicitud 
                 FROM sec_detallesolicitudestudios 		t01 
                 INNER JOIN sec_solicitudestudios 		t02 	ON (t02.id = t01.idsolicitudestudio) 
                 INNER JOIN lab_recepcionmuestra 		t03 	ON (t02.id = t03.idsolicitudestudio) 
@@ -305,7 +305,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
                 t11.nombre AS nombresubservicio, 
                 t22.sct_name_es AS diagnostico, 
                 t23.peso as peso, 
-                t23.talla as talla 
+                t23.talla as talla,t02.fecha_solicitud as fechasolicitud 
                 FROM sec_detallesolicitudestudios t01 
                 INNER JOIN sec_solicitudestudios 		t02 		ON (t02.id = t01.idsolicitudestudio) 
                 INNER JOIN lab_recepcionmuestra 		t03 		ON (t02.id = t03.idsolicitudestudio) 
@@ -362,10 +362,11 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
                 join mnt_area_examen_establecimiento mnt4       on mnt4.id_area_servicio_diagnostico=casd.id 
                 join lab_conf_examen_estab lcee                 on (mnt4.id=lcee.idexamen) 
                 INNER JOIN sec_detallesolicitudestudios sdses   ON sdses.id_conf_examen_estab=lcee.id
-                inner join lab_tipomuestra ltm                  on ltm.id=sdses.idtipomuestra
-            where sdses.id=$idsolicitud 
-           -- AND casd.id=$idarea
-          --  AND lcee.id=$idexamen";
+                inner join lab_tipomuestra ltm                  on ltm.id=sdses.idtipomuestra where sdses.id=$idsolicitud ";
+              /*-- AND casd.id=$idarea
+          --  AND lcee.id=$idexamen";*/
+            
+          
               
 		$result = @pg_query($query);
 	    if (!$result)

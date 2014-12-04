@@ -1,4 +1,4 @@
-<?php session_start();
+   <?php session_start();
 $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];

@@ -121,68 +121,66 @@ function ExamenesPorArea($idarea,$lugar)
 }
 
 function consultarpag($query_search,$RegistrosAEmpezar,$RegistrosAMostrar)
- {
+{
    //creamos el objeto $con a partir de la clase ConexionBD
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
-   if($con->conectar()==true){
-  $query = $query_search ." LIMIT $RegistrosAMostrar  OFFSET $RegistrosAEmpezar";
-     $result = @pg_query($query);
-	 if (!$result)
+    if($con->conectar()==true){
+        $query = $query_search ." LIMIT $RegistrosAMostrar  OFFSET $RegistrosAEmpezar";
+        $result = @pg_query($query);
+	if (!$result)
 	   return false;
-	 else
+	else
 	   return $result;
-   }
-  } 
+    }
+} 
 
 
-	 //FUNCION PARA MOSTRAR DATOS GENERALES DE LA SOLICITUD PROCESADAS POR AREA Y ESTADO
-	  function LeerEspecialidades()
-	 {
-	   $con = new ConexionBD;
-	   if($con->conectar()==true) 
-	   {
-	   $query= "SELECT IdSubServicio,NombreSubServicio FROM mnt_subservicio
+    //FUNCION PARA MOSTRAR DATOS GENERALES DE LA SOLICITUD PROCESADAS POR AREA Y ESTADO
+    function LeerEspecialidades()
+    {
+        $con = new ConexionBD;
+	if($con->conectar()==true) 
+	{
+            $query= "SELECT IdSubServicio,NombreSubServicio FROM mnt_subservicio
 	             WHERE IdServicio='CONEXT' ORDER BY NombreSubServicio";
 	 
-	     $result = @pg_query($query);
-	     if (!$result)
+	    $result = @pg_query($query);
+	    if (!$result)
 	       return false;
-	     else
+	    else
 	       return $result;	   
-	   }
-	 }
+	}
+    }
  
- 	 //FUNCION PARA MOSTRAR DATOS DE BUSQUEDA
-	  function BuscarSolicitudesPaciente($query_search)
-	 {
-	   
-  //creamos el objeto $con a partir de la clase ConexionBD
-	   $con = new ConexionBD;
+    //FUNCION PARA MOSTRAR DATOS DE BUSQUEDA
+    function BuscarSolicitudesPaciente($query_search)
+    {  //creamos el objeto $con a partir de la clase ConexionBD
+	$con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
-	   if($con->conectar()==true){
-	     $query = $query_search;
-		 $result = @pg_query($query);
-		 if (!$result)
-		   return false;
-		 else
-		   return $result;
+	if($con->conectar()==true){
+	    $query = $query_search;
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+	        return $result;
 		   
-	   }
-	 }
+	}
+    }
 	
-	 function BuscarRecepcion($Idsolic){
-	  $con = new ConexionBD;
-	   if($con->conectar()==true) 
-	   {
+    function BuscarRecepcion($Idsolic){
+        $con = new ConexionBD;
+	if($con->conectar()==true) 
+	{
 	   $query ="SELECT DATE_FORMAT(FechaRecepcion,'%e/ %m / %Y')AS fecha FROM lab_recepcionmuestra WHERE IdSolicitudEstudio=$Idsolic";
 	      $result = @pg_query($query);
 	     if (!$result)
 	       return false;
 	     else
 	       return $result;	
-	 }
-	 }
+	}
+    }
 	 
 	function  BuscarCita($Idsolic){
 	   $con = new ConexionBD;
@@ -204,7 +202,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-	   $query ="SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
+	  $query ="SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                     t01.id as iddetallesolicitud,
                     t02.id as idsolicitudestudio,
                     t04.idplantilla  as idplantilla,
@@ -213,7 +211,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
                     t24.nombreempleado as medico,
                     CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido,
                     t07.apellido_casada) AS paciente,
-                    t07.conocido_por as conocodidox,
+                    t07.conocido_por as conocidox,
                     REPLACE(
                                     REPLACE(
                                         REPLACE(
@@ -230,12 +228,12 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
                                  (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
                     t11.nombre AS nombresubservicio,
                     t22.sct_name_es AS diagnostico, 
-                    t23.peso as peso,
-                    t23.talla as talla,
-                    t04.nombre_examen as nombre_examen,
-                    t04.codigo_examen as codigo_examen,
-                    t25.idarea as codigo_area,
-                    t25.nombrearea as nombre_area,
+                    t23.peso AS peso,
+                    t23.talla AS talla,
+                    t04.nombre_examen AS nombre_examen,
+                    t04.codigo_examen AS codigo_examen,
+                    t25.idarea AS codigo_area,
+                    t25.nombrearea as nombre_area,t25.id AS idarea,
                     CASE t01.estadodetalle 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada'
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='R') THEN 'Recibida'
@@ -253,8 +251,8 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado1, 
-                    t01.indicacion as indicacion,
-                    t01.idempleado as idempleado
+                    t01.indicacion AS indicacion,
+                    t01.idempleado AS idempleado,t01.id_conf_examen_estab as idexamen
             FROM sec_detallesolicitudestudios           t01 
             INNER JOIN sec_solicitudestudios            t02 	ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra             t03 	ON (t02.id = t03.idsolicitudestudio) 
@@ -275,11 +273,11 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
             INNER JOIN lab_tiposolicitud                t17 	ON (t17.id = t02.idtiposolicitud) 
             INNER JOIN ctl_examen_servicio_diagnostico  t18 	ON (t18.id = t05.id_examen_servicio_diagnostico) 
             INNER JOIN ctl_sexo                         t19 	ON (t19.id = t07.id_sexo)
-            left  join sec_diagnostico_paciente		t21     on (t21.id_historial_clinico=t09.id)
-            left join mnt_snomed_cie10 			t22     on (t22.id=t21.id_snomed)
-            left join sec_signos_vitales                t23     on (t23.id_historial_clinico=t09.id)
-            left  join mnt_empleado 			t24     on (t09.id_empleado=t24.id) 
-            inner join ctl_area_servicio_diagnostico    t25     on (t25.id=t05.id_area_servicio_diagnostico)
+            LEFT JOIN sec_diagnostico_paciente		t21     ON (t21.id_historial_clinico=t09.id)
+            LEFT JOIN mnt_snomed_cie10 			t22     ON (t22.id=t21.id_snomed)
+            LEFT JOIN sec_signos_vitales                t23     ON (t23.id_historial_clinico=t09.id)
+            LEFT JOIN mnt_empleado 			t24     ON (t09.id_empleado=t24.id) 
+            LEFT JOIN ctl_area_servicio_diagnostico    t25     ON (t25.id=t05.id_area_servicio_diagnostico)
             
             WHERE  t02.id=$idsolicitud and  t06.numero='$idexpediente'
 
@@ -318,7 +316,7 @@ UNION
                     t04.nombre_examen as nombre_examen,
                    t04.codigo_examen as codigo_examen,
                    t25.idarea as codigo_area,
-                   t25.nombrearea as nombre_area,
+                   t25.nombrearea as nombre_area,t25.id as idarea,
                     CASE t01.estadodetalle
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada'
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='R') THEN 'Recibida'
@@ -337,8 +335,8 @@ UNION
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado1, 
 
-			t01.indicacion as indicacion,
-                        t01.idempleado  as idempleado
+                    t01.indicacion as indicacion,
+                    t01.idempleado  as idempleado,t01.id_conf_examen_estab as idexamen
             FROM sec_detallesolicitudestudios           t01 
             INNER JOIN sec_solicitudestudios            t02 	ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra             t03 	ON (t02.id = t03.idsolicitudestudio) 
@@ -378,8 +376,8 @@ UNION
  function MostrarResultadoGenerales($idsolicitud,$idexamen,$lugar)
  {
 	$con = new ConexionBD;
-   if($con->conectar()==true) 
-  {	$query="SELECT lab_recepcionmuestra.IdSolicitudEstudio, mnt_expediente.IdNumeroExp, CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoApellido) AS NombrePaciente,
+    if($con->conectar()==true) 
+    {	$query="SELECT lab_recepcionmuestra.IdSolicitudEstudio, mnt_expediente.IdNumeroExp, CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoApellido) AS NombrePaciente,
 	(year(CURRENT_DATE)-year(FechaNacimiento))AS Edad,IF(Sexo=1,'Masculino','Femenino') AS Sexo,
 	NombreSubServicio AS Origen,NombreServicio AS Procedencia,NombreArea,NumeroMuestra,
 	DATE_FORMAT(lab_resultados.FechaHoraReg,'%d/%m/%Y %H:%i:%s') AS Fecha,mnt_establecimiento.Nombre,
@@ -402,9 +400,9 @@ UNION
 	WHERE sec_detallesolicitudestudios.IdExamen='$idexamen' AND lab_recepcionmuestra.IdSolicitudEstudio=$idsolicitud AND sec_solicitudestudios.IdEstablecimiento=$lugar AND mnt_expediente.IdEstablecimiento=$lugar";
   //echo $query;
 	$result = @pg_query($query);
-     if (!$result)
-       return false;
-     else
+        if (!$result)
+            return false;
+        else
        return $result;	   
    }
  }
@@ -535,9 +533,10 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
 	 $con = new ConexionBD;
    if($con->conectar()==true)
    {
-	$query="SELECT lab_detalleresultado.Resultado,lab_detalleresultado.Observacion FROM lab_resultados
+	 $query="SELECT lab_detalleresultado.Resultado,lab_detalleresultado.Observacion FROM lab_resultados
 	INNER JOIN lab_detalleresultado ON lab_resultados.IdResultado=lab_detalleresultado.IdResultado
-	WHERE lab_resultados.IdSolicitudEstudio=$idsolicitud AND lab_resultados.IdDetalleSolicitud=$iddetalle   AND lab_detalleresultado.IdElemento=$idelemento"; 
+	WERE lab_resultados.IdSolicitudEstudio=$idsolicitud AND lab_resultados.IdDetalleSolicitud=$iddetalle
+        AND lab_detalleresultado.IdElemento=$idelemento"; 
 	 $result = @pg_query($query);
      	if (!$result)
       		return false;
@@ -610,7 +609,7 @@ function MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar)
 	$con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query ="SELECT 
+        $query ="SELECT 
                     TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                     t06.numero AS idnumeroexp,
                     t01.id as iddetallesolicitud,
@@ -1131,17 +1130,17 @@ function ObtenerCantidadResultados($idsolicitud,$iddetalle)
     }
  }
  
-function ObtenerFechaResultado($idsolicitud,$idarea,$lugar)
+//FUNCION FECHA DE RESULTADO
+function ObtenerFechaResultado($idsolicitud,$IdExamen,$lugar)
 {
 	$con = new ConexionBD;
    if($con->conectar()==true)
    {
-      $query = "SELECT DATE_FORMAT(FechaHoraReg,'%d/%m/%Y %H:%i:%s') AS FechaResultado, Responsable
-				FROM lab_resultados where IdSolicitudEstudio=$idsolicitud AND IdEstablecimiento=$lugar
-				AND IdExamen like '$idarea%'";
-      
-     // echo $query;
-     $result = @pg_query($query);
+      echo $query = "SELECT TO_CHAR(fecha_resultado,'dd/mm/YYYY HH12:MI:SS') AS fecharesultado
+                FROM lab_resultados 
+                WHERE idsolicitudestudio=$idsolicitud AND idestablecimiento=$lugar 
+                AND idexamen=$IdExamen";
+     $result = pg_query($query);
      if (!$result)
        return false;
      else

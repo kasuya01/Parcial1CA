@@ -281,7 +281,7 @@ VALUES($idexmen_metodologia,
     function DatosGeneralesSolicitud($idexpediente, $idsolicitud) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-             $query ="SELECT t02.id, 
+             $query ="SELECT t02.id,t02.fecha_solicitud AS fechasolicitud, 
                 t13.nombre AS nombreservicio, 
                 t19.nombre AS sexo, 
                 t24.nombreempleado as medico, 
@@ -334,7 +334,7 @@ VALUES($idexmen_metodologia,
 
        UNION
 
-                SELECT t02.id, 
+                SELECT t02.id,t02.fecha_solicitud AS fechasolicitud, 
                 t13.nombre AS nombreservicio, 
                 t19.nombre AS sexo, 
                 t24.nombreempleado as medico, 
@@ -412,14 +412,7 @@ VALUES($idexmen_metodologia,
     function DatosExamen($idarea, $idsolicitud, $idexamen) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-          $query = /* "SELECT lab_examenes.IdExamen,NombreExamen,TipoMuestra,Indicacion,sec_detallesolicitudestudios.Observacion 
-                      FROM sec_detallesolicitudestudios
-                      INNER JOIN lab_examenes ON sec_detallesolicitudestudios.IdExamen=lab_examenes.IdExamen
-                      INNER JOIN lab_tipomuestra ON lab_tipomuestra.IdTipoMuestra=sec_detallesolicitudestudios.IdTipoMuestra
-                      WHERE idSolicitudEstudio = $idsolicitud
-                      AND IdArea='$idarea' AND lab_examenes.IdExamen='$idexamen'"; */
-
-                    "select lcee.codigo_examen,
+        $query = "select lcee.codigo_examen,
                         lcee.nombre_examen,
                         ltm.tipomuestra,
                         sdses.indicacion,
@@ -430,9 +423,15 @@ VALUES($idexmen_metodologia,
                 join lab_conf_examen_estab lcee                     on (mnt4.id=lcee.idexamen) 
                 INNER JOIN sec_detallesolicitudestudios sdses       ON sdses.id_conf_examen_estab=lcee.id
                 inner join lab_tipomuestra ltm                      on ltm.id=sdses.idtipomuestra
-            where sdses.id=$idsolicitud 
-           -- AND casd.id=$idarea
-           -- AND lcee.id=$idexamen";
+            where sdses.id=$idsolicitud ";
+         /*  -- AND casd.id=$idarea
+           -- AND lcee.id=$idexamen*/
+/* "SELECT lab_examenes.IdExamen,NombreExamen,TipoMuestra,Indicacion,sec_detallesolicitudestudios.Observacion 
+                      FROM sec_detallesolicitudestudios
+                      INNER JOIN lab_examenes ON sec_detallesolicitudestudios.IdExamen=lab_examenes.IdExamen
+                      INNER JOIN lab_tipomuestra ON lab_tipomuestra.IdTipoMuestra=sec_detallesolicitudestudios.IdTipoMuestra
+                      WHERE idSolicitudEstudio = $idsolicitud
+                      AND IdArea='$idarea' AND lab_examenes.IdExamen='$idexamen'"; */
 
 
 

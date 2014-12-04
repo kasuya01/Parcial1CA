@@ -34,8 +34,8 @@ switch ($opcion)
 	//$usuario=$_SESSION['correlativo'];
 	$resultado="";
    	//guardandolos datos generales del resultado
-	  $ultimo= $obj->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$idempleado,$usuario,$tab,$fecharealiz,$fecharesultado,$lugar);
-         echo $ultimo;                      
+	$ultimo= $obj->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$idempleado,$usuario,$tab,$fecharealiz,$fecharesultado,$lugar);
+        // echo $ultimo;                      
 	//guardando el detalle del resultado
 	$obj->insertar_elemento($ultimo,$idelemento,$idcantidad,$lugar);
              

@@ -267,7 +267,8 @@ function ProcesarMuestra1(idexamen)
 {
     //alert(idexamen)
    idsolicitudPadre=document.frmDatos.idsolicitudPadre.value;
-   text=document.frmDatos.txtobservacion.value;
+  // text=document.frmDatos.txtobservacion.value;
+   text='';
    fechasolicitud=document.frmDatos.fechasolicitud.value;
     //alert(text);
    //alert("Voy a cambiar estados");

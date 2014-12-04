@@ -148,8 +148,7 @@ function BuscarServicio(IdServicio){
 		              	include_once("../../../Conexion/ConexionBD.php");
 					$con = new ConexionBD;
 					if($con->conectar()==true){			  
-						//$consulta  = "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$tipo' ORDER BY Nombre";
-                                                $consulta  = "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento='$tipo' ORDER BY nombre";
+						$consulta  = "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento='$tipo' ORDER BY nombre";
 						$resultado = @pg_query($consulta) or die('La consulta fall&oacute;: ' . @pg_error());
 						//por cada registro encontrado en la tabla me genera un <option>
 						while ($rows = @pg_fetch_array($resultado)){

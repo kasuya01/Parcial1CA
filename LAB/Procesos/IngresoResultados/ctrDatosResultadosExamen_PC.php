@@ -197,8 +197,8 @@ switch ($opcion)
                            }
                                    pg_free_result($consulta);
 
-                                    $imprimir.= "  <input type='text' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
-                                                <input type='text' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
+                                    $imprimir.= "  <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
+                                                <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
 
                             $imprimir.="<tr>
                                            <td colspan='6'>&nbsp;</td>
@@ -229,6 +229,10 @@ switch ($opcion)
                 $idobservacion= ($_POST['idobservacion']==0) ? 'NULL' : "'" . pg_escape_string($_POST['idobservacion']) . "'";
                 //echo $idobservacion;
                 $observacion= $_POST['observacion'];
+                
+                $fecharealiz=$_POST['fecharealiz'];
+                $fecharesultado=$_POST['fecharesultado'];
+                
 		$codigos_antibioticos=$_POST['codigos_antibioticos'];
 		$valores_antibioticos=$_POST['valores_antibioticos'];
 		$idarea=$_POST['idarea'];
@@ -243,14 +247,16 @@ switch ($opcion)
 		$tamano_vector=count($vector_valores);
 		$tamano_vectoantibiotico=count($vector_antibioticos);
                 //echo "Examen=".$idexamen." - soli=".$idsolicitud." - empleado=".$idempleado." - idrecepcion=".$idrecepcion." - iddetalle=".$iddetalle." - observacion=".$observacion." - resultado=".$resultado;
-
+                // echo $fecharealiz." - ".$fecharesultado;
+                
                 $posele=0;
                 $ban=0;
                 //echo $v_id_elementos[1];
                 if ($resultado=="P")
                 {
                       $codigoResultado=4;
-                      $ultimo= $objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion);
+                      $ultimo= $objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado);
+                                                             
                       if ($ultimo != "")
                       {
                               $idresultado=$ultimo;
@@ -332,7 +338,9 @@ switch ($opcion)
         $idobservacion=$_POST['idobservacion'];
 	$resultado=$_POST['resultado'];
 	$establecimiento=$_POST['estab'];
-
+        $fecharealiz=$_POST['fecharealiz'];
+        $fecharesultado=$_POST['fecharesultado'];
+        
 	$Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
 	$row_estab = pg_fetch_array($Consulta_Estab);
 
@@ -416,7 +424,8 @@ switch ($opcion)
 			$imprimir.=	"<td colspan='5'>--</td>";
 	   	break;
 	}
-
+            $imprimir.= "   <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
+                            <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
 	   $imprimir.= "</tr>
 			<tr>
 				<td colspan='1'><strong>Observaci&oacute;n</strong></td>
@@ -452,25 +461,28 @@ case 6:
 	$observacion= (empty($_POST['observacion'])) ? 'NULL' : "'" . pg_escape_string($_POST['observacion']) . "'";
         $idobservacion=$_POST['idobservacion'];
 	$resultado=$_POST['resultado'];
+        $fecharealiz=$_POST['fecharealiz'];
+        $fecharesultado=$_POST['fecharesultado'];
+        echo $fecharealiz." - ".$fecharesultado;
      //echo "Examen=".$idexamen." - soli=".$idsolicitud." - empleado=".$idempleado." - idrecepcion=".$idrecepcion." - iddetalle=".$iddetalle." - observacion=".$observacion." - resultado=".$resultado;
 	if ($resultado=="N")
 	{
                 $codigoResultado=2;
-                $ultimo=$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion);
+                $ultimo=$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado);
 
                 echo "Datos Guardados";
 	}
 	else{
                 $codigoResultado=2;
-                $ultimo=$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion);
+                $ultimo=$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado);
 
 	   echo "Datos Guardados";
 	}
 
 	if (($objdatos->CambiarEstadoDetalle($iddetalle)==true)&&($objdatos->CambiarEstadoSolicitud($idsolicitud)==false))
-	     {
+	{
 			echo (" Correctamente");
-		}
+        }
 
 	break;
 

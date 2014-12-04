@@ -150,8 +150,8 @@ $con = new ConexionBD;
                     $row_exam_metod = pg_fetch_array($result);
                     $id_exam_metod = $row_exam_metod[0];
                     $id_exam_metod;
-                  $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado)
-                                  VALUES($id_exam_metod, $iddetalle, $tab, $usuario, NOW(),'$fecharealiz','$fecharesultado')";
+                  $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
+                                  VALUES($id_exam_metod, $iddetalle, $tab, $usuario, NOW(),'$fecharealiz','$fecharesultado',$responsable)";
                         
                     $result = pg_query($query);
 
@@ -176,7 +176,7 @@ function insertar_elemento($ultimo,$idelemento,$idcantidad,$lugar)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "INSERT INTO lab_detalleresultado(idresultado,idelemento,idcantidad,idestablecimiento) 
+       $query = "INSERT INTO lab_detalleresultado(idresultado,idelemento,idcantidad,idestablecimiento) 
 	      VALUES($ultimo,$idelemento,$idcantidad,$lugar)";
      $result = pg_query($query);
 	 

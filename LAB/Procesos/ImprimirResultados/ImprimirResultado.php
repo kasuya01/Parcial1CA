@@ -95,21 +95,21 @@ if ($nivel==33){
 if ($nivel==4){
 	include_once ('../../../PaginaPrincipal/index_laboratorio42.php');}            
 ?><br>
-<table align="center" width="100%">
+<table align="center" width="60%">
 <tr>
-	<td>
-		<div  id="divInicial" >
-		<form>
-			<p>&nbsp;</p>
-				<table align="center"  class="StormyWeatherFormTABLE">
-					<tr>
-				    		<td colspan="5" align="center" class="CobaltFieldCaptionTD"><h3><strong>
-				Imprimir Resultados</strong></h3></td>
-					</tr>
-				 	<tr>		
-						<td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</td>
-		<td class="StormyWeatherDataTD"><select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)">
-        	<option value="0">Seleccione un Tipo de Establecimiento</option>
+    <td>
+        <div  id="divInicial" >
+            <form>
+                <p>&nbsp;</p>
+		<table align="center"  class="StormyWeatherFormTABLE" width="95%">
+		<tr>
+                    <td colspan="5" align="center" class="CobaltFieldCaptionTD"><h3><strong>Imprimir Resultados</strong></h3></td>
+		</tr>
+		<tr>		
+                    <td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</td>
+                    <td class="StormyWeatherDataTD">
+                        <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)">
+                            <option value="0">Seleccione un Tipo de Establecimiento</option>
 			<?php
 				$db = new ConexionBD;
 				if($db->conectar()==true){
@@ -122,16 +122,16 @@ if ($nivel==4){
 						echo '<option value="'. $tipo .'" selected="selected">' .htmlentities($nomtipo). '</option>';
 				}
 			?>
-        	</select>
-		</td>
-        	<td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
-        	<td class="StormyWeatherDataTD" >
-				<div id="divEstablecimiento">
-					<select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px">
-						<option value="0" >Seleccione un Establecimiento</option>
+                        </select>
+                    </td>
+                    <td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
+                    <td class="StormyWeatherDataTD" >
+			<div id="divEstablecimiento">
+                            <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px">
+                            	<option value="0" >Seleccione un Establecimiento</option>
 				<?php 
 				  echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
-		              	include_once("../../../Conexion/ConexionBD.php");
+                                  	include_once("../../../Conexion/ConexionBD.php");
 					$con = new ConexionBD;
 					if($con->conectar()==true){			  
 						//$consulta  = "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$tipo' ORDER BY Nombre";
@@ -140,29 +140,27 @@ if ($nivel==4){
 						//por cada registro encontrado en la tabla me genera un <option>
 						while ($rows = @pg_fetch_array($resultado)){
 							echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]). '</option>';
-						}
-		            }
+                                                }
+                                        }
 				?>	
-					</select>
-				</div>
-		</td>
-	</tr>
-	<tr>	
-		<td class="StormyWeatherFieldCaptionTD">Procedencia</td>
-		<td class="StormyWeatherDataTD">
+                            </select>
+			</div>
+                    </td>
+                </tr>
+                <tr>	
+                    <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
+                    <td class="StormyWeatherDataTD">
 			<select name="CmbServicio" id="CmbServicio" style="width:355px" onChange="BuscarServicio(this.value)" >
-				<option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
+                            <option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
 				<?php
-					$db = new ConexionBD;
-					if($db->conectar()==true){
-						
-							
-                                            $consulta  = "SELECT t01.id,
-                                                                 t01.nombre
-                                                          FROM ctl_area_atencion t01
-                                                          WHERE t01.id IN (
-                                                                SELECT DISTINCT id_area_atencion 
-                                                                FROM mnt_area_mod_estab WHERE id_establecimiento = $lugar)";
+                                    $db = new ConexionBD;
+                                    if($db->conectar()==true){
+				        $consulta  = "SELECT t01.id,
+                                                      t01.nombre
+                                                      FROM ctl_area_atencion t01
+                                                      WHERE t01.id IN (
+                                                      SELECT DISTINCT id_area_atencion 
+                                                      FROM mnt_area_mod_estab WHERE id_establecimiento = $lugar)";
                                             
                                            /* "SELECT mse.id,mse.nombre 
 						FROM mnt_servicio_externo mse 
@@ -173,55 +171,53 @@ if ($nivel==4){
 						$resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
 						//por cada registro encontrado en la tabla me genera un <option>
 						while ($rows = pg_fetch_array($resultado)){
-							echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
-						}
-					}
+                                        	echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
+                                                }
+                                    }
 				?>
 			</select>
-		</td>
-		<td class="StormyWeatherFieldCaptionTD">Servicio</td>
-		<td class="StormyWeatherDataTD">
+                    </td>
+                    <td class="StormyWeatherFieldCaptionTD">Servicio</td>
+                    <td class="StormyWeatherDataTD">
 			<div id="divsubserv">
-				<select name="cmbSubServ" id="cmbSubServ" style="width:375px" >
-					<option value="0" selected="selected"> Seleccione un Servicio </option>
-				</select>
+                            <select name="cmbSubServ" id="cmbSubServ" style="width:375px" >
+				<option value="0" selected="selected"> Seleccione un Servicio </option>
+                            </select>
 			</div>
-		</td>
-	</tr>
-
-	<tr>
-		
-		<td class="StormyWeatherFieldCaptionTD"  >Expediente</td>
-		<td  class="StormyWeatherDataTD" width="5%" ><input type="text" size="24" name="txtexpediente" id="txtexpediente" />
-		</td>
-		<td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Recepi&oacute;n</td>
-		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="15" name="txtfecharecep" id="txtfecharecep" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="StormyWeatherFieldCaptionTD"  >Expediente</td>
+                    <td  class="StormyWeatherDataTD" width="5%" ><input type="text" size="24" name="txtexpediente" id="txtexpediente" />
+                    </td>
+                    <td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Recepi&oacute;n</td>
+                    <td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="15" name="txtfecharecep" id="txtfecharecep" />
 			<input type="button" value="..." id="trigger">dd/mm/aaaa
-		</td>
-	</tr>
-	<tr>
-		<td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong>   </td> 
-		<td class="StormyWeatherDataTD" >
+                    </td>
+                </tr>
+                <tr>
+                    <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong>   </td> 
+                    <td class="StormyWeatherDataTD" >
 			<input class="MailboxInput" maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre"></td> 
-		<td class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Nombre</strong>   </td> <td class="StormyWeatherDataTD">
+                    <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Nombre</strong>   </td> <td class="StormyWeatherDataTD">
 			<input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre"></td> 
-	</tr>
-	<tr>
-		<td class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Apellido</strong></td> 
-		<td class="StormyWeatherDataTD">
+                </tr>
+                <tr>
+                    <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Apellido</strong></td> 
+                    <td class="StormyWeatherDataTD">
 			<input class="MailboxInput" maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido"></td> 
-		<td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Apellido</strong></td> 
-		<td class="StormyWeatherDataTD" >
+                    <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Apellido</strong></td> 
+                    <td class="StormyWeatherDataTD" >
 			<input class="MailboxInput" maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" ></td>
-	</tr>
-  <tr>
-				<td  class="StormyWeatherDataTD" colspan="4" align="right">
-							<input type="button" id="btnbuscar" value="Buscar Solicitudes" onClick="MostrarBusqueda();">
-							<input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('ImprimirResultado.php')">
-						</td>
-					</tr>
-				</table>
-		</form>
+                </tr>
+                <tr>
+                    <td  class="StormyWeatherDataTD" colspan="4" align="right">
+                        <input type="button" id="btnbuscar" value="Buscar Solicitudes" onClick="MostrarBusqueda();">
+			<input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('ImprimirResultado.php')">
+                    </td>
+		</tr>
+		</table>
+	    </form>
 		<script type="text/javascript">
 				Calendar.setup(
 				    {
@@ -232,16 +228,16 @@ if ($nivel==4){
 				);
 				
 		</script>
-		</div>
-		<div id="divBusqueda">
+	</div>
+	<div id="divBusqueda">
 
-		</div>
-		<div id="divSolicitud">
+	</div>
+	<div id="divSolicitud">
 
-		</div>
-		<div id="divRespuesta">
+	</div>
+	<div id="divRespuesta">
 
-		</div>
+	</div>
 
 </body>
 </html>

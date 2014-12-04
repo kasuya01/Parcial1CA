@@ -210,14 +210,14 @@ $row_cantidad=pg_fetch_array($Catidad);
 		        $Observ= $obj->ObtenerObservacion($idsolicitud,$iddetalle);
 		        $row_observ= pg_fetch_array($Observ);
 		        $Observacion=$row_observ['observacion'];
-			$nombre=$row_area['NombreArea'];
+			//$nombre=$row_area['NombreArea'];
 			?>
 
 
                                 <div  id="divImpresion" >
                                     <table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
                                         <tr>
-                                            <td colspan="1" align="left" width="20%"><img id="Image1" style="WIDTH: 80px; HEIGHT: 55px" height="86" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
+                                            <td colspan="1" align="left" width="20%"><img id="Image1" style="width: auto; height: 55px;" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
                                             <td align="center" colspan="4" width="60%" class="Estilo6">
                                                 <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO </strong></p>
                                                 <p><strong><?php echo $row_estab['nombre'] ?></strong></p>
@@ -233,7 +233,7 @@ $row_cantidad=pg_fetch_array($Catidad);
                                             <td colspan="2" class="Estilo6"><?php echo $row_generales['estabext']?></td>
                                             <td colspan="1" class="Estilo5"><strong>Fecha Resultado:</strong></td>
                                             <td colspan="2" class="Estilo6"><?php echo $row_generales['fecharecepcion']?></td>
-						<input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row_generales['FechaNacimiento']?>>
+						
 					</tr>
 					<tr>
                                             <td colspan="1" class="Estilo5"><strong>NEC</strong></td>

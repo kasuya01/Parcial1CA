@@ -112,9 +112,9 @@ for ($i = 0; $i < $NroRegistros; $i++) {
 		</tr>";
         $detalle = $objdatos->BuscarDetalleSolicitud($idexpediente, $Nfechacita, $arraysolic[$i], $idEstablecimiento);
         while ($rows = pg_fetch_array($detalle)) {
-            echo "<tr>
-                    <td >" . $rows['idestandar'] . " </td>
-                    <td >" . $rows['idarea'] . " </td>
+          echo "<tr>
+                    <td>" . $rows['idestandar'] . " </td>
+                    <td>" . $rows['idarea'] . " </td>
                     <td>" . htmlentities($rows['nombreexamen']) . "</td>";
             if (!empty($rows['indicacion'])) {
                 echo "<td>" . htmlentities($rows['indicacion']) . "</td>";

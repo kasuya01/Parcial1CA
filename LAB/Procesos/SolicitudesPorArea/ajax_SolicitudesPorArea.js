@@ -169,6 +169,7 @@ function MostrarDatos(posicion)
 		idarea=document.getElementById('idarea['+posicion+']').value;
 		idexamen=document.getElementById('idexamen['+posicion+']').value;
 		idtipo=document.getElementById('idtipo['+posicion+']').value;
+              // alert(idtipo+'##'+idarea);
 		idexpediente=trim(idexpediente);
 		idsolicitud=(idsolicitud);
 		//alert(idsolicitud+" - "+idarea+" - "+idexamen+" - "+idtipo+" - "+idexpediente);

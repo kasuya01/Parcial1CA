@@ -22,8 +22,9 @@ switch ($opcion)
         $idarea         = $_POST['idarea'];
         $idexamen       = $_POST['idexamen'];
         $idexpediente   = $_POST['idexpediente'];
-        $fechasolicitud = $_POST['fechasolicitud'];
-        $fecharecepcion = $_POST['fecharecepcion'];
+        $fecharecepcion = (empty($_POST['fecharecepcion'])) ? 'NULL' : "'" . pg_escape_string($_POST['fecharecepcion'])."'";
+       // $fechasolicitud = $_POST['fechasolicitud'];
+       // $fecharecepcion = $_POST['fecharecepcion'];
         $PNombre        = $_POST['PNombre'];
         $SNomre         = $_POST['SNombre'];
         $PApellido      = $_POST['PApellido'];
@@ -294,9 +295,13 @@ switch ($opcion)
 					   "<input name='idestablecimiento[".$pos."]' id='idestablecimiento[".$pos."]' type='hidden' size='60' value='".$IdEstab."' />".
 				  "<td width='25%'>".$row['paciente']."</td>
 				   <td width='10%'>".$row['idexamen']."</td>
-				   <td width='25%'>".htmlentities($row['nombreexamen'])."</td>
-				   <td width='20%'>".htmlentities($row['observacion'])."</td>
-				   <td width='15%'>".htmlentities($row['nombresubservicio'])."</td>
+				   <td width='25%'>".htmlentities($row['nombreexamen'])."</td>";
+                        if (!empty($row['observacion']))
+			     echo "<td width='20%'>".htmlentities($row['observacion'])."</td>";
+                        else 
+                            echo " <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+                             
+			    echo " <td width='15%'>".htmlentities($row['nombresubservicio'])."</td>
 				   <td width='15%'>".htmlentities($row['nombreservicio'])."</td>
                                    <td width='20%'>".htmlentities($row['estabext'])."</td>
 				   <td width='15%'>".$row['fecharecepcion']."</td>
@@ -318,36 +323,36 @@ switch ($opcion)
         break;
    
    case 2:
-		 $idexpediente=$_POST['idexpediente'];
-		$idsolicitud=$_POST['idsolicitud'];
-		 $idarea=$_POST['idarea'];
-		 $idsolicitudP=$_POST['idsolicitudP'];           
-  //$establecimiento=$_POST['establecimiento'];
+	$idexpediente=$_POST['idexpediente'];
+	$idsolicitud=$_POST['idsolicitud'];
+	$idarea=$_POST['idarea'];
+	$idsolicitud=$_POST['idsolicitud'];           
+                //$establecimiento=$_POST['establecimiento'];
 			//echo $idexpediente."**".$idsolicitud;
 		/*if ($idarea=="URI" or $idarea=="BAT" OR $idarea=="TMU" ){  */
-              $idexamen=$_POST['idexamen'];		
+        $idexamen=$_POST['idexamen'];		
          
-			include_once("clsMuestrasRechazadas.php");
-			//recuperando los valores generales de la solicitud
-			$consulta=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud);
-			$row = pg_fetch_array($consulta);
-			//obteniedo los datos generales de la solicitud
-			//valores de las consultas
-			/*$idsolicitudPadre=$row[0];
-                        $medico=$row[2];
-			$idmedico=$row[1];
-			$paciente=$row['paciente'];
-			$edad=$row['edad'];
-			$sexo=$row[5];
-			$precedencia=$row[13];
-			$origen=$row[8];
-			//$DatosClinicos=$row['DatosClinicos'];
-			//$fechasolicitud=$row['FechaSolicitud'];
-			//$FechaNac=$row['FechaNacimiento'];
-                        $Talla=$row[11];
-                        $Peso=$row[10];
-                        $Diagnostico=$row[9];
-                        $ConocidoPor=$row[7];*/
+	include_once("clsMuestrasRechazadas.php");
+	//recuperando los valores generales de la solicitud
+	$consulta=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud);
+	$row = pg_fetch_array($consulta);
+	//obteniedo los datos generales de la solicitud
+	//valores de las consultas
+	/*$idsolicitudPadre=$row[0];
+        $medico=$row[2];
+	$idmedico=$row[1];
+	$paciente=$row['paciente'];
+	$edad=$row['edad'];
+	$sexo=$row[5];
+	$precedencia=$row[13];
+	$origen=$row[8];
+	//$DatosClinicos=$row['DatosClinicos'];
+	//$fechasolicitud=$row['FechaSolicitud'];
+	//$FechaNac=$row['FechaNacimiento'];
+        $Talla=$row[11];
+        $Peso=$row[10];
+        $Diagnostico=$row[9];
+          $ConocidoPor=$row[7];*/
         $idsolicitudPadre=$row[0];
         $medico         = $row['medico'];
         $idmedico       = $row[1];
@@ -357,12 +362,12 @@ switch ($opcion)
         $precedencia    = $row['nombreservicio'];
         $origen         = $row['nombresubservicio'];
         //$DatosClinicos=$row['DatosClinicos'];
-        //$fechasolicitud=$row['FechaSolicitud'];
+        $fechasolicitud=$row['fechasolicitud'];
         //$FechaNac=$row['FechaNacimiento'];
         $Talla          = $row['talla'];
         $Peso           = $row['peso'];
         $Diagnostico    = $row['diagnostico'];
-        $ConocidoPor    = $row['conocidox'];
+        $ConocidoPor    = (empty($row['conocidox'])) ? 'NULL' : "'" . pg_escape_string($row['conocidox'])."'";
 			//recuperando los valores del detalle de la solicitud
 			$datosexamen=$objdatos->DatosExamen($idarea,$idsolicitud,$idexamen);//cambie esta funcion
 			
@@ -408,7 +413,7 @@ switch ($opcion)
 					<input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled' />
 					<input name='fechasolicitud' id='fechasolicitud'  type='hidden' size='40' value='".$fechasolicitud."' disabled='disabled' />
 					<input name='idarea' id='idarea'  type='hidden' size='40' value='".$idarea."' disabled='disabled' />
-					<input name='suEdad' id='suEdad'  type='hidden' size='40' value='".$FechaNac."' disabled='disabled' />
+					
 				</td>
                         </tr>
                         <tr>
@@ -480,43 +485,26 @@ pg_free_result($datosexamen);
 			VALIDACI&Oacute;N DE RECEPCI&Oacute;N DE ESTUDIO
 			</td> </center>
 		</tr>
-		<tr>
-			<!-- <td>Procesar Muestra</td>
-			<td><select id='cmbProcesar' name='cmbProcesar' size='1'  >
-					<option value='0' >--Seleccione--</option>
-					<option value='S' >Si</option>
-			        <option value='N' >No</option>		
-			    </select> 
-			</td> -->
-					
-				
-		</tr>
+		
 		</table>
 		<div id='divObservacion'  >
-		
-                  <table align='center' width='45%'>
-		<tr>
-			<td>Observacion: </td>
-			<td colspan='0'>
-			<textarea cols='60' rows='2' name='txtobservacion' <span style='color: #0000FF;background-color:#87CEEB;'>".htmlentities($fila['Observacion'])."</textarea>
-         			</td>
-                        
-		</tr>
+                    <table align='center' width='45%'>     
+                        <tr>
                             <td colspan='2' >
-		<center>  <input type='button' name='btnProcesar'  id='btnProcesar' value='Procesar Muestra' onClick=\"ProcesarMuestra1('".$idexamen."')\"> 
-                         <!--<input type='button' name='btnRechazar'  id='btnRechazar' value='Recahazar Muestra' onClick=\"RechazarMuestra1('".$idexamen."')\"> -->
-		<input type='button' name='btnCerrar'  value='Cerrar' onClick='Cerrar()'>  </center>
-			</td>
-                        
-			<!--style='display:none' -->
-                    
-		</table>
+                                <center> 
+                                    <input type='button' name='btnProcesar'  id='btnProcesar' value='Procesar Muestra' onClick=\"ProcesarMuestra1('".$idexamen."')\"> 
+                                    <input type='button' name='btnCerrar'  value='Cerrar' onClick='Cerrar()'>  </center>
+                            </td>
+                        </tr>
+                            <!--style='display:none' -->
+
+                    </table>
                 
                             
 		</div>
                 </center>
 		</form>";
- 
+ //<!--<input type='button' name='btnRechazar'  id='btnRechazar' value='Recahazar Muestra' onClick=\"RechazarMuestra1('".$idexamen."')\"> -->
 
 //$textoDoTextArea = $_POST['txtobservacion'];
 
@@ -543,7 +531,7 @@ pg_free_result($datosexamen);
             $row = pg_fetch_array($consulta);
             $contaridresultado=$row[0];
             
-if ($contaridresultado>0) 
+    if ($contaridresultado>0) 
               //if ($idresulta>0) 
     {
                         
@@ -573,45 +561,39 @@ if ($contaridresultado>0)
               
             
             if ($objdatos->CambiarEstadoDetalle($idsolicitud,$estado,$observacion)==true)   
-		{
-                    echo "Muestra Procesada ";
-				//CambiarEstadoSolicitudProceso3
-			if($objdatos->CambiarEstadoSolicitudProceso3($idexpediente,$fechasolicitud,$estadosolicitud,$idsolicitudPadre)==true)
-				{       echo ", Solicitud  Fue cambiada De Estado..";
-                                    if($objdatos->inseresul_metodologia($idexmen_metodologia,$id_detalleresultado,$estado,$observacion,$usuario,$id_empleado)==true)
-                                        {
-                                                //echo "insertado";
-                                        } 
-                                }
-                                 
-                                else
-                                    {
-					echo "No Se Pudo Actualizar La Solicitud";
-				    }
+            {   // echo "Muestra Procesada ";
+		//CambiarEstadoSolicitudProceso3
+		if($objdatos->CambiarEstadoSolicitudProceso3($idexpediente,$fechasolicitud,$estadosolicitud,$idsolicitudPadre)==true)
+		{      // echo ", Solicitud  Fue cambiada De Estado..";
+                    if($objdatos->inseresul_metodologia($idexmen_metodologia,$id_detalleresultado,$estado,$observacion,$usuario,$id_empleado)==true)
+                    {
+                        echo "Prueba lista para ingreso de resultado ";
+                    } 
+                }
+                else
+                {
+                   echo "No Se Pudo Actualizar La Solicitud";
 		}
+	    }
     }
-    
-    
-    else {
+    else{
             // echo "no hay resultados    ";
-        
-                if ($objdatos->CambiarEstadoDetalle($idsolicitud,$estado,$observacion)==true)   
-		{
-                    echo "Muestra Procesada ";
+        if ($objdatos->CambiarEstadoDetalle($idsolicitud,$estado,$observacion)==true)   
+	{   //echo "Muestra Procesada";
 				//CambiarEstadoSolicitudProceso3
-			if($objdatos->CambiarEstadoSolicitudProceso3($idexpediente,$fechasolicitud,$estadosolicitud,$idsolicitudPadre)==true)
-				{
-                                        echo ", Solicitud  Fue cambiada De Estado..";
-                                }
-                            else
-                              {
-			         echo "No Se Pudo Actualizar La Solicitud";
-                              }
-		}
+            if($objdatos->CambiarEstadoSolicitudProceso3($idexpediente,$fechasolicitud,$estadosolicitud,$idsolicitudPadre)==true)
+            {
+                 echo "Prueba lista para ingreso de resultado ";
+            }
+            else
+            {
+                echo "No Se Pudo Actualizar La Solicitud";
+            }
         }
+    }
 		
-	break;
-                
+break;
+              
                 
 case 4:// Rechazar Muestra // se ah quitado esta opcion
 			$idexpediente   =$_POST['idexpediente'];

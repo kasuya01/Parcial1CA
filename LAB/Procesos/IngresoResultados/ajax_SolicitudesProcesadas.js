@@ -408,9 +408,13 @@ function ImprimirPlantillaC(idsolicitud, idexamen, resultado, responsable, proce
 function ImprimirPlantillaCN(idsolicitud, idexamen, idarea, resultado, responsable, procedencia, origen, observacion) {
 
     ventana_secundaria = window.open("ImprimirPlantillaCN.php?var1=" + idsolicitud +
-            "&var2=" + idexamen + "&var3=" + idarea +
-            "&var4=" + resultado + "&var5=" + responsable + "&var6=" + escape(procedencia) +
-            "&var7=" + escape(origen) + "&var8=" + encodeURIComponent(observacion) +
+            "&var2=" + idexamen + 
+            "&var3=" + idarea +
+            "&var4=" + resultado + 
+            "&var5=" + responsable + 
+            "&var6=" + escape(procedencia) +
+            "&var7=" + escape(origen) + 
+            "&var8=" + encodeURIComponent(observacion) +
             "&var9=" + escape(estab), "ImprimirCN", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
 }
 
@@ -731,6 +735,8 @@ function PreviosNegativos()
         idobservacion = document.getElementById('cmbObservacion').value;
         resultado = document.frmnuevo.cmbResultado.value;
         estab = document.frmnuevo.txtEstablecimiento.value;
+        fecharealiz = document.frmnuevo.txtresultrealiza.value;
+        fecharesultado =document.frmnuevo.txtresultfin.value;
         //alert(estab);	
         opcion = 5;
 
@@ -746,7 +752,7 @@ function PreviosNegativos()
         ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idtarjeta=" + idtarjeta + "&tiporespuesta=" + tiporespuesta +
                 "&idarea=" + idarea + "&idsolicitud=" + idsolicitud + "&idempleado=" + idempleado + "&observacion=" + encodeURIComponent(observacion) +
-                "&resultado=" + resultado + "&estab=" + estab +"&idobservacion=" +idobservacion);
+                "&resultado=" + resultado + "&estab=" + estab + "&idobservacion=" + idobservacion + "&fecharealiz=" + fecharealiz + "&fecharesultado=" + fecharesultado);
         ajax.onreadystatechange = function()
         {
             if (ajax.readyState == 4)
@@ -784,11 +790,13 @@ function GuardarResultadosNegativosPlantillaC()
     idobservacion = document.getElementById('cmbObservacion').value;
     resultado = document.getElementById('cmbResultado').value;
     idempleado = document.getElementById('cmbEmpleados').value;
-
+    fecharealiz = document.getElementById('txtresultrealiza').value;
+    fecharesultado =document.getElementById('txtresultfin').value;
     ajax.open("POST", "ctrDatosResultadosExamen_PC.php", true);
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     ajax.send("opcion=" + opcion + "&idsolicitud=" + idsolicitud + "&idrecepcion=" + idrecepcion + "&iddetalle=" + iddetalle +
-            "&idexamen=" + idexamen + "&observacion=" + escape(observacion) + "&resultado=" + resultado + "&idempleado=" + idempleado + "&idobservacion="+ idobservacion);
+            "&idexamen=" + idexamen + "&observacion=" + escape(observacion) + "&resultado=" + resultado + "&idempleado=" + idempleado + "&idobservacion="+ idobservacion + 
+            "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)

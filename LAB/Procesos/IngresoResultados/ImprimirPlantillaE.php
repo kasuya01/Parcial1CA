@@ -87,7 +87,7 @@ if ($IdEstandar=="H15"){
 			<td colspan="1" align="left" width="20%"><img id="Image1" style="WIDTH: 80px; HEIGHT: 55px" height="86" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
                         <td align="center" colspan="4" width="60%" class="Estilo6">
 				<p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO </strong></p>
-                                <p><strong><?php  echo                        $row_estab['nombre'] ?></strong></p>
+                                <p><strong><?php  echo  $row_estab['nombre'] ?></strong></p>
 				<p><strong>ÁREA DE <?php echo htmlentities($row_area['nombrearea'])?> </strong></p>
 			</td>
                         <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
@@ -267,7 +267,7 @@ if ($IdEstandar=="H15"){
 					<td class="Estilo5" width='30%' align='center'><strong> Rango </strong></td>
 				</tr>
 				<?php $pos=0;
-				while($row = pg_fetch_array($consulta))//ELEMENTOS
+			while($row = pg_fetch_array($consulta))//ELEMENTOS
 					{  ?>
 				<tr>
 					<td class="Estilo5" width='25%'align='left'><?php echo htmlentities($row['nombreprocedimiento'])?></td>
@@ -279,8 +279,8 @@ if ($IdEstandar=="H15"){
                                                            echo $row['rangoinicio']."-".$row['rangofin'];?></td>
 				</tr>
 					<?php  $pos=$pos + 1;
-					}
-					pg_free_result($consulta);?>
+			}
+			pg_free_result($consulta);?>
                         </table>
                     </td>
                 </tr>

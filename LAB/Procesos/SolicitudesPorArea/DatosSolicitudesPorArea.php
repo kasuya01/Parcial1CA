@@ -33,7 +33,7 @@ var getVars = query.split(/&/);
 for ( i = 0; i < getVars.length; i++)
 	{
 		if ( getVars[i].substr(0,5) == 'var1=' )//loops through this array and extract each name and value
-            idexpediente = getVars[i].substr(5);
+                    idexpediente = getVars[i].substr(5);
 		if ( getVars[i].substr(0,5) == 'var2=' )
 			idarea= getVars[i].substr(5);
 		if ( getVars[i].substr(0,5) == 'var3=' )
@@ -111,12 +111,12 @@ function calc_edad()
         $precedencia    = $row['nombreservicio'];
         $origen         = $row['nombresubservicio'];
         //$DatosClinicos=$row['DatosClinicos'];
-        //$fechasolicitud=$row['FechaSolicitud'];
+        $fechasolicitud=$row['fechasolicitud'];
         //$FechaNac=$row['FechaNacimiento'];
         $Talla          = $row['talla'];
         $Peso           = $row['peso'];
         $Diagnostico    = $row['diagnostico'];
-        $ConocidoPor    = $row['conocidox'];
+        $ConocidoPor    = $row['conocodidox'];
                 
                 
 		//recuperando los valores del detalle de la solicitud
@@ -127,13 +127,11 @@ function calc_edad()
 			<tr>
 				<td colspan='4' align='center' class='CobaltFieldCaptionTD'>DATOS SOLICITUD</td>
 		   	</tr>
-			
-                        <tr>
+			<tr>
 				<td class='StormyWeatherFieldCaptionTD'>Establecimiento</td>
                                 <td class='StormyWeatherDataTD' colspan='3'>".$row['estabext']."</td>
 			</tr>
-                            
-			<tr>
+                        <trr>
 				<td class='StormyWeatherFieldCaptionTD'>Paciente</td>
 				<td colspan='3' class='StormyWeatherDataTD'>" . htmlentities($paciente) . " 
 				     <input name='txtpaciente' id='txtpaciente' type='hidden' size='70' value='" . $paciente . "' disabled='disabled' /></td>
@@ -143,11 +141,8 @@ function calc_edad()
 				<td colspan='3' class='StormyWeatherDataTD'>" . htmlentities($ConocidoPor) . " </td>
 		    	</tr>
 			<tr>
-				
-                                
-                                    
-                                    <td class='StormyWeatherFieldCaptionTD'>Edad</td>
-				   <td class='StormyWeatherDataTD'>$edad <input name='txtedad' id='txtedad' 
+                                <td class='StormyWeatherFieldCaptionTD'>Edad</td>
+				<td class='StormyWeatherDataTD'>$edad <input name='txtedad' id='txtedad' 
 				   type='hidden' size='35' value='" . $edad . "' disabled='disabled' /></td>
                                        
     				</div></td>
@@ -168,7 +163,7 @@ function calc_edad()
                                     <input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='" . $idexpediente . "' disabled='disabled' />
                                     <input name='fechasolicitud' id='fechasolicitud'  type='hidden' size='40' value='" . $fechasolicitud . "' disabled='disabled' />
                                     <input name='idarea' id='idarea'  type='hidden' size='40' value='" . $idarea . "' disabled='disabled' />
-                                    <input name='suEdad' id='suEdad'  type='hidden' size='40' value='" . $FechaNac . "' disabled='disabled' />
+                                    
 				</td>
 		        </tr>
 			<tr>
@@ -178,18 +173,19 @@ function calc_edad()
 		        </tr>
                         <tr>
                                 <td class='StormyWeatherFieldCaptionTD'>Diagnostico</td>
-                                <td colspan='3' class='StormyWeatherDataTD'>&nbsp;&nbsp;&nbsp;" . $Diagnostico . "</td>
+                                <td colspan='3' class='StormyWeatherDataTD'>" . $Diagnostico . "</td>
                         </tr>
                         <tr>
                                 <td class='StormyWeatherFieldCaptionTD'>Peso</td>";
+                 
         if (!empty($Peso))
-            $imprimir .= "<td class='StormyWeatherDataTD'>&nbsp;&nbsp;&nbsp;" . $Peso . "&nbsp;&nbsp;Kg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+            $imprimir .= "<td class='StormyWeatherDataTD'>" . $Peso . "&nbsp;&nbsp;Kg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
         else
             $imprimir .= "<td class='StormyWeatherDataTD'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 
         $imprimir .="<td class='StormyWeatherFieldCaptionTD'>Talla</td>";
         if (!empty($Talla))
-            $imprimir .="<td class='StormyWeatherDataTD'>&nbsp;&nbsp;&nbsp;" . $Talla . "&nbsp;&nbsp;mts.</td>";
+            $imprimir .="<td class='StormyWeatherDataTD'>" . $Talla . "&nbsp;&nbsp;mts.</td>";
         else
             $imprimir .= "<td class='StormyWeatherDataTD'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
        
