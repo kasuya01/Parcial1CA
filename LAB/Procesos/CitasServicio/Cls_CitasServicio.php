@@ -21,13 +21,12 @@ function dias_festivos($fech_act,$emp){
                         FROM cit_evento
                         WHERE (fechaini <= '$fech_act' AND fechafin >= '$fech_act') 
                         AND (idempleado is null OR idempleado=$emp);";
-	$queryfestivos=mysql_query($query_festivos) or die('La consulta fall&oacute;:' . mysql_error());
+	//$queryfestivos=mysql_query($query_festivos) or die('La consulta fall&oacute;:' . mysql_error());
         $queryfestivos= pg_query($query_festivos);
 	$search = pg_num_rows($queryfestivos);
-
+//echo $query_festivos;
 	if($search > 0 and $search <>""){$esEvt=-1;}
-		else{$esEvt = 0;}  		
-  
+		else{$esEvt = 0;}
 	return $esEvt;
   }
 }
@@ -47,26 +46,27 @@ function diaslaborales($dia){
 	if ($indice_encontrado==TRUE){
 		$fecha_gen=0;
 	}else{$fecha_gen=-1;}
-        echo 'fecha_gen: '.$fecha_gen;
+        //echo 'fecha_gen: '.$fecha_gen;
 	return $fecha_gen;	
 }
 
 function parse_day($fecha_rec){
   $query_day="SELECT EXTRACT(DOW FROM TIMESTAMP '$fecha_rec') as dow";
-  $queryDay =pgl_query($query_day);
+  $queryDay =pg_query($query_day);
   
   $rows = pg_fetch_array($queryDay);
 	$dia  =	$rows['dow'];
-  echo $dia;
+  //echo $dia;
   return $dia;
 }
-
+//Fn pg
 function RESTAR($fecha,$tiempo_max){
     $con = new ConexionBD;
     if ($con->conectar()==TRUE){
     $query_resta="SELECT date( date('$fecha') - INTERVAL '$tiempo_max days' ) as fecha_int, current_date as fecha_actual";
 //  $query_resta="SELECT DATE_FORMAT(adddate('$fecha',interval -$tiempo_max day),'%Y-%m-%d') as Fecha";
     $queryDay =pg_query($query_resta);
+    //
     //echo '<br>RESTAR: '.$query_resta;
     if (!$queryDay)
         return false;
@@ -209,7 +209,7 @@ function MaxTiempoPrevdeExamenes($idsolicitudestudio,$IdEstablecimiento){
                             where sds.idsolicitudestudio=$idsolicitudestudio
                             and shc.idestablecimiento=$IdEstablecimiento";
             $valret= pg_query($query_Search);
-           // echo 'Maxtiempoprev: '.$query_Search;
+            //echo 'Maxtiempoprev: '.$query_Search.' /finMaxtiempoprev';
            // $valret = mysql_query($query_Search) or die('La consulta 3 fall&oacute;: ' . mysql_error());
             $var=pg_fetch_array($valret);
         if (!$valret)
@@ -228,7 +228,7 @@ function ObtenerFechaCitaMedica($nec){
                                         where id_expediente=$nec
                                         and date(fechahorareg) >=current_date
                                         and id_estado in (1,6)";
-                //echo 'Obtener fecha: '.$query_FechaCitaMedica;
+               // echo 'Obtener fecha: '.$query_FechaCitaMedica;
 		//$valret =  mysql_query($query_FechaCitaMedica) or die('La consulta fall&oacute;: ' . mysql_error());
                 $valret = pg_query($query_FechaCitaMedica);
                 if (!$valret)
@@ -238,16 +238,17 @@ function ObtenerFechaCitaMedica($nec){
 	}
 }
 
-function InsertarCitaServicio($actual,$idsolicitudestudio,$FechaReg,$idetallesolicitud,$IdUsuarioReg){
+function InsertarCitaServicio($actual,$idsolicitudestudio,$FechaReg,$IdUsuarioReg){
 	$con = new ConexionBD;
 	if($con->conectar()==true){
 			
 		//$sql_Insert =	"INSERT INTO cit_citasxserviciodeapoyo 	(IdCitaServApoyo,Fecha,IdSolicitudEstudio,IdUsuarioReg,FechaHoraReg,IdDetalleSolicitud) 
 		//				VALUES ('0','$actual','".$idsolicitudestudio."',$IdUsuarioReg,'".$FechaReg."',$idetallesolicitud)";
 		$sql_Insert =	"insert into cit_citas_serviciodeapoyo (fecha, id_solicitudestudios, idusuarioreg, fechahorareg)
-                                 values (' $actual', $idsolicitudestudio, $IdUsuarioReg, ' $FechaReg');";
+                                 values (' $actual', $idsolicitudestudio, $IdUsuarioReg, '$FechaReg');";
 		//$valret = mysql_query($sql_Insert) or die('La consulta fall&oacute;: ' . mysql_error());
                 $valret = pg_query($sql_Insert);
+              // echo ' ..sqlinsert: '.$sql_Insert;
                 if (!$valret)
                     return FALSE;
                 else 
@@ -255,12 +256,12 @@ function InsertarCitaServicio($actual,$idsolicitudestudio,$FechaReg,$idetallesol
 	}
 	//return $valret;
 }
-
+//Fn_pg
 function ValidarFecha($FechaActual){
-	$querySelect="select curdate() as FechaActual";
-	$resp=mysql_fetch_array(mysql_query($querySelect));
+	$querySelect="select current_date as FechaActual";
+	$resp=pg_fetch_array(pg_query($querySelect));
 	if($resp[0]==$FechaActual){
-		$NewDate=mysql_fetch_array(mysql_query("select adddate('$FechaActual',interval 1 day) as NuevaFecha"));
+		$NewDate=pg_fetch_array(pg_query(" SELECT date(date('$FechaActual') + INTERVAL '1 day')"));
 		return($NewDate[0]);
 	}else{
 		return ($FechaActual);
@@ -289,6 +290,7 @@ function ContarFechas($actual){
 		$dt_Sql= pg_query($query_Existencia);
                $row = pg_fetch_array($dt_Sql);
 			$valret=$row[0];
+//echo 'valret'.$valret.' - dt_sql: '.$dt_Sql.' /--';
         if (!$dt_Sql)
             return false;
         else {
@@ -309,7 +311,7 @@ function ContarCreatinina($actual, $id_qui045){
                             from cit_citas_serviciodeapoyo
                             where fecha='$actual'";
 		$valret = pg_query($query_Search);
-		$totalRegs= pgl_num_rows($valret);
+		$totalRegs= pg_num_rows($valret);
 		
 		while ($row = pg_fetch_array($valret)){
 			$solicitudes[$i]=$row[0];
@@ -329,6 +331,7 @@ function ContarCreatinina($actual, $id_qui045){
 			}
 		}
 		$tamano = sizeof($detalles);
+                //echo '--tamano:'.$tamano.'--';
         if (!$dt_Sql)
             return false;
         else
@@ -372,7 +375,7 @@ function buscar($idsolicitudestudio,$idservicio){
                             and ccs.id_solicitudestudios=$idsolicitudestudio;";
 		//$dt = mysql_query($query_Search) or die('La consulta fall&oacute;: ' . mysql_error());
 		$dt=pg_query($query_Search);
-                echo $query_Search;
+               // echo $query_Search;
                 $rows=pg_fetch_array($dt);
                 $encontrados= $rows[0];
                 if (!$query_Search)
