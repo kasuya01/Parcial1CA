@@ -327,7 +327,7 @@ switch($Proceso){
 				$bandera=0;
 				//echo ' bandera:'.$bandera.' actual: '.$actual;
 				while($bandera==0){
-                                        //echo 'actual: '.$actual;
+                                        //echo '<br> Entro a while actual: '.$actual.'<br>';
 					//identificamos que dia de la semana tiene la fecha generada
 					$dd = $citaserv->parse_day($actual);
 					//comprobamos si ese dia de la semana no es sabado ni domingo
@@ -370,7 +370,7 @@ switch($Proceso){
                                             //echo '......::entro a insert::...';
 						//comprobamos si ese dia de la semana no es sabado ni domingo
 						$weekend = $citaserv->diaslaborales($dd);							
-						$datos = $citaserv->InsertarCitaServicio($actual,$_POST['idsolicitudestudio'],$fechareg,$IdUsuarioReg);
+						//$datos = $citaserv->InsertarCitaServicio($actual,$_POST['idsolicitudestudio'],$fechareg,$IdUsuarioReg);
 						$bandera=1;
 						
 					}else{
