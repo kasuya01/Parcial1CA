@@ -17,6 +17,9 @@ if ($nivel == 31) {
 if ($nivel == 33) {
     include_once ('../../../PaginaPrincipal/index_laboratorio33.php');
 }
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+include_once $ROOT_PATH."/public/css.php";
+include_once $ROOT_PATH."/public/js.php";
 ?>
 <html>
     <head>
@@ -47,7 +50,12 @@ if ($nivel == 33) {
                 accion = 1;
                 proceso='busquedaexp';
                 id_exp = document.getElementById('IdNumeroExp_Name').value
-
+                document.getElementById('divrespuesta').innerHTML="";
+                document.getElementById('datos').innerHTML="";
+                document.getElementById('cita').innerHTML="";
+                //document.getElementById('divrespuesta').innerHTML="";
+                
+                
                 if ((id_exp.length <= 0)) {
                     alert("Ingrese Numero de Expediente para la busqueda!!");
                     return false;
@@ -117,21 +125,21 @@ if ($nivel == 33) {
 //                        'application/x-www-form-urlencoded');
                 sendReq.open("POST", 'ajax_CitasServicios.php', true);
                 //alert(sendReq.onreadystatechange)
-              //  sendReq.onreadystatechange = procesaSearch;
-                    sendReq.onreadystatechange = function()
-                    {
-                        alert (sendReq.readyState)
-                        if (sendReq.readyState == 4) {//4 The request is complete
-                            alert(sendReq.status)
-                            if (sendReq.status == 200) {//200 means no error.
-                               
-                                respuesta = sendReq.responseText;
-                                alert('respuesta: '+respuesta)
-                                return false;
-                                //document.getElementById('divsubserv').innerHTML = respuesta;
-                            }
-                        }
-                    }
+                sendReq.onreadystatechange = procesaSearch;
+//                    sendReq.onreadystatechange = function()
+//                    {
+//                        alert (sendReq.readyState)
+//                        if (sendReq.readyState == 4) {//4 The request is complete
+//                            alert(sendReq.status)
+//                            if (sendReq.status == 200) {//200 means no error.
+//                               
+//                                respuesta = sendReq.responseText;
+//                                alert('respuesta: '+respuesta)
+//                                return false;
+//                                //document.getElementById('divsubserv').innerHTML = respuesta;
+//                            }
+//                        }
+//                    }
                 sendReq.setRequestHeader('Content-Type',
                         'application/x-www-form-urlencoded');
                 var param = 'Proceso=darcita';
@@ -192,7 +200,7 @@ if ($nivel == 33) {
                 if (sendReq.readyState == 4) {
                     if (sendReq.status == 200) {
                         respuesta = sendReq.responseText;
-                        alert('respuesta: '+respuesta+' -accion: '+accion);
+                       // alert('respuesta: '+respuesta+' -accion: '+accion);
                         switch (accion) {
                             case 1:
                                 document.getElementById('divrespuesta').innerHTML =
@@ -254,17 +262,25 @@ if ($nivel == 33) {
     <body text="#000000" class="StormyWeatherPageBody" onLoad="frmhistorial.IdNumeroExp_Name.focus()">
     <center>
 
-        <div id="divinicial">
+<!--        <div id="divinicial" class="container">-->
 
-            <form action="" name="frmhistorial" enctype="multipart/form-data">
-                <h2>Busqueda&nbsp;de Solicitudes de Examenes</h2>
-                <br>
-                <table class="StormyWeatherFormTABLE" cellspacing="1" cellpadding="0" border="1" >
-                    <!-- BEGIN Error -->
+<!--            <form action="" name="frmhistorial" enctype="multipart/form-data"  class="form-inline">
+                <h3>Busqueda&nbsp;de Solicitudes de Examenes</h3>
+                <br>-->
+                
+<!--                <div class="form-group">
+                    <label for="expediente"><strong>No. Expediente:&nbsp;</strong></label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter email">
+                   
+                        <input class="StormyWeatherInput" maxlength="10" id="IdNumeroExp_Name" placeholder="Ingrese Número de Expediente">
+                    
+                </div>-->
+<!--                <table class="StormyWeatherFormTABLE" cellspacing="1" cellpadding="0" border="0"  >
+                     BEGIN Error 
                     <tr>
                         <td class="StormyWeatherErrorDataTD" colspan="6">&nbsp;</td> 
                     </tr>
-                    <!-- END Error -->
+                     END Error 
                     <tr>
                         <td class="StormyWeatherFieldCaptionTD" align="left"><strong>No. Expediente:&nbsp;</strong></td> 
                         <td class="StormyWeatherDataTD">
@@ -275,12 +291,25 @@ if ($nivel == 33) {
                     <tr>
                         <td colspan="6" align="right" nowrap class="StormyWeatherFooterTD">	
                             <input type="button" name="btnSearch" id="btnSearch" value="Buscar" class="StormyWeatherButton" onClick="busquedaexp()">			
-                            <!--<input type="button" name="btnSearch" id="btnSearch" value="p" class="StormyWeatherButton" onClick="prueba()">-->
+                            <input type="button" name="btnSearch" id="btnSearch" value="p" class="StormyWeatherButton" onClick="prueba()">
                         </td>	
                     </tr> 
-                </table>
-            </form>
+                </table>-->
+ <div id="divinicial" class="container">
+      <h2>Búsqueda de Solicitudes de Exámenes</h2>
+      <hr>
+      <p>Ingrese el número de expediente por favor.</p>
+      
+      <form class="form-inline" role="form" action="" name="frmhistorial" enctype="multipart/form-data">
+        <div class="form-group">
+          <label align="left">No. Expediente:&nbsp;</label>
+          <input type="text" class="form-control" id="IdNumeroExp_Name" >
         </div>
+          <input type="button" name="btnSearch" class="btn btn-default" onClick="busquedaexp()" value="Buscar">
+      </form>
+    </div>
+<!--            </form>
+        </div>-->
 
         <div id="divrespuesta">
 
@@ -291,6 +320,7 @@ if ($nivel == 33) {
 
         <div id="cita">
         </div>
+
 
     </center>
 </body>
