@@ -39,6 +39,7 @@ function diaslaborales($dia){
 	for ($i=0;$i<5;$i++){
 		if($vector[$i]==$dia){
 			$indice_encontrado=TRUE;
+                       // echo 'vector:'.$indice_encontrado.' -vectori:'.$vector[$i].' -i:'.$i.' --dia:'.$dia;
 			break;	
 		}		
 	}
@@ -46,7 +47,7 @@ function diaslaborales($dia){
 	if ($indice_encontrado==TRUE){
 		$fecha_gen=0;
 	}else{$fecha_gen=-1;}
-        //echo 'fecha_gen: '.$fecha_gen;
+        //echo '  --fecha_gen: '.$fecha_gen.' --diaglob:'.$dia.'<br>';
 	return $fecha_gen;	
 }
 
