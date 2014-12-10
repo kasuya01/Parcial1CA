@@ -397,7 +397,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
  
 //FUNCION PARA CAMBIAR EL ESTADO DE LA SOLICITUD
 function CambiarEstadoSolicitud($idsolicitud,$estadosolicitud,$estadosolicitud6)
- {
+ {       
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {

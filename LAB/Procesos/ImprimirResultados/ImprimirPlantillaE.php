@@ -9,7 +9,7 @@ $idplatilla=$_GET['var3'];
 $expediente=$_GET['var4'];
 $idarea=$_GET['var5'];
 $idexamen=$_GET['var6'];
-echo $idexamen;
+//echo $idexamen;
 
 ?>
 <html>
@@ -81,11 +81,11 @@ $obj = new clsImprimirResultado;
 			<td colspan='1' class="Estilo5">Establecimiento Solicitante:</td>
 			<td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['estabext']) ?></td>
 			<td colspan='1' class="Estilo5">Fecha Resultado:</td>
-			<td colspan='2' class="Estilo6"><?php echo $row_fecha['FechaResultado']?></td>
+			<td colspan='2' class="Estilo6"><?php echo $row_fecha['fecharesultado']?></td>
 		</tr>
 
 		<tr>
-			<td colspan='1' class="Estilo5">NEC</td>
+			<td colspan='1' class="Estilo5">Expediente:</td>
 			<td colspan='2' class="Estilo6"><?php echo $row_generales['idnumeroexp']?></td>
 
 			<td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
@@ -107,7 +107,7 @@ $obj = new clsImprimirResultado;
 		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>
-			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_generales['NombreEmpleado'])?></td>
+			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_generales['empleado'])?></td>
 		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
@@ -182,11 +182,11 @@ $obj = new clsImprimirResultado;
 			<td colspan='1' class="Estilo5"><strong>Establecimiednto Solicitante:</strong></td>
 			<td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['estabext']) ?></td>
 			<td colspan='1' class="Estilo5"><strong>Fecha Resultado:</strong></td>
-			<td colspan='2' class="Estilo6"><?php echo $row_fecha['FechaResultado']?></td>
+			<td colspan='2' class="Estilo6"><?php echo $row_fecha['fecharesultado']?></td>
 		</tr>
 
 		<tr>
-			<td colspan='1' class="Estilo5"><strong>NEC</strong></td>
+			<td colspan='1' class="Estilo5"><strong>Expediente:</strong></td>
 			<td colspan='5' class="Estilo7"><?php echo $row_generales['idnumeroexp'] ?></td>
                 </tr>
                 <tr>
@@ -242,12 +242,12 @@ $obj = new clsImprimirResultado;
 				while($row = pg_fetch_array($consulta))//ELEMENTOS
 					{  ?>
 				<tr>
-					<td width='25%' align='left' class="Estilo5"><?php echo htmlentities($row['NombreProcedimiento'])?></td>
-					<td width='30%' align='center' class="Estilo5"><input name='oidprueba[<?php $pos?>]' type='hidden' id='oidprueba[<?php $pos?>]' value='<?php $row['IdProcedimientoporexamen']?>'><?php echo htmlentities($row['Resultado'])?></td>
-					<td width='20%' align='center' class="Estilo5"><?php echo htmlentities($row['Unidades'])?></td>
+					<td width='25%' align='left' class="Estilo5"><?php echo htmlentities($row['nombreprocedimiento'])?></td>
+					<td width='30%' align='center' class="Estilo5"><input name='oidprueba[<?php $pos?>]' type='hidden' id='oidprueba[<?php $pos?>]' value='<?php $row['id']?>'><?php echo htmlentities($row['resultado'])?></td>
+					<td width='20%' align='center' class="Estilo5"><?php echo htmlentities($row['unidades'])?></td>
 					<td width='30%' align='center' class="Estilo5"align='center'><?php
                                               if((!empty($row['rangoinicio'])) AND (!empty($row['rangoinicio'])))
-                                                    echo $row['RangoInicio']." - ".$row['rangofin']?>
+                                                    echo $row['rangoinicio']." - ".$row['rangofin']?>
                                         </td>
                                 </tr>
 					<?php  $pos=$pos + 1;

@@ -461,7 +461,7 @@ $imprimir="<form name='frmDatos'>
 		if ($objdatos->CambiarEstadoDetalle($idsolicitud,$estado,$observacion)==true)   
 		  { //$objdatos->IngresarRecepcionArea($idarea,$idsolicitud,)           
 			echo "Muestras Recibidas.";	
-			if($objdatos->CambiarEstadoSolicitud($idsolicitud,$estadosolicitud)==true)
+			if($objdatos->CambiarEstadoSolicitud($idsolicitud,$estadosolicitud,$estadosolicitud)==true)
 			{
 				 echo "Solicitud No fue cambiada de Estado..";
 			 }

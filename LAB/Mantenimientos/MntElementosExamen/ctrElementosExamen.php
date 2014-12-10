@@ -43,7 +43,7 @@ switch ($opcion)
 		
 		If ($objdatos->actualizar($idelemento,$nomelemento,$subelemento,$unidadele,$observacionele,$usuario,$lugar,$Fechaini,$Fechafin)==true) 
                         /*&& $Clases->actualizar_labo($idelemento,$nomelemento,$subelemento,$unidadele,$observacionele,$usuario,$lugar,$Fechaini,$Fechafin)==true){*/
-			echo "Registro Actualizado"	;			
+			echo "Registro Actualizado";			
 		
 		else
 			echo "No se pudo actualizar";

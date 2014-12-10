@@ -293,7 +293,7 @@ function MostrarDatos(posicion)
 		  //enviando los valores
 	
 	
-ajax.send("opcion="+opcion+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud+"&IdEstablecimiento="+IdEstablecimiento);
+        ajax.send("opcion="+opcion+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud+"&IdEstablecimiento="+IdEstablecimiento);
 	ajax.onreadystatechange=function() 
 	{
 		if (ajax.readyState==4) 
@@ -305,7 +305,7 @@ ajax.send("opcion="+opcion+"&idexpediente="+idexpediente+"&idsolicitud="+idsolic
 	}
 }
 
-function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,idexamen,sexo,fechanac)
+function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,idexamen,sexo,fechanac,idexamen,fechanac)
 {
     
   //alert(iddetalle);
@@ -313,7 +313,7 @@ function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,ide
     //alert(idplantilla);
     //alert(idexpediente);
    // alert(idarea);
-    //alert(idexamen);
+   // alert(idexamen);
     //alert(sexo);
    // alert(fechanac);
     
