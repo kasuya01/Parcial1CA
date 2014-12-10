@@ -122,7 +122,7 @@ switch ($opcion)
                            </tr>
 
                            <tr>
-                                  <td colspan='1' style='font:bold'><strong>NEC</strong></td>
+                                  <td colspan='1' style='font:bold'><strong>Expediente:</strong></td>
                                   <td colspan='5' >".$row_generales['numero']."</td>
                            </tr>
                            <tr>
@@ -375,7 +375,7 @@ switch ($opcion)
 			</tr>
 
 			<tr>
-				<td colspan='1' style='font:bold'><strong>NEC</strong></td>
+				<td colspan='1' style='font:bold'><strong>Expediente:</strong></td>
 				<td colspan='5'>".$row_generales['numero']."</td>
                         </tr>
                         <tr>

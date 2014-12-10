@@ -95,7 +95,7 @@ if ($nivel==33){
 if ($nivel==4){
 	include_once ('../../../PaginaPrincipal/index_laboratorio42.php');}            
 ?><br>
-<table align="center" width="60%">
+<table align="center" width="70%">
 <tr>
     <td>
         <div  id="divInicial" >

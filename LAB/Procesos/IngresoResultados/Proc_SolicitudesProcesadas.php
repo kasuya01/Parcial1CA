@@ -37,7 +37,7 @@ if (isset($_SESSION['Correlativo'])) {
             <!--<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />-->
             <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
             <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
-            <title>Solicitudes Procesadas</title>
+            <title>Ingreso de Resultados</title>
             <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script>
             <?php include_once $ROOT_PATH."/public/js.php";?>
             <!--referencias del estilo del calendario-->
@@ -133,7 +133,7 @@ if (isset($_SESSION['Correlativo'])) {
                         <tr>
                             <td colspan="4" align="center" class="CobaltFieldCaptionTD">
                                 <h3>
-                                    <strong>Solicitudes Procesadas por &Aacute;rea</strong>
+                                    <strong>Ingreso de Resultados</strong>
                                 </h3>
                             </td>
                         </tr>

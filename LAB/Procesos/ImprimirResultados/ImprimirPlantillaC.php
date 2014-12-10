@@ -76,7 +76,8 @@ $row_cantidad=pg_fetch_array($Catidad);
 			$consulta_datos=$obj->DatosResultadoPlanCPositivo($idsolicitud,$iddetalle);
 			$row_datos= pg_fetch_array($consulta_datos);
 			$consulta=$obj->LeerResultadosAntibioticos($idsolicitud,$iddetalle);
-
+                        $FechaRes = $obj->ObtenerFechaResultado($idsolicitud,$idexamen,$lugar);
+                        $row_fecha = pg_fetch_array($FechaRes);                                        
 
 		  	$ban=0;
 
@@ -95,11 +96,11 @@ $row_cantidad=pg_fetch_array($Catidad);
 					<td colspan='1' class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
 					<td colspan='1' class="Estilo6"><?php echo $row_generales['estabext']?></td>
 					<td colspan='1' class="Estilo5"><strong>Fecha Resultado:</strong></td>
-			  		<td colspan='2' class="Estilo6"><?php echo $row_generales['fecharecepcion']?></td>
+			  		<td colspan='2' class="Estilo6"><?php echo $row_fecha['fecharesultado']?></td>
 				</tr>
 
 				<tr>
-					<td colspan='1' class="Estilo5"><strong>NEC:</strong></td>
+					<td colspan='1' class="Estilo5"><strong>Expediente:</strong></td>
 			  		<td colspan='2' class="Estilo7"><?php echo $row_generales['idnumeroexp']?></td>
                                 </tr>
                                 <tr>
@@ -194,12 +195,10 @@ $row_cantidad=pg_fetch_array($Catidad);
 
 		<?php
 		}else{
-                    
-                  // echo "dentro del if-  else";
-	//	     $total= $row_cantidad[0];
-          //           $cont=1;
-
-                        // echo $idsolicitud."-".$iddetalle."-".$lugar;
+                    // echo "dentro del if-  else";
+                    //$total= $row_cantidad[0];
+                    // $cont=1;
+                    // echo $idsolicitud."-".$iddetalle."-".$lugar;
 			$Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
 			$row_estab = pg_fetch_array($Consulta_Estab);
 			$datos_generales=$obj->MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar);
@@ -210,6 +209,8 @@ $row_cantidad=pg_fetch_array($Catidad);
 		        $Observ= $obj->ObtenerObservacion($idsolicitud,$iddetalle);
 		        $row_observ= pg_fetch_array($Observ);
 		        $Observacion=$row_observ['observacion'];
+                        $FechaRes = $obj->ObtenerFechaResultado($idsolicitud,$idexamen,$lugar);
+                        $row_fecha = pg_fetch_array($FechaRes);
 			//$nombre=$row_area['NombreArea'];
 			?>
 
@@ -232,11 +233,11 @@ $row_cantidad=pg_fetch_array($Catidad);
                                             <td colspan="1" class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
                                             <td colspan="2" class="Estilo6"><?php echo $row_generales['estabext']?></td>
                                             <td colspan="1" class="Estilo5"><strong>Fecha Resultado:</strong></td>
-                                            <td colspan="2" class="Estilo6"><?php echo $row_generales['fecharecepcion']?></td>
+                                            <td colspan="2" class="Estilo6"><?php echo $row_fecha['fecharesultado']?></td>
 						
 					</tr>
 					<tr>
-                                            <td colspan="1" class="Estilo5"><strong>NEC</strong></td>
+                                            <td colspan="1" class="Estilo5"><strong>Expediente:</strong></td>
                                             <td colspan="2" class="Estilo7"><?php echo $row_generales['idnumeroexp']?></td>
                                         </tr>
                                         <tr>
@@ -350,7 +351,7 @@ $row_cantidad=pg_fetch_array($Catidad);
                                 <td colspan="2" class="Estilo6"><?php echo $row_generales['fecharecepcion']?></td>
                             </tr>
                             <tr>
-				<td colspan="1" class="Estilo5"><strong>NEC:</strong></td>
+				<td colspan="1" class="Estilo5"><strong>Expediente:</strong></td>
                                 <td colspan="2" class="Estilo6"><?php echo $row_generales['idnumeroexp']?></td>
                             </tr>
                             <tr>

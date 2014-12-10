@@ -33,7 +33,7 @@ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$obs
                observacion,resultado,idempleado,idusuarioreg,fechahorareg,idestablecimiento,id_observacion,fecha_resultado) 
 	       VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,
                '$observacion','$resultado',$responsable,$usuario,NOW(),$lugar,$idobservacion,'$fecharesultado')RETURNING id";
-       echo $query;
+       //echo $query;
                 $result = pg_query($query);
                 
                 if($row = pg_fetch_array($result)) {

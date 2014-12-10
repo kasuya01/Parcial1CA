@@ -85,7 +85,10 @@ $con = new ConexionBD;
 function Obtener_Estandar($idexamen){
    $con = new ConexionBD;
    if($con->conectar()==true){ 
-       	$query="SELECT IdEstandar FROM lab_examenes WHERE IdExamen='$idexamen'";
+       $query="SELECT idestandar FROM lab_conf_examen_estab 
+                    INNER JOIN mnt_area_examen_establecimiento ON mnt_area_examen_establecimiento.id=lab_conf_examen_estab .idexamen 
+                    INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id=mnt_area_examen_establecimiento.id_examen_servicio_diagnostico
+                    WHERE lab_conf_examen_estab.id=$idexamen";
 	 $result = @pg_query($query);
      if (!$result)
        return false;
@@ -252,7 +255,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado1, 
                     t01.indicacion AS indicacion,
-                    t01.idempleado AS idempleado,t01.id_conf_examen_estab as idexamen
+                    t01.idempleado AS idempleado,t01.id_conf_examen_estab as idexamen,t07.fecha_nacimiento as fechanac
             FROM sec_detallesolicitudestudios           t01 
             INNER JOIN sec_solicitudestudios            t02 	ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra             t03 	ON (t02.id = t03.idsolicitudestudio) 
@@ -336,7 +339,7 @@ UNION
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado1, 
 
                     t01.indicacion as indicacion,
-                    t01.idempleado  as idempleado,t01.id_conf_examen_estab as idexamen
+                    t01.idempleado  as idempleado,t01.id_conf_examen_estab as idexamen,t07.fecha_nacimiento as fechanac
             FROM sec_detallesolicitudestudios           t01 
             INNER JOIN sec_solicitudestudios            t02 	ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra             t03 	ON (t02.id = t03.idsolicitudestudio) 
@@ -372,7 +375,7 @@ UNION
 	}
  }
 
-//FUNCION PARA MOSTRAR LOS DATOS Resultado Plantilla A  
+/*//FUNCION PARA MOSTRAR LOS DATOS Resultado Plantilla A  
  function MostrarResultadoGenerales($idsolicitud,$idexamen,$lugar)
  {
 	$con = new ConexionBD;
@@ -398,7 +401,7 @@ UNION
 	INNER JOIN lab_resultados ON sec_detallesolicitudestudios.IdDetalleSolicitud=lab_resultados.IdDetalleSolicitud
 	INNER JOIN mnt_empleados ON lab_resultados.Responsable=mnt_empleados.IdEmpleado
 	WHERE sec_detallesolicitudestudios.IdExamen='$idexamen' AND lab_recepcionmuestra.IdSolicitudEstudio=$idsolicitud AND sec_solicitudestudios.IdEstablecimiento=$lugar AND mnt_expediente.IdEstablecimiento=$lugar";
-  //echo $query;
+ //echo $query;
 	$result = @pg_query($query);
         if (!$result)
             return false;
@@ -410,9 +413,9 @@ UNION
 
  function MostrarResultadoGenerales1($idsolicitud,$idarea,$lugar)
  {
-	$con = new ConexionBD;
-   if($con->conectar()==true) 
-  {	$query="SELECT lab_recepcionmuestra.IdSolicitudEstudio, mnt_expediente.IdNumeroExp, 
+    $con = new ConexionBD;
+    if($con->conectar()==true) 
+    {	$query="SELECT lab_recepcionmuestra.IdSolicitudEstudio, mnt_expediente.IdNumeroExp, 
 		CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoApellido) AS NombrePaciente,
 		(year(CURRENT_DATE)-year(FechaNacimiento))AS Edad,IF(Sexo=1,'Masculino','Femenino') AS Sexo,
 		TelefonoCasa,Direccion,NombreSubServicio AS Origen,NombreServicio AS Procedencia,
@@ -431,14 +434,14 @@ UNION
 		INNER JOIN mnt_establecimiento ON sec_solicitudestudios.IdEstablecimiento=mnt_establecimiento.IdEstablecimiento
 		WHERE lab_areas.IdArea='$idarea' AND  lab_recepcionmuestra.IdSolicitudEstudio=$idsolicitud AND mnt_establecimiento.IdEstablecimiento=$lugar
 		AND mnt_expediente.IdEstablecimiento=$lugar";
-        //echo $query;
+       // echo $query;
 	$result = @pg_query($query);
      if (!$result)
        return false;
      else
        return $result;	   
-   }
- }
+    }
+ }*/
 
 
   //DATOS DEL DETALLE DE LA SOLICITUD
@@ -508,7 +511,17 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-      $query = "SELECT IdElemento,Elemento,UnidadElem,SubElemento,NombreArea,NombreExamen,ObservElem 
+      $query = "SELECT lab_elementos.id as idelemento,lab_elementos.elemento,lab_elementos.unidadelem,observelem,nombrearea,lab_elementos.fechaini,fechafin,subelemento  
+                FROM lab_elementos 
+                INNER JOIN lab_conf_examen_estab ON lab_elementos.id_conf_examen_estab=lab_conf_examen_estab.id
+                INNER JOIN mnt_area_examen_establecimiento ON mnt_area_examen_establecimiento.id=lab_conf_examen_estab.idexamen 
+                INNER JOIN ctl_area_servicio_diagnostico ON ctl_area_servicio_diagnostico.id = mnt_area_examen_establecimiento.id_area_servicio_diagnostico
+                INNER JOIN lab_resultados ON lab_resultados.idexamen= lab_conf_examen_estab.id
+                WHERE lab_elementos.id_conf_examen_estab=$idexamen
+                AND iddetallesolicitud=$iddetalle AND lab_elementos.idestablecimiento=$lugar
+                AND lab_resultados.fecha_resultado BETWEEN lab_elementos.fechaini AND (CASE WHEN lab_elementos.fechafin IS NULL THEN CURRENT_DATE ELSE lab_elementos.fechafin END)";
+        
+/* "SELECT IdElemento,Elemento,UnidadElem,SubElemento,NombreArea,NombreExamen,ObservElem 
 		FROM lab_elementos INNER JOIN lab_examenesxestablecimiento ON lab_elementos.IdExamen=lab_examenesxestablecimiento.IdExamen 
 		INNER JOIN lab_examenes ON lab_examenesxestablecimiento.IdExamen=lab_examenes.IdExamen
 		INNER JOIN lab_areasxestablecimiento ON lab_examenes.IdArea=lab_areasxestablecimiento.IdArea 
@@ -517,7 +530,7 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
 		WHERE lab_examenesxestablecimiento.IdExamen='$idexamen' AND lab_elementos.IdEstablecimiento=$lugar 
 		AND left(lab_resultados.FechaHoraReg,10) 
 		BETWEEN lab_elementos.FechaIni AND IF(lab_elementos.FechaFin ='0000-00-00',CURDATE(),lab_elementos.FechaFin) 
-		AND IdDetalleSolicitud=$iddetalle ORDER BY IdElemento";
+		AND IdDetalleSolicitud=$iddetalle ORDER BY IdElemento";*/
 //echo $query;
      $result = @pg_query($query);
      if (!$result)
@@ -551,7 +564,16 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query ="SELECT lab_resultados.IdResultado, lab_detalleresultado.IdDetalleResultado, 
+     $query ="SELECT lab_resultados.id as idresultado, lab_detalleresultado.id as iddetalleresultado,lab_subelementos.idelemento,lab_detalleresultado.idsubelemento,
+              lab_subelementos.subelemento,lab_detalleresultado.resultado,lab_subelementos.unidad,lab_subelementos.rangoinicio,lab_subelementos.rangofin, 
+              lab_detalleresultado.observacion 
+              FROM lab_resultados 
+              INNER JOIN lab_detalleresultado ON lab_resultados.id=lab_detalleresultado.idresultado 
+              INNER JOIN lab_subelementos ON lab_detalleresultado.idsubelemento=lab_subelementos.id
+              WHERE idsolicitudestudio=$idsolicitud AND iddetallesolicitud=$idsolicitud AND lab_subelementos.idelemento=$idelemento 
+              AND (lab_subelementos.idsexo=$sexo OR lab_subelementos.idsexo is NULL) AND (idedad=4 OR idedad=$idedad)
+              AND lab_subelementos.idestablecimiento=$lugar ORDER BY lab_subelementos.id ";
+         /*"SELECT lab_resultados.IdResultado, lab_detalleresultado.IdDetalleResultado, 
               lab_subelementos.IdElemento,lab_detalleresultado.IdSubElemento,lab_subelementos.SubElemento,
               lab_detalleresultado.Resultado,lab_subelementos.Unidad,lab_subelementos.RangoInicio,lab_subelementos.RangoFin,
               lab_detalleresultado.Observacion 
@@ -563,8 +585,8 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
               AND DATE_FORMAT(lab_resultados.FechaHoraReg,'%Y/%m/%d') BETWEEN FechaIni 
               AND IF(lab_subelementos.FechaFin ='0000-00-00',CURDATE(),lab_subelementos.FechaFin) 
               AND (lab_subelementos.idsexo=$sexo OR lab_subelementos.idsexo=3) AND (idedad=4 OR idedad=$idedad)
-	      ORDER BY IdSubElemento ";
-        //echo $query;
+	      ORDER BY IdSubElemento ";*/
+        echo $query;
 
      $result = @pg_query($query);
      if (!$result)
@@ -580,18 +602,13 @@ function LeerDatos($idexamen)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = /*"SELECT NombreArea,NombreExamen 
-		FROM lab_examenes 
-		INNER JOIN lab_areas ON  lab_examenes.IdArea=lab_areas.IdArea
-		WHERE  lab_examenes.IdExamen='$idexamen'";*/
-               
-                "SELECT lcee.id,
+        $query = "SELECT lcee.id,
                     lcee.nombre_examen  as nombre_examen,
                     casd.nombrearea  as nombrearea
                     FROM mnt_area_examen_establecimiento maees
                     INNER JOIN lab_conf_examen_estab lcee           ON  maees.id= lcee.idexamen 
                     inner join ctl_area_servicio_diagnostico casd   on  maees.id_area_servicio_diagnostico=casd.id
-                    WHERE lcee.codigo_examen='$idexamen'";
+                    WHERE lcee.id=$idexamen";
              
      $result = @pg_query($query);
      if (!$result)
@@ -666,7 +683,7 @@ function MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar)
                     t26.lectura as lectura,
                     t26.interpretacion as interpretacion,
                     t26.observacion as observacion
-             FROM sec_detallesolicitudestudios          t01 
+            FROM sec_detallesolicitudestudios           t01 
             INNER JOIN sec_solicitudestudios            t02 	ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra             t03 	ON (t02.id = t03.idsolicitudestudio) 
             INNER JOIN lab_conf_examen_estab            t04 	ON (t04.id = t01.id_conf_examen_estab) 
@@ -805,7 +822,8 @@ function MostrarDatosGeneralesxId($idsolicitud,$iddetalle,$lugar,$IdResultado)
 	   (year(CURRENT_DATE)-year(FechaNacimiento))AS Edad,
 	   IF(Sexo=1,'Masculino','Femenino') AS Sexo,
 	   NombreSubServicio AS Origen,NombreServicio AS Procedencia,
-	   NumeroMuestra,DATE_FORMAT(lab_resultados.FechaHoraReg,'%d/%m/%Y %H:%i:%s') AS Fecha,mnt_establecimiento.Nombre,DATE_FORMAT(FechaNacimiento,'%d/%m/%Y') as FechaNacimiento,
+	   NumeroMuestra,DATE_FORMAT(lab_resultados.FechaHoraReg,'%d/%m/%Y %H:%i:%s') AS Fecha,mnt_establecimiento.Nombre,
+           DATE_FORMAT(FechaNacimiento,'%d/%m/%Y') as FechaNacimiento,
            lab_resultados.Responsable,mnt_empleados.NombreEmpleado,lab_resultados.Observacion,lab_resultados.IdResultado,
 	   lab_detalleresultado.IdBacteria,lab_bacterias.Bacteria,lab_detalleresultado.Cantidad
 	   FROM lab_recepcionmuestra 
@@ -815,7 +833,7 @@ function MostrarDatosGeneralesxId($idsolicitud,$iddetalle,$lugar,$IdResultado)
 	   INNER JOIN mnt_datospaciente  ON mnt_datospaciente.IdPaciente=mnt_expediente.IdPaciente 
 	   INNER JOIN mnt_subservicio ON mnt_subservicio.IdSubServicio= sec_historial_clinico.IdSubServicio
 	   INNER JOIN mnt_servicio ON mnt_servicio .IdServicio= mnt_subservicio.IdServicio
-       INNER JOIN mnt_establecimiento ON sec_historial_clinico.IdEstablecimiento=mnt_establecimiento.IdEstablecimiento
+           INNER JOIN mnt_establecimiento ON sec_historial_clinico.IdEstablecimiento=mnt_establecimiento.IdEstablecimiento
 	   INNER JOIN lab_resultados ON sec_solicitudestudios.IdSolicitudEstudio=lab_resultados.IdSolicitudEstudio
 	   INNER JOIN lab_detalleresultado ON lab_resultados.IdResultado=lab_detalleresultado.IdResultado
 	   INNER JOIN mnt_empleados ON lab_resultados.Responsable=mnt_empleados.IdEmpleado
@@ -851,8 +869,10 @@ function Obtener_datos($idsolicitud,$iddetalle){
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-   	$query ="SELECT lab_examenes.IdArea FROM sec_detallesolicitudestudios 
-		INNER JOIN lab_examenes ON sec_detallesolicitudestudios.IdExamen=lab_examenes.IdExamen WHERE IdSolicitudEstudio=$idsolicitud AND IdDetalleSolicitud=$iddetalle";
+      $query = "SELECT lab_examenes.IdArea 
+                FROM sec_detallesolicitudestudios 
+		INNER JOIN lab_examenes ON sec_detallesolicitudestudios.IdExamen=lab_examenes.IdExamen 
+                WHERE IdSolicitudEstudio=$idsolicitud AND IdDetalleSolicitud=$iddetalle";
   	$result = @pg_query($query);
    	if (!$result)
       		return false;
@@ -924,8 +944,9 @@ function VerificaDetalle($idsolicitud,$iddetalle){
  function CalculoDias($fechanac){
      $con = new ConexionBD;
    if($con->conectar()==true){ 
-       	$query="SELECT DATEDIFF(NOW( ),'$fechanac')";
-      //  echo $query;
+       	$query=" SELECT TO_CHAR((now( )::timestamp - '$fechanac'::timestamp),'DD')";
+                //"SELECT DATEDIFF(NOW( ),'$fechanac')";
+      $query;
 	 $result = @pg_query($query);
      if (!$result)
        return false;
@@ -937,8 +958,8 @@ function VerificaDetalle($idsolicitud,$iddetalle){
 function ObtenerCodigoRango($dias){
    $con = new ConexionBD;
    if($con->conectar()==true){  
-       $query="SELECT * FROM mnt_rangoedad WHERE $dias BETWEEN edadini AND edadfin
-            AND idedad <>4";
+      $query="SELECT * FROM ctl_rango_edad WHERE cod_modulo='LAB' AND nombre<>'Todos' AND $dias BETWEEN edad_minima_dias AND edad_maxima_dias ";
+              
         $result = @pg_query($query);
          if (!$result)
             return false;
@@ -965,16 +986,10 @@ function ObtenerObservacion($idsolicitud,$iddetalle){
     $con = new ConexionBD;
     if($con->conectar()==true)
     {
-    	$query =/*"SELECT lab_observaciones.Observacion FROM lab_resultados 
-		INNER JOIN lab_observaciones ON lab_resultados.Observacion=lab_observaciones.IdObservacion
-		INNER JOIN sec_solicitudestudios ON lab_resultados.IdSolicitudEstudio=lab_resultados.IdSolicitudEstudio
-		WHERE sec_solicitudestudios.IdSolicitudEstudio=$idsolicitud and lab_resultados.IdDetalleSolicitud=$iddetalle  
-               AND sec_solicitudestudios.IdEstablecimiento=$lugar";*/
-                
-                "select t02.observacion as observacion from lab_resultados t01 
-		left join lab_observaciones t02 on (t02.id=t01.id_observacion)
-		left join sec_solicitudestudios  t03 on (t01.idsolicitudestudio=t03.id)
-		where t03.id=$idsolicitud and t01.iddetallesolicitud=$iddetalle";
+    	$query ="SELECT t02.observacion as observacion from lab_resultados t01 
+		LEFT JOIN lab_observaciones t02 on (t02.id=t01.id_observacion)
+		LEFT JOIN sec_solicitudestudios  t03 on (t01.idsolicitudestudio=t03.id)
+		WHERE t03.id=$idsolicitud and t01.iddetallesolicitud=$iddetalle";
                 
 	$result = @pg_query($query);
 	if (!$result)
@@ -1072,15 +1087,16 @@ function LeerProcesoExamen($idsolicitud,$iddetalle)
 	$con = new ConexionBD;
    if($con->conectar()==true) 
    {
-		$query ="SELECT lab_procedimientosporexamen.IdProcedimientoporexamen,lab_procedimientosporexamen.NombreProcedimiento,
-		lab_detalleresultado.Resultado,lab_procedimientosporexamen.RangoInicio,
-		lab_procedimientosporexamen.rangofin,lab_procedimientosporexamen.Unidades,lab_detalleresultado.Observacion 
-		FROM 	lab_resultados 
-		INNER JOIN  lab_detalleresultado ON lab_detalleresultado.IdResultado=lab_resultados.IdResultado
-		INNER JOIN lab_procedimientosporexamen ON lab_detalleresultado.IdProcedimiento=lab_procedimientosporexamen.IdProcedimientoporexamen
-		WHERE lab_resultados.IdDetalleSolicitud=$iddetalle AND lab_resultados.IdSolicitudEstudio=$idsolicitud 
-		AND  DATE_FORMAT(lab_resultados.FechaHoraReg, '%Y/%m/%d' ) BETWEEN lab_procedimientosporexamen.FechaIni AND IF(lab_procedimientosporexamen.FechaFin ='0000-00-00',CURDATE(),lab_procedimientosporexamen.FechaFin)
-		ORDER BY IdProcedimiento ASC";
+	$query ="SELECT lab_procedimientosporexamen.id,lab_procedimientosporexamen.nombreprocedimiento, 
+                lab_detalleresultado.resultado,lab_procedimientosporexamen.rangoinicio,
+                lab_procedimientosporexamen.rangofin,lab_procedimientosporexamen.unidades,lab_detalleresultado.observacion 
+                FROM lab_resultados 
+                INNER JOIN lab_detalleresultado ON lab_detalleresultado.idresultado=lab_resultados.id 
+                INNER JOIN lab_procedimientosporexamen ON lab_detalleresultado.idprocedimiento=lab_procedimientosporexamen.id 
+                WHERE lab_resultados.iddetallesolicitud=$iddetalle AND lab_resultados.idsolicitudestudio=$idsolicitud 
+                AND CURRENT_DATE BETWEEN lab_procedimientosporexamen.fechaini 
+                AND CASE WHEN fechafin IS NULL THEN CURRENT_DATE ELSE lab_procedimientosporexamen.fechafin END
+                ORDER BY id ASC ";
 
 	 $result = @pg_query($query);
 	 
@@ -1136,7 +1152,7 @@ function ObtenerFechaResultado($idsolicitud,$IdExamen,$lugar)
 	$con = new ConexionBD;
    if($con->conectar()==true)
    {
-      echo $query = "SELECT TO_CHAR(fecha_resultado,'dd/mm/YYYY HH12:MI:SS') AS fecharesultado
+      $query = "SELECT TO_CHAR(fecha_resultado,'dd/mm/YYYY HH12:MI:SS') AS fecharesultado
                 FROM lab_resultados 
                 WHERE idsolicitudestudio=$idsolicitud AND idestablecimiento=$lugar 
                 AND idexamen=$IdExamen";
