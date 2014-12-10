@@ -47,14 +47,14 @@ switch ($opcion)
         $imprimir.= "<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
                      <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."'/>";
 	$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>";
-                     
+
 	    $imprimir.="<tr>
 				<td width='100%' colspan='2' class='StormyWeatherDataTD'  align='right'>
 				<input type='button' name='Submit' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaC()'>
 				</td>
 			</tr>
 	           </table>";
-               
+
 	echo $imprimir;
 
    break;
@@ -63,13 +63,13 @@ switch ($opcion)
    		$idexamen=$_POST['idexamen'];
 		$idsolicitud= $_POST['idsolicitud'];
 		$idempleado= $_POST['idempleado'];
-               
+
                 $fecharealiz=$_POST['fecharealiz'];
                 $fecharesultado=$_POST['fecharesultado'];
-                
+
 		$idrecepcion= $_POST['idrecepcion'];
 		$iddetalle= $_POST['iddetalle'];
-                
+
 		$observacion= $_POST['observacion'];
                 $idobservacion= ($_POST['idobservacion']==0) ? 'NULL' : "'" . pg_escape_string($_POST['idobservacion']) . "'";
                 //echo $idobservacion;
@@ -80,7 +80,7 @@ switch ($opcion)
 		$cantidad=$_POST['cantidad'];
 		$resultado="P";
                 $establecimiento=$_POST['estab'];
-                
+
               //  echo $fecharealiz." - ".$fecharesultado;
           //echo " Solicitud=".$idsolicitud." empleado=".$idempleado." Examen=".$idexamen." detalle=".$iddetalle." detalle=".$establecimiento;
 		$Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
@@ -159,7 +159,7 @@ switch ($opcion)
                            <tr>
                                 <td colspan='1'>Observación:</td>
                                 <td colspan='5'>".$observacion."
-                                   
+
                                 </td>
                            </tr>
                            <tr>
@@ -229,10 +229,10 @@ switch ($opcion)
                 $idobservacion= ($_POST['idobservacion']==0) ? 'NULL' : "'" . pg_escape_string($_POST['idobservacion']) . "'";
                 //echo $idobservacion;
                 $observacion= $_POST['observacion'];
-                
+
                 $fecharealiz=$_POST['fecharealiz'];
                 $fecharesultado=$_POST['fecharesultado'];
-                
+
 		$codigos_antibioticos=$_POST['codigos_antibioticos'];
 		$valores_antibioticos=$_POST['valores_antibioticos'];
 		$idarea=$_POST['idarea'];
@@ -248,7 +248,7 @@ switch ($opcion)
 		$tamano_vectoantibiotico=count($vector_antibioticos);
                 //echo "Examen=".$idexamen." - soli=".$idsolicitud." - empleado=".$idempleado." - idrecepcion=".$idrecepcion." - iddetalle=".$iddetalle." - observacion=".$observacion." - resultado=".$resultado;
                 // echo $fecharealiz." - ".$fecharesultado;
-                
+
                 $posele=0;
                 $ban=0;
                 //echo $v_id_elementos[1];
@@ -256,7 +256,7 @@ switch ($opcion)
                 {
                       $codigoResultado=4;
                       $ultimo= $objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado);
-                                                             
+
                       if ($ultimo != "")
                       {
                               $idresultado=$ultimo;
@@ -334,13 +334,13 @@ switch ($opcion)
 	$idsolicitud= $_POST['idsolicitud'];
 	$idempleado= $_POST['idempleado'];
 	$observacion= (empty($_POST['observacion'])) ? ' ' : "'" . pg_escape_string($_POST['observacion']) . "'";
-       
+
         $idobservacion=$_POST['idobservacion'];
 	$resultado=$_POST['resultado'];
 	$establecimiento=$_POST['estab'];
         $fecharealiz=$_POST['fecharealiz'];
         $fecharesultado=$_POST['fecharesultado'];
-        
+
 	$Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
 	$row_estab = pg_fetch_array($Consulta_Estab);
 
@@ -473,7 +473,7 @@ case 6:
                 echo "Datos Guardados";
 	}
 	else{
-                $codigoResultado=2;
+                $codigoResultado=5;
                 $ultimo=$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado);
 
 	   echo "Datos Guardados";
