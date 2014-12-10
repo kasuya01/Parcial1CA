@@ -72,7 +72,7 @@ class clsLab_Examenes
                {
                     $query="UPDATE lab_conf_examen_estab 
                               SET idusuariomod=$usuario,fechahoramod=NOW(),idformulario=$IdFormulario,
-                              idestandarrep=$IdEstandarResp,IdPlantilla=$plantilla,impresion='$letra 
+                              idestandarrep=$IdEstandarResp,IdPlantilla=$plantilla,impresion='$letra' 
                               urgente=$Urgente,ubicacion=$ubicacion,condicion='$Hab',nombre_examen='$nomexamen',idsexo=$idsexo
                               WHERE lab_conf_examen_estab.id=$idconf";
                     //echo $query;

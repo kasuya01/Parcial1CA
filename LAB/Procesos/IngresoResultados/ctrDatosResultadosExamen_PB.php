@@ -46,7 +46,7 @@ switch ($opcion) {
 			while($row = pg_fetch_array($consulta)) { //ELEMENTOS
                             if($row['subelemento'] === "S") {
 			   	$imprimir.="<tr>
-			   			<td colspan='5' style='font:bold' class='StormyWeatherFieldCaptionTD'>".htmlentities($row['elemento'])."</td>
+			   			<td colspan='5' style='font:bold' class='StormyWeatherFieldCaptionTD'>".$row['elemento']."</td>
                                             </tr>";
 			   			
 			   			$consulta2=$objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
@@ -226,8 +226,8 @@ switch ($opcion) {
 	   	$tab 		      = $_POST['tab'];
 	   	$fechanac 	      = $_POST['fechanac'];
 	   	$sexo 		      = $_POST['sexo'];
-                $fecharealiz=$_POST['fecharealiz'];
-                $fecharesultado=$_POST['fecharesultado'];
+                $fecharealiz          =$_POST['fecharealiz'];
+                $fecharesultado       =$_POST['fecharesultado'];
                // echo $fecharealiz."-".$fecharesultado;
 	   	$Consulta_Estab  = $objdatos->Nombre_Establecimiento($lugar);
 	   	$row_estab   	 = pg_fetch_array($Consulta_Estab);
@@ -242,11 +242,11 @@ switch ($opcion) {
 
 	   	switch ($codigo_estandar) {
 	   		case "H50":
-		   		$cadena 		  	  = $valores_subelementos;
-		   		$vector 		  	  = EXPLODE("/",$cadena);
+		   		$cadena 		  = $valores_subelementos;
+		   		$vector 		  = EXPLODE("/",$cadena);
 		   		$vector_elementos 	  = EXPLODE("/",$valores_elementos);
 		   		$vector_controles 	  = EXPLODE("/",$controles);
-		   		$vector_controles_ele = EXPLODE("/",$controles_ele);
+		   		$vector_controles_ele     = EXPLODE("/",$controles_ele);
 		   		$objdatos 		  = new clsConsultarElementos;
 		   		$consulta 		  = $objdatos->LeerElementosExamen($idexamen,$lugar);
 		   		$consulta_datos 	  = $objdatos->LeerDatos($idexamen);
@@ -274,7 +274,7 @@ switch ($opcion) {
 				   			<td colspan='2'>".$row_generales['fecha']."</td><input name='suEdad' id='suEdad'  type='hidden'  value='".$row_generales['fechanacimiento']."'/>
 				   		</tr>
 				   		<tr>
-				   			<td colspan='1'><strong>N&uacute;mero de Expediente:</strong></td>
+				   			<td colspan='1'><strong>Expediente:</strong></td>
 				   			<td colspan='2'>".$row_generales['idnumeroexp']."</td>
 				   		</tr>
 			   			<tr>    
@@ -425,7 +425,7 @@ switch ($opcion) {
 		        			<input name='suEdad' id='suEdad' type='hidden' value='".$row_generales['fechanacimiento']."'/>
 		        		</tr>
 		        		<tr>
-		        			<td colspan='1'><strong>N&uacute;mero de Expediente:</strong></td>
+		        			<td colspan='1'><strong>Expediente:</strong></td>
 		        			<td colspan='1'>".$row_generales['idnumeroexp']."</td>
 		        		</tr>
 		        		<tr>

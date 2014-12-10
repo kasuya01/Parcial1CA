@@ -413,22 +413,7 @@ switch ($opcion) {
         $row = pg_fetch_array($consulta);
         //obteniedo los datos generales de la solicitud
         //valores de las consultas
-        /* $medico=$row['NombreMedico'];
-          $idmedico=$row['IdMedico'];
-          $paciente=$row['NombrePaciente'];
-          $edad=$row['Edad'];
-          $sexo=$row['Sexo'];
-          $precedencia=$row['Precedencia'];
-          $origen=$row['Origen'];
-          $DatosClinicos=$row['DatosClinicos'];
-          $Estado=$row['Estado'];
-          $fechasolicitud=$row['FechaSolicitud'];
-          $fecharecep=$row['FechaRecepcion'];
-          $Sexo=$row['Sexo'];
-          $FechaNacimiento=$row['FechaNacimiento'];*
-
-         */
-
+       
         $idsolicitudPadre = $row[0];
         $medico = $row['medico'];
         $idmedico = $row[1];
@@ -441,17 +426,18 @@ switch ($opcion) {
         //$DatosClinicos=$row['fecharecepcion'];
         $Estado = $row['estado'];
         $fecharecepcion=$row['fecharecepcion'];
-        // $FechaNac=$row['FechaNacimiento'];
+        $FechaNac=$row['fechanac'];
+        //echo $FechaNac;
         //recuperando los valores del detalle de la solicitud
         $consultadetalle = $objdatos->DatosGeneralesSolicitud($idexpediente, $idsolicitud,$lugar);
         $imprimir = "<form name='frmDatos'>
-        <table width='70%' border='0' align='center'>
+                    <table width='70%' border='0' align='center'>
 			<tr>
 				<td  colspan='4'>&nbsp;&nbsp;&nbsp;&nbsp</td>
 			</tr>
 			<tr>
 				<td colspan='4' align='center' class='CobaltFieldCaptionTD'>
-					<h3><strong>DATOS SOLICITUD</strong></h3>
+					<h3><strong>DATOS SOLICITUD</strong></h3></td>
 			</tr>
 			<tr>
 				<td class='StormyWeatherFieldCaptionTD'>Establecimiento</td>
@@ -480,14 +466,14 @@ switch ($opcion) {
                         <tr>
 				<td class='StormyWeatherFieldCaptionTD'>Procedencia</td>
 				<td class='StormyWeatherDataTD'>$precedencia <input name='txtprecedencia' id='txtprecedencia' 
-				type='hidden' size='35' value='" . $precedencia . "' disabled='disabled' /></td>
+				type='hidden' size='35' value='" . $precedencia . "' disabled='disabled' />
 				<td class='StormyWeatherFieldCaptionTD'>Origen</td>
 				<td class='StormyWeatherDataTD'>" . htmlentities($origen) . "
 					<input name='txtorigen' id='txtorigen'  type='hidden' size='35' value='" . $origen . "' disabled='disabled' />
                                         <input name='idsolicitudPadre' id='idsolicitudPadre'  type='hidden' size='40' value='" . $idsolicitudPadre . "' disabled='disabled' />
 					<input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='" . $idsolicitud . "' disabled='disabled' />
 					<input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='" . $idexpediente . "' disabled='disabled' />
-					
+					<input name='fechanac' id='fechanac'  type='hidden'  value='" . $FechaNac . "' disabled='disabled' />
 					
 					
 				</td>
@@ -531,7 +517,7 @@ switch ($opcion) {
             $imprimir .= "<tr>";
             if ($fila['estado'] == "Resultado Completo") {
                 $imprimir .="<td><img src='../../../Iconos/impresion.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-				onclick=\"ImprimirDatos('" . $fila['iddetallesolicitud'] . "','" . $fila['idsolicitudestudio'] . "','" . $fila['idplantilla'] . "','$idexpediente','" . $fila['codigo_area'] . "','" . $fila['codigo_examen'] . "','" . $row['sexo'] . "','" . $row['edad'] . "')\">
+				onclick=\"ImprimirDatos('" . $fila['iddetallesolicitud'] . "','" . $fila['idsolicitudestudio'] . "','" . $fila['idplantilla'] . "','$idexpediente','" . $fila['codigo_area'] . "','" . $fila['codigo_examen'] . "','" . $row['sexo'] . "','" . $row['edad'] . "','" . $fila['idexamen'] . "','$FechaNac')\">
 					</td>
 					<td>" . htmlentities($fila['codigo_examen']) . "</td>
 					<td>" . htmlentities($fila['nombre_examen']) . "
@@ -539,7 +525,7 @@ switch ($opcion) {
 						<input name='idsolicitud[" . $pos . "]' type='hidden' id='idsolicitud[" . $pos . "]' value='" . $fila['idsolicitudestudio'] . "'>
 						<input name='idarea[" . $pos . "]' type='hidden' id='idarea[" . $pos . "]' value='" . $fila['idarea'] . "'>
 						<input name='paciente[" . $pos . "]' type='hidden' id='paciente[" . $pos . "]' value='" . $row['paciente'] . "'>
-						<input name='idexamen[" . $pos . "]' type='text' id='idexamen[" . $pos . "]' value='" . $fila['idexamen'] . "' disabled='disabled' />
+						<input name='idexamen[" . $pos . "]' type='hidden' id='idexamen[" . $pos . "]' value='" . $fila['idexamen'] . "' disabled='disabled' />
 					</td>	
 					<td>" . $fila['codigo_area'] . "</td>";
                 if (!empty($fila['indicacion'])) {
