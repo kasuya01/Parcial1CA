@@ -1,13 +1,25 @@
 <?php 
 include_once("../../../Conexion/ConexionBD.php");
 //implementamos la clase lab_areas
-class clsReporteExamenesporServicio
+class clsReporteTiporedsultado
 {
 	 //constructor	
-	 function clsReporteExamenesporServicio()
+	 function clsReporteTiporedsultado()
 	 {
 	 }	
 	 
+          function codigoresultado(){
+	$con = new ConexionBD;
+		if($con->conectar()==true) 
+		{ $query= "select * from lab_codigosresultados ";
+                        
+			$result = @pg_query($query);
+			if (!$result)
+			return false;
+			else
+			return $result;	
+		}
+      }
 	
  
     function LeerAreas($lugar){
@@ -34,27 +46,63 @@ class clsReporteExamenesporServicio
 			return $result;	
 		}
       }
+      
+      
+      function ExamenesPorArea($idarea, $lugar) {
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if ($con->conectar() == true) {
+            $query = "SELECT lcee.id,lcee.nombre_examen 
+                    FROM mnt_area_examen_establecimiento maees
+                    INNER JOIN lab_conf_examen_estab lcee ON maees.id= lcee.idexamen 
+                    WHERE maees.id_area_servicio_diagnostico=$idarea
+                    AND maees.id_establecimiento=$lugar
+                    AND lcee.condicion= 'H'
+                    ORDER BY lcee.nombre_examen asc";
+
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
 	
-function NumeroDeRegistros($lugar){
+     function ListadoSolicitudesPorArea($query_search) { {
+            //creamos el objeto $con a partir de la clase ConexionBD
+            $con = new ConexionBD;
+            //usamos el metodo conectar para realizar la conexion
+            if ($con->conectar() == true) {
+                $query = $query_search;
+                $result = @pg_query($query);
+                if (!$result)
+                    return false;
+                else
+                    return $result;
+            }
+        }
+    }
+    
+     function ContarNumeroDeRegistros($query) {
+        //creamos el objeto $con a partir de la clase ConexionBD
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if ($con->conectar() == true) {
+            $query = $query;
+            $numreg = pg_num_rows(pg_query($query));
+            if (!$numreg)
+                return false;
+            else
+                return $numreg;
+        }
+    }
+    
+function NumeroDeRegistros(){
    //creamos el objeto $con a partir de la clase ConexionBD
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query =/*"SELECT lab_areas.IdArea,NombreArea FROM lab_areas 
-	      INNER JOIN lab_areasxestablecimiento ON lab_areas.IdArea=lab_areasxestablecimiento.IdArea
-	      WHERE lab_areasxestablecimiento.IdEstablecimiento=$lugar AND lab_areas.Administrativa='N' 
-              AND lab_areasxestablecimiento.Condicion='H' 
-              ORDER BY NombreArea";*/
-     
-     
-                "SELECT t01.id AS idarea, t01.nombrearea
-                      FROM ctl_area_servicio_diagnostico t01
-                      WHERE t01.id IN (
-                        SELECT idarea
-                        FROM lab_areasxestablecimiento 
-                        WHERE condicion = 'H'  AND idestablecimiento = $lugar)
-                        AND t01.administrativa = 'N'
-                      ORDER BY nombrearea";
+    $query ="select * from lab_codigosresultados";
      
 	 $numreg = pg_num_rows(pg_query($query));
 	 if (!$numreg )
@@ -140,43 +188,64 @@ $con = new ConexionBD;
 function subserviciosxservicio($cadena,$servicio,$ffechaini,$ffechafin,$lugar){
 $con = new ConexionBD;
 	if($con->conectar()==true){
-	    $query=  "select   
-                        $cadena  
-                        t13.nombre as servicio, 
-                        t14.nombre as establecimiento, 
-                        t11.nombre as subservicio,
-                        SUM (CASE WHEN t01.id_conf_examen_estab<>1 THEN 1 else 0 END )AS total
-                        FROM sec_detallesolicitudestudios           t01 
-                        INNER JOIN   lab_resultados                 t02 	ON (t01.id=t02.iddetallesolicitud) 
-                        INNER JOIN lab_conf_examen_estab            t03 	ON (t01.id_conf_examen_estab=t03.id) 
-                        INNER JOIN mnt_area_examen_establecimiento  t04 	ON (t04.id=t03.idexamen) 
-                        INNER JOIN ctl_area_servicio_diagnostico    t05 	ON (t05.id=t04.id_area_servicio_diagnostico) 
-                        INNER JOIN lab_areasxestablecimiento        t06 	ON (t06.idarea=t05.id) 
-                        INNER JOIN sec_solicitudestudios            t07 	ON (t07.id=t01.idsolicitudestudio) 
-                        left JOIN sec_historial_clinico             t08 	ON (t07.id_historial_clinico=t08.id)
-                        INNER JOIN  mnt_aten_area_mod_estab         t10 	ON (t10.id = t08.idsubservicio) 
-                        INNER JOIN  ctl_atencion                    t11 	ON (t11.id = t10.id_atencion) 
-                        INNER JOIN  mnt_area_mod_estab              t12 	ON (t12.id = t10.id_area_mod_estab) 
-                        INNER JOIN   ctl_area_atencion              t13 	ON (t13.id = t12.id_area_atencion) 
-                        INNER JOIN ctl_establecimiento              t14 	ON (t14.id = t08.idestablecimiento) 
-                       WHERE t01.estadodetalle=(select id from ctl_estado_servicio_diagnostico where idestado='RC') 
+	     $query=/*"SELECT $cadena NombreSubServicio as origen, 
+sum(if(sec_detallesolicitudestudios.IdExamen<>'',1,0)) as total ,mnt_servicio.IdServicio, mnt_servicio.NombreServicio 
+from sec_detallesolicitudestudios 
+INNER JOIN lab_resultados ON sec_detallesolicitudestudios.IdDetalleSolicitud=lab_resultados.IdDetalleSolicitud 
+INNER JOIN lab_examenes ON sec_detallesolicitudestudios.IdExamen=lab_examenes.IdExamen 
+INNER JOIN lab_areas ON lab_examenes.IdArea=lab_areas.IdArea 
+INNER JOIN sec_solicitudestudios ON sec_detallesolicitudestudios.IdSolicitudEstudio=sec_solicitudestudios.IdSolicitudEstudio 
+INNER JOIN sec_historial_clinico ON sec_solicitudestudios.IdHistorialClinico=sec_historial_clinico.IdHistorialClinico 
+INNER JOIN mnt_subservicio ON sec_historial_clinico.IdSubServicio=mnt_subservicio.IdSubServicio 
+INNER JOIN mnt_servicio ON mnt_subservicio.IdServicio= mnt_servicio.IdServicio
+INNER JOIN lab_areasxestablecimiento ON lab_areas.IdArea=lab_areasxestablecimiento.IdArea  
+WHERE sec_detallesolicitudestudios.EstadoDetalle='RC' AND lab_areasxestablecimiento.Condicion='H' 
+AND lab_areasxestablecimiento.IdEstablecimiento=$lugar 
+AND (lab_resultados.FechaHoraReg >='$ffechaini' AND lab_resultados.FechaHoraReg <='$ffechafin') 
+AND mnt_subservicio.IdServicio='$servicio' 
+GROUP BY sec_historial_clinico.IdSubServicio ORDER BY sec_historial_clinico.IdSubServicio";*/
+                  " SELECT   $cadena 
+                        SUM (CASE WHEN t01.id_conf_examen_estab<>1 THEN 1 else 0 END )AS total,
+                        t05.nombrearea nombrearea, 
+                        t13.nombre as servicio , 
+                        t14.nombre as establecimiento , 
+                        t11.nombre as subservicio, 
+                        t03.nombre_examen nombre_examen
+                        FROM sec_detallesolicitudestudios               t01
+                        INNER JOIN lab_resultados  			t02	ON (t01.id=t02.iddetallesolicitud)
+                        INNER JOIN lab_conf_examen_estab    		t03	ON (t01.id_conf_examen_estab=t03.id) 
+                        INNER JOIN mnt_area_examen_establecimiento 	t04 	ON (t04.id=t03.idexamen)
+                        INNER JOIN ctl_area_servicio_diagnostico 	t05	ON (t05.id=t04.id_area_servicio_diagnostico)
+                        INNER JOIN lab_areasxestablecimiento 		t06	ON (t06.idarea=t05.id)
+                        INNER JOIN sec_solicitudestudios 		t07	ON (t07.id=t01.idsolicitudestudio) 
+                        left  JOIN sec_historial_clinico 		t08	ON (t07.id_historial_clinico=t08.id) 
+                        INNER JOIN mnt_aten_area_mod_estab 		t10     ON (t10.id = t08.idsubservicio) 
+                        INNER JOIN ctl_atencion 			t11     ON (t11.id = t10.id_atencion) 
+                        INNER JOIN mnt_area_mod_estab 			t12     ON (t12.id = t10.id_area_mod_estab) 
+                        INNER JOIN ctl_area_atencion 			t13     ON (t13.id = t12.id_area_atencion) 
+                        INNER JOIN ctl_establecimiento 			t14     ON (t14.id = t08.idestablecimiento)
+                        WHERE t01.estadodetalle=(select id from ctl_estado_servicio_diagnostico where idestado='RC') 
                             AND (t06.condicion='H')
                             AND (t06.idestablecimiento=$lugar)  
                             AND (t02 .fechahorareg >='".$ffechaini."' AND t02 .fechahorareg <='".$ffechafin."') 
-                            AND  id_area_atencion= $servicio 
-                               
-
-                                GROUP BY   
-                                        t13.nombre, 
-                                        t14.nombre, 
-                                        t11.nombre 
-        union 
+                            AND  id_area_atencion= $servicio  
+                                GROUP BY
+                                    t05.nombrearea, 
+                                    t13.nombre, 
+                                    t14.nombre,
+                                    t11.nombre, 
+                                    t03.nombre_examen 
+                  
+                    union 
+                    
                         select 
-                        $cadena  
-                        t13.nombre as servicio, 
-                        t14.nombre as establecimiento, 
-                        t11.nombre as subservicio,
-                        SUM (CASE WHEN t01.id_conf_examen_estab<>1 THEN 1 else 0 END )AS total
+                        $cadena 
+                        SUM (CASE WHEN t01.id_conf_examen_estab<>1 THEN 1 else 0 END )AS total,
+                        t05.nombrearea nombrearea, 
+                        t13.nombre as servicio , 
+                        t14.nombre as establecimiento , 
+                        t11.nombre as subservicio, 
+                        t03.nombre_examen nombre_examen
                         from sec_detallesolicitudestudios           t01 
                         INNER JOIN   lab_resultados                 t02 	ON (t01.id=t02.iddetallesolicitud) 
                         INNER JOIN lab_conf_examen_estab            t03 	ON (t01.id_conf_examen_estab=t03.id) 
@@ -195,10 +264,11 @@ $con = new ConexionBD;
                             AND (t06.idestablecimiento=$lugar)  
                             AND (t02 .fechahorareg >='".$ffechaini."' AND t02 .fechahorareg <='".$ffechafin."') 
                             AND  id_area_atencion= $servicio 
-                                GROUP BY   
-                                        t13.nombre, 
-                                        t14.nombre, 
-                                        t11.nombre";
+                                GROUP BY
+                                    t05.nombrearea, 
+                                    t13.nombre, 
+                                    t14.nombre, t11.nombre, 
+                                    t03.nombre_examen ";
           
                   
  $dt = pg_query( $query) or die('La consulta fall&oacute;:' . pg_error());
