@@ -166,7 +166,7 @@ class clsLab_Examenes
                     
                         
 
-                    $query_tiempo="SELECT * FROM cit_programacion_exams 
+             echo" program_exam". $query_tiempo="SELECT * FROM cit_programacion_exams 
                                     WHERE id_examen_establecimiento=$idconf ";
                     $tot = pg_num_rows(pg_query($query_tiempo));
                     // $tot=$result_tiempo[0];
@@ -177,7 +177,7 @@ class clsLab_Examenes
                                      WHERE id_examen_establecimiento=$idconf";
                          // $dtSub = pg_query($sqlText) or die('La consulta fall&oacute;: ' . pg_error());      
                      }else{    
-                          $sqlText = "INSERT INTO cit_programacion_exams (id_examen_establecimiento,rangotiempoprev,id_atencion,id_establecimiento,idusuarioreg,fechahorareg) 
+                           echo" program_exam". $sqlText = "INSERT INTO cit_programacion_exams (id_examen_establecimiento,rangotiempoprev,id_atencion,id_establecimiento,idusuarioreg,fechahorareg) 
                                      VALUES ($idconf,$TiempoPrevio,98,$lugar,$usuario,NOW())"; 
 
 

@@ -9,7 +9,7 @@ $idplatilla=$_GET['var3'];
 $expediente=$_GET['var4'];
 $idarea=$_GET['var5'];
 $idexamen=$_GET['var6'];
-//echo $idexamen;
+echo $idexamen;
 
 ?>
 <html>
@@ -133,11 +133,11 @@ $obj = new clsImprimirResultado;
 					while($row = pg_fetch_array($consulta))//ELEMENTOS
 					{?>
 				<tr>
-					<td class="Estilo5"  width='25%'align='left'><?PHP echo htmlentities($row['NombreProcedimiento'])?></td>
+					<td class="Estilo5"  width='25%'align='left'><?PHP echo htmlentities($row['nombreprocedimiento'])?></td>
 					<td align='center' width='30%' >
-						<input name='oidprueba[<?php $pos ?>]' type='hidden' id='oidprueba[<?php $pos ?>]' value='<?php $row['IdProcedimientoporexamen'] ?>'><?php echo htmlentities($row['Resultado'])?></td>
-					<td class="Estilo5" align='center' width='30%'><?php echo $row['Unidades']?></td>
-					<td class="Estilo5" align='center'><?php echo htmlentities($row['Observacion'])?></td>	<td><?php echo htmlentities($row['Unidades'])?></td>
+						<input name='oidprueba[<?php $pos ?>]' type='hidden' id='oidprueba[<?php $pos ?>]' value='<?php $row['id'] ?>'><?php echo htmlentities($row['Resultado'])?></td>
+					<td class="Estilo5" align='center' width='30%'><?php echo $row['unidades']?></td>
+					<td class="Estilo5" align='center'><?php echo htmlentities($row['observacion'])?></td>	<td><?php echo htmlentities($row['unidades'])?></td>
 				</tr>
 					<?php $pos=$pos + 1;
 					}

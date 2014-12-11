@@ -490,7 +490,7 @@ function ValidarCamposPlantillaC()
 //FUNCION PARA MOSTRAR DATOS PREVIOS DE LA PLANTILLA C  	OPCION 2
 function MostrarVistaPreviaPlantillaC()
 {
-    if (ValidarCamposPlantillaC())
+    if (validadatosplantilla())
     {
         opcion = 2;
         //DATOS DE ENCABEZADO DE LOS RESULTADOS
@@ -1627,9 +1627,28 @@ function validaempleado()
     return resp;
 }
 
+function validadatosplantilla()
+{
+    var resp = true;
+
+    if (document.frmnuevo.cmbEmpleados.value == "")
+    {
+        resp = false;
+    }
+    
+     if (document.frmnuevo.txtresultrealiza.value == "")
+    {
+        resp = false;
+    }
+     if (document.frmnuevo.txtresultfin.value == "")
+    {
+        resp = false;
+    }
+    return resp;
+}
 
 function IngresarResultados() {
-    if (validaempleado()) {
+    if (validadatosplantilla()) {
         codigoex = document.frmnuevo.txtidexamen.value;
         fechanac = document.frmnuevo.txtFechaNac.value;
         sexo = document.frmnuevo.txtSexo.value;
@@ -1640,7 +1659,7 @@ function IngresarResultados() {
         //alert (fecharealiz+'-'+fecharesultado);
         CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial,fecharealiz,fecharesultado);
     } else {
-        alert("Ingrese el nombre de Responsable");
+        alert("Por favor ingrese los campos obligatorios(*)");
     }
 }
 
@@ -1670,7 +1689,7 @@ function IngresarTodosResultados()
     }
     else
     {
-        alert("Por favor ingrese los campos obligatorios(*)");
+        alert("Por favor ingrese los campos obligatorios(*)1");
     }
 }
 
@@ -2175,7 +2194,7 @@ function ImprimirD() {
 //********************************************** FUNCIONES PARA LA PLANTILLA E *****************************************
 function IngresarResultadosPlantillaE()
 {
-    if (validaempleado())
+    if (validadatosplantilla())
     {
         codigoex = document.frmnuevo.txtidexamen.value;
         fechanac = document.frmnuevo.txtFechaNac.value;
@@ -2187,7 +2206,7 @@ function IngresarResultadosPlantillaE()
     }
     else
     {
-        alert("Ingrese el nombre de Responsable");
+        alert("Ingrese los campos marcados con (*)");
     }
 }
 

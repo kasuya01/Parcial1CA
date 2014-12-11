@@ -153,12 +153,12 @@ $area    = $_SESSION['Idarea'];
             <td>
                 <div  id="divFrmNuevo" style="display:block" >
                     <form name="frmnuevo" method="get" action="ProcDatosResultadosExamen_PA.php" enctype="multipart/form-data">
-                        <table width="70%" border="0" align="center" class="StormyWeatherFormTABLE">
+                        <table width="75%" border="0" align="center" class="StormyWeatherFormTABLE">
                             <tr class="CobaltButton" >
                                 <td colspan="5" align="center"> <h3>DATOS GENERALES</h3></td>
                             </tr>
                             <tr>
-                                <td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
+                                <td class="StormyWeatherFieldCaptionTD">Establecimiento Solicitante</td>
                                 <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var18'];?></td>
                             </tr>
                             <tr>          	
@@ -248,12 +248,12 @@ $area    = $_SESSION['Idarea'];
                                 </td>
                             </tr>
                             <tr>
-                                <td class="StormyWeatherFieldCaptionTD">Fecha y hora inicio Proceso</td>
+                                <td class="StormyWeatherFieldCaptionTD">*Fecha y hora inicio Proceso</td>
                                 <td class="StormyWeatherDataTD">
                                         <input type="text" class="datepicker" id="txtresultrealiza"  name="txtresultrealiza" size="15">										
                                 </td>
                             
-                                <td class="StormyWeatherFieldCaptionTD">Fecha Resultado</td>
+                                <td class="StormyWeatherFieldCaptionTD">*Fecha Resultado</td>
                                 <td class="StormyWeatherDataTD">
                                         <input type="text" class="datepicker" name="txtresultfin" id="txtresultfin" size="15"  value="<?php echo date("Y-m-d h:m"); ?>"  />	
                                 </td>
