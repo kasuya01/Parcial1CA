@@ -147,7 +147,7 @@ AND t02.id_establecimiento = $LugardeAtencion";
                 $sql2=  pg_query($num);
                 $nmuestra=  pg_fetch_array($sql2);
 
-                $remuestra= "insert into lab_recepcionmuestra (numeromuestra, fecharecepcion, idsolicitudestudio, fechacita, idestablecimiento, idusuarioreg, fechahorareg) VALUES ($nmuestra[0], current_date, $IdSolicitudEstudio, current_date, $LugardeAtencion, $iduser, NOW())";
+                $remuestra= "insert into lab_recepcionmuestra (numeromuestra, fecharecepcion, idsolicitudestudio, fechacita, idestablecimiento, idusuarioreg, fechahorareg) VALUES ($nmuestra[0], current_date, $IdSolicitudEstudio, current_date, $LugardeAtencion, $iduser, date_trunc('seconds',NOW()))";
                  $rep=  pg_query($remuestra); 
                        if (!$rep)
                            return false;
@@ -160,7 +160,7 @@ AND t02.id_establecimiento = $LugardeAtencion";
                     $nextseq=  pg_fetch_array($sql);
                     $idnext=$nextseq[0];
                     $InsertCit = "INSERT INTO cit_citas_serviciodeapoyo (id, fecha, id_solicitudestudios, idusuarioreg, fechahorareg)
-                                  VALUES ($idnext,current_date,$IdSolicitudEstudio,$iduser,NOW())";
+                                  VALUES ($idnext,current_date,$IdSolicitudEstudio,$iduser,date_trunc('seconds',NOW()))";
                   // echo 'inse: '.$InsertCit.'<br/>';
                     $queryIns = pg_query($InsertCit);
                     if (!$queryIns)
@@ -190,7 +190,7 @@ AND t02.id_establecimiento = $LugardeAtencion";
        
 	function FechaHoraNow($conectar){
 		if($conectar==true){
-			$SQL = "SELECT now() as Ahora";
+			$SQL = "SELECT date_trunc('seconds',NOW()) as Ahora";
 			$Resultado = mysql_query($SQL) or die('La consulta fall&oacute;: ' . mysql_error());
 			$Rows = mysql_fetch_array($Resultado);
 			$Nombre=$Rows['Ahora'];
@@ -992,7 +992,7 @@ class CrearHistorialClinico{
             $row=  pg_fetch_row($res);
             $idseq=$row[0];
          $sqlInsertCita= " insert into sec_historial_clinico (id, fechaconsulta, idsubservicio,        idusuarioreg, fechahorareg, piloto, ipaddress, idestablecimiento, idnumeroexp, id_numero_expediente, id_empleado)
-values($idseq,'$FechaConsulta', $IdSubServicio, $iduser,NOW(), 'V', '$ippc', $lugar, '$IdNumeroExp', $idexpediente, $IdEmpleado)";
+values($idseq,'$FechaConsulta', $IdSubServicio, $iduser,date_trunc('seconds',NOW()), 'V', '$ippc', $lugar, '$IdNumeroExp', $idexpediente, $IdEmpleado)";
     //echo $sqlInsertCita;
         }
         else{
@@ -1001,7 +1001,7 @@ values($idseq,'$FechaConsulta', $IdSubServicio, $iduser,NOW(), 'V', '$ippc', $lu
             $row=  pg_fetch_row($res);
             $idseq=$row[0];
             $sqlInsertCita= "insert into mnt_dato_referencia(id, id_expediente_referido, id_empleado, id_aten_area_mod_estab, fecha_horareg, idusuarioreg, id_establecimiento) 
-values($idseq,$idexpediente, $IdEmpleado,$IdSubServicio, NOW(), $iduser, $lugar)";
+values($idseq,$idexpediente, $IdEmpleado,$IdSubServicio, date_trunc('seconds',NOW()), $iduser, $lugar)";
          /*   $sqlInsertCita= "insert into sec_historial_clinico (id, fechaconsulta, idsubservicio,        idusuarioreg, fechahorareg, piloto, ipaddress, idestablecimiento, idnumeroexp, id_numero_expediente, id_empleado)
 values($idseq,'$FechaConsulta', $IdSubServicio, $iduser,NOW(), 'V', '$ippc', $lugar, '$IdNumeroExp', $idexpediente, $IdEmpleado)";*/
         }

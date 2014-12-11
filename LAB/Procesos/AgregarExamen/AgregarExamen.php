@@ -20,7 +20,8 @@ $nomtipo=$row[2];
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">    
 <title>Solicitudes Por Paciente</title>
-<?php include_once $ROOT_PATH."/public/js.php";?>
+<?php include_once $ROOT_PATH.'/public/css.php';?>
+<?php include_once $ROOT_PATH.'/public/js.php';?>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <script language="JavaScript" type="text/javascript" src="ajax_AgregarExamen.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
@@ -141,8 +142,8 @@ if ($nivel==4){
 				</td>
 			</tr>
 			<tr>		
-				<td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</td>
-		<td class="StormyWeatherDataTD"><select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)">
+				<td class="StormyWeatherFieldCaptionTD" width="20%">Tipo Establecimiento</td>
+		<td class="StormyWeatherDataTD"  width="35%"><select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)">
         	<option value="0">Seleccione un Tipo de Establecimiento</option>
 			<?php
 				$db = new ConexionBD;
@@ -158,8 +159,8 @@ if ($nivel==4){
 			?>
         	</select>
 		</td>
-        	<td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
-        	<td class="StormyWeatherDataTD" >
+        	<td class="StormyWeatherFieldCaptionTD"  width="20%">Establecimiento</td>
+        	<td class="StormyWeatherDataTD"  width="35%">
 				<div id="divEstablecimiento">
 					<select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px">
 						<option value="0" >Seleccione un Establecimiento</option>
@@ -184,7 +185,7 @@ if ($nivel==4){
 	<tr>	
 		<td class="StormyWeatherFieldCaptionTD">Procedencia</td>
 		<td class="StormyWeatherDataTD">
-			<select name="CmbServicio" id="CmbServicio" style="width:355px" onChange="BuscarServicio(this.value)" >
+			<select name="CmbServicio" id="CmbServicio" style="width:405px" onChange="BuscarServicio(this.value)" >
 				<option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
 				<?php
 					$db = new ConexionBD;
@@ -226,10 +227,10 @@ if ($nivel==4){
 	<tr>
 		
 		<td class="StormyWeatherFieldCaptionTD"  >Expediente</td>
-		<td  class="StormyWeatherDataTD" width="5%" ><input type="text" size="24" name="txtexpediente" id="txtexpediente" />
+		<td  class="StormyWeatherDataTD" width="5%" ><input type="text" size="28" name="txtexpediente" id="txtexpediente" />
 		</td>
 		<td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Recepi&oacute;n</td>
-		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="15" name="txtfecharecep" id="txtfecharecep" />
+		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="28" name="txtfecharecep" id="txtfecharecep" />
 			<input type="button" value="..." id="trigger">dd/mm/aaaa
 		</td>
 	</tr>

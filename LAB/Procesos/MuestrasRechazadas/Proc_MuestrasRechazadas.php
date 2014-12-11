@@ -35,7 +35,8 @@ else{
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 <title>Reactivar Muestras Rechazadas</title>
 <script language="JavaScript" type="text/javascript" src="ajax_MuestrasRechazadas.js"></script>
-<?php include_once $ROOT_PATH."/public/js.php";?>
+<?php include_once $ROOT_PATH.'/public/css.php';?>
+<?php include_once $ROOT_PATH.'/public/js.php';?>
 <!--referencias del estilo del calendario-->
 <link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
 <link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />
@@ -123,8 +124,8 @@ if ($nivel==4){
 		</td>
 	</tr>
 	<tr>		
-		<td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</td>
-		<td class="StormyWeatherDataTD"><select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)">
+		<td class="StormyWeatherFieldCaptionTD" width="20%">Tipo Establecimiento</td>
+		<td class="StormyWeatherDataTD"  width="35%"><select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)">
         	<option value="0">Seleccione un Tipo de Establecimiento</option>
 			<?php
 				$db = new ConexionBD;
@@ -140,8 +141,8 @@ if ($nivel==4){
 			?>
         	</select>
 		</td>
-        	<td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
-        	<td class="StormyWeatherDataTD" >
+        	<td class="StormyWeatherFieldCaptionTD"  width="20%">Establecimiento</td>
+        	<td class="StormyWeatherDataTD"  width="35%">
 				<div id="divEstablecimiento">
 					<select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px">
 						<option value="0" >Seleccione un Establecimiento</option>
@@ -165,7 +166,7 @@ if ($nivel==4){
 	<tr>	
 		<td class="StormyWeatherFieldCaptionTD">Procedencia</td>
 		<td class="StormyWeatherDataTD">
-			<select name="CmbServicio" id="CmbServicio" style="width:355px" onChange="BuscarServicio(this.value)" >
+			<select name="CmbServicio" id="CmbServicio" style="width:405px" onChange="BuscarServicio(this.value)" >
 				<option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
 				<?php
 					$db = new ConexionBD;
@@ -204,7 +205,7 @@ if ($nivel==4){
 			<b>&Aacute;rea de Laboratorio </b>
 		</td>
 		<td class="StormyWeatherDataTD" colspan="1" width="11%">
-			<select id="cmbArea" name="cmbArea" size="1"  onChange="BuscarExamen(this.value)">
+			<select id="cmbArea" name="cmbArea" size="1" style="width:405px" onChange="BuscarExamen(this.value)">
                             <!--<option value="0" >--Seleccione un &Aacute;rea--</option>-->
 				<?php
 				include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
@@ -220,7 +221,7 @@ if ($nivel==4){
 		<td  class="StormyWeatherFieldCaptionTD">Examen </td>
    		<td  class="StormyWeatherDataTD"  style="width:205px">
 			<div id="divExamen">
-				<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:250px"> 
+				<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:375px"> 
 					<option value="0"> Seleccione Examen </option>
 				</select>
 			</div>

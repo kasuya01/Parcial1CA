@@ -260,20 +260,21 @@ echo "<table width='35%' border='0'  align='center'>
   
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);
 
-        echo "<table width='81%' border='1' align='center'>
-                <tr class='CobaltFieldCaptionTD'>
-			<td>Muestra </td>
-		        <td>NEC </td>
-			<td>Paciente</td>
-			<td>Id Examen</td>
-			<td>Examen</td>
-			<td>Observaci&oacute;n</td>
-			<td>Servicio</td>
-			<td>Procedencia</td>
-			<td>Establecimiento</td>
-			<td>Fecha Recepci&oacute;n</td>
-			<td>Prioridad</td>
-                    </tr>";
+        echo "<div class='table-responsive' style='width: 80%;'>
+            <table width='81%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                <thead><tr>
+			<th>Muestra </th>
+		        <th>NEC </th>
+			<th>Paciente</th>
+			<th>Cod. Examen</th>
+			<th>Examen</th>
+			<th>Observaci&oacute;n</th>
+			<th>Servicio</th>
+			<th>Procedencia</th>
+			<th>Establecimiento</th>
+			<th>Fecha Recepci&oacute;n</th>
+			<th>Prioridad</th>
+                    </tr></thead><tbody>";
         if(pg_num_rows($consulta))
         {
             $pos = 0;
@@ -281,8 +282,8 @@ echo "<table width='35%' border='0'  align='center'>
             while ($row = pg_fetch_array($consulta)) 
             {
                  echo "<tr>
-                           <td width='7%'>" . $row['numeromuestra'] . "</td>
-                           <td width='8%'><span style='color: #0101DF;'>
+                           <td width='4%'>" . $row['numeromuestra'] . "</td>
+                           <td width='6%'><span style='color: #0101DF;'>
                            <a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" .$row['idnumeroexp'] . "</a></td>
                            <input name='idsolicitudP[" . $pos . "]' id='idsolicitudP[" . $pos . "]' type='hidden' size='60' value='" . $row[1] . "' />" .
                             "<input name='idsolicitud[" . $pos . "]' id='idsolicitud[" . $pos . "]' type='hidden' size='60' value='" . $row[1] . "' />" .
@@ -290,15 +291,15 @@ echo "<table width='35%' border='0'  align='center'>
                            "<input name='idarea[" . $pos . "]' id='idarea[" . $pos . "]' type='hidden' size='60' value='" . $idarea . "' />" .
                            "<input name='idexamen[" . $pos . "]' id='idexamen[" . $pos . "]' type='hidden' size='60' value='" . $row[1] . "' />" .
                            "<td width='20%'>" . $row['paciente'] . "</td>
-                           <td width='10%'>" . $row['idexamen'] . "</td>
-                           <td width='22%'>" . htmlentities($row['nombreexamen']) . "</td>";
+                           <td width='8%'>" . $row['idexamen'] . "</td>
+                           <td width='12%'>" . htmlentities($row['nombreexamen']) . "</td>";
                   if(!empty($row['observacion']))
-                     echo" <td width='15%'>" . htmlentities($row['observacion']) . "</td>";
+                     echo" <td width='10%'>" . htmlentities($row['observacion']) . "</td>";
                   else 
-                      echo"<td width='15%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-                      echo"<td width='15%'>" . htmlentities($row['nombresubservicio']) . "</td>
-                           <td width='10%'>" . htmlentities($row['nombreservicio']) . "</td>
-                           <td width='30%'>" . htmlentities($row['estabext']) . "</td>
+                      echo"<td width='10%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+                      echo"<td width='8%'>" . htmlentities($row['nombresubservicio']) . "</td>
+                           <td width='8%'>" . htmlentities($row['nombreservicio']) . "</td>
+                           <td width='38%'>" . htmlentities($row['estabext']) . "</td>
                            <td width='10%'>" . $row['fecharecepcion'] . "</td>
                            <td width='10%'>" . ($row['prioridad']) . "</td>
 		      </tr>";
@@ -306,10 +307,10 @@ echo "<table width='35%' border='0'  align='center'>
             }
             pg_free_result($consulta);
             echo "<input type='hidden' name='oculto' id='text' value='" . $pos . "' />
-                </table>";
+                </tbody></table></div>";
         } else 
             {
-                 echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table>";
+                 echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></tbody></table></div>";
             }
 
 
@@ -598,7 +599,7 @@ echo "<table width='35%' border='0'  align='center'>
         //echo $IdSubEsp;
         $dtExam = $objdatos->ExamenesPorArea($idarea, $lugar);
 
-        $rslts = '<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:270px">';
+        $rslts = '<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:375px">';
         $rslts .='<option value="0">--Seleccione Examen--</option>';
 
         while ($rows = pg_fetch_array($dtExam)) {

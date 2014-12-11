@@ -55,7 +55,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                     <td colspan='4' align='center' class='CobaltFieldCaptionTD'>DATOS SOLICITUD</td>
                 </tr>
                 <tr>
-                    <td class='StormyWeatherFieldCaptionTD'>Tipo Solicitud</td>
+                    <td class='StormyWeatherFieldCaptionTD' width='20%'>Tipo Solicitud</td>
                     <td colspan='3' class='StormyWeatherDataTD'>" . htmlentities($row['tiposolicitud']) . "</td>
                 </tr>
                 <tr>
@@ -64,9 +64,9 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                 </tr>
                 <tr>
                     <td class='StormyWeatherFieldCaptionTD'>Expediente</td>
-                    <td colspan='1' class='StormyWeatherDataTD'><h3>" . htmlentities($row['idnumeroexp']) . "</h3></td>
-                    <td class='StormyWeatherFieldCaptionTD'>Paciente</td>
-                    <td colspan='1' class='StormyWeatherDataTD'>" . htmlentities($row['nombrepaciente']) . "
+                    <td colspan='1' class='StormyWeatherDataTD'  width='35%'><h3>" . htmlentities($row['idnumeroexp']) . "</h3></td>
+                    <td class='StormyWeatherFieldCaptionTD'  width='20%'>Paciente</td>
+                    <td colspan='1' class='StormyWeatherDataTD' width='35%'>" . htmlentities($row['nombrepaciente']) . "
                         <input name='txtpaciente[" . $i . "]' id='txtpaciente[" . $i . "]' type='hidden' value='" . htmlentities($row['nombrepaciente']) . "' disabled='disabled' />
                     </td>
                 </tr>

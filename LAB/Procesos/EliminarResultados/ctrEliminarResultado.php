@@ -170,17 +170,18 @@ switch ($opcion)
 				<td colspan='7' align='center' ><h3><strong>TOTAL DE SOLICITUDES: ".$NroRegistros."</strong></h3></td>
 			</tr>
 		</table> "; 
-    $imprimir.="<table width='85%' border='1' align='center'>
-			<tr class='CobaltFieldCaptionTD'>
-				<td>Fecha Recepci&oacute;n</td>
-				<td>NEC </td>
-				<td>Nombre Paciente</td>
-				<td>Origen</td>
-				<td>Procedencia</td>
-				<td>Establecimiento</td>
-				<td>Estado Solicitud</td>
-				<td>Fecha Consulta</td>
-			</tr>";    
+    $imprimir.="<center><div class='table-responsive' style='width: 80%;'>
+        <table width='85%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+			<thead><tr>
+				<th>Fecha Recepci&oacute;n</th>
+				<th>NEC </th>
+				<th>Nombre Paciente</th>
+				<th>Origen</th>
+				<th>Procedencia</th>
+				<th>Establecimiento</th>
+				<th>Estado Solicitud</th>
+				<th>Fecha Consulta</th>
+			</tr></thead><tbody>";    
 		$pos=0;
 		while ($row = pg_fetch_array($consulta))
 		{ 
@@ -215,7 +216,7 @@ switch ($opcion)
 			
 		$imprimir .= "<input type='hidden' name='oculto' id='text' value='".$pos."' /> 
   
-		</table>";
+		</tbody></table></div>";
     			echo $imprimir;
 		
 		
@@ -247,55 +248,56 @@ switch ($opcion)
 		//recuperando los valores del detalle de la solicitud
 		$consultadetalle=$objdatos->DatosDetalleSolicitud($idsolicitud);
 		$imprimir="<form name='frmDatos'>
-		<table width='55%' border='0' align='center'>
+		<table width='55%' border='0' align='center' >
                     <tr>
                             <td colspan='4' align='center' class='CobaltFieldCaptionTD'><h3><strong>DATOS SOLICITUD</strong></h3></td>
                     </tr>
-                    <tr>    <td>Establecimiento:</td>
-                            <td colspan='3'>".$row['estabext']."</td>
+                    <tr>    <th class='StormyWeatherFieldCaptionTD'>Establecimiento:</th>
+                            <td class='StormyWeatherDataTD' colspan='3'>".$row['estabext']."</td>
                     </tr>
                     <tr>
-                            <td>Procedencia: </td>
-                            <td>".$precedencia."</td>
-                            <td>Origen: </td>
-                            <td>".htmlentities($origen)."
+                            <th class='StormyWeatherFieldCaptionTD'>Procedencia: </th>
+                            <td class='StormyWeatherDataTD'>".$precedencia."</td>
+                            <th class='StormyWeatherFieldCaptionTD'>Origen: </th>
+                            <td class='StormyWeatherDataTD'>".htmlentities($origen)."
                                     <input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled' />
                                     <input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled' />
 
                             </td>
                     </tr>
                     <tr>
-                            <td>Medico: </td>
-                            <td >".htmlentities($medico)."</td>
-                            <td>Fecha Recepcion</td>
-                            <td >".$fecharecep."</td>
+                            <th class='StormyWeatherFieldCaptionTD'>Medico: </th>
+                            <td class='StormyWeatherDataTD'>".htmlentities($medico)."</td>
+                            <th class='StormyWeatherFieldCaptionTD'>Fecha Recepcion</th>
+                            <td class='StormyWeatherDataTD'>".$fecharecep."</td>
                     </tr>
                     <tr>
-                            <td>Paciente: </td>
-                            <td colspan='3'>".htmlentities($paciente)."</td>
+                            <th class='StormyWeatherFieldCaptionTD'>Paciente: </th>
+                            <td class='StormyWeatherDataTD' colspan='3'>".htmlentities($paciente)."</td>
                     </tr>
                     <tr>
-                        <td>Edad: </td>
-                        <td>". $edad."</td>
-                        <td>Sexo: </td>
-                        <td>".$sexo."</td>
+                        <th class='StormyWeatherFieldCaptionTD'>Edad: </th>
+                        <td class='StormyWeatherDataTD'>". $edad."</td>
+                        <th class='StormyWeatherFieldCaptionTD'>Sexo: </th>
+                        <td class='StormyWeatherDataTD'>".$sexo."</td>
                     </tr>
 		</table>
-		
+		<br><br>
 		<table width='90%' border='0' align='center'>
-                    <tr>
-                            <td colspan='4' align='center'>ESTUDIOS SOLICITADO</td>
-                    </tr>
+                   
                     <tr>
                             <td>
-                                <table border = 1 align='center' class='estilotabla'>
+                                <table border = 1 align='center' class='estilotabla' >
+                                <tr>
+                                        <td colspan='6' class='CobaltFieldCaptionTD' align='center' >ESTUDIOS SOLICITADO</td>
+                                </tr>
                                     <tr>
-                                            <td> Eliminar</td>
-                                            <td> Código</td>
-                                            <td> Examen </td>
-                                            <td> IdArea </td>
-                                            <td> Indicacion Medica </td>
-                                            <td> Estado </td>
+                                            <td class='CobaltFieldCaptionTD'> Eliminar</td>
+                                            <td class='CobaltFieldCaptionTD'> Código</td>
+                                            <td class='CobaltFieldCaptionTD'> Examen </td>
+                                            <td class='CobaltFieldCaptionTD'> IdArea </td>
+                                            <td class='CobaltFieldCaptionTD'> Indicacion Medica </td>
+                                            <td class='CobaltFieldCaptionTD'> Estado </td>
                                     </tr>";
                             $pos=0;
      while($fila = pg_fetch_array($consultadetalle)){

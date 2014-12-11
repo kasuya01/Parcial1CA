@@ -336,6 +336,7 @@ function GuardarResultadosPlantillaA()
                 alert(ajax.responseText);
                 document.getElementById('btnGuardar').style.visibility = 'hidden';
                 document.getElementById('btningresar').style.visibility = 'hidden';
+                document.getElementById('agregarresults').style.visibility = 'hidden';
                 document.getElementById('divexamen').style.display = "none";;
             }
         }
@@ -982,6 +983,8 @@ function agregaresultado(act)
        // $("#cmbEmpleadosfin option[value='0']").attr('selected', 'selected');
         document.getElementById('cmbEmpleadosfin').value=0
         $('#responde').css('display','');
+        $('#valresult').css('display','none');
+        
 }
 
 
@@ -1110,7 +1113,7 @@ cantsegui=document.getElementById('cantsegui').value;
 					parametros=parametros+"&hdn_idflujo"+s+"="+this.value;	
                 });
  parametros=parametros+"&cantidadSegCheck="+s;*/
- 
+                   
  }
  /*
  parametros=parametros+"&i_idemppl="+document.getElementById('i_idemppl').value;
@@ -1202,6 +1205,7 @@ if ((document.getElementById('cantele'))!= null){
            //    alert (parametros)
            if (val==1)
                 VerResultados2(parametros);
+             document.getElementById('agregarresults').style.visibility = 'hidden';
                 //alert(ajax.responseText);
             }
 	}

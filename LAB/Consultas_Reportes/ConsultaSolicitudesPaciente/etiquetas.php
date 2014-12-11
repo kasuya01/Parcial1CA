@@ -15,7 +15,7 @@
 .Estilo12 {font-size: 6pt}
 -->
 </style>
-<title>Datos de las Vi�etas</title>
+<title>Datos de las Viñetas</title>
 <script language="JavaScript" type="text/javascript" src="ajax_RecepcionSolicitud.js"></script>
 <script language="JavaScript" >
 function RecogeValor()
@@ -77,7 +77,7 @@ while($fila = pg_fetch_array($consultadetalle)){
                             //echo "esto es dentro del if";
                     //idestablecimiento 10 
 			$codigo= $idsolicitud."-".$fila[2];
-			$codigo1= $idsolicitud."&nbsp;&nbsp;&nbsp;".$fila[3];
+			$codigo1= $idsolicitud."      ".$fila[3];
 		?>    
 			<table width="30" border = "0" class="estilotabla">
 		 		<tr align="center">
