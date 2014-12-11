@@ -123,16 +123,16 @@ function calc_edad()
                         <td colspan='4' aling='center'  >
 				<table width='110%' border='0' aling='center' cellspacing="0">
                                     <tr>
-                                        <td width='50%' class="Estilo5" aling='center' ><strong>Elemento de Tinci&oacute;n</strong>
+                                        <td width='50%' class="Estilo5" aling='center' ><span style='color: #0101DF;'><strong>Elemento de Tinci&oacute;n</span></strong>
 					</td>
-					<td width='50%' class="Estilo5" aling='center' ><strong>Cantidad</strong>
+                                        <td width='50%' class="Estilo5" aling='center' ><span style='color: #0101DF;'><strong>Cantidad</span></strong>
 					</td>
                                     </tr>
 				<?php while($row = pg_fetch_array($consulta)){
 				?>
 					<tr>
-						<td width='50%' class="Estilo6"><?php echo $row['ElementoTincion']?></td>
-						<td width='50%' class="Estilo6"><?php echo $row['CantidadTincion']?></td>
+						<td width='50%' class="Estilo6"><?php echo $row['elemento']?></td>
+						<td width='50%' class="Estilo6"><?php echo $row['cantidadtincion']?></td>
 					</tr>
 				<?php	}
 						pg_free_result($consulta);

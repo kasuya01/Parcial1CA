@@ -58,10 +58,10 @@ function calc_edad()
 	 $obj = new clsImprimirResultado;
 
 	$Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
-	$row_estab = pg_fetch_array($Consulta_Estab);
-	$ConEstandar=$obj->Obtener_Estandar($idexamen);
-	$CodEstandar= pg_fetch_array($ConEstandar);
-	$IdEstandar=$CodEstandar[0];
+	$row_estab      = pg_fetch_array($Consulta_Estab);
+	$ConEstandar    =$obj->Obtener_Estandar($idexamen);
+	$CodEstandar    = pg_fetch_array($ConEstandar);
+	$IdEstandar     =$CodEstandar[0];
        // echo $fechanac;
           $Cuentadias=$obj->CalculoDias($fechanac);
           $Cdias= pg_fetch_array($Cuentadias);
@@ -75,10 +75,11 @@ function calc_edad()
 	switch ($IdEstandar){
 
 	case "H50":
+                        //echo "caso 1";
 
-		$consulta=$obj->LeerElementosExamen($idexamen,$iddetalle,$lugar);
+		$consulta=$obj->LeerElementosExamen($idexamen,$iddetalle,$lugar); 
 		$consulta_datos=$obj->LeerDatos($idexamen);
-		$datos_generales=$obj->MostrarDatosGenerales($idsolicitud,$idexamen,$lugar);
+		$datos_generales=$obj->MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar);
 
 		$row_generales= pg_fetch_array($datos_generales);
                 $FechaRes  = $obj->ObtenerFechaResultado($idsolicitud,$idexamen,$lugar);
@@ -91,7 +92,7 @@ function calc_edad()
                          <td align="center" colspan="4" width="60%" class="Estilo6">
                             <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO </strong></p>
                             <p><strong><?php echo $row_estab['nombre'] ?></strong></p>
-                            <p><strong>&Aacute;rea de <?php echo htmlentities($row_area['nombre_area'])?> </strong></p></td>
+                            <p><strong>&Aacute;rea de <?php echo htmlentities($row_area['nombrearea'])?> </strong></p></td>
                          <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
 		</tr>
                 <tr>
@@ -146,19 +147,21 @@ function calc_edad()
 			<?php pg_free_result($consulta_datos);
 			pg_free_result($datos_generales);?>
 			<tr >
-				<td width='35%' class="Estilo5"></td>
-				<td width='25%' class="Estilo5">Resultado</td>
-				<td width='20%' class="Estilo5">Unidades</td>
-				<td width='60%' class="Estilo5" colspan='2'>Control Normal </td>
+                            
+				<td width='25%' class='Estilo5'><span style='color: #0101DF;'> Elemento </span> </td> 
+				<td width='10%' class="Estilo5"><span style='color: #0101DF;'> Resultado </span> </td> 
+				<td width='10%' class="Estilo5"><span style='color: #0101DF;'> Unidades </span> </td>
+				<td width='10%' class="Estilo5" colspan='2'><span style='color: #0101DF;'> Control Normal </span> </td>
 			</tr>
 				<?php $pos=0;
 			 	$posele=0;
-			while($row = pg_fetch_array($consulta))//ELEMENTOS
+			/*while($row = pg_fetch_array($consulta))//ELEMENTOS
 			{
-				if($row['SubElemento']=='S')
-				{ ?>
+				if($row['subelemento']=='S')
+				{    //echo "if";
+                                    ?>
 			<tr >
-				<td colspan='5' class="Estilo6" ><?php echo htmlentities($row['Elemento'])?></td>
+				<!--<td colspan='5' class="Estilo6" ><?php echo htmlentities($row['elemento'])?></td> -->
 			</tr>
 				<?php	 //echo  $idedad."   ".$sexo;
                                 $consulta2=$obj->LeerSubElementosExamen($idsolicitud,$iddetalle,$row['idelemento'],$lugar,$idedad,$sexo);
@@ -166,20 +169,34 @@ function calc_edad()
 				while($rowsub = pg_fetch_array($consulta2))//SUBELEMENTOS
 				{?>
 			<tr>
-				<td width='35%' class="Estilo6"><?php echo htmlentities($rowsub['subelemento'])?></td>
+				<!--<td width='35%' class="Estilo6"><?php echo htmlentities($rowsub['subelemento'])?></td> -->
 				<td width='25%' class="Estilo6"><?php echo htmlentities($rowsub['resultado'])?></td>
 				<td width='20%' class="Estilo6"><?php echo htmlentities($rowsub['unidad'])?></td>
-				<td width='40%' class="Estilo6"><?php echo htmlentities($rowsub['observacion']) ." ".htmlentities($rowsub['unidad'])?> </td>
+			<!--	<td width='40%' class="Estilo6"> <?php echo htmlentities($rowsub['observacion']) ." ".htmlentities($rowsub['unidad'])?> </td> 
 			</tr>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
 				<?php	$pos=$pos + 1;
 				}?>
 			<tr>
-				<td colspan='4' class="Estilo6"><?php echo htmlentities($row['observelem'])?></td>
-			</tr>
+			 <!--	<td colspan='4' class="Estilo6"><?php echo htmlentities($row['observelem'])?></td>
+			--> </tr>
 			<tr>
 				<td colspan='5'>&nbsp;</td>
 			</tr>
-			<?php	}else{?>
+			<?php	}
+                        
+                        else{
+                                      //echo "else";  ?>
 			<tr>
 				<?php
                     $consulta3=$obj->ResulatdoElementoExamen($idsolicitud,$iddetalle,$row['id']);
@@ -191,8 +208,7 @@ function calc_edad()
 				</td>
 				<td width='25%' class="Estilo6"><?php echo htmlentities($rowele['resultado'])?></td>
 				<td width='10%' class="Estilo6"><?php echo htmlentities($row['unidadelem'])?></td>
-
-				<td class="Estilo5"><?php echo htmlentities($rowele['observacion'])."  ".htmlentities($row['unidadelem'])?></td>
+                               <!-- <td class="Estilo5"><?php echo htmlentities($rowele['observacion'])."  ".htmlentities($row['unidadelem'])?></td> -->
 			</tr>
 				<?php	$posele=$posele+1;?>
 			<tr>
@@ -203,7 +219,69 @@ function calc_edad()
 			</tr>
 			<?php	}
 
-			}// del while
+			}*/ //del while
+                                
+                                while($row = pg_fetch_array($consulta))//ELEMENTOS
+                    {
+                            if($row['subelemento']=="S")
+                            {   ?>
+                                <tr>
+                                    <td  width='35%' class="Estilo5"><strong><?php echo htmlentities($row['elemento'])?></strong></td>
+                                </tr>
+                                    <?php
+                                            $consulta2=$obj->LeerSubElementosExamen($idsolicitud,$iddetalle,$row['idelemento'],$lugar,$idedad,$sexo);
+                                             //echo  $idedad."   ".$sexo;
+
+                                while($rowsub = pg_fetch_array($consulta2)){//SUBELEMENTOS
+                                ?>
+                               <tr>
+                                    <td width='35%' class="Estilo5"><?php echo htmlentities($rowsub['subelemento'])?></td>
+                                    <td width='25%' class="Estilo5"><?php echo htmlentities($rowsub['resultado'])?></td>
+                                    <td width='15%' class="Estilo5"><?php echo htmlentities($rowsub['unidad'])?></td>
+                                    <?php if ((!empty($rowsub['rangoinicio'])) AND (!empty($rowsub['rangofin']))){?>
+                                    <td width='30%' class="Estilo5"> <?php echo $rowsub['rangoinicio']."  -  ".$rowsub['rangofin']?>
+                           <?php }else{ 
+                                        ?>  
+                                    <td width='30%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-</td>
+                      <?php  } ?>
+                                    
+                               </tr>
+                               
+                                    <?php
+                            $pos=$pos + 1;
+                                }?>
+                               <tr>
+                                    <td width='50%'  class="Estilo5"><?php echo htmlentities($row['observelem'])?></td>
+                               </tr>
+                               
+                               <tr>
+                                   <td> </td>
+                               </tr>
+                               <tr>
+                                   <td> </td>
+                               </tr>
+                               
+                            <?php }
+                            else
+                            {?>
+                                <tr>
+                                     <td  width='35%' class="Estilo5"><strong><?php echo htmlentities($row['elemento'])?></strong></td>
+                                    <td><?php echo htmlentities($vector_elementos[$posele])?></td>
+                                    <td width='25%' class="Estilo5"><?php htmlentities($row['unidadelem'])?></td>
+                                </tr>
+                                  <?php
+                                         $posele=$posele+1;
+                                       ?>
+                                <tr>
+                                     <td colspan='5' class="Estilo5"><?php echo htmlentities($row['observelem'])?></td>
+                                </tr>
+
+                            <?php
+                            }
+
+                    }
+                                
+                                
 			pg_free_result($consulta);?>
 			<tr>
 				<td colspan="7" align="center">
@@ -215,6 +293,7 @@ function calc_edad()
 <?php break;
 
 	default:
+                //echo "caso 2";
 
 		$consulta=$obj->LeerElementosExamen($idexamen,$iddetalle,$lugar);
 	  	$consulta_datos=$obj->LeerDatos($idexamen);
@@ -223,6 +302,7 @@ function calc_edad()
                 $FechaRes  = $obj->ObtenerFechaResultado($idsolicitud,$idexamen,$lugar);
                 $row_fecha = pg_fetch_array($FechaRes);
 	  	$row_area = pg_fetch_array($consulta_datos);
+                //$nombrearea=$row_area['nombrearea'];
 		?>
 	  	<table width="100%" border="0" align="center" cellspacing="0" >
                     <tr>
@@ -282,10 +362,11 @@ function calc_edad()
                         <td colspan="6">
                             <table width='100%' border='0' align='center' cellspacing="0" >
                                 <tr>
-                                    <td width='35%' class='Estilo5'></td>
-                                    <td width='20%' class='Estilo5'><strong>Resultado</strong></td>
-                                    <td width='15%' class='Estilo5'><strong>Unidades</strong></td>
-                                    <td width='30%' class='Estilo5'><strong>Rangos de Referencia</strong></td>
+                                    <td width='35%' class='Estilo5'> <span style='color: #0101DF;'> Elemento </span> </td> 
+                                    <td width='20%' class='Estilo5'> <span style='color: #0101DF;'> Resultado </span> </td> 
+                                    <td width='15%' class='Estilo5'> <span style='color: #0101DF;'> Unidades </span> </td> 
+                                    <td width='30%' class='Estilo5'> <span style='color: #0101DF;'> Rangos de Referencia </span> </td>
+                                        
                                 </tr>
                                 <?php $pos=0;
                                       $posele=0;
@@ -308,8 +389,9 @@ function calc_edad()
                                     <td width='15%' class="Estilo5"><?php echo htmlentities($rowsub['unidad'])?></td>
                            <?php if ((!empty($rowsub['rangoinicio'])) AND (!empty($rowsub['rangofin']))){?>
                                     <td width='30%' class="Estilo5"> <?php echo $rowsub['rangoinicio']."  -  ".$rowsub['rangofin']?>
-                           <?php }else{ ?>
-                                    <td width='30%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                           <?php }else{ 
+                                        ?>  
+                                    <td width='30%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-</td>
                       <?php  } ?>
                                </tr>
                                     <?php

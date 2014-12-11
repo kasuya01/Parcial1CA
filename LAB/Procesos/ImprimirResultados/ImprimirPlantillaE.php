@@ -55,8 +55,9 @@ $obj = new clsImprimirResultado;
 
 	$Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
 	$row_estab = pg_fetch_array($Consulta_Estab);
-
+        
 	if ($idexamen=="COA006"){
+          //  echo "dentro del if";
 		$consulta_datos=$obj->LeerDatos($idexamen);
 		$datos_generales=$obj->MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar);
 		$row_generales= pg_fetch_array($datos_generales);
@@ -123,39 +124,48 @@ $obj = new clsImprimirResultado;
 			?>
 		<tr>
 			<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE' >
-				<tr >
-					<td class="Estilo5"> Prueba </td>
-					<td class="Estilo5"> Resultado </td>
-					<td class="Estilo5"> Unidades </td>
-					<td class="Estilo5"colspan='2' > Control Diario </td>
+				
+                                <tr >
+                                        <td class="Estilo5" width='25%' align='left'><span style='color: #0101DF;'> Prueba </span> </td>
+					<td class="Estilo5" width='30%' align='center'><span style='color: #0101DF;'> Resultado </span></td>
+					<td class="Estilo5" width='20%' align='center'><span style='color: #0101DF;'>  Unidades </span></td>
+					<td class="Estilo5" width='30%' align='center'><span style='color: #0101DF;'>  Control Diario </span></td>
 				</tr>
+                                
+                                
 					<?php	$pos=0;
-					while($row = pg_fetch_array($consulta))//ELEMENTOS
-					{?>
+					
+				while($row = pg_fetch_array($consulta))//ELEMENTOS
+					{  ?>
 				<tr>
-					<td class="Estilo5"  width='25%'align='left'><?PHP echo htmlentities($row['NombreProcedimiento'])?></td>
-					<td align='center' width='30%' >
-						<input name='oidprueba[<?php $pos ?>]' type='hidden' id='oidprueba[<?php $pos ?>]' value='<?php $row['IdProcedimientoporexamen'] ?>'><?php echo htmlentities($row['Resultado'])?></td>
-					<td class="Estilo5" align='center' width='30%'><?php echo $row['Unidades']?></td>
-					<td class="Estilo5" align='center'><?php echo htmlentities($row['Observacion'])?></td>	<td><?php echo htmlentities($row['Unidades'])?></td>
-				</tr>
-					<?php $pos=$pos + 1;
+					<td width='25%' align='left' class="Estilo5"><?php echo htmlentities($row['nombreprocedimiento'])?></td>
+					<td width='30%' align='center' class="Estilo5"><input name='oidprueba[<?php $pos?>]' type='hidden' id='oidprueba[<?php $pos?>]' value='<?php $row['id']?>'><?php echo htmlentities($row['resultado'])?></td>
+					<td width='20%' align='center' class="Estilo5"><?php echo htmlentities($row['unidades'])?></td>
+					<td width='30%' align='center' class="Estilo5"align='center'><?php
+                                              if((!empty($row['rangoinicio'])) AND (!empty($row['rangoinicio'])))
+                                                    echo $row['rangoinicio']." - ".$row['rangofin']?>
+                                        </td>
+                                </tr>
+					<?php  $pos=$pos + 1;
 					}
 						pg_free_result($consulta);?>
 			</table>
 		</tr>
-		<tr>
-			<td colspan="7" align="center" >
-				<div id="boton1">
-					<input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
-					<input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar() ;"/>
-				</div>
-			</td>
-		</tr>
-	</table>
+		 <div id="boton">
+                     <table align="center">
+                        <tr>
+                            <td colspan="7" align="center" >
+                                <input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
+                                <input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar() ;"/>
+                            </td>
+			</tr>
+                     </table>
+                </div>
 
 	<?php
 	}else{
+            
+            //echo "dentro del else";
 	$consulta_datos=$obj->LeerDatos($idexamen);
 	$datos_generales=$obj->MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar);
 
@@ -233,10 +243,10 @@ $obj = new clsImprimirResultado;
 	        ?>
 			<table width='100%' border='0' align='center' cellspacing="0">
 				<tr >
-                                        <td class="Estilo5" width='25%' align='left'><strong> Prueba </strong> </td>
-					<td class="Estilo5" width='30%' align='center'><strong> Resultado </strong></td>
-					<td class="Estilo5" width='20%' align='center'><strong> Unidades </strong></td>
-					<td class="Estilo5" width='30%' align='center'><strong> Rango </strong></td>
+                                        <td class="Estilo5" width='25%' align='left'><span style='color: #0101DF;'>  Prueba </span> </td>
+					<td class="Estilo5" width='30%' align='center'><span style='color: #0101DF;'>  Resultado </span></td>
+					<td class="Estilo5" width='20%' align='center'><span style='color: #0101DF;'>  Unidades </span></td>
+					<td class="Estilo5" width='30%' align='center'><span style='color: #0101DF;'>  Rango </span></td>
 				</tr>
 					<?php $pos=0;
 				while($row = pg_fetch_array($consulta))//ELEMENTOS

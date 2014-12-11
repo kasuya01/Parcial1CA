@@ -127,13 +127,13 @@ $nombre=$row['nombre_area'];
                             <td  colspan="6">
                                 <table width="100%"  align="center" border="0" class="StormyWeatherFormTABLE">
                                     <tr class="CobaltButton">
-                                            <td align="left" class="Estilo5"><strong> Prueba Realizada</strong></td>
-                                            <td align="center" class="Estilo5"><strong>Resultado</strong></td>
-                                            <td align="center" class="Estilo5"><strong>Unidades</strong></td>
-                                            <td align="center" class="Estilo5"><strong>Rangos Normales<strong></td>
-                                            <td align="center" class="Estilo5"><strong>Lectura</strong></td>
-                                            <td align="center" class="Estilo5"><strong>Interpretaci&oacute;n</strong></td>
-                                            <td align="center" class="Estilo5"><strong>Observaci&oacute;n</strong></td>
+                                        <td align="left" class="Estilo5"><span style='color: #0101DF;'><strong> Prueba Realizada</span></strong></td>
+                                            <td align="center" class="Estilo5"><span style='color: #0101DF;'><strong>Resultado</span></strong></td>
+                                            <td align="center" class="Estilo5"><span style='color: #0101DF;'><strong>Unidades</span></strong></td>
+                                            <td align="center" class="Estilo5"><span style='color: #0101DF;'><strong>Rangos Normales</span><strong></td>
+                                            <td align="center" class="Estilo5"><span style='color: #0101DF;'><strong>Lectura</span></strong></td>
+                                            <td align="center" class="Estilo5"><span style='color: #0101DF;'><strong>Interpretaci&oacute;n</span></strong></td>
+                                            <td align="center" class="Estilo5"><span style='color: #0101DF;'><strong>Observaci&oacute;n</span></strong></td>
                                     </tr>
                                     <tr>
                                             <td align="left" class="Estilo5"><?php echo htmlentities($fila['nombre_examen'])?></td>

@@ -478,7 +478,7 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
  {
 	 $con = new ConexionBD;
 	   if($con->conectar()==true) 
-	  {	 $query=/*"SELECT lab_examenes.IdExamen,NombreExamen,Unidades,RangoInicio,RangoFin
+	  {	$query=/*"SELECT lab_examenes.IdExamen,NombreExamen,Unidades,RangoInicio,RangoFin
 				FROM lab_datosfijosresultado 
 				INNER JOIN lab_examenes ON lab_datosfijosresultado.IdExamen=lab_examenes.IdExamen
 				INNER JOIN lab_resultados ON lab_examenes.IdExamen=lab_resultados.IdExamen  
@@ -486,16 +486,21 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
 				AND IdSolicitudEstudio=$idsolicitud
 				AND DATE_FORMAT(lab_resultados.FechaHoraReg,'%Y/%m/%d') BETWEEN lab_datosfijosresultado.FechaIni AND IF(lab_datosfijosresultado.FechaFin ='0000-00-00',CURDATE(),lab_datosfijosresultado.FechaFin)";*/
                   
-                   "select t02.nombre_examen as nombre_examen, 
-                  t01.unidades as unidades, t01.rangoinicio as rangoinicio, 
-                  t01.rangofin as rangofin 
-                  from lab_datosfijosresultado t01 
-                  inner join lab_conf_examen_estab t02 on (t02.id=t01.id_conf_examen_estab) 
-                  left join lab_resultados t03 on (t03.id=t02.idexamen) 
-                  where t01.idestablecimiento=$lugar 
-                  and t03.idexamen=(select id from lab_conf_examen_estab  where codigo_examen='$idexamen')
-                  and t03.iddetallesolicitud=$iddetalle ";
+                   
                   
+                  "select 
+                  t02.id, 
+                  t03.id, 
+                  t02.nombre_examen as nombre_examen, 
+                  t01.unidades as unidades,
+                  t01.rangoinicio as rangoinicio, 
+                  t01.rangofin as rangofin 
+                  from lab_datosfijosresultado 	  t01 
+                  inner join lab_conf_examen_estab  t02 on (t02.id=t01.id_conf_examen_estab) 
+                  left join lab_resultados 	  t03 on (t02.id=t03.idexamen) 
+                  where t01.idestablecimiento=$lugar 
+                  and t02.id=$idexamen 
+                  and t03.iddetallesolicitud=$iddetalle";
                                         
 	     $result = @pg_query($query);
 	     if (!$result)
@@ -511,7 +516,7 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-      $query = "SELECT lab_elementos.id as idelemento,lab_elementos.elemento,lab_elementos.unidadelem,observelem,nombrearea,lab_elementos.fechaini,fechafin,subelemento  
+     $query = "SELECT lab_elementos.id as idelemento,lab_elementos.elemento,lab_elementos.unidadelem,observelem,nombrearea,lab_elementos.fechaini,fechafin,subelemento  
                 FROM lab_elementos 
                 INNER JOIN lab_conf_examen_estab ON lab_elementos.id_conf_examen_estab=lab_conf_examen_estab.id
                 INNER JOIN mnt_area_examen_establecimiento ON mnt_area_examen_establecimiento.id=lab_conf_examen_estab.idexamen 
@@ -519,7 +524,8 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
                 INNER JOIN lab_resultados ON lab_resultados.idexamen= lab_conf_examen_estab.id
                 WHERE lab_elementos.id_conf_examen_estab=$idexamen
                 AND iddetallesolicitud=$iddetalle AND lab_elementos.idestablecimiento=$lugar
-                AND lab_resultados.fecha_resultado BETWEEN lab_elementos.fechaini AND (CASE WHEN lab_elementos.fechafin IS NULL THEN CURRENT_DATE ELSE lab_elementos.fechafin END)";
+                --AND lab_resultados.fecha_resultado BETWEEN lab_elementos.fechaini 
+                --AND (CASE WHEN lab_elementos.fechafin IS NULL THEN CURRENT_DATE ELSE lab_elementos.fechafin END)";
         
 /* "SELECT IdElemento,Elemento,UnidadElem,SubElemento,NombreArea,NombreExamen,ObservElem 
 		FROM lab_elementos INNER JOIN lab_examenesxestablecimiento ON lab_elementos.IdExamen=lab_examenesxestablecimiento.IdExamen 
@@ -564,15 +570,26 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query ="SELECT lab_resultados.id as idresultado, lab_detalleresultado.id as iddetalleresultado,lab_subelementos.idelemento,lab_detalleresultado.idsubelemento,
-              lab_subelementos.subelemento,lab_detalleresultado.resultado,lab_subelementos.unidad,lab_subelementos.rangoinicio,lab_subelementos.rangofin, 
-              lab_detalleresultado.observacion 
-              FROM lab_resultados 
-              INNER JOIN lab_detalleresultado ON lab_resultados.id=lab_detalleresultado.idresultado 
-              INNER JOIN lab_subelementos ON lab_detalleresultado.idsubelemento=lab_subelementos.id
-              WHERE idsolicitudestudio=$idsolicitud AND iddetallesolicitud=$idsolicitud AND lab_subelementos.idelemento=$idelemento 
-              AND (lab_subelementos.idsexo=$sexo OR lab_subelementos.idsexo is NULL) AND (idedad=4 OR idedad=$idedad)
-              AND lab_subelementos.idestablecimiento=$lugar ORDER BY lab_subelementos.id ";
+        $query ="SELECT lab_resultados.id as idresultado, 
+            lab_detalleresultado.id as iddetalleresultado,
+            lab_subelementos.idelemento,
+            lab_detalleresultado.idsubelemento,
+            lab_subelementos.subelemento,
+            lab_detalleresultado.resultado,
+            lab_subelementos.unidad,
+            lab_subelementos.rangoinicio,
+            lab_subelementos.rangofin, 
+            lab_detalleresultado.observacion 
+            FROM lab_resultados 
+              INNER JOIN lab_detalleresultado   ON lab_resultados.id=lab_detalleresultado.idresultado 
+              INNER JOIN lab_subelementos       ON lab_detalleresultado.idsubelemento=lab_subelementos.id
+              WHERE idsolicitudestudio=$idsolicitud  
+              AND iddetallesolicitud=$iddetalle  
+              AND lab_subelementos.idelemento=$idelemento 
+              AND (lab_subelementos.idsexo=(select id from ctl_sexo where nombre='$sexo')OR lab_subelementos.idsexo is NULL) 
+              AND (idedad=4 OR idedad=$idedad)
+              AND lab_subelementos.idestablecimiento=$lugar 
+             ORDER BY lab_subelementos.id ";
          /*"SELECT lab_resultados.IdResultado, lab_detalleresultado.IdDetalleResultado, 
               lab_subelementos.IdElemento,lab_detalleresultado.IdSubElemento,lab_subelementos.SubElemento,
               lab_detalleresultado.Resultado,lab_subelementos.Unidad,lab_subelementos.RangoInicio,lab_subelementos.RangoFin,
@@ -586,7 +603,7 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
               AND IF(lab_subelementos.FechaFin ='0000-00-00',CURDATE(),lab_subelementos.FechaFin) 
               AND (lab_subelementos.idsexo=$sexo OR lab_subelementos.idsexo=3) AND (idedad=4 OR idedad=$idedad)
 	      ORDER BY IdSubElemento ";*/
-        echo $query;
+        //echo $query;
 
      $result = @pg_query($query);
      if (!$result)
@@ -602,7 +619,7 @@ function LeerDatos($idexamen)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-        $query = "SELECT lcee.id,
+         $query = "SELECT lcee.id,
                     lcee.nombre_examen  as nombre_examen,
                     casd.nombrearea  as nombrearea
                     FROM mnt_area_examen_establecimiento maees
@@ -1048,11 +1065,12 @@ $con = new ConexionBD;
  	     INNER JOIN lab_cantidadestincion  ON lab_cantidadestincion.IdCantidadesTincion=lab_detalleresultado.IdCantidad
          WHERE IdResultado=$idresultado" ;*/
     
-            "SELECT idelemento,cantidad 
-	     FROM lab_detalleresultado 
-	     INNER JOIN lab_elementos   ON lab_detalleresultado.idelemento=lab_elementos.id
- 	     INNER JOIN lab_cantidadestincion  ON lab_cantidadestincion.id=lab_detalleresultado.idcantidad
-         WHERE lab_detalleresultado.id=$idresultado";
+            "SELECT idelemento,cantidad,lab_elementos.elemento,
+            lab_cantidadestincion.cantidadtincion
+	    FROM lab_detalleresultado 
+	    INNER JOIN lab_elementos   ON lab_detalleresultado.idelemento=lab_elementos.id
+ 	    INNER JOIN lab_cantidadestincion  ON lab_cantidadestincion.id=lab_detalleresultado.idcantidad
+         WHERE lab_detalleresultado.idresultado=$idresultado";
     
    $result = @pg_query($query);
 	 
@@ -1068,7 +1086,7 @@ function ObtenerIdResultado($idsolicitud,$iddetalle)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-	 $query ="SELECT id as idresultado FROM lab_resultados where idsolicitudestudio=$idsolicitud and iddetallesolicitud=$iddetalle";
+	$query ="SELECT id as idresultado FROM lab_resultados where idsolicitudestudio=$idsolicitud and iddetallesolicitud=$iddetalle";
 	  $result = @pg_query($query);
 	 
      if (!$result)
@@ -1087,7 +1105,7 @@ function LeerProcesoExamen($idsolicitud,$iddetalle)
 	$con = new ConexionBD;
    if($con->conectar()==true) 
    {
-	$query ="SELECT lab_procedimientosporexamen.id,lab_procedimientosporexamen.nombreprocedimiento, 
+	 $query ="SELECT lab_procedimientosporexamen.id,lab_procedimientosporexamen.nombreprocedimiento, 
                 lab_detalleresultado.resultado,lab_procedimientosporexamen.rangoinicio,
                 lab_procedimientosporexamen.rangofin,lab_procedimientosporexamen.unidades,lab_detalleresultado.observacion 
                 FROM lab_resultados 

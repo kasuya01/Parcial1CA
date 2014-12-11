@@ -304,9 +304,13 @@ switch ($opcion) {
 
         $imprimir = "<table width='85%' border='0' align='center'>
 			<tr>
-				<td colspan='7' align='center' ><h3><strong>TOTAL DE SOLICITUDES: " . $NroRegistros . "</strong></h3></td>
+				<td colspan='7' align='center' ><span style='color: #0101DF;'><h3><strong>TOTAL DE SOLICITUDES: " . $NroRegistros . "</strong></h3></span></td>
 			</tr>
 		</table> ";
+        
+
+        
+        
         $imprimir.="<table width='85%' border='1' align='center'>
                     <tr class='CobaltFieldCaptionTD'>
 				<td>Fecha Recepci&oacute;n</td>
@@ -328,7 +332,7 @@ switch ($opcion) {
             //if (!empty($recepcion)){
             $imprimir .="<tr>
 				<td>" . $row['fecharecepcion'] . "</td>";
-            $imprimir .="<td><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a>" .
+            $imprimir .="<td><span style='color: #0101DF;'><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a>" .
                     "<input name='idsolicitud[" . $pos . "]' id='idsolicitud[" . $pos . "]' type='hidden' size='60' value='" . $row[0] . "' />" .
                     "<input name='idexpediente[" . $pos . "]' id='idexpediente[" . $pos . "]' type='hidden' size='60' value='" . $row['idnumeroexp'] . "' /></td>" .
                     "<input name='idestablecimiento[" . $pos . "]' id='idestablecimiento[" . $pos . "]' type='hidden' size='60' value='" . $IdEstab . "' />" .

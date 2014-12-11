@@ -10,7 +10,7 @@ $expediente=$_GET['var4'];
 $idarea=$_GET['var5'];
 //$sexo=$_GET['var6'];
 $fechanac=$_GET['var7'];
-echo "que hay ".$idexamen=$_GET['var6'];
+$idexamen=$_GET['var6'];
 //echo $fechanac."    ".$sexo;
 //echo $iddetalle."*sol".$idsolicitud."*plan".$idplatilla."*exp".$expediente."*area".$idarea
 ?>
@@ -149,13 +149,13 @@ include_once("clsImprimirResultado.php");
              <td  colspan="6">
                 <table width='100%'  align='center' border='0' class='StormyWeatherFormTABLE'>
                     <tr >
-                        <td align="left" class="Estilo5"><strong>Prueba Realizada </strong></td>
-                        <td align="center" class="Estilo5"><strong>Resultado</strong></td>
-                        <td align="center" class="Estilo5"><strong>Unidades</strong></td>
-                        <td align="center" class="Estilo5"><strong>Rangos Normales</strong></td>
-                        <td align="center" class="Estilo5"><strong>Lectura</strong></td>
-                        <td align="center" class="Estilo5"><strong>Interpretación</strong></td>
-                        <td align="center" class="Estilo5"><strong>Observación</strong></td>
+                        <td align="left" class="Estilo5"><span style='color: #0101DF;'><strong>Prueba Realizada</span> </strong></td>
+                        <td align="center" class="Estilo5"><span style='color: #0101DF;'><strong>Resultado</span></strong></td>
+                        <td align="center" class="Estilo5"><span style='color: #0101DF;'><strong>Unidades</span></strong></td>
+                        <td align="center" class="Estilo5"><span style='color: #0101DF;'><strong>Rangos Normales</span></strong></td>
+                        <td align="center" class="Estilo5"><span style='color: #0101DF;'><strong>Lectura</span></strong></td>
+                        <td align="center" class="Estilo5"><span style='color: #0101DF;'><strong>Interpretación</span></strong></td>
+                        <td align="center" class="Estilo5"><span style='color: #0101DF;'><strong>Observación</span></strong></td>
 
 
                     </tr>
@@ -168,8 +168,8 @@ include_once("clsImprimirResultado.php");
                         <td align="center" class="Estilo5"><?php echo htmlentities($rowdet['unidades'])?></td>
                         <td align="center" class="Estilo5"><?php echo $rowdet['rangoinicio']."-".$rowdet['rangofin']?></td>
                         <td align="center" class="Estilo5"><?php echo htmlentities($row['lectura'])?></td>
-                        <td align='justify' class="Estilo5"><?php echo htmlentities($row['interpretacion'])?></td>
-                        <td align='justify' class="Estilo5"><?php echo htmlentities($row['observacion'])?></td>
+                        <td align='center' class="Estilo5"><?php echo htmlentities($row['interpretacion'])?></td>
+                        <td align='center' class="Estilo5"><?php echo htmlentities($row['observacion'])?></td>
 
 
                     </tr>

@@ -320,8 +320,9 @@ function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,ide
    switch (idplantilla)
 	{ 	case "1":   //"A": 
                //alert(idarea);
-                  // alert("la plantilla es 1");
+                 //alert("la plantilla es 1");
 			if (idarea=="QUI" || idarea=="HEM" || idarea=="INM"){
+                            //alert("la plantilla es 1 IF");
 				ventana_secundaria = window.open("ImprimirPlantillaA1.php?var1="+iddetalle+
                                 "&var2="+idsolicitud+"&var3="+idplantilla+"&var4="+idexpediente+
                                 "&var5="+idarea+"&var6="+idexamen+"&var7="+fechanac,
@@ -331,6 +332,7 @@ function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,ide
                                          
 			}
 			else{
+                            //alert("la plantilla es 1 ELSE");
 				ventana_secundaria = window.open("ImprimirPlantillaA.php?var1="+iddetalle+
                                 "&var2="+idsolicitud+"&var3="+idplantilla+"&var4="+idexpediente+
                                 "&var5="+idarea+"&var6="+idexamen+"&var7="+sexo+"&var8="+fechanac,
@@ -343,9 +345,10 @@ function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,ide
                                 ventana_secundaria = window.open("ImprimirPlantillaB.php?var1="+iddetalle+"&var2="+idsolicitud+
                                    "&var3="+idplantilla+"&var4="+idexpediente+"&var5="+idarea+"&var6="+idexamen+
                                    "&var7="+sexo+"&var8="+fechanac,"Impresion","width=1150,height=1150,menubar=no,scrollbars=yes,location=no");
-	  	break;
+                                  // alert(var1);
+            break;
 	  	case   "3":   //"C":  
-                     //alert("la plantilla es 3");
+                    // alert("la plantilla es 3");
 	  			ventana_secundaria = window.open("ImprimirPlantillaC.php?var1="+iddetalle+"&var2="+idsolicitud+
                                    "&var3="+idplantilla+"&var4="+idexpediente+"&var5="+idarea+"&var6="+idexamen,
                                    "Impresion","width=1150,ccc=800,menubar=no,scrollbars=yes,location=no");
@@ -355,7 +358,7 @@ function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,ide
                                    
 	  	break;
 	  	case "4":
-                   // alert("la plantilla es 4");
+                    //alert("la plantilla es 4");
 				ventana_secundaria = window.open("ImprimirPlantillaD.php?var1="+iddetalle+"&var2="+idsolicitud+
                                    "&var3="+idplantilla+"&var4="+idexpediente+"&var5="+idarea+"&var6="+idexamen,
                                    "Impresion","width=1150,ccc=800,menubar=no,scrollbars=yes,location=no");

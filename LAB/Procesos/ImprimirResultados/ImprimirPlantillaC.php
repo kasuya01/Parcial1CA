@@ -65,6 +65,7 @@ $row_cantidad=pg_fetch_array($Catidad);
                 
 
 		If($Resultado=='P'){
+                   // echo "dentro del if =P";
                     
                    // echo " if";
 			$Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
@@ -195,7 +196,7 @@ $row_cantidad=pg_fetch_array($Catidad);
 
 		<?php
 		}else{
-                    // echo "dentro del if-  else";
+                    //echo "dentro else";
                     //$total= $row_cantidad[0];
                     // $cont=1;
                     // echo $idsolicitud."-".$iddetalle."-".$lugar;
@@ -308,7 +309,8 @@ $row_cantidad=pg_fetch_array($Catidad);
 
 		<?php }
 	}
-	else{//Mas de un resultado
+	else{
+        //Mas de un resultado
         //
         //echo "mas de un resulrado";
 		// echo $row_cantidad[0];
