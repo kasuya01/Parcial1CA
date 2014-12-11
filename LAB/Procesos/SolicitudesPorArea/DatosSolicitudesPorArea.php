@@ -131,7 +131,7 @@ function calc_edad()
 				<td class='StormyWeatherFieldCaptionTD'>Establecimiento</td>
                                 <td class='StormyWeatherDataTD' colspan='3'>".$row['estabext']."</td>
 			</tr>
-                        <trr>
+                        <tr>
 				<td class='StormyWeatherFieldCaptionTD'>Paciente</td>
 				<td colspan='3' class='StormyWeatherDataTD'>" . htmlentities($paciente) . " 
 				     <input name='txtpaciente' id='txtpaciente' type='hidden' size='70' value='" . $paciente . "' disabled='disabled' /></td>

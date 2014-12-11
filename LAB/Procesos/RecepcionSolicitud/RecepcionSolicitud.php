@@ -57,10 +57,10 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                     <td colspan='3' class='StormyWeatherDataTD'>" . htmlentities($row['nombre']) . "</td>
                 </tr>
                 <tr>
-                    <td class='StormyWeatherFieldCaptionTD'>Expediente</td>
-                    <td colspan='1' class='StormyWeatherDataTD'><h3>" . htmlentities($row['idnumeroexp']) . "</h3></td>
-                    <td class='StormyWeatherFieldCaptionTD'>Paciente</td>
-                    <td colspan='1' class='StormyWeatherDataTD'>" . htmlentities($row['nombrepaciente']) . "
+                    <td class='StormyWeatherFieldCaptionTD'  width='20%'>Expediente</td>
+                    <td colspan='1' class='StormyWeatherDataTD' width='35%'><h3>" . htmlentities($row['idnumeroexp']) . "</h3></td>
+                    <td class='StormyWeatherFieldCaptionTD' width='20%'>Paciente</td>
+                    <td colspan='1' class='StormyWeatherDataTD' width='35%'>" . htmlentities($row['nombrepaciente']) . "
                         <input name='txtpaciente[" . $i . "]' id='txtpaciente[" . $i . "]' type='hidden' value='" . htmlentities($row['nombrepaciente']) . "' disabled='disabled' />
                     </td>
                 </tr>
@@ -100,7 +100,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                     <td class='StormyWeatherDataTD'>" . $row['talla'] . "&nbsp;&nbsp;cm.</td>
 		</tr>
             </table><br>";
-        echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
+        echo "<table border = 1 align='center' class='StormyWeatherFormTABLE' cellspacing='5'>
 		<tr>
                     <td colspan='5' align='center' class='CobaltFieldCaptionTD'>ESTUDIOS SOLICITADOS</td>
 		</tr>

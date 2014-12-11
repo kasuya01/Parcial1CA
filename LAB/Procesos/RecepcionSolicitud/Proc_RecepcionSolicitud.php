@@ -90,6 +90,7 @@ if (isset($_SESSION['Correlativo'])) {
                                                     <th>Fecha Cita</th>\
                                                     <th>Nombre Paciente</th>\
                                                     <th>Estado</th>\
+                                                    <th>Tipo Solicitud</th>\
                                                 </tr>\
                                             </thead>\
                                             <tbody>';
@@ -100,13 +101,16 @@ if (isset($_SESSION['Correlativo'])) {
                                 }
                                 else
                                     date_cita=val.fecha_cita
+                                if (date_cita!=''){
                                 html = html + '<tr>\
                                                 <td><a href="#" onclick="VerificarExistencia('+' \''+val.numero_expediente+'\', \''+val.fecha_cita+'\', '+val.id_establecimiento+', true);return false;" style="padding-left:7px;">'+val.numero_expediente+'</a></td>\
                                                 <td>'+val.fecha_consulta+'</td>\
                                                 <td>'+date_cita+'</td>\
                                                 <td>'+val.nombre_paciente+'</td>\
                                                 <td>'+val.estado+'</td>\
+                                                <td>'+val.tiposolicitud+'</td>\
                                             </tr>';
+                                }
                             });
                         } else {
                             html = html + '<tr><td colspan="5" style="color:#888888; font-weit">No se encontraron solicitudes para mostrar...</td></tr>';

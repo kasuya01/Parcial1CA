@@ -4,6 +4,7 @@ $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea']; 
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
 include_once("clsSolicitudesPorArea.php");
 //consulta los datos por su id
 $obj = new clsSolicitudesPorArea;
@@ -45,6 +46,8 @@ else{
 <script type="text/javascript" src="../../../calendarstructure/calendar.js"></script>
 <script type="text/javascript" src="../../../calendarstructure/calendar-es.js"></script>
 <script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
+<?php include_once $ROOT_PATH."/public/css.php";?>
+<?php include_once $ROOT_PATH."/public/js.php";?>
 
 <script language="JavaScript" type="text/javascript">
 function MostrarSolicitudes()
@@ -115,7 +118,7 @@ function BuscarServicio(IdServicio){
             <form>
                 <table  align="center" class="StormyWeatherFormTABLE" width="83%">
                     <tr>
-                        <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3><strong>Solicitudes a Procesar por &Aacute;rea</strong></h3></td>
+                        <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3><strong>Recepción de Solicitudes a Procesar por &Aacute;rea</strong></h3></td>
                     </tr>
                     <tr>		
                         <td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</td>
@@ -163,7 +166,7 @@ function BuscarServicio(IdServicio){
                    <tr>	
                         <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
                         <td class="StormyWeatherDataTD">
-                            <select name="CmbServicio" id="CmbServicio" style="width:355px" onChange="BuscarServicio(this.value)" >
+                            <select name="CmbServicio" id="CmbServicio" style="width:405px" onChange="BuscarServicio(this.value)" >
                                 <option value="0" selected="selected" align="center">Seleccione Procedencia</option>
                                 <?php
 					$db = new ConexionBD;
@@ -198,9 +201,9 @@ function BuscarServicio(IdServicio){
                         </td>
                     </tr>
                     <tr>
-                        <td class="StormyWeatherFieldCaptionTD" style="font-weight:bold"><b>&Aacute;rea de Laboratorio</b></td>
+                        <td class="StormyWeatherFieldCaptionTD" style="font-weight:bold"><b>&Aacute;rea de Laboratorio*</b></td>
                         <td class="StormyWeatherDataTD" >
-                                <select id="cmbArea" name="cmbArea" size="1" width="11%" onChange="BuscarExamen(this.value)" >
+                                <select id="cmbArea" name="cmbArea" size="1" style="width:405px" onChange="BuscarExamen(this.value)" >
                                 <!--<option value="0" selected="selected">Seleccione un &Aacute;rea</option>-->
                                 <?php
 				include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
@@ -224,10 +227,10 @@ function BuscarServicio(IdServicio){
                     </tr>
                     <tr>
                         <td class="StormyWeatherFieldCaptionTD" >Expediente</td>
-                        <td class="StormyWeatherDataTD" ><input type="text" size="24" name="txtexpediente" id="txtexpediente" /></td>
+                        <td class="StormyWeatherDataTD" ><input type="text" size="28" name="txtexpediente" id="txtexpediente" /></td>
                         <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Consulta</td>
                         <td class="StormyWeatherDataTD" width="20%">
-                            <input type="text" size="15" name="txtfechasolicitud" id="txtfechasolicitud"/>
+                            <input type="text" size="28" name="txtfechasolicitud" id="txtfechasolicitud"/>
                             <input type="button" value="..." id="trigger">dd/mm/aaaa</td> 
                     </tr>
                     <tr>

@@ -395,7 +395,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                             <?php 
                           }?>
                             <td colspan="4"  class="StormyWeatherDataTD"><center>
-                                <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="agregaresultado('0');">Agregar Resultado </button>
+                                <button type="button" align="center" id="agregarresults" class="fg-button ui-state-default ui-corner-all" onclick="agregaresultado('0');">Agregar Resultado </button>
 <!--                                <input type="button" name="add" value="Agregar Resultado" Onclick="AddResultado() ;"> -->
                         </center>
                             </td>

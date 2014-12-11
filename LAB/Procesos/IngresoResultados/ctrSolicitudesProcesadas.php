@@ -238,20 +238,21 @@ switch ($opcion) {
 
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);
 
-        echo "<table width='81%' border='1' align='center'>
-                <tr class='CobaltFieldCaptionTD'>
-                    <td>Muestra </td>
-                    <td>NEC </td>
-                    <td>paciente </td>
-                    <td>Id Examen</td>
-                    <td>Examen</td>
-                    <td>Servicio</td>
-                    <td>Procedencia</td>
-                    <td>Establecimiento</td>
-                    <td>Fecha Consulta</td>
-                    <td>Fecha Recepcion</td>
-                    <td>Prioridad</td>
-                </tr>";
+        echo "<div class='table-responsive' style='width: 80%;'>
+            <table width='81%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                <thead><tr>
+                    <th>Muestra </th>
+                    <th>NEC </th>
+                    <th>paciente </th>
+                    <th>Id Examen</th>
+                    <th>Examen</th>
+                    <th>Servicio</th>
+                    <th>Procedencia</v>
+                    <th>Establecimiento</th>
+                    <th>Fecha Consulta</th>
+                    <th>Fecha Recepcion</th>
+                    <th>Prioridad</th>
+                </tr></thead><tbody>";
      //   echo '<br/>'.$query.'<br/>';
         if(pg_num_rows($consulta)){
             $pos = 0;
@@ -296,9 +297,9 @@ switch ($opcion) {
             }
             pg_free_result($consulta);
             echo "<input type='hidden' name='oculto' id='text' value='" . $pos . "' />
-                </table>";
+                </tbody></table></div>";
         } else {
-            echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table>";
+            echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></tbody></table></div>";
         }
 
 

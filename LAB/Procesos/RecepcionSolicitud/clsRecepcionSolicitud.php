@@ -86,7 +86,8 @@ class clsRecepcionSolicitud {
                                 WHEN 'P' then 'En Proceso'
                                 WHEN 'C' then 'Completa'
                              END AS estado,
-                             COALESCE(t03.idestablecimiento,t10.id_establecimiento) AS id_establecimiento
+                             COALESCE(t03.idestablecimiento,t10.id_establecimiento) AS id_establecimiento,
+                              tiposolicitud
                       FROM sec_solicitudestudios                 t01
                       left JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
                       LEFT JOIN sec_historial_clinico            t03 ON (t03.id = t01.id_historial_clinico)
@@ -96,12 +97,13 @@ class clsRecepcionSolicitud {
                       LEFT JOIN mnt_paciente                     t07 ON (t07.id = t05.id_paciente)
                       left join mnt_dato_referencia t12 on (t12.id=t01.id_dato_referencia)
                       LEFT JOIN mnt_expediente_referido          t10 ON (t10.id = t12.id_expediente_referido)
-                      LEFT JOIN mnt_paciente_referido            t11 ON (t11.id = t10.id_referido)";
+                      LEFT JOIN mnt_paciente_referido            t11 ON (t11.id = t10.id_referido)
+                      LEFT JOIN lab_tiposolicitud		 t13 ON (t13.id = t01.idtiposolicitud)";
 
             $where = " WHERE t01.id_establecimiento = $lugar 
                          AND t04.idestado = 'D'              AND t06.codigo_busqueda = 'DCOLAB'";
 
-            $orderBy = " ORDER BY t05.numero";
+            $orderBy = " ORDER BY t13.id, t05.numero";
 
             if($idexpediente !== '') {
                 $where = $where." AND (t05.numero = '$idexpediente' OR t10.numero = '$idexpediente')";

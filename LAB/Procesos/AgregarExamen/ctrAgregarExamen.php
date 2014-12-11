@@ -257,17 +257,18 @@ switch ($opcion)
      
      
    
-     echo "<table width='95%' border='1' align='center'>
-                <tr class='CobaltFieldCaptionTD'>
-			<td>Fecha Recepci&oacute;n</td>
-				<td>NEC </td>
-				<td>Nombre Paciente</td>
-					<td>Origen</td>
-					<td>Procedencia</td>
-					<td>Establecimiento</td>
-					<td>Estado Solicitud</td>
-					<td>Fecha Consulta</td>
-                    </tr>";
+     echo "<center><div class='table-responsive' style='width: 80%;'>
+         <table width='95%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                <thead><tr>
+			<th>Fecha Recepci&oacute;n</th>
+				<th>NEC </th>
+				<th>Nombre Paciente</th>
+					<th>Origen</th>
+					<th>Procedencia</th>
+					<th>Establecimiento</th>
+					<th>Estado Solicitud</th>
+					<th>Fecha Consulta</th>
+                    </tr></thead><tbody>";
         if(pg_num_rows($consulta)){
             $pos = 0;
 
@@ -302,9 +303,9 @@ switch ($opcion)
             }
             pg_free_result($consulta);
             echo "<input type='hidden' name='oculto' id='text' value='" . $pos . "' />
-                </table>";
+                </tbody></table></div></center>";
         } else {
-            echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table>";
+            echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></tbody></table></div></center>";
         }
 	
         
@@ -467,14 +468,15 @@ switch ($opcion)
                         <tr>
 		
 </table>
-
-		<table width='80%' border='0' frame='above' align='center'>
-		<tr>
-			<td colspan='3'  class='CobaltFieldCaptionTD' align='center'>ESTUDIOS SOLICITADO</td>
-		</tr>
+    <br><br>
+		<table width='80%' border='0'  align='center'>
+		
 		<tr>
 			<td>
                             <table border = 1 align='center' class='estilotabla'>
+                            <tr>
+			<td colspan='5'  class='CobaltFieldCaptionTD' align='center'>ESTUDIOS SOLICITADO</td>
+		</tr>
                                 <tr>
                                     <td class='CobaltFieldCaptionTD' width='10%'> IdExamen</td>
                                     <td class='CobaltFieldCaptionTD' width='39%'> Examen </td>
@@ -504,7 +506,9 @@ switch ($opcion)
 			
  	//$imprimir .= "<i/nput type='hidden' name='oculto' id='oculto' value='".$pos."' />
 	 $imprimir .="</table>
+             <center>
 	<div id='divImpresion' style='display:block' >
+        
 		<table>
 			<tr >
 				<p></p>
@@ -516,7 +520,7 @@ switch ($opcion)
 				$imprimir .="</td>
 			</tr>
 		</table>
-	</div>
+	</div></center>
 </form>";
      echo $imprimir;
 	 

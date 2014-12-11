@@ -4,6 +4,7 @@ $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 $nivel=$_SESSION['NIVEL'];
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
 include_once("clsEliminarResultado.php"); 
 //consulta los datos por su id
 $obj = new clsEliminarResultado;
@@ -25,7 +26,8 @@ $nomtipo=$row[2];
 <!--referencias del estilo del calendario-->
 <link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
 <link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />
-
+<?php include_once $ROOT_PATH.'/public/css.php';?>
+<?php include_once $ROOT_PATH.'/public/js.php';?>
 <!--llamado al archivo de funciones del calendario-->
 <script type="text/javascript" src="../../../calendarstructure/calendar.js"></script>
 <script type="text/javascript" src="../../../calendarstructure/calendar-es.js"></script>
@@ -142,7 +144,7 @@ if ($nivel==4){
                             <tr>	
                                     <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
                                     <td class="StormyWeatherDataTD">
-                                            <select name="CmbServicio" id="CmbServicio" style="width:375px" onChange="BuscarServicio(this.value)" >
+                                            <select name="CmbServicio" id="CmbServicio" style="width:406px" onChange="BuscarServicio(this.value)" >
                                                     <option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
                                                             <?php
                                                             $db = new ConexionBD;
@@ -176,7 +178,7 @@ if ($nivel==4){
                                     <td  class="StormyWeatherDataTD"><input type="text" size="28" name="txtexpediente" id="txtexpediente" /></td>	
                                     <td class="StormyWeatherFieldCaptionTD">Fecha Recepci&oacute;n</td>
                                     <td  class="StormyWeatherDataTD">
-                                            <input type="text" name="txtfechaRecep" id="txtfechaRecep" />
+                                            <input type="text" name="txtfechaRecep" id="txtfechaRecep"  size="28"/>
                                             <input name="button" type="button" id="trigger"  value="..."> dd/mm/aaa</td>
                             </tr>
                             <tr>

@@ -34,8 +34,9 @@ if (isset($_SESSION['Correlativo'])) {
             <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
             <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
             <title>Rechazar Muestras en &Aacute;rea</title>
-            <script language="JavaScript" type="text/javascript" src="ajax_RMAutomatizada.js"></script>
-            <?php include_once $ROOT_PATH."/public/js.php";?>
+            <script language="JavaScript" type="text/javascript" src="ajax_RMAutomatizada.js"></script>            
+            <?php include_once $ROOT_PATH.'/public/css.php';?>
+            <?php include_once $ROOT_PATH.'/public/js.php';?>
             <!--referencias del estilo del calendario-->
             <link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
             <link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />
@@ -126,8 +127,8 @@ if (isset($_SESSION['Correlativo'])) {
                             <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3><strong>Rechazar Muestra en &Aacute;rea </strong></h3></td>
                         </tr>
                         <tr>		
-                            <td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</td>
-                            <td class="StormyWeatherDataTD">
+                            <td class="StormyWeatherFieldCaptionTD" style="width:20%">Tipo Establecimiento</td>
+                            <td class="StormyWeatherDataTD" style="width: 35%">
                                 <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:406px" onChange="BuscarEstablecimiento(this.value)">
                                     <option value="0" >Seleccione un Tipo de Establecimiento</option>
                                     <?php
@@ -144,8 +145,8 @@ if (isset($_SESSION['Correlativo'])) {
                                     ?>
                                 </select>
                             </td>
-                            <td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
-                            <td class="StormyWeatherDataTD" >
+                            <td class="StormyWeatherFieldCaptionTD" style="width: 20%">Establecimiento</td>
+                            <td class="StormyWeatherDataTD" style="width:35%">
                                 <div id="divEstablecimiento">
                                     <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px"> 
                                         <option value="0" >Seleccione un Establecimiento</option>
@@ -170,7 +171,7 @@ if (isset($_SESSION['Correlativo'])) {
                         <tr>	
                             <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
                             <td class="StormyWeatherDataTD">
-                                <select name="CmbServicio" id="CmbServicio" style="width:375px" onChange="BuscarServicio(this.value)" >
+                                <select name="CmbServicio" id="CmbServicio" style="width:406px" onChange="BuscarServicio(this.value)" >
                                     <option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
 
                                     <?php
@@ -212,7 +213,7 @@ if (isset($_SESSION['Correlativo'])) {
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD" style="font-weight:bold"><b>&Aacute;rea de Laboratorio </b></td>
                             <td class="StormyWeatherDataTD" colspan="1">
-                                <select id="cmbArea" name="cmbArea" size="1" onChange="BuscarExamen(this.value)">
+                                <select id="cmbArea" name="cmbArea" size="1" onChange="BuscarExamen(this.value)" style="width:406px">
                                     <option value="0" >Seleccione un &Aacute;rea</option>
                                     <?php
                                     include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
@@ -228,7 +229,7 @@ if (isset($_SESSION['Correlativo'])) {
                             <td  class="StormyWeatherFieldCaptionTD">Examen </td>
                             <td  class="StormyWeatherDataTD"  style="width:205px">
                                 <div id="divExamen">
-                                    <select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:260px"> 
+                                    <select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:375px"> 
                                         <option value="0">--Seleccione Examen--</option>
                                     </select>
                                 </div>
@@ -236,10 +237,10 @@ if (isset($_SESSION['Correlativo'])) {
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD" >Expediente</td>
-                            <td class="StormyWeatherDataTD"><input type="text" size="24" name="txtexpediente" id="txtexpediente"></td>
+                            <td class="StormyWeatherDataTD"><input type="text" size="28" name="txtexpediente" id="txtexpediente"></td>
                             <td class="StormyWeatherFieldCaptionTD"  width="15%">Fecha Recepi&oacute;n</td>
                             <td class="StormyWeatherDataTD" width="20%">
-                                <input type="text" size="15" name="txtfecharecep" id="txtfecharecep">
+                                <input type="text" size="28" name="txtfecharecep" id="txtfecharecep">
                                 <input name="button" type="button" id="trigger" value="...">dd/mm/aaaa </td>
                         </tr>
                         <tr>

@@ -40,6 +40,7 @@ if (isset($_SESSION['Correlativo'])) {
             <title>Ingreso de Resultados</title>
             <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script>
             <?php include_once $ROOT_PATH."/public/js.php";?>
+             <?php include_once $ROOT_PATH."/public/css.php";?>
             <!--referencias del estilo del calendario-->
             <link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
             <link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />
@@ -138,8 +139,8 @@ if (isset($_SESSION['Correlativo'])) {
                             </td>
                         </tr>
                         <tr>		
-                            <td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</td>
-                            <td class="StormyWeatherDataTD">
+                            <td class="StormyWeatherFieldCaptionTD" width="20%">Tipo Establecimiento</td>
+                            <td class="StormyWeatherDataTD" width="35%">
                                 <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)">
                                     <option value="0" >Seleccione un Tipo de Establecimiento</option>
                                     <?php
@@ -157,8 +158,8 @@ if (isset($_SESSION['Correlativo'])) {
                                     ?>
                                 </select>
                             </td>
-                            <td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
-                            <td class="StormyWeatherDataTD" >
+                            <td class="StormyWeatherFieldCaptionTD" width="20%">Establecimiento</td>
+                            <td class="StormyWeatherDataTD"  width="35%">
                                 <div id="divEstablecimiento">
                                     <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px"> <option value="0" >Seleccione un Establecimiento</option>
                                         <?php
@@ -181,7 +182,7 @@ if (isset($_SESSION['Correlativo'])) {
                         <tr>	
                             <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
                             <td class="StormyWeatherDataTD">
-                                <select name="CmbServicio" id="CmbServicio" style="width:355px" onChange="BuscarServicio(this.value)" >
+                                <select name="CmbServicio" id="CmbServicio" style="width:405px" onChange="BuscarServicio(this.value)" >
                                     <option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
                                     <?php
                                     $db = new ConexionBD;
@@ -211,9 +212,9 @@ if (isset($_SESSION['Correlativo'])) {
                             </td>
                         </tr>
                         <tr>                	
-                            <td class="StormyWeatherFieldCaptionTD">&Aacute;rea de Laboratorio</td>
+                            <td class="StormyWeatherFieldCaptionTD">&Aacute;rea de Laboratorio*</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbArea" name="cmbArea"  size="1" onChange="BuscarExamen(this.value)" >
+                                <select id="cmbArea" name="cmbArea"  size="1" onChange="BuscarExamen(this.value)" style="width:405px">
                                     <?php
                                     echo '<option value="' . $area1 . '" selected="selected">' . htmlentities($nomarea) . '</option>';
                                     include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
@@ -228,7 +229,7 @@ if (isset($_SESSION['Correlativo'])) {
                             <td  class="StormyWeatherFieldCaptionTD">Examen</td>
                             <td  class="StormyWeatherDataTD" >
                                 <div id="divExamen">
-                                    <select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:250px"> 
+                                    <select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:375px"> 
                                         <option value="0"> Seleccione Examen </option>
                                     </select>
                                 </div>
@@ -236,24 +237,25 @@ if (isset($_SESSION['Correlativo'])) {
 
                         </tr>
                         <tr>
-                            <td class="StormyWeatherFieldCaptionTD" >Expediente</td>
-                            <td  class="StormyWeatherDataTD"><input type="text" size="24" name="txtexpediente" id="txtexpediente" /></td>
+                            <td class="StormyWeatherFieldCaptionTD" align="left" ><strong>Tipo Solicitud</strong></td>
+                            <td class="StormyWeatherDataTD">
+                                <select id="cmbTipoSolic" name="cmbTipoSolic" size="1" style="width:405px" >
+                                    <option value="0">Seleccione un Tipo de Solicitud</option>
+                                </select>
+                            </td>
                             <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Consulta</td>
                             <td  class="StormyWeatherDataTD" width="20%" >
-                                <input type="text" size="15" name="txtfechasolicitud" id="txtfechasolicitud" />
+                                <input type="text" size="28" name="txtfechasolicitud" id="txtfechasolicitud" />
                                 <input type="button" value="..." id="trigger1">aaaa/mm/dd
                             </td>
                         </tr>
                         <tr>
-                            <td class="StormyWeatherFieldCaptionTD" align="left" ><strong>Tipo Solicitud</strong></td>
-                            <td class="StormyWeatherDataTD">
-                                <select id="cmbTipoSolic" name="cmbTipoSolic" size="1" >
-                                    <option value="0">Seleccione un Tipo de Solicitud</option>
-                                </select>
-                            </td>
+                            <td class="StormyWeatherFieldCaptionTD" >Expediente</td>
+                            <td  class="StormyWeatherDataTD"><input type="text" size="28" name="txtexpediente" id="txtexpediente" /></td>
+                            
                             <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Fecha Recepi&oacute;n</strong></td>
                             <td  class="StormyWeatherDataTD">
-                                <input type="text" size="15" name="txtfecharecep" id="txtfecharecep"/>
+                                <input type="text" size="28" name="txtfecharecep" id="txtfecharecep"/>
                                 <input type="button" value="..." id="trigger2">aaaa/mm/dd
                             </td>
                         </tr>
