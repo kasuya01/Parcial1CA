@@ -20,7 +20,7 @@ case 1:
 	$observacion= $_POST['observacion'];
         $fechanac=$_POST['fechanac'];
         $sexo=$_POST['sexo'];
-        
+      //  echo $idexamen;
         $fecharealiz=$_POST['fecharealiz'];
         $fecharesultado=$_POST['fecharesultado'];
       //  echo $fecharealiz." - ".$fecharesultado;
@@ -455,44 +455,41 @@ case 2://vista Previa de Resultado
    	$tamano_vector=count($vector_respuesta);
 		//$tamano_vectorcodigos=count($vector_idprocesos);
 		//$tamano_vectorcomentario=count($vector_comentarios);
-
+        $existe = $obj->VerificarExistencia($idexamen,$idsolicitud,$iddetalle);
+        if ($existe[0] >= 1){
+                     echo "Ya hay un resultado para esta muestra!!";
+        }else{  
 	   //VALIDANDO QUE LA INFORMACION ESTE COMPLETA:
-	$ultimo= $obj->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$idempleado,$usuario,$tab,$fecharealiz,$fecharesultado,$lugar);
-//echo $ultimo;
-		$pos=0;
-		$ban=0;
-		if ($ultimo != "")
-		{
-			$idresultado=$ultimo;
-			if (($tamano_vector-1)>0){
-				for ($i=0; $i < $tamano_vector-1 ; $i++) //INSERTANDO PROCEDIMIENTOS
-				{
-					if ($obj->insertar_detalle($idresultado,$vector_idprocesos[$pos],$vector_respuesta[$pos],$vector_comentarios[$pos],$lugar)==false)
-
-					{
-						$ban=1;
-					}
-					$pos=$pos+1;
-				}
-			}
-			if($ban==0){
-			//actualiza el estado del detalle de la solicitud para indicar que el resultado esta completo para el examen
-
-                            echo "Datos Guardados";
-
-
-                            if (($obj->CambiarEstadoDetalle($iddetalle)==true)&&($obj->CambiarEstadoSolicitud($idsolicitud)==true))
-                            {
-                                    echo " Correctamente";
-                            }
-
-                        }
-                        else
+            $ultimo= $obj->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$idempleado,$usuario,$tab,$fecharealiz,$fecharesultado,$lugar);
+        //echo $ultimo;
+            $pos=0;
+            $ban=0;
+            if ($ultimo != "")
+            {
+                $idresultado=$ultimo;
+                if (($tamano_vector-1)>0){
+                    for ($i=0; $i < $tamano_vector-1 ; $i++) //INSERTANDO PROCEDIMIENTOS
+                    {
+                        if ($obj->insertar_detalle($idresultado,$vector_idprocesos[$pos],$vector_respuesta[$pos],$vector_comentarios[$pos],$lugar)==false)
                         {
-                              echo "Los resultados no pueden ser guardados consulte al Administrador...";
+                            $ban=1;
                         }
-
-                 }else{ echo "Los resultados no pueden ser guardados consulte al Administrador...";}
+                            $pos=$pos+1;
+                    }
+                }
+                if($ban==0){
+                                //actualiza el estado del detalle de la solicitud para indicar que el resultado esta completo para el examen
+                    echo "Datos Guardados";
+                    if (($obj->CambiarEstadoDetalle($iddetalle)==true)&&($obj->CambiarEstadoSolicitud($idsolicitud)==true))
+                    {
+                        echo " Correctamente";
+                    }
+                }
+                else{
+                    echo "Los resultados no pueden ser guardados consulte al Administrador...";
+                }
+            }else{ echo "Los resultados no pueden ser guardados consulte al Administrador...";}
+        }
    break;
 
   }

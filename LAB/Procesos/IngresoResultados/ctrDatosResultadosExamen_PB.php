@@ -29,7 +29,7 @@ switch ($opcion) {
 		$CodEstandar     = pg_fetch_array($ConEstandar);
 		$codigo_estandar = $CodEstandar[0];
 		$IdEstandar	 = $CodEstandar[1];
-               
+              // echo $idexamen;
 		switch ($codigo_estandar) {
 			case "H50":
 				$consulta = $objdatos->LeerElementosExamen($idexamen,$lugar);
@@ -560,50 +560,57 @@ switch ($opcion) {
 		$tab 				  = $_POST['tab'];
   		$fecharealiz=$_POST['fecharealiz'];
                 $fecharesultado=$_POST['fecharesultado'];
-               //
+               
+                $existe = $objdatos->VerificarExistencia($idexamen,$idsolicitud,$iddetalle);
+                
+                if ($existe[0] >= 1){
+                     echo "Ya hay un resultado para esta muestra!!";
+                }else{     
                //  echo $fecharealiz."-".$fecharesultado;
   		//VALIDANDO QUE LA INFORMACION ESTE COMPLETA:
-		$ultimo = $objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$idempleado,$usuario,$tab,$fecharealiz,$fecharesultado,$lugar);
-              //  echo $ultimo;
-		$pos = 0;
-		$posele = 0;
-		$ban = 0;
-		if ($ultimo != "" && $ultimo != false) { //INSERTANDO ELEMENTOS
-			$idresultado = $ultimo;
-			
-			if (($tamano_vectorele-1) > 0) {
-				for ($i=0; $i < $tamano_vectorele-1 ; $i++) {
-					if ($objdatos->insertar_elementos($idresultado,$v_id_elementos[$posele],$vector_elementos[$posele],$vector_controles_ele[$posele],$lugar)==false) {
-						$ban = 1;
-					}
-					
-					$posele = $posele+1;
-				}
-			}
-			
-			if (($tamano_vector-1) > 0) {
-				for ($i=0; $i < $tamano_vector-1 ; $i++) { //INSERTANDO SUB-ELEMENTOS
-					if ($objdatos->insertar_subelementos($idresultado,$v_id_subelementos[$pos],$vector[$pos],$vector_controles[$pos],$lugar)==false) {
-						$ban=1;
-					}
-					
-					$pos = $pos+1;
-				}
-			}
-			
-			if($ban == 0) {
-				echo ("Datos Guardados");
-				
-				//cambia el estado del detalle de la solicitud que la respuesta ha sido ingresada RC
-				if (($objdatos->CambiarEstadoDetalle($iddetalle)==true)&&($objdatos->CambiarEstadoSolicitud($idsolicitud)==true)) {
-					echo " Correctamente";
-				}
-			} else {
-				echo "Los resultados no pueden ser guardados consulte al Administrador [OBJETOS]...";
-			}
-		} else {
-			echo "Los resultados no pueden ser guardados consulte al Administrador... ultimo->".$ultimo; 
-		}
+                        $ultimo = $objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$idempleado,$usuario,$tab,$fecharealiz,$fecharesultado,$lugar);
+                      //  echo $ultimo;
+                        $pos = 0;
+                        $posele = 0;
+                        $ban = 0;
+                        if ($ultimo != "" && $ultimo != false) { //INSERTANDO ELEMENTOS
+                                $idresultado = $ultimo;
+
+                                if (($tamano_vectorele-1) > 0) {
+                                        for ($i=0; $i < $tamano_vectorele-1 ; $i++) {
+                                                if ($objdatos->insertar_elementos($idresultado,$v_id_elementos[$posele],$vector_elementos[$posele],$vector_controles_ele[$posele],$lugar)==false) {
+                                                        $ban = 1;
+                                                }
+
+                                                $posele = $posele+1;
+                                        }
+                                }
+
+                                if (($tamano_vector-1) > 0) {
+                                        for ($i=0; $i < $tamano_vector-1 ; $i++) { //INSERTANDO SUB-ELEMENTOS
+                                                if ($objdatos->insertar_subelementos($idresultado,$v_id_subelementos[$pos],$vector[$pos],$vector_controles[$pos],$lugar)==false) {
+                                                        $ban=1;
+                                                }
+
+                                                $pos = $pos+1;
+                                        }
+                                }
+
+                                if($ban == 0) {
+                                        echo ("Datos Guardados");
+
+                                        //cambia el estado del detalle de la solicitud que la respuesta ha sido ingresada RC
+                                        if (($objdatos->CambiarEstadoDetalle($iddetalle)==true)&&($objdatos->CambiarEstadoSolicitud($idsolicitud)==true)) {
+                                                echo " Correctamente";
+                                        }
+                                } else {
+                                        echo "Los resultados no pueden ser guardados consulte al Administrador [OBJETOS]...";
+                                }
+                        } else {
+                                echo "Los resultados no pueden ser guardados consulte al Administrador... ultimo->".$ultimo; 
+                        }
+                }
+                
 		break;
 }
 ?>

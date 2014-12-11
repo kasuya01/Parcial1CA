@@ -23,16 +23,16 @@ switch ($opcion)
         $IdEstab        = $_POST['IdEstab'];
         $IdServ         = $_POST['IdServ'];
         $IdSubServ      = $_POST['IdSubServ'];
-        $idarea         = $_POST['idarea'];
-        $idexamen       = $_POST['idexamen'];
+       // $idarea         = $_POST['idarea'];
+       // $idexamen       = $_POST['idexamen'];
         $idexpediente   = $_POST['idexpediente'];
-        $fechasolicitud = $_POST['fechasolicitud'];
-        $fecharecepcion = $_POST['fecha'];
+       // $fechasolicitud = $_POST['fechasolicitud'];
+       // $fecharecepcion = $_POST['fecha'];
         $PNombre        = $_POST['primernombre'];
         $SNomre         = $_POST['segundonombre'];
         $PApellido      = $_POST['primerapellido'];
         $SApellido      = $_POST['segundoapellido'];
-        $TipoSolic      = $_POST['TipoSolic'];
+       // $TipoSolic      = $_POST['TipoSolic'];
         $cond1="";
         $cond2="";
         $query="";
@@ -251,7 +251,7 @@ switch ($opcion)
         	<center>
            
             
-<tr><td colspan='11'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES: :".$NroRegistros."</h3></span></td></tr>
+<tr><td colspan='11' align='center'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES: :".$NroRegistros."</h3></span></td></tr>
             </center>
 	</table> "; 
      
@@ -296,7 +296,7 @@ switch ($opcion)
               
                 $pos = $pos + 1;
                 
-                
+                //
                 
                 
               
@@ -379,8 +379,8 @@ switch ($opcion)
             
                 $idexpediente       =$_POST['idexpediente'];
 	        $idsolicitud        =$_POST['idsolicitud'];
-		$IdEstablecimiento  =$POST['idestablecimiento'];
-		$IdEstablecimiento;
+		//$IdEstablecimiento  =$POST['idestablecimiento'];
+		//$IdEstablecimiento;
 		include_once("clsSolicitudesPorPaciente.php");
 		//recuperando los valores generales de la solicitud
 		

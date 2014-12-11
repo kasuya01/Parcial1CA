@@ -130,6 +130,15 @@ function CambiarEstadoDetalle($iddetalle)
    }
    }
 
+   function VerificarExistencia($idexamen,$idsolicitud,$iddetalle){
+       $con = new ConexionBD;
+        if($con->conectar()==true) {
+          $query = "SELECT count(*) FROM lab_resultados WHERE idsolicitudestudio=$idsolicitud AND iddetallesolicitud= $iddetalle";
+            $cantidad = pg_fetch_array(pg_query($query));
+            return $cantidad[0];
+        }
+   }
+   
 ////********************************************************************************************************************************////
 //INSERTA RESULTADOS ENCABEZADO
  function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$responsable,$usuario,$tab,$fecharealiz,$fecharesultado,$lugar)

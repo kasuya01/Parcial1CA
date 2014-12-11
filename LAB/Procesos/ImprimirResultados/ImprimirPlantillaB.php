@@ -92,7 +92,8 @@ function calc_edad()
                          <td align="center" colspan="4" width="60%" class="Estilo6">
                             <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO </strong></p>
                             <p><strong><?php echo $row_estab['nombre'] ?></strong></p>
-                            <p><strong>&Aacute;rea de <?php echo htmlentities($row_area['nombrearea'])?> </strong></p></td>
+                            <p><strong>ÁREA DE <?php echo htmlentities($row_area['nombrearea'])?> </strong></p></td>
+
                          <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
 		</tr>
                 <tr>
@@ -161,7 +162,11 @@ function calc_edad()
 				{    //echo "if";
                                     ?>
 			<tr >
+<<<<<<< HEAD
 				<!--<td colspan='5' class="Estilo6" ><?php echo htmlentities($row['elemento'])?></td> -->
+=======
+				<td colspan='5' class="Estilo6" ><?php echo htmlentities($row['elemento'])?></td>
+>>>>>>> roxy
 			</tr>
 				<?php	 //echo  $idedad."   ".$sexo;
                                 $consulta2=$obj->LeerSubElementosExamen($idsolicitud,$iddetalle,$row['idelemento'],$lugar,$idedad,$sexo);

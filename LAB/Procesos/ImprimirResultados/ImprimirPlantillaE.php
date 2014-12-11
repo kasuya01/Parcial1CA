@@ -9,7 +9,7 @@ $idplatilla=$_GET['var3'];
 $expediente=$_GET['var4'];
 $idarea=$_GET['var5'];
 $idexamen=$_GET['var6'];
-//echo $idexamen;
+echo $idexamen;
 
 ?>
 <html>
@@ -138,6 +138,7 @@ $obj = new clsImprimirResultado;
 				while($row = pg_fetch_array($consulta))//ELEMENTOS
 					{  ?>
 				<tr>
+<!--<<<<<<< HEAD-->
 					<td width='25%' align='left' class="Estilo5"><?php echo htmlentities($row['nombreprocedimiento'])?></td>
 					<td width='30%' align='center' class="Estilo5"><input name='oidprueba[<?php $pos?>]' type='hidden' id='oidprueba[<?php $pos?>]' value='<?php $row['id']?>'><?php echo htmlentities($row['resultado'])?></td>
 					<td width='20%' align='center' class="Estilo5"><?php echo htmlentities($row['unidades'])?></td>
@@ -146,7 +147,16 @@ $obj = new clsImprimirResultado;
                                                     echo $row['rangoinicio']." - ".$row['rangofin']?>
                                         </td>
                                 </tr>
-					<?php  $pos=$pos + 1;
+					
+//=======////$pos=$pos + 1;
+//					<td class="Estilo5"  width='25%'align='left'><?PHP echo htmlentities($row['nombreprocedimiento'])?></td>
+					<td align='center' width='30%' >
+						<input name='oidprueba[//<?php $pos ?>]' type='hidden' id='oidprueba[<?php $pos ?>]' value='<?php $row['id'] ?>'><?php echo htmlentities($row['Resultado'])?></td>
+					<td class="Estilo5" align='center' width='30%'>//<?php echo $row['unidades']?></td>
+					<td class="Estilo5" align='center'>//<?php echo htmlentities($row['observacion'])?></td>	<td><?php echo htmlentities($row['unidades'])?></td>
+				</tr>
+					<?php $pos=$pos + 1;
+//>>>>>>> roxy
 					}
 						pg_free_result($consulta);?>
 			</table>

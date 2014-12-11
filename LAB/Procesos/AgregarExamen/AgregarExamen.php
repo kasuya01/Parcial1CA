@@ -19,9 +19,14 @@ $nomtipo=$row[2];
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">    
+<<<<<<< HEAD
 <title>Solicitudes Por Paciente</title>
 <?php include_once $ROOT_PATH.'/public/css.php';?>
 <?php include_once $ROOT_PATH.'/public/js.php';?>
+=======
+<title>Agregar Examen a Solicitud</title>
+<?php include_once $ROOT_PATH."/public/js.php";?>
+>>>>>>> roxy
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <script language="JavaScript" type="text/javascript" src="ajax_AgregarExamen.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
@@ -134,14 +139,15 @@ if ($nivel==4){
 	<td>
 		<div  id="divInicial" >
 		<form>
-			<p>&nbsp;</p>
+                    <p>&nbsp;</p>
 			<table align="center"  class="StormyWeatherFormTABLE">
 			<tr>
 				<td colspan="5" align="center" class="CobaltFieldCaptionTD">
-				    <h3><strong>Consulta de Solicitudes por Paciente</strong></h3>
+				    <h3><strong>Agregar Examen a Solicitud</strong></h3>
 				</td>
 			</tr>
 			<tr>		
+<<<<<<< HEAD
 				<td class="StormyWeatherFieldCaptionTD" width="20%">Tipo Establecimiento</td>
 		<td class="StormyWeatherDataTD"  width="35%"><select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)">
         	<option value="0">Seleccione un Tipo de Establecimiento</option>
@@ -164,20 +170,20 @@ if ($nivel==4){
 				<div id="divEstablecimiento">
 					<select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px">
 						<option value="0" >Seleccione un Establecimiento</option>
-				<?php 
-				  echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
-		              	include_once("../../../Conexion/ConexionBD.php");
-					$con = new ConexionBD;
-					if($con->conectar()==true){			  
-						//$consulta  = "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$tipo' ORDER BY Nombre";
-                                                $consulta  = "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento='$tipo' ORDER BY nombre";
-						$resultado = @pg_query($consulta) or die('La consulta fall&oacute;: ' . @pg_error());
-						//por cada registro encontrado en la tabla me genera un <option>
-						while ($rows = @pg_fetch_array($resultado)){
-							echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]). '</option>';
-						}
-		            }
-				?>	
+                                        <?php 
+				          echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
+                                            include_once("../../../Conexion/ConexionBD.php");
+                                            $con = new ConexionBD;
+                                            if($con->conectar()==true){			  
+                                                    //$consulta  = "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$tipo' ORDER BY Nombre";
+                                                    $consulta  = "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento='$tipo' ORDER BY nombre";
+                                                    $resultado = @pg_query($consulta) or die('La consulta fall&oacute;: ' . @pg_error());
+                                                    //por cada registro encontrado en la tabla me genera un <option>
+                                                    while ($rows = @pg_fetch_array($resultado)){
+                                                            echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]). '</option>';
+                                                    }
+                                            }
+                                        ?>	
 					</select>
 				</div>
 		</td>
@@ -226,11 +232,19 @@ if ($nivel==4){
 	
 	<tr>
 		
+<<<<<<< HEAD
 		<td class="StormyWeatherFieldCaptionTD"  >Expediente</td>
 		<td  class="StormyWeatherDataTD" width="5%" ><input type="text" size="28" name="txtexpediente" id="txtexpediente" />
 		</td>
 		<td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Recepi&oacute;n</td>
 		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="28" name="txtfecharecep" id="txtfecharecep" />
+=======
+		<td class="StormyWeatherFieldCaptionTD">Expediente</td>
+		<td class="StormyWeatherDataTD" width="5%" ><input type="text" size="24" name="txtexpediente" id="txtexpediente" />
+		</td>
+		<td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Recepi&oacute;n</td>
+		<td class="StormyWeatherDataTD" width="20%" ><input type="text" size="15" name="txtfecharecep" id="txtfecharecep" />
+>>>>>>> roxy
 			<input type="button" value="..." id="trigger">dd/mm/aaaa
 		</td>
 	</tr>
@@ -249,13 +263,12 @@ if ($nivel==4){
 		<td class="StormyWeatherDataTD" >
 			<input class="MailboxInput" maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" ></td>
 	</tr>
-  
-			<tr>
-				<td class="StormyWeatherDataTD" colspan="4" align="right">
+  	<tr>
+		<td class="StormyWeatherDataTD" colspan="4" align="right">
 					<input type="button" id="btnbuscar" value="Buscar Solicitudes" onClick="MostrarBusqueda();">
 					<input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('AgregarExamen.php')">
-				</td>
-			</tr>
+		</td>
+	</tr>
 			</table>
 		</form>
 		<script type="text/javascript">
