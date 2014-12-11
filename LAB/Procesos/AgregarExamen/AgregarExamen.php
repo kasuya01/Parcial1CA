@@ -19,14 +19,9 @@ $nomtipo=$row[2];
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">    
-<<<<<<< HEAD
-<title>Solicitudes Por Paciente</title>
+<title>Agregar Examen a Solicitud</title>
 <?php include_once $ROOT_PATH.'/public/css.php';?>
 <?php include_once $ROOT_PATH.'/public/js.php';?>
-=======
-<title>Agregar Examen a Solicitud</title>
-<?php include_once $ROOT_PATH."/public/js.php";?>
->>>>>>> roxy
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <script language="JavaScript" type="text/javascript" src="ajax_AgregarExamen.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
@@ -147,7 +142,7 @@ if ($nivel==4){
 				</td>
 			</tr>
 			<tr>		
-<<<<<<< HEAD
+
 				<td class="StormyWeatherFieldCaptionTD" width="20%">Tipo Establecimiento</td>
 		<td class="StormyWeatherDataTD"  width="35%"><select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)">
         	<option value="0">Seleccione un Tipo de Establecimiento</option>
@@ -231,20 +226,13 @@ if ($nivel==4){
 	</tr>
 	
 	<tr>
-		
-<<<<<<< HEAD
+
 		<td class="StormyWeatherFieldCaptionTD"  >Expediente</td>
 		<td  class="StormyWeatherDataTD" width="5%" ><input type="text" size="28" name="txtexpediente" id="txtexpediente" />
 		</td>
 		<td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Recepi&oacute;n</td>
 		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="28" name="txtfecharecep" id="txtfecharecep" />
-=======
-		<td class="StormyWeatherFieldCaptionTD">Expediente</td>
-		<td class="StormyWeatherDataTD" width="5%" ><input type="text" size="24" name="txtexpediente" id="txtexpediente" />
-		</td>
-		<td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Recepi&oacute;n</td>
-		<td class="StormyWeatherDataTD" width="20%" ><input type="text" size="15" name="txtfecharecep" id="txtfecharecep" />
->>>>>>> roxy
+
 			<input type="button" value="..." id="trigger">dd/mm/aaaa
 		</td>
 	</tr>
