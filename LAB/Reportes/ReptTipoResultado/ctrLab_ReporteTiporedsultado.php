@@ -37,12 +37,12 @@ switch ($opcion)
 		//VERIFICANDO LOS POST ENVIADOS
                 
                  if (!empty($_POST['idarea'])) {
-            $cond1 .= " t07.id = " . $_POST['idarea'] . " AND";
-            //$cond2 .= " t07.id = " . $_POST['idarea'] . " AND";
+            $cond1 .= " t05.id = " . $_POST['idarea'] . " AND";
+            //$cond1 .= " t05.id = " . $_POST['idarea'] . " AND";
         }
                 if (!empty($_POST['idexamen'])) {
-             $cond1 .= " t05.id = " . $_POST['idexamen'] . " AND";
-             //$cond2 .= " t05.id = " . $_POST['idexamen'] . " AND";
+             $cond1 .= " t03.id = " . $_POST['idexamen'] . " AND";
+             //$cond1 .= " t03.id = " . $_POST['idexamen'] . " AND";
         }
                 
                 
@@ -83,7 +83,9 @@ switch ($opcion)
 			//$arraynombres[$j]="codigo".$j;
 			//$j++;
                         
-                         $cadena=$cadena."SUM (CASE WHEN t02.id=$si THEN 1 else 0 END )AS codigo$si,";
+                         $cadena=$cadena."count (CASE WHEN t02.id=$si THEN '$si'  else null END )AS codigo$si,";
+                         
+            //count (CASE WHEN t02.id=1 THEN 'uno' else null END )AS codigo1,
 		}
 	
 		/*for ($i=0;$i<$NroRegistros;$i++){
@@ -105,12 +107,13 @@ switch ($opcion)
 		
            //  echo $query1;
            // $query_search = 
+            //
             //echo $cond1;
             //echo $cond2;
         }     
        // echo $cond2;
 		//print_r($arraynombres);	
-		  echo $query ="SELECT $cadena
+		  $query =/*"SELECT $cadena
                       SUM (CASE WHEN t02.id<>0 THEN 1 else 0 END )AS total,
                       t02.id, 
                       t02.resultado, 
@@ -126,13 +129,32 @@ switch ($opcion)
             where $cond1   
                           GROUP BY  t02.id, 
                       t02.resultado, 
-                      t07.nombrearea,t05.nombre_examen  " ;
+                      t07.nombrearea,t05.nombre_examen  " ;*/
+                          
+                "SELECT $cadena
+                id_examen_metodologia, t03.nombre_examen,t05.nombrearea,count(*) as total 
+                from lab_resultado_metodologia t01 
+                JOIN lab_codigosresultados t02 ON (t02.id=t01.id_codigoresultado)
+                join lab_conf_examen_estab t03 on (t03.id=t01.id_examen_metodologia)
+                JOIN mnt_area_examen_establecimiento t04 ON (t04.id = t03.idexamen) 
+                JOIN ctl_area_servicio_diagnostico t05 ON (t05.id = t04.id_area_servicio_diagnostico) 
+                where $cond1 
+
+                group by t01.id_examen_metodologia, t03.nombre_examen,t05.nombrearea
+                order by t03.nombre_examen ";
                   
                   
-                  
+           $Nombrepdf="Rep_TipodeResultado".'_'.date('d_m_Y__h_i_s A');
+	      	$nombrearchivo = "../../../Reportes/".$Nombrepdf.".pdf";
+                	
+                $nombrearchivoe = "../../../Reportes/".$Nombrepdf.".ods";
+		//$nombrearchivo;
+	       	$punteroarchivo = fopen($nombrearchivo, "w+") 	 or die("El archivo de reporte no pudo crearse");
+                
+                     $punteroarchivo1 = fopen($nombrearchivoe, "w+") 	 or die("El archivo de reporte no pudo crearse");  
                 
 		
-echo "<table width='35%' border='0'  align='center'>
+echo  "<table width='35%' border='0'  align='center'>
         <center>
             <tr>
                 <td colspan='11'><span style='color: #0101DF;'> <h2> RESULTADO DE PRUEBA DE LA BUSQUEDA </h2> </span>
@@ -147,17 +169,13 @@ echo "<table width='35%' border='0'  align='center'>
    if(pg_num_rows($consulta))
     {     //echo "dentro";            
               
-                $Nombrepdf="Rep_TipodeResultado".'_'.date('d_m_Y__h_i_s A');
-	      	$nombrearchivo = "../../../Reportes1/".$Nombrepdf.".pdf";
-		$nombrearchivo;
-	       	$punteroarchivo = fopen($nombrearchivo, "w+") 	 or die("El archivo de reporte no pudo crearse");
                 
-                
-                echo"   <table width='100%' hight='10%' align='center'>
+                echo"   <table  width='100%' hight='10%' align='center'>
          <tr>
 	       		<td colspan='28' align='center'>
-                            <a href='".$nombrearchivo."'><H5>DESCARGAR REPORTE  <img src='../../../Imagenes/icono-pdf.jpg'></H5></a>
-                        </td>
+                            <a href='".$nombrearchivo."'><H5>DESCARGAR REPORTE PDF <img src='../../../Imagenes/icono-pdf.jpg'></H5></a>
+                                <a href='".$nombrearchivoe."'><H5>DESCARGAR REPORTE   </H5></a>
+        </td>
 	           </tr> 
                    
      </table>";  
@@ -165,8 +183,8 @@ echo "<table width='35%' border='0'  align='center'>
                 
                 
                 
-                 fwrite($punteroarchivo,$imprimir);
-	    fclose($punteroarchivo);
+                // fwrite($punteroarchivo,$imprimir);
+	    //fclose($punteroarchivo);
 		//************************/ 
 	     // echo $imprimir;
             while ($row = pg_fetch_array($consulta))
@@ -201,7 +219,9 @@ $imprimir.="</table>";
 	    fwrite($punteroarchivo,$imprimir);
 	    fclose($punteroarchivo);
 		
-	     
+	       fwrite($punteroarchivo1,$imprimir);
+	    fclose($punteroarchivo1);
+		
 
 echo $imprimir;
 
@@ -241,7 +261,7 @@ case 3://LLENANDO COMBO subservicio
         
         $dtMed=$obj->ExamenesPorArea($idarea, $lugar);
 
-        $rslts = '<select name="cmbExamen" id="cmbExamen" class="ui-corner-all" style="width:200px">';
+        $rslts = '<select name="cmbExamen" id="cmbExamen" class="ui-state-default ui-corner-all" style="width:200px">';
         $rslts .='<option value="0">--Seleccione Examen--</option>';
         while ($rows =pg_fetch_array($dtMed)){
 			$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';

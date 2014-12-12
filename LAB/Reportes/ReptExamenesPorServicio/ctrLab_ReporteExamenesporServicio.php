@@ -143,8 +143,8 @@ switch ($opcion)
     //echo "dentro del if ";
 		//GENERACION DE EXCEL
 		$NombreExcel="Rep_pruebas_por_servicio".'_'.date('d_m_Y__h_i_s A');
-	      	$nombrearchivo = "../../../Reportes1/".$NombreExcel.".pdf";
-		echo $nombrearchivo;
+	      	$nombrearchivo = "../../../Reportes/".$NombreExcel.".ods";
+		$nombrearchivo;
 	       	$punteroarchivo = fopen($nombrearchivo, "w+") 	 or die("El archivo de reporte no pudo crearse");
                 
 			//***********************
@@ -162,7 +162,7 @@ switch ($opcion)
        echo"<table width='100%' hight='10%' align='center'>
 	           <tr>
 	       		<td colspan='28' align='center'>
-                            <a href='".$nombrearchivo."'><H5>DESCARGAR2 REPORTE EXCEL <img src='../../../Imagenes/excel.gif'></H5></a>
+                            <a href='".$nombrearchivo."'><H5>DESCARGAR REPORTE EXCEL <img src='../../../Imagenes/excel.gif'></H5></a>
                         </td>
 	           </tr> ";
                 $imprimir="<tr>
@@ -241,7 +241,7 @@ else{ //reporte de todas las especialidades
 		
 			
      		$NombreExcel="Rep_General_de_pruebas_por_servicio".'_'.date('d_m_Y__h_i_s A');
-    		$nombrearchivo = "../../../Reportes1/".$NombreExcel.".ods";
+    		$nombrearchivo = "../../../Reportes/".$NombreExcel.".ods";
      		$punteroarchivo = fopen($nombrearchivo, "w+") or die("El archivo de reporte no pudo crearse");
 		//***********************
 		$FechaI=explode('-',$_POST['fechainicio']);
@@ -264,6 +264,9 @@ else{ //reporte de todas las especialidades
 		$consultaSubServicio=$obj->consultaTodosServicios($lugar); 
  
                 //*********ConsultaExterna********
+                
+                
+                
                 $ConsultaExterna=$obj->ConsultaExterna();
                 $row = pg_fetch_array($ConsultaExterna);
                  $servicio=$row[0];
@@ -350,7 +353,10 @@ else{ //reporte de todas las especialidades
                     pg_free_result($consulta);
                     $imprimir .= "<input type='hidden' name='oculto' id='text' value='".$pos."' /> 
 			</table>";
-                        echo $imprimir;
+                       // echo $imprimir;
+                      fwrite($punteroarchivo,$imprimir);
+	    fclose($punteroarchivo);
+                    echo  $imprimir; 
     }else {
                  $consultaAreas=$obj->consultarareas($lugar);
                              $imprimir.="<table width='90%' border='1' align='center' >
@@ -365,7 +371,11 @@ else{ //reporte de todas las especialidades
              $imprimir.= "<table width='90%' border='1' align='center' >
                           <tr style='background:#BBBEC9'> <tr><td colspan='11'><span style='color: #0101DF;'>No se han encontrado resultados...</span></td></tr></table>";
            
-             echo  $imprimir;  
+           //   
+               fwrite($punteroarchivo);
+	    fclose($punteroarchivo);
+             
+             echo  $imprimir; 
           }
     
     
@@ -452,10 +462,13 @@ else{ //reporte de todas las especialidades
                                             $imprimir.=" <td width='10%'><strong>".$row['total']."</strong></td>
                                        </tr>";
                     $pos=$pos + 1;
-                         echo $imprimir;                   
+                    
+                      fwrite($punteroarchivo,$imprimir);
+	    fclose($punteroarchivo);
+                       //////  echo $imprimir;                   
                 } 
         
-                              //  echo $imprimir;
+                               echo $imprimir;
     }else { 
            // echo "dentro del else emergencia";                      //$cantidademer;
             $consultaAreas=$obj->consultarareas($lugar);
@@ -470,7 +483,9 @@ else{ //reporte de todas las especialidades
                                 
              $imprimir.= "<table width='90%' border='1' align='center' >
                           <tr style='background:#BBBEC9'> <tr><td colspan='11'><span style='color: #0101DF;'>No se han encontrado resultados...</span></td></tr></table>";
-           
+             fwrite($punteroarchivo,$imprimir);
+	    fclose($punteroarchivo);
+             
              echo  $imprimir;  
            }
                             
@@ -537,8 +552,9 @@ else{ //reporte de todas las especialidades
                                             
                 }
         
-        
-                                        echo $imprimir;
+          fwrite($punteroarchivo);
+	    fclose($punteroarchivo);
+                                      echo $imprimir;
    }else {
                                   //$cantidadhos;
                                     $consultaAreas=$obj->consultarareas($lugar);
@@ -553,21 +569,22 @@ else{ //reporte de todas las especialidades
                                 
              $imprimir.= "<table width='90%' border='1' align='center' >
                           <tr style='background:#BBBEC9'> <tr><td colspan='11'><span style='color: #0101DF;'>No se han encontrado resultados...</span></td></tr></table>";
-           
-             echo  $imprimir;
+             fwrite($punteroarchivo);
+	    fclose($punteroarchivo);
+           // echo  $imprimir;
          }            
                             
-                            
-                            
-		fwrite($punteroarchivo,$imprimir1);
-		//echo $imprimir;	
+         
+         
+         
+         	
+		//CIERRE DE ARCHIVO EXCEL
+	    fwrite($punteroarchivo,$imprimir);
+	    fclose($punteroarchivo);
+		//************************/ 
+	      echo $imprimir;
 
-		//***********************			
-		fwrite($punteroarchivo,$imprimir);
-		
-//}	//while principal	
-       //echo $imprimir;	
-	fclose($punteroarchivo);
+       		
 }//else
 	break;
     
