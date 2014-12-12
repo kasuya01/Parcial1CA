@@ -100,7 +100,7 @@ function Duplos($IdSolicitudEstudio,$IdSubServicio){
 			WHERE hc.IdSubServicio='$IdSubServicio' and (se.Estado='D' or se.Estado='C' or se.Estado='P' or se.Estado='R') 
                         and ca.IdSolicitudEstudio=$IdSolicitudEstudio
                         and fecha>=curdate()";*/
-        $query="select ccs.fecha, sse.estado
+        $query="select ccs.fecha, sse.estado, shc.id_empleado
 from cit_citas_serviciodeapoyo ccs
 join sec_solicitudestudios sse		on (sse.id=ccs.id_solicitudestudios)
 join sec_historial_clinico shc		on (shc.id=sse.id_historial_clinico)
@@ -246,7 +246,7 @@ function InsertarCitaServicio($actual,$idsolicitudestudio,$FechaReg,$IdUsuarioRe
 		//$sql_Insert =	"INSERT INTO cit_citasxserviciodeapoyo 	(IdCitaServApoyo,Fecha,IdSolicitudEstudio,IdUsuarioReg,FechaHoraReg,IdDetalleSolicitud) 
 		//				VALUES ('0','$actual','".$idsolicitudestudio."',$IdUsuarioReg,'".$FechaReg."',$idetallesolicitud)";
 		$sql_Insert =	"insert into cit_citas_serviciodeapoyo (fecha, id_solicitudestudios, idusuarioreg, fechahorareg)
-                                 values (' $actual', $idsolicitudestudio, $IdUsuarioReg, '$FechaReg');";
+                                 values ('$actual', $idsolicitudestudio, $IdUsuarioReg, date_trunc('seconds', NOW()));";
 		//$valret = mysql_query($sql_Insert) or die('La consulta fall&oacute;: ' . mysql_error());
                 $valret = pg_query($sql_Insert);
               // echo ' ..sqlinsert: '.$sql_Insert;
@@ -301,6 +301,18 @@ function ContarFechas($actual){
 	
 }
 
+//Fn pg 
+function BuscarEmployee($idsol){
+        $SQL ="select id_empleado
+from sec_historial_clinico shc
+join sec_solicitudestudios sse on (shc.id=sse.id_historial_clinico)
+where sse.id=$idsol;";
+        $db = pg_query($SQL);
+        $vareturn = pg_fetch_array($db);
+   
+    return $vareturn['id_empleado'];
+}
+
 function ContarCreatinina($actual, $id_qui045){
 	$con = new ConexionBD;
 	$solicitudes = array();
@@ -308,7 +320,7 @@ function ContarCreatinina($actual, $id_qui045){
 	$i=1;
 	
 	if($con->conectar()==true){
-		$query_Search = "select idsolicitudestudios
+		$query_Search = "select id_solicitudestudios
                             from cit_citas_serviciodeapoyo
                             where fecha='$actual'";
 		$valret = pg_query($query_Search);
@@ -394,7 +406,7 @@ function ObtenerSubServicio($IdSolicitud,$Fecha, $Idexpediente){
 	}else{
 		$comp="and fecha='$Fecha'";
 	}
-		$query_Search="select distinct (id_aten_area_mod_estab) 
+		$query_Search="select distinct (id_aten_area_mod_estab)
                                 from sec_solicitudestudios sse
                                 join sec_historial_clinico shc 	on (shc.id = sse.id_historial_clinico) 
                                 join cit_citas_dia ccd		on (ccd.id_empleado = shc.id_empleado)
@@ -412,13 +424,13 @@ function ObtenerSubServicio($IdSolicitud,$Fecha, $Idexpediente){
 }//ObtenerSubServicio
 
 function FechaServer(){
-        $SQL ="select to_char(current_timestamp, 'YYYY-MM-DD HH24:MI:SS') as fecha";
+        $SQL ="select date_trunc('seconds', NOW()) as fecha";
         $db = pg_query($SQL);
         $vareturn = pg_fetch_array($db);
    
     return $vareturn['fecha'];
 }
- 
+
 }//Clase
 
 

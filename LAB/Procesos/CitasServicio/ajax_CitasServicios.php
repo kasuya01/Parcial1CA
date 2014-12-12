@@ -22,7 +22,7 @@ $idexp=$_POST['id_exp'];
 
 switch($Proceso){
 	
-////	Procesos para el otorgamiento de CITAS PARA LOS SERVICIOS DE APOYO.	
+////	$IdUsuarioRegProcesos para el otorgamiento de CITAS PARA LOS SERVICIOS DE APOYO.	
 	
 	case 'busquedaexp'://busqueda de los datos del paciente en base al numero de expediente, ya que al otorgar la cita del servicio de apoyo TODO paciente debe poseer un numero de expediente clinico
 	$rslt='';
@@ -278,6 +278,7 @@ switch($Proceso){
 				echo $rslt;
 				
 			}else{
+                                $employee=$citaserv->BuscarEmployee($_POST["idsolicitudestudio"]);
 				$array_labexamens = array();	
 				$array_namexams = array();
 				$i=1;	
@@ -370,7 +371,7 @@ switch($Proceso){
                                             //echo '......::entro a insert::...';
 						//comprobamos si ese dia de la semana no es sabado ni domingo
 						$weekend = $citaserv->diaslaborales($dd);							
-						//$datos = $citaserv->InsertarCitaServicio($actual,$_POST['idsolicitudestudio'],$fechareg,$IdUsuarioReg);
+						$datos = $citaserv->InsertarCitaServicio($actual,$_POST['idsolicitudestudio'],$fechareg,$IdUsuarioReg);
 						$bandera=1;
 						
 					}else{
