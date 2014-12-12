@@ -93,7 +93,7 @@ if ($nivel==31){
 if ($nivel==33){
 	include_once ('../../../PaginaPrincipal/index_laboratorio33.php');}
 ?><br>
-<table align="center" width="100%">
+<table  align="center" width="100%">
 
 <tr>
 <td>
@@ -146,7 +146,7 @@ if ($nivel==33){
                 <tr>
                             <td class="StormyWeatherFieldCaptionTD" style="font-weight:bold">Grupo Prueba </td>
                             <td class="StormyWeatherDataTD" colspan="1">
-                                <select id="cmbArea" name="cmbArea" class="ui-corner-all" style="width:200px" size="1" onChange="BuscarExamen(this.value)">
+                                <select id="cmbArea" name="cmbArea" class="ui-state-default ui-corner-all" style="width:200px" size="1" onChange="BuscarExamen(this.value)">
                                     
                                     
                                     <?php
@@ -163,7 +163,7 @@ if ($nivel==33){
                             <td  class="StormyWeatherFieldCaptionTD">Prueba</td>
                             <td  class="StormyWeatherDataTD"  style="width:200px">
                                 <div id="divExamen">
-                                    <select name="cmbExamen" id="cmbExamen" class="ui-corner-all" style="width:200px"> 
+                                    <select name="cmbExamen" id="cmbExamen"   class="ui-state-default ui-corner-all" style="width:200px"> 
                                         <option value="0">--Seleccione Examen--</option>
                                     </select>
                                 </div>
