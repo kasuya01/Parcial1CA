@@ -2,7 +2,10 @@
 Conexion/*
 
 #Omitiendo Reportes
-Reportes/*
+Reportes/*.ods
+Reportes/*.pdf
+Reportes1/*.ods
+Reportes1/*.pdf
 
 #Archivos Thumbs
 Thumbs.db
