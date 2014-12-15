@@ -420,8 +420,8 @@ case 2://vista Previa de Resultado
                         <tr>
                             <td colspan='5' align='center'>
                                 <input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarPlantillaE()'>
-				<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaE(".$idsolicitud.",\"".$idexamen."\",\"".htmlentities($row_empleado['empleado'])."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($comentarios)."\",\"".htmlentities($valores)."\",\"".$codigos."\",\"".htmlentities($observacion)."\",\"".$row_generales['estabext']."\",\"".$sexo."\",\"".$idedad."\");'>
-				<input type='button' id='btnSalir' value='cerrar' onclick='Cerrar()'>
+				<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaE(".$idsolicitud.",\"".$idexamen."\",\"".$row_empleado['empleado']."\",\"".$row_generales['procedencia']."\",\"".$row_generales['subservicio']."\",\"".$comentarios."\",\"".$valores."\",\"".$codigos."\",\"".$observacion."\",\"".htmlentities($establecimiento)."\",\"".$sexo."\",\"".$idedad."\");'>
+                         	<input type='button' id='btnSalir' value='cerrar' onclick='Cerrar()'>
                             </td>
 			</tr>";
 	$imprimir.="</table>";

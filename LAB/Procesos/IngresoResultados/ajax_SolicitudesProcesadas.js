@@ -426,7 +426,8 @@ function ImprimirPlantillaD(idsolicitud, idexamen, idresultado, idempleado, esta
 }
 
 function ImprimirPlantillaE(idsolicitud, idexamen, responsable, procedencia, origen, cometarios, valores, codigos, observacion, estab, sexo, idedad) {
-//alert (idedad);
+//alert (idsolicitud+" examen= "+idexamen+" responsable= "+responsable+" procedencia= "+procedencia+
+//"origen= "+origen+" cometarios= "+cometarios+" valores= "+valores+" codigos= "+codigos+" observacion= "+observacion+" estab= "+estab+" sexo "+sexo+" edad= "+idedad);
     ventana_secundaria = window.open("ImprimirPlantillaE.php?var1=" + idsolicitud +
             "&var2=" + idexamen + "&var3=" + responsable +
             "&var4=" + procedencia + "&var5=" + origen +
@@ -551,7 +552,7 @@ function MostrarVistaPreviaPlantillaC()
                 {  //mostrar los nuevos registros en esta capa
                     document.getElementById('divresultado').style.display = "block";
                     document.getElementById('divresultado').innerHTML = ajax.responseText;
-                    calc_edad();
+                   // calc_edad();
 
                 }
             }
@@ -763,7 +764,7 @@ function PreviosNegativos()
                     document.getElementById('divresultado').style.display = "block";
                     document.getElementById('divresultado').innerHTML = ajax.responseText;
                     //alert(ajax.responseText)
-                    calc_edad();
+                   // calc_edad();
                 }
             }
         }
@@ -1382,7 +1383,7 @@ function MostrarVistaPreviaPlantillaB(){
                 {  //mostrar los nuevos registros en esta capa
                     document.getElementById('divresultado').style.display = "block";
                     document.getElementById('divresultado').innerHTML = ajax.responseText;
-                    calc_edad();
+                    //calc_edad();
                     //alert(ajax.responseText);
                 }
             }
@@ -1496,8 +1497,10 @@ function LlenarComboResponsable(idarea)
             }
         }
     }
-    
-   LlenarComboResponsable2(idarea);
+    comboempfin=document.getElementById('cmbEmpleadosfin');
+    if(comboempfin!=null)
+        LlenarComboResponsable2(idarea);
+   
 
 }
 //Fn PG
@@ -2131,7 +2134,7 @@ function VistaPrevia()
                 document.getElementById('divpreview').innerHTML = ajax.responseText;
                 document.getElementById('divBotonPrevie').style.display = "block";
                 document.getElementById('divBotonGuardar').style.display = "none";
-                calc_edad();
+                //calc_edad();
             }
         }
     }
@@ -2317,7 +2320,7 @@ function MostrarVistaPreviaPlantillaE()
                 {  //mostrar los nuevos registros en esta capa
                     document.getElementById('divresultado').style.display = "block";
                     document.getElementById('divresultado').innerHTML = ajax.responseText;
-                    calc_edad();
+                    //calc_edad();
                 }
             }
         }
