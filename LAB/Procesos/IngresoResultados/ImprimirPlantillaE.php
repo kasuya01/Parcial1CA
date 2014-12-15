@@ -14,7 +14,7 @@ $observacion=$_GET['var9'];
 $establecimiento=$_GET['var10'];
 $sexo=$_GET['var11'];
 $idedad=$_GET['var12'];
-//echo $sexo."-".$idedad;
+//echo $idsolicitud."Examen= ".$idexamen."Empleado= ".$responsable." procedencia= ".$procedencia."oreigen= ".$origen." comentario= ".$comentarios." valores= ".$valores."codigos= ".$codigos."observacio= ".$observacion."establecimiento= ".$establecimiento."sexo= ".$sexo." idedad= ".$idedad;
 //echo $responsable;
 
 ?>
@@ -42,9 +42,7 @@ function calc_edad()
 
 <style type="text/css">
 <!--
-@media print{
-#boton{display:none;}
-}
+
 @media print{
 #boton1{display:none;}
 }
@@ -84,13 +82,13 @@ if ($IdEstandar=="H15"){
 
 	<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
 		<tr>
-			<td colspan="1" align="left" width="20%"><img id="Image1" style="WIDTH: 80px; HEIGHT: 55px" height="86" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
+			<td colspan="1" align="left" width="20%"><img id="Image1" style="width: auto; height: 55px;" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
                         <td align="center" colspan="4" width="60%" class="Estilo6">
 				<p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO </strong></p>
                                 <p><strong><?php  echo  $row_estab['nombre'] ?></strong></p>
 				<p><strong>ÁREA DE <?php echo htmlentities($row_area['nombrearea'])?> </strong></p>
 			</td>
-                        <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
+                        <td colspan="1" align="right" width="20%"><img id="Image3" style="width: auto; height: 55px;" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
 		</tr>
                 <tr>
                         <td colspan='6'>&nbsp;</td>
@@ -196,13 +194,13 @@ if ($IdEstandar=="H15"){
 	?>
 	<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
 		<tr>
-			<td colspan="1" align="left" width="20%"><img id="Image1" style="WIDTH: 80px; HEIGHT: 55px" height="86" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
+			<td colspan="1" align="left" width="20%"><img id="Image1" style="width: auto; height: 55px;"  src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
                         <td align="center" colspan="4" width="60%" class="Estilo5">
 				<p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
                                 <p><strong><?php echo $row_estab['nombre'] ?></strong></p>
 				<p><strong>ÁREA DE <?php echo htmlentities($row_area['nombrearea'])?> </strong></p>
 			</td>
-                        <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
+                        <td colspan="1" align="right" width="20%"><img id="Image3" style="width: auto; height: 55px;"  src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
 		</tr>
                  <tr>
                         <td colspan='6'>&nbsp;</td>
