@@ -175,12 +175,13 @@ switch ($opcion)
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo) 
                 WHERE t16.idestado = 'P' OR t16.idestado = 'C' AND t02.id_establecimiento = $lugar AND $condf2";
 				
-			echo $query;
+			//echo $query;
 			
 			$consulta=$objdatos->ListadoResultadosPorArea($query);     
 		// $consulta=$objdatos->ListadoResultadosPorArea($idarea,$idexpediente);
-		echo "<table width='80%' border='1' align='center'>
-				<tr class='CobaltFieldCaptionTD'>
+		echo "<center><div class='table-responsive' style='width: 80%;'>
+                    <table width='80%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+				<thead><tr class='CobaltFieldCaptionTD'>
 					<td>Fecha Recepci&oacute;n</td>
 					<td>Muestra</td>
 					<td>NEC </td>
@@ -189,7 +190,7 @@ switch ($opcion)
 					<td>Procedencia</td>
 					<td>Establecimiento</td>
 					<td>Estado Solicitud</td>
-				</tr>";    
+				</tr></thead><tbody>";    
 		$pos=0;
 		
 		while ($row = pg_fetch_array($consulta))
@@ -229,7 +230,7 @@ switch ($opcion)
 			pg_free_result($consulta);
 			
 		"<input type='hidden' name='oculto' id='text' value='".$pos."' /> 
-				</table>";
+				</tbody></table></div></center>";
    
 	break;
 	case 5://LLENANDO COMBO DE Examenes

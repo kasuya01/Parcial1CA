@@ -60,3 +60,36 @@ $(function(){
                         
 	});
 });
+
+$(function(){
+    classdate();
+});
+function classdate() {
+       //pongo lo de formato español porque esta es una clase
+    //Nose si es lo correcto pero funciona.
+    $.datepicker.regional['es'] = {
+		closeText: 'Cerrar',
+		prevText: '&#x3c;Ant',
+		nextText: 'Sig&#x3e;',
+		currentText: 'Hoy',
+		monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+		'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+		monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
+		'Jul','Ago','Sep','Oct','Nov','Dic'],
+		dayNames: ['Domingo','Lunes','Martes','Mi&eacute;rcoles','Jueves','Viernes','S&aacute;bado'],
+		dayNamesShort: ['Dom','Lun','Mar','Mi&eacute;','Juv','Vie','S&aacute;b'],
+		dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','S&aacute;'],
+		weekHeader: 'Sm',
+		dateFormat: 'yy-mm-dd',
+		firstDay: 1,
+		isRTL: false,
+		showMonthAfterYear: false,
+		yearSuffix: ''};
+	$.datepicker.setDefaults($.datepicker.regional['es']);
+      $('.date').on('click', function() {
+		$(this).datepicker({showOn:'focus', changeMonth: true,showWeek: true,
+			changeYear: true,  firstDay: 0, dateFormat: 'yy-mm-dd', yearRange: "-120:+0"}).focus();
+                        
+	});
+}
+
