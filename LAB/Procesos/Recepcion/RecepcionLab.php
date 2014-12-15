@@ -41,10 +41,13 @@ if ($nivel==4){
 <link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
 <link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />
 
-<!--llamado al archivo de funciones del calendario-->
-<script type="text/javascript" src="../../../calendarstructure/calendar.js"></script>
-<script type="text/javascript" src="../../../calendarstructure/calendar-es.js"></script>
-<script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
+<style type="text/css">
+			*{ font-size:12px; font-family:verdana; }
+			h1 { font-size:22px; }
+			//input { width:250px; border: 2px solid #CCC; line-height:20px;height:20px; border-radius:3px; padding:2px; }
+		</style>
+<link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+<link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
 
 <script language="javascript">
 var miPopup
@@ -701,8 +704,8 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
             <tr>
                     <td class="StormyWeatherFieldCaptionTD" align="center">Fecha en que paso Consulta</td>
                     <td class="StormyWeatherDataTD" colspan="2">
-                            <input name="Input" class="CobaltInput" id="txtconsulta" style="width:188px; height:20px" size="26">
-                            <input type="button" value="..." id="trigger">&nbsp;&nbsp;aaaa-mm-dd</td>
+                        <input name="Input" class="date" id="txtconsulta" style="width:188px; height:20px" size="26" placeholder="aaaa-mm-dd">
+<!--                            <input type="button" value="..." id="trigger">&nbsp;&nbsp;aaaa-mm-dd</td>
                                     <script type="text/javascript">
                                             Calendar.setup(
                                             {
@@ -711,7 +714,7 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
                                             button      : "trigger"       // el ID del boton			  	  
                                             }
                                             );
-                                    </script>
+                                    </script>-->
             </tr>
             <tr>
                     <td class="StormyWeatherFieldCaptionTD">Agregar Examenes</td>
@@ -726,6 +729,12 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
 <p align="center"><!-- END Record NewRecord1 --></p>
 <p align="center">&nbsp;</p>
 </body>
+ <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
+<script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-es.js"></script>
+<script type="text/javascript" src="../../../public/datepicker/script.js"></script>    
+    
 </html>
 <?php
 }

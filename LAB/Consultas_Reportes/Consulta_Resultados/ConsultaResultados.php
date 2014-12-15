@@ -4,6 +4,7 @@ $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea']; 
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
  include_once("clsConsultaResultados.php"); 
 //consulta los datos por su id
 $obj = new clsConsultaResultados;
@@ -34,6 +35,8 @@ else{
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 <title>Consulta Resultados</title>
 <script language="JavaScript" type="text/javascript" src="ajax_ConsultaResultados.js"></script>
+<?php include_once $ROOT_PATH.'/public/css.php';?>
+<?php include_once $ROOT_PATH.'/public/js.php';?>
 <!--referencias del estilo del calendario-->
 <link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
 <link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />
@@ -103,7 +106,8 @@ if ($nivel==33){
 	</tr>
 	<tr>		
 		<td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</td>
-		<td class="StormyWeatherDataTD"><select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)">
+		<td class="StormyWeatherDataTD">
+                    <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)">
         	<option value="0">Seleccione un Tipo de Establecimiento</option>
 			<?php
 				$db = new ConexionBD;
@@ -145,7 +149,7 @@ if ($nivel==33){
 	<tr>	
 		<td class="StormyWeatherFieldCaptionTD">Procedencia</td>
 		<td class="StormyWeatherDataTD">
-			<select name="CmbServicio" id="CmbServicio" style="width:355px" onChange="BuscarServicio(this.value)" >
+			<select name="CmbServicio" id="CmbServicio" style="width:405px" onChange="BuscarServicio(this.value)" >
 				<option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
 				<?php
 					$db = new ConexionBD;
@@ -185,10 +189,10 @@ if ($nivel==33){
 	</tr>
 	<tr>
 		<td class="StormyWeatherFieldCaptionTD" width="22%" style="font-weight:bold">
-			<b>&Aacute;rea de Laboratorio </b>
+			<b>&Aacute;rea de Laboratorio * </b>
 		</td>
 		<td class="StormyWeatherDataTD" colspan="1" width="11%">
-			<select id="cmbArea" name="cmbArea" size="1"  onChange="BuscarExamen(this.value)">
+			<select id="cmbArea" name="cmbArea" size="1"  onChange="BuscarExamen(this.value)" style="width:405px">
                             <!--<option value="0" >--Seleccione un &Aacute;rea--</option>-->
 				<?php
 				include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
@@ -204,7 +208,7 @@ if ($nivel==33){
 		<td  class="StormyWeatherFieldCaptionTD">Examen </td>
    		<td  class="StormyWeatherDataTD"  style="width:205px">
 			<div id="divExamen">
-				<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:250px"> 
+				<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:375px"> 
 					<option value="0"> Seleccione Examen </option>
 				</select>
 			</div>
@@ -214,10 +218,10 @@ if ($nivel==33){
 	<tr>
 		
 		<td class="StormyWeatherFieldCaptionTD"  >Expediente</td>
-		<td  class="StormyWeatherDataTD" width="5%" ><input type="text" size="24" name="txtexpediente" id="txtexpediente" />
+		<td  class="StormyWeatherDataTD" width="5%" ><input type="text" size="28" name="txtexpediente" id="txtexpediente" />
 		</td>
 		<td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Recepi&oacute;n</td>
-		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="15" name="txtfecharecep" id="txtfecharecep" />
+		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="28" name="txtfecharecep" id="txtfecharecep" />
 			<input type="button" value="..." id="trigger">dd/mm/aaaa
 		</td>
 	</tr>
