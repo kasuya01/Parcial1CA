@@ -7,6 +7,7 @@ $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea']; 
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
 $recepcion = new clsRecepcion;
 // echo $lugar;
 /***************/
@@ -37,18 +38,13 @@ if ($nivel==4){
 </style>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
-<!--referencias del estilo del calendario-->
-<link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
-<link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />
-
 <style type="text/css">
 			*{ font-size:12px; font-family:verdana; }
 			h1 { font-size:22px; }
 			//input { width:250px; border: 2px solid #CCC; line-height:20px;height:20px; border-radius:3px; padding:2px; }
 		</style>
-<link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
-<link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
-
+<?php include_once $ROOT_PATH."/public/css.php";?>
+<?php include_once $ROOT_PATH."/public/js.php";?>
 <script language="javascript">
 var miPopup
 function fillEstablecimiento(idtipoEstab){

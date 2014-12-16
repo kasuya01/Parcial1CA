@@ -40,12 +40,6 @@ else{
 <title>Recepcion de Examenes en &Aacute;reas de Laboratorio</title>
 <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesPorArea.js"></script>
 <!--referencias del estilo del calendario-->
-<link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
-<link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />
-<!--llamado al archivo de funciones del calendario-->
-<script type="text/javascript" src="../../../calendarstructure/calendar.js"></script>
-<script type="text/javascript" src="../../../calendarstructure/calendar-es.js"></script>
-<script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
 <?php include_once $ROOT_PATH."/public/css.php";?>
 <?php include_once $ROOT_PATH."/public/js.php";?>
 
@@ -230,8 +224,7 @@ function BuscarServicio(IdServicio){
                         <td class="StormyWeatherDataTD" ><input type="text" size="28" name="txtexpediente" id="txtexpediente" /></td>
                         <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Consulta</td>
                         <td class="StormyWeatherDataTD" width="20%">
-                            <input type="text" size="28" name="txtfechasolicitud" id="txtfechasolicitud"/>
-                            <input type="button" value="..." id="trigger">dd/mm/aaaa</td> 
+                            <input type="text" size="28" name="txtfechasolicitud" id="txtfechasolicitud" class="date"  placeholder="aaaa-mm-dd"/>
                     </tr>
                     <tr>
                         <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong></td> 
@@ -298,3 +291,4 @@ else{?>
             window.location="../../../login.php";
     </script>
 <?php }?>
+ 

@@ -37,13 +37,6 @@ else{
 <script language="JavaScript" type="text/javascript" src="ajax_MuestrasRechazadas.js"></script>
 <?php include_once $ROOT_PATH.'/public/css.php';?>
 <?php include_once $ROOT_PATH.'/public/js.php';?>
-<!--referencias del estilo del calendario-->
-<link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
-<link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />
-<!--llamado al archivo de funciones del calendario-->
-<script type="text/javascript" src="../../../calendarstructure/calendar.js"></script>
-<script type="text/javascript" src="../../../calendarstructure/calendar-es.js"></script>
-<script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
 <script language="JavaScript" type="text/javascript">
 
 function MostrarMuestrasRechazadas()
@@ -231,11 +224,10 @@ if ($nivel==4){
 	<tr>
 		
 		<td class="StormyWeatherFieldCaptionTD"  >Expediente</td>
-		<td  class="StormyWeatherDataTD" width="5%" ><input type="text" size="24" name="txtexpediente" id="txtexpediente" />
+		<td  class="StormyWeatherDataTD" width="5%" ><input type="text" size="28" name="txtexpediente" id="txtexpediente" />
 		</td>
 		<td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Recepi&oacute;n</td>
-		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="15" name="txtfecharecep" id="txtfecharecep" />
-			<input type="button" value="..." id="trigger">dd/mm/aaaa
+		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="28" name="txtfecharecep" id="txtfecharecep" class="date"  placeholder="aaaa-mm-dd" />
 		</td>
 	</tr>
 	<tr>
@@ -271,15 +263,6 @@ if ($nivel==4){
 	<tr>
 </table>
 </form>
-	<script type="text/javascript">
-			Calendar.setup(
-				{
-				inputField  : "txtfecharecep",         // el ID texto 
-				ifFormat    : "%d/%m/%Y",    // formato de la fecha
-				button      : "trigger"       // el ID del boton			  	  
-				}
-			);
-	</script>
 </div>
 <div id="divBusqueda">
 

@@ -39,15 +39,8 @@ if (isset($_SESSION['Correlativo'])) {
             <script language="JavaScript" type="text/javascript" src="ajax_RecepcionSolicitud.js"></script>
             <?php include_once $ROOT_PATH."/public/css.php";?>
             <?php include_once $ROOT_PATH."/public/js.php";?>
-            <!--referencias del estilo del calendario-->
-            <link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
-            <link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />
             <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
             <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
-            <!--llamado al archivo de funciones del calendario-->
-            <script type="text/javascript" src="../../../calendarstructure/calendar.js"></script>
-            <script type="text/javascript" src="../../../calendarstructure/calendar-es.js"></script>
-            <script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
             <script language="JavaScript" >
                 function BuscarEstablecimiento(IdTipoEstab) {
                     LlenarEstablecimiento(IdTipoEstab);
@@ -77,10 +70,10 @@ if (isset($_SESSION['Correlativo'])) {
                 function searchAllBuild(object) {
                     jQuery('#divResultado').empty();
                     jQuery('#divResultado').append('<center><img id="wait" src="<?php echo $base_url; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" class="search-label">Buscando...</div></center>');
-
+                    k=0;
                     setTimeout(function() {
                         var html =  '<center>\
-                                        <div style="background-color:#FAFAFA;padding: 20px 0 20px 0;">\
+                                        <div style="background-color:#FFFFFF;padding: 20px 0 20px 0;">\
                                             <div class="table-responsive" style="width: 80%;">\
                                                 <table class="table table-hover table-bordered table-condensed table-white">\
                                             <thead>\
@@ -102,6 +95,7 @@ if (isset($_SESSION['Correlativo'])) {
                                 else
                                     date_cita=val.fecha_cita
                                 if (date_cita!=''){
+                                    k++;
                                 html = html + '<tr>\
                                                 <td><a href="#" onclick="VerificarExistencia('+' \''+val.numero_expediente+'\', \''+val.fecha_cita+'\', '+val.id_establecimiento+', true);return false;" style="padding-left:7px;">'+val.numero_expediente+'</a></td>\
                                                 <td>'+val.fecha_consulta+'</td>\
@@ -111,11 +105,17 @@ if (isset($_SESSION['Correlativo'])) {
                                                 <td>'+val.tiposolicitud+'</td>\
                                             </tr>';
                                 }
+                                
                             });
                         } else {
-                            html = html + '<tr><td colspan="5" style="color:#888888; font-weit">No se encontraron solicitudes para mostrar...</td></tr>';
+                            html = html + '<tr><td colspan="6" style="color:#888888; font-weit">No se encontraron solicitudes para mostrar...</td></tr>';
+                            k=1;
                         }
-
+                        
+                        if(k==0)
+                                {
+                                   html = html + '<tr><td colspan="6" style="color:#888888; font-weit">No se encontraron solicitudes para mostrar...</td></tr>'; 
+                                }
                         html = html + '     </tbody>\
                                         </table>\
                                     </center>';
@@ -205,8 +205,7 @@ if (isset($_SESSION['Correlativo'])) {
                                     <tr>
                                         <td class="StormyWeatherFieldCaptionTD">Fecha de Cita</td>
                                         <td class="StormyWeatherDataTD">
-                                            <input type="text" name="txtfechasolicitud" id="txtfechasolicitud" value="<?php //echo date("d/m/Y"); ?>"/>
-                                            <input type="button" value="..." id="trigger">dd/mm/aaaa
+                                            <input type="text" name="txtfechasolicitud" id="txtfechasolicitud" value="<?php //echo date("d/m/Y"); ?>" class="date"  placeholder="aaaa-mm-dd" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -216,15 +215,6 @@ if (isset($_SESSION['Correlativo'])) {
                                     </tr>
                                 </table>
                             </form>
-                            <script type="text/javascript">
-                                Calendar.setup(
-                                        {
-                                            inputField: "txtfechasolicitud", // el ID texto
-                                            ifFormat: "%d/%m/%Y", // formato de la fecha
-                                            button: "trigger"       // el ID del boton
-                                        }
-                                );
-                            </script>
                         </div>
                         <div id="divResultado">
                         </div>
@@ -236,7 +226,7 @@ if (isset($_SESSION['Correlativo'])) {
                         </div>
                     </TD>
                 </TR>
-        </body>
+        </body> 
     </html>
     <?php
 } else {

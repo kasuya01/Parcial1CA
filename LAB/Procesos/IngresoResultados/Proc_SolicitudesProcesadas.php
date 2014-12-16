@@ -41,13 +41,6 @@ if (isset($_SESSION['Correlativo'])) {
             <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script>
             <?php include_once $ROOT_PATH."/public/js.php";?>
              <?php include_once $ROOT_PATH."/public/css.php";?>
-            <!--referencias del estilo del calendario-->
-            <link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
-            <link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />
-            <!--llamado al archivo de funciones del calendario-->
-            <script type="text/javascript" src="../../../calendarstructure/calendar.js"></script>
-            <script type="text/javascript" src="../../../calendarstructure/calendar-es.js"></script>
-            <script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
             <script language="JavaScript" type="text/javascript">
                 function MostrarSolicitudes() {
                     var error = [];
@@ -245,8 +238,8 @@ if (isset($_SESSION['Correlativo'])) {
                             </td>
                             <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Consulta</td>
                             <td  class="StormyWeatherDataTD" width="20%" >
-                                <input type="text" size="28" name="txtfechasolicitud" id="txtfechasolicitud" />
-                                <input type="button" value="..." id="trigger1">aaaa/mm/dd
+                                <input type="text" size="28" name="txtfechasolicitud" id="txtfechasolicitud" class="date"  placeholder="aaaa-mm-dd"/>
+                               
                             </td>
                         </tr>
                         <tr>
@@ -255,8 +248,7 @@ if (isset($_SESSION['Correlativo'])) {
                             
                             <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Fecha Recepi&oacute;n</strong></td>
                             <td  class="StormyWeatherDataTD">
-                                <input type="text" size="28" name="txtfecharecep" id="txtfecharecep"/>
-                                <input type="button" value="..." id="trigger2">aaaa/mm/dd
+                                <input type="text" size="28" name="txtfecharecep" id="txtfecharecep" class="date"  placeholder="aaaa-mm-dd"/>
                             </td>
                         </tr>
                         <tr>
@@ -283,23 +275,6 @@ if (isset($_SESSION['Correlativo'])) {
                         </tr>
                     </table>
                 </form>
-                <script type="text/javascript">
-                    Calendar.setup(
-                            {
-                                inputField: "txtfechasolicitud", // el ID texto 
-                                ifFormat: "%Y-%m-%d", // formato de la fecha
-                                button: "trigger1"       // el ID del boton			  	  
-                            }
-                    );
-            
-                    Calendar.setup(
-                            {
-                                inputField: "txtfecharecep", // el ID texto 
-                                ifFormat: "%Y-%m-%d", // formato de la fecha
-                                button: "trigger2"       // el ID del boton			  	  
-                            }
-                    );
-                </script>
             </div>
             <div id="divBusqueda">
 
