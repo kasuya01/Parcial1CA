@@ -23,15 +23,8 @@ $nomtipo=$row[2];
 <script language="JavaScript" type="text/javascript" src="ajax_EliminarResultado.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
-<!--referencias del estilo del calendario-->
-<link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
-<link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />
 <?php include_once $ROOT_PATH.'/public/css.php';?>
 <?php include_once $ROOT_PATH.'/public/js.php';?>
-<!--llamado al archivo de funciones del calendario-->
-<script type="text/javascript" src="../../../calendarstructure/calendar.js"></script>
-<script type="text/javascript" src="../../../calendarstructure/calendar-es.js"></script>
-<script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
 <script language="JavaScript" type="text/javascript">
 function MostrarBusqueda()
 {
@@ -178,8 +171,7 @@ if ($nivel==4){
                                     <td  class="StormyWeatherDataTD"><input type="text" size="28" name="txtexpediente" id="txtexpediente" /></td>	
                                     <td class="StormyWeatherFieldCaptionTD">Fecha Recepci&oacute;n</td>
                                     <td  class="StormyWeatherDataTD">
-                                            <input type="text" name="txtfechaRecep" id="txtfechaRecep"  size="28"/>
-                                            <input name="button" type="button" id="trigger"  value="..."> dd/mm/aaa</td>
+                                            <input type="text" name="txtfechaRecep" id="txtfechaRecep"  size="28" class="date"  placeholder="aaaa-mm-dd"/></td>
                             </tr>
                             <tr>
                                     <td  class="StormyWeatherFieldCaptionTD" align="left" ><strong>Primer Nombre&nbsp;</strong>   </td> 

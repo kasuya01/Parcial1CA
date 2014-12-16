@@ -37,13 +37,6 @@ if (isset($_SESSION['Correlativo'])) {
             <script language="JavaScript" type="text/javascript" src="ajax_RMAutomatizada.js"></script>            
             <?php include_once $ROOT_PATH.'/public/css.php';?>
             <?php include_once $ROOT_PATH.'/public/js.php';?>
-            <!--referencias del estilo del calendario-->
-            <link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
-            <link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />
-            <!--llamado al archivo de funciones del calendario-->
-            <script type="text/javascript" src="../../../calendarstructure/calendar.js"></script>
-            <script type="text/javascript" src="../../../calendarstructure/calendar-es.js"></script>
-            <script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
             <script language="JavaScript" type="text/javascript">
 
                 function MostrarMuestrasRechazadas()
@@ -240,8 +233,8 @@ if (isset($_SESSION['Correlativo'])) {
                             <td class="StormyWeatherDataTD"><input type="text" size="28" name="txtexpediente" id="txtexpediente"></td>
                             <td class="StormyWeatherFieldCaptionTD"  width="15%">Fecha Recepi&oacute;n</td>
                             <td class="StormyWeatherDataTD" width="20%">
-                                <input type="text" size="28" name="txtfecharecep" id="txtfecharecep">
-                                <input name="button" type="button" id="trigger" value="...">dd/mm/aaaa </td>
+                                <input type="text" size="28" name="txtfecharecep" id="txtfecharecep" class="date"  placeholder="aaaa-mm-dd">
+                            </td>
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong></td> 
@@ -279,15 +272,6 @@ if (isset($_SESSION['Correlativo'])) {
                         <tr>
                     </table>
                 </form>
-                <script type="text/javascript">
-                    Calendar.setup(
-                            {
-                                inputField: "txtfecharecep", // el ID texto 
-                                ifFormat: "%d/%m/%Y", // formato de la fecha
-                                button: "trigger"       // el ID del boton			  	  
-                            }
-                    );
-                </script>
             </div>
             <div id="divBusqueda">
 
@@ -299,7 +283,7 @@ if (isset($_SESSION['Correlativo'])) {
             </div>
             <div id="divImprimir">
 
-        </body>
+        </body> 
     </html>
     <?php
 } else {
