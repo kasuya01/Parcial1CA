@@ -182,7 +182,7 @@ switch ($opcion)
                        t18.idestandar,
                        t02.id_establecimiento_externo,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-                        t01.observacion,t01.idtipomuestra
+                        t01.observacion,t01.idtipomuestra,t01.estadodetalle detalle
             FROM sec_detallesolicitudestudios           t01 
             INNER JOIN sec_solicitudestudios            t02     ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra             t03     ON (t02.id = t03.idsolicitudestudio) 
@@ -236,7 +236,7 @@ switch ($opcion)
                    t18.idestandar,
                    t02.id_establecimiento_externo,
                    (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-                    t01.observacion,t01.idtipomuestra 
+                    t01.observacion,t01.idtipomuestra,t01.estadodetalle detalle 
                 FROM sec_detallesolicitudestudios       t01 
             INNER JOIN sec_solicitudestudios            t02     ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra             t03     ON (t02.id = t03.idsolicitudestudio) 
@@ -269,7 +269,7 @@ switch ($opcion)
         
  
         
-  echo "<table width='35%' border='0'  align='center'>
+  echo "<form name='frmDatos'>    <table width='35%' border='0'  align='center'>
         	<center>
            
             
@@ -311,8 +311,11 @@ switch ($opcion)
 				"<input name='idexpediente[".$pos."]' id='idexpediente[".$pos."]' type='hidden' size='60' value='".$row["idnumeroexp"]."' />".
 				"<input name='idarea[".$pos."]' id='idarea[".$pos."]' type='hidden' size='60' value='".$idarea."' />".
                                 "<input name='idtipo[".$pos."]' id='idtipo[".$pos."]' type='hidden'   size='60' value='".$row["idtipomuestra"]."' />".
-			     	"<input name='idexamen[".$pos."]' id='idexamen[".$pos."]' type='hidden' size='60' value='".$row['idexamen']."' />
-                        </td>
+			     	"<input name='idexamen[".$pos."]' id='idexamen[".$pos."]' type='hidden' size='60' value='".$row['idexamen']."' />".
+                                "<input name='detalle[".$pos."]' id='detalle[".$pos."]' type='hidden' size='60' value='".$row['detalle']."' />
+
+             
+</td>
 			<td width='23%'>".htmlentities($row['paciente'])."</td>	 
 			<td width='8%'>".$row['idexamen']."</td>
 			<td width='16%'>" . htmlentities($row['nombreexamen']) . "</td>";
@@ -331,7 +334,7 @@ switch ($opcion)
             }
             pg_free_result($consulta);
             echo "<input type='hidden' name='oculto' id='text' value='" . $pos . "' />
-                </tbody></table></div><br><br>";
+                </tbody></table></div><br><br> </form>" ;
         } else 
             {
                  echo "<tbody><tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></tbody></table></div><br><br>";
@@ -460,10 +463,10 @@ $imprimir="<form name='frmDatos'>
 			echo "Muestras Recibidas.";	
 			if($objdatos->CambiarEstadoSolicitud($idsolicitud,$estadosolicitud,$estadosolicitud)==true)
 			{
-				 echo "Solicitud No fue cambiada de Estado..";
+				// echo "Solicitud No fue cambiada de Estado..";
 			 }
 			else{
-					echo "Solicitud No fue cambiada de Estado..";
+					//echo "Solicitud No fue cambiada de Estado..";
 			}
 		}
 				
@@ -485,7 +488,7 @@ $imprimir="<form name='frmDatos'>
 			
                     echo "Muestras Rechazada";
                     if($objdatos->CambiarEstadoSolicitud($idsolicitud,$estadosolicitud,$estadosolicitud6)==true){
-			echo "Solicitud  fue cambiada de Estado..";	
+			//echo "Solicitud  fue cambiada de Estado..";	
 			}
 			//echo "Muestras Rechazada";
 		}
