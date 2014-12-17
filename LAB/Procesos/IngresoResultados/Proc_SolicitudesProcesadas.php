@@ -97,7 +97,7 @@ if (isset($_SESSION['Correlativo'])) {
                     LlenarComboServicio(IdServicio);
                 }
                 
-                llenarComboTipoSolicitud();
+             //   llenarComboTipoSolicitud();
             </script>
 
         </head>
@@ -234,6 +234,12 @@ if (isset($_SESSION['Correlativo'])) {
                             <td class="StormyWeatherDataTD">
                                 <select id="cmbTipoSolic" name="cmbTipoSolic" size="1" style="width:405px" >
                                     <option value="0">Seleccione un Tipo de Solicitud</option>
+                                    <?php
+                                        $option=$obj->consultarTipoSolicitud();
+                                        while($rowop = pg_fetch_array($option)){
+                                            echo '<option value='.$rowop[idtiposolicitud].'>'.$rowop["tiposolicitud"].'</option>';
+                                        }
+                                    ?>
                                 </select>
                             </td>
                             <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Consulta</td>

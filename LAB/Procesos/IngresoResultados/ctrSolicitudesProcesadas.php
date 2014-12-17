@@ -647,6 +647,7 @@ switch ($opcion) {
         if ($result !== false) {
             $jsonresponse['status'] = true;
             $jsonresponse['data'] = pg_fetch_all($result);
+            $jsonresponse['nums'] = pg_num_rows($result);
         } else {
             $jsonresponse['status'] = false;
         }
