@@ -2427,7 +2427,7 @@ var fecha2 = parseInt(f2[0]+f2[1]+f2[2]);
 
 
 function llenarComboTipoSolicitud() {
-    jQuery.ajaxSetup({
+    jQuery.ajaxSetup({        
         error: function(jqXHR, exception) {
             if (jqXHR.status === 0) {
                 alert('Not connect.\n Verify Network.');
@@ -2454,9 +2454,14 @@ function llenarComboTipoSolicitud() {
         type: 'POST',
         data: { opcion: 9 },
         success: function(object) {
-            if(object.status) {
+            if(object.status) {              
                 jQuery.each(object.data, function(idx, val) {
-                    jQuery('#cmbTipoSolic').append($("<option></option>").attr("value",val.idtiposolicitud).text(val.tiposolicitud));
+//                    alert ('paso lo otro: '+val.tiposolicitud)
+//                    jQuery('#cmbTipoSolic').append($("<option></option>").attr("value",val.idtiposolicitud).text(val.tiposolicitud));
+                         $('#cmbTipoSolic').append($('<option>', { 
+                            value: val.idtiposolicitud,
+                            text : val.tiposolicitud
+                        }));
                 });
             }
         }

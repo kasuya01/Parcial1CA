@@ -57,8 +57,7 @@ function AgregarExamen(){
 			Parametros+="&idexpediente="+idexpediente;
 			Parametros+="&Sexo="+Sexo;
 			Parametros+="&FechaConsulta="+FechaConsulta;
-			
-			
+				
 	location.href='./Solicitud.php'+Parametros;
 
 }
@@ -275,12 +274,18 @@ function MostrarDetalle(IdHistorialClinico){
 			if ((document.getElementById(ID).checked == true) && suma !=0) {
 						
 				// Parametros del Detalle de los examenes 
-					NombreExamen=document.getElementById(ID).value;
-					Muestra="M"+ NombreExamen;
-					Origen="Origen"+ NombreExamen;
-					NombreMuestra=document.getElementById(Muestra).value;
-                                        
-                                       
+                                    NombreExamen=document.getElementById(ID).value;
+                                    Muestra="M"+ NombreExamen;
+                                    Origen="Origen"+ NombreExamen;
+                                    NombreMuestra=document.getElementById(Muestra).value;
+                                    cantselectmuest=$('#'+Muestra+' option').size(); 
+                                    if (cantselectmuest>0 && NombreMuestra==0){
+                                        alert ('Debe seleccionar los tipos de muestra de las pruebas seleccionadas, que lo requieran');
+                                        $('#Enviar').removeAttr('disabled')
+                                        return false;
+                                    }
+                                            
+                                    else {   
 					if(NombreMuestra==0){
 						NombreOrigen=0;
 					}else{
@@ -330,7 +335,7 @@ function MostrarDetalle(IdHistorialClinico){
 		return false;
 			
 				
-						
+                        }//fin else			
 			}//If checked == true
 	//}//for
                         

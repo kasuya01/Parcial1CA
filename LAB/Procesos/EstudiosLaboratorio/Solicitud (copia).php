@@ -2,7 +2,6 @@
 include_once("../../../Conexion/ConexionBD.php");
 include_once("ClaseSolicitud.php"); //Agregamos el Archivo con las clases y funciones a utilizar
 @session_start();
-$ROOT_PATH = $_SESSION['ROOT_PATH'];
 // Creamos un objeto Conexion, Paciente, Laboratorio
 $Conexion = new ConexionBD;
 //Abrimos la Conexion
@@ -18,8 +17,8 @@ $FechaConsulta = $_GET["FechaConsulta"];
 $IdCitaServApoyo = $_GET["IdCitaServApoyo"];
 $sexo = $_GET["Sexo"];
 $idexpediente = $_GET["idexpediente"];
-//echo '<br\>.Idexpediente: '.$idexpediente.' IdNumeroExp:'.$IdNumeroExp. '  numhistorial: '.$_GET["IdHistorialClinico"].'  issethist: '.isset( $_GET["IdHistorialClinico"]);
-$IdHistorialClinico = $_GET["IdHistorialClinico"];
+//echo '<br\>.Idexpediente: '.$idexpediente.' IdNumeroExp:'.$IdNumeroExp;
+//$IdHistorialClinico = $_GET["IdHistorialClinico"];
 //echo 'idexp: '.$idexpediente;
 $FechaSolicitud = $FechaConsulta;
 /* PARA OBTENER LA IP REAL DE LA PC QUE SE CONECTA */
@@ -53,71 +52,61 @@ $_SESSION["lugar"] = $lugar;
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Solicitud de Estudios Para Laboratorio Clínico</title>
         <link rel="stylesheet" type="text/css" href="./Estilo.css">
-        <?php include_once $ROOT_PATH."/public/css.php";?>
-        <?php include_once $ROOT_PATH."/public/js.php";?>
             <script language="javascript" src="./ajax.js"></script>
     </head>
 
 
     <body>
-        
-        <div class="panel panel-primary">
-        <table  cellspacing="1" cellpadding="2" border="1" align="justify" width="100%"  class="table table-bordered table-condensed table-white no-v-border">
-            <thead><tr>
-                   
-                <!--<td colspan='7'color='white' nowrap><strong><font color="white">P R U E B A S &nbsp;&nbsp;&nbsp; I N D I V I D U A L E S  </font></strong>-->
-                    <td colspan='6'color='white' style="background-color: #428bca" nowrap>
-                        <img src="../../../Imagenes/paisanito_white.png" class="pull-left" style="padding: 5px; height: 80px;" />
-                        <strong><font color="white"> <div class="panel-heading">
-                                    <center>
-                                        <h2><strong>SOLICITUD A LABORATORIO CLINICO</strong></h2>
-                                        P R U E B A S &nbsp;&nbsp;&nbsp; I N D I V I D U A L E S
-                                    </center></div>     </font></strong>
+        <table width="100%">
+            <tr>
+                <td><img src="../../../Imagenes/paisanito.png"  width="124" height="80" /></td>
+                <td width="80%" align="center" class="TdTitulo1"><strong>SOLICITUD A LABORATORIO CLINICO</strong></td>
+            </tr>
+        </table>
+        <table  cellspacing="1" cellpadding="2" border="0" align="justify" width="100%" class="General">
+            <tr>
+                <td colspan='7' class='TdTitulo' color='white' nowrap><strong><font color="white">P R U E B A S &nbsp;&nbsp;&nbsp; I N D I V I D U A L E S  </font></strong>
                 </td>
-                </tr></thead>
+            </tr>
 
             <?php
 //Llamar a funcion para buscar las areas que tiene configurado el establecimiento
             $areas = $Historial->buscarareas($lugar);
-           // echo 'num areas: '.pg_num_rows($areas).' areas:'.$areas.'<br/>';
+           // echo 'num areas: '.pg_num_rows($areas).'<br/>';
             echo "<form  method='post' name='Solicitud'>";
             $i=0;
-            //$row22=pg_fetch_array($areas);
-            //echo 'row1: '.$row22['nombrearea'];
-            while ($rowar = @pg_fetch_array($areas)) {
-                //echo '<br>i got here lugar:'.$lugar.'  -rowar[id]: '.$rowar['id'];
+            while ($rowar = pg_fetch_array($areas)) {
+               // echo 'i got here ';
 
                 $examen = $Historial->busca_mnt_area_exa_est($lugar, $rowar['id'], $sexo, $IdHistorialClinico, $IdEstablecimiento);
-                //echo 'cant: '.pg_num_rows($examen);
                 if (pg_num_rows($examen) > 0) {
-                    echo "<thead><tr><td colspan='6'><b>" . ($rowar['nombrearea']) . "</b></td></tr></thead><tbody>";
+                    echo "<tr><td colspan='7' class='TdAreas'><b>" . ($rowar['nombrearea']) . "</b></td></tr>";
                     while ($ResultadoExamenes = pg_fetch_array($examen)) {
                         //Primera Columna
                         echo "<tr>
-                                <td style='width:3%'>
+                                <td class='TdCheck'>
                                     <input type='checkbox' name='Examenes'  Id='Examenes" . $i . "' value='" . $ResultadoExamenes['idconf'] . "' onclick=\"MostrarLista(".$ResultadoExamenes['idconf'].",$i)\" />
                                 </td>";
-                        echo "<td style='width:23%'><b>" . $ResultadoExamenes['nombre_examen'] . "</b>
+                        echo "<td  class='TdExamenNombre'><b>" . $ResultadoExamenes['nombre_examen'] . "</b>
                                     <input type='hidden' id='Nombre" . $ResultadoExamenes['idconf'] . "' value='" . $ResultadoExamenes['nombre_examen'] . "'>
                                 </td>";
-                        echo "<td style='width:23%'><div id='" . $ResultadoExamenes['idconf'] . "'></div>";
+                        echo "<td class='TdExamenList'><div id='" . $ResultadoExamenes['idconf'] . "'></div>";
                         echo "<div id='O" . $ResultadoExamenes['idconf'] . "'></div></td>";
                         $i++;
                         // SEGUNDA COLUMNA
 			if($ResultadoExamenes=pg_fetch_array($examen)){
-                            echo "<td style='width:3%'><input type='checkbox' name='Examenes'  Id='Examenes" . $i . "' value='".$ResultadoExamenes['idconf']."' onclick=\"MostrarLista(".$ResultadoExamenes['idconf'].",$i)\" /></td>";
-                            echo "<td style='width:23%'><b>".$ResultadoExamenes['nombre_examen']."</b>
+                            echo "<td class='TdCheck'><input type='checkbox' name='Examenes'  Id='Examenes" . $i . "' value='".$ResultadoExamenes['idconf']."' onclick=\"MostrarLista(".$ResultadoExamenes['idconf'].",$i)\" /></td>";
+                            echo "<td  class='TdExamenNombre'><b>".$ResultadoExamenes['nombre_examen']."</b>
                             <input type='hidden' id='Nombre".$ResultadoExamenes['idconf']."' value='".$ResultadoExamenes['nombre_examen']."'></td>";
-                            echo "<td style='width:23%'><div  id='".$ResultadoExamenes['idconf']."'></div>";
+                            echo "<td  class='TdExamenList'><div  id='".$ResultadoExamenes['idconf']."'></div>";
                             echo "<div  id='O".$ResultadoExamenes['idconf']."'></div>";
                             echo "</td></tr>";
                             $i++;
                         }else
-                            echo "<td colspan='3'></td></tr>";
+                            echo "<td colspan='3' class='TdExamenNombre'></td></tr>";
 
 
                     }
-                    echo '</tbody>';
                 }//fin while examenes
             }//Fin while areas
             echo "</table>
@@ -133,16 +122,14 @@ $_SESSION["lugar"] = $lugar;
                 
             echo "
               <br>
-              <table  class='table table-bordered table-condensed table-white'>
+              <table class='General'>
               <tr><td colspan='6'><div id='Resultados'></div></td></tr>
               <tr><td colspan='6' align='right' >
-              
-              <span class='glyphicon glyphicon-chevron-right'></span>
-              <span class='glyphicon glyphicon-chevron-right'></span>
-              <span class='glyphicon glyphicon-chevron-right'></span>
-              <span class='glyphicon glyphicon-chevron-right'></span>
-              <button type='button' class='btn btn-primary' id='Enviar' onclick='GuardarSolicitud(); '><span class='glyphicon glyphicon-share-alt'></span> Enviar Solicitud</button>
-              <button type='button' class='btn btn-primary'  onclick='window.close();'><span class='glyphicon glyphicon-remove-circle'></span> Cancelar Solicitud</button></td></tr>";    
+              <img src='../../../Imagenes/flecha.jpg' align='top'  Alt='Click  en el Botón Para Enviar Solicitud' />
+              <img src='../../../Imagenes/flecha.jpg' align='top'  Alt='Click  en el Botón Para Enviar Solicitud' />
+              <img src='../../../Imagenes/flecha.jpg' align='top'  Alt='Click  en el Botón Para Enviar Solicitud' />
+              <input value='ENVIAR SOLICITUD' type='button' class='boton' id='Enviar' onclick='GuardarSolicitud(); '/>
+              <input value='CANCELAR SOLICITUD' type='button' class='boton' onclick='window.close();'/></td></tr>";    
                   
           
             /* $SQL="Select lab_areas.IdArea, NombreArea from lab_areas
@@ -215,6 +202,6 @@ $_SESSION["lugar"] = $lugar;
             ?>
 
         </table>
-        </div>
+
     </body>
 </html>

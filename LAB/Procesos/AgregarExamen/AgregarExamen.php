@@ -249,16 +249,6 @@ if ($nivel==4){
 	</tr>
 			</table>
 		</form>
-		<script type="text/javascript">
-				Calendar.setup(
-				{
-				inputField  : "txtfechaconsulta",         // el ID texto 
-				ifFormat    : "%d/%m/%Y",    // formato de la fecha
-				button      : "trigger"       // el ID del boton			  	  
-				}
-				);
-				
-		</script>
 		</div>
 		<div id="divBusqueda">
 		
