@@ -150,7 +150,7 @@ $con = new ConexionBD;
                     $row_exam_metod = pg_fetch_array($result);
                     $id_exam_metod = $row_exam_metod[0];
                     $id_exam_metod;
-                  $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
+                  echo $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
                                   VALUES($id_exam_metod, $iddetalle, $tab, $usuario, NOW(),'$fecharealiz','$fecharesultado',$responsable)";
                         
                     $result = pg_query($query);
@@ -242,7 +242,7 @@ function ObtenerFechaResultado($idsolicitud,$IdExamen,$lugar)
 
 
 //FUNCION PARA MOSTRAR DATOS GENERALES
-function MostrarDatosGenerales($idsolicitud)
+function MostrarDatosGenerales($idsolicitud,$lugar)
 {
 	$con = new ConexionBD;
    if($con->conectar()==true)
