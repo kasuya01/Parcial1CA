@@ -135,7 +135,7 @@ function CargarDatos(){
                     </tr>	    
 
                     <tr>
-                            <td width="30%" class="StormyWeatherFieldCaptionTD">NEC</td>
+                            <td width="30%" class="StormyWeatherFieldCaptionTD">Expediente</td>
                             <td width="70%" class="StormyWeatherDataTD"><?php echo $nec ?>
                             <input type="hidden" name="txtnec" id="txtnec" disabled="disabled" />
                             <input type="hidden" name="txtidsolicitud" id="txtidsolicitud" value="<?php echo $idsolicitud;?>"/>

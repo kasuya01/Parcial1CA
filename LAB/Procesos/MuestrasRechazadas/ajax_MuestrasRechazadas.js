@@ -136,22 +136,25 @@ function MostrarDatos(posicion)
 		idarea=document.getElementById('idarea['+posicion+']').value;
 		idexamen=document.getElementById('idexamen['+posicion+']').value;
 		idestablecimiento=document.getElementById('idestablecimiento['+posicion+']').value;
+                subservicio=document.getElementById('subservicio['+posicion+']').value;
 		idexpediente=trim(idexpediente);
 		idsolicitud=trim(idsolicitud);
+               // alert(subservicio);
                // idsolicitud1=trim(idsolicitud1);
 		switch (idarea)
-		 { case "URI": 
+		 {  case "URI": 
+                         
 			ventana_secundaria = window.open("DatosSolicitudesPorArea1.php?var1="+idexpediente+
-										  "&var2="+idarea+"&var3="+idsolicitud+"&var4="+idexamen,"Datos1",											"width=850,height=475,menubar=no,scrollbars=yes") ;
+							  "&var2="+idarea+"&var3="+idsolicitud+"&var4="+idexamen+"&var5="+subservicio,"Datos1",											"width=850,height=475,menubar=no,scrollbars=yes") ;
 			break;
 			case "BAT": 
 			ventana_secundaria = window.open("DatosSolicitudesPorArea1.php?var1="+idexpediente+
-										  "&var2="+idarea+"&var3="+idsolicitud+"&var4="+idexamen,"Datos1",											"width=850,height=475,menubar=no,scrollbars=yes") ;
+							  "&var2="+idarea+"&var3="+idsolicitud+"&var4="+idexamen+"&var5="+subservicio,"Datos1",											"width=850,height=475,menubar=no,scrollbars=yes") ;
 			break;
 			
 			default:
 			ventana_secundaria = window.open("DatosSolicitudesPorArea.php?var1="+idexpediente+
-										  "&var2="+idarea+"&var3="+idsolicitud+"&var4="+idexamen+"&var5="+idestablecimiento,"Datos",											"width=850,height=475,menubar=no,scrollbars=yes") ;
+							  "&var2="+idarea+"&var3="+idsolicitud+"&var4="+idexamen+"&var5="+idestablecimiento+"&var6="+subservicio,"Datos",											"width=850,height=475,menubar=no,scrollbars=yes") ;
 			break;
 		}
  }
@@ -385,16 +388,16 @@ function MostrarObservacion(){
    }
 }
 
-function CargarDatosFormulario(idexpediente,idsolicitud,idarea,idexamen)
+function CargarDatosFormulario(idexpediente,idsolicitud,idarea,idexamen,subservicio)
 {
 	ajax=objetoAjax();
 	opcion=2;
-	
+	alert(subservicio);
 	ajax.open("POST", "ctrMuestrasRechazadas.php",true);
 		  //muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		  //enviando los valores
-	ajax.send("opcion="+opcion+"&idarea="+idarea+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud+"&idexamen="+idexamen);
+	ajax.send("opcion="+opcion+"&idarea="+idarea+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud+"&idexamen="+idexamen+"&subservicio="+subservicio);
 	ajax.onreadystatechange=function() 
 	{
 		if (ajax.readyState==4) 

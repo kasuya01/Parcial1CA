@@ -204,32 +204,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-	$query = /*"SELECT sec_solicitudestudios.IdSolicitudEstudio AS IdSolicitudEstudio,NumeroMuestra,FechaRecepcion,mnt_empleados.IdEmpleado AS IdMedico,
-	NombreEmpleado AS NombreMedico, NombreSubServicio AS Origen,
-	NombreServicio AS Precedencia, mnt_expediente.IdNumeroExp, 
-	CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoApellido) AS NombrePaciente,
-        CURDATE() AS Fecha,(year(CURRENT_DATE)-year(FechaNacimiento))AS Edad,
-	IF(Sexo=1,'Masculino','Femenino') AS Sexo,
-	sec_solicitudestudios.FechaSolicitud,mnt_establecimiento.Nombre,
-        DATE_FORMAT(FechaNacimiento,'%d/%m/%Y') as FechaNacimiento,IdDiagnostico1,Diagnostico,
-        sec_examenfisico.Peso,sec_examenfisico.Talla,ConocidoPor
-        FROM sec_historial_clinico 
-	INNER JOIN sec_solicitudestudios ON sec_historial_clinico.IdHistorialClinico= sec_solicitudestudios.IdHistorialClinico
-	INNER JOIN mnt_empleados ON sec_historial_clinico.IDEmpleado= mnt_empleados  .IdEmpleado
-	INNER JOIN mnt_expediente ON sec_historial_clinico.IdNumeroExp= mnt_expediente.IdNumeroExp
-	INNER JOIN mnt_datospaciente ON mnt_expediente.IdPaciente=mnt_datospaciente.IdPaciente  
-	INNER JOIN mnt_subservicio ON mnt_subservicio.IdSubServicio= sec_historial_clinico.IDSubServicio
-	INNER JOIN mnt_servicio ON mnt_servicio .IdServicio=  mnt_subservicio.IdServicio
-	INNER JOIN lab_recepcionmuestra ON sec_solicitudestudios.IdSolicitudEstudio=lab_recepcionmuestra.IdSolicitudEstudio
-	INNER JOIN mnt_establecimiento ON sec_historial_clinico.IdEstablecimiento=mnt_establecimiento.IdEstablecimiento
-        LEFT JOIN sec_diagnosticospaciente ON sec_historial_clinico.IdHistorialClinico=sec_diagnosticospaciente.IdHistorialClinico
-        LEFT JOIN mnt_cie10 ON sec_diagnosticospaciente.IdDiagnostico1=mnt_cie10.IdCie10
-        LEFT JOIN sec_examenfisico ON sec_historial_clinico.IdHistorialClinico=sec_examenfisico.IdHistorialClinico
-	WHERE sec_solicitudestudios.IdServicio ='DCOLAB' AND sec_historial_clinico.IdNumeroExp='$idexpediente' AND sec_solicitudestudios.IdSolicitudEstudio=$idsolicitud
-	AND sec_solicitudestudios.IdEstablecimiento=$lugar";*/
-                
-                
-                "SELECT t02.id, 
+	$query = "SELECT t02.id, 
                 t13.nombre AS nombreservicio, 
                 t19.nombre AS sexo, 
                 t24.nombreempleado as medico, 
@@ -474,6 +449,25 @@ function CambiarEstadoDetalle($idsolicitud,$estado,$observacion)
    }
  }
  
+ 
+ //FUNCION PARA CAMBIAR EL ESTADO DE PROCESADO AL DETALLE DE LA SOLICITUD
+function CambiarEstadoDetalle2($idsolicitud,$estado,$idarea,$idtipo,$observacion)
+ {
+   $con = new ConexionBD;
+   if($con->conectar()==true) 
+   {
+		$query = "UPDATE sec_detallesolicitudestudios AS a,sec_solicitudestudios AS b
+				  SET a.stadodetalle='$estado',a.observacion='$observacion'
+				  WHERE a.idsolicitudestudio='$idsolicitud' AND 
+				  b.IdServicio='DCOLAB' AND a.IdExamen LIKE '%$idarea%' AND a.IdTipoMuestra=$idtipo";
+									
+		$result = @mysql_query($query);
+	    if (!$result)
+	       return false;
+	    else
+	       return true;	   
+   }
+ }
  
   //FUNCION PARA CAMBIAR EL ESTADO DE PROCESADO AL DETALLE DE LA SOLICITUD
 function CambiarEstadoDetalle1($idsolicitud,$estado,$idexamen,$observacion)

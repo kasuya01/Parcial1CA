@@ -294,6 +294,7 @@ switch ($opcion)
 					   "<input name='idarea[".$pos."]' id='idarea[".$pos."]' type='hidden' size='60' value='".$idarea."' />".
 					   "<input name='idexamen[".$pos."]' id='idexamen[".$pos."]' type='hidden' size='60' value='".$row['idexamen']."' />".
 					   "<input name='idestablecimiento[".$pos."]' id='idestablecimiento[".$pos."]' type='hidden' size='60' value='".$IdEstab."' />".
+                                           "<input name='subservicio[".$pos."]' id='subservicio[".$pos."]' type='hidden' size='60' value='".$row['nombresubservicio']."' />".
 				  "<td width='20%'>".$row['paciente']."</td>
 				   <td width='7%'>".$row['idexamen']."</td>
 				   <td width='13%'>".htmlentities($row['nombreexamen'])."</td>";
@@ -327,7 +328,9 @@ switch ($opcion)
 	$idexpediente=$_POST['idexpediente'];
 	$idsolicitud=$_POST['idsolicitud'];
 	$idarea=$_POST['idarea'];
-	$idsolicitud=$_POST['idsolicitud'];           
+	$idsolicitud=$_POST['idsolicitud'];   
+        $subservicio=$_POST['subservicio'];
+        //echo $subservicio;
                 //$establecimiento=$_POST['establecimiento'];
 			//echo $idexpediente."**".$idsolicitud;
 		/*if ($idarea=="URI" or $idarea=="BAT" OR $idarea=="TMU" ){  */
@@ -407,7 +410,7 @@ switch ($opcion)
 				<td class='StormyWeatherDataTD'>$precedencia <input name='txtprecedencia' id='txtprecedencia' 
 				type='hidden' size='35' value='".$precedencia."' disabled='disabled' /></td>
 				<td class='StormyWeatherFieldCaptionTD'>Origen</td>
-				<td class='StormyWeatherDataTD'>".htmlentities($origen)."
+				<td class='StormyWeatherDataTD'>".htmlentities($subservicio)."
 					<input name='txtorigen' id='txtorigen'  type='hidden' size='35' value='".$origen."' disabled='disabled' />
                                         <input name='idsolicitudPadre' id='idsolicitudPadre'  type='hidden' size='40' value='".$idsolicitudPadre."' disabled='disabled' />
 					<input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled' />

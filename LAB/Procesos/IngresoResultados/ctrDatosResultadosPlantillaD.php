@@ -161,7 +161,7 @@ switch ($opcion)
 			<td colspan='2' >".$row_generales['fecharecep']."</td>
                     </tr>
                     <tr>
-			<td colspan='1' ><strong>NEC</strong></td>
+			<td colspan='1' ><strong>Expediente:</strong></td>
 			<td colspan='2' >".$row_generales['numero']."</td>
                     </tr>
                     <tr>
@@ -235,8 +235,8 @@ switch ($opcion)
 	$idelemento= $_POST['idelemento'];
 	$idresultado= $_POST['idresultado'];
 	//$resultado=" ";
-   $obj->EliminarElementoDetalle($idresultado,$idelemento);
-   $consulta=$obj->MostrarElementosAgregados($idresultado);
+        $obj->EliminarElementoDetalle($idresultado,$idelemento);
+        $consulta=$obj->MostrarElementosAgregados($idresultado);
 	$resultado="
 				<input name='oresultado' type='hidden' id='oresultado' value='".$idresultado."'>
 				<table aling='center' border='1'>
