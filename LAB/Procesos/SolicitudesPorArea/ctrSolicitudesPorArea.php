@@ -325,10 +325,10 @@ switch ($opcion)
 				"<input name='idarea[".$pos."]' id='idarea[".$pos."]' type='hidden' size='60' value='".$idarea."' />".
                                 "<input name='idtipo[".$pos."]' id='idtipo[".$pos."]' type='hidden'   size='60' value='".$row["idtipomuestra"]."' />".
 			     	"<input name='idexamen[".$pos."]' id='idexamen[".$pos."]' type='hidden' size='60' value='".$row['idexamen']."' />".
-                                "<input name='detalle[".$pos."]' id='detalle[".$pos."]' type='hidden' size='60' value='".$row['detalle']."' />
-
+                                "<input name='detalle[".$pos."]' id='detalle[".$pos."]' type='hidden' size='60' value='".$row['detalle']."' />".
+                                "<input name='subservicio[".$pos."]' id='subservicio[".$pos."]' type='hidden' size='60' value='".$row['nombresubservicio']."' />
              
-</td>
+                        </td>
 			<td width='23%'>".htmlentities($row['paciente'])."</td>	 
 			<td width='8%'>".$row['idexamen']."</td>
 			<td width='16%'>" . htmlentities($row['nombreexamen']) . "</td>";

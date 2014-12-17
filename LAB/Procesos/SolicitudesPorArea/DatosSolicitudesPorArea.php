@@ -88,13 +88,14 @@ function calc_edad()
 	$idsolicitud=$_GET['var3'];
 	$idtipo=$_GET['var5'];
 	$idExamen=$_GET['var4'];
+        $subservicio=$_GET['var6'];
 	//echo $idexpediente."  ".$idsolicitud."  ".$lugar;
 	
-	//echo $idtipo;		
+	//echo  $subservicio;		
 	
 	$objdatos = new clsSolicitudesPorArea;
 	//recuperando los valores generales de la solicitud
-		$consulta=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud);
+		$consulta=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar);
 		$row = pg_fetch_array($consulta);
 		//obteniedo los datos generales de la solicitud
 		//valores de las consultas
@@ -154,7 +155,7 @@ function calc_edad()
 				<td class='StormyWeatherDataTD'>$precedencia <input name='txtprecedencia' id='txtprecedencia' 
 				type='hidden' size='35' value='" . $precedencia . "' disabled='disabled' /></td>
 				<td class='StormyWeatherFieldCaptionTD'>Origen</td>
-				<td class='StormyWeatherDataTD'>" . htmlentities($origen) . "
+				<td class='StormyWeatherDataTD'>" . htmlentities($subservicio) . "
                                     <input name='txtorigen' id='txtorigen'  type='hidden' size='35' value='" . $origen . "' disabled='disabled' />
                                     
                                     <input name='idsolicitudPadre' id='idsolicitudPadre'  type='hidden' size='40' value='" . $idsolicitudPadre . "' disabled='disabled' />

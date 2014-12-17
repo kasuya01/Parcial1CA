@@ -170,6 +170,7 @@ function MostrarDatos(posicion)
 		idexamen=document.getElementById('idexamen['+posicion+']').value;
 		idtipo=document.getElementById('idtipo['+posicion+']').value;
                 detalle=document.getElementById('detalle['+posicion+']').value;
+                subservicio=document.getElementById('subservicio['+posicion+']').value;
               // alert(idtipo+'##'+idarea);
 		idexpediente=trim(idexpediente);
 		idsolicitud=(idsolicitud);
@@ -178,7 +179,8 @@ function MostrarDatos(posicion)
                 //alert("solicitud ya fue cambiado de estado"+idsolicitud);
 		//alert(idsolicitud+" - "+idarea+" - "+idexamen+" - "+idtipo+" - "+idexpediente);
 		ventana_secundaria = window.open("DatosSolicitudesPorArea.php?var1="+idexpediente+
-		"&var2="+idarea+"&var3="+idsolicitud+"&var4="+idexamen+"&var5="+idtipo,"Datos","width=850,height=475,menubar=no,scrollbars=yes") ;
+		"&var2="+idarea+"&var3="+idsolicitud+"&var4="+idexamen+"&var5="+idtipo+
+                "&var6="+subservicio,"Datos","width=850,height=475,menubar=no,scrollbars=yes") ;
  }
 
 

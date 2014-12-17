@@ -23,11 +23,11 @@ for ( i = 0; i < getVars.length; i++)
 						idsolicitud = getVars[i].substr(5);
 			if ( getVars[i].substr(0,5) == 'var4=' )
 						idexamen = getVars[i].substr(5);
-			/*if ( getVars[i].substr(0,5) == 'var5=' )
-						idestablecimiento = getVars[i].substr(5);	*/		
+			if ( getVars[i].substr(0,5) == 'var6=' )
+						subservicio = getVars[i].substr(5);		
 		}
 //alert(idexamen);
- CargarDatosFormulario(idexpediente,idsolicitud,idarea,idexamen);
+ CargarDatosFormulario(idexpediente,idsolicitud,idarea,idexamen,subservicio);
 }
 
 </script>

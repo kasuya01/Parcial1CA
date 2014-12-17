@@ -59,7 +59,7 @@ function calc_edad()
 
 	$consulta=$obj->MostrarElementosAgregados($idresultado);
     	$consulta_datos=$obj->LeerDatos($idexamen);
-	$datos_generales=$obj->MostrarDatosGenerales($idsolicitud);
+	$datos_generales=$obj->MostrarDatosGenerales($idsolicitud,$lugar);
 	$datos_empleado=$obj->DatosEmpleado($idempleado);
 	$row_generales= pg_fetch_array($datos_generales);
 	$row_area = pg_fetch_array($consulta_datos);
