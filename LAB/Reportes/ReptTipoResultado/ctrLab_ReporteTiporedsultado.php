@@ -214,7 +214,8 @@ echo  "<table width='35%' border='0'  align='center'>
            
            
 $imprimir.="</table>";
-
+$imprimir.="<br>";
+$imprimir.="<br>";
 //CIERRE DE ARCHIVO pdf
 	    fwrite($punteroarchivo,$imprimir);
 	    fclose($punteroarchivo);
@@ -261,7 +262,7 @@ case 3://LLENANDO COMBO subservicio
         
         $dtMed=$obj->ExamenesPorArea($idarea, $lugar);
 
-        $rslts = '<select name="cmbExamen" id="cmbExamen" class="ui-state-default ui-corner-all" style="width:200px">';
+        $rslts = '<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:200px">';
         $rslts .='<option value="0">--Seleccione Examen--</option>';
         while ($rows =pg_fetch_array($dtMed)){
 			$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';

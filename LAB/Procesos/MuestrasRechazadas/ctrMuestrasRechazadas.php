@@ -250,14 +250,28 @@ switch ($opcion)
          $consulta=$objdatos->ListadoSolicitudesPorArea($query);  
 		   $NroRegistros= $objdatos->NumeroDeRegistros($query);
 		
-                
-                echo "<table width='35%' border='0'  align='center'>
+              if ($NroRegistros==""){
+            $NroRegistros=0;
+            
+            echo "<table  border='0'  align='center'>
         	<center>
            
             
-<tr><td colspan='11'><span style='color: #0101DF;'> <h3> TOTAL DE EXAMENES RECHAZADOS: <b>".$NroRegistros."</b></h3></span></td></tr>
+<tr><td colspan='11'><span style='color: #0101DF;'> <h3> TOTAL DE EXAMENES RECHAZADOS:".$NroRegistros."</h3></span></td></tr>
             </center>
 	</table> "; 
+            
+        }else{
+            echo "<table  border='0'  align='center'>
+        	<center>
+           
+            
+<tr><td colspan='11'><span style='color: #0101DF;'> <h3> TOTAL DE EXAMENES RECHAZADOS:".$NroRegistros."</h3></span></td></tr>
+            </center>
+	</table> "; 
+            
+        }
+              
                 
                 
 

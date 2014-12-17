@@ -4,38 +4,28 @@ $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea']; 
+ $ROOT_PATH = $_SESSION['ROOT_PATH'];
+    $base_url  = $_SESSION['base_url'];
  ?>
+
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-<title>Reporte de Examenes por Servicio</title>
-
-<script language="JavaScript" type="text/javascript" src="ajax_ReporteTiporedsultado.js"></script>
-<!--Calendar-->
-<style type="text/css">
-			*{ font-size:12px; font-family:verdana; }
-			h1 { font-size:22px; }
-			input { width:250px; border: 2px solid #CCC; line-height:20px;height:20px; border-radius:3px; padding:2px; }
-		</style>
-<script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script> 
+<!--<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />-->
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
-<link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
-<link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
-
-  
-<!--Calendar-->
-
-
+<title>Recepcion de Examenes en &Aacute;reas de Laboratorio</title>
+<script language="JavaScript" type="text/javascript" src="ajax_ReporteTiporedsultado.js"></script>
 <!--referencias del estilo del calendario-->
-<link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
-<link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />
+<?php include_once $ROOT_PATH."/public/css.php";?>
+<?php include_once $ROOT_PATH."/public/js.php";?>
 
-<!--llamado al archivo de funciones del calendario -->
-<script type="text/javascript" src="../../../calendarstructure/calendar.js"></script>
-<script type="text/javascript" src="../../../calendarstructure/calendar-es.js"></script>
-<script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
 <script language="JavaScript" type="text/javascript">
+
+
+
+
+
 function MostrarBusqueda()
 {
 	 if ((document.getElementById('txtfechainicio').value == "")&& (document.getElementById('txtfechafin').value == ""))
@@ -63,16 +53,7 @@ function BuscarExamen(idarea) {
                 }
 
 </script>
-<style type="text/css">
-<!--
-@media print{
-#boton{display:none;}
-#divInicial{display:none;}
-#divInicial{display:none;}
-}
 
--->
-</style>
 </head>
 <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" >
 
@@ -146,7 +127,7 @@ if ($nivel==33){
                 <tr>
                             <td class="StormyWeatherFieldCaptionTD" style="font-weight:bold">Grupo Prueba </td>
                             <td class="StormyWeatherDataTD" colspan="1">
-                                <select id="cmbArea" name="cmbArea" class="ui-state-default ui-corner-all" style="width:200px" size="1" onChange="BuscarExamen(this.value)">
+                                <select id="cmbArea" name="cmbArea" class="MailboxSelect" style="width:200px" size="1" onChange="BuscarExamen(this.value)">
                                     
                                     
                                     <?php
@@ -163,7 +144,7 @@ if ($nivel==33){
                             <td  class="StormyWeatherFieldCaptionTD">Prueba</td>
                             <td  class="StormyWeatherDataTD"  style="width:200px">
                                 <div id="divExamen">
-                                    <select name="cmbExamen" id="cmbExamen"   class="ui-state-default ui-corner-all" style="width:200px"> 
+                                    <select name="cmbExamen" id="cmbExamen"   class="MailboxSelect" style="width:200px"> 
                                         <option value="0">--Seleccione Examen--</option>
                                     </select>
                                 </div>
@@ -171,15 +152,17 @@ if ($nivel==33){
                         </tr>
                 
 		<tr>
-			<td class="StormyWeatherFieldCaptionTD" style="width:120px">Fecha Resultado </td>
-			<td class="StormyWeatherDataTD" style="width:210px">
-				<input type="text" class="datepicker" name="txtfechainicio" id="txtfechainicio" />
-<!--				<input name="button" type="button" id="trigger"  value="...">-->
-                        </td>
-			<td class="StormyWeatherFieldCaptionTD" style="width:120px">Hasta </td>
-			<td class="StormyWeatherDataTD" style="width:210px"><input type="text" class="datepicker" name="txtfechafin" id="txtfechafin" />
-<!--				<input name="button2" type="button" id="trigger2" value="...">-->
-                        </td>
+                    
+                    <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Resultado</td>
+                        <td class="StormyWeatherDataTD" width="20%">
+                            <input type="text" size="28" name="txtfechainicio" id="txtfechainicio" class="date"  placeholder="aaaa-mm-dd"/>
+                    
+                    
+                        
+                        
+                        <td class="StormyWeatherFieldCaptionTD" width="15%" >Hasta</td>
+                        <td class="StormyWeatherDataTD" width="20%">
+                            <input type="text" size="28" name="txtfechafin" id="txtfechafin" class="date"  placeholder="aaaa-mm-dd"/>
 		</tr>
 		<tr>
 			<td  colspan="5" align="right">  
@@ -193,22 +176,15 @@ if ($nivel==33){
 		</tr>
 	</table>
 </form>
-<script type="text/javascript">
-		Calendar.setup(
-		    {
-		      inputField  : "txtfechainicio",         // el ID texto 
-		      ifFormat    : "%Y-%m-%d",    // formato de la fecha
-		      button      : "trigger"       // el ID del boton			  	  
-		    }
-		);
-		Calendar.setup(
-		    {
-		      inputField  : "txtfechafin",         // el ID texto 
-		      ifFormat    : "%Y-%m-%d",    // formato de la fecha
-		      button      : "trigger2"       // el ID del boton			  	  
-		    }
-		);
-</script>
+ <!--<script type="text/javascript">
+                    Calendar.setup(
+                        {
+                            inputField  : "txtfechasolicitud",         // el ID texto 
+                            ifFormat    : "%d/%m/%Y",    // formato de la fecha
+                            button      : "trigger"       // el ID del boton			  	  
+                        }
+                    );
+                </script>  -->
 </div>
 <div id="divBusqueda">
 

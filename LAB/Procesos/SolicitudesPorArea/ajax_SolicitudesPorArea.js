@@ -173,7 +173,7 @@ function MostrarDatos(posicion)
               // alert(idtipo+'##'+idarea);
 		idexpediente=trim(idexpediente);
 		idsolicitud=(idsolicitud);
-                alert(detalle);
+               // alert(detalle);
                 
                 //alert("solicitud ya fue cambiado de estado"+idsolicitud);
 		//alert(idsolicitud+" - "+idarea+" - "+idexamen+" - "+idtipo+" - "+idexpediente);
@@ -231,6 +231,7 @@ function CambiarEstadoDetalleSolicitud1(estado,idexamen)
 function Cerrar(){
 	//window.opener.location.href = window.opener.location.href;
     window.close();
+    
 }
 
 function Imprimir(){
@@ -253,6 +254,7 @@ function ProcesarMuestra(idtipo,idexpediente,idarea,idsolicitud,fechasolicitud)
 function CambiarEstadoDetalleSolicitud(estado,idtipo,idexpediente,idarea,idsolicitud,fechasolicitud)
 {  	idexamen="";
 	opcion=3;
+       // alert($idarea);
 	idsolicitud=trim(idsolicitud);
 	idexpediente=trim(idexpediente);
 	fechasolicitud=trim(fechasolicitud);
@@ -273,11 +275,21 @@ function CambiarEstadoDetalleSolicitud(estado,idtipo,idexpediente,idarea,idsolic
 				{
 					//mostrar los nuevos registros en esta capa
 					//document.getElementById('divCambioEstado').innerHTML = ajax.responseText;	
-					alert(ajax.responseText);
+                                         // SolicitudesPorArea2vuelta();
+                                       alert(ajax.responseText);
                                         window.close();
+                                       //SolicitudesPorArea();
+                                      // SolicitudesPorArea2vuelta(idarea);
+                                       
+                                       
+                                       
 				}
 			}
 	   }
+           
+           
+           
+           
 	
 }
 
@@ -421,6 +433,49 @@ function CargarDatosFormulario1(idexpediente,idsolicitud,idarea,idexamen)
 	}
 }
 
+function SolicitudesPorArea2vuelta(idarea)
+{
+    alert("recibirrr");
+       // idsolicitud=trim(idsolicitud);
+         
+       // idarea=trim(idarea);
+       // alert("."+idarea) ; 
+        ajax=objetoAjax();
+	opcion=1;
+        //IdEstab=document.getElementById('cmbEstablecimiento').value;
+      //  IdServ=document.getElementById('CmbServicio').value;
+        //IdSubServ=document.getElementById('cmbSubServ').value;
+	//idarea=document.getElementById('cmbArea').value;
+	//idexpediente=document.getElementById('txtexpediente').value;
+        /*idexamen=document.getElementById('cmbExamen').value;
+	fechasolicitud=document.getElementById('txtfechasolicitud').value;
+	PNombre=document.getElementById('PrimerNombre').value;
+        SNombre=document.getElementById('SegundoNombre').value;
+	PApellido=document.getElementById('PrimerApellido').value;
+        SApellido=document.getElementById('SegundoApellido').value;
+	TipoSolic=document.getElementById('cmbTipoSolic').value; */
+	alert(idarea);
+		//alert(IdEstab+'*'+IdServ+'*'+IdSubServ+'*'+idarea+'*'+idexpediente+'*'+idexamen); 
+	ajax.open("POST", "ctrSolicitudesPorArea.php",true);
+		  //muy importante este encabezado ya que hacemos uso de un formulario
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		  //enviando los valores
+	ajax.send("opcion="+opcion+/*"&IdEstab="+IdEstab+"&IdServ="+IdServ+"&IdSubServ="+IdSubServ+*/"&idarea="+idarea/*+
+	"&idexpediente="+idexpediente+"&idexamen="+idexamen+"&PNombre="+PNombre+"&SNombre="+SNombre+"&PApellido="+PApellido+
+	"&SApellido="+SApellido+"&fechasolicitud="+fechasolicitud+"&TipoSolic="+TipoSolic*/);
+	ajax.onreadystatechange=function() 
+	{
+		if (ajax.readyState==4) 
+		{	 if (ajax.status == 200)
+			{  //mostrar los nuevos registros en esta capa
+			   document.getElementById('divBusqueda').innerHTML = ajax.responseText;
+			   document.getElementById('divResultado').style.display= "none"
+			}
+	    }
+	}
+        
+}
+
 function SolicitudesPorArea()
 {
 	ajax=objetoAjax();
@@ -456,6 +511,7 @@ function SolicitudesPorArea()
 			}
 	    }
 	}
+       // SolicitudesPorArea2vuelta(idarea);
 }
 
 function LlenarComboEstablecimiento(idtipoesta)

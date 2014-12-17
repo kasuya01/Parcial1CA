@@ -4,6 +4,8 @@ $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 $nivel=$_SESSION['NIVEL'];
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+    $base_url  = $_SESSION['base_url'];
 include_once("clsImprimirResultado.php"); 
 //consulta los datos por su id
 $obj = new clsImprimirResultado;
@@ -27,9 +29,9 @@ $nomtipo=$row[2];
 <link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />
 
 <!--llamado al archivo de funciones del calendario-->
-<script type="text/javascript" src="../../../calendarstructure/calendar.js"></script>
-<script type="text/javascript" src="../../../calendarstructure/calendar-es.js"></script>
-<script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
+<?php include_once $ROOT_PATH."/public/css.php";?>
+<?php include_once $ROOT_PATH."/public/js.php";?>
+
 <script language="JavaScript" type="text/javascript">
 function MostrarBusqueda()
 {
@@ -190,9 +192,13 @@ if ($nivel==4){
                     <td class="StormyWeatherFieldCaptionTD"  >Expediente</td>
                     <td  class="StormyWeatherDataTD" width="5%" ><input type="text" size="24" name="txtexpediente" id="txtexpediente" />
                     </td>
-                    <td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Recepi&oacute;n</td>
-                    <td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="15" name="txtfecharecep" id="txtfecharecep" />
-			<input type="button" value="..." id="trigger">dd/mm/aaaa
+                             <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Recepi&oacute;n</td>
+                             <td class="StormyWeatherDataTD" width="20%">
+                            <input type="text" size="28"  name="txtfecharecep" id="txtfecharecep" class="date"  placeholder="aaaa-mm-dd"/>
+                    
+                    
+                    
+                    
                     </td>
                 </tr>
                 <tr>
@@ -210,15 +216,28 @@ if ($nivel==4){
                     <td class="StormyWeatherDataTD" >
 			<input class="MailboxInput" maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" ></td>
                 </tr>
+               
+                
+                
+                
                 <tr>
-                    <td  class="StormyWeatherDataTD" colspan="4" align="right">
-                        <input type="button" id="btnbuscar" value="Buscar Solicitudes" onClick="MostrarBusqueda();">
-			<input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('ImprimirResultado.php')">
-                    </td>
+			<td  colspan="5" align="right">  
+                            <center>
+                                    <!-- <input type="button" id="btnbuscar"  class="fg-button ui-state-default ui-corner-all  value="Buscar" onClick="MostrarBusqueda();"> -->
+                                    <!-- <input type="button" id="btnClear" value="Nueva Busqueda"  onClick="window.location.replace('ImprimirResultado.php')">	-->
+                                    <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="MostrarBusqueda();">Buscar Solicitudes</button>
+                                    <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="window.location.replace('ImprimirResultado.php')">Nueva Busqueda </button>
+                            </center>  
+                        </td>
 		</tr>
+                
+                
+                
+                
+                
 		</table>
 	    </form>
-		<script type="text/javascript">
+		<!--<script type="text/javascript">
 				Calendar.setup(
 				    {
 				      inputField  : "txtfechaRecep",         // el ID texto 
@@ -227,7 +246,7 @@ if ($nivel==4){
 				    }
 				);
 				
-		</script>
+		</script> -->
 	</div>
 	<div id="divBusqueda">
 
