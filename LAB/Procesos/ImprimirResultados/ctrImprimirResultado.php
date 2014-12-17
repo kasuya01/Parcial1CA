@@ -145,14 +145,14 @@ switch ($opcion) {
             $cond2 .= " and t04.id = " . $_POST['idexamen'] . " ";
         }
 
-        if (!empty($_POST['fechasolicitud'])) {
+       /* if (!empty($_POST['fechasolicitud'])) {
             $cond1 .= " and t02.fecha_solicitud = '" . $_POST['fechasolicitud'] . "' ";
             $cond2 .= " and  t02.fecha_solicitud = '" . $_POST['fechasolicitud'] . "' ";
-        }
+        }*/
 
-        if (!empty($_POST['fecha'])) {
-            $cond1 .= " and t03.fecharecepcion = '" . $_POST['fecha'] . "'       ";
-            $cond2 .= " and t03.fecharecepcion = '" . $_POST['fecha'] . "'       ";
+        if (!empty($_POST['fecharecep'])) {
+            $cond1 .= " and t03.fecharecepcion = '" . $_POST['fecharecep'] . "'       ";
+            $cond2 .= " and t03.fecharecepcion = '" . $_POST['fecharecep'] . "'       ";
         }
 
         if (!empty($_POST['primernombre'])) {
@@ -292,6 +292,10 @@ switch ($opcion) {
         //echo $query_search;
         //$consulta=$objdatos->BuscarSolicitudesPaciente($query); 
         //$NroRegistros= $objdatos->NumeroDeRegistros($query);	
+       
+        
+        //echo $cond1;
+       // echo $cond2;
 
         $consulta = $objdatos->BuscarSolicitudesPaciente($query);
 
@@ -309,9 +313,9 @@ switch ($opcion) {
 		</table> ";
         
 
+        //<td>Fecha Recepci&oacute;n</td>
         
-        
-        $imprimir.="<table width='85%' border='1' align='center'>
+        $imprimir.="<table width='97%' border='1' align='center'>
                     <tr class='CobaltFieldCaptionTD'>
 				<td>Fecha Recepci&oacute;n</td>
 				<td>NEC </td>
@@ -331,11 +335,11 @@ switch ($opcion) {
             //$cita= pg_fetch_array($fechacita);
             //if (!empty($recepcion)){
             $imprimir .="<tr>
-				<td>" . $row['fecharecepcion'] . "</td>";
+				<td>" .htmlentities($row['fecharecepcion']). "</td>";
             $imprimir .="<td><span style='color: #0101DF;'><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a>" .
                     "<input name='idsolicitud[" . $pos . "]' id='idsolicitud[" . $pos . "]' type='hidden' size='60' value='" . $row[0] . "' />" .
-                    "<input name='idexpediente[" . $pos . "]' id='idexpediente[" . $pos . "]' type='hidden' size='60' value='" . $row['idnumeroexp'] . "' /></td>" .
-                    "<input name='idestablecimiento[" . $pos . "]' id='idestablecimiento[" . $pos . "]' type='hidden' size='60' value='" . $IdEstab . "' />" .
+                    "<input name='idexpediente[" . $pos . "]' id='idexpediente[" . $pos . "]' type='hidden' size='60' value='" . $row['idnumeroexp'] . "' />" .
+                    "<input name='idestablecimiento[" . $pos . "]' id='idestablecimiento[" . $pos . "]' type='hidden' size='60' value='" . $IdEstab . "' /></td>" .
                     "<td>" . htmlentities($row['paciente']) . "</td>
 				 <td>" . htmlentities($row['nombresubservicio']) . "</td>
 				 <td>" . htmlentities($row['nombreservicio']) . "</td>

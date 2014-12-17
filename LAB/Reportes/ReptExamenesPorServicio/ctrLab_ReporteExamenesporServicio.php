@@ -214,6 +214,9 @@ $imprimir.="<table width='90%' border='1' align='center' >
            
            
 $imprimir.="</table>";
+
+$imprimir.= "<br>";
+$imprimir.= "<br>";
     
     
     
@@ -574,7 +577,8 @@ else{ //reporte de todas las especialidades
            // echo  $imprimir;
          }            
                             
-         
+         $imprimir.= "<br>";
+         $imprimir.= "<br>";
          
          
          	

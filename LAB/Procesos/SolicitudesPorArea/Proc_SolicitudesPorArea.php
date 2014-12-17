@@ -260,7 +260,7 @@ function BuscarServicio(IdServicio){
                     </tr>
                 </table>
             </form>
-                <script type="text/javascript">
+                <!--<script type="text/javascript">
                     Calendar.setup(
                         {
                             inputField  : "txtfechasolicitud",         // el ID texto 
@@ -268,7 +268,7 @@ function BuscarServicio(IdServicio){
                             button      : "trigger"       // el ID del boton			  	  
                         }
                     );
-                </script>
+                </script> -->
         </div>
         <div id="divBusqueda">
 

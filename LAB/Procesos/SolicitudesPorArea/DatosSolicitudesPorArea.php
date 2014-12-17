@@ -43,8 +43,7 @@ for ( i = 0; i < getVars.length; i++)
 		if ( getVars[i].substr(0,5) == 'var5=' )
 			idtipo = getVars[i].substr(5);
 	}
-
-// CargarDatosFormulario(idexpediente,idsolicitud,idarea,idtipo);
+//CargarDatosFormulario(idexpediente,idarea,idsolicitud,idarea,idtipo);
 }
 </script>
 
