@@ -544,7 +544,7 @@ function calcular_edad(fecha){
 
 
 function MuestrasRechazadas()
-{
+{  
 	ajax=objetoAjax();
 	opcion=1;
 	idarea=document.getElementById('cmbArea').value;
@@ -562,6 +562,7 @@ function MuestrasRechazadas()
 	//idsolicitud="";
 	//estado="";
 	//fechasolicitud="";
+       // alert(fecharecep);
 	
 	//idexamen="";
 	ajax.open("POST", "ctrMuestrasRechazadas.php",true);

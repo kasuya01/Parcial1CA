@@ -192,7 +192,9 @@ $referido=$_GET['referido'];
 $iddetallesolicitud=$_GET['var5'];
 $idarea=$_GET['var4'];
 $cant=$objdatos->buscarAnterioresPUnica($solicitud,$iddetallesolicitud, $idarea);
+ 
 if (pg_num_rows($cant)>0){
+   
    //  echo $referido.'<br>';
 if ($referido!="t"){
   

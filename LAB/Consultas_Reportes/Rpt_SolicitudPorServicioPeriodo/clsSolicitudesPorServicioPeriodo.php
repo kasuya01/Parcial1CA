@@ -262,7 +262,7 @@ function LlenarCmbMedicos($idSubEsp)
  {//echo $IdSub;
 	$con = new ConexionBD;
 	if($con->conectar()==true){
-		$sqlText= /*"SELECT mnt_empleados.IdEmpleado,mnt_empleados.NombreEmpleado 
+		 $sqlText= /*"SELECT mnt_empleados.IdEmpleado,mnt_empleados.NombreEmpleado 
 			   FROM mnt_empleados 
 			   WHERE  mnt_empleados.IdEstablecimiento=$lugar  AND IdTipoEmpleado='MED' AND IdEmpleado<>'MED0000'
 			   ORDER BY mnt_empleados.NombreEmpleado";*/
@@ -270,7 +270,7 @@ function LlenarCmbMedicos($idSubEsp)
                          "select mem.id as idemp, nombreempleado as nombre, idempleado  
 from mnt_empleado_especialidad_estab empest
 join mnt_empleado mem on (empest.id_empleado=mem.id)
-where id_aten_area_mod_estab=$idSubEsp";
+where id_aten_area_mod_estab=$idSubEsp  order by nombreempleado ";
                 $dt=  pg_query($sqlText);
                 if (!$dt)
                     return false;
@@ -290,7 +290,7 @@ function cantidadMedicos($idSubEsp)
  {//echo $IdSub;
 	$con = new ConexionBD;
 	if($con->conectar()==true){
-		$sqlText= /*"SELECT mnt_empleados.IdEmpleado,mnt_empleados.NombreEmpleado 
+		 $sqlText= /*"SELECT mnt_empleados.IdEmpleado,mnt_empleados.NombreEmpleado 
 			   FROM mnt_empleados 
 			   WHERE  mnt_empleados.IdEstablecimiento=$lugar  AND IdTipoEmpleado='MED' AND IdEmpleado<>'MED0000'
 			   ORDER BY mnt_empleados.NombreEmpleado";*/

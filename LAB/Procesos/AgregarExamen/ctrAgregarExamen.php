@@ -27,7 +27,7 @@ switch ($opcion)
        // $idexamen       = $_POST['idexamen'];
         $idexpediente   = $_POST['idexpediente'];
        // $fechasolicitud = $_POST['fechasolicitud'];
-       // $fecharecepcion = $_POST['fecha'];
+        $fecharecepcion = $_POST['fechaconsulta'];
         $PNombre        = $_POST['primernombre'];
         $SNomre         = $_POST['segundonombre'];
         $PApellido      = $_POST['primerapellido'];
@@ -89,9 +89,9 @@ switch ($opcion)
              $cond2 .= " and  t02.fecha_solicitud = '" . $_POST['fechasolicitud'] . "' ";
         }
 
-        if (!empty($_POST['fecha'])) {
-             $cond1 .= " and t03.fecharecepcion = '".$_POST['fecha']."'       ";
-             $cond2 .= " and t03.fecharecepcion = '".$_POST['fecha']."'       ";
+        if (!empty($_POST['fechaconsulta'])) {
+             $cond1 .= " and t03.fecharecepcion = '".$_POST['fechaconsulta']."'       ";
+             $cond2 .= " and t03.fecharecepcion = '".$_POST['fechaconsulta']."'       ";
         }
 
         if (!empty($_POST['primernombre'])) {
@@ -233,7 +233,7 @@ switch ($opcion)
     
           $consulta=$objdatos->BuscarSolicitudesPaciente($query); 
          
-         $RegistrosAMostrar=5;
+         $RegistrosAMostrar=10;
 	$RegistrosAEmpezar=($_POST['pag']-1)*$RegistrosAMostrar;
 	$PagAct=$_POST['pag'];
 				

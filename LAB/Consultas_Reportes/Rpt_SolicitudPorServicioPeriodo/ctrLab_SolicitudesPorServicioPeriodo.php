@@ -79,13 +79,14 @@ switch ($opcion)
                
                 
                  if ((!empty($_POST['fechainicio'])) and (!empty($_POST['fechafin'])))
-	{ $Nfechaini=explode("/",$fechainicio);
+	{ /* $Nfechaini=explode("/",$fechainicio);
 	  $Nfechafin=explode("/",$fechafin);
 		 	//print_r($Nfecha);
-        $Nfechaini=$Nfechaini[2]."-".$Nfechaini[1]."-".$Nfechaini[0]; 
-		$Nfechafin=$Nfechafin[2]."-".$Nfechafin[1]."-".$Nfechafin[0]; 
-		$cond1 .= " and     t02.fecha_solicitud BETWEEN '".$Nfechaini."'     AND     '".$Nfechafin."'    ";
-                $cond2 .= " and     t02.fecha_solicitud BETWEEN '".$Nfechaini."'     AND     '".$Nfechafin."'    ";
+                $Nfechaini=$Nfechaini[2]."-".$Nfechaini[1]."-".$Nfechaini[0]; 
+		$Nfechafin=$Nfechafin[2]."-".$Nfechafin[1]."-".$Nfechafin[0]; */
+                     
+		$cond1 .= " and     t02.fecha_solicitud BETWEEN '".$_POST['fechainicio']."'     AND     '".$_POST['fechafin']."'    ";
+                $cond2 .= " and     t02.fecha_solicitud BETWEEN '".$_POST['fechainicio']."'     AND     '".$_POST['fechafin']."'    ";
                 
         }
                 
@@ -102,8 +103,8 @@ switch ($opcion)
             
           //  echo $query1;
            // $query_search = 
-           //$cond1;
-          // echo $cond2;
+        // echo  $cond1;
+        //  echo $cond2;
         }     
         $query="SELECT 
                     t01.id,

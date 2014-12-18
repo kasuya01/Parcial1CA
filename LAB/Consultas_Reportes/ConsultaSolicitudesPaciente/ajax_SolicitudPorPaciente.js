@@ -184,7 +184,7 @@ function BuscarDatospaciente(pag)
 		//especialidad=document.getElementById('cmbEspecialidad').value;
 		fechaconsulta=document.getElementById('txtfecharecep').value;
          // alert(IdServ);
-         //  alert(IdSubServ);
+         //alert(fechaconsulta);
 		
 		//archivo que realizar� la operacion ->actualizacion.php
 		ajax.open("POST", "ctrLab_SolicitudesPorPaciente.php",true);
