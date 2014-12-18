@@ -182,7 +182,7 @@ function BuscarDatos(pag)
 		primerapellido=document.getElementById('PrimerApellido').value;
 		segundoapellido=document.getElementById('SegundoApellido').value;
 		fechaconsulta=document.getElementById('txtfecharecep').value;
-		//alert (IdEstab);
+		//alert (fechaconsulta);
 		ajax=objetoAjax();
 		//archivo que realizar� la operacion ->actualizacion.php
 		ajax.open("POST", "ctrAgregarExamen.php",true);

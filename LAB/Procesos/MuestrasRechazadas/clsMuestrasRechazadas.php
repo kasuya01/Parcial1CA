@@ -26,7 +26,7 @@ class clsMuestrasRechazadas {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
             
-             $NomAre = "select id from lab_resultados where  idsolicitudestudio=$idsolicitudPadre
+            $NomAre = "select id from lab_resultados where  idsolicitudestudio=$idsolicitudPadre
                         and iddetallesolicitud=$idsolicitud ";
             $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
         }
@@ -38,7 +38,7 @@ class clsMuestrasRechazadas {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
             
-            $NomAre = "select id  from lab_detalleresultado where idresultado=$idresulta ";
+           $NomAre = "select id  from lab_detalleresultado where idresultado=$idresulta ";
             $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
         }
         return $resul;
@@ -76,7 +76,7 @@ class clsMuestrasRechazadas {
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia,
+    $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia,
 					id_detalleresultado,
 					resultado,
 					observacion,
@@ -275,13 +275,41 @@ VALUES($idexmen_metodologia,
             }
         }
     }
+    
+      function nombrepaciente($idsolicitud,$idexpediente)
+           
+  {
+	$con = new ConexionBD;
+   if($con->conectar()==true) 
+   {
+	    $query =  "SELECT  
+ CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido, 
+        t07.apellido_casada) AS paciente,t04.nombre_examen AS nombreexamen
+    FROM sec_detallesolicitudestudios t01 
+    INNER JOIN sec_solicitudestudios  t02 ON (t02.id = t01.idsolicitudestudio) 
+    INNER JOIN lab_conf_examen_estab  t04 ON (t04.id = t01.id_conf_examen_estab) 
+    INNER JOIN mnt_expediente         t06 ON (t06.id = t02.id_expediente) 
+    INNER JOIN mnt_paciente           t07 ON (t07.id = t06.id_paciente) 
+    WHERE t01.id=$idsolicitud 
+    and t06.numero='$idexpediente' ";
+              
+              $result = @pg_query($query);
+	    if (!$result)
+	       return false;
+	    else
+	       return $result;	   
+   }
+ }
+   
+    
+    
 
     //FUNCION PARA DEVOLVER DATOS DE LA SOLICITUD QUE HA DE SER PROCESADA
     //DATOS GENERALES DE LA SOLICITUD
     function DatosGeneralesSolicitud($idexpediente, $idsolicitud) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-             $query ="SELECT t02.id,t02.fecha_solicitud AS fechasolicitud, 
+            $query ="SELECT t02.id,t02.fecha_solicitud AS fechasolicitud, 
                 t13.nombre AS nombreservicio, 
                 t19.nombre AS sexo, 
                 t24.nombreempleado as medico, 
@@ -331,6 +359,7 @@ VALUES($idexmen_metodologia,
                 left  join mnt_empleado 			t24 	on (t09.id_empleado=t24.id) 
                 WHERE t01.id=$idsolicitud 
                 and t06.numero='$idexpediente' 
+                AND  t01.estadodetalle=(select id from ctl_estado_servicio_diagnostico where idestado ='RM')
 
        UNION
 
@@ -380,8 +409,8 @@ VALUES($idexmen_metodologia,
                 left join sec_signos_vitales  			t23             on (t23.id_historial_clinico=t09.id)
                 left  join mnt_empleado 			t24             on (t09.id_empleado=t24.id) 
                 WHERE t01.id=$idsolicitud 
-                 and t06.numero='$idexpediente'";
-                    
+                and t06.numero='$idexpediente'
+               AND  t01.estadodetalle=(select id from ctl_estado_servicio_diagnostico where idestado ='RM')";
                     
                     
             $result = @pg_query($query);

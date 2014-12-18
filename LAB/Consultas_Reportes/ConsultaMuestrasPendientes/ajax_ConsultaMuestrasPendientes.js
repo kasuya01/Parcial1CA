@@ -420,7 +420,9 @@ function MuestrasPendientes()
 	PApellido=document.getElementById('PrimerApellido').value;
         SApellido=document.getElementById('SegundoApellido').value;
 	//idsolicitud="";
-	//estado="";
+	
+        
+        
 	//fechasolicitud="";
 	
 	ajax.open("POST", "ctrConsultaMuestrasPendientes.php",true);

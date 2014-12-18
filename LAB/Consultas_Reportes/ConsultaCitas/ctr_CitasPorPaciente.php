@@ -265,10 +265,9 @@ switch ($opcion)
 					$RegistrosAMostrar=20;
 					$NroRegistros= $objdatos->NumeroDeRegistros($query);
 	
-			
-                        
-                        
-$imprimir= "<table width='35%' border='0'  align='center'>
+                        if ($NroRegistros==""){
+                            $NroRegistros=0;
+                            $imprimir= "<table width='35%' border='0'  align='center'>
           <center>
                 <tr>
                         <td colspan='11' align='center' ><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES:".$NroRegistros."</h3></span></td>
@@ -278,7 +277,22 @@ $imprimir= "<table width='35%' border='0'  align='center'>
 		</tr>
           </center>
 	</table> ";
+                        }else{
+                            $imprimir= "<table width='35%' border='0'  align='center'>
+          <center>
+                <tr>
+                        <td colspan='11' align='center' ><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES:".$NroRegistros."</h3></span></td>
+                </tr>
+                <tr>
+			<td colspan='7' align='center' style='color:#990000; font:bold'><a style ='text-decoration:underline;cursor:pointer; font:bold; size:36' onclick='VistaPrevia();'>IMPRIMIR REPORTE</a></td>	
+		</tr>
+          </center>
+	</table> ";
+                        }
                         
+                        
+                        
+    
 	
 			$imprimir.="<table width='80%' border='1' align='center'>
 					<tr class='CobaltFieldCaptionTD'>

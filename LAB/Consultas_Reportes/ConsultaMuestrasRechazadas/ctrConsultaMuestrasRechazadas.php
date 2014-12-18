@@ -26,7 +26,7 @@ switch ($opcion)
         $idexamen       = $_POST['idexamen'];
         $idexpediente   = $_POST['idexpediente'];
         $fechasolicitud = $_POST['fechasolicitud'];
-        $fecharecepcion = $_POST['fecharecepcion'];
+        $fecharecepcion = $_POST['fecharecep'];
         $PNombre        = $_POST['PNombre'];
         $SNomre         = $_POST['SNombre'];
         $PApellido      = $_POST['PApellido'];
@@ -77,9 +77,9 @@ switch ($opcion)
              $cond2 .= " t02.fecha_solicitud = '" . $_POST['fechasolicitud'] . "' AND";
         }
 
-        if (!empty($_POST['fecharecepcion'])) {
-             $cond1 .= " t03.fecharecepcion = '" . $_POST['fecharecepcion'] . "' AND";
-             $cond2 .= " t03.fecharecepcion = '" . $_POST['fecharecepcion'] . "' AND";
+        if (!empty($_POST['fecharecep'])) {
+             $cond1 .= " t03.fecharecepcion = '" . $_POST['fecharecep'] . "' AND";
+             $cond2 .= " t03.fecharecepcion = '" . $_POST['fecharecep'] . "' AND";
         }
 
         if (!empty($_POST['PNombre'])) {
@@ -249,7 +249,14 @@ switch ($opcion)
       //echo $query;
         $consulta=$objdatos->ListadoSolicitudesPorArea($query);  
 	$NroRegistros= $objdatos->NumeroDeRegistros($query);
- 	echo  "<table width='35%' border='0'  align='center'>
+ 
+        
+        
+        
+        
+              if ($NroRegistros==""){
+                            $NroRegistros=0;
+                            $imprimir= "<table width='35%' border='0'  align='center'>
           <center>
                 <tr>
                         <td colspan='11' align='center' ><span style='color: #0101DF;'> <h3> TOTAL DE MUESTRAS RECHAZADAS:".$NroRegistros."</h3></span></td>
@@ -259,6 +266,23 @@ switch ($opcion)
 		</tr>
           </center>
 	</table> ";
+                        }else{
+                            $imprimir= "<table width='35%' border='0'  align='center'>
+          <center>
+                <tr>
+                        <td colspan='11' align='center' ><span style='color: #0101DF;'> <h3> TOTAL DE MUESTRAS RECHAZADAS:".$NroRegistros."</h3></span></td>
+                </tr>
+                <tr>
+			<td colspan='7' align='center' style='color:#990000; font:bold'><a style ='text-decoration:underline;cursor:pointer; font:bold; size:36' onclick='VistaPrevia();'>IMPRIMIR REPORTE</a></td>	
+		</tr>
+          </center>
+	</table> ";
+                        }
+        
+        
+        
+        echo $imprimir;
+        
         
 
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);
@@ -309,6 +333,7 @@ switch ($opcion)
             pg_free_result($consulta);
             echo "<input type='hidden' name='oculto' id='text' value='" . $pos . "' />
                 </table>";
+            echo "<br><br>";
         } else {
             echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table>";
         }

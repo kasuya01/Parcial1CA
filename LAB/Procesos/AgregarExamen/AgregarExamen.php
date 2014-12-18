@@ -41,7 +41,7 @@ function MostrarBusqueda()
 	   alert("Ingrese un parmetro de busqueda");
 	   document.getElementById('txtexpediente').focus();
 	   }
-    	/* else{	 
+    	/* else{	
              
              
 	     BuscarDatos(1);

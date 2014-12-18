@@ -24,7 +24,7 @@ for ( i = 0; i < getVars.length; i++)
 			if ( getVars[i].substr(0,5) == 'var4=' )
 						idexamen = getVars[i].substr(5);
 		}
-
+//alert("ejemplo");
  CargarDatosFormulario1(idexpediente,idsolicitud,idarea,idexamen);
 
 }

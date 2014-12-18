@@ -229,6 +229,7 @@ function CambiarEstadoDetalleSolicitud1(estado,idexamen)
 
 //CambiarEstadoDetalleSolicitud1(estado,idexamen)
 function Cerrar(){
+        //SolicitudesPorArea();
 	//window.opener.location.href = window.opener.location.href;
     window.close();
     
@@ -320,7 +321,7 @@ function RechazarMuestra(idtipo,idexpediente,idarea,idsolicitud,fechasolicitud,o
 			{
 			    if (ajax.status == 200)
 				{
-					//mostrar los nuevos registros en esta capa
+                                    //mostrar los nuevos registros en esta capa
 					//document.getElementById('divCambioEstado').innerHTML = ajax.responseText;	
 					alert(ajax.responseText);
                                         window.close();

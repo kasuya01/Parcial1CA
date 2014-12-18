@@ -12,6 +12,7 @@ $estadosolicitud='P';
 //creando los objetos de las clases
 $objdatos = new clsMuestrasRechazadas;
 
+
 switch ($opcion) 
 {
  case 1:
@@ -22,9 +23,9 @@ switch ($opcion)
         $idarea         = $_POST['idarea'];
         $idexamen       = $_POST['idexamen'];
         $idexpediente   = $_POST['idexpediente'];
-        $fecharecepcion = (empty($_POST['fecharecepcion'])) ? 'NULL' : "'" . pg_escape_string($_POST['fecharecepcion'])."'";
+       // $fecharecepcion = (empty($_POST['fecharecepcion'])) ? 'NULL' : "'" . pg_escape_string($_POST['fecharecepcion'])."'";
        // $fechasolicitud = $_POST['fechasolicitud'];
-       // $fecharecepcion = $_POST['fecharecepcion'];
+        $fecharecepcion = $_POST['fecharecep'];
         $PNombre        = $_POST['PNombre'];
         $SNomre         = $_POST['SNombre'];
         $PApellido      = $_POST['PApellido'];
@@ -75,9 +76,9 @@ switch ($opcion)
              $cond2 .= " t02.fecha_solicitud = '" . $_POST['fechasolicitud'] . "' AND";
         }
 
-        if (!empty($_POST['fecharecepcion'])) {
-             $cond1 .= " t03.fecharecepcion = '" . $_POST['fecharecepcion'] . "' AND";
-             $cond2 .= " t03.fecharecepcion = '" . $_POST['fecharecepcion'] . "' AND";
+        if (!empty($_POST['fecharecep'])) {
+             $cond1 .= " t03.fecharecepcion = '" . $_POST['fecharecep'] . "' AND";
+             $cond2 .= " t03.fecharecepcion = '" . $_POST['fecharecep'] . "' AND";
         }
 
         if (!empty($_POST['PNombre'])) {
@@ -348,26 +349,21 @@ switch ($opcion)
         $idexamen=$_POST['idexamen'];		
          
 	include_once("clsMuestrasRechazadas.php");
+        
+         $nombe=$objdatos->nombrepaciente($idsolicitud,$idexpediente);
+      $row1 = pg_fetch_array($nombe);
+      $nombrepaciente       = $row1['paciente'];
+      $nombreexamen= $row1['nombreexamen'];
+        
+        
 	//recuperando los valores generales de la solicitud
 	$consulta=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud);
+        
+        
 	$row = pg_fetch_array($consulta);
-	//obteniedo los datos generales de la solicitud
-	//valores de las consultas
-	/*$idsolicitudPadre=$row[0];
-        $medico=$row[2];
-	$idmedico=$row[1];
-	$paciente=$row['paciente'];
-	$edad=$row['edad'];
-	$sexo=$row[5];
-	$precedencia=$row[13];
-	$origen=$row[8];
-	//$DatosClinicos=$row['DatosClinicos'];
-	//$fechasolicitud=$row['FechaSolicitud'];
-	//$FechaNac=$row['FechaNacimiento'];
-        $Talla=$row[11];
-        $Peso=$row[10];
-        $Diagnostico=$row[9];
-          $ConocidoPor=$row[7];*/
+        if (pg_num_rows($consulta)>0){
+            //echo "dentro del if";
+	
         $idsolicitudPadre=$row[0];
         $medico         = $row['medico'];
         $idmedico       = $row[1];
@@ -525,7 +521,17 @@ pg_free_result($datosexamen);
 
      echo $imprimir;
 	// break;
-	
+        }else {// echo   $consulta;
+      //          echo "dentro del else";
+            
+     echo '<br><br><br><br><img src="../../../Imagenes/indice.jpeg" valign="middle"  border="0" height="60" width="80" />';
+     
+     echo "<center> <h1> El Resultado Del Examen:<span style='color: #0101DF;'> $nombreexamen</span>, De: <span style='color: #0101DF;'> $nombrepaciente</span>, Ya a Sido Procesado.</h1> ";
+            
+     
+     echo " <button type='submit' class='fg-button ui-state-default ui-corner-all' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' />Cerrar</button></center>";
+  
+     }
    break;
     	
   case 3: //procezar muestra
@@ -549,7 +555,7 @@ pg_free_result($datosexamen);
     if ($contaridresultado>0) 
               //if ($idresulta>0) 
     {
-                        
+            //echo "hay resultado";            
            $consulta=$objdatos->idresultado($idsolicitud,$idsolicitudPadre);
             $row = pg_fetch_array($consulta);
              $idresulta=$row[0];
@@ -592,7 +598,7 @@ pg_free_result($datosexamen);
 	    }
     }
     else{
-            // echo "no hay resultados    ";
+            //echo "no hay resultados    ";
         if ($objdatos->CambiarEstadoDetalle($idsolicitud,$estado,$observacion)==true)   
 	{   //echo "Muestra Procesada";
 				//CambiarEstadoSolicitudProceso3

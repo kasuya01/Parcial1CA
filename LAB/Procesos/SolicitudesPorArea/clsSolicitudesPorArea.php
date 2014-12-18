@@ -279,6 +279,8 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
                 left  join mnt_empleado 			t24 	on (t09.id_empleado=t24.id) 
                 WHERE t01.id=$idsolicitud 
                 and t06.numero='$idexpediente' 
+                AND t02.estado=(select id from ctl_estado_servicio_diagnostico where idestado ='R')
+                AND  t01.estadodetalle=(select id from ctl_estado_servicio_diagnostico where idestado ='D') 
 
        UNION
 
@@ -327,7 +329,9 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
                 left join mnt_snomed_cie10 			t22             on (t22.id=t21.id_snomed)
                 left join sec_signos_vitales  			t23             on (t23.id_historial_clinico=t09.id)
                 left  join mnt_empleado 			t24             on (t09.id_empleado=t24.id) 
-                WHERE t01.id=$idsolicitud and t06.numero='$idexpediente'";
+                WHERE t01.id=$idsolicitud and t06.numero='$idexpediente'
+                AND t02.estado=(select id from ctl_estado_servicio_diagnostico where idestado ='R')
+                AND  t01.estadodetalle=(select id from ctl_estado_servicio_diagnostico where idestado ='D')  ";
                 
                 
         //echo $query;
@@ -338,6 +342,41 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
        return $result;	   
 	}
  }
+ 
+  
+ 
+ 
+          //DATOS DEL DETALLE DE LA SOLICITUD
+  function nombrepaciente($idsolicitud,$idexpediente)
+           
+  {
+	$con = new ConexionBD;
+   if($con->conectar()==true) 
+   {
+	    $query =  "SELECT  
+ CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido, 
+        t07.apellido_casada) AS paciente,t04.nombre_examen AS nombreexamen
+    FROM sec_detallesolicitudestudios t01 
+    INNER JOIN sec_solicitudestudios  t02 ON (t02.id = t01.idsolicitudestudio) 
+    INNER JOIN lab_conf_examen_estab  t04 ON (t04.id = t01.id_conf_examen_estab) 
+    INNER JOIN mnt_expediente         t06 ON (t06.id = t02.id_expediente) 
+    INNER JOIN mnt_paciente           t07 ON (t07.id = t06.id_paciente) 
+    WHERE t01.id=$idsolicitud 
+    and t06.numero='$idexpediente' ";
+              
+              $result = @pg_query($query);
+	    if (!$result)
+	       return false;
+	    else
+	       return $result;	   
+   }
+ }
+          
+          
+          
+          
+          
+          
   //DATOS DEL DETALLE DE LA SOLICITUD
   function DatosDetalleSolicitud($idsolicitud)
            

@@ -42,7 +42,10 @@ else{
 <script type="text/javascript" src="../../../calendarstructure/calendar.js"></script>
 <script type="text/javascript" src="../../../calendarstructure/calendar-es.js"></script>
 <script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
-<script language="JavaScript" type="text/javascript">
+<?php include_once $ROOT_PATH.'/public/css.php';?>
+<?php include_once $ROOT_PATH.'/public/js.php';?>
+
+<script language="JavaScript" type="text/javascript"  >
 
 function MostrarMuestrasRechazadas()
 
@@ -53,6 +56,9 @@ function MostrarMuestrasRechazadas()
                     
                     if ((document.getElementById('cmbArea').value == 0) && (document.getElementById('txtexpediente').value == "")&& (document.getElementById('txtfecharecep').value == "")&& (document.getElementById('CmbServicio').value == 0))
 			alert("Ingrese al menos un parámetro de búsqueda");
+                         // <div class="alert alert-success"> nana </div>
+             
+         
 	/*else  
 		MuestrasRechazadas();*/
         else {
@@ -225,10 +231,15 @@ if ($nivel==33){
 		<td class="StormyWeatherFieldCaptionTD"  >Expediente</td>
 		<td  class="StormyWeatherDataTD" width="5%" ><input type="text" size="24" name="txtexpediente" id="txtexpediente" />
 		</td>
-		<td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Recepi&oacute;n</td>
-		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="15" name="txtfecharecep" id="txtfecharecep" />
-			<input type="button" value="..." id="trigger">dd/mm/aaaa
+		
+                
+                
+                     <td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Recepi&oacute;n</td>
+		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="28" name="txtfecharecep" id="txtfecharecep" class="date"  placeholder="aaaa-mm-dd" />
 		</td>
+                        
+                
+                
 	</tr>
 	<tr>
 		<td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong>   </td> 
@@ -253,7 +264,7 @@ if ($nivel==33){
 <tr>
 </table>
 </form>
-<script type="text/javascript">
+<!--<script type="text/javascript">
 			Calendar.setup(
 				{
 				inputField  : "txtfecharecep",         // el ID texto 
@@ -261,7 +272,7 @@ if ($nivel==33){
 				button      : "trigger"       // el ID del boton			  	  
 				}
 			);
-		</script>
+		</script> -->
 </div>
 <div id="divBusqueda">
 
