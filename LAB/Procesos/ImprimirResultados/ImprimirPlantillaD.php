@@ -13,6 +13,7 @@ $idplatilla=$_GET['var3'];
 $expediente=$_GET['var4'];
 $idarea=$_GET['var5'];
 $idexamen=$_GET['var6'];
+$subservicio=$_GET['var7'];
 ?>
 <html>
 <head>
@@ -83,11 +84,11 @@ function calc_edad()
 			<td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['estabext'])?></td>
 			<td colspan="1" class="Estilo5"><strong>Fecha Resultado</strong></td>
 			<td colspan="2" class="Estilo6"><?php echo $row_generales['fecharecepcion']?></td>
-				<input name='suEdad' id='suEdad' type='hidden' value=<?php echo $row_generales['FechaNacimiento']?>>
+				
 		</tr>
 
 		<tr>
-			<td colspan="1" class="Estilo5"><strong>NEC</strong></td>
+			<td colspan="1" class="Estilo5"><strong>Expediente:</strong></td>
 			<td colspan="5" class="Estilo7"><?php echo $row_generales['idnumeroexp']?></td>
                 </tr>
                 <tr>
@@ -105,7 +106,7 @@ function calc_edad()
 			<td colspan="1" class="Estilo5"><strong>Procedencia:</strong></td>
 			<td colspan="2" class="Estilo6"><?php echo htmlentities($row_generales['nombreservicio'])?></td>
 			<td colspan="1" class="Estilo5"><strong>Origen:</strong></td>
-			<td colspan='2' class="Estilo6" ><?php echo $row_generales['nombresubservicio']?></td>
+			<td colspan='2' class="Estilo6" ><?php echo $subservicio?></td>
 		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
@@ -123,9 +124,9 @@ function calc_edad()
                         <td colspan='4' aling='center'  >
 				<table width='110%' border='0' aling='center' cellspacing="0">
                                     <tr>
-                                        <td width='50%' class="Estilo5" aling='center' ><span style='color: #0101DF;'><strong>Elemento de Tinci&oacute;n</span></strong>
+                                        <td width='50%' class="Estilo5" aling='center' ><strong>Elemento de Tinci&oacute;n</strong>
 					</td>
-                                        <td width='50%' class="Estilo5" aling='center' ><span style='color: #0101DF;'><strong>Cantidad</span></strong>
+                                        <td width='50%' class="Estilo5" aling='center' ><strong>Cantidad</strong>
 					</td>
                                     </tr>
 				<?php while($row = pg_fetch_array($consulta)){

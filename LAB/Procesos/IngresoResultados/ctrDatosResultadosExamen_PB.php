@@ -228,6 +228,8 @@ switch ($opcion) {
 	   	$sexo 		      = $_POST['sexo'];
                 $fecharealiz          =$_POST['fecharealiz'];
                 $fecharesultado       =$_POST['fecharesultado'];
+                $subservicio       =$_POST['subservicio'];
+               // echo $subservicio;
                // echo $fecharealiz."-".$fecharesultado;
 	   	$Consulta_Estab  = $objdatos->Nombre_Establecimiento($lugar);
 	   	$row_estab   	 = pg_fetch_array($Consulta_Estab);
@@ -283,7 +285,7 @@ switch ($opcion) {
 			   			</tr>
 		   				<tr>
 			   				<td colspan='1'><strong>Edad:</strong></td>
-			   				<td colspan='2'><div id='divsuedad'></div></td>
+			   				<td colspan='2'>".$row_generales['edad']."</td>
 			   				<td colspan='1'><strong>Sexo:</strong></td>
 			   				<td colspan='2'>".$row_generales['sexo']."</td>
 			   			</tr>
@@ -291,7 +293,7 @@ switch ($opcion) {
 			   				<td colspan='1'><strong>Procedencia:</strong></td>
 			   				<td colspan='2'>".$row_generales['procedencia']."</td>
 			   				<td colspan='1'><strong>Servicio:</strong></td>
-			   				<td colspan='2'>".$row_generales['origen']."</td>
+			   				<td colspan='2'>".$subservicio."</td>
 			   			</tr>
 			   			<tr>
 			   				<td colspan='1'><strong>Examen Realizado:</strong></td>
@@ -384,7 +386,7 @@ switch ($opcion) {
 	            $imprimir .="<td colspan='3' align='right'>
 			                    <input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaB()'>
 			                    <input type='button' name='Imprimir'  id='Imprimir' value='Imprimir'
-			                    	Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['origen'])."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities( $establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\") ;'>
+			                    	Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities( $establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\") ;'>
 			                    <input type='button' id='btnSalir' value='Cerrar' onclick='Cerrar()'>
 			                </td>
 			            </tr>
@@ -443,7 +445,7 @@ switch ($opcion) {
 		        			<td colspan='1'><strong>Procedencia:</strong></td>
 		        			<td colspan='2'>".htmlentities($row_generales['procedencia'])."</td>
 		        			<td colspan='1'><strong>Servicio:</strong></td>
-		        			<td colspan='2'>".htmlentities($row_generales['origen'])."</td>
+		        			<td colspan='2'>".$subservicio."</td>
 		        		</tr>
 		        		<tr>
 		        			<td colspan='1'><strong>Examen Realizado:</strong></td>
@@ -525,7 +527,7 @@ switch ($opcion) {
 							<td colspan='5' align='center' >
 								<input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaB()'>
 								<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir'
-									Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['origen'])."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\") ;'>
+									Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\") ;'>
 								<input type='button' id='btnSalir' value='Cerrar' onclick='Cerrar()'>
 							</td>
 						</tr>

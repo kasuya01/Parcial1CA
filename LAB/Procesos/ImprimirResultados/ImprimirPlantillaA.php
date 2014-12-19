@@ -9,6 +9,7 @@ $idplatilla=$_GET['var3'];
 $expediente=$_GET['var4'];
 $idarea=$_GET['var5'];
 $IdExamen=$_GET['var6'];
+$subservicio=$_GET['var8'];
 
 //echo $iddetalle."*soli".$idsolicitud."*plantilla".$idplatilla."*exp".$expediente."*area".$idarea."*exam".$IdExamen
 ?>
@@ -20,7 +21,7 @@ $IdExamen=$_GET['var6'];
 <!--<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">-->
 <script language="JavaScript">
-function calc_edad()
+/*function calc_edad()
 {
   var fecnac1=document.getElementById("suEdad").value;
   var fecnac2=fecnac1.substring(0,10);
@@ -29,7 +30,7 @@ function calc_edad()
  // alert(suEdades);
 
   document.getElementById("divsuedad").innerHTML=suEdades;
-}
+}*/
 </script>
 <style type="text/css">
 <!--
@@ -86,7 +87,7 @@ $nombre=$row['nombre_area'];
 			</tr>
 
 			<tr>
-				<td colspan="1" class="Estilo5"><strong>NEC</strong></td>
+				<td colspan="1" class="Estilo5"><strong>Expediente:</strong></td>
 				<td colspan="5" class="Estilo7"><?php echo $row['idnumeroexp'];?></td>
                         </tr>
                         <tr>
@@ -111,7 +112,7 @@ $nombre=$row['nombre_area'];
 				<td colspan="1" class="Estilo5"><strong>Procedencia:</strong></td>
 				<td colspan="2" class="Estilo6"><?php echo htmlentities($row['nombreservicio'])?></td>
 				<td colspan="1" class="Estilo5"><strong>Servicio:</strong></td>
-				<td colspan="2" class="Estilo6"><?php echo htmlentities($row['nombresubservicio'])?></td>
+				<td colspan="2" class="Estilo6"><?php echo htmlentities($subservicio)?></td>
 			</tr>
 			<tr>
 				<td  colspan='1' class="Estilo5"><strong>Validado Por: </strong></td>

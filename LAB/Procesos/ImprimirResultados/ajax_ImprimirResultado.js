@@ -274,13 +274,14 @@ function MostrarDatos(posicion)
 		idsolicitud=document.getElementById('idsolicitud['+posicion+']').value;
 		idexpediente=trim(idexpediente);
 		IdEstablecimiento=document.getElementById('idestablecimiento['+posicion+']').value;
+                subservicio=document.getElementById('subservicio['+posicion+']').value;
 		//alert(IdEstablecimiento);
 		idsolicitud=trim(idsolicitud);
-		CargarDatosFormulario(idexpediente,idsolicitud,IdEstablecimiento);
+		CargarDatosFormulario(idexpediente,idsolicitud,IdEstablecimiento,subservicio);
 	 
  }
 
- function CargarDatosFormulario(idexpediente,idsolicitud,IdEstablecimiento)
+ function CargarDatosFormulario(idexpediente,idsolicitud,IdEstablecimiento,subservicio)
  
 {         
         
@@ -293,7 +294,7 @@ function MostrarDatos(posicion)
 		  //enviando los valores
 	
 	
-        ajax.send("opcion="+opcion+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud+"&IdEstablecimiento="+IdEstablecimiento);
+        ajax.send("opcion="+opcion+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud+"&IdEstablecimiento="+IdEstablecimiento+"&subservicio="+subservicio);
 	ajax.onreadystatechange=function() 
 	{
 		if (ajax.readyState==4) 
@@ -305,7 +306,7 @@ function MostrarDatos(posicion)
 	}
 }
 
-function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,idexamen,sexo,fechanac,idexamen,fechanac)
+function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,idexamen,sexo,fechanac,idexamen,$subservicio)
 {
     
   //alert(iddetalle);
@@ -315,7 +316,7 @@ function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,ide
    // alert(idarea);
    // alert(idexamen);
     //alert(sexo);
-   // alert(fechanac);
+    
     
    switch (idplantilla)
 	{ 	case "1":   //"A": 
@@ -325,34 +326,34 @@ function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,ide
                             //alert("la plantilla es 1 IF");
 				ventana_secundaria = window.open("ImprimirPlantillaA1.php?var1="+iddetalle+
                                 "&var2="+idsolicitud+"&var3="+idplantilla+"&var4="+idexpediente+
-                                "&var5="+idarea+"&var6="+idexamen+"&var7="+fechanac,
+                                "&var5="+idarea+"&var6="+idexamen+"&var7="+subservicio,
                                 "Impresion","width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
-					 //calc_edad();
-                                        // alert("dentro del if");
+				//alert($subservicio);
                                          
 			}
 			else{
-                            //alert("la plantilla es 1 ELSE");
+                           // alert($subservicio);
 				ventana_secundaria = window.open("ImprimirPlantillaA.php?var1="+iddetalle+
                                 "&var2="+idsolicitud+"&var3="+idplantilla+"&var4="+idexpediente+
-                                "&var5="+idarea+"&var6="+idexamen+"&var7="+sexo+"&var8="+fechanac,
+                                "&var5="+idarea+"&var6="+idexamen+"&var7="+sexo+"&var8="+subservicio,
                                 "Impresion","width=1150,ccc=800,menubar=no,scrollbars=yes,location=no");
-                                     //  alert("dentro del else");
+                                   // alert($subservicio);
 			}
 	      	break;
 	  	case   "2":  //"B":  
 		  	//alert("la plantilla es 2");
+                      /// alert($subservicio);
                                 ventana_secundaria = window.open("ImprimirPlantillaB.php?var1="+iddetalle+"&var2="+idsolicitud+
                                    "&var3="+idplantilla+"&var4="+idexpediente+"&var5="+idarea+"&var6="+idexamen+
-                                   "&var7="+sexo+"&var8="+fechanac,"Impresion","width=1150,height=1150,menubar=no,scrollbars=yes,location=no");
-                                  // alert(var1);
+                                   "&var7="+sexo+"&var8="+fechanac+"&var9="+subservicio,"Impresion","width=1150,height=1150,menubar=no,scrollbars=yes,location=no");
+                                 
             break;
 	  	case   "3":   //"C":  
                     // alert("la plantilla es 3");
 	  			ventana_secundaria = window.open("ImprimirPlantillaC.php?var1="+iddetalle+"&var2="+idsolicitud+
-                                   "&var3="+idplantilla+"&var4="+idexpediente+"&var5="+idarea+"&var6="+idexamen,
+                                   "&var3="+idplantilla+"&var4="+idexpediente+"&var5="+idarea+"&var6="+idexamen+"&var7="+subservicio,
                                    "Impresion","width=1150,ccc=800,menubar=no,scrollbars=yes,location=no");
-                                   
+                                 //  alert($subservicio);
                                    
                                   
                                    
@@ -360,14 +361,17 @@ function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,ide
 	  	case "4":
                     //alert("la plantilla es 4");
 				ventana_secundaria = window.open("ImprimirPlantillaD.php?var1="+iddetalle+"&var2="+idsolicitud+
-                                   "&var3="+idplantilla+"&var4="+idexpediente+"&var5="+idarea+"&var6="+idexamen,
+                                   "&var3="+idplantilla+"&var4="+idexpediente+"&var5="+idarea+"&var6="+idexamen+"&var7="+subservicio,
                                    "Impresion","width=1150,ccc=800,menubar=no,scrollbars=yes,location=no");
+                                //   alert($subservicio);
 	  	break;
 	 	case   "5":  //"E":
+                    // alert($subservicio);
                             //alert("la plantilla es 5");
 		 		ventana_secundaria = window.open("ImprimirPlantillaE.php?var1="+iddetalle+"&var2="+idsolicitud+
                                    "&var3="+idplantilla+"&var4="+idexpediente+"&var5="+idarea+"&var6="+idexamen+
-                                   "&var7="+sexo+"&var8="+fechanac,"Impresion","width=1150,height=550,menubar=no,scrollbars=yes,location=no");
+                                   "&var7="+sexo+"&var8="+subservicio,"Impresion","width=1150,height=550,menubar=no,scrollbars=yes,location=no");
+                          
 		break;
 	}
 }

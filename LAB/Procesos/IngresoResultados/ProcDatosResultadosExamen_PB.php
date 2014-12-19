@@ -179,7 +179,7 @@ $area    = $_SESSION['Idarea'];
                                     <input type="hidden" name="txtSexo" id="txtSexo" value="<?php echo $_GET['var15']?>" />
                                     <input type="hidden" name="txtIdEstandar" id="txtIdEstandar" value="<?php echo $_GET['var16']?>" />
                                     <input type="hidden" name="txtIdHistorial" id="txtIdHistorial" value="<?php echo $_GET['var17']?>" />
-                                    
+                                    <input type="hidden" name="txtsubservicio" id="txtsubservicio" value="<?php echo $_GET['var11']?>" />
                                 </td>
                             </tr>
                             <tr>

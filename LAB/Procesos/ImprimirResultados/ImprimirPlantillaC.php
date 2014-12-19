@@ -14,6 +14,7 @@ $idplatilla=$_GET['var3'];
 $expediente=$_GET['var4'];
 $idarea=$_GET['var5'];
 $idexamen=$_GET['var6'];
+$subservicio=$_GET['var7'];
 ?>
 <html>
 <head>
@@ -122,7 +123,7 @@ $row_cantidad=pg_fetch_array($Catidad);
 					<td colspan='1' class="Estilo6"><?php echo htmlentities($row_generales['nombreservicio']);?></td>
 
 					<td colspan='1' class="Estilo5"><strong>Servicio:</strong></td>
-					<td colspan='2' class="Estilo6" ><?php echo htmlentities($row_generales['nombresubservicio']);?></td>
+					<td colspan='2' class="Estilo6" ><?php echo htmlentities($subservicio);?></td>
 				</tr>
 				<tr>
 					<td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
@@ -258,7 +259,7 @@ $row_cantidad=pg_fetch_array($Catidad);
                                             <td colspan="2"class="Estilo6"><?php echo htmlentities($row_generales['nombreservicio'])?></td>
 
                                             <td colspan="1" class="Estilo5"><strong>Origen:</strong></td>
-                                            <td colspan="2" class="Estilo6"><?php echo htmlentities($row_generales['nombresubservicio'])?></td>
+                                            <td colspan="2" class="Estilo6"><?php echo htmlentities($subservicio)?></td>
 					</tr>
 					<tr>
                                             <td colspan="1" class="Estilo5"><strong>Examen Realizado:</strong></td>

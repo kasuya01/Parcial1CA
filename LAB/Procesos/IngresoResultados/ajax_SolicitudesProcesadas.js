@@ -376,10 +376,10 @@ function ImprimirPlantillaA1(idsolicitud, idarea, responsable, valores_resultado
 
 function ImprimirPlantillaB(idsolicitud, idexamen, responsable, procedencia, origen, observacion, valores_subelementos, codigos_subelementos, valores_elementos, codigos_elementos, controles, controles_ele, nombrearea, establecimiento, responsable, sexo, idedad) {
 
-//alert(idedad);
+//alert(origen);
     ventana_secundaria = window.open("ImprimirPlantillaB.php?var1=" + idsolicitud +
             "&var2=" + idexamen + "&var3=" + responsable + "&var4=" + escape(procedencia) +
-            "&var5=" + escape(origen) + "&var6=" + escape(observacion) + "&var7=" + encodeURIComponent(valores_subelementos) +
+            "&var5=" + origen + "&var6=" + escape(observacion) + "&var7=" + encodeURIComponent(valores_subelementos) +
             "&var8=" + codigos_subelementos + "&var9=" + escape(valores_elementos) +
             "&var10=" + codigos_elementos + "&var11=" + encodeURIComponent(controles) +
             "&var12=" + controles_ele + "&var13=" + nombrearea +
@@ -1336,11 +1336,12 @@ function MostrarVistaPreviaPlantillaB(){
         sexo = document.getElementById('txtSexo').value;
         fecharealiz = document.getElementById('txtresultrealiza').value;
         fecharesultado=document.getElementById('txtfresultado').value;
+        subservicio=document.getElementById('txtsubservicio').value;
+       // alert(subservicio)
         // alert (idsolicitud+"-"+idrecepcion+"-"+iddetalle+"-"+idexamen+"-"+observacion+"-"+estab);
         // alert (fechanac+"-"+sexo);
         //DATOS PARA EL DETALLE DE LOS RESULTADOS
-        //if (ValidarCamposPlantillaB())
-        //{
+        
 
         valores_subelementos = "";
         codigos_subelementos = "";
@@ -1374,7 +1375,7 @@ function MostrarVistaPreviaPlantillaB(){
                 "&origen=" + escape(origen) + "&valores_subelementos=" + encodeURIComponent(valores_subelementos) + "&codigos_subelementos=" + codigos_subelementos +
                 "&valores_elementos=" + encodeURIComponent(valores_elementos) + "&codigos_elementos=" + codigos_elementos + "&controles=" + encodeURIComponent(controles) +
                 "&controles_ele=" + encodeURIComponent(controles_ele) + "&estab=" + estab + "&tab=" + tab + "&fechanac=" + fechanac + "&sexo=" + sexo+
-                "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado);
+                "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado+"&subservicio="+subservicio);
         ajax.onreadystatechange = function()
         {
             if (ajax.readyState == 4)
@@ -1663,8 +1664,10 @@ function IngresarResultados() {
         idhistorial = document.frmnuevo.txtIdHistorial.value;
         fecharealiz = document.frmnuevo.txtresultrealiza.value;
         fecharesultado=document.frmnuevo.txtresultfin.value;
+        subservicio=document.frmnuevo.txtsubservicio.value;
+       // alert (subservicio);
         //alert (fecharealiz+'-'+fecharesultado);
-        CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial,fecharealiz,fecharesultado);
+        CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial,fecharealiz,fecharesultado,subservicio);
     } else {
         alert("Por favor ingrese los campos obligatorios(*)");
     }

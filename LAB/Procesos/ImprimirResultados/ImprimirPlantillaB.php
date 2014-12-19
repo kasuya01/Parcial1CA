@@ -12,6 +12,7 @@ $idarea=$_GET['var5'];
 $idexamen=$_GET['var6'];
 $sexo=$_GET['var7'];
 $fechanac=$_GET['var8'];
+$subservicio=$_GET['var9'];
 //echo $idexamen." fecha=".$fechanac;
 ?>
 <html>
@@ -63,9 +64,9 @@ function calc_edad()
 	$CodEstandar    = pg_fetch_array($ConEstandar);
 	$IdEstandar     =$CodEstandar[0];
        // echo $fechanac;
-          $Cuentadias=$obj->CalculoDias($fechanac);
-          $Cdias= pg_fetch_array($Cuentadias);
-          $dias=$Cdias[0];
+          $Cuentadias = $obj->CalculoDias($fechanac);
+          $Cdias = pg_fetch_array($Cuentadias);
+          $dias = $Cdias[0];
 
           $ConRangos=$obj->ObtenerCodigoRango($dias);
           $row_rangos=  pg_fetch_array($ConRangos);
@@ -128,7 +129,7 @@ function calc_edad()
 			<td colspan='2' class="Estilo6"><?php echo $row_generales['nombresubservicio']?></td>
 
 			<td colspan='1' class="Estilo5"><strong>Servicio:</strong></td>
-			<td colspan='2' class="Estilo6"><?php echo $row_generales['nombreservicio']?></td>
+			<td colspan='2' class="Estilo6"><?php echo $subservicio?></td>
 		</tr>
 		<tr>
 			 <td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
@@ -149,35 +150,31 @@ function calc_edad()
 			pg_free_result($datos_generales);?>
 			<tr >
                             
-				<td width='25%' class='Estilo5'><span style='color: #0101DF;'> Elemento </span> </td> 
-				<td width='10%' class="Estilo5"><span style='color: #0101DF;'> Resultado </span> </td> 
-				<td width='10%' class="Estilo5"><span style='color: #0101DF;'> Unidades </span> </td>
-				<td width='10%' class="Estilo5" colspan='2'><span style='color: #0101DF;'> Control Normal </span> </td>
+                            <td width='25%' class='Estilo5'><strong> Elemento </strong> </td> 
+                            <td width='10%' class="Estilo5"><strong> Resultado </strong> </td> 
+                            <td width='10%' class="Estilo5"><strong> Unidades </strong> </td>
+                            <td width='10%' class="Estilo5" colspan='2'><stron> Control Normal </stron> </td>
 			</tr>
 				<?php $pos=0;
 			 	$posele=0;
-			/*while($row = pg_fetch_array($consulta))//ELEMENTOS
-			{
-				if($row['subelemento']=='S')
-				{    //echo "if";
-                                    ?>
-			<tr >
-<<<<<<< HEAD
-				<!--<td colspan='5' class="Estilo6" ><?php echo htmlentities($row['elemento'])?></td> -->
-=======
-				<td colspan='5' class="Estilo6" ><?php echo htmlentities($row['elemento'])?></td>
->>>>>>> roxy
+		while($row = pg_fetch_array($consulta))//ELEMENTOS
+		{
+                    if($row['subelemento']=='S')
+                    {    //echo "if";
+                        ?>
+			<tr>
+                            <td colspan='5' class="Estilo6" ><?php echo htmlentities($row['elemento'])?></td>
 			</tr>
 				<?php	 //echo  $idedad."   ".$sexo;
-                                $consulta2=$obj->LeerSubElementosExamen($idsolicitud,$iddetalle,$row['idelemento'],$lugar,$idedad,$sexo);
+                            $consulta2=$obj->LeerSubElementosExamen($idsolicitud,$iddetalle,$row['idelemento'],$lugar,$idedad,$sexo);
                                                          //LeerSubElementosExamen($idsolicitud,$iddetalle,$idelemento,$lugar,$idedad,$sexo)
-				while($rowsub = pg_fetch_array($consulta2))//SUBELEMENTOS
-				{?>
-			<tr>
-				<!--<td width='35%' class="Estilo6"><?php echo htmlentities($rowsub['subelemento'])?></td> -->
+                            while($rowsub = pg_fetch_array($consulta2))//SUBELEMENTOS
+			{?>
+                        <tr>
+				<td width='35%' class="Estilo6"><?php echo htmlentities($rowsub['subelemento'])?></td>
 				<td width='25%' class="Estilo6"><?php echo htmlentities($rowsub['resultado'])?></td>
 				<td width='20%' class="Estilo6"><?php echo htmlentities($rowsub['unidad'])?></td>
-			<!--	<td width='40%' class="Estilo6"> <?php echo htmlentities($rowsub['observacion']) ." ".htmlentities($rowsub['unidad'])?> </td> 
+				<td width='40%' class="Estilo6"> <?php echo htmlentities($rowsub['observacion']) ." ".htmlentities($rowsub['unidad'])?> </td> 
 			</tr>
                         
                         
@@ -193,8 +190,8 @@ function calc_edad()
 				<?php	$pos=$pos + 1;
 				}?>
 			<tr>
-			 <!--	<td colspan='4' class="Estilo6"><?php echo htmlentities($row['observelem'])?></td>
-			--> </tr>
+                                <td colspan='4' class="Estilo6"><?php echo htmlentities($row['observelem'])?></td>
+			</tr>
 			<tr>
 				<td colspan='5'>&nbsp;</td>
 			</tr>
@@ -213,7 +210,7 @@ function calc_edad()
 				</td>
 				<td width='25%' class="Estilo6"><?php echo htmlentities($rowele['resultado'])?></td>
 				<td width='10%' class="Estilo6"><?php echo htmlentities($row['unidadelem'])?></td>
-                               <!-- <td class="Estilo5"><?php echo htmlentities($rowele['observacion'])."  ".htmlentities($row['unidadelem'])?></td> -->
+                                <td class="Estilo5"><?php echo htmlentities($rowele['observacion'])."  ".htmlentities($row['unidadelem'])?></td> 
 			</tr>
 				<?php	$posele=$posele+1;?>
 			<tr>
@@ -224,39 +221,36 @@ function calc_edad()
 			</tr>
 			<?php	}
 
-			}*/ //del while
+			} //del while
                                 
-                                while($row = pg_fetch_array($consulta))//ELEMENTOS
-                    {
-                            if($row['subelemento']=="S")
-                            {   ?>
-                                <tr>
-                                    <td  width='35%' class="Estilo5"><strong><?php echo htmlentities($row['elemento'])?></strong></td>
-                                </tr>
-                                    <?php
-                                            $consulta2=$obj->LeerSubElementosExamen($idsolicitud,$iddetalle,$row['idelemento'],$lugar,$idedad,$sexo);
-                                             //echo  $idedad."   ".$sexo;
-
-                                while($rowsub = pg_fetch_array($consulta2)){//SUBELEMENTOS
-                                ?>
-                               <tr>
-                                    <td width='35%' class="Estilo5"><?php echo htmlentities($rowsub['subelemento'])?></td>
-                                    <td width='25%' class="Estilo5"><?php echo htmlentities($rowsub['resultado'])?></td>
-                                    <td width='15%' class="Estilo5"><?php echo htmlentities($rowsub['unidad'])?></td>
-                                    <?php if ((!empty($rowsub['rangoinicio'])) AND (!empty($rowsub['rangofin']))){?>
-                                    <td width='30%' class="Estilo5"> <?php echo $rowsub['rangoinicio']."  -  ".$rowsub['rangofin']?>
-                           <?php }else{ 
-                                        ?>  
-                                    <td width='30%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-</td>
-                      <?php  } ?>
-                                    
-                               </tr>
-                               
-                                    <?php
-                            $pos=$pos + 1;
-                                }?>
-                               <tr>
-                                    <td width='50%'  class="Estilo5"><?php echo htmlentities($row['observelem'])?></td>
+                while($row = pg_fetch_array($consulta))//ELEMENTOS
+                {
+                    if($row['subelemento']=="S")
+                    { ?>
+                        <tr>
+                            <td  width='35%' class="Estilo5"><strong><?php echo htmlentities($row['elemento'])?></strong></td>
+                        </tr>
+                             <?php
+                                $consulta2=$obj->LeerSubElementosExamen($idsolicitud,$iddetalle,$row['idelemento'],$lugar,$idedad,$sexo);
+                                //echo  $idedad."   ".$sexo;
+                        while($rowsub = pg_fetch_array($consulta2)){//SUBELEMENTOS
+                           ?>
+                        <tr>
+                            <td width='35%' class="Estilo5"><?php echo htmlentities($rowsub['subelemento'])?></td>
+                            <td width='25%' class="Estilo5"><?php echo htmlentities($rowsub['resultado'])?></td>
+                            <td width='15%' class="Estilo5"><?php echo htmlentities($rowsub['unidad'])?></td>
+                    <?php if ((!empty($rowsub['rangoinicio'])) AND (!empty($rowsub['rangofin']))){?>
+                            <td width='30%' class="Estilo5"> <?php echo $rowsub['rangoinicio']."  -  ".$rowsub['rangofin']?>
+                    <?php }else{ 
+                              ?>  
+                            <td width='30%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-</td>
+                    <?php } ?>
+                        </tr>
+            <?php
+                  $pos=$pos + 1;
+                        }?>
+                        <tr>
+                            <td width='50%'  class="Estilo5"><?php echo htmlentities($row['observelem'])?></td>
                                </tr>
                                
                                <tr>
@@ -367,10 +361,10 @@ function calc_edad()
                         <td colspan="6">
                             <table width='100%' border='0' align='center' cellspacing="0" >
                                 <tr>
-                                    <td width='35%' class='Estilo5'> <span style='color: #0101DF;'> Elemento </span> </td> 
-                                    <td width='20%' class='Estilo5'> <span style='color: #0101DF;'> Resultado </span> </td> 
-                                    <td width='15%' class='Estilo5'> <span style='color: #0101DF;'> Unidades </span> </td> 
-                                    <td width='30%' class='Estilo5'> <span style='color: #0101DF;'> Rangos de Referencia </span> </td>
+                                    <td width='35%' class='Estilo5'> <strong> Elemento </strong> </td> 
+                                    <td width='20%' class='Estilo5'> <strong> Resultado </stron> </td> 
+                                    <td width='15%' class='Estilo5'> <strong> Unidades </strong> </td> 
+                                    <td width='30%' class='Estilo5'> <strong> Rangos de Referencia </strong> </td>
                                         
                                 </tr>
                                 <?php $pos=0;

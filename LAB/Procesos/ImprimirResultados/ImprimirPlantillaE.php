@@ -9,7 +9,8 @@ $idplatilla=$_GET['var3'];
 $expediente=$_GET['var4'];
 $idarea=$_GET['var5'];
 $idexamen=$_GET['var6'];
-echo $idexamen;
+$subservicio=$_GET['var8'];
+//echo $idexamen;
 
 ?>
 <html>
@@ -104,7 +105,7 @@ $obj = new clsImprimirResultado;
 			<td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['nombresubservicio'])?></td>
 
 			<td colspan='1' class="Estilo5"><strong>Servicio:</strong></td>
-			<td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['nombreservicio'])?></td>
+			<td colspan='2' class="Estilo6"><?php echo htmlentities($subservicio)?></td>
 		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>
@@ -227,7 +228,7 @@ $obj = new clsImprimirResultado;
 			<td colspan='2' class="Estilo6"><?php echo $row_generales['nombresubservicio']?></td>
 
 			<td colspan='1' class="Estilo5"><strong>Servicio:</strong></td>
-			<td colspan='2' class="Estilo6"><?php echo $row_generales['nombreservicio']?></td>
+			<td colspan='2' class="Estilo6"><?php echo $subservicio?></td>
 		</tr>
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
@@ -253,10 +254,10 @@ $obj = new clsImprimirResultado;
 	        ?>
 			<table width='100%' border='0' align='center' cellspacing="0">
 				<tr >
-                                        <td class="Estilo5" width='25%' align='left'><span style='color: #0101DF;'>  Prueba </span> </td>
-					<td class="Estilo5" width='30%' align='center'><span style='color: #0101DF;'>  Resultado </span></td>
-					<td class="Estilo5" width='20%' align='center'><span style='color: #0101DF;'>  Unidades </span></td>
-					<td class="Estilo5" width='30%' align='center'><span style='color: #0101DF;'>  Rango </span></td>
+                                    <td class="Estilo5" width='25%' align='left'> <strong>Prueba</strong>  </td>
+                                    <td class="Estilo5" width='30%' align='center'><strong>Resultado</strong></td>
+                                    <td class="Estilo5" width='20%' align='center'><strong> Unidades</strong></td>
+                                    <td class="Estilo5" width='30%' align='center'><strong> Rango </strong></td>
 				</tr>
 					<?php $pos=0;
 				while($row = pg_fetch_array($consulta))//ELEMENTOS

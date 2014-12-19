@@ -98,7 +98,7 @@ function calc_edad()
 		</tr>
 
 		<tr>
-                    <td colspan='1' class="Estilo5"><strong>Expediente:C</strong></td>
+                    <td colspan='1' class="Estilo5"><strong>Expediente:</strong></td>
                     <td colspan='2' class="Estilo7"><?php echo $row_generales['numero']?></td>
                     <td colspan='1' class="Estilo5" ><strong>Fecha Recepción:</strong></td>
                     <td colspan='2' class="Estilo6" ><?php echo $row_generales['fecharecep']?></td>
