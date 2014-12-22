@@ -301,6 +301,7 @@ function MostrarDatos(posicion)
 		{	 if (ajax.status == 200)
 			{  //mostrar los nuevos registros en esta capa
 			  document.getElementById('divSolicitud').innerHTML = ajax.responseText;
+                          document.getElementById('divSolicitud').scrollIntoView()
 			 }
 	     }
 	}

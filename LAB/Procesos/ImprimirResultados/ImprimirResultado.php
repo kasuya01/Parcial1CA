@@ -152,7 +152,7 @@ if ($nivel==4){
                 <tr>	
                     <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
                     <td class="StormyWeatherDataTD">
-			<select name="CmbServicio" id="CmbServicio" style="width:355px" onChange="BuscarServicio(this.value)" >
+			<select name="CmbServicio" id="CmbServicio" style="width:405px" onChange="BuscarServicio(this.value)" >
                             <option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
 				<?php
                                     $db = new ConexionBD;
@@ -190,7 +190,7 @@ if ($nivel==4){
                 </tr>
                 <tr>
                     <td class="StormyWeatherFieldCaptionTD"  >Expediente</td>
-                    <td  class="StormyWeatherDataTD" width="5%" ><input type="text" size="24" name="txtexpediente" id="txtexpediente" />
+                    <td  class="StormyWeatherDataTD" width="5%" ><input type="text" size="28" name="txtexpediente" id="txtexpediente" />
                     </td>
                              <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Recepi&oacute;n</td>
                              <td class="StormyWeatherDataTD" width="20%">
@@ -222,12 +222,17 @@ if ($nivel==4){
                 
                 <tr>
 			<td  colspan="5" align="right">  
-                            <center>
+                           <br>
                                     <!-- <input type="button" id="btnbuscar"  class="fg-button ui-state-default ui-corner-all  value="Buscar" onClick="MostrarBusqueda();"> -->
                                     <!-- <input type="button" id="btnClear" value="Nueva Busqueda"  onClick="window.location.replace('ImprimirResultado.php')">	-->
-                                    <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="MostrarBusqueda();">Buscar Solicitudes</button>
-                                    <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="window.location.replace('ImprimirResultado.php')">Nueva Busqueda </button>
-                            </center>  
+                               <button type='button' align="center" class='btn btn-primary' id='buscarsolicitud' onclick='MostrarBusqueda(); '><span class='glyphicon glyphicon-search'></span> Buscar Solicitudes</button>
+                               <button type='button' align="center" class='btn btn-primary' id='nuevabusqueda' onclick="window.location.replace('ImprimirResultado.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+                               <br>
+                               
+                               
+<!--                                    <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="MostrarBusqueda();">Buscar Solicitudes</button>-->
+<!--                                    <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="window.location.replace('ImprimirResultado.php')">Nueva Busqueda </button>-->
+                            
                         </td>
 		</tr>
                 

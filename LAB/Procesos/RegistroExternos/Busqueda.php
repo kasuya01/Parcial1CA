@@ -5,6 +5,7 @@ include_once("../../../Conexion/ConexionBD.php");
 //$IdEstablecimiento=$_SESSION['IdEstablecimiento'];
 $LugardeAtencion=$_SESSION['Lugar'];
 $nec=$_GET['nec'];
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
 ?>
 <html>
 <head>
@@ -12,44 +13,60 @@ $nec=$_GET['nec'];
 <script language="javascript" src="Includes/Funciones.js">
 </script>
 <!-- AUTOCOMPLETAR -->
-	<script type="text/javascript" src="scripts/prototype.js"></script>
-	<script type="text/javascript" src="scripts/autocomplete.js"></script>
+	
+      <?php include_once $ROOT_PATH."/public/css.php";?>
+      <?php include_once $ROOT_PATH."/public/js.php";?>
+      <script type="text/javascript" src="scripts/prototype.js"></script>
+      <script type="text/javascript" src="scripts/autocomplete.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles/autocomplete.css" />
 </head>
 
-<body class="MailboxPageBody">
+<body class="MailboxPageBody"><br><br>
 <center>
-<strong>
+<!--<strong>
 	<h2 align="center"><img class="MailboxInput" style="WIDTH: 57px; HEIGHT: 38px" height="94" src="../../../Iconos/buscar.gif" width="106">
             &nbsp;Busqueda de paciente Externo</h2>
-	</strong> 
+	</strong> -->
 
 
 <div id="Busqueda" >
-<table border="1" cellpadding="2" style="border:steelblue 1px; border-collapse: collapse" class="CobaltFormTABLE">
-    <tr>
-      <th class="CobaltFieldCaptionTD" align="left">Nombre del Establecimiento Externo:&nbsp;</th> 
-      <td colspan="8" class="CobaltDataTD">
+   <div class='panel panel-primary' style="width: 95%">
+               <table border="1" cellpadding="2" style="border:steelblue 1px; border-collapse: collapse" class='table table-bordered table-condensed table-white no-v-border'><thead><tr><td colspan="4"  style='background-color: #428bca; color:#ffffff; text-align:center' ><h3 align="center">
+<!--                        <img class="MailboxInput" style="WIDTH: 57px; HEIGHT: 38px" height="94" src="../../../Iconos/buscar.gif" width="106">-->
+                              <span class='glyphicon glyphicon-folder-open'></span>
+                        &nbsp;Busqueda de paciente Externo   </h3>
+            </td></tr></thead>
+                  <tbody><tr>
+      <td align="left">Nombre del Establecimiento Externo:&nbsp;</td> 
+      <td colspan="3">
           <input class="CobaltInput" maxlength="20" size="80" id="NombreEstablecimiento"></td>
           
     </tr>
     <tr>
-        <th class="CobaltFieldCaptionTD" align="left">Nombre Paciente:&nbsp;</th> 
-        <td colspan="8" class="CobaltDataTD"><input class="CobaltInput" maxlength="40" size="80" id="NombrePaciente">
+        <td align="left">Nombre Paciente:&nbsp;</td> 
+        <td colspan="3"><input class="CobaltInput" maxlength="40" size="80" id="NombrePaciente">
         <input type="hidden" id="nec" value= '<?php echo $nec;?>'>
         </td>
     </tr>
-    <tr>
-        <td class="CobaltDataTD" colspan="4" align="right"> <input  type="button" id="ClearInfo" name="ClearInfo" value="NUEVA BUSQUEDA" onClick="javascript:LimpiarConExpe('<?php echo $nec; ?>');"></td>
+    <tr style="border-bottom-color: #428BCA; border-bottom-style: inset">
+        <td colspan="4" align="right"> 
+<!--           <input  type="button" id="ClearInfo" name="ClearInfo" value="NUEVA BUSQUEDA" onClick="javascript:LimpiarConExpe('<?php echo $nec; ?>');">-->
+            <button type='button' align="center" class='btn btn-primary' id='ClearInfo' name="ClearInfo" onClick="javascript:LimpiarConExpe('<?php echo $nec; ?>');"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+           <br>
+        </td>
     </tr>
-    <tr style="border-left: 1px solid white; border-right: 1px white">
-        <td class="CobaltDataTD" colspan="4" nowrap><h3 align="center"><br/><br/>Datos de la Busqueda</h3></td> 
+    <tr style="border-style: none"><td><br><br></td></tr>
+                  </tbody>
+                  <thead>
+                     <tr >
+       <th style='background-color: #428bca; color:#ffffff; text-align:center' nowrap colspan="4"><h3 align="center">Datos de la Busqueda</h3></th> 
     </tr>
     <tr>
-        <th class="CobaltDataTD" align="center"><h4 align="center">Numero Correlativo Interno</h4></th>
-        <th class="CobaltDataTD" align="center"><h4 align="center">Nombre del Paciente</h4></th>
-        <th class="CobaltDataTD" align="center"><h4 align="center">Nombre de la Madre</h4></th>
-    </tr> 
+        <th align="center"><h4 align="center">Numero Correlativo Interno</h4></th>
+        <th align="center"><h4 align="center">Nombre del Paciente</h4></th>
+        <th align="center"><h4 align="center">Nombre de la Madre</h4></th>
+               </tr> </thead>
+               <tbody>
     <tr>
         <td class="CobaltDataTD" align="center"><!-- Enviodatos() -->
             <a class="CobaltDataLink" href="javascript: VerificarExistente();"><div id="IdNumeroExp"> </div></a></td>
@@ -73,18 +90,23 @@ $nec=$_GET['nec'];
 	<div id="Paciente"><a class="CobaltDataLink"></a></div></td>
 	<td class="CobaltDataTD" align="center">
 	<div id="NombreMadre1"><a class="CobaltDataLink"></a></div></td>
-	</tr>
+    </tr></tbody>
 <!--<input type="hidden" id="NEC" value="">-->
 
 </table></div>
+</div>
 
 <div id="Externo" style="display:none">
-<table border="0" cellpadding="2" style="border:steelblue 1px; border-collapse: collapse" class="CobaltFormTABLE">
-
+   <div class='panel panel-primary' style="width: 95%">
+   <table border="0" cellpadding="2" style="border:steelblue 1px; border-collapse: collapse" class='table table-bordered table-condensed table-white no-v-border'>
+      <thead>
        <tr>
-      <td class="CobaltDataTD" colspan="4" nowrap><h3 align="center">Datos del Paciente</h3></td> 
+      <td colspan="4" nowrap style='background-color: #428bca; color:#ffffff; text-align:center'>
+         <h3 align="center"><span class='glyphicon glyphicon-list-alt'></span>
+            Datos del Paciente</h3></td> 
 	</tr>
- 
+      </thead>
+        <tbody>
     <tr>
       <td nowrap class="CobaltFieldCaptionTD"><strong>Apellidos:<font color="#ff0000">*</font> </strong></td> 
       <td class="CobaltDataTD">
@@ -98,7 +120,7 @@ $nec=$_GET['nec'];
      <tr>
       <td nowrap class="CobaltFieldCaptionTD"><strong>Nombre:<font color="#ff0000">*</font> </strong></td> 
       <td class="CobaltDataTD">
-	  <input class="MailboxInput" style="WIDTH: 190px;" maxlength="20" name="PrimerNombre_Name" id="PrimerNombre_Name" onfocus=""></td> 
+	  <input class="MailboxInput" style="WIDTH: 190px;" maxlength="20" name="PrimerNombre_Name" id="PrimerNombre_Name" placeholder="Primer Nombre" onfocus=""></td> 
 <!--      <td nowrap class="CobaltFieldCaptionTD"><strong>Segundo Nombre: <font color="#ff0000">*</font> </strong></td> -->
       <td class="CobaltDataTD">
 	  <input class="MailboxInput" style="WIDTH: 190px;" maxlength="20" name="SegundoNombre_Name" id="SegundoNombre_Name" placeholder="Segundo Nombre"></td> 
@@ -144,12 +166,16 @@ $nec=$_GET['nec'];
     </tr>
   <tr>
     <td colspan="4" align="center" nowrap class="MailboxFooterTD">
-    <br/><input type="button" id="GetInfor" name="GetInfo" value=" GUARDAR DATOS " onClick="javascript:GuardarInformacionExterna();">
+    <br/>
+     <button type='button' align="center" class='btn btn-primary' id='GetInfor' name="GetInfo" onClick="javascript:GuardarInformacionExterna();"><span class='glyphicon glyphicon-floppy-disk'></span> Guardar Datos</button>
+     <button type='button' align="center" class='btn btn-primary' id='ClearInfo' name="ClearInfo" onClick="javascript:LimpiarConExpe('<?php echo $nec; ?>');"><span class='glyphicon glyphicon-refresh'></span> Nueva Búsqueda</button>
+<!--    <input type="button" id="GetInfor" name="GetInfo" value=" GUARDAR DATOS " onClick="javascript:GuardarInformacionExterna();">-->
 	<!-- <input type="text" id="Establecimiento" value="<?php// echo $IdEstablecimiento; ?>">-->
 	<input type="hidden" id="LugarAtencion" value="<?php echo $LugardeAtencion; ?>">
 	<input type="hidden" id="EstablecimientoExterno" value="">
 
-	<input type="button" id="ClearInfo" name="ClearInfo" value="NUEVA BUSQUEDA" onClick="javascript:LimpiarConExpe('<?php echo $nec; ?>');"></td>
+	<!--<input type="button" id="ClearInfo" name="ClearInfo" value="NUEVA BUSQUEDA" onClick="javascript:LimpiarConExpe('<?php //echo $nec; ?>');">-->
+    </td>
   </tr>
   <tr>
     <td>&nbsp;</td>
@@ -157,8 +183,8 @@ $nec=$_GET['nec'];
   </tr>
   <tr>
     <td colspan="2">&nbsp;<div id="Datos"></div></td>
-  </tr>
-</table></div>
+  </tr></tbody>
+   </table></div></div>
 
 <script>
 	   new Autocomplete('NombreEstablecimiento', function() { 
