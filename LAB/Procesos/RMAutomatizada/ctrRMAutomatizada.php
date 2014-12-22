@@ -517,7 +517,7 @@ switch ($opcion) {
             
      echo '<br><br><br><br><img src="../../../Imagenes/indice.jpeg" valign="middle"  border="0" height="60" width="80" />';
      
-     echo "<center> <h1> El Resultado Del Examen:<span style='color: #0101DF;'> $nombreexamen</span>, De: <span style='color: #0101DF;'> $nombrepaciente</span>, Ya a Sido Procesado.</h1> ";
+     echo "<center> <h1> El Resultado Del Examen:<span style='color: #0101DF;'> $nombreexamen</span>, De: <span style='color: #0101DF;'> $nombrepaciente</span>, Ya a Sido Rechazado.</h1> ";
             
      
      echo " <button type='submit' class='fg-button ui-state-default ui-corner-all' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' />Cerrar</button></center>";
@@ -554,51 +554,53 @@ switch ($opcion) {
             $consulta=$objdatos->contaridresultado($idsolicitud,$idsolicitudPadre);
             $row = pg_fetch_array($consulta);
             $contaridresultado=$row[0];
+            //echo $contaridresultado;
             
         if ($contaridresultado>0) 
         {
+           // echo "si hay resultado"; 
+            
             $consulta=$objdatos->idresultado($idsolicitud,$idsolicitudPadre);
             $row = pg_fetch_array($consulta);
             $idresulta=$row[0];
-
+                            
             $consulta=$objdatos->id_detalleresultado($idresulta);
             $row = pg_fetch_array($consulta);
-            $id_detalleresultado=$row[0]; 
-
-            if ($id_detalleresultado=='')
-            {
-                if ($objdatos->CambiarEstadoDetalle1($idsolicitud, $estado, $idexamen, $observacion) == true) 
-                {
-                   // echo "Muestra Rechazada, ";
-                    if ($objdatos->CambiarEstadoSolicitud($idsolicitud, $idsolicitudPadre) == true) 
-                    {   // echo "El Estado Solicitud fue Modificado";
-                        if($objdatos->MarcarObservacionRechazado1($idsolicitud,$idexamen,$observacion)==true)
-                        {
-                            echo "Muestra Rechazada";
-                        } 
-                    }
-                }
-            }
-                    // termina el if interno 
-            else { // else interno 
-                             //   echo "si hay resultado"; 
-                $consulta=$objdatos->id_detalleresultado($idresulta);
-                $row = pg_fetch_array($consulta);
-                $id_detalleresultado=$row[0];
-
-                $consulta1=$objdatos->idexmen_metodologia($idsolicitud,$idsolicitudPadre);
+            $id_detalleresultado=$row[0];
+               // echo  $id_detalleresultado;
+                
+            $consulta1=$objdatos->idexmen_metodologia($idsolicitud,$idsolicitudPadre);
+            $row = pg_fetch_array($consulta1);
+            $idexmen_metodologia=$row[0];  
+                
+                //ECHO $idexmen_metodologia;
+                
+            $consulta1=$objdatos->idempleado($idsolicitud,$idsolicitudPadre);
+            $row = pg_fetch_array($consulta1);
+            $id_empleado=$row[0];
+                //echo $id_empleado;
+               /* echo "--";
+                echo  $id_detalleresultado;
+                echo "--";
+                ECHO $idexmen_metodologia;
+                echo "--";
+                echo $id_empleado;*/
+                
+                 $consulta1=$objdatos->contaridresultadometodologia($idexmen_metodologia,$idsolicitud,$id_empleado);
+                 $row = pg_fetch_array($consulta1);
+                 $contarmetodologia=$row[0];
+                // echo $contarmetodologia;
+                 
+                 if ($contarmetodologia>0){
+                     
+                    // echo "dentro del if interno";
+                     
+                $consulta1=$objdatos->idresultadometodologia($idexmen_metodologia,$idsolicitud,$id_empleado);
                 $row = pg_fetch_array($consulta1);
-                $idexmen_metodologia=$row[0];
+                $idresultadometodologia=$row[0]; 
+               // echo $idresultadometodologia;
 
-                $consulta1=$objdatos->idempleado($idsolicitud,$idsolicitudPadre);
-                $row = pg_fetch_array($consulta1);
-                $id_empleado=$row[0];
-
-                $consulta1=$objdatos->idresultadometodologia($idexmen_metodologia,$id_detalleresultado,$id_empleado);
-                $row = pg_fetch_array($consulta1);
-                $idresultadometodologia=$row[0];
-
-                if ($objdatos->CambiarEstadoDetalle1($idsolicitud, $estado, $idexamen, $observacion) == true)
+              if ($objdatos->CambiarEstadoDetalle1($idsolicitud, $estado, $idexamen, $observacion) == true)
                 {
                         //echo "Muestra Rechazada, ";
                     if ($objdatos->CambiarEstadoSolicitud($idsolicitud, $idsolicitudPadre) == true) 
@@ -607,12 +609,33 @@ switch ($opcion) {
                             // echo "Muestra Rechazada";
                             if($objdatos->eliminarsultadometodologia($idresultadometodologia)==true) 
                             {
-                                echo "Muestra Rechazada";
+                                echo "Muestra Rechazada ";
                             }
 
                     }
                 }
-            }// fin else interno 
+                     
+                 }else{
+                          //   echo "dentro del else interno";
+                     
+                            if ($objdatos->CambiarEstadoDetalle1($idsolicitud, $estado, $idexamen, $observacion) == true)
+                            {
+                        //echo "Muestra Rechazada, ";
+                                 if ($objdatos->CambiarEstadoSolicitud($idsolicitud, $idsolicitudPadre) == true) 
+                                 {   //  echo "El Estado Solicitud fue Modificado";
+                                         if($objdatos->MarcarObservacionRechazado1($idsolicitud,$idexamen,$observacion)==true)
+                            // echo "Muestra Rechazada";
+                                    
+                                         echo "Muestra Rechazada ";
+                                     
+
+                                }
+                            }
+                     
+                     
+                        }
+                
+           
 
 
 
@@ -620,7 +643,7 @@ switch ($opcion) {
         }// termina el if primero
         else 
         {
-                //echo "no hay resultado";
+               echo "no hay resultado";
 
             if ($objdatos->CambiarEstadoDetalle1($idsolicitud, $estado, $idexamen, $observacion) == true) 
             {  // echo "Muestra Rechazada, ";

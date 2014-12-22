@@ -195,7 +195,7 @@ if ($nivel==4){
 	</tr>
 	<tr>
 		<td class="StormyWeatherFieldCaptionTD" width="22%" style="font-weight:bold">
-			<b>&Aacute;rea de Laboratorio </b>
+			<b>&Aacute;rea de Laboratorio*</b>
 		</td>
 		<td class="StormyWeatherDataTD" colspan="1" width="11%">
 			<select id="cmbArea" name="cmbArea" size="1" style="width:405px" onChange="BuscarExamen(this.value)">

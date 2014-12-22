@@ -14,7 +14,7 @@ class clsMuestrasRechazadas {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
             
-             $NomAre = "SELECT COUNT(id) 
+            $NomAre = "SELECT COUNT(id) 
 		        FROM lab_resultados   where  idsolicitudestudio=$idsolicitudPadre
                         and iddetallesolicitud=$idsolicitud";
             $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
@@ -26,7 +26,7 @@ class clsMuestrasRechazadas {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
             
-            $NomAre = "select id from lab_resultados where  idsolicitudestudio=$idsolicitudPadre
+           $NomAre = "select id from lab_resultados where  idsolicitudestudio=$idsolicitudPadre
                         and iddetallesolicitud=$idsolicitud ";
             $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
         }
@@ -38,7 +38,7 @@ class clsMuestrasRechazadas {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
             
-           $NomAre = "select id  from lab_detalleresultado where idresultado=$idresulta ";
+          $NomAre = "select id  from lab_detalleresultado where idresultado=$idresulta ";
             $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
         }
         return $resul;
@@ -71,28 +71,29 @@ class clsMuestrasRechazadas {
     
     
     
-    function inseresul_metodologia($idexmen_metodologia,$id_detalleresultado,$estado,$observacion,$usuario,$id_empleado )
+    function inseresul_metodologia($idexmen_metodologia,$idsolicitud,$estado,$observacion,$usuario,$id_empleado )
            {
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
     $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia,
-					id_detalleresultado,
+					id_detallesolicitudestudio,
 					resultado,
 					observacion,
 					idusuarioreg,
 					fechahorareg,
 					idusuariomod,
 					fechahoramod,
-                                        fecha_realizacion,id_empleado) 
+                                        fecha_realizacion,fecha_resultado,id_empleado) 
 VALUES($idexmen_metodologia,
-	$id_detalleresultado,
+	$idsolicitud,
 	'$estado',
 	'$observacion',
 	$usuario,
 	NOW(),
 	'$usuario',
 	NOW(),
+        current_date,
         current_date,
         $id_empleado)";
      $result = pg_query($query);
@@ -309,7 +310,7 @@ VALUES($idexmen_metodologia,
     function DatosGeneralesSolicitud($idexpediente, $idsolicitud) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query ="SELECT t02.id,t02.fecha_solicitud AS fechasolicitud, 
+           $query ="SELECT t02.id,t02.fecha_solicitud AS fechasolicitud, 
                 t13.nombre AS nombreservicio, 
                 t19.nombre AS sexo, 
                 t24.nombreempleado as medico, 
@@ -332,7 +333,8 @@ VALUES($idexmen_metodologia,
                 t11.nombre AS nombresubservicio, 
                 t22.sct_name_es AS diagnostico, 
                 t23.peso as peso, 
-                t23.talla as talla 
+                t23.talla as talla,
+                t01.observacion observacion
                 FROM sec_detallesolicitudestudios 		t01 
                 INNER JOIN sec_solicitudestudios 		t02 	ON (t02.id = t01.idsolicitudestudio) 
                 INNER JOIN lab_recepcionmuestra 		t03 	ON (t02.id = t03.idsolicitudestudio) 
@@ -386,7 +388,8 @@ VALUES($idexmen_metodologia,
                 t11.nombre AS nombresubservicio, 
                 t22.sct_name_es AS diagnostico, 
                 t23.peso as peso, 
-                t23.talla as talla 
+                t23.talla as talla,
+                t01.observacion observacion
                 FROM sec_detallesolicitudestudios t01 
                 INNER JOIN sec_solicitudestudios 		t02 		ON (t02.id = t01.idsolicitudestudio) 
                 INNER JOIN lab_recepcionmuestra 		t03 		ON (t02.id = t03.idsolicitudestudio) 

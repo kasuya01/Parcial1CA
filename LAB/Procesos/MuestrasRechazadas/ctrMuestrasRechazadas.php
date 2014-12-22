@@ -6,6 +6,9 @@ include ("clsMuestrasRechazadas.php");
 
 //variables POST
 $opcion=$_POST['opcion'];
+
+
+
 $estadosolicitud='P';
 //echo $estado;
 
@@ -310,7 +313,8 @@ switch ($opcion)
 					   "<input name='idexamen[".$pos."]' id='idexamen[".$pos."]' type='hidden' size='60' value='".$row['idexamen']."' />".
 					   "<input name='idestablecimiento[".$pos."]' id='idestablecimiento[".$pos."]' type='hidden' size='60' value='".$IdEstab."' />".
                                            "<input name='subservicio[".$pos."]' id='subservicio[".$pos."]' type='hidden' size='60' value='".$row['nombresubservicio']."' />".
-				  "<td width='20%'>".$row['paciente']."</td>
+                                           "<input name='observacion[".$pos."]' id='observacion[".$pos."]' type='hidden' size='60' value='".$row['observacion']."' />".
+                                      "<td width='20%'>".$row['paciente']."</td>
 				   <td width='7%'>".$row['idexamen']."</td>
 				   <td width='13%'>".htmlentities($row['nombreexamen'])."</td>";
                         if (!empty($row['observacion']))
@@ -378,6 +382,7 @@ switch ($opcion)
         //$DatosClinicos=$row['DatosClinicos'];
         $fechasolicitud=$row['fechasolicitud'];
         //$FechaNac=$row['FechaNacimiento'];
+        $observacioon=$row['observacion'];
         $Talla          = $row['talla'];
         $Peso           = $row['peso'];
         $Diagnostico    = $row['diagnostico'];
@@ -423,6 +428,7 @@ switch ($opcion)
 				<td class='StormyWeatherDataTD'>".htmlentities($subservicio)."
 					<input name='txtorigen' id='txtorigen'  type='hidden' size='35' value='".$origen."' disabled='disabled' />
                                         <input name='idsolicitudPadre' id='idsolicitudPadre'  type='hidden' size='40' value='".$idsolicitudPadre."' disabled='disabled' />
+                                        <input name='observacioon' id='observacioon'  type='hidden' size='40' value='".$observacioon."' disabled='disabled' />
 					<input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled' />
 					<input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled' />
 					<input name='fechasolicitud' id='fechasolicitud'  type='hidden' size='40' value='".$fechasolicitud."' disabled='disabled' />
@@ -527,6 +533,8 @@ pg_free_result($datosexamen);
         }else {// echo   $consulta;
       //          echo "dentro del else";
             
+            
+            
      echo '<br><br><br><br><img src="../../../Imagenes/indice.jpeg" valign="middle"  border="0" height="60" width="80" />';
      
      echo "<center> <h1> El Resultado Del Examen:<span style='color: #0101DF;'> $nombreexamen</span>, De: <span style='color: #0101DF;'> $nombrepaciente</span>, Ya a Sido Procesado.</h1> ";
@@ -545,7 +553,7 @@ pg_free_result($datosexamen);
 	$fechasolicitud =$_POST['fechasolicitud'];
 	$idexamen       =$_POST['idexamen'];
 	$fecharecep     =$_POST['fecharecep'];
-       $observacion     =$_POST['observacion'];
+        $observacion     =$_POST['observacioon'];
        $idsolicitudPadre=$_POST['idsolicitudPadre'];
       include_once("clsMuestrasRechazadas.php");
 			//recuperando los valores generales de la solicitud
@@ -566,14 +574,17 @@ pg_free_result($datosexamen);
     
            // echo "si hay resultados!!    ";
             
+                //id_detalleresultado
             $consulta=$objdatos->id_detalleresultado($idresulta);
             $row = pg_fetch_array($consulta);
-            $id_detalleresultado=$row[0];  //aca esta la falla.
+            $id_detalleresultado=$row[0];  
            
+              //idexmen_metodologia
             $consulta1=$objdatos->idexmen_metodologia($idsolicitud,$idsolicitudPadre);
             $row = pg_fetch_array($consulta1);
             $idexmen_metodologia=$row[0];
            
+            //idempleado
             $consulta1=$objdatos->idempleado($idsolicitud,$idsolicitudPadre);
             $row = pg_fetch_array($consulta1);
             $id_empleado=$row[0];
@@ -589,7 +600,7 @@ pg_free_result($datosexamen);
 		//CambiarEstadoSolicitudProceso3
 		if($objdatos->CambiarEstadoSolicitudProceso3($idexpediente,$fechasolicitud,$estadosolicitud,$idsolicitudPadre)==true)
 		{      // echo ", Solicitud  Fue cambiada De Estado..";
-                    if($objdatos->inseresul_metodologia($idexmen_metodologia,$id_detalleresultado,$estado,$observacion,$usuario,$id_empleado)==true)
+                    if($objdatos->inseresul_metodologia($idexmen_metodologia,$idsolicitud,$estado,$observacion,$usuario,$id_empleado)==true)
                     {
                         echo "Prueba lista para ingreso de resultado ";
                     } 

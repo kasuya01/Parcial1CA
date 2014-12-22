@@ -5,7 +5,7 @@ $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea']; 
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
-    $base_url  = $_SESSION['base_url'];
+$base_url  = $_SESSION['base_url'];
  ?>
 <html>
 <head>
@@ -94,7 +94,6 @@ if ($nivel==33){
 					if($con->conectar()==true){			  
 						$consulta  = /*"SELECT IdServicio,NombreServicio FROM mnt_servicio 
 						WHERE IdTipoServicio<>'DCO' AND IdTipoServicio<>'FAR' ";*/
-                                                        
                                                         "SELECT t01.id,
                                                                  t01.nombre
                                                           FROM ctl_area_atencion t01

@@ -76,17 +76,35 @@ class clsRMAutomatizada {
     }
     
     
-    function idresultadometodologia($idexmen_metodologia,$id_detalleresultado,$id_empleado) {
+    function idresultadometodologia($idexmen_metodologia,$idsolicitud,$id_empleado) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
             
           $NomAre = "select id from lab_resultado_metodologia  where id_examen_metodologia=$idexmen_metodologia
-					       and id_detalleresultado=$id_detalleresultado
-					       and id_empleado='$id_empleado'";
+					       and id_detallesolicitudestudio=$idsolicitud
+					       and id_empleado='$id_empleado'
+                                               and resultado='PM' ";
             $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
         }
         return $resul;
     }
+    
+    
+    
+      function contaridresultadometodologia($idexmen_metodologia,$idsolicitud,$id_empleado) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            
+        $NomAre = "select count(id) from lab_resultado_metodologia  where id_examen_metodologia=$idexmen_metodologia
+					       and id_detallesolicitudestudio=$idsolicitud
+					       and id_empleado='$id_empleado'
+                                               and resultado='PM' ";
+            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+        }
+        return $resul;
+    }
+    
+    
     
     
     function contarresultadometodologia($idresultadometodologia) {
@@ -107,7 +125,7 @@ class clsRMAutomatizada {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
             
-           $NomAre = "DELETE FROM lab_resultado_metodologia WHERE id=$idresultadometodologia";
+          $NomAre = "DELETE FROM lab_resultado_metodologia WHERE id=$idresultadometodologia";
             $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
         }
         return $resul;
