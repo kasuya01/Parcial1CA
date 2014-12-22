@@ -11,15 +11,18 @@ $IdNumeroExp = $_GET["IdNumeroExp"];
 $IdEstablecimiento = $_GET["IdEstablecimiento"]; //IdEstablecimiento solicitante
 $lugar = $_GET["lugar"]; //IdEstablecimiento local
 //echo 'Idestab:'.$IdEstablecimiento.'<br/>Lugar:'.$lugar.'<br\>';
-$IdSubServicio = $_GET["IdSubServicio"];
-$IdEmpleado = $_GET["IdEmpleado"];
+//$IdSubServicio = $_GET["IdSubServicio"];
+$IdSubServicio =  isset($_GET['IdSubServicio']) ? $_GET['IdSubServicio'] : null ;
+//$IdEmpleado = $_GET["IdEmpleado"];
+$IdEmpleado = isset($_GET['IdEmpleado']) ? $_GET['IdEmpleado'] : null ;
 $IdUsuarioReg = $_SESSION['Correlativo'];
 $FechaConsulta = $_GET["FechaConsulta"];
 $IdCitaServApoyo = $_GET["IdCitaServApoyo"];
 $sexo = $_GET["Sexo"];
 $idexpediente = $_GET["idexpediente"];
 //echo '<br\>.Idexpediente: '.$idexpediente.' IdNumeroExp:'.$IdNumeroExp. '  numhistorial: '.$_GET["IdHistorialClinico"].'  issethist: '.isset( $_GET["IdHistorialClinico"]);
-$IdHistorialClinico = $_GET["IdHistorialClinico"];
+//IdHistorialClinico = $_GET["IdHistorialClinico"];
+$IdHistorialClinico = isset($_GET['IdHistorialClinico']) ? $_GET['IdHistorialClinico'] : null ;
 //echo 'idexp: '.$idexpediente;
 $FechaSolicitud = $FechaConsulta;
 /* PARA OBTENER LA IP REAL DE LA PC QUE SE CONECTA */

@@ -315,17 +315,18 @@ switch ($opcion) {
 
         //<td>Fecha Recepci&oacute;n</td>
         
-        $imprimir.="<table width='97%' border='1' align='center'>
-                    <tr class='CobaltFieldCaptionTD'>
-				<td>Fecha Recepci&oacute;n</td>
-				<td>NEC </td>
-				<td>Nombre Paciente</td>
-				<td>Origen</td>
-				<td>Procedencia</td>
-				<td>Establecimiento</td>
-				<td>Estado Solicitud</td>
-				<td>Fecha Consulta</td>
-		     </tr>";
+        $imprimir.="<div class='table-responsive' style='width: 100%;'>
+           <table width='97%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'><thead>
+                    <tr>
+				<th>Fecha Recepci&oacute;n</th>
+				<th>NEC </th>
+				<th>Nombre Paciente</th>
+				<th>Origen</th>
+				<th>Procedencia</th>
+				<th>Establecimiento</th>
+				<th>Estado Solicitud</th>
+				<th>Fecha Consulta</th>
+		     </tr></thead><tbody>";
         $pos = 0;
         while ($row = pg_fetch_array($consulta)) {
             //$Idsolic=$row['IdSolicitudEstudio'];
@@ -355,7 +356,7 @@ switch ($opcion) {
 
         $imprimir .= "<input type='hidden' name='oculto' id='text' value='" . $pos . "' /> 
   
-		</table>";
+		</tbody></table></div>";
         echo $imprimir;
 
         //determinando el numero de paginas
@@ -438,45 +439,43 @@ switch ($opcion) {
         //echo $FechaNac;
         //recuperando los valores del detalle de la solicitud
         $consultadetalle = $objdatos->DatosGeneralesSolicitud($idexpediente, $idsolicitud,$lugar);
-        $imprimir = "<form name='frmDatos'>
-                    <table width='70%' border='0' align='center'>
+        $imprimir = "<br><form name='frmDatos'>
+                     <div class='table-responsive' style='width: 80%;'>
+                     <table width='70%' border='0' align='center' class='table table-hover table-bordered table-condensed table-white'>
+			<thead><th>
+				<td colspan='4' align='center' style='background-color: #428bca'>
+					<h3><strong>DATOS SOLICITUD</strong></h3></th>
+			</tr></thead><tbody>
 			<tr>
-				<td  colspan='4'>&nbsp;&nbsp;&nbsp;&nbsp</td>
-			</tr>
-			<tr>
-				<td colspan='4' align='center' class='CobaltFieldCaptionTD'>
-					<h3><strong>DATOS SOLICITUD</strong></h3></td>
-			</tr>
-			<tr>
-				<td class='StormyWeatherFieldCaptionTD'>Establecimiento</td>
-                                <td class='StormyWeatherDataTD' colspan='3'>" . $row['estabext'] . "</td>
+				<td>Establecimiento</td>
+                                <td>" . $row['estabext'] . "</td>
 			</tr>
 		        <tr>
-				<td class='StormyWeatherFieldCaptionTD'>Paciente</td>
-				<td colspan='3' class='StormyWeatherDataTD'>" . htmlentities($paciente) . " 
+				<td>Paciente</td>
+				<td colspan='3'>" . htmlentities($paciente) . " 
                         	     <input name='txtpaciente' id='txtpaciente' type='hidden' size='' value=$paciente disabled='disabled' /></td>
                         </tr>
                         <tr>
-				<td class='StormyWeatherFieldCaptionTD'>Conocido por</td>
-				<td colspan='3' class='StormyWeatherDataTD'>" . htmlentities($ConocidoPor) . " 
+				<td>Conocido por</td>
+				<td colspan='3'>" . htmlentities($ConocidoPor) . " 
 			     		<input name='txtpaciente' id='txtpaciente' type='hidden' size='70' value='" . $paciente . "' disabled='disabled' /></td>
 		   	</tr>
 			<tr>
-				<td class='StormyWeatherFieldCaptionTD'>Edad</td>
-				<td class='StormyWeatherDataTD'>" . htmlentities($edad) . " 
+				<td>Edad</td>
+				<td>" . htmlentities($edad) . " 
 			     		<input name='txtpaciente' id='txtpaciente1' type='hidden' size='35' value='" . $edad . "' disabled='disabled' /></td>
 				
                                     </div>
                                 </td>
-				<td class='StormyWeatherFieldCaptionTD'>Sexo</td>
-				<td class='StormyWeatherDataTD'>$sexo<input type='hidden' name='txtsexo' value='" . $sexo . "' disabled='disabled' /></td>
+				<td>Sexo</td>
+				<td>$sexo<input type='hidden' name='txtsexo' value='" . $sexo . "' disabled='disabled' /></td>
                         </tr>
                         <tr>
-				<td class='StormyWeatherFieldCaptionTD'>Procedencia</td>
-				<td class='StormyWeatherDataTD'>$precedencia <input name='txtprecedencia' id='txtprecedencia' 
+				<td>Procedencia</td>
+				<td>$precedencia <input name='txtprecedencia' id='txtprecedencia' 
 				type='hidden' size='35' value='" . $precedencia . "' disabled='disabled' />
-				<td class='StormyWeatherFieldCaptionTD'>Origen</td>
-				<td class='StormyWeatherDataTD'>" . htmlentities($origen) . "
+				<td>Origen</td>
+				<td>" . htmlentities($origen) . "
 					<input name='txtorigen' id='txtorigen'  type='hidden' size='35' value='" . $origen . "' disabled='disabled' />
                                         <input name='idsolicitudPadre' id='idsolicitudPadre'  type='hidden' size='40' value='" . $idsolicitudPadre . "' disabled='disabled' />
 					<input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='" . $idsolicitud . "' disabled='disabled' />
@@ -487,35 +486,34 @@ switch ($opcion) {
 				</td>
                         </tr>
                         <tr>
-				<td class='StormyWeatherFieldCaptionTD'>M&eacute;dico</td>
-				<td colspan='3' class='StormyWeatherDataTD'>" . htmlentities($medico) . "
+				<td>M&eacute;dico</td>
+				<td colspan='3'>" . htmlentities($medico) . "
 					<input name='txtmedico' id='txtmedico'  type='hidden' size='70' value='" . $medico . "' disabled='disabled' /></td>
                         </tr>
                         <tr>
-                                <td class='StormyWeatherFieldCaptionTD'>Fecha Recepción</td>
-                                <td colspan='3' class='StormyWeatherDataTD'>" . $fecharecepcion . "</td>
+                                <td>Fecha Recepción</td>
+                                <td colspan='3'>" . $fecharecepcion . "</td>
                         </tr>
                         <tr>
 
-
-	<table width='70%' border='0' align='center'>
-		<tr>
-                            <td colspan='1' align='center' class='CobaltFieldCaptionTD'>
+                  </tbody>
+                </table>
+		
+				<table border = 1 align='center' class='table table-hover table-bordered table-condensed table-white'>
+                                <thead><tr>
+                                    <td colspan='6' align='center' style='background-color: #428bca'>
 					<h3><strong>ESTUDIOS SOLICITADO</strong></h3>
                         
                         
-		</tr>
-		<tr>
-			<td>
-				<table border = 1 align='center' class='estilotabla'>
+                                 </tr>
 			   	<tr>
-			   		<td class='CobaltFieldCaptionTD'>Imprimir</td>
-			   		<td class='CobaltFieldCaptionTD'>IdExamen</td>
-			   		<td class='CobaltFieldCaptionTD'>Examen</td>
-			   		<td class='CobaltFieldCaptionTD'>IdArea</td>
-			   		<td class='CobaltFieldCaptionTD'>Indicacion Medica </td>
-			   		<td class='CobaltFieldCaptionTD'>Estado</td>
-			   	</tr>";
+			   		<th>Imprimir</th>
+			   		<th>IdExamen</th>
+			   		<th>Examen</th>
+			   		<th>IdArea</th>
+			   		<th>Indicacion Medica </th>
+			   		<th>Estado</th>
+			   	</tr></thead><tbody>";
         //<input name='fechasolicitud' id='fechasolicitud'  type='hidden' size='40' value='" . $fechasolicitud . "' disabled='disabled' />
         //<input name='idarea' id='idarea'  type='hidden' size='40' value='" . $idarea . "' disabled='disabled' />
         //<input name='procedencia[" . $pos . "]' type='hidden' id='procedencia[" . $pos . "]' value='" . $row['Precedencia'] . "'>
@@ -563,7 +561,7 @@ switch ($opcion) {
         //<input name='IdExamen[" . $pos . "]' type='hidden' id='IdExamen[" . $pos . "]' value='" . $fila['IdExamen'] . "'>
         //<input name='idplantilla[" . $pos . "]' type='hidden' id='idplantilla[" . $pos . "]' value='" . $fila['IdPlantilla'] . "'>
         $imprimir .= "<input type='hidden' name='oculto' id='oculto' value='" . $pos . "' />
-				</table></form>";
+				<tbody></table></form>";
         echo $imprimir;
         pg_free_result($consultadetalle);
         break;

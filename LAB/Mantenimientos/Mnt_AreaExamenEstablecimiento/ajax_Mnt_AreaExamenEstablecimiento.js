@@ -47,12 +47,20 @@ function getAreaExamenEstablecimiento(funct) {
 
 function updateRegisters() {
     var idarea = document.getElementById('cmb-area').value;
+
+    var form=[];
+    if (jQuery('form#lab-form').serializeArray().length!=0){
+       form=jQuery('form#lab-form').serializeArray();
+    }
+    else{
+       form=null;
+    }
     jQuery.ajax({
         url: 'ctr_Mnt_AreaExamenEstablecimiento.php',
         type: 'post',
         dataType: 'json',
         async: false,
-        data: {accion: 'updateRegisters', parameters: { idarea: idarea, form: jQuery('form#lab-form').serializeArray() } },
+        data: {accion: 'updateRegisters', parameters: { idarea: idarea, form: form } },
         success: function(data) {
             if(data.status)
                 alert('Registros Ingresados Exitosamente...');

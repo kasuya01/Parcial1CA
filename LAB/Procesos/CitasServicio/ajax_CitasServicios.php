@@ -111,7 +111,7 @@ switch($Proceso){
 					'<td align="center"> '.$row['numero'].' </td>'.
 					'<td align="center"> '.$row['fecha_solicitud'].' </td>'.
 					'<td align="center">'.
-					'<a class="StormyWeatherDataLink" href="javascript:darcita('.$row[2].','.$row['idatencion'].','.$_POST['id_exp'].')">'.
+					'<a class="StormyWeatherDataLink" href="javascript:darcita('.$row[2].','.$row['idatencion'].','.$_POST['id_exp'].')">Programar cita de '.
 					'&nbsp;'.$row['nombre'].'</a></td>'.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 					'</tr>';
 		}

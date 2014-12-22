@@ -127,7 +127,7 @@ include_once("ClaseSolicitud.php"); //Agregamos el Archivo con las clases y func
                     }
                     //echo "<tr><td colspan='6' align='right'><br><h3><b>".$check."Resultado de Examenes Impresos [Pre-Operatorios]</b></h3> </td></tr></table><br>";
              echo "<tr><td colspan='6'><br><b>Total de Examenes Solicitados:". $i."</b> </td></tr>"
-                    . "<tr><br><br><br><td colspan='5'>  <h3><b>".$check."Resultado de Examenes Impresos [Pre-Operatorios]</b></h3> </td></tr>"
+                    . "<tr><td colspan='5'>  <h3><b>".$check."Resultado de Examenes Impresos [Pre-Operatorios]</b></h3> </td></tr>"
                     . "</tbody></table></div><br>";
              
                     echo "<table border=0 style='width:100%'>

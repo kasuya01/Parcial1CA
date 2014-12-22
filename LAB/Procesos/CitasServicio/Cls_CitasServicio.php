@@ -345,7 +345,7 @@ function ContarCreatinina($actual, $id_qui045){
 		}
 		$tamano = sizeof($detalles);
                 //echo '--tamano:'.$tamano.'--';
-        if (!$dt_Sql)
+        if (!$valret)
             return false;
         else
             return $tamano;
@@ -424,11 +424,14 @@ function ObtenerSubServicio($IdSolicitud,$Fecha, $Idexpediente){
 }//ObtenerSubServicio
 
 function FechaServer(){
+   $con = new ConexionBD;
+	if($con->conectar()==true){
         $SQL ="select date_trunc('seconds', NOW()) as fecha";
         $db = pg_query($SQL);
         $vareturn = pg_fetch_array($db);
    
     return $vareturn['fecha'];
+        }
 }
 
 }//Clase

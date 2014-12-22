@@ -112,15 +112,22 @@ function updateRegisters($parameters) {
 	global $mntAreaExamenEstab;
 
 	$array = array();
-    foreach ($parameters['post']['form'] as $value) {
-    	$tmp_array = explode('_',$value['value']);
+        if ($parameters['post']['form']!==''){
+           foreach ($parameters['post']['form'] as $value) {
+               $tmp_array = explode('_',$value['value']);
 
-    	if($tmp_array[1] !== 'na') {
-    		$array['update'][] = $tmp_array[0];
-    	} else {
-    		$array['insert'][] = $tmp_array[0];
-    	}
-    }
+               if($tmp_array[1] !== 'na') {
+                       $array['update'][] = $tmp_array[0];
+               } else {
+                       $array['insert'][] = $tmp_array[0];
+               }
+           }
+        }
+        else{
+           $array['update']=array();
+           $array['insert']=array();
+        }
+    
     //var_dump($array);exit();
     $query = $mntAreaExamenEstab->setAreaExamenEstastablecimiento($parameters['post']['idarea'], $parameters['lugar'], $array, $parameters['usuario']);
 
