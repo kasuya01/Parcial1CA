@@ -161,7 +161,7 @@ else
         if($con->conectar()==true) {
            $query = "INSERT INTO lab_resultados (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
                       observacion,idempleado,idusuarioreg,fechahorareg,idestablecimiento,fecha_resultado) 
-                      VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,'$observacion',$responsable,$usuario,NOW(),$lugar,'$fecharesultado')
+                      VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,'$observacion',$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,'$fecharesultado')
                       RETURNING id";
           // echo $query;
             $result = pg_query($query);
@@ -177,7 +177,7 @@ else
                     $id_exam_metod = $row_exam_metod[0];
 
                   $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, idusuarioreg, fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
-                            VALUES($id_exam_metod, $iddetalle, $tab, $usuario, NOW(),'$fecharealiz','$fecharesultado',$responsable)";
+                            VALUES($id_exam_metod, $iddetalle, $tab, $usuario, date_trunc('seconds',NOW()),'$fecharealiz','$fecharesultado',$responsable)";
 
                     $result = pg_query($query);
 
@@ -201,7 +201,7 @@ else
     function insertar_elementos($idresultado,$idelemento,$resultado,$control_ele,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-         echo   $query = "INSERT INTO lab_detalleresultado(idresultado, idelemento, resultado, observacion, idestablecimiento) 
+              $query = "INSERT INTO lab_detalleresultado(idresultado, idelemento, resultado, observacion, idestablecimiento) 
                       VALUES($idresultado,$idelemento,'$resultado','$control_ele',$lugar)";
             
             $result = @pg_query($query);

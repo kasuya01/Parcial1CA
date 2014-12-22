@@ -369,7 +369,7 @@ switch ($opcion)
 			<tr>
 				<td colspan='1'><strong>Establecimiento Solicitante:</strong></td>
 				<td colspan='2'>".$row_generales['estabext']."</td>
-				<td colspan='1'><strong>Fecha Receoción:</strong></td>
+				<td colspan='1'><strong>Fecha Recepción:</strong></td>
 				<td colspan='2'>".$row_generales['fecharecep']."</td>
 
 			</tr>
@@ -463,7 +463,7 @@ case 6:
 	$resultado=$_POST['resultado'];
         $fecharealiz=$_POST['fecharealiz'];
         $fecharesultado=$_POST['fecharesultado'];
-        echo $fecharealiz." - ".$fecharesultado;
+      //  echo $fecharealiz." - ".$fecharesultado;
      //echo "Examen=".$idexamen." - soli=".$idsolicitud." - empleado=".$idempleado." - idrecepcion=".$idrecepcion." - iddetalle=".$iddetalle." - observacion=".$observacion." - resultado=".$resultado;
 	if ($resultado=="N")
 	{

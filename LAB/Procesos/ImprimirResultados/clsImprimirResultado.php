@@ -552,7 +552,7 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
 	 $con = new ConexionBD;
    if($con->conectar()==true)
    {
-	 $query="SELECT lab_detalleresultado.Resultado,lab_detalleresultado.Observacion FROM lab_resultados
+    	echo $query="SELECT lab_detalleresultado.Resultado,lab_detalleresultado.Observacion FROM lab_resultados
 	INNER JOIN lab_detalleresultado ON lab_resultados.IdResultado=lab_detalleresultado.IdResultado
 	WERE lab_resultados.IdSolicitudEstudio=$idsolicitud AND lab_resultados.IdDetalleSolicitud=$iddetalle
         AND lab_detalleresultado.IdElemento=$idelemento"; 
@@ -963,7 +963,7 @@ function VerificaDetalle($idsolicitud,$iddetalle){
    if($con->conectar()==true){ 
        	$query=" SELECT TO_CHAR((now( )::timestamp - '$fechanac'::timestamp),'DD')";
                 //"SELECT DATEDIFF(NOW( ),'$fechanac')";
-      $query;
+    // echo $query;
 	 $result = @pg_query($query);
      if (!$result)
        return false;

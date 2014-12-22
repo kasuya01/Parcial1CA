@@ -739,7 +739,7 @@ function CantMetodologia($idexamen) {
         if ($con->conectar() == true) {
             $query = "INSERT INTO lab_resultados(IdSolicitudEstudio,IdDetalleSolicitud,IdExamen,
             IdRecepcionMuestra,Resultado,Lectura,Interpretacion,Observacion,Responsable,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod,IdCodigoResultado,IdEstablecimiento)  	VALUES($idsolicitud,$iddetalle,'$idexamen',$idrecepcion,'$resultado','$lectura',
-	   '$interpretacion','$observacion','$responsable',$usuario,NOW(),$usuario,NOW(),$codigo,$lugar)";
+	   '$interpretacion','$observacion','$responsable',$usuario,date_trunc('second',NOW()),$usuario,date_trunc('second',NOW()),$codigo,$lugar)";
             $query2 = "SELECT LAST_INSERT_ID();";
 
             $result = pg_query($query);
@@ -766,7 +766,7 @@ function CantMetodologia($idexamen) {
             $idnext=$nextseq[0];
 
             $query = "insert into lab_resultado_metodologia (id, id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, resultado, observacion, idusuarioreg, fechahorareg, fecha_realizacion, fecha_resultado, id_empleado)
-values ($idnext,$hdnIdMetodologia_, $iddetalle, $hdnCodResult_, $hdnResult_,$hdnObserva_, $usuario, NOW(), $hdnFecProc_, $hdnFecResu_, $hdnResp_);";
+            values ($idnext,$hdnIdMetodologia_, $iddetalle, $hdnCodResult_, $hdnResult_,$hdnObserva_, $usuario, date_trunc('second',NOW()), $hdnFecProc_, $hdnFecResu_, $hdnResp_);";
                //echo $query;
        //     $query2 = "SELECT LAST_INSERT_ID();";
 
@@ -792,7 +792,8 @@ values ($idnext,$hdnIdMetodologia_, $iddetalle, $hdnCodResult_, $hdnResult_,$hdn
             $nextseq=  pg_fetch_array($sql);
             $idnext=$nextseq[0];
 
-            $query = "insert into lab_resultados (id, idsolicitudestudio, iddetallesolicitud, idrecepcionmuestra, resultado, lectura, interpretacion, observacion, idestablecimiento, idusuarioreg, fechahorareg, idexamen, idempleado, fecha_resultado)  values ($idnext, $idsolicitud, $iddetalle, $idrecepcion, $v_resultfin, $v_lectura,$v_interpretacion, $v_obserrecep, $lugar, $usuario, NOW(), $idexamen, $cmbEmpleadosfin, $d_resultfin)";
+            $query = "insert into lab_resultados (id, idsolicitudestudio, iddetallesolicitud, idrecepcionmuestra, resultado, lectura, interpretacion, observacion, idestablecimiento, idusuarioreg, fechahorareg, idexamen, idempleado, fecha_resultado) "
+                    . "values ($idnext, $idsolicitud, $iddetalle, $idrecepcion, $v_resultfin, $v_lectura,$v_interpretacion, $v_obserrecep, $lugar, $usuario, date_trunc('seconds',NOW()), $idexamen, $cmbEmpleadosfin, $d_resultfin)";
             
          //   echo '<br/>'.$query;
        //     $query2 = "SELECT LAST_INSERT_ID();";

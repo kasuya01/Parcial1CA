@@ -22,6 +22,7 @@ $establecimietno      = $_GET['var14'];
 $responsable          = $_GET['var15'];
 $sexo                 = $_GET['var16'];
 $idedad               = $_GET['var17'];
+//echo $origen;
 ?>
 <html>
 <head>
@@ -132,7 +133,7 @@ $idedad               = $_GET['var17'];
                                 <td colspan='1' class="Estilo6"><strong>Procedencia:</strong></td>
                                 <td colspan='2' class="Estilo6"><?php echo $row_generales['procedencia']?></td>
                                 <td colspan='1' class="Estilo6"><strong>Servicio:</strong></td>
-                                <td colspan='2' class="Estilo6"><?php echo $row_generales['origen']?></td>
+                                <td colspan='2' class="Estilo6"><?php echo $origen?></td>
                             </tr>
                             <tr>
                                 <td colspan='1' class="Estilo6"><strong>Examen Realizado:</strong></td>
@@ -286,7 +287,7 @@ $idedad               = $_GET['var17'];
                                 <td colspan='1' class="Estilo5"><strong>Procedencia:</strong></td>
                                 <td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['procedencia'])?></td>
                                 <td colspan='1' class="Estilo5"><strong>Servicio:</strong></td>
-                                <td colspan='2' class="Estilo6" ><?php echo htmlentities($row_generales['origen'])?></td>
+                                <td colspan='2' class="Estilo6" ><?php echo htmlentities($origen)?></td>
                             </tr>
                             <tr>
                                 <td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>

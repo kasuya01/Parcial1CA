@@ -139,7 +139,7 @@ $con = new ConexionBD;
        $query = "INSERT INTO lab_resultados
                 (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
                 idempleado,idusuarioreg,fechahorareg,idestablecimiento,fecha_resultado) 
-	        VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$responsable,$usuario,NOW(),$lugar,'$fecharesultado')RETURNING id";
+	        VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,'$fecharesultado')RETURNING id";
               
         $result = pg_query($query);
         if($row = pg_fetch_array($result)) {
@@ -151,7 +151,7 @@ $con = new ConexionBD;
                     $id_exam_metod = $row_exam_metod[0];
                     $id_exam_metod;
                     $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
-                                  VALUES($id_exam_metod, $iddetalle, $tab, $usuario, NOW(),'$fecharealiz','$fecharesultado',$responsable)";
+                                  VALUES($id_exam_metod, $iddetalle, $tab, $usuario, date_trunc('seconds',NOW()),'$fecharealiz','$fecharesultado',$responsable)";
                         
                     $result = pg_query($query);
 

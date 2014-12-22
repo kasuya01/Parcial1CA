@@ -32,7 +32,7 @@ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$obs
 	       (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
                observacion,resultado,idempleado,idusuarioreg,fechahorareg,idestablecimiento,id_observacion,fecha_resultado) 
 	       VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,
-               '$observacion','$resultado',$responsable,$usuario,NOW(),$lugar,$idobservacion,'$fecharesultado')RETURNING id";
+               '$observacion','$resultado',$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,$idobservacion,'$fecharesultado')RETURNING id";
        //echo $query;
                 $result = pg_query($query);
                 
@@ -45,7 +45,7 @@ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$obs
                         $id_exam_metod = $row_exam_metod[0];
                         $id_exam_metod;
                         $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
-                                  VALUES($id_exam_metod, $iddetalle, $codigoResultado, $usuario, NOW(),'$fecharealiz','$fecharesultado',$responsable)";
+                                  VALUES($id_exam_metod, $iddetalle, $codigoResultado, $usuario, date_trunc('seconds',NOW()),'$fecharealiz','$fecharesultado',$responsable)";
                         
                         $result = pg_query($query);
 

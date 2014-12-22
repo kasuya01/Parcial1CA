@@ -9,8 +9,9 @@ $idplatilla=$_GET['var3'];
 $expediente=$_GET['var4'];
 $idarea=$_GET['var5'];
 //$sexo=$_GET['var6'];
-$fechanac=$_GET['var7'];
+//$fechanac=$_GET['var7'];
 $idexamen=$_GET['var6'];
+$subservicio=$_GET['var8'];
 //echo $fechanac."    ".$sexo;
 //echo $iddetalle."*sol".$idsolicitud."*plan".$idplatilla."*exp".$expediente."*area".$idarea
 ?>
@@ -133,7 +134,7 @@ include_once("clsImprimirResultado.php");
             <td colspan="1" class="Estilo5"><strong>Procedencia:</strong></td>
             <td colspan="2" class="Estilo6"><?php echo htmlentities($row['nombreservicio'])?></td>
             <td colspan="1" class="Estilo5"><strong>Servicio:</strong></td>
-            <td colspan="1" class="Estilo6"><?php echo htmlentities($row['nombresubservicio'])?></td>
+            <td colspan="1" class="Estilo6"><?php echo htmlentities($subservicio)?></td>
 	</tr>
          <tr>
             <td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>
