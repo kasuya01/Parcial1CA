@@ -125,9 +125,9 @@ if ($nivel==33){
 				</div>		</td> 
 		</tr> -->
                 <tr>
-                            <td class="StormyWeatherFieldCaptionTD" style="font-weight:bold">Grupo Prueba </td>
+                            <td class="StormyWeatherFieldCaptionTD" style="font-weight:bold">&Aacute;rea de Laboratorio</td>
                             <td class="StormyWeatherDataTD" colspan="1">
-                                <select id="cmbArea" name="cmbArea" class="MailboxSelect" style="width:200px" size="1" onChange="BuscarExamen(this.value)">
+                                <select id="cmbArea" name="cmbArea" class="MailboxSelect" style="width:196px" size="1" onChange="BuscarExamen(this.value)">
                                     
                                     
                                     <?php
@@ -141,10 +141,10 @@ if ($nivel==33){
 				?>
                                 </select>
                             </td>
-                            <td  class="StormyWeatherFieldCaptionTD">Prueba</td>
+                            <td  class="StormyWeatherFieldCaptionTD">Examen</td>
                             <td  class="StormyWeatherDataTD"  style="width:200px">
                                 <div id="divExamen">
-                                    <select name="cmbExamen" id="cmbExamen"   class="MailboxSelect" style="width:200px"> 
+                                    <select name="cmbExamen" id="cmbExamen"   class="MailboxSelect" style="width:196px"> 
                                         <option value="0">--Seleccione Examen--</option>
                                     </select>
                                 </div>
@@ -155,14 +155,14 @@ if ($nivel==33){
                     
                     <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Resultado</td>
                         <td class="StormyWeatherDataTD" width="20%">
-                            <input type="text" size="28" name="txtfechainicio" id="txtfechainicio" class="date"  placeholder="aaaa-mm-dd"/>
+                            <input type="text" size="17" name="txtfechainicio" id="txtfechainicio" class="date"  placeholder="aaaa-mm-dd"/>
                     
                     
                         
                         
                         <td class="StormyWeatherFieldCaptionTD" width="15%" >Hasta</td>
                         <td class="StormyWeatherDataTD" width="20%">
-                            <input type="text" size="28" name="txtfechafin" id="txtfechafin" class="date"  placeholder="aaaa-mm-dd"/>
+                            <input type="text" size="17" name="txtfechafin" id="txtfechafin" class="date"  placeholder="aaaa-mm-dd"/>
 		</tr>
 		<tr>
 			<td  colspan="5" align="right">  
