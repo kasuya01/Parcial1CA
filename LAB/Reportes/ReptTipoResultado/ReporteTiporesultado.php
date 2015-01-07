@@ -15,7 +15,7 @@ $area=$_SESSION['Idarea'];
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 <title>Recepcion de Examenes en &Aacute;reas de Laboratorio</title>
-<script language="JavaScript" type="text/javascript" src="ajax_ReporteTiporedsultado.js"></script>
+<script language="JavaScript" type="text/javascript" src="ajax_ReporteTiporesultado.js"></script>
 <!--referencias del estilo del calendario-->
 <?php include_once $ROOT_PATH."/public/css.php";?>
 <?php include_once $ROOT_PATH."/public/js.php";?>
@@ -170,7 +170,7 @@ if ($nivel==33){
                                     <!-- <input type="button" id="btnbuscar"  class="fg-button ui-state-default ui-corner-all  value="Buscar" onClick="MostrarBusqueda();"> -->
                                     <!-- <input type="button" id="btnClear" value="Nueva Busqueda"  onClick="window.location.replace('ReporteExamenesporServicio.php')">	-->
                                     <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="MostrarBusqueda();">Buscar </button>
-                                    <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="window.location.replace('ReporteTiporedsultado.php')">Nueva Busqueda </button>
+                                    <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="window.location.replace('ReporteTiporesultado.php')">Nueva Busqueda </button>
                             </center>  
                         </td>
 		</tr>

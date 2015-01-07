@@ -109,7 +109,7 @@ function BuscarDatos(pag)
                 //alert(subservicio);
 		ajax=objetoAjax();
 		//archivo que realizar� la operacion ->actualizacion.php
-		ajax.open("POST", "ctrLab_ReporteTiporedsultado.php",true);
+		ajax.open("POST", "ctrLab_ReporteTiporesultado.php",true);
 		//muy importante este encabezado ya que hacemos uso de un formulario
 		ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores
@@ -192,7 +192,7 @@ function LlenarComboSubServicio(proce)
 	medico="";
 	pag="";
     opcion=3;
-   ajax.open("POST", "ctrLab_ReporteTiporedsultado.php",true);
+   ajax.open("POST", "ctrLab_ReporteTiporesultado.php",true);
 		  //muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		  //enviando los valores
@@ -222,7 +222,7 @@ function LlenarComboExamen(idarea)
     
     opcion = 5;
 
-      ajax.open("POST", "ctrLab_ReporteTiporedsultado.php",true);
+      ajax.open("POST", "ctrLab_ReporteTiporesultado.php",true);
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores

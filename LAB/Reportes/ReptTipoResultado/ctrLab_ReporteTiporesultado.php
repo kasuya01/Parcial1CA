@@ -2,14 +2,14 @@
 $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
-include ("clsReporteTiporedsultado.php");
+include ("clsReporteTiporesultado.php");
 
 //variables POST
 $opcion=$_POST['opcion'];
 //$pag =$_POST['pag'];
 
 //creando los objetos de las clases
-$obj = new clsReporteTiporedsultado;
+$obj = new clsReporteTiporesultado;
 
 switch ($opcion) 
 {   
@@ -144,14 +144,17 @@ switch ($opcion)
                 order by t03.nombre_examen ";
                   
                   
-           $Nombrepdf="Rep_TipodeResultado".'_'.date('d_m_Y__h_i_s A');
+           $Nombrepdf="TipodeResultado".'_'.date('d_m_Y');
 	      	$nombrearchivo = "../../../Reportes/".$Nombrepdf.".pdf";
                 	
                 $nombrearchivoe = "../../../Reportes/".$Nombrepdf.".ods";
+               // $idarea=1;
+                //$idexamen=32;
+                echo $archivopdf= "../../../Reportes/".$Nombrepdf.".pdf?idarea=".$idarea."&idexamen=".$idexamen."&fechaini=".$fechainicio."&fechafin=".$fechafin;
 		//$nombrearchivo;
-	       	$punteroarchivo = fopen($nombrearchivo, "w+") 	 or die("El archivo de reporte no pudo crearse");
+	       //	$punteroarchivo = fopen($nombrearchivo, "w+") 	 or die("El archivo de reporte no pudo crearse");
                 
-                     $punteroarchivo1 = fopen($nombrearchivoe, "w+") 	 or die("El archivo de reporte no pudo crearse");  
+                   //  $punteroarchivo1 = fopen($nombrearchivoe, "w+") 	 or die("El archivo de reporte no pudo crearse");  
                 
 		
 echo  "<table width='35%' border='0'  align='center'>
@@ -169,16 +172,29 @@ echo  "<table width='35%' border='0'  align='center'>
    if(pg_num_rows($consulta))
     {     //echo "dentro";            
               
-                
-                echo"   <table  width='100%' hight='10%' align='center'>
-         <tr>
-	       		<td colspan='28' align='center'>
-                            <a href='".$nombrearchivo."'><H5>DESCARGAR REPORTE PDF <img src='../../../Imagenes/icono-pdf.jpg'></H5></a>
-                                <a href='".$nombrearchivoe."'><H5>DESCARGAR REPORTE   </H5></a>
-        </td>
-	           </tr> 
-                   
-     </table>";  
+//    echo '<h1>Resultado de Pruebas por Sexo del Paciente  &emsp;&emsp;&emsp; <a href="/url/preanalitica/solicitud/exporta/pdfOrd_x_genero.php?id_sibasi='.$id_sibasi.'&id_establecimiento='.$id_establecimiento.'&fecha1='.$fecha1.'&fecha2='.$fecha2.'&id_grupoprueba='.$id_grupoprueba.'&id_prueba='.$id_prueba.'&id_sexo='.$id_sexo.'&title=\'PDF\'" target="_blank"><img align="center" src="/default/img/icons/pdf2.png" title="Exportar a PDF" alt="Exportar a PDF" style="padding-right:5px"></a></h1><br/>'; 
+    echo '<table width="100%" height="10%" align="center">'
+    . '<tr><td colspan="28" align="center">'
+            . '<a href="pdfOrd_x_tiporesultado.php?idarea='.$idarea.'&idexamen='.$idexamen.'&fechaini='.$fechainicio.'&fechafin='.$fechafin.'&title=\'PDF\'" target="_blank"><h5>Descargar Reporte PDF </h5><img src="../../../Imagenes/icono-pdf.jpg"/></a> '
+            . '</td></tr></table>';
+//      echo '<table width="100%" height="10%" align="center">'
+//    . '<tr><td colspan="28" align="center">'
+//            . '<a href="pdfOrd_x_tiporesultado.php?title=\'PDF\'" target="_blank"><h5>Descargar Reporte PDF </h5><img src="../../../Imagenes/icono-pdf.jpg"/></a> '
+//            . '</td></tr></table>';
+//      
+      echo '<hr>';
+      echo '<hr>';
+      
+
+//                echo"   <table  width='100%' hight='10%' align='center'>
+//         <tr>
+//	       		<td colspan='28' align='center'>
+//                            <a href='../../../Reportes/".$Nombrepdf.".pdf?idarea=".$idarea."&idexamen=".$idexamen."&fechaini=".$fechainicio."&fechafin=".$fechafin target=blank'><H5>DESCARGAR REPORTE PDF <img src='../../../Imagenes/icono-pdf.jpg'></H5></a>
+//                                <a href='".$nombrearchivoe."'><H5>DESCARGAR REPORTE   </H5></a>
+//        </td>
+//	           </tr> 
+//                   
+//     </table>";  
                 
                 
                 
