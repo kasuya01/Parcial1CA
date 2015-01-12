@@ -6,6 +6,7 @@ $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 $db = new ConexionBD;
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
 
 ?>
 <html>
@@ -17,11 +18,13 @@ $db = new ConexionBD;
 			h1 { font-size:22px; }
 			input { width:250px; border: 2px solid #CCC; line-height:20px;height:20px; border-radius:3px; padding:2px; }
 		</style>
+<?php include_once $ROOT_PATH."/public/css.php";?>
+<?php include_once $ROOT_PATH."/public/js.php";?>
 <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script> 
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
-<link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
-<link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+<!--<link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+<link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />-->
 
    
 
@@ -339,11 +342,11 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                          <tr>
                             <td class="StormyWeatherFieldCaptionTD">Fecha Realización </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="datepicker" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" />
+                               <input type="text" class="datepicker" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" onchange="valfechasolicita(this, 'fecha_realizacion')"/>
                             </td>
                              <td class="StormyWeatherFieldCaptionTD">Fecha Reporte </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="datepicker" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  /><input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  /> 
+                                <input type="text" class="datepicker" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d H:i"); ?>"   onchange="valfechasolicita(this, 'fecha_reporte')"/><input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d H:i"); ?>"  /> 
                             </td>
                         </tr>
                         <tr>
@@ -401,10 +404,10 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                         <tr>
                             <?php 
                           }?>
-                            <td colspan="4"  class="StormyWeatherDataTD"><center>
-                                <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="VerResultados();">Ver Resultado </button>
+                            <td colspan="4" style="text-align:right">
+                               <button type="button" align="right" style="text-align: right" class="btn btn-primary" onclick="VerResultados();"><span class='glyphicon glyphicon-file'></span>Ver Resultado </button>
 <!--                                <input type="button" name="add" value="Agregar Resultado" Onclick="AddResultado() ;"> -->
-                        </center>
+                        
                             </td>
                         </tr>
                         
@@ -438,13 +441,13 @@ else{
                
 }
 ?>
- <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
+<!-- <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon-i18n.min.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-es.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui-sliderAccess.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/script.js"></script>    
+                <script type="text/javascript" src="../../../public/datepicker/script.js"></script>    -->
     
 </body>
 </html>

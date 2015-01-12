@@ -204,7 +204,7 @@ switch ($opcion)
             INNER JOIN ctl_examen_servicio_diagnostico  t18     ON (t18.id = t05.id_examen_servicio_diagnostico) 
             INNER JOIN ctl_sexo                         t19     ON (t19.id = t07.id_sexo)
             INNER JOIN tbl_servicio                     t20     ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
-            WHERE t02.estado in (select id from ctl_estado_servicio_diagnostico where idestado  in ('R','P'))
+            WHERE t02.estado in (select id from ctl_estado_servicio_diagnostico where idestado  in ('R'))
             AND  t01.estadodetalle=(select id from ctl_estado_servicio_diagnostico where idestado ='D') 
             AND t02.id_establecimiento = $lugar
             AND $cond1

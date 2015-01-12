@@ -6,6 +6,7 @@ $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 $objdatos = new clsSolicitudesProcesadas;
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
 
 ?>
 <html>
@@ -20,8 +21,10 @@ $objdatos = new clsSolicitudesProcesadas;
 			h1 { font-size:22px; }
 			input { width:250px; border: 2px solid #CCC; line-height:20px;height:20px; border-radius:3px; padding:2px; }
 		</style>
-<link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
-<link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+<?php include_once $ROOT_PATH."/public/css.php";?>
+            <?php include_once $ROOT_PATH."/public/js.php";?>
+<!--<link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+<link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />-->
 
 <script language="JavaScript" >
 function Guardar(){
@@ -322,11 +325,11 @@ else{
 }
 ?>
 </body>
- <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
+<!-- <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon-i18n.min.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-es.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui-sliderAccess.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/script.js"></script> 
+                <script type="text/javascript" src="../../../public/datepicker/script.js"></script> -->
 </html>
