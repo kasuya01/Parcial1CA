@@ -4,8 +4,8 @@ $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea']; 
- $ROOT_PATH = $_SESSION['ROOT_PATH'];
-    $base_url  = $_SESSION['base_url'];
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
  ?>
 
 <html>
@@ -165,13 +165,18 @@ if ($nivel==33){
                             <input type="text" size="17" name="txtfechafin" id="txtfechafin" class="date"  placeholder="aaaa-mm-dd"/>
 		</tr>
 		<tr>
-			<td  colspan="5" align="right">  
-                            <center>
+			 
+                           
+                                 
+                            <td class="StormyWeatherDataTD" colspan="4" align="right">
+                              
+                            <br>
                                     <!-- <input type="button" id="btnbuscar"  class="fg-button ui-state-default ui-corner-all  value="Buscar" onClick="MostrarBusqueda();"> -->
-                                    <!-- <input type="button" id="btnClear" value="Nueva Busqueda"  onClick="window.location.replace('ReporteExamenesporServicio.php')">	-->
-                                    <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="MostrarBusqueda();">Buscar </button>
-                                    <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="window.location.replace('ReporteTiporesultado.php')">Nueva Busqueda </button>
-                            </center>  
+                                    <!-- <input type="button" id="btnClear" value="Nueva Busqueda"  onClick="window.location.replace('ImprimirResultado.php')">	-->
+                               <button type='button' align="center" class='btn btn-primary' id='buscarsolicitud' onclick='MostrarBusqueda(); '><span class='glyphicon glyphicon-search'></span> Buscar</button>
+                               <button type='button' align="center" class='btn btn-primary' id='nuevabusqueda' onclick="window.location.replace('ReporteTiporesultado.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+                               <br>
+                           
                         </td>
 		</tr>
 	</table>
@@ -189,22 +194,7 @@ if ($nivel==33){
 <div id="divBusqueda">
 
 </div>
-     <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon-i18n.min.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-es.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/jquery-ui-sliderAccess.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/script.js"></script>  
-   
- <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon-i18n.min.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-es.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/jquery-ui-sliderAccess.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/script.js"></script>    
-       
+ 
 </body>
 
 </html>

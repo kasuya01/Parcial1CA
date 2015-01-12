@@ -45,22 +45,26 @@ switch ($opcion)
     break;
     case 4:// PAGINACION
 	////para manejo de la paginacion
-	$RegistrosAMostrar=4;
+	$RegistrosAMostrar=10;
 	$RegistrosAEmpezar=($_POST['Pag']-1)*$RegistrosAMostrar;
 	$PagAct=$_POST['Pag'];
 	
 	 /////LAMANDO LA FUNCION DE LA CLASE 
 	$consulta= $objdatos->consultarpag($RegistrosAEmpezar, $RegistrosAMostrar);
-
+        
+        
 	//muestra los datos consultados en la tabla
-	echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
-	      <tr>
-		   <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
-		 <!--  <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
-		    <td class='CobaltFieldCaptionTD'> Area</td> 
-		   <td class='CobaltFieldCaptionTD'> observacion </td>
-                   <td class='CobaltFieldCaptionTD'> Tipo de Respuesta</td>		   
-	      </tr>";
+    echo "<center><div class='table-responsive' style='width: 60%;'>
+            <table width='50%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                <thead>
+                <tr>
+		    <th aling='center'> Modificar</th>
+		    <!--<td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
+		    <th> Area</th> 
+		    <th> observacion </th>
+                    <th> Tipo de Respuesta</th>		   
+	        </tr></thead><tbody>";
+    
              while($row = pg_fetch_array($consulta)){
 		echo "<tr>
 			<td aling='center'> 
@@ -140,7 +144,7 @@ switch ($opcion)
 		$query_search = $query."ORDER  BY c1.idarea,observacion";	
      //  echo $query_search ;
 	//para manejo de la paginacion
-		$RegistrosAMostrar=4;
+		$RegistrosAMostrar=10;
 		$RegistrosAEmpezar=($_POST['Pag']-1)*$RegistrosAMostrar;
 		$PagAct=$_POST['Pag'];
 	//  echo 
@@ -148,14 +152,16 @@ switch ($opcion)
 		$consulta= $objdatos->consultarpagbus($query_search,$RegistrosAEmpezar,$RegistrosAMostrar);
 
 		//muestra los datos consultados en la tabla
-	echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
-	      <tr>
-		   <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
-		  <!-- <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
-		    <td class='CobaltFieldCaptionTD'> Area</td>
-		   <td class='CobaltFieldCaptionTD'> observacion </td>
-                   <td class='CobaltFieldCaptionTD'> Tipo de Respuesta </td>		   
-	      </tr>";
+	echo "<center><div class='table-responsive' style='width: 60%;'>
+            <table width='50%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                <thead>
+                <tr>
+		    <th aling='center'> Modificar</th>
+		    <!--<td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
+		    <th> Area</th> 
+		    <th> observacion </th>
+                    <th> Tipo de Respuesta</th>		   
+	        </tr></thead><tbody>";
              while($row = pg_fetch_array($consulta)){
 		echo "<tr>
 			<td aling='center'> 

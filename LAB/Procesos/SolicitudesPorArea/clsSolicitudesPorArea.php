@@ -204,7 +204,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-	$query = "SELECT t02.id, 
+	 $query = "SELECT t02.id, 
                 t13.nombre AS nombreservicio, 
                 t19.nombre AS sexo, 
                 t24.nombreempleado as medico, 

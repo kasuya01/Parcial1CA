@@ -45,12 +45,21 @@ $Fechafin = $row[3];
                 </table>
             </td>		
         </tr>
-        <tr>
+        <!--<tr>
             <td class="StormyWeatherDataTD" colspan="2" align="right">
                 <input type="button" name="btnActualizar" value="Actualizar" onclick="ActualizarDatos();" />
                 <input type="button" name="btnNuevo" value="Nuevo" onClick="window.location.replace('MntTarjetasVITEK.php')" />
             </td>
-        </tr>
+        </tr>-->
+        
+        <tr>
+                <td class="StormyWeatherDataTD" colspan="6" align="right">
+                                
+                                <button type='button' align="center" class='btn btn-primary'  onclick="ActualizarDatos();"><span class='glyphicon glyphicon-repeat'></span> Actualizar</button>
+                                <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntTarjetasVITEK.php')"><span></span> Nuevo</button>
+                
+                </td>
+        </tr>  
     </table>
 </form>
 

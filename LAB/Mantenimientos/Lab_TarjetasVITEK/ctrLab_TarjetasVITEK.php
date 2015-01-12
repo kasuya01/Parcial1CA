@@ -78,15 +78,20 @@ switch ($opcion) {
 	    $consulta= $objdatos->consultarpag($RegistrosAEmpezar,$RegistrosAMostrar,$lugar);
 
 			//muestra los datos consultados en la tabla
-	    echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
-			    <tr>
-			    	<td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
-			    	<!--  <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
-			    	<td class='CobaltFieldCaptionTD'> IdTarjeta</td>
-			    	<td class='CobaltFieldCaptionTD'> Nombre de Tarjeta </td>
-			    	<td class='CobaltFieldCaptionTD'> Fecha Inicio </td>	 
-			    	<td class='CobaltFieldCaptionTD'> Fecha Finalización </td>	
-			    </tr>";
+	    echo "<center >
+                
+                <table border = 1 style='width: 60%;'  class='table table-hover table-bordered table-condensed table-white'>
+			   <thead>
+                            <tr>
+                                <th  aling='center'> Modificar</th>
+			    	<!--  <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</th> -->
+			    	<!--<th > IdTarjeta</th>-->
+			    	<th > Nombre de Tarjeta </th>
+			    	<th > Fecha Inicio </th>	 
+			    	<th > Fecha Finalización </th>	
+			    </tr>
+                    </thead><tbody>
+                    </center>";
 
 	    while($row = pg_fetch_array($consulta)){
 	    	echo "<tr>
@@ -96,7 +101,7 @@ switch ($opcion) {
 			    		<!-- <td aling ='center'> 
 			    		<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 			    		onclick=\"eliminarDato('".$row['id']."')\"> </td> -->
-			    		<td>".$row['id']."</td>
+			    		<!--<td>".$row['id']."</td>-->
 			    		<td>".htmlentities($row['nombretarjeta'])." </td>
 			    		<td>".htmlentities($row['fechaini'])." </td>
 			    		<td>".htmlentities($row['fechafin'])." </td>
@@ -182,15 +187,20 @@ switch ($opcion) {
     		$consulta= $objdatos->consultarpagbus($query,$RegistrosAEmpezar, $RegistrosAMostrar);
 
 				//muestra los datos consultados en la tabla
-    		echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
-    		<tr>
-    			<td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
-    			<!-- <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
-    			<td class='CobaltFieldCaptionTD' > IdTarjeta</td>
-    			<td class='CobaltFieldCaptionTD'> Nombre de Tarjeta </td>
-    			<td class='CobaltFieldCaptionTD'> Fecha Inicio </td>	 
-    			<td class='CobaltFieldCaptionTD'> Fecha Finalización </td>	
-    		</tr>";
+    		echo "<center >
+                
+                <table border = 1 style='width: 60%;'  class='table table-hover table-bordered table-condensed table-white'>
+			   <thead>
+                            <tr>
+                                <th  aling='center'> Modificar</th>
+			    	<!--  <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</th> -->
+			    	<!--<th > IdTarjeta</th>-->
+			    	<th > Nombre de Tarjeta </th>
+			    	<th > Fecha Inicio </th>	 
+			    	<th > Fecha Finalización </th>	
+			    </tr>
+                    </thead><tbody>
+                    </center>";
 
     		while($row = pg_fetch_array($consulta)){
     			echo "<tr>
@@ -200,7 +210,7 @@ switch ($opcion) {
     				<!-- <td aling ='center'> 
     				<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
     				onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
-    				<td>".$row['id']."</td>
+    				<!--<td>".$row['id']."</td>-->
     				<td>".htmlentities($row['nombretarjeta'])." </td>
     				<td>".$row['fechaini']."</td>
     				<td>".$row['fechafin']."</td>

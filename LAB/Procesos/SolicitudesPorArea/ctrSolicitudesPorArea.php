@@ -138,7 +138,7 @@ switch ($opcion)
           
         }     
        // echo $cond2;
-       $query="WITH tbl_servicio AS (
+      $query="WITH tbl_servicio AS (
                     SELECT t02.id,
                         CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
@@ -204,7 +204,7 @@ switch ($opcion)
             INNER JOIN ctl_examen_servicio_diagnostico  t18     ON (t18.id = t05.id_examen_servicio_diagnostico) 
             INNER JOIN ctl_sexo                         t19     ON (t19.id = t07.id_sexo)
             INNER JOIN tbl_servicio                     t20     ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
-            WHERE t02.estado in (select id from ctl_estado_servicio_diagnostico where idestado  in ('R','P'))
+            WHERE  t02.estado=(select id from ctl_estado_servicio_diagnostico where idestado ='R')
             AND  t01.estadodetalle=(select id from ctl_estado_servicio_diagnostico where idestado ='D') 
             AND t02.id_establecimiento = $lugar
             AND $cond1
@@ -269,22 +269,25 @@ switch ($opcion)
         
         if ($NroRegistros==""){
             $NroRegistros=0;
-            echo "<form name='frmDatos'>    <table width='35%' border='0'  align='center'>
-        	<center>
-           
-            
-<tr><td colspan='11'  align='center'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES A PROCESAR:".$NroRegistros."</h3></span></td></tr>
-            </center>
-	</table> "; 
+             echo "<table width='85%' border='0' align='center'>
+			<tr>
+				<td colspan='7' align='center' ><span style='color: #0101DF;'><h4><strong> TOTAL DE SOLICITUDES A PROCESAR:".$NroRegistros."  </strong></h4></span></td>
+			</tr>
+		</table> ";
+        
             
         }
-        else{ echo "<form name='frmDatos'>    <table width='35%' border='0'  align='center'>
-        	<center>
-           
+        else{ 
             
-<tr><td colspan='11'  align='center'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES A PROCESAR:".$NroRegistros."</h3></span></td></tr>
-            </center>
-	</table> ";
+        
+        
+        echo "<table width='85%' border='0' align='center'>
+			<tr>
+				<td colspan='7' align='center' ><span style='color: #0101DF;'><h4><strong> TOTAL DE SOLICITUDES A PROCESAR:".$NroRegistros."  </strong></h4></span></td>
+			</tr>
+		</table> ";
+        
+        
             
         }
         

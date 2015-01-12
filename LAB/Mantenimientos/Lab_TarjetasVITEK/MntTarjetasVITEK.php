@@ -3,6 +3,9 @@ $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea']; 
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
+?>
 ?>
 <html>
 <head>
@@ -19,6 +22,8 @@ $area=$_SESSION['Idarea'];
 	<script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
 	<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 	<link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+        <?php include_once $ROOT_PATH.'/public/css.php';?>
+        <?php include_once $ROOT_PATH.'/public/js.php';?>
 
 
 	<script language="JavaScript" type="text/javascript">
@@ -68,21 +73,48 @@ $area=$_SESSION['Idarea'];
 					        <tr>	
 					        	<td colspan="2" class="StormyWeatherDataTD">
 					        		<table width="100%" border="0" align="center" class="StormyWeatherFormTABLE">
-					        			<tr>
+					        			
+                                                                 <tr>   
+                                                                     <td class="StormyWeatherFieldCaptionTD"  width="15%">Fecha Inicio</td>
+                                                                     <td class="StormyWeatherDataTD" width="20%">
+                                                                            <input name="txtFechainicio" type="text" id="txtFechainicio" size="28" class="date"  placeholder="aaaa-mm-dd">
+                                                                    </td>
+                                                                    
+                                                                    
+                                                                    
+                                                                     <td class="StormyWeatherFieldCaptionTD"  width="15%">Fecha Inicio</td>
+                                                                     <td class="StormyWeatherDataTD" width="20%">
+                                                                            <input name="txtFechaFin" type="text" id="txtFechaFin" size="28" class="date"  placeholder="aaaa-mm-dd">
+                                                                    </td>
+                                                                 </tr>   
+                                                                    
+                                                                  <!--  <tr>
 					        				<td width="20%" class="StormyWeatherFieldCaptionTD">Fecha Inicio</td>
 					        				<td width="30%" class="StormyWeatherDataTD"><input name="txtFechainicio" type="text" id="txtFechainicio" size="6" ><input name="button" type="button" id="trigger"  value="...">dd/mm/aaaa</td>
 					        				<td width="20%" class="StormyWeatherFieldCaptionTD">Fecha Final</td>
 					        				<td width="30%" class="StormyWeatherDataTD"><input name="txtFechaFin" type="text" id="txtFechaFin" size="6" ><input name="button2" type="button" id="trigger2" value="...">dd/mm/aaaa</td>	
-					        			</tr>
+					        			</tr> -->
 					        		</table>
 					        	</td>			
 					        </tr>
-					        <tr>
+					        <!--<tr>
 					        	<td class="StormyWeatherDataTD" colspan="2" align="right">
 					        		<input type="submit" name="Submit" value="Guardar"> 
 					        		<input type="button" name="Submit" value="Buscar" onClick="BuscarCodigo();">
 					        		<input type="button" name="btnNuevo" id="btnNuevo" value="Cancelar" onClick="window.location.replace('MntTarjetasVITEK.php')">
 					        	</td>
+                                                  </tr>  -->   
+                                                      <tr>  
+                                                        <td class="StormyWeatherDataTD" colspan="6" align="right">
+                                
+                                                                <button type='submit' align="center" class='btn btn-primary' id='buscarsolicitud' ><span class='glyphicon glyphicon-floppy-disk'> </span> Guardar</button>
+                                                                <button type='button' align="center" class='btn btn-primary' id='buscarsolicitud' onclick='BuscarCodigo(); '><span class='glyphicon glyphicon-search'></span> Buscar Solicitudes</button>
+                                                                <button type='button' align="center" class='btn btn-primary' id='nuevabusqueda' onclick="window.location.replace('MntTarjetasVITEK.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+                
+                                                       </td>
+                                                        
+                                                        
+                                                        
 					        </tr>
 					    </table>
 					</form>

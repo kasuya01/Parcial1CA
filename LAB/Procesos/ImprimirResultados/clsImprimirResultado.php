@@ -1068,8 +1068,8 @@ $con = new ConexionBD;
             "SELECT idelemento,cantidad,lab_elementos.elemento,
             lab_cantidadestincion.cantidadtincion
 	    FROM lab_detalleresultado 
-	    INNER JOIN lab_elementos   ON lab_detalleresultado.idelemento=lab_elementos.id
- 	    INNER JOIN lab_cantidadestincion  ON lab_cantidadestincion.id=lab_detalleresultado.idcantidad
+	    LEFT JOIN lab_elementos   ON lab_detalleresultado.idelemento=lab_elementos.id
+ 	    LEFT JOIN lab_cantidadestincion  ON lab_cantidadestincion.id=lab_detalleresultado.idcantidad
          WHERE lab_detalleresultado.idresultado=$idresultado";
     
    $result = @pg_query($query);
@@ -1086,7 +1086,7 @@ function ObtenerIdResultado($idsolicitud,$iddetalle)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-	$query ="SELECT id as idresultado FROM lab_resultados where idsolicitudestudio=$idsolicitud and iddetallesolicitud=$iddetalle";
+	 $query ="SELECT id as idresultado FROM lab_resultados where idsolicitudestudio=$idsolicitud and iddetallesolicitud=$iddetalle";
 	  $result = @pg_query($query);
 	 
      if (!$result)

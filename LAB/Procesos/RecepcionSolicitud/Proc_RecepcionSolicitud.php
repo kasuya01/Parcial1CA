@@ -208,11 +208,22 @@ if (isset($_SESSION['Correlativo'])) {
                                             <input type="text" name="txtfechasolicitud" id="txtfechasolicitud" value="<?php //echo date("d/m/Y"); ?>" class="date"  placeholder="aaaa-mm-dd" />
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <!--<tr>
                                         <td colspan="2" class="StormyWeatherDataTD" align="right">
                                             <input type="button" name="btnBuscar" value="Buscar Solicitud" onClick="BuscarDatos();" />
                                         </td>
+                                    </tr> -->
+                                    
+                                    <tr>
+                                             <td class="StormyWeatherDataTD" colspan="4" align="right">
+                        
+                                                <button type='button' align="center" class='btn btn-primary' id='buscarsolicitud' onclick='BuscarDatos(); '><span class='glyphicon glyphicon-search'></span> Buscar Solicitudes</button>
+                                                <button type='button' align="center" class='btn btn-primary' id='nuevabusqueda' onclick="window.location.replace('Proc_RecepcionSolicitud.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+                                                                                                                                                                                    
+                                            </td>
                                     </tr>
+                                    
+                                    
                                 </table>
                             </form>
                         </div>

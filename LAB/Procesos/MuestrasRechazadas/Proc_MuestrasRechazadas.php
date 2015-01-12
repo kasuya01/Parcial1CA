@@ -255,12 +255,20 @@ if ($nivel==4){
 			</select>
 		</td>	
 	</tr>
-	<tr>
+	<!--<tr>
 		<td  class="StormyWeatherDataTD" colspan="4" align="right">
 			<input type="button" name="Submit" value="Buscar Solicitudes" onClick="MostrarMuestrasRechazadas()">
 			<input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('Proc_MuestrasRechazadas.php')">
 		</td>
-	<tr>
+	<tr> -->
+            
+            <tr>
+                <td class="StormyWeatherDataTD" colspan="4" align="right">
+                        
+                                <button type='button' align="center" class='btn btn-primary' id='buscarsolicitud' onclick='MostrarMuestrasRechazadas(); '><span class='glyphicon glyphicon-search'></span> Buscar Solicitudes</button>
+                                <button type='button' align="center" class='btn btn-primary' id='nuevabusqueda' onclick="window.location.replace('Proc_MuestrasRechazadas.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+                </td>
+            </tr>
 </table>
 </form>
 </div>

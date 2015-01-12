@@ -3,7 +3,9 @@ include('../Lab_Areas/clsLab_Areas.php');
 $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
-$area=$_SESSION['Idarea']; 
+$area=$_SESSION['Idarea'];
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
 ?>
 <html>
 <head>
@@ -12,6 +14,8 @@ $area=$_SESSION['Idarea'];
 <script language="JavaScript" type="text/javascript" src="ajax_Lab_Observaciones.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+<?php include_once $ROOT_PATH.'/public/css.php';?>
+<?php include_once $ROOT_PATH.'/public/js.php';?>
 </head>
 
 <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" onLoad="show_event(1);">
@@ -72,15 +76,28 @@ if ($nivel==33){
     </tr>
     <tr>
         <td class="StormyWeatherFieldCaptionTD">Observaci&oacute;n </td>
-        <td class="StormyWeatherDataTD"><textarea name="txtobservacion" cols="60" id="txtobservacion"></textarea></td>
+        <td class="StormyWeatherDataTD"><textarea name="txtobservacion" cols="60" id="txtobservacion"<span style="color: #0000FF;background-color:#87CEEB;"></textarea></td>
     </tr>
-    <tr>
+    
+   <!-- <tr>
         <td colspan="2" class="StormyWeatherDataTD" align="right">
             <input type="submit" name="Submit" value="Guardar">
 	        <input type="button" name="btnbuscar" value="Buscar" onClick="BuscarObservacion();">
 			 <input type="button" name="Submit" value="Cancelar" onClick="window.location.replace('MntObservaciones.php')">
         </td>
-    </tr>
+     </tr>-->
+     
+     <tr>
+         <td class="StormyWeatherDataTD" colspan="6" align="right">
+                                
+                                <button type='submit' align="center" class='btn btn-primary' id='buscarsolicitud' ><span class='glyphicon glyphicon-floppy-disk'> </span>Guardar</button>
+                                <button type='button' align="center" class='btn btn-primary' id='buscarsolicitud' onclick='BuscarObservacion(); '><span class='glyphicon glyphicon-search'></span>Buscar Solicitudes</button>
+                                <button type='button' align="center" class='btn btn-primary' id='nuevabusqueda' onclick="window.location.replace('MntObservaciones.php')"><span class='glyphicon glyphicon-refresh'></span>Nueva Busqueda</button>
+                
+                </td>
+                
+     </tr>
+     
 </table>
 </form>
 

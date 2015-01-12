@@ -245,15 +245,34 @@ switch ($opcion)
 	    
 		
 		
-		$NroRegistros= $objdatos->NumeroDeRegistros($query);				
-   
-      echo "<table width='35%' border='0'  align='center'>
-        	<center>
-           
+		$NroRegistros= $objdatos->NumeroDeRegistros($query);	
+                
+                    if ($NroRegistros=="")
+            {
+                     $NroRegistros=0;
             
-<tr><td colspan='11' align='center'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES: :".$NroRegistros."</h3></span></td></tr>
-            </center>
-	</table> "; 
+             echo "<table width='35%' border='0'  align='center'>
+                    <center>
+                        <tr>
+                            <td colspan='11' align='center'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES: ".$NroRegistros."</h3></span>
+                            </td>
+                        </tr>
+                    </center>
+                </table> "; 
+            
+            }else {
+                       echo "<table width='35%' border='0'  align='center'>
+                    <center>
+                        <tr>
+                            <td colspan='11' align='center'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES: ".$NroRegistros."</h3></span>
+                            </td>
+                        </tr>
+                    </center>
+                </table> "; 
+                      
+                  }
+   
+     
      
      
    
