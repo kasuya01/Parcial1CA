@@ -148,7 +148,7 @@ case 4:
         $fetchseq= @pg_fetch_array($querypr);
         $seqpr= $fetchseq['idpacreferido'];
         $InsertDP = "INSERT INTO mnt_paciente_referido (id,primer_nombre, segundo_nombre, tercer_nombre, primer_apellido, segundo_apellido, apellido_casada, fecha_nacimiento, nombre_responsable, nombre_madre, nombre_padre, id_sexo, id_user, fecha_registro, asegurado)
-values ($seqpr,$PrimerNombre, $SegundoNombre, $TercerNombre, $PrimerApellido, $SegundoApellido, $CasadaApellido, $FechaNacimiento, $NombreResponsable, $NombreMadre, $NombrePadre, $Sexo_Name, $iduser, NOW(), false);";
+values ($seqpr,$PrimerNombre, $SegundoNombre, $TercerNombre, $PrimerApellido, $SegundoApellido, $CasadaApellido, $FechaNacimiento, $NombreResponsable, $NombreMadre, $NombrePadre, $Sexo_Name, $iduser, date_trunc('seconds',NOW()), false);";
 
         $sql=  pg_query($InsertDP);
 	//$IdPaciente=mysql_insert_id();
@@ -158,7 +158,7 @@ values ($seqpr,$PrimerNombre, $SegundoNombre, $TercerNombre, $PrimerApellido, $S
         $seqexp= $fetchseqexp['idexpreferido'];
         
         $InsertExp = "INSERT into mnt_expediente_referido(id, numero, id_referido, id_establecimiento, id_establecimiento_origen, fecha_creacion, hora_creacion, id_creacion_expediente)
-values ($seqexp,$IdNumeroExpRef, $seqpr, $LugardeAtencion,$IdEstablecimientoExterno, current_date, current_time, 1);";
+values ($seqexp,$IdNumeroExpRef, $seqpr, $LugardeAtencion,$IdEstablecimientoExterno, current_date, current_time(0), 1);";
         $sql=  pg_query($InsertExp);
 	$IdNumeroExp=$seqexp;
         

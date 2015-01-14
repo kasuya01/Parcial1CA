@@ -27,7 +27,7 @@ switch ($opcion)
        // $idexamen       = $_POST['idexamen'];
         $idexpediente   = $_POST['idexpediente'];
        // $fechasolicitud = $_POST['fechasolicitud'];
-       // $fecharecepcion = $_POST['fecha'];
+        $fecharecepcion = $_POST['fechaconsulta'];
         $PNombre        = $_POST['primernombre'];
         $SNomre         = $_POST['segundonombre'];
         $PApellido      = $_POST['primerapellido'];
@@ -89,9 +89,9 @@ switch ($opcion)
              $cond2 .= " and  t02.fecha_solicitud = '" . $_POST['fechasolicitud'] . "' ";
         }
 
-        if (!empty($_POST['fecha'])) {
-             $cond1 .= " and t03.fecharecepcion = '".$_POST['fecha']."'       ";
-             $cond2 .= " and t03.fecharecepcion = '".$_POST['fecha']."'       ";
+        if (!empty($_POST['fechaconsulta'])) {
+             $cond1 .= " and t03.fecharecepcion = '".$_POST['fechaconsulta']."'       ";
+             $cond2 .= " and t03.fecharecepcion = '".$_POST['fechaconsulta']."'       ";
         }
 
         if (!empty($_POST['primernombre'])) {
@@ -233,7 +233,7 @@ switch ($opcion)
     
           $consulta=$objdatos->BuscarSolicitudesPaciente($query); 
          
-         $RegistrosAMostrar=5;
+         $RegistrosAMostrar=10;
 	$RegistrosAEmpezar=($_POST['pag']-1)*$RegistrosAMostrar;
 	$PagAct=$_POST['pag'];
 				
@@ -245,15 +245,34 @@ switch ($opcion)
 	    
 		
 		
-		$NroRegistros= $objdatos->NumeroDeRegistros($query);				
-   
-      echo "<table width='35%' border='0'  align='center'>
-        	<center>
-           
+		$NroRegistros= $objdatos->NumeroDeRegistros($query);	
+                
+                    if ($NroRegistros=="")
+            {
+                     $NroRegistros=0;
             
-<tr><td colspan='11' align='center'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES: :".$NroRegistros."</h3></span></td></tr>
-            </center>
-	</table> "; 
+             echo "<table width='35%' border='0'  align='center'>
+                    <center>
+                        <tr>
+                            <td colspan='11' align='center'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES: ".$NroRegistros."</h3></span>
+                            </td>
+                        </tr>
+                    </center>
+                </table> "; 
+            
+            }else {
+                       echo "<table width='35%' border='0'  align='center'>
+                    <center>
+                        <tr>
+                            <td colspan='11' align='center'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES: ".$NroRegistros."</h3></span>
+                            </td>
+                        </tr>
+                    </center>
+                </table> "; 
+                      
+                  }
+   
+     
      
      
    

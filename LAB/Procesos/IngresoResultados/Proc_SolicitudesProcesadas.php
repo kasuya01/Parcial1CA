@@ -272,13 +272,23 @@ if (isset($_SESSION['Correlativo'])) {
                             <td class="StormyWeatherDataTD" >
                                 <input class="MailboxInput" maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" ></td>
                         </tr>
-                        <tr>
+                        <!--<tr>
                             <td class="StormyWeatherDataTD" colspan="4" align="right">		
                                 <input type="button" name="Submit" value="Buscar Solicitudes" onClick="MostrarSolicitudes()">
                                 <input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('Proc_SolicitudesProcesadas.php')">
 
                             </td>
+                        </tr>-->
+                        <tr>
+                            <td class="StormyWeatherDataTD" colspan="4" align="right">
+                        
+                                                <button type='button' align="center" class='btn btn-primary' id='buscarsolicitud' onclick='MostrarSolicitudes(); '><span class='glyphicon glyphicon-search'></span> Buscar Solicitudes</button>
+                                                <button type='button' align="center" class='btn btn-primary' id='nuevabusqueda' onclick="window.location.replace('Proc_SolicitudesProcesadas.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+                                                                                                                                                                                    
+                            </td>
                         </tr>
+                        
+                        
                     </table>
                 </form>
             </div>

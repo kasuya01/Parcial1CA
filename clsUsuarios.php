@@ -97,9 +97,11 @@ class clsUsuarios {
                       t02.id_establecimiento,
                       t02.idarea,
                       t01.nivel,
-                      t01.id_empleado
+                      t01.id_empleado,
+                      replace (t03.nombre,'\"','') as nombre_establecimiento
 		FROM fos_user_user      t01
 		INNER JOIN mnt_empleado t02 ON (t02.id = t01.id_empleado AND t01.id_establecimiento = t02.id_establecimiento) 
+                INNER JOIN ctl_establecimiento t03 on (t03.id=t02.id_establecimiento)
 		WHERE username='$login' AND password= md5('$password') AND modulo='LAB'";
 
             $result = @pg_query($query);

@@ -3,6 +3,8 @@ $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea']; 
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
 ?>
 <html>
 <head>
@@ -11,6 +13,8 @@ $area=$_SESSION['Idarea'];
 <script language="JavaScript" type="text/javascript" src="ajax_Lab_AntibioticosPorTarjeta.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+<?php include_once $ROOT_PATH.'/public/css.php';?>
+<?php include_once $ROOT_PATH.'/public/js.php';?>
 </head>
 <script language="JavaScript" type="text/javascript">
 var resto = new Array();
@@ -127,7 +131,7 @@ if ($nivel==33){
 					<table width="100%" border="0">
 						<tr>
 			<!--<input type="hidden" name="txtoculto" id="txtoculto" /> -->
-				<td width="47%" class="StormyWeatherFieldCaptionTD">Tarjeta VITEK </td>
+				<td align="center" class="StormyWeatherFieldCaptionTD">Tarjeta VITEK </td>
 				<td width="53%"  class="StormyWeatherDataTD">
 					<select name="cmbTarjetas" id="cmbTarjetas" onChange="LlenarLista(this.value);">
 					<option value="0" >--Seleccione una Tarjeta--</option>
@@ -150,7 +154,7 @@ if ($nivel==33){
 									<tr>
 											<td width="40%" align="center" class="StormyWeatherFieldCaptionTD" >Lista Antibi&oacute;ticos 				  </td>
 											<td width="10%" class="StormyWeatherDataTD">&nbsp;</td>
-											<td width="40%" align="center" class="StormyWeatherFieldCaptionTD" >Antibi&oacute;tico asociado por Tarjeta</td>
+											<td width="40%" align="center" class="StormyWeatherFieldCaptionTD" >Antibi&oacute;tico Asociado por Tarjeta</td>
 									</tr>
 									<tr>
 											<td width="47%" align="center" class="StormyWeatherDataTD">
@@ -169,16 +173,29 @@ if ($nivel==33){
 											<td width="6%" align="center" class="StormyWeatherDataTD">
 												<table width="100%" border="0" >
 													<tr>
-														<td align="center" class="StormyWeatherDataTD">
-																<input type="button" name="Agregar" value=">>" onClick="AgregarItemsLista();" ></td>
-													</tr>
-													<tr>
+														<!--<td align="center" class="StormyWeatherDataTD">
+																<input type="button" name="Agregar" value=">>" onClick="AgregarItemsLista();" >
+                                                                                                                </td>-->
+													
+                                                                                                        
+                                                                                                                 <td align="center" class="StormyWeatherDataTD" colspan="6" align="right">
+                                                                                                                        <button type='button' align="center" class='btn btn-primary'  onclick='AgregarItemsLista(); '><span class='glyphicon glyphicon-forward'></span></button>
+                                                                                                                </td>
+                                                                                                        
+                                                                                                        </tr>
+                                                                                                        <tr>
 														<td align="center" class="StormyWeatherDataTD">&nbsp;</td>
 													</tr>
 													<tr>
-														<td align="center" class="StormyWeatherDataTD">
+														<!--<td align="center" class="StormyWeatherDataTD">
 																<input type="button" name="Eliminar" value="<<"  onClick="EliminarItemsLista();" >
-														</td>
+														</td>-->
+                                                                                                                
+                                                                                                                
+                                                                                                                <td align="center" class="StormyWeatherDataTD" colspan="6" align="right">
+                                                                                                                <button type='button' align="center" class='btn btn-primary'  onclick='EliminarItemsLista(); '><span class='glyphicon glyphicon-backward'></span></button>
+                                                                                                            </td>
+                                                                                                                
 													</tr>
 												</table>
 											</td>
@@ -189,12 +206,25 @@ if ($nivel==33){
 												</div>
 											</td>
 									</tr>
-									<tr>
+									<!--<tr>
 										<td colspan="3" align="right" class="StormyWeatherDataTD">
 											<input type="button" name="btnGuardar" value="Guardar Muestras" onClick="GuardarItems();">
 											<input type="button" name="submit1" value="Eliminar Muestra" onClick="EliminarItems() ;" >
 										</td>
-								   </tr>
+                                                                        </tr>-->
+                                                                   
+                                                                   <tr>
+                                                                       <td class="StormyWeatherDataTD" colspan="6" align="right">
+                                
+                                                                            
+                                                                            <button type='button' align="center" class='btn btn-primary'  onclick='GuardarItems(); '><span class='glyphicon glyphicon-floppy-disk'></span>Guardar Muestras</button>
+                                                                            <button type='button' align="center" class='btn btn-primary'  onclick='EliminarItems(); '><span class='glyphicon glyphicon-remove-circle'></span>Eliminar Muestra</button>
+                                                                            
+
+                                                                    </td>
+                                                                       
+                                                                   </tr>
+                                                                   
 								</table>
 							</td>
 						</tr>

@@ -91,16 +91,26 @@ function calc_edad()
         $subservicio=$_GET['var6'];
 	//echo $idexpediente."  ".$idsolicitud."  ".$lugar;
 	
-	//echo  $subservicio;		
-	
+
 	$objdatos = new clsSolicitudesPorArea;
+        
+      $nombe=$objdatos->nombrepaciente($idsolicitud,$idexpediente);
+      $row = pg_fetch_array($nombe);
+      $nombrepaciente       = $row['paciente'];
+      $nombreexamen= $row['nombreexamen'];
 	//recuperando los valores generales de la solicitud
 		$consulta=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar);
 		$row = pg_fetch_array($consulta);
 		//obteniedo los datos generales de la solicitud
 		//valores de las consultas
-		
-		
+		//echo $consulta;
+	if (pg_num_rows($consulta)>0){
+            
+          // echo "dentro del if";
+            
+            
+            
+        
                 
         $idsolicitudPadre = $row[0];
         $medico         = $row['medico'];
@@ -120,7 +130,10 @@ function calc_edad()
                 
                 
 		//recuperando los valores del detalle de la solicitud
-		$consultadetalle=$objdatos->DatosDetalleSolicitud($idsolicitud);?>
+		 $consultadetalle=$objdatos->DatosDetalleSolicitud($idsolicitud);
+               // echo $consultadetalle;
+                ?>
+                
 	<?php
                 $imprimir = "<form name='frmDatos'>
                     <table width='85%' border='0' align='center' class='StormyWeatherFormTABLE'>
@@ -250,7 +263,7 @@ pg_free_result($consultadetalle);?>
 				</select> 
 			</td>
 			<td colspan="2" >
-				<input type="button" name="btnProcesar" id="btnProcesar" disabled="disabled"  value="Procesar Muestra" onClick='Procesar()'>
+				<input type="button"  name="btnProcesar" id="btnProcesar" disabled="disabled"  value="Procesar Muestra" onClick='Procesar()'>
 				<input type="button" name="btnRechazar" id="btnRechazar" disabled="disabled" value="Rechazar Muestra" onClick='Rechazar()'>
 			</td>
 		</tr>
@@ -274,8 +287,26 @@ pg_free_result($consultadetalle);?>
 <td>
 	<input type="button" name="btnimprimir" id="btnimprimir"  value="Imprimir" onClick="Imprimir();">
 	<input type="button" name="btnCerrar"  value="Cerrar" onClick="Cerrar()">
-</td>			
-</table>			
+</td>	
+
+
+</table>
+    
+ <?php
+    }else {
+     // echo   $consulta;
+      //          echo "dentro del else";
+            
+     echo '<br><br><br><br><img src="../../../Imagenes/indice.jpeg" valign="middle"  border="0" height="60" width="80" />';
+     
+     echo "<center> <h1> El Resultado Del Examen:<span style='color: #0101DF;'> $nombreexamen</span>, De: <span style='color: #0101DF;'> $nombrepaciente</span>, Ya a Sido Procesado.</h1> ";
+            
+     
+     echo " <button type='submit' class='fg-button ui-state-default ui-corner-all' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' />Cerrar</button></center>";
+         
+     }
+ ?>
+    
 </div>			
 </body>
 </html>

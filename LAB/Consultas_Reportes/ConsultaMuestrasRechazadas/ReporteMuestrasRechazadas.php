@@ -10,6 +10,7 @@ $area=$_SESSION['Idarea'];
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 <link rel="stylesheet" type="text/css" href="../../Webstyle/Themes/Cobalt/Style.css">
+
 <style type="text/css">
 <!--
 @media print{

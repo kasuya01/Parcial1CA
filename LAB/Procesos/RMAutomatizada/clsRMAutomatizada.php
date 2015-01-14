@@ -76,17 +76,35 @@ class clsRMAutomatizada {
     }
     
     
-    function idresultadometodologia($idexmen_metodologia,$id_detalleresultado,$id_empleado) {
+    function idresultadometodologia($idexmen_metodologia,$idsolicitud,$id_empleado) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
             
           $NomAre = "select id from lab_resultado_metodologia  where id_examen_metodologia=$idexmen_metodologia
-					       and id_detalleresultado=$id_detalleresultado
-					       and id_empleado='$id_empleado'";
+					       and id_detallesolicitudestudio=$idsolicitud
+					       and id_empleado='$id_empleado'
+                                               and resultado='PM' ";
             $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
         }
         return $resul;
     }
+    
+    
+    
+      function contaridresultadometodologia($idexmen_metodologia,$idsolicitud,$id_empleado) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            
+        $NomAre = "select count(id) from lab_resultado_metodologia  where id_examen_metodologia=$idexmen_metodologia
+					       and id_detallesolicitudestudio=$idsolicitud
+					       and id_empleado='$id_empleado'
+                                               and resultado='PM' ";
+            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+        }
+        return $resul;
+    }
+    
+    
     
     
     function contarresultadometodologia($idresultadometodologia) {
@@ -107,7 +125,7 @@ class clsRMAutomatizada {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
             
-           $NomAre = "DELETE FROM lab_resultado_metodologia WHERE id=$idresultadometodologia";
+          $NomAre = "DELETE FROM lab_resultado_metodologia WHERE id=$idresultadometodologia";
             $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
         }
         return $resul;
@@ -280,6 +298,35 @@ VALUES($idexmen_metodologia,
             }
         }
     }
+    
+        function nombrepaciente($idsolicitud,$idexpediente)
+           
+  {
+	$con = new ConexionBD;
+   if($con->conectar()==true) 
+   {
+	    $query =  "SELECT  
+ CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido, 
+        t07.apellido_casada) AS paciente,t04.nombre_examen AS nombreexamen
+    FROM sec_detallesolicitudestudios t01 
+    INNER JOIN sec_solicitudestudios  t02 ON (t02.id = t01.idsolicitudestudio) 
+    INNER JOIN lab_conf_examen_estab  t04 ON (t04.id = t01.id_conf_examen_estab) 
+    INNER JOIN mnt_expediente         t06 ON (t06.id = t02.id_expediente) 
+    INNER JOIN mnt_paciente           t07 ON (t07.id = t06.id_paciente) 
+    WHERE t01.id=$idsolicitud 
+    and t06.numero='$idexpediente' ";
+              
+              $result = @pg_query($query);
+	    if (!$result)
+	       return false;
+	    else
+	       return $result;	   
+   }
+ }
+   
+    
+    
+    
 
     //FUNCION PARA DEVOLVER DATOS DE LA SOLICITUD QUE HA DE SER PROCESADA
     //DATOS GENERALES DE LA SOLICITUD
@@ -336,6 +383,8 @@ VALUES($idexmen_metodologia,
                 left  join mnt_empleado 			t24 	on (t09.id_empleado=t24.id) 
                 WHERE t01.id=$idsolicitudP 
                 and t06.numero='$idexpediente' 
+                AND ( (t01.estadodetalle=(select id from ctl_estado_servicio_diagnostico where idestado ='PM') )
+                     or (t01.estadodetalle=(select id from ctl_estado_servicio_diagnostico where idestado ='D') ) )
 
        UNION
 
@@ -384,7 +433,9 @@ VALUES($idexmen_metodologia,
                 left join mnt_snomed_cie10 			t22             on (t22.id=t21.id_snomed)
                 left join sec_signos_vitales  			t23             on (t23.id_historial_clinico=t09.id)
                 left  join mnt_empleado 			t24             on (t09.id_empleado=t24.id) 
-                WHERE t01.id=$idsolicitudP and t06.numero='$idexpediente'";
+                WHERE t01.id=$idsolicitudP and t06.numero='$idexpediente' 
+                AND ( (t01.estadodetalle=(select id from ctl_estado_servicio_diagnostico where idestado ='PM') )
+                     or (t01.estadodetalle=(select id from ctl_estado_servicio_diagnostico where idestado ='D') ) )";
                       
                       
             $result = @pg_query($query);

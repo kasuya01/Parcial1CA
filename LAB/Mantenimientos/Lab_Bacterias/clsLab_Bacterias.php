@@ -82,7 +82,7 @@ function VerificarIntegridad($idbacteria)
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT * FROM lab_bacterias ORDER BY bacteria  LIMIT  $RegistrosAMostrar OFFSET $RegistrosAEmpezar ";
+    $query = "SELECT * FROM lab_bacterias ORDER BY bacteria  LIMIT  $RegistrosAMostrar OFFSET $RegistrosAEmpezar ";
 	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;

@@ -1002,7 +1002,7 @@ order by nombre_examen;";
    function buscarAnterioresPUnica($idsolicitud,$iddetallesolicitud, $idarea){
          $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query= "select nombre_examen, sds.id as iddetallesolicitud, lce.id as idexamen 
+           $query= "select nombre_examen, sds.id as iddetallesolicitud, lce.id as idexamen 
 from sec_solicitudestudios sse
 join sec_detallesolicitudestudios sds 	on (sse.id = sds.idsolicitudestudio)
 join lab_conf_examen_estab lce 		on (lce.id = sds.id_conf_examen_estab)

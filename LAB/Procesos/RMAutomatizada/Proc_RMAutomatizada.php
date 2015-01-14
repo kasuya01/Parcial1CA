@@ -204,7 +204,7 @@ if (isset($_SESSION['Correlativo'])) {
                             </td>
                         </tr>
                         <tr>
-                            <td class="StormyWeatherFieldCaptionTD" style="font-weight:bold"><b>&Aacute;rea de Laboratorio </b></td>
+                            <td class="StormyWeatherFieldCaptionTD" style="font-weight:bold"><b>&Aacute;rea de Laboratorio*</b></td>
                             <td class="StormyWeatherDataTD" colspan="1">
                                 <select id="cmbArea" name="cmbArea" size="1" onChange="BuscarExamen(this.value)" style="width:406px">
                                     <option value="0" >Seleccione un &Aacute;rea</option>
@@ -264,12 +264,22 @@ if (isset($_SESSION['Correlativo'])) {
                                 </select>
                             </td>	
                         </tr>
-                        <tr>
+                       <!-- <tr>
                             <td class="StormyWeatherDataTD" colspan="4" align="right">
                                 <input type="button" name="Submit" value="Buscar Solicitudes" onClick="MostrarMuestrasRechazadas()">
                                 <input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('Proc_RMAutomatizada.php')">		
                             </td>
-                        <tr>
+                        <tr> -->
+                            
+                     <tr>
+                            <td class="StormyWeatherDataTD" colspan="4" align="right">
+                        
+                                <button type='button' align="center" class='btn btn-primary' id='buscarsolicitud' onclick='MostrarMuestrasRechazadas(); '><span class='glyphicon glyphicon-search'></span> Buscar Solicitudes</button>
+                                <button type='button' align="center" class='btn btn-primary' id='nuevabusqueda' onclick="window.location.replace('Proc_RMAutomatizada.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+                            </td>
+                    </tr>
+                            
+                            
                     </table>
                 </form>
             </div>

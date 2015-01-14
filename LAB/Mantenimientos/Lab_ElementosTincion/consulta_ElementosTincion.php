@@ -34,11 +34,22 @@ onsubmit="enviarDatos(); return false">
                     <input name="idElemTin" id="idElemTin" type="hidden" value="<?php echo $idElemTin; ?>" disabled="disabled" />
                 </td>    
 	</tr>
-		<td class="StormyWeatherDataTD" colspan="2" align="right">
+		<!--<td class="StormyWeatherDataTD" colspan="2" align="right">
 			<input type="submit" name="btnActualizar" value="Actualizar" />
 			<input type="button" name="btnNuevo" id="btnNuevo" value="Nuevo" onClick="window.location.replace('MntElementosTincion.php')">
 
-		</td>
+		</td>-->
+                
+                <tr>
+                <td class="StormyWeatherDataTD" colspan="6" align="right">
+                                
+                                <button type='submit' align="center" class='btn btn-primary'  ><span class='glyphicon glyphicon-repeat'></span> Actualizar</button>
+                                <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntElementosTincion.php')"><span></span> Nuevo</button>
+                
+                </td>
+            </tr>  
+                
+                
 	</table>
 </form>
 

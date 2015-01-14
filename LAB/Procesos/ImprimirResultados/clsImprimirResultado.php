@@ -1080,7 +1080,7 @@ function ObtenerIdResultado($idsolicitud,$iddetalle)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-	$query ="SELECT id as idresultado FROM lab_resultados where idsolicitudestudio=$idsolicitud and iddetallesolicitud=$iddetalle";
+	 $query ="SELECT id as idresultado FROM lab_resultados where idsolicitudestudio=$idsolicitud and iddetallesolicitud=$iddetalle";
 	  $result = @pg_query($query);
 	 
      if (!$result)

@@ -192,6 +192,7 @@ function BuscarDatos() {
     idexpediente      = document.getElementById('txtidexpediente').value;
     fechacita         = document.getElementById('txtfechasolicitud').value;
     idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
+    $( "#divResultado" ).empty();
     VerificarExistencia(idexpediente, fechacita, idEstablecimiento, false);
 }
 

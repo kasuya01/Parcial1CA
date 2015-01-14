@@ -355,7 +355,7 @@ $con = new ConexionBD;
 	  $query="SELECT t01.id,
                           t01.nombre
                     FROM ctl_area_atencion t01
-                    WHERE t01.id=1";
+                    WHERE t01.id=1 and t01.nombre='Consulta Externa'";
                   
                   
 	  $dt = pg_query( $query) or die('La consulta fall&oacute;:' . pg_error());
@@ -369,7 +369,7 @@ $con = new ConexionBD;
 	  $query="SELECT t01.id,
                           t01.nombre
                     FROM ctl_area_atencion t01
-                    WHERE t01.id=2";
+                    WHERE t01.id=2 and t01.nombre='Emergencia'";
                   
                   
 	  $dt = pg_query( $query) or die('La consulta fall&oacute;:' . pg_error());
@@ -386,7 +386,7 @@ $con = new ConexionBD;
 	  $query="SELECT t01.id,
                           t01.nombre
                     FROM ctl_area_atencion t01
-                    WHERE t01.id=3";
+                    WHERE t01.id=3 and t01.nombre='Hospitalización'";
                   
                   
 	  $dt = pg_query( $query) or die('La consulta fall&oacute;:' . pg_error());

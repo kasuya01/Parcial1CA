@@ -50,13 +50,19 @@ switch ($opcion)
 		$consulta= $objdatos->consultarpag($RegistrosAEmpezar, $RegistrosAMostrar);
 
 		//muestra los datos consultados en la tabla
-		echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
-		      <tr>
-			   <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
-			 <!--  <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
-			  <!-- <td class='CobaltFieldCaptionTD'> IdCantidad</td> -->
-			   <td class='CobaltFieldCaptionTD'> Cantidad Tincion </td>	   
-		      </tr>";
+		echo "<center>
+                            <div class='table-responsive' style='width: 30%;'>
+                            <table class='table table-hover table-bordered table-condensed table-white'>
+                                <thead>
+                                    <tr>
+                                        <th  aling='center'> Modificar</th>
+                                        <!--   aling='center'> Eliminar</th> -->
+                                        <!-- <th class='CobaltFieldCaptionTD'> IdCantidad</th> -->
+                                        <th > Cantidad Tincion </th>	   
+                                   </tr>
+                    </thead><tbody>
+                    
+                    </center>";
 			while($row = pg_fetch_array($consulta)){
 		echo "<tr>
 			   <td aling='center'> 
@@ -120,14 +126,19 @@ switch ($opcion)
 		$consulta= $objdatos->consultarpagbus($query,$RegistrosAEmpezar, $RegistrosAMostrar);
 
 		//muestra los datos consultados en la tabla
-		echo "<table border = 1 align='center' class='estilotabla'>
-			   <tr>
-			   <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>
-			 <!--  <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td> -->
-			  <!-- <td class='CobaltFieldCaptionTD'> IdCantidad</td> -->
-			   <td class='CobaltFieldCaptionTD'> Cantidad Tincion </td>	   
-		      </tr>";
-
+		echo "<center>
+                            <div class='table-responsive' style='width: 30%;'>
+                            <table class='table table-hover table-bordered table-condensed table-white'>
+                                <thead>
+                                    <tr>
+                                        <th  aling='center'> Modificar</th>
+                                        <!--   aling='center'> Eliminar</th> -->
+                                        <!-- <th class='CobaltFieldCaptionTD'> IdCantidad</th> -->
+                                        <th > Cantidad Tincion </th>	   
+                                   </tr>
+                    </thead><tbody>
+                    
+                    </center>";
 		while($row = pg_fetch_array($consulta)){
 			echo "<tr>
 					<td aling='center'> 

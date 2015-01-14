@@ -75,15 +75,27 @@ $nombrearea=$row['nombrearea'];
 	<tr>
 		<td class="StormyWeatherFieldCaptionTD">Observaci&oacute;n</td>
 		<td class="StormyWeatherDataTD">
-			<textarea name="txtobservacion" cols="60" id="txtobservacion"><?php echo htmlentities($observacion); ?>
+			<textarea name="txtobservacion" cols="60" id="txtobservacion"<span style="color: #0000FF;background-color:#87CEEB;"><?php echo htmlentities($observacion); ?>
 			</textarea>
+                    
 		</td>    
 	</tr>
-	<TR>
+	<!--<tr>
 		<td colspan="2" class="StormyWeatherDataTD" align="right">
 		<input type="submit" name="btnActualizar" value="Actualizar" />
                 <input type="button" name="Submit" value="Nuevo" onClick="window.location.replace('MntObservaciones.php')">    
-	</tr>
+	</tr>-->
+        
+        <tr>
+                <td class="StormyWeatherDataTD" colspan="6" align="right">
+                                
+                                <button type='submit' align="center" class='btn btn-primary'  ><span class='glyphicon glyphicon-repeat'></span> Actualizar</button>
+                                <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntObservaciones.php')"><span></span> Nuevo</button>
+                
+                </td>
+        </tr>  
+        
+        
 	</table>
 </form>
 

@@ -33,11 +33,22 @@ onsubmit="enviarDatos(); return false">
                                                 <input name="idCanTin" id="idCanTin" type="hidden" value="<?php echo $idCanTin; ?>" disabled="disabled" />
                 </td>  
 	</tr>
-	<tr>	
+	<!--<tr>	
 		<td class="StormyWeatherDataTD" colspan="2" align="right">
-			<input type="submit" name="btnActualizar" value="Actualizar" /><input type="button" name="btnNuevo" id="btnNuevo" value="Nuevo" onClick="window.location.replace('MntCantidadTincion.php')">
+			<input type="submit" name="btnActualizar" value="Actualizar" />
+                        <input type="button" name="btnNuevo" id="btnNuevo" value="Nuevo" onClick="window.location.replace('MntCantidadTincion.php')">
 		</td>
-	</tr>
+                
+	</tr>-->
+        <tr>
+                <td class="StormyWeatherDataTD" colspan="6" align="right">
+                                
+                                <button type='submit' align="center" class='btn btn-primary'  ><span class='glyphicon glyphicon-repeat'></span> Actualizar</button>
+                                <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntCantidadTincion.php')"><span></span> Nuevo</button>
+                
+                </td>
+        </tr>  
+        
 </table>
 </form>
 

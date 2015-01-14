@@ -4,8 +4,8 @@ $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea']; 
- $ROOT_PATH = $_SESSION['ROOT_PATH'];
-    $base_url  = $_SESSION['base_url'];
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
  ?>
 
 <html>
@@ -15,7 +15,7 @@ $area=$_SESSION['Idarea'];
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 <title>Recepcion de Examenes en &Aacute;reas de Laboratorio</title>
-<script language="JavaScript" type="text/javascript" src="ajax_ReporteTiporedsultado.js"></script>
+<script language="JavaScript" type="text/javascript" src="ajax_ReporteTiporesultado.js"></script>
 <!--referencias del estilo del calendario-->
 <?php include_once $ROOT_PATH."/public/css.php";?>
 <?php include_once $ROOT_PATH."/public/js.php";?>
@@ -125,9 +125,9 @@ if ($nivel==33){
 				</div>		</td> 
 		</tr> -->
                 <tr>
-                            <td class="StormyWeatherFieldCaptionTD" style="font-weight:bold">Grupo Prueba </td>
+                            <td class="StormyWeatherFieldCaptionTD" style="font-weight:bold">&Aacute;rea de Laboratorio</td>
                             <td class="StormyWeatherDataTD" colspan="1">
-                                <select id="cmbArea" name="cmbArea" class="MailboxSelect" style="width:200px" size="1" onChange="BuscarExamen(this.value)">
+                                <select id="cmbArea" name="cmbArea" class="MailboxSelect" style="width:196px" size="1" onChange="BuscarExamen(this.value)">
                                     
                                     
                                     <?php
@@ -141,10 +141,10 @@ if ($nivel==33){
 				?>
                                 </select>
                             </td>
-                            <td  class="StormyWeatherFieldCaptionTD">Prueba</td>
+                            <td  class="StormyWeatherFieldCaptionTD">Examen</td>
                             <td  class="StormyWeatherDataTD"  style="width:200px">
                                 <div id="divExamen">
-                                    <select name="cmbExamen" id="cmbExamen"   class="MailboxSelect" style="width:200px"> 
+                                    <select name="cmbExamen" id="cmbExamen"   class="MailboxSelect" style="width:196px"> 
                                         <option value="0">--Seleccione Examen--</option>
                                     </select>
                                 </div>
@@ -155,23 +155,28 @@ if ($nivel==33){
                     
                     <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Resultado</td>
                         <td class="StormyWeatherDataTD" width="20%">
-                            <input type="text" size="28" name="txtfechainicio" id="txtfechainicio" class="date"  placeholder="aaaa-mm-dd"/>
+                            <input type="text" size="17" name="txtfechainicio" id="txtfechainicio" class="date"  placeholder="aaaa-mm-dd"/>
                     
                     
                         
                         
                         <td class="StormyWeatherFieldCaptionTD" width="15%" >Hasta</td>
                         <td class="StormyWeatherDataTD" width="20%">
-                            <input type="text" size="28" name="txtfechafin" id="txtfechafin" class="date"  placeholder="aaaa-mm-dd"/>
+                            <input type="text" size="17" name="txtfechafin" id="txtfechafin" class="date"  placeholder="aaaa-mm-dd"/>
 		</tr>
 		<tr>
-			<td  colspan="5" align="right">  
-                            <center>
+			 
+                           
+                                 
+                            <td class="StormyWeatherDataTD" colspan="4" align="right">
+                              
+                            <br>
                                     <!-- <input type="button" id="btnbuscar"  class="fg-button ui-state-default ui-corner-all  value="Buscar" onClick="MostrarBusqueda();"> -->
-                                    <!-- <input type="button" id="btnClear" value="Nueva Busqueda"  onClick="window.location.replace('ReporteExamenesporServicio.php')">	-->
-                                    <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="MostrarBusqueda();">Buscar </button>
-                                    <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="window.location.replace('ReporteTiporedsultado.php')">Nueva Busqueda </button>
-                            </center>  
+                                    <!-- <input type="button" id="btnClear" value="Nueva Busqueda"  onClick="window.location.replace('ImprimirResultado.php')">	-->
+                               <button type='button' align="center" class='btn btn-primary' id='buscarsolicitud' onclick='MostrarBusqueda(); '><span class='glyphicon glyphicon-search'></span> Buscar</button>
+                               <button type='button' align="center" class='btn btn-primary' id='nuevabusqueda' onclick="window.location.replace('ReporteTiporesultado.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+                               <br>
+                           
                         </td>
 		</tr>
 	</table>
@@ -189,22 +194,7 @@ if ($nivel==33){
 <div id="divBusqueda">
 
 </div>
-     <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon-i18n.min.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-es.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/jquery-ui-sliderAccess.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/script.js"></script>  
-   
- <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon-i18n.min.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-es.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/jquery-ui-sliderAccess.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/script.js"></script>    
-       
+ 
 </body>
 
 </html>

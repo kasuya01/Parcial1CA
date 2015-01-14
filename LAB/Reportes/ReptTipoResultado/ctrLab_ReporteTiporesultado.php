@@ -2,14 +2,14 @@
 $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
-include ("clsReporteTiporedsultado.php");
+include ("clsReporteTiporesultado.php");
 
 //variables POST
 $opcion=$_POST['opcion'];
 //$pag =$_POST['pag'];
 
 //creando los objetos de las clases
-$obj = new clsReporteTiporedsultado;
+$obj = new clsReporteTiporesultado;
 
 switch ($opcion) 
 {   
@@ -93,17 +93,22 @@ switch ($opcion)
                     
                     echo $i;
                   }*/
-                  
-                  $imprimir.="<table width='90%' border='1' align='center' >
-                                <tr style='background:#BBBEC9'>
-                                <td class='CobaltFieldCaptionTD' width='5%'><strong>Prueba</strong></td>";
+           
+                
+                
+                  $imprimir.=" 
+                      <table width='90%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                            <thead>  
+                                  <tr>
+                                <th > <strong>Prueba</strong></th>";
 		
                  $consulta=$obj->codigoresultado();
                 while ($consulcodigo=pg_fetch_array($consulta))
                         {
-                             $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>".htmlentities($consulcodigo['resultado'])."</strong></td>";
+                             $imprimir.="<th ><strong>".htmlentities($consulcodigo['resultado'])."</strong></th>";
 			}
-                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>TOTAL</strong></td></tr>";
+                            $imprimir.="<th> <strong>TOTAL</strong></th>
+                                   </tr></thead><tbody>";
 		
            //  echo $query1;
            // $query_search = 
@@ -132,53 +137,87 @@ switch ($opcion)
                       t07.nombrearea,t05.nombre_examen  " ;*/
                           
                 "SELECT $cadena
-                id_examen_metodologia, t03.nombre_examen,t05.nombrearea,count(*) as total 
-                from lab_resultado_metodologia t01 
-                JOIN lab_codigosresultados t02 ON (t02.id=t01.id_codigoresultado)
-                join lab_conf_examen_estab t03 on (t03.id=t01.id_examen_metodologia)
-                JOIN mnt_area_examen_establecimiento t04 ON (t04.id = t03.idexamen) 
-                JOIN ctl_area_servicio_diagnostico t05 ON (t05.id = t04.id_area_servicio_diagnostico) 
+                id_examen_metodologia,  
+                t03.nombre_examen,
+                t05.nombrearea,
+                count(*) as total 
+                from lab_resultado_metodologia          t01 
+                JOIN lab_codigosresultados              t02 ON (t02.id = t01.id_codigoresultado)
+                join lab_conf_examen_estab              t03 on (t03.id = t01.id_examen_metodologia)
+                JOIN mnt_area_examen_establecimiento    t04 ON (t04.id = t03.idexamen) 
+                JOIN ctl_area_servicio_diagnostico      t05 ON (t05.id = t04.id_area_servicio_diagnostico) 
                 where $cond1 
 
                 group by t01.id_examen_metodologia, t03.nombre_examen,t05.nombrearea
                 order by t03.nombre_examen ";
                   
                   
-           $Nombrepdf="Rep_TipodeResultado".'_'.date('d_m_Y__h_i_s A');
+           $Nombrepdf="TipodeResultado".'_'.date('d_m_Y');
 	      	$nombrearchivo = "../../../Reportes/".$Nombrepdf.".pdf";
                 	
                 $nombrearchivoe = "../../../Reportes/".$Nombrepdf.".ods";
-		//$nombrearchivo;
-	       	$punteroarchivo = fopen($nombrearchivo, "w+") 	 or die("El archivo de reporte no pudo crearse");
-                
-                     $punteroarchivo1 = fopen($nombrearchivoe, "w+") 	 or die("El archivo de reporte no pudo crearse");  
+               // $idarea=1;
+                //$idexamen=32;
+                $archivopdf= "../../../Reportes/".$Nombrepdf.".pdf?idarea=".$idarea."&idexamen=".$idexamen."&fechaini=".$fechainicio."&fechafin=".$fechafin;
+		
+
+                //$nombrearchivo;
+	        //$punteroarchivo = fopen($nombrearchivo, "w+") 	 or die("El archivo de reporte no pudo crearse");
+                //  $punteroarchivo1 = fopen($nombrearchivoe, "w+") 	 or die("El archivo de reporte no pudo crearse");  
                 
 		
-echo  "<table width='35%' border='0'  align='center'>
-        <center>
-            <tr>
-                <td colspan='11'><span style='color: #0101DF;'> <h2> RESULTADO DE PRUEBA DE LA BUSQUEDA </h2> </span>
+ /* echo "<table width='85%' border='0'  align='center'>
+         <tr>
+                <td colspan='7' align='center'> <span style='color: #0101DF;'> <h3> RESULTADO DE PRUEBA DE LA BUSQUEDA </h3> </span>
                 </td>
             </tr>
-        </center>
-     </table> "; 
+        
+     </table> "; */
+
+echo "<table width='85%' border='0' align='center'>
+			<tr>
+				<td colspan='7' align='center' ><span style='color: #0101DF;'><h4><strong> RESULTADO DE PRUEBAS DE LA BÚSQUEDA   </strong></h4></span></td>
+			</tr>
+		</table> ";
+       // echo $imprimir;
+
+
                   
-		$consulta=$obj->ListadoSolicitudesPorArea($query);  
+	$consulta=$obj->ListadoSolicitudesPorArea($query);  
 	$NroRegistros= $obj->ContarNumeroDeRegistros($query);
        
    if(pg_num_rows($consulta))
     {     //echo "dentro";            
               
-                
-                echo"   <table  width='100%' hight='10%' align='center'>
-         <tr>
-	       		<td colspan='28' align='center'>
-                            <a href='".$nombrearchivo."'><H5>DESCARGAR REPORTE PDF <img src='../../../Imagenes/icono-pdf.jpg'></H5></a>
-                                <a href='".$nombrearchivoe."'><H5>DESCARGAR REPORTE   </H5></a>
-        </td>
-	           </tr> 
-                   
-     </table>";  
+       
+       
+       
+//    echo '<h1>Resultado de Pruebas por Sexo del Paciente  &emsp;&emsp;&emsp; <a href="/url/preanalitica/solicitud/exporta/pdfOrd_x_genero.php?id_sibasi='.$id_sibasi.'&id_establecimiento='.$id_establecimiento.'&fecha1='.$fecha1.'&fecha2='.$fecha2.'&id_grupoprueba='.$id_grupoprueba.'&id_prueba='.$id_prueba.'&id_sexo='.$id_sexo.'&title=\'PDF\'" target="_blank"><img align="center" src="/default/img/icons/pdf2.png" title="Exportar a PDF" alt="Exportar a PDF" style="padding-right:5px"></a></h1><br/>'; 
+    echo '<table width="100%" border="0" height="10%" align="center " >
+                <tr>
+                      <td width="1000">  </td>  <td colspan="28"   >
+                                <a href="pdfOrd_x_tiporesultado.php?idarea='.$idarea.'&idexamen='.$idexamen.'&fechaini='.$fechainicio.'&fechafin='.$fechafin.'&title=\'PDF\'" target="_blank"><h5></h5><img src="../../../Imagenes/icono-pdf.jpg" height="60" width="60" /></a> 
+                         </td>
+                </tr>
+          </table>';
+//      echo '<table width="100%" height="10%" align="center">'
+//    . '<tr><td colspan="28" align="center">'
+//            . '<a href="pdfOrd_x_tiporesultado.php?title=\'PDF\'" target="_blank"><h5>Descargar Reporte PDF </h5><img src="../../../Imagenes/icono-pdf.jpg"/></a> '
+//            . '</td></tr></table>';
+//      
+    //  echo '<hr>';
+    //  echo '<hr>';
+      
+
+//                echo"   <table  width='100%' hight='10%' align='center'>
+//         <tr>
+//	       		<td colspan='28' align='center'>
+//                            <a href='../../../Reportes/".$Nombrepdf.".pdf?idarea=".$idarea."&idexamen=".$idexamen."&fechaini=".$fechainicio."&fechafin=".$fechafin target=blank'><H5>DESCARGAR REPORTE PDF <img src='../../../Imagenes/icono-pdf.jpg'></H5></a>
+//                                <a href='".$nombrearchivoe."'><H5>DESCARGAR REPORTE   </H5></a>
+//        </td>
+//	           </tr> 
+//                   
+//     </table>";  
                 
                 
                 
@@ -202,7 +241,7 @@ echo  "<table width='35%' border='0'  align='center'>
                         $codi='codigo'.$si;
                         $imprimir.="<td width='10%'>".$row[$codi]."</td>";
                     }
-                                            $imprimir.="<td width='14%'><strong> <span style='color: #0101DF;'>".$row['total']."</strong></td>
+                                            $imprimir.="<td width='14%'><strong> <span style='color: ##0101DF ;'>".$row['total']."</strong></td>
                                 </tr>";
 	     }
                 
@@ -217,11 +256,11 @@ $imprimir.="</table>";
 $imprimir.="<br>";
 $imprimir.="<br>";
 //CIERRE DE ARCHIVO pdf
-	    fwrite($punteroarchivo,$imprimir);
+	   /* fwrite($punteroarchivo,$imprimir);
 	    fclose($punteroarchivo);
 		
 	       fwrite($punteroarchivo1,$imprimir);
-	    fclose($punteroarchivo1);
+	    fclose($punteroarchivo1);*/
 		
 
 echo $imprimir;
@@ -262,7 +301,7 @@ case 3://LLENANDO COMBO subservicio
         
         $dtMed=$obj->ExamenesPorArea($idarea, $lugar);
 
-        $rslts = '<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:200px">';
+        $rslts = '<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:196px">';
         $rslts .='<option value="0">--Seleccione Examen--</option>';
         while ($rows =pg_fetch_array($dtMed)){
 			$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
@@ -285,3 +324,6 @@ case 3://LLENANDO COMBO subservicio
 		//	// "../ReportesExcel/".$NombreExcel.".xls";
 	 //$punteroarchivo = fopen($nombrearchivo, "w+") or die.("El archivo de reporte no pudo crearse");
  }
+ ?>
+
+ 

@@ -34,6 +34,8 @@ $nomtipo=$row[2];
 <script type="text/javascript" src="../../../calendarstructure/calendar.js"></script>
 <script type="text/javascript" src="../../../calendarstructure/calendar-es.js"></script>
 <script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
+<?php include_once $ROOT_PATH.'/public/css.php';?>
+<?php include_once $ROOT_PATH.'/public/js.php';?>
 <script language="JavaScript" type="text/javascript">
 function MostrarBusqueda()
 {
@@ -196,13 +198,19 @@ if ($nivel==33){
 			</td> 
 		</tr>
 		<tr>
-			<td class="StormyWeatherFieldCaptionTD" width="15%">Fecha Inicio </td>
-			<td  class="StormyWeatherDataTD" width="18%">
-				<input type="text" name="txtfechainicio" id="txtfechainicio" />
-				<input name="button" type="button" id="trigger"  value="...">dd/mm/aaaa</td>
-			<td class="StormyWeatherFieldCaptionTD" width="15%">Fecha Final </td>
-			<td class="StormyWeatherDataTD" width="18%"><input type="text" name="txtfechafin" id="txtfechafin" />
-				<input name="button2" type="button" id="trigger2" value="...">dd/mm/dddd</td>
+			
+                        
+                        <td class="StormyWeatherFieldCaptionTD" width="19%">Fecha  Inicio</td>
+		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="28" name="txtfechainicio" id="txtfechainicio" class="date"  placeholder="aaaa-mm-dd" />
+		</td>
+                        
+                
+                            <td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Final</td>
+		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="28"  name="txtfechafin" id="txtfechafin" class="date"  placeholder="aaaa-mm-dd" />
+		</td>
+                      
+                        
+                        
 		</tr>
 		<tr>
 			<td class="StormyWeatherDataTD" colspan="5" align="right"><input type="button" id="btnbuscar" value="Buscar" onClick="MostrarBusqueda();">
@@ -211,7 +219,7 @@ if ($nivel==33){
 		</tr>
 	</table>
 </form>
-<script type="text/javascript">
+<!--<script type="text/javascript">
 	Calendar.setup(
 	{
 	    inputField  : "txtfechainicio",         // el ID texto 
@@ -226,7 +234,7 @@ if ($nivel==33){
 	      button      : "trigger2"       // el ID del boton			  	  
 	}
 	);
-</script>
+</script> -->
 </div>
 <div id="divBusqueda">
 

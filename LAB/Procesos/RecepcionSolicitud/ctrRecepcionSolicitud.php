@@ -61,8 +61,10 @@ switch ($opcion) {
         $idexpediente      = $_POST['idexpediente'];
         $fechacita         = $_POST['fechacita'];
         $idEstablecimiento = $_POST['idEstablecimiento'];
-        $Nfecha     = explode("/", $fechacita);
-        $Nfechacita = $Nfecha[2] . "-" . $Nfecha[1] . "-" . $Nfecha[0];
+       //// echo 'fechaCita:'.$fechacita;
+        //$Nfecha     = explode("/", $fechacita);
+        //$Nfechacita = $Nfecha[2] . "-" . $Nfecha[1] . "-" . $Nfecha[0];
+        $Nfechacita =$fechacita;
 
         if ($con->conectar() == true) {
             $query = "SELECT COUNT(t01.id_solicitudestudios) AS numreg, (CASE WHEN t10.id is null THEN false ELSE true END) referido
@@ -76,6 +78,7 @@ switch ($opcion) {
                       WHERE t01.fecha = '$Nfechacita' AND (t04.numero = '$idexpediente' OR t11.numero = '$idexpediente') AND t02.id_establecimiento = $lugar";
 
             $numreg = pg_fetch_array(pg_query($query.' GROUP BY t10.id'));
+            echo $query;
             
             if ($numreg[0] == 1) {//verificando existencia de datos para los parametros de la busqueda no referido
                 if ($numreg['referido']=='f'){
@@ -123,6 +126,7 @@ switch ($opcion) {
                     }
                 }
             }
+            echo 'numreg: '.$numreg[0];
 
             if ($numreg[0] > 1) {
                 $query_estado = "SELECT CASE t04.idestado
@@ -143,7 +147,6 @@ switch ($opcion) {
                 $result = @pg_query($query_estado);
                 $row = pg_fetch_array($result);
                 $estadosolicitud = $row[0];
-
                 if ($estadosolicitud != '') {
                     if ($estadosolicitud == "Digitada") { //Mostrar datos de la solicitud
                         echo 'D';

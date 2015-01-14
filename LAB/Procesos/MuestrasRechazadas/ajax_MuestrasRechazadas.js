@@ -129,7 +129,8 @@ function LlenarComboExamen(idarea)
 }
 //FUNCION PARA VERIFICAR SI EXISTEN  DATOS DE LA SOLICITUD
 function MostrarDatos(posicion)
-{
+{               
+                
 		idexpediente=document.getElementById('idexpediente['+posicion+']').value;
 		idsolicitud=document.getElementById('idsolicitud['+posicion+']').value;
                 //idsolicitud1=document.getElementById('idsolicitud1['+posicion+']').value;
@@ -209,6 +210,8 @@ function CambiarEstadoDetalleSolicitud1(estado,idexamen,text,fechasolicitud,idso
 {
       //alert(idexamen);
    		idsolicitud=document.frmDatos.idsolicitud.value;
+                observacioon=document.frmDatos.observacioon.value;
+                
                // idsolicitud1=document.frmDatos.idsolicitud1.value;
 		idexpediente=document.frmDatos.idexpediente.value;
 		fechasolicitud=document.frmDatos.fechasolicitud.value;
@@ -219,7 +222,7 @@ function CambiarEstadoDetalleSolicitud1(estado,idexamen,text,fechasolicitud,idso
                 textAtea=text;
 		//idexamen=document.frmDatos.// puse esto
 		opcion=3;
-		//alert(idsolicitud);
+		//alert(observacioon+"eee");
                 
 		idsolicitud=trim(idsolicitud);
                // idsolicitud1=trim(idsolicitud1);
@@ -240,7 +243,7 @@ function CambiarEstadoDetalleSolicitud1(estado,idexamen,text,fechasolicitud,idso
 		//muy importante este encabezado ya que hacemos uso de un formulario
 		ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores
-		ajax.send("idexpediente="+idexpediente+"&idarea="+idarea+"&fechasolicitud="+fechasolicitud+"&idsolicitud="+idsolicitud+"&opcion="+opcion+"&estado="+estado+"&idexamen="+idexamen+"&fecharecep="+fecharecep+"&pag="+pag+"&observacion="+textAtea+"&idsolicitudPadre="+id);	
+		ajax.send("idexpediente="+idexpediente+"&idarea="+idarea+"&fechasolicitud="+fechasolicitud+"&idsolicitud="+idsolicitud+"&opcion="+opcion+"&estado="+estado+"&idexamen="+idexamen+"&fecharecep="+fecharecep+"&pag="+pag+"&observacioon="+observacioon+"&idsolicitudPadre="+id);	
 		ajax.onreadystatechange=function() 
 		{
 			if (ajax.readyState==4) 
@@ -251,6 +254,9 @@ function CambiarEstadoDetalleSolicitud1(estado,idexamen,text,fechasolicitud,idso
 					//document.getElementById('divCambioEstado').innerHTML = ajax.responseText;	
 					alert(ajax.responseText);	
                                          window.close();
+                                         
+                                         
+                                         //acaaa
 				}
 			}
 	   }
@@ -392,7 +398,7 @@ function CargarDatosFormulario(idexpediente,idsolicitud,idarea,idexamen,subservi
 {
 	ajax=objetoAjax();
 	opcion=2;
-	alert(subservicio);
+	//alert(subservicio);
 	ajax.open("POST", "ctrMuestrasRechazadas.php",true);
 		  //muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
@@ -414,6 +420,9 @@ function CargarDatosFormulario1(idexpediente,idsolicitud,idarea,idexamen)
 {
 	ajax=objetoAjax();
 	opcion=2;
+        //aca.
+        
+        
 	//fechasolicitud="";
 	//fecharecep="";
 	//estado="";
@@ -544,7 +553,7 @@ function calcular_edad(fecha){
 
 
 function MuestrasRechazadas()
-{
+{  
 	ajax=objetoAjax();
 	opcion=1;
 	idarea=document.getElementById('cmbArea').value;
@@ -562,6 +571,7 @@ function MuestrasRechazadas()
 	//idsolicitud="";
 	//estado="";
 	//fechasolicitud="";
+       // alert(fecharecep);
 	
 	//idexamen="";
 	ajax.open("POST", "ctrMuestrasRechazadas.php",true);
