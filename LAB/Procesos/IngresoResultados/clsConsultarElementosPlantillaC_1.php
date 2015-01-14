@@ -25,12 +25,6 @@ function Nombre_Establecimiento($lugar){
 function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$responsable,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado)
 {
    $con = new ConexionBD;
-   if ($resultado=='P')
-       $NomResultado='Positivo';
-   else if($resultado=='N')
-       $NomResultado='Negativo';
-   else if($resultado=='O')
-       $NomResultado='---';
    //echo $resultado;
     if($con->conectar()==true) 
     {
@@ -38,8 +32,8 @@ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$obs
 	       (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
                observacion,resultado,idempleado,idusuarioreg,fechahorareg,idestablecimiento,id_observacion,fecha_resultado) 
 	       VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,
-               '$observacion','$NomResultado',$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,$idobservacion,'$fecharesultado')RETURNING id";
-       $query;
+               '$observacion','$resultado',$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,$idobservacion,'$fecharesultado')RETURNING id";
+       //echo $query;
                 $result = pg_query($query);
                 
                 if($row = pg_fetch_array($result)) {
@@ -111,13 +105,13 @@ function insertar_detalle($idresultado,$ibacteria,$idtarjeta,$cantidad,$lugar)
  }
  
 //INSERTAR LOS RESULTADOS DE LAS TARJETAS
-function insertar_resultadoantibioticos($iddetalleresultado,$idantibiotico,$resultado,$valor,$lugar)
+function insertar_resultadoantibioticos($iddetalleresultado,$idantibiotico,$resultado,$lugar)
  {
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "INSERT INTO lab_resultadosportarjeta(iddetalleresultado,idantibiotico,id_posible_resultado,valor,idestablecimiento) 
-	       VALUES($iddetalleresultado,$idantibiotico,$valor,'$resultado',$lugar)";
+    $query = "INSERT INTO lab_resultadosportarjeta(iddetalleresultado,idantibiotico,resultado,idestablecimiento) 
+			  VALUES($iddetalleresultado,$idantibiotico,'$resultado',$lugar)";
      $result = pg_query($query);
 	//echo $query; 
      if (!$result)
@@ -181,7 +175,7 @@ function DatosEmpleado($idempleado,$lugar)
 $con = new ConexionBD;
    if($con->conectar()==true)
    {
-   $query = "SELECT nombreempleado as empleado 
+     $query = "SELECT CONCAT_WS(' ',nombre,NULL,apellido) as empleado 
                FROM mnt_empleado WHERE id=$idempleado AND id_establecimiento=$lugar";
      $result = pg_query($query);
        $no="no existe";
@@ -336,58 +330,6 @@ function LeerDatos($idexamen)
     }
 }
 
-function contar_resultados($idsolicitud,$idexamen){
-     $con = new ConexionBD;
-    if($con->conectar()==true)
-   {
-        $query = "SELECT lab_resultados.id as idresultado,resultado,observacion,nombreempleado 
-               FROM lab_resultados 
-               INNER JOIN mnt_empleado ON mnt_empleado.id= lab_resultados.idempleado
-               WHERE idsolicitudestudio=$idsolicitud AND idexamen=$idexamen order by lab_resultados.id asc ";
-      $result = pg_query($query);
-     if (!$result)
-       return false;
-     else
-       return $result;
-    }
-    
-}
-
-function obtener_detalle_resultado($idresulatado){
-    
-   $con = new ConexionBD;
-   if($con->conectar()==true)
-   {
-     $query = "SELECT lab_detalleresultado.id as iddetalleresultado,idtarjeta,nombretarjeta,idbacteria,bacteria,cantidad 
-               FROM lab_detalleresultado 
-               INNER JOIN lab_tarjetasvitek ON  lab_tarjetasvitek.id=lab_detalleresultado.idtarjeta
-               INNER JOIN lab_bacterias ON lab_bacterias.id= lab_detalleresultado.idbacteria
-               WHERE idresultado=$idresulatado order by lab_detalleresultado.id asc";
-     $result = pg_query($query);
-     if (!$result)
-       return false;
-     else
-       return $result;
-   }
-}
-
-function obtener_resultadoxtarjeta($iddetalleresultado){
-    $con = new ConexionBD;
-   if($con->conectar()==true)
-   {
-     $query = "SELECT lab_resultadosportarjeta.idantibiotico,antibiotico,resultado,valor,id_posible_resultado,posible_resultado 
-FROM lab_resultadosportarjeta 
-INNER JOIN lab_antibioticos ON lab_antibioticos.id=lab_resultadosportarjeta.idantibiotico
-INNER JOIN lab_posible_resultado ON lab_posible_resultado.id=lab_resultadosportarjeta.id_posible_resultado 
-WHERE iddetalleresultado=$iddetalleresultado order by lab_resultadosportarjeta.id asc";
-     $result = pg_query($query);
-     if (!$result)
-       return false;
-     else
-       return $result;
-    
-}
-}
 //FUNCION PARA OBTENER ANTIBIOTICOS DE UNA TARJETA
  function LeerAntibioticos($idtarjeta)
  {
@@ -406,38 +348,6 @@ WHERE iddetalleresultado=$iddetalleresultado order by lab_resultadosportarjeta.i
     }
   }
 
- function consultar_resultados($idantibiotico){
-     $con = new ConexionBD;
-    if($con->conectar()==true)
-    {
-      $query = "SELECT lab_posible_resultado.id,posible_resultado,descripcion  
-                FROM lab_antibiotico_posible_resultado 
-                INNER JOIN lab_posible_resultado ON lab_posible_resultado.id=lab_antibiotico_posible_resultado.id_posible_resultado
-                WHERE lab_antibiotico_posible_resultado.habilitado=TRUE AND lab_posible_resultado.habilitado=TRUE 
-                AND id_antibiotico=$idantibiotico ";  
-    $result = pg_query($query);
-     if (!$result)
-       return false;
-     else
-       return $result;
-    }  
-     
- }
- 
- function nombre_resultado($idresultado){
-      $con = new ConexionBD;
-    if($con->conectar()==true)
-    {
-    $query = "SELECT posible_resultado,descripcion FROM lab_posible_resultado WHERE id=$idresultado";
-       $result = pg_query($query);
-      if (!$result)
-       return false;
-     else
-       return $result;
-    }  
-     
- }
- 
 //FUNCION PARA LEER LAS BACTERIAS REGISTRADAS
  function LeerBacterias()
  {

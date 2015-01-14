@@ -644,7 +644,7 @@ function MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar)
    if($con->conectar()==true)
    {
         $query ="SELECT 
-                    TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
+                    TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY HH12:MI:SS') AS fecharecepcion,
                     t06.numero AS idnumeroexp,
                     t01.id as iddetallesolicitud,
                     t02.id as idsolicitudestudio,
@@ -1059,16 +1059,10 @@ function MostrarElementosAgregados($idresultado)
 $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query =/*"SELECT ElementoTincion,CantidadTincion 
-	     FROM lab_detalleresultado 
-	     INNER JOIN lab_elementostincion  ON lab_detalleresultado.IdElemento=lab_elementostincion.IdElementosTincion
- 	     INNER JOIN lab_cantidadestincion  ON lab_cantidadestincion.IdCantidadesTincion=lab_detalleresultado.IdCantidad
-         WHERE IdResultado=$idresultado" ;*/
-    
-            "SELECT idelemento,cantidad,lab_elementos.elemento,
+    $query ="SELECT idelemento,cantidad,lab_elementostincion.elementotincion,
             lab_cantidadestincion.cantidadtincion
 	    FROM lab_detalleresultado 
-	    INNER JOIN lab_elementos   ON lab_detalleresultado.idelemento=lab_elementos.id
+	    INNER JOIN lab_elementostincion  ON lab_detalleresultado.id_elementotincion=lab_elementostincion.id
  	    INNER JOIN lab_cantidadestincion  ON lab_cantidadestincion.id=lab_detalleresultado.idcantidad
          WHERE lab_detalleresultado.idresultado=$idresultado";
     
@@ -1142,7 +1136,7 @@ function ObtenerCantidadResultados($idsolicitud,$iddetalle)
 {
  $con = new ConexionBD;
    if($con->conectar()==true)
-   {  $query = "SELECT Count(*) FROM lab_resultados WHERE idsolicitudestudio=$idsolicitud AND 		
+   { echo $query = "SELECT Count(*) FROM lab_resultados WHERE idsolicitudestudio=$idsolicitud AND 		
 		iddetallesolicitud=$iddetalle";
     $result = @pg_query($query);
      if (!$result)
@@ -1187,7 +1181,7 @@ function ObtenerResultado($idsolicitud,$iddetalle)
 {
  $con = new ConexionBD;
    if($con->conectar()==true)
-   {  $query = "SELECT resultado FROM lab_resultados WHERE idsolicitudestudio=$idsolicitud AND 		
+   { $query = "SELECT resultado FROM lab_resultados WHERE idsolicitudestudio=$idsolicitud AND 		
 		iddetallesolicitud=$iddetalle";
     $result = @pg_query($query);
      if (!$result)
@@ -1201,7 +1195,7 @@ function ObtenerResultadoxId($idsolicitud,$iddetalle)
 {
  $con = new ConexionBD;
    if($con->conectar()==true)
-   {  $query = "SELECT id,resultado FROM lab_resultados WHERE idsolicitudestudio=$idsolicitud AND 		
+   { $query = "SELECT id,resultado FROM lab_resultados WHERE idsolicitudestudio=$idsolicitud AND 		
 		iddetallesolicitud=$iddetalle";
     $result = @pg_query($query);
      if (!$result)
@@ -1230,21 +1224,13 @@ function ObtenerResultadoxId($idsolicitud,$iddetalle)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = /*"SELECT lab_resultados.IdResultado, 						 	 
-	lab_detalleresultado.IdDetalleResultado,lab_resultadosportarjeta.IdAntibiotico,lab_antibioticos.Antibiotico,
-	lab_resultadosportarjeta.Resultado
-	FROM lab_resultados 
-	INNER JOIN lab_detalleresultado ON lab_resultados.IdResultado=lab_detalleresultado.IdResultado
-	INNER JOIN lab_resultadosportarjeta ON lab_detalleresultado.IdDetalleResultado=lab_resultadosportarjeta.IdDetalleResultado
-	INNER JOIN lab_antibioticos ON lab_resultadosportarjeta.IdAntibiotico=lab_antibioticos.IdAntibiotico
-	WHERE IdSolicitudEstudio=$idsolicitud and IdDetalleSolicitud=$iddetalle";*/
-     
-            "select t04.antibiotico as antibiotico, t03.resultado as resultado  
-	from lab_resultados		     t01
-	left join lab_detalleresultado       t02	on (t02.idresultado=t01.id)
-	left join lab_resultadosportarjeta   t03	on (t03.iddetalleresultado=t02.id)
-	left join lab_antibioticos	     t04	on (t04.id=t03.idantibiotico)
-	WHERE idsolicitudestudio=$idsolicitud and iddetallesolicitud=$iddetalle";
+    $query = "SELECT idantibiotico,antibiotico,valor,lab_resultadosportarjeta.id_posible_resultado,posible_resultado
+              FROM lab_resultados 
+              LEFT JOIN lab_detalleresultado ON lab_detalleresultado.idresultado=lab_resultados.id 
+              LEFT JOIN lab_resultadosportarjeta ON lab_resultadosportarjeta.iddetalleresultado=lab_detalleresultado.id 
+              INNER JOIN lab_posible_resultado ON lab_posible_resultado.id=lab_resultadosportarjeta.id_posible_resultado
+              LEFT JOIN lab_antibioticos ON lab_antibioticos.id=lab_resultadosportarjeta.idantibiotico
+	      WHERE idsolicitudestudio=$idsolicitud and iddetallesolicitud=$iddetalle";
      
      $result = @pg_query($query);
      if (!$result)
@@ -1254,12 +1240,66 @@ function ObtenerResultadoxId($idsolicitud,$iddetalle)
     }
   }
 
+  function contar_resultados($idsolicitud,$idexamen){
+     $con = new ConexionBD;
+    if($con->conectar()==true)
+   {
+        $query = "SELECT lab_resultados.id as idresultado,resultado,observacion,nombreempleado 
+               FROM lab_resultados 
+               INNER JOIN mnt_empleado ON mnt_empleado.id= lab_resultados.idempleado
+               WHERE idsolicitudestudio=$idsolicitud AND idexamen=$idexamen order by lab_resultados.id asc ";
+      $result = pg_query($query);
+     if (!$result)
+       return false;
+     else
+       return $result;
+    }
+    
+}
+
+function obtener_detalle_resultado($idresulatado){
+    
+   $con = new ConexionBD;
+   if($con->conectar()==true)
+   {
+     $query = "SELECT lab_detalleresultado.id as iddetalleresultado,idtarjeta,nombretarjeta,idbacteria,bacteria,cantidad 
+               FROM lab_detalleresultado 
+               INNER JOIN lab_tarjetasvitek ON  lab_tarjetasvitek.id=lab_detalleresultado.idtarjeta
+               INNER JOIN lab_bacterias ON lab_bacterias.id= lab_detalleresultado.idbacteria
+               WHERE idresultado=$idresulatado order by lab_detalleresultado.id asc";
+     $result = pg_query($query);
+     if (!$result)
+       return false;
+     else
+       return $result;
+   }
+}
+
+function obtener_resultadoxtarjeta($iddetalleresultado){
+    $con = new ConexionBD;
+   if($con->conectar()==true)
+   {
+     $query = "SELECT lab_resultadosportarjeta.idantibiotico,antibiotico,resultado,valor,id_posible_resultado,posible_resultado 
+FROM lab_resultadosportarjeta 
+INNER JOIN lab_antibioticos ON lab_antibioticos.id=lab_resultadosportarjeta.idantibiotico
+INNER JOIN lab_posible_resultado ON lab_posible_resultado.id=lab_resultadosportarjeta.id_posible_resultado 
+WHERE iddetalleresultado=$iddetalleresultado order by lab_resultadosportarjeta.id asc";
+     $result = pg_query($query);
+     if (!$result)
+       return false;
+     else
+       return $result;
+    
+}
+}
+  
+  
   function LeerResultadosAntibioticosxId($idsolicitud,$iddetalle)
  {
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = /*"	SELECT lab_resultados.IdResultado, 						 	 
+     echo $query = /*"	SELECT lab_resultados.IdResultado, 						 	 
 	lab_detalleresultado.IdDetalleResultado, lab_detalleresultado.IdTarjeta,lab_tarjetasvitek.NombreTarjeta,lab_detalleresultado.IdBacteria,
 	lab_bacterias.Bacteria,lab_resultadosportarjeta.IdAntibiotico,lab_antibioticos.Antibiotico,
 	lab_resultadosportarjeta.Resultado, mnt_empleados.NombreEmpleado
@@ -1293,6 +1333,20 @@ function ObtenerResultadoxId($idsolicitud,$iddetalle)
        return $result;
     }
   }
+  
+  function nombre_resultado($idresultado){
+      $con = new ConexionBD;
+    if($con->conectar()==true)
+    {
+    $query = "SELECT posible_resultado,descripcion FROM lab_posible_resultado WHERE id=$idresultado";
+       $result = pg_query($query);
+      if (!$result)
+       return false;
+     else
+       return $result;
+    }  
+     
+ }
 //FUNCION PARA MOSTRAR DATOS RESULTADO DE PLANTILLA C POSITIVO
 function DatosResultadoPlanCPositivo($idsolicitud,$iddetalle)
 {

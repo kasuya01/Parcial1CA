@@ -24,6 +24,7 @@ table thead {
 
 .table-bordered.no-v-border > tbody > tr > td {
     border: 0 !important;
+    
 }
 
 .search-label {

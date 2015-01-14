@@ -71,7 +71,7 @@ function ValidacionElemento($idresultado,$idelemento)
    if($con->conectar()==true)
    {	$query="SELECT COUNT(idresultado) 
                 FROM lab_detalleresultado 
-                WHERE idresultado=$idresultado AND idelemento=$idelemento";	
+                WHERE idresultado=$idresultado AND id_elementotincion=$idelemento";	
         $result = pg_query($query);
 	
         if (!$result)
@@ -176,7 +176,7 @@ function insertar_elemento($ultimo,$idelemento,$idcantidad,$lugar)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-       $query = "INSERT INTO lab_detalleresultado(idresultado,idelemento,idcantidad,idestablecimiento) 
+       $query = "INSERT INTO lab_detalleresultado(idresultado,id_elementotincion,idcantidad,idestablecimiento) 
 	      VALUES($ultimo,$idelemento,$idcantidad,$lugar)";
      $result = pg_query($query);
 	 
@@ -195,7 +195,7 @@ $con = new ConexionBD;
    {
    $query ="SELECT elementotincion,cantidadTincion 
                  FROM lab_detalleresultado 
-                 INNER JOIN lab_elementostincion  ON lab_detalleresultado.idelemento=lab_elementostincion.id
+                 INNER JOIN lab_elementostincion  ON lab_detalleresultado.id_elementotincion=lab_elementostincion.id
                  INNER JOIN lab_cantidadestincion ON lab_cantidadestincion.id=lab_detalleresultado.idcantidad 
                  WHERE idresultado=$idresultado" ;
          $result = pg_query($query);

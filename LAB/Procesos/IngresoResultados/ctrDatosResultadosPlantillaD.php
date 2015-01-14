@@ -44,27 +44,26 @@ switch ($opcion)
 	//consultando los resultados ingresados
 	$idresultado=$ultimo;
 	$consulta=$obj->MostrarElementosAgregados($idresultado);
-	$resultado="
-				<input name='oresultado' type='hidden' id='oresultado' value='".$ultimo."'>
-				<table aling='center' border='1'>
-				<tr class='CobaltButton'>
+	$resultado="<input name='oresultado' type='hidden' id='oresultado' value='".$ultimo."'>
+                        <table aling='center' border='1'>
+                            <tr class='CobaltButton'>
 				<td aling='center' >Eliminar</td>
 				<td aling='center' >Elemento</td>
 				<td aling='center' >Cantidad</td>
-				</tr>
-				<tr>";
-	while($row = pg_fetch_array($consulta)){
-			$resultado.= "<tr>
-							<td aling ='center'>
-							<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
-							onclick=\"EliminarElemento('".$row[0]."')\"> </td>
-							<td> $row[0] </td>
-							<td> $row[1] </td>
-							</tr>";
-				}
+                            </tr>
+                            <tr>";
+	   while($row = pg_fetch_array($consulta)){
+              $resultado.= "<tr>
+				<td aling ='center'>
+                                    <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
+                                    onclick=\"EliminarElemento('".$row[0]."')\"> </td>
+				<td> $row[0] </td>
+				<td> $row[1] </td>
+                            </tr>";
+		}
                                  $resultado.= "  <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
                                                 <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
-	$resultado.="</table>";
+	   $resultado.="</table>";
 
 	echo $resultado;
 	//$obj->CambiarEstadoSolicitud($idsolicitud);

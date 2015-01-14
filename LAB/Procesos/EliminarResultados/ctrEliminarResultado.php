@@ -92,7 +92,7 @@ switch ($opcion)
                     $condf2 = substr($cond2, 0, strlen($cond2) - 3);
 		}
                // echo "COND1=".$condf1;
-	 $query = "WITH tbl_servicio AS (
+            $query = "WITH tbl_servicio AS (
                     SELECT t02.id,
                         CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
@@ -134,7 +134,7 @@ switch ($opcion)
                 INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud) 
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo) 
                 INNER JOIN tbl_servicio t20 ON (t20.id = t10.id AND t20.servicio IS NOT NULL) 
-                WHERE t16.idestado = 'P' OR t16.idestado = 'C' AND t02.id_establecimiento = $lugar AND $condf1
+                WHERE (t16.idestado = 'P' OR t16.idestado = 'C') AND t02.id_establecimiento = $lugar AND $condf1
         
                 UNION
 
@@ -160,7 +160,7 @@ switch ($opcion)
                 INNER JOIN ctl_estado_servicio_diagnostico t16 ON (t16.id = t02.estado) 
                 INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud) 
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo) 
-                WHERE t16.idestado = 'P' OR t16.idestado = 'C' AND t02.id_establecimiento = $lugar AND $condf2";
+                WHERE (t16.idestado = 'P' OR t16.idestado = 'C') AND t02.id_establecimiento = $lugar AND $condf2";
 		
 		$consulta=$objdatos->BuscarSolicitudesPaciente($query); 
 		$NroRegistros= $objdatos->NumeroDeRegistros($query);				
@@ -420,7 +420,7 @@ switch ($opcion)
 					            $TipoResultado=$result['resultado'];
 								//echo " tipo=".$TipoResultado;
 								switch($TipoResultado){
-								case 'P':
+								case 'Positivo':
 						//	 while($result = mysql_fetch_array($r)){
 									$idresultado=$result['id'];
 									$det=$objdatos->ObtenerIdDetalleRes($idresultado);

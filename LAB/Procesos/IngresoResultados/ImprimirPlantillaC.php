@@ -8,6 +8,7 @@ $obj = new clsConsultarElementosPlantillaC;
 
 $idsolicitud=$_GET['var1'];
 $idexamen=$_GET['var2'];
+//echo "sol= ".$idsolicitud."Exa= ".$idexamen;
 $resultado=$_GET['var3'];
 $responsable=$_GET['var4'];
 $procedencia=$_GET['var5'];
@@ -20,7 +21,9 @@ $cantidad=$_GET['var11'];
 $idtarjeta=$_GET['var12'];
 $nombrearea=$_GET['var13'];
 $establecimiento=$_GET['var14'];
+ //$valores_interpretacion=$_GET['var15'];
 $idobservacion=$_GET['var15'];
+$valores_interpretacion=$_GET['var16'];
 //echo $idobservacion;
 $Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
 $row_estab = pg_fetch_array($Consulta_Estab);
@@ -71,25 +74,29 @@ function calc_edad()
 	$row_generales= pg_fetch_array($datos_generales);
 	$consulta_datos=$obj->LeerDatos($idexamen);
 	$row_area= pg_fetch_array($consulta_datos);
-	$bateria=$obj->NombreBacteria($idbacteria);
+	
+        $bateria=$obj->NombreBacteria($idbacteria);
 	$row_nombrebacteria= pg_fetch_array($bateria);
 	$consulta=$obj->LeerAntibioticos($idtarjeta);
 	$vector_valores=EXPLODE("/",$valores_antibioticos);
         $vector_antibioticos=EXPLODE("/",$codigos_antibioticos);
+        
+       // print_r($valores_interpretacion);
+        
+       // $vector_interpretacion=EXPLODE("/",$valores_interpretacion);
 	//$obj = new clsConsultarElementosPlantillaC;
         $tamano_vector=count($vector_valores);
 	$tamano_vectoantibiotico=count($vector_antibioticos);
+       // $tamano_vectorinterpretacion=count($vector_interpretacion);
+        
+        //echo $tamano_vectorinterpretacion;
         $FechaRes=$obj->ObtenerFechaResultado($idsolicitud,$idexamen,$lugar);
 	$row_fecha=pg_fetch_array($FechaRes);
-
-
+        
+         
         $posele=0;
         $ban=0;
-	//$datos_empleado=$obj->DatosEmpleado($idempleado);
-	//$row_empleado = mysql_fetch_array($datos_empleado);
-	//$datos_observacion=$obj->LeerObservacion($observacion);
-	//$row_observacion = mysql_fetch_array($datos_observacion);
-    $nombre=$row_area['nombrearea'];
+	$nombre=$row_area['nombrearea'];
 ?>
 	<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE' cellspacing="0">
             <tr>
@@ -105,7 +112,7 @@ function calc_edad()
 		<td colspan='6'>&nbsp;</td>
             </tr>
             <tr>
-		<td colspan='1' class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
+		<td colspan='1' class="Estilo5"><strong>Est. Solicitante:</strong></td>
 		<td colspan='2' class="Estilo6"><?php echo $row_generales['estabext']?></td>
 		<td colspan='1' class="Estilo5"><strong>Fecha Resultado:</strong></td>
 	  	<td colspan='2' class="Estilo6" colspan='1'><?php echo $row_fecha['fecharesultado']?></td>
@@ -138,71 +145,92 @@ function calc_edad()
 		<td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
 	  	<td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['nombre_examen']);?></td>
             </tr>
-
-
             <tr>
-            	<td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>
-		<td colspan='5' class="Estilo6"><?php echo $responsable;?></td>
-            </tr>
-           <tr>
-		<td colspan='6'>&nbsp;</td>
-           </tr>
-           <tr>
                 <td colspan='1' class="Estilo5"><strong>Rsultado:</strong></td>
-                <td colspan='2' class="Estilo5"><?php echo "Positivo"?></td>
+                <td colspan='2' class="Estilo5">Positivo</td>
+                
+           </tr>  
+            <tr>
+		<td colspan='6'>&nbsp;</td>
+            </tr>
+            
+     <?php 
+      $contar=$obj->contar_resultados($idsolicitud,$idexamen);
+            //$row_totresult= pg_fetch_array($contar); 
+      while($row_totresult = pg_fetch_array($contar)){
+        ?>
+            <tr>
+                <td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>
+                <td colspan='5' class="Estilo6"><?php echo $row_totresult['nombreempleado'];?></td>
            </tr>
-           <tr>
+                  
+            <tr>
                 <td colspan='1' class="Estilo5"><strong>Observación:</strong></td>
-                <td colspan='5' class="Estilo5"><?php echo $observacion ?></td>
+                <td colspan='5' class="Estilo5"><?php echo $row_totresult['observacion']; ?></td>
            </tr>
-           <tr>
+ <?php
+   $detalle = $obj->obtener_detalle_resultado($row_totresult['idresultado']);
+    //$row_det= pg_fetch_array($detalle);
+         while($row_det = pg_fetch_array($detalle)){?>
+            <tr>
                 <td colspan='1' class="Estilo5"><strong>Organismo:</strong></td>
-                <td colspan='5' class="Estilo5"><?php echo htmlentities($row_nombrebacteria['bacteria']); ?></td>
-           </tr>
+                <td colspan='5' class="Estilo5"><?php echo htmlentities($row_det['bacteria']); ?></td>
+            </tr>
            <tr>
-                <td colspan='1' class="Estilo5"><strong>Cultivo con Cuenta de Colonias:</strong></td>
-                <td colspan='5' class="Estilo5"><?php echo htmlentities($cantidad)?></td>
+                <td colspan='2' class="Estilo5"><strong>Cultivo con Cuenta de Colonias:</strong></td>
+                <td colspan='1' class="Estilo5"><?php echo htmlentities($row_det['cantidad'])?></td>
            </tr>
            <tr>
 		<td colspan='6'>&nbsp;</td>
             </tr>
-            <tr>
+           <tr> 
                 <td colspan='6'>
                     <table width='60%' border='0' align='left' class='StormyWeatherFormTABLE' cellspacing="0">
 
-                        <tr>
-                            <td colspan='4'>&nbsp;</td></tr>
                         <tr>
                             <td colspan='4'>
                                 <table width="100%" border="0" align="left" cellspacing="0" >
                                     <tr>
                                         <td colspan='1' class="Estilo5"><strong>ANTIBIOTICO</strong></td>
-                                        <td colspan='2' class="Estilo5"><strong>INTERPRETACI&Oacute;N</strong>
-                                        </td>
+                                        <td colspan='1' class="Estilo5"><strong>LECTURA</strong></td>
+                                        <td colspan='2' class="Estilo5"><strong>INTERPRETACI&Oacute;N</strong></td>
                                     </tr>
-                                    <?php	//mysql_free_result($consulta_datos);
-                                                    pg_free_result($datos_generales);
-                                                    $pos=0;
-
-                                    while($row = pg_fetch_array($consulta))//ELEMENTOS)
-                                    {?>
+         <?php
+                     $res_tarjeta= $obj->obtener_resultadoxtarjeta($row_det['iddetalleresultado']);
+                    //$row_tarjeta= pg_fetch_array($res_tarjeta);
+                        while($row_tarjeta = pg_fetch_array($res_tarjeta)){?>
                                     <tr>
-                                        <td colspan='1' class="Estilo5"><?php echo $row['antibiotico']?></td>
-                                        <td colspan='2' class="Estilo5"><?php echo htmlentities($vector_valores[$pos])?>
-                                                <input name='oidantibiotico[".$pos."]' type='hidden' id='oidantibiotico[<?php $pos ?>]' value='<?php $row['IdAntibiotico']?>'>
-                                        </td>
-
+                                        <td colspan='1' class="Estilo5"><?php echo $row_tarjeta['antibiotico']?></td>
+                                        <td colspan='1' class="Estilo5"><?php echo htmlentities($row_tarjeta['valor'])?></td>
+                                        <td colspan='2' class="Estilo5"> <?php echo htmlentities( $row_tarjeta['posible_resultado']) ?></td>
                                     </tr>
-                                        <?php $pos=$pos+1;
-                                    }
-                                    pg_free_result($consulta);?>
+            
+                <?php
+                }?>
                                 </table>
                            </td>
                         </tr>
-                    </table>
+                        <tr>
+		<td colspan='6'>&nbsp;</td>
+           </tr> 
+           
+                    </table><?php 
+    }
+}?>
                 </td>
-            </tr>
-        </table>
+        </tr>
+    </table>
+
+    
+               
+               
+                  
+                   
+                  
+                  
+            
+            
+                
 
         <div id="boton">
             <table align='center' border="0">
