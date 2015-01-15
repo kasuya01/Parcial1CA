@@ -109,11 +109,11 @@ switch ($opcion)
 	case 5:  //buscar
             
 	    $query = "SELECT id,cantidadtincion FROM lab_cantidadestincion
-		      WHERE ";
+		       ";
 				
 		//VERIFICANDO LOS POST ENVIADOS
 		if (!empty($_POST['CanTin']))
-		{ $query .= " cantidadtincion ilike'%".$_POST['CanTin']."%' "; }
+		{ $query .= " WHERE cantidadtincion ilike'%".$_POST['CanTin']."%' order by cantidadtincion "; }
 		
 		$query = substr($query ,0,strlen($query)-1);
 		//echo $query;
@@ -139,7 +139,7 @@ switch ($opcion)
                     </thead><tbody>
                     
                     </center>";
-		while($row = pg_fetch_array($consulta)){
+		while($row = @pg_fetch_array($consulta)){
 			echo "<tr>
 					<td aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 

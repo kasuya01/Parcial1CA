@@ -35,6 +35,51 @@ function LlenarExamenes(idarea)
 	}	
 }
 
+
+function Estado(idlppe,condicion){
+
+var opcion=9;
+	//alert(idexamen+"-"+condicion);
+	ajax=objetoAjax();
+	//archivo que realizar� la operacion ->actualizacion.php
+	ajax.open("POST", "ctrLab_Procedimientos.php",true);
+	//muy importante este encabezado ya que hacemos uso de un formulario
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	//enviando los valores
+      // alert(idlppe+"-"+condicion);
+	ajax.send("idlppe="+idlppe+"&condicion="+condicion+"&opcion="+opcion);
+
+	ajax.onreadystatechange=function() {
+		 if(ajax.readyState==1){
+                    // alert("if 1");
+                                       
+                 }
+		 if (ajax.readyState==4) {
+		//alert(ajax.responseText);
+                //alert("if2");
+			show_event(1); 
+                       
+		 }
+	}	
+}
+function show_event(Pag)
+{
+	opcion=4;
+	
+	ajax=objetoAjax();
+	ajax.open("POST", 'ctrLab_Procedimientos.php', true);
+	ajax.onreadystatechange = function(){ 
+	if (ajax.readyState==4) {
+		   //mostrar resultados en esta capa
+		   document.getElementById('divinicial').innerHTML = ajax.responseText;
+		  }
+	}
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	ajax.send("&Pag="+Pag+"&opcion="+opcion);	
+}
+
+
+
 function DatosCompletos(tipo) {
 	var error = [];
 	var data = new Object();
@@ -133,7 +178,7 @@ function IngresarRegistro(){ //INGRESAR REGISTROS
         sexo=document.getElementById('cmbSexo').value;
         redad=document.getElementById('cmbEdad').value;
         
-        //alert(Fechaini+"**"+Fechafin);
+        alert(sexo);
 		var opcion=1;
 		Pag=1;
 		//instanciamos el objetoAjax

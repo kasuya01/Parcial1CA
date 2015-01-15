@@ -476,7 +476,7 @@ function LeerUltimoCodigo($idarea)
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = $query_search." LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+	    $query = $query_search." LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
 		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
@@ -588,13 +588,13 @@ ORDER BY ctl_examen_servicio_diagnostico.id";
     //usamos el metodo conectar para realizar la conexion
         if($con->conectar()==true){
             if($cond=='H'){
-                $query = "UPDATE lab_conf_examen_estab SET condicion='I' WHERE id=$idexamen";
+                 $query = "UPDATE lab_conf_examen_estab SET condicion='I' WHERE id=$idexamen";
                 $result = pg_query($query);
               //  $query1= "UPDATE lab_examenes SET Habilitado='N' WHERE IdExamen='$idexamen'" ;
                // $result1 = pg_query($query1);
              }
              if($cond=='I'){
-                $query = "UPDATE lab_conf_examen_estab SET condicion='H' WHERE id=$idexamen";
+                 $query = "UPDATE lab_conf_examen_estab SET condicion='H' WHERE id=$idexamen";
                 $result = pg_query($query);
                // $query1= "UPDATE lab_examenes SET Habilitado='S' WHERE IdExamen='$idexamen'";
                 //$result1 = pg_query($query1);

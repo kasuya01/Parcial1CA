@@ -90,7 +90,7 @@ $nombrearea=$row['nombrearea'];
                 <td class="StormyWeatherDataTD" colspan="6" align="right">
                                 
                                 <button type='submit' align="center" class='btn btn-primary'  ><span class='glyphicon glyphicon-repeat'></span> Actualizar</button>
-                                <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntObservaciones.php')"><span></span> Nuevo</button>
+                                <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntObservaciones.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
                 
                 </td>
         </tr>  

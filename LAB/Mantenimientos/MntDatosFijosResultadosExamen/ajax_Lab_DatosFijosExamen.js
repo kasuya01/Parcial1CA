@@ -37,7 +37,7 @@ function LlenarExamenes(idarea)
 function LimpiarCampos(){
 	document.getElementById('cmbArea').value="0";
 	document.getElementById('cmbExamen').value="0";
-        document.getElementById('cmbSexo').value="3";
+        document.getElementById('cmbSexo').value="0";
         document.getElementById('cmbEdad').value="0";
 	document.getElementById('txtunidades').value="";
 	document.getElementById('txtrangoinicio').value="";

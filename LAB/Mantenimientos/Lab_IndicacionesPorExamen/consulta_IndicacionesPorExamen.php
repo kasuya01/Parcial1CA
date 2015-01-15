@@ -1,7 +1,11 @@
 
 <?php
 include_once("clsLab_IndicacionesPorExamen.php");
-
+//include_once("clsLab_IndicacionesPorExamen.php");
+include('../Lab_Areas/clsLab_Areas.php');
+$usuario = $_SESSION['Correlativo'];
+$lugar = $_SESSION['Lugar'];
+$area = $_SESSION['Idarea'];
 //consulta los datos por su id
  $idindicacion=$_POST['idindicacion'];
 $obj = new clsLab_IndicacionesPorExamen;
@@ -28,10 +32,10 @@ $indicacion=$row['indicacion'];
             <td class="StormyWeatherDataTD">
                 <select name="cmbArea" size="1" onChange="LlenarComboExamen(this.value);">			 
 			<?php
-			include('../Lab_Areas/clsLab_Areas.php');
+			//include('../Lab_Areas/clsLab_Areas.php');
 			$objeareas = new clsLab_Areas;
-			$consulta = $objeareas->consultaractivas();
-			while($row = pg_fetch_array($consulta))
+			$consulta = $objeareas->consultaractivas($lugar);
+			while($row = @pg_fetch_array($consulta))
 			{
 				echo "<option value='" . $row['idarea']. "'>" . htmlentities($row['nombrearea']) . "</option>";
 			}						            	
@@ -57,16 +61,25 @@ $indicacion=$row['indicacion'];
             <td class="StormyWeatherFieldCaptionTD">Indicaci&oacute;n</td>
             <td class="StormyWeatherDataTD">
 			<input type="hidden" name="txtidindicacion" id="txtidindicacion" size="50" value="<?php echo $idindicacion; ?>" />
-			<textarea name="txtindicacion" cols="60" rows="4" id="txtindicacion"><?php echo htmlentities($indicacion); ?> </textarea>
+			<textarea name="txtindicacion" cols="60" rows="4" id="txtindicacion"<span style="color: #0000FF;background-color:#87CEEB;"><?php echo htmlentities($indicacion); ?> </textarea>
 			</td>
           </tr>
-          <tr>
+          <!--<tr>
 				<td class="StormyWeatherDataTD" colspan="2" align="right">
 				<input type="button" name="btnActualizar" value="Actualizar" onclick="Actualizar() ;" /> 
 			    <input type="button" name="btnNuevo" value="Nuevo" onclick="Nuevo() ;" />
 				<input type="button" name="btnBuscar" value="Buscar" onclick="Buscar() ;" />
 			</td>
-          </tr>
+          </tr>-->
+          
+          <tr>
+                <td class="StormyWeatherDataTD" colspan="6" align="right">
+                                
+                                <button type='button' align="center" class='btn btn-primary'  onclick='Actualizar(); '><span class='glyphicon glyphicon-repeat'></span> Actualizar</button>
+                                <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntIndicacionesPorExamen.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+                
+                </td>
+    </tr>   
   </table> 
 </form>
 

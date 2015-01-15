@@ -136,7 +136,7 @@ lab_observaciones.idarea,ctl_area_servicio_diagnostico.nombrearea FROM lab_obser
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $numreg = pg_num_rows(pg_query($query));
+	    $numreg = pg_num_rows(pg_query($query));
 		 if (!$numreg )
 		   return false;
 		 else

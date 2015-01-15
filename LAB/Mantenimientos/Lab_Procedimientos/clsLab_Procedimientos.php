@@ -11,8 +11,8 @@ class clsLab_Procedimientos {
 	function insertar( $proce, $idarea, $idexamen, $unidades, $rangoini, $rangofin, $usuario, $lugar, $Fechaini, $Fechafin, $sexo, $redad ) {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
-			$query ="INSERT INTO lab_procedimientosporexamen (nombreprocedimiento, id_conf_examen_estab, unidades, rangoinicio, rangofin, idusuarioreg, fechahorareg, idestablecimiento, fechaini, fechafin, idsexo, idrangoedad)
-                     VALUES('$proce',$idexamen,'$unidades',$rangoini,$rangofin,$usuario,NOW(),$lugar,$Fechaini,$Fechafin,$sexo,$redad)";
+			  $query ="INSERT INTO lab_procedimientosporexamen (nombreprocedimiento, id_conf_examen_estab, unidades, rangoinicio, rangofin, idusuarioreg, fechahorareg, idestablecimiento, fechaini, fechafin, idsexo, idrangoedad)
+                     VALUES('$proce',$idexamen,'$unidades',$rangoini,$rangofin,$usuario,NOW(),$lugar,'$Fechaini','$Fechafin',$sexo,$redad)";
 			$result = @pg_query( $query );
 
 			if ( !$result )
@@ -73,7 +73,7 @@ class clsLab_Procedimientos {
 	function RangosEdades() {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
-			$query = "SELECT id, nombre FROM ctl_rango_edad";
+			$query = "SELECT id, nombre FROM ctl_rango_edad ORDER BY nombre";
 			$result = pg_query( $query );
 			if ( !$result )
 				return false;
@@ -156,12 +156,16 @@ class clsLab_Procedimientos {
 		//usamos el metodo conectar para realizar la conexion
 		if ( $con->conectar()==true ) {
 
-			$query ="SELECT lcee.id AS idexamen, lcee.nombre_examen AS nombreexamen
-                 	 FROM mnt_area_examen_establecimiento maees
-                 	 INNER JOIN lab_conf_examen_estab 	  lcee ON (maees.id = lcee.idexamen)
-                 	 INNER JOIN lab_plantilla 			  lpla ON (lpla.id  = lcee.idplantilla)
-                 	 WHERE maees.id_area_servicio_diagnostico = $idarea AND lpla.idplantilla = 'E' AND lcee.condicion='H' AND maees.id_establecimiento = $lugar
-                 	 ORDER BY lcee.nombre_examen";
+			 $query ="SELECT lcee.id AS idexamen, 
+                                            lcee.nombre_examen AS nombreexamen
+                                    FROM mnt_area_examen_establecimiento maees
+                                    INNER JOIN lab_conf_examen_estab    lcee ON (maees.id = lcee.idexamen)
+                                    INNER JOIN lab_plantilla 		lpla ON (lpla.id  = lcee.idplantilla)
+                                    WHERE maees.id_area_servicio_diagnostico = $idarea 
+                                    --AND lpla.idplantilla = 'E' 
+                                    AND lcee.condicion='H' 
+                                    AND maees.id_establecimiento = $lugar
+                                    ORDER BY lcee.nombre_examen";
 
 			$result = @pg_query( $query );
 			if ( !$result )
@@ -170,6 +174,32 @@ class clsLab_Procedimientos {
 				return $result;
 		}
 	}
+        
+        
+        
+        function consulhabilitado( $idproce ) {
+		$con = new ConexionBD;
+		//usamos el metodo conectar para realizar la conexion
+		$con = new ConexionBD;
+		//usamos el metodo conectar para realizar la conexion
+		if ( $con->conectar()==true ) {
+			 $query =
+
+				"SELECT 
+				lppe.habilitado,
+                                lppe.id as idlppe
+                                FROM lab_procedimientosporexamen  lppe
+				WHERE  lppe.id = $idproce ";
+
+			$result = @pg_query( $query );
+			if ( !$result )
+				return false;
+			else
+				return $result;
+		}
+	}
+        
+        
 	//*************************************************FUNCIONES PARA MANEJO DE PAGINACION******************************************************/
 	//consultando el numero de registros de la tabla
 	function NumeroDeRegistros( $lugar ) {
@@ -214,6 +244,37 @@ class clsLab_Procedimientos {
 				return $numreg ;
 		}
 	}
+         function EstadoCuenta($idlppe,$cond,$usuario){ 
+    $con = new ConexionBD;
+    //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+             
+            //habilitado='t' = 'Habilitado'
+            if($cond=='t'){
+                 $query="UPDATE lab_procedimientosporexamen SET habilitado='f',
+					fechafin=NULL,
+					idusuarioreg=$usuario,
+					fechahoramod=NOW()
+					 WHERE id=$idlppe ";
+                $result = pg_query($query);
+              //  $query1= "UPDATE lab_examenes SET Habilitado='N' WHERE IdExamen='$idexamen'" ;
+               // $result1 = pg_query($query1);
+             }
+            // habilitado='f' = 'Inhabilitado'
+             if($cond=='f'){
+                 //$query = "UPDATE lab_conf_examen_estab SET condicion='H' WHERE id=$idexamen";
+                 $query="UPDATE lab_procedimientosporexamen SET habilitado='t',
+					fechafin=current_date,
+					idusuarioreg=$usuario,
+					fechahoramod=NOW()
+					 WHERE id=$idlppe ";
+                $result = pg_query($query);
+               // $query1= "UPDATE lab_examenes SET Habilitado='S' WHERE IdExamen='$idexamen'";
+                //$result1 = pg_query($query1);
+             }
+        }
+        $con->desconectar();
+    }
 
 	function consultarpag( $lugar, $RegistrosAEmpezar, $RegistrosAMostrar ) {
 
@@ -221,7 +282,7 @@ class clsLab_Procedimientos {
 		$con = new ConexionBD;
 		//usamos el metodo conectar para realizar la conexion
 		if ( $con->conectar()==true ) {
-			$query =
+			 $query =
 
 				"SELECT lppe.id AS idprocedimientoporexamen,
 						lcee.codigo_examen AS idexamen,
@@ -236,16 +297,28 @@ class clsLab_Procedimientos {
 						            WHEN 2 THEN 'Femenino'
 						            ELSE 'Ambos'
 						END AS sexovn,
-						cre.nombre AS nombregrupoedad
+						cre.nombre AS nombregrupoedad,
+						(CASE WHEN lcee.condicion='H' THEN 'Habilitado'
+						WHEN lcee.condicion='I' THEN 'Inhabilitado' END) AS cond1,
+                                                (CASE WHEN lppe.habilitado='t' THEN 'Habilitado'
+						WHEN lppe.habilitado='f' THEN 'Inhabilitado' END) AS cond,
+						lppe.habilitado,
+                                                lppe.id as idlppe,
+                                                mnt4.id as idmnt4,
+                                                lcee.condicion
 						FROM lab_procedimientosporexamen 		   lppe
 						INNER JOIN lab_conf_examen_estab		   lcee ON (lcee.id = lppe.id_conf_examen_estab)
-						INNER JOIN mnt_area_examen_establecimiento mnt4 ON (mnt4.id = lcee.idexamen)
-						INNER JOIN ctl_area_servicio_diagnostico   casd ON (casd.id = mnt4.id_area_servicio_diagnostico)
-						INNER JOIN lab_areasxestablecimiento	   laxe ON (casd.id = laxe.idarea)
-						INNER JOIN lab_plantilla				   lpla ON (lpla.id = lcee.idplantilla)
-						LEFT OUTER JOIN ctl_sexo				   cex  ON (cex.id  = lppe.idsexo)
-						LEFT OUTER JOIN ctl_rango_edad  		   cre  ON (cre.id  = lppe.idrangoedad)
-						WHERE lcee.condicion = 'H' AND laxe.condicion = 'H' AND lpla.idplantilla = 'E' AND lppe.idestablecimiento = $lugar
+						INNER JOIN mnt_area_examen_establecimiento  mnt4 ON (mnt4.id = lcee.idexamen)
+						INNER JOIN ctl_area_servicio_diagnostico    casd ON (casd.id = mnt4.id_area_servicio_diagnostico)
+						INNER JOIN lab_areasxestablecimiento        laxe ON (casd.id = laxe.idarea)
+						INNER JOIN lab_plantilla                    lpla ON (lpla.id = lcee.idplantilla)
+						LEFT OUTER JOIN ctl_sexo                    cex  ON (cex.id  = lppe.idsexo)
+						LEFT OUTER JOIN ctl_rango_edad              cre  ON (cre.id  = lppe.idrangoedad)
+						WHERE 
+                                                lcee.condicion = 'H' 
+                                                AND laxe.condicion = 'H' 
+                                                AND lpla.idplantilla = 'E' AND 
+                                                lppe.idestablecimiento = $lugar
 						ORDER BY lcee.codigo_examen, lppe.id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
 
 			$result = @pg_query( $query );

@@ -2,7 +2,9 @@
 $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
-$area=$_SESSION['Idarea']; 
+$area=$_SESSION['Idarea'];
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
 ?>
 <html>
 	<head>
@@ -18,7 +20,9 @@ $area=$_SESSION['Idarea'];
 			<script type="text/javascript" src="../../../calendarstructure/calendar.js"></script>
 			<script type="text/javascript" src="../../../calendarstructure/calendar-es.js"></script>
 			<script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
-			<script language="JavaScript" >
+			<?php include_once $ROOT_PATH.'/public/css.php';?>
+                        <?php include_once $ROOT_PATH.'/public/js.php';?>
+                        <script language="JavaScript" >
 			function Guardar(){
 				IngresarRegistro();
 			}

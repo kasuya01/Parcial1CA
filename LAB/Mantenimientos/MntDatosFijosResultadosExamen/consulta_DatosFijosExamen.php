@@ -51,7 +51,7 @@ $rangoedad=$row['redad'];
                     <?php
 			include('../Lab_Areas/clsLab_Areas.php');
 			$objeareas=new clsLab_Areas;
-			$consulta= $objeareas->consultaractivas();
+			$consulta= $objeareas->consultaractivas($lugar);
 			while($row = pg_fetch_array($consulta)){
                             echo "<option value='".$row['id']."'>".$row['nombrearea']."</option>";
                            
@@ -67,8 +67,8 @@ $rangoedad=$row['redad'];
                 <select id="cmbExamen" name="cmbExamen" size="1">
                     <option value="0">--Seleccione un Examen--</option>";
                     <?php
-                        $consultaex = $obj->ExamenesPorArea($idarea);
-                        while($row = mysql_fetch_array($consultaex))
+                        $consultaex = $obj->ExamenesPorArea($idarea,$lugar);
+                        while($row = pg_fetch_array($consultaex))
                         {
                             echo "<option value='" . $row['idexamen']. "'>" . $row['nombreexamen'] . "</option>";
                         }						            	
@@ -81,7 +81,7 @@ $rangoedad=$row['redad'];
             <td width="17%" class="StormyWeatherFieldCaptionTD">Sexo</td>
             <td width="83%"  class="StormyWeatherDataTD">
                 <select id="cmbSexo" name="cmbSexo" size="1" >
-                     <option value="3">Ninguno</option>  
+                     <option value="3">--Seleccione Sexo--</option>  
                      <option value="0">Ambos</option>
                     <?php
                             $consultaS= $obj->consultarsexo();
@@ -116,7 +116,7 @@ $rangoedad=$row['redad'];
    	</tr>
        	<tr>
             <td colspan="2" class="StormyWeatherDataTD">
-		<fieldset><legend><span>Rangos</span></legend>
+		<fieldset><span><center><h4>Rangos</h4></center></span>
                     <table width="200" border="0" align="center" class="StormyWeatherFormTABLE">
                         <tr>
                                 <td class="StormyWeatherFieldCaptionTD">Inicio</td>
@@ -136,12 +136,12 @@ $rangoedad=$row['redad'];
        	<tr>
             <td class="StormyWeatherFieldCaptionTD">Observaci&oacute;n</td>
             <td class="StormyWeatherDataTD">
-          	<textarea name="txtnota" cols="50" rows="6" id="txtnota" ><?php echo htmlentities($nota); ?></textarea>
+          	<textarea name="txtnota" cols="65" rows="3" id="txtnota" ><?php echo htmlentities($nota); ?></textarea>
 	    </td>
        	</tr>
 	<tr>
             <td colspan="2" class="StormyWeatherDataTD">
-                <table width="700" border="0" align="center" class="StormyWeatherFormTABLE">
+                <table width="740" border="0" align="center" class="StormyWeatherFormTABLE">
                     <tr>
                         <td class="StormyWeatherFieldCaptionTD">Fecha Inicio</TD>
                         <td  class="StormyWeatherDataTD">
@@ -153,13 +153,21 @@ $rangoedad=$row['redad'];
                 </table>
             </td>
 	</tr>	
-	<tr>
+	<!--<tr>
             <td class="StormyWeatherDataTD" colspan="2" align="right">
 		<input type="button" name="btnGuardar" value="Actualizar" onClick="Actualizar() ;">
 		<input type="button" name="btnBuscar" value="Buscar" Onclick="Buscar() ;">
 		<input type="button" name="btnCancelar" value="Cancelar" onClick="window.location.replace('MntDatosFijosResultadosExamen.php');">			
             </td>
-        </tr>
+        </tr>-->
+        
+        <tr>  
+            <td class="StormyWeatherDataTD" colspan="6" align="right">
+                <button type='button' align="center" class='btn btn-primary'  onclick='Actualizar(); '><span class='glyphicon glyphicon-repeat'></span> Actualizar </button>
+                <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntDatosFijosResultadosExamen.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+            </td>
+    </tr>
+        
 	</table>
 
 </form>

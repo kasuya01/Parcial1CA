@@ -5,7 +5,8 @@ $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea']; 
 $objeareas=new clsLab_Areas;
-
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
                                         
 
 ?>
@@ -17,6 +18,8 @@ $objeareas=new clsLab_Areas;
 <script language="JavaScript" type="text/javascript" src="ajax_Lab_IndicacionesPorExamen.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+<?php include_once $ROOT_PATH.'/public/css.php';?>
+<?php include_once $ROOT_PATH.'/public/js.php';?>
 
 <script language="JavaScript" >
 function Guardar(){
@@ -28,7 +31,17 @@ function LlenarComboExamen(idarea)
    LlenarExamenes(idarea);   
 }
 function Buscar(){
-	BuscarDatos();
+    
+    if ((document.getElementById('cmbArea').value == 0)&&
+             (document.getElementById('cmbExamen').value == 0)&& 
+             (document.getElementById('txtindicacion').value == ""))
+		 {
+			alert("Debe de Ingresar un Parámetro de Búsqueda")		
+		 }
+                 else{
+                   BuscarDatos();  
+                 }
+	
 }
 function Actualizar(){
 	enviarDatos();
@@ -87,7 +100,7 @@ if ($nivel==33){
         <td class="StormyWeatherFieldCaptionTD">Examen</td>
         <td class="StormyWeatherDataTD">
              <div id="divExamen">
-                <select name="cmbExamen" id="cmbExamen" style="width:250px"> 
+                <select name="cmbExamen" id="cmbExamen" style="width:235px"> 
                     <option value="0">--Seleccione un Examen--</option>
                 </select>
             </div>
@@ -95,15 +108,26 @@ if ($nivel==33){
     </tr>
 	<tr>
         <td class="StormyWeatherFieldCaptionTD">Indicaci&oacute;n</td>
-        <td class="StormyWeatherDataTD"><textarea name="txtindicacion" cols="60" rows="4" id="txtindicacion"></textarea></td>
+        <td class="StormyWeatherDataTD"><textarea name="txtindicacion" cols="60" rows="4" id="txtindicacion"<span style="color: #0000FF;background-color:#87CEEB;"></textarea></td>
     </tr>
-    <tr>
+    <!--<tr>
 		<td class="StormyWeatherDataTD" colspan="2" align="right">
 			   <input type="button" name="Submit" value="Guardar" Onclick="Guardar() ;">   
 			   <input type="button" name="Submit2" value="Buscar" Onclick="Buscar() ;">
 			   <input type="button" name="Submit2" value="Cancelar" Onclick="Cancelar() ;">
 		</td>
-    </tr>
+    </tr>-->
+    
+    
+    <tr>
+                <td class="StormyWeatherDataTD" colspan="6" align="right">
+                                
+                                <button type='button' align="center" class='btn btn-primary'  onclick='Guardar(); '><span class='glyphicon glyphicon-floppy-disk'></span> Guardar</button>
+                                <button type='button' align="center" class='btn btn-primary'  onclick='Buscar(); '><span class='glyphicon glyphicon-search'></span> Buscar </button>
+                                <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntIndicacionesPorExamen.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+                
+                </td>
+    </tr>  
 </table>
 </form>
 </div>
