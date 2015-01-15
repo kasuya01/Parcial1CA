@@ -34,6 +34,29 @@ $base_url  = $_SESSION['base_url'];
 		function Limpiar()
 		{  LimpiarContoles();
 		}
+                
+                function buscartarje()
+                {
+                    if ((document.getElementById('txtnombretarjeta').value == "") 
+                        &&(document.getElementById('txtFechainicio').value == "")
+                        &&(document.getElementById('txtFechaFin').value == ""))
+                        {  
+                            alert("Debe de Ingresar un Parámetro de Búsqueda ");
+                        }
+                    else{
+                        BuscarCodigo();
+                        
+                    }
+                    
+                    // && (document.getElementById('txtnombretarjeta').value == "")
+             
+             
+                   /* nombretarjeta = document.frmnuevo.txtnombretarjeta.value;
+                    Fechaini = document.frmnuevo.txtFechainicio.value;
+                    Fechafin = document.frmnuevo.txtFechaFin.value;*/
+                 
+                }
+                
 	</script>
 </head>
 <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" onLoad="show_event(1);">
@@ -66,8 +89,8 @@ $base_url  = $_SESSION['base_url'];
 					        	<td class="StormyWeatherDataTD"><input type="hidden" name="txtidtarjeta" id="txtidtarjeta" disabled="disabled" /></td>
 					        </tr-->
 					        <tr>
-					        	<td width="21%" class="StormyWeatherFieldCaptionTD">Nombre Tarjeta</td>
-					        	<td class="StormyWeatherDataTD"><input type="text" name="txtnombretarjeta" id="txtnombretarjeta" size="40" /></td>
+					        	<td width="20%" class="StormyWeatherFieldCaptionTD">Nombre Tarjeta</td>
+					        	<td class="StormyWeatherDataTD"><input type="text" name="txtnombretarjeta" id="txtnombretarjeta" size="69" /></td>
 					        	<input type="hidden" name="txtidtarjeta" id="txtidtarjeta" disabled="disabled" />
 					        </tr>
 					        <tr>	
@@ -75,14 +98,14 @@ $base_url  = $_SESSION['base_url'];
 					        		<table width="100%" border="0" align="center" class="StormyWeatherFormTABLE">
 					        			
                                                                  <tr>   
-                                                                     <td class="StormyWeatherFieldCaptionTD"  width="15%">Fecha Inicio</td>
-                                                                     <td class="StormyWeatherDataTD" width="20%">
-                                                                            <input name="txtFechainicio" type="text" id="txtFechainicio" size="28" class="date"  placeholder="aaaa-mm-dd">
+                                                                     <td width="21%" class="StormyWeatherFieldCaptionTD">Fecha Inicio</td>
+                                                                     <td class="StormyWeatherDataTD">
+                                                                            <input name="txtFechainicio" type="text" id="txtFechainicio" size="25" class="date"  placeholder="aaaa-mm-dd">
                                                                     </td>
                                                                     
                                                                     
                                                                     
-                                                                     <td class="StormyWeatherFieldCaptionTD"  width="15%">Fecha Inicio</td>
+                                                                     <td class="StormyWeatherFieldCaptionTD"  width="15%">Fecha Fin</td>
                                                                      <td class="StormyWeatherDataTD" width="20%">
                                                                             <input name="txtFechaFin" type="text" id="txtFechaFin" size="28" class="date"  placeholder="aaaa-mm-dd">
                                                                     </td>
@@ -108,7 +131,7 @@ $base_url  = $_SESSION['base_url'];
                                                         <td class="StormyWeatherDataTD" colspan="6" align="right">
                                 
                                                                 <button type='submit' align="center" class='btn btn-primary' id='buscarsolicitud' ><span class='glyphicon glyphicon-floppy-disk'> </span> Guardar</button>
-                                                                <button type='button' align="center" class='btn btn-primary' id='buscarsolicitud' onclick='BuscarCodigo(); '><span class='glyphicon glyphicon-search'></span> Buscar Solicitudes</button>
+                                                                <button type='button' align="center" class='btn btn-primary' id='buscarsolicitud' onclick='buscartarje(); '><span class='glyphicon glyphicon-search'></span> Buscar </button>
                                                                 <button type='button' align="center" class='btn btn-primary' id='nuevabusqueda' onclick="window.location.replace('MntTarjetasVITEK.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
                 
                                                        </td>
@@ -141,7 +164,7 @@ $base_url  = $_SESSION['base_url'];
 			</td>
 		</tr>
 	</table>
-	<script type="text/javascript">
+	<!--<script type="text/javascript">
 		Calendar.setup({
 			inputField  : "txtFechainicio",         // el ID texto 
 			ifFormat    : "%d/%m/%Y",    // formato de la fecha
@@ -152,6 +175,6 @@ $base_url  = $_SESSION['base_url'];
 			ifFormat    : "%d/%m/%Y",    // formato de la fecha
 			button      : "trigger2"       // el ID del boton			  	  
 		});
-	</script>
+	</script> -->
 </body>
 </html>

@@ -60,14 +60,17 @@ switch ($opcion) {
         $consulta = $objdatos->consultarpag($RegistrosAEmpezar, $RegistrosAMostrar);
 
         //muestra los datos consultados en la tabla
-        echo "<table border = 1 align='center' width='60%' class='StormyWeatherFormTABLE'>
-                <tr>
-                    <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-                    <!-- <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
-                    <td class='CobaltFieldCaptionTD'> Area </td>
-                    <td class='CobaltFieldCaptionTD'> Examen </td> 
-                    <td class='CobaltFieldCaptionTD'> Indicaci&oacute;n </td>	   
-		</tr>";
+        echo "<center><div class='table-responsive' style='width: 60%;'>
+            <table width='50%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                <thead>
+                    <tr>
+                        <th aling='center' > Modificar</th>
+                        <!-- <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
+                        <th ><center> Area </center></th>
+                        <th ><center> Examen </center></th> 
+                        <th > <center> Indicaci&oacute;n </center></th>	   
+                    </tr>
+                </thead><tbody>";
 
         while ($row = pg_fetch_array($consulta)) {
           echo "<tr>
@@ -181,12 +184,17 @@ switch ($opcion) {
 
         break;
     case 7: //BUSQUEDA
-        $query = "SELECT mipe.id, casd.id,casd.nombrearea,lcee.id,lcee.nombre_examen,mipe.indicacion		
-                  FROM ctl_area_servicio_diagnostico casd
-		  JOIN mnt_area_examen_establecimiento mnt4 ON  mnt4.id_area_servicio_diagnostico=casd.id
-		  JOIN lab_conf_examen_estab lcee ON (mnt4.id=lcee.idexamen) 
-		  JOIN mnt_indicacionesporexamen mipe ON (mipe.id_conf_examen_estab=lcee.id) 
-                  WHERE lcee.condicion='H' AND";
+         $query = "  SELECT mipe.id, 
+                        casd.id,
+                        casd.nombrearea,
+                        lcee.id,
+                        lcee.nombre_examen,
+                        mipe.indicacion		
+                    FROM ctl_area_servicio_diagnostico casd
+                    JOIN mnt_area_examen_establecimiento    mnt4 ON  mnt4.id_area_servicio_diagnostico=casd.id
+                    JOIN lab_conf_examen_estab              lcee ON (mnt4.id=lcee.idexamen) 
+                    JOIN mnt_indicacionesporexamen          mipe ON (mipe.id_conf_examen_estab=lcee.id) 
+                    WHERE lcee.condicion='H' AND";
         $ban = 0;
         //VERIFICANDO LOS POST ENVIADOS
         if (!empty($_POST['idarea'])) {
@@ -228,14 +236,17 @@ switch ($opcion) {
         $consulta = $objdatos->consultarpagbus($query_search, $RegistrosAEmpezar, $RegistrosAMostrar);
 
         //muestra los datos consultados en la tabla
-        echo "<table border = 1 align='center'  width='60%' class='StormyWeatherFormTABLE'>
-		        <tr>
-				<td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-				<!--<td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
-				<td class='CobaltFieldCaptionTD'> Area </td>
-				<td class='CobaltFieldCaptionTD'> Examen </td>
-				<td class='CobaltFieldCaptionTD'> Indicaci&oacute;n </td>	   
-			</tr>";
+        echo "<center><div class='table-responsive' style='width: 60%;'>
+            <table width='50%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                <thead>
+                    <tr>
+                        <th aling='center' > Modificar</th>
+                        <!-- <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
+                        <th ><center> Area </center></th>
+                        <th ><center> Examen </center></th> 
+                        <th > <center> Indicaci&oacute;n </center></th>	   
+                    </tr>
+                </thead><tbody>";
 
         while ($row = pg_fetch_array($consulta)) {
             echo "<tr>

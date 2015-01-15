@@ -10,6 +10,12 @@ $idproce=$_POST['idproce'];
 $obj = new clsLab_Procedimientos;
 
 
+$consulta1=$obj->consulhabilitado($idproce);
+$row = pg_fetch_array($consulta1);
+$habilitado=$row['habilitado'];
+
+//echo $habilitado;
+
 $consulta=$obj->consultarid($idproce,$lugar);
 $row = pg_fetch_array($consulta);
 
@@ -131,7 +137,7 @@ $rangoedad=$row['nombregrupoedad'];
 	</tr>
     	<tr>
         	<td colspan="2" class="StormyWeatherDataTD">
-			<fieldset><legend><span>Rangos</span></legend>
+			<fieldset><span><center> <h4>Rangos</h4></center></span>
 			<table width="200" border="0" align="center" class="StormyWeatherFormTABLE">
 			<tr>
 				<td class="StormyWeatherFieldCaptionTD">Inicio</td>
@@ -159,12 +165,39 @@ $rangoedad=$row['nombregrupoedad'];
 				</table>
 			</td>		
 		</tr>
-    	<tr>
-        	<td class="StormyWeatherDataTD" colspan="2" align="right"><input type="button" name="btnGuardar" value="Actualizar" onClick="Actualizar() ;">
+    	<!--<tr>
+        	<td class="StormyWeatherDataTD" colspan="2" align="right">
+                        <input type="button" name="btnGuardar" value="Actualizar" onClick="Actualizar() ;">
 			<input type="button" name="btnBuscar" value="Buscar" Onclick="Buscar() ;">
 		    	<input type="button" name="btnCancelar" value="Cancelar" onClick="window.location.replace('MntProcedimientosExamen.php')">			
 		</td>
+        </tr>-->
+                <?php  
+                if ($habilitado=="t"){
+                    
+                    ?>
+                
+                 <tr>  
+            <td class="StormyWeatherDataTD" colspan="6" align="right">
+               
+                <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntProcedimientosExamen.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+            </td>
     </tr>
+             <?php        
+                } else {
+                  ?>
+    
+                    <tr>  
+            <td class="StormyWeatherDataTD" colspan="6" align="right">
+                <button type='button' align="center" class='btn btn-primary'  onclick='Actualizar(); '><span class='glyphicon glyphicon-repeat'></span> Actualizar </button>
+                <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntProcedimientosExamen.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+            </td>
+    </tr>
+    <?php 
+                }
+                
+                ?>
+    
 </table>
 </form>
 

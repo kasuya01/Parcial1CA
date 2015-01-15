@@ -217,8 +217,8 @@ if ($nivel==33){
                                                                        <td class="StormyWeatherDataTD" colspan="6" align="right">
                                 
                                                                             
-                                                                            <button type='button' align="center" class='btn btn-primary'  onclick='GuardarItems(); '><span class='glyphicon glyphicon-floppy-disk'></span>Guardar Muestras</button>
-                                                                            <button type='button' align="center" class='btn btn-primary'  onclick='EliminarItems(); '><span class='glyphicon glyphicon-remove-circle'></span>Eliminar Muestra</button>
+                                                                            <button type='button' align="center" class='btn btn-primary'  onclick='GuardarItems(); '><span class='glyphicon glyphicon-floppy-disk'></span> Guardar </button>
+                                                                            <button type='button' align="center" class='btn btn-primary'  onclick='EliminarItems(); '><span class='glyphicon glyphicon-remove-circle'></span> Eliminar </button>
                                                                             
 
                                                                     </td>

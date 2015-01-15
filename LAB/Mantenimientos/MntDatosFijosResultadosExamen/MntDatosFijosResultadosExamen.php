@@ -5,6 +5,8 @@ $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea']; 
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
 ?>
 <html>
 <head>
@@ -21,7 +23,10 @@ $area=$_SESSION['Idarea'];
 
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+<?php include_once $ROOT_PATH.'/public/css.php';?>
+<?php include_once $ROOT_PATH.'/public/js.php';?>
 <script language="JavaScript" >
+    
 function Guardar(){
    if ((document.getElementById('cmbArea').value == 0) && (document.getElementById('cmbExamen').value == 0) && (document.getElementById('txtFechainicio').value == ""))	
 	alert("Ingrese los datos");
@@ -35,12 +40,25 @@ function LlenarComboExamen(idarea)
 }
 
 function Buscar(){
- if ((document.getElementById('cmbArea').value == 0) && (document.getElementById('cmbExamen').value == 0) 
-         && (document.getElementById('txtFechainicio').value == "") && (document.getElementById('cmbSexo').value == 0) 
-         && (document.getElementById('cmbEdad').value == 0))	
-	alert("Ingrese los datos a buscar");
+ if ((document.getElementById('cmbArea').value == 0) 
+        && (document.getElementById('cmbExamen').value == 0) 
+        && (document.getElementById('cmbSexo').value == 0)
+         && (document.getElementById('cmbEdad').value == 0)
+         && (document.getElementById('txtunidades').value == "")
+         && (document.getElementById('txtrangoinicio').value == "")
+         && (document.getElementById('txtrangofin').value == "")
+         && (document.getElementById('txtnota').value == "")
+         && (document.getElementById('txtFechainicio').value == "")
+         && (document.getElementById('txtFechaFin').value == ""))
+ {
+    alert("Debe de Ingresar un Parámetro de Búsqueda "); 
+ }
+	
   else
-   BuscarDatos();
+  {
+       BuscarDatos();
+  }
+  
 }
 function Actualizar(){
 	enviarDatos();
@@ -83,7 +101,7 @@ if ($nivel==33){
                     <tr>
                          <td width="17%" class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
                          <td width="83%"  class="StormyWeatherDataTD">
-                            <select id="cmbArea" name="cmbArea" size="1" onChange="LlenarComboExamen(this.value);">
+                            <select id="cmbArea" name="cmbArea" size="1" style="width:250px" onChange="LlenarComboExamen(this.value);">
                                 <option value="0" >--Seleccione un &Aacute;rea--</option>
 				<?php
                                     include('../Lab_Areas/clsLab_Areas.php');
@@ -111,15 +129,20 @@ if ($nivel==33){
                         <td width="83%"  class="StormyWeatherDataTD">
                             <select id="cmbSexo" name="cmbSexo" size="1" >
                                
-                                 <option value="3">Ninguno</option>
-                                 <option value="0">Ambos</option>
-                                <?php
-                                    $consultaS= $objdatos->consultarsexo();
-                                     while($row =pg_fetch_array($consultaS)){
-                                         echo "<option value='" . $row[0]. "'>". $row[1] . "</option>";
-                                                                                                                  
-                                      }
-                                ?>        
+                              
+                                 
+                                 
+                                 <option value="0" >--Seleccione Sexo--</option>
+                                        <?php
+                                            $consultaS= $objdatos->consultarsexo();
+                                            while($row =pg_fetch_array($consultaS)){
+                                                echo "<option value='" . $row['id']. "'>". $row['nombre'] . "</option>";
+                                            }
+                                            echo "<option value='3'>Ambos</option>"
+                                        ?>    
+                                 
+                                 
+                                 
                              </select>		  
 			</td>        
                     </tr>
@@ -143,7 +166,7 @@ if ($nivel==33){
                      </tr>
                      <tr>
                         <td colspan="2" class="StormyWeatherDataTD">
-                            <fieldset><legend><span>Rangos</span></legend>
+                            <fieldset><span><center><h4>Rangos</h4></center></span>
                                 <table width="200" border="0" align="center" class="StormyWeatherFormTABLE">
                                     <tr>
                                         <td  class="StormyWeatherFieldCaptionTD">Inicio</td>
@@ -158,30 +181,55 @@ if ($nivel==33){
                      <tr>
                         <td class="StormyWeatherFieldCaptionTD">Observaci&oacute;n</td>
                         <td  class="StormyWeatherDataTD">
-                            <textarea name="txtnota" cols="50" rows="6" id="txtnota"></textarea>             
+                            <textarea name="txtnota" cols="65" rows="3" id="txtnota"></textarea>             
 			</td>
                      </tr>
                      <tr>	
 			<td colspan="2" class="StormyWeatherDataTD">
                             <table width="750" border="0" align="center" class="StormyWeatherFormTABLE">
-                                <tr>
+                                <!--<tr>
                                     <td class="StormyWeatherFieldCaptionTD">Fecha Inicio</td>
                                     <td  class="StormyWeatherDataTD">
                                         <input name="txtFechainicio" type="text" id="txtFechainicio" size="6" ><input name="button" type="button" id="trigger"  value="...">dd/mm/aaaa</td>
                                     <td class="StormyWeatherFieldCaptionTD">Fecha Final</td>
                                     <td  class="StormyWeatherDataTD">
 					<input name="txtFechaFin" type="text" id="txtFechaFin" size="6" ><input name="button2" type="button" id="trigger2" value="...">dd/mm/aaaa</td>	
-				</tr>
+				</tr>-->
+                                
+                               <tr>   
+                                                                     <td width="20%" class="StormyWeatherFieldCaptionTD">Fecha Inicio</td>
+                                                                     <td class="StormyWeatherDataTD">
+                                                                            <input  name="txtFechainicio" type="text" id="txtFechainicio" size="25" class="date"  placeholder="aaaa-mm-dd">
+                                                                    </td>
+                                                                    
+                                                                    
+                                                                    
+                                                                     <td class="StormyWeatherFieldCaptionTD"  width="15%">Fecha Fin</td>
+                                                                     <td class="StormyWeatherDataTD" width="20%">
+                                                                            <input name="txtFechaFin" type="text" id="txtFechaFin" size="28" class="date"  placeholder="aaaa-mm-dd">
+                                                                    </td>
+                                    </tr>   
+                                
+                                
                              </table>
 			</td>			
                     </tr>
-                    <tr>
+                    <!--<tr>
                         <td class="StormyWeatherDataTD" colspan="2" align="right">
                             <input type="button" name="btnGuardar" value="Guardar" onClick="Guardar() ;">
                             <input type="button" name="btnBuscar" value="Buscar" Onclick="Buscar() ;">
                             <input type="button" name="btnCancelar" value="Cancelar" Onclick="Cancelar() ;">			
 			</td>
-                    </tr>
+                    </tr>-->
+                    
+                    <tr>  
+                            <td class="StormyWeatherDataTD" colspan="6" align="right">
+                                <button type='button' align="center" class='btn btn-primary'  onclick='Guardar(); '> <span   class='glyphicon glyphicon-floppy-disk'>    </span> Guardar </button>
+                                <button type='button' align="center" class='btn btn-primary'  onclick='Buscar(); '>  <span    class='glyphicon glyphicon-search'>         </span> Buscar </button>
+                                <button type='button' align="center" class='btn btn-primary'  onclick='Cancelar(); '><span  class='glyphicon glyphicon-refresh'>        </span> Nueva Busqueda</button>
+                            </td>
+                         </tr>
+                    
 		 </table>
             </form>
 	</div>
@@ -198,7 +246,7 @@ if ($nivel==33){
     </td>
 </tr>
 </table>
-		<script type="text/javascript">
+		<!--<script type="text/javascript">
 			Calendar.setup(
 				{
 					inputField  : "txtFechainicio",         // el ID texto 
@@ -213,7 +261,7 @@ if ($nivel==33){
 				button      : "trigger2"       // el ID del boton			  	  
 				}
 			);
-		</script>
+		</script> -->
 
 			
 

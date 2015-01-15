@@ -435,16 +435,19 @@ var opcion=3;
 	//muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
-       //  alert(idexamen+"-"+condicion);
+      // alert(idexamen+"-"+condicion);
 	ajax.send("idexamen="+idexamen+"&condicion="+condicion+"&opcion="+opcion);
 
 	ajax.onreadystatechange=function() {
 		 if(ajax.readyState==1){
+                     
                                        
                  }
 		 if (ajax.readyState==4) {
 		//alert(ajax.responseText);
+               
 			show_event(1); 
+                       
 		 }
 	}	
 }

@@ -149,14 +149,19 @@ class clsLab_IndicacionesPorExamen {
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
-           $query = "SELECT mipe.id,casd.id,casd.nombrearea,lcee.id,lcee.nombre_examen,mipe.indicacion 
-                      FROM ctl_area_servicio_diagnostico casd JOIN mnt_area_examen_establecimiento 
-                      mnt4 ON mnt4.id_area_servicio_diagnostico=casd.id 
-                      JOIN lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen) 
-                      JOIN mnt_indicacionesporexamen mipe ON (mipe.id_conf_examen_estab=lcee.id) 
-                      WHERE lcee.condicion='H'
-                      ORDER BY casd.nombrearea, lcee.nombre_examen 
-                      LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+           $query = "SELECT mipe.id,
+                                casd.id,
+                                casd.nombrearea,
+                                lcee.id,
+                                lcee.nombre_examen,
+                                mipe.indicacion 
+                        FROM ctl_area_servicio_diagnostico casd 
+                        JOIN mnt_area_examen_establecimiento    mnt4   ON (mnt4.id_area_servicio_diagnostico=casd.id)
+                        JOIN lab_conf_examen_estab              lcee   ON (mnt4.id=lcee.idexamen) 
+                        JOIN mnt_indicacionesporexamen          mipe   ON (mipe.id_conf_examen_estab=lcee.id) 
+                        WHERE lcee.condicion='H'
+                        ORDER BY casd.nombrearea, lcee.nombre_examen 
+                        LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
 
             /*  "SELECT id,idservicio,id_conf_examen_estab,indicacion FROM mnt_indicacionesporexamen LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar "; */
             $result = @pg_query($query);

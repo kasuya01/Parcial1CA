@@ -15,6 +15,21 @@ $base_url  = $_SESSION['base_url'];
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 <?php include_once $ROOT_PATH.'/public/css.php';?>
 <?php include_once $ROOT_PATH.'/public/js.php';?>
+ <script language="JavaScript" type="text/javascript">
+
+                function buscarbacte()
+                {
+                    if (document.getElementById('txtbacteria').value == 0) {
+                        alert("Debe de Ingresar un Parámetro de Búsqueda ");
+                    }
+                    else {
+                        BuscarCodigo();
+                    }
+                    
+                    //idarea=document.getElementById('cmbArea').value;
+                    //BuscarObservacion();
+                }
+ </script>
 </head>
 
 <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" onLoad="show_event(1);">
@@ -46,7 +61,7 @@ if ($nivel==33){
 </tr> -->
 <tr>
     <td class="StormyWeatherFieldCaptionTD">Bacteria </td>
-    <td class="StormyWeatherDataTD"><input type="text" name="txtbacteria" id="txtbacteria" size="50" />
+    <td class="StormyWeatherDataTD"><input type="text" name="txtbacteria" id="txtbacteria" size="58" />
         <input type="hidden" name="txtidbacteria" id="txtidbacteria" disabled="disabled" />
        
     </td>
@@ -61,7 +76,7 @@ if ($nivel==33){
                 <td class="StormyWeatherDataTD" colspan="6" align="right">
                                 
                                 <button type='submit' align="center" class='btn btn-primary'  ><span class='glyphicon glyphicon-floppy-disk'></span> Guardar</button>
-                                <button type='button' align="center" class='btn btn-primary'  onclick='BuscarCodigo(); '><span class='glyphicon glyphicon-search'></span> Buscar Solicitudes</button>
+                                <button type='button' align="center" class='btn btn-primary'  onclick='buscarbacte(); '><span class='glyphicon glyphicon-search'></span> Buscar </button>
                                 <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntBacterias.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
                 
                 </td>

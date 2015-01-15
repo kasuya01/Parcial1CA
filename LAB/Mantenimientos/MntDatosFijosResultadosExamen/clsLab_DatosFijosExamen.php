@@ -220,20 +220,30 @@ class clsLab_DatosFijosExamen
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
             if($con->conectar()==true){
-                $query = "SELECT lab_datosfijosresultado.id,lab_conf_examen_estab.codigo_examen,lab_conf_examen_estab.nombre_examen,
-                          lab_datosfijosresultado.unidades,lab_datosfijosresultado.rangoinicio,rangofin, lab_datosfijosresultado.nota, 
-                          to_char(lab_datosfijosresultado.fechaini,'dd/mm/YYYY') AS FechaIni, 
-                          to_char(lab_datosfijosresultado.fechafin,'dd/mm/YYYY') AS FechaFin,ctl_sexo.nombre as sexo,ctl_rango_edad.nombre as redad 
+                $query = "SELECT    lab_datosfijosresultado.id,
+                                    lab_conf_examen_estab.codigo_examen,
+                                    lab_conf_examen_estab.nombre_examen,
+                                    lab_datosfijosresultado.unidades,
+                                    lab_datosfijosresultado.rangoinicio,
+                                    rangofin, 
+                                    lab_datosfijosresultado.nota, 
+                                    to_char(lab_datosfijosresultado.fechaini,'dd/mm/YYYY') AS FechaIni, 
+                                    to_char(lab_datosfijosresultado.fechafin,'dd/mm/YYYY') AS FechaFin,
+                                    ctl_sexo.nombre as sexo,
+                                    ctl_rango_edad.nombre as redad 
                           FROM lab_datosfijosresultado
-                          INNER JOIN lab_conf_examen_estab ON lab_datosfijosresultado.id_conf_examen_estab=lab_conf_examen_estab.id 
-                          INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
-                          INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
-                          INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
-                          LEFT JOIN ctl_sexo ON lab_datosfijosresultado.idsexo = ctl_sexo.id 
-                          INNER JOIN ctl_rango_edad ON lab_datosfijosresultado.idedad = ctl_rango_edad.id 
-                          WHERE lab_conf_examen_estab.idplantilla=1 AND lab_conf_examen_estab.condicion='H'AND lab_areasxestablecimiento.condicion='H'
+                          INNER JOIN lab_conf_examen_estab              ON lab_datosfijosresultado.id_conf_examen_estab=lab_conf_examen_estab.id 
+                          INNER JOIN mnt_area_examen_establecimiento    ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
+                          INNER JOIN ctl_area_servicio_diagnostico      ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
+                          INNER JOIN lab_areasxestablecimiento          ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
+                          LEFT JOIN ctl_sexo                            ON lab_datosfijosresultado.idsexo = ctl_sexo.id 
+                          INNER JOIN ctl_rango_edad                     ON lab_datosfijosresultado.idedad = ctl_rango_edad.id 
+                          WHERE lab_conf_examen_estab.idplantilla=1 
+                          AND lab_conf_examen_estab.condicion='H'
+                          AND lab_areasxestablecimiento.condicion='H'
                           AND lab_datosfijosresultado.IdEstablecimiento=$lugar
-                          ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,lab_conf_examen_estab.nombre_examen
+                          ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,
+                          lab_conf_examen_estab.nombre_examen
                           LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
                
               //  echo $query;

@@ -143,6 +143,9 @@ switch ($opcion) {
 	    break;
     case 5: //Busqueda
         $nombretarjeta=$_POST['nombretarjeta'];
+        echo $fechaini=$_POST['Fechaini'];
+        $fechafin=$_POST['Fechafin'];
+        
 
         if (empty($_POST['Fechaini'])){
         	$Fechaini="NULL";
@@ -157,19 +160,36 @@ switch ($opcion) {
         	$FechaF=explode('/',$_POST['Fechafin']);
         	$Fechafin= '\''.$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0].'\'';	
         }
-        $query = "SELECT id,nombretarjeta,TO_CHAR(fechaini::timestamp, 'DD/MM/YYYY') AS fechaini, TO_CHAR(fechafin::timestamp, 'DD/MM/YYYY') AS fechafin FROM lab_tarjetasvitek WHERE idestablecimiento=$lugar AND ";
+        $query = "SELECT id,nombretarjeta,
+                TO_CHAR(fechaini::timestamp, 'DD/MM/YYYY') AS fechaini, 
+                TO_CHAR(fechafin::timestamp, 'DD/MM/YYYY') AS fechafin 
+                FROM lab_tarjetasvitek 
+                WHERE idestablecimiento=$lugar";
 
 	//VERIFICANDO LOS POST ENVIADOS
         if (!empty($_POST['nombretarjeta']))
-        	{ $query .= " nombretarjeta ilike '%".$_POST['nombretarjeta']."%' AND"; }
+        	{ $query .= "AND nombretarjeta ilike '%".$_POST['nombretarjeta']."%' AND"; }
 
+       /* if (!empty($_POST['Fechaini'])) {
+        	$query .= "AND fechaini= ".$Fechaini." AND";
+    	}*/
+        
         if (!empty($_POST['Fechaini'])) {
-        	$query .= " fechaini= ".$Fechaini." AND";
-    	}
+             $query .= " AND fechaini = '" . $_POST['Fechaini'] . "' AND";
+           
+        }
+        
+        
 
-        if (!empty($_POST['Fechafin'])) {
-        	$query .= " fechafin = ".$Fechafin." AND";
-        } 	
+        /*if (!empty($_POST['Fechafin'])) {
+        	$query .= "AND fechafin = ".$Fechafin." AND";
+        } */
+        
+         if (!empty($_POST['Fechafin'])) {
+             $query .= " AND fechafin = '" . $_POST['Fechafin'] . "' AND";
+           //  $cond2 .= " t02.fecha_solicitud = '" . $_POST['Fechaini'] . "' AND";
+        }
+        
 
         if((empty($_POST['nombretarjeta'])) and (empty($_POST['Fechaini'])) and (empty($_POST['Fechafin']))) {
         	$ban=1;
@@ -188,8 +208,7 @@ switch ($opcion) {
 
 				//muestra los datos consultados en la tabla
     		echo "<center >
-                
-                <table border = 1 style='width: 60%;'  class='table table-hover table-bordered table-condensed table-white'>
+                        <table border = 1 style='width: 60%;'  class='table table-hover table-bordered table-condensed table-white'>
 			   <thead>
                             <tr>
                                 <th  aling='center'> Modificar</th>
@@ -201,22 +220,26 @@ switch ($opcion) {
 			    </tr>
                     </thead><tbody>
                     </center>";
+                //echo $query;
+         
+                 while($row = pg_fetch_array($consulta)){
+	    	echo "<tr>
+			    	<td aling='center'> 
+			    		<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+			    		onclick=\"pedirDatos('".$row['id']."')\"> </td>
+			    		<!-- <td aling ='center'> 
+			    		<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+			    		onclick=\"eliminarDato('".$row['id']."')\"> </td> -->
+			    		<!--<td>".$row['id']."</td>-->
+			    		<td>".htmlentities($row['nombretarjeta'])." </td>
+			    		<td>".htmlentities($row['fechaini'])." </td>
+			    		<td>".htmlentities($row['fechafin'])." </td>
+			    	</tr>";
+	    }
+	    echo "</table>"; 
 
-    		while($row = pg_fetch_array($consulta)){
-    			echo "<tr>
-    			<td aling='center'> 
-    				<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-    				onclick=\"pedirDatos('".$row[0]."')\"> </td>
-    				<!-- <td aling ='center'> 
-    				<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-    				onclick=\"eliminarDato('".$row[0]."')\"> </td> -->
-    				<!--<td>".$row['id']."</td>-->
-    				<td>".htmlentities($row['nombretarjeta'])." </td>
-    				<td>".$row['fechaini']."</td>
-    				<td>".$row['fechafin']."</td>
-    			</tr>";
-    		}
-    		echo "</table>"; 
+                
+            
 
 				//determinando el numero de paginas
     		$NroRegistros= $objdatos->NumeroDeRegistrosbus($query);

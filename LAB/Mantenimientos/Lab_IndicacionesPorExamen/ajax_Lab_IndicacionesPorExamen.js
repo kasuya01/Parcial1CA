@@ -73,9 +73,28 @@ function LimpiarCampos(){
        	document.frmnuevo.txtindicacion.focus();
 }
 
+function DatosCompletos()
+{
+  var resp = true;
+	 
+	 if ((document.getElementById('cmbArea').value == 0)&&
+             (document.getElementById('cmbExamen').value == 0)&& 
+             (document.getElementById('txtindicacion').value == ""))
+		 {
+			resp= false;		
+		 }
+  return resp;  
+}
+
+
 function IngresarRegistro(){ //INGRESAR REGISTROS
 	//donde se mostrar� lo resultados
 	//valores de los inputs
+        
+        if (DatosCompletos())
+	{
+        
+        
 	idarea=document.getElementById('cmbArea').value;
 	idexamen=document.getElementById('cmbExamen').value
 	indicacion=document.getElementById('txtindicacion').value;
@@ -99,6 +118,12 @@ function IngresarRegistro(){ //INGRESAR REGISTROS
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
 	ajax.send("idarea="+idarea+"&opcion="+opcion+"&idexamen="+idexamen+"&idindicacion="+idindicacion+"&Pag="+Pag+"&indicacion="+escape(indicacion));
+  
+  }
+	else{
+		alert("Complete los datos a Ingresar");
+	}
+
 }
 
 function pedirDatos(idindicacion){ //CARGAR DATOS A MODIFICAR
@@ -106,6 +131,7 @@ function pedirDatos(idindicacion){ //CARGAR DATOS A MODIFICAR
 	divFormulario = document.getElementById('divFrmModificar');
 	divFormularioNuevo=document.getElementById('divFrmNuevo');
 	//instanciamos el objetoAjax
+        
 	ajax=objetoAjax();
 	//uso del medotod POST
 	ajax.open("POST", "consulta_IndicacionesPorExamen.php");
