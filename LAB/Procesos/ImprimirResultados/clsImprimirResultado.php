@@ -1181,7 +1181,7 @@ function ObtenerResultado($idsolicitud,$iddetalle)
 {
  $con = new ConexionBD;
    if($con->conectar()==true)
-   { $query = "SELECT resultado FROM lab_resultados WHERE idsolicitudestudio=$idsolicitud AND 		
+   { echo $query = "SELECT resultado FROM lab_resultados WHERE idsolicitudestudio=$idsolicitud AND 		
 		iddetallesolicitud=$iddetalle";
     $result = @pg_query($query);
      if (!$result)
