@@ -73,25 +73,27 @@ class cls_Mnt_AreaExamenEstablecimiento {
             }
 
             $result1 = @pg_query($query1);
+            
+            if(isset($elementos['insert'])) {
+                if(count($elementos['insert']) > 0) {
+                    $query2 = "";
+                    foreach ($elementos['insert'] as $key => $idexam) {
+                            $query2 = $query2."INSERT INTO mnt_area_examen_establecimiento(id_area_servicio_diagnostico, id_examen_servicio_diagnostico, id_establecimiento, id_usuario_reg, fecha_hora_reg, activo) VALUES($idarea, $idexam, $lugar, $usuario, NOW(), true);";
+                    }
 
-            if(count($elementos['insert']) > 0) {
-            	$query2 = "";
-            	foreach ($elementos['insert'] as $key => $idexam) {
-            		$query2 = $query2."INSERT INTO mnt_area_examen_establecimiento(id_area_servicio_diagnostico, id_examen_servicio_diagnostico, id_establecimiento, id_usuario_reg, fecha_hora_reg, activo) VALUES($idarea, $idexam, $lugar, $usuario, NOW(), true);";
-            	}
+                    $result2 = @pg_query($query2);
 
-            	$result2 = @pg_query($query2);
+                    if (!$result1 || !$result2)
+                            return false;
+                        else
+                            return $result1;
 
-            	if (!$result1 || !$result2)
-	                return false;
-	            else
-	                return $result1;
-
-            } else {
-            	if (!$result1)
-	                return false;
-	            else
-	                return $result1;
+                } else {
+                    if (!$result1)
+                            return false;
+                        else
+                            return $result1;
+                }
             }
         }
     }

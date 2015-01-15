@@ -460,17 +460,13 @@ switch ($opcion) {
                         
                                  </tr>
 			   	<tr>
-			   		<th>Imprimir</th>
-			   		<th>IdExamen</th>
-			   		<th>Examen</th>
-			   		<th>IdArea</th>
-			   		<th>Indicacion Medica </th>
-			   		<th>Estado</th>
-			   	</tr></thead><tbody>";
-        //<input name='fechasolicitud' id='fechasolicitud'  type='hidden' size='40' value='" . $fechasolicitud . "' disabled='disabled' />
-        //<input name='idarea' id='idarea'  type='hidden' size='40' value='" . $idarea . "' disabled='disabled' />
-        //<input name='procedencia[" . $pos . "]' type='hidden' id='procedencia[" . $pos . "]' value='" . $row['Precedencia'] . "'>
-	//<input name='idorigen[" . $pos . "]' type='hidden' id='idorigen[" . $pos . "]' value='" . $row['Origen'] . "'>
+			   		<td class='CobaltFieldCaptionTD'>Imprimir</td>
+			   		<td class='CobaltFieldCaptionTD'>IdExamen</td>
+			   		<td class='CobaltFieldCaptionTD'>Examen</td>
+			   		<td class='CobaltFieldCaptionTD'>IdArea</td>
+			   		<td class='CobaltFieldCaptionTD'>Indicacion Medica </td>
+			   		<td class='CobaltFieldCaptionTD'>Estado</td>
+			   	</tr>";
         $pos = 0;
         while ($fila = pg_fetch_array($consultadetalle)) {
             $imprimir .= "<tr>";
@@ -510,9 +506,7 @@ switch ($opcion) {
 
             $pos = $pos + 1;
         }
-//<input name='iddetalle[" . $pos . "]' type='hidden' id='iddetalle[" . $pos . "]' value='" . $fila['IdDetalleSolicitud'] . "'>
-        //<input name='IdExamen[" . $pos . "]' type='hidden' id='IdExamen[" . $pos . "]' value='" . $fila['IdExamen'] . "'>
-        //<input name='idplantilla[" . $pos . "]' type='hidden' id='idplantilla[" . $pos . "]' value='" . $fila['IdPlantilla'] . "'>
+
         $imprimir .= "<input type='hidden' name='oculto' id='oculto' value='" . $pos . "' />
 				<tbody></table></form>";
         echo $imprimir;

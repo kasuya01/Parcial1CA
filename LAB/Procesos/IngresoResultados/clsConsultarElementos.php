@@ -201,7 +201,7 @@ else
     function insertar_elementos($idresultado,$idelemento,$resultado,$control_ele,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-              $query = "INSERT INTO lab_detalleresultado(idresultado, idelemento, resultado, observacion, idestablecimiento) 
+              $query = "INSERT INTO lab_detalleresultado(idresultado, id_elementotincion, resultado, observacion, idestablecimiento) 
                       VALUES($idresultado,$idelemento,'$resultado','$control_ele',$lugar)";
             
             $result = @pg_query($query);
@@ -217,7 +217,7 @@ else
     function insertar_subelementos($idresultado,$idsubelemento,$resultado,$control,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-          $query = "INSERT INTO lab_detalleresultado(idresultado,idsubelemento,resultado,observacion,idestablecimiento) 
+          $query = "INSERT INTO lab_detalleresultado(idresultado,id_elementotincion,resultado,observacion,idestablecimiento) 
                       VALUES($idresultado,$idsubelemento,'$resultado','$control',$lugar)";
             
             $result = @pg_query($query);

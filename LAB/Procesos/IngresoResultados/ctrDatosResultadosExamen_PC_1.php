@@ -230,7 +230,6 @@ switch ($opcion)
                                            <td colspan='6'>
                                                <input type='button' name='Guardar'  id='Guardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaC()'\>
                                                <input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaC(".$idsolicitud.",\"".$idexamen."\",\"".$resultado."\",\"".$row_empleado['empleado']."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_antibioticos)."\",\"".$codigos_antibioticos."\",".$idbacteria.",\"".$cantidad."\",".$idtarjeta.",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".$idobservacion."\",\"".$valores_interpretacion."\");' />
-                                               <input type='button' name='Ingresar' id='Ingresar' value='Ingresar otro Resultado' onclick='IngresarOtro()'\>   
                                                <input type='button' id='btnSalir' value='cerrar' onclick='Cerrar()'
                                            </td>
 

@@ -58,14 +58,14 @@ $row_cantidad=pg_fetch_array($Catidad);
     // $row_cantidad[0];
 
 echo "SOL= ".$idsolicitud." DET=".$iddetalle;
-	//if ($row_cantidad[0]==1){
+	if ($row_cantidad[0]==1){
           //  echo "--->> 1";
 		$tipo=$obj->ObtenerResultado($idsolicitud,$iddetalle);
 		$row_tipo=pg_fetch_array($tipo);
 		$Resultado=$row_tipo['resultado'];
                 echo $Resultado[0];
 
-		If($Resultado[0]=='Positivo'){/*****************Positivo*****************/
+		If($Resultado[0]=='Positivo'){
                    // echo "dentro del if =P";
                     
                    // echo " if";
@@ -142,7 +142,7 @@ echo "SOL= ".$idsolicitud." DET=".$iddetalle;
                                     <td colspan="4">
                                         <table width="75%" border="0" align="left" cellspacing="0" >
                                         <tr>
-                                                <td colspan='1' class="Estilo5"><strong>Resultado rrrr:</strong></td>
+                                                <td colspan='1' class="Estilo5"><strong>Resultado:</strong></td>
                                                 <td colspan='2' class="Estilo6"><?php echo "Positivo"?></td>
                                         </tr>
                                         <tr>
@@ -196,7 +196,7 @@ echo "SOL= ".$idsolicitud." DET=".$iddetalle;
 
 
 		<?php
-		}else{/*******************************Negativo*******************/
+		}else{
                     //echo "dentro else";
                     //$total= $row_cantidad[0];
                     // $cont=1;
@@ -278,10 +278,10 @@ echo "SOL= ".$idsolicitud." DET=".$iddetalle;
                                                         
                                                         
 							{
-								case "Negativo";?>
+								case "N";?>
 									<td colspan='5' class="Estilo6">NEGATIVO</td>
 							  <?php break;
-								case "---";?>
+								case "O";?>
 									<td colspan='5' class="Estilo6">--</td>
 							  <?php break;
 							}?>
@@ -308,8 +308,8 @@ echo "SOL= ".$idsolicitud." DET=".$iddetalle;
 
 
 
-		<?php }/*****************************/
-	/*}
+		<?php }
+	}
 	else{
         //Mas de un resultado
         //
@@ -473,5 +473,5 @@ echo "SOL= ".$idsolicitud." DET=".$iddetalle;
 		 }?>
 
 	<?php
-	}*/
+	}
 ?>

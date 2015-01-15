@@ -387,8 +387,8 @@ function ImprimirPlantillaB(idsolicitud, idexamen, responsable, procedencia, ori
             "&var16=" + sexo + "&var17=" + idedad, "ImprimirB", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
 }
 
-function ImprimirPlantillaC(idsolicitud, idexamen, resultado, responsable, procedencia, origen, observacion, valores_antibioticos, codigos_antibioticos, idbacteria, cantidad, idtarjeta, nombrearea, estab,idobservacion) {
-
+function ImprimirPlantillaC(idsolicitud, idexamen, resultado, responsable, procedencia, origen, observacion, valores_antibioticos, codigos_antibioticos, idbacteria, cantidad, idtarjeta, nombrearea, estab,idobservacion,valores_interpretacion) {
+//alert(valores_interpretacion);
     ventana_secundaria = window.open("ImprimirPlantillaC.php?var1=" + idsolicitud +
             "&var2=" + idexamen + 
             "&var3=" + resultado +
@@ -403,7 +403,8 @@ function ImprimirPlantillaC(idsolicitud, idexamen, resultado, responsable, proce
             "&var12=" + idtarjeta + 
             "&var13=" + escape(nombrearea) +
             "&var14=" + escape(estab) +
-            "&var15=" + idobservacion, "ImprimirC", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
+            "&var15=" + idobservacion +
+            "&var16=" + valores_interpretacion, "ImprimirC", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
 }
 
 function ImprimirPlantillaCN(idsolicitud, idexamen, idarea, resultado, responsable, procedencia, origen, observacion) {
@@ -477,9 +478,18 @@ function ValidarCamposPlantillaC()
     {
         resp = false;
     }
+     if (document.frmnuevo.txtresultrealiza.value == "")
+    {
+        resp = false;
+    }
+     if (document.frmnuevo.txtresultfin.value == "")
+    {
+        resp = false;
+    }
+    return resp;
     for (i = 0; i < document.getElementById('oculto').value; i++)
     {
-        if (document.getElementById('txtresultado[' + i + ']').value == "")
+        if (document.getElementById('cmbResultado[' + i + ']').value == "0")
         {
             resp = false;
         }
@@ -492,7 +502,7 @@ function ValidarCamposPlantillaC()
 //FUNCION PARA MOSTRAR DATOS PREVIOS DE LA PLANTILLA C  	OPCION 2
 function MostrarVistaPreviaPlantillaC()
 {
-    if (validadatosplantilla())
+    if (ValidarCamposPlantillaC())
     {
         opcion = 2;
         //DATOS DE ENCABEZADO DE LOS RESULTADOS
@@ -526,14 +536,18 @@ function MostrarVistaPreviaPlantillaC()
         //DATOS PARA EL DETALLE DE LOS RESULTADOS
         valores_antibioticos = "";
         codigos_antibioticos = "";
+        valores_interpretacion = "";
         if (document.getElementById('oculto').value > 0)
         {
             for (i = 0; i < document.getElementById('oculto').value; i++)
             {
                 valores_antibioticos += document.getElementById('txtresultado[' + i + ']').value + "/";
                 codigos_antibioticos += document.getElementById('oidantibiotico[' + i + ']').value + "/";
+                valores_interpretacion += document.getElementById('cmbresultado[' + i + ']').value + "/";
             }
+            
         }
+       // alert (valores_interpretacion);
         ajax.open("POST", "ctrDatosResultadosExamen_PC.php", true);
         //muy importante este encabezado ya que hacemos uso de un formulario
         ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -543,7 +557,8 @@ function MostrarVistaPreviaPlantillaC()
                 "&idempleado=" + idempleado + "&valores_antibioticos=" + escape(valores_antibioticos) +
                 "&codigos_antibioticos=" + codigos_antibioticos + "&idtarjeta=" + idtarjeta +
                 "&idbacteria=" + idbacteria + "&cantidad=" + encodeURIComponent(cantidad) +
-                "&estab=" + estab+"&idobservacion=" + idobservacion + "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado);
+                "&estab=" + estab+"&idobservacion=" + idobservacion + "&fecharealiz=" + fecharealiz +
+                "&fecharesultado="+fecharesultado+"&valores_interpretacion="+valores_interpretacion);
         ajax.onreadystatechange = function()
         {
             if (ajax.readyState == 4)
@@ -602,6 +617,7 @@ function GuardarResultadosPlantillaC()
     //DATOS PARA EL DETALLE DE LOS RESULTADOS
     valores_antibioticos = "";
     codigos_antibioticos = "";
+    valores_interpretacion = "";
 
 
     if (document.getElementById('oculto').value > 0)
@@ -610,10 +626,12 @@ function GuardarResultadosPlantillaC()
         {
             valores_antibioticos += document.getElementById('txtresultado[' + i + ']').value + "/";
             codigos_antibioticos += document.getElementById('oidantibiotico[' + i + ']').value + "/";
+            valores_interpretacion += document.getElementById('cmbresultado[' + i + ']').value + "/";
         }
     }
-    //alert(valores_antibioticos);
+  // alert(valores_antibioticos);
     //alert(codigos_antibioticos);
+    // alert(valores_interpretacion);
     ajax.open("POST", "ctrDatosResultadosExamen_PC.php", true);
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idsolicitud=" + idsolicitud + "&idrecepcion=" + idrecepcion +
@@ -621,7 +639,7 @@ function GuardarResultadosPlantillaC()
             encodeURIComponent(valores_antibioticos) + "&codigos_antibioticos=" + codigos_antibioticos + "&idtarjeta=" + idtarjeta +
             "&tiporespuesta=" + tiporespuesta + "&idarea=" + idarea + "&nombrearea=" + escape(nombrearea) + "&resultado=" + resultado +
             "&idbacteria=" + idbacteria + "&cantidad=" + encodeURIComponent(cantidad)+"&idobservacion=" + idobservacion + 
-            "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado);
+            "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado+"&valores_interpretacion="+valores_interpretacion);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)

@@ -65,6 +65,8 @@ function calc_edad()
 	$datos_generales=$obj->MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar);
 	$row_generales= pg_fetch_array($datos_generales);
 	$row_area = pg_fetch_array($consulta_datos);
+        $FechaRes = $obj->ObtenerFechaResultado($idsolicitud,$idexamen,$lugar);
+                        $row_fecha = pg_fetch_array($FechaRes);         
 ?>
 	<table width='85%' border='0' align='center' class='StormyWeatherFormTABLE'>
 		<tr>
@@ -83,7 +85,7 @@ function calc_edad()
 			<td colspan="1" class="Estilo5"><strong>Establecimiento:</strong></td>
 			<td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['estabext'])?></td>
 			<td colspan="1" class="Estilo5"><strong>Fecha Resultado</strong></td>
-			<td colspan="2" class="Estilo6"><?php echo $row_generales['fecharecepcion']?></td>
+			<td colspan="2" class="Estilo6"><?php echo $row_fecha['fecharesultado']?></td>
 				
 		</tr>
 
@@ -132,7 +134,7 @@ function calc_edad()
 				<?php while($row = pg_fetch_array($consulta)){
 				?>
 					<tr>
-						<td width='50%' class="Estilo6"><?php echo $row['elemento']?></td>
+						<td width='50%' class="Estilo6"><?php echo $row['elementotincion']?></td>
 						<td width='50%' class="Estilo6"><?php echo $row['cantidadtincion']?></td>
 					</tr>
 				<?php	}
