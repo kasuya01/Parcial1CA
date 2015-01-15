@@ -146,7 +146,7 @@ function calc_edad()
 	  	<td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['nombre_examen']);?></td>
             </tr>
             <tr>
-                <td colspan='1' class="Estilo5"><strong>Rsultado:</strong></td>
+                <td colspan='1' class="Estilo5"><strong>Rsultado ddd:</strong></td>
                 <td colspan='2' class="Estilo5">Positivo</td>
                 
            </tr>  

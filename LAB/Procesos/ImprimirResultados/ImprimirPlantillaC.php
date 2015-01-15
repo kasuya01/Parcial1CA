@@ -62,10 +62,11 @@ echo "SOL= ".$idsolicitud." DET=".$iddetalle;
           //  echo "--->> 1";
 		$tipo=$obj->ObtenerResultado($idsolicitud,$iddetalle);
 		$row_tipo=pg_fetch_array($tipo);
-		$Resultado=$row_tipo['resultado'];
-                echo $Resultado[0];
+                print_r($row_tipo);
+		$Resultado=$row_tipo[0];
+              // echo $Resultado;
 
-		If($Resultado[0]=='Positivo'){/*****************Positivo*****************/
+		If($Resultado=='Positivo'){/*****************Positivo*****************/
                    // echo "dentro del if =P";
                     
                    // echo " if";
@@ -75,11 +76,14 @@ echo "SOL= ".$idsolicitud." DET=".$iddetalle;
 			$row_generales= pg_fetch_array($datos_generales);
 			$consulta_area=$obj->LeerDatos($idexamen);
 			$row_area= pg_fetch_array($consulta_area);
+                        $FechaRes = $obj->ObtenerFechaResultado($idsolicitud,$idexamen,$lugar);
+                        $row_fecha = pg_fetch_array($FechaRes);            
+                        
+                        
 			$consulta_datos=$obj->DatosResultadoPlanCPositivo($idsolicitud,$iddetalle);
 			$row_datos= pg_fetch_array($consulta_datos);
 			$consulta=$obj->LeerResultadosAntibioticos($idsolicitud,$iddetalle);
-                        $FechaRes = $obj->ObtenerFechaResultado($idsolicitud,$idexamen,$lugar);
-                        $row_fecha = pg_fetch_array($FechaRes);                                        
+                                                   
 
 		  	$ban=0;
 
@@ -131,65 +135,64 @@ echo "SOL= ".$idsolicitud." DET=".$iddetalle;
 					<td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
 			  		<td colspan='2' class="Estilo6"><?php echo htmlentities($row_area['nombre_examen']);?></td>
 				</tr>
+                                
                                 <tr>
-					<td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>
-					<td colspan='2' class="Estilo6"><?php echo $row_generales['empleado'];?></td>
-				</tr>
+                                        <td colspan='1' class="Estilo5"><strong>Resultado:</strong></td>
+                                        <td colspan='2' class="Estilo6">Positivo</td>
+                                </tr>
                                 <tr>
                                         <td >&nbsp;</td>
                                 </tr>
-                                <tr>
-                                    <td colspan="4">
-                                        <table width="75%" border="0" align="left" cellspacing="0" >
-                                        <tr>
-                                                <td colspan='1' class="Estilo5"><strong>Resultado rrrr:</strong></td>
-                                                <td colspan='2' class="Estilo6"><?php echo "Positivo"?></td>
-                                        </tr>
-                                        <tr>
-                                                <td colspan='1' class="Estilo5" ><strong>Organismo:</strong></td>
-                                                <td colspan='2' class="Estilo6"><?php echo htmlentities($row_datos['bacteria']); ?></td>
-                                        </tr>
-                                        <tr>
-                                                <td class="Estilo5" colspan="1"><strong>Cultivo con Cuenta de Colonias:</strong></td>
-                                                <td class="Estilo5" colspan="2"><?php echo htmlentities($row_datos['cantidad'])?></td>
+                                <?php 
+     
+   $detalle = $obj->obtener_detalle_resultado($row_totresult['idresultado']);
+    //$row_det= pg_fetch_array($detalle);
+         while($row_det = pg_fetch_array($detalle)){?>
+            <tr>
+                <td colspan='1' class="Estilo5"><strong>Organismo:</strong></td>
+                <td colspan='5' class="Estilo5"><?php echo htmlentities($row_det['bacteria']); ?></td>
+            </tr>
+           <tr>
+                <td colspan='2' class="Estilo5"><strong>Cultivo con Cuenta de Colonias:</strong></td>
+                <td colspan='1' class="Estilo5"><?php echo htmlentities($row_det['cantidad'])?></td>
+           </tr>
+           <tr>
+		<td colspan='6'>&nbsp;</td>
+            </tr>
+           <tr> 
+                <td colspan='6'>
+                    <table width='60%' border='0' align='left' class='StormyWeatherFormTABLE' cellspacing="0">
 
-                                        <tr>
-                                                <td colspan='3'>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan='5'>
-                                                <table width='100%' border='0' align='left' class='StormyWeatherFormTABLE'>
-                                                        <tr>
-                                                            <td class="Estilo5" colspan="1"><strong>ANTIBIOTICO</strong></td>
-                                                            <td class="Estilo5" colspan="1"><strong>LECTURA</strong></td>
-                                                            <td class="Estilo5" colspan="2"><strong>INTERPRETACI&Oacute;N</strong>
-                                                            </td>
-                                                        </tr>
-                                                                    <?php	pg_free_result($datos_generales);
-                                                                            $pos=0;
-
-                                                    while($row = pg_fetch_array($consulta))//ELEMENTOS)
-                                                            {?>
-                                                        <tr>
-                                                            <td colspan="1" class="Estilo5"><?php echo htmlentities($row['antibiotico'])?></td>
-                                                            <td colspan="1" class="Estilo5"><?php echo htmlentities($row['valor'])?></td>
-                                                            <td colspan="2" class="Estilo5"><?php echo htmlentities($row['posible_resultado'])?> </td>
-                                                        </tr>
-                                                            <?php
-                                                            }
-                                                            pg_free_result($consulta);?>
-                                                        <tr>
-                                                            <td colspan="7" align="center" >
-                                                                <div id="boton">
-                                                                    <input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
-                                                                    <input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar() ;"/>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </table>
+                        <tr>
+                            <td colspan='4'>
+                                <table width="100%" border="0" align="left" cellspacing="0" >
+                                    <tr>
+                                        <td colspan='1' class="Estilo5"><strong>ANTIBIOTICO</strong></td>
+                                        <td colspan='1' class="Estilo5"><strong>LECTURA</strong></td>
+                                        <td colspan='2' class="Estilo5"><strong>INTERPRETACI&Oacute;N</strong></td>
+                                    </tr>
+         <?php
+                     $res_tarjeta= $obj->obtener_resultadoxtarjeta($row_det['iddetalleresultado']);
+                    //$row_tarjeta= pg_fetch_array($res_tarjeta);
+                        while($row_tarjeta = pg_fetch_array($res_tarjeta)){?>
+                                    <tr>
+                                        <td colspan='1' class="Estilo5"><?php echo $row_tarjeta['antibiotico']?></td>
+                                        <td colspan='1' class="Estilo5"><?php echo htmlentities($row_tarjeta['valor'])?></td>
+                                        <td colspan='2' class="Estilo5"> <?php echo htmlentities( $row_tarjeta['posible_resultado']) ?></td>
+                                    </tr>
+            
+                <?php
+                }?>
+                                </table>
+                           </td>
+                        </tr>
+                        <tr>
+		<td colspan='6'>&nbsp;</td>
+           </tr> 
+           
+                    </table><?php 
+    }
+}?>
                                 </td>
                             </tr>
                         </table>
