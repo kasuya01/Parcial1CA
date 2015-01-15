@@ -37,7 +37,7 @@
                                 nav_header = nav_header + '<li>'
                                 nav_content = nav_content + '<div class="tab-pane fade" id="pane_'+gval.codigo+'">';
                             }
-                            
+
                             nav_header = nav_header + '<a href="#pane_'+gval.codigo+'" role="tab" data-toggle="pill">'+gval.nombre+'</a></li>';
                             grp_idx++;
 
@@ -47,7 +47,7 @@
                                 var checked = '';
                                 if(eval.activo === 'true')
                                     checked = 'checked';
-                                
+
                                 if(exa_idx % 2 === 0 || exa_idx === 0)
                                     nav_content = nav_content + '<tr>';
 
@@ -55,7 +55,7 @@
                                                                 <div class="checkbox">\
                                                                     <label>\
                                                                         <input type="checkbox" id="exam_'+gval.codigo+'_'+eval.id+'" name="exam_'+gval.codigo+'_'+eval.id+'" value="'+eval.id+'_'+eval.activo+'" '+checked+'>\
-                                                                        '+eval.nombre+'\
+                                                                        <b>'+eval.codigo + '</b> - ' + eval.nombre+'\
                                                                     </label>\
                                                                 </div>\
                                                             </td>';
@@ -85,7 +85,7 @@
                         $.each(object.data, function(idx,val) {
                             $('#cmb-area').append($("<option></option>").attr("value",val.idarea).text(val.nombrearea));
                         });
-                        
+
                         $("#cmb-area option:first").attr('selected','selected');
                         $('#cmb-area').trigger("change");
                     }
