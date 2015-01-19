@@ -128,11 +128,11 @@ switch ($opcion)
                             END AS tiporespuesta1
                      FROM lab_observaciones lb1
 		     inner join ctl_area_servicio_diagnostico c1 on (c1.id=lb1.idarea)
-		     WHERE  ";
+		      WHERE ";
 		
 	//VERIFICANDO LOS POST ENVIADOS
 	if (!empty($_POST['idarea']))
-		{ $query .="c1.id=".$_POST['idarea']." AND "; }
+		{ $query .=" c1.id=".$_POST['idarea']." AND "; }
 		
 	if (!empty($_POST['tiporespuesta']))
 		{ $query .="tiporespuesta='".$_POST['tiporespuesta']."'AND "; }
@@ -141,8 +141,8 @@ switch ($opcion)
 		{ $query .="observacion ilike '%".$_POST['observacion']."%' AND ";}
                   	
 		 $query = substr($query ,0,strlen($query)-4);
-		$query_search = $query."ORDER  BY c1.idarea,observacion";	
-     //  echo $query_search ;
+		 $query_search = $query."ORDER  BY c1.idarea,observacion";	
+       //echo $query_search ;
 	//para manejo de la paginacion
 		$RegistrosAMostrar=10;
 		$RegistrosAEmpezar=($_POST['Pag']-1)*$RegistrosAMostrar;
@@ -162,7 +162,7 @@ switch ($opcion)
 		    <th> observacion </th>
                     <th> Tipo de Respuesta</th>		   
 	        </tr></thead><tbody>";
-             while($row = pg_fetch_array($consulta)){
+             while($row = @pg_fetch_array($consulta)){
 		echo "<tr>
 			<td aling='center'> 
 			<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 

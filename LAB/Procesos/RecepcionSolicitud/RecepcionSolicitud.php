@@ -12,7 +12,6 @@ $area    = $_SESSION['Idarea'];
 $idexpediente = $_POST['idexpediente'];
 $fechacita    = $_POST['fechacita'];
 $Nfecha       = explode("/", $fechacita);
-
 $Nfechacita = $Nfecha[2] . "/" . $Nfecha[1] . "/" . $Nfecha[0];
 $estado     = 'D';
 $idEstablecimiento = $_POST['idEstablecimiento'];

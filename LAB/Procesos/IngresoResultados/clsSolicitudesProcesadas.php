@@ -385,9 +385,9 @@ to_char(t05.fecha_resultado, 'dd/mm/yyyy') as fecharesultado, t06.nombre_reporta
                     from lab_codigosxexamen lce
                     join lab_codigosresultados lcr on (lcr.id=lce.idresultado)
                     where lcr.id !=5
-                    and lce.idestandar=(select id from ctl_examen_servicio_diagnostico where idestandar='$idestandar');";
+                    and lce.idestandar=(select id from ctl_examen_servicio_diagnostico where idestandar='$idestandar' and activo=true);";
             $result =@pg_query($query);
-            echo 'query: '.$query;
+           // echo 'query: '.$query;
             if (!$result)
                 return false;
             else
@@ -757,7 +757,7 @@ function CantMetodologia($idexamen) {
     //Fn para ingresar en lab_resultado_metodologia
     
     //FUNCION PARA GUARDAR RESULTADOS
-  function InsertarResultadoPlantillaAM($hdnidexamen_, $hdnIdMetodologia_, $hdnResp_, $hdnFecProc_, $hdnFecResu_, $hdnResult_, $hdnObserva_, $hdnCodResult_, $idsolicitud, $usuario, $iddetalle, $idrecepcion, $lugar) {
+  function InsertarResultadoPlantillaAM($hdnidexamen_, $hdnIdMetodologia_, $hdnResp_, $hdnFecProc_, $hdnFecResu_, $hdnResult_, $hdnObserva_, $hdnCodResult_, $idsolicitud, $usuario, $iddetalle, $idrecepcion, $lugar, $idresultado) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
             $nextid="select nextval('lab_resultado_metodologia_id_seq')"; 
@@ -765,8 +765,8 @@ function CantMetodologia($idexamen) {
             $nextseq=  pg_fetch_array($sql);
             $idnext=$nextseq[0];
 
-            $query = "insert into lab_resultado_metodologia (id, id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, resultado, observacion, idusuarioreg, fechahorareg, fecha_realizacion, fecha_resultado, id_empleado)
-            values ($idnext,$hdnIdMetodologia_, $iddetalle, $hdnCodResult_, $hdnResult_,$hdnObserva_, $usuario, date_trunc('second',NOW()), $hdnFecProc_, $hdnFecResu_, $hdnResp_);";
+            $query = "insert into lab_resultado_metodologia (id, id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, resultado, observacion, idusuarioreg, fechahorareg, fecha_realizacion, fecha_resultado, id_empleado, id_posible_resultado)
+            values ($idnext,$hdnIdMetodologia_, $iddetalle, $hdnCodResult_, $hdnResult_,$hdnObserva_, $usuario, date_trunc('second',NOW()), $hdnFecProc_, $hdnFecResu_, $hdnResp_, $idresultado);";
                //echo $query;
        //     $query2 = "SELECT LAST_INSERT_ID();";
 
@@ -784,7 +784,7 @@ function CantMetodologia($idexamen) {
     //Fn para ingresar en lab_resultado final
     
     //FUNCION PARA GUARDAR RESULTADOS
-    function InsertarResultadoPlantillaAF($idsolicitud, $iddetalle,$idrecepcion, $v_resultfin, $v_lectura, $v_interpretacion, $v_obserrecep, $lugar, $usuario, $idexamen, $cmbEmpleadosfin, $d_resultfin) {
+    function InsertarResultadoPlantillaAF($idsolicitud, $iddetalle,$idrecepcion, $v_resultfin, $v_lectura, $v_interpretacion, $v_obserrecep, $lugar, $usuario, $idexamen, $cmbEmpleadosfin, $d_resultfin, $idresultado) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
             $nextid="select nextval('lab_resultados_id_seq')"; 
@@ -792,8 +792,8 @@ function CantMetodologia($idexamen) {
             $nextseq=  pg_fetch_array($sql);
             $idnext=$nextseq[0];
 
-            $query = "insert into lab_resultados (id, idsolicitudestudio, iddetallesolicitud, idrecepcionmuestra, resultado, lectura, interpretacion, observacion, idestablecimiento, idusuarioreg, fechahorareg, idexamen, idempleado, fecha_resultado) "
-                    . "values ($idnext, $idsolicitud, $iddetalle, $idrecepcion, $v_resultfin, $v_lectura,$v_interpretacion, $v_obserrecep, $lugar, $usuario, date_trunc('seconds',NOW()), $idexamen, $cmbEmpleadosfin, $d_resultfin)";
+            $query = "insert into lab_resultados (id, idsolicitudestudio, iddetallesolicitud, idrecepcionmuestra, resultado, lectura, interpretacion, observacion, idestablecimiento, idusuarioreg, fechahorareg, idexamen, idempleado, fecha_resultado, id_posible_resultado) "
+                    . "values ($idnext, $idsolicitud, $iddetalle, $idrecepcion, $v_resultfin, $v_lectura,$v_interpretacion, $v_obserrecep, $lugar, $usuario, date_trunc('seconds',NOW()), $idexamen, $cmbEmpleadosfin, $d_resultfin, $idresultado)";
             
          //   echo '<br/>'.$query;
        //     $query2 = "SELECT LAST_INSERT_ID();";
@@ -1013,6 +1013,116 @@ and sds.id=$iddetallesolicitud
 and mae.id_area_servicio_diagnostico = $idarea
 order by nombre_examen;";
            // echo $query;
+            $result = pg_query($query);
+            if (!$result) {
+                return false;
+            } else {
+                return $result;
+            }
+        }
+    }//fin BuscarAnterioresPUnica
+    
+    //Fn PG
+    function consultarPosibleRes($idexamen){
+         $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query= "select t03.id, posible_resultado
+                  from lab_examen_metodo_pos_resultado t01
+                  join lab_examen_metodologia t02 on (t02.id=t01.id_examen_metodologia)
+                  join lab_posible_resultado t03 on (t03.id=t01.id_posible_resultado)
+                  where id_conf_exa_estab =$idexamen
+                  and t01.habilitado=true
+                  and t02.activo=true;";
+            //echo $query;
+            $result = pg_query($query);
+            if (!$result) {
+                return false;
+            } else {
+                return $result;
+            }
+        }
+    }
+    
+    //Fn PG
+    function BuscarCodResult($idposres, $idexamen){
+         $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query= " select  t04.id, t04.resultado
+                  from lab_examen_metodo_pos_resultado t01 
+                 join lab_examen_metodologia t02 on (t02.id=t01.id_examen_metodologia) 
+                 join lab_posible_resultado t03 on (t03.id=t01.id_posible_resultado) 
+                 join lab_codigosresultados t04 on (t04.id=t01.id_codigoresultado)
+                 where id_conf_exa_estab =$idexamen
+                 and t03.id=$idposres
+                  and t01.habilitado=true 
+                  and t02.activo=true
+                  and t03.habilitado=true;";
+            //echo $query;
+            $result = pg_query($query);
+            if (!$result) {
+                return false;
+            } else {
+                return $result;
+            }
+        }
+    }
+    
+    //Fn PG
+    function PosibleResMetodo($idexametodologia){
+         $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query= " select t02.id, posible_resultado
+from lab_examen_metodo_pos_resultado t01
+join lab_posible_resultado t02 on (t02.id=t01.id_posible_resultado)
+where id_examen_metodologia =$idexametodologia
+and t01.habilitado=true 
+and t02.habilitado=true
+and (date(t01.fechafin) >= current_date or date(t01.fechafin) is null)
+and (date(t02.fechafin) >= current_date or date(t02.fechafin) is null);";
+            //echo $query;
+            $result = pg_query($query);
+            if (!$result) {
+                return false;
+            } else {
+                return $result;
+            }
+        }
+    }
+       //Fn PG
+    function buscaEstandar($idexamen, $idestablecimiento){
+         $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query= " select t02.id, posible_resultado
+from lab_examen_metodo_pos_resultado t01
+join lab_posible_resultado t02 on (t02.id=t01.id_posible_resultado)
+where id_examen_metodologia =$idexametodologia
+and t01.habilitado=true 
+and t02.habilitado=true
+and (date(t01.fechafin) >= current_date or date(t01.fechafin) is null)
+and (date(t02.fechafin) >= current_date or date(t02.fechafin) is null);";
+            //echo $query;
+            $result = pg_query($query);
+            if (!$result) {
+                return false;
+            } else {
+                return $result;
+            }
+        }
+    }
+    
+         //Fn PG
+    function buscarresfin($idexamen){
+         $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query= "  select t01.id, posible_resultado 
+              from lab_posible_resultado t01
+              join lab_examen_posible_resultado t02 on (t01.id=t02.id_posible_resultado)
+              where id_conf_examen_estab=33
+              and t01.habilitado=true 
+              and t02.habilitado=true
+              and (date(t01.fechafin) >= current_date or date(t01.fechafin) is null)
+              and (date(t02.fechafin) >= current_date or date(t02.fechafin) is null);";
+            //echo $query;
             $result = pg_query($query);
             if (!$result) {
                 return false;

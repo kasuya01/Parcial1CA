@@ -180,6 +180,7 @@ function BuscarObservacion()
 	idarea=document.getElementById('cmbArea').value;
 	tiporespuesta=document.getElementById('cmbTipoRespuesta').value;
 	//instanciamos el objetoAjax
+        //alert(tiporespuesta);
 	ajax=objetoAjax();
 	//archivo que realizar� la operacion ->actualizacion.php
 	ajax.open("POST", "ctrLab_Observaciones.php",true);

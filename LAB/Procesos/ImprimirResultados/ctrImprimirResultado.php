@@ -393,14 +393,14 @@ switch ($opcion) {
         $imprimir = "<br><form name='frmDatos'>
                      <div class='table-responsive' style='width: 80%;'>
                      <table width='70%' border='0' align='center' class='table table-hover table-bordered table-condensed table-white'>
-			<thead><th>
-				<td colspan='4' align='center' style='background-color: #428bca'>
+			<thead>
+				<td colspan='4' align='center' style='background-color: #428bca; color: #ffffff'>
 					<h3><strong>DATOS SOLICITUD</strong></h3></th>
 			</tr></thead><tbody>
 			<tr>
 
 				<td>Establecimiento</td>
-                                <td>" . $row['estabext'] . "</td>
+                                <td colspan='3'>" . $row['estabext'] . "</td>
 			</tr>
 		        <tr>
 				<td>Paciente</td>
@@ -454,7 +454,7 @@ switch ($opcion) {
 		
 				<table border = 1 align='center' class='table table-hover table-bordered table-condensed table-white'>
                                 <thead><tr>
-                                    <td colspan='6' align='center' style='background-color: #428bca'>
+                                    <td colspan='6' align='center' style='background-color: #428bca; color: #ffffff'>
 					<h3><strong>ESTUDIOS SOLICITADO</strong></h3>
                         
                         

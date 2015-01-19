@@ -194,7 +194,7 @@ values ($seqexp,$IdNumeroExpRef, $seqpr, $LugardeAtencion,$IdEstablecimientoExte
     $nextseq=  pg_fetch_array($sql);
     $idnext=$nextseq[0];
     $InsertCit = "INSERT INTO cit_citas_serviciodeapoyo (id, fecha, idusuarioreg, fechahorareg)
-                                  VALUES ($idnext,current_date,$iduser,NOW())";
+                                  VALUES ($idnext,current_date,$iduser,date_trunc('seconds',NOW()))";
                    //echo 'inse: '.$InsertCit.'<br/>';
                     $queryIns = pg_query($InsertCit);
         echo $IdNumeroExp.'~'.$idnext.'~'.$_GET['IdNumeroExpRef'];

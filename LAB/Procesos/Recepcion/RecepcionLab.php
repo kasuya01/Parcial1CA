@@ -582,7 +582,7 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
 
 <!--<link href="../../../css/paginalab.css" rel="stylesheet" type="text/css" />-->
 <form name="frmdatosexpediente" action="" method="post">	
-<table border = 1 class="CobaltFormTABLE" cellspacing="0" cellpadding="3" align="center">
+<table border = 0 class="CobaltFormTABLE" cellspacing="0" cellpadding="3" align="center">
 	<tr>
 		<td colspan="3" align="center" class="CobaltFieldCaptionTD">
 			<H3><strong>Verificar Expediente</strong></H3>
@@ -590,11 +590,12 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
 	  </tr>
 	<tr>
 		<td class="StormyWeatherFieldCaptionTD" align="center">Expediente</td>
-		<td class="StormyWeatherDataTD">
+                <td class="StormyWeatherDataTD"><br/>
 			<input id="txtexp" class="CobaltInput" style="width:188px; height:20px" size="26"  >
                         <input type="hidden" id="IdCitaServApoyo">
                         <input type="hidden" id="IdEstablecimientoExterno">
-                        <input type="button" value="Verificar" id="btnverificar" onClick="searchpac();">
+                        <button type="button" id="btnverificar" name="btnverificar" class='btn btn-primary' onclick="searchpac()"><span class='glyphicon glyphicon glyphicon-search'>&nbsp;Verificar</button>
+<!--                        <input type="button" value="Verificar" id="btnverificar" onClick="searchpac();">-->
 		</td> 
 	</tr>     
 </table>	
@@ -602,12 +603,12 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
 <div id="DatosPaciente"></div>
  <div id="lyLaboratorio" style="display:none; position:relative;">
      <form name="frmdatosgenerales" action="" method="post">  
-        <table cellspacing="0" cellpadding="3" align="center" border=1 class="StormyWeatherFormTABLE">
+        <table cellspacing="0" cellpadding="0" align="center" border=0 class="StormyWeatherFormTABLE" style="height:275px">
             <tr>&nbsp;</tr>
             <tr>
                     <td colspan="3" align="center" class="CobaltFieldCaptionTD">
                             <div>
-                                    <H3><strong>Datos Generales de Boleta de Ex&aacute;menes </strong></H3>
+                               <h2><strong>Datos Generales de Boleta de Ex&aacute;menes </strong></h2>
                             </div>
                     </td>
             </tr>
@@ -679,7 +680,7 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
                     <td class="StormyWeatherFieldCaptionTD">SubServicio:&nbsp;</td>
                     <td class="StormyWeatherDataTD">
                             <div id="lysubserv">
-                                    <select name="cmbSubServ" id="cmbSubServ" >
+                               <select name="cmbSubServ" id="cmbSubServ"  style="width:350px">
                                             <option value="0" selected="selected">--Seleccione Subespecialidad--</option>
 
                                     </select>
@@ -690,7 +691,7 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
                     <td class="StormyWeatherFieldCaptionTD">M&eacute;dico&nbsp;</td>
                     <td class="StormyWeatherDataTD">
                             <div id="lyMed">
-                                    <select name="cmbMedico" id="cmbMedico" onChange="fillMed(this.value)">
+                               <select name="cmbMedico" id="cmbMedico" onChange="fillMed(this.value)" style="width:350px">
                                             <option value="0" selected="selected">--Seleccione M&eacute;dico&nbsp;--</option>
 
                                     </select>

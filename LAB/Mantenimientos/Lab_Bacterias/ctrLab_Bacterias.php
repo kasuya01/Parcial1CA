@@ -112,20 +112,23 @@ switch ($opcion)
      case 5:  //buscar
             
 	   $query = "SELECT id,bacteria FROM lab_bacterias
-		      WHERE ";
+		      ";
+
 				
 		//VERIFICANDO LOS POST ENVIADOS
         		if (!empty($_POST['bacteria']))
                     		{ 
-                    $query .= " bacteria ilike '%".$_POST['bacteria']."%' " ; }
+                    $query .= " WHERE bacteria ilike '%".$_POST['bacteria']."%' " ; }
+
 		
 		$query = substr($query ,0,strlen($query)-1);
 	
 		//para manejo de la paginacion
-		$RegistrosAMostrar=4;
+		$RegistrosAMostrar=10;
 		$RegistrosAEmpezar=($_POST['Pag']-1)*$RegistrosAMostrar;
 		$PagAct=$_POST['Pag'];
 	 $query_search = $query." ORDER BY bacteria";
+         
 		//LAMANDO LA FUNCION DE LA CLASE 
 		$consulta= $objdatos->consultarpagbus($query,$RegistrosAEmpezar, $RegistrosAMostrar);
 
@@ -145,8 +148,9 @@ switch ($opcion)
 			</tr>
                     </thead>
                     <tbody>";
+                
 
-		while($row = pg_fetch_array($consulta)){
+		while($row = @pg_fetch_array($consulta)){
 		      echo "<tr>
 					<th aling='center'> 
 					<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 

@@ -72,26 +72,30 @@ switch ($opcion)
 		 /////LAMANDO LA FUNCION DE LA CLASE 
 		$consulta= $objdatos->consultarpag($lugar,$RegistrosAEmpezar, $RegistrosAMostrar);
 		//muestra los datos consultados en la tabla
-        echo "<table border = 1 align='center' class='StormyWeatherFormTABLE' width='85%'>
-                    <tr>
-                        <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-			<td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td>
-			<td class='CobaltFieldCaptionTD'> Examen </td>
-			<td class='CobaltFieldCaptionTD'> Elemento </td>
-			<td class='CobaltFieldCaptionTD'> Unidad </td>
-			<td class='CobaltFieldCaptionTD'> Observación</td>
-			<td class='CobaltFieldCaptionTD'> Tiene Sub-Elemento</td>
-			<td class='CobaltFieldCaptionTD'> Fecha Inicio</td>	
-			<td class='CobaltFieldCaptionTD'> Fecha Fin</td>		
-                    </tr>";
+        echo "<center >
+               <table border = 1 style='width: 90%;'  class='table table-hover table-bordered table-condensed table-white'>
+	           <thead>
+                        <tr>
+                            <th aling='center' > Modificar</th>
+                            <!--<th aling='center' class='CobaltFieldCaptionTD'> Eliminar</th>-->
+                            <th> Examen             </th>
+                            <th> Elemento           </th>
+                            <th> Unidad             </th>
+                            <th> Observación        </th>
+                            <th> Tiene Sub-Elemento </th>
+                            <th> Fecha Inicio       </th>	
+                            <th> Fecha Fin          </th>		
+                    	</tr>
+                    </thead><tbody>
+                </center>";
 		while($row = pg_fetch_array($consulta)){
                 echo"<tr>
 			<td aling='center'> 
                             <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
                             onclick=\"pedirDatos('".$row['idelemento']."')\"> </td>
-				<td aling ='center'> 
+				<!--<td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"eliminarDato('".$row['idelemento']."')\"> </td>
+					onclick=\"eliminarDato('".$row['idelemento']."')\"> </td>-->
 				<td>".$row['nombre_examen']."</td>
 				<td>".htmlentities($row['elemento'])."</td>";
 				if (empty($row['unidadelem']))

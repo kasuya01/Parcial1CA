@@ -55,10 +55,10 @@ include_once("ClaseSolicitud.php"); //Agregamos el Archivo con las clases y func
                  <h4>Datos Paciente</h4>
              </td></tr></thead><tbody>
 		  <tr>
-                      <td style="width: 10%"><b>No Expediente:</b> </td>
+                      <td style="width: 10%"><b>Expediente:</b> </td>
                       <td style="width: 90%; alignment-adjust: left"><?php echo $IdNumeroExp;?></td></tr>
 		  <tr>
-		  	<td><font color='black'><b>Nombre Paciente:</b></td> 
+		  	<td><font color='black'><b>Paciente:</b></td> 
 			<td><font color='black'><?php echo $NombrePaciente;?></td></tr>
      </tbody></table>
  </div>

@@ -144,8 +144,9 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
         
         $Peso=$rows['peso'];
         $Talla=$rows['talla'];
-        $Diagnostico=$rows['diagnostico'];
-        $ConocidoPor=$rows['conocido_por'];
+        //S$Diagnostico=$rows['diagnostico'];
+        $Diagnostico=isset($rows['diagnostico']) ? $rows['diagnostico'] : null;
+        $ConocidoPor=isset($rows['conocido_por']) ? $rows['conocido_por'] : null;
   }
   else{
       $Peso='-';
