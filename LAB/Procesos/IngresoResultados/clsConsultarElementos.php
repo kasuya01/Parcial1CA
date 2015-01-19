@@ -149,7 +149,7 @@ else
    function VerificarExistencia($idexamen,$idsolicitud,$iddetalle){
        $con = new ConexionBD;
         if($con->conectar()==true) {
-          $query = "SELECT count(*) FROM lab_resultados WHERE idsolicitudestudio=$idsolicitud AND iddetallesolicitud= $iddetalle";
+       echo   $query = "SELECT count(*) FROM lab_resultados WHERE idsolicitudestudio=$idsolicitud AND iddetallesolicitud= $iddetalle";
             $cantidad = pg_fetch_array(pg_query($query));
             return $cantidad[0];
         }
@@ -159,7 +159,7 @@ else
     function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$responsable,$usuario,$tab,$fecharealiz,$fecharesultado,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-           $query = "INSERT INTO lab_resultados (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
+          $query = "INSERT INTO lab_resultados (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
                       observacion,idempleado,idusuarioreg,fechahorareg,idestablecimiento,fecha_resultado) 
                       VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,'$observacion',$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,'$fecharesultado')
                       RETURNING id";
@@ -176,7 +176,7 @@ else
 
                     $id_exam_metod = $row_exam_metod[0];
 
-                  $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, idusuarioreg, fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
+                $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, idusuarioreg, fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
                             VALUES($id_exam_metod, $iddetalle, $tab, $usuario, date_trunc('seconds',NOW()),'$fecharealiz','$fecharesultado',$responsable)";
 
                     $result = pg_query($query);
@@ -214,12 +214,18 @@ else
     }
 
     //SUBELEMENTOS
-    function insertar_subelementos($idresultado,$idsubelemento,$resultado,$control,$lugar) {
+    function insertar_subelementos($idresultado,$idsubelemento,$resultado,$control,$lugar,$pos) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-          $query = "INSERT INTO lab_detalleresultado(idresultado,id_elementotincion,resultado,observacion,idestablecimiento) 
-                      VALUES($idresultado,$idsubelemento,'$resultado','$control',$lugar)";
-            
+            if ($pos==NULL){
+                $query = "INSERT INTO lab_detalleresultado(idresultado,idsubelemento,resultado,observacion,idestablecimiento) 
+                          VALUES($idresultado,$idsubelemento,'$resultado','$control',$lugar)";
+            }
+            else{
+                
+                $query = "INSERT INTO lab_detalleresultado(idresultado,idsubelemento,id_posible_resultado,observacion,idestablecimiento) 
+                          VALUES($idresultado,$idsubelemento,'$resultado','$control',$lugar)";
+            }
             $result = @pg_query($query);
 
             if (!$result)
@@ -378,7 +384,7 @@ else
     function LeerSubElementosExamen($idelemento,$lugar,$sexo,$idedad) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-            $query = "SELECT t01.id AS idsubelemento,
+          $query = "SELECT t01.id AS idsubelemento,
                              t01.subelemento,
                              t01.unidad,
                              t01.observsubelem,
@@ -388,7 +394,7 @@ else
                       WHERE t01.idelemento = $idelemento AND t01.idestablecimiento = $lugar
                         AND CURRENT_DATE BETWEEN t01.fechaini AND CASE WHEN fechafin IS NULL THEN CURRENT_DATE ELSE t01.fechafin END
                         AND (t01.idsexo = $sexo OR t01.idsexo IS NULL) AND (idedad = 4 OR idedad = $idedad)
-                      ORDER BY t01.subelemento";
+                      ORDER BY t01.orden";
             $result = @pg_query($query);
             
             if (!$result)
@@ -397,6 +403,52 @@ else
                 return $result;
         }
     }
+    
+    function leer_posibles_resultados($idsubelemento){
+         $con = new ConexionBD;
+        if($con->conectar()==true) {
+            $query="SELECT id_posible_resultado,posible_resultado 
+                    FROM lab_subelemento_posible_resultado 
+                    INNER JOIN lab_posible_resultado ON lab_posible_resultado.id = lab_subelemento_posible_resultado.id_posible_resultado
+                    WHERE id_subelemento=$idsubelemento";
 
+            $result = @pg_query($query);
+            
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }    
+    }
+    function contar_posibles_resultados($idsubelemento){
+         $con = new ConexionBD;
+        if($con->conectar()==true) {
+           $query="SELECT count(*) 
+                    FROM lab_subelemento_posible_resultado 
+                    INNER JOIN lab_posible_resultado ON lab_posible_resultado.id = lab_subelemento_posible_resultado.id_posible_resultado
+                    WHERE id_subelemento=$idsubelemento";
+
+            $result = @pg_query($query);
+            
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }    
+    }
+    
+    function BuscarResultado($id_posible_resultado){
+         $con = new ConexionBD;
+        if($con->conectar()==true) {
+           $query="SELECt posible_resultado from lab_posible_resultado where id=$id_posible_resultado";
+           $result = @pg_query($query);
+            
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }       
+        
+    }
 }//CLASE
 ?>

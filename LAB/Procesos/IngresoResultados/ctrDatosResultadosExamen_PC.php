@@ -41,7 +41,8 @@ switch ($opcion)
 					<input name='txtresultado[".$pos."]' type='text' id='txtresultado[".$pos."]' >
 					<input name='oidantibiotico[".$pos."]' type='hidden' id='oidantibiotico[".$pos."]' value='".$row['idantibiotico']."'></td>
                                 <td width='20%' class='StormyWeatherDataTD'> 
-                                    <select id='cmbresultado[".$pos."]' name='cmbresultado[".$pos."]'  size='1' style='width:205px'>";
+                                    <select id='cmbresultado[".$pos."]' name='cmbresultado[".$pos."]'  size='1' style='width:205px'>
+                                        <option value='0' >--Seleccione Resultado--</option>";
                                     $con_result = $objdatos->consultar_resultados($row['idantibiotico']);
                                     while ($row_result = pg_fetch_array($con_result)) {
                                         $imprimir.="<option value='" . $row_result['id'] . "'>" . htmlentities($row_result['posible_resultado']) . "</option>";

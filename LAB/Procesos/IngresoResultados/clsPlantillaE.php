@@ -371,12 +371,12 @@ function LeerProcesoExamen($idexamen,$lugar,$sexo,$idedad)
             FROM lab_procedimientosporexamen 
             INNER JOIN lab_conf_examen_estab ON lab_conf_examen_estab.id=lab_procedimientosporexamen.id_conf_examen_estab 
             INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
-            WHERE lab_procedimientosporexamen.id_conf_examen_estab=8 AND lab_procedimientosporexamen.idestablecimiento=$lugar
+            WHERE lab_procedimientosporexamen.id_conf_examen_estab=$idexamen AND lab_procedimientosporexamen.idestablecimiento=$lugar
             AND CURRENT_DATE BETWEEN lab_procedimientosporexamen.fechaini 
             AND CASE WHEN fechafin IS NULL THEN CURRENT_DATE ELSE lab_procedimientosporexamen.fechafin END
             AND (lab_procedimientosporexamen.idsexo=$sexo OR lab_procedimientosporexamen.idsexo IS NULL)
             AND (lab_procedimientosporexamen.idrangoedad=$idedad OR lab_procedimientosporexamen.idrangoedad=4)";
-   //echo $query;
+  //echo $query;
 	
 	 $result = @pg_query($query);
 	 
