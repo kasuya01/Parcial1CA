@@ -53,8 +53,9 @@ switch ($opcion) {
 						while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
 				$imprimir.= "<tr>
 						<td width='30%' class='StormyWeatherDataTD'>".htmlentities($rowsub['subelemento'])."</td>
-						<td width='30%' class='StormyWeatherDataTD'>
-                                                    <input size='20' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]'>
+						<td width='30%' class='StormyWeatherDataTD'>";
+                                                    
+                                $imprimir.= "<input size='20' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]'>
                                                     <input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>
 						</td>
 						<td width='5%' class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."</td>
@@ -130,41 +131,71 @@ switch ($opcion) {
 					</tr>";
 				$pos=0;
 				$posele=0;
+                                
 				while($row = pg_fetch_array($consulta)) { //ELEMENTOS
-					if($row['subelemento']=="S") {
-						$imprimir.= "
-							<tr class='StormyWeatherFieldCaptionTD'>
-								<td colspan='4' style='font:bold'>".htmlentities($row['elemento'])."</td>
-							</tr>";
+                                    if($row['subelemento']=="S") {
+					$imprimir.= "
+                                            <tr class='StormyWeatherFieldCaptionTD'>
+						<td colspan='4' style='font:bold'>".htmlentities($row['elemento'])."</td>
+                                            </tr>";
 						$consulta2=$objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
 
-						while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
-							$imprimir.= "
-								<tr>
-									<td width='30%' class='StormyWeatherDataTD'>".htmlentities($rowsub['subelemento'])."</td>
-									<td width='25%' class='StormyWeatherDataTD'>
-										<input size='30' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]'>
+					while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
+                                            $imprimir.= "
+                                            <tr>
+						<td width='30%' class='StormyWeatherDataTD'>".htmlentities($rowsub['subelemento'])."</td>
+						<td width='25%' class='StormyWeatherDataTD'>";
+                                             $imprimir.="<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>";
+                                                   $con_total=$objdatos->contar_posibles_resultados($rowsub['idsubelemento']);
+                                                   $total=pg_fetch_array($con_total);
+                                                   //echo $total[0];
+                                                if($total[0]>=1){      
+                                                       $imprimir.= "<select id='txtresultadosub[".$pos."]' name='txtresultadosub[".$pos."]'  size='1' style='width:260px'>
+                                                              <option value='0' >--Seleccione Resultado--</option>";
+                                                    $con_result=$objdatos->leer_posibles_resultados($rowsub['idsubelemento']);
+                                                    while ($row_result=pg_fetch_array($con_result)) {
+                                        $imprimir.="<option value='" . $row_result['id_posible_resultado'] . "'>" . htmlentities($row_result['posible_resultado']) . "</option>";
+                                                       }   
+                                                     
+                                                     $imprimir.= "   <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]' value='".$pos."'>  "; 
+                                                   // print_r($row_result);
+                                                    //$tot=  count($row_result);
+                                                    //echo $tot;
+                                                     //   prit_r($row_result);
+                                            
+                                              
+                                                //  $imprimir.="<option value='" . $row_result['id_posible_resultado'] . "'>" . htmlentities($row_result['posible_resultado']) . "</option>";
+                                                }
+                                                else{
+                                                                           //  print_r($row_result);
+							$imprimir.= "  <input size='30' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]'>
 										<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>
-									</td>
-									<td width='20%' align='center' class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."
+                                                                                     <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''  
+									</td>";
+                                                      
+                                                }
+							$imprimir.=     "<td width='20%' align='center' class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."
 									<td width='20%' align='center' class='StormyWeatherDataTD'>".$rowsub['rangoinicio']." - ".$rowsub['rangofin']."
 										<input name='txtcontrol[".$pos."]' type='hidden' id='txtcontrol[".$pos."]'>
+                                                                                    
 									</td>
 								</tr>";
 							$pos=$pos + 1;
-						} //while interno
+                                                    
+                                        } //while interno
 						$imprimir.= "<tr>
 								<td colspan='4' class='StormyWeatherDataTD'>".htmlentities($row['observelem'])."</td>
 							</tr>
 							<tr>
 								<td colspan='4' class='StormyWeatherDataTD'>&nbsp;</td>
 							</tr>";
-					} else {
+                                    } else {
 						$imprimir.="<tr>
 								<td style='font:bold'>".htmlentities($row['elemento'])."</td>
 								<td>
 									<input name='txtresultadoele[".$posele."]' type='text' id='txtresultadoele[".$posele."]'>
 									<input name='oidelemento[".$posele."]' type='hidden' id='oidelemento[".$posele."]' value='".$row['idelemento']."'>
+                                                                       
 								</td>
 								<td class='StormyWeatherDataTD'>".htmlentities($row['unidadelem'])."
 									<input name='txtcontrol[".$posele."]' type='hidden' id='txtcontrol[".$posele."]'>
@@ -179,6 +210,7 @@ switch ($opcion) {
 								<td colspan='4' class='StormyWeatherDataTD'>&nbsp;</td>
 							</tr></table>";
 					}//else
+                                    
 				}//while externo
                                 
 				pg_free_result($consulta);
@@ -222,6 +254,7 @@ switch ($opcion) {
 	   	$codigos_elementos    = $_POST['codigos_elementos'];
 	   	$controles 	      = $_POST['controles'];
 	   	$controles_ele 	      = $_POST['controles_ele'];
+                $valores_combos       = $_POST['valores_combos'];
 	   	$establecimiento      = $_POST['estab'];
 	   	$tab 		      = $_POST['tab'];
 	   	$fechanac 	      = $_POST['fechanac'];
@@ -386,7 +419,7 @@ switch ($opcion) {
 	            $imprimir .="<td colspan='3' align='right'>
 			                    <input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaB()'>
 			                    <input type='button' name='Imprimir'  id='Imprimir' value='Imprimir'
-			                    	Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities( $establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\") ;'>
+			                    	Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities( $establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\",\"".$valores_combos."\") ;'>
 			                    <input type='button' id='btnSalir' value='Cerrar' onclick='Cerrar()'>
 			                </td>
 			            </tr>
@@ -395,11 +428,14 @@ switch ($opcion) {
 	        	echo $imprimir;
 	        	break;
 		    default:
-		        $cadena 		  = $valores_subelementos;
-		        $vector 		  = EXPLODE("/",$cadena);
-		        $vector_elementos = EXPLODE("/",$valores_elementos);
+		        $cadena 	   = $valores_subelementos;
+                        $datos_combos      = $valores_combos;
+		        $vector 	   = EXPLODE("/",$cadena);
+		        $vector_elementos  = EXPLODE("/",$valores_elementos);
+                        $vector_combos     = EXPLODE("/", $datos_combos);
+                       // print_r($vector_combos);
 				//$obj 			  = new clsConsultarElementos;
-		        $consulta 		  = $objdatos->LeerElementosExamen($idexamen,$lugar);
+		        $consulta 	  = $objdatos->LeerElementosExamen($idexamen,$lugar);
 		        $consulta_datos   = $objdatos->LeerDatos($idexamen);
 		        $datos_generales  = $objdatos->MostrarDatosGenerales($idsolicitud,$lugar);
 		        $datos_empleado   = $objdatos->DatosEmpleado($idempleado,$lugar);
@@ -407,7 +443,7 @@ switch ($opcion) {
 		        $row_area 	  = pg_fetch_array($consulta_datos);
 		        $row_empleado 	  = pg_fetch_array($datos_empleado);
 		        $nombreEmpleado   = $row_empleado['nombreempleado'];
-
+                        
 		        $imprimir="<br>
 		        	<table width='95%' border='0' align='center' class='StormyWeatherFormTABLE'>
 		        		<tr>
@@ -487,9 +523,17 @@ switch ($opcion) {
 					$consulta2 = $objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
 		    while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
   			 $imprimir.="<tr>
-					<td width='35%'>".htmlentities($rowsub['subelemento'])."</td>
-					<td width='25%'>".htmlentities($vector[$pos])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>
-					<td width='10%'>".htmlentities($rowsub['unidad'])."</td>";
+					<td width='35%'>".htmlentities($rowsub['subelemento'])."</td>";
+                            if  ($vector_combos[$pos]== NULL){  
+			     $imprimir.="<td width='25%'>".htmlentities($vector[$pos])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>";
+                            }
+                            else{
+                                            $conresult=$objdatos->BuscarResultado($vector[$pos]);
+                                            $row_dresult=  pg_fetch_array($conresult);
+                            $imprimir.="<td width='25%'>".htmlentities($row_dresult['posible_resultado'])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>";
+                                        
+                            }
+                        $imprimir.="<td width='10%'>".htmlentities($rowsub['unidad'])."</td>";
 			if (empty($rowsub['rangoinicio']) AND empty($rowsub['rangofin']))
 			    $imprimir.= "<td >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 			else
@@ -527,7 +571,7 @@ switch ($opcion) {
 							<td colspan='5' align='center' >
 								<input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaB()'>
 								<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir'
-									Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\") ;'>
+									Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\",\"".$valores_combos."\") ;'>
 								<input type='button' id='btnSalir' value='Cerrar' onclick='Cerrar()'>
 							</td>
 						</tr>
@@ -537,21 +581,22 @@ switch ($opcion) {
 		}
 		break;
 	case 3://GUARDANDO DATOS DE LOS RESULTADOS EN LAS TABLAS
-		$idexamen 			  = $_POST['idexamen'];
+		$idexamen 		  = $_POST['idexamen'];
 		$idsolicitud 		  = $_POST['idsolicitud'];
 		$idrecepcion 		  = $_POST['idrecepcion'];
-		$iddetalle 			  = $_POST['iddetalle'];
+		$iddetalle 		  = $_POST['iddetalle'];
 		$procedencia 		  = $_POST['procedencia'];
-		$origen 			  = $_POST['origen'];
+		$origen 		  = $_POST['origen'];
 		$observacion 		  = $_POST['observacion'];
 		$idempleado 		  = $_POST['idempleado'];
-		$valores_subelementos = $_POST['valores_subelementos'];
-		$codigos_subelementos = $_POST['codigos_subelementos'];
+		$valores_subelementos     = $_POST['valores_subelementos'];
+		$codigos_subelementos     = $_POST['codigos_subelementos'];
 		$valores_elementos 	  = $_POST['valores_elementos'];
 		$codigos_elementos 	  = $_POST['codigos_elementos'];
-		$controles 			  = $_POST['controles'];
+		$controles                = $_POST['controles'];
 		$controles_ele 		  = $_POST['controles_ele'];
-		$vector 			  = EXPLODE("/",$valores_subelementos); //SON LOS SUB-ELEMENTOS
+                $valores_combos           = $_POST['valores_combos'];
+		$vector 		  = EXPLODE("/",$valores_subelementos); //SON LOS SUB-ELEMENTOS
 		$vector_elementos 	  = EXPLODE("/",$valores_elementos);
 		$v_id_elementos 	  = EXPLODE("/",$codigos_elementos);
 		$v_id_subelementos 	  = EXPLODE("/",$codigos_subelementos);
@@ -559,7 +604,8 @@ switch ($opcion) {
 		$tamano_vectorele 	  = count($vector_elementos);
 		$vector_controles 	  = EXPLODE("/",$controles);
 		$vector_controles_ele = EXPLODE("/",$controles_ele);
-		$tab 				  = $_POST['tab'];
+                $vector_combos            = explode("/",$valores_combos);
+		$tab 			  = $_POST['tab'];
   		$fecharealiz=$_POST['fecharealiz'];
                 $fecharesultado=$_POST['fecharesultado'];
                
@@ -590,7 +636,8 @@ switch ($opcion) {
 
                                 if (($tamano_vector-1) > 0) {
                                         for ($i=0; $i < $tamano_vector-1 ; $i++) { //INSERTANDO SUB-ELEMENTOS
-                                                if ($objdatos->insertar_subelementos($idresultado,$v_id_subelementos[$pos],$vector[$pos],$vector_controles[$pos],$lugar)==false) {
+                                              // $vector_combos[$pos];
+                                                if ($objdatos->insertar_subelementos($idresultado,$v_id_subelementos[$pos],$vector[$pos],$vector_controles[$pos],$lugar,$vector_combos[$pos])==false) {
                                                         $ban=1;
                                                 }
 

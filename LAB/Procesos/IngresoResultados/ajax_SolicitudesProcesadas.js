@@ -377,9 +377,9 @@ function ImprimirPlantillaA1(idsolicitud, idarea, responsable, valores_resultado
             "&var14=" + txtnec , "ImprimirA1", "width=700,ccc=500,menubar=no,scrollbars=yes,location=no");
 }
 
-function ImprimirPlantillaB(idsolicitud, idexamen, responsable, procedencia, origen, observacion, valores_subelementos, codigos_subelementos, valores_elementos, codigos_elementos, controles, controles_ele, nombrearea, establecimiento, responsable, sexo, idedad) {
+function ImprimirPlantillaB(idsolicitud, idexamen, responsable, procedencia, origen, observacion, valores_subelementos, codigos_subelementos, valores_elementos, codigos_elementos, controles, controles_ele, nombrearea, establecimiento, responsable, sexo, idedad, valores_combos) {
 
-//alert(origen);
+alert(valores_combos);
     ventana_secundaria = window.open("ImprimirPlantillaB.php?var1=" + idsolicitud +
             "&var2=" + idexamen + "&var3=" + responsable + "&var4=" + escape(procedencia) +
             "&var5=" + origen + "&var6=" + escape(observacion) + "&var7=" + encodeURIComponent(valores_subelementos) +
@@ -387,7 +387,7 @@ function ImprimirPlantillaB(idsolicitud, idexamen, responsable, procedencia, ori
             "&var10=" + codigos_elementos + "&var11=" + encodeURIComponent(controles) +
             "&var12=" + controles_ele + "&var13=" + nombrearea +
             "&var14=" + establecimiento + "&var15=" + escape(responsable) +
-            "&var16=" + sexo + "&var17=" + idedad, "ImprimirB", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
+            "&var16=" + sexo + "&var17=" + idedad + "&var18=" + valores_combos, "ImprimirB", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
 }
 
 function ImprimirPlantillaC(idsolicitud, idexamen, resultado, responsable, procedencia, origen, observacion, valores_antibioticos, codigos_antibioticos, idbacteria, cantidad, idtarjeta, nombrearea, estab,idobservacion,valores_interpretacion) {
@@ -1368,6 +1368,11 @@ function ValidarCamposPlantillaB()
     {
         resp = false;
     }
+    
+     if (document.getElementById('cmbTabulador').value == 0)
+    {
+        resp = false;
+    }
     return resp;
 }
 
@@ -1378,7 +1383,7 @@ function ValidarCamposPlantillaB()
 
 function MostrarVistaPreviaPlantillaB(){
 
-    if (ValidarCamposPlantillaB()) {
+   /* if (ValidarCamposPlantillaB()) {*/
         opcion = 2;
         //DATOS DE ENCABEZADO DE LOS RESULTADOS
         //solicitud estudio
@@ -1415,11 +1420,14 @@ function MostrarVistaPreviaPlantillaB(){
         codigos_elementos = "";
         controles = "";
         controles_ele = "";
+        valores_combos="";
         if (document.getElementById('oculto').value > 0) {
             for (i = 0; i < document.getElementById('oculto').value; i++) {
                 valores_subelementos += document.getElementById('txtresultadosub[' + i + ']').value + "/";
+                valores_combos += document.getElementById('totcombo[' + i + ']').value + "/";
                 codigos_subelementos += document.getElementById('oidsubelemento[' + i + ']').value + "/";
                 controles += document.getElementById('txtcontrol[' + i + ']').value + "/";
+               // alert(valores_combos);
             }
         }
         
@@ -1441,7 +1449,7 @@ function MostrarVistaPreviaPlantillaB(){
                 "&origen=" + escape(origen) + "&valores_subelementos=" + encodeURIComponent(valores_subelementos) + "&codigos_subelementos=" + codigos_subelementos +
                 "&valores_elementos=" + encodeURIComponent(valores_elementos) + "&codigos_elementos=" + codigos_elementos + "&controles=" + encodeURIComponent(controles) +
                 "&controles_ele=" + encodeURIComponent(controles_ele) + "&estab=" + estab + "&tab=" + tab + "&fechanac=" + fechanac + "&sexo=" + sexo+
-                "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado+"&subservicio="+subservicio);
+                "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado+"&subservicio="+subservicio+"&valores_combos="+ valores_combos);
         ajax.onreadystatechange = function()
         {
             if (ajax.readyState == 4)
@@ -1456,11 +1464,11 @@ function MostrarVistaPreviaPlantillaB(){
             }
         }
 
-    }
+   /* }
     else
     {
         alert("Complete los datos a Ingresar")
-    }
+    }*/
 
 }
 
@@ -1495,11 +1503,13 @@ function GuardarResultadosPlantillaB()
     codigos_elementos = "";
     controles = "";
     controles_ele = "";
+    valores_combos="";
     if (document.getElementById('oculto').value > 0)
     {
         for (i = 0; i < document.getElementById('oculto').value; i++)
         {
             valores_subelementos += document.getElementById('txtresultadosub[' + i + ']').value + "/";
+            valores_combos += document.getElementById('totcombo[' + i + ']').value + "/";
             codigos_subelementos += document.getElementById('oidsubelemento[' + i + ']').value + "/";
             controles += document.getElementById('txtcontrol[' + i + ']').value + "/";
         }
@@ -1523,7 +1533,7 @@ function GuardarResultadosPlantillaB()
             "&iddetalle=" + iddetalle + "&observacion=" + observacion + "&idempleado=" + idempleado + "&procedencia=" + procedencia + "&origen=" + origen + "&valores_subelementos=" +
             encodeURIComponent(valores_subelementos) + "&codigos_subelementos=" + codigos_subelementos + "&valores_elementos=" + encodeURIComponent(valores_elementos) +
             "&codigos_elementos=" + codigos_elementos + "&controles=" + encodeURIComponent(controles) + "&controles_ele=" + encodeURIComponent(controles_ele) + "&tab=" + tab +
-            "&fecharealiz="+ fecharealiz + "&fecharesultado="+fecharesultado);
+            "&fecharealiz="+ fecharealiz + "&fecharesultado="+fecharesultado+"&valores_combos="+ valores_combos);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -2277,7 +2287,8 @@ function IngresarResultadosPlantillaE()
         sexo = document.frmnuevo.txtSexo.value;
         fecharealiz = document.frmnuevo.txtresultrealiza.value;
         fecharesultado=document.frmnuevo.txtresultfin.value;
-     //   alert(fecharealiz+" - "+fecharesultado);
+       //alert(fecharealiz+" - "+fecharesultado);
+       alert(codigoex);
         CargarProcesosExamen(codigoex, fechanac, sexo,fecharealiz,fecharesultado);
     }
     else

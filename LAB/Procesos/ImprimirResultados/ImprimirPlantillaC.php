@@ -57,12 +57,12 @@ $row_cantidad=pg_fetch_array($Catidad);
 
     // $row_cantidad[0];
 
-echo "SOL= ".$idsolicitud." DET=".$iddetalle;
+//echo "SOL= ".$idsolicitud." DET=".$iddetalle;
 	//if ($row_cantidad[0]==1){
           //  echo "--->> 1";
 		$tipo=$obj->ObtenerResultado($idsolicitud,$iddetalle);
 		$row_tipo=pg_fetch_array($tipo);
-                print_r($row_tipo);
+              //  print_r($row_tipo);
 		$Resultado=$row_tipo[0];
               // echo $Resultado;
 
@@ -144,6 +144,20 @@ echo "SOL= ".$idsolicitud." DET=".$iddetalle;
                                         <td >&nbsp;</td>
                                 </tr>
                                 <?php 
+      $contar=$obj->contar_resultados($idsolicitud,$idexamen);
+            //$row_totresult= pg_fetch_array($contar); 
+      while($row_totresult = pg_fetch_array($contar)){
+        ?>
+            <tr>
+                <td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>
+                <td colspan='5' class="Estilo6"><?php echo $row_totresult['nombreempleado'];?></td>
+           </tr>
+                  
+            <tr>
+                <td colspan='1' class="Estilo5"><strong>Observación:</strong></td>
+                <td colspan='5' class="Estilo5"><?php echo $row_totresult['observacion']; ?></td>
+           </tr>
+                                <?php 
      
    $detalle = $obj->obtener_detalle_resultado($row_totresult['idresultado']);
     //$row_det= pg_fetch_array($detalle);
@@ -153,8 +167,8 @@ echo "SOL= ".$idsolicitud." DET=".$iddetalle;
                 <td colspan='5' class="Estilo5"><?php echo htmlentities($row_det['bacteria']); ?></td>
             </tr>
            <tr>
-                <td colspan='2' class="Estilo5"><strong>Cultivo con Cuenta de Colonias:</strong></td>
-                <td colspan='1' class="Estilo5"><?php echo htmlentities($row_det['cantidad'])?></td>
+                <td colspan='1' class="Estilo5"><strong>Cultivo con Cuenta de Colonias:</strong></td>
+                <td colspan='5' class="Estilo5" align='left'><?php echo htmlentities($row_det['cantidad'])?></td>
            </tr>
            <tr>
 		<td colspan='6'>&nbsp;</td>

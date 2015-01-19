@@ -22,6 +22,7 @@ $establecimietno      = $_GET['var14'];
 $responsable          = $_GET['var15'];
 $sexo                 = $_GET['var16'];
 $idedad               = $_GET['var17'];
+$valores_combos       = $_GET['var18'];
 //echo $origen;
 ?>
 <html>
@@ -75,6 +76,7 @@ $idedad               = $_GET['var17'];
                 $vector_elementos     = EXPLODE("/",$valores_elementos);
                 $vector_controles     = EXPLODE("/",$controles);
                 $vector_controles_ele = EXPLODE("/",$controles_ele);
+               
                 $consulta             = $obj->LeerElementosExamen($idexamen,$lugar);
                 $consulta_datos       = $obj->LeerDatos($idexamen);
                 $datos_generales      = $obj->MostrarDatosGenerales($idsolicitud,$lugar);
@@ -233,6 +235,7 @@ $idedad               = $_GET['var17'];
                 $cadena           = $valores_subelementos;
                 $vector           = EXPLODE("/",$cadena);
                 $vector_elementos = EXPLODE("/",$valores_elementos);
+                $vector_combos    = EXPLODE("/",$valores_combos);
                 $consulta         = $obj->LeerElementosExamen($idexamen,$lugar);
                 $consulta_datos   = $obj->LeerDatos($idexamen);
                 $datos_generales  = $obj->MostrarDatosGenerales($idsolicitud,$lugar);
@@ -266,6 +269,8 @@ $idedad               = $_GET['var17'];
                             <tr>
                                 <td colspan='1' class="Estilo5"><strong>N&uacute;mero de Expediente:</strong></td>
                                 <td colspan='2' class="Estilo6"><?php echo $row_generales['idnumeroexp']?></td>
+                                <td colspan='1' class="Estilo5" ><strong>Fecha Recepción:</strong></td>
+                                <td colspan='2' class="Estilo6" ><?php echo $row_generales['fecha']?></td>
                             </tr>
                             <tr>
                                 <td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
@@ -328,7 +333,17 @@ $idedad               = $_GET['var17'];
                                             ?>
                                                     <tr>
                                                         <td width='25%' class="Estilo5"><?php echo htmlentities($rowsub['subelemento'])?></td>
+                                              <?php
+                                                    if($vector_combos[$pos]== NULL){  
+                                              ?>
                                                         <td width='20%' class="Estilo5"><?php echo htmlentities($vector[$pos])?></td>
+                                                        
+                                                     <?php }
+                                                    else{
+                                                          $conresult=$obj->BuscarResultado($vector[$pos]);
+                                                          $row_dresult=  pg_fetch_array($conresult);?>
+                                                        <td width='20%' class="Estilo5"><?php echo htmlentities($row_dresult['posible_resultado'])?></td> 
+                                                    <?php }?>          
                                                         <td width='15%' class="Estilo5"><?php echo htmlentities($rowsub['unidad'])?></td>
                                                     <?php
                                                         if ((!empty($rowsub['rangoinicio'])) AND (!empty($rowsub['rangofin']))) { 
