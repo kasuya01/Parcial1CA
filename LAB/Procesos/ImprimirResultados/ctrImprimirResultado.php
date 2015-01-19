@@ -369,8 +369,9 @@ switch ($opcion) {
 
         //  echo $idexpediente."  ".$idsolicitud;
         //echo $idEstab;
-        $consulta = $objdatos->DatosGeneralesSolicitud($idexpediente, $idsolicitud, $idEstab, $lugar);
+        $consulta = $objdatos->DatosGeneralesSolicitud($idexpediente, $idsolicitud, $lugar);
         $row = pg_fetch_array($consulta);
+       // echo $consulta;
         //obteniedo los datos generales de la solicitud
         //valores de las consultas
        
@@ -387,13 +388,19 @@ switch ($opcion) {
         $Estado = $row['estado'];
         $fecharecepcion=$row['fecharecepcion'];
         $FechaNac=$row['fechanac'];
+        $dias=$row['dias'];
+        $idsexo=$row['idsexo'];
+        
+        $ConRangos = $objdatos->ObtenerCodigoRango($dias);
+        $row_rangos = pg_fetch_array($ConRangos);
+        $idedad = $row_rangos[0];
         //echo $FechaNac;
         //recuperando los valores del detalle de la solicitud
         $consultadetalle = $objdatos->DatosGeneralesSolicitud($idexpediente, $idsolicitud,$lugar);
         $imprimir = "<br><form name='frmDatos'>
                      <div class='table-responsive' style='width: 80%;'>
                      <table width='70%' border='0' align='center' class='table table-hover table-bordered table-condensed table-white'>
-			<thead>
+			<thead><tr>
 				<td colspan='4' align='center' style='background-color: #428bca; color: #ffffff'>
 					<h3><strong>DATOS SOLICITUD</strong></h3></th>
 			</tr></thead><tbody>
@@ -458,7 +465,7 @@ switch ($opcion) {
 					<h3><strong>ESTUDIOS SOLICITADO</strong></h3>
                         
                         
-                                 </tr>
+                                 </tr></thead><tbody>
 			   	<tr>
 			   		<td class='CobaltFieldCaptionTD'>Imprimir</td>
 			   		<td class='CobaltFieldCaptionTD'>IdExamen</td>
@@ -472,7 +479,7 @@ switch ($opcion) {
             $imprimir .= "<tr>";
             if ($fila['estado'] == "Resultado Completo") {
                 $imprimir .="<td><img src='../../../Iconos/impresion.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-				onclick=\"ImprimirDatos('" . $fila['iddetallesolicitud'] . "','" . $fila['idsolicitudestudio'] . "','" . $fila['idplantilla'] . "','$idexpediente','" . $fila['codigo_area'] . "','" . $fila['codigo_examen'] . "','" . $row['sexo'] . "','" . $FechaNac . "','" . $fila['idexamen'] . "','$subservicio')\">
+				onclick=\"ImprimirDatos('" . $fila['iddetallesolicitud'] . "','" . $fila['idsolicitudestudio'] . "','" . $fila['idplantilla'] . "','$idexpediente','" . $fila['codigo_area'] . "','" . $fila['codigo_examen'] . "','" . $row['sexo'] . "','" . $FechaNac . "','" . $fila['idexamen'] . "','$subservicio', $idsexo, $idedad)\">
 					</td>
 					<td>" . htmlentities($fila['codigo_examen']) . "</td>
 					<td>" . htmlentities($fila['nombre_examen']) . "
@@ -508,7 +515,7 @@ switch ($opcion) {
         }
 
         $imprimir .= "<input type='hidden' name='oculto' id='oculto' value='" . $pos . "' />
-				<tbody></table></form>";
+				</tbody></table></form>";
         echo $imprimir;
         pg_free_result($consultadetalle);
         break;

@@ -10,6 +10,9 @@ $expediente=$_GET['var4'];
 $idarea=$_GET['var5'];
 $IdExamen=$_GET['var6'];
 $subservicio=$_GET['var8'];
+$idsexo=$_GET['idsexo'];
+$idedad=$_GET['idedad'];
+//echo 'idedad:'.$idedad;
 
 //echo $iddetalle."*soli".$idsolicitud."*plantilla".$idplatilla."*exp".$expediente."*area".$idarea."*exam".$IdExamen
 ?>
@@ -105,7 +108,7 @@ $nombre=$row['nombre_area'];
 			</tr>
 
 			<?php
-				$consulta2=$objdatos->MostrarDatosFijosPlantillaA($IdExamen,$lugar,$iddetalle);
+				$consulta2=$objdatos->MostrarDatosFijosPlantillaA($IdExamen,$lugar,$iddetalle, $idsexo, $idedad);
 				$fila = pg_fetch_array($consulta2);
 			?>
                         <tr>

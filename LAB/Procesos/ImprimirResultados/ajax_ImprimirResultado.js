@@ -307,7 +307,7 @@ function MostrarDatos(posicion)
 	}
 }
 
-function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,idexamen,sexo,fechanac,idexamen,$subservicio)
+function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,idexamen,sexo,fechanac,idexamen,$subservicio, idsexo, idedad)
 {
     
   //alert(iddetalle);
@@ -327,8 +327,7 @@ function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,ide
                             //alert("la plantilla es 1 IF");
 				ventana_secundaria = window.open("ImprimirPlantillaA1.php?var1="+iddetalle+
                                 "&var2="+idsolicitud+"&var3="+idplantilla+"&var4="+idexpediente+
-                                "&var5="+idarea+"&var6="+idexamen+"&var7="+subservicio,
-                                "Impresion","width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
+                                "&var5="+idarea+"&var6="+idexamen+"&var7="+subservicio+"&idsexo="+idsexo+"&idedad="+idedad, "Impresion","width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
 				//alert($subservicio);
                                          
 			}
@@ -336,7 +335,7 @@ function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,ide
                            // alert($subservicio);
 				ventana_secundaria = window.open("ImprimirPlantillaA.php?var1="+iddetalle+
                                 "&var2="+idsolicitud+"&var3="+idplantilla+"&var4="+idexpediente+
-                                "&var5="+idarea+"&var6="+idexamen+"&var7="+sexo+"&var8="+subservicio,
+                                "&var5="+idarea+"&var6="+idexamen+"&var7="+sexo+"&var8="+subservicio+"&idsexo="+idsexo+"&idedad="+idedad,
                                 "Impresion","width=1150,ccc=800,menubar=no,scrollbars=yes,location=no");
                                    // alert($subservicio);
 			}

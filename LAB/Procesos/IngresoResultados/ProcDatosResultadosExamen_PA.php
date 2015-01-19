@@ -452,7 +452,7 @@ echo '<option value="xyz">Seleccione una opción</option>';
                             <?php 
                           }?>
                             <td colspan="4" style="text-align:right">
-                               <button type="button" align="right" style="text-align: right" class="btn btn-primary" onclick="VerResultados();"><span class='glyphicon glyphicon-file'></span>Ver Resultado </button>
+                               <button type="button" align="right" style="text-align: right" class="btn btn-primary" onclick="VerResultados();"><span class='glyphicon glyphicon-file'></span>&nbsp;Ver Resultado </button>
 <!--                                <input type="button" name="add" value="Agregar Resultado" Onclick="AddResultado() ;"> -->
                         
                             </td>
@@ -482,9 +482,10 @@ echo '<option value="xyz">Seleccione una opción</option>';
   <?php
 }
 else{
- echo '<center><br><br><h1><img src="../../../Imagenes/warning.png" valign="middle"/>'
-            . 'Los resultados de los examenes de la persona '.$rowpa['nombre'].', en esta área ya fueron ingresados.</h1> ';
-            echo " <button type='submit' class='fg-button ui-state-default ui-corner-all' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' />Cerrar</button></center>";
+ echo '<center><br><br><h1><img src="../../../Imagenes/alerta.png" valign="middle"/>'
+   . '&nbsp;'
+            . 'El resultado del exámen seleccionado del expediente "'.$_GET['var1'].'",<br/> ya fue ingresado.</h1> ';
+            echo " <button type='submit' class='btn btn-primary' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' /><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button></center>";
                
 }
 ?>

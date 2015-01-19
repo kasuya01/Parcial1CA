@@ -12,6 +12,8 @@ $idarea=$_GET['var5'];
 //$fechanac=$_GET['var7'];
 $idexamen=$_GET['var6'];
 $subservicio=$_GET['var8'];
+$idsexo=$_GET['idsexo'];
+$idedad=$_GET['idedad'];
 //echo $fechanac."    ".$sexo;
 //echo $iddetalle."*sol".$idsolicitud."*plan".$idplatilla."*exp".$expediente."*area".$idarea
 ?>
@@ -87,7 +89,7 @@ include_once("clsImprimirResultado.php");
 //echo  $idedad."   ".$sexo;
     //$consulta=$objdatos->DetalleExamenes($idsolicitud,$idarea,$lugar,$idedad,$sexo);
    
- $consulta=$objdatos->MostrarDatosFijosPlantillaA($idexamen,$lugar,$iddetalle);
+ $consulta=$objdatos->MostrarDatosFijosPlantillaA($idexamen,$lugar,$iddetalle, $idsexo, $idedad);
     
 ?>
     <table width='100%' align='center' class='StormyWeatherFormTABLE'>
