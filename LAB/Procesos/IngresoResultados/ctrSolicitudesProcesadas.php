@@ -524,7 +524,7 @@ switch ($opcion) {
 
         $Imprimir.="<table width='100%'  align='center' border='0' class='StormyWeatherFormTABLE'>
                         <tr>
-                            <td colspan='6' align='center' >&nbsp;DETALLE DE RESULTADOS<br/><br></td>
+                            <td colspan='7' align='center' >&nbsp;DETALLE DE RESULTADOS<br/><br></td>
                         </tr>
                         <tr >
                             <td align='center'><b>Prueba Realizada </b></td>";
@@ -870,9 +870,9 @@ switch ($opcion) {
          $consulta_empleado = $objdatos->BuscarEmpleadoValidador($responsable, $lugar);
                 $fila_empleado = pg_fetch_array($consulta_empleado); //$fila_empleado['NombreEmpleado'].
        
-        $Imprimir = "<hr><table width='70%' align='center' border='0' class='StormyWeatherFormTABLE'>
+        $Imprimir = "<hr><table width='100%' align='center' border='0' class='StormyWeatherFormTABLE' style='height: 350px;'>
 	            <tr>
-			<td colspan='1' align='left' width='5%'><img id='Image1' style='WIDTH: 80px; HEIGHT: 55px' height='86' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
+			<td colspan='1' align='left' width='20%'><img id='Image1' style='WIDTH: 80px; HEIGHT: 55px' height='86' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
                         <td align='center' colspan='4' width='60%' class='Estilo5'>
                             <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
                             <p><strong>" . $row_estab['nombre'] . "</strong></p>
@@ -881,51 +881,53 @@ switch ($opcion) {
                         <td colspan='1' align='right' width='20%'><img id='Image3' style='WIDTH: 110px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
                     </tr>
                     
-                        <td colspan='6' align='center'></td>
+                      <td colspan='6' align='center'><hr><br></td>
                     </tr>
                     <tr>
-                         <td rowspan='6' style='width:5%'>
+                         
                     	<td colspan='1' style='font:bold'><strong>Establecimiento:</strong></td>
-                    	<td colspan='1' style='font:bold'>" . $establecimiento . "</td>
-                            <td rowspan='5' style='width:5%'>
+                    	<td colspan='2' style='font:bold'>" . $establecimiento . "</td>
+                         
                     	<td colspan='1'style='font:bold'><strong>Fecha Recepción:</strong></td>
-                    	<td colspan='1' style='font:bold'>" . $row['fecharecepcion'] . "<input name='suEdad' id='suEdad'  type='hidden'  value='" . $rowpa['fecha_nacimiento'] . "'/></td>
+                    	<td colspan='2' style='font:bold'>" . $row['fecharecepcion'] . "<input name='suEdad' id='suEdad'  type='hidden'  value='" . $rowpa['fecha_nacimiento'] . "'/></td>
                     </tr>
 
                     <tr>
                     	<td colspan='1' style='font:bold'><strong>NEC:</strong></td>
-			<td colspan='1'>" . $txtnec . "</td>
+			<td colspan='2'>" . $txtnec . "</td>
                     	<td colspan='1' style='font:bold'><strong>Fecha Resultado:</strong></td>
-			<td colspan='1'>" . $d_resultfin . "</td></tr>
+			<td colspan='2'>" . $d_resultfin . "</td></tr>
 		    <tr>
                         <td colspan='1' style='font:bold'><strong>Paciente:</strong></td>
-			<td colspan='3' >" . $rowpa['nombre'] . "</td>
+			<td colspan='5' >" . $rowpa['nombre'] . "</td>
                     </tr>
                     <tr>
 			<td colspan='1' style='font:bold'><strong>Edad:</strong></td>
-			<td colspan='1'>".$rowpa['edad']."
+			<td colspan='2'>".$rowpa['edad']."
                             
                            <!-- <div id='divsuedad'>
                             </div>--></td>
 			<td colspan='1' style='font:bold'><strong>Sexo:</strong></td>
-			<td colspan='1'>" . $rowpa['sexo'] . "</td>
+			<td colspan='2'>" . $rowpa['sexo'] . "</td>
                     </tr>
                      </tr>
                     	<td colspan='1'style='font:bold'><strong>Procedencia:</strong></td>
-                    	<td colspan='1'>" . $proce . "</td>
+                    	<td colspan='2'>" . $proce . "</td>
                     	<td colspan='1' style='font:bold'><strong>Servicio:</strong></td>
-			<td colspan='1'>" . $origen . "</td>
+			<td colspan='2'>" . $origen . "</td>
                     </tr>
                     <tr>
-                      <th style='font:bold; text-align:left'>Responsable:</th>
-                      <td>".$fila_empleado['empleado']."</td>
-                    </tr>
-                    <tr>
-                     <td colspan='6'>
-                     <br><hr>
-                        <table align='center'>
+                      <th style='font:bold;'><strong>Validado por:</strong></th>
+                      <td colspan='5'>".$fila_empleado['empleado']."</td>
+                    </tr>                      
+                     <tr>
+			<td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;</td>
+		    </tr>
+
+		    </table>";
+                         $Imprimir.="<table width='100%'  align='center' border='0' class='StormyWeatherFormTABLE'>
                         <tr>
-                        <td colspan='10' align='center'><bold>&nbsp;DETALLE DE RESULTADOS</bold></td>
+                        <td colspan='7' align='center'><bold>&nbsp;DETALLE DE RESULTADOS</bold><br/><br></td>
                         </tr>
                         ";
         
@@ -988,15 +990,16 @@ switch ($opcion) {
 	}*/
       
         $Imprimir.="  
-            <tr class='CobaltButton'>
+            <tr>
                             <td align='center'>Prueba Realizada </td>
                             <td align='center'>Resultado</td>
                             <td align='center'>Unidades</td>
                             <td align='center'>Rangos Normales </td>
-                            <td align='center'>Lectura</td>
-			    <td align='center'>Interpretaci&oacute;n</td>
-			    <td align='center'>Observaci&oacute;n</td>
+                            <td align='left'>Lectura</td>
+			    <td align='left'>Interpretaci&oacute;n</td>
+			    <td align='left'>Observaci&oacute;n</td>
 			</tr>
+                        <tr><td colspan='7'><hr style='width:90%'></td></tr>
                     <tr>
                             <td align='center' style='font:bold'><strong>".$fila['nombre_reporta']."</strong></td>
 <td align='center'>".$v_resultfin."</td>
@@ -1006,19 +1009,19 @@ switch ($opcion) {
 			    <td align='justify'>".$v_interpretacion."</td>
 			    <td align='justify'>".$v_obserrecep."</td>
 			</tr>
-                    <tr>
+                        <tr><td colspan='7'>&nbsp;</td></tr>
             
-                    </table>        
-                    </td>
-                    </tr>
-                    <tr><td colspan=6><hr></td>
+                    </table>  
+                    <table align='center' border='0'>
+                    
+                    <tr><td colspan=7><hr></td>
                     </tr>
                     <tr>
-                        <td colspan='6' align='center' >
+                        <td colspan='7' align='center' >
                         <button name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $v_resultfin. "\",\"" . $d_resultfin . "\", \"" . $v_lectura . "\",\"" . $v_interpretacion . "\",\"" . $v_obserrecep. "\",\"" . $cmbEmpleadosfin . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec. "\",\"" . $proce. "\",\"" . $origen . "\",\"" . $iddetalle  . "\") ;' class='btn btn-primary'><span class='glyphicon glyphicon-print'></span>&nbsp;Imprimir</button>
-                            <button name='btnSalir' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' class='btn btn-primary' >Cerrar</button>
+                            <button name='btnSalir' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' class='btn btn-primary' ><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br><br/>
                         </td>
-                    </tr>";
+                    </tr></table>";
         echo $Imprimir;
 	     
         break;

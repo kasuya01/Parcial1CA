@@ -488,7 +488,7 @@ echo '<option value="xyz">Seleccione una opción</option>';
                         </td>
                         <td align="right"><b>F. Emisión Resultado final:</b></td>
                         <td colspan="1" >
-                                 <input type="text" class="datepicker" name="d_resultfin" id="d_resultfin" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />	<input type="hidden" name="fechaact" id="fechaact" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />	
+                                 <input type="text" class="datepicker" name="d_resultfin" id="d_resultfin" size="60"  value="<?php echo date("Y-m-d h:m"); ?>" onchange="valfechasolicita(this, 'd_resultfin')"  />	<input type="hidden" name="fechaact" id="fechaact" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />	
                         </td>
                 </tr>
                 <tr>
@@ -532,8 +532,8 @@ echo '<option value="xyz">Seleccione una opción</option>';
                          
                 <p><center><br />
 <!--                        <div id="responde2" style="display: block">-->
-                                <button type="button" align="center" class="btn btn-primary" onclick="enviarDatosResult(1,0);" ><span class='glyphicon glyphicon-plus-sign'></span>&nbsp;Guardar</button>
-                                <button type="button" align="center" class="btn btn-primary" onclick="Cerrar();"><span class='glyphicon glyphicon-plus-sign'></span>&nbsp;Cancelar</button>
+                                <button type="button" align="center" class="btn btn-primary" onclick="enviarDatosResult(1,0);" ><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar</button>
+                                <button type="button" align="center" class="btn btn-primary" onclick="Cerrar();"><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cancelar</button>
                   
                                 </center></p>
                         </div>
@@ -547,7 +547,7 @@ echo '<option value="xyz">Seleccione una opción</option>';
                          <button type="button" align="center" class="btn btn-primary" onclick="ValidarResultado();" title="Validar y Finalizar"><span class='glyphicon glyphicon-check'></span>&nbsp;Validar</button>
 	<!--<button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="enviarDatosResult(0,0);" title="Guardar sin validar">Guardar</button>-->
        
-		<button type="button" align="center" class="btn btn-primary" title="Regresar a Inicio"  onclick="Cerrar();"><span class='glyphicon glyphicon-share'></span>&nbsp;Regresar</button>
+		<button type="button" align="center" class="btn btn-primary" title="Regresar a Inicio"  onclick="Cerrar();"><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Regresar</button>
 	
 	</center>  
                           </div>
@@ -581,9 +581,10 @@ echo '<option value="xyz">Seleccione una opción</option>';
    <?php
 }
 else{
- echo '<center><br><br><h1><img src="../../../Imagenes/warning.png" valign="middle"/>'
-            . 'Los resultados de los examenes de la persona '.$rowpa['nombre'].', en esta área ya fueron ingresados.</h1> ';
-            echo " <button type='submit' class='fg-button ui-state-default ui-corner-all' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' />Cerrar</button></center>";
+ echo '<center><br><br><h1><img src="../../../Imagenes/alerta.png" valign="middle"/>'
+   . '&nbsp;'
+            . 'El resultado del exámen seleccionado del expediente "'.$_GET['var1'].'",<br/> ya fue ingresado.</h1> ';
+            echo " <button type='submit' class='btn btn-primary' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' /><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button></center>";
                
 }
 ?>

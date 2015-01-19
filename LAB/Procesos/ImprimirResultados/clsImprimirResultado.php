@@ -255,7 +255,8 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado1, 
                     t01.indicacion AS indicacion,
-                    t01.idempleado AS idempleado,t01.id_conf_examen_estab as idexamen,t07.fecha_nacimiento as fechanac
+                    t01.idempleado AS idempleado,t01.id_conf_examen_estab as idexamen,t07.fecha_nacimiento as fechanac,
+                    t19.id as idsexo, date (current_date)  - date (t07.fecha_nacimiento) as dias
             FROM sec_detallesolicitudestudios           t01 
             INNER JOIN sec_solicitudestudios            t02 	ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra             t03 	ON (t02.id = t03.idsolicitudestudio) 
@@ -319,7 +320,7 @@ UNION
                     t04.nombre_examen as nombre_examen,
                    t04.codigo_examen as codigo_examen,
                    t25.idarea as codigo_area,
-                   t25.nombrearea as nombre_area,t25.id as idarea,
+                   t25.nombrearea as nombre_area,t25.id as idarea, 
                     CASE t01.estadodetalle
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada'
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='R') THEN 'Recibida'
@@ -339,7 +340,9 @@ UNION
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado1, 
 
                     t01.indicacion as indicacion,
-                    t01.idempleado  as idempleado,t01.id_conf_examen_estab as idexamen,t07.fecha_nacimiento as fechanac
+                    t01.idempleado  as idempleado,t01.id_conf_examen_estab as idexamen,t07.fecha_nacimiento as fechanac,
+                    t19.id as idsexo,
+                    date (current_date)  - date (t07.fecha_nacimiento) as dias
             FROM sec_detallesolicitudestudios           t01 
             INNER JOIN sec_solicitudestudios            t02 	ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra             t03 	ON (t02.id = t03.idsolicitudestudio) 
@@ -474,7 +477,7 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
  }
 
 //FUNCION PARA MOSTRAR DATOS FIJOS DE LA PLANTILLA
- function MostrarDatosFijosPlantillaA($idexamen,$lugar,$iddetalle)
+ function MostrarDatosFijosPlantillaA($idexamen,$lugar,$iddetalle, $sexo, $idedad)
  {
 	 $con = new ConexionBD;
 	   if($con->conectar()==true) 
@@ -500,9 +503,13 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
                   left join lab_resultados 	  t03 on (t02.id=t03.idexamen) 
                   where t01.idestablecimiento=$lugar 
                   and t02.id=$idexamen 
-                  and t03.iddetallesolicitud=$iddetalle";
+                  and t03.iddetallesolicitud=$iddetalle 
+                  and (current_date between fechaini and (case when fechafin is null then current_date else fechafin end))
+                and (t01.idsexo is null or t01.idsexo=$sexo)
+                and (idedad=4 or idedad=$idedad)";
                                         
 	     $result = @pg_query($query);
+             //echo $query;
 	     if (!$result)
 	       return false;
 	     else
