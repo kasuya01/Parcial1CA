@@ -6,6 +6,7 @@ $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 $db = new ConexionBD;
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
 
 ?>
 <html>
@@ -17,6 +18,9 @@ $db = new ConexionBD;
 			h1 { font-size:22px; }
 			input { width:250px; border: 2px solid #CCC; line-height:20px;height:20px; border-radius:3px; padding:2px; }
 		</style>
+
+<?php include_once $ROOT_PATH."/public/css.php";?>
+<?php include_once $ROOT_PATH."/public/js.php";?>
 <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script> 
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
@@ -61,10 +65,16 @@ function ValidarCampos()
 		 {
 			resp= false;		
 		 }
-	 if (document.frmnuevo.txtresultado.value == "")
-		 {
-			resp= false;		
-		 }
+         if (document.getElementById('idresultado').value=='x'){
+            if (document.frmnuevo.txtresultado.value==""){
+               resp=false;
+               }
+            }
+         else{
+            if (document.getElementById('idresultado').value=='xyz'){
+               resp=false;
+            }
+         }
          if (document.frmnuevo.cant_metodologia.value!="0"){
              if (document.frmnuevo.cmbmetodologia.value==0){
                         resp=false;
@@ -92,7 +102,15 @@ function VerResultados()
 	idsolicitud=document.frmnuevo.txtidsolicitud.value;
         iddetalle=document.frmnuevo.txtiddetalle.value;
 	idarea=document.frmnuevo.txtarea.value;
-	resultado=document.frmnuevo.txtresultado.value;
+	//resultado=document.frmnuevo.txtresultado.value;
+        idresultado=document.getElementById('idresultado').value;
+        if (idresultado=='x'){
+           resultado=document.getElementById('txtresultado').value;
+        }
+        else
+        {
+           resultado=$("#idresultado").find('option:selected').text();
+        }
 	lectura=document.getElementById('txtlectura').value;
 	interpretacion=document.getElementById('txtinterpretacion').value;
 	observacion=document.frmnuevo.txtcomentario.value;
@@ -108,7 +126,7 @@ function VerResultados()
         cmbmetodologia=document.frmnuevo.cmbmetodologia.value;
         txtnec=document.frmnuevo.txtnec.value;
         
-	MostrarResultadoExamen(idsolicitud,iddetalle,idarea,idexamen,resultado,lectura,interpretacion,observacion,responsable,nombrearea,procedencia,origen,impresion,establecimiento,codresult,fechanac,sexo, cmbmetodologia, txtnec);
+	MostrarResultadoExamen(idsolicitud,iddetalle,idarea,idexamen,resultado,lectura,interpretacion,observacion,responsable,nombrearea,procedencia,origen,impresion,establecimiento,codresult,fechanac,sexo, cmbmetodologia, txtnec, idresultado);
 	
     }else
     {    alert("Complete la Informacion Requerida");   }
@@ -196,6 +214,7 @@ $solicitud=$_GET['var6'];
 $referido=$_GET['referido'];
 $idarea=$_GET['var4'];
 $iddetallesolicitud=$_GET['var5'];
+$idexamen_=$_GET['var3'];
 $cant=$objdatos->buscarAnterioresPUnica($solicitud,$iddetallesolicitud, $idarea);
 if (pg_num_rows($cant)>0){
 if ($referido!="t"){
@@ -218,10 +237,10 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
         $resultado = mysql_query($condatos);*/
 	$rows = pg_fetch_array($condatos);
         
-        $Peso=$rows['Peso'];
-        $Talla=$rows['Talla'];
-        $Diagnostico=$rows['Diagnostico'];
-        $ConocidoPor=$rows['ConocidoPor'];
+        $Peso=isset($rows['Peso']) ? $rows['Peso'] : null;
+        $Talla=isset($rows['Talla']) ? $rows['Talla'] : null;
+        $Diagnostico=isset($rows['diagnostico']) ? $rows['diagnostico'] : null;
+        $ConocidoPor=isset($rows['conocido_por']) ? $rows['conocido_por'] : null;
   }
   else{
       $Peso='-';
@@ -238,7 +257,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
         <td>
             <div  id="divFrmNuevo" style="display:block" >
                 <form name="frmnuevo" method="get" action="ProcDatosResultadosExamen_PA.php" enctype="multipart/form-data">
-                    <table width="70%" border="0" align="center" class="StormyWeatherFormTABLE">
+                    <table width="70%" border="0" align="center" class="StormyWeatherFormTABLE"  style="height: 525px; ">
                         
                         <tr>
                             <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3>INGRESO DE RESULTADOS</h3></td>
@@ -326,7 +345,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                             <td class="StormyWeatherFieldCaptionTD">*Metodologia</td>
                             <td class="StormyWeatherDataTD" colspan="3">
                                   <div id="divMetodologia">
-                                    <select id="cmbmetodologia" name="cmbmetodologia" size="1">
+                                     <select id="cmbmetodologia" name="cmbmetodologia" size="1" onchange="buscarPosResMet(this.value)" style='width:96%; height:100%'>
                                         <option value="0" >--Seleccione Metodologia--</option>
                                     </select>
                                                         
@@ -340,11 +359,11 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                          <tr>
                             <td class="StormyWeatherFieldCaptionTD">*Fecha Realización </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="datepicker" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" />
+                                <input type="text" class="datepicker" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" onchange="valfechasolicita(this, 'fecha_realizacion')"/>
                             </td>
                              <td class="StormyWeatherFieldCaptionTD" width="196 px">*Fecha Reporte </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="datepicker" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  /> 
+                                <input type="text" class="datepicker" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  onchange="valfechasolicita(this, 'fecha_reporte')"/>                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  /> 
                             </td>
                         </tr>
                         <tr>
@@ -360,18 +379,22 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                         <tr>
                              <td class="StormyWeatherFieldCaptionTD">*Resultado</td>
                              <td class="StormyWeatherDataTD" colspan="3">
-                                <textarea  name="txtresultado" cols="50" size="43"  id="txtresultado"/></textarea>
+                                 <div id="divResult">
+                                    <textarea  name="txtresultado" cols="50" size="43"  id="txtresultado" placeholder="Debe seleccionar una metodología" disabled="disabled" style="width:96%"/></textarea> <input type="hidden" id="idresultado" name="idresultado" value="x"/>    
+                                </div>
+                               
                              </td>
                              
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Observaci&oacute;n</td>
-                            <td class="StormyWeatherDataTD" colspan="3"><textarea name="txtcomentario" cols="50" id="txtcomentario"></textarea></td>
+                            <td class="StormyWeatherDataTD" colspan="3"><textarea name="txtcomentario" cols="50" id="txtcomentario" style="width:96%"></textarea></td>
                         </tr>
                         <tr>
                             <td  class="StormyWeatherFieldCaptionTD">*Resultado Tabulador</td>
                             <td  class="StormyWeatherDataTD" colspan="3">
-				<select id="cmbResultado2" name="cmbResultado2" size="1">
+                                <div id="divCodResultado">
+                                   <select id="cmbResultado2" name="cmbResultado2" size="1" style="width:29%">
                                 <option value="0" >--Seleccione Resultado--</option>
                               
                                 <?php 
@@ -382,6 +405,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                                 }
                                 ?>
 				</select>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -394,10 +418,8 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                         <tr>
                             <?php 
                           }?>
-                            <td colspan="4"  class="StormyWeatherDataTD"><center>
-                                <button type="button" align="center" id="agregarresults" class="fg-button ui-state-default ui-corner-all" onclick="agregaresultado('0');">Agregar Resultado </button>
-<!--                                <input type="button" name="add" value="Agregar Resultado" Onclick="AddResultado() ;"> -->
-                        </center>
+                           <td colspan="4" style="text-align:right">
+                               <button type="button" align="right" id="agregarresults" class="btn btn-primary" onclick="agregaresultado('0');"><span class='glyphicon glyphicon-plus-sign'></span>&nbsp;Agregar Resultado </button>                                
                             </td>
                         </tr>
                         
@@ -412,15 +434,15 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
 					</td>
 				</tr>
 				<tr class="CobaltFieldCaptionTD">
-					<th width="10%" title="Examen"><h3>Examen</h3></th>
-					<th width="13%" title="Metodologia"><h3>Metodologia</h3></th>
-					<th width="6%" title="Fecha Realiza"><h3>Fecha Realizaci&oacute;n</h3></th>
-					<th width="6%" title="Fecha Resultado"><h3>Fecha Resultado</h3></th>
-					<th width="10%" title="Responsable"><h3>Responsable</h3></th>
-					<th  width="10%" title="Resultado"><h3>Resultado</h3></th>
-					<th  width="12%" title="Observacion"><h3>Observaci&oacute;n</h3></th>
-					<th  width="8%" title="Tabulador"><h3>Tabulador</h3></th>
-					<th  width="5%" title="Eliminar"><h3>Elim.</h3></th>
+                                   <th width="10%" style="height:35px" title="Examen">Examen</th>
+					<th width="13%" title="Metodologia">Metodologia</th>
+					<th width="6%" title="Fecha Realiza">Fecha Realizaci&oacute;n</th>
+					<th width="6%" title="Fecha Resultado">Fecha Resultado</th>
+					<th width="10%" title="Responsable">Responsable</th>
+					<th  width="10%" title="Resultado">Resultado</th>
+					<th  width="12%" title="Observacion">Observaci&oacute;n</th>
+					<th  width="8%" title="Tabulador">Tabulador</th>
+					<th  width="5%" title="Eliminar">Elim.</th>
 					
 				</tr>
 			</table>
@@ -429,18 +451,43 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                                 </td>
                         </tr>	
                         
-                        <tr><td colspan="4"><center>
-                        <div id="valresult" style="display:none; width: 70%;">
+                        <tr><td colspan="4"><center><br>
+                        <div id="valresult" style="display:none; width: 80%;" >
                                 <br/>
-                        <fieldset><legend>Validar Prueba <small> <?php echo $_GET['var2'];?></small></legend>
-                <table align="left" width="100%" border="0"cellpadding="2" >
+                        <fieldset><legend style="color:white; background-color: #428bca; height:45px; padding: 0.2em 0.5em; float:left;margin-bottom: 0px">Validar Prueba <small> <?php echo $_GET['var2'];?></small></legend>
+                <table align="left" border="0"cellpadding="0" class="table table-bordered table-condensed table-white no-v-border">
                 <tr>
-                        <td width="20%"><b>Resultado Final:</b></td>
+                   <td><b>Resultado Final:</b></td>
                         <td colspan="1">
-                                <input type="text" id="v_resultfin" name="v_resultfin" style="width:100%">										
+                           <?php
+                           $buscarResfin=$objdatos->buscarresfin($idexamen_);
+                           
+                           $canti=pg_num_rows($buscarResfin);
+                           echo '<input type="hidden" id="cantresultfin" name="cantresultfin" value="'.$canti.'"/>';
+                           if ($canti>0){
+                              echo '<select id="idresultadofin" name="idresultadofin" style="width:96%">';
+
+                            if ($canti>1){
+echo '<option value="xyz">Seleccione una opción</option>';
+                              while ($pr= pg_fetch_array($buscarResfin)){
+                                 echo '<option value='.$pr["id"].'>'.$pr["posible_resultado"].'</option>';
+                                 
+                              }//fin while posible resultado
+                            }//fin if cant>1
+                            else{
+                                echo '<option id='.$pr["id"].'>'.$pr["posible_resultado"].'</option>';
+                            }
+                             echo '</select>';
+                          }
+                          else {                                                                        echo '<textarea  name="v_resultfin" cols="50" size="43"  id="v_resultfin"/></textarea><input type="hidden" id="idresultadofin" name="idresultadofin" value="x"/>';
+                          }
+                          
+                           ?>
+<!--                           
+                                <input type="text" id="v_resultfin" name="v_resultfin" style="width:100%">										-->
                         </td>
-                        <td width="20%" align="right"><b>F. Emisión Resultado final:</b></td>
-                        <td colspan="1">
+                        <td align="right"><b>F. Emisión Resultado final:</b></td>
+                        <td colspan="1" >
                                  <input type="text" class="datepicker" name="d_resultfin" id="d_resultfin" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />	<input type="hidden" name="fechaact" id="fechaact" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />	
                         </td>
                 </tr>
@@ -454,15 +501,15 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                         </tr>
                 <tr>
                         <td><b>Observaci&oacute;n Final:</b></td>
-                        <td colspan="4">
+                        <td colspan="3">
                                 <input type="text" id="v_obseresultfin" name="v_obseresultfin" style="width:100%">										
                         </td>
                 </tr>	
                  <tr>
                         <td><b>Valido Resultado:</b></td>
-                        <td colspan="4">
-                                <div id="divEncargado1">
-                                    <select id="cmbEmpleadosfin" name="cmbEmpleadosfin" size="1">
+                        <td colspan="3">
+                           <div id="divEncargado1" style="width:100%">
+                                    <select id="cmbEmpleadosfin" name="cmbEmpleadosfin" size="1" style="width:100%">
                                         <option value="0" >--Seleccione Empleado--</option>
                                     </select>
                                 </div>										
@@ -485,8 +532,8 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                          
                 <p><center><br />
 <!--                        <div id="responde2" style="display: block">-->
-                                <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="enviarDatosResult(1,0);" >Guardar</button>
-                                <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="Cerrar();">Cancelar</button>
+                                <button type="button" align="center" class="btn btn-primary" onclick="enviarDatosResult(1,0);" ><span class='glyphicon glyphicon-plus-sign'></span>&nbsp;Guardar</button>
+                                <button type="button" align="center" class="btn btn-primary" onclick="Cerrar();"><span class='glyphicon glyphicon-plus-sign'></span>&nbsp;Cancelar</button>
                   
                                 </center></p>
                         </div>
@@ -496,11 +543,11 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                  <tr>    
                      <td colspan="6" align="center">
                          <div id="responde" style="display: none">
-	<center>
-                         <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="ValidarResultado();" title="Validar y Finalizar">Validar</button>
+                            <center><br>
+                         <button type="button" align="center" class="btn btn-primary" onclick="ValidarResultado();" title="Validar y Finalizar"><span class='glyphicon glyphicon-check'></span>&nbsp;Validar</button>
 	<!--<button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="enviarDatosResult(0,0);" title="Guardar sin validar">Guardar</button>-->
        
-		<button type="button" align="center" class="fg-button ui-state-default ui-corner-all" title="Regresar a Inicio"  onclick="Cerrar();">Regresar</button>
+		<button type="button" align="center" class="btn btn-primary" title="Regresar a Inicio"  onclick="Cerrar();"><span class='glyphicon glyphicon-share'></span>&nbsp;Regresar</button>
 	
 	</center>  
                           </div>

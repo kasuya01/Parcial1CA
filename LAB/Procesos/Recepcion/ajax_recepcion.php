@@ -342,42 +342,42 @@ switch($Proceso){
         {
     //    echo 'entroooooooooo a if';
 	$rslts='</br><form name="" action="" method="post">
-        <table border = 1 class="CobaltFormTABLE" cellspacing="0" cellpadding="3" align="center">
+        <table border = 0 class="CobaltFormTABLE" cellspacing="0" cellpadding="0" style="height:200px" align="center">
               <tr>
                       <td colspan="3" align="center" class="CobaltFieldCaptionTD">
-                              <H3><strong>Verificar datos de paciente</strong></H3>
+                              <h2><strong>Verificar datos de paciente</strong></h2>
                       </td>
                 </tr>
               <tr>
                       <td class="StormyWeatherFieldCaptionTD">Expediente</td>
                       <td class="StormyWeatherDataTD">
-                              <input id="IdNumeroExp" class="CobaltInput" style="width:188px; height:20px" size="26" value="'.$DatosPaciente["numero"].'" >
-                              <input type="hidden" id="idexpediente" name="idexpediente" value="'.$DatosPaciente["idexpediente"].'">
+                              <input id="IdNumeroExp" class="CobaltInput" style="width:400px; height:100%" size="26" value="'.$DatosPaciente["numero"].'" >
+                              <input type="hidden" id="idexpediente" name="idexpediente" value="'.$DatosPaciente["idexpediente"].' " style="height:100%">
                       </td> 
               </tr>
               <tr>
                       <td class="StormyWeatherFieldCaptionTD">Nombre Completo</td>
                       <td class="StormyWeatherDataTD">
-                              <input id="Nombre" class="CobaltInput" style="width:400px; height:20px" size="50" value="'.$DatosPaciente["nombre"].'" >
+                              <input id="Nombre" class="CobaltInput" style="width:400px; height:100%" size="50" value="'.$DatosPaciente["nombre"].'" >
                       </td> 
               </tr>
               <tr>
                       <td class="StormyWeatherFieldCaptionTD">Edad</td>
                       <td class="StormyWeatherDataTD">
-                              <input id="Edad" class="CobaltInput" style="width:188px; height:20px" size="26" value="'.$DatosPaciente["edad"].'" >
+                              <input id="Edad" class="CobaltInput" style="width:400px; height:100%" size="26" value="'.$DatosPaciente["edad"].'" >
                       </td> 
               </tr>
               <tr>
                       <td class="StormyWeatherFieldCaptionTD">Sexo</td>
                       <td class="StormyWeatherDataTD">
-                              <input id="sexo" name ="sexo" class="CobaltInput" style="width:188px; height:20px" size="26" value="'.$DatosPaciente["sexoconv"].'" >
+                              <input id="sexo" name ="sexo" class="CobaltInput" style="width:400px; height:100%" size="26" value="'.$DatosPaciente["sexoconv"].'" >
                               <input id="tiposexo" type="hidden" class="CobaltInput" style="width:188px; height:20px" size="26" value="'.$DatosPaciente["id_sexo"].'" >    
                       </td> 
               </tr>
               <tr>
                       <td class="StormyWeatherFieldCaptionTD" >Conocido por</td>
                       <td class="StormyWeatherDataTD">
-                              <input id="ConocidoPor" class="CobaltInput" style="width:188px; height:20px" size="26" value="'.$DatosPaciente["conocido_por"].'" >
+                              <input id="ConocidoPor" class="CobaltInput" style="width:400px; height:100%" size="26" value="'.$DatosPaciente["conocido_por"].'" >
                       </td> 
               </tr>
       </table>
@@ -386,11 +386,11 @@ switch($Proceso){
     else{
         //echo 'Entro al else';
          $rslts='</br><form name="" action="" method="post">
-        <table border = 1 class="CobaltFormTABLE" cellspacing="0" cellpadding="3" align="center">
+        <table border = 1 class="CobaltFormTABLE" cellspacing="0" cellpadding="0" align="center">
               <tr>
-                      <td class="StormyWeatherFieldCaptionTD" >Paciente no encontrado. Registrar paciete.</td>
-                      <td class="StormyWeatherDataTD">
-                              <input class="" type="button" value="Registrar Paciente" id="Registrar" style="WIDTH: 170px; HEIGHT: 33px" onclick="abreVentana('.$nec.')">
+                      <td class="StormyWeatherFieldCaptionTD" ><br>Paciente no encontrado. Registrar paciente.<br/>&nbsp;</td>
+                      <td class="StormyWeatherDataTD"><br>
+                      <button type="button" id="Registrar" name="Registrar" style="WIDTH: 170px; HEIGHT: 33px" onclick="abreVentana('.$nec.')" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-search">&nbsp;Registrar Paciente</button><br/>&nbsp;
                       </td> 
               </tr>
       </table>

@@ -76,9 +76,9 @@ switch ($opcion) {
                       LEFT JOIN mnt_expediente_referido     t11 ON (t11.id = t10.id_expediente_referido)
                       
                       WHERE t01.fecha = '$Nfechacita' AND (t04.numero = '$idexpediente' OR t11.numero = '$idexpediente') AND t02.id_establecimiento = $lugar";
-
-            $numreg = pg_fetch_array(pg_query($query.' GROUP BY t10.id'));
-            echo $query;
+            $query .=' GROUP BY (CASE WHEN t10.id is null THEN false ELSE true END)' ;
+            $numreg = pg_fetch_array(pg_query($query));
+           // echo $query;
             
             if ($numreg[0] == 1) {//verificando existencia de datos para los parametros de la busqueda no referido
                 if ($numreg['referido']=='f'){
@@ -96,6 +96,7 @@ switch ($opcion) {
                                      INNER JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)
                                      WHERE t05.numero = '$idexpediente' AND t02.fecha = '$Nfechacita' AND  t01.id_establecimiento = $lugar
                                            AND t03.idestablecimiento = $idEstablecimiento AND t06.codigo_busqueda = 'DCOLAB'";
+//echo $query_estado;
                 } else { // verificar existencia para datos de referencia
                     $query_estado = "SELECT CASE t04.idestado
                                             WHEN 'D' THEN 'Digitada'
@@ -126,7 +127,7 @@ switch ($opcion) {
                     }
                 }
             }
-            echo 'numreg: '.$numreg[0];
+           // echo 'numreg: '.$numreg[0];
 
             if ($numreg[0] > 1) {
                 $query_estado = "SELECT CASE t04.idestado

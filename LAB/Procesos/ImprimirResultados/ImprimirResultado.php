@@ -256,7 +256,7 @@ if ($nivel==4){
 	<div id="divBusqueda">
 
 	</div>
-	<div id="divSolicitud">
+       <div id="divSolicitud" align="center">
 
 	</div>
 	<div id="divRespuesta">

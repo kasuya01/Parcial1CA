@@ -308,7 +308,7 @@ switch ($opcion) {
     case 2://LLENANDO COMBO DE EMPLEADOS
         $idarea = $_POST['idarea'];
        // echo $idarea;
-        $resultado = "<select id='cmbEmpleados' name='cmbEmpleados' size='1'>
+        $resultado = "<select id='cmbEmpleados' name='cmbEmpleados' size='1' style='width:96%'>
                         <option value='0' >Seleccione...</option>";
         require_once('clsSolicitudesProcesadas.php');
         $obje = new clsSolicitudesProcesadas;
@@ -326,6 +326,11 @@ switch ($opcion) {
         $idexamen = $_POST['idexamen'];
         $idsolicitud = $_POST['idsolicitud'];
         $iddetalle = $_POST['iddetalle'];
+        $idresultado = $_POST['idresultado'];
+        if ($idresultado=='x'){
+           $idresultado='NULL';
+        }
+           
         //$resultado = $_POST['resultado'];
         $resultado = (empty($_POST['resultado'])) ? 'NULL' : "'" . pg_escape_string($_POST['resultado']) . "'";
         //$lectura = $_POST['lectura'];
@@ -349,11 +354,11 @@ switch ($opcion) {
         $idmetodologia=@pg_fetch_array($objdatos->BuscarExaMetodologia($idexamen));
         // echo $verifica[0];
         if ($verifica == 0) {
-            $verdadero = $objdatos->InsertarResultadoPlantillaAM($idexamen, $idmetodologia['idexamet'], $responsable, $fecha_realizacion, $fecha_reporte, $resultado, $observacion, $codigo, $idsolicitud, $usuario, $iddetalle, $idrecepcion, $lugar) ;
+            $verdadero = $objdatos->InsertarResultadoPlantillaAM($idexamen, $idmetodologia['idexamet'], $responsable, $fecha_realizacion, $fecha_reporte, $resultado, $observacion, $codigo, $idsolicitud, $usuario, $iddetalle, $idrecepcion, $lugar, $idresultado) ;
             
             if ($verdadero != 0) {
                 $cantingresados++;
-                if ($objdatos->InsertarResultadoPlantillaAF($idsolicitud, $iddetalle,$idrecepcion, $resultado, $lectura, $interpretacion, $observacion, $lugar, $usuario, $idexamen, $responsable, $fecha_reporte)==false){
+                if ($objdatos->InsertarResultadoPlantillaAF($idsolicitud, $iddetalle,$idrecepcion, $resultado, $lectura, $interpretacion, $observacion, $lugar, $usuario, $idexamen, $responsable, $fecha_reporte, $idresultado)==false){
                     echo "Error al momento de validar resultado. Por favor revisar informaci&oacute;n.";
                     $flag=1;
                 }
@@ -422,6 +427,7 @@ switch ($opcion) {
         $txtnec = $_POST['nec'];
         $fecha_realizacion = $_POST['fecha_realizacion'];
         $fecha_reporta = $_POST['fecha_reporta'];
+        $idresultado = $_POST['idresultado'];
 
         $Consulta_Estab = $objdatos->Nombre_Establecimiento($lugar);
         $row_estab = pg_fetch_array($Consulta_Estab);
@@ -449,7 +455,7 @@ switch ($opcion) {
 
         //  echo $fechanac."***".$sexo."***".$idedad;
         //cho $idedad;
-        $Imprimir = "<table width='100%' align='center' border='0' class='StormyWeatherFormTABLE'>
+        $Imprimir = "<table width='100%' align='center' border='0' class='StormyWeatherFormTABLE' style='height: 350px;'>
 	            <tr>
 			<td colspan='1' align='left' width='20%'><img id='Image1' style='WIDTH: 80px; HEIGHT: 55px' height='86' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
                         <td align='center' colspan='4' width='60%' class='Estilo5'>
@@ -477,7 +483,7 @@ switch ($opcion) {
                         <input type='hidden' id='fecha_reporte_' name='fecha_reporte_' value='" . $fecha_reporta . "'/>
                         <input type='hidden' id='fecha_realiza_' name='fecha_realiza_' value='" . $fecha_realizacion . "'/></td></tr>
 		    <tr>
-                        <td colspan='1' style='font:bold'><strong>paciente:</strong></td>
+                        <td colspan='1' style='font:bold'><strong>Paciente:</strong></td>
 			<td colspan='5' style='font:bold'>" . $rowpa['nombre'] . "</td>
                     </tr>
                     <tr>
@@ -518,20 +524,20 @@ switch ($opcion) {
 
         $Imprimir.="<table width='100%'  align='center' border='0' class='StormyWeatherFormTABLE'>
                         <tr>
-                            <td colspan='6' align='center' >&nbsp;DETALLE DE RESULTADOS</td>
+                            <td colspan='6' align='center' >&nbsp;DETALLE DE RESULTADOS<br/><br></td>
                         </tr>
                         <tr >
-                            <td align='center'>Prueba Realizada </td>";
+                            <td align='center'><b>Prueba Realizada </b></td>";
         if ($idmetodologia!=0){
-            $Imprimir.="<td align='center'>Metodología </td>";
+            $Imprimir.="<td align='center'><b>Metodología </b></td>";
         }
         $Imprimir.="                    
-                            <td align='center'>Resultado</td>
-                            <td align='center'>Unidades</td>
-                            <td align='center'>Rangos Normales </td>
-                            <td align='center'>Lectura</td>
-			    <td align='center'>Interpretaci&oacute;n</td>
-			    <td align='center'>Observaci&oacute;n</td>
+                            <td align='center'><b>Resultado</b></td>
+                            <td align='center'><b>Unidades</b></td>
+                            <td align='center'><b>Rangos Normales </b></td>
+                            <td align='center'><b>Lectura</b></td>
+			    <td align='center'><b>Interpretaci&oacute;n</b></td>
+			    <td align='center'><b>Observaci&oacute;n</b></td>
 			</tr>
                         <tr><td colspan='7'><hr style='width:90%'></td></tr>";
 
@@ -546,7 +552,7 @@ switch ($opcion) {
         }
         $Imprimir.="   
                             
-			    <td align='center'>" . $resultado . "<input type='hidden' id='resultado_' name='resultado_' value='" . $resultado . "'/></td>
+			    <td align='center'>" . $resultado . "<input type='hidden' id='resultado_' name='resultado_' value='" . $resultado . "'/><input type='hidden' id='idresultado_' name='idresultado_' value=".$idresultado." /></td>
 			    <td align='center'>" . $fila['unidades'] . "</td>
 			    <td align='center'>" . $fila['rangoinicio'] . " - " . $fila['rangofin'] . "</td>
 			    <td align='center'>" . $lectura . "<input type='hidden' id='lectura_' name='lectura_' value='" . $lectura . "'/></td>
@@ -554,6 +560,8 @@ switch ($opcion) {
 			    <td align='center'>" . $observacion . "<input type='hidden' id='observacion_' name='observacion_' value='" . $observacion . "'/></td>
 			</tr>";
         $Imprimir.="<tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
@@ -571,10 +579,10 @@ switch ($opcion) {
 			</tr>
                         <tr>
                             <td colspan='7' align='center' >
-                            <button type='button' id='btnGuardar' align='center' class='fg-button ui-state-default ui-corner-all' title='Guardar Resultados'  onclick='GuardarResultados();'>Guardar Resultados</button>
-                            <button type='button' id='Imprimir' name='Imprimir' align='center' class='fg-button ui-state-default ui-corner-all' title='Imprimir'  onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $resultado . "\",\"" . $fecha_reporta . "\", \"" . $lectura . "\",\"" . $interpretacion . "\",\"" . $observacion . "\",\"" . $responsable . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec . "\",\"" . $proce . "\",\"" . $origen . "\",\"" . $iddetalle . "\") ;'>Imprimir</button>
+                            <button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarResultados();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>
+                            <button style='display:none' type='button' id='Imprimir' name='Imprimir' align='center' class='btn btn-primary' title='Imprimir'  onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $resultado . "\",\"" . $fecha_reporta . "\", \"" . $lectura . "\",\"" . $interpretacion . "\",\"" . $observacion . "\",\"" . $responsable . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec . "\",\"" . $proce . "\",\"" . $origen . "\",\"" . $iddetalle . "\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Imprimir</button>
                             
-                            <button type='button' id='btnSalir' align='center' class='fg-button ui-state-default ui-corner-all' title='Cerrar'  onclick='Cerrar();'>Cerrar</button>
+                            <button type='button' id='btnSalir' align='center' class='btn btn-primary' title='Cerrar'  onclick='Cerrar();'><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br/><br><br/>
                             </td>
 			</tr>
 			</table>";
@@ -662,7 +670,7 @@ switch ($opcion) {
         $cant=  pg_num_rows($consulta);
         if ($cant>0){
            
-        $resultado2 = "<select id='cmbmetodologia' name='cmbmetodologia' size='1'>";
+        $resultado2 = "<select id='cmbmetodologia' name='cmbmetodologia' size='1' onchange='buscarPosResMet(this.value)' style='width:96%; height:100%'>";
             if ($cant>1){
                 $resultado2 .="<option value='0' selected>Seleccione...</option>";
             }
@@ -683,7 +691,7 @@ switch ($opcion) {
     case 11://LLENANDO COMBO DE Empleado que emite resultado final
         $idarea = $_POST['idarea'];
         //echo $idarea;
-        $resultado = "<select id='cmbEmpleadosfin' name='cmbEmpleadosfin' size='1'>
+        $resultado = "<select id='cmbEmpleadosfin' name='cmbEmpleadosfin' size='1' style='width:100%'>
                         <option value='0' >Seleccione...</option>";
         require_once('clsSolicitudesProcesadas.php');
         $obje = new clsSolicitudesProcesadas;
@@ -720,6 +728,9 @@ switch ($opcion) {
 		$hdnFecProc_ =  (empty($_POST['hdnFecProc_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnFecProc_'.$i]) . "'";
 		$hdnFecResu_ =  (empty($_POST['hdnFecResu_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnFecResu_'.$i]) . "'";
 		$hdnResult_ =  (empty($_POST['hdnResult_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnResult_'.$i]) . "'";
+		$hdnIdResult_ =  $_POST['hdnIdResult_'.$i];
+                if ($hdnIdResult_ =='x')
+                   $hdnIdResult_='NULL';
 		$hdnObserva_=  (empty($_POST['hdnObserva_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnObserva_'.$i]) . "'";
 		$hdnCodResult_ = $_POST['hdnCodResult_'.$i];
                                 
@@ -729,7 +740,7 @@ switch ($opcion) {
               //   echo '<br>Verificadoooo: '.$verifica;
                 if ($verifica == 0) {
             //        echo '    entro a verifica';
-                    $verdadero = $objdatos->InsertarResultadoPlantillaAM($hdnidexamen_, $hdnIdMetodologia_, $hdnResp_, $hdnFecProc_, $hdnFecResu_, $hdnResult_, $hdnObserva_, $hdnCodResult_, $idsolicitud, $usuario, $iddetalle, $idrecepcion, $lugar);
+                    $verdadero = $objdatos->InsertarResultadoPlantillaAM($hdnidexamen_, $hdnIdMetodologia_, $hdnResp_, $hdnFecProc_, $hdnFecResu_, $hdnResult_, $hdnObserva_, $hdnCodResult_, $idsolicitud, $usuario, $iddetalle, $idrecepcion, $lugar, $hdnIdResult_);
                     
 
                     if ($verdadero != 0) {
@@ -757,6 +768,10 @@ switch ($opcion) {
         if ($val==1 && $cantingresados>0)
 	{
 		$v_resultfin=(empty($_POST['v_resultfin'])) ? 'NULL' : "'" . pg_escape_string($_POST['v_resultfin']) . "'";
+                $idresultadofin=$_POST['idresultadofin'];
+                if ($idresultadofin=='x'){
+                   $idresultadofin='NULL';
+                }
 		
 		$cmbEmpleadosfin=$_POST['cmbEmpleadosfin'];
                
@@ -765,7 +780,7 @@ switch ($opcion) {
 		$v_obserrecep=(empty($_POST['v_obseresultfin'])) ? 'NULL' : "'" . pg_escape_string($_POST['v_obseresultfin']) . "'";
 		$v_interpretacion=(empty($_POST['v_interpretacion'])) ? 'NULL' : "'" . pg_escape_string($_POST['v_interpretacion']) . "'";
 		$v_lectura=(empty($_POST['v_lectura'])) ? 'NULL' : "'" . pg_escape_string($_POST['v_lectura']) . "'";
-		if ($objdatos->InsertarResultadoPlantillaAF($idsolicitud, $iddetalle,$idrecepcion, $v_resultfin, $v_lectura, $v_interpretacion, $v_obserrecep, $lugar, $usuario, $hdnidexamen_, $cmbEmpleadosfin, $d_resultfin)==false)                {
+		if ($objdatos->InsertarResultadoPlantillaAF($idsolicitud, $iddetalle,$idrecepcion, $v_resultfin, $v_lectura, $v_interpretacion, $v_obserrecep, $lugar, $usuario, $hdnidexamen_, $cmbEmpleadosfin, $d_resultfin, $idresultadofin)==false)                {
                     echo "<font color=red><center>Error al momento de validar resultado. Por favor revisar informaci&oacute;n.</center></font>";
                     $flag=1;
 		}
@@ -984,7 +999,7 @@ switch ($opcion) {
 			</tr>
                     <tr>
                             <td align='center' style='font:bold'><strong>".$fila['nombre_reporta']."</strong></td>
-			    <td align='center'>".$v_resultfin."</td>
+<td align='center'>".$v_resultfin."</td>
 			    <td align='center'>".$fila['unidades']."</td>
 			    <td align='justify'>".$fila['rangoinicio']." - ".$fila['rangofin']."</td>
 			    <td align='justify'>".$v_lectura."</td>
@@ -1000,12 +1015,87 @@ switch ($opcion) {
                     </tr>
                     <tr>
                         <td colspan='6' align='center' >
-                        <button name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $v_resultfin. "\",\"" . $d_resultfin . "\", \"" . $v_lectura . "\",\"" . $v_interpretacion . "\",\"" . $v_obserrecep. "\",\"" . $cmbEmpleadosfin . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec. "\",\"" . $proce. "\",\"" . $origen . "\",\"" . $iddetalle  . "\") ;'>Imprimir</button>
-                            <button name='btnSalir' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' >Cerrar</button>
+                        <button name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $v_resultfin. "\",\"" . $d_resultfin . "\", \"" . $v_lectura . "\",\"" . $v_interpretacion . "\",\"" . $v_obserrecep. "\",\"" . $cmbEmpleadosfin . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec. "\",\"" . $proce. "\",\"" . $origen . "\",\"" . $iddetalle  . "\") ;' class='btn btn-primary'><span class='glyphicon glyphicon-print'></span>&nbsp;Imprimir</button>
+                            <button name='btnSalir' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' class='btn btn-primary' >Cerrar</button>
                         </td>
                     </tr>";
         echo $Imprimir;
 	     
         break;
+     
+      case 14://LLENANDO COMBO DE CodigoPosibleResultados divCodResultado
+        $idresultado = $_POST['idresultado'];
+        $idexamen = $_POST['idexamen'];
+        $IdEstandar = $_POST['idEstandar'];
+        if ($idresultado!='xyz' && $idresultado!='x'){
+         $consulta = $objdatos->BuscarCodResult($idresultado, $idexamen);
+        $resultado = "<select id='cmbResultado2' name='cmbResultado2' size='1' style='width:29%'>";
+                      
+        
+        while ($row = pg_fetch_array($consulta)) {
+            $resultado .="<option value='" . $row[0] . "'>" . $row[0].' - '.$row[1] . "</option>";
+        }
+        pg_free_result($consulta);
+        $resultado.= "</select>"; 
+       }
+       else{
+         // if ($idresultado=='x'){
+              $resultado = "<select id='cmbResultado2' name='cmbResultado2' size='1' style='width:29%'>"
+                      . " <option value='0' selected >--Seleccione Resultado--</option>
+                              ";
+             $resscod=$objdatos->BuscarResultados($IdEstandar);
+
+               while ($rows = pg_fetch_array($resscod)){
+                       $resultado .= '<option value="' . $rows['idresultado'] . '">' . $rows['idresultado'] . '  -  ' . $rows['resultado'] . '</option>'; 
+               }
+               $resultado.= "</select>"; 
+      //    }
+//          else{
+         /*   $resultado = "<select id='cmbResultado2' name='cmbResultado2' size='1' style='width:29%'>";
+          $resultado .= "<option value='0'>Seleccione un Resultado </option>"
+                  . "</select>"; */
+//          }
+//       $buscaEstandar=$objdatos->buscaEstandar($idexamen);
+//          $resultado = "<select id='cmbResultado2' name='cmbResultado2' size='1' style='width:29%'>";
+//          $resultado .= "<option value='0'>Seleccione un Resultado </option>";
+//          $resscod=$objdatos->BuscarResultados($IdEstandar);
+//          while ($rows = pg_fetch_array($resscod)){
+//            $resultado .= '<option value="' . $rows['idresultado'] . '">' . $rows['idresultado'] . '  -  ' . $rows['resultado'] . '</option>'; 
+//          }
+//          $resultado .= "</select>"; 
+//          
+          
+       }
+        //echo $idresultado.' - '.$idexamen;
+        
+        echo $resultado;
+      break;
+      //fn Pg
+      
+      case 15://LLENANDO COMBO DE CodigoPosibleResultados 
+        $idexametodologia = $_POST['idexametodologia'];
+     //   $idexamen = $_POST['idexamen'];
+       if ($idexametodologia!='0'){
+         $consulta = $objdatos->PosibleResMetodo($idexametodologia);
+         if (pg_num_rows($consulta)>0){
+             $resultado = "<select id='idresultado' name='idresultado' size='1' style='width:96%' onchange='setCodResultado(this.value)'>"
+                     . "<option value='xyz'>Seleccione un resultado</option>";
+             
+          while ($row = pg_fetch_array($consulta)) {
+            $resultado .="<option value='" . $row[0] . "'>" .$row[1] . "</option>";
+        }
+               $resultado.= "</select>";
+         }
+         else {
+ $resultado = '<textarea  name="txtresultado" cols="50" size="43"  id="txtresultado" style="width:96%"/></textarea><input type="hidden" id="idresultado" name="idresultado" value="x" style="width:96%"/>'; 
+         }
+       }
+       else{
+           $resultado = '<textarea  name="txtresultado" cols="50" size="43"  id="txtresultado" placeholder="Debe seleccionar una metodología" disabled style="width:96%"/></textarea><input type="hidden" id="idresultado" name="idresultado" value="x" style="width:96%"/>'; 
+       }
+        //echo $idresultado.' - '.$idexamen;
+        
+        echo $resultado;
+      break;
 }
 ?>

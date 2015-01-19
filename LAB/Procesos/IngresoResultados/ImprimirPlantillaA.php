@@ -70,7 +70,7 @@ $rowpa = pg_fetch_array($datpac);
 $consultares = $objdatos->MostrarDatoslabresultado($idexamen, $lugar, $idsolicitud, $iddetalle);
         $filares = pg_fetch_array($consultares);
        // echo '<br\>'.$filares['idempleado'].'<br\>';
-        $d_resultfin=$filares['d_resultfin'];
+        //$d_resultfin=$filares['d_resultfin'];
 //$Consulta_fecha=$objdatos->ObtenerFechaResultado1($IdSolicitud,$IdExamen,$lugar);
 //$rowfecha = mysql_fetch_array($Consulta_fecha);
 $fechares=$filares['fecha_resultado'];
@@ -83,7 +83,7 @@ $responsable=$filares['idempleado'];
 ?>
 <div  id="divImpresion" >
     <form name="frmimpresion" >
-        <table width='100%' align='center' class='StormyWeatherFormTABLE' cellspacing="0">
+        <table width='100%' align='center' class='StormyWeatherFormTABLE' cellspacing="0" style='height: 350px;'>
             <tr>
                 <td colspan="1" align="left" width="20%"><img id="Image1" style="WIDTH: 80px; HEIGHT: 55px" height="86" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
                 <td align="center" colspan="4" width="60%" class="Estilo6">
@@ -101,7 +101,7 @@ $responsable=$filares['idempleado'];
 		<td colspan="2" class="Estilo6"><?php echo $row_estab2['nombre'];?></td>
 		<td colspan="1" class="Estilo5"><strong>Fecha Recepción:</strong></td>
 		<td colspan="2" class="Estilo6"><?php echo $row['fecharecepcion'];?></td>
-                    <input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row['FechaNacimiento']?>>
+<!--                    <input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row['FechaNacimiento']?>>-->
             </tr>
             <tr>
             	<td colspan="1" class="Estilo5"><strong>NEC:</strong></td>
@@ -160,12 +160,12 @@ $responsable=$filares['idempleado'];
                         <tr>
                             <td align="left" class="Estilo5"><?php echo $fila['nombre_reporta'];?></td>
                             <td align="center" class="Estilo5"><?php echo $resultado?></td>
-                     <?php if (!empty($fila['Unidades'])){ ?>
+                     <?php if (!empty($fila['unidades'])){ ?>
                             <td align="center" class="Estilo5"><?php echo $fila['unidades'] ?></td>
                      <?php }else{?>
                             <td  align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                      <?php }  ?>
-                            <td align="center" class="Estilo5"><?php echo $fila['rangoinicio']." - ".$fila['RangoFin']?></td>
+                            <td align="center" class="Estilo5"><?php echo isset($fila['rangoinicio']) ? $fila['rangoinicio'] : null." - ".isset($fila['rangorin']) ? $fila['rangofin'] : null?></td>
                      <?php if (!empty($lectura)){ ?>
                             <td align="justify" class="Estilo5"><?php echo $lectura?></td>
                      <?php }else{?>
