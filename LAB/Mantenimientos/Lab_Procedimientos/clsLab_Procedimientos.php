@@ -200,6 +200,33 @@ class clsLab_Procedimientos {
 	}
         
         
+        
+        function updatehabilitadof() {
+		$con = new ConexionBD;
+		if ( $con->conectar()==true ) {
+			 $query = "UPDATE lab_procedimientosporexamen SET habilitado='f' where   fechafin is null";
+			$result = pg_query( $query );
+			if ( !$result )
+				return false;
+			else
+				return $result;
+		}
+	}
+        
+                
+        function updatehabilitadot() {
+		$con = new ConexionBD;
+		if ( $con->conectar()==true ) {
+			 $query = "UPDATE lab_procedimientosporexamen SET habilitado='t' where fechafin = fechafin ";
+			$result = pg_query( $query );
+			if ( !$result )
+				return false;
+			else
+				return $result;
+		}
+	}
+        
+        
 	//*************************************************FUNCIONES PARA MANEJO DE PAGINACION******************************************************/
 	//consultando el numero de registros de la tabla
 	function NumeroDeRegistros( $lugar ) {
@@ -282,9 +309,7 @@ class clsLab_Procedimientos {
 		$con = new ConexionBD;
 		//usamos el metodo conectar para realizar la conexion
 		if ( $con->conectar()==true ) {
-			 $query =
-
-				"SELECT lppe.id AS idprocedimientoporexamen,
+			 $query = "SELECT lppe.id AS idprocedimientoporexamen,
 						lcee.codigo_examen AS idexamen,
 						lcee.nombre_examen AS nombreexamen,
 						lppe.nombreprocedimiento,

@@ -145,6 +145,10 @@ case 4:// PAGINACION
 	$PagAct=$_POST['Pag'];
 
 	/////LAMANDO LA FUNCION DE LA CLASE
+        
+       $consulta= $objdatos->updatehabilitadof();
+        $consulta= $objdatos->updatehabilitadot();
+        
 	$consulta= $objdatos->consultarpag( $lugar, $RegistrosAEmpezar, $RegistrosAMostrar );
 
 	//muestra los datos consultados en la tabla
@@ -402,8 +406,18 @@ case 7: //BUSQUEDA
 	}
 
 	if ( !empty( $_POST['sexo'] ) && $_POST['sexo'] !== '0' ) {
-		$query .= "  AND CASE WHEN cex.id IS NULL THEN 'NULL' ELSE cex.id::text END = '".$_POST['sexo']."'   ";
-	}
+		
+                if ( $_POST['sexo']==3){
+                    
+                    $query .= //"  AND CASE WHEN cex.id IS NULL THEN 'NULL' ELSE cex.id::text END = '".$_POST['sexo']."'   ";
+                "AND ((cex.id IS NULL) or (cex.id=".$_POST['sexo']."))        ";
+                }
+                else{
+                    $query .="AND cex.id=".$_POST['sexo']."         ";
+                    
+                }
+                
+        }
 
 	if ( !empty( $_POST['redad'] ) && $_POST['redad'] !== '0' ) {
 		$query .= "AND lppe.idrangoedad = ".$_POST['redad']."   ";
@@ -439,7 +453,7 @@ case 7: //BUSQUEDA
 	}
 
 	$query_search = $query. " ORDER BY lcee.codigo_examen";
-	$query_search;
+	//echo $query_search;
 	//ENVIANDO A EJECUTAR LA BUSQUEDA!!
 	//require_once("clsLab_Procedimientos.php");
 	////para manejo de la paginacion
@@ -472,7 +486,7 @@ case 7: //BUSQUEDA
                    </thead><tbody>
                     </center>";
 	while ( $row = @pg_fetch_array( $consulta ) ) {
-		echo "<tr>
+		/*echo "<tr>
                 <td aling='center'><img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" onclick=\"pedirDatos('".$row['idprocedimientoporexamen']."')\"></td>
                	<!-- <td aling ='center'><img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"></td> -->
                  <td width='6%'><span style='color: #0101DF;'>
@@ -495,7 +509,78 @@ case 7: //BUSQUEDA
 		else
 			echo "<td>".$row['fechafin']."</td>
 		          ";
-		echo"</tr>";
+		echo"</tr>";*/
+            
+            $habilitado=$row['habilitado'] ;
+                   // == "t") {
+                
+          //  }
+                 if ($habilitado=="f")
+                     {
+                     
+                     echo "<tr>
+                    <td aling='center'>
+                        <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\"
+			onclick=\"pedirDatos('".$row['idprocedimientoporexamen']."')\"> </td>
+                   <!-- <td aling ='center'>
+			 <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
+			onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"> </td> -->
+                      <td width='6%'><span style='color: #0101DF;'>
+                   	 <a style ='text-decoration:underline;cursor:pointer;' onclick='Estado(\"".$row['idlppe']."\",\"".$row['habilitado']."\")'>".$row['cond']."</a></td>
+                    <td>".$row['idexamen']."</td>
+                    <td>".htmlentities( $row['nombreexamen'] )."</td>
+                    <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
+                    <td>".htmlentities( $row['unidades'] )."</td>
+                    <td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
+		echo "<td>".$row['sexovn']."</td>
+                    <td>".$row['nombregrupoedad']."</td>";
+		if ( ( $row['fechaini']=="NULL" ) || ( $row['fechaini']=="00/00/0000" ) ||( empty( $row['fechaini'] ) ) )
+			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+		else
+			echo "<td>".$row['fechaini']."</td>";
+
+		if ( ( empty( $row['fechafin'] ) ) || ( $row['fechafin']=="NULL" ) || ( $row['fechafin']=="00/00/0000" ) )
+			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+		else
+			echo "<td>".$row['fechafin']."</td>
+			          ";
+		echo"</tr> ";
+                     
+                 }
+                 else {
+                     
+                       echo "<tr>
+                    <td aling='center'>
+                        <img src='../../../Imagenes/buscar.jpeg' style=\"text-decoration:underline;cursor:pointer;\"
+			onclick=\"pedirDatos('".$row['idprocedimientoporexamen']."')\"  height='60' width='80'> </td>
+                   <!-- <td aling ='center'>
+			 <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
+			onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"> </td> -->
+                      <td width='6%'><span style='color: #0101DF;'>
+                   	 <a style ='text-decoration:underline;cursor:pointer;' >    ".$row['cond']."</a></td>
+                    <td>".$row['idexamen']."</td>
+                    <td>".htmlentities( $row['nombreexamen'] )."</td>
+                    <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
+                    <td>".htmlentities( $row['unidades'] )."</td>
+                    <td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
+		echo "<td>".$row['sexovn']."</td>
+                    <td>".$row['nombregrupoedad']."</td>";
+		if ( ( $row['fechaini']=="NULL" ) || ( $row['fechaini']=="00/00/0000" ) ||( empty( $row['fechaini'] ) ) )
+			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+		else
+			echo "<td>".$row['fechaini']."</td>";
+
+		if ( ( empty( $row['fechafin'] ) ) || ( $row['fechafin']=="NULL" ) || ( $row['fechafin']=="00/00/0000" ) )
+			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+		else
+			echo "<td>".$row['fechafin']."</td>
+			          ";
+		echo"</tr> ";
+                     
+                 }
+                 
+            
+            
 	}
 	echo "</table>";
 	//determinando el numero de paginas
@@ -688,7 +773,7 @@ case 8://PAGINACION DE BUSQUEDA
                    </thead><tbody>
                     </center>";
 	while ( $row = pg_fetch_array( $consulta ) ) {
-		echo "<tr>
+		/*echo "<tr>
                 <td aling='center'><img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" onclick=\"pedirDatos('".$row['idprocedimientoporexamen']."')\"></td>
                	<!-- <td aling ='center'><img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"></td> -->
                 <td width='6%'><span style='color: #0101DF;'>
@@ -711,7 +796,79 @@ case 8://PAGINACION DE BUSQUEDA
 		else
 			echo "<td>".$row['fechafin']."</td>
 		          ";
-		echo"</tr>";
+		echo"</tr>";*/
+            
+            
+            $habilitado=$row['habilitado'] ;
+                   // == "t") {
+                
+          //  }
+                 if ($habilitado=="f")
+                     {
+                     
+                     echo "<tr>
+                    <td aling='center'>
+                        <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\"
+			onclick=\"pedirDatos('".$row['idprocedimientoporexamen']."')\"> </td>
+                   <!-- <td aling ='center'>
+			 <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
+			onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"> </td> -->
+                      <td width='6%'><span style='color: #0101DF;'>
+                   	 <a style ='text-decoration:underline;cursor:pointer;' onclick='Estado(\"".$row['idlppe']."\",\"".$row['habilitado']."\")'>".$row['cond']."</a></td>
+                    <td>".$row['idexamen']."</td>
+                    <td>".htmlentities( $row['nombreexamen'] )."</td>
+                    <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
+                    <td>".htmlentities( $row['unidades'] )."</td>
+                    <td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
+		echo "<td>".$row['sexovn']."</td>
+                    <td>".$row['nombregrupoedad']."</td>";
+		if ( ( $row['fechaini']=="NULL" ) || ( $row['fechaini']=="00/00/0000" ) ||( empty( $row['fechaini'] ) ) )
+			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+		else
+			echo "<td>".$row['fechaini']."</td>";
+
+		if ( ( empty( $row['fechafin'] ) ) || ( $row['fechafin']=="NULL" ) || ( $row['fechafin']=="00/00/0000" ) )
+			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+		else
+			echo "<td>".$row['fechafin']."</td>
+			          ";
+		echo"</tr> ";
+                     
+                 }
+                 else {
+                     
+                       echo "<tr>
+                    <td aling='center'>
+                        <img src='../../../Imagenes/buscar.jpeg' style=\"text-decoration:underline;cursor:pointer;\"
+			onclick=\"pedirDatos('".$row['idprocedimientoporexamen']."')\"  height='60' width='80'> </td>
+                   <!-- <td aling ='center'>
+			 <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
+			onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"> </td> -->
+                      <td width='6%'><span style='color: #0101DF;'>
+                   	 <a style ='text-decoration:underline;cursor:pointer;' >    ".$row['cond']."</a></td>
+                    <td>".$row['idexamen']."</td>
+                    <td>".htmlentities( $row['nombreexamen'] )."</td>
+                    <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
+                    <td>".htmlentities( $row['unidades'] )."</td>
+                    <td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
+		echo "<td>".$row['sexovn']."</td>
+                    <td>".$row['nombregrupoedad']."</td>";
+		if ( ( $row['fechaini']=="NULL" ) || ( $row['fechaini']=="00/00/0000" ) ||( empty( $row['fechaini'] ) ) )
+			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+		else
+			echo "<td>".$row['fechaini']."</td>";
+
+		if ( ( empty( $row['fechafin'] ) ) || ( $row['fechafin']=="NULL" ) || ( $row['fechafin']=="00/00/0000" ) )
+			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+		else
+			echo "<td>".$row['fechafin']."</td>
+			          ";
+		echo"</tr> ";
+                     
+                 }
+                 
+            
+            
 	}
 	echo "</table>";
 	//determinando el numero de paginas
