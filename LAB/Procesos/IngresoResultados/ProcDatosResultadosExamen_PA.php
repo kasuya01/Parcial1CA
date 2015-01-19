@@ -64,10 +64,20 @@ function ValidarCampos()
 		 {
 			resp= false;		
 		 }
-	 if (document.frmnuevo.txtresultado.value == "")
-		 {
-			resp= false;		
-		 }
+         if (document.getElementById('idresultado').value=='x'){
+            if (document.frmnuevo.txtresultado.value==""){
+               resp=false;
+               }
+            }
+         else{
+            if (document.getElementById('idresultado').value=='xyz'){
+               resp=false;
+            }
+         }
+//	 if (document.frmnuevo.txtresultado.value == "" || document.frmnuevo.txtresultado.value=="xyz")
+//		 {
+//			resp= false;		
+//		 }
          if (document.frmnuevo.cant_metodologia!="0"){
              if (document.frmnuevo.cmbmetodologia==0){
                         resp=false;
@@ -92,7 +102,15 @@ function VerResultados()
 	idsolicitud=document.frmnuevo.txtidsolicitud.value;
         iddetalle=document.frmnuevo.txtiddetalle.value;
 	idarea=document.frmnuevo.txtarea.value;
-	resultado=document.frmnuevo.txtresultado.value;
+	//resultado=document.frmnuevo.txtresultado.value;
+	idresultado=document.getElementById('idresultado').value;
+        if (idresultado=='x'){
+           resultado=document.getElementById('txtresultado').value;
+        }
+        else
+        {
+           resultado=$("#idresultado").find('option:selected').text();
+        }
 	lectura=document.getElementById('txtlectura').value;
 	interpretacion=document.getElementById('txtinterpretacion').value;
 	observacion=document.frmnuevo.txtcomentario.value;
@@ -110,7 +128,7 @@ function VerResultados()
         fecha_realizacion=document.frmnuevo.fecha_realizacion.value;
         fecha_reporta=document.frmnuevo.fecha_reporte.value;
         
-	MostrarResultadoExamen(idsolicitud,iddetalle,idarea,idexamen,resultado,lectura,interpretacion,observacion,responsable,nombrearea,procedencia,origen,impresion,establecimiento,codresult,fechanac,sexo, cmbmetodologia, txtnec, fecha_realizacion, fecha_reporta);
+	MostrarResultadoExamen(idsolicitud,iddetalle,idarea,idexamen,resultado,lectura,interpretacion,observacion,responsable,nombrearea,procedencia,origen,impresion,establecimiento,codresult,fechanac,sexo, cmbmetodologia, txtnec, fecha_realizacion, fecha_reporta, idresultado);
 	
     }else
     {    alert("Complete la Informacion Requerida");   }
@@ -186,8 +204,8 @@ LlenarComboMetodologia(idexamen, area);
 <?php  
 //FUNCION PARA VERIFICAR DATOS REQUERIDOS EN RESULTADOS
 $bandera=$_GET['var12'];
-/*$fechanac=$_GET['var14'];
-$idexamen=$_GET['var3'];*/
+/*$fechanac=$_GET['var14'];*/
+$idexamen_=$_GET['var3'];
 $IdEstandar=$_GET['var16'];
 $IdHistorial=$_GET['var17'];
 $solicitud=$_GET['var6'];
@@ -222,8 +240,10 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
         
         $Peso=$rows['peso'];
         $Talla=$rows['talla'];
-        $Diagnostico=$rows['diagnostico'];
-        $ConocidoPor=$rows['conocidoPor'];
+        //$Diagnostico=$rows['diagnostico'];
+        $Diagnostico=isset($rows['diagnostico']) ? $rows['diagnostico'] : null;
+       // $ConocidoPor=$rows['conocidoPor'];
+        $ConocidoPor=isset($rows['conocidoPor']) ? $rows['conocidoPor'] : null ;
   }
   else{
       $Peso='-';
@@ -242,7 +262,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
         <td>
             <div  id="divFrmNuevo" style="display:block" >
                 <form name="frmnuevo" method="get" action="ProcDatosResultadosExamen_PA.php" enctype="multipart/form-data">
-                    <table width="70%" border="0" align="center" class="StormyWeatherFormTABLE">
+                   <table width="70%" border="0" align="center" class="StormyWeatherFormTABLE"  style="height: 525px; ">
                         
                         <tr>
                             <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3>INGRESO DE RESULTADOS</h3></td>
@@ -259,7 +279,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                                 <input type="hidden" name="txtnec" id="txtnec" disabled="disabled" />
 			 	<input type="hidden" name="txtidsolicitud" id="txtidsolicitud" />
 			 	<input type="hidden" name="txtiddetalle" id="txtiddetalle" />
-			 	<input type="hidden" name="txtidexamen" id="txtidexamen" />
+			 	<input type="hidden" name="txtidexamen" id="txtidexamen"  />
 			 	<input type="hidden" name="txtidrecepcion" id="txtidrecepcion" />
 			 	<input type="hidden" name="txtarea" id="txtarea" />
 			 	<input type="hidden" name="txtprocedencia" id="txtprocedencia" value="<?php echo $_GET['var10']?>"/>
@@ -353,16 +373,40 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                             <td class="StormyWeatherFieldCaptionTD">*Validado Por</td>
                             <td class="StormyWeatherDataTD" colspan="3">
                                 <div id="divEncargado">
-                                    <select id="cmbEmpleados" name="cmbEmpleados" size="1">
+                                   <select id="cmbEmpleados" name="cmbEmpleados" size="1" style="width:96%">
                                         <option value="0" >--Seleccione Empleado--</option>
                                     </select>
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                             <td class="StormyWeatherFieldCaptionTD">*Resultado</td>
+                             <td class="StormyWeatherFieldCaptionTD">*Resultado</td>                             
                              <td class="StormyWeatherDataTD" colspan="3">
-                                <textarea  name="txtresultado" cols="50" size="43"  id="txtresultado"/></textarea>
+                                <?php
+                                 $posible=$objdatos->consultarPosibleRes($idexamen_);
+                                 $cant=pg_num_rows($posible);
+                                 
+                                 
+                                 if ($cant>0){
+                                     echo '<select id="idresultado" name="idresultado" onchange="setCodResultado(this.value)" style="width:96%">';
+                                  
+                                   if ($cant>1){
+echo '<option value="xyz">Seleccione una opción</option>';
+                                      while ($pr= pg_fetch_array($posible)){
+                                                                               echo '<option value='.$pr["id"].'>'.$pr["posible_resultado"].'</option>';
+                                         
+                                      }//fin while posible resultado
+                                   }//fin if cant>1
+                                   else{
+                                       echo '<option id='.$pr["id"].'>'.$pr["posible_resultado"].'</option>';
+                                   }
+                                    echo '</select>';
+                                 }
+                                 else {                                                                        echo '<textarea  name="txtresultado" cols="50" size="43"  id="txtresultado"/></textarea><input type="hidden" id="idresultado" name="idresultado" value="x"/>';
+                                 }
+                               
+                                ?>
+                                
                              </td>
                              
                         </tr>
@@ -381,7 +425,8 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                         <tr>
                             <td  class="StormyWeatherFieldCaptionTD">*Resultado Tabulador</td>
                             <td  class="StormyWeatherDataTD" colspan="3">
-				<select id="cmbResultado2" name="cmbResultado2" size="1">
+                                  <div id="divCodResultado">
+                                     <select id="cmbResultado2" name="cmbResultado2" size="1" style="width:29%">
                                 <option value="0" >--Seleccione Resultado--</option>
                               
                                 <?php 
@@ -392,6 +437,8 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                                 }
                                 ?>
 				</select>
+                                </div>
+				
                             </td>
                         </tr>
                         <tr>
