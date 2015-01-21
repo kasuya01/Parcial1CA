@@ -164,10 +164,10 @@ function MostrarDetalleSolicitudes($nec,$idestablecimiento){
 function ListExamenesTiempoPrev($idsolicitudestudio,$IdEstablecimiento){
 	$con = new ConexionBD;
 	if($con->conectar()==true){
-		$query_Search = "select  lce.id as idexamen, nombre_examen as nombreexam, rangotiempoprev, sds.id as iddetalle
+		$query_Search = "select  lce.id as idexamen, nombre_examen as nombreexam, case when rangotiempoprev is null then 1 else rangotiempoprev end as rangotiempoprev, sds.id as iddetalle
 from sec_detallesolicitudestudios sds
 join lab_conf_examen_estab lce		on (lce.id = sds.id_conf_examen_estab)
-join cit_programacion_exams cpe 	on (cpe.id_examen_establecimiento = sds.id_conf_examen_estab)
+left join cit_programacion_exams cpe 	on (cpe.id_examen_establecimiento = sds.id_conf_examen_estab)
 join sec_solicitudestudios sse		on (sse.id = sds.idsolicitudestudio)
 join sec_historial_clinico shc		on (shc.id = sse.id_historial_clinico)
 where sds.idsolicitudestudio= $idsolicitudestudio"

@@ -99,16 +99,17 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                     <td class='StormyWeatherDataTD'>" . $row['talla'] . "&nbsp;&nbsp;cm.</td>
 		</tr>
             </table><br>";
-        echo "<table border = 1 align='center' class='StormyWeatherFormTABLE' cellspacing='5'>
+        echo "<div class='table-responsive' style='width: 100%;' style='align:center;'>          
+           <table border = 0 align='center' class='table table-hover table-bordered table-condensed table-white' cellspacing='0' style='width:70%'><thead>
 		<tr>
                     <td colspan='5' align='center' class='CobaltFieldCaptionTD'>ESTUDIOS SOLICITADOS</td>
 		</tr>
 		<tr class='StormyWeatherFieldCaptionTD'>
-                    <td >Código Prueba</td>
-                    <td >IdArea</td>
-                    <td> Examen </td>
-                    <td> Indicaciones </td>
-		</tr>";
+                    <th >Código Prueba</th>
+                    <th >Cód. Area</th>
+                    <th> Examen </th>
+                    <th> Indicaciones </th>
+		</tr></thead><tbody>";
         $detalle = $objdatos->BuscarDetalleSolicitud($idexpediente, $Nfechacita, $arraysolic[$i], $idEstablecimiento);
         while ($rows = pg_fetch_array($detalle)) {
           echo "<tr>
@@ -126,12 +127,16 @@ for ($i = 0; $i < $NroRegistros; $i++) {
             echo "</tr>";
         }// while detalle
 
-
-        echo "</table>
+        echo "</tbody></table></div>
               <table align='center'><br>
+              <tr>
+               <td>Fecha de toma de muestra: </td>
+               <td><input type=''><input type='text' class='datepicker' name='fecha_reporte' id='fecha_reporte' size='60' value='".date('Y-m-d H:i')."' onchange=\"valfechasolicita(this, 'fecha_reporte')\"/>
+              </tr>
                 <tr>
                     <td>
-                        <input type='button' name='btnActualizar[" . $i . "]' id='btnActualizar[" . $i . "]' value='Procesar Solicitud' onClick='AsignarNumeroMuestra(" . $i . ");'/>
+                        <button type='button'  name='btnActualizar[" . $i . "]' id='btnActualizar[" . $i . "]' align='right' style='text-align: right' class='btn btn-primary' onclick='AsignarNumeroMuestra(" . $i . ");'><span class='glyphicon glyphicon-check'></span>&nbsp;Procesar Solicitud </button>
+                        
                         <input type='hidden' name='oculto' id='text' value='" . $i . "' />
                     </td>
                     <td>
