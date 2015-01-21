@@ -57,6 +57,11 @@ function Cancelar()
     show_subelemento(1,idelemento);
     LimpiarSubElementos()
 }
+
+    function popup(URL) {
+        myWindow=window.open(URL, '" + "', 'scrollbars=yes, width=700, height=500, left=100, top = 100');
+    }
+
 </script>
 
 </head>
