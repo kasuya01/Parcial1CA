@@ -6,7 +6,7 @@ include ("clsSolicitudesPorServicioPeriodo.php");
 
 //variables POST
 
- $opcion=$_POST['opcion'];
+  $opcion=$_POST['opcion'];
 
 //creando los objetos de las clases
 $objdatos = new clsSolicitudesPorServicioPeriodo;
@@ -208,43 +208,73 @@ FROM sec_detallesolicitudestudios t01
 				
 	$consulta=$objdatos->consultarpag($query,$RegistrosAEmpezar,$RegistrosAMostrar);
 	$NroRegistros= $objdatos->NumeroDeRegistros($query);
+        
+        
+        
+         if ($NroRegistros==""){
+                            $NroRegistros=0;
+                            $imprimir= "<table width='100%' border='0'  align='center'>
+          <center>
+                <tr>
+                        <td width='500'  align='center'  ><span style='color: #0101DF;'> <h4> TOTAL DE SOLICITUDES:".$NroRegistros."</h4></span></td>
+                </tr>
+                </table>
+                
+                <table width='100%' border='0'  align='center'>
+                   <td width='1550'></td>   <td width='1000' align='center' > <button type='button'  class='btn btn-primary'  onclick='VistaPrevia(); '><span class='glyphicon glyphicon-print'></span> IMPRIMIR REPORTE </button> </td>
+			<!--<td <td width='500'>  </td>  <td colspan='7'      style='color:#990000; font:bold'><a style ='text-decoration:underline;cursor:pointer; font:bold; size:36' onclick='VistaPrevia();'>IMPRIMIR REPORTE</a></td>	-->
+		</tr>
+          </center>
+	</table> ";
+                        }ELSE {
+                            
+                            $imprimir= "<table width='100%' border='0'  align='center'>
+          <center>
+                <tr>
+                        <td width='500'  align='center'  ><span style='color: #0101DF;'> <h4> TOTAL DE SOLICITUDES:".$NroRegistros."</h4></span></td>
+                </tr>
+                </table>
+                
+                <table width='100%' border='0'  align='center'>
+                   <td width='1550'></td>   <td width='1000' align='center' > <button type='button'  class='btn btn-primary'  onclick='VistaPrevia(); '><span class='glyphicon glyphicon-print'></span> IMPRIMIR REPORTE </button> </td>
+			<!--<td <td width='500'>  </td>  <td colspan='7'      style='color:#990000; font:bold'><a style ='text-decoration:underline;cursor:pointer; font:bold; size:36' onclick='VistaPrevia();'>IMPRIMIR REPORTE</a></td>	-->
+		</tr>
+          </center>
+	</table> ";
+                        }
 				
- $imprimir= "<table width='35%' border='0'  align='center'>
-        	<center>
-           
-            
-<tr><td colspan='11'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES:".$NroRegistros."</h3></span></td></tr>
-            </center>
-	</table> "; 
-  
+
  
  
-$imprimir.="<table width='95%' border='1' align='center'>
-                <tr class='CobaltFieldCaptionTD'>
-					<td>Fecha Solicitud </td>
-					<td>NEC</td>
-					<td>Nombre Paciente</td>
-					<td>Medico</td>
-					<td>Origen</td>
-					<td>Procedencia</td>
-					<td>Establecimiento</td>
-					<td>Estado Solicitud</td>
-	    	   </tr>"; 
+$imprimir.="<center><div class='table-responsive' style='width: 70%;'>
+                <table width='50%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                    <thead>
+                            <tr>
+					<th>Fecha Solicitud </th>
+					<th>NEC             </th>
+					<th>Nombre Paciente </th>
+					<th>Medico          </th>
+					<th>Origen          </th>
+					<th>Procedencia     </th>
+					<th>Establecimiento </th>
+					<th>Estado Solicitud</th>
+	    	  </tr>
+                    </thead><tbody>"; 
 if(pg_num_rows($consulta)){
                     $pos = 0;
  	
         while ($row = pg_fetch_array($consulta))
 	{ 
     $imprimir .="<tr>
-					<td width='%'>".$row['fechasolicitud']."</td>
+					<td width='10%'>".$row['fechasolicitud']."</td>
 					<td width='7%'>".$row['expediente']."</td>". 
 						"<input name='idsolicitud[".$pos."]' id='idsolicitud[".$pos."]' type='hidden' size='60' value='".$row[1]."' />".
 						"<input name='idexpediente[".$pos."]' id='idexpediente[".$pos."]' type='hidden' size='60' value='".$row['expediente']."' />".
-					"<td width='20%'>".$row['paciente']."</td>
+					"<td width='25%'>".$row['paciente']."</td>
 			    	 <td width='18%'>".htmlentities($row['medico'])."</td>
 			    	 <td width='10%'>".htmlentities($row['nombresubservicio'])."</td>
 			    	 <td width='10%'>".htmlentities($row['nombreservicio'])."</td>
-			    	 <td width='15%'>".htmlentities($row['estabext'])."</td>	
+			    	 <td width='30%'>".htmlentities($row['estabext'])."</td>	
 			    	 <td width='10%'>".$row['estado']."</td>
 	            </tr>";
 
@@ -258,6 +288,8 @@ if(pg_num_rows($consulta)){
 	            </table>";
     
 	echo $imprimir;
+        
+        
 	//determinando el numero de paginas
 	$PagAnt=$PagAct-1;
 	$PagSig=$PagAct+1;
@@ -271,6 +303,7 @@ if(pg_num_rows($consulta)){
 	//una unidad para obtener la ultima pagina
 	 if($Res>0) $PagUlt=floor($PagUlt)+1;
 	    echo "<table align='center'>
+                 <ul class='pagination'>
 		       <tr>
 				<td colspan=3 align='center'> <strong>Pagina ".$PagAct."/".$PagUlt."</strong> </td>
 	               </tr>
@@ -279,24 +312,34 @@ if(pg_num_rows($consulta)){
 				//// desplazamiento
 
 	if($PagAct>1) 
-	 		 echo "<td> <a onclick=\"BuscarDatos('$PagAnt')\">Anterior</a> </td>";
+	 		 echo "<td>  <a onclick=\"BuscarDatos('$PagAnt')\">Anterior</a> </td>";
 	 if($PagAct<$PagUlt)  
 			 echo "<td> <a onclick=\"BuscarDatos('$PagSig')\">Siguiente</a> </td>";
 		 	 echo "<td> <a onclick=\"BuscarDatos('$PagUlt')\">Ultimo</a></td></tr>
-                 </table>";
-	   echo "<table align='center'>
-			<tr align='center'><td  colspan='2' width='25%'>";
+                 </table> ";
+                         
+                         
+	   echo " <center> <ul class='pagination'>";
 		 $numPags ='';
 			 for ($i=1 ; $i<=$PagUlt; $i++){
-				 if ($pag == $i)
-					 $numPags .= "<a >$pag</a>";
-							
-				 else
-					 $numPags .= "<a  href='javascript: BuscarDatos(".$i.")'>$i</a>&nbsp;";
-			 }
-				 echo $numPags."</td></tr>
-		</table>";
+                              /*  if ($i==1){
+                                
+                                 echo " <li class='active'><a href='#'> $i <span class='sr-only'>(current)</span></a></li>";
+                                     
+                                    // $numPags .= "<a >$pag</a>";
+                                     
+                                 }
                                  
+					// 
+							
+				 else{*/
+					 echo " <li ><a  href='javascript: BuscarDatos(".$i.")'>$i</a></li>";
+                                // }
+			 }
+				// echo "<li><a>".$numPags."</a></<li>
+                 echo " </ul></center>";
+                                 
+                              
                                  } else {
              $imprimir .="<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table>";
                 echo $imprimir;
@@ -595,6 +638,10 @@ pg_free_result($consultadetalle);
 		$rslts .= '</select>';
 		echo $rslts;
    	break;
+        
+        
+        
+        
 	case 7:// Llenar combo Subservicio
    	     $rslts='';
              $IdServ=$_POST['IdServicio'];
@@ -609,5 +656,24 @@ pg_free_result($consultadetalle);
 	      $rslts .='</select>';
 	      echo $rslts;
         break;	
+        case 11:// mensaje de alert
+		echo" <center><table border='0' width='50%'>
+                        <center> <tr>
+                        <td width='30'>
+                        <div width='10%' class='alert alert-info' role='alert'>
+                        
+                                    <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                                            <span aria-hidden='true'> &times;</span>
+                                    </button> 
+                                            <strong>
+                                                        <center>¡Complete el rango de las fechas!</center>
+                                            </strong>
+                                 </td>           
+                           </tr> 
+                           </center>
+                    </div>
+                    </table></center>";
+		//echo "<div class='alert alert-info'>¡Complete el rango de las fechas!</center></div>";
+   	break;
 
  }

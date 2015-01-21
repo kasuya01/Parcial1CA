@@ -34,6 +34,52 @@ function LlenarExamenes(idarea)
 	}	
 }
 
+
+function Estado(idatofijo){
+
+var opcion=9;
+	//alert(idexamen+"-"+condicion);
+	ajax=objetoAjax();
+	//archivo que realizar� la operacion ->actualizacion.php
+	ajax.open("POST", "ctrLab_DatosFijosExamen.php",true);
+	//muy importante este encabezado ya que hacemos uso de un formulario
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	//enviando los valores
+    // alert(idatofijo);
+	ajax.send("idatofijo="+idatofijo+"&opcion="+opcion);
+
+	ajax.onreadystatechange=function() {
+		 if(ajax.readyState==1){
+                    // alert("if 1");
+                                       
+                 }
+		 if (ajax.readyState==4) {
+		//alert(ajax.responseText);
+                //alert("if2");
+			show_event(1); 
+                       
+		 }
+	}	
+}
+
+function show_event(Pag)
+{
+	opcion=4;
+	
+	ajax=objetoAjax();
+	ajax.open("POST", 'ctrLab_DatosFijosExamen.php', true);
+	ajax.onreadystatechange = function(){ 
+	if (ajax.readyState==4) {
+		   //mostrar resultados en esta capa
+		   document.getElementById('divinicial').innerHTML = ajax.responseText;
+		  }
+	}
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	ajax.send("&Pag="+Pag+"&opcion="+opcion);	
+}
+
+
+
 function LimpiarCampos(){
 	document.getElementById('cmbArea').value="0";
 	document.getElementById('cmbExamen').value="0";

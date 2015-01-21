@@ -15,6 +15,7 @@ $row = pg_fetch_array($consulta);
 $tipo=$row[0];
 $nombrEstab=$row[1];
 $nomtipo=$row[2];
+
  ?>
 <html>
 <head>
@@ -26,6 +27,8 @@ $nomtipo=$row[2];
 <script language="JavaScript" type="text/javascript" src="ajax_AgregarExamen.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+<?php include_once $ROOT_PATH.'/public/css.php';?>
+<?php include_once $ROOT_PATH.'/public/js.php';?>
 <script language="JavaScript" type="text/javascript">
 function MostrarBusqueda()
 {

@@ -140,6 +140,15 @@ switch ($opcion) {
 	    		echo "<td> <a onclick=\"show_event('$PagUlt')\">Ultimo</a></td>";
 	    		echo "</tr>
 	    	</table>";
+                        
+                        echo " <center> <ul class='pagination'>";
+                          for ($i=1 ; $i<=$PagUlt; $i++)
+                                    {
+                             
+					 echo " <li ><a  href='javascript: show_event(".$i.")'>$i</a></li>";
+                                     }
+                    echo " </ul></center>";
+                        
 	    break;
     case 5: //Busqueda
         $nombretarjeta=$_POST['nombretarjeta'];
@@ -271,6 +280,14 @@ switch ($opcion) {
     				echo "<td> <a onclick=\"show_event_search('$PagUlt')\">Ultimo</a></td>";
     				echo "</tr>
     			</table>";
+                                
+                                  echo " <center> <ul class='pagination'>";
+                          for ($i=1 ; $i<=$PagUlt; $i++)
+                                    {
+                             
+					 echo " <li ><a  href='javascript: show_event_search(".$i.")'>$i</a></li>";
+                                     }
+                    echo " </ul></center>";
         }
        	break;
 }

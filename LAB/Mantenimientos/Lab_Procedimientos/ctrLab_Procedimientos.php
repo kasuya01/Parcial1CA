@@ -121,7 +121,7 @@ case 3:  //ELIMINAR
 	break;
         
 case 9:  //habilitado
-              // echo "llega"; 
+             
                 $cond=$_POST['condicion'];
 		$idlppe=$_POST['idlppe'];
                 //$fechafinhabilitado="NULL";
@@ -129,9 +129,9 @@ case 9:  //habilitado
 		//$resultado=Estado::EstadoCuenta($idexamen,$cond,$lugar);
 		if($objdatos->EstadoCuenta($idlppe,$cond,$usuario)==true )
                 {
-                    echo "cambio";
+                   // echo "cambio";
                 }else{
-                    echo "no cambio";
+                   // echo "no cambio";
                 }
 	break;
         
@@ -146,14 +146,14 @@ case 4:// PAGINACION
 
 	/////LAMANDO LA FUNCION DE LA CLASE
         
-       $consulta= $objdatos->updatehabilitadof();
-        $consulta= $objdatos->updatehabilitadot();
+       $consulta= $objdatos->updatehabilitadot();
+        $consulta= $objdatos->updatehabilitadof();
         
 	$consulta= $objdatos->consultarpag( $lugar, $RegistrosAEmpezar, $RegistrosAMostrar );
 
 	//muestra los datos consultados en la tabla
 	echo "<center >
-               <table border = 1 style='width: 90%;'  class='table table-hover table-bordered table-condensed table-white'>
+               <table border = 1 style='width: 80%;'  class='table table-hover table-bordered table-condensed table-white'>
 	           <thead>
                         <tr>
                                 <th   aling='center'> Modificar</th>
@@ -179,7 +179,7 @@ case 4:// PAGINACION
                    // == "t") {
                 
           //  }
-                 if ($habilitado=="f")
+                 if ($habilitado=="t")
                      {
                      
                      echo "<tr>
@@ -215,13 +215,12 @@ case 4:// PAGINACION
                      
                        echo "<tr>
                     <td aling='center'>
-                        <img src='../../../Imagenes/buscar.jpeg' style=\"text-decoration:underline;cursor:pointer;\"
-			onclick=\"pedirDatos('".$row['idprocedimientoporexamen']."')\"  height='60' width='80'> </td>
+                        <img src='../../../Imagenes/Search.png' style=\"text-decoration:underline;cursor:pointer;\"
+			onclick=\"pedirDatos('".$row['idprocedimientoporexamen']."')\"  height='40' width='50'> </td>
                    <!-- <td aling ='center'>
 			 <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
 			onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"> </td> -->
-                      <td width='6%'><span style='color: #0101DF;'>
-                   	 <a style ='text-decoration:underline;cursor:pointer;' >    ".$row['cond']."</a></td>
+                      <td width='6%'>   ".$row['cond']."</td>
                     <td>".$row['idexamen']."</td>
                     <td>".htmlentities( $row['nombreexamen'] )."</td>
                     <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
@@ -240,6 +239,9 @@ case 4:// PAGINACION
 			echo "<td>".$row['fechafin']."</td>
 			          ";
 		echo"</tr> ";
+                
+                
+                
                      
                  }
                  
@@ -276,6 +278,17 @@ case 4:// PAGINACION
 	echo "<td> <a onclick=\"show_event('$PagUlt')\">Ultimo</a></td>";
 	echo "</tr>
 	      </table>";
+        
+        
+               echo " <center> <ul class='pagination'>";
+                          for ($i=1 ; $i<=$PagUlt; $i++)
+                                    {
+                             
+					 echo " <li ><a  href='javascript: show_event(".$i.")'>$i</a></li>";
+                                     }
+                    echo " </ul></center>";
+        
+        
 	break;
 case 5:  //LLENAR COMBO DE EXAMENES
 	$idarea=$_POST['idarea'];
@@ -350,10 +363,10 @@ case 7: //BUSQUEDA
 				    END AS sexovn,
 				 	cre.id AS idedad,
 				 	cre.nombre AS nombregrupoedad,
-                                        (CASE WHEN lcee.condicion='H' THEN 'Habilitado'
-						WHEN lcee.condicion='I' THEN 'Inhabilitado' END) AS cond1,
-                                                (CASE WHEN lppe.habilitado='t' THEN 'Habilitado'
-						WHEN lppe.habilitado='f' THEN 'Inhabilitado' END) AS cond,
+                                        
+                                                (CASE WHEN lppe.habilitado='f' THEN 'Inhabilitado'
+						WHEN lppe.habilitado='t' THEN 'Habilitado' END) AS cond,
+                                                
 						lppe.habilitado,
                                                 lppe.id as idlppe,
                                                 mnt4.id as idmnt4,
@@ -467,7 +480,7 @@ case 7: //BUSQUEDA
 
 	//muestra los datos consultados en la tabla
 	echo "<center >
-               <table border = 1 style='width: 90%;'  class='table table-hover table-bordered table-condensed table-white'>
+               <table border = 1 style='width: 80%;'  class='table table-hover table-bordered table-condensed table-white'>
 	           <thead>
                         <tr>
                                 <th   aling='center'> Modificar</th>
@@ -515,7 +528,7 @@ case 7: //BUSQUEDA
                    // == "t") {
                 
           //  }
-                 if ($habilitado=="f")
+                 if ($habilitado=="t")
                      {
                      
                      echo "<tr>
@@ -551,13 +564,12 @@ case 7: //BUSQUEDA
                      
                        echo "<tr>
                     <td aling='center'>
-                        <img src='../../../Imagenes/buscar.jpeg' style=\"text-decoration:underline;cursor:pointer;\"
-			onclick=\"pedirDatos('".$row['idprocedimientoporexamen']."')\"  height='60' width='80'> </td>
+                        <img src='../../../Imagenes/Search.png' style=\"text-decoration:underline;cursor:pointer;\"
+			onclick=\"pedirDatos('".$row['idprocedimientoporexamen']."')\"  height='40' width='50'> </td>
                    <!-- <td aling ='center'>
 			 <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
 			onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"> </td> -->
-                      <td width='6%'><span style='color: #0101DF;'>
-                   	 <a style ='text-decoration:underline;cursor:pointer;' >    ".$row['cond']."</a></td>
+                      <td width='6%'>   ".$row['cond']."</td>
                     <td>".$row['idexamen']."</td>
                     <td>".htmlentities( $row['nombreexamen'] )."</td>
                     <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
@@ -614,6 +626,15 @@ case 7: //BUSQUEDA
 		echo "<td> <a onclick=\"show_event_search('$PagUlt')\">Ultimo</a></td>";
 	echo "</tr>
 		  </table>";
+                    
+                     echo " <center> <ul class='pagination'>";
+                          for ($i=1 ; $i<=$PagUlt; $i++)
+                                    {
+                             
+					 echo " <li ><a  href='javascript: show_event_search(".$i.")'>$i</a></li>";
+                                     }
+                    echo " </ul></center>";
+        
 	break;
 
 case 8://PAGINACION DE BUSQUEDA
@@ -668,8 +689,11 @@ case 8://PAGINACION DE BUSQUEDA
 				 	cre.nombre AS nombregrupoedad,
                                         (CASE WHEN lcee.condicion='H' THEN 'Habilitado'
 						WHEN lcee.condicion='I' THEN 'Inhabilitado' END) AS cond1,
-                                                (CASE WHEN lppe.habilitado='t' THEN 'Habilitado'
-						WHEN lppe.habilitado='f' THEN 'Inhabilitado' END) AS cond,
+                                                
+                                                (CASE WHEN lppe.habilitado='f' THEN 'Inhabilitado'
+						WHEN lppe.habilitado='t' THEN 'Habilitado' END) AS cond,
+                                                
+
 						lppe.habilitado,
                                                 lppe.id as idlppe,
                                                 mnt4.id as idmnt4,
@@ -715,8 +739,18 @@ case 8://PAGINACION DE BUSQUEDA
 	}
 
 	if ( !empty( $_POST['sexo'] ) && $_POST['sexo'] !== '0' ) {
-		$query .= " CASE WHEN cex.id IS NULL THEN 'NULL' ELSE cex.id::text END = '".$_POST['sexo']."' AND";
-	}
+		
+                if ( $_POST['sexo']==3){
+                    
+                    $query .= //"  AND CASE WHEN cex.id IS NULL THEN 'NULL' ELSE cex.id::text END = '".$_POST['sexo']."'   ";
+                " ((cex.id IS NULL) or (cex.id=".$_POST['sexo']."))        ";
+                }
+                else{
+                    $query .=" cex.id=".$_POST['sexo']."         ";
+                    
+                }
+                
+        }
 
 	if ( !empty( $_POST['redad'] ) && $_POST['redad'] !== '0' ) {
 		$query .= " lppe.idrangoedad = ".$_POST['redad']." AND";
@@ -754,7 +788,7 @@ case 8://PAGINACION DE BUSQUEDA
 
 	//muestra los datos consultados en la tabla
 	echo "<center >
-               <table border = 1 style='width: 90%;'  class='table table-hover table-bordered table-condensed table-white'>
+               <table border = 1 style='width: 80%;'  class='table table-hover table-bordered table-condensed table-white'>
 	           <thead>
                         <tr>
                                 <th   aling='center'> Modificar</th>
@@ -803,7 +837,7 @@ case 8://PAGINACION DE BUSQUEDA
                    // == "t") {
                 
           //  }
-                 if ($habilitado=="f")
+                 if ($habilitado=="t")
                      {
                      
                      echo "<tr>
@@ -839,13 +873,12 @@ case 8://PAGINACION DE BUSQUEDA
                      
                        echo "<tr>
                     <td aling='center'>
-                        <img src='../../../Imagenes/buscar.jpeg' style=\"text-decoration:underline;cursor:pointer;\"
-			onclick=\"pedirDatos('".$row['idprocedimientoporexamen']."')\"  height='60' width='80'> </td>
+                        <img src='../../../Imagenes/Search.png' style=\"text-decoration:underline;cursor:pointer;\"
+			onclick=\"pedirDatos('".$row['idprocedimientoporexamen']."')\"  height='40' width='50'> </td>
                    <!-- <td aling ='center'>
 			 <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
 			onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"> </td> -->
-                      <td width='6%'><span style='color: #0101DF;'>
-                   	 <a style ='text-decoration:underline;cursor:pointer;' >    ".$row['cond']."</a></td>
+                      <td width='6%'>  ".$row['cond']."</td>
                     <td>".$row['idexamen']."</td>
                     <td>".htmlentities( $row['nombreexamen'] )."</td>
                     <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
@@ -902,6 +935,15 @@ case 8://PAGINACION DE BUSQUEDA
 		echo "<td> <a onclick=\"show_event_search('$PagUlt')\">Ultimo</a></td>";
 	echo "</tr>
 		  </table>";
+        
+                    echo " <center> <ul class='pagination'>";
+                          for ($i=1 ; $i<=$PagUlt; $i++)
+                                    {
+                             
+					 echo " <li ><a  href='javascript: show_event_search(".$i.")'>$i</a></li>";
+                                     }
+                    echo " </ul></center>";
+        
 	break;
         
         
