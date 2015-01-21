@@ -3,6 +3,8 @@ $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 $nivel=$_SESSION['NIVEL'];
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
 ?>
 
 <html>
@@ -25,6 +27,8 @@ $nivel=$_SESSION['NIVEL'];
 </style>
 <title>Reporte de Solicitudes por Sub-Servicio</title>
 <script language="JavaScript" type="text/javascript" src="ajax_SolicitudPorServicioPeriodo.js"></script>
+<?php include_once $ROOT_PATH.'/public/css.php';?>
+<?php include_once $ROOT_PATH.'/public/js.php';?>
 <script language="JavaScript" >
 function RecogeValor()
 {
@@ -99,13 +103,13 @@ include_once("clsSolicitudesPorServicioPeriodo.php");
                 }
 	
 	if ((!empty($_GET['var2'])) and (!empty($_GET['var3'])))
-	{ $Nfechaini=explode("/",$fechainicio);
-	  $Nfechafin=explode("/",$fechafin);
+	{ //$Nfechaini=explode("/",$fechainicio);
+	  //$Nfechafin=explode("/",$fechafin);
 		 	//print_r($Nfecha);
-        $Nfechaini=$Nfechaini[2]."-".$Nfechaini[1]."-".$Nfechaini[0]; 
-	$Nfechafin=$Nfechafin[2]."-".$Nfechafin[1]."-".$Nfechafin[0]; 
-		$cond1 .= " and     t02.fecha_solicitud BETWEEN '".$Nfechaini."'     AND     '".$Nfechafin."'    ";
-                $cond2 .= " and     t02.fecha_solicitud BETWEEN '".$Nfechaini."'     AND     '".$Nfechafin."'    ";}
+        //$Nfechaini=$Nfechaini[2]."-".$Nfechaini[1]."-".$Nfechaini[0]; 
+	//$Nfechafin=$Nfechafin[2]."-".$Nfechafin[1]."-".$Nfechafin[0]; 
+		$cond1 .= " and     t02.fecha_solicitud BETWEEN '".$_GET['var2']."'     AND     '".$_GET['var3']."'     ";
+                $cond2 .= " and     t02.fecha_solicitud BETWEEN '".$_GET['var2']."'     AND     '".$_GET['var3']."'     ";}
            
          
                 
@@ -118,9 +122,9 @@ include_once("clsSolicitudesPorServicioPeriodo.php");
             $cond1 = substr($cond1, 0, strlen($query) - 3);
             $cond2 = substr($cond2, 0, strlen($query) - 3);
             
-          //  echo $query1;
+           //echo $query1;
            // $query_search = 
-           // $cond1;
+            $cond1;
            //echo $cond2;
         }     
        $query="SELECT 
@@ -166,7 +170,7 @@ include_once("clsSolicitudesPorServicioPeriodo.php");
             left join sec_diagnostico_paciente 		t21 on (t21.id_historial_clinico=t09.id) 
             left join mnt_snomed_cie10 			t22 on (t22.id=t21.id_snomed) 
             left join sec_signos_vitales 			t23 on (t23.id_historial_clinico=t09.id) 
-            left join mnt_empleado 				t24 on (t09.id_empleado=t24.id)
+            left join mnt_empleado 			t24 on (t09.id_empleado=t24.id)
             inner join ctl_area_servicio_diagnostico 	t25 on (t25.id=t05.id_area_servicio_diagnostico) 
             WHERE t01.idestablecimiento=$lugar  $cond1 
 
@@ -218,8 +222,8 @@ FROM sec_detallesolicitudestudios t01
 		
         $consulta1=$objdatos->BuscarSolicitudesEspecialidad($query); 
 			 
-	$row1 = pg_fetch_array($consulta1);?>
- 	<table width="100%" border="0"  align='center'>
+	$row1 = @pg_fetch_array($consulta1);?>
+ 	<table width="60%" border="0"  align='center'>
 		<tr>
 			<td colspan="7" align="center"><h3><strong>REPORTE DE SOLICITUDES POR SUB-SERVICIO
 			</h3></strong></td>
@@ -232,7 +236,7 @@ FROM sec_detallesolicitudestudios t01
 	</table>
  	 <?php 
          $consulta=$objdatos->BuscarSolicitudesEspecialidad($query); ?>
- 	<table width="100%" border="1" align="center" cellspacing="0">
+ 	<table width="80%" border="1" align="center" cellspacing="0">
 		<tr>
 			<td width="10%" class="StormyWeatherDataTD" style="color:#000000; font:bold" ><h4><strong>Fecha Solicitud</h4></strong></td>
 			<td width="6%" class="StormyWeatherDataTD" style="color:#000000; font:bold" ><h4><strong>NEC </strong><h4></td>
@@ -244,7 +248,7 @@ FROM sec_detallesolicitudestudios t01
 			<td width="15%" class="StormyWeatherDataTD" style="color:#000000; font:bold"><h4><strong>Estado Solicitud</strong><h4></td>
 		</tr>    
 	<?php $pos=0;
-    	while ($row = pg_fetch_array($consulta))
+    	while ($row = @pg_fetch_array($consulta))
 	{ ?>
 		<tr>
 			<td width="10%"><?php echo $row['fechasolicitud']; ?></td>
@@ -259,21 +263,29 @@ FROM sec_detallesolicitudestudios t01
 	<?php
 		$pos=$pos + 1;
 	}
-		pg_free_result($consulta);
+		@pg_free_result($consulta);
 	?>
 	
   		<input type="hidden" name="oculto" id="text" value='".$pos."' /> 
    
 	</table>
+    <br>
     	<table width="90%" border="0" align="center">
 	<tr>
 		<td colspan="7" align="center">	
 			<div id="boton">	
-				<input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
+				<!--<input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
 				<input type="button" name="btncl" id="btnct" value="Regresar" onClick="window.close();"> </div>
-				</div>
+				-->
+                                <button type='button' align="center" class='btn btn-primary'  onclick='window.print(); '><span class='glyphicon glyphicon-print'></span> Imprimir </button>
+                                <button type='button' align="center" class='btn btn-primary'  onClick="window.close();"><span class='glyphicon glyphicon-arrow-left'></span> Regresar </button>
+                    
+                               
+                    
+                    </div>
 		</td>
 	</tr>
 	</table>
+    <br>
 </body>
 </html>

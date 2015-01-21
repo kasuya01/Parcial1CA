@@ -41,7 +41,11 @@ function MostrarBusqueda()
 {
 	if ((document.getElementById('txtfechainicio').value == "") || (document.getElementById('txtfechafin').value == ""))
 	{
-		alert("¡Complete el rango de las fechas!");
+		//alert("¡Complete el rango de las fechas!");
+               
+                mensaje();
+                
+                
 	}
 	/*else 
 		BuscarDatos(1);*/
@@ -99,6 +103,7 @@ if ($nivel==33){
 <form>
 <p>&nbsp;</p>
 	<table align="center"  class="StormyWeatherFormTABLE" width="85%">
+          
 		<tr>
 			<td colspan="5" align="center" class="CobaltFieldCaptionTD">
 				<h3><strong>Consulta de Solicitudes por Sub-Servicio</strong></h3>
@@ -119,6 +124,8 @@ if ($nivel==33){
 						echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
 					}
 						echo '<option value="'. $tipo .'" selected="selected">' .htmlentities($nomtipo). '</option>';
+                                                
+                                                
 				}
 			?>
         			</select>
@@ -213,10 +220,16 @@ if ($nivel==33){
                         
 		</tr>
 		<tr>
-			<td class="StormyWeatherDataTD" colspan="5" align="right"><input type="button" id="btnbuscar" value="Buscar" onClick="MostrarBusqueda();">
+			 <!--<td class="StormyWeatherDataTD" colspan="5" align="right"><input type="button" id="btnbuscar" value="Buscar" onClick="MostrarBusqueda();">
 				<input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('SolicitudPorServicioPeriodo.php')">
-			</td>
+			</td>-->
+                    <td class="StormyWeatherDataTD" colspan="6" align="right">
+                        <button type='button' align="center" class='btn btn-primary'  onclick='MostrarBusqueda(); '><span class='glyphicon glyphicon-search'></span> Buscar </button>
+                        <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('SolicitudPorServicioPeriodo.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+                    </td>
+                        
 		</tr>
+            
 	</table>
 </form>
 <!--<script type="text/javascript">

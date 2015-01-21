@@ -6,7 +6,8 @@ $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
 $nivel=$_SESSION['NIVEL'];
-
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
 
 
 ?>
@@ -17,6 +18,8 @@ $nivel=$_SESSION['NIVEL'];
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 <title>Datos del Generales de la Solicitud</title>
+<?php include_once $ROOT_PATH.'/public/css.php';?>
+<?php include_once $ROOT_PATH.'/public/js.php';?>
 <script language="JavaScript" type="text/javascript" src="ajax_AgregarExamen.js"></script>
 
 </head>
@@ -27,9 +30,9 @@ $nivel=$_SESSION['NIVEL'];
 	//echo $idestablecimiento;
 	//echo $usuario."##".$idsolicitud;
 	$obj = new clsAgregarExamen;
-	$ConEmp=$obj->ObtenerCodigoTecnico($usuario);
-	$rowEmp=pg_fetch_array($ConEmp);
-	$CodEmpleado=$rowEmp[0];
+	//$ConEmp=$obj->ObtenerCodigoTecnico($usuario);
+	//$rowEmp=pg_fetch_array($ConEmp);
+	//$CodEmpleado=$rowEmp[0];
 	//echo $CodEmpleado;
 	
 	$conEst=$obj->DatosEstablecimiento($idestablecimiento);
@@ -155,9 +158,11 @@ $nivel=$_SESSION['NIVEL'];
 			</tr>
 			<tr>
 				<td width="6%" colspan="2" class="StormyWeatherFieldCaptionTD" align="right">
-					<input type="button" name="Submit" value="Guardar Cambios" Onclick="GuardarExamen();"> </td>
-			</tr>
-				
+					<!--<input type="button" name="Submit" value="Guardar Cambios" Onclick="GuardarExamen();"> -->
+                                        <button type='button' align="center" class='btn btn-primary' id='buscarsolicitud' onclick='GuardarExamen(); '><span class='glyphicon glyphicon-floppy-save'></span> Guardar Cambios</button>
+                                </td>
+                        </tr>
+			
 		</table>	
 	</form>
 </div>

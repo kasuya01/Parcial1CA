@@ -173,7 +173,7 @@ $rangoedad=$row['nombregrupoedad'];
 		</td>
         </tr>-->
                 <?php  
-                if ($habilitado=="t"){
+                if ($habilitado=="f"){
                     
                     ?>
                 

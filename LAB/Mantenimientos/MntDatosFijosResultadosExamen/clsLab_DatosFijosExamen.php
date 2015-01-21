@@ -86,7 +86,7 @@ class clsLab_DatosFijosExamen
          $con = new ConexionBD;
          if($con->conectar()==true)
          {
-           $query = "SELECT id, nombre FROM ctl_rango_edad";
+           $query = "SELECT id, nombre FROM ctl_rango_edad order by nombre";
            $result = pg_query($query);
            if (!$result)
              return false;
@@ -205,14 +205,51 @@ class clsLab_DatosFijosExamen
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = $query_search;
-		 $numreg = pg_num_rows(pg_query($query));
+	      $query = $query_search;
+		 $numreg = @pg_num_rows(pg_query($query));
 		 if (!$numreg )
 		   return false;
 		 else
 		   return $numreg ;
 	   }
-	  }	  
+	  }	
+          
+          
+           function consultarhabilitado($iddatosfijosexamen)
+       {
+         $con = new ConexionBD;
+         if($con->conectar()==true)
+         {
+           $query = "select CASE lab_datosfijosresultado.fechafin 
+                     WHEN lab_datosfijosresultado.fechafin THEN 'Inhabilitado'
+                     ELSE 'Habilitado' END AS habilitado from  lab_datosfijosresultado   WHERE id=$iddatosfijosexamen";
+           $result = pg_query($query);
+           if (!$result)
+             return false;
+           else
+             return $result;
+          }
+        }
+
+          
+                   
+        function Estadohabilitado($idatofijo,$usuario) {
+		$con = new ConexionBD;
+		if ( $con->conectar()==true ) {
+			 echo $query = "UPDATE lab_datosfijosresultado SET 
+					fechafin=current_date,
+					idusuarioreg=$usuario,
+					fechahoramod=NOW()
+					 WHERE id=$idatofijo ";
+			$result = pg_query( $query );
+			if ( !$result )
+				return false;
+			else
+				return $result;
+		}
+	}
+          
+          
 	
 	function consultarpag($lugar,$RegistrosAEmpezar, $RegistrosAMostrar)
 	{
@@ -220,7 +257,7 @@ class clsLab_DatosFijosExamen
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
             if($con->conectar()==true){
-                $query = "SELECT    lab_datosfijosresultado.id,
+              $query = "SELECT    lab_datosfijosresultado.id,
                                     lab_conf_examen_estab.codigo_examen,
                                     lab_conf_examen_estab.nombre_examen,
                                     lab_datosfijosresultado.unidades,
@@ -230,7 +267,11 @@ class clsLab_DatosFijosExamen
                                     to_char(lab_datosfijosresultado.fechaini,'dd/mm/YYYY') AS FechaIni, 
                                     to_char(lab_datosfijosresultado.fechafin,'dd/mm/YYYY') AS FechaFin,
                                     ctl_sexo.nombre as sexo,
-                                    ctl_rango_edad.nombre as redad 
+                                    ctl_rango_edad.nombre as redad,
+                                    CASE lab_datosfijosresultado.fechafin 
+                                    WHEN lab_datosfijosresultado.fechafin THEN 'Inhabilitado'
+                                    ELSE 'Habilitado' END AS habilitado,
+                                    lab_datosfijosresultado.id as idatofijo
                           FROM lab_datosfijosresultado
                           INNER JOIN lab_conf_examen_estab              ON lab_datosfijosresultado.id_conf_examen_estab=lab_conf_examen_estab.id 
                           INNER JOIN mnt_area_examen_establecimiento    ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
@@ -262,7 +303,7 @@ class clsLab_DatosFijosExamen
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
 	     $query = $query_search." LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
-		 $result = pg_query($query);
+		 $result = @pg_query($query);
 		 if (!$result)
 		   return false;
 		 else

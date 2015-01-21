@@ -137,7 +137,7 @@ function ExamenesPorArea($idarea,$lugar)
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	      $query = $query_search;
+	       $query = $query_search;
 		 $result = @pg_query($query);
 		 if (!$result)
 		   return false;

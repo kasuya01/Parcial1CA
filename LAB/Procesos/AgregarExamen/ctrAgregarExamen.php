@@ -276,7 +276,7 @@ switch ($opcion)
      
      
    
-     echo "<center><div class='table-responsive' style='width: 80%;'>
+     echo "<center> <div class='table-responsive' style='width: 80%;'>
          <table width='95%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
                 <thead><tr>
 			<th>Fecha Recepci&oacute;n</th>
@@ -354,7 +354,9 @@ switch ($opcion)
 			 echo "<td> <a onclick=\"BuscarDatos('$PagSig')\">Siguiente</a> </td>";
 		 	 echo "<td> <a onclick=\"BuscarDatos('$PagUlt')\">Ultimo</a></td></tr>
                  </table>";
-	   echo "<table align='center'>
+	   
+                         
+                    /*     echo "<table align='center'>
 			<tr align='center'><td  colspan='2' width='25%'>";
 		 $numPags ='';
 			 for ($i=1 ; $i<=$PagUlt; $i++){
@@ -365,7 +367,18 @@ switch ($opcion)
 					 $numPags .= "<a  href='javascript: BuscarDatos(".$i.")'>$i</a>&nbsp;";
 			 }
 				 echo $numPags."</td></tr>
-		</table>";
+		</table>";*/
+                         
+                         echo " <center> <ul class='pagination'>";
+                          for ($i=1 ; $i<=$PagUlt; $i++)
+                                    {
+                             
+					 echo " <li ><a  href='javascript: BuscarDatos(".$i.")'>$i</a></li>";
+                                     }
+                    echo " </ul></center>";
+                                 
+                                 
+                                 
         
         
 	break;
@@ -400,7 +413,7 @@ switch ($opcion)
 	        $idsolicitud        =$_POST['idsolicitud'];
 		//$IdEstablecimiento  =$POST['idestablecimiento'];
 		//$IdEstablecimiento;
-		include_once("clsSolicitudesPorPaciente.php");
+		//include_once("clsSolicitudesPorPaciente.php");
 		//recuperando los valores generales de la solicitud
 		
 		$consulta=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar);
@@ -488,21 +501,26 @@ switch ($opcion)
 		
 </table>
     <br><br>
-		<table width='80%' border='0'  align='center'>
+    
+   
 		
-		<tr>
-			<td>
-                            <table border = 1 align='center' class='estilotabla'>
-                            <tr>
-			<td colspan='5'  class='CobaltFieldCaptionTD' align='center'>ESTUDIOS SOLICITADO</td>
-		</tr>
+		
+			
+                           
+                <table width='70%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                    <thead> <tr>
+			
+                        <th colspan='5'   class='CobaltFieldCaptionTD'>
+					<h3><strong><center>ESTUDIOS SOLICITADO</center></strong></h3> </th>
+                            </tr>
                                 <tr>
-                                    <td class='CobaltFieldCaptionTD' width='10%'> IdExamen</td>
-                                    <td class='CobaltFieldCaptionTD' width='39%'> Examen </td>
-                                    <td class='CobaltFieldCaptionTD' width='7%'> IdArea </td>
-                                    <td class='CobaltFieldCaptionTD' width='20%'> Indicacion Medica </td>
-                                    <td class='CobaltFieldCaptionTD' colspan='2' > Estado            </td>
-			   	</tr>";
+                                    <th><center>    IdExamen    <center></th>
+                                    <th><center>    Examen      <center></th>
+                                    <th><center>    IdArea      <center></th>
+                                    <th><center>    Indicacion Medica <center></th>
+                                    <th><center>    Estado            <center></th>
+			   	 </tr>
+                    </thead><tbody>";
 			$pos=0;
 	while($fila = pg_fetch_array($consultadetalle)){
                     $imprimir .= "<tr>
@@ -534,8 +552,8 @@ switch ($opcion)
 			</tr>
 			<tr >
 				<td align='center'>
-					<input type='button' name='btnImprimirSol' id='btnImprimirSol' value='Agregar Examen' onClick='ImprimirSolicitud()'>";
-					
+					<!--<input type='button' name='btnImprimirSol' class='btn btn-primary' id='btnImprimirSol' value='Agregar Examen' onClick='ImprimirSolicitud()' <span class='glyphicon glyphicon-search'>-->
+					 <button type='button' align='center' class='btn btn-primary' id='buscarsolicitud' onclick='ImprimirSolicitud(); '><span class='glyphicon glyphicon-plus-sign'></span> Agregar Examen</button>";
 				$imprimir .="</td>
 			</tr>
 		</table>

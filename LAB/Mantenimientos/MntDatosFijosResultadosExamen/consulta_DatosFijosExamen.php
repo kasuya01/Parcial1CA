@@ -8,6 +8,12 @@ $iddatosfijosexamen=$_POST['iddatosfijosexamen'];
 //echo $iddatosfijosexamen;
 //echo $iddatosfijosexamen;
 $obj = new clsLab_DatosFijosExamen;
+
+$consulta1=$obj->consultarhabilitado($iddatosfijosexamen);
+$row = pg_fetch_array($consulta1);
+$habilitado=$row['habilitado'];
+
+
 $consulta=$obj->consultarid($iddatosfijosexamen,$lugar);
 $row = pg_fetch_array($consulta);
 //$iddatosfijosexamen;
@@ -161,12 +167,32 @@ $rangoedad=$row['redad'];
             </td>
         </tr>-->
         
+          <?php  
+                if ($habilitado=="Inhabilitado"){
+                    
+                    ?>
+        
+        <tr>  
+            <td class="StormyWeatherDataTD" colspan="6" align="right">
+                
+                <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntDatosFijosResultadosExamen.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+            </td>
+        </tr>
+        
+        <?php        
+                } else {
+                  ?>
+        
         <tr>  
             <td class="StormyWeatherDataTD" colspan="6" align="right">
                 <button type='button' align="center" class='btn btn-primary'  onclick='Actualizar(); '><span class='glyphicon glyphicon-repeat'></span> Actualizar </button>
                 <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntDatosFijosResultadosExamen.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
             </td>
     </tr>
+    <?php 
+                }
+                
+                ?>
         
 	</table>
 

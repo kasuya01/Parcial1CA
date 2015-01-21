@@ -201,10 +201,10 @@ class clsLab_Procedimientos {
         
         
         
-        function updatehabilitadof() {
+        function updatehabilitadot() {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
-			 $query = "UPDATE lab_procedimientosporexamen SET habilitado='f' where   fechafin is null";
+			 $query = "UPDATE lab_procedimientosporexamen SET habilitado='t' where   fechafin is null";
 			$result = pg_query( $query );
 			if ( !$result )
 				return false;
@@ -214,10 +214,10 @@ class clsLab_Procedimientos {
 	}
         
                 
-        function updatehabilitadot() {
+        function updatehabilitadof() {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
-			 $query = "UPDATE lab_procedimientosporexamen SET habilitado='t' where fechafin = fechafin ";
+			 $query = "UPDATE lab_procedimientosporexamen SET habilitado='f' where fechafin = fechafin ";
 			$result = pg_query( $query );
 			if ( !$result )
 				return false;
@@ -323,8 +323,10 @@ class clsLab_Procedimientos {
 						            ELSE 'Ambos'
 						END AS sexovn,
 						cre.nombre AS nombregrupoedad,
-						(CASE WHEN lcee.condicion='H' THEN 'Habilitado'
-						WHEN lcee.condicion='I' THEN 'Inhabilitado' END) AS cond1,
+						(CASE WHEN lcee.condicion='H' THEN 'Inhabilitado'
+						WHEN lcee.condicion='I' THEN 'Habilitado' END) AS cond1,
+                                                
+
                                                 (CASE WHEN lppe.habilitado='t' THEN 'Habilitado'
 						WHEN lppe.habilitado='f' THEN 'Inhabilitado' END) AS cond,
 						lppe.habilitado,

@@ -119,6 +119,16 @@ switch ($opcion) {
             echo "<td> <a onclick=\"show_event('$PagUlt')\">Ultimo</a></td>";
         echo "</tr>
 			  </table>";
+        
+         echo " <center> <ul class='pagination'>";
+                          for ($i=1 ; $i<=$PagUlt; $i++)
+                                    {
+                             
+					 echo " <li ><a  href='javascript: show_event(".$i.")'>$i</a></li>";
+                                     }
+                    echo " </ul></center>";
+        
+        
         break;
     case 5:  //LLENAR COMBO DE EXAMENES  
         //DIBUJANDO EL FORMULARIO NUEVAMENTE
@@ -295,6 +305,14 @@ switch ($opcion) {
             echo "<td> <a onclick=\"show_event_search('$PagUlt')\">Ultimo</a></td>";
         echo "</tr>
 			  </table>";
+        echo " <center> <ul class='pagination'>";
+                          for ($i=1 ; $i<=$PagUlt; $i++)
+                                    {
+                             
+					 echo " <li ><a  href='javascript: show_event_search(".$i.")'>$i</a></li>";
+                                     }
+                    echo " </ul></center>";
+        
         break;
     case 8://PAGINACION DE BUSQUEDA
         $query = "SELECT mipe.id, casd.id,casd.nombrearea,lcee.id,lcee.nombre_examen,mipe.indicacion		
@@ -399,6 +417,14 @@ switch ($opcion) {
             echo "<td> <a onclick=\"show_event_search('$PagUlt')\">Ultimo</a></td>";
         echo "</tr>
 			  </table>";
+        
+         echo " <center> <ul class='pagination'>";
+                          for ($i=1 ; $i<=$PagUlt; $i++)
+                                    {
+                             
+					 echo " <li ><a  href='javascript: show_event_search(".$i.")'>$i</a></li>";
+                                     }
+                    echo " </ul></center>";
         break;
 }
 ?>

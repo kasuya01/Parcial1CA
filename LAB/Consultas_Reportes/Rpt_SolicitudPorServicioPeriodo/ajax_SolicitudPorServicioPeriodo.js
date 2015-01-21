@@ -106,6 +106,34 @@ function LlenarComboEstablecimiento(idtipoesta)
    	}
 }
 
+
+function mensaje()
+{           
+    //alert("vaaa");
+  	ajax=objetoAjax();
+  	opcion=11;
+  	ajax.open("POST","ctrLab_SolicitudesPorServicioPeriodo.php",true);
+  	//muy importante este encabezado ya que hacemos uso de un formulario
+  	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+  	//enviando los valores
+	ajax.send("opcion="+opcion);	
+	ajax.onreadystatechange=function() 
+	{
+		
+		if (ajax.readyState == 4){//4 The request is complete
+			if (ajax.status == 200){//200 means no error.
+				respuesta = ajax.responseText;	
+				// alert (respuesta)
+				//document.getElementById('divEstablecimiento').innerHTML = respuesta;
+                                document.getElementById('divBusqueda').innerHTML = ajax.responseText;
+			}	  	
+		}
+   	}
+}
+
+
+
+
 function LlenarComboServicio(IdServicio)
 {
 	ajax=objetoAjax();
