@@ -194,12 +194,16 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
                to_char(lab_subelementos.fechaini,'dd/mm/YYYY')AS FechaIni, 
                to_char(lab_subelementos.fechafin,'dd/mm/YYYY')AS FechaFin ,
                ctl_sexo.id as idsexo,ctl_sexo.nombre As nombresexo, ctl_rango_edad.id as idedad,
-               ctl_rango_edad.nombre AS nombreedad
+               ctl_rango_edad.nombre AS nombreedad,
+               ARRAY_AGG(lab_subelemento_posible_resultado.id) AS catalogo
                FROM lab_elementos 
                INNER JOIN lab_subelementos ON lab_elementos.id=lab_subelementos.idelemento 
                LEFT JOIN ctl_sexo ON lab_subelementos.idsexo = ctl_sexo.id 
-               INNER JOIN ctl_rango_edad ON lab_subelementos.idedad = ctl_rango_edad.id 
-               WHERE lab_elementos.id=$idelemento ORDER BY subelemento
+               INNER JOIN ctl_rango_edad ON lab_subelementos.idedad = ctl_rango_edad.id
+               LEFT JOIN lab_subelemento_posible_resultado ON lab_subelemento_posible_resultado.id_subelemento = lab_subelementos.id AND lab_subelemento_posible_resultado.habilitado=true
+               WHERE lab_elementos.id=$idelemento 
+               GROUP BY lab_subelementos.id,lab_elementos.id,ctl_sexo.id,ctl_rango_edad.id
+               ORDER BY subelemento
 	       LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
               // echo $query;
 	 $result = pg_query($query) or die(mysql_error());
@@ -242,6 +246,199 @@ function consultarpagbus($query_search,$RegistrosAEmpezar, $RegistrosAMostrar)
   } 
 //************************************************FIN FUNCIONES PARA MANEJO DE PAGINACION***************************************************/
  
+  /*========================================================================================*/
+ 
+    function resultados($id_subelemento){
+        /*
+        * Julio Castillo
+        */
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+          $query = "SELECT pr.id as id,
+                        pr.posible_resultado resultado
+                     FROM lab_posible_resultado pr
+                             LEFT JOIN (SELECT id, id_posible_resultado, id_subelemento, habilitado 
+                                        FROM lab_subelemento_posible_resultado spr 
+                                        WHERE spr.id_subelemento = '$id_subelemento' AND spr.habilitado = true) spr ON spr.id_posible_resultado = pr.id
+                     WHERE spr.id is null
+                     ORDER BY pr.posible_resultado";
+
+             $result = pg_query($query);
+             if (!$result)
+               return false;
+             else
+               return $result;
+        }
+    }
+
+    function get_subelemento($id_subelemento){
+        /*
+        * Julio Castillo
+        */
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+          $query = "SELECT s.id as id,
+                        s.subelemento as subelemento_text
+                     FROM lab_subelementos s
+                     WHERE s.id = '$id_subelemento'";
+             $result = pg_query($query);
+             if (!$result)
+               return false;
+             else
+               return $result;
+        }
+    }
+    
+    function resultados_seleccionados($id_subelemento){
+        /*
+        * Julio Castillo
+        */
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+          $query = "SELECT pr.id as id,
+                        pr.posible_resultado as resultado
+                    FROM
+                        lab_subelemento_posible_resultado spr
+                    LEFT JOIN lab_posible_resultado pr ON pr.id = spr.id_posible_resultado
+                    WHERE spr.id_subelemento = '$id_subelemento' AND spr.habilitado is true
+                    ORDER BY posible_resultado";
+
+             $result = pg_query($query);
+             if (!$result)
+               return false;
+             else
+               return $result;
+        }
+    }
+    
+    function cambiar_estado($id_subelemento){
+        /*
+        * Julio Castillo
+        */
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+            $query = "UPDATE lab_subelemento_posible_resultado SET habilitado = false WHERE id_subelemento = '$id_subelemento'";
+            $result = pg_query($query);
+            if (!$result)
+              return false;
+            else
+              return $result;
+        }
+    }
+    
+    function cambiar_estado_id($id_posible_resultado,$id_subelemento){
+        /*
+        * Julio Castillo
+        */
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+            $query = "UPDATE lab_subelemento_posible_resultado 
+                        SET habilitado = true,
+                            fechafin = null,
+                            id_user_mod = 8,
+                            fecha_mod = now()
+                        WHERE id_posible_resultado = '$id_posible_resultado' AND id_subelemento='$id_subelemento'";
+            $result=pg_query($query);
+            if (pg_affected_rows($result)==0){
+                $query = "
+                    INSERT INTO lab_subelemento_posible_resultado(
+                            id_subelemento, id_posible_resultado, fechainicio, fechafin, 
+                            habilitado, id_user, fecha_registro, id_user_mod, fecha_mod)
+                    VALUES ('$id_subelemento', '$id_posible_resultado', now(), null, 
+                            true, 8, now(), null, null)";
+                $result=pg_query($query);
+            }
+        }
+    }
+    
+          function examen_metodologia($id_examen){
+            /*
+            * Julio Castillo
+            */
+            $con = new ConexionBD;
+	    //usamos el metodo conectar para realizar la conexion
+	    if($con->conectar()==true){
+	      $query = "SELECT m.id as id_metodologia,
+                                (CASE WHEN (em.id_metodologia IS NULL) then m.nombre_metodologia ELSE '' END) metodologias, 
+                                (SELECT nombre_metodologia FROM lab_metodologia WHERE id=em.id_metodologia) metodologias_sel,
+                                (SELECT CONCAT(idestandar,'-',descripcion) 
+                                    FROM ctl_examen_servicio_diagnostico t01, lab_conf_examen_estab t02 
+                                    WHERE t01.id=t02.idestandarrep AND t02.id=$id_examen) nombre_prueba,
+                                '$id_examen' AS idexamen
+                        FROM lab_metodologia m
+                        LEFT JOIN (SELECT id_metodologia from lab_examen_metodologia 
+                                    WHERE id_conf_exa_estab =$id_examen) em ON em.id_metodologia = m.id
+                        WHERE m.activa IS TRUE
+                        GROUP BY m.id, em.id_metodologia
+                        ORDER BY m.nombre_metodologia";
+             
+		 $result = pg_query($query);
+		 if (!$result)
+		   return false;
+		 else
+		   return $result;
+	   }
+	 }
+         
+         function prueba_lab($id_examen){
+            /*
+            * Julio Castillo
+            */
+            $con = new ConexionBD;
+	    //usamos el metodo conectar para realizar la conexion
+	    if($con->conectar()==true){
+	      $query = "SELECT nombre_examen as nombre_prueba FROM lab_conf_examen_estab WHERE id=$id_examen";
+             
+		 $result = pg_query($query);
+		 if (!$result)
+		   return false;
+		 else
+		   return $result;
+	   }
+	 }
+         
+         function examen_metodologia_add($id_examen, $id_metodologia){
+             /*
+              * Julio Castillo
+              */
+            $con = new ConexionBD;
+	    //usamos el metodo conectar para realizar la conexion
+	    if($con->conectar()==true){
+	       $query = "INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin) VALUES ($id_examen, $id_metodologia, true, NOW(), NULL)";
+             
+		 $result = pg_query($query);
+		 if (!$result)
+		   return false;
+		 else
+		   return $result;
+	   }
+	 }
+         
+         function examen_metodologia_del($id_examen, $id_metodologia){
+             /*
+              * Julio Castillo
+              */
+            $con = new ConexionBD;
+	    //usamos el metodo conectar para realizar la conexion
+	    if($con->conectar()==true){
+	      $query = "DELETE FROM lab_examen_metodologia WHERE id_conf_exa_estab = $id_examen AND id_metodologia = $id_metodologia";
+             
+		 $result = pg_query($query);
+		 if (!$result)
+		   return false;
+		 else
+		   return $result;
+	   }
+	 }
+ 
+  
+  
+  
 }//CLASE}
 
 
@@ -303,6 +500,8 @@ function insertar_labo($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fec
  }
 
 
+ 
+ 
 
 }//CLASE
 ?>

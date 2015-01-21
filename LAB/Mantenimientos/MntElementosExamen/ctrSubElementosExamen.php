@@ -100,7 +100,8 @@ switch ($opcion)
                     <td class='CobaltFieldCaptionTD'> Rango Edad </td>
                     <td class='CobaltFieldCaptionTD'> Sexo</td>
 		    <td class='CobaltFieldCaptionTD'> Fecha Inicio</td>	
-                    <td class='CobaltFieldCaptionTD'> Fecha Fin</td>	
+                    <td class='CobaltFieldCaptionTD'> Fecha Fin</td>
+                    <td class='CobaltFieldCaptionTD'> Atar a cat&aacute;logo</td>
 	        </tr>";
     while($row = pg_fetch_array($consulta)){
           echo "<tr>
@@ -134,6 +135,14 @@ switch ($opcion)
 	      echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 	  else 	
 	      echo "<td>".htmlentities($row['fechafin'])."</td>";
+          
+          if ($row['catalogo'] != '{NULL}') { 
+                echo "<td><input type='button'  value='Cat&aacute;logo' onclick='popup(".'"consulta_SubElemento.php?id_subelemento='.$row['id'].'"'.")' /></td>";
+          }
+          else {
+              echo "<td><input type='button' value='...'  onclick='popup(".'"consulta_SubElemento.php?id_subelemento='.$row['id'].'"'.")' /></td>";
+          }
+          
 	  echo "</tr>";
 		}
 	  echo "</table>"; 
