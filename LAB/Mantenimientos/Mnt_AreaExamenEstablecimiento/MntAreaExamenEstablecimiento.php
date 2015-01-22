@@ -50,7 +50,7 @@
 
                                 if(exa_idx % 2 === 0 || exa_idx === 0)
                                     nav_content = nav_content + '<tr>';
-
+                                 
                                 nav_content = nav_content + '<td>\
                                                                 <div class="checkbox">\
                                                                     <label>\

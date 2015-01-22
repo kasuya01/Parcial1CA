@@ -6,8 +6,9 @@ $lugar   = $_SESSION['Lugar'];
 $area    = $_SESSION['Idarea'];
 ?>
 <script language="JavaScript" type="text/javascript" src="ajax_RecepcinSolicitud.js"></script>
-<script language="JavaScript" ></script>
-<?php
+<?php 
+
+
 //variables POST
 $idexpediente = $_POST['idexpediente'];
 $fechacita    = $_POST['fechacita'];
@@ -126,35 +127,35 @@ for ($i = 0; $i < $NroRegistros; $i++) {
             }
             echo "</tr>";
         }// while detalle
-
+// <input type='text' class='datepicker' name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" onchange="valfechasolicita(this, 'fecha_realizacion')"/>
+//          <input type='text' class='datepicker' name='fecha_reporte' id='fecha_reporte' size='15'  value='".date('Y-m-d H:i')."' onchange=\'valfechasolicita(this, 'fecha_reporte')\'/><br>           <input type='button' name='btnImprimir[" . $i . "]' id='btnImprimir[" . $i . "]' value='Imprimir Vi&ntilde;etas' onClick='ImprimirExamenes(" . $i . ");'/>   <input type='button' name='btnImpSolicitud[" . $i . "]' id='btnImpSolicitud[" . $i . "]' value='Imprimir Solicitud' onClick='ImprimirSolicitud(" . $i . ");'/>
+         
         echo "</tbody></table></div>
-              <table align='center'><br>
-              <tr>
-               <td>Fecha de toma de muestra: </td>
-               <td><input type=''><input type='text' class='datepicker' name='fecha_reporte' id='fecha_reporte' size='60' value='".date('Y-m-d H:i')."' onchange=\"valfechasolicita(this, 'fecha_reporte')\"/>
-              </tr>
+              <table align='center' class='table table-condensed table-white' style='width:45%;border:0'><br>
                 <tr>
-                    <td>
+                    <td align='right'>
                         <button type='button'  name='btnActualizar[" . $i . "]' id='btnActualizar[" . $i . "]' align='right' style='text-align: right' class='btn btn-primary' onclick='AsignarNumeroMuestra(" . $i . ");'><span class='glyphicon glyphicon-check'></span>&nbsp;Procesar Solicitud </button>
-                        
                         <input type='hidden' name='oculto' id='text' value='" . $i . "' />
                     </td>
-                    <td>
-                        <div id='divoculto[" . $i . "]' style='display:none' >
-                            <input type='button' name='btnImprimir[" . $i . "]' id='btnImprimir[" . $i . "]' value='Imprimir Vi&ntilde;etas' onClick='ImprimirExamenes(" . $i . ");'/>
-                            <input type='button' name='btnImpSolicitud[" . $i . "]' id='btnImpSolicitud[" . $i . "]' value='Imprimir Solicitud' onClick='ImprimirSolicitud(" . $i . ");'/>
+                    <td id='divoculto[" . $i . "]' style='display:none'><center>
+                       
+                         <button type='button'  name='btnImprimir[" . $i . "]' id='btnImprimir[" . $i . "]' align='right' style='text-align: right' class='btn btn-primary' onclick='ImprimirExamenes(" . $i . ");'><span class='glyphicon glyphicon-barcode'></span>&nbsp;Imprimir Viñetas </button>
+                          <button type='button'  name='btnImpSolicitud[" . $i . "]' id='btnImpSolicitud[" . $i . "]' align='right' style='text-align: right' class='btn btn-primary' onclick='ImprimirSolicitud(" . $i . ");'><span class='glyphicon glyphicon-list-alt'></span>&nbsp;Imprimir Solicitud </button>  
+                         </center>
+                         
 			</div>
                     </td>
-		</tr>
-              </table><br>";
+              ";
     }//del while
     echo "<input type='hidden' name='topei' id='topei' value='" . $NroRegistros . "' /> ";
 }
 ?>
 
-    <table align="center">
-        <tr>
-            <td><input type="button" name="btnOtra" id="btnOtra" value="Ingresar otra solicitud" onClick="window.location.replace('Proc_RecepcionSolicitud.php')"></td>
+<!--    <table align="center">
+        <tr>-->
+            <td>
+               <button type='button'  name='btnOtra' id='btnOtra' align='right' style='text-align: right' class='btn btn-primary' onclick='window.location.replace("Proc_RecepcionSolicitud.php");'><span class='glyphicon glyphicon-refresh'></span>&nbsp;Ingresar otra solicitud </button></td>
+<!--               <input type="button" name="btnOtra" id="btnOtra" value="Ingresar otra solicitud" onClick="window.location.replace('Proc_RecepcionSolicitud.php')"></td>-->
         </tr>
     </table>
 </form>

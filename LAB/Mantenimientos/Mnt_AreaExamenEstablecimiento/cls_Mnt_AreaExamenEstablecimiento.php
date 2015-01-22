@@ -63,7 +63,12 @@ class cls_Mnt_AreaExamenEstablecimiento {
     	$con = new ConexionBD;
 
         if ($con->conectar() == true) {
-        	$update_exam = implode(",",$elementos['update']);
+        
+        if(isset($elementos['update'])) {
+            $update_exam = implode(",",$elementos['update']);
+        } else {
+           $update_exam = "";
+        }
 
             if($update_exam !== "") {
                 $query1 = "UPDATE mnt_area_examen_establecimiento SET activo = true WHERE id_examen_servicio_diagnostico IN ($update_exam) AND id_area_servicio_diagnostico = $idarea AND id_establecimiento = $lugar;

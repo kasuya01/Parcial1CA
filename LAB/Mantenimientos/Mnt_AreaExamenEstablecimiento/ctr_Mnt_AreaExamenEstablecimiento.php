@@ -97,8 +97,8 @@ function addElementToGroups($groups, $newGroup, $newExam){
 }
 
 function addElementToExams($exams, $newExam){
-	if( ! isset($exams[ $newExam[2] ]) ){
-		$exams[ $newExam[2] ] = array('id'	   => $newExam[0],
+	if( ! isset($exams[ $newExam[1] ]) ){
+		$exams[ $newExam[1] ] = array('id'	   => $newExam[0],
 									  'codigo' => $newExam[1],
 									  'nombre' => $newExam[2],
 									  'activo' => $newExam[3]

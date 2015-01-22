@@ -1,6 +1,11 @@
+<?php
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+?>
 <html>
     <head>
         <title>Seleccionar metodolog&iacute;as</title>
+        <?php include_once $ROOT_PATH."/public/css.php";?>
+        <?php include_once $ROOT_PATH."/public/js.php";?>
         <script language="JavaScript" >
             /*
              * Juio castillo
