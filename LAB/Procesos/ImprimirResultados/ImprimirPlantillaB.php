@@ -163,7 +163,8 @@ function calc_edad()
                     {    //echo "if";
                         ?>
 			<tr>
-                            <td colspan='5' class="Estilo6" ><?php echo htmlentities($row['elemento'])?></td>
+                            <td colspan='5' class="Estilo6" ><strong><?php echo htmlentities($row['elemento'])?></strong>
+                            </td>
 			</tr>
 				<?php	 //echo  $idedad."   ".$sexo;
                             $consulta2=$obj->LeerSubElementosExamen($idsolicitud,$iddetalle,$row['idelemento'],$lugar,$idedad,$sexo);
@@ -201,7 +202,7 @@ function calc_edad()
                                       //echo "else";  ?>
 			<tr>
 				<?php
-                    $consulta3=$obj->ResulatdoElementoExamen($idsolicitud,$iddetalle,$row['id']);
+                                $consulta3=$obj->ResulatdoElementoExamen($idsolicitud,$iddetalle,$row['idelemento']);
 					$rowele = pg_fetch_array($consulta3);
 
 				  // echo htmlentities($rowele['Resultado']);

@@ -196,20 +196,16 @@ if ($nivel==33){
 					<input name="txtFechaFin" type="text" id="txtFechaFin" size="6" ><input name="button2" type="button" id="trigger2" value="...">dd/mm/aaaa</td>	
 				</tr>-->
                                 
-                               <tr>   
-                                                                     <td width="20%" class="StormyWeatherFieldCaptionTD">Fecha Inicio</td>
-                                                                     <td class="StormyWeatherDataTD">
-                                                                            <input  name="txtFechainicio" type="text" id="txtFechainicio" size="25" class="date"  placeholder="aaaa-mm-dd">
-                                                                    </td>
-                                                                    
-                                                                    
-                                                                    
-                                                                     <td class="StormyWeatherFieldCaptionTD"  width="15%">Fecha Fin</td>
-                                                                     <td class="StormyWeatherDataTD" width="20%">
-                                                                            <input name="txtFechaFin" type="text" id="txtFechaFin" size="28" class="date"  placeholder="aaaa-mm-dd">
-                                                                    </td>
-                                    </tr>   
-                                
+                                <tr>   
+                                    <td width="20%" class="StormyWeatherFieldCaptionTD">Fecha Inicio</td>
+                                    <td class="StormyWeatherDataTD">
+                                        <input  name="txtFechainicio" type="text" id="txtFechainicio" size="25" class="date"  placeholder="aaaa-mm-dd">
+                                    </td>
+                                    <td class="StormyWeatherFieldCaptionTD"  width="15%">Fecha Fin</td>
+                                    <td class="StormyWeatherDataTD" width="20%">
+                                        <input name="txtFechaFin" type="text" id="txtFechaFin" size="28" class="date"  placeholder="aaaa-mm-dd">
+                                    </td>
+                                </tr>   
                                 
                              </table>
 			</td>			

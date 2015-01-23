@@ -442,11 +442,11 @@ function LeerUltimoCodigo($idarea)
                 LEFT JOIN ctl_sexo ON lab_conf_examen_estab.idsexo= ctl_sexo.id 
                 INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
                 LEFT JOIN cit_programacion_exams ON lab_conf_examen_estab.id=cit_programacion_exams.id_examen_establecimiento
-                WHERE lab_areasxestablecimiento.condicion='H' AND mnt_area_examen_establecimiento.id_establecimiento=$lugar 
+                WHERE lab_areasxestablecimiento.condicion='H' AND ctl_examen_servicio_diagnostico.activo= TRUE AND mnt_area_examen_establecimiento.activo=TRUE AND mnt_area_examen_establecimiento.id_establecimiento=$lugar 
                 AND lab_areasxestablecimiento.idestablecimiento=$lugar
                 ORDER BY ctl_area_servicio_diagnostico.idarea,lab_conf_examen_estab.nombre_examen";
               
-           //echo $query;     
+          // echo $query;     
              
 	 $numreg = pg_num_rows(pg_query($query));
 	 if (!$numreg )
@@ -568,11 +568,12 @@ ORDER BY ctl_examen_servicio_diagnostico.id";
                              LEFT JOIN ctl_sexo ON lab_conf_examen_estab.idsexo= ctl_sexo.id 
                              INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
                              LEFT JOIN cit_programacion_exams ON lab_conf_examen_estab.id=cit_programacion_exams.id_examen_establecimiento
-                             WHERE lab_areasxestablecimiento.condicion='H' AND mnt_area_examen_establecimiento.id_establecimiento=$lugar 
+                             WHERE lab_areasxestablecimiento.condicion='H' AND ctl_examen_servicio_diagnostico.activo= TRUE 
+                             AND mnt_area_examen_establecimiento.activo=TRUE AND mnt_area_examen_establecimiento.id_establecimiento=$lugar 
                              ORDER BY ctl_area_servicio_diagnostico.idarea,lab_conf_examen_estab.nombre_examen  
                              LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
-                   //AND lab_areasxestablecimiento.condicion='H'
-                    // echo $query; 
+                  
+                  //   echo $query; 
                             $result = pg_query($query);
                              
                             if (!$result)

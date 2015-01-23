@@ -523,7 +523,7 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT lab_elementos.id as idelemento,lab_elementos.elemento,lab_elementos.unidadelem,observelem,nombrearea,lab_elementos.fechaini,fechafin,subelemento  
+   $query = "SELECT lab_elementos.id as idelemento,lab_elementos.elemento,lab_elementos.unidadelem,observelem,nombrearea,lab_elementos.fechaini,fechafin,subelemento  
                 FROM lab_elementos 
                 INNER JOIN lab_conf_examen_estab ON lab_elementos.id_conf_examen_estab=lab_conf_examen_estab.id
                 INNER JOIN mnt_area_examen_establecimiento ON mnt_area_examen_establecimiento.id=lab_conf_examen_estab.idexamen 
@@ -531,19 +531,9 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
                 INNER JOIN lab_resultados ON lab_resultados.idexamen= lab_conf_examen_estab.id
                 WHERE lab_elementos.id_conf_examen_estab=$idexamen
                 AND iddetallesolicitud=$iddetalle AND lab_elementos.idestablecimiento=$lugar
-                --AND lab_resultados.fecha_resultado BETWEEN lab_elementos.fechaini 
-                --AND (CASE WHEN lab_elementos.fechafin IS NULL THEN CURRENT_DATE ELSE lab_elementos.fechafin END)";
+                AND lab_resultados.fecha_resultado BETWEEN lab_elementos.fechaini AND CASE WHEN fechafin IS NULL THEN CURRENT_DATE ELSE lab_elementos.fechafin END ORDER BY orden";
         
-/* "SELECT IdElemento,Elemento,UnidadElem,SubElemento,NombreArea,NombreExamen,ObservElem 
-		FROM lab_elementos INNER JOIN lab_examenesxestablecimiento ON lab_elementos.IdExamen=lab_examenesxestablecimiento.IdExamen 
-		INNER JOIN lab_examenes ON lab_examenesxestablecimiento.IdExamen=lab_examenes.IdExamen
-		INNER JOIN lab_areasxestablecimiento ON lab_examenes.IdArea=lab_areasxestablecimiento.IdArea 
-		INNER JOIN lab_areas ON lab_areasxestablecimiento.IdArea=lab_areas.IdArea
-		INNER JOIN lab_resultados ON lab_elementos.IdExamen=lab_resultados.IdExamen 
-		WHERE lab_examenesxestablecimiento.IdExamen='$idexamen' AND lab_elementos.IdEstablecimiento=$lugar 
-		AND left(lab_resultados.FechaHoraReg,10) 
-		BETWEEN lab_elementos.FechaIni AND IF(lab_elementos.FechaFin ='0000-00-00',CURDATE(),lab_elementos.FechaFin) 
-		AND IdDetalleSolicitud=$iddetalle ORDER BY IdElemento";*/
+
 //echo $query;
      $result = @pg_query($query);
      if (!$result)
@@ -559,9 +549,9 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
 	 $con = new ConexionBD;
    if($con->conectar()==true)
    {
-    	echo $query="SELECT lab_detalleresultado.Resultado,lab_detalleresultado.Observacion FROM lab_resultados
-	INNER JOIN lab_detalleresultado ON lab_resultados.IdResultado=lab_detalleresultado.IdResultado
-	WERE lab_resultados.IdSolicitudEstudio=$idsolicitud AND lab_resultados.IdDetalleSolicitud=$iddetalle
+    $query="SELECT lab_detalleresultado.Resultado,lab_detalleresultado.Observacion FROM lab_resultados
+	INNER JOIN lab_detalleresultado ON lab_resultados.id=lab_detalleresultado.idresultado
+	WHERE lab_resultados.idsolicitudestudio=$idsolicitud AND lab_resultados.iddetallesolicitud=$iddetalle
         AND lab_detalleresultado.IdElemento=$idelemento"; 
 	 $result = @pg_query($query);
      	if (!$result)
@@ -596,7 +586,7 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
               AND (lab_subelementos.idsexo=(select id from ctl_sexo where nombre='$sexo')OR lab_subelementos.idsexo is NULL) 
               AND (idedad=4 OR idedad=$idedad)
               AND lab_subelementos.idestablecimiento=$lugar 
-             ORDER BY lab_subelementos.id ";
+             ORDER BY lab_subelementos.orden ";
          /*"SELECT lab_resultados.IdResultado, lab_detalleresultado.IdDetalleResultado, 
               lab_subelementos.IdElemento,lab_detalleresultado.IdSubElemento,lab_subelementos.SubElemento,
               lab_detalleresultado.Resultado,lab_subelementos.Unidad,lab_subelementos.RangoInicio,lab_subelementos.RangoFin,
@@ -610,7 +600,7 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
               AND IF(lab_subelementos.FechaFin ='0000-00-00',CURDATE(),lab_subelementos.FechaFin) 
               AND (lab_subelementos.idsexo=$sexo OR lab_subelementos.idsexo=3) AND (idedad=4 OR idedad=$idedad)
 	      ORDER BY IdSubElemento ";*/
-        //echo $query;
+       //echo $query;
 
      $result = @pg_query($query);
      if (!$result)
