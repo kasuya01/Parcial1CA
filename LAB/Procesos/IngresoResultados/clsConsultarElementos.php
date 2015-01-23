@@ -149,7 +149,7 @@ else
    function VerificarExistencia($idexamen,$idsolicitud,$iddetalle){
        $con = new ConexionBD;
         if($con->conectar()==true) {
-       echo   $query = "SELECT count(*) FROM lab_resultados WHERE idsolicitudestudio=$idsolicitud AND iddetallesolicitud= $iddetalle";
+         $query = "SELECT count(*) FROM lab_resultados WHERE idsolicitudestudio=$idsolicitud AND iddetallesolicitud= $iddetalle";
             $cantidad = pg_fetch_array(pg_query($query));
             return $cantidad[0];
         }
@@ -201,7 +201,7 @@ else
     function insertar_elementos($idresultado,$idelemento,$resultado,$control_ele,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-              $query = "INSERT INTO lab_detalleresultado(idresultado, id_elementotincion, resultado, observacion, idestablecimiento) 
+              $query = "INSERT INTO lab_detalleresultado(idresultado,idelemento,resultado,observacion,idestablecimiento) 
                       VALUES($idresultado,$idelemento,'$resultado','$control_ele',$lugar)";
             
             $result = @pg_query($query);
@@ -256,7 +256,7 @@ else
     function MostrarDatosGenerales($idsolicitud,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-          $query = "SELECT DISTINCT t01.idsolicitudestudio,
+        $query = "SELECT DISTINCT t01.idsolicitudestudio,
                              CASE WHEN t02.id_historial_clinico IS NOT NULL
                                  THEN t04.numero
                                  ELSE t13.numero
@@ -370,7 +370,7 @@ else
                       INNER JOIN ctl_area_servicio_diagnostico   t04 ON (t04.id = t03.id_area_servicio_diagnostico)
                       WHERE t02.id = $idexamen AND t01.idestablecimiento = $lugar  
                         AND CURRENT_DATE BETWEEN t01.fechaini AND CASE WHEN fechafin IS NULL THEN CURRENT_DATE ELSE t01.fechafin END
-                      ORDER BY t01.elemento";
+                      ORDER BY t01.orden";
 
             $result = @pg_query($query);
             if (!$result)

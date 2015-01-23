@@ -362,7 +362,8 @@ switch ($opcion)
                                             LEFT JOIN ctl_sexo ON lab_conf_examen_estab.idsexo= ctl_sexo.id 
                                             INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
                                             LEFT JOIN cit_programacion_exams ON lab_conf_examen_estab.id=cit_programacion_exams.id_examen_establecimiento 
-                                            WHERE lab_areasxestablecimiento.condicion='H' AND lab_areasxestablecimiento.idestablecimiento=$lugar AND ";
+                                            WHERE lab_areasxestablecimiento.condicion='H' AND ctl_examen_servicio_diagnostico.activo= TRUE 
+                                            AND mnt_area_examen_establecimiento.activo=TRUE AND lab_areasxestablecimiento.idestablecimiento=$lugar AND ";
 					$ban=0;
 					
 						//VERIFICANDO LOS POST ENVIADOS
@@ -429,7 +430,7 @@ switch ($opcion)
                                             $query_search = $query. " ORDER BY ctl_area_servicio_diagnostico.idarea,lab_conf_examen_estab.nombre_examen";
 					}
 			
-		 //echo$query_search;
+		echo $query_search;
                 //para manejo de la paginacion
 		$RegistrosAMostrar=4;
 		$RegistrosAEmpezar=($_POST['Pag']-1)*$RegistrosAMostrar;
@@ -563,27 +564,31 @@ switch ($opcion)
 				//print_r ($ExisExa[0]);
 				
 		
-	        $query = "SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.codigo_examen as idexamen, 
-                          lab_conf_examen_estab.nombre_examen as nombreexamen, ctl_area_servicio_diagnostico.nombrearea,lab_plantilla.idplantilla, 
-                          ctl_examen_servicio_diagnostico.idestandar, 
-                          (CASE WHEN lab_conf_examen_estab.ubicacion=0 THEN 'Todas las Procedencias' 
-                          WHEN lab_conf_examen_estab.ubicacion=1 THEN 'Hospitalización y Emergencia' 
-                          WHEN lab_conf_examen_estab.ubicacion=4 THEN 'Laboratorio' END ) AS Ubicacion, 
-                          (SELECT idestandar FROM ctl_examen_servicio_diagnostico 
-                          WHERE lab_conf_examen_estab.idestandarrep=ctl_examen_servicio_diagnostico.id) AS estandarrep, 
-                          lab_conf_examen_estab.impresion,urgente, ctl_sexo.nombre AS nombresexo,lab_conf_examen_estab.condicion, 
-                          (CASE WHEN lab_conf_examen_estab.condicion='H' THEN 'Habilitado' 
-                          WHEN lab_conf_examen_estab.condicion='I' THEN 'Inhabilitado' END) AS cond,cit_programacion_exams.rangotiempoprev,
-                          mnt_formularios.nombreformulario
-                          FROM lab_conf_examen_estab 
-                          INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
-                          INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
-                          INNER JOIN ctl_examen_servicio_diagnostico ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico=ctl_examen_servicio_diagnostico.id 
-                          LEFT JOIN mnt_formularios ON lab_conf_examen_estab.idformulario=mnt_formularios.id INNER JOIN lab_plantilla ON lab_conf_examen_estab.idplantilla=lab_plantilla.id 
-                          LEFT JOIN ctl_sexo ON lab_conf_examen_estab.idsexo= ctl_sexo.id INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
-                          LEFT JOIN cit_programacion_exams ON lab_conf_examen_estab.id=cit_programacion_exams.id_examen_establecimiento 
-                          WHERE lab_areasxestablecimiento.condicion='H' AND lab_areasxestablecimiento.idestablecimiento=$lugar AND ";
-					$ban=0;
+	       $query = "SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.codigo_examen as idexamen, 
+                                            lab_conf_examen_estab.nombre_examen as nombreexamen, ctl_area_servicio_diagnostico.nombrearea,lab_plantilla.idplantilla, 
+                                            ctl_examen_servicio_diagnostico.idestandar, 
+                                            (CASE WHEN lab_conf_examen_estab.ubicacion=0 THEN 'Todas las Procedencias' 
+                                            WHEN lab_conf_examen_estab.ubicacion=1 THEN 'Hospitalización y Emergencia' 
+                                            WHEN lab_conf_examen_estab.ubicacion=4 THEN 'Laboratorio' END ) AS Ubicacion, 
+                                            (SELECT idestandar FROM ctl_examen_servicio_diagnostico 
+                                            WHERE lab_conf_examen_estab.idestandarrep=ctl_examen_servicio_diagnostico.id) AS estandarrep, 
+                                            lab_conf_examen_estab.impresion,urgente, ctl_sexo.nombre AS nombresexo,lab_conf_examen_estab.condicion, 
+                                            (CASE WHEN lab_conf_examen_estab.condicion='H' THEN 'Habilitado' 
+                                            WHEN lab_conf_examen_estab.condicion='I' THEN 'Inhabilitado' END) AS cond,cit_programacion_exams.rangotiempoprev,
+                                            mnt_formularios.nombreformulario
+                                            FROM lab_conf_examen_estab 
+                                            INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
+                                            INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
+                                            INNER JOIN ctl_examen_servicio_diagnostico ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico=ctl_examen_servicio_diagnostico.id 
+                                            LEFT JOIN mnt_formularios ON lab_conf_examen_estab.idformulario=mnt_formularios.id 
+                                            INNER JOIN lab_plantilla ON lab_conf_examen_estab.idplantilla=lab_plantilla.id 
+                                            LEFT JOIN ctl_sexo ON lab_conf_examen_estab.idsexo= ctl_sexo.id 
+                                            INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
+                                            LEFT JOIN cit_programacion_exams ON lab_conf_examen_estab.id=cit_programacion_exams.id_examen_establecimiento 
+                                            WHERE lab_areasxestablecimiento.condicion='H' AND ctl_examen_servicio_diagnostico.activo= TRUE 
+                                            AND mnt_area_examen_establecimiento.activo=TRUE AND lab_areasxestablecimiento.idestablecimiento=$lugar AND ";
+			  
+                          $ban=0;
 					
 						//VERIFICANDO LOS POST ENVIADOS
                                                // echo $ExisExa[0]; 
@@ -619,13 +624,20 @@ switch ($opcion)
                                        
                                  if (!empty($_POST['urgente']))
                                             { $query .= " lab_conf_examen_estab.urgente='".$_POST['urgente']."' AND"; }
+                                  
                                             
-				if ($_POST['sexo']<>3)
+                                if ($_POST['sexo']<>0)
+					{ if($_POST['sexo']<>4)
+                                            $query .= "  lab_conf_examen_estab.idsexo =".$_POST['sexo']." AND";
+                                          else 
+                                            $query .= "  lab_conf_examen_estab.idsexo IS NULL AND";
+                                         }             
+				/*if ($_POST['sexo']<>3)
                                     { if($_POST['sexo']<>0)
                                             $query .= "  lab_conf_examen_estab.idsexo =".$_POST['sexo']." AND";
                                       else 
                                             $query .= "  lab_conf_examen_estab.idsexo IS NULL AND";
-                                    } 
+                                    } */
                                             
                                 if (!empty($_POST['Hab'])){
                                     if ($_POST['Hab']=='H')

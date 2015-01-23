@@ -23,7 +23,7 @@ $responsable          = $_GET['var15'];
 $sexo                 = $_GET['var16'];
 $idedad               = $_GET['var17'];
 $valores_combos       = $_GET['var18'];
-//echo $origen;
+//echo $responsable;
 ?>
 <html>
 <head>
@@ -143,7 +143,7 @@ $valores_combos       = $_GET['var18'];
                             </tr>
                             <tr>
                                 <td colspan='1' class="Estilo6"><strong>Validado Por:</strong></td>
-                                <td colspan='5' class="Estilo6"><?php echo htmlentities($responsable)?></td>
+                                <td colspan='5' class="Estilo6"><?php echo $responsable?></td>
                             </tr>
                             <tr>
                                 <td colspan='1' class="Estilo6"><strong>Observacion:</strong></td>
@@ -320,46 +320,45 @@ $valores_combos       = $_GET['var18'];
                                         $pos=0;
                                         $posele=0;
 	                                       
-                                        while($row = pg_fetch_array($consulta)) { //ELEMENTOS
-                                            if($row['subelemento']=="S") {
+                                while($row = pg_fetch_array($consulta)) { //ELEMENTOS
+                                    if($row['subelemento']=="S") {
                                     ?>
-                                                <tr class='StormyWeatherFieldCaptionTD'>
-                                                    <td colspan='5' class="Estilo5"><strong><?php echo htmlentities($row['elemento'])?></strong></td>
-                                                </tr>
+                                        <tr class='StormyWeatherFieldCaptionTD'>
+                                            <td colspan='5' class="Estilo5"><strong><?php echo htmlentities($row['elemento'])?></strong></td>
+                                        </tr>
                                             <?php
                                                 $consulta2 = $obj->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
 
                                                 while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
                                             ?>
-                                                    <tr>
-                                                        <td width='25%' class="Estilo5"><?php echo htmlentities($rowsub['subelemento'])?></td>
+                                        <tr>
+                                            <td width='25%' class="Estilo5"><?php echo htmlentities($rowsub['subelemento'])?></td>
                                               <?php
-                                                    if($vector_combos[$pos]== NULL){  
+                                        if($vector_combos[$pos]== NULL){  
                                               ?>
-                                                        <td width='20%' class="Estilo5"><?php echo htmlentities($vector[$pos])?></td>
+                                            <td width='20%' class="Estilo5"><?php echo htmlentities($vector[$pos])?></td>
                                                         
-                                                     <?php }
-                                                    else{
-                                                          $conresult=$obj->BuscarResultado($vector[$pos]);
-                                                          $row_dresult=  pg_fetch_array($conresult);?>
-                                                        <td width='20%' class="Estilo5"><?php echo htmlentities($row_dresult['posible_resultado'])?></td> 
-                                                    <?php }?>          
-                                                        <td width='15%' class="Estilo5"><?php echo htmlentities($rowsub['unidad'])?></td>
+                                            <?php }
+                                        else{
+                                                        $conresult=$obj->BuscarResultado($vector[$pos]);
+                                                        $row_dresult=  pg_fetch_array($conresult);?>
+                                            <td width='20%' class="Estilo5"><?php echo htmlentities($row_dresult['posible_resultado'])?></td> 
+                                  <?php }?>          
+                                            <td width='15%' class="Estilo5"><?php echo htmlentities($rowsub['unidad'])?></td>
                                                     <?php
-                                                        if ((!empty($rowsub['rangoinicio'])) AND (!empty($rowsub['rangofin']))) { 
+                                        if ((!empty($rowsub['rangoinicio'])) AND (!empty($rowsub['rangofin']))) { 
                                                     ?>
-                                                            <td width='30%' class="Estilo5"><?php echo $rowsub['rangoinicio']." - ".$rowsub['rangofin']?></td>
+                                            <td width='30%' class="Estilo5"><?php echo $rowsub['rangoinicio']." - ".$rowsub['rangofin']?></td>
                                                     <?php 
-                                                        } else { 
+                                        } else { 
                                                     ?>
-                                                            <td width='30%' align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                                                    <?php
-                                                        }  
-                                                    ?>
-                                                    </tr>
-                                            <?php
+                                            <td width='30%' align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                   <?php
+                                        } ?>
+                                        </tr>
+                                    <?php
                                                     $pos=$pos + 1;
-                                                }
+                                        }
                                             ?>
                                             <tr>
                                                 <td colspan='5' class="Estilo5"><?php echo htmlentities($row['observelem'])?></td>

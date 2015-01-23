@@ -379,7 +379,7 @@ function ImprimirPlantillaA1(idsolicitud, idarea, responsable, valores_resultado
 
 function ImprimirPlantillaB(idsolicitud, idexamen, responsable, procedencia, origen, observacion, valores_subelementos, codigos_subelementos, valores_elementos, codigos_elementos, controles, controles_ele, nombrearea, establecimiento, responsable, sexo, idedad, valores_combos) {
 
-alert(valores_combos);
+//alert(valores_combos);
     ventana_secundaria = window.open("ImprimirPlantillaB.php?var1=" + idsolicitud +
             "&var2=" + idexamen + "&var3=" + responsable + "&var4=" + escape(procedencia) +
             "&var5=" + origen + "&var6=" + escape(observacion) + "&var7=" + encodeURIComponent(valores_subelementos) +
