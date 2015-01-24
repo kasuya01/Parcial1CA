@@ -85,7 +85,7 @@ if ($nivel==33){
 	<tr>
         <td class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
         <td class="StormyWeatherDataTD">
-			<select id="cmbArea" name="cmbArea" size="1" onChange="LlenarComboExamen(this.value);">
+			<select id="cmbArea" name="cmbArea" size="1" onChange="LlenarComboExamen(this.value);" style="width:235px">
 				<option value="0" >--Seleccione un &Aacute;rea--</option>
 				<?php
                                        $consulta= $objeareas->consultaractivas($lugar); 
@@ -108,7 +108,7 @@ if ($nivel==33){
     </tr>
 	<tr>
         <td class="StormyWeatherFieldCaptionTD">Indicaci&oacute;n</td>
-        <td class="StormyWeatherDataTD"><textarea name="txtindicacion" cols="60" rows="4" id="txtindicacion"<span style="color: #0000FF;background-color:#87CEEB;"></textarea></td>
+        <td class="StormyWeatherDataTD"><textarea name="txtindicacion" cols="60" rows="4" style="width: 100%" id="txtindicacion"></textarea></td>
     </tr>
     <!--<tr>
 		<td class="StormyWeatherDataTD" colspan="2" align="right">

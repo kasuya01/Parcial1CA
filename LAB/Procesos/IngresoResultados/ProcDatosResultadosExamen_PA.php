@@ -88,6 +88,9 @@ function ValidarCampos()
          if (document.frmnuevo.fecha_realizacion.value == ""){
                 resp=false
              }
+         if (document.frmnuevo.cmbResultado2.value == 0){
+                resp=false
+             }
          }
          
      
@@ -111,6 +114,7 @@ function VerResultados()
         {
            resultado=$("#idresultado").find('option:selected').text();
         }
+	marca=document.getElementById('txtmarca').value;
 	lectura=document.getElementById('txtlectura').value;
 	interpretacion=document.getElementById('txtinterpretacion').value;
 	observacion=document.frmnuevo.txtcomentario.value;
@@ -127,8 +131,8 @@ function VerResultados()
         txtnec=document.frmnuevo.txtnec.value;
         fecha_realizacion=document.frmnuevo.fecha_realizacion.value;
         fecha_reporta=document.frmnuevo.fecha_reporte.value;
-        
-	MostrarResultadoExamen(idsolicitud,iddetalle,idarea,idexamen,resultado,lectura,interpretacion,observacion,responsable,nombrearea,procedencia,origen,impresion,establecimiento,codresult,fechanac,sexo, cmbmetodologia, txtnec, fecha_realizacion, fecha_reporta, idresultado);
+
+	MostrarResultadoExamen(idsolicitud,iddetalle,idarea,idexamen,resultado,lectura,interpretacion,observacion,responsable,nombrearea,procedencia,origen,impresion,establecimiento,codresult,fechanac,sexo, cmbmetodologia, txtnec, fecha_realizacion, fecha_reporta, idresultado, marca);
 	
     }else
     {    alert("Complete la Informacion Requerida");   }
@@ -411,9 +415,15 @@ echo '<option value="xyz">Seleccione una opción</option>';
                              
                         </tr>
                         <tr>
+                            <td class="StormyWeatherFieldCaptionTD">Marca</td>
+                            <td class="StormyWeatherDataTD" colspan="3">
+                               <textarea name="txtmarca" cols="50" id="txtmarca"></textarea></td>
+                        </tr>
+                        <tr>
                             <td class="StormyWeatherFieldCaptionTD">Lectura</td>
                             <td class="StormyWeatherDataTD" colspan="3"><textarea name="txtlectura" cols="50" id="txtlectura"></textarea></td>
                         </tr>
+                        
                         <tr>
                             <td  class="StormyWeatherFieldCaptionTD">Interpretaci&oacute;n</td>
                             <td  class="StormyWeatherDataTD" colspan="3"><textarea name="txtinterpretacion" cols="50" id="txtinterpretacion"></textarea></td>

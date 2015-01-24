@@ -13,6 +13,7 @@ $txtnec=$_GET['var11'];
 $proce=$_GET['var12'];
 $origen=$_GET['var13'];
 $iddetalle=$_GET['var14'];
+$marca=$_GET['var15'];
 //echo $sexo."***".$idedad;
 ?>
 <html>
@@ -75,10 +76,12 @@ $consultares = $objdatos->MostrarDatoslabresultado($idexamen, $lugar, $idsolicit
 //$rowfecha = mysql_fetch_array($Consulta_fecha);
 $fechares=$filares['fecha_resultado'];
 $resultado=$filares['resultado'];
+$marca=$filares['marca'];
 $lectura=$filares['lectura'];
 $interpretacion=$filares['interpretacion'];
 $observacion=$filares['observacion'];
 $responsable=$filares['idempleado'];
+$nexamen=$filares['nombre_examen'];
  //echo 'emp:'.$responsable;
 ?>
 <div  id="divImpresion" >
@@ -152,13 +155,14 @@ $responsable=$filares['idempleado'];
                             <td align="center" class="Estilo5"><strong>Resultado</strong></td>
                             <td align="center" class="Estilo5"><strong>Unidades</strong></td>
                             <td align="center" class="Estilo5"><strong>Rangos Normales</strong> </td>
+                            <td align="justify" class="Estilo5"><strong>Marca</strong></td>
                             <td align="justify" class="Estilo5"><strong>Lectura</strong></td>
                             <td align="justify" class="Estilo5"><strong>Interpretación</strong></td>
                             <td align="justify" class="Estilo5"><strong>Observación</strong></td>
                         </tr>
-                        <tr><td colspan="7"><hr></td><tr/>
+                        <tr><td colspan="8"><hr></td><tr/>
                         <tr>
-                            <td align="left" class="Estilo5"><?php echo $fila['nombre_reporta'];?></td>
+                            <td align="left" class="Estilo5"><?php echo $nexamen;?></td>
                             <td align="center" class="Estilo5"><?php echo $resultado?></td>
                      <?php if (!empty($fila['unidades'])){ ?>
                             <td align="center" class="Estilo5"><?php echo $fila['unidades'] ?></td>
@@ -166,7 +170,12 @@ $responsable=$filares['idempleado'];
                             <td  align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                      <?php }  ?>
                             <td align="center" class="Estilo5"><?php echo isset($fila['rangoinicio']) ? $fila['rangoinicio'] : null." - ".isset($fila['rangorin']) ? $fila['rangofin'] : null?></td>
-                     <?php if (!empty($lectura)){ ?>
+                     <?php if (!empty($marca)){ ?>
+                            <td align="justify" class="Estilo5"><?php echo $marca?></td>
+                     <?php }else{?>
+                            <td  align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                     <?php }
+                            if (!empty($lectura)){ ?>
                             <td align="justify" class="Estilo5"><?php echo $lectura?></td>
                      <?php }else{?>
                             <td  align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -182,6 +191,28 @@ $responsable=$filares['idempleado'];
                             <td  align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                      <?php } ?>
                         </tr>
+                        <?php
+                     echo "<tr><td colspan='8'>&nbsp;</td></tr>";
+          
+         $met=$objdatos->buscarexamresult($iddetalle, $idsolicitud, $lugar, $idexamen, $sexo, $idedad);
+         $cantmet=pg_num_rows($met);
+         if ($met>0){
+            echo "<tr><td colspan=1><br><i>Metodologías:</i></td></tr>";
+            while ($rowme=pg_fetch_array($met)){
+                echo "<tr>
+                        <td align='left' style='font:bold'>".$rowme['nombre_metodologia']."</td>
+   <td align='center'>".$rowme['resultado']."</td>
+                        <td align='center'>".$rowme['unidades']."</td>
+                        <td align='justify'>".$rowme['rangoinicio']." - ".$rowme['rangofin']."</td>
+                        <td align='justify'>".$rowme['marca']."</td>
+                        <td align='justify'>".$rowme['lectura']."</td>
+                        <td align='justify'></td>
+                        <td align='justify'>".$rowme['observacion']."</td>
+                    </tr>";
+                }
+         }
+                        ?>
+                       
                     </table>
                 </td>
              </tr>

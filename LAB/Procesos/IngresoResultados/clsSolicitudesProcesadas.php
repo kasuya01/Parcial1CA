@@ -146,7 +146,7 @@ class clsSolicitudesProcesadas {
 			when 0 then (id_metodologia>0 or id_metodologia is null)
 			else id_metodologia=$idmetodologia
 			end)";
-            //  echo $query;
+             // echo $query;
             $result = @pg_query($query);
             if (!$result)
                 return false;
@@ -500,10 +500,41 @@ and sse.id_establecimiento=$lugar;";
     function MostrarDatoslabresultado($idexamen, $lugar, $idsolicitud, $iddetalle) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query="select *, idempleado as empleado from lab_resultados
-where idsolicitudestudio=$idsolicitud
-and iddetallesolicitud=$iddetalle
-and idestablecimiento=$lugar;";
+            $query="select t01.*, t01.idempleado as empleado, nombre_examen 
+from lab_resultados t01
+join sec_detallesolicitudestudios t02 on (t02.id=t01.iddetallesolicitud)
+join lab_conf_examen_estab t03 on (t03.id=t02.id_conf_examen_estab)
+where t01.idsolicitudestudio=$idsolicitud
+and t01.iddetallesolicitud=$iddetalle
+and t01.idestablecimiento=$lugar;";
+            $result = @pg_query($query);
+           // $filares = pg_fetch_array($result);
+              // echo '<br\>'.$filares['idempleado'].'<br\>';
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
+    
+    //Fn Pg
+    function buscarexamresult($iddetalle, $idsolicitud, $lugar, $idexamen, $sexo, $idedad) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query="select lce.id  as idexamen, codigo_examen, nombre_examen, unidades, rangoinicio, rangofin,nombre_metodologia, id_metodologia, nombre_reporta, fechafin, fechaini, ldf.id,
+lrm.resultado, lrm.observacion, lrm.marca, lrm.lectura
+from lab_datosfijosresultado 	ldf
+join lab_conf_examen_estab	lce on (lce.id = ldf.id_conf_examen_estab)
+join lab_examen_metodologia 	lem on (lce.id = lem.id_conf_exa_estab)
+left join lab_metodologia	lme on (lme.id = lem.id_metodologia)
+join lab_resultado_metodologia 	lrm on (lem.id = lrm.id_examen_metodologia)
+where idestablecimiento=$lugar
+and id_conf_examen_estab=$idexamen
+and id_detallesolicitudestudio=$iddetalle
+and (current_date between fechaini and (case when date(fechafin) is null then current_date else fechafin end))
+and (ldf.idsexo is null or ldf.idsexo=$sexo)
+and (idedad=4 or idedad=$idedad)
+and b_reporta=true order by nombre_metodologia";
             $result = @pg_query($query);
            // $filares = pg_fetch_array($result);
               // echo '<br\>'.$filares['idempleado'].'<br\>';
@@ -757,7 +788,7 @@ function CantMetodologia($idexamen) {
     //Fn para ingresar en lab_resultado_metodologia
     
     //FUNCION PARA GUARDAR RESULTADOS
-  function InsertarResultadoPlantillaAM($hdnidexamen_, $hdnIdMetodologia_, $hdnResp_, $hdnFecProc_, $hdnFecResu_, $hdnResult_, $hdnObserva_, $hdnCodResult_, $idsolicitud, $usuario, $iddetalle, $idrecepcion, $lugar, $idresultado) {
+  function InsertarResultadoPlantillaAM($hdnidexamen_, $hdnIdMetodologia_, $hdnResp_, $hdnFecProc_, $hdnFecResu_, $hdnResult_, $hdnObserva_, $hdnCodResult_, $idsolicitud, $usuario, $iddetalle, $idrecepcion, $lugar, $idresultado, $marca, $lectura) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
             $nextid="select nextval('lab_resultado_metodologia_id_seq')"; 
@@ -765,8 +796,8 @@ function CantMetodologia($idexamen) {
             $nextseq=  pg_fetch_array($sql);
             $idnext=$nextseq[0];
 
-            $query = "insert into lab_resultado_metodologia (id, id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, resultado, observacion, idusuarioreg, fechahorareg, fecha_realizacion, fecha_resultado, id_empleado, id_posible_resultado)
-            values ($idnext,$hdnIdMetodologia_, $iddetalle, $hdnCodResult_, $hdnResult_,$hdnObserva_, $usuario, date_trunc('second',NOW()), $hdnFecProc_, $hdnFecResu_, $hdnResp_, $idresultado);";
+            $query = "insert into lab_resultado_metodologia (id, id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, resultado, observacion, idusuarioreg, fechahorareg, fecha_realizacion, fecha_resultado, id_empleado, id_posible_resultado, marca, lectura)
+            values ($idnext,$hdnIdMetodologia_, $iddetalle, $hdnCodResult_, $hdnResult_,$hdnObserva_, $usuario, date_trunc('second',NOW()), $hdnFecProc_, $hdnFecResu_, $hdnResp_, $idresultado, $marca, $lectura);";
                //echo $query;
        //     $query2 = "SELECT LAST_INSERT_ID();";
 
@@ -784,7 +815,7 @@ function CantMetodologia($idexamen) {
     //Fn para ingresar en lab_resultado final
     
     //FUNCION PARA GUARDAR RESULTADOS
-    function InsertarResultadoPlantillaAF($idsolicitud, $iddetalle,$idrecepcion, $v_resultfin, $v_lectura, $v_interpretacion, $v_obserrecep, $lugar, $usuario, $idexamen, $cmbEmpleadosfin, $d_resultfin, $idresultado) {
+    function InsertarResultadoPlantillaAF($idsolicitud, $iddetalle,$idrecepcion, $v_resultfin, $v_lectura, $v_interpretacion, $v_obserrecep, $lugar, $usuario, $idexamen, $cmbEmpleadosfin, $d_resultfin, $idresultado, $marca) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
             $nextid="select nextval('lab_resultados_id_seq')"; 
@@ -792,8 +823,8 @@ function CantMetodologia($idexamen) {
             $nextseq=  pg_fetch_array($sql);
             $idnext=$nextseq[0];
 
-            $query = "insert into lab_resultados (id, idsolicitudestudio, iddetallesolicitud, idrecepcionmuestra, resultado, lectura, interpretacion, observacion, idestablecimiento, idusuarioreg, fechahorareg, idexamen, idempleado, fecha_resultado, id_posible_resultado) "
-                    . "values ($idnext, $idsolicitud, $iddetalle, $idrecepcion, $v_resultfin, $v_lectura,$v_interpretacion, $v_obserrecep, $lugar, $usuario, date_trunc('seconds',NOW()), $idexamen, $cmbEmpleadosfin, $d_resultfin, $idresultado)";
+            $query = "insert into lab_resultados (id, idsolicitudestudio, iddetallesolicitud, idrecepcionmuestra, resultado, lectura, interpretacion, observacion, idestablecimiento, idusuarioreg, fechahorareg, idexamen, idempleado, fecha_resultado, id_posible_resultado, marca) "
+                    . "values ($idnext, $idsolicitud, $iddetalle, $idrecepcion, $v_resultfin, $v_lectura,$v_interpretacion, $v_obserrecep, $lugar, $usuario, date_trunc('seconds',NOW()), $idexamen, $cmbEmpleadosfin, $d_resultfin, $idresultado, $marca)";
             
          //   echo '<br/>'.$query;
        //     $query2 = "SELECT LAST_INSERT_ID();";

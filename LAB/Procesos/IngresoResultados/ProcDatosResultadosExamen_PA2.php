@@ -387,6 +387,16 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                              
                         </tr>
                         <tr>
+                            <td class="StormyWeatherFieldCaptionTD">Marca</td>
+                            <td class="StormyWeatherDataTD" colspan="3">
+                               <textarea name="txtmarca" cols="50" id="txtmarca" style="width:96%"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td class="StormyWeatherFieldCaptionTD">Lectura</td>
+                            <td class="StormyWeatherDataTD" colspan="3">
+                               <textarea name="txtlectura" cols="50" id="txtlectura" style="width:96%"></textarea></td>
+                        </tr>
+                        <tr>
                             <td class="StormyWeatherFieldCaptionTD">Observaci&oacute;n</td>
                             <td class="StormyWeatherDataTD" colspan="3"><textarea name="txtcomentario" cols="50" id="txtcomentario" style="width:96%"></textarea></td>
                         </tr>
@@ -440,6 +450,8 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
 					<th width="6%" title="Fecha Resultado">Fecha Resultado</th>
 					<th width="10%" title="Responsable">Responsable</th>
 					<th  width="10%" title="Resultado">Resultado</th>
+					<th  width="10%" title="Marca">Marca</th>
+					<th  width="10%" title="Lectura">Lectura</th>
 					<th  width="12%" title="Observacion">Observaci&oacute;n</th>
 					<th  width="8%" title="Tabulador">Tabulador</th>
 					<th  width="5%" title="Eliminar">Elim.</th>

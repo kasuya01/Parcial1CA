@@ -173,7 +173,7 @@ switch ($opcion) {
 		        </tr>
 		        <tr>
 					<td class='StormyWeatherFieldCaptionTD'>Examen </td>
-					<td class='StormyWeatherDataTD'><select id='cmbExamen' name='cmbExamen' size='1'>
+					<td class='StormyWeatherDataTD'><select id='cmbExamen' name='cmbExamen' size='1' style='width:235px'>
 					<option value='0'>--Seleccione un Examen--</option>";
         $resultado .= "</select>
 					</td>

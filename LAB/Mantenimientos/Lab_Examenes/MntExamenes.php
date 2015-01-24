@@ -44,7 +44,7 @@ function Cancelar()
 	show_event(1);
 }
 function popup(URL) {
-        myWindow=window.open(URL, '" + "', 'scrollbars=yes, width=700, height=500, left=100, top = 100');
+        myWindow=window.open(URL, '" + "', 'scrollbars=yes, width=700, height=700, left=100, top = 100');
     }
     function habilitar_metodologia(obj){
         if(obj.value !== "") {
@@ -83,12 +83,12 @@ if ($nivel==33){
 			</tr>
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo del Examen</td>
-                            <td class="StormyWeatherDataTD"> <div id="divCodigo"><input type="text" id="txtidexamen"  name="txtidexamen" disabled="disabled" /></div></td>
+                            <td class="StormyWeatherDataTD"> <div id="divCodigo"><input type="text" id="txtidexamen"  name="txtidexamen" disabled="disabled" style="width:250px"/></div></td>
 			</tr>
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo del &Aacute;rea</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbArea" name="cmbArea" size="1"  onChange="LlenarComboExamen(this.value);">
+                                <select id="cmbArea" name="cmbArea" size="1"  onChange="LlenarComboExamen(this.value);" style="width:250px">
                                     <option value="0" >--Seleccione un &Aacute;rea--</option>
                                     <?php
                                         $consulta= $objeareas->consultaractivas($lugar);
@@ -118,7 +118,7 @@ if ($nivel==33){
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD" >Plantilla</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbPlantilla" name="cmbPlantilla" size="1">
+                                <select id="cmbPlantilla" name="cmbPlantilla" size="1" style="width:250px">
                                     <option value="0">--Seleccione una Plantilla--</option>
                                         <?php
                                             $obje=new clsLab_Examenes;
@@ -133,7 +133,7 @@ if ($nivel==33){
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD"><strong>Solicitado en </strong> </td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbUbicacion" name="cmbUbicacion" size="1" >
+                                <select id="cmbUbicacion" name="cmbUbicacion" size="1" style="width:250px">
                                     <option value="" >--Seleccione--</option>
                                     <option value="0" >Todas las procediencias</option>
                                     <option value="1" >Hospitalización y Emergencia</option>
@@ -146,7 +146,7 @@ if ($nivel==33){
                             <td width="17%" class="StormyWeatherFieldCaptionTD">Formulario para Examen</td>
                             <td width="83%"  class="StormyWeatherDataTD">
                              
-                                    <select name="cmbFormularios" id="cmbFormularios" size="1" > 
+                                    <select name="cmbFormularios" id="cmbFormularios" size="1" style="width:250px"> 
                                         <option value="0">Ninguno</option>
                                         <?php
                                             $consulta= $obj->consultar_formularios($lugar);
@@ -176,7 +176,7 @@ if ($nivel==33){
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD" >Tipo Etiqueta</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbEtiqueta" name="cmbEtiqueta" size="1" >
+                                <select id="cmbEtiqueta" name="cmbEtiqueta" size="1" style="width:250px">
                                     <option value="0">--Seleccione un un tipo de etiqueta--</option>
                                     <option value="G">General</option>
                                     <option value="O">Especial</option>
@@ -186,7 +186,7 @@ if ($nivel==33){
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Examen Solicitado Urgente</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbUrgente" name="cmbUrgente" size="1">
+                                <select id="cmbUrgente" name="cmbUrgente" size="1" style="width:250px">
                                     <option value="0">No</option>
                                     <option value="1">Si</option>
                                 </select>    
@@ -195,7 +195,7 @@ if ($nivel==33){
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Sexo al que se le realiza la prueba</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbsexo" name="cmbsexo" size="1">
+                                <select id="cmbsexo" name="cmbsexo" size="1" style="width:250px">
                                      <option value="0">Ninguno</option>
                                      <option value="4">Ambos</option>
                                     <?php
@@ -211,7 +211,7 @@ if ($nivel==33){
                          <tr>
                             <td class="StormyWeatherFieldCaptionTD">Habilitar Prueba</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbHabilitar" name="cmbHabilitar" size="1">
+                                <select id="cmbHabilitar" name="cmbHabilitar" size="1" style="width:250px" class="selectpicker">
                                     <option value="0">-- Seleccione Condici&oacute;n --</option>
                                     <option value="H">Habilitado</option>
                                     <option value="I">Inhabilitado</option>
@@ -228,10 +228,12 @@ if ($nivel==33){
                         <td class="StormyWeatherDataTD">
                             <input type="hidden" name="metodologias_sel" id="metodologias_sel">
                             <input type="hidden" name="text_metodologias_sel" id="text_metodologias_sel">
-                            <input type="button" value="..." name="add_metodologia" id="add_metodologia" disabled="disabled" onclick="
+                            <input type="hidden" name="id_metodologias_sel" id="id_metodologias_sel">
+                            <button type='button' class='btn btn-primary' disabled="disabled"  name="add_metodologia" id="add_metodologia" style="width:250px" onclick="
                                 popup('consulta_metodologias.php?form=frmnuevo&metodologias_sel='+document.getElementById('metodologias_sel').value+
                                         '&text_metodologias_sel='+document.getElementById('text_metodologias_sel').value+
-                                        '&nombre='+document.getElementById('txtnombreexamen').value);"/>
+                                        '&nombre='+document.getElementById('txtnombreexamen').value+ '&id_metodologias_sel='+document.getElementById('id_metodologias_sel').value);"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Metodologías:..</button>
+                           
                         </td>
                         
                         </tr>

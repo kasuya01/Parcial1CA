@@ -335,6 +335,7 @@ switch ($opcion) {
         $resultado = (empty($_POST['resultado'])) ? 'NULL' : "'" . pg_escape_string($_POST['resultado']) . "'";
         //$lectura = $_POST['lectura'];
         $lectura = (empty($_POST['lectura'])) ? 'NULL' : "'" . pg_escape_string($_POST['lectura']) . "'";
+        $marca = (empty($_POST['marca'])) ? 'NULL' : "'" . pg_escape_string($_POST['marca']) . "'";
       //$observacion = $_POST['observacion'];
         $observacion = (empty($_POST['observacion'])) ? 'NULL' : "'" . pg_escape_string($_POST['observacion']) . "'";
         $responsable = $_POST['responsable'];
@@ -354,11 +355,11 @@ switch ($opcion) {
         $idmetodologia=@pg_fetch_array($objdatos->BuscarExaMetodologia($idexamen));
         // echo $verifica[0];
         if ($verifica == 0) {
-            $verdadero = $objdatos->InsertarResultadoPlantillaAM($idexamen, $idmetodologia['idexamet'], $responsable, $fecha_realizacion, $fecha_reporte, $resultado, $observacion, $codigo, $idsolicitud, $usuario, $iddetalle, $idrecepcion, $lugar, $idresultado) ;
+            $verdadero = $objdatos->InsertarResultadoPlantillaAM($idexamen, $idmetodologia['idexamet'], $responsable, $fecha_realizacion, $fecha_reporte, $resultado, $observacion, $codigo, $idsolicitud, $usuario, $iddetalle, $idrecepcion, $lugar, $idresultado, $marca, $lectura) ;
             
             if ($verdadero != 0) {
                 $cantingresados++;
-                if ($objdatos->InsertarResultadoPlantillaAF($idsolicitud, $iddetalle,$idrecepcion, $resultado, $lectura, $interpretacion, $observacion, $lugar, $usuario, $idexamen, $responsable, $fecha_reporte, $idresultado)==false){
+                if ($objdatos->InsertarResultadoPlantillaAF($idsolicitud, $iddetalle,$idrecepcion, $resultado, $lectura, $interpretacion, $observacion, $lugar, $usuario, $idexamen, $responsable, $fecha_reporte, $idresultado, $marca)==false){
                     echo "Error al momento de validar resultado. Por favor revisar informaci&oacute;n.";
                     $flag=1;
                 }
@@ -414,6 +415,7 @@ switch ($opcion) {
         $idexamen = $_POST['idexamen'];
         $resultado = $_POST['resultado'];
         $lectura = $_POST['lectura'];
+        $marca = $_POST['marca'];
         $interpretacion = $_POST['interpretacion'];
         $observacion = $_POST['observacion'];
         $responsable = $_POST['responsable'];
@@ -524,7 +526,7 @@ switch ($opcion) {
 
         $Imprimir.="<table width='100%'  align='center' border='0' class='StormyWeatherFormTABLE'>
                         <tr>
-                            <td colspan='7' align='center' >&nbsp;DETALLE DE RESULTADOS<br/><br></td>
+                            <td colspan='8' align='center' >&nbsp;DETALLE DE RESULTADOS<br/><br></td>
                         </tr>
                         <tr >
                             <td align='center'><b>Prueba Realizada </b></td>";
@@ -535,11 +537,12 @@ switch ($opcion) {
                             <td align='center'><b>Resultado</b></td>
                             <td align='center'><b>Unidades</b></td>
                             <td align='center'><b>Rangos Normales </b></td>
+                            <td align='center'><b>Marca</b></td>
                             <td align='center'><b>Lectura</b></td>
 			    <td align='center'><b>Interpretaci&oacute;n</b></td>
 			    <td align='center'><b>Observaci&oacute;n</b></td>
 			</tr>
-                        <tr><td colspan='7'><hr style='width:90%'></td></tr>";
+                        <tr><td colspan='8'><hr style='width:90%'></td></tr>";
 
         //MOSTRAR DATOS FIJOS Y RESULTADOS DIGITADOS
         $consulta2 = $objdatos->MostrarDatosFijosPlantillaA($idexamen, $lugar, $sexo, $idedad, $idmetodologia);
@@ -555,11 +558,13 @@ switch ($opcion) {
 			    <td align='center'>" . $resultado . "<input type='hidden' id='resultado_' name='resultado_' value='" . $resultado . "'/><input type='hidden' id='idresultado_' name='idresultado_' value=".$idresultado." /></td>
 			    <td align='center'>" . $fila['unidades'] . "</td>
 			    <td align='center'>" . $fila['rangoinicio'] . " - " . $fila['rangofin'] . "</td>
-			    <td align='center'>" . $lectura . "<input type='hidden' id='lectura_' name='lectura_' value='" . $lectura . "'/></td>
+			    <td align='center'>" . $marca . "<input type='hidden' id='marca_' name='marca_' value='" . $marca . "'/></td>"
+                . "<td align='center'>" . $lectura . "<input type='hidden' id='lectura_' name='lectura_' value='" . $lectura . "'/></td>
 			    <td align='center'>" . $interpretacion . "<input type='hidden' id='interpretacion_' name='interpretacion_' value='" . $interpretacion . "'/></td>
 			    <td align='center'>" . $observacion . "<input type='hidden' id='observacion_' name='observacion_' value='" . $observacion . "'/></td>
 			</tr>";
         $Imprimir.="<tr>
+                            <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
@@ -580,7 +585,7 @@ switch ($opcion) {
                         <tr>
                             <td colspan='7' align='center' >
                             <button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarResultados();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>
-                            <button style='display:none' type='button' id='Imprimir' name='Imprimir' align='center' class='btn btn-primary' title='Imprimir'  onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $resultado . "\",\"" . $fecha_reporta . "\", \"" . $lectura . "\",\"" . $interpretacion . "\",\"" . $observacion . "\",\"" . $responsable . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec . "\",\"" . $proce . "\",\"" . $origen . "\",\"" . $iddetalle . "\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Imprimir</button>
+                            <button style='display:none' type='button' id='Imprimir' name='Imprimir' align='center' class='btn btn-primary' title='Imprimir'  onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $resultado . "\",\"" . $fecha_reporta . "\", \"" . $lectura . "\",\"" . $interpretacion . "\",\"" . $observacion . "\",\"" . $responsable . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec . "\",\"" . $proce . "\",\"" . $origen . "\",\"" . $iddetalle . "\",\"" . $marca . "\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Imprimir</button>
                             
                             <button type='button' id='btnSalir' align='center' class='btn btn-primary' title='Cerrar'  onclick='Cerrar();'><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br/><br><br/>
                             </td>
@@ -703,7 +708,7 @@ switch ($opcion) {
         $resultado.= "</select>";
         echo $resultado;
         break;
-        
+    //Fn PG    
     case 12://Ingresando los resultados de la boleta.
          // $idexamen = $_POST['idexamen'];
         $idsolicitud = $_POST['idsolicitud'];
@@ -731,6 +736,8 @@ switch ($opcion) {
 		$hdnIdResult_ =  $_POST['hdnIdResult_'.$i];
                 if ($hdnIdResult_ =='x')
                    $hdnIdResult_='NULL';
+		$hdnMarca_=  (empty($_POST['hdnMarca_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnMarca_'.$i]) . "'";
+		$hdnLectura_=  (empty($_POST['hdnLectura_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnLectura_'.$i]) . "'";
 		$hdnObserva_=  (empty($_POST['hdnObserva_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnObserva_'.$i]) . "'";
 		$hdnCodResult_ = $_POST['hdnCodResult_'.$i];
                                 
@@ -740,7 +747,7 @@ switch ($opcion) {
               //   echo '<br>Verificadoooo: '.$verifica;
                 if ($verifica == 0) {
             //        echo '    entro a verifica';
-                    $verdadero = $objdatos->InsertarResultadoPlantillaAM($hdnidexamen_, $hdnIdMetodologia_, $hdnResp_, $hdnFecProc_, $hdnFecResu_, $hdnResult_, $hdnObserva_, $hdnCodResult_, $idsolicitud, $usuario, $iddetalle, $idrecepcion, $lugar, $hdnIdResult_);
+                    $verdadero = $objdatos->InsertarResultadoPlantillaAM($hdnidexamen_, $hdnIdMetodologia_, $hdnResp_, $hdnFecProc_, $hdnFecResu_, $hdnResult_, $hdnObserva_, $hdnCodResult_, $idsolicitud, $usuario, $iddetalle, $idrecepcion, $lugar, $hdnIdResult_, $hdnMarca_, $hdnLectura_);
                     
 
                     if ($verdadero != 0) {
@@ -780,7 +787,8 @@ switch ($opcion) {
 		$v_obserrecep=(empty($_POST['v_obseresultfin'])) ? 'NULL' : "'" . pg_escape_string($_POST['v_obseresultfin']) . "'";
 		$v_interpretacion=(empty($_POST['v_interpretacion'])) ? 'NULL' : "'" . pg_escape_string($_POST['v_interpretacion']) . "'";
 		$v_lectura=(empty($_POST['v_lectura'])) ? 'NULL' : "'" . pg_escape_string($_POST['v_lectura']) . "'";
-		if ($objdatos->InsertarResultadoPlantillaAF($idsolicitud, $iddetalle,$idrecepcion, $v_resultfin, $v_lectura, $v_interpretacion, $v_obserrecep, $lugar, $usuario, $hdnidexamen_, $cmbEmpleadosfin, $d_resultfin, $idresultadofin)==false)                {
+                $marca='NULL';
+		if ($objdatos->InsertarResultadoPlantillaAF($idsolicitud, $iddetalle,$idrecepcion, $v_resultfin, $v_lectura, $v_interpretacion, $v_obserrecep, $lugar, $usuario, $hdnidexamen_, $cmbEmpleadosfin, $d_resultfin, $idresultadofin, $marca)==false)                {
                     echo "<font color=red><center>Error al momento de validar resultado. Por favor revisar informaci&oacute;n.</center></font>";
                     $flag=1;
 		}
@@ -857,7 +865,7 @@ switch ($opcion) {
         $row_rangos = pg_fetch_array($ConRangos);
         $idedad = $row_rangos[0];
         $consulta2 = $objdatos->MostrarDatosFijosPlantillaA($idexamen, $lugar, $sexo, $idedad, 0);
-                $fila = pg_fetch_array($consulta2);
+        $fila = pg_fetch_array($consulta2);
         $consultares = $objdatos->MostrarDatoslabresultado($idexamen, $lugar, $idsolicitud, $iddetalle);
         $filares = pg_fetch_array($consultares);
         $d_resultfin=$filares['fecha_resultado'];
@@ -927,16 +935,18 @@ switch ($opcion) {
 		    </table>";
                          $Imprimir.="<table width='100%'  align='center' border='0' class='StormyWeatherFormTABLE'>
                         <tr>
-                        <td colspan='7' align='center'><bold>&nbsp;DETALLE DE RESULTADOS</bold><br/><br></td>
+                        <td colspan='8' align='center'><bold>&nbsp;DETALLE DE RESULTADOS</bold><br/><br></td>
                         </tr>
                         ";
         
         
         
                 $v_resultfin=$filares['resultado'];
+                $v_examen=$filares['nombre_examen'];
 		$v_obserrecep=$filares['observacion'];
 		$v_interpretacion=$filares['interpretacion'];
 		$v_lectura=$filares['lectura'];
+		$v_marca=$filares['marca'];
                 
                
          
@@ -989,35 +999,58 @@ switch ($opcion) {
             }
 	}*/
       
-        $Imprimir.="  
-            <tr>
-                            <td align='center'>Prueba Realizada </td>
-                            <td align='center'>Resultado</td>
-                            <td align='center'>Unidades</td>
-                            <td align='center'>Rangos Normales </td>
-                            <td align='left'>Lectura</td>
-			    <td align='left'>Interpretaci&oacute;n</td>
-			    <td align='left'>Observaci&oacute;n</td>
-			</tr>
-                        <tr><td colspan='7'><hr style='width:90%'></td></tr>
+         $Imprimir.=" <tr>
+                        <td align='center'>Prueba Realizada </td>
+                        <td align='center'>Resultado</td>
+                        <td align='center'>Unidades</td>
+                        <td align='center'>Rangos Normales </td>
+                        <td align='center'>Marca </td>
+                        <td align='left'>Lectura</td>
+                        <td align='left'>Interpretaci&oacute;n</td>
+                        <td align='left'>Observaci&oacute;n</td>
+                    </tr>
+                    <tr><td colspan='8'><hr style='width:90%'></td></tr>
                     <tr>
-                            <td align='center' style='font:bold'><strong>".$fila['nombre_reporta']."</strong></td>
-<td align='center'>".$v_resultfin."</td>
-			    <td align='center'>".$fila['unidades']."</td>
-			    <td align='justify'>".$fila['rangoinicio']." - ".$fila['rangofin']."</td>
-			    <td align='justify'>".$v_lectura."</td>
-			    <td align='justify'>".$v_interpretacion."</td>
-			    <td align='justify'>".$v_obserrecep."</td>
-			</tr>
-                        <tr><td colspan='7'>&nbsp;</td></tr>
-            
-                    </table>  
+                        <td align='center' style='font:bold'><strong>".$v_examen."</strong></td>
+   <td align='center'>".$v_resultfin."</td>
+                        <td align='center'>".$fila['unidades']."</td>
+                        <td align='justify'>".$fila['rangoinicio']." - ".$fila['rangofin']."</td>
+                        <td align='justify'>".$v_marca."</td>
+                        <td align='justify'>".$v_lectura."</td>
+                        <td align='justify'>".$v_interpretacion."</td>
+                        <td align='justify'>".$v_obserrecep."</td>
+                    </tr>
+                    <tr><td colspan='8'>&nbsp;</td></tr>";
+          
+         $met=$objdatos->buscarexamresult($iddetalle, $idsolicitud, $lugar, $idexamen, $sexo, $idedad);
+         $cantmet=
+                  pg_num_rows($met);
+         if ($met>0){
+            $Imprimir.="<tr><td colspan=1><p align='center'><br><i>Metodologías:</i></p></td>"
+                    . "<td colspan='7'></td></tr>";
+            while ($rowme=pg_fetch_array($met)){
+                $Imprimir.="<tr>
+                        <td align='center' style='font:bold'>".$rowme['nombre_metodologia']."</td>
+   <td align='center'>".$rowme['resultado']."</td>
+                        <td align='center'>".$rowme['unidades']."</td>
+                        <td align='center'>".$rowme['rangoinicio']." - ".$rowme['rangofin']."</td>
+                        <td align='justify'>".$rowme['marca']."</td>
+                        <td align='justify'>".$rowme['lectura']."</td>
+                        <td align='justify'></td>
+                        <td align='justify'>".$rowme['observacion']."</td>
+                    </tr>"; 
+                
+            }
+         }
+          
+         $Imprimir.="     <tr><td colspan='8'>&nbsp;</td></tr>
+            </table>  
                     <table align='center' border='0'>
                     
-                    <tr><td colspan=7><hr></td>
+                    <tr><td colspan=8><hr></td>
                     </tr>
                     <tr>
-                        <td colspan='7' align='center' >
+                        <td colspan='8' align='center' >
                         <button name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $v_resultfin. "\",\"" . $d_resultfin . "\", \"" . $v_lectura . "\",\"" . $v_interpretacion . "\",\"" . $v_obserrecep. "\",\"" . $cmbEmpleadosfin . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec. "\",\"" . $proce. "\",\"" . $origen . "\",\"" . $iddetalle  . "\") ;' class='btn btn-primary'><span class='glyphicon glyphicon-print'></span>&nbsp;Imprimir</button>
                             <button name='btnSalir' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' class='btn btn-primary' ><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br><br/>
                         </td>

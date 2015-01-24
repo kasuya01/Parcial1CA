@@ -8,12 +8,14 @@ class clsLab_Examenes
     }	
 
     //INSERTA UN REGISTRO          
-    function IngExamenxEstablecimiento($idexamen,$nomexamen,$Hab,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$TiempoPrevio,$sexo,$idestandar,$lugar,$metodologias_sel,$text_metodologias_sel){
+    function IngExamenxEstablecimiento($idexamen,$nomexamen,$Hab,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$TiempoPrevio,$sexo,$idestandar,$lugar,$metodologias_sel,$text_metodologias_sel, $id_metodologias_sel){
 
         $con = new ConexionBD;
        if($con->conectar()==true) 
        {
-        $query = "INSERT INTO lab_conf_examen_estab
+         if ($IdFormulario=='0')
+               $IdFormulario='NULL';
+            $query = "INSERT INTO lab_conf_examen_estab
                 (condicion,idformulario,urgente,impresion,ubicacion,codigosumi,
                  idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idexamen,idestandarrep,idplantilla,nombre_examen,
                  idsexo,codigo_examen) 
@@ -25,7 +27,7 @@ class clsLab_Examenes
        
        
 
-        $query2 ="select max(id) from lab_conf_examen_estab";
+        $query2 ="select COALESCE(max(id),1) from lab_conf_examen_estab";
         $result2 = pg_query($query2);
         $row2=pg_fetch_array($result2);
         $ultimo=$row2[0];
@@ -36,16 +38,17 @@ class clsLab_Examenes
         */
         $aMetodologias = explode(',',$metodologias_sel); 
         $aMetodologias_text = explode(',',$text_metodologias_sel); 
+        $aMetodologias_id = explode(',',$id_metodologias_sel); 
 
         /*
          * actualizar o crear examen metodología
          */
         for ($i=0;$i<count($aMetodologias)-1;$i++){
-            $sql="INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin,nombre_reporta) VALUES ($ultimo, $aMetodologias[$i], true, NOW(), NULL, '$aMetodologias_text[$i]')";
+            $sql="INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin,nombre_reporta) VALUES ($ultimo, $aMetodologias[$i], true, NOW(), NULL, '$aMetodologias_id[$i]')";
             pg_query($sql);           
         }
         if ($i==0){ // si no se han seleccionado metodologias
-            $sql="INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin) VALUES ($ultimo, 0, true, NOW(), NULL)";
+            $sql="INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin, nombre_reporta) VALUES ($ultimo, 0, true, NOW(), NULL, '$nomexamen')";
             pg_query($sql);
         }
         
@@ -64,16 +67,17 @@ class clsLab_Examenes
     }
 
     //ACTUALIZA UN REGISTRO
-     function ActExamenxEstablecimiento($idconf,$nomexamen,$lugar,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$Hab,$TiempoPrevio,$idsexo,$idestandar,$ctlidestandar,$metodologias_sel,$text_metodologias_sel)
+     function ActExamenxEstablecimiento($idconf,$nomexamen,$lugar,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$Hab,$TiempoPrevio,$idsexo,$idestandar,$ctlidestandar,$metodologias_sel,$text_metodologias_sel, $id_metodologias_sel)
 
      {
                $con = new ConexionBD;
                if($con->conectar()==true) 
                {
+                  if ($IdFormulario=='0')
+                      $IdFormulario='NULL';
                     $query="UPDATE lab_conf_examen_estab 
                               SET idusuariomod=$usuario,fechahoramod=NOW(),idformulario=$IdFormulario,
-                              idestandarrep=$IdEstandarResp,IdPlantilla=$plantilla,impresion='$letra' 
-                              urgente=$Urgente,ubicacion=$ubicacion,condicion='$Hab',nombre_examen='$nomexamen',idsexo=$idsexo
+                              idestandarrep=$IdEstandarResp,IdPlantilla=$plantilla,impresion='$letra',urgente=$Urgente,ubicacion=$ubicacion,condicion='$Hab',nombre_examen='$nomexamen',idsexo=$idsexo
                               WHERE lab_conf_examen_estab.id=$idconf";
                     //echo $query;
                     $result = pg_query($query);
@@ -112,11 +116,12 @@ class clsLab_Examenes
                      $aMetodologias = explode(',',$metodologias_sel);
                      
                      $aMetodologias_text = explode(',',$text_metodologias_sel);
+                     $aMetodologias_id = explode(',',$id_metodologias_sel);
                      
                     /*
                     * actualizar las metodoligas del examen
                     */
-                                        
+                                    
                     if ($aMetodologias[0]==""){ // cuando no hay metodologias seleccionadas
                         /*
                          * verificar si hay registro con NULL en metodologia
@@ -132,7 +137,7 @@ class clsLab_Examenes
                             $sql="UPDATE lab_examen_metodologia SET activo=false,fecha_fin=NOW() WHERE id_conf_exa_estab=$idconf AND id_metodologia is not null";
                             $upd = pg_query($sql);
                         } else { // si no existen registro con metodologia NULL 
-                            $sql="INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin) VALUES ($idconf, null, true, NOW(), NULL)";
+                            $sql="INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin, nombre_reporta) VALUES ($idconf, null, true, NOW(), NULL, '$nomexamen')";
                             pg_query($sql);
                             /*
                              * Desactivar todas los examen metodologias menos el que solo tiene examen.
@@ -146,21 +151,86 @@ class clsLab_Examenes
                          */
                         $sql="UPDATE lab_examen_metodologia SET activo=false,fecha_fin=NOW() WHERE id_conf_exa_estab=$idconf AND fecha_fin is null";
                         $upd = pg_query($sql);
-                        
+                       //echo $sql;                        
                         /*
                          * 
                          */
-                        $sql="SELECT * FROM lab_examen_metodologia WHERE id_conf_exa_estab=$idconf and id_metodologia is not NULL";
-                        $con = pg_query($sql);
                         
-                        for ($i=0;$i<count($aMetodologias)-1;$i++){
-                           $sql="UPDATE lab_examen_metodologia SET activo=true,fecha_inicio=NOW(),fecha_fin=NULL,nombre_reporta='$aMetodologias_text[$i]' WHERE id_conf_exa_estab=$idconf AND id_metodologia=$aMetodologias[$i]";
+                           $band=0;
+                           $sql1="SELECT * FROM lab_examen_metodologia WHERE id_conf_exa_estab=$idconf and id_metodologia is not NULL";
+//                           $con = pg_query($sql);
+//                           while ($rome = pg_fetch_array($con)){                             
+//                              for ($i=0;$i<count($aMetodologias)-1;$i++){
+//                                  if ($rome['id_metodologia'] == $aMetodologias[$i]){
+//                                      $sql="UPDATE lab_examen_metodologia SET activo=true,fecha_inicio=NOW(),fecha_fin=NULL,nombre_reporta='$aMetodologias_id[$i]' WHERE id_conf_exa_estab=$idconf AND id_metodologia=$aMetodologias[$i]";
+//                           $upd = pg_query($sql) or die('La consulta fall&oacute;: ' . pg_error());
+//                                    $band=1;
+//                                 }
+//                                  echo 'i:'.$i.' band:'.$band;
+//                              }
+//                             
+//                              if ($band==0){
+//                              echo 'entro aqui';
+//                              $sql="INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin,nombre_reporta) VALUES ($idconf, $aMetodologias[$i], true, NOW(), NULL,'$aMetodologias_id[$i]')";
+//                              echo 'sql:'.$sql;
+//                               $upd=pg_query($sql) or die('La consulta fall&oacute;: ' . pg_error());
+//                               
+//                              } 
+//                              $band=0;
+//                           }
+                           
+                           /*********/
+                           for ($i=0;$i<count($aMetodologias)-1;$i++){
+                            // echo $band=0;
+                              $con = pg_query($sql1);
+                              while ($rome = pg_fetch_array($con)){    
+                                 if ($rome['id_metodologia'] == $aMetodologias[$i]){
+                                      $sql="UPDATE lab_examen_metodologia SET activo=true,fecha_inicio=NOW(),fecha_fin=NULL,nombre_reporta='$aMetodologias_id[$i]' WHERE id_conf_exa_estab=$idconf AND id_metodologia=$aMetodologias[$i]";
                            $upd = pg_query($sql) or die('La consulta fall&oacute;: ' . pg_error());
-                           if ($upd){ //si no existía la metodologia guardada para este examen se debe crear
-                               $sql="INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin,nombre_reporta) VALUES ($idconf, $aMetodologias[$i], true, NOW(), NULL,'$aMetodologias_text[$i]')";
-                               pg_query($sql);
+                                    $band=1;
+                                 }
+                                 // echo 'i:'.$i.' band:'.$band.' idmet:'.$rome['id_metodologia'].' amet:'.$aMetodologias[$i].'<br>****';
+                              }
+                             if ($band==0){
+                             // echo 'entro aqui';
+                              $sql="INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin,nombre_reporta) VALUES ($idconf, $aMetodologias[$i], true, NOW(), NULL,'$aMetodologias_id[$i]')";
+                             // echo 'sql:'.$sql;
+                               $upd=pg_query($sql) or die('La consulta fall&oacute;: ' . pg_error());
+                               
+                              }
+                              $band=0;
                            }
-                        }  
+                           
+                           
+                          
+                        
+                           
+                           
+                           
+                        
+//                        for ($i=0;$i<count($aMetodologias)-1;$i++){
+//                           $band=0;
+//                           $sql="SELECT * FROM lab_examen_metodologia WHERE id_conf_exa_estab=$idconf and id_metodologia is not NULL";
+//                           $con = pg_query($sql);
+//                           while ($rome = pg_fetch_array($con)){
+//                           if ($rome['id_metodologia'] == $aMetodologias[$i]){
+//                               
+//                           $sql="UPDATE lab_examen_metodologia SET activo=true,fecha_inicio=NOW(),fecha_fin=NULL,nombre_reporta='$aMetodologias_id[$i]' WHERE id_conf_exa_estab=$idconf AND id_metodologia=$aMetodologias[$i]";
+//                           $upd = pg_query($sql) or die('La consulta fall&oacute;: ' . pg_error());
+//                           $band==1;
+//                           }
+//                           
+//                        }
+//                        if ($band==0){
+//                              $sql="INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin,nombre_reporta) VALUES ($idconf, $aMetodologias[$i], true, NOW(), NULL,'$aMetodologias_id[$i]')";
+//                               $upd=pg_query($sql) or die('La consulta fall&oacute;: ' . pg_error());
+//                           
+//                        }
+//                          
+////                           if (!$upd){ //si no existía la metodologia guardada para este examen se debe crear
+////                               
+////                           }
+//                        }  
                     }
                     
                     
@@ -361,11 +431,16 @@ class clsLab_Examenes
                         LEFT JOIN lab_metodologia m ON m.id = em.id_metodologia
                         WHERE em.id_conf_exa_estab = $idexamen AND em.activo=true AND em.id_metodologia is not null
                         GROUP BY em.id_conf_exa_estab) as metodologias,
+                    (SELECT ARRAY_AGG(m.nombre_metodologia) metodologia
+                        FROM lab_examen_metodologia em
+                        JOIN lab_metodologia m ON m.id = em.id_metodologia
+                        WHERE em.id_conf_exa_estab = $idexamen AND em.activo=true AND em.id_metodologia is not null
+                        GROUP BY em.id_conf_exa_estab) as metodologias_text,
                     (SELECT ARRAY_AGG(em.nombre_reporta) metodologia
                         FROM lab_examen_metodologia em
                         LEFT JOIN lab_metodologia m ON m.id = em.id_metodologia
                         WHERE em.id_conf_exa_estab = $idexamen AND em.activo=true AND em.id_metodologia is not null
-                        GROUP BY em.id_conf_exa_estab) as metodologias_text
+                        GROUP BY em.id_conf_exa_estab) as id_metodologias_text
                     FROM lab_conf_examen_estab 
                     INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
                     INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
@@ -656,7 +731,7 @@ ORDER BY ctl_examen_servicio_diagnostico.id";
 	      $query = "SELECT m.id as id_metodologia,
                                 m.nombre_metodologia metodologias
                         FROM lab_metodologia m
-                        WHERE m.activa is true
+                        WHERE m.activa=true
                         ORDER BY m.nombre_metodologia";
              
 		 $result = pg_query($query);
