@@ -19,19 +19,19 @@ switch ($opcion)
 	case 1: 
                 $idarea     =$_POST['idarea'];
                 $idexamen   =$_POST['idexamen'];
-  		$procedencia=$_POST['procedencia'];
+  		//$procedencia=$_POST['procedencia'];
 		$fechainicio=$_POST['fechainicio'];
 		$fechafin   =$_POST['fechafin'];
-		$subservicio=$_POST['subservicio'];
+		//$subservicio=$_POST['subservicio'];
 		$ffechaini  =$fechainicio." 00:00:00";
 		$ffechafin  =$fechafin." 23:59:59";
 		
 		$cadena="";
                 $cond1="";
-                //$cond2="";
+                $cond2="";
                 $query="";
                 $cond0="and";
-                
+                $imprimir="";
                 
                 $ban=0;
 		//VERIFICANDO LOS POST ENVIADOS
@@ -96,9 +96,9 @@ switch ($opcion)
            
                 
                 
-                  $imprimir.=" 
-                      <table width='90%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
-                            <thead>  
+                  $imprimir.=" <center><div class='table-responsive' style='width: 80%;'>
+                <table width='80%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                    <thead>  
                                   <tr>
                                 <th > <strong>Prueba</strong></th>";
 		
@@ -228,7 +228,7 @@ echo "<table width='85%' border='0' align='center'>
 	     // echo $imprimir;
             while ($row = pg_fetch_array($consulta))
             {
-                   $ser=$row['subservicio'];
+                //   $ser=$row['subservicio'];
                  // echo "nada". $a1=$row['area1'];
                  // echo  $ser;
                    

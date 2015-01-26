@@ -16,9 +16,31 @@ $tipo=$row[0];
 $nombrEstab=$row[1];
 $nomtipo=$row[2];
  ?>
-<html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html lang = "en">
 <head>
+    <meta charset="utf-8" />
 <title>Consulta Solicitudes Por Sub-Servicio</title>
+
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+
 <!--<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1" />-->
 <?php include_once $ROOT_PATH."/public/js.php";?>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
@@ -36,15 +58,71 @@ $nomtipo=$row[2];
 <script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
 <?php include_once $ROOT_PATH.'/public/css.php';?>
 <?php include_once $ROOT_PATH.'/public/js.php';?>
+
+ 
+
+
+
+
+
 <script language="JavaScript" type="text/javascript">
+    
+
+    
 function MostrarBusqueda()
-{
+{ 
 	if ((document.getElementById('txtfechainicio').value == "") || (document.getElementById('txtfechafin').value == ""))
 	{
-		//alert("¡Complete el rango de las fechas!");
-               
-                mensaje();
-                
+		
+             
+        /*  $(function hola() {
+                $("#dialog").dialog();
+                autoOpen: false //| false // Modo de apertura
+              //  resizable: tue //| false // Modificar las dimensiones
+              //  height: integer // altura
+              //  modal: true //| false // capa y fondo opaco
+                //buttons: //: permite añadir botones
+                //cancel: /*crear botón de cancelar // ejemplo */
+               /* });*/
+                                    
+                          /*         $(function () {
+                    $("#dialog").dialog( {
+                    
+                    autoOpen: false,
+                    modal: true
+                    
+                    
+                    });
+                    $("#abrir")
+                    //.button()
+                    //.click(function () {
+                    $("#dialog").dialog("open");
+                    //});
+                    });*/
+                $(function ()   {
+                    $("#dialog").dialog({
+                                autoOpen: false,
+                                modal: true,
+                                    buttons: {      
+                                                "Cerrar": function () 
+                                                            {
+                                                                $(this).dialog("close");
+                                                            }
+                                            }
+                                        });
+                            $("#abrir")
+                            //.button()
+                            //.click(function () {
+                            $("#dialog").dialog("open");
+                           // });
+                                });
+            
+            
+                        
+                        
+                       
+                        
+
                 
 	}
 	/*else 
@@ -82,7 +160,9 @@ function BuscarServicio(IdServicio){
 </script>
 </head>
 <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" >
-
+<div id="dialog" style='display:none;' title="¡Aviso!">
+    <p> <cente>¡Complete el Rango de las Fechas!</cente></p>
+</div>
 <?php 
 
 if ($nivel==1){
@@ -112,7 +192,7 @@ if ($nivel==33){
 		<tr>		
 			<td class="StormyWeatherFieldCaptionTD" width="15%">Tipo Establecimiento</td>
 			<td class="StormyWeatherDataTD" width="18%">
-				<select name="cmbTipoEstab" id="cmbTipoEstab" style="width:375px" onChange="BuscarEstablecimiento(this.value)">
+				<select name="cmbTipoEstab" id="cmbTipoEstab" style="width:375px" onChange="BuscarEstablecimiento(this.value)"  >
         				<option value="0" >Seleccione un Tipo de Establecimiento</option>
 					<?php
 				$db = new ConexionBD;
@@ -224,7 +304,7 @@ if ($nivel==33){
 				<input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('SolicitudPorServicioPeriodo.php')">
 			</td>-->
                     <td class="StormyWeatherDataTD" colspan="6" align="right">
-                        <button type='button' align="center" class='btn btn-primary'  onclick='MostrarBusqueda(); '><span class='glyphicon glyphicon-search'></span> Buscar </button>
+                        <button type='button' align="center" class='btn btn-primary' id="abrir" onclick='MostrarBusqueda(); '><span class='glyphicon glyphicon-search'></span> Buscar </button>
                         <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('SolicitudPorServicioPeriodo.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
                     </td>
                         
@@ -253,6 +333,7 @@ if ($nivel==33){
 
 </div>
 </body>
+
 </html>
 <?php
 }

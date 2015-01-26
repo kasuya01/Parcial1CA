@@ -95,7 +95,7 @@ $pdf->Ln(5);
 //echo '<br>Cond1: '.$cond1.' postarea: '.$_GET['idarea'].'<br>';
 
 $pdf->Ln(5);
-$pdf->SetFont('Arial','I',10);
+$pdf->SetFont('Arial','I',10 );
 $pdf->AddCol('v_nombreprueba',50,'Prueba','L'); //25
 //$pdf->AddCol($sql,50,$sql,'L'); //25
 ////
@@ -108,7 +108,7 @@ $pdf->AddCol('total',20,'Total','L'); //25
 $prop=array('HeaderColor'=>array(255,100,100),
             'color1'=>array(210,245,255),
             'color2'=>array(255,255,210),
-            'padding'=>2);		
+            'padding'=>2 );		
 $pdf->Table($sql,$prop);
 
 ob_end_clean();

@@ -188,33 +188,47 @@ if ($nivel==4){
 			</div>
                     </td>
                 </tr>
-                <tr>
+                <tr> 
                     <td class="StormyWeatherFieldCaptionTD"  >Expediente</td>
-                    <td  class="StormyWeatherDataTD" width="5%" ><input type="text" size="28" name="txtexpediente" id="txtexpediente" />
-                    </td>
+                    <td  class="StormyWeatherDataTD" width="5%" >
+                         <div class="col-xs-9">
+                        <input  type="text" size="28" name="txtexpediente" id="txtexpediente" class="form-control" placeholder="Buscar Expediente"/>
+                         </div>
+                         </td>
+                    
                              <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Recepi&oacute;n</td>
-                             <td class="StormyWeatherDataTD" width="20%">
-                            <input type="text" size="28"  name="txtfecharecep" id="txtfecharecep" class="date"  placeholder="aaaa-mm-dd"/>
-                    
-                    
-                    
-                    
-                    </td>
+                             <td class="StormyWeatherDataTD" width="5%">
+                                 <div class="col-xs-9"> 
+                                     <input type="text" size="25"  name="txtfecharecep" id="txtfecharecep" class="date"   placeholder="aaaa-mm-dd"/>
+                                </div> 
+                            </td>
                 </tr>
                 <tr>
                     <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong>   </td> 
                     <td class="StormyWeatherDataTD" >
-			<input class="MailboxInput" maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre"></td> 
+                        <div class="col-xs-9">
+                            <input  maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre" class="form-control" >
+                        </div>
+                    </td> 
                     <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Nombre</strong>   </td> <td class="StormyWeatherDataTD">
-			<input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre"></td> 
+                        <div class="col-xs-9">
+                                <input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre" class="form-control" >
+                        </div>
+                    </td> 
                 </tr>
                 <tr>
                     <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Apellido</strong></td> 
                     <td class="StormyWeatherDataTD">
-			<input class="MailboxInput" maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido"></td> 
+                        <div class="col-xs-9">
+                            <input  maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido" class="form-control">
+                        </div>
+                    </td> 
                     <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Apellido</strong></td> 
                     <td class="StormyWeatherDataTD" >
-			<input class="MailboxInput" maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" ></td>
+                        <div class="col-xs-9">
+                           <input  maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" class="form-control" >
+                         </div>
+                    </td>
                 </tr>
                
                 

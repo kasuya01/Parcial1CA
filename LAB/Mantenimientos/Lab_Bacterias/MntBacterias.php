@@ -52,7 +52,7 @@ if ($nivel==33){
 <form name="frmnuevo" action="" onSubmit="IngresarRegistro(); return false">
 <table width="60%" border="0" align="center" class="StormyWeatherFormTABLE">
 <tr>
-	<td colspan="2" class="CobaltFieldCaptionTD" align="center"><h3><strong>Mantenimiento de Bacterias</strong></h3>
+	<td colspan="3" class="CobaltFieldCaptionTD" align="center"><h3><strong>Mantenimiento de Bacterias</strong></h3>
 	</td>
 </tr>
 <!-- <tr>
@@ -61,10 +61,12 @@ if ($nivel==33){
 </tr> -->
 <tr>
     <td class="StormyWeatherFieldCaptionTD">Bacteria </td>
-    <td class="StormyWeatherDataTD"><input type="text" name="txtbacteria" id="txtbacteria" size="58" />
-        <input type="hidden" name="txtidbacteria" id="txtidbacteria" disabled="disabled" />
+    <td class="StormyWeatherDataTD"> <input type="text" name="txtbacteria" id="txtbacteria" size="58" class="form-control"placeholder="Buscar Bacteria"/>
+        
+        <input  type="hidden" name="txtidbacteria" id="txtidbacteria" disabled="disabled" />
        
-    </td>
+    </td> <td> <button type='button' align="center" class='btn btn-primary'  onclick='buscarbacte(); '><span class='glyphicon glyphicon-search'></span> Buscar </button>
+                                 </td>
 </tr>
 <!--<tr>
     <td class="StormyWeatherDataTD" colspan="2" align="right">
@@ -76,8 +78,8 @@ if ($nivel==33){
                 <td class="StormyWeatherDataTD" colspan="6" align="right">
                                 
                                 <button type='submit' align="center" class='btn btn-primary'  ><span class='glyphicon glyphicon-floppy-disk'></span> Guardar</button>
-                                <button type='button' align="center" class='btn btn-primary'  onclick='buscarbacte(); '><span class='glyphicon glyphicon-search'></span> Buscar </button>
-                                <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntBacterias.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+                               <!-- <button type='button' align="center" class='btn btn-primary'  onclick='buscarbacte(); '><span class='glyphicon glyphicon-search'></span> Buscar </button>
+                                --><button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntBacterias.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
                 
                 </td>
 </tr>

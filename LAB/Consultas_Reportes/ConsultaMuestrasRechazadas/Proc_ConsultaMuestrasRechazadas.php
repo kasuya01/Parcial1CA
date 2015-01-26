@@ -28,11 +28,17 @@ else{
 ?>
 <html>
 <head>
+     <meta charset="utf-8" />
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <!--<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />-->
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 <title>Consulta de Muestras Rechazadas por &Aacute;rea de Laboratorio</title>
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+
 <?php include_once $ROOT_PATH."/public/js.php";?>
 <script language="JavaScript" type="text/javascript" src="ajax_ConsultaMuestrasRechazadas.js"></script>
 <!--referencias del estilo del calendario-->
@@ -55,9 +61,29 @@ function MostrarMuestrasRechazadas()
                     
                     
                     if ((document.getElementById('cmbArea').value == 0) && (document.getElementById('txtexpediente').value == "")&& (document.getElementById('txtfecharecep').value == "")&& (document.getElementById('CmbServicio').value == 0))
-			alert("Ingrese al menos un parámetro de búsqueda");
+                    {//alert("Ingrese al menos un parámetro de búsqueda");
                          // <div class="alert alert-success"> nana </div>
-             
+                         
+                         $(function ()   {
+                    $("#dialog").dialog({
+                                autoOpen: false,
+                                modal: true,
+                                    buttons: {      
+                                                "Cerrar": function () 
+                                                            {
+                                                                $(this).dialog("close");
+                                                            }
+                                            }
+                                        });
+                            $("#abrir")
+                            //.button()
+                            //.click(function () {
+                            $("#dialog").dialog("open");
+                           // });
+                                });
+                         
+                         
+        }
          
 	/*else  
 		MuestrasRechazadas();*/
@@ -97,7 +123,9 @@ function BuscarExamen(idarea){
 </script>
 </head>
 <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7">
-
+<div id="dialog" style='display:none;' title="¡Aviso!">
+    <p> <cente>¡Ingrese Al Menos Un Parámetro De Búsqueda!</cente></p>
+</div>
 <?php 
 
 
@@ -229,14 +257,20 @@ if ($nivel==33){
 	<tr>
 		
 		<td class="StormyWeatherFieldCaptionTD"  >Expediente</td>
-		<td  class="StormyWeatherDataTD" width="5%" ><input type="text" size="24" name="txtexpediente" id="txtexpediente" />
-		</td>
+		<td  class="StormyWeatherDataTD" width="5%" >
+                     <div class="col-xs-9"> 
+                    <input type="text" size="24" name="txtexpediente" id="txtexpediente" class="form-control" placeholder="Buscar Expediente" />
+                     </div>
+                </td>
 		
                 
                 
                      <td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Recepi&oacute;n</td>
-		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="28" name="txtfecharecep" id="txtfecharecep" class="date"  placeholder="aaaa-mm-dd" />
-		</td>
+		<td  class="StormyWeatherDataTD" width="20%" > 
+                     <div class="col-xs-9"> 
+                         <input type="text" size="25" name="txtfecharecep" id="txtfecharecep" class="date"  placeholder="aaaa-mm-dd" />
+                     </div>
+                </td>
                         
                 
                 
@@ -244,23 +278,39 @@ if ($nivel==33){
 	<tr>
 		<td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong>   </td> 
 		<td class="StormyWeatherDataTD" >
-			<input class="MailboxInput" maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre"></td> 
+                            <div class="col-xs-9"> 	
+                                        <input maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre" class="form-control" >
+                            </div>
+                </td> 
 		<td class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Nombre</strong>   </td> <td class="StormyWeatherDataTD">
-			<input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre"></td> 
+                         <div class="col-xs-9"> 	
+                                <input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre" class="form-control" > 
+                         </div>
+                </td> 
 	</tr>
 	<tr>
 		<td class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Apellido</strong></td> 
 		<td class="StormyWeatherDataTD">
-			<input class="MailboxInput" maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido"></td> 
+                            <div class="col-xs-9"> 	
+                                    <input  maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido" class="form-control" >
+                            </div>
+                </td> 
 		<td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Apellido</strong></td> 
 		<td class="StormyWeatherDataTD" >
-			<input class="MailboxInput" maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" ></td>
+			 <div class="col-xs-9"> 
+                                   <input  maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" class="form-control" >
+                         </div>
+                </td>
 	</tr>
 	<tr>
 <tr>	<td  class="StormyWeatherDataTD" colspan="4" align="right">
-		<input type="button" name="Submit" value="Buscar Solicitudes" onClick="MostrarMuestrasRechazadas()">
+		<!--<input type="button" name="Submit" value="Buscar Solicitudes" onClick="MostrarMuestrasRechazadas()">
 		<input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('Proc_ConsultaMuestrasRechazadas.php')">
-	</td>
+	-->
+                <button type='button' align="center" class='btn btn-primary' id="abrir" onclick='MostrarMuestrasRechazadas(); '><span class='glyphicon glyphicon-search'></span> Buscar Solicitudes</button>
+                <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('Proc_ConsultaMuestrasRechazadas.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+                  
+    </td>
 <tr>
 </table>
 </form>

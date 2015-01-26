@@ -428,10 +428,12 @@ switch ($opcion)
 		$sexo=$row['sexo'];
 		$precedencia=$row['nombreservicio'];
 		$origen=$row['nombresubservicio'];
-		$DatosClinicos=$row['DatosClinicos'];
+		//$DatosClinicos=$row['DatosClinicos'];
 		$Estado=$row['estado'];
-		$fechasolicitud=$row['FechaSolicitud'];
-                $FechaNac=$row['FechaNacimiento'];
+                $ConocidoPor=$row['conocodidox'];
+               $Diagnostico=$row['diagnostico']; 
+		//$fechasolicitud=$row['FechaSolicitud'];
+                //$FechaNac=$row['FechaNacimiento'];
 		//recuperando los valores del detalle de la solicitud
 		$consultadetalle=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar);
             
@@ -483,9 +485,9 @@ switch ($opcion)
                                         <input name='idsolicitudPadre' id='idsolicitudPadre'  type='hidden' size='40' value='".$idsolicitudPadre."' disabled='disabled' />
 					<input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled' />
 					<input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled' />
-					<input name='fechasolicitud' id='fechasolicitud'  type='hidden' size='40' value='".$fechasolicitud."' disabled='disabled' />
-					<input name='idarea' id='idarea'  type='hidden' size='40' value='".$idarea."' disabled='disabled' />
-					<input name='suEdad' id='suEdad'  type='hidden' size='40' value='".$FechaNac."' disabled='disabled' />
+					
+					
+					
 				</td>
                         </tr>
                         <tr>
@@ -501,13 +503,9 @@ switch ($opcion)
 		
 </table>
     <br><br>
-    
-   
-		
-		
-			
-                           
-                <table width='70%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+    <center>
+   <div class='table-responsive' style='width: 80%;'>
+            <table width='81%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
                     <thead> <tr>
 			
                         <th colspan='5'   class='CobaltFieldCaptionTD'>
@@ -537,7 +535,7 @@ switch ($opcion)
                     </tr>";	
 				}
    	}
-	 $imprimir .="</table>";
+	 $imprimir .="</table> </center>";
 
 			pg_free_result($consultadetalle);
 			

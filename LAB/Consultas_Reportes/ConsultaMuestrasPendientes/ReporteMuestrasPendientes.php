@@ -2,6 +2,8 @@
 $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
 ?>
 <html>
 <head>
@@ -9,6 +11,8 @@ $area=$_SESSION['Idarea'];
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 <link rel="stylesheet" type="text/css" href="../../Webstyle/Themes/Cobalt/Style.css">
+<?php include_once $ROOT_PATH.'/public/css.php';?>
+<?php include_once $ROOT_PATH.'/public/js.php';?>
 <style type="text/css">
 <!--
 @media print{
@@ -338,13 +342,19 @@ NOMBRE PACIENTE</strong><h4></td>
 		</table>
     
 	<div id="boton">
+            <br>
 	<table width="90%" border="0" align="center">
 			<tr>
 			<td colspan="7" align="center">	
 			<div id="boton">	
-			<input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
+			<!--<input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
 			<input type="button" name="btncl" id="btnct" value="Regresar" onClick="window.close();"> </div>
-			</div>	</td>
+			-->
+                        <button type='button' align="center" class='btn btn-primary'  onclick='window.print(); '><span class='glyphicon glyphicon-print'></span> Imprimir </button>
+                        <button type='button' align="center" class='btn btn-primary'  onClick="window.close();"><span class='glyphicon glyphicon-arrow-left'></span> Regresar </button>
+                    
+                        
+                        </div>	</td>
 				
 			</tr></table>
 </body>

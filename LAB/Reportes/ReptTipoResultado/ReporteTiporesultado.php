@@ -15,6 +15,11 @@ $base_url  = $_SESSION['base_url'];
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 <title>Recepcion de Examenes en &Aacute;reas de Laboratorio</title>
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+
 <script language="JavaScript" type="text/javascript" src="ajax_ReporteTiporesultado.js"></script>
 <!--referencias del estilo del calendario-->
 <?php include_once $ROOT_PATH."/public/css.php";?>
@@ -28,9 +33,28 @@ $base_url  = $_SESSION['base_url'];
 
 function MostrarBusqueda()
 {
-	 if ((document.getElementById('txtfechainicio').value == "")&& (document.getElementById('txtfechafin').value == ""))
+	 if ((document.getElementById('txtfechainicio').value == "") || (document.getElementById('txtfechafin').value == ""))
 	 {
-		alert("Seleccione un rango de fechas!");
+		//alert("Seleccione un rango de fechas!");
+                  
+                         $(function ()   {
+                    $("#dialog").dialog({
+                                autoOpen: false,
+                                modal: true,
+                                    buttons: {      
+                                                "Cerrar": function () 
+                                                            {
+                                                                $(this).dialog("close");
+                                                            }
+                                            }
+                                        });
+                            $("#abrir")
+                            //.button()
+                            //.click(function () {
+                            $("#dialog").dialog("open");
+                           // });
+                                });
+                
 	 }
 	 else 
 		BuscarDatos(1);
@@ -56,7 +80,9 @@ function BuscarExamen(idarea) {
 
 </head>
 <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" >
-
+<div id="dialog" style='display:none;' title="¡Aviso!">
+    <p> <cente>¡Seleccione un rango de fechas!!</cente></p>
+</div>
 <?php 
 //$nivel=$_SESSION['NIVEL']; 
 //$_SESSION['correlativo']=$_SESSION['Correlativo']; 
@@ -137,7 +163,7 @@ if ($nivel==33){
 				while($row = pg_fetch_array($consulta)){
 			        echo "<option value='" . $row['idarea']. "'>" . htmlentities($row['nombrearea']) . "</option>";
 				}
-				echo '<option value="'.$area1.'" selected="selected">'.htmlentities('--Seleccione un Área--').'</option>';
+				echo '<option value="'. $row['idarea'].'" selected="selected">'.htmlentities('--Seleccione un Área--').'</option>';
 				?>
                                 </select>
                             </td>
@@ -173,7 +199,7 @@ if ($nivel==33){
                             <br>
                                     <!-- <input type="button" id="btnbuscar"  class="fg-button ui-state-default ui-corner-all  value="Buscar" onClick="MostrarBusqueda();"> -->
                                     <!-- <input type="button" id="btnClear" value="Nueva Busqueda"  onClick="window.location.replace('ImprimirResultado.php')">	-->
-                               <button type='button' align="center" class='btn btn-primary' id='buscarsolicitud' onclick='MostrarBusqueda(); '><span class='glyphicon glyphicon-search'></span> Buscar</button>
+                               <button type='button' align="center" class='btn btn-primary' id="abrir" onclick='MostrarBusqueda(); '><span class='glyphicon glyphicon-search'></span> Buscar</button>
                                <button type='button' align="center" class='btn btn-primary' id='nuevabusqueda' onclick="window.location.replace('ReporteTiporesultado.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
                                <br>
                            

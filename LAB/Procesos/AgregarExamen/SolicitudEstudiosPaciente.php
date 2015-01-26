@@ -69,10 +69,10 @@ $base_url  = $_SESSION['base_url'];
 		$sexo=$row['sexo'];
 		$precedencia=$row['nombreservicio'];
 		$origen=$row['nombresubservicio'];
-		$DatosClinicos=$row['DatosClinicos'];
+		//$DatosClinicos=$row['DatosClinicos'];
 		$Estado=$row['estado'];
-		$fechasolicitud=$row['FechaSolicitud'];
-                $FechaNac=$row['FechaNacimiento'];
+		//$fechasolicitud=$row['FechaSolicitud'];
+                //$FechaNac=$row['FechaNacimiento'];
 	//recuperando los valores del detalle de la solicitud
 	$consultadetalle=$obj->DatosDetalleSolicitud($idexpediente,$idsolicitud,$lugar);
 ?>
@@ -105,7 +105,7 @@ $base_url  = $_SESSION['base_url'];
 		        <td width="6%" class="StormyWeatherFieldCaptionTD">Área</td>
 		        <td width="12%" class="StormyWeatherDataTD">
                             <select id="cmbArea" name="cmbArea" size="1"  onChange="LlenarComboExamen(this.value)">
-                               <!-- <option value="0" >--Seleccione Área--</option> -->
+                               <option value="0" >--Seleccione Área--</option> 
                                     <?php
 				include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
 				$objeareas=new clsLab_Areas;
@@ -113,7 +113,7 @@ $base_url  = $_SESSION['base_url'];
 				while($row = pg_fetch_array($consulta)){
 			        echo "<option value='" . $row['idarea']. "'>" . htmlentities($row['nombrearea']) . "</option>";
 				}
-				echo '<option value="'.$area1.'" selected="selected">'.htmlentities("--Seleccione Área--").'</option>';
+				//echo '<option value="'.$area1.'" selected="selected">'.htmlentities("--Seleccione Área--").'</option>';
 				?>
                             </select></td>
 			</tr>

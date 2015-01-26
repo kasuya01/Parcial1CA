@@ -221,26 +221,43 @@ function BuscarServicio(IdServicio){
                     </tr>
                     <tr>
                         <td class="StormyWeatherFieldCaptionTD" >Expediente</td>
-                        <td class="StormyWeatherDataTD" ><input type="text" size="28" name="txtexpediente" id="txtexpediente" /></td>
+                        <td class="StormyWeatherDataTD" >
+                             <div class="col-xs-9"> 
+                                 <input type="text" size="28" name="txtexpediente" id="txtexpediente" class="form-control" placeholder="Buscar Expediente" />
+                             </div>
+                        </td>
                         <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Consulta</td>
                         <td class="StormyWeatherDataTD" width="20%">
-                            <input type="text" size="28" name="txtfechasolicitud" id="txtfechasolicitud" class="date"  placeholder="aaaa-mm-dd"/>
+                           <div class="col-xs-9">  
+                               <input type="text" size="25" name="txtfechasolicitud" id="txtfechasolicitud" class="date"  placeholder="aaaa-mm-dd"/>
+                           </div>
                     </tr>
                     <tr>
                         <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong></td> 
                         <td class="StormyWeatherDataTD" >
-                            <input class="MailboxInput" maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre"></td> 
+                            <div class="col-xs-9">    <input  maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre" class="form-control">
+                                </div>
+                            </td> 
                         <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Nombre</strong></td> 
                         <td class="StormyWeatherDataTD">
-                            <input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre"></td> 
+                           <div class="col-xs-9"> 
+                               <input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre" class="form-control">
+                           </div>
+                        </td> 
                     </tr>
                     <tr>
                         <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Apellido</strong></td> 
                         <td class="StormyWeatherDataTD">
-                            <input class="MailboxInput" maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido"></td> 
+                           <div class="col-xs-9"> 
+                               <input  maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido" class="form-control">
+                           </div>
+                        </td> 
                         <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Apellido</strong></td> 
                         <td class="StormyWeatherDataTD" >
-                            <input class="MailboxInput" maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" ></td>
+                           <div class="col-xs-9"> 
+                               <input  maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido"  class="form-control">
+                           </div>
+                        </td>
                     </tr>	
                     <tr>
                         <td class="StormyWeatherFieldCaptionTD" align="left" colspan="1" align="right">Tipo Solicitud</td>
