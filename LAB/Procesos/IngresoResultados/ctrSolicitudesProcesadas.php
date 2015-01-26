@@ -1023,9 +1023,8 @@ switch ($opcion) {
                     <tr><td colspan='8'>&nbsp;</td></tr>";
           
          $met=$objdatos->buscarexamresult($iddetalle, $idsolicitud, $lugar, $idexamen, $sexo, $idedad);
-         $cantmet=
-                  pg_num_rows($met);
-         if ($met>0){
+         $cantmet=pg_num_rows($met);
+         if ($cantmet>0){
             $Imprimir.="<tr><td colspan=1><p align='center'><br><i>Metodologías:</i></p></td>"
                     . "<td colspan='7'></td></tr>";
             while ($rowme=pg_fetch_array($met)){

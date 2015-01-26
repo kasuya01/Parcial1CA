@@ -196,7 +196,7 @@ $nexamen=$filares['nombre_examen'];
           
          $met=$objdatos->buscarexamresult($iddetalle, $idsolicitud, $lugar, $idexamen, $sexo, $idedad);
          $cantmet=pg_num_rows($met);
-         if ($met>0){
+         if ($cantmet>0){
             echo "<tr><td colspan=1><br><i>Metodologías:</i></td></tr>";
             while ($rowme=pg_fetch_array($met)){
                 echo "<tr>

@@ -1148,7 +1148,7 @@ and (date(t02.fechafin) >= current_date or date(t02.fechafin) is null);";
             $query= "  select t01.id, posible_resultado 
               from lab_posible_resultado t01
               join lab_examen_posible_resultado t02 on (t01.id=t02.id_posible_resultado)
-              where id_conf_examen_estab=33
+              where id_conf_examen_estab=$idexamen
               and t01.habilitado=true 
               and t02.habilitado=true
               and (date(t01.fechafin) >= current_date or date(t01.fechafin) is null)
