@@ -626,7 +626,6 @@ switch ($opcion)
                                             { $query .= " lab_conf_examen_estab.urgente='".$_POST['urgente']."' AND"; }
                                   
                                             
-<<<<<<< HEAD
                                 if ($_POST['sexo']<>0)
 					{ if($_POST['sexo']<>4)
                                             $query .= "  lab_conf_examen_estab.idsexo =".$_POST['sexo']." AND";
@@ -635,18 +634,12 @@ switch ($opcion)
                                          }             
 				/*if ($_POST['sexo']<>3)
                                     { if($_POST['sexo']<>0)
-=======
-				if ($_POST['sexo']<>0)
-                                       { if($_POST['sexo']<>4)
->>>>>>> francis
                                             $query .= "  lab_conf_examen_estab.idsexo =".$_POST['sexo']." AND";
                                           else 
                                             $query .= "  lab_conf_examen_estab.idsexo IS NULL AND";
-<<<<<<< HEAD
+
                                     } */
-=======
-                                       }    
->>>>>>> francis
+
                                             
                                 if (!empty($_POST['Hab'])){
                                     if ($_POST['Hab']=='H')
