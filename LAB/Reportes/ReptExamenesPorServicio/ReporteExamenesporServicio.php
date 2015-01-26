@@ -25,9 +25,28 @@ $base_url  = $_SESSION['base_url'];
 <script language="JavaScript" type="text/javascript">
 function MostrarBusqueda()
 {
-	 if ((document.getElementById('txtfechainicio').value == "")&& (document.getElementById('txtfechafin').value == ""))
+	 if ((document.getElementById('txtfechainicio').value == "") ||
+             (document.getElementById('txtfechafin').value == "") )
 	 {
-		alert("Seleccione un rango de fechas!");
+		//alert("Seleccione un rango de fechas!");
+                 $(function ()   {
+                    $("#dialog").dialog({
+                                autoOpen: false,
+                                modal: true,
+                                    buttons: {      
+                                                "Cerrar": function () 
+                                                            {
+                                                                $(this).dialog("close");
+                                                            }
+                                            }
+                                        });
+                            $("#abrir")
+                            //.button()
+                            //.click(function () {
+                            $("#dialog").dialog("open");
+                           // });
+                                });
+                         
 	 }
 	 else 
 		BuscarDatos(1);
@@ -52,7 +71,9 @@ function BuscarSubServicio(proce){
 </style>
 </head>
 <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" >
-
+<div id="dialog" style='display:none;' title="¡Aviso!">
+    <p> <cente>¡Seleccione un rango de fechas!</cente></p>
+</div>
 <?php 
 //$nivel=$_SESSION['NIVEL']; 
 //$_SESSION['correlativo']=$_SESSION['Correlativo']; 
@@ -86,7 +107,7 @@ if ($nivel==33){
 		<tr>
 			<td class="StormyWeatherFieldCaptionTD" >Procedencia</td>
 			<td  class="StormyWeatherDataTD" ><span class="StormyWeatherDataTD" >
-			  <select name="cmbProcedencia" class="MailboxSelect" id="cmbProcedencia" onChange="BuscarSubServicio(this.value)"  >
+			  <select name="cmbProcedencia"  class="MailboxSelect" id="cmbProcedencia" onChange="BuscarSubServicio(this.value)"  >
                			 <option value="0">--Todas las Procedencia--</option>
          			<?php
 					include_once("../../../Conexion/ConexionBD.php");
@@ -114,7 +135,7 @@ if ($nivel==33){
 			<td class="StormyWeatherFieldCaptionTD">Servicio</td>
 			<td  class="StormyWeatherDataTD">
 				<div id="divSubServ">
-					<select name="cmbSubServicio" id="cmbSubServicio" class="MailboxSelect" style="width:250px"> 
+					<select name="cmbSubServicio" id="cmbSubServicio" class="MailboxSelect" style="width:220px"> 
 						<option value="0">--Seleccione un Servicio--</option>
 					</select>
 				</div>		</td> 
@@ -124,12 +145,12 @@ if ($nivel==33){
                         
                         <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Inicio </td>
                         <td class="StormyWeatherDataTD" width="20%">
-                            <input type="text" size="28" name="txtfechainicio" id="txtfechainicio" class="date"  placeholder="aaaa-mm-dd"/>
+                            <input type="text" size="22" name="txtfechainicio" id="txtfechainicio" class="date"  placeholder="aaaa-mm-dd"/>
                     
                         
                         <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Final </td>
                         <td class="StormyWeatherDataTD" width="20%">
-                            <input type="text" size="28" name="txtfechafin" id="txtfechafin"  class="date"  placeholder="aaaa-mm-dd"/>
+                            <input type="text" size="22" name="txtfechafin" id="txtfechafin"  class="date"  placeholder="aaaa-mm-dd"/>
                     
                         
                         
@@ -140,12 +161,17 @@ if ($nivel==33){
                  
                  <tr>
 			<td  colspan="5" align="right">  
-                            <center>
+                            
                                     <!-- <input type="button" id="btnbuscar"  class="fg-button ui-state-default ui-corner-all  value="Buscar" onClick="MostrarBusqueda();"> -->
                                     <!-- <input type="button" id="btnClear" value="Nueva Busqueda"  onClick="window.location.replace('ReporteExamenesporServicio.php')">	-->
-                                    <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="MostrarBusqueda();">Buscar </button>
+                                   <!-- <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="MostrarBusqueda();">Buscar </button>
                                     <button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="window.location.replace('ReporteExamenesporServicio.php')">Nueva Busqueda </button>
-                            </center>  
+                                    -->
+                                    <button type='button' align="center" class='btn btn-primary' id="abrir" onclick='MostrarBusqueda(); '><span class='glyphicon glyphicon-search'></span> Buscar Solicitudes</button>
+                                    <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('ReporteExamenesporServicio.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+                 
+                            
+                             
                         </td>
 		</tr>
                  

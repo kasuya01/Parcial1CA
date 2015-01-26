@@ -376,7 +376,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
                     INNER JOIN mnt_area_mod_estab           t03 ON (t03.id = t02.id_area_mod_estab)
                     LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
                     LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
-                    WHERE  t02.id_establecimiento = 49
+                    WHERE  t02.id_establecimiento = $lugar
                     ORDER BY 2)
             
                     SELECT 

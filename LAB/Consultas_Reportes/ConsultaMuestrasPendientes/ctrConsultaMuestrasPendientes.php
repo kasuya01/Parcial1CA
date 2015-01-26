@@ -22,13 +22,13 @@ switch ($opcion)
         $idarea         = $_POST['idarea'];
         $idexamen       = $_POST['idexamen'];
         $idexpediente   = $_POST['idexpediente'];
-        $fechasolicitud = $_POST['fechasolicitud'];
+       // $fechasolicitud = $_POST['fechasolicitud'];
         $fecharecepcion = $_POST['fecharecep'];
         $PNombre        = $_POST['PNombre'];
         $SNomre         = $_POST['SNombre'];
         $PApellido      = $_POST['PApellido'];
         $SApellido      = $_POST['SApellido'];
-        $TipoSolic      = $_POST['TipoSolic'];
+       // $TipoSolic      = $_POST['TipoSolic'];
         $cond1="";
         $cond2="";
         $query="";
@@ -253,10 +253,14 @@ switch ($opcion)
                             $imprimir= "<table width='35%' border='0'  align='center'>
           <center>
                 <tr>
-                        <td colspan='11' align='center' ><span style='color: #0101DF;'> <h3> TOTAL DE EXAMENES PENDIENTES DE PROCESAR:".$NroRegistros."</h3></span></td>
+                        <td width='500'  align='center'  ><span style='color: #0101DF;'> <h4> TOTAL DE EXAMENES PENDIENTES DE PROCESAR:".$NroRegistros."</h4></span></td>
                 </tr>
-                <tr>
-			<td colspan='7' align='center' style='color:#990000; font:bold'><a style ='text-decoration:underline;cursor:pointer; font:bold; size:36' onclick='VistaPrevia();'>IMPRIMIR REPORTE</a></td>	
+                
+          </center>
+	</table>    </table>
+         <table width='80%' border='0'  align='center'>
+                   <td width='3000'></td>   <td ' > <button type='button'  class='btn btn-primary'  onclick='VistaPrevia(); '><span class='glyphicon glyphicon-print'></span> IMPRIMIR REPORTE </button> </td>
+			<!--<td <td width='500'>  </td>  <td colspan='7'      style='color:#990000; font:bold'><a style ='text-decoration:underline;cursor:pointer; font:bold; size:36' onclick='VistaPrevia();'>IMPRIMIR REPORTE</a></td>	-->
 		</tr>
           </center>
 	</table> ";
@@ -264,13 +268,17 @@ switch ($opcion)
                             $imprimir= "<table width='35%' border='0'  align='center'>
           <center>
                 <tr>
-                        <td colspan='11' align='center' ><span style='color: #0101DF;'> <h3> TOTAL DE EXAMENES PENDIENTES DE PROCESAR:".$NroRegistros."</h3></span></td>
-                </tr>
-                <tr>
-			<td colspan='7' align='center' style='color:#990000; font:bold'><a style ='text-decoration:underline;cursor:pointer; font:bold; size:36' onclick='VistaPrevia();'>IMPRIMIR REPORTE</a></td>	
+                       <td width='500'  align='center'  ><span style='color: #0101DF;'> <h4> TOTAL DE EXAMENES PENDIENTES DE PROCESAR:".$NroRegistros."</h4></span></td>
+                 </tr>
+               
+          </center>
+	</table>    </table>
+         <table width='80%' border='0'  align='center'>
+                   <td width='3000'></td>   <td ' > <button type='button'  class='btn btn-primary'  onclick='VistaPrevia(); '><span class='glyphicon glyphicon-print'></span> IMPRIMIR REPORTE </button> </td>
+			<!--<td <td width='500'>  </td>  <td colspan='7'      style='color:#990000; font:bold'><a style ='text-decoration:underline;cursor:pointer; font:bold; size:36' onclick='VistaPrevia();'>IMPRIMIR REPORTE</a></td>	-->
 		</tr>
           </center>
-	</table> ";
+	</table> "; 
                         }
                         
                         echo $imprimir;
@@ -279,20 +287,22 @@ switch ($opcion)
 
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);
 
-        echo "<table width='81%' border='1' align='center'>
-                <tr class='CobaltFieldCaptionTD'>
-			<td>Muestra </td>
-		        <td>NEC </td>
-			<td>Paciente</td>
-			<td>Id Examen</td>
-			<td>Examen</td>
-			<td>Observaci&oacute;n</td>
-			<td>Servicio</td>
-			<td>Procedencia</td>
-			<td>Establecimiento</td>
-			<td>Fecha Recepci&oacute;n</td>
-			<td>Prioridad</td>
-                    </tr>";
+        echo "<center><div class='table-responsive' style='width: 80%;'>
+               <table width='80%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+              <thead>
+                    <tr>
+			<th>Muestra </th>
+		        <th>NEC </th>
+			<th>Paciente</th>
+			<th>Id Examen</th>
+			<th>Examen</th>
+			<th>Observaci&oacute;n</th>
+			<th>Servicio</th>
+			<th>Procedencia</th>
+			<th>Establecimiento</th>
+			<th>Fecha Recepci&oacute;n</th>
+			<th>Prioridad</th>
+                    </tr></thead><tbody>"; 
         if(pg_num_rows($consulta)){
             $pos = 0;
 
@@ -324,10 +334,10 @@ switch ($opcion)
             }
             pg_free_result($consulta);
             echo "<input type='hidden' name='oculto' id='text' value='" . $pos . "' />
-                </table>";
+                </table></center>";
             echo "<br><br>";
         } else {
-            echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table>";
+            echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table><br>";
         }
 
 

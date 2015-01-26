@@ -1,3 +1,12 @@
+<?php session_start();
+ if(isset($_SESSION['Correlativo'])){
+$usuario=$_SESSION['Correlativo'];
+$lugar=$_SESSION['Lugar'];
+
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+ $base_url  = $_SESSION['base_url'];
+ 
+ ?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -39,16 +48,20 @@ for ( i = 0; i < getVars.length; i++)
 </head>
 
 <body onLoad="RecogeValor();">
-
+<br><br>
 <table  border="0"  align="rigth" class='estilotabla' >
 <tr>
 	<td>
-	<div id="boton">	<input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" /></div>
+	<div id="boton">	<!--<input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />-->
+                                <button type='button' align='center' class='btn btn-primary'  onClick=' window.print();' ><span class='glyphicon glyphicon-print'></span> Imprimir </button>
+        </div>
 	</td>
 </tr>
-</table>
+</table> <br><br>
 
-
+<?php include_once $ROOT_PATH.'/public/css.php';?>
+<?php include_once $ROOT_PATH.'/public/js.php';?>
+    
 <?php 
 
 include_once("clsSolicitudesPorPaciente.php");
@@ -165,4 +178,9 @@ while($fila = pg_fetch_array($consultadetalle)){
 </div>
 
 </body>
-</html>
+</html><?php
+}else{?>
+<script language="javascript">
+	window.location="../../../login.php";
+</script>
+<?php }?>

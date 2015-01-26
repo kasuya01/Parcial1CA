@@ -337,15 +337,17 @@ switch ($opcion) {
                  </table>";
         echo "<table align='center'>
 			<tr align='center'><td  colspan='2' width='25%'>";
-        $numPags = '';
-        for ($i = 1; $i <= $PagUlt; $i++) {
-            if ($pag == $i)
-                $numPags .= "<a >$pag</a>";
-            else
-                $numPags .= "<a  href='javascript: BuscarDatos(" . $i . ")'>$i</a>&nbsp;";
-        }
-        echo $numPags . "</td></tr>
-		</table>";
+        
+        
+        echo " <center> <ul class='pagination'>";
+		 $numPags ='';
+			 for ($i=1 ; $i<=$PagUlt; $i++){
+                              
+					 echo " <li ><a  href='javascript: BuscarDatos(".$i.")'>$i</a></li>";
+                                
+			 }
+				
+                 echo " </ul></center>";
 
 
 

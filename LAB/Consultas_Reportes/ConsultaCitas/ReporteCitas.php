@@ -2,6 +2,8 @@
 $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
 //include_once("clsSolicitudesPorArea.php");
 
 ?>
@@ -25,6 +27,8 @@ $area=$_SESSION['Idarea'];
 </style>
 <title>Reporte Citas Programadas</title>
 <script language="JavaScript" type="text/javascript" src="ajax_CitasPorPaciente.js"></script>
+<?php include_once $ROOT_PATH.'/public/css.php';?>
+<?php include_once $ROOT_PATH.'/public/js.php';?>
 <script language="JavaScript" >
 function RecogeValor()
 {
@@ -84,6 +88,7 @@ $query_search="";
 //$medico=$_GET['var4'];
 $objdatos = new clsCitasPorPaciente;
 $cond2="";
+$cond1="";
         $query="";
         $query2="";
         $where_with="";
@@ -337,18 +342,23 @@ $cond2="";
 	
    <input type="hidden" name="oculto" id="text" value='".$pos."' /> 
 </table>
-    
+    <br>
 <div id="boton">
 	<table width="90%" border="0" align="center">
 		<tr>
 			<td colspan="7" align="center">	
 					
-					<input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
+					<!--<input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
 					<input type="button" name="btncl" id="btnct" value="Regresar" onClick="window.close();"> </div>
-					</td>
+                                        -->
+                                         <button type='button' align="center" class='btn btn-primary'  onclick='window.print(); '><span class='glyphicon glyphicon-print'></span> Imprimir </button>
+                                         <button type='button' align="center" class='btn btn-primary'  onClick="window.close();"><span class='glyphicon glyphicon-arrow-left'></span> Regresar </button>
+                        
+                        </td>
 				
 		</tr>
 	</table>
+    <br>
 </div>
 </body>
 </html>

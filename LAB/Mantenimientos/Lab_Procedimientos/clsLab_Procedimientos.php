@@ -276,22 +276,31 @@ class clsLab_Procedimientos {
     //usamos el metodo conectar para realizar la conexion
         if($con->conectar()==true){
              
-            //habilitado='t' = 'Habilitado'
+            //habilitado='t' = 'Habilitado' --> pasara a f
             if($cond=='t'){
-                 $query="UPDATE lab_procedimientosporexamen SET habilitado='f',
-					fechafin=NULL,
+                
+                $query="UPDATE lab_procedimientosporexamen SET habilitado='f',
+					fechafin=current_date,
 					idusuarioreg=$usuario,
 					fechahoramod=NOW()
 					 WHERE id=$idlppe ";
+                
+                 
                 $result = pg_query($query);
               //  $query1= "UPDATE lab_examenes SET Habilitado='N' WHERE IdExamen='$idexamen'" ;
                // $result1 = pg_query($query1);
              }
-            // habilitado='f' = 'Inhabilitado'
+            // habilitado='f' = 'Inhabilitado' -->pasara a t
              if($cond=='f'){
                  //$query = "UPDATE lab_conf_examen_estab SET condicion='H' WHERE id=$idexamen";
-                 $query="UPDATE lab_procedimientosporexamen SET habilitado='t',
+                 /*$query="UPDATE lab_procedimientosporexamen SET habilitado='t',
 					fechafin=current_date,
+					idusuarioreg=$usuario,
+					fechahoramod=NOW()
+					 WHERE id=$idlppe ";*/
+                 
+                 $query="UPDATE lab_procedimientosporexamen SET habilitado='t',
+					fechafin=NULL,
 					idusuarioreg=$usuario,
 					fechahoramod=NOW()
 					 WHERE id=$idlppe ";

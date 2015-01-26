@@ -23,16 +23,16 @@ switch ($opcion)
         $IdEstab        = $_POST['IdEstab'];
         $IdServ         = $_POST['IdServ'];
         $IdSubServ      = $_POST['IdSubServ'];
-        $idarea         = $_POST['idarea'];
-        $idexamen       = $_POST['idexamen'];
+        //$idarea         = $_POST['idarea'];
+        //$idexamen       = $_POST['idexamen'];
         $idexpediente   = $_POST['idexpediente'];
-        $fechasolicitud = $_POST['fechasolicitud'];
+        //$fechasolicitud = $_POST['fechasolicitud'];
         $fecharecepcion = $_POST['fecha'];
         $PNombre        = $_POST['primernombre'];
         $SNomre         = $_POST['segundonombre'];
         $PApellido      = $_POST['primerapellido'];
         $SApellido      = $_POST['segundoapellido'];
-        $TipoSolic      = $_POST['TipoSolic'];
+        //$TipoSolic      = $_POST['TipoSolic'];
         $cond1="";
         $cond2="";
         $query="";
@@ -265,44 +265,54 @@ switch ($opcion)
 					$RegistrosAMostrar=20;
 					$NroRegistros= $objdatos->NumeroDeRegistros($query);
 	
-                        if ($NroRegistros==""){
+                      
+         if ($NroRegistros==""){
                             $NroRegistros=0;
-                            $imprimir= "<table width='35%' border='0'  align='center'>
+                            $imprimir= "<table width='80%' border='0'  align='center'>
           <center>
                 <tr>
-                        <td colspan='11' align='center' ><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES:".$NroRegistros."</h3></span></td>
+                        <td width='500'  align='center'  ><span style='color: #0101DF;'> <h4> TOTAL DE SOLICITUDES:".$NroRegistros."</h4></span></td>
                 </tr>
-                <tr>
-			<td colspan='7' align='center' style='color:#990000; font:bold'><a style ='text-decoration:underline;cursor:pointer; font:bold; size:36' onclick='VistaPrevia();'>IMPRIMIR REPORTE</a></td>	
+                </table>
+                
+                <table width='80%' border='0'  align='center'>
+                   <td width='1550'></td>   <td > <button type='button'  class='btn btn-primary'  onclick='VistaPrevia(); '><span class='glyphicon glyphicon-print'></span> IMPRIMIR REPORTE </button> </td>
+			<!--<td <td width='500'>  </td>  <td colspan='7'      style='color:#990000; font:bold'><a style ='text-decoration:underline;cursor:pointer; font:bold; size:36' onclick='VistaPrevia();'>IMPRIMIR REPORTE</a></td>	-->
 		</tr>
           </center>
 	</table> ";
-                        }else{
-                            $imprimir= "<table width='35%' border='0'  align='center'>
+                        }ELSE {
+                            
+                            $imprimir= "<table width='80%' border='0'  align='center'>
           <center>
                 <tr>
-                        <td colspan='11' align='center' ><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES:".$NroRegistros."</h3></span></td>
+                        <td width='500'  align='center'  ><span style='color: #0101DF;'> <h4> TOTAL DE SOLICITUDES:".$NroRegistros."</h4></span></td>
                 </tr>
-                <tr>
-			<td colspan='7' align='center' style='color:#990000; font:bold'><a style ='text-decoration:underline;cursor:pointer; font:bold; size:36' onclick='VistaPrevia();'>IMPRIMIR REPORTE</a></td>	
+                </table>
+                
+                <table width='80%' border='0'  align='center'>
+                   <td width='1600'></td>   <td   > <button type='button'  class='btn btn-primary'  onclick='VistaPrevia(); '><span class='glyphicon glyphicon-print'></span> IMPRIMIR REPORTE </button> </td>
+			<!--<td <td width='500'>  </td>  <td colspan='7'      style='color:#990000; font:bold'><a style ='text-decoration:underline;cursor:pointer; font:bold; size:36' onclick='VistaPrevia();'>IMPRIMIR REPORTE</a></td>	-->
 		</tr>
           </center>
 	</table> ";
                         }
                         
                         
-                        
     
 	
-			$imprimir.="<table width='80%' border='1' align='center'>
-					<tr class='CobaltFieldCaptionTD'>
-						<td>Fecha cita</td>
-						<td>NEC </td>
-						<td>Nombre Paciente</td>
-						<td>Origen</td>
-						<td>Procedencia</td>
-						<td>Establecimiento</td>
-					</tr>";    
+			$imprimir.="<center><div class='table-responsive' style='width: 80%;'>
+                <table width='80%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                    <thead>
+                                <tr> 
+						<th>Fecha cita</th>
+						<th>NEC </th>
+						<th>Nombre Paciente</th>
+						<th>Origen</th>
+						<th>Procedencia</th>
+						<th>Establecimiento</th>
+					</tr>
+                    </thead><tbody>";  
 		if(pg_num_rows($consulta)){
                     $pos = 0;
                         
@@ -330,7 +340,7 @@ switch ($opcion)
 		echo $imprimir;
 			
          } else {
-             $imprimir .="<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table>";
+             $imprimir .="<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table><br><br>";
                 echo $imprimir;
              
          }

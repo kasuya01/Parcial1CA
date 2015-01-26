@@ -2,6 +2,8 @@
 $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
 include ("clsSolicitudesPorPaciente.php");
 
 //variables POST
@@ -23,16 +25,16 @@ switch ($opcion)
         $IdEstab        = $_POST['IdEstab'];
         $IdServ         = $_POST['IdServ'];
         $IdSubServ      = $_POST['IdSubServ'];
-        $idarea         = $_POST['idarea'];
-        $idexamen       = $_POST['idexamen'];
+        //$idarea         = $_POST['idarea'];
+        //$idexamen       = $_POST['idexamen'];
         $idexpediente   = $_POST['idexpediente'];
-       $fechasolicitud = $_POST['fechasolicitud'];
+       //$fechasolicitud = $_POST['fechasolicitud'];
        $fecharecepcion = $_POST['fechaconsulta'];
         $PNombre        = $_POST['primernombre'];
         $SNomre         = $_POST['segundonombre'];
         $PApellido      = $_POST['primerapellido'];
         $SApellido      = $_POST['segundoapellido'];
-        $TipoSolic      = $_POST['TipoSolic'];
+        //$TipoSolic      = $_POST['TipoSolic'];
         $cond1="";
         $cond2="";
         $query="";
@@ -266,24 +268,27 @@ switch ($opcion)
 <tr><td colspan='11'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES:".$NroRegistros."</h3></span></td></tr>
             </center>
 	</table> ";
-     }
-     
-   
-     echo "<table width='81%' border='1' align='center'>
-                <tr class='CobaltFieldCaptionTD'>
-			<td>Fecha Recepci&oacute;n</td>
-				<td>NEC </td>
-				<td>Nombre Paciente</td>
-					<td>Origen</td>
-					<td>Procedencia</td>
-					<td>Establecimiento</td>
-					<td>Estado Solicitud</td>
-					<td>Fecha Consulta</td>
-                    </tr>";
+     }               
+                                                    
+     echo "<center><div class='table-responsive' style='width: 70%;'>
+                <table width='85%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                    <thead>
+                        <tr>
+                                <td>Fecha Recepci&oacute;n      </th>
+                                        <th>NEC                 </th>
+                                        <th>Nombre Paciente     </th>
+                                        <th>Origen              </th>
+                                        <th>Procedencia         </th>
+                                        <th>Establecimiento     </th>
+                                        <th>Estado Solicitud    </th>
+                                        <th>Fecha Consulta      </th>
+                        </tr>
+                    </thead><tbody>"; 
         if(pg_num_rows($consulta)){
             $pos = 0;
 
             while ($row = pg_fetch_array($consulta)) {
+                $esta =$row['estado'];
                 echo "<tr>
 				   <td width='8%'>".$row['fecharecepcion']."</td>
 				   <td width='8%'><span style='color: #0101DF;'>
@@ -302,8 +307,7 @@ switch ($opcion)
 				  
                                       
 				 </tr>";
-                
-              
+            
                 $pos = $pos + 1;
                 
                 
@@ -346,7 +350,7 @@ switch ($opcion)
 			 echo "<td> <a onclick=\"BuscarDatospaciente('$PagSig')\">Siguiente</a> </td>";
 		 	 echo "<td> <a onclick=\"BuscarDatospaciente('$PagUlt')\">Ultimo</a></td></tr>
                  </table>";
-	   echo "<table align='center'>
+	   /*echo "<table align='center'>
 			<tr align='center'><td  colspan='2' width='25%'>";
 		 $numPags ='';
 			 for ($i=1 ; $i<=$PagUlt; $i++){
@@ -357,7 +361,15 @@ switch ($opcion)
 					 $numPags .= "<a  href='javascript: BuscarDatospaciente(".$i.")'>$i</a>&nbsp;";
 			 }
 				 echo $numPags."</td></tr>
-		</table>";
+		</table> ";*/
+                                 
+                                  echo " <center> <ul class='pagination'>";
+                          for ($i=1 ; $i<=$PagUlt; $i++)
+                                    {
+                             
+					 echo " <li ><a  href='javascript: BuscarDatospaciente(".$i.")'>$i</a></li>";
+                                     }
+                    echo " </ul></center>";
                                  
                                  
         
@@ -367,8 +379,8 @@ switch ($opcion)
 	case 2:  // solicitud estudios
 		$idexpediente       =$_POST['idexpediente'];
 		$idsolicitud        =$_POST['idsolicitud'];
-		$IdEstablecimiento  =$POST['idestablecimiento'];
-		$IdEstablecimiento;
+		//$IdEstablecimiento  =$POST['idestablecimiento'];
+		//$IdEstablecimiento;
 		include_once("clsSolicitudesPorPaciente.php");
 		//recuperando los valores generales de la solicitud
 		
@@ -385,10 +397,12 @@ switch ($opcion)
 		$sexo=$row['sexo'];
 		$precedencia=$row['nombreservicio'];
 		$origen=$row['nombresubservicio'];
-		$DatosClinicos=$row['DatosClinicos'];
+		//$DatosClinicos=$row['DatosClinicos'];
                 $Estado=$row['estado'];
-		$fechasolicitud=$row['FechaSolicitud'];
-                $FechaNac=$row['FechaNacimiento'];
+                $ConocidoPor=$row['conocodidox'];
+                $Diagnostico=$row['diagnostico'];
+		//$fechasolicitud=$row['FechaSolicitud'];
+                //$FechaNac=$row['FechaNacimiento'];
 		//recuperando los valores del detalle de la solicitud
 		$consultadetalle=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar);
 		//$estadosolicitud=$objdatos->EstadoSolicitud($idexpediente,$idsolicitud);
@@ -438,10 +452,8 @@ switch ($opcion)
                                         <input name='idsolicitudPadre' id='idsolicitudPadre'  type='hidden' size='40' value='".$idsolicitudPadre."' disabled='disabled' />
 					<input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled' />
 					<input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled' />
-					<input name='fechasolicitud' id='fechasolicitud'  type='hidden' size='40' value='".$fechasolicitud."' disabled='disabled' />
-					<input name='idarea' id='idarea'  type='hidden' size='40' value='".$idarea."' disabled='disabled' />
-					<input name='suEdad' id='suEdad'  type='hidden' size='40' value='".$FechaNac."' disabled='disabled' />
-				</td>
+					
+					
                         </tr>
                         <tr>
 				<td class='StormyWeatherFieldCaptionTD'>M&eacute;dico</td>
@@ -453,22 +465,28 @@ switch ($opcion)
                                 <td colspan='3' class='StormyWeatherDataTD'>". $Diagnostico."</td>
                         </tr>
                         <tr>
+                        
+                        </table>
+                        <br><br><br>
 		
 
-		<table width='70%' border='0' align='center'>
-			<tr>
-				<td colspan='4'  class='CobaltFieldCaptionTD' align='center'>ESTUDIOS SOLICITADO</td>
-			</tr>
-			<tr>
-				<td>
-					<table border = 1 align='center' class='estilotabla'>
-			   		<tr>
-						<td class='CobaltFieldCaptionTD' width='10%'> IdExamen</td>
-						<td class='CobaltFieldCaptionTD' width='39%'> Examen </td>
-						<td class='CobaltFieldCaptionTD' width='7%'> IdArea </td>
-						<td class='CobaltFieldCaptionTD' width='20%'> Indicacion Medica </td>
-						<td  class='CobaltFieldCaptionTD'width='21%'> Estado </td>
-			   		</tr>";
+		<center><div class='table-responsive' style='width: 70%;'>
+                <table width='50%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                    <thead>
+                            <tr>
+				<th colspan='5'  class='CobaltFieldCaptionTD' ><center>ESTUDIOS SOLICITADO</center></th>
+                            </tr>
+                                <tr>
+				
+					<!--<table border = '1'  align='center' class='estilotabla'>-->
+			   		
+						<th > IdExamen</th>
+						<th > Examen </th>
+						<th > IdArea </th>
+						<th > Indicacion Medica </th>
+						<th  > Estado </th>
+			   		</tr>
+                    </thead><tbody>"; 
 			$pos=0;
 			while($fila = pg_fetch_array($consultadetalle)){
                 
@@ -496,15 +514,19 @@ switch ($opcion)
 		$row = pg_fetch_array($consulta);
                  $Estado1=$row['estado1'];
                         
-	 $imprimir .="</table>
-	<div id='divImpresion' style='display:block' >
+	 $imprimir .="</table></center>
+	<center><div id='divImpresion' style='display:block' >
 		<table>
 			<tr >
 				<p></p>
 			</tr>
 			<tr >
 				<td align='center'>
-					<input type='button' name='btnImprimirSol' id='btnImprimirSol' value='Imprimir Solicitud' onClick='ImprimirSolicitud()'>";
+					
+                                    <button type='button' align='center' class='btn btn-primary'  onclick='ImprimirSolicitud(); '><span class='glyphicon glyphicon-print'></span> Imprimir Solicitud </button>
+                                
+                
+                                        <!--<input type='button' name='btnImprimirSol' id='btnImprimirSol' value='Imprimir Solicitud' onClick='ImprimirSolicitud()'>-->";
 			//	echo"---> estado1--->". $estado['estado1'];
          
                          $Estado1;
@@ -512,16 +534,22 @@ switch ($opcion)
                             if(($Estado1=='Recibida') OR ($Estado1 =='En Proceso')){
                                             
                                                     //echo " si esta entrando ";
-						$imprimir .="<input type='button' name='btnImprimir'  id=btnImprimir' value='Imprimir Vi&ntilde;etas' onClick='ImprimirExamenes()'/>";}
+						$imprimir .=" <!--<input type='button' name='btnImprimir'  id=btnImprimir' value='Imprimir Vi&ntilde;etas' onClick='ImprimirExamenes()'/>-->
+                                                        
+                                                                <button type='button' align='center' class='btn btn-primary'  onclick='ImprimirExamenes(); '><span class='glyphicon glyphicon-print'></span> Imprimir Vi&ntilde;etas </button>
+                                                                    ";}
                                                 
                                                 else{
                                                // echo "no esta entrando ";
-						$imprimir .="<input type='button' name='btnImprimir' disabled='enabled' id=btnImprimir' value='Imprimir Vi&ntilde;etas' onClick='ImprimirExamenes();'/>";
+						$imprimir .="<!--<input type='button' name='btnImprimir' disabled='enabled' id=btnImprimir' value='Imprimir Vi&ntilde;etas' onClick='ImprimirExamenes();'/>-->
+                                                        <button type='button' align='center' class='btn btn-primary'  onclick='ImprimirExamenes(); '><span class='glyphicon glyphicon-print'></span> Imprimir Vi&ntilde;etas </button>
+                                                        ";
 					}
 				$imprimir .="</td>
 			</tr>
 		</table>
-	</div>
+	</div>	</center>
+
 </form>";
      echo $imprimir;
 	 
@@ -546,10 +574,12 @@ switch ($opcion)
 		$sexo           =$row['sexo'];
 		$precedencia    =$row['nombreservicio'];
 		$origen         =$row['nombresubservicio'];
-		$DatosClinicos  =$row['DatosClinicos'];
-		$Estado         =$row['Estado'];
-		$fechasolicitud =$row['FechaSolicitud'];
-                $FechaNac       =$row['FechaNacimiento'];
+		//$DatosClinicos  =$row['DatosClinicos'];
+		//$Estado         =$row['Estado'];
+		//$fechasolicitud =$row['FechaSolicitud'];
+                //$FechaNac       =$row['FechaNacimiento'];
+                $ConocidoPor    =$row['conocodidox'];
+                $Diagnostico    =$row['diagnostico'];
 		//recuperando los valores del detalle de la solicitud
 		$consultadetalle=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar);
 		//recuperando los valores del detalle de la solicitud
@@ -597,10 +627,7 @@ switch ($opcion)
                                         <input name='idsolicitudPadre' id='idsolicitudPadre'  type='hidden' size='40' value='".$idsolicitudPadre."' disabled='disabled' />
 					<input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled' />
 					<input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled' />
-					<input name='fechasolicitud' id='fechasolicitud'  type='hidden' size='40' value='".$fechasolicitud."' disabled='disabled' />
-					<input name='idarea' id='idarea'  type='hidden' size='40' value='".$idarea."' disabled='disabled' />
-					<input name='suEdad' id='suEdad'  type='hidden' size='40' value='".$FechaNac."' disabled='disabled' />
-				</td>
+					
                         </tr>
                         <tr>
 				<td class='StormyWeatherFieldCaptionTD'>M&eacute;dico</td>
@@ -614,22 +641,21 @@ switch ($opcion)
                         <tr>
 		  
 	    	</table>
-		
-
-		<table width='80%' border='0' align='center'>
-		<tr>
-			<td colspan='4' align='center' class='CobaltFieldCaptionTD'>ESTUDIOS SOLICITADO</td>
-		</tr>
-		<tr>
-			<td>
-				<table border = 1 align='center' class='estilotabla' width='100%' >
-			   	<tr>
-			   		<td> IdExamen</td>
-			  		<td> Examen </td>
-			   		<td> IdArea </td>
-			   		<td> Indicacion Medica </td>
-			   		<td> Estado </td>
-			   	</tr>";
+                 <br>
+		<center>
+                    <div class='table-responsive' style='width: 70%;'>
+                <table width='50%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                    <thead>
+                            <tr>
+				<th colspan='5'  class='CobaltFieldCaptionTD' ><center>ESTUDIOS SOLICITADO</center></th>
+                            </tr>
+                                <tr>
+                                        <th> IdExamen</th>
+			  		<th> Examen </th>
+			   		<th> IdArea </th>
+			   		<th> Indicacion Medica </th>
+			   		<th> Estado </th>
+			   	</thead><tbody></tr>"; 
 		$pos=0;
 		while($fila = pg_fetch_array($consultadetalle)){
 		  $imprimir .= "<tr>
@@ -652,17 +678,24 @@ pg_free_result($consultadetalle);
 
  $imprimir .= "<input type='hidden' name='oculto' id='oculto' value='".$pos."' />
 			</table>
-			<div id='divImpresion' style='display:block' >
-				<table aling='center'>
+			<div id='divImpresion' style='display:block' ></div></form>";
+				
+                                     $imprimir.="   <table aling='center'>
 				<tr >
 				<p></p>
-				</tr>
-				<td aling='center'><input type='button' name='btnCerrar' id='btnCerrar' value='Cerrar' onClick='Cerrar()'></td>
-				<td ><input type='button' name='btnImprimir' id='btnImprimir'  value='Imprimir' onClick='Imprimir()'></td>
-				</tr>
-				</table>
-			</div>
-			</form>";
+				
+                                      
+                                        <td class='StormyWeatherDataTD'>
+                                        <button type='button' align='center' class='btn btn-primary'  onclick='Cerrar(); '><span class='glyphicon glyphicon-remove-sign'></span> Cerrar </button>
+                                        <button type='button' align='center' class='btn btn-primary'  onClick=' window.print();' ><span class='glyphicon glyphicon-print'></span> Imprimir </button>
+                                         </td>
+                                </tr>
+				</table> <center>";
+                                ?> <?php include_once $ROOT_PATH.'/public/css.php';?>
+                                    <?php include_once $ROOT_PATH.'/public/js.php';?>
+                                  <?php     
+                                     
+                    
      echo $imprimir;
    
    break;

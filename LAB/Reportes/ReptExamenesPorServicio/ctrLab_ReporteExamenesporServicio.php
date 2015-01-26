@@ -29,7 +29,7 @@ switch ($opcion)
                 $cond2="";
                 $query="";
                 $cond0="and";
-                
+                $pos="";
                 
                 $ban=0;
 		//VERIFICANDO LOS POST ENVIADOS
@@ -159,32 +159,41 @@ switch ($opcion)
 		$FechaF=explode('-',$_POST['fechafin']);
 		$FechaI2=$FechaI[2].'/'.$FechaI[1].'/'.$FechaI[0];
 		$FechaF2=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];
-       echo"<table width='100%' hight='10%' align='center'>
+       echo"<table width='100%' border='0' hight='10%' align='center'>
 	           <tr>
-	       		<td colspan='28' align='center'>
-                            <a href='".$nombrearchivo."'><H5>DESCARGAR REPORTE EXCEL <img src='../../../Imagenes/excel.gif'></H5></a>
-                        </td>
+	       		
 	           </tr> ";
                 $imprimir="<tr>
                                 <td colspan='28' align='center'><h3>REGISTRO DE EXAMENES PRACTICADOS A LOS DIFERENTES SERVICIOS SEPARADOS POR SECCION</h3></td>
                             </tr>
                             <tr>
-                                <td colspan='28' align='center' ><h4>PROCEDENCIA: <span style='color: #0101DF;'>".$rowServicio['servicio']."</h4></td>
+                                <td width='50%' align='right' >
+                                                    <h4>PERIODO DEL:  ".$FechaI2." AL ".$FechaF2."</h4>
+                                </td>
+                                
+                               
+                                    <td align='center' >
+                                            <a href='".$nombrearchivo."'><H5>   DESCARGAR REPORTE EXCEL <img src='../../../Imagenes/excel.gif'></H5></a>
+                                    </td>
                             </tr>
                             <tr>
-                                <td colspan='28' align='center'><h4>PERIODO DEL:  ".$FechaI2." AL ".$FechaF2."</h4></td>
+                                <td colspan='28' align='center' ><h4>PROCEDENCIA: <span style='color: #0101DF;'>".$rowServicio['servicio']."</h4></td>
                             </tr>
+                            
             </table>";
         
         //otra tabla 
-$imprimir.="<table width='90%' border='1' align='center' >
-                                <tr style='background:#BBBEC9'>
-                                <td class='CobaltFieldCaptionTD' width='20%'><strong>Servicio</strong></td>";
+$imprimir.="<center><div class='table-responsive' style='width: 80%;'>
+                <table width='80%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                    <thead>
+                            <tr>
+                                <th  width='20%'><strong>Servicio</strong></th>";
 		while ($rowarea=pg_fetch_array($consultaAreas))
                         {
-                             $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>".htmlentities($rowarea['nombrearea'])."</strong></td>";
+                             $imprimir.="<th  width='12%'><strong>".htmlentities($rowarea['nombrearea'])."</strong></th>";
 			}
-                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>TOTAL</strong></td></tr>";
+                            $imprimir.="<th  width='12%'><strong>TOTAL</strong></th></tr>
+                    </thead><tbody>"; 
 		
    if(pg_num_rows($consulta))
            {     //echo "dentro";            
@@ -207,13 +216,13 @@ $imprimir.="<table width='90%' border='1' align='center' >
 		}
                 
            }else { //echo "nada";
-             $imprimir .="<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado reeeesultados...</span></td></tr></table>";
+             $imprimir .="<tr><th colspan='11'><span style='color: #575757;'>No se han encontrado reeeesultados...</span></th></tr></table>";
                 //echo $imprimir;
              
          }  
            
            
-$imprimir.="</table>";
+$imprimir.="</table><center>";
 
 $imprimir.= "<br>";
 $imprimir.= "<br>";
@@ -251,15 +260,16 @@ else{ //reporte de todas las especialidades
 		$FechaF=explode('-',$_POST['fechafin']);
 		$FechaI2=$FechaI[2].'/'.$FechaI[1].'/'.$FechaI[0];
 		$FechaF2=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];
-		$imprimir1="<table width='100%' hight='10%' align='center'>
-                                        <tr>
-                                                <td colspan='5' align='center'><a href='".$nombrearchivo."'><H5>DESCARGAR REPORTE EXCEL <img src='../../../Imagenes/excel.gif'></H5></a></td>
-                                        </tr>
+		$imprimir1="<table width='100%' border='0' hight='10%' align='center'>
+                                       
                                         <tr>
                                                 <td colspan='25' align='center'><h3>REGISTRO DE EXAMENES PRACTCADOS A LOS DIFERENTES SERVICIOS SEPARADOS POR SECCION</h3></td>
                                         </tr>
                                         <tr>
-                                                <td colspan='25' align='center'><h3>PERIODO DEL:  ".$FechaI2." AL ".$FechaF2."</h3></td>
+                                                <td width='50%' align='right'><h3>PERIODO DEL:  ".$FechaI2." AL ".$FechaF2."</h3></td>
+                                         
+                                                <td  align='center'><a href='".$nombrearchivo."'><H5>DESCARGAR REPORTE EXCEL <img src='../../../Imagenes/excel.gif'></H5></a></td>
+                                        
                                         </tr>
                             </table>";
 		echo $imprimir1;
@@ -317,20 +327,25 @@ else{ //reporte de todas las especialidades
                                 
     if ($cantidadcon>0  )
     {
-             $imprimir.="<table width='90%' border='1' align='center' >
-                                                    <tr style='background:#BBBEC9'>
-                                                    <td class='CobaltFieldCaptionTD' width='12%'><strong>Servicio</strong></td>";
+             $imprimir.="<center><div class='table-responsive' style='width: 80%;'>
+                <table width='80%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                    <thead>
+                            <tr>
+                                                    <th  width='12%'><strong>Servicio</strong></th>";
                                                     
              $consultaAreas=$obj->consultarareas($lugar);
                            
                                         while ($rowarea=pg_fetch_array($consultaAreas))
                                     {
-                                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>".htmlentities($rowarea['nombrearea'])."</strong></td>";
+                                            $imprimir.="<th width='12%'><strong>".htmlentities($rowarea['nombrearea'])."</strong></th>";
                                     }
                                     
                                    
                                     
-                                     $imprimir.=" <td class='CobaltFieldCaptionTD' width='12%'><strong>TOTAL</strong></td>";
+                                     $imprimir.=" <th width='12%'><strong>TOTAL</strong></th>
+                                             
+                                        </tr>
+                    </thead><tbody>"; 
                                     
                     //echo "cantidad mayor ";
 			//echo $servicio."-".$ffechaini."-".$ffechafin;
@@ -355,7 +370,7 @@ else{ //reporte de todas las especialidades
                 }      
                     pg_free_result($consulta);
                     $imprimir .= "<input type='hidden' name='oculto' id='text' value='".$pos."' /> 
-			</table>";
+			</table></center>";
                        // echo $imprimir;
                       fwrite($punteroarchivo,$imprimir);
 	    fclose($punteroarchivo);
@@ -431,18 +446,23 @@ else{ //reporte de todas las especialidades
         
       {
         
-        $imprimir.="<table width='90%' border='1' align='center' >
-                                                    <tr style='background:#BBBEC9'>
-                                                    <td class='CobaltFieldCaptionTD' width='20%'><strong>Servicio</strong></td>";
+        $imprimir.="<center><div class='table-responsive' style='width: 80%;'>
+                <table width='80%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                    <thead>
+                            <tr>
+                                                    <th  width='20%'><strong>Servicio</strong></th>";
         
          $consultaAreas=$obj->consultarareas($lugar);
                            
                                         while ($rowarea=pg_fetch_array($consultaAreas))
                                     {
-                                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>".htmlentities($rowarea['nombrearea'])."</strong></td>";
+                                            $imprimir.="<th  width='12%'><strong>".htmlentities($rowarea['nombrearea'])."</strong></th>";
                                     }
                                     
-                                   $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>TOTAL</strong></td>";
+                                   $imprimir.="<th  width='12%'><strong>TOTAL</strong></th>
+                                          
+                                        </tr>
+                    </thead><tbody>"; 
         
          echo  $imprimir;  
         
@@ -475,19 +495,21 @@ else{ //reporte de todas las especialidades
     }else { 
            // echo "dentro del else emergencia";                      //$cantidademer;
             $consultaAreas=$obj->consultarareas($lugar);
-                             $imprimir.="<table width='90%' border='1' align='center' >
-                                                    <tr style='background:#BBBEC9'>
-                                                    <td class='CobaltFieldCaptionTD' width='20%'><strong>Servicio</strong></td>";
+                             $imprimir.="<center><div class='table-responsive' style='width: 80%;'>
+                                        <table width='80%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                                            <thead>
+                                                    <tr>
+                                                    <th width='20%'><strong>Servicio</strong></th>";
                                         while ($rowarea=pg_fetch_array($consultaAreas))
                                     {
-                                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>".htmlentities($rowarea['nombrearea'])."</strong></td>";
+                                            $imprimir.="<th  width='12%'><strong>".htmlentities($rowarea['nombrearea'])."</strong></th>";
                                     }
-                                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>TOTAL</strong></td></tr>";
+                                            $imprimir.="<th  width='12%'><strong>TOTAL</strong></th></tr>
+                    </thead><tbody>"; 
                                 
-             $imprimir.= "<table width='90%' border='1' align='center' >
-                          <tr style='background:#BBBEC9'> <tr><td colspan='11'><span style='color: #0101DF;'>No se han encontrado resultados...</span></td></tr></table>";
-             fwrite($punteroarchivo,$imprimir);
-	    fclose($punteroarchivo);
+             $imprimir.= " <th colspan='11'><span style='color: #0101DF;'>No se han encontrado resultados...</span></th>";
+            // fwrite($punteroarchivo,$imprimir);
+	    //fclose($punteroarchivo);
              
              echo  $imprimir;  
            }
@@ -532,14 +554,16 @@ else{ //reporte de todas las especialidades
                                 
                 {
                       $consultaAreas=$obj->consultarareas($lugar);
-                            $imprimir.="<table width='90%' border='1' align='center' >
-                                                    <tr style='background:#BBBEC9'>
-                                                    <td class='CobaltFieldCaptionTD' width='20%'><strong>Servicio</strong></td>";
+                            $imprimir.="<center><div class='table-responsive' style='width: 80%;'>
+                                        <table width='80%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                                            <thead>
+                                                    <th width='20%'><strong>Servicio</strong></th>";
                                         while ($rowarea=pg_fetch_array($consultaAreas))
                                     {
-                                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>".htmlentities($rowarea['nombrearea'])."</strong></td>";
+                                            $imprimir.="<th class='CobaltFieldCaptionTD' width='12%'><strong>".htmlentities($rowarea['nombrearea'])."</strong></th>";
                                     }
-                                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>TOTAL</strong></td></tr>";
+                                            $imprimir.="<th class='CobaltFieldCaptionTD' width='12%'><strong>TOTAL</strong></th></tr>
+                    </thead><tbody>"; 
                                     $ser=$row['subservicio'];
                                             // echo  $ser;
                             $imprimir.="<tr>
@@ -550,7 +574,7 @@ else{ //reporte de todas las especialidades
                                             $imprimir.="<td width='10%'>".$row[$area]."</td>";
                                         }
                                             $imprimir.="<td width='14%'><strong>".$row['total']."</strong></td>
-                                        </tr>";
+                                        </tr></table><center>";
                     $pos=$pos + 1;
                                             
                 }
@@ -561,19 +585,20 @@ else{ //reporte de todas las especialidades
    }else {
                                   //$cantidadhos;
                                     $consultaAreas=$obj->consultarareas($lugar);
-                             $imprimir.="<table width='90%' border='1' align='center' >
-                                                    <tr style='background:#BBBEC9'>
-                                                    <td class='CobaltFieldCaptionTD' width='20%'><strong>Servicio</strong></td>";
+                                $imprimir.="<table width='80%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                                            <thead>    
+                                            <tr>
+                                                    <th  width='20%'><strong>Servicio</strong></th>";
                                         while ($rowarea=pg_fetch_array($consultaAreas))
                                     {
-                                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>".htmlentities($rowarea['nombrearea'])."</strong></td>";
+                                            $imprimir.="<th  width='12%'><strong>".htmlentities($rowarea['nombrearea'])."</strong></th>";
                                     }
-                                            $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>TOTAL</strong></td></tr>";
+                                            $imprimir.="<th  width='12%'><strong>TOTAL</strong></th></tr>
+                    </thead><tbody>"; 
                                 
-             $imprimir.= "<table width='90%' border='1' align='center' >
-                          <tr style='background:#BBBEC9'> <tr><td colspan='11'><span style='color: #0101DF;'>No se han encontrado resultados...</span></td></tr></table>";
-             fwrite($punteroarchivo);
-	    fclose($punteroarchivo);
+             $imprimir.= "<th colspan='11'><span style='color: #0101DF;'>No se han encontrado resultados...</span></th></table>";
+             //fwrite($punteroarchivo);
+	    //fclose($punteroarchivo);
            // echo  $imprimir;
          }            
                             
@@ -583,8 +608,8 @@ else{ //reporte de todas las especialidades
          
          	
 		//CIERRE DE ARCHIVO EXCEL
-	    fwrite($punteroarchivo,$imprimir);
-	    fclose($punteroarchivo);
+	  //  fwrite($punteroarchivo,$imprimir);
+	    //fclose($punteroarchivo);
 		//************************/ 
 	      echo $imprimir;
 

@@ -77,7 +77,10 @@ include_once("clsSolicitudesPorServicioPeriodo.php");
      $IdEstab        =$_GET['var5'];
     $medico         =$_GET['var4'];
     $objdatos       = new clsSolicitudesPorServicioPeriodo;
-
+    $cond1="";
+    $cond2="";
+    $ban="";
+    
  if (!empty($_GET['var5'])) {
            if ($_GET['var5']<>$lugar){
                $cond1 .= " and   t02.id_establecimiento_externo = " . $_GET['var5'] . " ";
@@ -117,7 +120,7 @@ include_once("clsSolicitudesPorServicioPeriodo.php");
 		{
 				$ban=1;
 		}
-           if ($ban == 0) {
+           /*if ($ban == 0) {
 
             $cond1 = substr($cond1, 0, strlen($query) - 3);
             $cond2 = substr($cond2, 0, strlen($query) - 3);
@@ -126,7 +129,7 @@ include_once("clsSolicitudesPorServicioPeriodo.php");
            // $query_search = 
             $cond1;
            //echo $cond2;
-        }     
+        }     */
        $query="SELECT 
                     t01.id,
 		   t13.nombre AS nombreservicio, 

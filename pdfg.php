@@ -39,7 +39,7 @@ function TableHeader()
 			$nf=max($nf,$this->NbLines($wi,$info));
 		}
 		$h=5*$nf;
-        $a=isset($this->aligns[$i]) ? $this->aligns[$i] : 'L';
+        //$a=isset($this->aligns[$i]) ? $this->aligns[$i] : 'L';
         //Save the current position
         $x=$this->GetX();
         $y=$this->GetY();
