@@ -22,7 +22,8 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                 obj = obj_metodologia;
                 objtext=obj_metodologia.options[obj_metodologia.selectedIndex].text;
                 if (acn===1){
-                    var forma_reporte = prompt("Por favor ingrese nombre que reporta", document.getElementById('nombre_prueba').innerHTML);
+                    //var forma_reporte = prompt("Por favor ingrese nombre que reporta", document.getElementById('nombre_prueba').innerHTML);
+                    var forma_reporte = prompt("Por favor ingrese nombre que reporta", obj_metodologia.options[obj_metodologia.selectedIndex].text);
                 }   
                 if(forma_reporte === null || forma_reporte === ""){
                     return;

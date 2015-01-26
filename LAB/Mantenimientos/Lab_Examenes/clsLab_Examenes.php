@@ -31,7 +31,7 @@ class clsLab_Examenes
         $result2 = pg_query($query2);
         $row2=pg_fetch_array($result2);
         $ultimo=$row2[0];
-        
+        //echo 'met_sel:'.$metodologias_sel;
         
         /*
         * crear examen - metodologias
@@ -39,16 +39,19 @@ class clsLab_Examenes
         $aMetodologias = explode(',',$metodologias_sel); 
         $aMetodologias_text = explode(',',$text_metodologias_sel); 
         $aMetodologias_id = explode(',',$id_metodologias_sel); 
-
+        //echo 'amet:'.count($aMetodologias). ' /met: '. $aMetodologias[0];
         /*
          * actualizar o crear examen metodología
          */
-        for ($i=0;$i<count($aMetodologias)-1;$i++){
+        $i=0;
+         if ($aMetodologias[0]!=""){
+        for ($i=0;$i<(count($aMetodologias)-1);$i++){
             $sql="INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin,nombre_reporta) VALUES ($ultimo, $aMetodologias[$i], true, NOW(), NULL, '$aMetodologias_id[$i]')";
             pg_query($sql);           
-        }
+         }
+         }
         if ($i==0){ // si no se han seleccionado metodologias
-            $sql="INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin, nombre_reporta) VALUES ($ultimo, 0, true, NOW(), NULL, '$nomexamen')";
+            $sql="INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin, nombre_reporta) VALUES ($ultimo, NULL, true, NOW(), NULL, '$nomexamen')";
             pg_query($sql);
         }
         
@@ -112,7 +115,7 @@ class clsLab_Examenes
                                  VALUES ($idconf,$TiempoPrevio,98,$lugar,$usuario,NOW())"; 
 >>>>>>> roxy
                      
-               */     
+               */    
                      $aMetodologias = explode(',',$metodologias_sel);
                      
                      $aMetodologias_text = explode(',',$text_metodologias_sel);
