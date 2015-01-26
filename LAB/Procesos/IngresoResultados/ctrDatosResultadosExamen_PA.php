@@ -344,12 +344,15 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
                     $observacion= (empty($vector_obser[$pos])) ? 'NULL' : "'" . pg_escape_string($vector_obser[$pos]) . "'";
                     $resultado=(empty($vector_resultados[$pos])) ? 'NULL' : "'" . pg_escape_string($vector_resultados[$pos]) . "'";
                     
-                   if($obj->InsertarResultadoPlantillaAM($vector_examenes[$pos], $vector_idexametodologia[$pos], $responsable,$fecha_realizacion, $fecha_reporte,$resultado, $observacion, $vector_tabuladores[$pos], $idsolicitud, $usuario, $vector_codigos[$pos], $txtidrecepcion, $lugar)==false){
+                    $idresultado='NULL';
+                    $marca='NULL';
+                    $lectura='NULL';
+                   if($obj->InsertarResultadoPlantillaAM($vector_examenes[$pos], $vector_idexametodologia[$pos], $responsable,$fecha_realizacion, $fecha_reporte,$resultado, $observacion, $vector_tabuladores[$pos], $idsolicitud, $usuario, $vector_codigos[$pos], $txtidrecepcion, $lugar, $idresultado, $marca, $lectura)==false){
                  // if($obj->InsertarResultadoPlantillaAM($vector_examenes[$pos], $vector_idexametodologia[$pos], $responsable,$fecha_realizacion, $fecha_reporte, $vector_obser[$pos], $vector_tabuladores[$pos], $idsolicitud, $usuario, $vector_codigos[$pos], $txtidrecepcion, $lugar)==false){
                         $ban=1;
                    }
                     else{
-                         if($obj->InsertarResultadoPlantillaAF($idsolicitud, $vector_codigos[$pos], $txtidrecepcion,$resultado, 'NULL','NULL',$observacion,$lugar, $usuario,$vector_examenes[$pos], $responsable,$fecha_reporte)==false){
+                         if($obj->InsertarResultadoPlantillaAF($idsolicitud, $vector_codigos[$pos], $txtidrecepcion,$resultado, 'NULL','NULL',$observacion,$lugar, $usuario,$vector_examenes[$pos], $responsable,$fecha_reporte, $idresultado, $marca)==false){
                              $ban=1;
                          }
                          else{
