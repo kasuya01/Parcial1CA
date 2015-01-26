@@ -86,7 +86,7 @@ class clsLab_DatosFijosExamen
          $con = new ConexionBD;
          if($con->conectar()==true)
          {
-           $query = "SELECT id, nombre FROM ctl_rango_edad order by nombre";
+           $query = "SELECT id, nombre FROM ctl_rango_edad WHERE cod_modulo='LAB'";
            $result = pg_query($query);
            if (!$result)
              return false;
