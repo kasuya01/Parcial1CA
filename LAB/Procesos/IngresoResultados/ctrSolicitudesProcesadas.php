@@ -676,9 +676,9 @@ switch ($opcion) {
         if ($cant>0){
            
         $resultado2 = "<select id='cmbmetodologia' name='cmbmetodologia' size='1' onchange='buscarPosResMet(this.value)' style='width:96%; height:100%'>";
-            if ($cant>1){
+           // if ($cant>1){
                 $resultado2 .="<option value='0' selected>Seleccione...</option>";
-            }
+            //}
         while ($row = pg_fetch_array($consulta)) {
             $resultado2 .="<option value='" . $row['idexamet'] . "'>" . $row['nombre_metodologia'] . "</option> ";
         }
