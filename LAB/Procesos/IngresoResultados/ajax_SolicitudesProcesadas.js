@@ -232,6 +232,7 @@ function GuardarResultados()
     idrecepcion = document.frmnuevo.txtidrecepcion.value;
     resultado = document.getElementById('resultado_').value;
     idresultado = document.getElementById('idresultado_').value;
+    marca = document.getElementById('marca_').value;
     lectura = document.getElementById('lectura_').value;
     interpretacion = document.getElementById('interpretacion_').value;
     observacion = document.getElementById('observacion_').value;
@@ -248,7 +249,7 @@ function GuardarResultados()
     ajax.send("opcion=" + opcion + "&idsolicitud=" + idsolicitud + "&iddetalle=" + iddetalle + "&idexamen=" + idexamen +
             "&idrecepcion=" + idrecepcion + "&resultado=" + encodeURIComponent(resultado) + "&lectura=" + escape(lectura) +
             "&interpretacion=" + escape(interpretacion) + "&observacion=" + escape(observacion) +
-            "&responsable=" + escape(responsable) + "&procedencia=" + procedencia + "&origen=" + origen + "&codigo=" + codigo+ "&fecha_realizacion=" + fecha_realizacion+ "&fecha_reporte=" + fecha_reporte+"&idresultado="+idresultado);
+            "&responsable=" + escape(responsable) + "&procedencia=" + procedencia + "&origen=" + origen + "&codigo=" + codigo+ "&fecha_realizacion=" + fecha_realizacion+ "&fecha_reporte=" + fecha_reporte+"&idresultado="+idresultado+"&marca="+escape(marca));
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -347,13 +348,13 @@ function GuardarResultadosPlantillaA()
 
 }
 //Fn Pg
-function ImprimirPlantillaA(idsolicitud, idexamen, resultado, f_resultado, lectura, interpretacion, observacion, responsable, sexo, idedad, txtnec, proce, origen, iddetalle) {
+function ImprimirPlantillaA(idsolicitud, idexamen, resultado, f_resultado, lectura, interpretacion, observacion, responsable, sexo, idedad, txtnec, proce, origen, iddetalle, marca) {
 
     ventana_secundaria = window.open("ImprimirPlantillaA.php?var1=" + idsolicitud +
             "&var2=" + idexamen + "&var3=" +
             "&var3=" + encodeURIComponent(resultado) + "&var4=" + escape(lectura) +
             "&var5=" + escape(interpretacion) + "&var6=" + escape(observacion) +
-            "&var7=" + responsable + "&var8=" + sexo + "&var9=" + idedad+ "&var10=" + f_resultado+ "&var11=" + txtnec+ "&var12=" + proce+ "&var13=" + origen+ "&var14=" + iddetalle, "ImprimirA", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
+            "&var7=" + responsable + "&var8=" + sexo + "&var9=" + idedad+ "&var10=" + f_resultado+ "&var11=" + txtnec+ "&var12=" + proce+ "&var13=" + origen+ "&var14=" + iddetalle+"&var15=" + marca, "ImprimirA", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
 }
 
 //function ImprimirPlantillaA1(idsolicitud,idarea,responsable,valores_resultados,codigos_resultados,valores_lecturas,valores_inter,valores_obser,cod_examen,establecimiento,sexo,idedad){
@@ -843,7 +844,7 @@ function GuardarResultadosNegativosPlantillaC()
 
 
 //FUNCION PARA MOSTRAR RESULTADOS  Plantilla A
-function MostrarResultadoExamen(idsolicitud, iddetalle, idarea, idexamen, resultado, lectura, interpretacion, observacion, responsable, nombrearea, procedencia, origen, impresion, establecimiento, codigo, fechanac, sexo, cmbmetodologia, nec, fecha_realizacion, fecha_reporta, idresultado)
+function MostrarResultadoExamen(idsolicitud, iddetalle, idarea, idexamen, resultado, lectura, interpretacion, observacion, responsable, nombrearea, procedencia, origen, impresion, establecimiento, codigo, fechanac, sexo, cmbmetodologia, nec, fecha_realizacion, fecha_reporta, idresultado, marca)
 {
     ajax = objetoAjax();
     opcion = 4;
@@ -859,7 +860,7 @@ function MostrarResultadoExamen(idsolicitud, iddetalle, idarea, idexamen, result
             "&resultado=" + encodeURIComponent(resultado) + "&lectura=" + encodeURIComponent(lectura) + "&interpretacion=" + encodeURIComponent(interpretacion) +
             "&observacion=" + encodeURIComponent(observacion) + "&responsable=" + responsable + "&nombrearea=" + nombrearea +
             "&procedencia=" + procedencia + "&origen=" + origen + "&impresion=" + impresion + "&establecimiento=" + establecimiento + "&codigo=" + codigo +
-            "&fechanac=" + fechanac + "&sexo=" + sexo+"&cmbmetodologia="+cmbmetodologia+"&nec="+nec+"&fecha_realizacion="+fecha_realizacion+"&fecha_reporta="+fecha_reporta+"&idresultado="+idresultado);
+            "&fechanac=" + fechanac + "&sexo=" + sexo+"&cmbmetodologia="+cmbmetodologia+"&nec="+nec+"&fecha_realizacion="+fecha_realizacion+"&fecha_reporta="+fecha_reporta+"&idresultado="+idresultado+"&marca="+marca);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -887,6 +888,7 @@ function MostrarResultadoExamen(idsolicitud, iddetalle, idarea, idexamen, result
       //  document.getElementById('txtinterpretacion').value="";
         document.getElementById('txtcomentario').value="";
         document.getElementById('txtlectura').value="";
+        document.getElementById('txtmarca').value="";
         document.getElementById('txtinterpretacion').value="";
        // document.getElementById('cmbResultado2').value=0
         document.getElementById('cmbEmpleados').value=0
@@ -924,6 +926,8 @@ function agregaresultado(act)
 	//interpretacion=document.getElementById('txtinterpretacion').value;
 	fecha_realizacion=document.getElementById('fecha_realizacion').value;
 	fecha_reporte=document.getElementById('fecha_reporte').value;
+	lectura=document.frmnuevo.txtlectura.value;
+	marca=document.frmnuevo.txtmarca.value;
 	observacion=document.frmnuevo.txtcomentario.value;
 	responsable=document.frmnuevo.cmbEmpleados.value;
 	responsable_nombre=$("#cmbEmpleados option:selected").text();
@@ -983,7 +987,8 @@ function agregaresultado(act)
 		html += '<td  style="word-wrap:break-word; font-size:86%; padding:0px 0px 0px;">' + fecha_realizacion + '<input type="hidden" id="hdnFecProc_'+id_camposexorde+'" name="hdnFecProc_" value="'+fecha_realizacion+'"></td>';		
 		html += '<td  style="word-wrap:break-word; font-size:86%; padding:0px 0px 0px;">' + fecha_reporte + '<input type="hidden" id="hdnFecResu_'+id_camposexorde+'" name="hdnFecResu_" value="'+fecha_reporte+'"></td>';
                 html += '<td  style="word-wrap:break-word; font-size:86%; padding:0px 0px 0px;">' + responsable_nombre + '<input type="hidden" id="hdnResp_'+id_camposexorde+'" name="hdnResp_" value="'+responsable+'"><input type="hidden" id="hdnNomResp_'+id_camposexorde+'" name="hdnNomResp_" value="'+responsable_nombre+'"></td>';		
-		html += '<td  style="word-wrap:break-word;">' + resultado + '<input type="hidden" id="hdnResult_'+id_camposexorde+'" name="hdnResult_" value="'+resultado+'"><input type="hidden" id="hdnIdResult_'+id_camposexorde+'" name="hdnIdResult_" value="'+idresultado+'"></td>';		
+		html += '<td  style="word-wrap:break-word;">' + resultado + '<input type="hidden" id="hdnResult_'+id_camposexorde+'" name="hdnResult_" value="'+resultado+'"><input type="hidden" id="hdnIdResult_'+id_camposexorde+'" name="hdnIdResult_" value="'+idresultado+'"></td>';
+                html += '<td  style="word-wrap:break-word;">' + marca + '<input type="hidden" id="hdnMarca_'+id_camposexorde+'" name="hdnMarca_" value="'+marca+'"></td>';                 html += '<td  style="word-wrap:break-word;">' + lectura + '<input type="hidden" id="hdnLectura_'+id_camposexorde+'" name="hdnLectura_" value="'+lectura+'"></td>';		
 		//html += '<td  style="word-wrap:break-word;">' + lectura + '<input type="hidden" id="hdnLectura_'+id_camposexorde+'" name="hdnLectura_" value="'+lectura+'"></td>';		
 		
 		//html += '<td  style="word-wrap:break-word;">' + interpretacion + '<input type="hidden" id="hdnInterpreta_'+id_camposexorde+'" name="hdnInterpreta_" value="'+interpretacion+'"></td>';		
@@ -1007,6 +1012,8 @@ function agregaresultado(act)
         //document.getElementById('txtlectura').value="";
       //  document.getElementById('txtinterpretacion').value="";
         document.getElementById('txtcomentario').value="";
+        document.getElementById('txtlectura').value="";
+        document.getElementById('txtmarca').value="";
         
         if (canti==0)
         document.getElementById('v_resultfin').value="";
@@ -1216,6 +1223,8 @@ if ((document.getElementById('cantele'))!= null){
 					//parametros=parametros+"&hdnLectura_"+j+"="+document.getElementById("hdnLectura_" + this.value).value;	
 					//parametros=parametros+"&hdnInterpreta_"+j+"="+document.getElementById("hdnInterpreta_" + this.value).value;
 					//parametros=parametros+"&hdnIdTipoRes_"+j+"="+document.getElementById("hdnIdTipoRes_" + this.value).value;
+					parametros=parametros+"&hdnMarca_"+j+"="+document.getElementById("hdnMarca_" + this.value).value;
+					parametros=parametros+"&hdnLectura_"+j+"="+document.getElementById("hdnLectura_" + this.value).value;
 					parametros=parametros+"&hdnObserva_"+j+"="+document.getElementById("hdnObserva_" + this.value).value;
 					parametros=parametros+"&hdnCodResult_"+j+"="+document.getElementById("hdnCodResult_" + this.value).value;
 					/*if (i_idgruprue==4){

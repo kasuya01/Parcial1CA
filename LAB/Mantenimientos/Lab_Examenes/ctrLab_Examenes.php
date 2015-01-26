@@ -34,6 +34,7 @@ switch ($opcion)
                 $sexo=$_POST['sexo'];
                 $metodologias_sel=$_POST['metodologias_sel'];
                 $text_metodologias_sel=$_POST['text_metodologias_sel'];
+                $id_metodologias_sel=$_POST['id_metodologias_sel'];
                 //echo $sexo;
                 if($sexo<>4)
                     $idsexo=$sexo;
@@ -74,7 +75,7 @@ switch ($opcion)
                  }
 
                       //  echo $IdFormulario;
-		 If ($objdatos->IngExamenxEstablecimiento($idexamen,$nomexamen,$Hab,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$TiempoPrevio,$idsexo,$idestandar,$lugar,$metodologias_sel,$text_metodologias_sel)==true)
+		 If ($objdatos->IngExamenxEstablecimiento($idexamen,$nomexamen,$Hab,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$TiempoPrevio,$idsexo,$idestandar,$lugar,$metodologias_sel,$text_metodologias_sel, $id_metodologias_sel)==true)
 		 {
                      /*
                       * Ingresar metodologías seleccionadas
@@ -112,6 +113,7 @@ switch ($opcion)
                         $sexo=$_POST['idsexo']; 
                         $metodologias_sel=$_POST['metodologias_sel'];
                         $text_metodologias_sel=$_POST['text_metodologias_sel'];
+                        $id_metodologias_sel=$_POST['id_metodologias_sel'];
                      //  echo $IdEstandarResp." sexo=".$sexo;
                        if($sexo<>4)
                             $idsexo=$sexo;
@@ -149,7 +151,7 @@ switch ($opcion)
 			 }
 
 			// echo $idexamen."-".$lugar."-".$usuario."-".$IdFormulario."-".$IdEstandarResp."-".$plantilla."-".$letra."-".$Urgente."-".$ubicacion;
-              	If($objdatos->ActExamenxEstablecimiento($idconf,$nomexamen,$lugar,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$Hab,$TiempoPrevio,$idsexo,$idestandar,$ctlidestandar,$metodologias_sel,$text_metodologias_sel)==true){
+              	If($objdatos->ActExamenxEstablecimiento($idconf,$nomexamen,$lugar,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$Hab,$TiempoPrevio,$idsexo,$idestandar,$ctlidestandar,$metodologias_sel,$text_metodologias_sel, $id_metodologias_sel)==true){
                     /*
                      * creando arreglo de elementos seleccionados
                      */
@@ -564,8 +566,7 @@ switch ($opcion)
 				//print_r ($ExisExa[0]);
 				
 		
-	       $query = "SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.codigo_examen as idexamen, 
-                                            lab_conf_examen_estab.nombre_examen as nombreexamen, ctl_area_servicio_diagnostico.nombrearea,lab_plantilla.idplantilla, 
+	        $query = "SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.codigo_examen as idexamen, lab_conf_examen_estab.nombre_examen as nombreexamen, ctl_area_servicio_diagnostico.nombrearea,lab_plantilla.idplantilla, 
                                             ctl_examen_servicio_diagnostico.idestandar, 
                                             (CASE WHEN lab_conf_examen_estab.ubicacion=0 THEN 'Todas las Procedencias' 
                                             WHEN lab_conf_examen_estab.ubicacion=1 THEN 'Hospitalización y Emergencia' 
@@ -586,9 +587,8 @@ switch ($opcion)
                                             INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
                                             LEFT JOIN cit_programacion_exams ON lab_conf_examen_estab.id=cit_programacion_exams.id_examen_establecimiento 
                                             WHERE lab_areasxestablecimiento.condicion='H' AND ctl_examen_servicio_diagnostico.activo= TRUE 
-                                            AND mnt_area_examen_establecimiento.activo=TRUE AND lab_areasxestablecimiento.idestablecimiento=$lugar AND ";
-			  
-                          $ban=0;
+                           AND mnt_area_examen_establecimiento.activo=TRUE AND lab_areasxestablecimiento.idestablecimiento=$lugar AND";
+					$ban=0;
 					
 						//VERIFICANDO LOS POST ENVIADOS
                                                // echo $ExisExa[0]; 
@@ -626,6 +626,7 @@ switch ($opcion)
                                             { $query .= " lab_conf_examen_estab.urgente='".$_POST['urgente']."' AND"; }
                                   
                                             
+<<<<<<< HEAD
                                 if ($_POST['sexo']<>0)
 					{ if($_POST['sexo']<>4)
                                             $query .= "  lab_conf_examen_estab.idsexo =".$_POST['sexo']." AND";
@@ -634,10 +635,18 @@ switch ($opcion)
                                          }             
 				/*if ($_POST['sexo']<>3)
                                     { if($_POST['sexo']<>0)
+=======
+				if ($_POST['sexo']<>0)
+                                       { if($_POST['sexo']<>4)
+>>>>>>> francis
                                             $query .= "  lab_conf_examen_estab.idsexo =".$_POST['sexo']." AND";
-                                      else 
+                                          else 
                                             $query .= "  lab_conf_examen_estab.idsexo IS NULL AND";
+<<<<<<< HEAD
                                     } */
+=======
+                                       }    
+>>>>>>> francis
                                             
                                 if (!empty($_POST['Hab'])){
                                     if ($_POST['Hab']=='H')
