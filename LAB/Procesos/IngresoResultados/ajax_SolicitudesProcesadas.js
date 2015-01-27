@@ -378,17 +378,17 @@ function ImprimirPlantillaA1(idsolicitud, idarea, responsable, valores_resultado
             "&var14=" + txtnec , "ImprimirA1", "width=700,ccc=500,menubar=no,scrollbars=yes,location=no");
 }
 
-function ImprimirPlantillaB(idsolicitud, idexamen, responsable, procedencia, origen, observacion, valores_subelementos, codigos_subelementos, valores_elementos, codigos_elementos, controles, controles_ele, nombrearea, establecimiento, responsable, sexo, idedad, valores_combos) {
+function ImprimirPlantillaB(idsolicitud, idexamen, responsable, procedencia, origen, observacion, valores_subelementos, codigos_subelementos, valores_elementos, codigos_elementos, controles, controles_ele, nombrearea, establecimiento, responsable, sexo, idedad, valores_combos,idestab) {
 
-//alert(valores_combos);
+//alert(idestab);
     ventana_secundaria = window.open("ImprimirPlantillaB.php?var1=" + idsolicitud +
             "&var2=" + idexamen + "&var3=" + responsable + "&var4=" + escape(procedencia) +
             "&var5=" + origen + "&var6=" + escape(observacion) + "&var7=" + encodeURIComponent(valores_subelementos) +
             "&var8=" + codigos_subelementos + "&var9=" + escape(valores_elementos) +
             "&var10=" + codigos_elementos + "&var11=" + encodeURIComponent(controles) +
             "&var12=" + controles_ele + "&var13=" + nombrearea +
-            "&var14=" + establecimiento + "&var15=" + escape(responsable) +
-            "&var16=" + sexo + "&var17=" + idedad + "&var18=" + valores_combos, "ImprimirB", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
+            "&var14=" + escape(establecimiento) + "&var15=" + responsable +
+            "&var16=" + sexo + "&var17=" + idedad + "&var18=" + valores_combos +"&var19="+idestab, "ImprimirB", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
 }
 
 function ImprimirPlantillaC(idsolicitud, idexamen, resultado, responsable, procedencia, origen, observacion, valores_antibioticos, codigos_antibioticos, idbacteria, cantidad, idtarjeta, nombrearea, estab,idobservacion,valores_interpretacion) {
@@ -1417,6 +1417,7 @@ function MostrarVistaPreviaPlantillaB(){
         fecharealiz = document.getElementById('txtresultrealiza').value;
         fecharesultado=document.getElementById('txtfresultado').value;
         subservicio=document.getElementById('txtsubservicio').value;
+        idestab = document.getElementById('txtIdEstablecimiento').value;
        // alert(subservicio)
         // alert (idsolicitud+"-"+idrecepcion+"-"+iddetalle+"-"+idexamen+"-"+observacion+"-"+estab);
         // alert (fechanac+"-"+sexo);
@@ -1457,8 +1458,8 @@ function MostrarVistaPreviaPlantillaB(){
                 "&iddetalle=" + iddetalle + "&observacion=" + observacion + "&idempleado=" + idempleado + "&procedencia=" + escape(procedencia) +
                 "&origen=" + escape(origen) + "&valores_subelementos=" + encodeURIComponent(valores_subelementos) + "&codigos_subelementos=" + codigos_subelementos +
                 "&valores_elementos=" + encodeURIComponent(valores_elementos) + "&codigos_elementos=" + codigos_elementos + "&controles=" + encodeURIComponent(controles) +
-                "&controles_ele=" + encodeURIComponent(controles_ele) + "&estab=" + estab + "&tab=" + tab + "&fechanac=" + fechanac + "&sexo=" + sexo+
-                "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado+"&subservicio="+subservicio+"&valores_combos="+ valores_combos);
+                "&controles_ele=" + encodeURIComponent(controles_ele) + "&estab=" + encodeURIComponent(estab) + "&tab=" + tab + "&fechanac=" + fechanac + "&sexo=" + sexo+
+                "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado+"&subservicio="+subservicio+"&valores_combos="+ valores_combos+"&idestab="+idestab);
         ajax.onreadystatechange = function()
         {
             if (ajax.readyState == 4)
@@ -1812,6 +1813,7 @@ function MostrarDatos(posicion)
     IdHistorial = document.getElementById('IdHistorial[' + posicion + ']').value;
     referido = document.getElementById('referido[' + posicion + ']').value;
     estabext = document.getElementById('estabext[' + posicion + ']').value;
+    idestabext = document.getElementById('idestabext[' + posicion + ']').value;
     //alert ("Plnatilla="+plantilla+" Experiente="+idexpediente+" Solicitud="+idsolicitud+" idarea="+idarea+" idhistorial="+IdHistorial+" IdEstandar="+IdEstandar);
     //idhistorial=document.getElementById('idhistorial['+posicion+']').value;
     //alert(plantilla);
@@ -1853,7 +1855,7 @@ function MostrarDatos(posicion)
                     "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                     "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
-                    "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+estabext, "Resultados", "width=950,height=700,menubar=no,scrollbars=yes,location=no");
+                    "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+encodeURIComponent(estabext) + "&var19="+idestabext, "Resultados", "width=950,height=700,menubar=no,scrollbars=yes,location=no");
             break;
         case "3":
             //alert ("&estabext="+estabext);
@@ -2297,7 +2299,7 @@ function IngresarResultadosPlantillaE()
         fecharealiz = document.frmnuevo.txtresultrealiza.value;
         fecharesultado=document.frmnuevo.txtresultfin.value;
        //alert(fecharealiz+" - "+fecharesultado);
-       alert(codigoex);
+      // alert(codigoex);
         CargarProcesosExamen(codigoex, fechanac, sexo,fecharealiz,fecharesultado);
     }
     else

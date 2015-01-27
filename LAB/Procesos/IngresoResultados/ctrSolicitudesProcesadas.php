@@ -160,7 +160,7 @@ switch ($opcion) {
                        t07.fecha_nacimiento AS fechanacimiento, 
                        t19.id AS sexo, 
                        t18.idestandar,
-                       t02.id_establecimiento_externo,
+                       t02.id_establecimiento_externo as IdEstab,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
                        false AS referido
                 FROM sec_detallesolicitudestudios t01 
@@ -283,6 +283,7 @@ switch ($opcion) {
                         "<input name='IdHistorial[" . $pos . "]' id='IdHistorial[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idhistorialclinico"]) . "'/>" .
                         "<input name='referido[" . $pos . "]' id='referido[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["referido"]) . "'/>" .
                         "<input name='estabext[" . $pos . "]' id='estabext[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["estabext"]) . "'/>" .
+                        "<input name='idestabext[" . $pos . "]' id='idestabext[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idestab"]) . "'/>" .
                         "<td width='20%'>" . htmlentities($row['paciente']) . "</td>
                         <td width='7%'>" . $row['codigoexamen'] . "</td>
                         <td width='20%'>" . htmlentities($row['nombreexamen']) . "</td>

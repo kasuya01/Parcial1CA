@@ -99,8 +99,12 @@ $area    = $_SESSION['Idarea'];
                     IdEstandar=escape(getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'var17=' )
                     IdHistorial=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'var18=' )
+                    estabext=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'var19=' )
+                    idestabext=escape(getVars[i].substr(5));
             }
-            
+           
             document.frmnuevo.txtnec.value=nec;
             document.frmnuevo.txtarea.value=area;
             document.frmnuevo.txtpaciente.value=paciente;
@@ -174,12 +178,15 @@ $area    = $_SESSION['Idarea'];
                                     <input type="hidden" name="txtarea" id="txtarea" value="<?php echo $_GET['var4']?>"/>
                                     <input type="hidden" name="txtprocedencia" id="txtprocedencia" />
                                     <input type="hidden" name="txtorigen" id="txtorigen" />
-                                    <input type="hidden" name="txtEstablecimiento" id="txtEstablecimiento" value="<?php echo $_GET['var18']?>" />
+                                     <input type="hidden" name="txtsubservicio" id="txtsubservicio" value="<?php echo $_GET['var11']?>" />
+                                    
                                     <input type="hidden" name="txtFechaNac" id="txtFechaNac" value="<?php echo $_GET['var14']?>" />
                                     <input type="hidden" name="txtSexo" id="txtSexo" value="<?php echo $_GET['var15']?>" />
                                     <input type="hidden" name="txtIdEstandar" id="txtIdEstandar" value="<?php echo $_GET['var16']?>" />
                                     <input type="hidden" name="txtIdHistorial" id="txtIdHistorial" value="<?php echo $_GET['var17']?>" />
-                                    <input type="hidden" name="txtsubservicio" id="txtsubservicio" value="<?php echo $_GET['var11']?>" />
+                                    <input type="hidden" name="txtEstablecimiento" id="txtEstablecimiento" value="<?php echo $_GET['var18']?>" />
+                                    <input type="hidden" name="txtIdEstablecimiento" id="txtIdEstablecimiento" value="<?php echo $_GET['var19']?>" />
+                                   
                                 </td>
                             </tr>
                             <tr>

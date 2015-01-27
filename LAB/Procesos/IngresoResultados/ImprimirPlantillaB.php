@@ -23,7 +23,8 @@ $responsable          = $_GET['var15'];
 $sexo                 = $_GET['var16'];
 $idedad               = $_GET['var17'];
 $valores_combos       = $_GET['var18'];
-//echo $responsable;
+$idestab              = $_GET['var19'];
+//echo $idestab ;
 ?>
 <html>
 <head>
@@ -68,6 +69,8 @@ $valores_combos       = $_GET['var18'];
         $row_estab      = pg_fetch_array($Consulta_Estab);
         $FechaRes       = $obj->ObtenerFechaResultado($idsolicitud,$idexamen,$lugar);
         $row_fecha      = pg_fetch_array($FechaRes);
+        $Consulta_EstabExt = $obj->Nombre_Establecimiento($idestab);
+	$row_estabExt    = pg_fetch_array($Consulta_EstabExt);
 
         switch ($codigo_estandar){
             case "H50":
@@ -103,51 +106,47 @@ $valores_combos       = $_GET['var18'];
                                 <td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;</td>
                             </tr>
                             <tr>
-                               <td colspan='1' class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
-                               <td colspan='2' class="Estilo6"><?php echo $_GET['var14']?></td>
-                               <td colspan='1' class="Estilo5"><strong>Fecha Resultado:</strong></td>
+                               <td colspan='1' class="Estilo6"><strong> Establecimiento Solicitante:</strong></td>
+                               <td colspan='2' class="Estilo6"><?php echo $row_estabExt['nombre']?></td>
+                               <td colspan='1' class="Estilo6"><strong>Fecha Resultado:</strong></td>
                                <td colspan='2' class="Estilo6"><?php echo $row_fecha['fecharesultado']?></td>
-                               <input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row_generales['fechanacimiento']?>>
+                               
                             </tr>
                             <tr>
-                               <td colspan='1' class="Estilo5"><strong>N&uacute;mero de Expediente:</strong></td>
+                               <td colspan='1' class="Estilo6"><strong>Expediente:</strong></td>
                                <td colspan='2' class="Estilo6"><?php echo $row_generales['idnumeroexp']?></td>
-                               <td colspan='1' class="Estilo5" ><strong>Fecha Recepción:</strong></td>
+                               <td colspan='1' class="Estilo6" ><strong>Fecha Recepción:</strong></td>
                                <td colspan='2' class="Estilo6" ><?php echo $row_generales['fecha']?></td>
                             </tr>
                             <tr>
-                               <td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
-                               <td colspan='2' class="Estilo6"><?php echo $row_generales['nombrepaciente']?></td>
+                               <td colspan='1' class="Estilo6"><strong>Paciente:</strong></td>
+                               <td colspan='2' class="Estilo6"><?php echo utf8_encode($row_generales['nombrepaciente'])?></td>
                             </tr>
                             <tr>
-                                <td colspan='1' class="Estilo5"><strong>Edad:</strong></td>
-                                <td colspan='2' class="Estilo6">
-                                    <div id="divsuedad">
-                                       <script language="JavaScript" type="text/javascript">
-                                           calc_edad();
-                                       </script>
-                                    </div>
+                                <td colspan='1' class="Estilo6"><strong>Edad:</strong></td>
+                                <td colspan='2' class="Estilo6"><?php echo$row_generales['edad']?>
+                                   
                                 </td>
                                 <td colspan='1' class="Estilo6"><strong>Sexo:</strong></td>
                                 <td colspan='1' class="Estilo6"><?php echo $row_generales['sexo']?></td>
                             </tr>
                             <tr>
                                 <td colspan='1' class="Estilo6"><strong>Procedencia:</strong></td>
-                                <td colspan='2' class="Estilo6"><?php echo $row_generales['procedencia']?></td>
+                                <td colspan='2' class="Estilo6"><?php echo utf8_encode($row_generales['procedencia'])?></td>
                                 <td colspan='1' class="Estilo6"><strong>Servicio:</strong></td>
                                 <td colspan='2' class="Estilo6"><?php echo $origen?></td>
                             </tr>
                             <tr>
                                 <td colspan='1' class="Estilo6"><strong>Examen Realizado:</strong></td>
-                                <td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['nombre_reporta'])?></td>
+                                <td colspan='5' class="Estilo6"><?php echo utf8_encode($row_area['nombre_reporta'])?></td>
                             </tr>
                             <tr>
                                 <td colspan='1' class="Estilo6"><strong>Validado Por:</strong></td>
-                                <td colspan='5' class="Estilo6"><?php echo $responsable?></td>
+                                <td colspan='5' class="Estilo6"><?php echo utf8_encode($responsable)?></td>
                             </tr>
                             <tr>
                                 <td colspan='1' class="Estilo6"><strong>Observacion:</strong></td>
-                                <td colspan='5' class="Estilo6"><?php echo htmlentities($observacion)?></td>
+                                <td colspan='5' class="Estilo6"><?php echo utf8_encode($observacion)?></td>
                             </tr>
                             <tr>
                                 <td colspan='6'>
@@ -158,7 +157,7 @@ $valores_combos       = $_GET['var18'];
                                             <td width='35%' class="Estilo6"></td>
                                             <td width='25%' class="Estilo6"><strong>Resultado</strong></td>
                                             <td width='20%' class="Estilo6"><strong>Unidades</strong></td>
-                                            <td width='60%' colspan='2' class="Estilo5"><strong>Control Normal </strong></td>
+                                            <td width='20%' colspan='2' class="Estilo6"><strong>Control Normal </strong></td>
                                         </tr>
                                         <?php
                                             $pos=0;
@@ -179,7 +178,7 @@ $valores_combos       = $_GET['var18'];
                                                             <td width='35%' class="Estilo6" ><?php echo htmlentities($rowsub['subelemento'])?></td>
                                                             <td width='25%' class="Estilo6"><?php echo htmlentities($vector[$pos])?></td>
                                                             <td width='20%' class="Estilo6"><?php echo htmlentities($rowsub['unidad'])?></td>
-                                                            <td width='40%' class="Estilo6"><?php echo htmlentities($vector_controles[$pos])." ".htmlentities($rowsub['unidad'])?> </td>
+                                                            <td width='20%' class="Estilo6"><?php echo htmlentities($vector_controles[$pos])." ".htmlentities($rowsub['unidad'])?> </td>
                                                         </tr>
                                                     <?php
                                                         $pos = $pos + 1;
@@ -216,6 +215,21 @@ $valores_combos       = $_GET['var18'];
                                     </table>
                                 </td>
                             </tr>
+                            <tr>
+                                <td colspan='6' class="Estilo6">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan='6' class="Estilo6">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan='6' class="Estilo6">&nbsp;</td>
+                            </tr>
+                            <tr><td colspan='2' class="Estilo6" width='70%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td colspan='1' class="Estilo6" width='6%'>&nbsp;&nbsp;SELLO:</td>
+                                <td colspan='1' class="Estilo6" width='8%'>___________</td>
+                                <td colspan='1' class="Estilo6" width='6%'>&nbsp;&nbsp;&nbsp;&nbsp;FIRMA:</td>
+                                <td colspan='1' class="Estilo6"width='10%'>________________</td>
+                            </tr>
                         </table>
                     </form>
                     <div id="boton1">
@@ -249,7 +263,7 @@ $valores_combos       = $_GET['var18'];
         ?>
                 <div id="divImpresion" >
                     <form name="frmimpresion" >
-                        <table width='90%' border='0' align='center'  cellspacing="0" >
+                        <table width='100%' border='0' align='center'  cellspacing="0" >
                             <tr>
                                 <td colspan="1" align="left" width="20%"><img id="Image1" style='width: auto; height: 55px;' src="../../../Imagenes/escudo.png"  name="Image1"></td>
                                 <td align="center" colspan="4" width="60%" class="Estilo6">
@@ -261,7 +275,7 @@ $valores_combos       = $_GET['var18'];
                             </tr>
                             <tr>
                                 <td colspan='1' class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
-                                <td colspan='2' class="Estilo6"><?php echo $_GET['var14']?></td>
+                                <td colspan='2' class="Estilo6"><?php echo $row_estabExt['nombre']?></td>
                                 <td colspan='1' class="Estilo5"><strong>Fecha Resultado:</strong></td>
                                 <td colspan='2' class="Estilo6"><?php echo $row_fecha['fecharesultado']?></td>
                                 <input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row_generales['fechanacimiento']?>>
@@ -311,10 +325,10 @@ $valores_combos       = $_GET['var18'];
                                 <td colspan='6'>
                                     <table width='100%' border='0' align='center' Cellpadding="0"  cellspacing="0">
                                        <tr>
-                                            <td width='35%' class='Estilo5'></td>
-                                            <td width='20%' class='Estilo5'><strong>Resultado</strong></td>
-                                            <td width='15%' class='Estilo5'><strong>Unidades</strong></td>
-                                            <td width='30%' class='Estilo5'><strong>Rangos de Referencia</strong></td>
+                                            <td width='30%' colspan='2' class='Estilo5'></td>
+                                            <td width='20%' colspan='1' class='Estilo5'><strong>Resultado</strong></td>
+                                            <td width='10%' colspan='1' class='Estilo5'><strong>Unidades</strong></td>
+                                            <td width='40%' colspan='2' class='Estilo5'><strong>Rangos de Referencia</strong></td>
                                         </tr>
                                     <?php
                                         $pos=0;
@@ -324,7 +338,8 @@ $valores_combos       = $_GET['var18'];
                                     if($row['subelemento']=="S") {
                                     ?>
                                         <tr class='StormyWeatherFieldCaptionTD'>
-                                            <td colspan='5' class="Estilo5"><strong><?php echo htmlentities($row['elemento'])?></strong></td>
+                                            <td colspan='6' class="Estilo5"><strong><?php echo htmlentities($row['elemento'])?></strong></td>
+                                            
                                         </tr>
                                             <?php
                                                 $consulta2 = $obj->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
@@ -332,27 +347,27 @@ $valores_combos       = $_GET['var18'];
                                                 while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
                                             ?>
                                         <tr>
-                                            <td width='25%' class="Estilo5"><?php echo htmlentities($rowsub['subelemento'])?></td>
+                                            <td width='30%' class="Estilo5" colspan='2'><?php echo htmlentities($rowsub['subelemento'])?></td>
                                               <?php
                                         if($vector_combos[$pos]== NULL){  
                                               ?>
-                                            <td width='20%' class="Estilo5"><?php echo htmlentities($vector[$pos])?></td>
+                                            <td width='20%' class="Estilo5" colspan='1'><?php echo htmlentities($vector[$pos])?></td>
                                                         
                                             <?php }
                                         else{
                                                         $conresult=$obj->BuscarResultado($vector[$pos]);
                                                         $row_dresult=  pg_fetch_array($conresult);?>
-                                            <td width='20%' class="Estilo5"><?php echo htmlentities($row_dresult['posible_resultado'])?></td> 
+                                            <td width='20%' class="Estilo5" colspan='1'><?php echo htmlentities($row_dresult['posible_resultado'])?></td> 
                                   <?php }?>          
-                                            <td width='15%' class="Estilo5"><?php echo htmlentities($rowsub['unidad'])?></td>
+                                            <td width='10%' class="Estilo5" colspan='1'><?php echo htmlentities($rowsub['unidad'])?></td>
                                                     <?php
                                         if ((!empty($rowsub['rangoinicio'])) AND (!empty($rowsub['rangofin']))) { 
                                                     ?>
-                                            <td width='30%' class="Estilo5"><?php echo $rowsub['rangoinicio']." - ".$rowsub['rangofin']?></td>
+                                            <td width='40%' class="Estilo5" colspan='2'><?php echo $rowsub['rangoinicio']." - ".$rowsub['rangofin']?></td>
                                                     <?php 
                                         } else { 
                                                     ?>
-                                            <td width='30%' align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td width='40%' align="center" colspan='2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                    <?php
                                         } ?>
                                         </tr>
@@ -361,23 +376,24 @@ $valores_combos       = $_GET['var18'];
                                         }
                                             ?>
                                             <tr>
-                                                <td colspan='5' class="Estilo5"><?php echo htmlentities($row['observelem'])?></td>
+                                                <td colspan='6' class="Estilo5"><?php echo htmlentities($row['observelem'])?></td>
                                             </tr>
                                         <?php 
                                             } else {
                                         ?>
                                                 <tr>
-                                                    <td class="Estilo5" ><?php echo htmlentities($row['elemento'])?></td>
-                                                    <td class="Estilo5"><?php echo htmlentities($vector_elementos[$posele])?></td>
-                                                    <td width='25%' class="Estilo6"><?php htmlentities($row['unidadelem'])?></td>
+                                                    <td class="Estilo5"  colspan='3'><?php echo htmlentities($row['elemento'])?></td>
+                                                    <td class="Estilo5"  colspan='1'><?php echo htmlentities($vector_elementos[$posele])?></td>
+                                                    <td width='25%' class="Estilo6" colspan='1'><?php htmlentities($row['unidadelem'])?></td>
                                                 </tr>
                                             <?php
                                                 $posele=$posele+1;
                                             ?>
                                                 <tr>
-                                                    <td colspan='5' class="Estilo6"><?php echo htmlentities($row['observelem'])?></td>
+                                                    <td colspan='5' class="Estilo6" colspan='1'><?php echo htmlentities($row['observelem'])?></td>
                                                 </tr>
-                                            </table>
+                                    </table>
+                                </td>
                                     <?php
                                             }
 
@@ -387,6 +403,22 @@ $valores_combos       = $_GET['var18'];
                                         pg_free_result($consulta_datos);
                                         pg_free_result($datos_generales);
                                     ?>
+                            </tr>
+                            <tr>
+                                <td colspan='6' class="Estilo6">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan='6' class="Estilo6">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan='6' class="Estilo6">&nbsp;</td>
+                            </tr>
+                            <tr><td colspan='2' class="Estilo6" width='72%'>&nbsp;&nbsp;</td>
+                                <td colspan='1' class="Estilo6" width='6%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SELLO:</td>
+                                <td colspan='1' class="Estilo6" width='6%'>___________&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp</td>
+                                <td colspan='1' class="Estilo6" width='6%'>FIRMA:</td>
+                                <td colspan='2' class="Estilo6"width='10%'>________________&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td>
+                            </tr>
                         </table>
                     </form>
                 </div>

@@ -45,6 +45,7 @@ function calc_edad()
 
 @media print{
 #boton1{display:none;}
+#boton{display:none;}
 }
 
 
@@ -80,7 +81,7 @@ if ($IdEstandar=="H15"){
 	$vector_respuesta=EXPLODE("/",$valores);
 	$vector_comentarios=EXPLODE("/",$comentarios);?>
 
-	<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
+            <table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
 		<tr>
 			<td colspan="1" align="left" width="20%"><img id="Image1" style="width: auto; height: 55px;" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
                         <td align="center" colspan="4" width="60%" class="Estilo6">
@@ -144,38 +145,56 @@ if ($IdEstandar=="H15"){
 			<td colspan="6" align="center"></td>
 		</tr>
                 <tr>
+                    <td colspan="6">
 			<table width='80%' border='0' align='center' class='StormyWeatherFormTABLE' >
-				<tr class='CobaltButton'>
-					<td class="Estilo5"><strong> Prueba </strong></td>
-					<td class="Estilo5"><strong> Resultado</strong> </td>
-					<td class="Estilo5"><strong> Unidades</strong> </td>
-					<td class="Estilo5" colspan='2' ><strong> Control Diario</strong> </td>
-				</tr>
+                            <tr class='CobaltButton'>
+				<td class="Estilo5"><strong> Prueba </strong></td>
+				<td class="Estilo5"><strong> Resultado</strong> </td>
+				<td class="Estilo5"><strong> Unidades</strong> </td>
+				<td class="Estilo5" colspan='2' ><strong> Control Diario</strong> </td>
+                            </tr>
 				<?php	$pos=0;
 				while($row = pg_fetch_array($consulta))//ELEMENTOS
 				{?>
-				<tr>
-					<td class="Estilo5"><?PHP echo htmlentities($row['nombreprocedimiento'])?></td>
-					<td class="Estilo5" align='center'>
+                            <tr>
+				<td class="Estilo5"><?PHP echo htmlentities($row['nombreprocedimiento'])?></td>
+				<td class="Estilo5" align='center'>
 						<input name='oidprueba[<?php $pos ?>]' type='hidden' id='oidprueba[<?php $pos ?>]' value='<?php $row['idprocedimientoporexamen'] ?>'><?php echo htmlentities($vector_respuesta[$pos])?></td>
-					<td class="Estilo5"><?php echo $row['unidades']?></td>
-					<td class="Estilo5" align='center'><?php echo htmlentities($vector_comentarios[$pos])?></td>
-					<td class="Estilo5"><?php echo htmlentities($row['unidades'])?></td>
-				</tr>
+				<td class="Estilo5"><?php echo $row['unidades']?></td>
+				<td class="Estilo5" align='center'><?php echo htmlentities($vector_comentarios[$pos])?></td>
+				<td class="Estilo5"><?php echo htmlentities($row['unidades'])?></td>
+                            </tr>
 				<?php $pos=$pos + 1;
 				}
 					pg_free_result($consulta);?>
-			</table>
+                        </table>
+                    </td>
 		</tr>
+                <tr>
+                    <td colspan='6' class="Estilo6">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan='6' class="Estilo6">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan='6' class="Estilo6">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan='2' class="Estilo6" width='72%'>&nbsp;&nbsp;</td>
+                    <td colspan='1' class="Estilo6" width='6%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SELLO:</td>
+                    <td colspan='1' class="Estilo6" width='6%'>___________&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp</td>
+                    <td colspan='1' class="Estilo6" width='6%'>FIRMA:</td>
+                    <td colspan='2' class="Estilo6"width='10%'>________________&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td>
+                </tr>
 		<tr>
-			<td colspan="7" align="center" >
-				<div id="boton1">
-					<input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
-					<input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar() ;"/>
-				</div>
-			</td>
+                    <td colspan="7" align="center" >
+                        <div id="boton1">
+                            <input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
+                            <input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar() ;"/>
+			</div>
+                    </td>
 		</tr>
-		</table>
+	    </table>
 
 <?php
 }else{
@@ -282,16 +301,32 @@ if ($IdEstandar=="H15"){
                         </table>
                     </td>
                 </tr>
-	     </table>
-        <div id="boton">
-            <table align="center">
                 <tr>
-                    <td colspan="6" align="center" >
-			<input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
-			<input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar() ;"/>
-                    </td>
-		</tr>
-            </table>
-        </div>
+                    <td colspan='6' class="Estilo6">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan='6' class="Estilo6">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan='6' class="Estilo6">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan='2' class="Estilo6" width='72%'>&nbsp;&nbsp;</td>
+                    <td colspan='1' class="Estilo6" width='6%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SELLO:</td>
+                    <td colspan='1' class="Estilo6" width='6%'>___________&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp</td>
+                    <td colspan='1' class="Estilo6" width='6%'>FIRMA:</td>
+                    <td colspan='2' class="Estilo6"width='10%'>________________&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td>
+                </tr>
+	     </table>
+         <div id="boton">
+                    <table align="center">
+                        <tr>
+                            <td colspan="6" align="center" >
+                                <input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
+                                <input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar();" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
 
 <?php }?>
