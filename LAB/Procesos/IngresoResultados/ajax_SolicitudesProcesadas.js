@@ -340,8 +340,11 @@ function GuardarResultadosPlantillaA()
                 alert(ajax.responseText);
                 document.getElementById('btnGuardar').style.visibility = 'hidden';
                 document.getElementById('btningresar').style.visibility = 'hidden';
+                 document.getElementById('Imprimir').style.display = "initial";
+                 document.getElementById('divexamen').style.display = "none";
                 document.getElementById('agregarresults').style.visibility = 'hidden';
-                document.getElementById('divexamen').style.display = "none";;
+                
+               
             }
         }
     }
@@ -959,11 +962,11 @@ function agregaresultado(act)
     var cant=$('#addresultado >tbody >tr').length;
    // alert (cant)
     var html = '';
-    if (cant == 2){
+    if (cant == 0){
             masunresultado(1)
             cant1=cant+1;
     }
-    if (cant>=3)
+    if (cant>=1)
     {
        if (canti==0){
         document.getElementById('v_resultfin').value="";
@@ -1048,7 +1051,7 @@ if (eliminar) {
 var i=r.parentNode.parentNode.rowIndex;
 document.getElementById('addresultado').deleteRow(i);
             var cant=$('#addresultado >tbody >tr').length;
-		if (cant==2)
+		if (cant==0)
 		{
 			masunresultado(0)
 			document.getElementById('cant_campos').value=0;
@@ -1084,6 +1087,7 @@ function ocultarDivmasunoresultado()
 {
     $('#masunoresultado').css('display','none');
     $('#responde').css('display','none');
+    $('#valresult').css('display','none');
 }
 //Fn pg
 //funcion utilizada para validara recepcion d seccion
@@ -1096,7 +1100,7 @@ function ValidarResultado(){
 
 var cant=$('#addresultado >tbody >tr').length
 var html = '';
-if (cant == 2){
+if (cant == 0){
 	alert ("No ha ingresado ningun resultado, no puede validar")
 	return false;
 }
@@ -1107,7 +1111,7 @@ else
 	$('#responde').css('display','none');
 	$('#divresultado2').css('display','none');
         canti=$('#cantresultfin').val();
-        if (cant==3){
+        if (cant==1){
          if (canti==0){
             document.getElementById('v_resultfin').value=document.getElementById('hdnResult_1').value;
          }
@@ -1207,7 +1211,7 @@ if ((document.getElementById('cantele'))!= null){
 	 
 	 var cantresult=$('#addresultado >tbody >tr').length;  
 	
-		if (cantresult>2)
+		if (cantresult>0)
 		{
 		$('input[name="hdn_numexOrd"]').each(function(i) {    
 					j = parseInt(i)+1;					

@@ -47,32 +47,61 @@ switch ($opcion)
 
 	$consulta=$objdatos->DatosExamenes($idsolicitud,$idarea,$lugar,$sexo,$idedad, $lugar);
         if (pg_num_rows($consulta) >0){
-	echo "<table width='65%'  align='center' border='0' class='StormyWeatherFormTABLE'><tr>";
+	//echo "<table width='65%'  align='center' border='0' class='StormyWeatherFormTABLE'><tr>";
+	echo "<table style='width:65%'  align='center' border='0' class='table table-bordered table-condensed table-white no-v-border'>";
 	$pos=0;
 	 while($row = pg_fetch_array($consulta))
 	 {
-	    $imprimir= "
-                            <tr class='CobaltButton'>
-                                <td width='30%' class='StormyWeatherFieldCaptionTD'>Prueba Realizada </td>
-				<td width='35%' class='StormyWeatherDataTD'>".$row['nombre_examen']."
-                                    <input name='oiddetalle[".$pos."]' type='hidden' id='oiddetalle[".$pos."]' value='".$row['iddetallesolicitud']."'>
+	    $imprimir= "<tr><td colspan='4'><div class='panel panel-info'>"
+           . "<div class='panel-heading' style='background-color:#2C81AB; border-color:#37666F; color:#ffffff'>
+                                                        <h3 class='panel-title'>".$row['nombre_examen']." <input name='oiddetalle[".$pos."]' type='hidden' id='oiddetalle[".$pos."]' value='".$row['iddetallesolicitud']."'>
                                     <input name='oidexamen[".$pos."]' type='hidden' id='oidexamen[".$pos."]' value='".$row['id_conf_examen_estab']."'>
-                                    <input name='oidexametodologia[".$pos."]' type='hidden' id='oidexametodologia[".$pos."]' value='".$row['idexametodologia']."'>
-                                </td>
-                                <td width='10%' class='StormyWeatherFieldCaptionTD'>Unidades</td>
-				<td align='center' width='15%' class='StormyWeatherFieldCaptionTD'>Rangos Normales </td>
+                                    <input name='oidexametodologia[".$pos."]' type='hidden' id='oidexametodologia[".$pos."]' value='".$row['idexametodologia']."'></h3>
+                                                    </div>
+                                                    <div class='panel-body'>
+                                                        <div class='container-fluid'>
+                                                        <table  class='table table-white'>
+                                                        <tr>
+                                <th width='30%'>Resultado</td>
+				<td width='35%' >
+                                    <input name='txtresultado[".$pos."]' type='text' size='43' id='txtresultado[".$pos."]' style='width:100%' placeholder='Ingrese el resultado'>
+				</td><td>Unidades:</td>
+                                <td width='10%' align='left'>".$row['unidades']."</td></tr>
+				<tr><td>Rangos Normales:</td>
+                                <td width='15%'  align='center'>".$row['rangoinicio']."-".$row['rangofin']."</td><td colspan='2'></td>
                             </tr>
-                            <tr class='CobaltButton'>
-                                <td width='30%' class='StormyWeatherFieldCaptionTD'>Resultado</td>
-				<td width='35%' class='StormyWeatherDataTD'>
-                                    <input name='txtresultado[".$pos."]' type='text' size='43' id='txtresultado[".$pos."]'>
+                            <tr >
+                                <th  width='30%' >Observaci&oacute;n</td>
+				<td width='30%' colspan='3'>
+                                    <textarea name='txtobser[".$pos."]' cols='52' style='width:100%' id='txtobser[".$pos."]'></textarea>
 				</td>
-                                <td width='10%' class='StormyWeatherDataTD' align='center'>".$row['unidades']."</td>
-				<td width='15%' class='StormyWeatherDataTD' align='center'>".$row['rangoinicio']."-".$row['rangofin']."</td>
-                            </tr>";
+                            </tr>
+                                                        
+                                                        </table>
+                                                        </div>
+                                                    </div></td></tr>";
+//           $imprimir.= "
+//                            <tr >
+//                                <th class='CobaltButton' width='30%'>Prueba Realizada </th>
+//				<td width='35%' class='StormyWeatherDataTD'  >".$row['nombre_examen']."
+//                                    <input name='oiddetalle[".$pos."]' type='hidden' id='oiddetalle[".$pos."]' value='".$row['iddetallesolicitud']."'>
+//                                    <input name='oidexamen[".$pos."]' type='hidden' id='oidexamen[".$pos."]' value='".$row['id_conf_examen_estab']."'>
+//                                    <input name='oidexametodologia[".$pos."]' type='hidden' id='oidexametodologia[".$pos."]' value='".$row['idexametodologia']."'>
+//                                </td>
+//                                <th class='CobaltButton' width='10%' >Unidades</td>
+//				<th class='CobaltButton' align='center' width='15%' >Rangos Normales </td>
+//                            </tr>
+//                            <tr>
+//                                <th class='CobaltButton' width='30%'>Resultado</td>
+//				<td width='35%' >
+//                                    <input name='txtresultado[".$pos."]' type='text' size='43' id='txtresultado[".$pos."]' style='width:100%'>
+//				</td>
+//                                <td width='10%' align='center'>".$row['unidades']."</td>
+//				<td width='15%'  align='center'>".$row['rangoinicio']."-".$row['rangofin']."</td>
+//                            </tr>";
                            /* <tr class='CobaltButton'>
                                 <td width='30%' class='StormyWeatherFieldCaptionTD'>Lectura</td>
-				<td width='30%' class='StormyWeatherDataTD' colspan='7'>
+				<td wadministradoridth='30%' class='StormyWeatherDataTD' colspan='7'>
                                     <textarea name='txtlectura[".$pos."]' cols='50' id='txtlectura[".$pos."]'></textarea>
 				</td>
                             <tr class='CobaltButton'>
@@ -81,14 +110,14 @@ switch ($opcion)
                                     <textarea name='txtinter[".$pos."]' cols='50' id='txtinter[".$pos."]'></textarea>
 				</td>
                             </tr>*/
-              $imprimir.="  <tr class='CobaltButton'>
-                                <td width='30%' class='StormyWeatherFieldCaptionTD'>Observaci&oacute;n</td>
-				<td width='30%' class='StormyWeatherDataTD' colspan='3'>
-                                    <textarea name='txtobser[".$pos."]' cols='52' id='txtobser[".$pos."]'></textarea>
-				</td>
-                            </tr>
-						<tr class='CobaltButton'><td class='StormyWeatherDataTD'  colspan='6'>"; //numero de cajas de texto dibujadas para resultados
-								   $imprimir .="</td></tr> ";
+//              $imprimir.="  <tr >
+//                                <th class='CobaltButton' width='30%' >Observaci&oacute;n</td>
+//				<td width='30%' colspan='3'>
+//                                    <textarea name='txtobser[".$pos."]' cols='52' style='width:100%' id='txtobser[".$pos."]'></textarea>
+//				</td>
+//                            </tr>
+//						"; //numero de cajas de texto dibujadas para resultados
+								  // $imprimir .="</td></tr> ";
 					//numero de cajas de texto dibujadas para resultados
 					$pos=$pos + 1;
 
@@ -97,12 +126,12 @@ switch ($opcion)
 				//echo $pos;
 			  echo "</tr>
 					<tr>
-						<td colspan='4' align='center'>
-						<input  type='hidden' name='oculto' id='oculto' value='".$pos."'>
-						<button type='button' name='Submit' value='Vista Previa de Resultados' class='fg-button ui-state-default ui-corner-all'  onclick='MostrarVistaPreviaPlantillaA1()'>Vista Previa de Resultados</button>
+						<td colspan='4' align='right'>
+						<input  type='hidden' name='oculto' id='oculto' value='".$pos."'> <br/>
+						<button type='button' name='Submit' value='Vista Previa de Resultados' class='btn btn-primary'  onclick='MostrarVistaPreviaPlantillaA1()'><span class='glyphicon glyphicon-file'></span>&nbsp;Vista Previa de Resultados</button>
 						</td>
 					</tr>
-		</table>";
+		</table></div>";
         }
         else{
             echo '<center><br><br><h1><img src="../../../Imagenes/warning.png" valign="middle"/>'
@@ -250,7 +279,7 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
              $Imprimir.="<tr>
                              <td width='35%' align='justify'>".$row['nombre_reporta']."
                              <input name='oiddetalle[".$pos."]' type='hidden' id='oiddetalle[".$pos."]' value='".$row['iddetallesolicitud']."'>
-                             <input name='oidexamen[".$pos."]' type='hidden' id='oidexamen[".$pos."]' value='".$row['idExamen']."'>
+                             <input name='oidexamen[".$pos."]' type='hidden' id='oidexamen[".$pos."]' value='".$row['id_conf_examen_estab']."'>
                              <input name='oidexametodologia[".$pos."]' type='hidden' id='oidexametodologia[".$pos."]' value='".$row['idexametodologia']."'>
                              </td>";
            if ($row['iddetallesolicitud']== $vector_codigos[$pos]){
@@ -264,7 +293,7 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
                   $Imprimir.="<input name='txttab[".$pos."]' type='hidden' id='txttab[".$pos."]' value='".$tab."'>";
            }
                 $Imprimir.="<td align='center'>".$row['unidades']."</td>";
-                    if ((!empty($row['rangoinicio'])) && (!empty($row['rangofin'])))
+                    if ((isset($row['rangoinicio'])) && (isset($row['rangofin'])))
                 $Imprimir.="<td width='15%' align='center'>".$row['rangoinicio']."-".$row['rangofin']."</td>";
                                               else
                 $Imprimir.="<td align='center'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td>";
@@ -278,21 +307,21 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
              }
 
             $Imprimir.="<tr>
-                                       <td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;</td>
+                                       <td colspan='5' align='center' >&nbsp;&nbsp;&nbsp;</td>
                              </tr>
                                     </tr>
                                     <tr>
-                                      <td colspan='6' align='center' >
+                                      <td colspan='5' align='center' >
                                       <input  type='hidden' id='oculto' value='".$pos."'>
                                       <button type='submit' class='btn btn-primary' id='btnGuardar' value='Guardar Resultados' Onclick='GuardarResultadosPlantillaA();' /><span class='glyphicon glyphicon-remove-sign'></span>Guardar Resultados</button>
-                                      <button type='button' class='btn btn-primary'  name='Imprimir'  id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaA1(".$idsolicitud.",\"".$idarea."\",\"".$responsable."\", \"".$valores_resultados."\",\"".$codigos_resultados."\",\"".$valores_obser."\",\"".$codigos_examenes."\",\"".$establecimiento."\",\"".$sexo."\",\"".$idedad."\",\"".$examen_metodologia."\",\"".$txtnec."\",\"".$fecha_reporte."\",\"".$procedencia."\",\"".$origen."\") ;'><span class='glyphicon glyphicon-print'></span>Imprimir</button>
-                                                    <button type='submit' class='btn btn-primary' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' /><span class='glyphicon glyphicon-remove-sign'></span>Cerrar</button>
-                                            </td>
+                                      <button style='display:none' type='button' class='btn btn-primary'  name='Imprimir'  id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaA1(".$idsolicitud.",\"".$idarea."\",\"".$responsable."\", \"".$valores_resultados."\",\"".$codigos_resultados."\",\"".$valores_obser."\",\"".$codigos_examenes."\",\"".$establecimiento."\",\"".$sexo."\",\"".$idedad."\",\"".$examen_metodologia."\",\"".$txtnec."\",\"".$fecha_reporte."\",\"".$procedencia."\",\"".$origen."\") ;'><span class='glyphicon glyphicon-print'></span>Imprimir</button>
+                                                    <button type='submit' class='btn btn-primary' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' /><span class='glyphicon glyphicon-remove-sign'></span>Cerrar</button><br/>
+                                            <br></td>
                                 </tr>
                              </table>
                         </td>
                     </tr>
-                </table>";
+                </table><br>";
 		echo $Imprimir;
 		//<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaA1(".$idsolicitud.",\"".$idarea."\",\"".$responsable."\", \"".htmlentities($valores_resultados)."\",\"".$codigos_resultados."\",\"".htmlentities($valores_lecturas)."\",\"".htmlentities($valores_inter)."\",\"".htmlentities($valores_obser)."\",\"".$codigos_examenes."\",\"".htmlentities($establecimiento)."\",\"".$sexo."\",\"".$idedad."\") ;'>
    break;

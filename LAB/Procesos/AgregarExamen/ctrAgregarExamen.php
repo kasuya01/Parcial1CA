@@ -428,10 +428,16 @@ switch ($opcion)
 		$sexo=$row['sexo'];
 		$precedencia=$row['nombreservicio'];
 		$origen=$row['nombresubservicio'];
-		$DatosClinicos=$row['DatosClinicos'];
+		//$DatosClinicos=$row['DatosClinicos'];
+		$DatosClinicos=$DatosClinicos=isset($row['DatosClinicos']) ? $row['DatosClinicos'] : null ;
 		$Estado=$row['estado'];
-		$fechasolicitud=$row['FechaSolicitud'];
-                $FechaNac=$row['FechaNacimiento'];
+                $ConocidoPor=isset($row['conocodidox']) ? $row['conocodidox'] : null ;
+                $idarea=isset($row['idarea']) ? $row['idarea'] : null ;
+//		$fechasolicitud=$row['FechaSolicitud'];
+//                $FechaNac=$row['FechaNacimiento'];
+		$fechasolicitud=$DatosClinicos=isset($row['FechaSolicitud']) ? $row['FechaSolicitud'] : null ;
+		$Diagnostico=$DatosClinicos=isset($row['diagnostico']) ? $row['diagnostico'] : null ;
+                $FechaNac=isset($row['FechaNacimiento']) ? $row['FechaNacimiento'] : null ;
 		//recuperando los valores del detalle de la solicitud
 		$consultadetalle=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar);
             
@@ -507,7 +513,7 @@ switch ($opcion)
 		
 			
                            
-                <table width='70%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                <table style='width:80%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
                     <thead> <tr>
 			
                         <th colspan='5'   class='CobaltFieldCaptionTD'>

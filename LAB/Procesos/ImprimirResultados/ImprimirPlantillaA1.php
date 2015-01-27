@@ -11,7 +11,7 @@ $idarea=$_GET['var5'];
 //$sexo=$_GET['var6'];
 //$fechanac=$_GET['var7'];
 $idexamen=$_GET['var6'];
-$subservicio=$_GET['var8'];
+$subservicio=$_GET['var7'];
 $idsexo=$_GET['idsexo'];
 $idedad=$_GET['idedad'];
 //echo $fechanac."    ".$sexo;
@@ -65,7 +65,7 @@ include_once("clsImprimirResultado.php");
   //$consulta1=$objdatos->MostrarResultadoGenerales1($idsolicitud,$idarea,$lugar);
    $consulta1=$objdatos->MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar);
   $row = pg_fetch_array($consulta1);
-  //$Establecimiento=$row['IdEstablecimiento'];
+  $Establecimiento=$row['IdEstablecimiento'];
  // $nombre=$row['NombreArea'];
    //echo $Establecimiento;
   $Consulta_Estab=$objdatos->Nombre_Establecimiento($Establecimiento);
@@ -184,6 +184,10 @@ include_once("clsImprimirResultado.php");
                     </table>
                 </td>
             </tr>
+            <tr><td colspan="6" align='right'>
+                   <br><br>
+                   Sello: _______________________ &nbsp;&nbsp;&nbsp;     Firma: _______________________
+                </td></tr>
     </table>
      <div id="boton">
             <table align='center' border="0">

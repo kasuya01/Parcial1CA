@@ -437,13 +437,13 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                     <table width="100%" border="0" align="center">
                         <tr><td colspan="4">
 		<div id = 'masunoresultado' style="display: none;"><br/>
-			<table id="addresultado" name="addresult" cellpadding="0" cellspacing="0" border="1" id="table" class="ui-state-default" style="table-layout:fixed;font-size:89%; color: #000000" width="100%">
-				<tr>	
-					<td colspan="9" style="text-align:center;">
-						Resultados Obtenidos
+			<table id="addresultado" name="addresult" cellpadding="0" cellspacing="0" border="1" id="table" class="table table-bordered table-condensed table-white" style="table-layout:fixed;font-size:89%; color: #000000" width="100%">
+                           <thead>   <tr>	
+					<td colspan="11"  style="text-align:center;background-color: '#D0E6FF';">
+						Resultados Ingresados
 					</td>
-				</tr>
-				<tr class="CobaltFieldCaptionTD">
+                              </tr>
+				<tr class="CobaltFieldCaptionTD" >
                                    <th width="10%" style="height:35px" title="Examen">Examen</th>
 					<th width="13%" title="Metodologia">Metodologia</th>
 					<th width="6%" title="Fecha Realiza">Fecha Realizaci&oacute;n</th>
@@ -457,6 +457,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
 					<th  width="5%" title="Eliminar">Elim.</th>
 					
 				</tr>
+                           </thead>
 			</table>
                                 </div>
 
