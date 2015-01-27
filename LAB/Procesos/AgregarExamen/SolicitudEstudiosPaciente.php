@@ -70,9 +70,13 @@ $base_url  = $_SESSION['base_url'];
 		$precedencia=$row['nombreservicio'];
 		$origen=$row['nombresubservicio'];
 		//$DatosClinicos=$row['DatosClinicos'];
+		$DatosClinicos=isset($row['DatosClinicos']) ? $row['DatosClinicos'] : null ;
 		$Estado=$row['estado'];
-		//$fechasolicitud=$row['FechaSolicitud'];
-                //$FechaNac=$row['FechaNacimiento'];
+//		$fechasolicitud=$row['FechaSolicitud'];
+//                $FechaNac=$row['FechaNacimiento'];
+		$fechasolicitud=$DatosClinicos=isset($row['FechaSolicitud']) ? $row['FechaSolicitud'] : null ;
+                $FechaNac=isset($row['FechaNacimiento']) ? $row['FechaNacimiento'] : null ;
+
 	//recuperando los valores del detalle de la solicitud
 	$consultadetalle=$obj->DatosDetalleSolicitud($idexpediente,$idsolicitud,$lugar);
 ?>

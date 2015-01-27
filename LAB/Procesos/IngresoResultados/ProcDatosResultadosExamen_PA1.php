@@ -269,9 +269,9 @@ if (pg_num_rows($cant)>0){
                                         </td>
                                 </tr>
                                 <tr>	 
-                                        <td class="StormyWeatherDataTD" colspan="4"><center>
-                                              <button type="button" id="btningresar" name="btningresar" align="center" class="fg-button ui-state-default ui-corner-all" value="Ingresar Resultados" Onclick="IngresarTodosResultados() ;"> Ingresar Resultados</button>
-                                        </center></td>
+                                   <td class="StormyWeatherDataTD" colspan="4" align="right"><br>
+                                              <button type="button" id="btningresar" name="btningresar" align="right" class="btn btn-primary" value="Ingresar Resultados" Onclick="IngresarTodosResultados() ;"> <span class='glyphicon glyphicon-check'></span>&nbsp;Ingresar Resultados</button>
+                                       </td>
                                 </tr>
 			</table>
 		</form>

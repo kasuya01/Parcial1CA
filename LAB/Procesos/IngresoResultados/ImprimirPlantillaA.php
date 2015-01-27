@@ -36,7 +36,6 @@ function calc_edad()
 }
 
 </script>
-
 <style type="text/css">
 <!--
 @media print{
@@ -49,6 +48,11 @@ function calc_edad()
 .Estilo7 {font-family: Helvetica; font-size: 11pt}
 -->
 </style>
+<!--<style type='text/css' media='print'>
+
+	#boton{display:none;}
+
+</style>-->
 
 </script>
 </head>
@@ -216,6 +220,10 @@ $nexamen=$filares['nombre_examen'];
                     </table>
                 </td>
              </tr>
+             <tr><td colspan="6" align='right'>
+                   <br><br>
+                   Sello: _______________________ &nbsp;&nbsp;&nbsp;     Firma: _______________________
+                </td></tr>
         </table>
         <div id="boton">
             <table align="center">

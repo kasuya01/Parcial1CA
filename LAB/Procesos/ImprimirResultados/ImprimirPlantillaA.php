@@ -151,6 +151,10 @@ $nombre=$row['nombre_area'];
                                 </table>
 			  </td>
                         </tr>
+                        <tr><td colspan="6" align='right'>
+                   <br><br>
+                   Sello: _______________________ &nbsp;&nbsp;&nbsp;     Firma: _______________________
+                </td></tr>
                     </table>
                     <div id="boton">
                         <table align='center' border="0">

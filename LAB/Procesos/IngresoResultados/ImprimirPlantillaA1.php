@@ -40,6 +40,19 @@ $origen =$_GET['var17'];
 .Estilo7 {font-family: Helvetica; font-size: 11pt}
 -->
 </style>
+<!--<script type="text/javascript">
+    function printpage() {
+        //Get the print button and put it into a variable
+        var printButton = document.getElementById("boton");
+        //Set the print button visibility to 'hidden' 
+        printButton.style.visibility = 'hidden';
+        //Print the page content
+        window.print()
+        //Set the print button to 'visible' again 
+        //[Delete this line if you want it to stay hidden after printing]
+        printButton.style.visibility = 'visible';
+    }
+</script>-->
 
 </script>
 </head>
@@ -71,6 +84,7 @@ $rowpa = pg_fetch_array($datpac);
  //$rowdet=  pg_fetch_array($consulta);
  // $FechaRes=$objdatos->ObtenerFechaResultado($idsolicitud,$idarea,$lugar);
   //$row_fecha=pg_fetch_array($FechaRes);
+    $fechanac=isset($row['FechaNacimiento']) ? $row['FechaNacimiento'] : null;
 
 ?>
 	<table width='85%' align='center' class='StormyWeatherFormTABLE'>
@@ -89,20 +103,23 @@ $rowpa = pg_fetch_array($datpac);
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
                         <td colspan='2' class="Estilo6"><?php echo utf8_encode($_GET['var10'])?></td>
-			<td colspan='1' class="Estilo5"><strong>Fecha Resultado:</strong></td>
-			<td colspan='2' class="Estilo6"'><?php echo $fechareporte;?></td>
+                        <td colspan="1" class="Estilo5"><strong>Fecha Recepción:</strong></td>
+                        <td colspan="2" class="Estilo6"><?php echo $row['fecharecepcion'];?></td>
+			
 		</tr>
 
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>NEC:</strong></td>
-			<td colspan='5' class="Estilo7"><?php echo $txtnec;?></td>
+			<td colspan='2' class="Estilo7"><?php echo $txtnec;?></td>
+                        <td colspan='1' class="Estilo5"><strong>Fecha Resultado:</strong></td>
+			<td colspan='2' class="Estilo6"'><?php echo $fechareporte;?></td>
                 </tr>
 
                 <tr>
 			<td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
 			<td colspan='5' class="Estilo6"><?php echo $rowpa['nombre']?></td>
 
-                            <input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row['FechaNacimiento']?>>
+                            <input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $fechanac;?> />
 		<tr>
 
 			<td colspan='1' class="Estilo5"><strong>Edad:</strong></td>
@@ -168,17 +185,22 @@ $rowpa = pg_fetch_array($datpac);
 			$pos=$pos + 1;
                  }
 		?>
-
+                <tr><td colspan="6" align='right'>
+                   <br><br>
+                   Sello: _______________________ &nbsp;&nbsp;&nbsp;     Firma: _______________________
+                </td></tr>
                 </table>
+   <div id="boton">
                 <table align='center' border="0">
-                    <div id="boton">
+                    
                         <tr>
                                 <td colspan="7" align="center" >
 
-                                    <input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
+                                    <input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onclick="window.print()" />
                                     <input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar();" />
 
                                 </td>
                         </tr>
-                   </div>
+                  
                 </table>
+ </div>
