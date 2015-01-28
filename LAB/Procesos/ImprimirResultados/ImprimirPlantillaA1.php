@@ -65,27 +65,27 @@ include_once("clsImprimirResultado.php");
   //$consulta1=$objdatos->MostrarResultadoGenerales1($idsolicitud,$idarea,$lugar);
    $consulta1=$objdatos->MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar);
   $row = pg_fetch_array($consulta1);
-  $Establecimiento=$row['IdEstablecimiento'];
+  //$Establecimiento=$row['IdEstablecimiento'];
  // $nombre=$row['NombreArea'];
    //echo $Establecimiento;
-  $Consulta_Estab=$objdatos->Nombre_Establecimiento($Establecimiento);
-  $row_estab = pg_fetch_array($Consulta_Estab);
+$Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
+$row_estab = pg_fetch_array($Consulta_Estab);
 
   /*$Cuentadias=$objdatos->CalculoDias($fechanac);
   $Cdias= pg_fetch_array($Cuentadias);
   $dias=$Cdias[0];*/
-  $ConRangos=$objdatos->ObtenerCodigoRango($dias);
-  $row_rangos=  pg_fetch_array($ConRangos);
-  $idedad=$row_rangos[0];
+//  $ConRangos=$objdatos->ObtenerCodigoRango($dias);
+//  $row_rangos=  pg_fetch_array($ConRangos);
+//  $idedad=$row_rangos[0];
 
-  $FechaRes=$objdatos->ObtenerFechaResultado($idsolicitud,$idarea,$lugar);
+  $FechaRes=$objdatos->ObtenerFechaResultado($idsolicitud,$idexamen,$lugar);
   $row_fecha=pg_fetch_array($FechaRes);
   $FechaResultado=$row_fecha[0];
-  $IdEmpleado=$row_fecha[1];
+  //$IdEmpleado=$row_fecha[1];
  // echo $IdEmpleado;
 
-  $consulta_empleado=$objdatos->BuscarEmpleadoValidador($IdEmpleado);
-  $fila_empleado = pg_fetch_array($consulta_empleado);
+ // $consulta_empleado=$objdatos->BuscarEmpleadoValidador($IdEmpleado);
+ // $fila_empleado = pg_fetch_array($consulta_empleado);
 //echo  $idedad."   ".$sexo;
     //$consulta=$objdatos->DetalleExamenes($idsolicitud,$idarea,$lugar,$idedad,$sexo);
    
@@ -97,7 +97,7 @@ include_once("clsImprimirResultado.php");
             <td colspan="1" align="left" width="20%"><img id="Image1" style="WIDTH: 80px; HEIGHT: 55px" height="86" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
             <td align="center" colspan="4" width="60%" class="Estilo6">
                 <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
-                <p><strong><?php echo $row['nombre'] ?></strong></p>
+                <p><strong><?php echo $row_estab['nombre'] ?></strong></p>
                 <p><strong>ÁREA DE <?php echo htmlentities($row['nombre_area'])?></strong></p>
             </td>
             <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
@@ -140,27 +140,30 @@ include_once("clsImprimirResultado.php");
 	</tr>
          <tr>
             <td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>
-            <td colspan='2' class="Estilo6"><?php echo $fila_empleado['empleado']?></td>
+            <td colspan='2' class="Estilo6"><?php echo htmlentities($row['empleado'])?></td>
         </tr>
+<!--	<tr>
+           <td colspan='6' align='center' ><br/><hr>&nbsp;&nbsp;&nbsp;</td>
+	</tr>-->
 	<tr>
-            <td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;</td>
-	</tr>
-	<tr>
-            <td colspan='6' align='center' class="Estilo5"><strong>DETALLE DE RESULTADOS</strong></td>
+            <td colspan='6' align='center' class="Estilo5"><strong><br/><hr>DETALLE DE RESULTADOS</strong></td>
 	</tr>
         <tr>
              <td  colspan="6">
                 <table width='100%'  align='center' border='0' class='StormyWeatherFormTABLE'>
-                    <tr >
-                        <td align="left" class="Estilo5"><span style='color: #0101DF;'><strong>Prueba Realizada</span> </strong></td>
-                        <td align="center" class="Estilo5"><span style='color: #0101DF;'><strong>Resultado</span></strong></td>
-                        <td align="center" class="Estilo5"><span style='color: #0101DF;'><strong>Unidades</span></strong></td>
-                        <td align="center" class="Estilo5"><span style='color: #0101DF;'><strong>Rangos Normales</span></strong></td>
-                        <td align="center" class="Estilo5"><span style='color: #0101DF;'><strong>Lectura</span></strong></td>
-                        <td align="center" class="Estilo5"><span style='color: #0101DF;'><strong>Interpretación</span></strong></td>
-                        <td align="center" class="Estilo5"><span style='color: #0101DF;'><strong>Observación</span></strong></td>
+                    <tr>
+                        <td align="left" class="Estilo5"><span><strong>Prueba Realizada</span> </strong></td>
+                        <td align="center" class="Estilo5"><span><strong>Resultado</span></strong></td>
+                        <td align="center" class="Estilo5"><span><strong>Unidades</span></strong></td>
+                        <td align="center" class="Estilo5"><span><strong>Rangos Normales</span></strong></td>
+                        <td align="center" class="Estilo5"><span><strong>Lectura</span></strong></td>
+                        <td align="center" class="Estilo5"><span><strong>Interpretación</span></strong></td>
+                        <td align="center" class="Estilo5"><span><strong>Observación</span></strong></td>
 
 
+                    </tr>
+                    <tr>
+                       <td colspan='7' align='center' class="Estilo5"><hr></td>
                     </tr>
                                 <?php $pos=0;
                         while($rowdet = pg_fetch_array($consulta)){?>
