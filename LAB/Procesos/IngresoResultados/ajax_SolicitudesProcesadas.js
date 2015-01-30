@@ -2383,12 +2383,14 @@ function MostrarVistaPreviaPlantillaE()
         valores = "";
         codigos = "";
         comentarios = "";
+        valores_combos="";
         if (document.getElementById('oculto').value > 0)
         {
             for (i = 0; i < document.getElementById('oculto').value; i++)
             {
                 valores += document.getElementById('txtresultado[' + i + ']').value + "/";
                 codigos += document.getElementById('oidprueba[' + i + ']').value + "/";
+                valores_combos += document.getElementById('totcombo[' + i + ']').value + "/";
             }
         }
         if (document.getElementById('oculto').value > 0)
@@ -2406,7 +2408,8 @@ function MostrarVistaPreviaPlantillaE()
         //enviando los valores
         ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idsolicitud=" + idsolicitud + "&observacion=" + escape(observacion) +
                 "&idempleado=" + idempleado + "&valores=" + encodeURIComponent(valores) + "&codigos=" + codigos + "&comentarios=" + encodeURIComponent(comentarios) +
-                "&estab=" + estab + "&tab=" + tab + "&fechanac=" + fechanac + "&sexo=" + sexo + "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado);
+                "&estab=" + estab + "&tab=" + tab + "&fechanac=" + fechanac + "&sexo=" + sexo + "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado +
+                "&valores_combos="+ valores_combos);
         ajax.onreadystatechange = function()
         {
             if (ajax.readyState == 4)

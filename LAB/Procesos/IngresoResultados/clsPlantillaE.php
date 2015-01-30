@@ -43,7 +43,7 @@ function Nombre_Establecimiento($lugar){
    $con = new ConexionBD;
    if($con->conectar()==true){ 
        	$query="SELECT t03.idestandar, t03.id
-                FROM lab_conf_examen_estab                 t01
+                FROM lab_conf_examen_estab  t01
                 INNER JOIN mnt_area_examen_establecimiento t02 ON (t02.id = t01.idexamen)
                 INNER JOIN ctl_examen_servicio_diagnostico t03 ON (t03.id = t02.id_examen_servicio_diagnostico)
                 WHERE t01.id = $idexamen";
@@ -367,7 +367,7 @@ function LeerProcesoExamen($idexamen,$lugar,$sexo,$idedad)
 	$con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query="SELECT lab_procedimientosporexamen.id,nombreprocedimiento,unidades,rangoinicio,rangofin 
+     $query="SELECT lab_procedimientosporexamen.id as idprocedimiento,nombreprocedimiento,unidades,rangoinicio,rangofin 
             FROM lab_procedimientosporexamen 
             INNER JOIN lab_conf_examen_estab ON lab_conf_examen_estab.id=lab_procedimientosporexamen.id_conf_examen_estab 
             INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
@@ -387,6 +387,52 @@ function LeerProcesoExamen($idexamen,$lugar,$sexo,$idedad)
    }
 }
 
+function leer_posibles_resultados_procedimientos($idprocedimiento){
+         $con = new ConexionBD;
+        if($con->conectar()==true) {
+            $query="SELECT id_posible_resultado,posible_resultado 
+                    FROM lab_procedimiento_posible_resultado 
+                    INNER JOIN lab_posible_resultado ON lab_posible_resultado.id = lab_procedimiento_posible_resultado.id_posible_resultado
+                    WHERE id_procedimientoporexamen=$idprocedimiento";
+
+            $result = @pg_query($query);
+            
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }    
+    }
+
+    function contar_posibles_resultados_procedimientos($idprocedimiento){
+         $con = new ConexionBD;
+        if($con->conectar()==true) {
+           $query="SELECT count(*)
+                    FROM lab_procedimiento_posible_resultado 
+                    INNER JOIN lab_posible_resultado ON lab_posible_resultado.id = lab_procedimiento_posible_resultado.id_posible_resultado
+                    WHERE id_procedimientoporexamen=$idprocedimiento";
+
+            $result = @pg_query($query);
+            
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }    
+    }
+ function BuscarResultado($id_posible_resultado){
+         $con = new ConexionBD;
+        if($con->conectar()==true) {
+           $query="SELECt posible_resultado from lab_posible_resultado where id=$id_posible_resultado";
+           $result = @pg_query($query);
+            
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }       
+        
+    }
  
 }//CLASE
 ?>

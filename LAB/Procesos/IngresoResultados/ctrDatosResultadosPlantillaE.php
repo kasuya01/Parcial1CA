@@ -113,14 +113,35 @@ case 1:
 					<td> Rango </td>
 				</tr>";
 					$pos=0;
-					while($row = pg_fetch_array($consulta))//ELEMENTOS
+				while($row = pg_fetch_array($consulta))//ELEMENTOS
 					{
 		$imprimir.= "
 				<tr>
 					<td class='StormyWeatherFieldCaptionTD'>".$row['nombreprocedimiento']."</td>
 					<td class='StormyWeatherDataTD'>
-						<input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['id']."'>
+                                        <input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['idprocedimiento']."'>";
+                                              $con_total=$obj->contar_posibles_resultados_procedimientos($row['idprocedimiento']);
+                                                   $total=pg_fetch_array($con_total);
+                                                   //echo $total[0];
+                                    if($total[0]>=1){  
+                                   $imprimir.= "<select id='txtresultadosub[".$pos."]' name='txtresultadosub[".$pos."]'  size='1' style='width:260px'>
+                                                    <option value='0' >--Seleccione Resultado--</option>";
+                                                    $con_result=$obj->leer_posibles_resultados_procedimientos($row['idprocedimiento']);
+                                                    while ($row_result=pg_fetch_array($con_result)) {
+                                                        $imprimir.="<option value='" . $row_result['id_posible_resultado'] . "'>" . htmlentities($row_result['posible_resultado']) . "</option>";
+                                                       }   
+                           $imprimir.="<td class='StormyWeatherDataTD' >".$row['unidades']."</td>
+					<td class='StormyWeatherDataTD' aligh='center'>".$row['rangoinicio']."-".$row['rangofin']."</td>
+						<input name='txtcomentario[".$pos."]' type='hidden' id='txtcomentario[".$pos."]'>
+					</td> ";            
+                                                     $imprimir.= "   <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]' value='".$pos."'>  "; 
+                                                    
+                                    }
+                                    else
+                                                                                                       
+				   $imprimir.= "<input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['id']."'>
 						<input name='txtresultado[".$pos."]' type='text' id='txtresultado[".$pos."]'>
+                                                    <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''  >   
 					</td>
 					<td class='StormyWeatherDataTD' >".$row['unidades']."</td>
 					<td class='StormyWeatherDataTD' aligh='center'>".$row['rangoinicio']."-".$row['rangofin']."</td>
@@ -174,8 +195,9 @@ case 2://vista Previa de Resultado
 		if (isset($_POST['origen'])){$origen= $_POST['origen'];}else{$origen="";}
 		$codigos= $_POST['codigos'];
 		$valores= $_POST['valores'];
-		$comentarios= $_POST['comentarios'];
-		$establecimiento=$_POST['estab'];
+                $comentarios     = $_POST['comentarios'];
+                $valores_combos  = $_POST['valores_combos'];
+		$establecimiento = $_POST['estab'];
 		$tab=$_POST['tab'];
 		$fechanac=$_POST['fechanac'];
                 $sexo=$_POST['sexo'];
@@ -402,10 +424,16 @@ case 2://vista Previa de Resultado
                         {
                            $imprimir.= "<tr>
                                             <td align='left'>".htmlentities($row['nombreprocedimiento'])."</td>
-                                            <td align='center'>
-                                                <input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['id']."'>".htmlentities($vector_respuesta[$pos]).
-                                           "</td>
-                                            <td align='center'>".htmlentities($row['unidades'])."</td>";
+                                            <td align='center'>";
+                            if($vector_combos[$pos]== NULL){  
+                                  $imprimir.= "<input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['id']."'>".htmlentities($vector_respuesta[$pos]).
+                                           "</td>";
+                            }else{
+                                $conresult=$objdatos->BuscarResultado($vector[$pos]);
+                                $row_dresult=  pg_fetch_array($conresult);
+                                 $imprimir.="<td width='25%'>".htmlentities($row_dresult['posible_resultado'])."<input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['id']."'></td>";
+                            }                                                                                   
+                                $imprimir.= "<td align='center'>".htmlentities($row['unidades'])."</td>";
                            if((!empty($row['rangoinicio'])) AND (!empty($row['rangoinicio'])))
                                 $imprimir.= "<td align='center'>".$row['rangoinicio']."-".$row['rangofin']."</td>
                                         </tr>";
