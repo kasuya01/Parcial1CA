@@ -12,7 +12,7 @@ class cls_Mnt_AreaExamenEstablecimiento {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
         	$query = "WITH area_grupo_examen_atencion AS (
-								SELECT * 
+								SELECT *
 							  	FROM (
 								  	SELECT ti01.id AS id_grupo,
 									  	   ti01.idgrupo AS codigo_grupo,
@@ -49,7 +49,7 @@ class cls_Mnt_AreaExamenEstablecimiento {
 						   FROM area_grupo_examen_atencion t01
 						   LEFT OUTER JOIN mnt_area_examen_establecimiento t02 ON (t01.id_area = t02.id_area_servicio_diagnostico AND t01.id_examen = t02.id_examen_servicio_diagnostico AND t02.id_establecimiento = $lugar)
 						   WHERE t01.id_area = $idarea
-						   ORDER BY t01.nombre_area, t01.nombre_grupo, t01.nombre_examen";
+						   ORDER BY t01.nombre_area, t01.nombre_grupo, SUBSTRING(t01.codigo_examen FROM '[a-zA-Z]+'), TO_NUMBER(SUBSTRING(t01.codigo_examen FROM '[0-9]+'), '99')";
 
 			$result = @pg_query($query);
             if (!$result)
@@ -63,7 +63,7 @@ class cls_Mnt_AreaExamenEstablecimiento {
     	$con = new ConexionBD;
 
         if ($con->conectar() == true) {
-        
+
         if(isset($elementos['update'])) {
             $update_exam = implode(",",$elementos['update']);
         } else {
@@ -78,7 +78,7 @@ class cls_Mnt_AreaExamenEstablecimiento {
             }
 
             $result1 = @pg_query($query1);
-            
+
             if(isset($elementos['insert'])) {
                 if(count($elementos['insert']) > 0) {
                     $query2 = "";
