@@ -64,13 +64,17 @@ switch($Proceso){
 					"<th  align='center'><strong>Nombre del Paciente</strong></th>".
 					"</tr></thead> <tbody>";
 	
-								
+        if (pg_num_rows($dtSub)>0){
 	while ($row =pg_fetch_array($dtSub)){
 					
 		$rslt .="<tr><td  align='left'>";
                 $rslt .="<a class=\"MailboxDataLink\" href=\"javascript:mostrardetalle(".$row['id'].", $IdEstablecimiento)\">".$row['numero']."</a></td>";
 		$rslt .="<td>".$row['nombre']."</td></tr>";
 	}
+        }
+ else {
+    $rslt .="<tr><td  align='left' colspan='2' style=' color:#888888; font-weit'>No se encontró el número de expediente...</td></tr>";
+ }
         $rslt .=" </tbody></table></div>";
         
 	echo $rslt;

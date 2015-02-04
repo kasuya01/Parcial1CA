@@ -49,8 +49,8 @@ switch ($opcion) {
 			   			<td colspan='5' style='font:bold' class='StormyWeatherFieldCaptionTD'>".$row['elemento']."</td>
                                             </tr>";
 			   			
-			   			$consulta2=$objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
-						while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
+			   	$consulta2=$objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
+				while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
 				$imprimir.= "<tr>
 						<td width='30%' class='StormyWeatherDataTD'>".htmlentities($rowsub['subelemento'])."</td>
 						<td width='30%' class='StormyWeatherDataTD'>";
@@ -66,15 +66,15 @@ switch ($opcion) {
                                                         $imprimir.="<option value='" . $row_result['id_posible_resultado'] . "'>" . htmlentities($row_result['posible_resultado']) . "</option>";
                                                        }   
                                                      
-                                                     $imprimir.= "   <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]' value='".$pos."'>  "; 
+                                                     $imprimir.= "   <input name='totcombo[".$pos."]' type='text' id='totcombo[".$pos."]' value='".$pos."'>  "; 
                                                   
                                                 }
                                                 else{
                                 
                                                     
-                                $imprimir.= "<input size='20' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]'>
-                                                    <input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>
-                                                     <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''  >    
+                                   $imprimir.= "<input size='20' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]'>
+                                                <input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>
+                                                <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''  >    
 						</td>";
                                               }  
 				$imprimir.= "<td width='5%' class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."</td>
@@ -83,7 +83,7 @@ switch ($opcion) {
 						<td class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."</td>
                                             </tr>";
 							$pos=$pos + 1;
-						}
+				}
                                                      
 						pg_free_result($consulta2);
 				$imprimir.="<tr>

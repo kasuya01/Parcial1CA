@@ -235,6 +235,46 @@ function eliminarDato(iddatosfijosresultado){ //FUNCION PARA ELIMINACION
 
 	}
 }
+//fn pg
+
+function buscaranteriores(){ //INGRESAR REGISTROS
+	//donde se mostrar� lo resultados
+	//valores de los inputs
+	idarea=document.getElementById('cmbArea').value;
+	idexamen=document.getElementById('cmbExamen').value;
+        sexo=document.getElementById('cmbSexo').value;
+        redad=document.getElementById('cmbEdad').value;
+	if (idarea!=0 && idexamen!=0 && sexo!=0 && redad!=0){
+          //  alert('iadrea: '+idarea+' /idexa:  '+idexamen+' /sexo:  '+sexo+'/edad:'+redad)
+            var opcion=10;
+            Pag=1;
+            //instanciamos el objetoAjax
+            ajax=objetoAjax();
+            //archivo que realizar� la operacion
+            ajax.open("POST", "ctrLab_DatosFijosExamen.php",true);
+            ajax.onreadystatechange=function() {
+                    if (ajax.readyState==4) {
+                            //mostrar resultados en esta capa
+
+           // alert('ajax_response:'+ajax.responseText);
+                          if (ajax.responseText==1)
+                          {
+                             alert ('Existen conflictos con información previamente registrada, por favor revisar.');
+        $("#cmbExamen option[value='0']").attr('selected', 'selected');
+        $("#cmbSexo option[value='0']").attr('selected', 'selected');
+        $("#cmbEdad option[value='0']").attr('selected', 'selected');
+                          }
+                    }
+            }
+            ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+            //enviando los valores
+            ajax.send("idarea="+idarea+"&opcion="+opcion+"&idexamen="+idexamen+"&sexo="+sexo+"&redad="+redad);
+        }
+        return false;
+	//alert (sexo+"--"+redad);
+	
+}
+
 
 function BuscarDatos()
 {

@@ -35,7 +35,7 @@ if (isset($_SESSION['Correlativo'])) {
         <head>
             <!--<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />-->
             <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-            <title>Recepcion de Solicitudes Servicio de Laboratorio Clinico</title>
+            <title>Recepción de Solicitudes Servicio de Laboratorio Clinico</title>
             <script language="JavaScript" type="text/javascript" src="ajax_RecepcionSolicitud.js"></script>
             <?php include_once $ROOT_PATH."/public/css.php";?>
             <?php include_once $ROOT_PATH."/public/js.php";?>
@@ -157,7 +157,7 @@ if (isset($_SESSION['Correlativo'])) {
                                     </tr>
                                     <tr>	<td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</TD>
                                         <td class="StormyWeatherDataTD">
-                                            <select name="cmbTipoEstablec" class="MailboxSelect" id="cmbTipoEstablec"  onChange="BuscarEstablecimiento(this.value);" >
+                                            <select name="cmbTipoEstablec" class="form-control height" id="cmbTipoEstablec"  onChange="BuscarEstablecimiento(this.value);" style="width:400px" >
                                                 <option value="0">--Seleccione Tipo Establecimiento--</option>
                                                 <?php
                                                 include_once("../../../Conexion/ConexionBD.php");
@@ -180,7 +180,7 @@ if (isset($_SESSION['Correlativo'])) {
                                         <TD class="StormyWeatherFieldCaptionTD">Establecimiento Solicitante</TD>
                                         <td class="StormyWeatherDataTD">
                                             <div id="divEstablecimiento">
-                                                <select name="cmbEstablecimiento" id="cmbEstablecimiento" class="MailboxSelect" style="width:400px"><?php
+                                                <select name="cmbEstablecimiento" id="cmbEstablecimiento" class="form-control height" style="width:400px" ><?php
                                                     echo '<option value="' . $lugar . '" selected="selected">' . htmlentities($nombrEstab) . '</option>';
                                                     include_once("../../../Conexion/ConexionBD.php");
                                                     $con = new ConexionBD;
@@ -200,12 +200,12 @@ if (isset($_SESSION['Correlativo'])) {
                                     </tr>
                                     <tr>
                                         <td class="StormyWeatherFieldCaptionTD">N&ordm; de Expediente </td>
-                                        <td class="StormyWeatherDataTD"><input type="text" name="txtidexpediente" id="txtidexpediente" /></td>
+                                        <td class="StormyWeatherDataTD"><input type="text" name="txtidexpediente" id="txtidexpediente"  class='form-control height' style="width:400px"/></td>
                                     </tr>
                                     <tr>
                                         <td class="StormyWeatherFieldCaptionTD">Fecha de Cita</td>
                                         <td class="StormyWeatherDataTD">
-                                            <input type="text" name="txtfechasolicitud" id="txtfechasolicitud" value="<?php //echo date("d/m/Y"); ?>" class="date"  placeholder="aaaa-mm-dd" />
+                                            <input type="text" name="txtfechasolicitud" id="txtfechasolicitud" value="<?php //echo date("d/m/Y"); ?>" class="date form-control height"  placeholder="aaaa-mm-dd" style="width:400px" />
                                         </td>
                                     </tr>
                                     <!--<tr>

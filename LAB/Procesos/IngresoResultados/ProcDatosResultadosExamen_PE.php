@@ -184,7 +184,7 @@ function VerResultados()
                     <input type="hidden" name="txtnec" id="txtnec" disabled="disabled" />
 		    <input type="hidden" name="txtidsolicitud" id="txtidsolicitud" />
 		    <input type="hidden" name="txtiddetalle" id="txtiddetalle" />
-		    <input type="text" name="txtidexamen" id="txtidexamen" />
+		    <input type="hidden" name="txtidexamen" id="txtidexamen" />
 		    <input type="hidden" name="txtidrecepcion" id="txtidrecepcion" />
 		    <input type="hidden" name="txtarea" id="txtarea" />
 		    <input type="hidden" name="txtprocedencia" id="txtprocedencia" />

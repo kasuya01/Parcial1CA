@@ -111,7 +111,7 @@ switch ($opcion)
 		$datos_observacion=$objdatos->LeerObservacion($idobservacion);
 		$bateria=$objdatos->NombreBacteria($idbacteria);
              
-               // print_r($vector_interpretacion);
+                //print_r($datos_generales);
 		
                 $row_generales= pg_fetch_array($datos_generales);
 		$row_area = pg_fetch_array($consulta_datos);
@@ -149,7 +149,7 @@ switch ($opcion)
                            </tr>
                            <tr>
                                   <td colspan='1' style='font:bold'><strong>Edad:</strong></td>
-                                  <td colspan='2'>".$row_generales['edad']."</td>
+                                  <td colspan='2'>".htmlentities($row_generales['edad'])."</td>
                                   <td colspan='1' style='font:bold'><strong>Sexo:</strong></td>
                                   <td colspan='2'>".$row_generales['sexo']."</td>
                            </tr>

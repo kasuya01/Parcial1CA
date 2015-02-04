@@ -220,7 +220,9 @@ if (pg_num_rows($cant)>0){
 if ($referido!="t"){
     
 $condatos=$objdatos->condatos($IdHistorial, $lugar);
-
+$buscarinfo=$objdatos->consfecha($idsolicitud, $iddetallesolicitud,  $lugar);
+$rowdeta=pg_fetch_array($buscarinfo);
+$fechatomamues= $rowdeta['f_tomamuestra'];
 /*
 
   if($db->conectar()==true){
@@ -309,8 +311,11 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
-                            <td class="StormyWeatherDataTD" colspan="3"> <?php echo $_GET['var9'] ;?>
+                            <td class="StormyWeatherDataTD" colspan="1"> <?php echo $_GET['var9'] ;?>
                                 <input type="hidden" name="txtnombrearea" id="txtnombrearea" disabled="disabled" size="60" />
+                            </td>
+                             <td class="StormyWeatherFieldCaptionTD">F. Toma Muestra</td>
+                            <td class="StormyWeatherDataTD" colspan="1"> <?php echo $fechatomamues ;?>
                             </td>
                         </tr>
                          <tr>

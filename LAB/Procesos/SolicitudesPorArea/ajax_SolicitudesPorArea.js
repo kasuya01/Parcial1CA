@@ -180,7 +180,7 @@ function MostrarDatos(posicion)
 		//alert(idsolicitud+" - "+idarea+" - "+idexamen+" - "+idtipo+" - "+idexpediente);
 		ventana_secundaria = window.open("DatosSolicitudesPorArea.php?var1="+idexpediente+
 		"&var2="+idarea+"&var3="+idsolicitud+"&var4="+idexamen+"&var5="+idtipo+
-                "&var6="+subservicio,"Datos","width=850,height=475,menubar=no,scrollbars=yes") ;
+                "&var6="+subservicio,"Datos","width=850,height=550,menubar=no,scrollbars=yes") ;
  }
 
 

@@ -14,6 +14,7 @@ $observacion=$_GET['var9'];
 $establecimiento=$_GET['var10'];
 $sexo=$_GET['var11'];
 $idedad=$_GET['var12'];
+$valores_combos= $_GET['var13'];
 //echo $idsolicitud."Examen= ".$idexamen."Empleado= ".$responsable." procedencia= ".$procedencia."oreigen= ".$origen." comentario= ".$comentarios." valores= ".$valores."codigos= ".$codigos."observacio= ".$observacion."establecimiento= ".$establecimiento."sexo= ".$sexo." idedad= ".$idedad;
 //echo $responsable;
 
@@ -80,7 +81,7 @@ if ($IdEstandar=="H15"){
 	$vector_idprocesos=EXPLODE("/",$codigos);
 	$vector_respuesta=EXPLODE("/",$valores);
 	$vector_comentarios=EXPLODE("/",$comentarios);?>
-
+        $vector_combos    = EXPLODE("/",$valores_combos);
             <table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
 		<tr>
 			<td colspan="1" align="left" width="20%"><img id="Image1" style="width: auto; height: 55px;" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
@@ -209,6 +210,7 @@ if ($IdEstandar=="H15"){
 	//$row_empleado = mysql_fetch_array($datos_empleado);
 	$vector_idprocesos=EXPLODE("/",$codigos);
 	$vector_respuesta=EXPLODE("/",$valores);
+        $vector_combos    = EXPLODE("/",$valores_combos);
 	//echo $responsable;
 	?>
 	<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
@@ -269,9 +271,10 @@ if ($IdEstandar=="H15"){
 			<td colspan='6' align="center"></td>
 		</tr>
 		<tr>
-			<?php pg_free_result($consulta_datos);
-				  pg_free_result($datos_generales);
-				  $consulta=$obj->LeerProcesoExamen($idexamen,$lugar,$sexo,$idedad);
+		<?php   pg_free_result($consulta_datos);
+			pg_free_result($datos_generales);
+			$consulta=$obj->LeerProcesoExamen($idexamen,$lugar,$sexo,$idedad);
+                      //  print_r($vector_respuesta);
 	        ?>
 
                 <tr><td colspan='6'>
@@ -279,7 +282,7 @@ if ($IdEstandar=="H15"){
                     <table width='90%' border='0' align='left' cellspacing="0">
 				<tr >
                                         <td class="Estilo5" width='25%' align='left'  ><strong> Prueba </strong> </td>
-					<td class="Estilo5" width='30%' align='center'><strong> Resultado </strong></td>
+					<td class="Estilo5" width='30%' align='left'><strong> Resultado </strong></td>
 					<td class="Estilo5" width='20%' align='center'><strong> Unidades </strong></td>
 					<td class="Estilo5" width='30%' align='center'><strong> Rango </strong></td>
 				</tr>
@@ -287,11 +290,21 @@ if ($IdEstandar=="H15"){
 			while($row = pg_fetch_array($consulta))//ELEMENTOS
 					{  ?>
 				<tr>
+                            <?php   if($vector_combos[$pos]== NULL){  ?>
 					<td class="Estilo5" width='25%'align='left'><?php echo htmlentities($row['nombreprocedimiento'])?></td>
-					<td class="Estilo5" width='30%'align='center'><input name='oidprueba[<?php $pos?>]' type='hidden' id='oidprueba[<?php $pos?>]' value='<?php $row['id']?>'><?php echo htmlentities($vector_respuesta[$pos])?></td>
-					<td class="Estilo5" width='20%'align='center'><?php echo htmlentities($row['unidades'])?></td>
+                                        <td align='center' colspan='1'><?php echo htmlentities($vector_respuesta[$pos])?></td>
+                            <?php   }else {
+                                      //  echo $pos;
+                                        $conresult=$obj->BuscarResultado($vector_respuesta[$pos]);
+                                        $row_dresult=  pg_fetch_array($conresult);?>
+                                        <td class="Estilo5" width='25%'align='left'><?php echo htmlentities($row['nombreprocedimiento'])?></td>
+                                        <td class="Estilo5" width='25%'align="left"><?php echo htmlentities($row_dresult['posible_resultado'])?></td>
+                                  
+                         <?php      }?>            
+				<!--	<td class="Estilo5" width='30%'align='center'><input name='oidprueba[<?php $pos?>]' type='hidden' id='oidprueba[<?php $pos?>]' value='<?php $row['id']?>'><?php //echo htmlentities($vector_respuesta[$pos])?></td>-->
+					<td class="Estilo5" width='20%'align='left'><?php echo htmlentities($row['unidades'])?></td>
 
-					<td class="Estilo5" align='center' width='30%'><?php
+					<td class="Estilo5" align='left' width='30%'><?php
                                                      if((!empty($row['rangoinicio'])) AND (!empty($row['rangoinicio'])))
                                                            echo $row['rangoinicio']."-".$row['rangofin'];?></td>
 				</tr>
