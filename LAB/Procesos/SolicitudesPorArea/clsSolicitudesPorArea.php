@@ -256,6 +256,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
                 and t06.numero='$idexpediente' 
                 AND t02.estado=(select id from ctl_estado_servicio_diagnostico where idestado ='R')
                 AND  t01.estadodetalle=(select id from ctl_estado_servicio_diagnostico where idestado ='D') 
+                AND id_tipo_diagnostico=1
 
        UNION
 
@@ -306,7 +307,8 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
                 left  join mnt_empleado 			t24             on (t09.id_empleado=t24.id) 
                 WHERE t01.id=$idsolicitud and t06.numero='$idexpediente'
                 AND t02.estado=(select id from ctl_estado_servicio_diagnostico where idestado ='R')
-                AND  t01.estadodetalle=(select id from ctl_estado_servicio_diagnostico where idestado ='D')  ";
+                AND  t01.estadodetalle=(select id from ctl_estado_servicio_diagnostico where idestado ='D')
+                AND id_tipo_diagnostico=1";
                 
                 
         //echo $query;
@@ -353,30 +355,51 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
           
           
   //DATOS DEL DETALLE DE LA SOLICITUD
-  function DatosDetalleSolicitud($idsolicitud)
+  function DatosDetalleSolicitud($idsolicitud, $idarea)
            
   {
 	$con = new ConexionBD;
    if($con->conectar()==true) 
    {
-	      $query = /*"SELECT B.IdExamen,NombreExamen,TipoMuestra,Indicacion 
+	      $query =" select lcee.codigo_examen,
+                            lcee.nombre_examen,
+                            ltm.tipomuestra,
+                            sdses.indicacion,
+                            sdses.observacion,
+                            casd.id as idarea, 
+                            lrm.numeromuestra,
+                            ces.idestandar as estandar, 
+                            sdses.id as iddetalle
+		from ctl_area_servicio_diagnostico casd 
+                join mnt_area_examen_establecimiento mnt4       on mnt4.id_area_servicio_diagnostico=casd.id 
+                join lab_conf_examen_estab lcee                 on (mnt4.id=lcee.idexamen) 
+                INNER JOIN sec_detallesolicitudestudios sdses   on sdses.id_conf_examen_estab=lcee.id
+                inner join lab_tipomuestra ltm                  on ltm.id=sdses.idtipomuestra 
+                join lab_recepcionmuestra lrm			on (lrm.idsolicitudestudio=sdses.idsolicitudestudio) 
+                join ctl_examen_servicio_diagnostico ces	on (ces.id=mnt4.id_examen_servicio_diagnostico)
+                where sdses.idsolicitudestudio=(select idsolicitudestudio from sec_detallesolicitudestudios where id=$idsolicitud)
+                and casd.id=$idarea;
+"; 
+                      
+                      
+                      /*"SELECT B.IdExamen,NombreExamen,TipoMuestra,Indicacion 
 			FROM sec_detallesolicitudestudios A
 			INNER JOIN lab_examenes     AS B ON A.IdExamen=B.IdExamen
 			INNER JOIN lab_tipomuestra  AS C ON C.IdTipoMuestra=A.IdTipoMuestra
 			WHERE idSolicitudEstudio = $idsolicitud 
 			AND IdArea='$idarea' AND A.IdTipoMuestra=$idtipo";*/
               //echo $query;
-                      "select lcee.codigo_examen,
-                            lcee.nombre_examen,
-                            ltm.tipomuestra,
-                            sdses.indicacion,
-                            sdses.observacion,
-                            casd.id
-		from ctl_area_servicio_diagnostico casd 
-                join mnt_area_examen_establecimiento mnt4       on mnt4.id_area_servicio_diagnostico=casd.id 
-                join lab_conf_examen_estab lcee                 on (mnt4.id=lcee.idexamen) 
-                INNER JOIN sec_detallesolicitudestudios sdses   ON sdses.id_conf_examen_estab=lcee.id
-                inner join lab_tipomuestra ltm                  on ltm.id=sdses.idtipomuestra where sdses.id=$idsolicitud ";
+//                      "select lcee.codigo_examen,
+//                            lcee.nombre_examen,
+//                            ltm.tipomuestra,
+//                            sdses.indicacion,
+//                            sdses.observacion,
+//                            casd.id
+//		from ctl_area_servicio_diagnostico casd 
+//                join mnt_area_examen_establecimiento mnt4       on mnt4.id_area_servicio_diagnostico=casd.id 
+//                join lab_conf_examen_estab lcee                 on (mnt4.id=lcee.idexamen) 
+//                INNER JOIN sec_detallesolicitudestudios sdses   ON sdses.id_conf_examen_estab=lcee.id
+//                inner join lab_tipomuestra ltm                  on ltm.id=sdses.idtipomuestra where sdses.id=$idsolicitud ";
               /*-- AND casd.id=$idarea
           --  AND lcee.id=$idexamen";*/
             

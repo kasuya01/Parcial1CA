@@ -189,9 +189,15 @@ function buscaridexamen($codexamen){
             $query="select id 
                     from lab_conf_examen_estab
                     where codigo_examen='$codexamen'";
-           $result= pg_query($query);    
-           $row=  pg_fetch_array($result);
-           $id=$row['id'];
+           $result= pg_query($query);  
+           if (pg_fetch_array($result)>0){
+               $row=  pg_fetch_array($result);
+               $id=$row['id'];
+           }
+            else {
+               $id='NULL';
+            }
+           
         if(!$result)
             return false;
         else
@@ -415,7 +421,6 @@ function ObtenerSubServicio($IdSolicitud,$Fecha, $Idexpediente){
 
 			$comp";
                 
-               // echo $query_Search.'<br>';
                 $dt = pg_query($query_Search);
                 
 		//$dt = mysql_query($query_Search) or die('La consulta fall&oacute;: ' . mysql_error());

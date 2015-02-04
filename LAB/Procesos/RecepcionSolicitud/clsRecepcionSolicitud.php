@@ -257,7 +257,7 @@ class clsRecepcionSolicitud {
                       INNER JOIN mnt_area_mod_estab 		 t16 ON (t16.id = t07.id_area_mod_estab)
                       INNER JOIN ctl_area_atencion		 t17 ON (t17.id = t16.id_area_atencion)
                       WHERE t04.numero = '$idexpediente'
-                            AND t15.idestado = 'D' AND t02.id = $IdSolicitud AND t09.fecha = '$fechacita' AND t02.id_establecimiento = $lugar";
+                            AND t15.idestado = 'D' AND t02.id = $IdSolicitud AND t09.fecha = '$fechacita' AND t02.id_establecimiento = $lugar  and id_tipo_diagnostico=1";
             $result = @pg_query($query);
             if (pg_num_rows($result)==0){ // busqueda si el paciente es de referencia
               $query = "
@@ -284,14 +284,10 @@ class clsRecepcionSolicitud {
                              'day', 'día') AS edad,
                              t06.nombre AS sexo,
                              t07.id AS idsubservicio,
-                             t10.peso,
-                             t10.talla,
                              t13.nombre,
                              TO_CHAR(t05.fecha_nacimiento, 'DD/MM/YYYY') AS fechanacimiento,
                              t01.id_establecimiento,
-                             t14.tiposolicitud,
-                             t12.codigo AS iddiagnostico1,
-                             t12.diagnostico
+                             t14.tiposolicitud
                       FROM  sec_solicitudestudios                t01
                       INNER JOIN mnt_dato_referencia           	 t02 ON (t02.id = t01.id_dato_referencia)
                       LEFT  JOIN mnt_empleado                    t03 ON (t03.id = t02.id_empleado)
@@ -301,15 +297,13 @@ class clsRecepcionSolicitud {
                       INNER JOIN mnt_aten_area_mod_estab         t07 ON (t07.id = t02.id_aten_area_mod_estab)
                       INNER JOIN ctl_atencion                    t08 ON (t08.id = t07.id_atencion)
                       LEFT JOIN cit_citas_serviciodeapoyo       t09 ON (t01.id = t09.id_solicitudestudios)
-                      LEFT  JOIN sec_examenfisico                t10 ON (t01.id = t10.idhistorialclinico)
-                      LEFT  JOIN sec_diagnosticospaciente        t11 ON (t01.id = t11.idhistorialclinico)
-                      LEFT  JOIN mnt_cie10                       t12 ON (t12.id = t11.iddiagnostico1)
+                     
                       INNER JOIN ctl_establecimiento             t13 ON (t13.id = t01.id_establecimiento)
                       INNER JOIN lab_tiposolicitud               t14 ON (t14.id = t01.idtiposolicitud)
                       INNER JOIN ctl_estado_servicio_diagnostico t15 ON (t15.id = t01.estado AND t15.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
                         INNER JOIN mnt_area_mod_estab 		 t16 ON (t16.id = t07.id_area_mod_estab)
                       INNER JOIN ctl_area_atencion		 t17 ON (t17.id = t16.id_area_atencion)
-                      WHERE t04.numero = '$idexpediente' AND t15.idestado = 'D' AND t01.id = $IdSolicitud AND t09.fecha = '$fechacita' AND t02.id_establecimiento = $lugar";
+                      WHERE t04.numero = '$idexpediente' AND t15.idestado = 'D' AND t01.id = $IdSolicitud AND t09.fecha = '$fechacita' AND t02.id_establecimiento = $lugar  and id_tipo_diagnostico=1";
             $result = @pg_query($query);
             
             if (!$result)
@@ -632,7 +626,7 @@ class clsRecepcionSolicitud {
     function obtenerEstado($lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "SELECT COUNT(id) AS numero FROM lab_proceso_establecimiento WHERE id_proceso_laboratorio = 3";
+            $query = "SELECT COUNT(id) AS numero FROM lab_proceso_establecimiento WHERE id_proceso_laboratorio = 3 and activo=true;";
 
             $result = @pg_query($query);
             if (!$result)

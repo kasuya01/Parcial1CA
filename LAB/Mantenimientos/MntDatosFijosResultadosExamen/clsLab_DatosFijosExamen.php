@@ -16,7 +16,7 @@ class clsLab_DatosFijosExamen
 	   {
 	    $query = "INSERT INTO lab_datosfijosresultado
 		      (id_conf_examen_estab,unidades,rangoinicio,rangofin,nota,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,fechaini,fechafin,idsexo,idedad) 
-                      VALUES($idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,NOW(),$usuario,NOW(),$lugar,$Fechaini,$Fechafin,$sexo,$redad)";
+                      VALUES($idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,date_trunc('seconds',NOW()),$usuario,date_trunc('seconds', NOW()),$lugar,$Fechaini,$Fechafin,$sexo,$redad)";
 		//echo $query;
 	     $result = pg_query($query);
 	
@@ -232,7 +232,7 @@ class clsLab_DatosFijosExamen
         }
 
           
-                   
+         //fn_pg          
         function Estadohabilitado($idatofijo,$usuario) {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
@@ -241,6 +241,24 @@ class clsLab_DatosFijosExamen
 					idusuarioreg=$usuario,
 					fechahoramod=NOW()
 					 WHERE id=$idatofijo ";
+			$result = pg_query( $query );
+			if ( !$result )
+				return false;
+			else
+				return $result;
+		}
+	}
+          
+         //fn_pg          
+        function buscardatosfijo($idsexo,$idedad, $idconf) {
+		$con = new ConexionBD;
+		if ( $con->conectar()==true ) {
+                  $query = "select * 
+                     from lab_datosfijosresultado 
+                     where id_conf_examen_estab=$idconf
+                     and (fechafin is null or date(fechafin)>(current_date))
+                     and (idsexo is null or idsexo=$idsexo)
+                     and (idedad=4 or idedad=$idedad)";
 			$result = pg_query( $query );
 			if ( !$result )
 				return false;

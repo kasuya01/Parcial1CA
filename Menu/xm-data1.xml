@@ -27,6 +27,7 @@
 	    <menu labelText="CONFIGURACIÓN">
 			<item labelText="Áreas de Laboratorio" url="../LAB/Mantenimientos/Lab_Areas/MntAreasLaboratorio.php"/>
 			<item labelText="Examenes por Áreas" url="../LAB/Mantenimientos/Mnt_AreaExamenEstablecimiento/MntAreaExamenEstablecimiento.php"/>
+			<item labelText="Procesos del Laboratorio" url="../LAB/Mantenimientos/Lab_ProcesoLaboratorio/MntProcesoLaboratorio.php"/>
 		</menu>
 		<sep/>
 	    <menu labelText="MANTENIMIENTOS">

@@ -3,6 +3,7 @@ include_once("clsSolicitudesPorArea.php");
 $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
+ $ROOT_PATH = $_SESSION['ROOT_PATH'];
 ?>
 <html>
 <head>
@@ -10,6 +11,8 @@ $area=$_SESSION['Idarea'];
 <!--<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />-->
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+<?php include_once $ROOT_PATH."/public/css.php";?>
+<?php include_once $ROOT_PATH."/public/js.php";?>
 <style type="text/css">
 <!--
 @media print{
@@ -130,7 +133,7 @@ function calc_edad()
                 
                 
 		//recuperando los valores del detalle de la solicitud
-		 $consultadetalle=$objdatos->DatosDetalleSolicitud($idsolicitud);
+		 $consultadetalle=$objdatos->DatosDetalleSolicitud($idsolicitud, $idarea);
                // echo $consultadetalle;
                 ?>
                 
@@ -208,28 +211,34 @@ function calc_edad()
             echo $imprimir;
         ?>
 
-	   <table width='95%' border='0' align='center'>
+<!--   <table width='95%' border='0' align='center' class="table table-hover table-bordered table-condensed table-white">
 	   <tr>
-		<td colspan='4' align='center' >ESTUDIO SOLICITADO</td>
-	   </tr>
-	   <tr>
-                 <td>
-		    <table border = 1 align='center'  width='85%'>
+		<td colspan='4' align='center' ></td>
+   --><br>
+   <br>
+                    <table border = 0 align='center'  width='80%' class="table table-hover table-bordered table-white">
+                       <thead>
+                          <tr><th colspan="6" style="text-align: center">ESTUDIO SOLICITADO</th></tr>
                        <tr class='CobaltFieldCaptionTD'>
-                            <td width="10%"> IdExamen</td>
+                            <td width="8%"> Validar</td>
+                            <td width="10%"> Cód.Examen</td>
 			    <td width="53%"> Examen </td>
+			    <td width="14%"> NoMuestra </td>
 			    <td width="14%"> Tipo Muestra </td>
-			    <td width="23%"> Indicaci&oacute;n M&eacute;dica </td>
+			    <td width="12%"> Indicaci&oacute;n M&eacute;dica </td>
 		       </tr>
+                       </thead><tbody>
 <?php
             $pos=0;
 		while($fila = pg_fetch_array($consultadetalle)){?>
 			<tr>
-                            <td  width="10%"><?php echo $fila[0]?></td>
-                            <td width="53%"><?php echo htmlentities($fila[1])?></td>	
-                            <td width="14%"><?php echo htmlentities($fila[2])?></td>	
-			<?php if (!empty($fila[3])){?>    				
-                            <td width="23%"><?php echo htmlentities($fila[3])?></td>
+                           <td  width="10%"><input type="checkbox" name="valida_detalle" value="<?php echo $fila['iddetalle'];?>" selected/></td>
+                            <td  width="10%"><?php echo $fila['estandar']?></td>
+                            <td width="53%"><?php echo htmlentities($fila['nombre_examen'])?></td>	
+                            <td width="14%"><?php echo htmlentities($fila['numeromuestra'])?></td>	
+                            <td width="14%"><?php echo htmlentities($fila['tipomuestra'])?></td>	
+			<?php if (!empty($fila['indicacion'])){?>    				
+                            <td width="23%"><?php echo htmlentities($fila['indicacion'])?></td>
 			</tr>
                         <?php }else{?>
                              <td width="23%">&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -241,7 +250,7 @@ function calc_edad()
 pg_free_result($consultadetalle);?>
 
  <input type='hidden' name='oculto' id='oculto' value='<?php echo $pos ?>' />
-			</table>
+   </tbody></table>
 						
   
 </div>
@@ -251,47 +260,50 @@ pg_free_result($consultadetalle);?>
 			<td colspan="4" align="center">&nbsp;</td>
 		</tr>
 		<tr>
-			<td colspan="4" align="center">VALIDACI&Oacute;N DE RECEPCI&Oacute;N DE ESTUDIO
+                   <td colspan="4" align="center"><strong><h4>VALIDACI&Oacute;N DE RECEPCI&Oacute;N DE ESTUDIO</h4></strong>
 			</td>
 		</tr>
 		<tr>
-			<td>Procesar Muestra</td>
-			<td><select id="cmbProcesar" name="cmbProcesar" size="1" onChange="MostrarObservacion();" >
+			<td>Procesar Muestra:</td>
+                        <td><select id="cmbProcesar" name="cmbProcesar" size="1" onChange="MostrarObservacion();" class="form-control height" >
 					<option value="0" >--Seleccione--</option>
 					<option value="S" >Si</option>
 					<option value="N" >No</option>		
 				</select> 
 			</td>
 			<td colspan="2" >
-				<input type="button"  name="btnProcesar" id="btnProcesar" disabled="disabled"  value="Procesar Muestra" onClick='Procesar()'>
-				<input type="button" name="btnRechazar" id="btnRechazar" disabled="disabled" value="Rechazar Muestra" onClick='Rechazar()'>
+				
 			</td>
 		</tr>
 	</table>	
 </div>	
+   <br>
 <div id="divObservacion" style="display:none" >
 	<table align="center" width="55%">
 		<tr>
-			<td>Observacion</td>
+			<td>Observacion: </td>
 			<td colspan="3">
-				<textarea cols="60" rows="2" id="txtobservacion" name="txtobservacion" <span style="color: #0000FF;background-color:#87CEEB;"> </textarea>
+                           <textarea cols="60" rows="2" id="txtobservacion" name="txtobservacion" class="form-control"> </textarea>
 			</td>
 		</tr>
 	</table>
 </div>
+   <br>
 </form>			
 <div id="divCambioEstado">
 </div>
 <div id="divBotones">
 <table align="center">
 <td>
-	<input type="button" name="btnimprimir" id="btnimprimir"  value="Imprimir" onClick="Imprimir();">
-	<input type="button" name="btnCerrar"  value="Cerrar" onClick="Cerrar()">
+   <button type="button"  name="btnProcesar" id="btnProcesar" disabled="disabled"  value="Procesar Muestra" class="btn btn-primary" onClick='Procesar()'><span class="glyphicon glyphicon-ok-circle"></span>&nbsp;Procesar Muestra</button>
+   <button type="button" name="btnRechazar" id="btnRechazar" disabled="disabled" value="Rechazar Muestra" class="btn btn-primary" onClick='Rechazar()'><span class="glyphicon glyphicon-remove-circle"></span>&nbsp;Rechazar Muestra</button>
+   <button type="button" name="btnimprimir" id="btnimprimir"  value="Imprimir" onClick="Imprimir();" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span>&nbsp;Imprimir</button>
+   <button type="button" name="btnCerrar" class="btn btn-primary" value="Cerrar" onClick="Cerrar()"><span class="glyphicon glyphicon-remove"></span>&nbsp;Cerrar</button>
 </td>	
 
 
 </table>
-    
+   <br>
  <?php
     }else {
      // echo   $consulta;
