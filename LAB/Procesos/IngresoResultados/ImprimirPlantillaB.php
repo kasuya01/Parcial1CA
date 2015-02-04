@@ -384,7 +384,7 @@ $idestab              = $_GET['var19'];
                                                 <tr>
                                                     <td class="Estilo5"  colspan='3'><?php echo htmlentities($row['elemento'])?></td>
                                                     <td class="Estilo5"  colspan='1'><?php echo htmlentities($vector_elementos[$posele])?></td>
-                                                    <td width='25%' class="Estilo6" colspan='1'><?php htmlentities($row['unidadelem'])?></td>
+                                                    <td class="Estilo6"  colspan='1'><?php htmlentities($row['unidadelem'])?></td>
                                                 </tr>
                                             <?php
                                                 $posele=$posele+1;
