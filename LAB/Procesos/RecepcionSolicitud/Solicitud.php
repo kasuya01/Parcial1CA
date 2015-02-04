@@ -1,3 +1,6 @@
+<?php
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+?>
 <html>
     <head>
         <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
@@ -14,6 +17,8 @@
         </style>
         <title>Datos de Solicitud</title>
         <script language="JavaScript" type="text/javascript" src="ajax_RecepcionSolicitud.js"></script>
+         <?php include_once $ROOT_PATH."/public/css.php";?>
+         <?php include_once $ROOT_PATH."/public/js.php";?>
         <script language="JavaScript" >
             function RecogeValor1()
             {
@@ -98,6 +103,7 @@
                              t10.peso,
                              t10.talla,
                              t12.sct_name_es,
+         <?php include_o
                              t05.conocido_por AS conocidopor
                       FROM  sec_historial_clinico 			     t01
                       INNER JOIN sec_solicitudestudios 		     t02 ON (t01.id = t02.id_historial_clinico)
@@ -335,14 +341,14 @@
                                     <td colspan="5" align="center" >ESTUDIOS SOLICITADOS</td></tr>
                                 <tr>
                                     <td colspan="5">
-                                        <table border = 1 align='center' class="StormyWeatherFormTABLE">
+                                       <table border = 1 align='center' class='table table-hover table-bordered table-condensed table-white'><thead>
                                             <tr>
-                                                <td class="CobaltFieldCaptionTD">Código de prueba</td>
-                                                <td class="CobaltFieldCaptionTD">Área</td>
-                                                <td class="CobaltFieldCaptionTD">Código Examen</td>
-                                                <td class="CobaltFieldCaptionTD">Nombre Examen </td>
-                                                <td class="CobaltFieldCaptionTD">Indicación</td>
-                                            </tr>
+                                                <th class="CobaltFieldCaptionTD">Código de prueba</th>
+                                                <th class="CobaltFieldCaptionTD">Área</th>
+                                                <th class="CobaltFieldCaptionTD">Código Examen</th>
+                                                <th class="CobaltFieldCaptionTD">Nombre Examen </th>
+                                                <th class="CobaltFieldCaptionTD">Indicación</th>
+                                            </tr></thead><tbody>
                                             <?php
                                                 while ($fila = pg_fetch_array($resultdetalle)) {
                                             ?>
@@ -360,6 +366,7 @@
                                             <?php
                                                 }
                                             ?>
+                                          </tbody>
                                         </table>
                                     </td>
                                 </tr>

@@ -305,7 +305,7 @@ include_once $ROOT_PATH."/public/js.php";
           <label align="left">No. Expediente:&nbsp;</label>
           <input type="text" class="form-control" id="IdNumeroExp_Name" >
         </div>
-          <input type="button" name="btnSearch" class="btn btn-default" onClick="busquedaexp()" value="Buscar">
+         <button type="button" name="btnSearch" class="btn btn-primary" onClick="busquedaexp()" value="Buscar"><span class='glyphicon glyphicon-search'>&nbsp;Buscar</span></button>
       </form>
     </div>
 <!--            </form>

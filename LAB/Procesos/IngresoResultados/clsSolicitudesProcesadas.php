@@ -1162,6 +1162,23 @@ and (date(t02.fechafin) >= current_date or date(t02.fechafin) is null);";
             }
         }
     }
+    //Fn PG
+    function consfecha($idsolicitud, $iddetallesolicitud,  $lugar){
+         $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query= "select * 
+from sec_detallesolicitudestudios t01
+where t01.id=$iddetallesolicitud
+and idestablecimiento=$lugar;";
+            //echo $query;
+            $result = pg_query($query);
+            if (!$result) {
+                return false;
+            } else {
+                return $result;
+            }
+        }
+    }
 
 }
 //CLASE

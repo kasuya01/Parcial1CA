@@ -37,3 +37,14 @@ table thead {
     font-weight: bold;
     margin-top: 10px;
 }
+
+.form-control.height{
+   height: 25px !important;
+   padding: 3px 12px;
+}
+
+.form-control.placeholder::-webkit-input-placeholder{
+   font-weight: lighter !important;
+   opacity: 100 !important;
+   color: #BDBDBD !important;
+}

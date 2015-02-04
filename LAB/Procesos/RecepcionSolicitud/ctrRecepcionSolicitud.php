@@ -11,7 +11,8 @@ $Clases  = new cls_Clases;
 //variables POST
 $opcion = $_POST['opcion'];
 $object = new clsRecepcionSolicitud;
-
+//include_once $ROOT_PATH."/public/css.php";
+//include_once $ROOT_PATH."/public/js.php";
 //creando los objetos de las clases
 $con = new ConexionBD;
 $con2 = new ConexionBDLab;
@@ -39,7 +40,7 @@ switch ($opcion) {
 
             $result = @pg_query($query);
 
-            $aux_query  = "SELECT COUNT(id) AS numero FROM lab_proceso_establecimiento WHERE id_proceso_laboratorio = 3";
+            $aux_query  = "SELECT COUNT(id) AS numero FROM lab_proceso_establecimiento WHERE id_proceso_laboratorio = 3 and activo=true";
             $aux_result = @pg_query($aux_query);
 
             if(pg_fetch_array($aux_result)[0] === "0") {
@@ -173,10 +174,11 @@ switch ($opcion) {
 
         //Asignando el Numero de Muestra y Registrando la recepcion
         if ($con->conectar() == true) {
-            $query = "SELECT MAX(t01.numeromuestra) + 1 AS numeromuestra
+            $query = "SELECT coalesce(MAX(t01.numeromuestra),0) + 1 AS numeromuestra
                       FROM lab_recepcionmuestra        t01
 		      INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
-		      WHERE t01.fecharecepcion = TO_DATE(NOW()::text, 'YYYY-MM-DD') AND t02.id_establecimiento = $lugar";
+		      WHERE  date(t01.fecharecepcion) = current_date  
+                      AND t02.id_establecimiento = $lugar";
             $result = @pg_query($query);
             if (!$result)
                 echo "N";
@@ -263,7 +265,7 @@ switch ($opcion) {
             $query  = "SELECT id AS idestablecimiento, nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento = $Idtipo ORDER BY Nombre";
             $result = pg_query($query);
 
-            $rslts  = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" class="MailboxSelect" style="width:400px">';
+            $rslts  = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" class="form-control height+" style="width:400px">';
             $rslts .='<option value="0">--Seleccione un Establecimiento--</option>';
 
             while ($rows = pg_fetch_array($result)) {

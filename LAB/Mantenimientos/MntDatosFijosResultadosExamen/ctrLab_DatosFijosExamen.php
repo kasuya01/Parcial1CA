@@ -21,8 +21,10 @@ switch ($opcion)
 		$idarea=$_POST['idarea'];
 		$unidades=(empty($_POST['unidades'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidades']) . "'"; 
                 $nota=(empty($_POST['nota'])) ? 'NULL' : "'" . pg_escape_string($_POST['nota']) . "'";  
-                $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";        
-                $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'"; 
+                $sexo=$_POST['sexo'];    
+                if ($sexo==3)
+                    $sexo='NULL';
+                $redad=$_POST['redad']; 
                 $rangoinicio=(empty($_POST['rangoinicio'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangoinicio']) . "'";
                 $rangofin=(empty($_POST['rangofin'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangofin']) . "'";
                 $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
@@ -80,23 +82,6 @@ switch ($opcion)
 			  
 	break;
         
-        
-        case 9:  //habilitado
-             
-                
-		$idatofijo=$_POST['idatofijo'];
-                //$fechafinhabilitado="NULL";
-             //	echo $idexamen."-".$condicion;
-		//$resultado=Estado::EstadoCuenta($idexamen,$cond,$lugar);
-		if($objdatos->Estadohabilitado($idatofijo,$usuario)==true )
-                {
-                   // echo "cambio";
-                }else{
-                   // echo "no cambio";
-                }
-	break;
-        
-        
 	case 4:// PAGINACION
 		
 		////para manejo de la paginacion
@@ -143,7 +128,7 @@ switch ($opcion)
                                    </td> -->
                                    
                                     <td width='6%'><span style='color: #0101DF;'>
-                   	 <a style ='text-decoration:underline;cursor:pointer;' onclick='Estado(\"".$row['idatofijo']."\",\"".$row['habilitado']."\")'>".$row['habilitado']."</a></td>
+                   	 <a style ='text-decoration:underline;cursor:pointer;' title='Al dar Click inhabilitará el dato fijo' onclick='Estado(\"".$row['idatofijo']."\",\"".$row['habilitado']."\")'>".$row['habilitado']."</a></td>
                                    
                                   
 				<td>". $row['codigo_examen'] ."</td>
@@ -278,7 +263,7 @@ switch ($opcion)
 		$consultaex= $objdatos->ExamenesPorArea($idarea,$lugar);
 		//$dtMed=$obj->LlenarSubServ($proce);	
 		
-		$rslts = '<select name="cmbExamen" id="cmbExamen" size="1" >';
+		$rslts = '<select name="cmbExamen" id="cmbExamen" size="1" class="form-control height" style="width:75%">';
 		$rslts .='<option value="0">--Seleccione un Examen--</option>';
 			
 		while ($rows =pg_fetch_array($consultaex)){
@@ -881,6 +866,38 @@ switch ($opcion)
 		//echo $query_search;
 	   
 	break;
+         
+        case 9:  //habilitado
+             
+                
+		$idatofijo=$_POST['idatofijo'];
+                //$fechafinhabilitado="NULL";
+             //	echo $idexamen."-".$condicion;
+		//$resultado=Estado::EstadoCuenta($idexamen,$cond,$lugar);
+		if($objdatos->Estadohabilitado($idatofijo,$usuario)==true )
+                {
+                   // echo "cambio";
+                }else{
+                   // echo "no cambio";
+                }
+	break;
+        
+        case 10:
+           $idexamen=$_POST['idexamen'];
+           $sexo=$_POST['sexo'];
+           $edad=$_POST['redad'];
+           $hay=$objdatos->buscardatosfijo($sexo,$edad, $idexamen);
+           
+            $cuantos=pg_num_rows($hay);
+            if ($cuantos>0){
+               $imprimir = 1;
+            }
+            else {
+               $imprimir = 0; 
+            }
+           echo $imprimir; 
+             
+        break;
 }
 
 ?>

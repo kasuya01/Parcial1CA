@@ -110,6 +110,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                     <th >Cód. Area</th>
                     <th> Examen </th>
                     <th> Indicaciones </th>
+                    <th> Fecha Tmx. </th>
 		</tr></thead><tbody>";
         $detalle = $objdatos->BuscarDetalleSolicitud($idexpediente, $Nfechacita, $arraysolic[$i], $idEstablecimiento);
         while ($rows = pg_fetch_array($detalle)) {
@@ -121,6 +122,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                 echo "<td>" . htmlentities($rows['indicacion']) . "</td>";
             } else
                 echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+                echo " <td style='width:225px'><input type='text' class='date form-control height'  id='f_tomamuestra' name='f_tomamuestra'  value=". date('Y-m-d H:i')." style='width:200px'/></td>";
             //***************** bandera ************************
             if (($rows['idexamen'] == 'COA001')or ( $rows['idexamen'] == 'COA002') or ( $rows['idexamen'] == 'COA016')) {
                 $ban = 1;

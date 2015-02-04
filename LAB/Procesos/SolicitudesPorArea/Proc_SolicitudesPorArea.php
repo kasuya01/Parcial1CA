@@ -117,7 +117,7 @@ function BuscarServicio(IdServicio){
                     <tr>		
                         <td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</td>
                         <td class="StormyWeatherDataTD">
-                            <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)">
+                           <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)" class="form-control height">
                                 <option value="0" >Seleccione un Tipo de Establecimiento</option>
                                
                                 
@@ -138,7 +138,7 @@ function BuscarServicio(IdServicio){
                         <td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
                         <td class="StormyWeatherDataTD" >
                             <div id="divEstablecimiento">
-                                <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px"> 
+                               <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px" class="form-control height"> 
                                     <option value="0" >Seleccione un Establecimiento</option>
                                         <?php 
 				  echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
@@ -160,7 +160,7 @@ function BuscarServicio(IdServicio){
                    <tr>	
                         <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
                         <td class="StormyWeatherDataTD">
-                            <select name="CmbServicio" id="CmbServicio" style="width:405px" onChange="BuscarServicio(this.value)" >
+                            <select name="CmbServicio" id="CmbServicio" style="width:405px" onChange="BuscarServicio(this.value)" class="form-control height">
                                 <option value="0" selected="selected" align="center">Seleccione Procedencia</option>
                                 <?php
 					$db = new ConexionBD;
@@ -188,7 +188,7 @@ function BuscarServicio(IdServicio){
                         <td class="StormyWeatherFieldCaptionTD">Servicio</td>
                         <td class="StormyWeatherDataTD">
                             <div id="divsubserv">
-                                <select name="cmbSubServ" id="cmbSubServ" style="width:375px" >
+                               <select name="cmbSubServ" id="cmbSubServ" style="width:375px" class="form-control height" >
                                         <option value="0" selected="selected" >Seleccione un Servicio</option>
                                 </select>
                             </div>
@@ -197,7 +197,7 @@ function BuscarServicio(IdServicio){
                     <tr>
                         <td class="StormyWeatherFieldCaptionTD" style="font-weight:bold"><b>&Aacute;rea de Laboratorio*</b></td>
                         <td class="StormyWeatherDataTD" >
-                                <select id="cmbArea" name="cmbArea" size="1" style="width:405px" onChange="BuscarExamen(this.value)" >
+                           <select id="cmbArea" name="cmbArea" size="1" style="width:405px" onChange="BuscarExamen(this.value)" class="form-control height">
                                 <!--<option value="0" selected="selected">Seleccione un &Aacute;rea</option>-->
                                 <?php
 				include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
@@ -213,7 +213,7 @@ function BuscarServicio(IdServicio){
                         <td  class="StormyWeatherFieldCaptionTD">Examen </td>
                         <td  class="StormyWeatherDataTD" >
                             <div id="divExamen">
-                                <select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:375px"> 
+                               <select name="cmbExamen" id="cmbExamen" class="form-control height" style="width:375px" > 
                                     <option value="0">Seleccione Examen</option>
                                 </select>
                             </div>
@@ -222,47 +222,47 @@ function BuscarServicio(IdServicio){
                     <tr>
                         <td class="StormyWeatherFieldCaptionTD" >Expediente</td>
                         <td class="StormyWeatherDataTD" >
-                             <div class="col-xs-9"> 
-                                 <input type="text" size="28" name="txtexpediente" id="txtexpediente" class="form-control" placeholder="Buscar Expediente" />
+                             <div> 
+                                 <input type="text" size="28" name="txtexpediente" id="txtexpediente" class="form-control height placeholder" placeholder="No Expediente" style="width:405px"/>
                              </div>
                         </td>
                         <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Consulta</td>
                         <td class="StormyWeatherDataTD" width="20%">
-                           <div class="col-xs-9">  
-                               <input type="text" size="25" name="txtfechasolicitud" id="txtfechasolicitud" class="date"  placeholder="aaaa-mm-dd"/>
+                           <div>  
+                               <input type="text" size="25" name="txtfechasolicitud" id="txtfechasolicitud" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" style="width:375px"/>
                            </div>
                     </tr>
                     <tr>
                         <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong></td> 
                         <td class="StormyWeatherDataTD" >
-                            <div class="col-xs-9">    <input  maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre" class="form-control">
+                            <div >    <input  maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre" class="form-control height" style="width:405px">
                                 </div>
                             </td> 
                         <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Nombre</strong></td> 
                         <td class="StormyWeatherDataTD">
-                           <div class="col-xs-9"> 
-                               <input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre" class="form-control">
+                           <div> 
+                               <input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre" class="form-control height" style="width:375px">
                            </div>
                         </td> 
                     </tr>
                     <tr>
                         <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Apellido</strong></td> 
                         <td class="StormyWeatherDataTD">
-                           <div class="col-xs-9"> 
-                               <input  maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido" class="form-control">
+                           <div> 
+                               <input  maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido" class="form-control height" style="width:405px">
                            </div>
                         </td> 
                         <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Apellido</strong></td> 
                         <td class="StormyWeatherDataTD" >
-                           <div class="col-xs-9"> 
-                               <input  maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido"  class="form-control">
+                           <div> 
+                               <input  maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido"  class="form-control height" style="width:375px">
                            </div>
                         </td>
                     </tr>	
                     <tr>
                         <td class="StormyWeatherFieldCaptionTD" align="left" colspan="1" align="right">Tipo Solicitud</td>
                         <td class="StormyWeatherDataTD" colspan="3">
-                            <select id="cmbTipoSolic" name="cmbTipoSolic" size="1" >
+                           <select id="cmbTipoSolic" name="cmbTipoSolic" size="1" class="form-control height" style="width:405px">
                                 <option value="0">Seleccione un Tipo de Solicitud</option>
                                 <option value="1">URGENTE</option>
                                 <option value="2">NORMAL</option>
