@@ -353,12 +353,12 @@ class clsLab_Examenes
 	 $con = new ConexionBD;
 	 if($con->conectar()==true) 
 		{
-			$query = "SELECT mnt_formulariosxestablecimiento.idformulario,nombreformulario 
+			$query = "SELECT mnt_formulariosxestablecimiento.id,nombreformulario 
 				  FROM mnt_formularios 
 				  INNER JOIN mnt_formulariosxestablecimiento    
 				  ON mnt_formularios.id=mnt_formulariosxestablecimiento.idformulario
 		                  WHERE idestablecimiento=$lugar";
-                        //echo $query;
+                      // echo $query;
 			 $result = pg_query($query);
 			if (!$result)
 				return false;
@@ -603,11 +603,11 @@ function ObtenerCodigo($idarea){
       $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
     if($con->conectar()==true){
-        $query ="SELECT ctl_examen_servicio_diagnostico.id,idestandar,descripcion 
-FROM ctl_examen_servicio_diagnostico 
-INNER JOIN lab_estandarxgrupo ON lab_estandarxgrupo.id=ctl_examen_servicio_diagnostico.idgrupo
-WHERE id_atencion=98 AND ctl_examen_servicio_diagnostico.activo=TRUE AND lab_estandarxgrupo.activo=TRUE
-ORDER BY ctl_examen_servicio_diagnostico.id";
+    echo $query ="SELECT ctl_examen_servicio_diagnostico.id,idestandar,descripcion 
+                  FROM ctl_examen_servicio_diagnostico 
+                  INNER JOIN lab_estandarxgrupo ON lab_estandarxgrupo.id=ctl_examen_servicio_diagnostico.idgrupo
+                  WHERE id_atencion=98 AND ctl_examen_servicio_diagnostico.activo=TRUE AND lab_estandarxgrupo.activo=TRUE
+                  ORDER BY SUBSTRING(idestandar FROM '[a-zA-Z]+'), TO_NUMBER(SUBSTRING(idestandar FROM '[0-9]+'), '99')";
         $result = pg_query($query);
 	if (!$result)
 	   return false;
@@ -636,12 +636,14 @@ ORDER BY ctl_examen_servicio_diagnostico.id";
                              lab_conf_examen_estab.impresion,urgente, ctl_sexo.nombre AS nombresexo,lab_conf_examen_estab.condicion,
                              (CASE WHEN lab_conf_examen_estab.condicion='H' THEN 'Habilitado'
                              WHEN lab_conf_examen_estab.condicion='I' THEN 'Inhabilitado' END) AS cond,cit_programacion_exams.rangotiempoprev,
-                             ctl_examen_servicio_diagnostico.descripcion,mnt_formularios.id as idformulario  
+                             ctl_examen_servicio_diagnostico.descripcion,mnt_formulariosxestablecimiento.id as idformulario,
+                             (SELECT nombreformulario FROM mnt_formularios WHERE mnt_formularios.id=mnt_formulariosxestablecimiento.idformulario) AS nombreformulario   
                              FROM lab_conf_examen_estab 
                              INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
                              INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
                              INNER JOIN ctl_examen_servicio_diagnostico ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico=ctl_examen_servicio_diagnostico.id 
-                             LEFT JOIN mnt_formularios ON lab_conf_examen_estab.idformulario=mnt_formularios.id 
+                             LEFT JOIN mnt_formulariosxestablecimiento ON lab_conf_examen_estab.idformulario= mnt_formulariosxestablecimiento.id 
+                             LEFT JOIN mnt_formularios  ON mnt_formularios.id=mnt_formulariosxestablecimiento.idformulario
                              INNER JOIN lab_plantilla ON lab_conf_examen_estab.idplantilla=lab_plantilla.id 
                              LEFT JOIN ctl_sexo ON lab_conf_examen_estab.idsexo= ctl_sexo.id 
                              INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
@@ -651,7 +653,7 @@ ORDER BY ctl_examen_servicio_diagnostico.id";
                              ORDER BY ctl_area_servicio_diagnostico.idarea,lab_conf_examen_estab.nombre_examen  
                              LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
                   
-                  //   echo $query; 
+                    // echo $query; 
                             $result = pg_query($query);
                              
                             if (!$result)
@@ -710,7 +712,7 @@ ORDER BY ctl_examen_servicio_diagnostico.id";
                         FROM  mnt_area_examen_establecimiento
                         INNER JOIN ctl_examen_servicio_diagnostico ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico=ctl_examen_servicio_diagnostico.id 
                         WHERE  mnt_area_examen_establecimiento.activo=TRUE AND mnt_area_examen_establecimiento.id_area_servicio_diagnostico=$idarea AND id_establecimiento=$lugar 
-                        ORDER BY descripcion";
+                        ORDER BY SUBSTRING(idestandar FROM '[a-zA-Z]+'), TO_NUMBER(SUBSTRING(idestandar FROM '[0-9]+'), '99')";
               
           //  echo $query;
 		 $result = pg_query($query);

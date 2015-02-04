@@ -178,7 +178,7 @@ function CambiarEstadoDetalle($iddetalle)
                         return false;
                     }
                     
-               } else {
+                } else {
                     return false; // Aqui va la logica si hay mas de una metodologia en el examen
                 }
             } else {
@@ -188,15 +188,20 @@ function CambiarEstadoDetalle($iddetalle)
     }
  
  //FUNCION PARA INSERTAR EL DETALLE DE LOS RESULTADOS DE LOS PROCESOS
- function insertar_detalle($idresultado,$idproceso,$resultado,$comentario,$lugar)
+ function insertar_detalle($idresultado,$idproceso,$resultado,$comentario,$lugar,$pos)
  {
    $con = new ConexionBD;
    if($con->conectar()==true) 
-   {
-     $query = "INSERT INTO lab_detalleresultado(idresultado,idprocedimiento,resultado,observacion,idestablecimiento) 
-		  VALUES($idresultado,$idproceso,'$resultado','$comentario',$lugar)";
-     $result = @pg_query($query);
-	 
+   {    if ($pos==NULL){
+            $query = "INSERT INTO lab_detalleresultado(idresultado,idprocedimiento,resultado,observacion,idestablecimiento) 
+		      VALUES($idresultado,$idproceso,'$resultado','$comentario',$lugar)";
+            
+        }
+        else{
+             $query = "INSERT INTO lab_detalleresultado(idresultado,idprocedimiento,id_posible_resultado,observacion,idestablecimiento) 
+		       VALUES($idresultado,$idproceso,'$resultado','$comentario',$lugar)";
+        }
+       $result = @pg_query($query);
      if (!$result)
        return false;
      else

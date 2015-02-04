@@ -433,7 +433,7 @@ function ImprimirPlantillaD(idsolicitud, idexamen, idresultado, idempleado, esta
             "&var2=" + idexamen + "&var3=" + idresultado + "&var4=" + idempleado + "&var5=" + escape(estab), "ImprimirD", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
 }
 
-function ImprimirPlantillaE(idsolicitud, idexamen, responsable, procedencia, origen, cometarios, valores, codigos, observacion, estab, sexo, idedad) {
+function ImprimirPlantillaE(idsolicitud, idexamen, responsable, procedencia, origen, cometarios, valores, codigos, observacion, estab, sexo, idedad, valores_combos) {
 //alert (idsolicitud+" examen= "+idexamen+" responsable= "+responsable+" procedencia= "+procedencia+
 //"origen= "+origen+" cometarios= "+cometarios+" valores= "+valores+" codigos= "+codigos+" observacion= "+observacion+" estab= "+estab+" sexo "+sexo+" edad= "+idedad);
     ventana_secundaria = window.open("ImprimirPlantillaE.php?var1=" + idsolicitud +
@@ -442,7 +442,7 @@ function ImprimirPlantillaE(idsolicitud, idexamen, responsable, procedencia, ori
             "&var6=" + encodeURIComponent(cometarios) + "&var7=" + encodeURIComponent(valores) +
             "&var8=" + codigos + "&var9=" + encodeURIComponent(observacion) +
             "&var10=" + escape(estab) + "&var11=" + sexo +
-            "&var12=" + idedad, "ImprimirE", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
+            "&var12=" + idedad + "&var13=" + valores_combos, "ImprimirE", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
 }
 
 
@@ -1377,11 +1377,7 @@ function ValidarCamposPlantillaB()
         }
 
     }
-    if (document.getElementById('cmbTabulador').value == 0)
-    {
-        resp = false;
-    }
-    
+        
      if (document.getElementById('cmbTabulador').value == 0)
     {
         resp = false;
@@ -1526,6 +1522,7 @@ function GuardarResultadosPlantillaB()
             valores_combos += document.getElementById('totcombo[' + i + ']').value + "/";
             codigos_subelementos += document.getElementById('oidsubelemento[' + i + ']').value + "/";
             controles += document.getElementById('txtcontrol[' + i + ']').value + "/";
+            
         }
     }
     if (document.getElementById('ocultoele').value > 0)
@@ -2352,7 +2349,7 @@ function ValidarCamposPlantillaE()
 
     for (i = 0; i < document.getElementById('oculto').value; i++)
     {
-        if (document.getElementById('txtresultado[' + i + ']').value == "")
+        if (document.getElementById('txtresultado[' + i + ']').value == "") 
         {
             resp = false;
         }
@@ -2363,7 +2360,7 @@ function ValidarCamposPlantillaE()
 
 function MostrarVistaPreviaPlantillaE()
 {
-    if (ValidarCamposPlantillaE())
+   if (ValidarCamposPlantillaE())
     {
 
         ajax = objetoAjax();
@@ -2383,7 +2380,7 @@ function MostrarVistaPreviaPlantillaE()
         valores = "";
         codigos = "";
         comentarios = "";
-        valores_combos="";
+        valores_combos = "";
         if (document.getElementById('oculto').value > 0)
         {
             for (i = 0; i < document.getElementById('oculto').value; i++)
@@ -2391,6 +2388,7 @@ function MostrarVistaPreviaPlantillaE()
                 valores += document.getElementById('txtresultado[' + i + ']').value + "/";
                 codigos += document.getElementById('oidprueba[' + i + ']').value + "/";
                 valores_combos += document.getElementById('totcombo[' + i + ']').value + "/";
+               // alert(valores_combos);
             }
         }
         if (document.getElementById('oculto').value > 0)
@@ -2448,6 +2446,7 @@ function GuardarPlantillaE()
     //DATOS PARA EL DETALLE DE LOS RESULTADOS
     valores = "";
     codigos = "";
+    valores_combos = "";
     if (document.getElementById('oculto').value > 0)
     {
         for (i = 0; i < document.getElementById('oculto').value; i++)
@@ -2455,6 +2454,8 @@ function GuardarPlantillaE()
             valores += document.getElementById('txtresultado[' + i + ']').value + "/";
             codigos += document.getElementById('oidprueba[' + i + ']').value + "/";
             comentarios += document.getElementById('txtcomentario[' + i + ']').value + "/";
+            valores_combos += document.getElementById('totcombo[' + i + ']').value + "/";
+           // alert(valores_combos);
         }
     }
 
@@ -2466,7 +2467,7 @@ function GuardarPlantillaE()
     ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idsolicitud=" + idsolicitud + "&idrecepcion=" + idrecepcion +
             "&iddetalle=" + iddetalle + "&observacion=" + encodeURIComponent(observacion) + "&idempleado=" + idempleado +
             "&valores=" + encodeURIComponent(valores) + "&codigos=" + codigos + "&comentarios=" + encodeURIComponent(comentarios) + "&tab=" + tab +
-            "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado);
+            "&fecharealiz=" + fecharealiz + "&fecharesultado=" + fecharesultado + "&valores_combos="+valores_combos);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)

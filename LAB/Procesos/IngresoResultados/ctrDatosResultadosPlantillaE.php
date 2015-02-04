@@ -59,7 +59,7 @@ case 1:
 					<td class='StormyWeatherFieldCaptionTD'>".$row['nombreprocedimiento']."</td>
 					<td class='StormyWeatherDataTD' >
 						<input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['id']."'>
-						<input name='txtresultado[".$pos."]' type='text' id='txtresultado[".$pos."]'>
+						<input name='txtresultado[".$pos."]' type='hidden' id='txtresultado[".$pos."]'>
 					</td>
 					<td class='StormyWeatherDataTD'>".$row['unidades']."</td>
 					<td class='StormyWeatherDataTD' >
@@ -106,17 +106,16 @@ case 1:
 
 		$imprimir="
 			<table width='80%' border='0' align='center' class='StormyWeatherFormTABLE'>
-				<tr class='CobaltButton'>
-					<td> Prueba </td>
-					<td> Resultado </td>
-					<td> Unidades </td>
-					<td> Rango </td>
-				</tr>";
+			    <tr class='CobaltButton'>
+				<td> Prueba </td>
+				<td> Resultado </td>
+				<td> Unidades </td>
+				<td> Rango </td>
+			    </tr>";
 					$pos=0;
-				while($row = pg_fetch_array($consulta))//ELEMENTOS
-					{
-		$imprimir.= "
-				<tr>
+			while($row = pg_fetch_array($consulta))//ELEMENTOS
+			{
+		$imprimir.= "<tr>
 					<td class='StormyWeatherFieldCaptionTD'>".$row['nombreprocedimiento']."</td>
 					<td class='StormyWeatherDataTD'>
                                         <input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['idprocedimiento']."'>";
@@ -124,37 +123,35 @@ case 1:
                                                    $total=pg_fetch_array($con_total);
                                                    //echo $total[0];
                                     if($total[0]>=1){  
-                                   $imprimir.= "<select id='txtresultadosub[".$pos."]' name='txtresultadosub[".$pos."]'  size='1' style='width:260px'>
+                                        $imprimir.= "<select id='txtresultado[".$pos."]' name='txtresultado[".$pos."]'  size='1' style='width:260px'>
                                                     <option value='0' >--Seleccione Resultado--</option>";
                                                     $con_result=$obj->leer_posibles_resultados_procedimientos($row['idprocedimiento']);
                                                     while ($row_result=pg_fetch_array($con_result)) {
                                                         $imprimir.="<option value='" . $row_result['id_posible_resultado'] . "'>" . htmlentities($row_result['posible_resultado']) . "</option>";
-                                                       }   
-                           $imprimir.="<td class='StormyWeatherDataTD' >".$row['unidades']."</td>
-					<td class='StormyWeatherDataTD' aligh='center'>".$row['rangoinicio']."-".$row['rangofin']."</td>
-						<input name='txtcomentario[".$pos."]' type='hidden' id='txtcomentario[".$pos."]'>
-					</td> ";            
-                                                     $imprimir.= "   <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]' value='".$pos."'>  "; 
+                                                    }   
+                                        $imprimir.= "   <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]' value='".$pos."'>  ";                
                                                     
                                     }
-                                    else
+                                    else{
                                                                                                        
 				   $imprimir.= "<input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['id']."'>
-						<input name='txtresultado[".$pos."]' type='text' id='txtresultado[".$pos."]'>
-                                                    <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''  >   
-					</td>
-					<td class='StormyWeatherDataTD' >".$row['unidades']."</td>
-					<td class='StormyWeatherDataTD' aligh='center'>".$row['rangoinicio']."-".$row['rangofin']."</td>
-						<input name='txtcomentario[".$pos."]' type='hidden' id='txtcomentario[".$pos."]'>
-					</td>
-				</tr>";
+						<input name='txtresultado[".$pos."]' type='hidden' id='txtresultado[".$pos."]'>
+                                                <input name='totcombo[".$pos."]' type='text' id='totcombo[".$pos."]'  value=''  >   
+                                    </td>";
+                                                                          
+                                    }
+                                     $imprimir.="<td class='StormyWeatherDataTD' >".$row['unidades']."</td>
+				    <td class='StormyWeatherDataTD' aligh='center'>".$row['rangoinicio']."-".$row['rangofin']."
+					<input name='txtcomentario[".$pos."]' type='hidden' id='txtcomentario[".$pos."]'>
+				    </td> ";            
+                                                   
 					$pos=$pos + 1;
-					}
-                                        pg_free_result($consulta);
-                                          $imprimir.= "<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
-                                                       <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
+			}
+                        pg_free_result($consulta);
+                                    $imprimir.= "<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
+                                                 <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
 					
-					$imprimir.="
+		$imprimir.="
 				<tr><td class='StormyWeatherFieldCaptionTD'>*Resultado Tabulador</td>
 					<TD colspan='3' class='StormyWeatherDataTD'>
 						<select id='cmbTabulador' name='cmbTabulador' size='1'>
@@ -201,7 +198,7 @@ case 2://vista Previa de Resultado
 		$tab=$_POST['tab'];
 		$fechanac=$_POST['fechanac'];
                 $sexo=$_POST['sexo'];
-               // echo $fechanac."".$sexo;
+             //   echo  $valores_combos;
 		$ConEstandar=$obj->Obtener_Estandar($idexamen);
 		$CodEstandar= pg_fetch_array($ConEstandar);
 		$codigo_estandar  = $CodEstandar[0];
@@ -340,9 +337,11 @@ case 2://vista Previa de Resultado
 	$row_empleado = pg_fetch_array($datos_empleado);
 	$Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
 	$row_estab = pg_fetch_array($Consulta_Estab);
-	$vector_idprocesos=EXPLODE("/",$codigos);
-	$vector_respuesta=EXPLODE("/",$valores);
-//echo $lugar;
+	$vector_idprocesos = EXPLODE("/",$codigos);
+	$vector_respuesta = EXPLODE("/",$valores);
+       // $datos_combos= $valores_combos;
+        $vector_combos = EXPLODE("/",$valores_combos);
+//print_r($vector_combos);
 
 	$imprimir=" <table width='89%' border='0' align='center' class='StormyWeatherFormTABLE'>
                         <tr>
@@ -355,7 +354,8 @@ case 2://vista Previa de Resultado
                             <td colspan='1' align='right' width='20%'><img id='Image3' style='WIDTH: 110px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
 			</tr>
                         <tr>
-					<td colspan='6' align='center'></td>
+			    
+<td colspan='6' align='center'></td>
 			</tr>
 			<tr>
                             <td colspan='1' style='font:bold'>Establecimiento Solicitante:</td>
@@ -412,32 +412,32 @@ case 2://vista Previa de Resultado
 				$consulta=$obj->LeerProcesoExamen($idexamen,$lugar,$sexo,$idedad);
 	 //echo $establecimiento."$$ ".$sexo."%%".$idedad;
                     $imprimir.="<table width='100%' border='0' align='center' cellspacing='0'>
-                                     <tr>
-                                            <td align='left' ><strong> Prueba </strong></td>
-                                            <td align='center'><strong> Resultado </strong> </td>
-                                            <td align='center'><strong> Unidades </strong></td>
-                                            <td align='center'><strong> Rango </strong></td>
-                                      </tr>";
-                                                                $pos=0;
+                                    <tr>
+                                        <td colspan='2' align='left' ><strong> Prueba </strong></td>
+                                        <td colspan='1' align='left'><strong> Resultado </strong> </td>
+                                        <td colspan='1' align='center'><strong> Unidades </strong></td>
+                                        <td colspan='2' align='center'><strong> Rango </strong></td>
+                                    </tr>";
+                                        $pos=0;
 
-                        while($row = pg_fetch_array($consulta))//ELEMENTOS
-                        {
-                           $imprimir.= "<tr>
-                                            <td align='left'>".htmlentities($row['nombreprocedimiento'])."</td>
-                                            <td align='center'>";
-                            if($vector_combos[$pos]== NULL){  
-                                  $imprimir.= "<input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['id']."'>".htmlentities($vector_respuesta[$pos]).
-                                           "</td>";
-                            }else{
-                                $conresult=$objdatos->BuscarResultado($vector[$pos]);
+                    while($row = pg_fetch_array($consulta))//ELEMENTOS
+                    {
+                       $imprimir.= "<tr>
+                                        <td align='left' colspan='2'>".htmlentities($row['nombreprocedimiento'])."</td>
+                                        ";
+                        if($vector_combos[$pos]== NULL){  
+                            $imprimir.= "<td align='center' colspan='1'><input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['idprocedimiento']."'>".htmlentities($vector_respuesta[$pos]).
+                                        "</td>";
+                        }else{
+                                $conresult=$obj->BuscarResultado($vector_respuesta[$pos]);
                                 $row_dresult=  pg_fetch_array($conresult);
-                                 $imprimir.="<td width='25%'>".htmlentities($row_dresult['posible_resultado'])."<input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['id']."'></td>";
-                            }                                                                                   
-                                $imprimir.= "<td align='center'>".htmlentities($row['unidades'])."</td>";
+                            $imprimir.="<td align='left' colspan='1'>".htmlentities($row_dresult['posible_resultado'])."<input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['idprocedimiento']."'></td>";
+                        }                                                                                   
+                           $imprimir.= "<td align='center' colspan='1'>".htmlentities($row['unidades'])."</td>";
                            if((!empty($row['rangoinicio'])) AND (!empty($row['rangoinicio'])))
-                                $imprimir.= "<td align='center'>".$row['rangoinicio']."-".$row['rangofin']."</td>
-                                        </tr>";
-                                                  $pos=$pos + 1;
+                           $imprimir.= "<td align='center' colspan='2'>".$row['rangoinicio']."-".$row['rangofin']."</td>
+                                    </tr>";
+                                        $pos=$pos + 1;
                         }
                                 pg_free_result($consulta);
                                 $imprimir.= "  <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
@@ -448,7 +448,7 @@ case 2://vista Previa de Resultado
                         <tr>
                             <td colspan='5' align='center'>
                                 <input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarPlantillaE()'>
-				<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaE(".$idsolicitud.",\"".$idexamen."\",\"".$row_empleado['empleado']."\",\"".$row_generales['procedencia']."\",\"".$row_generales['subservicio']."\",\"".$comentarios."\",\"".$valores."\",\"".$codigos."\",\"".$observacion."\",\"".htmlentities($establecimiento)."\",\"".$sexo."\",\"".$idedad."\");'>
+				<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaE(".$idsolicitud.",\"".$idexamen."\",\"".$row_empleado['empleado']."\",\"".$row_generales['procedencia']."\",\"".$row_generales['subservicio']."\",\"".$comentarios."\",\"".$valores."\",\"".$codigos."\",\"".$observacion."\",\"".htmlentities($establecimiento)."\",\"".$sexo."\",\"".$idedad."\",\"".$valores_combos."\");'>
                          	<input type='button' id='btnSalir' value='cerrar' onclick='Cerrar()'>
                             </td>
 			</tr>";
@@ -475,10 +475,11 @@ case 2://vista Previa de Resultado
 	$codigos= $_POST['codigos'];
 	$valores= $_POST['valores'];
 	$comentarios= $_POST['comentarios'];
-
+        $valores_combos = $_POST['valores_combos'];
 	$vector_respuesta=EXPLODE("/",$valores);
 	$vector_idprocesos=EXPLODE("/",$codigos);
 	$vector_comentarios=EXPLODE("/",$comentarios);
+        $vector_combos = explode("/",$valores_combos);
 	$obj = new clsPlantillaE;
    	$tamano_vector=count($vector_respuesta);
 		//$tamano_vectorcodigos=count($vector_idprocesos);
@@ -498,7 +499,7 @@ case 2://vista Previa de Resultado
                 if (($tamano_vector-1)>0){
                     for ($i=0; $i < $tamano_vector-1 ; $i++) //INSERTANDO PROCEDIMIENTOS
                     {
-                        if ($obj->insertar_detalle($idresultado,$vector_idprocesos[$pos],$vector_respuesta[$pos],$vector_comentarios[$pos],$lugar)==false)
+                        if ($obj->insertar_detalle($idresultado,$vector_idprocesos[$pos],$vector_respuesta[$pos],$vector_comentarios[$pos],$lugar,$vector_combos[$pos])==false)
                         {
                             $ban=1;
                         }
