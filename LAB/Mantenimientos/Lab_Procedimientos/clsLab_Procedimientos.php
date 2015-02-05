@@ -8,11 +8,11 @@ class clsLab_Procedimientos {
 	}
 
 	//INSERTA UN REGISTRO
-	function insertar( $proce, $idarea, $idexamen, $unidades, $rangoini, $rangofin, $usuario, $lugar, $Fechaini, $Fechafin, $sexo, $redad ) {
+	function insertar( $proce, $idarea, $idexamen, $unidades, $rangoini, $rangofin, $usuario, $lugar, $Fechaini, $Fechafin, $sexo, $redad,$cmborden ) {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
-			  $query ="INSERT INTO lab_procedimientosporexamen (nombreprocedimiento, id_conf_examen_estab, unidades, rangoinicio, rangofin, idusuarioreg, fechahorareg, idestablecimiento, fechaini, fechafin, idsexo, idrangoedad)
-                     VALUES('$proce',$idexamen,'$unidades',$rangoini,$rangofin,$usuario,NOW(),$lugar,'$Fechaini','$Fechafin',$sexo,$redad)";
+			  $query ="INSERT INTO lab_procedimientosporexamen (nombreprocedimiento, id_conf_examen_estab, unidades, rangoinicio, rangofin, idusuarioreg, fechahorareg, idestablecimiento, fechaini, fechafin, idsexo, idrangoedad,orden)
+                     VALUES('$proce',$idexamen,'$unidades',$rangoini,$rangofin,$usuario,NOW(),$lugar,'$Fechaini',$Fechafin,$sexo,$redad,$cmborden)";
 			$result = @pg_query( $query );
 
 			if ( !$result )
@@ -23,12 +23,12 @@ class clsLab_Procedimientos {
 	}
 
 	//ACTUALIZA UN REGISTRO
-	function actualizar( $idproce, $proce, $idarea, $idexamen, $unidades, $rangoini, $rangofin, $usuario, $lugar, $Fechaini, $Fechafin, $sexo, $redad ) {
+	function actualizar( $idproce, $proce, $idarea, $idexamen, $unidades, $rangoini, $rangofin, $usuario, $lugar, $Fechaini, $Fechafin, $sexo, $redad,$cmborden ) {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
 			 $query ="UPDATE lab_procedimientosporexamen SET nombreprocedimiento='$proce', id_conf_examen_estab ='$idexamen', unidades = '$unidades', rangoinicio=$rangoini,
 													rangofin=$rangofin, idusuariomod=$usuario, fechahoramod = NOW(), fechaini = $Fechaini, fechafin = $Fechafin,
-													idsexo = $sexo, idrangoedad = $redad
+													idsexo = $sexo, idrangoedad = $redad, orden=$cmborden
 		 			 WHERE lab_procedimientosporexamen.id = $idproce AND idestablecimiento = $lugar";
 			$result = pg_query( $query );
 
@@ -70,7 +70,20 @@ class clsLab_Procedimientos {
 	}
 
 
-	function RangosEdades() {
+	function Rangos($idproce) {
+		$con = new ConexionBD;
+		if ( $con->conectar()==true ) {
+			$query = "SELECT orden FROM lab_procedimientosporexamen where id=$idproce";
+			$result = pg_query( $query );
+			if ( !$result )
+				return false;
+			else
+				return $result;
+		}
+
+	}
+        
+        function RangosEdades() {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
 			$query = "SELECT id, nombre FROM ctl_rango_edad ORDER BY nombre";
@@ -82,6 +95,7 @@ class clsLab_Procedimientos {
 		}
 
 	}
+        
 	//CONSULTA LOS REGISTROS
 	function consultar( $lugar ) {
 		//creamos el objeto $con a partir de la clase ConexionBD
@@ -109,12 +123,236 @@ class clsLab_Procedimientos {
 				return $result;
 		}
 	}
+          function cambiar_estado($id_subelemento){
+        /*
+        * Julio Castillo
+        */
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+          $query = "UPDATE lab_subelemento_posible_resultado SET habilitado = false WHERE id_subelemento = '$id_subelemento'";
+            $result = pg_query($query);
+            if (!$result)
+              return false;
+            else
+              return $result;
+        }
+    }
+    function cambiar_estadolabprocede($idproce){
+        /*
+        * Julio Castillo
+        */
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+          $query = "UPDATE lab_procedimiento_posible_resultado SET habilitado = false WHERE id_procedimientoporexamen = $idproce";
+            $result = pg_query($query);
+            if (!$result)
+              return false;
+            else
+              return $result;
+        }
+    }
+    
+      function ultimoidprocede(){
+        /*
+        * Julio Castillo
+        */
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+          $query = "SELECT * FROM lab_procedimientosporexamen ORDER BY id DESC LIMIT 1;";
+            $result = pg_query($query);
+            if (!$result)
+              return false;
+            else
+              return $result;
+        }
+    }
+    
+    
+     function cambiar_estado_id($id_posible_resultado,$id_subelemento){
+        /*
+        * Julio Castillo
+        */
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+            $query = "UPDATE lab_subelemento_posible_resultado 
+                        SET habilitado = true,
+                            fechafin = null,
+                            id_user_mod = 8,
+                            fecha_mod = now()
+                        WHERE id_posible_resultado = '$id_posible_resultado' AND id_subelemento='$id_subelemento'";
+            $result=pg_query($query);
+            if (pg_affected_rows($result)==0){
+                $query = "
+                    INSERT INTO lab_subelemento_posible_resultado(
+                            id_subelemento, id_posible_resultado, fechainicio, fechafin, 
+                            habilitado, id_user, fecha_registro, id_user_mod, fecha_mod)
+                    VALUES ('$id_subelemento', '$id_posible_resultado', now(), null, 
+                            true, 8, now(), null, null)";
+                $result=pg_query($query);
+            }
+        }
+    }
+    
+    function cambiar_estado_idprocedimiento($id_posible_resultado,$idproce){
+        /*
+        * Julio Castillo
+        */
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+           $query = "UPDATE lab_procedimiento_posible_resultado 
+                        SET habilitado = true,
+                            fechafin = null,
+                            id_user_mod = 8,
+                            fecha_mod = now()
+                        WHERE id_posible_resultado = '$id_posible_resultado' AND id_procedimientoporexamen='$idproce'";
+            $result=pg_query($query);
+            if (pg_affected_rows($result)==0){
+                $query = "INSERT INTO lab_procedimiento_posible_resultado(
+                            id_procedimientoporexamen, id_posible_resultado, fechainicio, fechafin, 
+                            habilitado, id_user, fecha_registro, id_user_mod, fecha_mod)
+                    VALUES ('$idproce', '$id_posible_resultado', now(), null, 
+                            true, 8, now(), null, null)";
+                $result=pg_query($query);
+            }
+        }
+    }
+    
+    function metodologias1(){
+            /*
+            * Julio Castillo
+            */
+            $con = new ConexionBD;
+	    //usamos el metodo conectar para realizar la conexion
+	    if($con->conectar()==true){
+	      $query = /*"SELECT m.id as id_metodologia,
+                                m.nombre_metodologia metodologias
+                        FROM lab_metodologia m
+                        WHERE m.activa=true
+                        ORDER BY m.nombre_metodologia";*/
+                    " select 	t01.id,
+				t01.posible_resultado resultado
+				from lab_posible_resultado t01
+                                left join lab_subelemento_posible_resultado t02 on (t02.id_posible_resultado=t01.id)
+                                where t02.id is null
+                                ORDER BY t01.posible_resultado";
+             
+		 $result = pg_query($query);
+		 if (!$result)
+		   return false;
+		 else
+		   return $result;
+	   }
+	 }
+          function prueba_lab1($nombre){
+            /*
+            * Julio Castillo
+            */
+            $con = new ConexionBD;
+	    //usamos el metodo conectar para realizar la conexion
+	    if($con->conectar()==true){
+	      $query = "SELECT nombre_examen as nombre_prueba FROM lab_conf_examen_estab WHERE id=$nombre";
+             
+		 $result = pg_query($query);
+		 if (!$result)
+		   return false;
+		 else
+		   return $result;
+	   }
+	 }
+    
+    
+     function resultados($idproce){
+        /*
+        * Julio Castillo
+        */
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+          $query = /*"SELECT pr.id as id,
+                        pr.posible_resultado resultado
+                     FROM lab_posible_resultado pr
+                             LEFT JOIN (SELECT id, id_posible_resultado, id_subelemento, habilitado 
+                                        FROM lab_subelemento_posible_resultado spr 
+                                        WHERE spr.id_subelemento = '$id_subelemento' AND spr.habilitado = true) spr ON spr.id_posible_resultado = pr.id
+                     WHERE spr.id is null
+                     ORDER BY pr.posible_resultado";*/
+                  
+                  "select 	t01.id,
+					t01.posible_resultado resultado
+				from lab_posible_resultado t01
+				left join  (select  id,
+						id_posible_resultado,
+						id_procedimientoporexamen,
+						habilitado from lab_procedimiento_posible_resultado t02
+						where t02.id_procedimientoporexamen=$idproce and t02.habilitado= true ) t02 on t02.id_posible_resultado=t01.id
+						WHERE t02.id is null 
+						ORDER BY t01.posible_resultado";
+
+             $result = pg_query($query);
+             if (!$result)
+               return false;
+             else
+               return $result;
+        }
+    }
+    
+     function get_subelemento($id_subelemento){
+        /*
+        * Julio Castillo
+        */
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+          $query = "SELECT s.id as id,
+                        s.subelemento as subelemento_text
+                     FROM lab_subelementos s
+                     WHERE s.id = '$id_subelemento'";
+             $result = pg_query($query);
+             if (!$result)
+               return false;
+             else
+               return $result;
+        }
+    }
+    
+      function resultados_seleccionados($idproce){
+        /*
+        * Julio Castillo
+        */
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+          $query = /*"SELECT pr.id as id,
+                        pr.posible_resultado as resultado
+                    FROM
+                        lab_subelemento_posible_resultado spr
+                    LEFT JOIN lab_posible_resultado pr ON pr.id = spr.id_posible_resultado
+                    WHERE spr.id_subelemento = '$id_subelemento' AND spr.habilitado is true
+                    ORDER BY posible_resultado";*/
+                
+               "select t02.id, t02.posible_resultado resultado, t03.nombreprocedimiento  from lab_procedimiento_posible_resultado t01
+                inner join lab_posible_resultado 	t02 on (t02.id=t01.id_posible_resultado)
+                inner join lab_procedimientosporexamen t03 on (t03.id=t01.id_procedimientoporexamen)
+                where t03.id=$idproce";
+
+             $result = pg_query($query);
+             if (!$result)
+               return false;
+             else
+               return $result;
+        }
+    }
 
 	//CONSULTA EXAMEN POR EL CODIGO
 	function consultarid( $idproce, $lugar ) {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
-			$query ="SELECT lppe.id AS idprocedimientoporexamen,
+			 $query ="SELECT lppe.id AS idprocedimientoporexamen,
 							lcee.id AS idexamen,
 							lcee.nombre_examen AS nombreexamen,
 							casd.id AS idarea,
@@ -132,14 +370,18 @@ class clsLab_Procedimientos {
 				                 ELSE cex.nombre
 				            END AS sexovn,
 				 			cre.id AS idedad,
-				 			cre.nombre AS nombregrupoedad
+				 			cre.nombre AS nombregrupoedad,
+                                                        lppe.orden
 				 	 FROM lab_procedimientosporexamen			lppe
 				 	 INNER JOIN lab_conf_examen_estab 			lcee ON (lcee.id = lppe.id_conf_examen_estab)
 				 	 INNER JOIN mnt_area_examen_establecimiento mnt4 ON (mnt4.id = lcee.idexamen)
 				 	 INNER JOIN ctl_area_servicio_diagnostico	casd ON (casd.id = mnt4.id_area_servicio_diagnostico)
 				 	 LEFT OUTER JOIN ctl_sexo 					cex  ON (cex.id  = lppe.idsexo AND cex.abreviatura != 'I')
 				 	 LEFT OUTER JOIN ctl_rango_edad 			cre  ON (cre.id  = lppe.idrangoedad)
-				 	 WHERE lppe.id = $idproce AND lppe.idestablecimiento = $lugar
+				 	 WHERE lppe.id = $idproce  
+                                            
+                                        AND lppe.idestablecimiento = $lugar
+                                             
 				 	 ORDER BY lcee.codigo_examen";
 
 			$result = @pg_query( $query );
@@ -175,7 +417,72 @@ class clsLab_Procedimientos {
 		}
 	}
         
+        function llenarrangoproc( $idexa ) {
+		$con = new ConexionBD;
+		//usamos el metodo conectar para realizar la conexion
+		if ( $con->conectar()==true ) {
+
+			  $query ="select  orden  from lab_procedimientosporexamen 
+                                  where id_conf_examen_estab=$idexa order by orden asc
+";
+
+			$result = @pg_query( $query );
+			if ( !$result )
+				return false;
+			else
+				return $result;
+		}
+	}
+           function llenarrangopro1( $idexa ) {
+		$con = new ConexionBD;
+		//usamos el metodo conectar para realizar la conexion
+		if ( $con->conectar()==true ) {
+
+			  $query ="select  orden  from lab_procedimientosporexamen 
+                                  where id_conf_examen_estab=$idexa order by orden asc
+";
+
+			$result = @pg_query( $query );
+			if ( !$result )
+				return false;
+			else
+				return $result;
+		}
+	}
         
+        
+         function contarorden( $idexa ) {
+		$con = new ConexionBD;
+		//usamos el metodo conectar para realizar la conexion
+		if ( $con->conectar()==true ) {
+
+			  $query ="select 
+                                        count (*) cantidad
+                                        from lab_procedimientosporexamen 
+                                        where id_conf_examen_estab=$idexa";
+
+			$result = @pg_query( $query );
+			if ( !$result )
+				return false;
+			else
+				return $result;
+		}
+	}
+        
+      function  llenarrangoproc1( $idexa ) {
+		$con = new ConexionBD;
+		//usamos el metodo conectar para realizar la conexion
+		if ( $con->conectar()==true ) {
+
+			  $query ="select id, orden  from lab_procedimientosporexamen where id_conf_examen_estab=$idexa";
+
+			$result = @pg_query( $query );
+			if ( !$result )
+				return false;
+			else
+				return $result;
+		}
+	}
         
         function consulhabilitado( $idproce ) {
 		$con = new ConexionBD;
@@ -311,6 +618,8 @@ class clsLab_Procedimientos {
         }
         $con->desconectar();
     }
+    
+  
 
 	function consultarpag( $lugar, $RegistrosAEmpezar, $RegistrosAMostrar ) {
 
@@ -318,7 +627,7 @@ class clsLab_Procedimientos {
 		$con = new ConexionBD;
 		//usamos el metodo conectar para realizar la conexion
 		if ( $con->conectar()==true ) {
-			 $query = "SELECT lppe.id AS idprocedimientoporexamen,
+			   $query = "SELECT lppe.id AS idprocedimientoporexamen,
 						lcee.codigo_examen AS idexamen,
 						lcee.nombre_examen AS nombreexamen,
 						lppe.nombreprocedimiento,
@@ -341,19 +650,20 @@ class clsLab_Procedimientos {
 						lppe.habilitado,
                                                 lppe.id as idlppe,
                                                 mnt4.id as idmnt4,
-                                                lcee.condicion
+                                                lcee.condicion,
+                                                lppe.orden
 						FROM lab_procedimientosporexamen 		   lppe
 						INNER JOIN lab_conf_examen_estab		   lcee ON (lcee.id = lppe.id_conf_examen_estab)
-						INNER JOIN mnt_area_examen_establecimiento  mnt4 ON (mnt4.id = lcee.idexamen)
+                                                INNER JOIN mnt_area_examen_establecimiento  mnt4 ON (mnt4.id = lcee.idexamen)
 						INNER JOIN ctl_area_servicio_diagnostico    casd ON (casd.id = mnt4.id_area_servicio_diagnostico)
 						INNER JOIN lab_areasxestablecimiento        laxe ON (casd.id = laxe.idarea)
 						INNER JOIN lab_plantilla                    lpla ON (lpla.id = lcee.idplantilla)
 						LEFT OUTER JOIN ctl_sexo                    cex  ON (cex.id  = lppe.idsexo)
 						LEFT OUTER JOIN ctl_rango_edad              cre  ON (cre.id  = lppe.idrangoedad)
 						WHERE 
-                                                lcee.condicion = 'H' 
-                                                AND laxe.condicion = 'H' 
-                                                AND lpla.idplantilla = 'E' AND 
+                                              -- lcee.condicion = 'H' 
+                                              -- AND laxe.condicion = 'H' 
+                                               --AND lpla.idplantilla = 'E' AND 
                                                 lppe.idestablecimiento = $lugar
 						ORDER BY lcee.codigo_examen, lppe.id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
 

@@ -36,7 +36,27 @@ function LlenarExamenes(idarea)
 }
 
 
-function Estado(idlppe,condicion){
+function LlenarRango(idexa)
+{
+	var opcion=11;
+   
+	 //instanciamos el objetoAjax
+	ajax=objetoAjax();
+	//archivo que realizar� la operacion ->actualizacion.php
+	ajax.open("POST", "ctrLab_Procedimientos.php",true);
+	//muy importante este encabezado ya que hacemos uso de un formulario
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	//enviando los valores
+	ajax.send("idexa="+idexa+"&opcion="+opcion);
+	ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+			//mostrar los nuevos registros en esta capa
+			document.getElementById('divRango').innerHTML = ajax.responseText;
+		}
+	}	
+}
+
+/*function Estado(idlppe,condicion){
 
 var opcion=9;
 	//alert(idexamen+"-"+condicion);
@@ -61,7 +81,7 @@ var opcion=9;
                        
 		 }
 	}	
-}
+}*/
 function show_event(Pag)
 {
 	opcion=4;
@@ -78,7 +98,16 @@ function show_event(Pag)
 	ajax.send("&Pag="+Pag+"&opcion="+opcion);	
 }
 
-
+function MostrarSubElementos1()
+{ 
+  idelemento=document.frmModificar.idelemento.value;
+  
+  elemento=document.frmModificar.txtelemento.value;
+  //alert(idelemento+"---"+elemento);
+  ventana_secundaria = window.open("MntSubElementosExamen1.php?var1="+idelemento+
+			"&var2="+escape(elemento),"Resultados","width=1100,height=900,menubar=no,scrollbars=yes") ;
+   
+}
 
 function DatosCompletos(tipo) {
 	var error = [];
@@ -105,6 +134,9 @@ function DatosCompletos(tipo) {
 		    if (document.getElementById('cmbEdad').value === "0") {
 					error.push('Rango Edad');
 			}
+                          if (document.getElementById('cmborden').value === "0") {
+					error.push('Rango');
+			}
 			break;
 		case 2:
 			if (document.frmModificar.cmbArea.value === "0") {
@@ -124,6 +156,8 @@ function DatosCompletos(tipo) {
 			}
 		    if (document.frmModificar.cmbEdad.value === "0") {
 					error.push('Rango Edad');
+			} if (document.frmModificar.cmborden.value === "0") {
+					error.push('Rango');
 			}
 			break;
 	}
@@ -151,6 +185,7 @@ function DatosCompletos(tipo) {
 function LimpiarCampos(){
 	document.getElementById('cmbArea').value="0";
 	document.getElementById('cmbExamen').value="0";
+        document.getElementById('cmborden').value="0";
 	document.getElementById('txtproc').value="";
 	document.getElementById('txtunidades').value="";
 	document.getElementById('txtrangoini').value="";
@@ -160,6 +195,11 @@ function LimpiarCampos(){
     document.getElementById('cmbSexo').value="0";
     document.getElementById('cmbEdad').value="0";
 	//document.getElementById('txtnota').value="";
+}
+
+function enviarasubelemntos(){
+    
+	ajax.open("POST", "consulta_SubElemento.php",true);
 }
 
 function IngresarRegistro(){ //INGRESAR REGISTROS
@@ -177,8 +217,8 @@ function IngresarRegistro(){ //INGRESAR REGISTROS
 		Fechafin=document.getElementById('txtFechaFin').value;
         sexo=document.getElementById('cmbSexo').value;
         redad=document.getElementById('cmbEdad').value;
-        
-        alert(sexo);
+        cmborden=document.getElementById('cmborden').value;
+      //  alert(sexo);
 		var opcion=1;
 		Pag=1;
 		//instanciamos el objetoAjax
@@ -188,21 +228,37 @@ function IngresarRegistro(){ //INGRESAR REGISTROS
 		ajax.onreadystatechange=function() {
 			if (ajax.readyState==4) {
 				//mostrar resultados en esta capa
-				//document.getElementById('divinicial').innerHTML = ajax.responseText;
+				document.getElementById('divinicial').innerHTML = ajax.responseText;
 	                        alert(ajax.responseText);
 				LimpiarCampos();
 				 show_event(1);
+                                 ventanasecundaria();
 			}
 		}
 		ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores
 		ajax.send("idarea="+idarea+"&opcion="+opcion+"&idexamen="+idexamen+"&proce="+escape(proce)+
 	                "&unidades="+escape(unidades)+"&Pag="+Pag+"&rangoini="+rangoini+"&rangofin="+rangofin+
-	                "&Fechaini="+Fechaini+"&Fechafin="+Fechafin+"&sexo="+sexo+"&redad="+redad);
+	                "&Fechaini="+Fechaini+"&Fechafin="+Fechafin+"&sexo="+sexo+"&redad="+redad+"&cmborden="+cmborden);
   	} else {
   		alert(datosCompletos['errorMessage']);
 	}
 
+}
+
+function ventanasecundaria(){
+
+
+                mismo=document.getElementById('mismo').value;
+		idexamen=document.getElementById('cmbExamen').value	
+ventana_secundaria = window.open("consulta_SubElemento1.php?var1="+mismo+
+									  "&var2="+idexamen,"solicitud",										"width=800,height=700,menubar=no,location=no,scrollbars=yes") 
+/*ajax.open("POST", "consulta_SubElemento1.php");
+		ajax.send("mismo="+ mismo);	*/							 
+}
+function Cerrar(){
+	//window.opener.location.href = window.opener.location.href;
+    window.close();
 }
 
 function pedirDatos(idproce){ //CARGAR DATOS A MODIFICAR
@@ -211,7 +267,7 @@ function pedirDatos(idproce){ //CARGAR DATOS A MODIFICAR
 	divFormularioNuevo=document.getElementById('divFrmNuevo');
 	//instanciamos el objetoAjax
 	ajax=objetoAjax();
-	//alert("esto----> ".idproce);
+	//alert(idproce);
 	//uso del medotod POST
 	ajax.open("POST", "consulta_Procedimientos.php");
 	ajax.onreadystatechange=function() {
@@ -228,6 +284,27 @@ function pedirDatos(idproce){ //CARGAR DATOS A MODIFICAR
 	ajax.send("idproce="+ idproce);
 	
 }
+function show_subelemento(Pag,idelemento)
+{
+	opcion=4;
+	idsubelemento="";
+	subelemento="";
+	elemento="";
+	unidad="";
+	//alert(idelemento);
+	ajax=objetoAjax();
+	ajax.open("POST", 'ctrSubElementosExamen.php', true);
+	ajax.onreadystatechange = function(){ 
+	if (ajax.readyState==4) {
+		   //mostrar resultados en esta capa
+		   document.getElementById('divinicial').innerHTML = unescape(ajax.responseText);
+		  }
+	}
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	ajax.send("&idelemento="+idelemento+"&Pag="+Pag+"&opcion="+opcion);	
+}
+
+
 
 function enviarDatos(){//FUNCION PARA MODIFICAR
 	//donde se mostrar� lo resultados
@@ -249,7 +326,8 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
 		Fechaini=document.frmModificar.txtFechainicio.value;
 		Fechafin=document.frmModificar.txtFechaFin.value;
 		sexo=document.frmModificar.cmbSexo.value;
-	    redad=document.frmModificar.cmbEdad.value;
+                redad=document.frmModificar.cmbEdad.value;
+                 cmborden=document.frmModificar.cmborden.value;
 		//alert(idproce+'***'+Fechaini+'***'+Fechafin);
 		var opcion=2;	
 		Pag=1;
@@ -263,7 +341,7 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
 		//enviando los valores
 		ajax.send("idarea="+idarea+"&opcion="+opcion+"&idexamen="+idexamen+"&proce="+escape(proce)+"&unidades="+escape(unidades)+"&Pag="+Pag
 		+"&rangoini="+rangoini+"&rangofin="+rangofin+"&idproce="+idproce+"&Fechaini="+Fechaini+"&Fechafin="+Fechafin+
-	                "&sexo="+sexo+"&redad="+redad);
+	                "&sexo="+sexo+"&redad="+redad+"&cmborden="+cmborden);
 		ajax.onreadystatechange=function()
 		{
 			if (ajax.readyState==4) 

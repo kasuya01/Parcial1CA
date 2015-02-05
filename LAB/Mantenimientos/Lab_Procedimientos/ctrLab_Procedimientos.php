@@ -13,7 +13,7 @@ $opcion=$_POST['opcion'];
 //echo $opcion;
 $objdatos = new clsLab_Procedimientos;
 $Clases = new clsLabor_Procedimientos;
-
+  
 
 
 switch ( $opcion ) {
@@ -22,10 +22,18 @@ case 1:  //INSERTAR
 	$proce=$_POST['proce'];
 	$idarea=$_POST['idarea'];
 	$unidades=$_POST['unidades'];
-	echo $sexo=$_POST['sexo'];
+        $cmborden=$_POST['cmborden'];
+	$sexo=$_POST['sexo'];
 	$redad=$_POST['redad'];
         $Fechaini=$_POST['Fechaini'];
         $Fechafin=$_POST['Fechafin'];
+        
+        if ($Fechafin==""){
+            $Fechafin="NULL";
+            
+        }else{
+            $Fechafin="'".$Fechafin."'";
+        }
 
 	if ( empty( $_POST['rangoini'] ) ) {
 		$rangoini="NULL";
@@ -38,7 +46,7 @@ case 1:  //INSERTAR
 	} else {
 		$rangofin=$_POST['rangofin'];
 	}
-
+        
 	/*if ( empty( $_POST['Fechaini'] ) ) {
 		$Fechaini="NULL";
 	} else {
@@ -55,11 +63,17 @@ case 1:  //INSERTAR
 
 	//echo $Fechaini."-".$Fechafin;
 
-	if ( $objdatos->insertar( $proce, $idarea, $idexamen, $unidades, $rangoini, $rangofin, $usuario, $lugar, $Fechaini, $Fechafin, $sexo, $redad ) == true ) {
-		echo "Registro Agregado";
-	}
+	if ( $objdatos->insertar( $proce, $idarea, $idexamen, $unidades, $rangoini, $rangofin, $usuario, $lugar, $Fechaini, $Fechafin, $sexo, $redad,$cmborden ) == true ) {
+		echo "Registro Agregado, Agregar Posible Resultado";
+               
+                
+                
+                        
+                
+        }
 	else {
 		echo "No se pudo Agregar";
+                 
 	}
 
 	break;
@@ -73,6 +87,10 @@ case 2:  //MODIFICAR
         
 	$sexo=$_POST['sexo'];
 	$redad=$_POST['redad'];
+        $cmborden=$_POST['cmborden'];
+        
+        
+        
 	if ( empty( $_POST['rangoini'] ) ) {
 		$rangoini="NULL";
 	}
@@ -100,7 +118,7 @@ case 2:  //MODIFICAR
 		$Fechafin='\''.$FechaF[2].'-'.$FechaF[1].'-'.$FechaF[0].'\'';
 	}
 
-	if ( $objdatos->actualizar( $idproce, $proce, $idarea, $idexamen, $unidades, $rangoini, $rangofin, $usuario, $lugar, $Fechaini, $Fechafin, $sexo, $redad )==true ) {
+	if ( $objdatos->actualizar( $idproce, $proce, $idarea, $idexamen, $unidades, $rangoini, $rangofin, $usuario, $lugar, $Fechaini, $Fechafin, $sexo, $redad,$cmborden )==true ) {
 		echo "Registro Actualizado";
 	} else {
 		echo "No se pudo actualizar";
@@ -140,7 +158,7 @@ case 9:  //habilitado
 case 4:// PAGINACION
 	//require_once("clsLab_Procedimientos.php");
 	////para manejo de la paginacion
-	$RegistrosAMostrar=4;
+	$RegistrosAMostrar=5;
 	$RegistrosAEmpezar=( $_POST['Pag']-1 )*$RegistrosAMostrar;
 	$PagAct=$_POST['Pag'];
 
@@ -153,7 +171,7 @@ case 4:// PAGINACION
 
 	//muestra los datos consultados en la tabla
 	echo "<center >
-               <table border = 1 style='width: 80%;'  class='table table-hover table-bordered table-condensed table-white'>
+               <table border = 1 style='width: 80%;'  class='table table-hover table-bordered table-condensed table-white table-striped'>
 	           <thead>
                         <tr>
                                 <th   aling='center'> Modificar</th>
@@ -161,6 +179,7 @@ case 4:// PAGINACION
                                 <th aling='center' > Habilitado</th>
                                 <th> IdExamen          </th>
                                 <th> Examen            </th>
+                                
                                 <th> Procedimiento     </th>
                                 <th> Unidades          </th>
                                 <th> Valores Normales  </th>
@@ -168,20 +187,24 @@ case 4:// PAGINACION
                                 <th> Rango de Edad     </th>
                                 <th> Fecha Inicio      </th>
                                 <th> Fecha Finalización </th>
+                                <th> Orden </th>
                         </tr>
                    </thead><tbody>
                     </center>";
 
-	while ( $row = pg_fetch_array( $consulta ) ) {
+	while ( $row = @pg_fetch_array( $consulta ) ) {
 
             //if (
-                 $habilitado=$row['habilitado'] ;
+               
+            // echo $pro= $row['idprocedimientoporexamen'];
+              //   $idelem= $row['idelemento'];
+            $habilitado=$row['habilitado'] ;
                    // == "t") {
                 
           //  }
                  if ($habilitado=="t")
                      {
-                     
+                    // echo " if";
                      echo "<tr>
                     <td aling='center'>
                         <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\"
@@ -193,6 +216,7 @@ case 4:// PAGINACION
                    	 <a style ='text-decoration:underline;cursor:pointer;' onclick='Estado(\"".$row['idlppe']."\",\"".$row['habilitado']."\")'>".$row['cond']."</a></td>
                     <td>".$row['idexamen']."</td>
                     <td>".htmlentities( $row['nombreexamen'] )."</td>
+                   
                     <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
                     <td>".htmlentities( $row['unidades'] )."</td>
                     <td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
@@ -208,12 +232,16 @@ case 4:// PAGINACION
 		else
 			echo "<td>".$row['fechafin']."</td>
 			          ";
+                 echo "<td>".$row['orden']."</td>
+			          ";
 		echo"</tr> ";
                      
                  }
                  else {
-                     
+                     //echo " else";
                        echo "<tr>
+                         
+                       
                     <td aling='center'>
                         <img src='../../../Imagenes/Search.png' style=\"text-decoration:underline;cursor:pointer;\"
 			onclick=\"pedirDatos('".$row['idprocedimientoporexamen']."')\"  height='40' width='50'> </td>
@@ -237,6 +265,8 @@ case 4:// PAGINACION
 			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 		else
 			echo "<td>".$row['fechafin']."</td>
+			          ";
+                                  echo "<td>".$row['orden']."</td>
 			          ";
 		echo"</tr> ";
                 
@@ -284,9 +314,12 @@ case 4:// PAGINACION
                           for ($i=1 ; $i<=$PagUlt; $i++)
                                     {
                              
-					 echo " <li ><a  href='javascript: show_event(".$i.")'>$i</a></li>";
+					 echo " <li ><a  href='javascript: show_event_search(".$i.")'>$i</a></li>";
                                      }
                     echo " </ul></center>";
+        
+        
+       
         
         
 	break;
@@ -296,7 +329,7 @@ case 5:  //LLENAR COMBO DE EXAMENES
 	$consultaex= $objdatos->ExamenesPorArea( $idarea, $lugar );
 	//$dtMed=$obj->LlenarSubServ($proce);
 
-	$rslts = '<select name="cmbExamen" id="cmbExamen" size="1" >';
+	$rslts = '<select name="cmbExamen" id="cmbExamen" size="1" onChange="llenarcomboRango(this.value);">';
 	$rslts .='<option value="0">--Seleccione un Examen--</option>';
 
 	while ( $rows =pg_fetch_array( $consultaex ) ) {
@@ -305,6 +338,34 @@ case 5:  //LLENAR COMBO DE EXAMENES
 	$rslts .= '</select>';
 	echo $rslts;
 
+
+	break;
+        
+case 11:  //LLENAR COMBO DE RANGOS
+	$idexa=$_POST['idexa'];
+        $rslts='';
+        
+           $rslts = '<select name="cmborden" id="cmborden" size="1"   >';
+           $rslts .='<option value="0">--Seleccione un Rango--</option>';
+        
+            
+                                     $datosDB=existeOrden($idexa);
+                                     
+                                    //echo  $datosDB[3];
+                                        for ($index = 1 ; $index <=10 ; $index++) 
+                                        {
+                                          $rest=areglo ($datosDB,$index);
+                                          if($rest==0){
+                                            $rslts.='<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
+                                          }
+                                            
+                           
+                                        }
+                                
+            $rslts .= '</select>';
+                            echo $rslts;
+	
+                      
 
 	break;
 
@@ -379,9 +440,9 @@ case 7: //BUSQUEDA
 			  LEFT OUTER JOIN ctl_sexo                              cex  ON (cex.id  = lppe.idsexo AND cex.abreviatura != 'I')
 			  LEFT OUTER JOIN ctl_rango_edad 			cre  ON (cre.id  = lppe.idrangoedad)
 			  WHERE 
-                           lpla.idplantilla = 'E' 
-                          AND lcee.condicion = 'H'
-                         AND 
+                         --  lpla.idplantilla = 'E' 
+                          --AND lcee.condicion = 'H'
+                         --AND 
                          lppe.idestablecimiento = $lugar";
 
 	$ban=0;
@@ -470,7 +531,7 @@ case 7: //BUSQUEDA
 	//ENVIANDO A EJECUTAR LA BUSQUEDA!!
 	//require_once("clsLab_Procedimientos.php");
 	////para manejo de la paginacion
-	$RegistrosAMostrar=4;
+	$RegistrosAMostrar=5;
 	$RegistrosAEmpezar=( $_POST['Pag']-1 )*$RegistrosAMostrar;
 	$PagAct=$_POST['Pag'];
 
@@ -524,7 +585,7 @@ case 7: //BUSQUEDA
 		          ";
 		echo"</tr>";*/
             
-            $habilitado=$row['habilitado'] ;
+          $habilitado=$row['habilitado'] ;
                    // == "t") {
                 
           //  }
@@ -624,10 +685,10 @@ case 7: //BUSQUEDA
 		echo "<td> <a onclick=\"show_event_search('$PagSig')\">Siguiente</a> </td>";
 	if ( $PagUlt > 0 )
 		echo "<td> <a onclick=\"show_event_search('$PagUlt')\">Ultimo</a></td>";
-	echo "</tr>
-		  </table>";
-                    
-                     echo " <center> <ul class='pagination'>";
+	 echo "</tr>
+	         </table>";
+         
+         echo " <center> <ul class='pagination'>";
                           for ($i=1 ; $i<=$PagUlt; $i++)
                                     {
                              
@@ -698,6 +759,7 @@ case 8://PAGINACION DE BUSQUEDA
                                                 lppe.id as idlppe,
                                                 mnt4.id as idmnt4,
                                                 lcee.condicion
+                                                
 			  FROM lab_procedimientosporexamen                      lppe
 			  INNER JOIN lab_conf_examen_estab 			lcee ON (lcee.id = lppe.id_conf_examen_estab)
 			  INNER JOIN lab_plantilla                              lpla ON (lpla.id = lcee.idplantilla)
@@ -706,9 +768,9 @@ case 8://PAGINACION DE BUSQUEDA
 			  LEFT OUTER JOIN ctl_sexo                              cex  ON (cex.id  = lppe.idsexo AND cex.abreviatura != 'I')
 			  LEFT OUTER JOIN ctl_rango_edad 			cre  ON (cre.id  = lppe.idrangoedad)
 			  WHERE 
-                           lpla.idplantilla = 'E' 
-                          AND lcee.condicion = 'H'
-                         AND 
+                           --lpla.idplantilla = 'E' 
+                          --AND lcee.condicion = 'H'
+                         --AND 
                          lppe.idestablecimiento = $lugar AND";
 
 	$ban=0;
@@ -778,7 +840,7 @@ case 8://PAGINACION DE BUSQUEDA
 	//ENVIANDO A EJECUTAR LA BUSQUEDA!!
 	//require_once("clsLab_Procedimientos.php");
 	////para manejo de la paginacion
-	$RegistrosAMostrar=4;
+	$RegistrosAMostrar=5;
 	$RegistrosAEmpezar=( $_POST['Pag']-1 )*$RegistrosAMostrar;
 	$PagAct=$_POST['Pag'];
 
@@ -839,7 +901,7 @@ case 8://PAGINACION DE BUSQUEDA
           //  }
                  if ($habilitado=="t")
                      {
-                     
+                     echo " if";
                      echo "<tr>
                     <td aling='center'>
                         <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\"
@@ -870,11 +932,11 @@ case 8://PAGINACION DE BUSQUEDA
                      
                  }
                  else {
-                     
+                     echo " else";
                        echo "<tr>
                     <td aling='center'>
                         <img src='../../../Imagenes/Search.png' style=\"text-decoration:underline;cursor:pointer;\"
-			onclick=\"pedirDatos('".$row['idprocedimientoporexamen']."')\"  height='40' width='50'> </td>
+			onclick=\"pedirDatos(".$row['idprocedimientoporexamen'].")\"  height='40' width='50'> </td>
                    <!-- <td aling ='center'>
 			 <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
 			onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"> </td> -->
@@ -945,7 +1007,42 @@ case 8://PAGINACION DE BUSQUEDA
                     echo " </ul></center>";
         
 	break;
-        
+       
+       
         
 }
+ function existeOrden($idexa){
+          $respuesta=0;
+          $objdatos = new clsLab_Procedimientos;
+          $consulta=$objdatos->llenarrangoproc($idexa);
+          $hola=array();                      
+                                while ($row=pg_fetch_array($consulta))
+                                    {
+                                       /* if($row['orden']==$index)
+                                        {
+                                            $respuesta=1;
+                                        }else{
+                                           $respuesta=0; 
+                                        }
+                                        echo $row['orden'];  */
+                                    $hola[]=$row['orden'];
+                                    }
+                                    
+           return $hola;                        
+        }
+    function areglo ($arr,$dato){
+        $respuesta=0;
+        $max = sizeof($arr);
+        for ($index = 0 ; $index<$max; $index++) 
+            {
+               if($dato<>$arr[$index]){
+                   $respuesta=0;//no mostrar
+              }else{
+                    $respuesta=1;//si mostrar
+                    $index=$max;
+                    
+               } 
+            }
+            return $respuesta;    
+    }    
 ?>

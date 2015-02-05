@@ -1,13 +1,14 @@
 <?php session_start();
 include('../Lab_Areas/clsLab_Areas.php');
 include("clsLab_Procedimientos.php");
+
  
 $objdatos=new clsLab_Procedimientos;
 $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea']; 
-
+$idproce=0;
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
 $base_url  = $_SESSION['base_url'];
 ?>
@@ -33,12 +34,20 @@ $base_url  = $_SESSION['base_url'];
 function Guardar(){
    	IngresarRegistro();
 }
+
+
+
 function LlenarComboExamen(idArea)
 {
- // alert  (idArea);
+  //alert  (idArea);
        LlenarExamenes(idArea);
 }
 
+function llenarcomboRango(idexa){
+    //alert(idexa);
+    LlenarRango(idexa)
+    
+}
 function Buscar(){
     
     
@@ -48,6 +57,7 @@ function Buscar(){
           &&(document.getElementById('cmbEdad').value == 0)
           &&(document.getElementById('txtproc').value == "")
           &&(document.getElementById('txtunidades').value == "")
+          &&(document.getElementById('cmbExamen').value == 0)
           &&(document.getElementById('txtrangoini').value == "")
           &&(document.getElementById('txtrangofin').value == "")
           
@@ -71,6 +81,31 @@ function Actualizar(){
 function Nuevo(){
 	MostraFormularioNuevo();
 }
+function popup(URL) {
+        myWindow=window.open(URL, '" + "', 'scrollbars=yes, width=700, height=700, left=100, top = 100');
+    }
+
+
+/*function habilitar_metodologia(obj){
+        if(obj.value !== "") {
+           // alert("se hablitara el boton");
+            obj1 = document.getElementById('add_metodologia');
+            obj1.disabled = false;
+        }
+    }*/
+    
+    function habilitar_rango(obj){
+        if(obj.value !== "") {
+          //  habilitar_metodologia();
+            // alert("se hablitara el combo");
+            obj1 = document.getElementById('add_cmbrango');
+            obj1.disabled = false;
+            
+            obj2 = document.getElementById('add_metodologia');
+            obj2.disabled = false;
+            
+        }
+    }
 
 </script>
 <style type="text/css">
@@ -122,15 +157,10 @@ if ($nivel==33){
                             <td width="17%" class="StormyWeatherFieldCaptionTD">Examen </td>
                             <td width="83%"  class="StormyWeatherDataTD">
                                 <div id="divExamen">
-                                    <select name="cmbExamen" id="cmbExamen" style="width:235px"> 
+                                    <select name="cmbExamen" id="cmbExamen" style="width:235px" > 
                                         <option value="0">--Seleccione un Examen--</option>
                                         
-                                       <?php 
-                                           /*  $consultaex = $obj->ExamenesPorArea($lugar);
-				while($row = pg_fetch_array($consultaex)){
-                                            echo "<option value='" .$row['id']."' >". $row['nombreexamen']."</option>";
-                                                }
-				*/?> 
+                                      
                                     </select>
 				</div>
                             </td>
@@ -172,6 +202,43 @@ if ($nivel==33){
                             <td width="17%" class="StormyWeatherFieldCaptionTD">Unidades</td>
                             <td width="83%" class="StormyWeatherDataTD"><input name="txtunidades" type="text" id="txtunidades" size="10"></td>
 			</tr>
+                        
+                        <tr>
+                            <td width="17%" class="StormyWeatherFieldCaptionTD">Orden </td>
+                            <td width="83%"  class="StormyWeatherDataTD">
+                                <div id="divRango">
+                                    <select   name="cmborden"  id="cmborden" style="width:235px" > 
+                                        <option value="0">--Seleccione un Orden--</option>
+                                        <!--disabled="disabled"-->
+                                  </select>
+				</div>
+                            </td>
+        		</tr>
+                        
+                        
+                      <!--  <tr>
+                        <td nowrap class="StormyWeatherFieldCaptionTD">Posibles Resultado </td>
+                        <td class="StormyWeatherDataTD">
+                            <input type="hidden" name="metodologias_sel" id="metodologias_sel">
+                            <input type="hidden" name="text_metodologias_sel" id="text_metodologias_sel">
+                            <input type="hidden" name="id_metodologias_sel" id="id_metodologias_sel">
+                            <button type='button' class='btn btn-default'   name="add_metodologia" id="add_metodologia" style="width:250px" 
+                                    onclick="popup('consulta_SubElemento1.php?form=frmnuevo&metodologias_sel='+document.getElementById('metodologias_sel').value+
+                                        '&text_metodologias_sel='+document.getElementById('text_metodologias_sel').value+
+                                        '&nombre='+document.getElementById('cmbExamen').value+ '&id_metodologias_sel='+document.getElementById('id_metodologias_sel').value);">
+                                        <span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Metodologías:..</button>
+                          disabled="disabled"
+                        </td>
+                        
+                        
+                        
+                        
+                        </tr> -->
+                        
+                        <!--<tr>
+                        <td nowrap class="StormyWeatherFieldCaptionTD">Posibles Resultado </td>
+                         
+                        </tr>-->
                         <tr>
                             <td colspan="2" class="StormyWeatherDataTD" >
                                 <fieldset><span><center> <h4>Rangos</h4></center></span>
@@ -232,7 +299,15 @@ if ($nivel==33){
                                 <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntProcedimientosExamen.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
                             </td>
                          </tr>
-                        
+                          <?php 
+                                     $consulta=$objdatos->ultimoidprocede();
+                  while ( $row = @pg_fetch_array( $consulta ) ) {
+                  $mismo=$row['id'] ;
+                  
+                  
+                  }
+                                       ?> 
+                        <input type="hidden" name="mismo" id="mismo" size="50" value="<?php echo $mismo; ?>" />
                     </table>
 		</form>
             </div>
