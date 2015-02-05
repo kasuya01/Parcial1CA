@@ -6,6 +6,7 @@ $usuario=$_SESSION['Correlativo'];
 $area=$_SESSION['Idarea'];
 //consulta los datos por su id
 $idproce=$_POST['idproce'];
+
  $idproce;
 $obj = new clsLab_Procedimientos;
 
@@ -20,6 +21,9 @@ $consulta=$obj->consultarid($idproce,$lugar);
 $row = pg_fetch_array($consulta);
 
 //valores de las consultas
+//$nombreelemento=$row['elemento'];
+
+$orden=$row['orden'];
 $idarea=$row['idarea'];
 $nombrearea=$row['nombrearea'];
 $idexamen=$row['idexamen'];
@@ -78,7 +82,7 @@ $rangoedad=$row['nombregrupoedad'];
             		<option value="0">--Seleccione un Examen--</option>
 	           		<?php
 						$consultaex = $obj->ExamenesPorArea($idarea, $lugar);
-						while($row = pg_fetch_array($consultaex)) {
+						while($row = @pg_fetch_array($consultaex)) {
 							if($row['idexamen'] === $idexamen)
 								echo "<option value='" . $idexamen . "' selected='selected'>" .$nombreexamen. "</option>";
 							else
@@ -134,7 +138,56 @@ $rangoedad=$row['nombregrupoedad'];
 	<tr>
 	    	<td width="17%" class="StormyWeatherFieldCaptionTD">Unidades</td>
 	    	<td width="83%" class="StormyWeatherDataTD"><input name="txtunidades" type="text" id="txtunidades" value="<?php echo htmlentities($unidades); ?>" size="10">		  </td>
-	</tr>
+	
+        <tr>
+                <td width="17%" class="StormyWeatherFieldCaptionTD">Orden</td>
+                    <td width="83%"  class="StormyWeatherDataTD">
+                        <div id="divRango">
+                            <select   name="cmborden"  id="cmborden" style="width:235px" > 
+                                <option value="0">--Seleccione un Orden--</option>
+                                        <!--disabled="disabled"--><?php
+                                $conEdad = $obj->Rangos($idproce);
+                                while($row = pg_fetch_array($conEdad)){
+                                	if($row['orden'] === $orden){
+                                		echo "<option value='" . $orden . "' selected='selected'>" .$orden. "</option>";
+                                        } else
+                                            $datosDB=0;
+                                             $datosDB=existeOrden($idexamen);
+                                                for ($index = 1 ; $index <=10 ; $index++) 
+                                                    {
+                                                      $rest=areglo ($datosDB,$index);
+                                                      if($rest==0){
+                                                        echo '<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
+                                                      }
+
+
+                                                    }
+                                            
+                                            
+                                    	//echo "<option value='" . $row['$orden']. "'>". $row['$orden'] . "</option>";
+                                      
+                                }
+                            ?>    
+                                </select>
+		        </div>
+                </td>
+        </tr>    
+                                           
+                                           
+                    
+
+        </tr>
+          <tr>
+                        <td nowrap class="StormyWeatherFieldCaptionTD">Posibles Resultado </td>
+                         <?php
+                         echo "<td class='StormyWeatherDataTD'>
+                                    <button type='button' align='center' class='btn btn-default'  onclick='popup(".'"consulta_SubElemento.php?idproce='.$idproce.'"'.")' >  <span class='glyphicon glyphicon-th-list'></span>  ..:Seleccionar Resultado:.. </button>
+                                    </td>"; ?>
+         </tr>
+        
+        
+        
+        
     	<tr>
         	<td colspan="2" class="StormyWeatherDataTD">
 			<fieldset><span><center> <h4>Rangos</h4></center></span>
@@ -191,12 +244,56 @@ $rangoedad=$row['nombregrupoedad'];
             <td class="StormyWeatherDataTD" colspan="6" align="right">
                 <button type='button' align="center" class='btn btn-primary'  onclick='Actualizar(); '><span class='glyphicon glyphicon-repeat'></span> Actualizar </button>
                 <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntProcedimientosExamen.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
-            </td>
+                <!--
+                <input type="button" name="btnSubElementos" value="SubElementos" Onclick="MostrarSubElementos() ;">  
+                -->
+                 </td>
     </tr>
     <?php 
                 }
                 
-                ?>
+                ?> 
+    
+    
+    
+    <?php
+    
+    function existeOrden($idexamen){
+          $respuesta=0;
+          $objdatos = new clsLab_Procedimientos;
+          $consulta=$objdatos->llenarrangoproc($idexamen);
+          $hola=array();                      
+                                while ($row=pg_fetch_array($consulta))
+                                    {
+                                       /* if($row['orden']==$index)
+                                        {
+                                            $respuesta=1;
+                                        }else{
+                                           $respuesta=0; 
+                                        }
+                                        echo $row['orden'];  */
+                                    $hola[]=$row['orden'];
+                                    }
+                                    
+           return $hola;                        
+        }
+    function areglo ($arr,$dato){
+        $respuesta=0;
+        $max = sizeof($arr);
+        for ($index = 0 ; $index<$max; $index++) 
+            {
+               if($dato<>$arr[$index]){
+                   $respuesta=0;//no mostrar
+              }else{
+                    $respuesta=1;//si mostrar
+                    $index=$max;
+                    
+               } 
+            }
+            return $respuesta;    
+    }    
+    
+    ?>
     
 </table>
 </form>
