@@ -56,7 +56,7 @@ function diaslaborales($dia){
 function parse_day($fecha_rec){
   $query_day="SELECT EXTRACT(DOW FROM TIMESTAMP '$fecha_rec') as dow";
   $queryDay =pg_query($query_day);
-  echo $query_day;
+  //echo $query_day;
   $rows = pg_fetch_array($queryDay);
 	$dia  =	$rows['dow'];
   //echo $dia;
@@ -80,10 +80,14 @@ function RESTAR($fecha,$tiempo_max){
 
 
 function subdays($fech_act){
+   //echo '<br>subday: '.$fech_act;
 	//$sql="SELECT DATE_FORMAT(adddate('$fech_act',interval -1 day),'%Y/%m/%d') as Fecha";
-	$sql="SELECT date(date('$fech_act') - INTERVAL '1 day') as fecha";
+   $fecha=date('Y-m-d');
+	$sql="SELECT case when (EXTRACT(DOW FROM TIMESTAMP '$fech_act')in(6,0) and ( (date('$fech_act')-current_date) in (1,2)) ) then  date(current_date + INTERVAL '3 day') 
+	else date(date('$fech_act') - INTERVAL '1 day') end as fecha;";
+	//$sql="SELECT date(date('$fech_act') - INTERVAL '1 day') as fecha";
        // $queryDay =mysql_query($sql) or die('La consulta fall&oacute;:' . mysql_error());
-       echo '<br>sql:'.$sql.'<br><br>';
+      // echo '<br>sql:'.$sql.'<br><br>';
         $queryDay =pg_query($sql);
 	$var=pg_fetch_array($queryDay);
         if (!$queryDay)
@@ -113,7 +117,7 @@ and ccs.id_solicitudestudios=$IdSolicitudEstudio
 and fecha>=current_date";
         //--Estados 1:Digitada 2:Recibida 3:En Proceso 4:Completa
 	$resp=pg_query($query);
-        echo $query.'<br>';
+        //echo $query.'<br>';
         if (!$resp)
             return false;
         else

@@ -117,7 +117,6 @@ include_once $ROOT_PATH."/public/js.php";
 
             function  darcita(idsolicitudestudio, idservicio, idexp, fecha) {//funcion que recibe el id de solicitud de estudio, el servicio, y el numero de expediente para ser enviados a otro proceso
                 accion = 3;
-
                 comprobar(idsolicitudestudio, idservicio, idexp);
 //                sendReq.open("POST", 'ajax_CitasServicios.php', true);
 //                sendReq.onreadystatechange = procesaSearch;

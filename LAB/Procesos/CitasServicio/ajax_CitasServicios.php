@@ -110,14 +110,20 @@ switch($Proceso){
 			'</tr></thead><tbody>';
 									
 		while ($row =pg_fetch_array($dtSub)){
-					
-			$rslt.='<tr>'.
+					$fechasol=$row['fecha_solicitud'];
+//			$rslt.='<tr>'.
+//					'<td align="center"> '.$row['numero'].' </td>'.
+//					'<td align="center"> '.$fechasol.' </td>'.
+//					'<td align="center">'.
+//					'<a class="StormyWeatherDataLink" href="javascript:darcita('.$row[2].','.$row['idatencion'].','.$_POST['id_exp'].', '.$fechasol.')">Programar cita de &nbsp;'.$row['nombre'].'</a></td></tr>';
+                        
+                        $rslt.='<tr>'.
 					'<td align="center"> '.$row['numero'].' </td>'.
-					'<td align="center"> '.$row['fecha_solicitud'].' </td>'.
+					'<td align="center"> '.$fechasol.' </td>'.
 					'<td align="center">'.
-					'<a class="StormyWeatherDataLink" href="javascript:darcita('.$row[2].','.$row['idatencion'].','.$_POST['id_exp'].', "'.$row['fecha_solicitud'].'")">Programar cita de '.
-					'&nbsp;'.$row['nombre'].'</a></td>'.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-					'</tr>';
+					"<a class='StormyWeatherDataLink' href=\"javascript:darcita(".$row[2].",".$row['idatencion'].",".$_POST['id_exp'].", '".$fechasol."')\">Programar cita de &nbsp;".$row['nombre']."</a></td></tr>";
+                        
+                        
 		}
                 echo '</tbody></table></div>';
 	}else{
@@ -332,18 +338,18 @@ switch($Proceso){
 				$bandera=0;
 				//echo ' bandera:'.$bandera.' actual: '.$actual;
 				while($bandera==0){
-                                        echo '<br> Entro a while actual: '.$actual.'<br>';
-					//identificamos que dia de la semana tiene la fecha generada
-                                   //echo 'actual:'.$actual.'<br>';
-					$dd = $citaserv->parse_day($actual);
-					//comprobamos si ese dia de la semana no es sabado ni domingo
-					$weekend = $citaserv->diaslaborales($dd);
-					//comprobamos si esa fecha es dia festivo fijo
-					$esFest = $citaserv->dias_festivos($actual,$employee);
-					//comprobamos cuantas solicitudes de examenes se tienen para esta fecha encontrada no permite un cupo mayor a 20
-					$existencia = $citaserv->ContarFechas($actual);
-					//generamos un arreglo para comprobar cuantas solicitudes de esta fecha contienen el examen de creatinina
-					$creatinina = $citaserv->ContarCreatinina($actual,$id_qui045);
+                          // echo '<br> Entro a while actual: '.$actual.'<br>';
+                           //identificamos que dia de la semana tiene la fecha generada
+                      //echo 'actual:'.$actual.'<br>';
+                           $dd = $citaserv->parse_day($actual);
+                           //comprobamos si ese dia de la semana no es sabado ni domingo
+                           $weekend = $citaserv->diaslaborales($dd);
+                           //comprobamos si esa fecha es dia festivo fijo
+                           $esFest = $citaserv->dias_festivos($actual,$employee);
+                           //comprobamos cuantas solicitudes de examenes se tienen para esta fecha encontrada no permite un cupo mayor a 20
+                           $existencia = $citaserv->ContarFechas($actual);
+                           //generamos un arreglo para comprobar cuantas solicitudes de esta fecha contienen el examen de creatinina
+                           $creatinina = $citaserv->ContarCreatinina($actual,$id_qui045);
 					//echo 'existencia: '.$existencia;				
 			/*if ($dd == 5 || $dd==6){//verificamos q si es Jueves o Viernes
 				if ($existencia <= 60){//el techo de examenes sea de 60 solamente
@@ -380,7 +386,6 @@ switch($Proceso){
 						$bandera=1;
 						
 					}else{
-                                         //  echo '.. emntrp a eñse :'. $esFest. ' /weekend:'.$weekend;
 						//Sumamaos un dia mas a la fecha generadada
 						$actual=$citaserv->subdays($actual);
 						//Verificamos que dia de la semana tiene la fecha nueva generada.
