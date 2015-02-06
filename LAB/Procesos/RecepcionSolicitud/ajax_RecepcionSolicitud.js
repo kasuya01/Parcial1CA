@@ -203,6 +203,7 @@ function VerificarExistencia(idexpediente, fechacita, idEstablecimiento, omitir_
         ajax = objetoAjax();
         opcion = 2;
         //usando del medoto POST
+        
         ajax.open("POST", "ctrRecepcionSolicitud.php", true);
         //muy importante este encabezado ya que hacemos uso de un formulario
         ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -214,6 +215,7 @@ function VerificarExistencia(idexpediente, fechacita, idEstablecimiento, omitir_
                 if (ajax.status == 200) { //alert (ajax.responseText);
                     if (ajax.responseText.replace(/(\r\n|\n|\r| )/gm,'') == 'D') { //si existen datos para la solicitud
                         MostrarDatosGenerales(idexpediente, fechacita, idEstablecimiento);
+                        
                     } else { //mueestra el mensaje de estado de la solicitud
                         alert(ajax.responseText);
                     }
@@ -270,8 +272,12 @@ function MostrarDatosGenerales(idexpediente, fechacita, idEstablecimiento) {
         if (ajax.readyState == 4) {
             if (ajax.status == 200)
             {
+               
                 //mostrar los nuevos registros en esta capa
                 document.getElementById('divResultado').innerHTML = ajax.responseText;
+            //    alert ('whaaa');
+                classdatepick();
+              //  alert ('yeye');
                 //posicion=document.getElementById('topei').value;
                 calc_edad();
                 //alert(ajax.responseText);

@@ -115,7 +115,7 @@ switch($Proceso){
 					'<td align="center"> '.$row['numero'].' </td>'.
 					'<td align="center"> '.$row['fecha_solicitud'].' </td>'.
 					'<td align="center">'.
-					'<a class="StormyWeatherDataLink" href="javascript:darcita('.$row[2].','.$row['idatencion'].','.$_POST['id_exp'].')">Programar cita de '.
+					'<a class="StormyWeatherDataLink" href="javascript:darcita('.$row[2].','.$row['idatencion'].','.$_POST['id_exp'].', "'.$row['fecha_solicitud'].'")">Programar cita de '.
 					'&nbsp;'.$row['nombre'].'</a></td>'.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 					'</tr>';
 		}
@@ -308,7 +308,7 @@ switch($Proceso){
 				$l=0;
 				$t=1;
 				
-				$dt_Cm=$citaserv->ObtenerFechaCitaMedica($_POST['id_exp']);
+				$dt_Cm=$citaserv->ObtenerFechaCitaMedica($_POST['id_exp'], $Fecha);
 				
 				while ($row =pg_fetch_array($dt_Cm)){
 						$fecha="$row[0]";//Sacamos la proxima fecha de la cita medica otorgada el dia de la cita.
@@ -332,8 +332,9 @@ switch($Proceso){
 				$bandera=0;
 				//echo ' bandera:'.$bandera.' actual: '.$actual;
 				while($bandera==0){
-                                        //echo '<br> Entro a while actual: '.$actual.'<br>';
+                                        echo '<br> Entro a while actual: '.$actual.'<br>';
 					//identificamos que dia de la semana tiene la fecha generada
+                                   //echo 'actual:'.$actual.'<br>';
 					$dd = $citaserv->parse_day($actual);
 					//comprobamos si ese dia de la semana no es sabado ni domingo
 					$weekend = $citaserv->diaslaborales($dd);
@@ -372,13 +373,14 @@ switch($Proceso){
 				if ($existencia <= 30){
 					if($weekend == 0 && $esFest == 0){
                                                 $fechareg = $citaserv->FechaServer();
-                                            //echo '......::entro a insert::...';
+                                          // echo '......::entro a insert::...';
 						//comprobamos si ese dia de la semana no es sabado ni domingo
 						$weekend = $citaserv->diaslaborales($dd);							
 						$datos = $citaserv->InsertarCitaServicio($actual,$_POST['idsolicitudestudio'],$fechareg,$IdUsuarioReg);
 						$bandera=1;
 						
 					}else{
+                                         //  echo '.. emntrp a eñse :'. $esFest. ' /weekend:'.$weekend;
 						//Sumamaos un dia mas a la fecha generadada
 						$actual=$citaserv->subdays($actual);
 						//Verificamos que dia de la semana tiene la fecha nueva generada.

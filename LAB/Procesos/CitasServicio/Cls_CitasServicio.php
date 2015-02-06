@@ -33,10 +33,12 @@ function dias_festivos($fech_act,$emp){
 
 //Funcion para verificar los dias laborales utilizados para generar un vector y usarlo en el proceso de citas para el servicio de apoyo
 function diaslaborales($dia){
+   //echo 'dia:'.$dia;
 	//$vector = array(2,3,4,5,6);--en mysql
         $vector = array(1,2,3,4,5); //en postgres
 	$indice_encontrado = array_search($dia,$vector);
 	for ($i=0;$i<5;$i++){
+          // echo 'Vector_'.$i.':'.$vector[$i];
 		if($vector[$i]==$dia){
 			$indice_encontrado=TRUE;
                        // echo 'vector:'.$indice_encontrado.' -vectori:'.$vector[$i].' -i:'.$i.' --dia:'.$dia;
@@ -54,7 +56,7 @@ function diaslaborales($dia){
 function parse_day($fecha_rec){
   $query_day="SELECT EXTRACT(DOW FROM TIMESTAMP '$fecha_rec') as dow";
   $queryDay =pg_query($query_day);
-  
+  echo $query_day;
   $rows = pg_fetch_array($queryDay);
 	$dia  =	$rows['dow'];
   //echo $dia;
@@ -68,7 +70,7 @@ function RESTAR($fecha,$tiempo_max){
 //  $query_resta="SELECT DATE_FORMAT(adddate('$fecha',interval -$tiempo_max day),'%Y-%m-%d') as Fecha";
     $queryDay =pg_query($query_resta);
     //
-    //echo '<br>RESTAR: '.$query_resta;
+   //echo '<br>RESTAR: '.$query_resta;
     if (!$queryDay)
         return false;
     else 
@@ -81,6 +83,7 @@ function subdays($fech_act){
 	//$sql="SELECT DATE_FORMAT(adddate('$fech_act',interval -1 day),'%Y/%m/%d') as Fecha";
 	$sql="SELECT date(date('$fech_act') - INTERVAL '1 day') as fecha";
        // $queryDay =mysql_query($sql) or die('La consulta fall&oacute;:' . mysql_error());
+       echo '<br>sql:'.$sql.'<br><br>';
         $queryDay =pg_query($sql);
 	$var=pg_fetch_array($queryDay);
         if (!$queryDay)
@@ -110,7 +113,7 @@ and ccs.id_solicitudestudios=$IdSolicitudEstudio
 and fecha>=current_date";
         //--Estados 1:Digitada 2:Recibida 3:En Proceso 4:Completa
 	$resp=pg_query($query);
-        //echo $query;
+        echo $query.'<br>';
         if (!$resp)
             return false;
         else
@@ -152,7 +155,7 @@ function MostrarDetalleSolicitudes($nec,$idestablecimiento){
                         and sse.id_establecimiento=$idestablecimiento";
 		//$valret = mysql_query($query_Search) or die('La consulta fall&oacute;: ' . mysql_error());
             $valret=  pg_query($query_Search);
-            //echo $query_Search;
+           // echo $query_Search;
             if (!$valret)
                 return false;
             else
@@ -227,15 +230,15 @@ function MaxTiempoPrevdeExamenes($idsolicitudestudio,$IdEstablecimiento){
 	
 }
 
-function ObtenerFechaCitaMedica($nec){
+function ObtenerFechaCitaMedica($nec, $Fecha){
 	$con = new ConexionBD;
 	if($con->conectar()==true){
-		$query_FechaCitaMedica="select fecha 
+		$query_FechaCitaMedica="select min(fecha) 
                                         from cit_citas_dia 
                                         where id_expediente=$nec
-                                        and date(fechahorareg) >=current_date
+                                        and date(fechahorareg) >='$Fecha'
                                         and id_estado in (1,6)";
-               // echo 'Obtener fecha: '.$query_FechaCitaMedica;
+                //echo 'Obtener fecha: '.$query_FechaCitaMedica;
 		//$valret =  mysql_query($query_FechaCitaMedica) or die('La consulta fall&oacute;: ' . mysql_error());
                 $valret = pg_query($query_FechaCitaMedica);
                 if (!$valret)
@@ -267,8 +270,12 @@ function InsertarCitaServicio($actual,$idsolicitudestudio,$FechaReg,$IdUsuarioRe
 function ValidarFecha($FechaActual){
 	$querySelect="select current_date as FechaActual";
 	$resp=pg_fetch_array(pg_query($querySelect));
-	if($resp[0]==$FechaActual){
+	if($resp[0]>=$FechaActual){
+        
+          $FechaActual=date('Y-m-d');
+           
 		$NewDate=pg_fetch_array(pg_query(" SELECT date(date('$FechaActual') + INTERVAL '1 day')"));
+           // echo 'fecha: '.$NewDate[0];
 		return($NewDate[0]);
 	}else{
 		return ($FechaActual);
@@ -297,7 +304,7 @@ function ContarFechas($actual){
 		$dt_Sql= pg_query($query_Existencia);
                $row = pg_fetch_array($dt_Sql);
 			$valret=$row[0];
-//echo 'valret'.$valret.' - dt_sql: '.$dt_Sql.' /--';
+//echo '<br>valret'.$valret.' - dt_sql: '.$query_Existencia.' /--<br';
         if (!$dt_Sql)
             return false;
         else {
@@ -420,12 +427,17 @@ function ObtenerSubServicio($IdSolicitud,$Fecha, $Idexpediente){
                                 and ccd.id_expediente=$Idexpediente
 
 			$comp";
-                
+                //echo 'sub:'.$query_Search.'<br>';
                 $dt = pg_query($query_Search);
                 
 		//$dt = mysql_query($query_Search) or die('La consulta fall&oacute;: ' . mysql_error());
 	$resp=pg_fetch_array($dt);
-	return($resp[0]);
+        if ($resp[0]==''){
+           $respu='NULL';
+           return $respu;
+        }
+        else
+            return($resp[0]);
 }//ObtenerSubServicio
 
 function FechaServer(){

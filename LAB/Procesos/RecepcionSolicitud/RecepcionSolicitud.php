@@ -122,7 +122,8 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                 echo "<td>" . htmlentities($rows['indicacion']) . "</td>";
             } else
                 echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-                echo " <td style='width:225px'><input type='text' class='date form-control height'  id='f_tomamuestra' name='f_tomamuestra'  value=". date('Y-m-d H:i')." style='width:200px'/></td>";
+                $fecha= date('Y-m-d H:i:s');
+            echo " <td style='width:225px'><input type='text' class='datepicker form-control height'  id='f_tomamuestra_' name='f_tomamuestra'  value='". date('Y-m-d H:i:s')."' style='width:200px' onchange='valfechasolicita(this, 'f_tomamuestra')'/></td>";
             //***************** bandera ************************
             if (($rows['idexamen'] == 'COA001')or ( $rows['idexamen'] == 'COA002') or ( $rows['idexamen'] == 'COA016')) {
                 $ban = 1;

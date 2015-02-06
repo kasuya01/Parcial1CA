@@ -115,7 +115,7 @@ include_once $ROOT_PATH."/public/js.php";
                 sendReq.send(param);
             }
 
-            function  darcita(idsolicitudestudio, idservicio, idexp) {//funcion que recibe el id de solicitud de estudio, el servicio, y el numero de expediente para ser enviados a otro proceso
+            function  darcita(idsolicitudestudio, idservicio, idexp, fecha) {//funcion que recibe el id de solicitud de estudio, el servicio, y el numero de expediente para ser enviados a otro proceso
                 accion = 3;
 
                 comprobar(idsolicitudestudio, idservicio, idexp);
@@ -143,7 +143,7 @@ include_once $ROOT_PATH."/public/js.php";
                 sendReq.setRequestHeader('Content-Type',
                         'application/x-www-form-urlencoded');
                 var param = 'Proceso=darcita';
-                param += '&idsolicitudestudio=' + idsolicitudestudio + '&idservicio=' + idservicio+'&id_exp='+idexp;
+                param += '&idsolicitudestudio=' + idsolicitudestudio + '&idservicio=' + idservicio+'&id_exp='+idexp+'&fecha='+fecha;
                 
               
               //  var param = 'Proceso=darcita';
