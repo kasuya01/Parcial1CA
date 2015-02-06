@@ -51,18 +51,14 @@ $(function()
 
 
 
-$(function(){
-   
-	$.timepicker.setDefaults( $.timepicker.regional['es']);
-      $('.datepicker').on('click', function() {
-		$(this).datetimepicker({showOn:'focus', changeMonth: true,showWeek: true,
-			changeYear: true,  firstDay: 0, dateFormat: 'yy-mm-dd', yearRange: "-120:+0"}).focus();
-                        
-	});
-});
+//$(function(){
+//   
+//	
+//});
 
 $(function(){
-    classdate();
+   classdatepick();
+   classdate();
 });
 function classdate() {
        //pongo lo de formato español porque esta es una clase
@@ -88,6 +84,14 @@ function classdate() {
 	$.datepicker.setDefaults($.datepicker.regional['es']);
       $('.date').on('click', function() {
 		$(this).datepicker({showOn:'focus', changeMonth: true,showWeek: true,
+			changeYear: true,  firstDay: 0, dateFormat: 'yy-mm-dd', yearRange: "-120:+0"}).focus();
+                        
+	});
+}
+function classdatepick(){
+   $.timepicker.setDefaults( $.timepicker.regional['es']);
+      $('.datepicker').on('click', function() {
+		$(this).datetimepicker({showOn:'focus', changeMonth: true,showWeek: true,
 			changeYear: true,  firstDay: 0, dateFormat: 'yy-mm-dd', yearRange: "-120:+0"}).focus();
                         
 	});

@@ -193,7 +193,8 @@ case 2://vista Previa de Resultado
 		$codigos= $_POST['codigos'];
 		$valores= $_POST['valores'];
                 $comentarios     = $_POST['comentarios'];
-                $valores_combos  = $_POST['valores_combos'];
+              //  $valores_combos  = $_POST['valores_combos'];
+                $valores_combos  = isset($_POST['valores_combos']) ? $_POST['valores_combos'] : null;
 		$establecimiento = $_POST['estab'];
 		$tab=$_POST['tab'];
 		$fechanac=$_POST['fechanac'];

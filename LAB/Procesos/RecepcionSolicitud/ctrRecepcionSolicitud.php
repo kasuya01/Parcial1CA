@@ -33,7 +33,7 @@ switch ($opcion) {
                             id_dato_referencia = (SELECT (CASE WHEN e.id is null THEN er.id ELSE e.id END) AS id FROM (SELECT id,numero FROM mnt_expediente WHERE numero = '$idexpediente') e
                             FULL OUTER JOIN (SELECT id,numero FROM mnt_expediente_referido  WHERE numero = '$idexpediente') er ON e.numero = er.numero)) AND  id = $idsolicitud";
             */
-            $query = "UPDATE sec_solicitudestudios SET estado = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = '$estado' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')), f_tomamuestra  = date_trunc('seconds', NOW())
+            $query = "UPDATE sec_solicitudestudios SET estado = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = '$estado' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
                         WHERE id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB') AND 
                         id_establecimiento = $lugar AND 
                          id = $idsolicitud";

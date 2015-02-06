@@ -522,7 +522,8 @@ class clsRecepcionSolicitud {
                              t02.fecha_solicitud AS fechasolicitud,
                              t06.idsubservicio,
                              t02.id AS idsolicitudestudio,
-                             t10.idestandar
+                             t10.idestandar,
+                             t01.id as iddetalle
                       FROM sec_detallesolicitudestudios 		 t01
                       INNER JOIN sec_solicitudestudios                   t02 ON (t02.id = t01.idsolicitudestudio)
                       INNER JOIN lab_conf_examen_estab 		         t03 ON (t03.id = t01.id_conf_examen_estab)
