@@ -113,6 +113,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                     <th> Fecha Tmx. </th>
 		</tr></thead><tbody>";
         $detalle = $objdatos->BuscarDetalleSolicitud($idexpediente, $Nfechacita, $arraysolic[$i], $idEstablecimiento);
+        $k=1;
         while ($rows = pg_fetch_array($detalle)) {
           echo "<tr>
                     <td>" . $rows['idestandar'] . " </td>
@@ -122,13 +123,18 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                 echo "<td>" . htmlentities($rows['indicacion']) . "</td>";
             } else
                 echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-                $fecha= date('Y-m-d H:i:s');
-            echo " <td style='width:225px'><input type='text' class='datepicker form-control height'  id='f_tomamuestra_' name='f_tomamuestra'  value='". date('Y-m-d H:i:s')."' style='width:200px' onchange='valfechasolicita(this, 'f_tomamuestra')'/></td>";
+                $fecha= date('Y-m-d H:i');
+                $iddetalle=$rows['iddetalle'];
+            echo " <td style='width:225px'><input type='text' class='datepicker form-control height'  id='f_tomamuestra_".$k."' name='f_tomamuestra_'  value='". date('Y-m-d H:i')."' onchange=\"valfechasolicita(this, 'f_tomamuestra_".$k."')\" style='width:200px' />"
+                    . "<input type='hidden' id='iddetalle_".$k."' name='iddetalle_' value='".$iddetalle."'/>"
+                    . "<input type='hidden' id='hdn_numexOrd".$k."' name='hdn_numexOrd' value='".$k."'/>"
+                    . "</td>";
             //***************** bandera ************************
             if (($rows['idexamen'] == 'COA001')or ( $rows['idexamen'] == 'COA002') or ( $rows['idexamen'] == 'COA016')) {
                 $ban = 1;
             }
             echo "</tr>";
+            $k++;
         }// while detalle
 // <input type='text' class='datepicker' name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" onchange="valfechasolicita(this, 'fecha_realizacion')"/>
 //          <input type='text' class='datepicker' name='fecha_reporte' id='fecha_reporte' size='15'  value='".date('Y-m-d H:i')."' onchange=\'valfechasolicita(this, 'fecha_reporte')\'/><br>           <input type='button' name='btnImprimir[" . $i . "]' id='btnImprimir[" . $i . "]' value='Imprimir Vi&ntilde;etas' onClick='ImprimirExamenes(" . $i . ");'/>   <input type='button' name='btnImpSolicitud[" . $i . "]' id='btnImpSolicitud[" . $i . "]' value='Imprimir Solicitud' onClick='ImprimirSolicitud(" . $i . ");'/>

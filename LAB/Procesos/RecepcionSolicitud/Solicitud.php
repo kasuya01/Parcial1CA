@@ -1,4 +1,5 @@
 <?php
+@session_start();
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
 ?>
 <html>
@@ -63,14 +64,18 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
 
         $con = new ConexionBD;
         if ($con->conectar() == true) {
+           
+        $estado="select * from sec_solicitudestudios where id=".$idsolicitud1.";";
+           $est=@pg_fetch_array(pg_query($estado));
+           $estado_solicitud=$est['estado'];
+           
             $aux_query  = "SELECT COUNT(id) AS numero FROM lab_proceso_establecimiento WHERE id_proceso_laboratorio = 3";
             $aux_result = @pg_query($aux_query);
+            $sirecep=pg_fetch_array($aux_result);
 
-            if(pg_fetch_array($aux_result)[0] === "0") {
-                $estado_solicitud = "P";
+            if($sirecep[0] === 0) {
                 $estado_detalle   = "PM";
             } else {
-                $estado_solicitud = "R";
                 $estado_detalle   = "D";
             }
 
@@ -103,7 +108,6 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                              t10.peso,
                              t10.talla,
                              t12.sct_name_es,
-         <?php include_o
                              t05.conocido_por AS conocidopor
                       FROM  sec_historial_clinico 			     t01
                       INNER JOIN sec_solicitudestudios 		     t02 ON (t01.id = t02.id_historial_clinico)
@@ -121,7 +125,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                       INNER JOIN lab_tiposolicitud 			     t14 ON (t14.id = t02.idtiposolicitud)
                       INNER JOIN ctl_estado_servicio_diagnostico t15 ON (t15.id = t02.estado AND t15.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
                       WHERE t08.codigo_busqueda = 'DCOLAB' AND t04.numero = '$idexpediente'
-                            AND t15.idestado = '$estado_solicitud'     AND t02.id = $idsolicitud1
+                            AND t15.id = $estado_solicitud     AND t02.id = $idsolicitud1
                             AND t09.fecha = '$Nfechacita'";
                 $result = @pg_query($query);
                 if (pg_num_rows($result)==0){ // busqueda si el paciente es de referencia
@@ -174,7 +178,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                       INNER JOIN ctl_estado_servicio_diagnostico t15 ON (t15.id = t01.estado AND t15.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
                         INNER JOIN mnt_area_mod_estab 		 t16 ON (t16.id = t07.id_area_mod_estab)
                       INNER JOIN ctl_area_atencion		 t17 ON (t17.id = t16.id_area_atencion)
-                      WHERE t04.numero = '$idexpediente' AND t15.idestado = '$estado_solicitud' AND t01.id = $idsolicitud1
+                      WHERE t04.numero = '$idexpediente' AND t15.id = $estado_solicitud AND t01.id = $idsolicitud1
                             AND t09.fecha = '$Nfechacita'";
                 $result = @pg_query($query);
             }
@@ -232,7 +236,8 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                              t02.fecha_solicitud AS fechasolicitud,
                              t06.idsubservicio,
                              t02.id AS idsolicitudestudio,
-                             t10.idestandar
+                             t10.idestandar, 
+                             t01.f_tomamuestra
                       FROM sec_detallesolicitudestudios 		 t01
                       INNER JOIN sec_solicitudestudios                   t02 ON (t02.id = t01.idsolicitudestudio)
                       INNER JOIN lab_conf_examen_estab 		         t03 ON (t03.id = t01.id_conf_examen_estab)
@@ -256,15 +261,16 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
             $resultdetalle = @pg_query($querydetalle);
         }
         ?>
+       <br>
         <form id="frmSolicitud">
-            <table width="80%" border="0" align="center" >
+           <table width="80%" border="0" align="center" class="table table-bordered table-condensed table-white no-v-border" >
                 <tr>
                     <td colspan="6" class="CobaltFieldCaptionTD" align="center" ><h3>DATOS SOLICITUD<h3></td>
                                 </tr>
                                 <tr align="right">
                                 </tr>
                                 <tr>
-                                    <td colspan="1">Establecimiento Solicitante:</td>
+                                   <td colspan="1"><strong>Establecimiento Solicitante:</strong></td>
                                     <td colspan="3" align="left"><?php echo htmlentities($establecimiento); ?></td>
                                 </tr>
                                 <tr>
@@ -348,6 +354,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                                                 <th class="CobaltFieldCaptionTD">Código Examen</th>
                                                 <th class="CobaltFieldCaptionTD">Nombre Examen </th>
                                                 <th class="CobaltFieldCaptionTD">Indicación</th>
+                                                <th class="CobaltFieldCaptionTD">F. Toma Muestra</th>
                                             </tr></thead><tbody>
                                             <?php
                                                 while ($fila = pg_fetch_array($resultdetalle)) {
@@ -362,6 +369,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                                                     <?php } else { ?>
                                                         <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                                     <?php } ?>
+                                                     <td> <?php echo $fila['f_tomamuestra']; ?>  </td>
                                                 </tr>
                                             <?php
                                                 }

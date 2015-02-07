@@ -22,6 +22,7 @@ switch ($opcion) {
         $fechacita    = $_POST['fechacita'];
         $estado       = $_POST['estado'];
         $idsolicitud  = $_POST['idsolicitud'];
+        $cantidadnum  = $_POST['cantidadnum'];
 
         if ($con->conectar() == true) {
             
@@ -33,22 +34,50 @@ switch ($opcion) {
                             id_dato_referencia = (SELECT (CASE WHEN e.id is null THEN er.id ELSE e.id END) AS id FROM (SELECT id,numero FROM mnt_expediente WHERE numero = '$idexpediente') e
                             FULL OUTER JOIN (SELECT id,numero FROM mnt_expediente_referido  WHERE numero = '$idexpediente') er ON e.numero = er.numero)) AND  id = $idsolicitud";
             */
-            $query = "UPDATE sec_solicitudestudios SET estado = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = '$estado' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+           $query = "UPDATE sec_solicitudestudios SET estado = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = '$estado' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
                         WHERE id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB') AND 
                         id_establecimiento = $lugar AND 
                          id = $idsolicitud";
 
             $result = @pg_query($query);
 
-            $aux_query  = "SELECT COUNT(id) AS numero FROM lab_proceso_establecimiento WHERE id_proceso_laboratorio = 3 and activo=true";
+           $aux_query  = "SELECT COUNT(id) AS numero FROM lab_proceso_establecimiento WHERE id_proceso_laboratorio = 3 and activo=true";
             $aux_result = @pg_query($aux_query);
+            $sirecep=pg_fetch_array($aux_result);
 
-            if(pg_fetch_array($aux_result)[0] === "0") {
-                $query1 ="UPDATE sec_detallesolicitudestudios SET estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = 'PM' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-                          WHERE idsolicitudestudio = $idsolicitud AND idestablecimiento = $lugar";
+            if($sirecep[0] === 0) {
+               
+              if ($cantidadnum>0) {
+               for ($i=1; $i<=$cantidadnum; $i++){
+                  $hdniddeatalle_ = $_POST['iddetalle_'.$i];
+                  $hdnfechatmx_ = $_POST['f_tomamuestra_'.$i];
+                   $query1 ="UPDATE sec_detallesolicitudestudios 
+                      SET estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = 'PM' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')), 
+                      f_tomamuestra= '$hdnfechatmx_'
+                                 WHERE idsolicitudestudio = $idsolicitud "
+                           . "AND idestablecimiento = $lugar
+                           and id= $hdniddeatalle_";
 
-                $result1 = @pg_query($query1);
+                       $result1 = @pg_query($query1);
+               }
+              }
             }
+            else{
+               if ($cantidadnum>0) {
+               for ($i=1; $i<=$cantidadnum; $i++){
+                  $hdniddeatalle_ = $_POST['iddetalle_'.$i];
+                  $hdnfechatmx_ = $_POST['f_tomamuestra_'.$i];
+                  $query1 ="UPDATE sec_detallesolicitudestudios 
+                      SET f_tomamuestra= '$hdnfechatmx_'
+                                 WHERE idsolicitudestudio = $idsolicitud "
+                           . "AND idestablecimiento = $lugar
+                           and id= $hdniddeatalle_";
+
+                       $result1 = @pg_query($query1);
+               }
+              }
+            }
+               
 
             if (!$result)
                 echo "N";
@@ -115,7 +144,7 @@ switch ($opcion) {
 				 WHERE (t05.numero = '$idexpediente' OR t11.numero = '$idexpediente') AND t02.fecha = '$Nfechacita' AND  t01.id_establecimiento = $lugar
                                        AND t10.id_establecimiento = $idEstablecimiento AND t06.codigo_busqueda = 'DCOLAB'";
                 }
-                
+                //echo $query_estado;
                 $result = @pg_query($query_estado);
                 $row = pg_fetch_array($result);
                 $estadosolicitud = $row[0];

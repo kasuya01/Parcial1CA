@@ -448,6 +448,12 @@ function RegistrarNumeroMuestra(posicion)//Registrando Numero de Muestra asociad
     ajax = xmlhttp();
     //usando del medoto POST
     opcion = 4;
+   
+//    for (i=0; i<=canti; i++){
+//       j = parseInt(i)+1;					
+//       parametros=parametros+"&f_tomamuestra_"+j+"="+document.getElementById("f_tomamuestra_" + this.value).value;	
+//       parametros=parametros+"&f_tomamuestra_"+j+"="+document.getElementById("f_tomamuestra_" + this.value).value;	
+//    }
     //alert(idsolicitud);
     ajax.open("POST", "ctrRecepcionSolicitud.php", true);
     //muy importante este encabezado ya que hacemos uso de un formulario
@@ -546,6 +552,22 @@ function CambiarEstadoSolicitud(estado, idsolicitud, posicion)
     idexpediente = document.getElementById('txtidexpediente').value;
     Solicitud = document.getElementById('txtidsolicitud[' + posicion + ']').value;
     fechacita = "";
+     cantresult=$('input[name="hdn_numexOrd"]').length;;
+    parametros="";
+    i=0;
+    j=0;
+    if (cantresult>0)
+         {
+         $('input[name="hdn_numexOrd"]').each(function(i) {
+            j = parseInt(i)+1;
+          parametros=parametros+"&f_tomamuestra_"+j+"="+document.getElementById("f_tomamuestra_" + this.value).value;
+          parametros=parametros+"&iddetalle_"+j+"="+document.getElementById("iddetalle_" + this.value).value;
+         }
+         ); 
+   }
+   cantidadnum=j;  
+   parametros=parametros+"&cantidadnum="+j;
+  // alert (parametros)
     opcion = 1;
     idsolicitud = idsolicitud;
     //alert(posicion)
@@ -556,7 +578,7 @@ function CambiarEstadoSolicitud(estado, idsolicitud, posicion)
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
-    ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&opcion=" + opcion + "&estado=" + estado + "&idsolicitud=" + idsolicitud + "&Solicitud=" + Solicitud);
+    ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&opcion=" + opcion + "&estado=" + estado + "&idsolicitud=" + idsolicitud + "&Solicitud=" + Solicitud+parametros);
     ajax.onreadystatechange = function() {
         if (ajax.readyState == 4) {
             if (ajax.status == 200)

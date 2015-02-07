@@ -2567,42 +2567,6 @@ function llenarComboTipoSolicitud() {
     });
 }
 
-function valfechasolicita(obj,nombre){
- //fecha0=document.getElementById('d_fechatoma').value;
-fecha1=obj.value;
-var fecha_actual = new Date() ;
-      var dia = fecha_actual.getDate()  
-      var mes = fecha_actual.getMonth() + 1  
-      var anio = fecha_actual.getFullYear()  
-      var hora = fecha_actual.getHours()
-      var mins = fecha_actual.getMinutes()
-	
-         if (mes<10)
-            mes='0'+mes;
-         if (dia<10)
-            dia='0'+dia;
-         if (hora<10)
-            hora='0'+hora;
-         if (mins<10)
-            mins='0'+mins;
-	fechact=parseInt(anio+""+mes+""+dia+""+hora+""+mins);
-
-//var f0 = fecha0.split('-');
-//var fechaPri = parseInt(f0[0]+f0[1]+f0[2]);
-fecha2 = fecha1.replace(/[-: ]/g , "");
-
-//var f2 = fecha1.split('-');
-//var fecha2 = parseInt(f2[0]+f2[1]+f2[2]+f2[3]+f2[4]);
-
-
-    if (fecha1!="" && fecha2>fechact)
-    {
-    alert ('La fecha de Solicitud de examen es mayor que la fecha actual')
-    fechafin=getCurrentDateTime('yyyy-mm-dd');
-    document.getElementById(nombre).value=fechafin;
-    return false;
-    }
-}
 
 //Fn Pg
 // Parametros para seleccionar establecimiento x tipo 1
