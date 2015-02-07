@@ -227,7 +227,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
                 t11.nombre AS nombresubservicio, 
                 t22.sct_name_es AS diagnostico, 
                 t23.peso as peso, 
-                t23.talla as talla,t02.fecha_solicitud as fechasolicitud 
+                t23.talla as talla,t02.fecha_solicitud as fechasolicitud, t02.id as idsol
                 FROM sec_detallesolicitudestudios 		t01 
                 INNER JOIN sec_solicitudestudios 		t02 	ON (t02.id = t01.idsolicitudestudio) 
                 INNER JOIN lab_recepcionmuestra 		t03 	ON (t02.id = t03.idsolicitudestudio) 
@@ -283,7 +283,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
                 t11.nombre AS nombresubservicio, 
                 t22.sct_name_es AS diagnostico, 
                 t23.peso as peso, 
-                t23.talla as talla,t02.fecha_solicitud as fechasolicitud 
+                t23.talla as talla,t02.fecha_solicitud as fechasolicitud, t02.id as idsol 
                 FROM sec_detallesolicitudestudios t01 
                 INNER JOIN sec_solicitudestudios 		t02 		ON (t02.id = t01.idsolicitudestudio) 
                 INNER JOIN lab_recepcionmuestra 		t03 		ON (t02.id = t03.idsolicitudestudio) 
@@ -369,7 +369,8 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
                             casd.id as idarea, 
                             lrm.numeromuestra,
                             ces.idestandar as estandar, 
-                            sdses.id as iddetalle
+                            sdses.id as iddetalle, 
+                            sdses.f_tomamuestra
 		from ctl_area_servicio_diagnostico casd 
                 join mnt_area_examen_establecimiento mnt4       on mnt4.id_area_servicio_diagnostico=casd.id 
                 join lab_conf_examen_estab lcee                 on (mnt4.id=lcee.idexamen) 
@@ -378,7 +379,8 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud)
                 join lab_recepcionmuestra lrm			on (lrm.idsolicitudestudio=sdses.idsolicitudestudio) 
                 join ctl_examen_servicio_diagnostico ces	on (ces.id=mnt4.id_examen_servicio_diagnostico)
                 where sdses.idsolicitudestudio=(select idsolicitudestudio from sec_detallesolicitudestudios where id=$idsolicitud)
-                and casd.id=$idarea;
+                and casd.id=$idarea
+                   and estadodetalle=1;
 "; 
                       
                       
@@ -440,14 +442,14 @@ function CambiarEstadoSolicitud($idsolicitud,$estadosolicitud,$estadosolicitud6)
    {
         $query6= "SELECT COUNT(id) 
 		FROM sec_detallesolicitudestudios sdse
-                WHERE idsolicitudestudio=(select idsolicitudestudio from sec_detallesolicitudestudios where id=$idsolicitud)
+                WHERE idsolicitudestudio=$idsolicitud
                 AND (estadodetalle <> (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado ='RM'))";
        // si retorna 0 muestra sera =6
        
      $detalle = pg_fetch_array(pg_query($query6));
             if ($detalle[0] == 0) {
                 $query1 = "UPDATE sec_solicitudestudios SET estado=(select id from ctl_estado_servicio_diagnostico where idestado='$estadosolicitud6')
-	    WHERE id=(select idsolicitudestudio from sec_detallesolicitudestudios where id =$idsolicitud)";
+	    WHERE id=$idsolicitud";
                 $result = pg_query($query1);
                 return true;
             }
@@ -457,7 +459,7 @@ function CambiarEstadoSolicitud($idsolicitud,$estadosolicitud,$estadosolicitud6)
        
         $query56="SELECT COUNT(id) 
 		FROM sec_detallesolicitudestudios sdse
-                WHERE idsolicitudestudio=(select idsolicitudestudio from sec_detallesolicitudestudios where id=$idsolicitud)
+                WHERE idsolicitudestudio=$idsolicitud
                 AND 
                 (estadodetalle <> (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado ='PM')
                 AND estadodetalle <> (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado ='RM'))";
@@ -466,7 +468,7 @@ function CambiarEstadoSolicitud($idsolicitud,$estadosolicitud,$estadosolicitud6)
         $detalle = pg_fetch_array(pg_query($query56));
             if ($detalle[0] == 0) {
                 $query1 = "UPDATE sec_solicitudestudios SET estado=(select id from ctl_estado_servicio_diagnostico where idestado='$estadosolicitud')
-	    WHERE id=(select idsolicitudestudio from sec_detallesolicitudestudios where id =$idsolicitud)";
+	    WHERE id=$idsolicitud)";
                 $result = pg_query($query1);
                 return true;
             }
@@ -501,7 +503,7 @@ function CambiarEstadoDetalle($idsolicitud,$estado,$observacion)
                         "UPDATE sec_detallesolicitudestudios 
                         SET estadodetalle=(select id from ctl_estado_servicio_diagnostico where idestado='$estado'),
                         observacion='$observacion'
-                        WHERE sec_detallesolicitudestudios.id=$idsolicitud ";
+                        WHERE sec_detallesolicitudestudios.id in ($idsolicitud) ";
 									
 		$result = @pg_query($query);
 	    if (!$result)

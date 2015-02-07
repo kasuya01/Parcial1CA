@@ -471,10 +471,11 @@ $imprimir="<form name='frmDatos'>
 		$idarea=$_POST['idarea'];
 		$estado=$_POST['estado'];
 		$idexpediente=$_POST['idexpediente'];
+		$iddetalle=$_POST['iddetallesol'];
 		$estadosolicitud="P";
                
 	        $observacion="";
-		if ($objdatos->CambiarEstadoDetalle($idsolicitud,$estado,$observacion)==true)   
+		if ($objdatos->CambiarEstadoDetalle($iddetalle,$estado,$observacion)==true)   
 		  { //$objdatos->IngresarRecepcionArea($idarea,$idsolicitud,)           
 			echo "Muestras Recibidas.";	
 			if($objdatos->CambiarEstadoSolicitud($idsolicitud,$estadosolicitud,$estadosolicitud)==true)
@@ -495,12 +496,13 @@ $imprimir="<form name='frmDatos'>
 		$idarea=$_POST['idarea'];
 		$estado=$_POST['estado'];
 		$idsolicitud=$_POST['idsolicitud'];
+                $iddetalle=$_POST['iddetallesol'];
 		$estadosolicitud='P';
                 $estadosolicitud6="RM";
 		$observacion;
 	//	$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$responsable,$usuario,$tab,$lugar);
 		
-		if ($objdatos->CambiarEstadoDetalle($idsolicitud,$estado,$observacion)==true){
+		if ($objdatos->CambiarEstadoDetalle($iddetalle,$estado,$observacion)==true){
 			
                     echo "Muestras Rechazada";
                     if($objdatos->CambiarEstadoSolicitud($idsolicitud,$estadosolicitud,$estadosolicitud6)==true){

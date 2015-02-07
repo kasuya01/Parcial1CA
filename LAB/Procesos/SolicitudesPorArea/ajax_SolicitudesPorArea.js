@@ -180,7 +180,7 @@ function MostrarDatos(posicion)
 		//alert(idsolicitud+" - "+idarea+" - "+idexamen+" - "+idtipo+" - "+idexpediente);
 		ventana_secundaria = window.open("DatosSolicitudesPorArea.php?var1="+idexpediente+
 		"&var2="+idarea+"&var3="+idsolicitud+"&var4="+idexamen+"&var5="+idtipo+
-                "&var6="+subservicio,"Datos","width=850,height=550,menubar=no,scrollbars=yes") ;
+                "&var6="+subservicio,"Datos","width=850,height=650,menubar=no,scrollbars=yes") ;
  }
 
 
@@ -261,6 +261,18 @@ function CambiarEstadoDetalleSolicitud(estado,idtipo,idexpediente,idarea,idsolic
 	idsolicitud=trim(idsolicitud);
 	idexpediente=trim(idexpediente);
 	fechasolicitud=trim(fechasolicitud);
+        parametros="";
+         rChecked = $('input:checkbox:checked:enabled').length;        
+         j=0;
+         $("input[type=checkbox]:checked:enabled").each(function(i){
+         j=i+1;
+                 //cada elemento seleccionado
+         parametros=parametros+$(this).val()
+         if (j<rChecked)
+         parametros=parametros+','
+                 //alert(parametros);
+         });
+        // alert(parametros);
 	//instanciamos el objetoAjax
 	ajax=objetoAjax();
 	//usando del medoto POST
@@ -269,7 +281,7 @@ function CambiarEstadoDetalleSolicitud(estado,idtipo,idexpediente,idarea,idsolic
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
 	ajax.send("idexpediente="+idexpediente+"&idarea="+idarea+"&fechasolicitud="+fechasolicitud+
-	"&idsolicitud="+idsolicitud+"&opcion="+opcion+"&estado="+estado+"&idexamen="+idexamen+"&idtipo="+idtipo);	
+	"&idsolicitud="+idsolicitud+"&opcion="+opcion+"&estado="+estado+"&idexamen="+idexamen+"&idtipo="+idtipo+'&iddetallesol='+parametros);	
 	ajax.onreadystatechange=function() 
 		{
 			if (ajax.readyState==4) 
@@ -280,7 +292,15 @@ function CambiarEstadoDetalleSolicitud(estado,idtipo,idexpediente,idarea,idsolic
 					//document.getElementById('divCambioEstado').innerHTML = ajax.responseText;	
                                          // SolicitudesPorArea2vuelta();
                                        alert(ajax.responseText);
-                                        window.close();
+                                       $('input:checkbox:checked').prop("disabled", true);
+                                       $("#cmbProcesar option[value='0']").attr('selected', 'selected');
+    $("#btnProcesar").attr("disabled", "disabled");
+    $("#btnRechazar").attr("disabled", "disabled");
+                                       
+//                 MostrarSolicitudes(); 
+//                 
+//                  window.close();
+                                        
                                        //SolicitudesPorArea();
                                       // SolicitudesPorArea2vuelta(idarea);
                                        
@@ -295,6 +315,27 @@ function CambiarEstadoDetalleSolicitud(estado,idtipo,idexpediente,idarea,idsolic
            
 	
 }
+function MostrarSolicitudes()
+{
+	if ((document.getElementById('cmbTipoEstab').value == 0) && (document.getElementById('cmbEstablecimiento').value == 0)
+	&& (document.getElementById('CmbServicio').value == 0) && (document.getElementById('cmbArea').value == 0) 
+	&& (document.getElementById('txtexpediente').value == "") && (document.getElementById('cmbExamen').value == 0) 
+	&& (document.getElementById('PrimerNombre').value=="") && (document.getElementById('SegundoNombre').value=="") 
+	&& (document.geElementById('PrimerApellido').value=="") && (document.getElementById('SegundoApellido').value=="") 
+	&& (document.getElementById('txtfechasolicitud')) && (document.getElementById('cmbTipoSolic')==0)){
+			alert("Ingrese parámetros de búsqueda");
+	 
+	 }
+    	else{  
+		if (document.getElementById('cmbArea').value == 0){
+			alert ("Debe de ingresar un Área");
+		}
+                else{
+                  
+			SolicitudesPorArea();}
+	}
+}
+
 
 //function RechazarMuestra(idexamen)
 function RechazarMuestra(idtipo,idexpediente,idarea,idsolicitud,fechasolicitud,observacion)
@@ -305,6 +346,18 @@ function RechazarMuestra(idtipo,idexpediente,idarea,idsolicitud,fechasolicitud,o
         idsolicitud=trim(idsolicitud);
 	idexpediente=trim(idexpediente);
 	fechasolicitud=trim(fechasolicitud);
+          parametros="";
+         rChecked = $('input:checkbox:checked:enabled').length;        
+         j=0;
+         $("input[type=checkbox]:checked:enabled").each(function(i){
+         j=i+1;
+                 //cada elemento seleccionado
+         parametros=parametros+$(this).val()
+         if (j<rChecked)
+         parametros=parametros+','
+                 //alert(parametros);
+         });
+         //alert(parametros);
         //alert(idexpediente);
 		//instanciamos el objetoAjax
 	ajax=objetoAjax();
@@ -315,7 +368,7 @@ function RechazarMuestra(idtipo,idexpediente,idarea,idsolicitud,fechasolicitud,o
 		//enviando los valores
 	
 	ajax.send("idexpediente="+idexpediente+"&idarea="+idarea+"&fechasolicitud="+fechasolicitud+
-	"&idsolicitud="+idsolicitud+"&opcion="+opcion+"&estado="+estado+"&observacion="+escape(observacion)+"&idexamen="+idexamen+"&idtipo="+idtipo);	
+	"&idsolicitud="+idsolicitud+"&opcion="+opcion+"&estado="+estado+"&observacion="+escape(observacion)+"&idexamen="+idexamen+"&idtipo="+idtipo+'&iddetallesol='+parametros);	
 
 		ajax.onreadystatechange=function() 
 		{
@@ -326,7 +379,14 @@ function RechazarMuestra(idtipo,idexpediente,idarea,idsolicitud,fechasolicitud,o
                                     //mostrar los nuevos registros en esta capa
 					//document.getElementById('divCambioEstado').innerHTML = ajax.responseText;	
 					alert(ajax.responseText);
-                                        window.close();
+                                         $('input:checkbox:checked').prop("disabled", true);
+                                         $("#cmbProcesar option[value='0']").attr('selected', 'selected');
+    $("#btnProcesar").attr("disabled", "disabled");
+    $("#btnRechazar").attr("disabled", "disabled");
+    document.frmDatos.txtobservacion.value="";
+    document.getElementById('divObservacion').style.display="none";
+//                 MostrarSolicitudes(); 
+//                                        window.close();
 				}
 			}
 	    }

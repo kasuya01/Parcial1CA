@@ -45,7 +45,8 @@ for ( i = 0; i < getVars.length; i++)
 			idexamen = getVars[i].substr(5);	
 		if ( getVars[i].substr(0,5) == 'var5=' )
 			idtipo = getVars[i].substr(5);
-	}
+      }
+        
 //CargarDatosFormulario(idexpediente,idarea,idsolicitud,idarea,idtipo);
 }
 </script>
@@ -55,7 +56,17 @@ function Procesar()
 {
  //alert (idtipo);
  fechasolicitud=document.frmDatos.fechasolicitud.value;
- ProcesarMuestra(idtipo,idexpediente,idarea,idsolicitud,fechasolicitud);
+ idsol=document.getElementById('idsol').value;
+ rChecked = $('input:checkbox:checked:enabled').length;
+ if (rChecked==0){
+    alert ('Seleccione al menos una prueba para Procesar.');
+    $("#cmbProcesar option[value='0']").attr('selected', 'selected');
+    $("#btnProcesar").attr("disabled", "disabled");
+    $("#btnRechazar").attr("disabled", "disabled");
+    return false;
+ }
+
+ ProcesarMuestra(idtipo,idexpediente,idarea,idsol,fechasolicitud);
 
 }
 
@@ -64,7 +75,18 @@ function Rechazar()
  //alert (idtipo);
  fechasolicitud=document.frmDatos.fechasolicitud.value;
  observacion=document.frmDatos.txtobservacion.value;
- RechazarMuestra(idtipo,idexpediente,idarea,idsolicitud,fechasolicitud,observacion);
+  idsol=document.getElementById('idsol').value;
+ rChecked = $('input:checkbox:checked:enabled').length;
+ if (rChecked==0){
+    alert ('Seleccione al menos una prueba para Rechazar.');
+    $("#cmbProcesar option[value='0']").attr('selected', 'selected');
+    $("#btnProcesar").attr("disabled", "disabled");
+    $("#btnRechazar").attr("disabled", "disabled");
+    document.frmDatos.txtobservacion.value="";
+    document.getElementById('divObservacion').style.display="none";
+    return false;
+ }
+ RechazarMuestra(idtipo,idexpediente,idarea,idsol,fechasolicitud,observacion);
 
 }
 
@@ -130,6 +152,7 @@ function calc_edad()
         $Peso           = $row['peso'];
         $Diagnostico    = $row['diagnostico'];
         $ConocidoPor    = $row['conocodidox'];
+        $idsol    = $row['idsol'];
                 
                 
 		//recuperando los valores del detalle de la solicitud
@@ -139,6 +162,7 @@ function calc_edad()
                 
 	<?php
                 $imprimir = "<form name='frmDatos'>
+                   <input type='hidden' id='idsol' name='idsol' value='".$idsol. "'/>
                     <table width='85%' border='0' align='center' class='StormyWeatherFormTABLE'>
 			<tr>
 				<td colspan='4' align='center' class='CobaltFieldCaptionTD'>DATOS SOLICITUD</td>
@@ -168,7 +192,7 @@ function calc_edad()
 		    	</tr>
                         <tr>
 				<td class='StormyWeatherFieldCaptionTD'>Procedencia</td>
-				<td class='StormyWeatherDataTD'>$precedencia <input name='txtprecedencia' id='txtprecedencia' 
+				<td class='StormyWeatherDatsec_solicitudestudiosaTD'>$precedencia <input name='txtprecedencia' id='txtprecedencia' 
 				type='hidden' size='35' value='" . $precedencia . "' disabled='disabled' /></td>
 				<td class='StormyWeatherFieldCaptionTD'>Origen</td>
 				<td class='StormyWeatherDataTD'>" . htmlentities($subservicio) . "
@@ -218,32 +242,36 @@ function calc_edad()
    <br>
                     <table border = 0 align='center'  width='80%' class="table table-hover table-bordered table-white">
                        <thead>
-                          <tr><th colspan="6" style="text-align: center">ESTUDIO SOLICITADO</th></tr>
+                          <tr><th colspan="7" style="text-align: center">ESTUDIO SOLICITADO</th></tr>
                        <tr class='CobaltFieldCaptionTD'>
                             <td width="8%"> Validar</td>
-                            <td width="10%"> Cód.Examen</td>
-			    <td width="53%"> Examen </td>
-			    <td width="14%"> NoMuestra </td>
-			    <td width="14%"> Tipo Muestra </td>
+                            <td width="6%"> Cód. Examen</td>
+			    <td width="44%"> Examen </td>
+			    <td width="8%"> No. Muestra </td>
+			    <td width="10%"> Tipo Muestra </td>
 			    <td width="12%"> Indicaci&oacute;n M&eacute;dica </td>
+			    <td width="12%"> F. Toma Muestra </td>
 		       </tr>
                        </thead><tbody>
 <?php
             $pos=0;
 		while($fila = pg_fetch_array($consultadetalle)){?>
 			<tr>
-                           <td  width="10%"><input type="checkbox" name="valida_detalle" value="<?php echo $fila['iddetalle'];?>" selected/></td>
-                            <td  width="10%"><?php echo $fila['estandar']?></td>
-                            <td width="53%"><?php echo htmlentities($fila['nombre_examen'])?></td>	
-                            <td width="14%"><?php echo htmlentities($fila['numeromuestra'])?></td>	
-                            <td width="14%"><?php echo htmlentities($fila['tipomuestra'])?></td>	
+                           <td  width="8%"><input type="checkbox" id="valida_detalle" name="valida_detalle<?php echo $fila['iddetalle'];?>" value="<?php echo $fila['iddetalle'];?>" selected/></td>
+                            <td  width="6%"><?php echo $fila['estandar']?></td>
+                            <td width="44%"><?php echo htmlentities($fila['nombre_examen'])?></td>	
+                            <td width="8%"><?php echo htmlentities($fila['numeromuestra'])?></td>	
+                            <td width="10%"><?php echo htmlentities($fila['tipomuestra'])?></td>	
 			<?php if (!empty($fila['indicacion'])){?>    				
-                            <td width="23%"><?php echo htmlentities($fila['indicacion'])?></td>
-			</tr>
+                            <td width="12%"><?php echo htmlentities($fila['indicacion'])?></td>
+			
                         <?php }else{?>
-                             <td width="23%">&nbsp;&nbsp;&nbsp;&nbsp;</td>
-			</tr> 
-                            <?php }
+                             <td width="12%">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			
+                            <?php } ?>
+                             <td width="12%"><small><?php echo htmlentities($fila['f_tomamuestra'])?></small></td>	</tr> 
+                        <?php
+                            
             $pos=$pos + 1;
             }
 
