@@ -500,13 +500,28 @@ and sse.id_establecimiento=$lugar;";
     function MostrarDatoslabresultado($idexamen, $lugar, $idsolicitud, $iddetalle) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query="select t01.*, t01.idempleado as empleado, nombre_examen 
+            $query="select t01.*, t01.idempleado as empleado, nombre_examen , t02.f_tomamuestra
 from lab_resultados t01
 join sec_detallesolicitudestudios t02 on (t02.id=t01.iddetallesolicitud)
 join lab_conf_examen_estab t03 on (t03.id=t02.id_conf_examen_estab)
 where t01.idsolicitudestudio=$idsolicitud
 and t01.iddetallesolicitud=$iddetalle
 and t01.idestablecimiento=$lugar;";
+            $result = @pg_query($query);
+           // $filares = pg_fetch_array($result);
+              // echo '<br\>'.$filares['idempleado'].'<br\>';
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
+    
+    //Fn Pg
+    function ftomamuestra($iddetalle, $lugar) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query="select * from sec_detallesolicitudestudios where id= $iddetalle and idestablecimiento=$lugar;";
             $result = @pg_query($query);
            // $filares = pg_fetch_array($result);
               // echo '<br\>'.$filares['idempleado'].'<br\>';

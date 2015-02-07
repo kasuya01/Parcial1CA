@@ -86,6 +86,7 @@ $interpretacion=$filares['interpretacion'];
 $observacion=$filares['observacion'];
 $responsable=$filares['idempleado'];
 $nexamen=$filares['nombre_examen'];
+$f_tomamuestra=$filares['f_tomamuestra'];
  //echo 'emp:'.$responsable;
 ?>
 <div  id="divImpresion" >
@@ -119,6 +120,8 @@ $nexamen=$filares['nombre_examen'];
             <tr>
 		<td colspan="1" class="Estilo5"><strong>Paciente:</strong></td>
 		<td colspan="2" class="Estilo6"><?php echo  $rowpa['nombre'];?></td>
+                <td colspan="1" class="Estilo5"><strong>Fecha Toma Muestra:</strong></td>
+		<td colspan="2" class="Estilo6"><?php echo $f_tomamuestra;?></td>
             </tr>
             <tr>
 		<td colspan="1" class="Estilo5"><strong>Edad:</strong></td>
@@ -204,14 +207,14 @@ $nexamen=$filares['nombre_examen'];
             echo "<tr><td colspan=1><br><i>Metodologías:</i></td></tr>";
             while ($rowme=pg_fetch_array($met)){
                 echo "<tr>
-                        <td align='left' style='font:bold'>".$rowme['nombre_metodologia']."</td>
-   <td align='center'>".$rowme['resultado']."</td>
-                        <td align='center'>".$rowme['unidades']."</td>
-                        <td align='justify'>".$rowme['rangoinicio']." - ".$rowme['rangofin']."</td>
-                        <td align='justify'>".$rowme['marca']."</td>
-                        <td align='justify'>".$rowme['lectura']."</td>
-                        <td align='justify'></td>
-                        <td align='justify'>".$rowme['observacion']."</td>
+                        <td align='left' style='font:bold'  class='Estilo5'>".$rowme['nombre_metodologia']."</td>
+   <td align='center'  class='Estilo5'>".$rowme['resultado']."</td>
+                        <td align='center'  class='Estilo5'>".$rowme['unidades']."</td>
+                        <td align='justify' class='Estilo5'>".$rowme['rangoinicio']." - ".$rowme['rangofin']."</td>
+                        <td align='justify' class='Estilo5'>".$rowme['marca']."</td>
+                        <td align='justify' class='Estilo5'>".$rowme['lectura']."</td>
+                        <td align='justify' class='Estilo5'></td>
+                        <td align='justify' class='Estilo5'>".$rowme['observacion']."</td>
                     </tr>";
                 }
          }

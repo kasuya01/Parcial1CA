@@ -220,9 +220,9 @@ if (pg_num_rows($cant)>0){
 if ($referido!="t"){
     
 $condatos=$objdatos->condatos($IdHistorial, $lugar);
-$buscarinfo=$objdatos->consfecha($idsolicitud, $iddetallesolicitud,  $lugar);
+$buscarinfo=$objdatos->consfecha($solicitud, $iddetallesolicitud,  $lugar);
 $rowdeta=pg_fetch_array($buscarinfo);
-$fechatomamues= $rowdeta['f_tomamuestra'];
+$fechatomamues= isset($rowdeta['f_tomamuestra']) ? $rowdeta['f_tomamuestra'] : null;
 /*
 
   if($db->conectar()==true){
@@ -350,7 +350,7 @@ $fechatomamues= $rowdeta['f_tomamuestra'];
                             <td class="StormyWeatherFieldCaptionTD">*Metodologia</td>
                             <td class="StormyWeatherDataTD" colspan="3">
                                   <div id="divMetodologia">
-                                     <select id="cmbmetodologia" name="cmbmetodologia" size="1" onchange="buscarPosResMet(this.value)" style='width:96%; height:100%'>
+                                     <select id="cmbmetodologia" name="cmbmetodologia" size="1" onchange="buscarPosResMet(this.value)" style='width:96%; height:100%' class="form-control  height">
                                         <option value="0" >--Seleccione Metodologia--</option>
                                     </select>
                                                         
@@ -362,20 +362,20 @@ $fechatomamues= $rowdeta['f_tomamuestra'];
                             </td>
                         </tr>
                          <tr>
-                            <td class="StormyWeatherFieldCaptionTD">*Fecha Realización </td>
+                            <td class="StormyWeatherFieldCaptionTD" style="white-space: nowrap;">*Fecha Realización </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="datepicker" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" onchange="valfechasolicita(this, 'fecha_realizacion')"/>
+                                <input type="text" class="datepicker form-control height" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" onchange="valfechasolicita(this, 'fecha_realizacion')"/>
                             </td>
                              <td class="StormyWeatherFieldCaptionTD" width="196 px">*Fecha Reporte </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="datepicker" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  onchange="valfechasolicita(this, 'fecha_reporte')"/>                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  /> 
+                                <input type="text" class="datepicker form-control height" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  onchange="valfechasolicita(this, 'fecha_reporte')" style="width:90%"/>                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  /> 
                             </td>
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">*Validado Por</td>
                             <td class="StormyWeatherDataTD" colspan="3">
                                 <div id="divEncargado">
-                                    <select id="cmbEmpleados" name="cmbEmpleados" size="1">
+                                    <select id="cmbEmpleados" name="cmbEmpleados" size="1" class="form-control  height">
                                         <option value="0" >--Seleccione Empleado--</option>
                                     </select>
                                 </div>
@@ -385,7 +385,7 @@ $fechatomamues= $rowdeta['f_tomamuestra'];
                              <td class="StormyWeatherFieldCaptionTD">*Resultado</td>
                              <td class="StormyWeatherDataTD" colspan="3">
                                  <div id="divResult">
-                                    <textarea  name="txtresultado" cols="50" size="43"  id="txtresultado" placeholder="Debe seleccionar una metodología" disabled="disabled" style="width:96%"/></textarea> <input type="hidden" id="idresultado" name="idresultado" value="x"/>    
+                                    <textarea  name="txtresultado" cols="50" size="43"  id="txtresultado" placeholder="Debe seleccionar una metodología" disabled="disabled" class="form-control  height placeholder" style="width:96%"/></textarea> <input type="hidden" id="idresultado" name="idresultado" value="x" />    
                                 </div>
                                
                              </td>
@@ -394,22 +394,22 @@ $fechatomamues= $rowdeta['f_tomamuestra'];
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Marca</td>
                             <td class="StormyWeatherDataTD" colspan="3">
-                               <textarea name="txtmarca" cols="50" id="txtmarca" style="width:96%"></textarea></td>
+                               <textarea name="txtmarca" cols="50" id="txtmarca" style="width:96%" class="form-control  height"></textarea></td>
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Lectura</td>
                             <td class="StormyWeatherDataTD" colspan="3">
-                               <textarea name="txtlectura" cols="50" id="txtlectura" style="width:96%"></textarea></td>
+                               <textarea name="txtlectura" cols="50" id="txtlectura" style="width:96%" class="form-control  height"></textarea></td>
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Observaci&oacute;n</td>
-                            <td class="StormyWeatherDataTD" colspan="3"><textarea name="txtcomentario" cols="50" id="txtcomentario" style="width:96%"></textarea></td>
+                            <td class="StormyWeatherDataTD" colspan="3"><textarea name="txtcomentario" cols="50" id="txtcomentario" style="width:96%" class="form-control"></textarea></td>
                         </tr>
                         <tr>
-                            <td  class="StormyWeatherFieldCaptionTD">*Resultado Tabulador</td>
-                            <td  class="StormyWeatherDataTD" colspan="3">
+                           <td  class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">*Resultado Tabulador</td>
+                            <td  class="StormyWeatherDataTD" colspan="1">
                                 <div id="divCodResultado">
-                                   <select id="cmbResultado2" name="cmbResultado2" size="1" style="width:29%">
+                                   <select id="cmbResultado2" name="cmbResultado2" size="1" style="width:100%" class="form-control  height">
                                 <option value="0" >--Seleccione Resultado--</option>
                               
                                 <?php 
@@ -422,6 +422,7 @@ $fechatomamues= $rowdeta['f_tomamuestra'];
 				</select>
                                 </div>
                             </td>
+                            <td  class="StormyWeatherDataTD" colspan="2"></td>
                         </tr>
                         <tr>
 			<?php 
@@ -481,9 +482,9 @@ $fechatomamues= $rowdeta['f_tomamuestra'];
                            $buscarResfin=$objdatos->buscarresfin($idexamen_);
                            
                            $canti=pg_num_rows($buscarResfin);
-                           echo '<input type="hidden" id="cantresultfin" name="cantresultfin" value="'.$canti.'"/>';
+                           echo '<input type="hidden" id="cantresultfin" class="form-control  height" name="cantresultfin" value="'.$canti.'"/>';
                            if ($canti>0){
-                              echo '<select id="idresultadofin" name="idresultadofin" style="width:96%">';
+                              echo '<select id="idresultadofin" name="idresultadofin" style="width:96%" class="form-control  height">';
 
                             if ($canti>1){
 echo '<option value="xyz">Seleccione una opción</option>';
@@ -497,7 +498,7 @@ echo '<option value="xyz">Seleccione una opción</option>';
                             }
                              echo '</select>';
                           }
-                          else {                                                                        echo '<textarea  name="v_resultfin" cols="50" size="43"  id="v_resultfin"/></textarea><input type="hidden" id="idresultadofin" name="idresultadofin" value="x"/>';
+                          else {                                                                        echo '<textarea  name="v_resultfin" cols="50" size="43"  id="v_resultfin" class="form-control height"/></textarea><input type="hidden" id="idresultadofin" name="idresultadofin" value="x"/>';
                           }
                           
                            ?>
@@ -506,28 +507,28 @@ echo '<option value="xyz">Seleccione una opción</option>';
                         </td>
                         <td align="right"><b>F. Emisión Resultado final:</b></td>
                         <td colspan="1" >
-                                 <input type="text" class="datepicker" name="d_resultfin" id="d_resultfin" size="60"  value="<?php echo date("Y-m-d h:m"); ?>" onchange="valfechasolicita(this, 'd_resultfin')"  />	<input type="hidden" name="fechaact" id="fechaact" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />	
+                                 <input type="text" class="datepicker form-control height" name="d_resultfin" id="d_resultfin" size="60"  value="<?php echo date("Y-m-d h:m"); ?>" onchange="valfechasolicita(this, 'd_resultfin')"  />	<input type="hidden" name="fechaact" id="fechaact" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />	
                         </td>
                 </tr>
                 <tr>
                     <td><b>Lectura</b></td>
-                    <td  colspan="3"><textarea name="txtlecturafin" cols="100" id="txtlecturafin"></textarea></td>
+                    <td  colspan="3"><textarea name="txtlecturafin" cols="100" id="txtlecturafin" class="form-control  height" style="width:100%"></textarea></td>
                 </tr>
                         <tr>
                             <td><b>Interpretaci&oacute;n</b></td>
-                            <td  colspan="3"><textarea name="txtinterpretacionfin" cols="100" id="txtinterpretacionfin"></textarea></td>
+                            <td  colspan="3"><textarea name="txtinterpretacionfin" cols="100" id="txtinterpretacionfin" class="form-control  height" style="width:100%"></textarea></td>
                         </tr>
                 <tr>
                         <td><b>Observaci&oacute;n Final:</b></td>
                         <td colspan="3">
-                                <input type="text" id="v_obseresultfin" name="v_obseresultfin" style="width:100%">										
+                                <input type="text" id="v_obseresultfin" name="v_obseresultfin" style="width:100%" class="form-control">										
                         </td>
                 </tr>	
                  <tr>
                         <td><b>Valido Resultado:</b></td>
                         <td colspan="3">
                            <div id="divEncargado1" style="width:100%">
-                                    <select id="cmbEmpleadosfin" name="cmbEmpleadosfin" size="1" style="width:100%">
+                                    <select id="cmbEmpleadosfin" name="cmbEmpleadosfin" size="1" style="width:100%" class="form-control  height">
                                         <option value="0" >--Seleccione Empleado--</option>
                                     </select>
                                 </div>										

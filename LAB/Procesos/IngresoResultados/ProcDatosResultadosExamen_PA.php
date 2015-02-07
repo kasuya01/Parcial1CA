@@ -222,9 +222,10 @@ if (pg_num_rows($cant)>0){
    
    //  echo $referido.'<br>';
 $buscarinfo=$objdatos->consfecha($solicitud, $iddetallesolicitud,  $lugar);
-echo 'bucarinfo: '.$buscarinfo;
+//echo 'bucarinfo: '.$buscarinfo;
 $rowdeta=pg_fetch_array($buscarinfo);
-$fechatomamues= $rowdeta['f_tomamuestra'];
+//$fechatomamues= $rowdeta['f_tomamuestra'];
+$fechatomamues= isset($rowdeta['f_tomamuestra']) ? $rowdeta['f_tomamuestra'] : null;
 
 
 if ($referido!="t"){
@@ -326,7 +327,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                             <td class="StormyWeatherDataTD" colspan="1"> <?php echo $_GET['var9'] ;?> 
                                 <input type="hidden" name="txtnombrearea" id="txtnombrearea" disabled="disabled" size="60" />
                             </td>
-                            <td class="StormyWeatherFieldCaptionTD">F. Toma Muestra</td>
+                            <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">F. Toma Muestra</td>
                             <td class="StormyWeatherDataTD" colspan="1"> <?php echo $fechatomamues ;?>
                             </td>
                         </tr>
@@ -362,7 +363,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                             <td class="StormyWeatherFieldCaptionTD">*Metodologia</td>
                             <td class="StormyWeatherDataTD" colspan="3">
                                   <div id="divMetodologia">
-                                    <select id="cmbmetodologia" name="cmbmetodologia" size="1">
+                                    <select id="cmbmetodologia" name="cmbmetodologia" size="1" class="form-control  height">
                                         <option value="0" >--Seleccione Metodologia--</option>
                                     </select>
                                                         
@@ -373,20 +374,20 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                             </td>
                         </tr>
                          <tr>
-                            <td class="StormyWeatherFieldCaptionTD">Fecha Realización </td>
+                            <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">Fecha Realización </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                               <input type="text" class="datepicker" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" onchange="valfechasolicita(this, 'fecha_realizacion')"/>
+                               <input type="text" class="datepicker form-control height placeholder" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" onchange="valfechasolicita(this, 'fecha_realizacion')" style="width:100%"/>
                             </td>
-                             <td class="StormyWeatherFieldCaptionTD">Fecha Reporte </td>
+                             <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">Fecha Reporte </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="datepicker" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d H:i"); ?>"   onchange="valfechasolicita(this, 'fecha_reporte')"/><input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d H:i"); ?>"  /> 
+                                <input type="text" class="datepicker form-control height" name="fecha_reporte" id="fecha_reporte" size="60" style="width:90%"  value="<?php echo date("Y-m-d H:i"); ?>"   onchange="valfechasolicita(this, 'fecha_reporte')"/><input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d H:i"); ?>"  /> 
                             </td>
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">*Validado Por</td>
                             <td class="StormyWeatherDataTD" colspan="3">
                                 <div id="divEncargado">
-                                   <select id="cmbEmpleados" name="cmbEmpleados" size="1" style="width:96%">
+                                   <select id="cmbEmpleados" name="cmbEmpleados" size="1" style="width:96%" class="form-control  height">
                                         <option value="0" >--Seleccione Empleado--</option>
                                     </select>
                                 </div>
@@ -401,7 +402,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                                  
                                  
                                  if ($cant>0){
-                                     echo '<select id="idresultado" name="idresultado" onchange="setCodResultado(this.value)" style="width:96%">';
+                                     echo '<select id="idresultado" name="idresultado" onchange="setCodResultado(this.value)" style="width:96%" class="form-control  height">';
                                   
                                    if ($cant>1){
 echo '<option value="xyz">Seleccione una opción</option>';
@@ -415,7 +416,7 @@ echo '<option value="xyz">Seleccione una opción</option>';
                                    }
                                     echo '</select>';
                                  }
-                                 else {                                                                        echo '<textarea  name="txtresultado" cols="50" size="43"  id="txtresultado"/></textarea><input type="hidden" id="idresultado" name="idresultado" value="x"/>';
+                                 else {                                                                        echo '<textarea  name="txtresultado" cols="50" size="43"  id="txtresultado" class="form-control  height"/></textarea><input type="hidden" id="idresultado" name="idresultado" value="x"/>';
                                  }
                                
                                 ?>
@@ -426,26 +427,26 @@ echo '<option value="xyz">Seleccione una opción</option>';
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Marca</td>
                             <td class="StormyWeatherDataTD" colspan="3">
-                               <textarea name="txtmarca" cols="50" id="txtmarca"></textarea></td>
+                               <textarea name="txtmarca" cols="50" id="txtmarca" class="form-control  height" style="width:96%"></textarea></td>
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Lectura</td>
-                            <td class="StormyWeatherDataTD" colspan="3"><textarea name="txtlectura" cols="50" id="txtlectura"></textarea></td>
+                            <td class="StormyWeatherDataTD" colspan="3" ><textarea name="txtlectura" cols="50" id="txtlectura" class="form-control  height" style="width:96%"></textarea></td>
                         </tr>
                         
                         <tr>
                             <td  class="StormyWeatherFieldCaptionTD">Interpretaci&oacute;n</td>
-                            <td  class="StormyWeatherDataTD" colspan="3"><textarea name="txtinterpretacion" cols="50" id="txtinterpretacion"></textarea></td>
+                            <td  class="StormyWeatherDataTD" colspan="3"><textarea name="txtinterpretacion" cols="50" id="txtinterpretacion" class="form-control  height" style="width:96%"></textarea></td>
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Observaci&oacute;n</td>
-                            <td class="StormyWeatherDataTD" colspan="3"><textarea name="txtcomentario" cols="50" id="txtcomentario"></textarea></td>
+                            <td class="StormyWeatherDataTD" colspan="3"><textarea name="txtcomentario" cols="50" id="txtcomentario" class="form-control" style="width:96%"></textarea></td>
                         </tr>
                         <tr>
-                            <td  class="StormyWeatherFieldCaptionTD">*Resultado Tabulador</td>
-                            <td  class="StormyWeatherDataTD" colspan="3">
+                            <td  class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">*Resultado Tabulador</td>
+                            <td  class="StormyWeatherDataTD" colspan="1">
                                   <div id="divCodResultado">
-                                     <select id="cmbResultado2" name="cmbResultado2" size="1" style="width:29%">
+                                     <select id="cmbResultado2" name="cmbResultado2" size="1" style="width:100%" class="form-control  height">
                                 <option value="0" >--Seleccione Resultado--</option>
                               
                                 <?php 
@@ -459,6 +460,7 @@ echo '<option value="xyz">Seleccione una opción</option>';
                                 </div>
 				
                             </td>
+                            <td  class="StormyWeatherDataTD" colspan="2"></td>
                         </tr>
                         <tr>
 			<?php 

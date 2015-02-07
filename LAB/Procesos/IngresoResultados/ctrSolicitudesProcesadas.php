@@ -237,7 +237,7 @@ switch ($opcion) {
                 WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $lugar AND $cond2"; 
 
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);
-
+        
         echo "<div class='table-responsive' style='width: 80%;'>
             <table width='81%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
                 <thead><tr>
@@ -309,7 +309,7 @@ switch ($opcion) {
     case 2://LLENANDO COMBO DE EMPLEADOS
         $idarea = $_POST['idarea'];
        // echo $idarea;
-        $resultado = "<select id='cmbEmpleados' name='cmbEmpleados' size='1' style='width:96%'>
+        $resultado = "<select id='cmbEmpleados' name='cmbEmpleados' size='1' style='width:96%' class='form-control height'>
                         <option value='0' >Seleccione...</option>";
         require_once('clsSolicitudesProcesadas.php');
         $obje = new clsSolicitudesProcesadas;
@@ -445,6 +445,9 @@ switch ($opcion) {
         $idhistoref = $row['idhistoref'];
         $datospaciente=$objdatos->MostrarDatosPersona($idsolicitud, $lugar, $id_establecimiento_externo, $txtnec, $idhistoref);
         $rowpa = pg_fetch_array($datospaciente);
+        $fecha_tmx=$objdatos->ftomamuestra($iddetalle, $lugar);
+        $ftmx = pg_fetch_array($fecha_tmx);
+        $f_tomamuestra=$ftmx['f_tomamuestra'];
         
     //    $proce = $row['procedencia'];
 
@@ -487,7 +490,9 @@ switch ($opcion) {
                         <input type='hidden' id='fecha_realiza_' name='fecha_realiza_' value='" . $fecha_realizacion . "'/></td></tr>
 		    <tr>
                         <td colspan='1' style='font:bold'><strong>Paciente:</strong></td>
-			<td colspan='5' style='font:bold'>" . $rowpa['nombre'] . "</td>
+			<td colspan='2' style='font:bold'>" . $rowpa['nombre'] . "</td>
+                        <td colspan='1' style='font:bold'><strong>Fecha Toma Muestra:</strong></td>
+			<td colspan='2' style='font:bold'>" . $f_tomamuestra . "</td>
                     </tr>
                     <tr>
 			<td colspan='1' style='font:bold'><strong>Edad:</strong></td>
@@ -550,7 +555,7 @@ switch ($opcion) {
         $fila = pg_fetch_array($consulta2);
 
         $Imprimir.="<tr>
-                            <td align='center' style='font:bold'><strong>" . $fila['nombre_reporta'] . "</strong></td>";
+                            <td align='center' style='font:bold'>" . $fila['nombre_examen'] . "</td>";
         if ($idmetodologia!=0){
             $Imprimir.="<td align='center' style='font:bold'><strong>" . $fila['nombre_metodologia'] . "</strong></td>";
         }
@@ -602,7 +607,7 @@ switch ($opcion) {
 
         $dtExam = $objdatos->ExamenesPorArea($idarea, $lugar);
 
-        $rslts = '<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:375px">';
+        $rslts = '<select name="cmbExamen" id="cmbExamen" style="width:375px" class="form-control height">';
         $rslts .='<option value="0"> Seleccione Examen </option>';
 
         while ($rows = pg_fetch_array($dtExam)) {
@@ -619,7 +624,7 @@ switch ($opcion) {
         $Idtipoesta = $_POST['idtipoesta'];
         // echo $Idtipoesta;
         $dtIdEstab = $objdatos->LlenarCmbEstablecimiento($Idtipoesta);
-        $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:375px">';
+        $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:375px" class="form-control height">';
         $rslts .='<option value="0"> Seleccione Establecimiento </option>';
         while ($rows = pg_fetch_array($dtIdEstab)) {
             $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
@@ -633,17 +638,17 @@ switch ($opcion) {
         $IdServ = $_POST['IdServicio'];
         //  echo $IdServ;
         $dtserv = $objdatos->LlenarCmbServ($IdServ, $lugar);
-        $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:375px">';
+        $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:375px" class="form-control height">';
         $rslts .='<option value="0"> Seleccione un Servicio </option>';
         while ($rows = pg_fetch_array($dtserv)) {
             $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
         }
 
         $rslts .='</select>';
-       // echo $rslts;
+        echo $rslts;
         break;
     case 8:// LLenado de combo de resultados para tabulaci�n tabulaci�n
-        $resultado = "<select id='cmbResultado2' name='cmbResultado2' size='1'>
+        $resultado = "<select id='cmbResultado2' name='cmbResultado2' size='1' class='form-control height' style='width:100%'>
 				<option value='0' >--Seleccione--</option>";
         require_once('clsSolicitudesProcesadas.php');
         $obje = new clsSolicitudesProcesadas;
@@ -676,7 +681,7 @@ switch ($opcion) {
         $cant=  pg_num_rows($consulta);
         if ($cant>0){
            
-        $resultado2 = "<select id='cmbmetodologia' name='cmbmetodologia' size='1' onchange='buscarPosResMet(this.value)' style='width:96%; height:100%'>";
+        $resultado2 = "<select id='cmbmetodologia' name='cmbmetodologia' size='1' onchange='buscarPosResMet(this.value)' style='width:96%; height:100%' class='form-control height'>";
            // if ($cant>1){
                 $resultado2 .="<option value='0' selected>Seleccione...</option>";
             //}
@@ -697,7 +702,7 @@ switch ($opcion) {
     case 11://LLENANDO COMBO DE Empleado que emite resultado final
         $idarea = $_POST['idarea'];
         //echo $idarea;
-        $resultado = "<select id='cmbEmpleadosfin' name='cmbEmpleadosfin' size='1' style='width:100%'>
+        $resultado = "<select id='cmbEmpleadosfin' name='cmbEmpleadosfin' size='1' style='width:100%' class='form-control height'>
                         <option value='0' >Seleccione...</option>";
         require_once('clsSolicitudesProcesadas.php');
         $obje = new clsSolicitudesProcesadas;
@@ -871,6 +876,7 @@ switch ($opcion) {
         $filares = pg_fetch_array($consultares);
         $d_resultfin=$filares['fecha_resultado'];
         $responsable=$filares['idempleado'];
+        $f_tomamuestra=$filares['f_tomamuestra'];
         
     //    $proce = $row['procedencia'];
 
@@ -908,7 +914,9 @@ switch ($opcion) {
 			<td colspan='2'>" . $d_resultfin . "</td></tr>
 		    <tr>
                         <td colspan='1' style='font:bold'><strong>Paciente:</strong></td>
-			<td colspan='5' >" . $rowpa['nombre'] . "</td>
+			<td colspan='2' >" . $rowpa['nombre'] . "</td>
+                           <td colspan='1' style='font:bold'><strong>Fecha Toma Muestra:</strong></td>
+			<td colspan='2'>" . $f_tomamuestra . "</td></tr>
                     </tr>
                     <tr>
 			<td colspan='1' style='font:bold'><strong>Edad:</strong></td>
@@ -1012,7 +1020,7 @@ switch ($opcion) {
                     </tr>
                     <tr><td colspan='8'><hr style='width:90%'></td></tr>
                     <tr>
-                        <td align='center' style='font:bold'><strong>".$v_examen."</strong></td>
+                        <td align='center' style='font:bold'>".$v_examen."</td>
    <td align='center'>".$v_resultfin."</td>
                         <td align='center'>".$fila['unidades']."</td>
                         <td align='justify'>".$fila['rangoinicio']." - ".$fila['rangofin']."</td>
@@ -1065,7 +1073,7 @@ switch ($opcion) {
         $IdEstandar = $_POST['idEstandar'];
         if ($idresultado!='xyz' && $idresultado!='x'){
          $consulta = $objdatos->BuscarCodResult($idresultado, $idexamen);
-        $resultado = "<select id='cmbResultado2' name='cmbResultado2' size='1' style='width:29%'>";
+        $resultado = "<select id='cmbResultado2' name='cmbResultado2' size='1' style='width:100%' class='form-control height'>";
                       
         
         while ($row = pg_fetch_array($consulta)) {
@@ -1076,7 +1084,7 @@ switch ($opcion) {
        }
        else{
          // if ($idresultado=='x'){
-              $resultado = "<select id='cmbResultado2' name='cmbResultado2' size='1' style='width:29%'>"
+              $resultado = "<select id='cmbResultado2' name='cmbResultado2' size='1' style='width:100%' class='form-control height'>"
                       . " <option value='0' selected >--Seleccione Resultado--</option>
                               ";
              $resscod=$objdatos->BuscarResultados($IdEstandar);
@@ -1114,7 +1122,7 @@ switch ($opcion) {
        if ($idexametodologia!='0'){
          $consulta = $objdatos->PosibleResMetodo($idexametodologia);
          if (pg_num_rows($consulta)>0){
-             $resultado = "<select id='idresultado' name='idresultado' size='1' style='width:96%' onchange='setCodResultado(this.value)'>"
+             $resultado = "<select id='idresultado' name='idresultado' size='1' style='width:96%' onchange='setCodResultado(this.value)' class='form-control height'>"
                      . "<option value='xyz'>Seleccione un resultado</option>";
              
           while ($row = pg_fetch_array($consulta)) {
@@ -1123,11 +1131,11 @@ switch ($opcion) {
                $resultado.= "</select>";
          }
          else {
- $resultado = '<textarea  name="txtresultado" cols="50" size="43"  id="txtresultado" style="width:96%"/></textarea><input type="hidden" id="idresultado" name="idresultado" value="x" style="width:96%"/>'; 
+ $resultado = '<textarea  name="txtresultado" cols="50" size="43"  id="txtresultado" style="width:96%"  class="form-control  height placeholder"/></textarea><input type="hidden" id="idresultado" name="idresultado" value="x" style="width:96%"/>'; 
          }
        }
        else{
-           $resultado = '<textarea  name="txtresultado" cols="50" size="43"  id="txtresultado" placeholder="Debe seleccionar una metodología" disabled style="width:96%"/></textarea><input type="hidden" id="idresultado" name="idresultado" value="x" style="width:96%"/>'; 
+           $resultado = '<textarea  name="txtresultado" cols="50" size="43"  id="txtresultado" placeholder="Debe seleccionar una metodología" disabled style="width:96%"  class="form-control  height placeholder placeholder"/></textarea><input type="hidden" id="idresultado" name="idresultado" value="x" style="width:96%"/>'; 
        }
         //echo $idresultado.' - '.$idexamen;
         
