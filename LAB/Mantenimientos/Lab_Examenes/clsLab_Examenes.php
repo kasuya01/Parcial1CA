@@ -8,7 +8,7 @@ class clsLab_Examenes
     }	
 
     //INSERTA UN REGISTRO          
-    function IngExamenxEstablecimiento($idexamen,$nomexamen,$Hab,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$TiempoPrevio,$sexo,$idestandar,$lugar,$metodologias_sel,$text_metodologias_sel, $id_metodologias_sel){
+    function IngExamenxEstablecimiento($idexamen,$nomexamen,$Hab,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$TiempoPrevio,$sexo,$idestandar,$lugar,$metodologias_sel,$text_metodologias_sel, $id_metodologias_sel,$resultado){
 
         $con = new ConexionBD;
        if($con->conectar()==true) 
@@ -24,6 +24,41 @@ class clsLab_Examenes
                    $IdEstandarResp,$plantilla,'$nomexamen',$sexo,'$idexamen') ";
        // echo $query;	
        $result = pg_query($query);
+       
+       
+       //ingresar resultados 
+       /*
+        * 
+        
+        */
+       
+       
+            $query2 ="select COALESCE(max(id),1) from lab_conf_examen_estab";
+        $result2 = pg_query($query2);
+        $row2=pg_fetch_array($result2);
+        $ultimo=$row2[0];
+        
+        $aresultados = explode(',',$resultado); 
+         for ($i=0;$i<(count($aresultados)-1);$i++){
+            
+            $query = "UPDATE lab_examen_posible_resultado 
+                        SET habilitado = true,
+                            fechafin = null,
+                            id_user_mod = 8,
+                            fecha_mod = now()
+                        WHERE id_posible_resultado = '$aresultados[$i]' AND id_conf_examen_estab='$ultimo'";
+            $result=pg_query($query);
+            if (pg_affected_rows($result)==0){
+               $query ="INSERT INTO lab_examen_posible_resultado(
+                            id_conf_examen_estab, id_posible_resultado, fechainicio, fechafin, 
+                            habilitado, id_user, fecha_registro, id_user_mod, fecha_mod)
+                    VALUES ('$ultimo', '$aresultados[$i]', date_trunc('seconds',NOW()), null, 
+                            true, 8, now(), null, null)";
+                $result=pg_query($query);
+            }
+         }  
+         
+         // fin ingresar resultados
        
        
 
@@ -61,12 +96,139 @@ class clsLab_Examenes
 
        // echo $query2." - ".$ultimo." - ".$sqlText;
        $dtSub = pg_query($sqlText) or die('La consulta fall&oacute;: ' . pg_error());
+       
             // echo $sqlText;
-        if (!$result && !$dtSub)
-           return false;
-         else
+        if (!$result ){
+            return false; 
+        } else{
            return true;
+        }        
+         //asignar posibles resultados
+        
+         
+         
         }
+        
+    }
+    
+    function IngExamenxEstablecimiento2($idexamen,$nomexamen,$Hab,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$TiempoPrevio,$sexo,$idestandar,$lugar,$metodologias_sel,$text_metodologias_sel, $id_metodologias_sel){
+
+        $con = new ConexionBD;
+       if($con->conectar()==true) 
+       {
+         if ($IdFormulario=='0')
+               $IdFormulario='NULL';
+            $query = "INSERT INTO lab_conf_examen_estab
+                (condicion,idformulario,urgente,impresion,ubicacion,codigosumi,
+                 idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idexamen,idestandarrep,idplantilla,nombre_examen,
+                 idsexo,codigo_examen) 
+                 VALUES
+                 ('$Hab',$IdFormulario,$Urgente,'$letra',$ubicacion,NULL,$usuario,NOW(),$usuario,NOW(),$idestandar,
+                   $IdEstandarResp,$plantilla,'$nomexamen',$sexo,'$idexamen') ";
+       // echo $query;	
+       $result = pg_query($query);
+       
+       
+      
+       
+       
+
+        $query2 ="select COALESCE(max(id),1) from lab_conf_examen_estab";
+        $result2 = pg_query($query2);
+        $row2=pg_fetch_array($result2);
+        $ultimo=$row2[0];
+        //echo 'met_sel:'.$metodologias_sel;
+        
+        /*
+        * crear examen - metodologias
+        */
+        $aMetodologias = explode(',',$metodologias_sel); 
+        $aMetodologias_text = explode(',',$text_metodologias_sel); 
+        $aMetodologias_id = explode(',',$id_metodologias_sel); 
+        //echo 'amet:'.count($aMetodologias). ' /met: '. $aMetodologias[0];
+        /*
+         * actualizar o crear examen metodología
+         */
+        $i=0;
+         if ($aMetodologias[0]!=""){
+        for ($i=0;$i<(count($aMetodologias)-1);$i++){
+            $sql="INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin,nombre_reporta) VALUES ($ultimo, $aMetodologias[$i], true, NOW(), NULL, '$aMetodologias_id[$i]')";
+            pg_query($sql);           
+         }
+         }
+        if ($i==0){ // si no se han seleccionado metodologias
+            $sql="INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin, nombre_reporta) VALUES ($ultimo, NULL, true, NOW(), NULL, '$nomexamen')";
+            pg_query($sql);
+        }
+        
+
+        $sqlText = "INSERT INTO cit_programacion_exams (id_examen_establecimiento,rangotiempoprev,id_atencion,id_establecimiento,idusuarioreg,fechahorareg) 
+                    VALUES ($ultimo,$TiempoPrevio,98,$lugar,$usuario,NOW())";
+
+       // echo $query2." - ".$ultimo." - ".$sqlText;
+       $dtSub = pg_query($sqlText) or die('La consulta fall&oacute;: ' . pg_error());
+       
+            // echo $sqlText;
+        if (!$result ){
+            return false; 
+        } else{
+           return true;
+        }        
+         //asignar posibles resultados
+        
+         
+         
+        }
+        
+    }
+    
+    // ultimo id de lab_conf_examen_estab
+     function ultimoexa(){
+       
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+          $query = "select COALESCE(max(id),1) from lab_conf_examen_estab";
+            $result = pg_query($query);
+            if (!$result)
+              return false;
+            else
+              return $result;
+        }
+    }
+    // INSERTAR LOS RESULTADOS
+    function posible_resultados($resultado){
+       
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+            
+             $query2 ="select COALESCE(max(id),1) from lab_conf_examen_estab";
+        $result2 = pg_query($query2);
+        $row2=pg_fetch_array($result2);
+        $ultimo=$row2[0];
+        
+        $aresultados = explode(',',$resultado); 
+         for ($i=0;$i<(count($aresultados)-1);$i++){
+            
+          echo  $query = "UPDATE lab_examen_posible_resultado 
+                        SET habilitado = true,
+                            fechafin = null,
+                            id_user_mod = 8,
+                            fecha_mod = now()
+                        WHERE id_posible_resultado = '$aresultados[$i]' AND id_conf_examen_estab='$ultimo'";
+            $result=pg_query($query);
+            if (pg_affected_rows($result)==0){
+              echo $query ="INSERT INTO lab_examen_posible_resultado(
+                            id_conf_examen_estab, id_posible_resultado, fechainicio, fechafin, 
+                            habilitado, id_user, fecha_registro, id_user_mod, fecha_mod)
+                    VALUES ('$ultimo', '$aresultados[$i]', now(), null, 
+                            true, 8, now(), null, null)";
+                $result=pg_query($query);
+            }
+         }  
+       
+         }
     }
 
     //ACTUALIZA UN REGISTRO
@@ -78,7 +240,7 @@ class clsLab_Examenes
                {
                   if ($IdFormulario=='0')
                       $IdFormulario='NULL';
-                    $query="UPDATE lab_conf_examen_estab 
+                  echo  $query="UPDATE lab_conf_examen_estab 
                               SET idusuariomod=$usuario,fechahoramod=NOW(),idformulario=$IdFormulario,
                               idestandarrep=$IdEstandarResp,IdPlantilla=$plantilla,impresion='$letra',urgente=$Urgente,ubicacion=$ubicacion,condicion='$Hab',nombre_examen='$nomexamen',idsexo=$idsexo
                               WHERE lab_conf_examen_estab.id=$idconf";
@@ -827,6 +989,144 @@ function ObtenerCodigo($idarea){
 		   return $result;
 	   }
 	 }
+         
+          /*
+      * Moy
+      */
+          function cambiar_estadolab_exaposible_resultado($idconf){
+       
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+          $query = "update lab_examen_posible_resultado set habilitado = false where id_conf_examen_estab= $idconf";
+            $result = pg_query($query);
+            if (!$result)
+              return false;
+            else
+              return $result;
+        }
+    }
+         
+    function cambiar_estado_idlab_posibleresultado($id_posible_resultado,$idconf){
+       
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+            $query = "UPDATE lab_examen_posible_resultado 
+                        SET habilitado = true,
+                            fechafin = null,
+                            id_user_mod = 8,
+                            fecha_mod = now()
+                        WHERE id_posible_resultado = '$id_posible_resultado' AND id_conf_examen_estab='$idconf'";
+            $result=pg_query($query);
+            if (pg_affected_rows($result)==0){
+               $query = "INSERT INTO lab_examen_posible_resultado(
+                            id_conf_examen_estab, 
+                            id_posible_resultado, 
+                            fechainicio, fechafin, 
+                            habilitado, 
+                            id_user, 
+                            fecha_registro, 
+                            id_user_mod, 
+                            fecha_mod)
+                    VALUES ('$idconf', '$id_posible_resultado', now(), null, 
+                            true, 8, date_trunc('seconds',NOW()), null, null)";
+                $result=pg_query($query);
+            }
+        }
+    }
+    
+         
+          function resultados1($idconf){
+        
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+                            $query =  "select 	t01.id,
+                  t01.posible_resultado resultado
+                  from lab_posible_resultado t01
+                  left join  (select  id,
+                                  id_conf_examen_estab,
+                                  id_posible_resultado,
+                                  habilitado from lab_examen_posible_resultado t02
+                                  where t02.id_conf_examen_estab=$idconf and t02.habilitado= true ) 
+
+
+                                  t02 on t02.id_posible_resultado=t01.id
+                                                                  WHERE t02.id is null 
+						ORDER BY t01.posible_resultado";
+                                   
+
+             $result = pg_query($query);
+             if (!$result)
+               return false;
+             else
+               return $result;
+        }
+    }
+         
+         function resultados(){
+        
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+                            $query =  /*"select 	t01.id,
+                  t01.posible_resultado resultado
+                  from lab_posible_resultado t01
+                  left join  (select  id,
+                                  id_conf_examen_estab,
+                                  id_posible_resultado,
+                                  habilitado from lab_examen_posible_resultado t02
+                                  where t02.id_conf_examen_estab=$idproce and t02.habilitado= true ) 
+
+
+                                  t02 on t02.id_posible_resultado=t01.id
+                                                                  WHERE t02.id is null 
+						ORDER BY t01.posible_resultado";*/
+                                    "select 	t01.id id,
+                  t01.posible_resultado resultado
+                  from lab_posible_resultado t01 ORDER BY t01.posible_resultado";
+
+             $result = pg_query($query);
+             if (!$result)
+               return false;
+             else
+               return $result;
+        }
+    }
+    
+        function resultados_seleccionados($idconf){
+       
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+         $query = 
+                
+              /* "select t02.id, t02.posible_resultado resultado, t03.nombreprocedimiento  from lab_procedimiento_posible_resultado t01
+                inner join lab_posible_resultado 	t02 on (t02.id=t01.id_posible_resultado)
+                inner join lab_procedimientosporexamen t03 on (t03.id=t01.id_procedimientoporexamen)
+                where t03.id=$idproce";*/
+                  
+                  "select t02.id, 
+                t02.posible_resultado resultado, 
+                t03.nombre_examen  
+                from lab_examen_posible_resultado   t01
+                inner join lab_posible_resultado    t02 on (t02.id=t01.id_posible_resultado)
+                inner join lab_conf_examen_estab    t03 on (t03.id=t01.id_conf_examen_estab)
+                where t03.id=$idconf";
+
+             $result = pg_query($query);
+             if (!$result)
+               return false;
+             else
+               return $result;
+        }
+    }
+    
+    
+     
+         
+         
 }//CLASE
 
 
@@ -864,6 +1164,17 @@ class clsLabor_Examenes
 	  }
 	}
         
+        
+        
+       
+        
+        
+        
         }
+        
+        
+        
+     
+        
 
 ?>

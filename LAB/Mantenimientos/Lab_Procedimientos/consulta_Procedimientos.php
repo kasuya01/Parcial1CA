@@ -60,7 +60,7 @@ $rangoedad=$row['nombregrupoedad'];
 	<tr>
         	<td  width="17%" class="StormyWeatherFieldCaptionTD" width="17%">&Aacute;rea</td>
         	<td width="83%" class="StormyWeatherDataTD">
-			<select id="cmbArea" name="cmbArea" size="1" onChange="LlenarComboExamen(this.value);">
+			<select id="cmbArea" name="cmbArea" size="1"  style="width:50%"  class="form-control height" onChange="LlenarComboExamen(this.value);">
 				<option value="0" >--Seleccione un &Aacute;rea--</option>
 				<?php
 					$objeareas=new clsLab_Areas;
@@ -78,7 +78,7 @@ $rangoedad=$row['nombregrupoedad'];
     	<tr>
         	<td width="17%" class="StormyWeatherFieldCaptionTD">Examen </td>
         	<td width="83%" class="StormyWeatherDataTD">
-                <select id="cmbExamen" name="cmbExamen" size="1">
+                <select id="cmbExamen" name="cmbExamen" size="1"  style="width:50%"  class="form-control height">
             		<option value="0">--Seleccione un Examen--</option>
 	           		<?php
 						$consultaex = $obj->ExamenesPorArea($idarea, $lugar);
@@ -95,7 +95,7 @@ $rangoedad=$row['nombregrupoedad'];
        <tr>
             <td width="17%" class="StormyWeatherFieldCaptionTD">Sexo</td>
             <td width="83%"  class="StormyWeatherDataTD">
-                <select id="cmbSexo" name="cmbSexo" size="1" >
+                <select id="cmbSexo" name="cmbSexo" size="1"  style="width:50%"  class="form-control height" >
                     <option value="0" >--Seleccione Sexo--</option>
                     <?php
                         $consultaS= $obj->consultarsexo();
@@ -117,7 +117,7 @@ $rangoedad=$row['nombregrupoedad'];
          <tr>
                 <td width="17%" class="StormyWeatherFieldCaptionTD">Rango Edad</td>
                 <td width="83%"  class="StormyWeatherDataTD">
-                    <select id="cmbEdad" name="cmbEdad" size="1" >
+                    <select id="cmbEdad" name="cmbEdad" size="1"  style="width:50%"  class="form-control height" >
                         <option value="0" >--Seleccione un Rango de Edad--</option>
                             <?php
                                 $conEdad = $obj->RangosEdades();
@@ -133,17 +133,17 @@ $rangoedad=$row['nombregrupoedad'];
         </tr>
 	<tr>
 	    	<td width="17%" class="StormyWeatherFieldCaptionTD">Procedimiento </td>
-	    	<td width="83%" class="StormyWeatherDataTD"><input name="txtproc" type="text" id="txtproc" value="<?php echo htmlentities($proce); ?>" size="50"></td>
+	    	<td width="83%" class="StormyWeatherDataTD"><input name="txtproc" type="text" id="txtproc" style="width:250px"   class="form-control height placeholder" value="<?php echo htmlentities($proce); ?>" size="50"></td>
 	</tr>
 	<tr>
 	    	<td width="17%" class="StormyWeatherFieldCaptionTD">Unidades</td>
-	    	<td width="83%" class="StormyWeatherDataTD"><input name="txtunidades" type="text" id="txtunidades" value="<?php echo htmlentities($unidades); ?>" size="10">		  </td>
+	    	<td width="83%" class="StormyWeatherDataTD"><input name="txtunidades" type="text" id="txtunidades" style="width:250px"   class="form-control height placeholder" value="<?php echo htmlentities($unidades); ?>" size="10">		  </td>
 	
         <tr>
                 <td width="17%" class="StormyWeatherFieldCaptionTD">Orden</td>
                     <td width="83%"  class="StormyWeatherDataTD">
                         <div id="divRango">
-                            <select   name="cmborden"  id="cmborden" style="width:235px" > 
+                            <select   name="cmborden"  id="cmborden"  style="width:50%"  class="form-control height" > 
                                 <option value="0">--Seleccione un Orden--</option>
                                         <!--disabled="disabled"--><?php
                                 $conEdad = $obj->Rangos($idproce);
@@ -178,11 +178,28 @@ $rangoedad=$row['nombregrupoedad'];
 
         </tr>
           <tr>
-                        <td nowrap class="StormyWeatherFieldCaptionTD">Posibles Resultado </td>
+              <?php  
+                if ($habilitado=="f"){
+                    
+                    ?>
+               <td nowrap class="StormyWeatherFieldCaptionTD">Posibles Resultado </td>
+                         <?php
+                         echo "<td class='StormyWeatherDataTD'>
+                                    <button type='button' align='center' disabled='disabled' class='btn btn-default'  onclick='popup(".'"consulta_SubElemento.php?idproce='.$idproce.'"'.")' >  <span class='glyphicon glyphicon-th-list'></span>  ..:Seleccionar Resultado:.. </button>
+                                    </td>"; ?>
+               <?php        
+                } else {
+                  ?> 
+               <td nowrap class="StormyWeatherFieldCaptionTD">Posibles Resultado </td>
                          <?php
                          echo "<td class='StormyWeatherDataTD'>
                                     <button type='button' align='center' class='btn btn-default'  onclick='popup(".'"consulta_SubElemento.php?idproce='.$idproce.'"'.")' >  <span class='glyphicon glyphicon-th-list'></span>  ..:Seleccionar Resultado:.. </button>
                                     </td>"; ?>
+               <?php 
+                }
+                
+                ?> 
+                       
          </tr>
         
         
@@ -190,30 +207,47 @@ $rangoedad=$row['nombregrupoedad'];
         
     	<tr>
         	<td colspan="2" class="StormyWeatherDataTD">
-			<fieldset><span><center> <h4>Rangos</h4></center></span>
-			<table width="200" border="0" align="center" class="StormyWeatherFormTABLE">
+			
+			<table width="850" border="0" align="center" class="StormyWeatherFormTABLE">
 			<tr>
-				<td class="StormyWeatherFieldCaptionTD">Inicio</td>
-                        <input type="hidden" name="txtoculto" id="txtoculto" size="50" value="<?php echo $idproce; ?>" />
-				<td class="StormyWeatherDataTD"><input name="txtrangoinicio" type="text" id="txtrangoini" value="<?php echo $rangoini; ?>" size="8">
+				<td width="19%" class="StormyWeatherFieldCaptionTD">Rango Inicio</td>
+                                    <input type="hidden" name="txtoculto" id="txtoculto" value="<?php echo $idproce; ?>" />
+				<td  class="StormyWeatherDataTD">
+                                        <input name="txtrangoinicio" type="text" id="txtrangoini" style="width:260px"   class="form-control height placeholder" value="<?php echo $rangoini; ?>" size="28">
 				</td>
-				<td class="StormyWeatherFieldCaptionTD">Fin </td>
-				<td class="StormyWeatherDataTD"><input name="txtrangofin" type="text" id="txtrangofin" value="<?php echo $rangofin; ?>" size="8"></td>
+				<td width="17%" class="StormyWeatherFieldCaptionTD">Rango Fin </td>
+				<td class="StormyWeatherDataTD">
+                                    <input name="txtrangofin" type="text" id="txtrangofin" style="width:280px"   class="form-control height placeholder" value="<?php echo $rangofin; ?>" size="28">
+                                </td>
 			</tr>
 			</table>
-			</fieldset>               
+			             
 		</td>
     	</tr>
     	<tr>
         	<td colspan="2" class="StormyWeatherDataTD">
 				<table width="850" border="0" align="center" class="StormyWeatherFormTABLE">
 				<tr>
-					<td width="17%" class="StormyWeatherFieldCaptionTD">Fecha Inicio</TD>
-					<td width="30%" class="StormyWeatherDataTD">
-						<input name="txtFechainicio1" type="text" id="txtFechainicio" value="<?php echo $Fechaini; ?>" size="8" >dd/mm/aaaa</td>
+					<td width="19%" class="StormyWeatherFieldCaptionTD">Fecha Inicio</TD>
+					<td  class="StormyWeatherDataTD">
+						<input name="txtFechainicio1" type="text" id="txtFechainicio" style="width:260px"   class="form-control height placeholder" value="<?php echo $Fechaini; ?>" size="28" >
+                                        </td>
 					<td width="17%" class="StormyWeatherFieldCaptionTD">Fecha Final</D>
-					<td width="30%" class="StormyWeatherDataTD">
-						<input name="txtFechaFin1" type="text" id="txtFechaFin" value="<?php echo $Fechafin; ?>" size="8" >dd/mm/aaaa</td>
+					<td  class="StormyWeatherDataTD">
+                                         <?php  if($Fechafin==""){
+                                             ?>
+                                            <input name="txtFechaFin1" type="text" id="txtFechaFin" style="width:280px"   class="form-control height placeholder" placeholder="Ingrese Fecha  dd/mm/aaaa" size="28" >
+                                              <?php 
+                                            }else {
+                                               ?>
+                                              <input name="txtFechaFin1" type="text" id="txtFechaFin" style="width:280px"   class="form-control height placeholder" value="<?php echo $Fechafin; ?>" size="28" >
+                                        
+                                           <?php  } ?>
+                                            
+                                            
+					<!--	<input name="txtFechaFin1" type="text" id="txtFechaFin" style="width:200px"   class="form-control height placeholder" value="<?php echo $Fechafin; ?>" size="28" >
+                                        -->
+                                        </td>
 				</tr>
 				</table>
 			</td>		

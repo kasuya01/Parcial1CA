@@ -12,10 +12,11 @@ class clsLab_Procedimientos {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
 			  $query ="INSERT INTO lab_procedimientosporexamen (nombreprocedimiento, id_conf_examen_estab, unidades, rangoinicio, rangofin, idusuarioreg, fechahorareg, idestablecimiento, fechaini, fechafin, idsexo, idrangoedad,orden)
-                     VALUES('$proce',$idexamen,'$unidades',$rangoini,$rangofin,$usuario,NOW(),$lugar,'$Fechaini',$Fechafin,$sexo,$redad,$cmborden)";
+                     VALUES('$proce',$idexamen,$unidades,$rangoini,$rangofin,$usuario,date_trunc('seconds',NOW()),$lugar,'$Fechaini',$Fechafin,$sexo,$redad,$cmborden)";
 			$result = @pg_query( $query );
+                        echo $query;
 
-			if ( !$result )
+			if (!$result)
 				return false;
 			else
 				return true;
@@ -124,9 +125,7 @@ class clsLab_Procedimientos {
 		}
 	}
           function cambiar_estado($id_subelemento){
-        /*
-        * Julio Castillo
-        */
+       
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if($con->conectar()==true){
@@ -139,9 +138,7 @@ class clsLab_Procedimientos {
         }
     }
     function cambiar_estadolabprocede($idproce){
-        /*
-        * Julio Castillo
-        */
+       
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if($con->conectar()==true){
@@ -155,9 +152,7 @@ class clsLab_Procedimientos {
     }
     
       function ultimoidprocede(){
-        /*
-        * Julio Castillo
-        */
+       
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if($con->conectar()==true){
@@ -172,9 +167,7 @@ class clsLab_Procedimientos {
     
     
      function cambiar_estado_id($id_posible_resultado,$id_subelemento){
-        /*
-        * Julio Castillo
-        */
+       
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if($con->conectar()==true){
@@ -198,13 +191,11 @@ class clsLab_Procedimientos {
     }
     
     function cambiar_estado_idprocedimiento($id_posible_resultado,$idproce){
-        /*
-        * Julio Castillo
-        */
+       
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if($con->conectar()==true){
-           $query = "UPDATE lab_procedimiento_posible_resultado 
+            $query = "UPDATE lab_procedimiento_posible_resultado 
                         SET habilitado = true,
                             fechafin = null,
                             id_user_mod = 8,
@@ -212,7 +203,7 @@ class clsLab_Procedimientos {
                         WHERE id_posible_resultado = '$id_posible_resultado' AND id_procedimientoporexamen='$idproce'";
             $result=pg_query($query);
             if (pg_affected_rows($result)==0){
-                $query = "INSERT INTO lab_procedimiento_posible_resultado(
+               $query = "INSERT INTO lab_procedimiento_posible_resultado(
                             id_procedimientoporexamen, id_posible_resultado, fechainicio, fechafin, 
                             habilitado, id_user, fecha_registro, id_user_mod, fecha_mod)
                     VALUES ('$idproce', '$id_posible_resultado', now(), null, 
@@ -223,9 +214,7 @@ class clsLab_Procedimientos {
     }
     
     function metodologias1(){
-            /*
-            * Julio Castillo
-            */
+          
             $con = new ConexionBD;
 	    //usamos el metodo conectar para realizar la conexion
 	    if($con->conectar()==true){
@@ -249,9 +238,7 @@ class clsLab_Procedimientos {
 	   }
 	 }
           function prueba_lab1($nombre){
-            /*
-            * Julio Castillo
-            */
+           
             $con = new ConexionBD;
 	    //usamos el metodo conectar para realizar la conexion
 	    if($con->conectar()==true){
@@ -302,9 +289,7 @@ class clsLab_Procedimientos {
     }
     
      function get_subelemento($id_subelemento){
-        /*
-        * Julio Castillo
-        */
+     
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if($con->conectar()==true){
@@ -321,9 +306,7 @@ class clsLab_Procedimientos {
     }
     
       function resultados_seleccionados($idproce){
-        /*
-        * Julio Castillo
-        */
+       
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if($con->conectar()==true){
@@ -571,7 +554,7 @@ class clsLab_Procedimientos {
 		$con = new ConexionBD;
 		//usamos el metodo conectar para realizar la conexion
 		if ( $con->conectar()==true ) {
-			$numreg = pg_num_rows( pg_query( $query_search ) );
+			 $numreg = pg_num_rows( pg_query( $query_search ) );
 			if ( !$numreg )
 				return false;
 			else
