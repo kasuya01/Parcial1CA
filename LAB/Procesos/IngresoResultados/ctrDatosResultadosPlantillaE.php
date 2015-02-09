@@ -129,16 +129,18 @@ case 1:
                                                     while ($row_result=pg_fetch_array($con_result)) {
                                                         $imprimir.="<option value='" . $row_result['id_posible_resultado'] . "'>" . htmlentities($row_result['posible_resultado']) . "</option>";
                                                     }   
-                                        $imprimir.= "   <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]' value='".$pos."'>  ";                
+                                        $imprimir.= "   <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]' value='".$pos."'></td> ";                
                                                     
                                     }
                                     else{
                                                                                                        
-				   $imprimir.= "<input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['id']."'>
-						<input name='txtresultado[".$pos."]' type='hidden' id='txtresultado[".$pos."]'>
+				   $imprimir.= "
+						<input name='txtresultado[".$pos."]' type='text' id='txtresultado[".$pos."]'>
                                                 <input name='totcombo[".$pos."]' type='text' id='totcombo[".$pos."]'  value=''  >   
                                     </td>";
-                                                                          
+                                                                                                       
+				                                                                     
+				                                                                    
                                     }
                                      $imprimir.="<td class='StormyWeatherDataTD' >".$row['unidades']."</td>
 				    <td class='StormyWeatherDataTD' aligh='center'>".$row['rangoinicio']."-".$row['rangofin']."
@@ -342,7 +344,7 @@ case 2://vista Previa de Resultado
 	$vector_respuesta = EXPLODE("/",$valores);
        // $datos_combos= $valores_combos;
         $vector_combos = EXPLODE("/",$valores_combos);
-//print_r($vector_combos);
+//print_r($vector_respuesta);
 
 	$imprimir=" <table width='89%' border='0' align='center' class='StormyWeatherFormTABLE'>
                         <tr>
@@ -415,7 +417,7 @@ case 2://vista Previa de Resultado
                     $imprimir.="<table width='100%' border='0' align='center' cellspacing='0'>
                                     <tr>
                                         <td colspan='2' align='left' ><strong> Prueba </strong></td>
-                                        <td colspan='1' align='left'><strong> Resultado </strong> </td>
+                                        <td colspan='1' align='center'><strong> Resultado </strong> </td>
                                         <td colspan='1' align='center'><strong> Unidades </strong></td>
                                         <td colspan='2' align='center'><strong> Rango </strong></td>
                                     </tr>";

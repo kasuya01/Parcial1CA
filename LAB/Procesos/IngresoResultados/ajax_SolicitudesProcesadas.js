@@ -2347,8 +2347,9 @@ function ValidarCamposPlantillaE()
 {
     var resp = true;
 
-    for (i = 0; i < document.getElementById('oculto').value; i++)
-    {
+    for (i = 0; i < document.getElementById('oculto').value; i++){
+       alert(document.getElementById('txtresultado[' + i + ']').value )
+    
         if (document.getElementById('txtresultado[' + i + ']').value == "") 
         {
             resp = false;
@@ -2360,8 +2361,8 @@ function ValidarCamposPlantillaE()
 
 function MostrarVistaPreviaPlantillaE()
 {
-   if (ValidarCamposPlantillaE())
-    {
+    //if (ValidarCamposPlantillaE())
+     //{
 
         ajax = objetoAjax();
         idexamen = window.document.frmnuevo.txtidexamen.value;
@@ -2388,7 +2389,7 @@ function MostrarVistaPreviaPlantillaE()
                 valores += document.getElementById('txtresultado[' + i + ']').value + "/";
                 codigos += document.getElementById('oidprueba[' + i + ']').value + "/";
                 valores_combos += document.getElementById('totcombo[' + i + ']').value + "/";
-               // alert(valores_combos);
+         
             }
         }
         if (document.getElementById('oculto').value > 0)
@@ -2420,11 +2421,10 @@ function MostrarVistaPreviaPlantillaE()
                 }
             }
         }
-    }
-    else
-    {
-        alert("Complete los datos a Ingresar")
-    }
+   //  else
+   //  {
+    //     alert("Complete los datos a Ingresar")
+    // }
 }
 
 function GuardarPlantillaE()
