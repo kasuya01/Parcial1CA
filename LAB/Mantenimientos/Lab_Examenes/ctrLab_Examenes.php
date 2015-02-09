@@ -17,6 +17,8 @@ $opcion=$_POST['opcion'];
 switch ($opcion) 
 {
 	case 1:  //INSERTAR	
+                $resultado=$_POST['resultado'];
+                $mismo=$_POST['mismo'];
 		$idexamen=$_POST['idexamen'];
 		$idarea=$_POST['idarea'];
 		$nomexamen=$_POST['nomexamen'];
@@ -32,7 +34,7 @@ switch ($opcion)
                 $etiqueta=$_POST['etiqueta'];
                 $Urgente=$_POST['urgente'];
                 $sexo=$_POST['sexo'];
-                $metodologias_sel=$_POST['metodologias_sel'];
+                echo $metodologias_sel=$_POST['metodologias_sel'];
                 $text_metodologias_sel=$_POST['text_metodologias_sel'];
                 $id_metodologias_sel=$_POST['id_metodologias_sel'];
                 //echo $sexo;
@@ -73,31 +75,47 @@ switch ($opcion)
                  else {
                     $letra=$etiqueta;
                  }
-
-                      //  echo $IdFormulario;
-		 If ($objdatos->IngExamenxEstablecimiento($idexamen,$nomexamen,$Hab,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$TiempoPrevio,$idsexo,$idestandar,$lugar,$metodologias_sel,$text_metodologias_sel, $id_metodologias_sel)==true)
+                    
+             if ($resultado <>""){
+                 If ($objdatos->IngExamenxEstablecimiento($idexamen,$nomexamen,$Hab,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$TiempoPrevio,$idsexo,$idestandar,$lugar,$metodologias_sel,$text_metodologias_sel, $id_metodologias_sel,$resultado)==true)
 		 {
-                     /*
-                      * Ingresar metodologías seleccionadas
-                      */
-                     
-                     
-                     
-                     
-                     
-                   /* if($plantilla<>1){
-                           // echo  $idexamen."  ".$idarea."  ".$usuario."  ".$lugar;
-                          if($objdatos->AgregarDatosFijos($idexamen,$idarea,$usuario,$lugar)==true)
-                               echo "Registro Agregado";
-                          else 
-                               echo "No se pudo agregar el registro";
-                    }else*/
-                             echo "Registro Agregado";
+                      // asignar_resultados($resultado);
+                     echo "Registro Agregado";
                  }
                  else{
-                        echo "No se pudo Ingresar el Registro";			
+                      echo "No se pudo Ingresar el Registro";			
 		 }
+                 
+             }else{
+                 
+                  If ($objdatos->IngExamenxEstablecimiento($idexamen,$nomexamen,$Hab,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$TiempoPrevio,$idsexo,$idestandar,$lugar,$metodologias_sel,$text_metodologias_sel, $id_metodologias_sel)==true)
+		 {
+                      // asignar_resultados($resultado);
+                     echo "Registro Agregado";
+                 }
+                 else{
+                      echo "No se pudo Ingresar el Registro";			
+		 }
+                 
+             }//fin else
+                 
+                 
+                      //  echo $IdFormulario;
+		
+                 
+                 
+                /*  if ($resultado <>"")
+                            {
+                               
+                                           $objdatos ->posible_resultados($resultado);
+                                           // echo "sii"; 
+                            }*/
+               //  asignar_resultados($resultado);
 	break;	
+        
+        
+       
+            
     case 2:  //MODIFICAR 
 			$idexamen=$_POST['idexamen'];
 			$idarea=$_POST['idarea'];
@@ -183,23 +201,27 @@ switch ($opcion)
 		 $consulta= $objdatos->consultarpag($lugar,$RegistrosAEmpezar, $RegistrosAMostrar);
 
 		//muestra los datos consultados en la tabla
-	    echo "<table border = 1 align='center'  class='StormyWeatherFormTABLE' width='85%'>
+	    echo "<center >
+               <table border = 1 style='width: 80%;'   class='table table-hover table-bordered table-condensed table-white' >
+	           <thead>
                         <tr>
-                            <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-                            <td aling='center' class='CobaltFieldCaptionTD'> Habilitado</td>
-                            <td class='CobaltFieldCaptionTD'> C&oacute;digo Examen </td>
-                            <td class='CobaltFieldCaptionTD'> Nombre Examen </td>
-                            <td class='CobaltFieldCaptionTD'> &Aacute;rea</td>
-                            <td class='CobaltFieldCaptionTD'>Plantilla</td>
-                            <td class='CobaltFieldCaptionTD'>C&oacute;digo del Est&aacute;ndar</td>
-                            <td class='CobaltFieldCaptionTD'>Solicitado en</td>
-     			    <td class='CobaltFieldCaptionTD'>Formulario</td>
-			    <td class='CobaltFieldCaptionTD'>Tabulador</td>
-                            <td class='CobaltFieldCaptionTD'>Tipo Viñeta</td>
-                            <td class='CobaltFieldCaptionTD'>Urgente</td>
-                            <td class='CobaltFieldCaptionTD'>Sexo</td>
-                            <td class='CobaltFieldCaptionTD'>Tiempo Previo</td>
-		      </tr>";
+                            <th aling='center' > Modificar</th>
+                            <th aling='center' '> Habilitado</th>
+                            <th > C&oacute;digo Examen </th>
+                            <th > Nombre Examen </th>
+                            <th > &Aacute;rea</th>
+                            <th >Plantilla</th>
+                            <th >C&oacute;digo del Est&aacute;ndar</th>
+                            <th >Solicitado en</th>
+     			    <th >Formulario</th>
+			    <th >Tabulador</th>
+                            <th >Tipo Viñeta</th>
+                            <th >Urgente</th>
+                            <th >Sexo</th>
+                            <th >Tiempo Previo</th>
+		     </tr>
+                   </thead><tbody>
+                    </center>";
 		while($row = pg_fetch_array($consulta)){
 		 echo "<tr>
                             <td aling='center'> 
@@ -270,6 +292,15 @@ switch ($opcion)
 			 echo "<td> <a onclick=\"show_event('$PagUlt')\">Ultimo</a></td>";
 			 echo "</tr>
 			  </table>";
+                         
+                         
+                           echo " <center> <ul class='pagination'>";
+                          for ($i=1 ; $i<=$PagUlt; $i++)
+                                    {
+                             
+					 echo " <li ><a  href='javascript: show_event(".$i.")'>$i</a></li>";
+                                     }
+                    echo " </ul></center>";
 	break;
 	case 5:// Se genera el Código del Examenen
             $idarea=$_POST['idarea'];  
@@ -303,7 +334,7 @@ switch ($opcion)
 		$consultaex= $objdatos->ExamenesPorArea($idarea,$lugar);
 		//$dtMed=$obj->LlenarSubServ($proce);	
 		
-		$rslts = '<select name="cmbEstandar" id="cmbEstandar" size="1" >';
+		$rslts = '<select name="cmbEstandar" id="cmbEstandar" size="1" style="width:250px" class="form-control height" >';
 		$rslts .='<option value="0">--Seleccione un Examen--</option>';
 			
 		while ($rows =pg_fetch_array($consultaex)){
@@ -444,29 +475,33 @@ switch ($opcion)
 		$consulta= $objdatos->consultarpagbus($query_search,$RegistrosAEmpezar, $RegistrosAMostrar);
 		//echo $query_search;
 		//muestra los datos consultados en la tabla
-		echo "<table border = 1 align='center' width='100%' class='StormyWeatherFormTABLE'>
-		      <tr>
-		      	    <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-			    <td aling='center' class='CobaltFieldCaptionTD'> Habilitado</td>
-			    <td class='CobaltFieldCaptionTD'> C&oacute;digo Examen </td>
-			    <td class='CobaltFieldCaptionTD'> Nombre Examen </td>
-			    <td class='CobaltFieldCaptionTD'> &Aacute;rea</td>
-                            <td class='CobaltFieldCaptionTD'>Plantilla</td>
-                            <td class='CobaltFieldCaptionTD'>C&oacute;digo del Est&aacute;ndar</td>
-			    <td class='CobaltFieldCaptionTD'>Solicitado en</td>	
-                            <td class='CobaltFieldCaptionTD'>Formulario</td>
-                            <td class='CobaltFieldCaptionTD'>Tabulador</td>
-                            <td class='CobaltFieldCaptionTD'>Tipo Viñeta</td>
-                            <td class='CobaltFieldCaptionTD'>Urgente</td>
-                            <td class='CobaltFieldCaptionTD'>Sexo</td>
-                            <td class='CobaltFieldCaptionTD'>Tiempo Previo</td>
-		      </tr>";
+		echo "<center >
+               <table border = 1 style='width: 80%;'   class='table table-hover table-bordered table-condensed table-white' >
+	           <thead>
+                        <tr>
+		      	    <th aling='center' > Modificar</td>
+			    <td aling='center' > Habilitado</td>
+			    <td > C&oacute;digo Examen </td>
+			    <td > Nombre Examen </td>
+			    <td > &Aacute;rea</td>
+                            <td >Plantilla</td>
+                            <td >C&oacute;digo del Est&aacute;ndar</td>
+			    <td >Solicitado en</td>	
+                            <td >Formulario</td>
+                            <td >Tabulador</td>
+                            <td >Tipo Viñeta</td>
+                            <td >Urgente</td>
+                            <td >Sexo</td>
+                            <td >Tiempo Previo</td>
+		     </tr>
+                   </thead><tbody>
+                    </center>";
 			while($row = pg_fetch_array($consulta)){
 		echo "<tr>
                             <td aling='center'> 
 				<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 				onclick=\"pedirDatos('".$row[0]."')\"></td>
-                            <td class='CobaltDataTD' style='text-decoration:underline;cursor:pointer;' ".
+                            <td  style='text-decoration:underline;cursor:pointer;' ".
 				"onclick='Estado(\"".$row['id']."\",\"".$row['condicion']."\")'>".$row['cond']."</td>
                             <td>".$row['idexamen']." </td>
                             <td>".htmlentities($row['nombreexamen'])."</td>
@@ -537,7 +572,13 @@ switch ($opcion)
 	        echo "</tr>
 			  </table>";
 		
-		
+		  echo " <center> <ul class='pagination'>";
+                          for ($i=1 ; $i<=$PagUlt; $i++)
+                                    {
+                             
+					 echo " <li ><a  href='javascript: show_event_search(".$i.")'>$i</a></li>";
+                                     }
+                    echo " </ul></center>";
 	break;
 	
 	case 8://PAGINACION DE BUSQUEDA
@@ -673,29 +714,33 @@ switch ($opcion)
 		$consulta= $objdatos->consultarpagbus($query_search,$RegistrosAEmpezar, $RegistrosAMostrar);
 
 		//muestra los datos consultados en la tabla
-		echo "<table border = 1 align='center' width='85%' class='StormyWeatherFormTABLE'>
-		      <tr>
-		      	    <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-                            <td aling='center' class='CobaltFieldCaptionTD'> Habilitado</td>
-                            <td aling='center' class='CobaltFieldCaptionTD'> C&oacute;digo Examen </td>
-                            <td aling='center' class='CobaltFieldCaptionTD'> Nombre Examen </td>
-                            <td aling='center' class='CobaltFieldCaptionTD'> &Aacute;rea</td>
-                            <td aling='center' class='CobaltFieldCaptionTD'>Plantilla</td>
-                            <td aling='center' class='CobaltFieldCaptionTD'>C&oacute;digo del Est&aacute;ndar</td>
-                            <td aling='center' class='CobaltFieldCaptionTD'>Solicitado en</td>
-                            <td aling='center' class='CobaltFieldCaptionTD'>Formulario</td>
-                            <td aling='center' class='CobaltFieldCaptionTD'>Tabulador</td>
-                            <td aling='center' class='CobaltFieldCaptionTD'>Tipo Viñeta</td>
-                            <td aling='center' class='CobaltFieldCaptionTD'>Urgente</td>
-                            <td aling='center' class='CobaltFieldCaptionTD'>Sexo</td>
-                            <td aling='center' class='CobaltFieldCaptionTD'>Tiempo Previo</td>
-		      </tr>";
+		echo "<center >
+               <table border = 1 style='width: 80%;'   class='table table-hover table-bordered table-condensed table-white' >
+	           <thead>
+                        <tr>
+		      	    <th aling='center' > Modificar</th>
+                            <th aling='center' > Habilitado</th>
+                            <th aling='center'> C&oacute;digo Examen </th>
+                            <th aling='center' > Nombre Examen </th>
+                            <th aling='center' > &Aacute;rea</th>
+                            <th aling='center' >Plantilla</th>
+                            <th aling='center' >C&oacute;digo del Est&aacute;ndar</th>
+                            <th aling='center' >Solicitado en</th>
+                            <th aling='center' >Formulario</th
+                            <th aling='center' >Tabulador</th>
+                            <th aling='center' >Tipo Viñeta</th>
+                            <th aling='center' >Urgente</th>
+                            <th aling='center' >Sexo</th>
+                            <th aling='center' >Tiempo Previo</th>
+		      </tr>
+                   </thead><tbody>
+                    </center>";
             while($row = pg_fetch_array($consulta)){
 		echo "<tr>
                             <td aling='center'> 
 				<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 				onclick=\"pedirDatos('".$row[0]."')\"></td>
-                            <td class='CobaltDataTD' style='text-decoration:underline;cursor:pointer;' ".
+                            <td  style='text-decoration:underline;cursor:pointer;' ".
 				"onclick='Estado(\"".$row['id']."\",\"".$row['condicion']."\")'>".$row['cond']."</td>
                             <td>".$row['idexamen']." </td>
                             <td>".htmlentities($row['nombreexamen'])."</td>
@@ -763,6 +808,14 @@ switch ($opcion)
 			 echo "<td> <a onclick=\"show_event_search('$PagUlt')\">Ultimo</a></td>";
 			 echo "</tr>
 			  </table>";
+                         
+                         echo " <center> <ul class='pagination'>";
+                          for ($i=1 ; $i<=$PagUlt; $i++)
+                                    {
+                             
+					 echo " <li ><a  href='javascript: show_event_search(".$i.")'>$i</a></li>";
+                                     }
+                    echo " </ul></center>";
 			 
 			  
 	break;
@@ -784,5 +837,10 @@ switch ($opcion)
 		
 	break;
 }
+    function asignar_resultados($resultado){
+        $objdatos = new clsLab_Examenes;
+        $objdatos ->posible_resultados($resultado);
+    
+    }
 
 ?>

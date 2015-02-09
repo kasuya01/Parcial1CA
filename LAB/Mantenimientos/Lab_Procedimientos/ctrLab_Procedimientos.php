@@ -22,6 +22,7 @@ case 1:  //INSERTAR
 	$proce=$_POST['proce'];
 	$idarea=$_POST['idarea'];
 	$unidades=$_POST['unidades'];
+	//$unidades=isset($_POST['unidades']) ? $_POST['unidades'] : null;;
         $cmborden=$_POST['cmborden'];
 	$sexo=$_POST['sexo'];
 	$redad=$_POST['redad'];
@@ -46,6 +47,12 @@ case 1:  //INSERTAR
 	} else {
 		$rangofin=$_POST['rangofin'];
 	}
+
+	if ( empty( $_POST['unidades'] ) ) {
+		$unidades="NULL";
+	} else {
+		$unidades="'".$_POST['unidades']."'";
+	}
         
 	/*if ( empty( $_POST['Fechaini'] ) ) {
 		$Fechaini="NULL";
@@ -62,20 +69,13 @@ case 1:  //INSERTAR
 	}*/
 
 	//echo $Fechaini."-".$Fechafin;
-
-	if ( $objdatos->insertar( $proce, $idarea, $idexamen, $unidades, $rangoini, $rangofin, $usuario, $lugar, $Fechaini, $Fechafin, $sexo, $redad,$cmborden ) == true ) {
-		echo "Registro Agregado, Agregar Posible Resultado";
-               
-                
-                
-                        
-                
+$proce= utf8_encode($proce);
+if ( $objdatos->insertar($proce, $idarea, $idexamen, $unidades, $rangoini, $rangofin, $usuario, $lugar, $Fechaini, $Fechafin, $sexo, $redad,$cmborden ) == true ) {
+		echo "Registro Agregado, Agregar Posible Resultado";        
         }
 	else {
-		echo "No se pudo Agregar";
-                 
+		echo "No se pudo Agregar";      
 	}
-
 	break;
 
 case 2:  //MODIFICAR
@@ -117,7 +117,7 @@ case 2:  //MODIFICAR
 		$FechaF=explode( '/', $_POST['Fechafin'] );
 		$Fechafin='\''.$FechaF[2].'-'.$FechaF[1].'-'.$FechaF[0].'\'';
 	}
-
+$proce= utf8_encode($proce);
 	if ( $objdatos->actualizar( $idproce, $proce, $idarea, $idexamen, $unidades, $rangoini, $rangofin, $usuario, $lugar, $Fechaini, $Fechafin, $sexo, $redad,$cmborden )==true ) {
 		echo "Registro Actualizado";
 	} else {
@@ -314,7 +314,7 @@ case 4:// PAGINACION
                           for ($i=1 ; $i<=$PagUlt; $i++)
                                     {
                              
-					 echo " <li ><a  href='javascript: show_event_search(".$i.")'>$i</a></li>";
+					 echo " <li ><a  href='javascript: show_event(".$i.")'>$i</a></li>";
                                      }
                     echo " </ul></center>";
         
@@ -329,7 +329,7 @@ case 5:  //LLENAR COMBO DE EXAMENES
 	$consultaex= $objdatos->ExamenesPorArea( $idarea, $lugar );
 	//$dtMed=$obj->LlenarSubServ($proce);
 
-	$rslts = '<select name="cmbExamen" id="cmbExamen" size="1" onChange="llenarcomboRango(this.value);">';
+	$rslts = '<select name="cmbExamen" id="cmbExamen"  style="width:50%"  class="form-control height" onChange="llenarcomboRango(this.value);">';
 	$rslts .='<option value="0">--Seleccione un Examen--</option>';
 
 	while ( $rows =pg_fetch_array( $consultaex ) ) {
@@ -345,8 +345,8 @@ case 11:  //LLENAR COMBO DE RANGOS
 	$idexa=$_POST['idexa'];
         $rslts='';
         
-           $rslts = '<select name="cmborden" id="cmborden" size="1"   >';
-           $rslts .='<option value="0">--Seleccione un Rango--</option>';
+           $rslts = '<select name="cmborden" id="cmborden" style="width:50%"  class="form-control height"  >';
+           $rslts .='<option value="0">--Seleccione un Orden--</option>';
         
             
                                      $datosDB=existeOrden($idexa);
@@ -431,7 +431,8 @@ case 7: //BUSQUEDA
 						lppe.habilitado,
                                                 lppe.id as idlppe,
                                                 mnt4.id as idmnt4,
-                                                lcee.condicion
+                                                lcee.condicion,
+                                                lppe.orden
 			  FROM lab_procedimientosporexamen                      lppe
 			  INNER JOIN lab_conf_examen_estab 			lcee ON (lcee.id = lppe.id_conf_examen_estab)
 			  INNER JOIN lab_plantilla                              lpla ON (lpla.id = lcee.idplantilla)
@@ -556,6 +557,7 @@ case 7: //BUSQUEDA
                                 <th> Rango de Edad     </th>
                                 <th> Fecha Inicio      </th>
                                 <th> Fecha Finalización </th>
+                                <th> Orden </th>
                         </tr>
                    </thead><tbody>
                     </center>";
@@ -618,6 +620,8 @@ case 7: //BUSQUEDA
 		else
 			echo "<td>".$row['fechafin']."</td>
 			          ";
+                 echo "<td>".$row['orden']."</td>
+			          ";
 		echo"</tr> ";
                      
                  }
@@ -647,6 +651,8 @@ case 7: //BUSQUEDA
 			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 		else
 			echo "<td>".$row['fechafin']."</td>
+			          ";
+                 echo "<td>".$row['orden']."</td>
 			          ";
 		echo"</tr> ";
                      
@@ -705,7 +711,9 @@ case 8://PAGINACION DE BUSQUEDA
 	$unidades = $_POST['unidades'];
 	$sexo 	  = $_POST['sexo'];
 	$redad 	  = $_POST['redad'];
-
+        $Fechaini = $_POST['Fechaini'];
+        $Fechaini = $_POST['Fechafin'];
+        
 	if ( empty( $_POST['rangoini'] ) ) {
 		$rangoini="NULL";
 	} else {
@@ -716,7 +724,7 @@ case 8://PAGINACION DE BUSQUEDA
 	} else {
 		$rangofin = '\''.$_POST['rangofin'].'\'';
 	}
-	if ( empty( $_POST['Fechaini'] ) ) {
+	/*if ( empty( $_POST['Fechaini'] ) ) {
 		$Fechaini="NULL";
 	} else {
 		$FechaI=explode( '/', $_POST['Fechaini'] );
@@ -727,7 +735,7 @@ case 8://PAGINACION DE BUSQUEDA
 	} else {
 		$FechaF=explode( '/', $_POST['Fechafin'] );
 		$Fechafin='\''.$FechaF[2].'-'.$FechaF[1].'-'.$FechaF[0].'\'';
-	}
+	}*/
 
 	$query = "SELECT lppe.id AS idprocedimientoporexamen,
 					lcee.codigo_examen AS idexamen,
@@ -758,8 +766,8 @@ case 8://PAGINACION DE BUSQUEDA
 						lppe.habilitado,
                                                 lppe.id as idlppe,
                                                 mnt4.id as idmnt4,
-                                                lcee.condicion
-                                                
+                                                lcee.condicion,
+                                                lppe.orden
 			  FROM lab_procedimientosporexamen                      lppe
 			  INNER JOIN lab_conf_examen_estab 			lcee ON (lcee.id = lppe.id_conf_examen_estab)
 			  INNER JOIN lab_plantilla                              lpla ON (lpla.id = lcee.idplantilla)
@@ -865,10 +873,11 @@ case 8://PAGINACION DE BUSQUEDA
                                 <th> Rango de Edad     </th>
                                 <th> Fecha Inicio      </th>
                                 <th> Fecha Finalización </th>
+                                <th> Orden </th>
                         </tr>
                    </thead><tbody>
                     </center>";
-	while ( $row = pg_fetch_array( $consulta ) ) {
+	while ( $row = @pg_fetch_array( $consulta ) ) {
 		/*echo "<tr>
                 <td aling='center'><img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" onclick=\"pedirDatos('".$row['idprocedimientoporexamen']."')\"></td>
                	<!-- <td aling ='center'><img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"></td> -->
@@ -901,7 +910,7 @@ case 8://PAGINACION DE BUSQUEDA
           //  }
                  if ($habilitado=="t")
                      {
-                     echo " if";
+                    // echo " if";
                      echo "<tr>
                     <td aling='center'>
                         <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\"
@@ -928,11 +937,13 @@ case 8://PAGINACION DE BUSQUEDA
 		else
 			echo "<td>".$row['fechafin']."</td>
 			          ";
+                 echo "<td>".$row['orden']."</td>
+			          ";
 		echo"</tr> ";
                      
                  }
                  else {
-                     echo " else";
+                    // echo " else";
                        echo "<tr>
                     <td aling='center'>
                         <img src='../../../Imagenes/Search.png' style=\"text-decoration:underline;cursor:pointer;\"
@@ -957,6 +968,8 @@ case 8://PAGINACION DE BUSQUEDA
 			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 		else
 			echo "<td>".$row['fechafin']."</td>
+			          ";
+                 echo "<td>".$row['orden']."</td>
 			          ";
 		echo"</tr> ";
                      
