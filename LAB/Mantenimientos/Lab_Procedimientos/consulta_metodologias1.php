@@ -1,9 +1,4 @@
 <?php
-
-
-
-// ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCTUUUUUUUUUUUUUUAAAAAAAAAAAAAAAAAAAALIZAAAAAAAAAARRRRR
-//include_once("clsLab_Examenes.php");
 include("clsLab_Procedimientos.php");
 @session_start();
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
@@ -11,7 +6,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
 <html>
     <head>
        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Seleccionarr metodologías</title>
+        <title>Seleccionar metodologías</title>
         <?php include_once $ROOT_PATH."/public/css.php";?>
         <?php include_once $ROOT_PATH."/public/js.php";?>
         <script language="JavaScript" >
@@ -78,16 +73,13 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
          
            
         <?php
-        /* 
-         * Julio Castillo
-         */
+        
+        
         
         extract($_GET);
         
-        //$obj = new clsLab_Examenes;
-        
-        $obj=new clsLab_Procedimientos;
-        
+        $obj = new clsLab_Procedimientos;
+        //include("clsLab_Procedimientos.php");
         /*
          * creando arreglo de elementos seleccionados
          */
@@ -98,33 +90,29 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
          /*
          * conocer el nombre de la prueba si es modificacion
          */
-      /*  if (isset($id_examen)){
-            $consulta = $obj->prueba_lab1($id_examen);
+        if (isset($nombre)){
+            $consulta = $obj->prueba_lab($nombre);
             $r = pg_fetch_array($consulta);
             $nombre_prueba = $r['nombre_prueba'];
-        } else {*/
+        } else {
             $nombre_prueba = $nombre;
-      //  }
-       // echo $nombre;
-           $consulta = $obj->prueba_lab1($nombre);
-            $r = pg_fetch_array($consulta);
-            $nombre_prueba = $r['nombre_prueba'];
-           
-      echo '<strong><font color="white"> 
-            <div class="panel-heading" style="background-color: #428bca">
-            <center>
-            <h3>Exámen:<strong><label id="nombre_prueba">'.$nombre_prueba.'</label> </strong></h3>
-                <h4><strong>Use doble clic para seleccionar la metodología</strong></h4>
-                
-            </center></div>     </font></strong>';       
-           
+        }
         
         /*
          * crear listado de metodologias existentes
          */
-        $consulta = $obj->metodologias1();
+        //$consulta = $obj->metodologias();
+        $consulta = $obj->resultados1();
         $r = pg_fetch_array($consulta);
-    
+       
+      echo '<strong><font color="white"> 
+            <div class="panel-heading" style="background-color: #428bca">
+            <center>
+            <h3>Exámen:<strong><label id="nombre_prueba">'.$nombre_prueba.'</label> </strong></h3>
+                <h4><strong>Use doble clic para seleccionar el resultado</strong></h4>
+                
+            </center></div>     </font></strong>';       
+           
   
        
         
@@ -135,7 +123,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
         $table = "<br/><table align='center'  class='table table-bordered table-condensed table-white no-v-border' style='width:100%'><thead>";
        // $table .= "<tr><head><center><label id='nombre_prueba'>".$nombre_prueba."</label></center></head></tr>";
         
-        $table .= "<tr><th style='text-align:center; width:300px;'>Metodolog&iacute;as</th>"
+        $table .= "<tr><th style='text-align:center; width:300px;'>Resultado</th>"
                 . "<th style='text-align:center;width:300px;'>Selecci&oacute;n</th></tr></thead><tbody>";
         $table .= "<td><select name='lista' id='lista' size=22 style='width: 100%;height:400px;' ondblclick='list_reload(this,1)'>";
         while ($r = pg_fetch_array($consulta)){
@@ -144,7 +132,6 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
               $table .= "<option value='$r[id]' >$metodologia </option>";  
         }
         $table .= "</select></td>";
-        
         
         /*
          * mostrar segundo select con metodologias seleccionadas
@@ -171,18 +158,18 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                <span class='glyphicon glyphicon-ok-circle'></span> 
                Aceptar
           </button><br/>
-        <input type="text" name="metodologias_sel" id="metodologias_sel" value="<?php print $metodologias_sel; ?>">
-        <input type="text" name="text_metodologias_sel" id="text_metodologias_sel" value="<?php print $text_metodologias_sel; ?>">
-        <input type="text" name="id_metodologias_sel" id="id_metodologias_sel" value="<?php print $id_metodologias_sel; ?>">
+          <input type="hidden" name="resultado" id="metodologias_sel" value="<?php print $metodologias_sel; ?>">
+          <input type="hidden" name="text_metodologias_sel" id="text_metodologias_sel" value="<?php print $text_metodologias_sel; ?>">
+          <input type="hidden" name="id_metodologias_sel" id="id_metodologias_sel" value="<?php print $id_metodologias_sel; ?>">
         <br></div>
         </body>
     
     
     <script language="JavaScript">
         function cerrar(){
-            opener.document.<?php print $form; ?>.metodologias_sel.value=document.getElementById('metodologias_sel').value;
-            opener.document.<?php print $form; ?>.text_metodologias_sel.value=document.getElementById('text_metodologias_sel').value;
-            opener.document.<?php print $form; ?>.id_metodologias_sel.value=document.getElementById('id_metodologias_sel').value;
+            opener.document.frmnuevo.resultado.value=document.getElementById('metodologias_sel').value;
+            opener.document.<?php print $form; ?>.resultado_nombre.value=document.getElementById('text_metodologias_sel').value;
+            opener.document.<?php print $form; ?>.id_resultado.value=document.getElementById('id_metodologias_sel').value;
             window.close();
         }
     </script>    

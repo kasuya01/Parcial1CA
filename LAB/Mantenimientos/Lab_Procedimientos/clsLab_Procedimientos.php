@@ -8,13 +8,46 @@ class clsLab_Procedimientos {
 	}
 
 	//INSERTA UN REGISTRO
-	function insertar( $proce, $idarea, $idexamen, $unidades, $rangoini, $rangofin, $usuario, $lugar, $Fechaini, $Fechafin, $sexo, $redad,$cmborden ) {
+	function insertar( $proce, $idarea, $idexamen, $unidades, $rangoini, $rangofin, $usuario, $lugar, $Fechaini, $Fechafin, $sexo, $redad,$cmborden,$resultado ) {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
 			  $query ="INSERT INTO lab_procedimientosporexamen (nombreprocedimiento, id_conf_examen_estab, unidades, rangoinicio, rangofin, idusuarioreg, fechahorareg, idestablecimiento, fechaini, fechafin, idsexo, idrangoedad,orden)
                      VALUES('$proce',$idexamen,$unidades,$rangoini,$rangofin,$usuario,date_trunc('seconds',NOW()),$lugar,'$Fechaini',$Fechafin,$sexo,$redad,$cmborden)";
 			$result = @pg_query( $query );
-                        echo $query;
+                         $query;
+                         
+                         
+        $query2 ="select COALESCE(max(id),1) from lab_procedimientosporexamen";
+        $result2 = pg_query($query2);
+        $row2=pg_fetch_array($result2);
+        $ultimo=$row2[0];
+        
+        $aresultados = explode(',',$resultado); 
+         for ($i=0;$i<(count($aresultados)-1);$i++){
+             
+             
+              $query = "UPDATE lab_procedimiento_posible_resultado 
+                        SET habilitado = true,
+                            fechafin = null,
+                            id_user_mod = 8,
+                            fecha_mod = now()
+                        WHERE id_posible_resultado = '$aresultados[$i]' AND id_procedimientoporexamen='$ultimo'";
+            $result=pg_query($query);
+            if (pg_affected_rows($result)==0){
+                $query = "INSERT INTO lab_procedimiento_posible_resultado(
+                            id_procedimientoporexamen, id_posible_resultado, fechainicio, fechafin, 
+                            habilitado, id_user, fecha_registro, id_user_mod, fecha_mod)
+                    VALUES ('$ultimo', '$aresultados[$i]', date_trunc('seconds',NOW()), null, 
+                            true, 8, date_trunc('seconds',NOW()), null, null)";
+                $result=pg_query($query);
+            }
+             
+             
+         }
+                         
+                         
+                         
+                         
 
 			if (!$result)
 				return false;
@@ -87,7 +120,7 @@ class clsLab_Procedimientos {
         function RangosEdades() {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
-			$query = "SELECT id, nombre FROM ctl_rango_edad ORDER BY nombre";
+			$query = "SELECT id, nombre FROM ctl_rango_edad where cod_modulo='LAB' ORDER BY nombre";
 			$result = pg_query( $query );
 			if ( !$result )
 				return false;
@@ -252,11 +285,22 @@ class clsLab_Procedimientos {
 	   }
 	 }
     
-    
+    function prueba_lab($nombre){
+         
+            $con = new ConexionBD;
+	    //usamos el metodo conectar para realizar la conexion
+	    if($con->conectar()==true){
+	      $query = "SELECT nombre_examen as nombre_prueba FROM lab_conf_examen_estab WHERE id=$nombre";
+             
+		 $result = pg_query($query);
+		 if (!$result)
+		   return false;
+		 else
+		   return $result;
+	   }
+	 }
      function resultados($idproce){
-        /*
-        * Julio Castillo
-        */
+        
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if($con->conectar()==true){
@@ -279,6 +323,23 @@ class clsLab_Procedimientos {
 						where t02.id_procedimientoporexamen=$idproce and t02.habilitado= true ) t02 on t02.id_posible_resultado=t01.id
 						WHERE t02.id is null 
 						ORDER BY t01.posible_resultado";
+
+             $result = pg_query($query);
+             if (!$result)
+               return false;
+             else
+               return $result;
+        }
+    }
+    
+      function resultados1(){
+        
+        $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if($con->conectar()==true){
+                           $query = "select 	t01.id id,
+                  t01.posible_resultado resultado
+                  from lab_posible_resultado t01 ORDER BY t01.posible_resultado";
 
              $result = pg_query($query);
              if (!$result)

@@ -726,7 +726,7 @@ switch ($opcion)
                             <th aling='center' >Plantilla</th>
                             <th aling='center' >C&oacute;digo del Est&aacute;ndar</th>
                             <th aling='center' >Solicitado en</th>
-                            <th aling='center' >Formulario</th
+                            <th aling='center' >Formulario</th>
                             <th aling='center' >Tabulador</th>
                             <th aling='center' >Tipo Viñeta</th>
                             <th aling='center' >Urgente</th>
