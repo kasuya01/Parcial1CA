@@ -143,8 +143,8 @@ class clsSolicitudesProcesadas {
                 and (ldf.idsexo is null or ldf.idsexo=$sexo)
                 and (idedad=4 or idedad=$idedad)
                 and  (case $idmetodologia
-			when 0 then (id_metodologia>0 or id_metodologia is null)
-			else id_metodologia=$idmetodologia
+			when 0 then (lem.id>0 or lem.id is null)
+			else lem.id=$idmetodologia
 			end)";
              // echo $query;
             $result = @pg_query($query);

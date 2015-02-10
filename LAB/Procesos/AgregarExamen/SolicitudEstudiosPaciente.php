@@ -86,29 +86,29 @@ $base_url  = $_SESSION['base_url'];
 		<table width="90%" border="0" align="center" class="StormyWeatherFormTABLE">
 		    <tr class="CobaltButton"><td colspan="4" align="center"><h3>DATOS GENERALES</h3></td></tr>
 			<tr>
-				  <td width="6%" class="StormyWeatherFieldCaptionTD">Establecimiento Solicitante</td>
-				  <td width="12%" class="StormyWeatherDataTD"><?php echo $nombrEstab;?></td> 
+				  <td width="6%" class="StormyWeatherFieldCaptionTD" >Establecimiento Solicitante</td>
+				  <td width="12%" class="StormyWeatherDataTD" class="height" style="height: 25px"><?php echo $nombrEstab;?></td> 
                                   <input type="hidden" name="txtidsolicitud" id="txtidsolicitud" value="<?php echo $idsolicitud ?>"/>
                                   <input type="hidden" name="txtidsoli" id="txtidsoli" value="<?php echo $idsolicitudPadre ?>"/>
                                   <input type="hidden" name="txtempleado" id="txtempleado" value="<?php echo $idempleadop ?>"/>
                                   <input type="hidden" name="txtIdEstablecimiento" id="txtIdEstablecimiento" value="<?php echo $idestablecimiento ?>"/>
 			</tr>	    
 		 	<tr>
-				  <td width="6%" class="StormyWeatherFieldCaptionTD">Procedencia</td>
-				  <td width="12%" class="StormyWeatherDataTD"><?php echo $precedencia;?></td>
+				  <td width="6%" class="StormyWeatherFieldCaptionTD" >Procedencia</td>
+				  <td width="12%" class="StormyWeatherDataTD" style="height: 25px"><?php echo $precedencia;?></td>
 				  </tr>
 				   <tr>
-				  <td width="6%" class="StormyWeatherFieldCaptionTD">Servicio</td>
-				  <td width="12%" class="StormyWeatherDataTD"><?php echo $origen;?></td>
+				  <td width="6%" class="StormyWeatherFieldCaptionTD" >Servicio</td>
+				  <td width="12%" class="StormyWeatherDataTD" style="height: 25px"><?php echo $origen;?></td>
 			</tr>
 			<tr>
-		        <td width="6%" class="StormyWeatherFieldCaptionTD">NEC</td>
-			    <td width="12%" class="StormyWeatherDataTD"><?php echo $idexpediente; ?>
+		        <td width="6%" class="StormyWeatherFieldCaptionTD" >NEC</td> 
+                        <td width="12%" class="StormyWeatherDataTD" style="height: 25px"><?php echo $idexpediente; ?>
 			</tr>
 			<tr>
 		        <td width="6%" class="StormyWeatherFieldCaptionTD">Área</td>
 		        <td width="12%" class="StormyWeatherDataTD">
-                            <select id="cmbArea" name="cmbArea" size="1"  onChange="LlenarComboExamen(this.value)">
+                           <select id="cmbArea" name="cmbArea" size="1"  onChange="LlenarComboExamen(this.value)" style="width:405px" class="form-control height">
                                <option value="0" >--Seleccione Área--</option> 
                                     <?php
 				include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
@@ -126,7 +126,7 @@ $base_url  = $_SESSION['base_url'];
                             <td width="6%" class="StormyWeatherFieldCaptionTD">Examen</td>
                             <td width="12%" class="StormyWeatherDataTD">
                                 <div id="divExamen">
-                                    <select id="cmbExamen" name="cmbExamen" size="1" onchange="LlenarComboMuestra1(this.value)">
+                                    <select id="cmbExamen" name="cmbExamen" size="1" onchange="LlenarComboMuestra1(this.value)" style="width:405px" class="form-control height">
 					<option value="0" >--Seleccione Examen--</option>
                                     </select>
 				</div>	
@@ -136,7 +136,7 @@ $base_url  = $_SESSION['base_url'];
 				<td width="6%" class="StormyWeatherFieldCaptionTD">Tipo Muestra</td>
 		        <td width="12%" class="StormyWeatherDataTD">
 					<div id="divMuestra">
-						<select id="cmbMuestra" name="cmbMuestra" size="1" onchange="LlenarComboOrigen1(this.value)">
+						<select id="cmbMuestra" name="cmbMuestra" size="1" onchange="LlenarComboOrigen1(this.value)" style="width:405px" class="form-control height">
 							<option value="0" >--Seleccione Tipo de Muestra--</option>
 						</select>
 					</div>	
@@ -146,7 +146,7 @@ $base_url  = $_SESSION['base_url'];
 				<td width="6%" class="StormyWeatherFieldCaptionTD">Origen Muestra</td>
 		        <td width="12%" class="StormyWeatherDataTD">
 					<div id="divOrigen">
-						<select id="cmbOrigen" name="cmbOrigen" size="1" >
+						<select id="cmbOrigen" name="cmbOrigen" size="1" style="width:405px" class="form-control height">
 							<option value="0" >--Seleccione Origen Muestra--</option>
 						</select>
 					</div>
@@ -154,11 +154,11 @@ $base_url  = $_SESSION['base_url'];
 			</tr>
 			<tr>
 				<td width="6%" class="StormyWeatherFieldCaptionTD">Indicación</td>
-		        <td width="12%" class="StormyWeatherDataTD"><textarea name="txtindicacion" cols="50" id="txtindicacion"></textarea></td>
+		        <td width="12%" class="StormyWeatherDataTD"><textarea name="txtindicacion" cols="50" id="txtindicacion" style="width:405px" class="form-control"></textarea></td>
 			</tr>
 			<tr>
 				<td width="6%" class="StormyWeatherFieldCaptionTD">Observación</td>
-		        <td width="12%" class="StormyWeatherDataTD"><textarea name="txtObservacion" cols="50" id="txtObservacion"></textarea></td>
+		        <td width="12%" class="StormyWeatherDataTD"><textarea name="txtObservacion" cols="50" id="txtObservacion" style="width:405px" class="form-control"></textarea></td>
 			</tr>
 			<tr>
 				<td width="6%" colspan="2" class="StormyWeatherFieldCaptionTD" align="right">
