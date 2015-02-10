@@ -132,6 +132,8 @@ if (ValidarCampos())
         metodologias_sel=frmnuevo.metodologias_sel.value;
         text_metodologias_sel=frmnuevo.text_metodologias_sel.value;
         id_metodologias_sel=frmnuevo.id_metodologias_sel.value;
+        resultado=frmnuevo.resultado.value;
+        mismo=frmnuevo.mismo.value;
       // alert(sexo);
 	//codempresa=document.frmnuevo.txttxtcodempresa.value;
 	//alert(idestandar);
@@ -158,13 +160,59 @@ if (ValidarCampos())
 	ajax.send("idexamen="+idexamen+"&idarea="+idarea+"&nomexamen="+nomexamen+
 	"&idestandar="+idestandar+"&Pag="+Pag+"&opcion="+opcion+"&plantilla="+plantilla+"&ubicacion="+ubicacion+
 	"&idformulario="+idformulario+"&idestandarRep="+idestandarRep+"&etiqueta="+etiqueta+"&urgente="+urgente+
-        "&sexo="+sexo+"&Hab="+Hab+"&tiempoprevio="+tiempoprevio+"&metodologias_sel="+metodologias_sel+"&text_metodologias_sel="+text_metodologias_sel+"&id_metodologias_sel="+id_metodologias_sel);
+        "&sexo="+sexo+"&Hab="+Hab+"&tiempoprevio="+tiempoprevio+"&metodologias_sel="+metodologias_sel+"&text_metodologias_sel="+text_metodologias_sel+"&id_metodologias_sel="+id_metodologias_sel
+        +"&resultado="+resultado+"&mismo="+mismo);
    }
 
 else{
 		alert("Complete los datos a Ingresar");
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+function IngresarRegistro1(){ //INGRESAR REGISTROS
+	//donde se mostrar� lo resultados
+	//valores de los inputs
+	 resultado=frmnuevo.resultado.value;
+      alert(resultado);
+	//codempresa=document.frmnuevo.txttxtcodempresa.value;
+	//alert(idestandar);
+	//alert (idPrograma+"*****"+idestandarRep);
+	
+	var opcion=11;
+	Pag=1;
+	//instanciamos el objetoAjax
+	ajax=objetoAjax();
+	//archivo que realiza la operacion
+	ajax.open("POST", "ctrLab_Examenes.php",true);
+	ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+			//mostrar resultados en esta capa
+			//document.getElementById('divinicial').innerHTML = ajax.responseText;
+                        alert(ajax.responseText);
+			LimpiarCampos();
+			show_event(Pag);
+		}
+	}
+        //alert (sexo);
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	//enviando los valores
+	ajax.send("resultado="+resultado);
+  
+}
+
+
+
 
 function LlenarComboFormulario(idprograma)
 {

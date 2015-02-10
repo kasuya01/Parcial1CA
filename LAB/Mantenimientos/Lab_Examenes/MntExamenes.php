@@ -6,9 +6,12 @@ $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
 $obje=new clsLab_CodigosEstandar;
 $objeareas=new clsLab_Areas;
 $obj=new clsLab_Examenes;
+$idproce=0;
  //echo $lugar;
 ?>
 <html>
@@ -18,6 +21,8 @@ $obj=new clsLab_Examenes;
 <script language="JavaScript" type="text/javascript" src="ajax_Lab_Examenes.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+<?php include_once $ROOT_PATH.'/public/css.php';?>
+<?php include_once $ROOT_PATH.'/public/js.php';?>
 <script language="JavaScript" >
 function Guardar(){
        	IngresarRegistro();
@@ -49,6 +54,8 @@ function popup(URL) {
     function habilitar_metodologia(obj){
         if(obj.value !== "") {
             obj1 = document.getElementById('add_metodologia');
+            obj2 = document.getElementById('add_presultado');
+            obj2.disabled=false;
             obj1.disabled = false;
         }
     }
@@ -83,12 +90,12 @@ if ($nivel==33){
 			</tr>
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo del Examen</td>
-                            <td class="StormyWeatherDataTD"> <div id="divCodigo"><input type="text" id="txtidexamen"  name="txtidexamen" disabled="disabled" style="width:250px"/></div></td>
+                            <td class="StormyWeatherDataTD"> <div id="divCodigo"><input type="text" id="txtidexamen"  name="txtidexamen" disabled="disabled" style="width:250px" class="form-control height placeholder" /></div></td>
 			</tr>
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo del &Aacute;rea</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbArea" name="cmbArea" size="1"  onChange="LlenarComboExamen(this.value);" style="width:250px">
+                                <select id="cmbArea" name="cmbArea" size="1"  onChange="LlenarComboExamen(this.value);" style="width:250px" class="form-control height">
                                     <option value="0" >--Seleccione un &Aacute;rea--</option>
                                     <?php
                                         $consulta= $objeareas->consultaractivas($lugar);
@@ -103,7 +110,7 @@ if ($nivel==33){
                             <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo del Est&aacute;ndar</td>
                             <td class="StormyWeatherDataTD">
                                <div id="divExamen">
-                                    <select name="cmbEstandar" id="cmbEstandar"  style="width:250px"> 
+                                    <select name="cmbEstandar" id="cmbEstandar"  style="width:250px"  class="form-control height placeholder"> 
                                          
                                              <option value="0">--Seleccione un Examen--</option>
                                               
@@ -113,12 +120,12 @@ if ($nivel==33){
 			</tr>
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD" >Nombre del Examen </td>
-                            <td class="StormyWeatherDataTD"><input type="text" id="txtnombreexamen" name="txtnombreexamen" size="50" onblur="habilitar_metodologia(this);"/></td>
+                            <td class="StormyWeatherDataTD"><input type="text" id="txtnombreexamen" name="txtnombreexamen"   style="width:250px" size="50"  placeholder="Ingrese Nombre del Examen" class="form-control height placeholder" onblur="habilitar_metodologia(this);"/></td>
 			</tr>
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD" >Plantilla</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbPlantilla" name="cmbPlantilla" size="1" style="width:250px">
+                                <select id="cmbPlantilla" name="cmbPlantilla" size="1" style="width:250px" class="form-control height">
                                     <option value="0">--Seleccione una Plantilla--</option>
                                         <?php
                                             $obje=new clsLab_Examenes;
@@ -133,7 +140,7 @@ if ($nivel==33){
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD"><strong>Solicitado en </strong> </td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbUbicacion" name="cmbUbicacion" size="1" style="width:250px">
+                                <select id="cmbUbicacion" name="cmbUbicacion" size="1" style="width:250px" class="form-control height">
                                     <option value="" >--Seleccione--</option>
                                     <option value="0" >Todas las procediencias</option>
                                     <option value="1" >Hospitalización y Emergencia</option>
@@ -146,7 +153,7 @@ if ($nivel==33){
                             <td width="17%" class="StormyWeatherFieldCaptionTD">Formulario para Examen</td>
                             <td width="83%"  class="StormyWeatherDataTD">
                              
-                                    <select name="cmbFormularios" id="cmbFormularios" size="1" style="width:250px"> 
+                                    <select name="cmbFormularios" id="cmbFormularios" size="1" style="width:250px" class="form-control height"> 
                                         <option value="0">Ninguno</option>
                                         <?php
                                             $consulta= $obj->consultar_formularios($lugar);
@@ -160,7 +167,7 @@ if ($nivel==33){
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo en tabulador</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbEstandarRep" name="cmbEstandarRep" size="1">
+                                <select id="cmbEstandarRep" name="cmbEstandarRep" size="1"style="width:250px" class="form-control height">
                                     <option value="0">--Seleccione un Est&aacute;ndar--</option>
                                         <?php
                                             $obje=new clsLab_CodigosEstandar;
@@ -176,7 +183,7 @@ if ($nivel==33){
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD" >Tipo Etiqueta</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbEtiqueta" name="cmbEtiqueta" size="1" style="width:250px">
+                                <select id="cmbEtiqueta" name="cmbEtiqueta" size="1" style="width:250px" class="form-control height">
                                     <option value="0">--Seleccione un un tipo de etiqueta--</option>
                                     <option value="G">General</option>
                                     <option value="O">Especial</option>
@@ -186,7 +193,7 @@ if ($nivel==33){
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Examen Solicitado Urgente</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbUrgente" name="cmbUrgente" size="1" style="width:250px">
+                                <select id="cmbUrgente" name="cmbUrgente" size="1" style="width:250px" class="form-control height">
                                     <option value="0">No</option>
                                     <option value="1">Si</option>
                                 </select>    
@@ -195,7 +202,7 @@ if ($nivel==33){
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Sexo al que se le realiza la prueba</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbsexo" name="cmbsexo" size="1" style="width:250px">
+                                <select id="cmbsexo" name="cmbsexo" size="1" style="width:250px" class="form-control height">
                                      <option value="0">Ninguno</option>
                                      <option value="4">Ambos</option>
                                     <?php
@@ -211,7 +218,7 @@ if ($nivel==33){
                          <tr>
                             <td class="StormyWeatherFieldCaptionTD">Habilitar Prueba</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbHabilitar" name="cmbHabilitar" size="1" style="width:250px" class="selectpicker">
+                                <select id="cmbHabilitar" name="cmbHabilitar" size="1" style="width:250px"  class="form-control height">
                                     <option value="0">-- Seleccione Condici&oacute;n --</option>
                                     <option value="H">Habilitado</option>
                                     <option value="I">Inhabilitado</option>
@@ -236,14 +243,46 @@ if ($nivel==33){
                            
                         </td>
                         
-                        </tr>
-                         <tr> 
-                            <td colspan="2" align="right" class="StormyWeatherDataTD">
+                        </tr> 
+                        
+                        
+                        <tr>
+                        <td nowrap class="StormyWeatherFieldCaptionTD">Posible  Resultado</td>
+                        <td class="StormyWeatherDataTD">
+                            <input type="hidden" name="resultado" id="resultado">
+                            <input type="hidden" name="resultado_nombre" id="resultado_nombre">
+                            <input type="hidden" name="id_resultado" id="id_resultado">
+                            <button type='button' class='btn btn-primary' disabled="disabled"  name="add_presultado" id="add_presultado" style="width:250px" onclick="
+                                popup('consulta_metodologias1.php?form=frmnuevo&metodologias_sel='+document.getElementById('resultado').value+
+                                        '&text_metodologias_sel='+document.getElementById('resultado_nombre').value+
+                                        '&nombre='+document.getElementById('txtnombreexamen').value+ '&id_metodologias_sel='+document.getElementById('id_resultado').value);"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Resultado:..</button>
+                           
+                        </td>
+                         <?php 
+                                $consulta=$obje1->ultimoexa();
+                                while ( $row = @pg_fetch_array( $consulta ) ) {
+                                $mismo=$row['id'] ;
+
+
+                                }
+                         ?> 
+                        <input type="hidden" name="mismo" id="mismo" size="50" value="<?php echo $mismo; ?>" />
+                    
+                         <!--<tr>
+                             <td colspan="2" align="right" class="StormyWeatherDataTD">
                                 <input type="button" name="btnGuardar" value="Guardar" onClick="Guardar();">
-				<input type="button" name="btnBuscar" value="Buscar" onClick="Buscar();">
+                                <input type="button" name="btnBuscar" value="Buscar" onClick="Buscar();">
 				<input type="button" name="btnCancelar" value="Cancelar" onClick="Cancelar();">
                             </td>
-			</tr>
+			</tr>-->
+                        <tr>  
+                            <td class="StormyWeatherDataTD" colspan="6" align="right">
+                                <button type='button' align="center" class='btn btn-primary'  onclick='Guardar(); '><span class='glyphicon glyphicon-floppy-disk'></span> Guardar </button>
+                                <button type='button' align="center" class='btn btn-primary'  onclick='Buscar(); '><span class='glyphicon glyphicon-search'></span>  Buscar </button>
+                                <button type='button' align="center" class='btn btn-primary'  onClick="Cancelar();"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+                            </td>
+                         </tr>
+                        
                     </table>
 		</form>
             </div>
