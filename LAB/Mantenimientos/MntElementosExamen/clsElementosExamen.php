@@ -17,7 +17,7 @@ class clsElementosExamen
     $query = "INSERT INTO lab_elementos(id_conf_examen_estab,elemento,subelemento,UnidadElem,ObservElem,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod,IdEstablecimiento,FechaIni,FechaFin) 
     VALUES($idexamen,'$nomelemento','$subelemento',$unidadele,$observacionele,$usuario,NOW(),$usuario,NOW(),$lugar,$Fechaini,$Fechafin)";
      $result = pg_query($query);
-	echo $query; 
+ 
      if (!$result)
        return false;
      else

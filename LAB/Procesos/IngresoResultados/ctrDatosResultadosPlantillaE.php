@@ -63,7 +63,7 @@ case 1:
 					</td>
 					<td class='StormyWeatherDataTD'>".$row['unidades']."</td>
 					<td class='StormyWeatherDataTD' >
-						<input name='txtcomentario[".$pos."]' type='text' id='txtcomentario[".$pos."]'>".$row['unidades']."
+						<input name='txtcomentario[".$pos."]' type='hidden' id='txtcomentario[".$pos."]'>".$row['unidades']."
 					</td>
 				</tr>";
 					$pos=$pos + 1;
@@ -136,7 +136,7 @@ case 1:
                                                                                                        
 				   $imprimir.= "
 						<input name='txtresultado[".$pos."]' type='text' id='txtresultado[".$pos."]'>
-                                                <input name='totcombo[".$pos."]' type='text' id='totcombo[".$pos."]'  value=''  >   
+                                                <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''  >   
                                     </td>";
                                                                                                        
 				                                                                     
