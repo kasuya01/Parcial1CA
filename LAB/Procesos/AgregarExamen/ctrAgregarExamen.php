@@ -599,7 +599,7 @@ switch ($opcion)
 		$idarea=$_POST['idarea'];
 		//echo $IdSubEsp;
 		$dtExam=$objdatos->ExamenesPorArea($idarea,$lugar);	
-		$rslts = '<select name="cmbExamen" id="cmbExamen"  onchange="LlenarComboMuestra1(this.value)" class="MailboxSelect" style="width:250px">';
+		$rslts = '<select name="cmbExamen" id="cmbExamen"  onchange="LlenarComboMuestra1(this.value)" class="form-control height" style="width:405px">';
 		$rslts .='<option value="0"> Seleccione Examen </option>';
 			
 		while ($rows =pg_fetch_array($dtExam)){
@@ -617,7 +617,7 @@ switch ($opcion)
 		$Idtipoesta=$_POST['idtipoesta'];
               // echo $Idtipoesta;
             	$dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
-              	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:375px">';
+              	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" class="form-control height" style="width:375px">';
 		$rslts .='<option value="0"> Seleccione Establecimiento </option>';
                while ($rows =pg_fetch_array( $dtIdEstab)){
 		  $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
@@ -631,7 +631,7 @@ switch ($opcion)
          $IdServ=$_POST['IdServicio'];
 	   //  echo $IdServ;
 	     $dtserv=$objdatos->LlenarCmbServ($IdServ,$lugar);
-	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:375px">';
+	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" class="form-control height" style="width:375px">';
 			$rslts .='<option value="0"> Seleccione Subespecialidad </option>';
 			while ($rows =pg_fetch_array($dtserv)){
 		  	$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
@@ -645,7 +645,7 @@ switch ($opcion)
          $IdExamen=$_POST['IdExamen'];
 	   //  echo $IdServ;
 	     $dtserv=$objdatos->LlenarCmbTipoMuestra($IdExamen);
-	     $rslts = '<select name="cmbMuestra" id="cmbMuestra" style="width:375px" onchange="LlenarComboOrigen1(this.value)">';
+	     $rslts = '<select name="cmbMuestra" id="cmbMuestra" class="form-control height" style="width:405px" onchange="LlenarComboOrigen1(this.value)">';
 		 $rslts .='<option value="0">--Seleccione Tipo de Muestra--</option>';
 		 while ($rows =pg_fetch_array($dtserv)){
 				$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
@@ -659,7 +659,7 @@ switch ($opcion)
         $IdTipo=$_POST['IdTipo'];
 
 	     $dtTipo=$objdatos->LlenarCmbOrigenMuestra($IdTipo);
-		 $rslts = '<select name="cmbOrigen" id="cmbOrigen" style="width:375px">';
+		 $rslts = '<select name="cmbOrigen" id="cmbOrigen" class="form-control height" style="width:405px">';
 		 $rslts .='<option value="0">--Seleccione Origen de Muestra--</option>';
 		 while ($rows =pg_fetch_array($dtTipo)){
 		  	$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';

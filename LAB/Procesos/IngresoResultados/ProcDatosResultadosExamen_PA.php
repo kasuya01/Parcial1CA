@@ -416,7 +416,7 @@ echo '<option value="xyz">Seleccione una opción</option>';
                                    }
                                     echo '</select>';
                                  }
-                                 else {                                                                        echo '<textarea  name="txtresultado" cols="50" size="43"  id="txtresultado" class="form-control  height"/></textarea><input type="hidden" id="idresultado" name="idresultado" value="x"/>';
+                                 else {                                                                        echo '<textarea  name="txtresultado" cols="50" size="43"  id="txtresultado" class="form-control  height" style="width:96%"/></textarea><input type="hidden" id="idresultado" name="idresultado" value="x"/>';
                                  }
                                
                                 ?>

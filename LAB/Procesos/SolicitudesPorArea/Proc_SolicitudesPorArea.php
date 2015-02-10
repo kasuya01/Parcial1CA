@@ -44,26 +44,6 @@ else{
 <?php include_once $ROOT_PATH."/public/js.php";?>
 
 <script language="JavaScript" type="text/javascript">
-function MostrarSolicitudes()
-{
-	if ((document.getElementById('cmbTipoEstab').value == 0) && (document.getElementById('cmbEstablecimiento').value == 0)
-	&& (document.getElementById('CmbServicio').value == 0) && (document.getElementById('cmbArea').value == 0) 
-	&& (document.getElementById('txtexpediente').value == "") && (document.getElementById('cmbExamen').value == 0) 
-	&& (document.getElementById('PrimerNombre').value=="") && (document.getElementById('SegundoNombre').value=="") 
-	&& (document.geElementById('PrimerApellido').value=="") && (document.getElementById('SegundoApellido').value=="") 
-	&& (document.getElementById('txtfechasolicitud')) && (document.getElementById('cmbTipoSolic')==0)){
-			alert("Ingrese parámetros de búsqueda");
-	 
-	 }
-    	else{  
-		if (document.getElementById('cmbArea').value == 0){
-			alert ("Debe de ingresar un Área");
-		}
-                else{
-                  
-			SolicitudesPorArea();}
-	}
-}
 
 
 function BuscarExamen(idarea){

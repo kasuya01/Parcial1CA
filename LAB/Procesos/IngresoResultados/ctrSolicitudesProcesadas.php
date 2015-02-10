@@ -518,7 +518,7 @@ switch ($opcion) {
                             <input type='hidden' id='idempleado_' name='idempleado_' value='" . $responsable . "'/></td>
                     </tr>
                     <tr>
-                        <td colspan='1'>Resultado Tabulador:</td>";
+                        <td colspan='1'><strong>Resultado Tabulador:</strong></td>";
         $nomcod = $objdatos->ObtenerNombreCodigo($cod);
         $row_codigo = pg_fetch_array($nomcod);
 
