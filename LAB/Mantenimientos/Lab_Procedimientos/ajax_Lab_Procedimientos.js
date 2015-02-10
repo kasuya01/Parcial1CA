@@ -215,10 +215,11 @@ function IngresarRegistro(){ //INGRESAR REGISTROS
 		rangofin=document.getElementById('txtrangofin').value;
 		Fechaini=document.getElementById('txtFechainicio').value;
 		Fechafin=document.getElementById('txtFechaFin').value;
-        sexo=document.getElementById('cmbSexo').value;
-        redad=document.getElementById('cmbEdad').value;
-        cmborden=document.getElementById('cmborden').value;
-      //  alert(sexo);
+                sexo=document.getElementById('cmbSexo').value;
+                redad=document.getElementById('cmbEdad').value;
+                cmborden=document.getElementById('cmborden').value;
+                resultado=document.getElementById('resultado').value;
+      alert(resultado);
 		var opcion=1;
 		Pag=1;
 		//instanciamos el objetoAjax
@@ -228,18 +229,18 @@ function IngresarRegistro(){ //INGRESAR REGISTROS
 		ajax.onreadystatechange=function() {
 			if (ajax.readyState==4) {
 				//mostrar resultados en esta capa
-				document.getElementById('divinicial').innerHTML = ajax.responseText;
+				//document.getElementById('divinicial').innerHTML = ajax.responseText;
 	                        alert(ajax.responseText);
 				LimpiarCampos();
 				 show_event(1);
-                                 ventanasecundaria();
+                                
 			}
 		}
 		ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores
 		ajax.send("idarea="+idarea+"&opcion="+opcion+"&idexamen="+idexamen+"&proce="+escape(proce)+
 	                "&unidades="+escape(unidades)+"&Pag="+Pag+"&rangoini="+rangoini+"&rangofin="+rangofin+
-	                "&Fechaini="+Fechaini+"&Fechafin="+Fechafin+"&sexo="+sexo+"&redad="+redad+"&cmborden="+cmborden);
+	                "&Fechaini="+Fechaini+"&Fechafin="+Fechafin+"&sexo="+sexo+"&redad="+redad+"&cmborden="+cmborden+"&resultado="+resultado);
   	} else {
   		alert(datosCompletos['errorMessage']);
 	}

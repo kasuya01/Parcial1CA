@@ -11,6 +11,7 @@ $area=$_SESSION['Idarea'];
 $idproce=0;
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
 $base_url  = $_SESSION['base_url'];
+ echo $idexamen=$_POST['resultado'];
 ?>
 <html>
 <head>
@@ -86,13 +87,13 @@ function popup(URL) {
     }
 
 
-/*function habilitar_metodologia(obj){
+function habilitar_metodologia(obj){
         if(obj.value !== "") {
            // alert("se hablitara el boton");
-            obj1 = document.getElementById('add_metodologia');
+            obj1 = document.getElementById('add_presultado');
             obj1.disabled = false;
         }
-    }*/
+    }
     
     function habilitar_rango(obj){
         if(obj.value !== "") {
@@ -127,8 +128,8 @@ if ($nivel==33){
 <table align="center" width="100%">
     <tr>
         <td>
-            <div  id="divFrmNuevo" >
-                <form id="frmnuevo">
+             <div  id="divFrmNuevo" >
+                <form name="frmnuevo" >
                     <table width="50%" border="0" align="center" class="StormyWeatherFormTABLE">
                         <tr>
                             <td colspan="3" align="center" class="CobaltFieldCaptionTD"><h3><strong>Procedimientos de Ex&aacute;menes de Laboratorio</h3></strong>
@@ -214,6 +215,25 @@ if ($nivel==33){
 				</div>
                             </td>
         		</tr>
+                        
+                        <tr>
+                        <td nowrap class="StormyWeatherFieldCaptionTD">Posible  Resultado</td>
+                         <td class="StormyWeatherDataTD">
+                             <input type="hidden" name="resultado" id="resultado">
+                             <input type="hidden" name="resultado_nombre" id="resultado_nombre">
+                             <input type="hidden" name="id_resultado" id="id_resultado">
+                            <button type='button' class='btn btn-primary'  disabled="disabled"  name="add_presultado" id="add_presultado" style="width:250px" onclick="
+                                popup('consulta_metodologias1.php?form=frmnuevo&metodologias_sel='+document.getElementById('resultado').value+
+                                        '&text_metodologias_sel='+document.getElementById('resultado_nombre').value+
+                                        '&nombre='+document.getElementById('cmbExamen').value+ '&id_metodologias_sel='+document.getElementById('id_resultado').value);"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Resultado:..</button>
+                         
+                        </td>
+                         </tr>  
+                        
+                       
+                        
+                      
+                        
                         
                         
                       <!--  <tr>

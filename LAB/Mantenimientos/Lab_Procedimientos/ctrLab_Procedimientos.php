@@ -24,10 +24,19 @@ case 1:  //INSERTAR
 	$unidades=$_POST['unidades'];
 	//$unidades=isset($_POST['unidades']) ? $_POST['unidades'] : null;;
         $cmborden=$_POST['cmborden'];
+        $resultado=$_POST['resultado'];
+       
 	$sexo=$_POST['sexo'];
 	$redad=$_POST['redad'];
         $Fechaini=$_POST['Fechaini'];
         $Fechafin=$_POST['Fechafin'];
+        
+        
+        
+        if ($sexo==3){
+            $sexo="NULL";
+            
+        }
         
         if ($Fechafin==""){
             $Fechafin="NULL";
@@ -70,8 +79,8 @@ case 1:  //INSERTAR
 
 	//echo $Fechaini."-".$Fechafin;
 $proce= utf8_encode($proce);
-if ( $objdatos->insertar($proce, $idarea, $idexamen, $unidades, $rangoini, $rangofin, $usuario, $lugar, $Fechaini, $Fechafin, $sexo, $redad,$cmborden ) == true ) {
-		echo "Registro Agregado, Agregar Posible Resultado";        
+if ( $objdatos->insertar($proce, $idarea, $idexamen, $unidades, $rangoini, $rangofin, $usuario, $lugar, $Fechaini, $Fechafin, $sexo, $redad,$cmborden,$resultado ) == true ) {
+		echo "Registro Agregado";        
         }
 	else {
 		echo "No se pudo Agregar";      
@@ -329,7 +338,7 @@ case 5:  //LLENAR COMBO DE EXAMENES
 	$consultaex= $objdatos->ExamenesPorArea( $idarea, $lugar );
 	//$dtMed=$obj->LlenarSubServ($proce);
 
-	$rslts = '<select name="cmbExamen" id="cmbExamen"  style="width:50%"  class="form-control height" onChange="llenarcomboRango(this.value);">';
+	$rslts = '<select name="cmbExamen" id="cmbExamen"  style="width:50%"  onblur="habilitar_metodologia(this);" class="form-control height" onChange="llenarcomboRango(this.value);">';
 	$rslts .='<option value="0">--Seleccione un Examen--</option>';
 
 	while ( $rows =pg_fetch_array( $consultaex ) ) {
@@ -345,7 +354,7 @@ case 11:  //LLENAR COMBO DE RANGOS
 	$idexa=$_POST['idexa'];
         $rslts='';
         
-           $rslts = '<select name="cmborden" id="cmborden" style="width:50%"  class="form-control height"  >';
+           $rslts = '<select name="cmborden" id="cmborden" style="width:50%"  class="form-control height"   >';
            $rslts .='<option value="0">--Seleccione un Orden--</option>';
         
             

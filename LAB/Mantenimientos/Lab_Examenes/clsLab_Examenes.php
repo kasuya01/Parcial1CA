@@ -53,7 +53,7 @@ class clsLab_Examenes
                             id_conf_examen_estab, id_posible_resultado, fechainicio, fechafin, 
                             habilitado, id_user, fecha_registro, id_user_mod, fecha_mod)
                     VALUES ('$ultimo', '$aresultados[$i]', date_trunc('seconds',NOW()), null, 
-                            true, 8, now(), null, null)";
+                            true, 8, date_trunc('seconds',NOW()), null, null)";
                 $result=pg_query($query);
             }
          }  
@@ -940,9 +940,7 @@ function ObtenerCodigo($idarea){
 	 }
          
          function prueba_lab($id_examen){
-            /*
-            * Julio Castillo
-            */
+         
             $con = new ConexionBD;
 	    //usamos el metodo conectar para realizar la conexion
 	    if($con->conectar()==true){
