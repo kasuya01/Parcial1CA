@@ -159,7 +159,15 @@ FormSubmit(); */
                     /*
              * crear listado de resultados existentes
              */
-            $consulta = $obj->resultados_seleccionados($idconf);
+          /*  $consulta = $obj->resultados_seleccionados($idconf);
+            $metodologias_sel="";
+            $table .= "<td><select name='lista_sel' id='lista_sel' size=22 style='width: 300px' ondblclick='list_reload(this,2)'>";
+            while ($r = pg_fetch_array($consulta)){
+                    $table .= "<option value='$r[id]' >$r[resultado]</option>";
+                    $metodologias_sel .= $r['id'].',';
+            }*/
+            
+             $consulta = $obj->resultados_seleccionados($idconf);
             $metodologias_sel="";
             $table .= "<td><select name='lista_sel' id='lista_sel' size=22 style='width: 300px' ondblclick='list_reload(this,2)'>";
             while ($r = pg_fetch_array($consulta)){

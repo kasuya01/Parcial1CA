@@ -219,7 +219,7 @@ function IngresarRegistro(){ //INGRESAR REGISTROS
                 redad=document.getElementById('cmbEdad').value;
                 cmborden=document.getElementById('cmborden').value;
                 resultado=document.getElementById('resultado').value;
-      alert(resultado);
+      //alert(resultado);
 		var opcion=1;
 		Pag=1;
 		//instanciamos el objetoAjax
