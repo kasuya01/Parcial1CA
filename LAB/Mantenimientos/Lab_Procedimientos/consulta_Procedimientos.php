@@ -185,7 +185,7 @@ $rangoedad=$row['nombregrupoedad'];
                <td nowrap class="StormyWeatherFieldCaptionTD">Posibles Resultado </td>
                          <?php
                          echo "<td class='StormyWeatherDataTD'>
-                                    <button type='button' align='center' disabled='disabled' class='btn btn-default'  onclick='popup(".'"consulta_SubElemento.php?idproce='.$idproce.'"'.")' >  <span class='glyphicon glyphicon-th-list'></span>  ..:Seleccionar Resultado:.. </button>
+                                    <button type='button' align='center' disabled='disabled' class='btn btn-default'  onclick='popup(".'"consulta_SubElemento_1.php?idproce='.$idproce.'"'.")' >  <span class='glyphicon glyphicon-th-list'></span>  ..:Seleccionar Resultado:.. </button>
                                     </td>"; ?>
                <?php        
                 } else {

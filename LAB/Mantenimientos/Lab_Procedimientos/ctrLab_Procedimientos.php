@@ -388,26 +388,29 @@ case 7: //BUSQUEDA
 	$unidades = $_POST['unidades'];
 	$sexo 	  = $_POST['sexo'];
 	$redad 	  = $_POST['redad'];
+       
 
 	if ( empty( $_POST['rangoini'] ) ) {
 		$rangoini="NULL";
 	} else {
 		$rangoini = '\''.$_POST['rangoini'].'\'';
 	}
+        
+        
 	if ( empty( $_POST['rangofin'] ) ) {
 		$rangofin="NULL";
 	} else {
 		$rangofin = '\''.$_POST['rangofin'].'\'';
 	}
-	/*if ( empty( $_POST['Fechaini'] ) ) {
+	if ( empty( $_POST['Fechaini'] ) ) {
 		$Fechaini="NULL";
-	} else {
+	} /*else {
 		$FechaI=explode( '/', $_POST['Fechaini'] );
 		$Fechaini='\''.$FechaI[2].'-'.$FechaI[1].'-'.$FechaI[0].'\'';
 	}*/
-	/*if ( empty( $_POST['Fechafin'] ) ) {
+	if ( empty( $_POST['Fechafin'] ) ) {
 		$Fechafin="NULL";
-	} else {
+	} /*else {
 		$FechaF=explode( '/', $_POST['Fechafin'] );
 		$Fechafin='\''.$FechaF[2].'-'.$FechaF[1].'-'.$FechaF[0].'\'';
 	}*/
@@ -721,7 +724,10 @@ case 8://PAGINACION DE BUSQUEDA
 	$sexo 	  = $_POST['sexo'];
 	$redad 	  = $_POST['redad'];
         $Fechaini = $_POST['Fechaini'];
-        $Fechaini = $_POST['Fechafin'];
+        $Fechaini="'".$Fechaini."'";
+        
+        $Fechafin = $_POST['Fechafin'];
+        $Fechafin="'".$Fechafin."'";
         
 	if ( empty( $_POST['rangoini'] ) ) {
 		$rangoini="NULL";
@@ -836,10 +842,10 @@ case 8://PAGINACION DE BUSQUEDA
 	}
 
 	if ( !empty( $_POST['Fechaini'] ) ) { 
-		$query .= " fechaini = ".$Fechaini." AND"; }
+		$query .= " fechaini = ".$Fechaini."        "; }
 
 	if ( !empty( $_POST['Fechafin'] ) ) {
-		$query .= " fechafin = ".$Fechafin." AND"; }
+		$query .= " fechafin = ".$Fechafin."       "; }
 
 	if ( ( empty( $_POST['idarea'] ) || $_POST['idarea'] === '0') and ( empty( $_POST['idexamen'] ) || $_POST['idexamen'] === '0' ) and ( empty( $_POST['proce'] ) ) and ( empty( $_POST['unidades'] ) ) and ( empty( $_POST['rangoini'] ) )
 		and ( empty( $_POST['rangofin'] ) ) and ( empty( $_POST['Fechafin'] ) ) and ( empty( $_POST['Fechaini'] ) ) and ( empty( $_POST['sexo'] ) || $_POST['sexo'] === '0') and ( empty( $_POST['redad'] ) || $_POST['redad'] === '0' ) ) {

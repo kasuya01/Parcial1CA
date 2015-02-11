@@ -258,15 +258,8 @@ if ($nivel==33){
                                         '&nombre='+document.getElementById('txtnombreexamen').value+ '&id_metodologias_sel='+document.getElementById('id_resultado').value);"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Resultado:..</button>
                            
                         </td>
-                         <?php 
-                                $consulta=$obje1->ultimoexa();
-                                while ( $row = @pg_fetch_array( $consulta ) ) {
-                                $mismo=$row['id'] ;
-
-
-                                }
-                         ?> 
-                        <input type="hidden" name="mismo" id="mismo" size="50" value="<?php echo $mismo; ?>" />
+                        
+                       
                     
                          <!--<tr>
                              <td colspan="2" align="right" class="StormyWeatherDataTD">

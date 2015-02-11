@@ -192,9 +192,9 @@
 					echo "<option value='" . $row['0']. "'>" . $row['1'].'- '.htmlentities($row['2']). "</option>";
 				}
                                                   $obje1=new clsLab_Examenes;
-                                                  $consulta2=$obje1->Obtener_NombreEstandar($IdEstandarResp);
-                                                  $rownom= pg_fetch_array($consulta2);
-                                                  $NombreEstandar=$rownom[0];
+                                                 // $consulta2=$obje1->Obtener_NombreEstandar($IdEstandarResp);
+                                                  //$rownom= pg_fetch_array($consulta2);
+                                                  //$NombreEstandar=$rownom[0];
                                            echo "<option value='".$IdEstandarResp."' selected='selected'>".$EstandarResp.'-'.htmlentities($Descestandarrep). "</option>";		
                                                 ?>	
 			</select>   
@@ -288,9 +288,9 @@
                 <tr>
                     <td nowrap class="StormyWeatherFieldCaptionTD">Metodologías</td>
                     <td class="StormyWeatherDataTD">
-                        <input type="hidden" name="metodologias_sel" id="metodologias_sel" value="<?php print $metodologias; ?>">
-                        <input type="hidden" name="text_metodologias_sel" id="text_metodologias_sel" value="<?php print $metodologias_text; ?>">
-                        <input type="hidden" name="id_metodologias_sel" id="id_metodologias_sel" value="<?php print $id_metodologias_text; ?>">
+                        <input type="text" name="metodologias_sel" id="metodologias_sel" value="<?php print $metodologias; ?>">
+                        <input type="text" name="text_metodologias_sel" id="text_metodologias_sel" value="<?php print $metodologias_text; ?>">
+                        <input type="text" name="id_metodologias_sel" id="id_metodologias_sel" value="<?php print $id_metodologias_text; ?>">
                         <button type='button' class='btn btn-default' name="add_metodologia" id="add_metodologia" style="width:250px" onclick="popup('consulta_metodologias.php?form=frmModificar&metodologias_sel='+frmModificar.metodologias_sel.value+'&id_examen=<?php print $idconf; ?>'+'&text_metodologias_sel='+frmModificar.text_metodologias_sel.value+'&id_metodologias_sel='+frmModificar.id_metodologias_sel.value);"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Metodologías:..</button>
 <!--                        <input type="button" value="..." name="add_metodologia" id="add_metodologia" onclick="popup('consulta_metodologias.php?form=frmModificar&metodologias_sel='+frmModificar.metodologias_sel.value+'&id_examen=<?php  //print $idconf; ?>'+'&text_metodologias_sel='+frmModificar.text_metodologias_sel.value+'&id_metodologias_sel='+frmModificar.id_metodologias_sel.value);"/>-->
                 </tr>

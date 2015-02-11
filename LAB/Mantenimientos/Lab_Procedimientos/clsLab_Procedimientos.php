@@ -349,15 +349,15 @@ class clsLab_Procedimientos {
         }
     }
     
-     function get_subelemento($id_subelemento){
+     function get_subelemento($idproce){
      
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if($con->conectar()==true){
-          $query = "SELECT s.id as id,
+         $query = "SELECT s.id as id,
                         s.subelemento as subelemento_text
                      FROM lab_subelementos s
-                     WHERE s.id = '$id_subelemento'";
+                     WHERE s.id = '$idproce'";
              $result = pg_query($query);
              if (!$result)
                return false;
@@ -379,10 +379,12 @@ class clsLab_Procedimientos {
                     WHERE spr.id_subelemento = '$id_subelemento' AND spr.habilitado is true
                     ORDER BY posible_resultado";*/
                 
-               "select t02.id, t02.posible_resultado resultado, t03.nombreprocedimiento  from lab_procedimiento_posible_resultado t01
+              "select t02.id, t02.posible_resultado resultado, t03.nombreprocedimiento  
+                    from lab_procedimiento_posible_resultado t01
                 inner join lab_posible_resultado 	t02 on (t02.id=t01.id_posible_resultado)
                 inner join lab_procedimientosporexamen t03 on (t03.id=t01.id_procedimientoporexamen)
-                where t03.id=$idproce";
+                 WHERE t01.id_procedimientoporexamen = '$idproce' AND t01.habilitado is true 
+                  ORDER BY posible_resultado";
 
              $result = pg_query($query);
              if (!$result)
