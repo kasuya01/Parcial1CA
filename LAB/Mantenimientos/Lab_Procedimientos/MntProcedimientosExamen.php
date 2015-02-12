@@ -11,7 +11,7 @@ $area=$_SESSION['Idarea'];
 $idproce=0;
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
 $base_url  = $_SESSION['base_url'];
- echo $idexamen=$_POST['resultado'];
+ //$idexamen=$_POST['resultado'];
 ?>
 <html>
 <head>
@@ -222,81 +222,45 @@ if ($nivel==33){
                              <input type="hidden" name="resultado" id="resultado">
                              <input type="hidden" name="resultado_nombre" id="resultado_nombre">
                              <input type="hidden" name="id_resultado" id="id_resultado">
-                            <button type='button' class='btn btn-primary'  disabled="disabled"  name="add_presultado" id="add_presultado" style="width:250px" onclick="
+                            <button type='button' class='btn btn-default'  disabled="disabled"  name="add_presultado" id="add_presultado" style="width:250px" onclick="
                                 popup('consulta_metodologias1.php?form=frmnuevo&metodologias_sel='+document.getElementById('resultado').value+
                                         '&text_metodologias_sel='+document.getElementById('resultado_nombre').value+
                                         '&nombre='+document.getElementById('cmbExamen').value+ '&id_metodologias_sel='+document.getElementById('id_resultado').value);"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Resultado:..</button>
                          
                         </td>
                          </tr>  
-                        
-                       
-                        
-                      
-                        
-                        
-                        
-                      <!--  <tr>
-                        <td nowrap class="StormyWeatherFieldCaptionTD">Posibles Resultado </td>
-                        <td class="StormyWeatherDataTD">
-                            <input type="hidden" name="metodologias_sel" id="metodologias_sel">
-                            <input type="hidden" name="text_metodologias_sel" id="text_metodologias_sel">
-                            <input type="hidden" name="id_metodologias_sel" id="id_metodologias_sel">
-                            <button type='button' class='btn btn-default'   name="add_metodologia" id="add_metodologia" style="width:250px" 
-                                    onclick="popup('consulta_SubElemento1.php?form=frmnuevo&metodologias_sel='+document.getElementById('metodologias_sel').value+
-                                        '&text_metodologias_sel='+document.getElementById('text_metodologias_sel').value+
-                                        '&nombre='+document.getElementById('cmbExamen').value+ '&id_metodologias_sel='+document.getElementById('id_metodologias_sel').value);">
-                                        <span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Metodologías:..</button>
-                          disabled="disabled"
-                        </td>
-                        
-                        
-                        
-                        
-                        </tr> -->
-                        
-                        <!--<tr>
-                        <td nowrap class="StormyWeatherFieldCaptionTD">Posibles Resultado </td>
                          
-                        </tr>-->
-                       <!-- <tr>
-                        <td width="17%" class="StormyWeatherFieldCaptionTD">Rango Inicial</td>
-                        <td class="StormyWeatherDataTD">
-                           <input name="txtrangoinicio" type="text" id="txtrangoinicio" size="6"  style="width:250px" placeholder="Ingrese Rango Inicial" class="form-control height placeholder" />		  
-			</td>      
-                          <td width="17%" class="StormyWeatherFieldCaptionTD" style="width:250px" >Rango Final</td>
-                        <td class="StormyWeatherDataTD">
-                            <input name="txtrangofin" type="text" id="txtrangofin" size="6" style="width:250px" placeholder="Ingrese Rango Final" class="form-control  height placeholder" />  
-			</td>      
-                     </tr>-->
+                        
                         
                         <tr>
                             <td colspan="2" class="StormyWeatherDataTD">
-                                <table width="850" border="0" align="center" class="StormyWeatherFormTABLE">
+                                <table width="900" border="0" align="center" class="StormyWeatherFormTABLE">
                                     <td width="17%" class="StormyWeatherFieldCaptionTD">Rango Inicio</td>
                                             <td class="StormyWeatherDataTD">
-                                                <input name="txtrangoini" type="text" id="txtrangoini" size="28"   style="width:280px" placeholder="Ingrese Rango Inicial" class="form-control height placeholder" >
+                                                <input name="txtrangoini" type="text" id="txtrangoini" size="25"   style="width:250px" placeholder="Ingrese Rango Inicial" class="form-control height placeholder" >
                                             </td>
-                                            <td width="17%" class="StormyWeatherFieldCaptionTD" > Rango Fin </td>
+                                            <td class="StormyWeatherFieldCaptionTD" > Rango Fin </td>
                                             <td class="StormyWeatherDataTD">
-                                                <input name="txtrangofin" type="text" id="txtrangofin" size="25"   style="width:280px" placeholder="Ingrese Rango Final" class="form-control height placeholder" >
+                                                <input name="txtrangofin" type="text" id="txtrangofin" size="25"   style="width:250px" placeholder="Ingrese Rango Final" class="form-control height placeholder" >
                                             </td>
 				</table>	             
                             </td> 
 			</tr>
-			<tr>
+                        
+                        <tr>
                             <td colspan="2" class="StormyWeatherDataTD">
-                                <table width="850" border="0" align="center" class="StormyWeatherFormTABLE">
+                                <table width="900" border="0" align="center" class="StormyWeatherFormTABLE">
                                     <tr>   
                                         <td width="17%" class="StormyWeatherFieldCaptionTD">Fecha Inicio</td>
                                             <td class="StormyWeatherDataTD">
-                                                <input  name="txtFechainicio" type="text" id="txtFechainicio" size="25"  class="date form-control  height placeholder"  placeholder="aaaa-mm-dd" style="width:280px"  >
+                                                <input  name="txtFechainicio" type="text" id="txtFechainicio" size="25" style="width:250px" placeholder="aaaa-mm-dd"  class="date form-control  height placeholder"    >
                                             </td>
                                                                     
-                                            <td class="StormyWeatherFieldCaptionTD"  width="17%">Fecha Fin</td>
-                                                <td class="StormyWeatherDataTD" >
-                                                    <input name="txtFechaFin" type="text" id="txtFechaFin" size="28" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" style="width:280px" >
-                                                </td>
+                                           
+                                            <td class="StormyWeatherFieldCaptionTD" >  Fecha Fin </td>
+                                            <td class="StormyWeatherDataTD">
+                                                <input name="txtFechaFin" type="text" id="txtFechaFin" size="25"   style="width:250px" placeholder="aaaa-mm-dd"  class="date form-control height placeholder" >
+                                            </td>
                                     </tr>   
                                     
 				</table>
