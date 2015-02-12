@@ -348,7 +348,7 @@ accion=7;
  
 function abreVentana(nec){ //datospacfisttime
     window.close("../RegistroExternos/Busqueda.php");
-    miPopup = window.open("../RegistroExternos/Busqueda.php?nec="+nec,"miwin","width=1000,height=400,scrollbars=yes"); 
+    miPopup = window.open("../RegistroExternos/Busqueda.php?nec="+nec,"miwin","width=1000,height=550,scrollbars=yes"); 
     miPopup.focus(); 
 } 
 

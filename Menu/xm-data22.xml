@@ -26,6 +26,7 @@
 		<menu labelText="MANTENIMIENTOS">
 			<menu labelText="EXÁMENES">
 				<item labelText="Exámenes" url="../../Mantenimientos/Lab_Examenes/MntExamenes.php"/>
+                                <item labelText="Metodología" url="../../Mantenimientos/Lab_Metodologia/MntLab_metodologia.php"/>
 				<!--<item labelText="Estándares de Laboratorio" url="../../Mantenimientos/Lab_CodigosEstandar/MntCodigosEstandar.php"/>-->
 				<item labelText="Indicaciones por Examen" url="../../Mantenimientos/Lab_IndicacionesPorExamen/MntIndicacionesPorExamen.php"/>
 				<item labelText="Procedimientos de Exámenes (Plantilla E)" url="../../Mantenimientos/Lab_Procedimientos/MntProcedimientosExamen.php"/>

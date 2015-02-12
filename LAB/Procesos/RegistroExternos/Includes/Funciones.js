@@ -28,6 +28,7 @@ function Limpiar(){
 }
 function LimpiarConExpe(nec){
 	window.location.replace('Busqueda.php?nec='+nec);
+        document.getElementById('Sexo_Name').value=0;
 }
 
 function NoCero(ct){

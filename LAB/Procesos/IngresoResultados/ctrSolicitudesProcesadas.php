@@ -531,9 +531,17 @@ switch ($opcion) {
 		    </table>";
 
         $Imprimir.="<table width='100%'  align='center' border='0' class='StormyWeatherFormTABLE'>
-                        <tr>
-                            <td colspan='8' align='center' >&nbsp;DETALLE DE RESULTADOS<br/><br></td>
-                        </tr>
+                        <tr>";
+       if ($idmetodologia!=0){
+            $Imprimir.="<td colspan='9' align='center' >&nbsp;DETALLE DE RESULTADOS<br/><br></td>";
+        }
+        else{
+           $Imprimir.="<td colspan='8' align='center' >&nbsp;DETALLE DE RESULTADOS<br/><br></td>";
+        }
+        
+                            
+                            
+         $Imprimir.="</tr>
                         <tr >
                             <td align='center'><b>Prueba Realizada </b></td>";
         if ($idmetodologia!=0){
@@ -547,8 +555,15 @@ switch ($opcion) {
                             <td align='center'><b>Lectura</b></td>
 			    <td align='center'><b>Interpretaci&oacute;n</b></td>
 			    <td align='center'><b>Observaci&oacute;n</b></td>
-			</tr>
-                        <tr><td colspan='8'><hr style='width:90%'></td></tr>";
+			</tr>";
+         if ($idmetodologia!=0){
+            $Imprimir.="<tr><td colspan='9'><hr style='width:90%'></td></tr>";
+        }
+        else{
+           $Imprimir.="<tr><td colspan='8'><hr style='width:90%'></td></tr>";
+        }       
+                
+                        
 
         //MOSTRAR DATOS FIJOS Y RESULTADOS DIGITADOS
         $consulta2 = $objdatos->MostrarDatosFijosPlantillaA($idexamen, $lugar, $sexo, $idedad, $idmetodologia);
@@ -577,9 +592,17 @@ switch ($opcion) {
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-			</tr>
+                            <td>&nbsp;</td>";
+       if ($idmetodologia!=0){
+          $Imprimir.= " <td>&nbsp;</td></tr>
                         </table>";
+       }
+       else{
+           $Imprimir.="</tr>
+                        </table>";
+       }
+                
+			
         $Imprimir.="<table align='center' border='0'>
                         <tr>
                             <td>&nbsp;</td>

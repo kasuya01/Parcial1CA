@@ -468,7 +468,7 @@ function CambiarEstadoSolicitud($idsolicitud,$estadosolicitud,$estadosolicitud6)
         $detalle = pg_fetch_array(pg_query($query56));
             if ($detalle[0] == 0) {
                 $query1 = "UPDATE sec_solicitudestudios SET estado=(select id from ctl_estado_servicio_diagnostico where idestado='$estadosolicitud')
-	    WHERE id=$idsolicitud)";
+	    WHERE id=$idsolicitud";
                 $result = pg_query($query1);
                 return true;
             }
