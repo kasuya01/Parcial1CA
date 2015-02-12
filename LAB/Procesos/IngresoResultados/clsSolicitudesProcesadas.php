@@ -161,13 +161,13 @@ class clsSolicitudesProcesadas {
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
             $query = "select sse.id as idsolicitudestudio, sds.id as iddetallesolicitud, sse.id_establecimiento_externo, 
-id_area_servicio_diagnostico, sds.id_conf_examen_estab,nombre_examen, id_area_servicio_diagnostico as idarea, ces.idestandar,
-ldf.unidades, ldf.rangoinicio, ldf.rangofin, lem.id as idexametodologia, nombre_reporta
-            from sec_solicitudestudios 		sse
-            join sec_detallesolicitudestudios	sds on (sse.id=sds.idsolicitudestudio)
-            join lab_conf_examen_estab		lex on (lex.id=sds.id_conf_examen_estab)
-            join mnt_area_examen_establecimiento	mae on (mae.id=lex.idexamen)
-            join ctl_examen_servicio_diagnostico	ces on (ces.id=mae.id_examen_servicio_diagnostico)
+                      id_area_servicio_diagnostico, sds.id_conf_examen_estab,nombre_examen, id_area_servicio_diagnostico as idarea, ces.idestandar,
+                      ldf.unidades, ldf.rangoinicio, ldf.rangofin, lem.id as idexametodologia, nombre_reporta
+                      from sec_solicitudestudios 		sse
+                      join sec_detallesolicitudestudios	sds on (sse.id=sds.idsolicitudestudio)
+                      join lab_conf_examen_estab		lex on (lex.id=sds.id_conf_examen_estab)
+                      join mnt_area_examen_establecimiento	mae on (mae.id=lex.idexamen)
+                      join ctl_examen_servicio_diagnostico	ces on (ces.id=mae.id_examen_servicio_diagnostico)
             left join lab_datosfijosresultado 	ldf on (lex.id=ldf.id_conf_examen_estab)
             join lab_examen_metodologia 	lem on (lex.id=lem.id_conf_exa_estab)
             where sse.id=$idsolicitud

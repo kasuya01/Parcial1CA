@@ -447,16 +447,16 @@ echo '<option value="xyz">Seleccione una opción</option>';
                             <td  class="StormyWeatherDataTD" colspan="1">
                                   <div id="divCodResultado">
                                      <select id="cmbResultado2" name="cmbResultado2" size="1" style="width:100%" class="form-control  height">
-                                <option value="0" >--Seleccione Resultado--</option>
-                              
-                                <?php 
-                                $resscod=$objdatos->BuscarResultados($IdEstandar);
-                               
-                                while ($rows = pg_fetch_array($resscod)){
-                                        echo '<option value="' . $rows['idresultado'] . '">' . $rows['idresultado'] . '  -  ' . $rows['resultado'] . '</option>'; 
-                                }
-                                ?>
-				</select>
+                                        <option value="0" >--Seleccione Resultado--</option>
+
+                                        <?php 
+                                        $resscod=$objdatos->BuscarResultados($IdEstandar);
+
+                                        while ($rows = pg_fetch_array($resscod)){
+                                            echo '<option value="' . $rows['idresultado'] . '">' . $rows['idresultado'] . '  -  ' . $rows['resultado'] . '</option>'; 
+                                        }
+                                        ?>
+                                    </select>
                                 </div>
 				
                             </td>

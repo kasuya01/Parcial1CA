@@ -204,7 +204,7 @@ if ($nivel==33){
                      <tr>
                         <td class="StormyWeatherFieldCaptionTD">Fecha Inicio</td>
                         <td  class="StormyWeatherDataTD">
-                            <input  name="txtFechainicio" type="text" id="txtFechainicio" size="25" class="date form-control  height placeholder"  placeholder="aaaa-mm-dd" style="width:250px"  value="<?php echo date("Y-m-d"); ?>"/>		  
+                            <input  name="txtFechainicio" type="text" id="txtFechainicio" size="25" class="date form-control  height placeholder"  placeholder="aaaa-mm-dd" style="width:250px" />		  
 			</td>      
                           <td class="StormyWeatherFieldCaptionTD" style="width:250px" >Fecha Final</td>
                         <td  class="StormyWeatherDataTD">

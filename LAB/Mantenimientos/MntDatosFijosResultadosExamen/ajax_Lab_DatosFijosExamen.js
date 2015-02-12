@@ -291,7 +291,7 @@ function BuscarDatos()
 	Fechafin=document.getElementById('txtFechaFin').value;	
 	sexo=document.getElementById('cmbSexo').value;
         redad=document.getElementById('cmbEdad').value;
-	
+	//alert(idexamen);
 	//instanciamos el objetoAjax
 	ajax=objetoAjax();
 	//archivo que realizar� la operacion ->actualizacion.php

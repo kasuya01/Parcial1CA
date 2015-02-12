@@ -282,7 +282,7 @@ switch ($opcion)
 	case 7: //BUSQUEDA
 		$idexamen=$_POST['idexamen'];
 		$idarea=$_POST['idarea'];
-		              
+		// echo   $idexamen;           
                 $unidades=(empty($_POST['unidades'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidades']) . "'"; 
                 $nota=(empty($_POST['nota'])) ? 'NULL' : "'" . pg_escape_string($_POST['nota']) . "'";  
                 $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";        
@@ -294,8 +294,8 @@ switch ($opcion)
 		
 	  	
 		$query = "SELECT lab_datosfijosresultado.id,
-                                lab_conf_examen_estab.codigo_examen as idexamen,
-                                lab_conf_examen_estab.nombre_examen as nombreexamen, 
+                                lab_conf_examen_estab.codigo_examen,
+                                lab_conf_examen_estab.nombre_examen, 
                                 lab_datosfijosresultado.unidades,
                                 lab_datosfijosresultado.rangoinicio,
                                 rangofin, lab_datosfijosresultado.nota, 
@@ -324,7 +324,7 @@ switch ($opcion)
                         { $query .= " AND  mnt_area_examen_establecimiento.id_area_servicio_diagnostico=".$_POST['idarea']."        "; }
 
                         if (!empty($_POST['idexamen']))
-                        { $query .= " AND lab_conf_examen_estab.id=".$_POST['idexamen']."  "; }
+                        { $query .= " AND lab_conf_examen_estab.id=".$_POST['idexamen']."     "; }
 
                        if (!empty($_POST['unidades']))
                         { $query .= " AND unidades='".$_POST['unidades']."'     "; }
