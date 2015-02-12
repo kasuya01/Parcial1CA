@@ -231,9 +231,9 @@ switch ($opcion)
             AND t02.id_establecimiento =$lugar $cond2   order by fecharecepcion desc  ";
           
     
-          $consulta=$objdatos->BuscarSolicitudesPaciente($query); 
+        $consulta=$objdatos->BuscarSolicitudesPaciente($query); 
          
-         $RegistrosAMostrar=10;
+        $RegistrosAMostrar=10;
 	$RegistrosAEmpezar=($_POST['pag']-1)*$RegistrosAMostrar;
 	$PagAct=$_POST['pag'];
 				
@@ -302,6 +302,7 @@ switch ($opcion)
                                            "<input name='idsoli[".$pos."]' id='idsoli[".$pos."]' type='hidden' size='60' value='".$row[1]."' />".
 					   "<input name='idexpediente[".$pos."]' id='idexpediente[".$pos."]' type='hidden' size='60' value='".$row['idnumeroexp']."' />".
 					   "<input name='idestablecimiento[".$pos."]' id='idestablecimiento[".$pos."]' type='hidden' size='60' value='".$IdEstab."' />".
+                                           "<input name='fecharecepcion[".$pos."]' id='fecharecepcion[".$pos."]' type='hidden' size='60' value='".$fecharecepcion."' />".
 				  "<td width='25%'>".$row['paciente']."</td>
 				  <td width='15%'>".htmlentities($row['nombresubservicio'])."</td>
 				   <td width='15%'>".htmlentities($row['nombreservicio'])."</td>
@@ -411,6 +412,8 @@ switch ($opcion)
             
                 $idexpediente       =$_POST['idexpediente'];
 	        $idsolicitud        =$_POST['idsolicitud'];
+                $fecharecepcion     =$_POST['fecharecepcion'];
+              //  echo $fecharecepcion;
 		//$IdEstablecimiento  =$POST['idestablecimiento'];
 		//$IdEstablecimiento;
 		//include_once("clsSolicitudesPorPaciente.php");
@@ -428,6 +431,8 @@ switch ($opcion)
 		$sexo=$row['sexo'];
 		$precedencia=$row['nombreservicio'];
 		$origen=$row['nombresubservicio'];
+                $expediente=$row['expediente'];
+                
 		//$DatosClinicos=$row['DatosClinicos'];
 
 		$DatosClinicos=$DatosClinicos=isset($row['DatosClinicos']) ? $row['DatosClinicos'] : null ;
@@ -448,7 +453,7 @@ switch ($opcion)
 		
 		
 		$imprimir="<form name='frmDatos'>
-		<table width='80%' border='0' align='center'>
+		<table width='65%' border='0' align='center'>
 			<tr>
 				<td  colspan='4'>&nbsp;&nbsp;&nbsp;&nbsp</td>
 			</tr>
@@ -460,9 +465,10 @@ switch ($opcion)
 				<td class='StormyWeatherFieldCaptionTD'>Establecimiento</td>
                                 <td class='StormyWeatherDataTD' colspan='3'>".$row['estabext']."</td>
 			</tr>
-		        <tr>
+		        <tr>    <td class='StormyWeatherFieldCaptionTD'>Expediente</td>
+                                <td class='StormyWeatherDataTD'>".$row['expediente']."</td>
 				<td class='StormyWeatherFieldCaptionTD'>Paciente</td>
-				<td colspan='3' class='StormyWeatherDataTD'>".htmlentities($paciente)." 
+				<td colspan='1' class='StormyWeatherDataTD'>".htmlentities($paciente)." 
                         	     <input name='txtpaciente' id='txtpaciente' type='hidden' size='' value=$paciente disabled='disabled' /></td>
                         </tr>
                         <tr>
@@ -475,30 +481,29 @@ switch ($opcion)
 				<td class='StormyWeatherDataTD'>".htmlentities($edad)." 
 			     		<input name='txtpaciente' id='txtpaciente1' type='hidden' size='35' value='".$edad."' disabled='disabled' /></td>
 				
-                                    </div>
+                                    
                                 </td>
 				<td class='StormyWeatherFieldCaptionTD'>Sexo</td>
 				<td class='StormyWeatherDataTD'>$sexo<input type='hidden' name='txtsexo' value='".$sexo."' disabled='disabled' /></td>
                         </tr>
                         <tr>
 				<td class='StormyWeatherFieldCaptionTD'>Procedencia</td>
-				<td class='StormyWeatherDataTD'>$precedencia <input name='txtprecedencia' id='txtprecedencia' 
-				type='hidden' size='35' value='".$precedencia."' disabled='disabled' /></td>
+				<td class='StormyWeatherDataTD'>$precedencia 
+                                    <input name='txtprecedencia' id='txtprecedencia' type='hidden' size='35' value='".$precedencia."' disabled='disabled' />
+                                </td>
 				<td class='StormyWeatherFieldCaptionTD'>Origen</td>
 				<td class='StormyWeatherDataTD'>".htmlentities($origen)."
 					<input name='txtorigen' id='txtorigen'  type='hidden' size='35' value='".$origen."' disabled='disabled' />
                                         <input name='idsolicitudPadre' id='idsolicitudPadre'  type='hidden' size='40' value='".$idsolicitudPadre."' disabled='disabled' />
 					<input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled' />
 					<input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled' />
-					
-					
-					
+                                        <input name='fecharecepcion' id='fecharecepcion'  type='hidden' size='40' value='".$fecharecepcion."' disabled='disabled' />    
 				</td>
                         </tr>
                         <tr>
 				<td class='StormyWeatherFieldCaptionTD'>M&eacute;dico</td>
 				<td colspan='3' class='StormyWeatherDataTD'>".htmlentities($medico)."
-					<input name='txtmedico' id='txtmedico'  type='hidden' size='70' value='".$medico."' disabled='disabled' /></td>
+				   <input name='txtmedico' id='txtmedico'  type='hidden' size='70' value='".$medico."' disabled='disabled' /></td>
                         </tr>
                         <tr>
                                 <td class='StormyWeatherFieldCaptionTD'>Diagnostico</td>
@@ -508,7 +513,7 @@ switch ($opcion)
 		
 </table>
     <br><br>       
-                <table style='width:80%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                <table style='width:65%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
 
                     <thead> <tr>
 			
@@ -655,10 +660,18 @@ switch ($opcion)
 	      echo $rslts;	
 	break;
 	case 9://Llenar origen muestra
-		 $rslts='';
-        $IdTipo=$_POST['IdTipo'];
-
-	     $dtTipo=$objdatos->LlenarCmbOrigenMuestra($IdTipo);
+		$rslts='';
+                $IdTipo=$_POST['IdTipo'];
+                $idexpediente=$_POST['idexpediente'];
+                $idsolicitud=$_POST['idsolicitud'];
+                
+               // echo  $IdTipo;
+               
+                
+                
+	    
+               $dtTipo=$objdatos->LlenarCmbOrigenMuestra($IdTipo);
+             
 		 $rslts = '<select name="cmbOrigen" id="cmbOrigen" style="width:375px">';
 		 $rslts .='<option value="0">--Seleccione Origen de Muestra--</option>';
 		 while ($rows =pg_fetch_array($dtTipo)){
@@ -666,6 +679,9 @@ switch ($opcion)
 	     }
 				
 	      $rslts .='</select>';
+                      
+              
+           
 	      echo $rslts;
 	break;
 	case 10:
@@ -678,7 +694,8 @@ switch ($opcion)
 		$Empleado=$_POST['IdEmpleado'];  // si!!
 		$IdEstab=$_POST['IdEstab'];     //si!!
                 $origen=$_POST['OrigenMuestra'];        //si
-               // echo $IdEstab; 
+                $fechatomamuestra=$_POST['fechatomamuestra'];
+               // echo $fechatomamuestra;
                 
                 
                 $consulta=$objdatos->opteneridexamen($IdExamen);
@@ -700,7 +717,7 @@ switch ($opcion)
                     
                     if ($origen==0){
                         
-                                if ($objdatos->insertar_Examensin($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab)==true){
+                                if ($objdatos->insertar_Examensin($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$fechatomamuestra)==true){
 				echo "Examen Agregado!!";
 			}
 			else{
@@ -710,7 +727,7 @@ switch ($opcion)
                         }
                         else {
                                 
-                                if ($objdatos->insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$origen)==true){
+                                if ($objdatos->insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$origen,$fechatomamuestra)==true){
 				echo "Examen Agregado!!";
 			}
 			else{
@@ -729,6 +746,24 @@ switch ($opcion)
 		}
 		
 	break;
+        case 11:
+             $rslts='';
+                $IdTipo=$_POST['IdTipo'];
+                $idexpediente=$_POST['idexpediente'];
+                $idsolicitud=$_POST['idsolicitud'];
+                $fecharecep=$_POST['fecharecep'];
+                $consultadetalle=$objdatos->obtener_fecha_tomamuestra($idexpediente,$idsolicitud,$lugar,$IdTipo);
+                $row_detalle = pg_fetch_array($consultadetalle);
+                if (!empty($row_detalle[0]))
+                    $rslts .='<input type="text" class="datepicker" name="txttomamuestra" id="txttomamuestra" size="15"  value="'. $row_detalle['fechatomamuestra'].'"/>';
+                else {
+                     $consrecep=$objdatos->BuscarFechaRecepcion($idsolicitud,$lugar);
+                     $row_recep = pg_fetch_array($consrecep);
+                     $rslts .='<input type="text" class="datepicker" name="txttomamuestra" id="txttomamuestra" size="15"  value="'. $row_recep['fecharecepcion'].'"/>';
+                }
+                echo $rslts;
+        break;
+    
 		
 }//switch
 

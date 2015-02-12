@@ -200,13 +200,13 @@ function BuscarDatos(pag)
 
 }
 
-function CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento)
+function CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento,fecharecepcion)
 {
 	ajax=objetoAjax();
 	opcion=2;
 	especialidad=0;
 		
-	//alert(idestablecimiento+"CargarDatosFormulario");
+	//alert(fecharecepcion);
 	ajax.open("POST", "ctrAgregarExamen.php",true);
 		  //muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
@@ -214,7 +214,7 @@ function CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento)
 	//ajax.send("opcion="+opcion+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud);
 	//alert(idsolicitud+"-"+idexpediente+"-"+idestablecimiento);
 	ajax.send("opcion="+opcion+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud+"&idestablecimiento="+idestablecimiento+
-	"&especialidad="+especialidad);
+	"&especialidad="+especialidad+"&fecharecepcion="+fecharecepcion);
 	ajax.onreadystatechange=function() 
 	{
 		if (ajax.readyState==4) 
@@ -282,6 +282,7 @@ function LlenarComboMuestra1(IdExamen)
      // alerrt ("siii"+IdExamen);
 	ajax=objetoAjax();
 	opcion=8;
+        txtIdexpediente
 	ajax.open("POST", "ctrAgregarExamen.php",true);
   	//muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
@@ -304,12 +305,15 @@ function LlenarComboOrigen1(IdTipo){
         //alert(IdTipo);
         ajax=objetoAjax();
 	opcion=9;
+        
+        idexpediente=document.getElementById('txtIdexpediente').value;
+	idsolicitud=document.getElementById('txtidsolicitud').value;
 	ajax.open("POST", "ctrAgregarExamen.php",true);
   	//muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
 	//alert(IdTipo);
-	ajax.send("opcion="+opcion+"&IdTipo="+IdTipo);	 
+	ajax.send("opcion="+opcion+"&IdTipo="+IdTipo+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud);	 
 	ajax.onreadystatechange=function() 
 	{
 		
@@ -317,31 +321,62 @@ function LlenarComboOrigen1(IdTipo){
 			if (ajax.status == 200){//200 means no error.
 	  			respuesta = ajax.responseText;	
 				document.getElementById('divOrigen').innerHTML = respuesta;
+                                Buscarfechamuestra(IdTipo);
 	 		}	  	
    	 	}
    	}
 
 }
 
-function LlenarComboEstablecimiento(idtipoesta)
-{
-  	ajax=objetoAjax();
-  	opcion=6;
-  	ajax.open("POST", "ctrAgregarExamen.php",true);
+function LlenarComboOrigen1(IdTipo){
+	
+        //alert(IdTipo);
+        ajax=objetoAjax();
+	opcion=9;
+        
+        idexpediente=document.getElementById('txtIdexpediente').value;
+	idsolicitud=document.getElementById('txtidsolicitud').value;
+	ajax.open("POST", "ctrAgregarExamen.php",true);
   	//muy importante este encabezado ya que hacemos uso de un formulario
-  	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-  	//enviando los valores
-	ajax.send("opcion="+opcion+"&idtipoesta="+idtipoesta);	
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	//enviando los valores
+	//alert(IdTipo);
+	ajax.send("opcion="+opcion+"&IdTipo="+IdTipo+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud);	 
 	ajax.onreadystatechange=function() 
 	{
 		
 		if (ajax.readyState == 4){//4 The request is complete
 			if (ajax.status == 200){//200 means no error.
-				respuesta = ajax.responseText;	
+	  			respuesta = ajax.responseText;	
+				document.getElementById('divOrigen').innerHTML = respuesta;
+                                Buscarfechamuestra(IdTipo);
+	 		}	  	
+   	 	}
+   	}
+
+}
+
+function Buscarfechamuestra(IdTipo)
+{
+  	ajax=objetoAjax();
+  	opcion=11;
+        idexpediente=document.getElementById('txtIdexpediente').value;
+	idsolicitud=document.getElementById('txtidsolicitud').value;
+        fecharecep=document.getElementById('txtfecharecep').value;
+  	ajax.open("POST", "ctrAgregarExamen.php",true);
+  	//muy importante este encabezado ya que hacemos uso de un formulario
+  	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+  	//enviando los valores
+	ajax.send("opcion="+opcion+"&IdTipo="+IdTipo+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud+"&fecharecep="+fecharecep);	
+	ajax.onreadystatechange=function() 
+	{
+            if (ajax.readyState == 4){//4 The request is complete
+		if (ajax.status == 200){//200 means no error.
+                    respuesta = ajax.responseText;	
 				// alert (respuesta)
-				document.getElementById('divEstablecimiento').innerHTML = respuesta;
-			}	  	
-		}
+                    document.getElementById('divfechatoma').innerHTML = respuesta;
+		}	  	
+            }
    	}
 }
 
@@ -374,8 +409,9 @@ function MostrarDatos(posicion)
 		idestablecimiento=document.getElementById('idestablecimiento['+posicion+']').value;
 		idexpediente=trim(idexpediente);
 		idsolicitud=trim(idsolicitud);
+                fecharecepcion=document.getElementById('fecharecepcion['+posicion+']').value;
 		//alert(idestablecimiento+"!!"+idexpediente+"!!"+idsolicitud);
-		CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento);
+		CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento,fecharecepcion);
  }
 
  
@@ -407,6 +443,7 @@ function GuardarExamen()
 		IdEmpleado=document.getElementById('txtempleado').value;
                 IdEstab=document.getElementById('txtIdEstablecimiento').value;
                 OrigenMuestra=document.getElementById('cmbOrigen').value;
+                fechatomamuestra=document.getElementById('txttomamuestra').value;
                // alert(tipoMuestra+"**"+OrigenMuestra);
 		//alert(idsolicitud+"%%"+IdEmpleado+"%%"+tipoMuestra);
 		ajax.open("POST", "ctrAgregarExamen.php",true);
@@ -417,7 +454,8 @@ function GuardarExamen()
 		ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores
 		ajax.send("opcion="+opcion+"&idsolicitud="+idsolicitud+"&idExamen="+idExamen+"&indicacion="+escape(indicacion)+"&tipoMuestra="+
-		tipoMuestra+"&Observacion="+escape(Observacion)+"&IdEmpleado="+IdEmpleado+"&IdEstab="+IdEstab+"&OrigenMuestra="+OrigenMuestra+"&idsoli="+idsoli);
+		tipoMuestra+"&Observacion="+escape(Observacion)+"&IdEmpleado="+IdEmpleado+"&IdEstab="+IdEstab+"&OrigenMuestra="+OrigenMuestra+
+                "&idsoli="+idsoli+"&fechatomamuestra="+fechatomamuestra);
 		ajax.onreadystatechange=function() 
 		{
 			if (ajax.readyState==4) 
@@ -441,10 +479,11 @@ function Cerrar(){
 function ImprimirSolicitud(){
 idexpediente=document.frmDatos.idexpediente.value;
 idsolicitud=document.frmDatos.idsolicitud.value;
+fecharecepcion=document.frmDatos.fecharecepcion.value;
 //idestablecimiento=document.frmDatos.idestablecimiento.value;
-//alert (idexpediente+"##"+idsolicitud +"##"+idestablecimiento+"Aqui")
+//alert (fecharecepcion)
 ventana_secundaria = window.open("SolicitudEstudiosPaciente.php?var1="+idexpediente+
-  "&var2="+idsolicitud+"&var3="+idestablecimiento,"solicitud","width=800,height=700,menubar=no,location=no,scrollbars=yes"); 
+  "&var2="+idsolicitud+"&var3="+idestablecimiento+"&var4="+fecharecepcion,"solicitud","width=800,height=700,menubar=no,location=no,scrollbars=yes"); 
 }
 
 function Imprimir1(){

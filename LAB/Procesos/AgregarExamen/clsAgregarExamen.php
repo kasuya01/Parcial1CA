@@ -169,7 +169,7 @@ function BuscarExamen($idsolicitudPa,$idexamen,$lugar){
 
  
  
-function insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$origen)
+function insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$origen,$fechatomamuestra)
  {
    $con = new ConexionBD;
    if($con->conectar()==true) 
@@ -181,7 +181,7 @@ function insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo
             "INSERT  INTO sec_detallesolicitudestudios (idsolicitudestudio,idexamen,
 					id_conf_examen_estab,indicacion,estadodetalle,
 					idtipomuestra,idorigenmuestra,observacion,idestablecimiento,idestablecimientoexterno,
-					    idempleado,idusuarioreg,fechahorareg)
+					    idempleado,idusuarioreg,fechahorareg,'f_tomamuestra')
 					    VALUES($idsolicitudPa,
                                                 $idexamen1,
 					      $IdExamen,
@@ -193,7 +193,7 @@ function insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo
 					      $lugar,
 					      $IdEstab,
 					      $Empleado,
-					      $usuario,NOW())";
+					      $usuario,NOW(),$fechatomamuestra)";
             
             $result = @pg_query($query);
     //echo $query;
@@ -207,30 +207,26 @@ function insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo
  
  
  
- function insertar_Examensin($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab)
+ function insertar_Examensin($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$fechatomamuestra)
  {
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query =/*"INSERT INTO sec_detallesolicitudestudios(IdSolicitudEstudio,IdExamen,Indicacion,EstadoDetalle,IdTipoMuestra,IdOrigenMuestra,
+        $query =/*"INSERT INTO sec_detallesolicitudestudios(IdSolicitudEstudio,IdExamen,Indicacion,EstadoDetalle,IdTipoMuestra,IdOrigenMuestra,
              Observacion,IdEstablecimiento,IdEstablecimientoExterno,IdEmpleado,IdUsuarioReg,FechaHoraReg) 
              VALUES($idsolicitud,'$IdExamen','$indicacion','PM',$IdTipo,$origen,'$Observa',$lugar,$IdEstab,'$Empleado',$usuario,NOW())";*/
    
             "INSERT  INTO sec_detallesolicitudestudios (idsolicitudestudio,idexamen,
 					id_conf_examen_estab,indicacion,estadodetalle,
 					idtipomuestra,observacion,idestablecimiento,idestablecimientoexterno,
-					    idempleado,idusuarioreg,fechahorareg)
-					    VALUES($idsolicitudPa,
-                                                $idexamen1,
-					      $IdExamen,
-					      '$indicacion',
-					      5,
+					    idempleado,idusuarioreg,fechahorareg,f_tomamuestra)
+					    VALUES($idsolicitudPa,$idexamen1,$IdExamen,'$indicacion', 5,
 					      $IdTipo,
 					      '$Observa',
 					      $lugar,
 					      $IdEstab,
 					      $Empleado,
-					      $usuario,NOW())";
+					      $usuario,NOW(),'$fechatomamuestra')";
             
             $result = @pg_query($query);
     //echo $query;
@@ -360,7 +356,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-	  $query ="WITH tbl_servicio AS (
+	$query ="WITH tbl_servicio AS (
                     SELECT t02.id,
                         CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
@@ -418,7 +414,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
 			t01.indicacion as indicacion,
-                        t01.idempleado as idempleado
+                        t01.idempleado as idempleado,t03.fechahorareg as fechatomamuestra,t06.numero as expediente
                    
 		   
             FROM sec_detallesolicitudestudios t01 
@@ -477,12 +473,12 @@ UNION
 		   (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
 		   t11.nombre AS nombresubservicio, 
 		   t22.sct_name_es AS diagnostico,
-                   t23.peso as peso,
-                    t23.talla as talla,
-                    t04.nombre_examen as nombre_examen,
-                   t04.codigo_examen as codigo_examen,
-                   t25.idarea as codigo_area,
-                   t25.nombrearea as nombre_area,
+                   t23.peso AS peso,
+                    t23.talla AS talla,
+                    t04.nombre_examen AS nombre_examen,
+                   t04.codigo_examen AS codigo_examen,
+                   t25.idarea AS codigo_area,
+                   t25.nombrearea AS nombre_area,
                     CASE t01.estadodetalle
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada'
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='R') THEN 'Recibida'
@@ -491,8 +487,9 @@ UNION
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
-			t01.indicacion as indicacion,
-                        t01.idempleado  as idempleado
+			t01.indicacion AS indicacion,
+                        t01.idempleado  AS idempleado,t03.fechahorareg AS fechatomamuestra,t06.numero as expediente
+                        
             FROM sec_detallesolicitudestudios t01 
             INNER JOIN sec_solicitudestudios t02 		ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra t03 		ON (t02.id = t03.idsolicitudestudio) 
@@ -510,11 +507,11 @@ UNION
             INNER JOIN ctl_establecimiento t14 			ON (t14.id = t09.id_establecimiento)
 	    INNER JOIN ctl_examen_servicio_diagnostico t18 	ON (t18.id = t05.id_examen_servicio_diagnostico) 
             INNER JOIN ctl_sexo t19 				ON (t19.id = t07.id_sexo)
-            left  join sec_diagnostico_paciente		t21     on (t21.id_historial_clinico=t09.id)
-            left join mnt_snomed_cie10 			t22	on (t22.id=t21.id_snomed)
-            left join sec_signos_vitales  			t23 	on (t23.id_historial_clinico=t09.id)
-            left  join mnt_empleado 			t24 	on (t09.id_empleado=t24.id) 
-            inner join ctl_area_servicio_diagnostico t25      on (t25.id=t05.id_area_servicio_diagnostico)
+            LEFT JOIN sec_diagnostico_paciente		t21     ON (t21.id_historial_clinico=t09.id)
+            LEFT JOIN mnt_snomed_cie10 			t22	ON (t22.id=t21.id_snomed)
+            LEFT JOIN sec_signos_vitales  		t23 	ON (t23.id_historial_clinico=t09.id)
+            LEFT JOIN mnt_empleado 			t24 	ON (t09.id_empleado=t24.id) 
+            INNER JOIN ctl_area_servicio_diagnostico t25      ON (t25.id=t05.id_area_servicio_diagnostico)
             
             WHERE   t02.id=$idsolicitud and  t06.numero='$idexpediente'";
                 
@@ -527,32 +524,45 @@ UNION
            }
    }
   //DATOS DEL DETALLE DE LA SOLICITUD
-  function DatosDetalleSolicitud($idexpediente,$idsolicitud,$lugar)
+  function obtener_fecha_tomamuestra($idexpediente,$idsolicitud,$lugar,$tipomuestra)
   {
 	$con = new ConexionBD;
    if($con->conectar()==true) 
    {
-	   $query = "SELECT sec_solicitudestudios.IdNumeroExp, lab_examenes.IdArea AS IdArea,lab_examenes.IdExamen AS IdExamen,NombreExamen,Indicacion,FechaSolicitud,
-	   CASE sec_detallesolicitudestudios.EstadoDetalle 
-            WHEN 'D'  THEN 'Digitado'
-            WHEN 'PM' THEN 'Muestra Procesada'
-            WHEN 'RM' THEN 'Muestra Rechazada'    
-            WHEN 'RC' THEN 'Resultado Completo' END AS Estado
-            FROM sec_detallesolicitudestudios 
-INNER JOIN sec_solicitudestudios ON sec_detallesolicitudestudios.IdSolicitudEstudio=sec_solicitudestudios.IdSolicitudEstudio
-INNER JOIN lab_examenes ON sec_detallesolicitudestudios.idExamen=lab_examenes.IdExamen
-INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
-INNER JOIN lab_areasxestablecimiento ON lab_examenes.IdArea=lab_areasxestablecimiento.IdArea
-WHERE sec_solicitudestudios.IdServicio ='DCOLAB' AND lab_examenesxestablecimiento.Condicion='H' 
-AND lab_areasxestablecimiento.Condicion='H' AND sec_solicitudestudios.IdNumeroExp='$idexpediente' 
-AND sec_solicitudestudios.IdSolicitudEstudio=$idsolicitud AND sec_solicitudestudios.IdEstablecimiento=$lugar
-ORDER BY lab_examenes.IdArea";
+      $query="SELECT 
+sec_detallesolicitudestudios.f_tomamuestra as fechatomamuestra,lab_recepcionmuestra.fechahorareg as fecharecepcion
+FROM sec_detallesolicitudestudios 
+INNER JOIN sec_solicitudestudios ON sec_detallesolicitudestudios.idsolicitudEstudio=sec_solicitudestudios.id
+INNER JOIN lab_conf_examen_estab ON sec_detallesolicitudestudios.idExamen=lab_conf_examen_estab.id
+INNER JOIN lab_recepcionmuestra ON lab_recepcionmuestra.idsolicitudestudio=sec_solicitudestudios.id
+WHERE sec_solicitudestudios.id=$idsolicitud AND sec_solicitudestudios.id_establecimiento=$lugar AND idtipomuestra=$tipomuestra limit 1 ";
+       
+       
 	  	$result = @pg_query($query);
 	     if (!$result)
 	       return false;
 	     else
 	       return $result;	   
    }
+ }
+ 
+ function BuscarFechaRecepcion($idsolicitud,$lugar){
+     
+     $con = new ConexionBD;
+     if($con->conectar()==true)
+     {
+         $query="SELECT lab_recepcionmuestra.fechahorareg as fecharecepcion
+                 FROM sec_solicitudestudios 
+                 INNER JOIN lab_recepcionmuestra ON lab_recepcionmuestra.idsolicitudestudio=sec_solicitudestudios.id
+                 WHERE sec_solicitudestudios.id=$idsolicitud AND sec_solicitudestudios.id_establecimiento=$lugar";
+         
+         $result = @pg_query($query);
+	     if (!$result)
+	       return false;
+	     else
+	       return $result;	   
+     }
+     
  }
 
  function ConsultarAreas(){
