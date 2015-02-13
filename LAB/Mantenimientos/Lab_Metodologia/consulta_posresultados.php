@@ -17,7 +17,76 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
              * para ver el efecto de agregar y quitar
              * 
              */
-            function list_reload(obj_posresultado,acn){
+            function list_reload(obj,acn){
+               alert (obj)
+               if (obj=='list'){
+                  obj=$('#lista option:selected');
+                  objval=$('#lista option:selected').val();
+                  objtext=$('#lista option:selected').text();
+               }
+               else{
+                  obj_posresultado = obj;
+                  objtext=obj_posresultado.options[obj_posresultado.selectedIndex].text;
+               }
+               
+               if (acn==1){
+                  codreporte=$('#cmbcodigoresultado option:selected').val();
+               }
+               if (codreporte==0){
+                  alert ('Seleccione una opción del resultado de tabulador por favor');
+                  return false
+               }
+               
+                  var obj_lista_sel=document.getElementById('lista_sel');
+                  if (acn===1){ // si la accion en agregar una metodologia seleccionada
+                    var option=window.opener.document.createElement("option");//creamos el elemento
+                    option.value=objval;//asignamos valores a sus parametros
+                    option.id=codreporte;
+                   // option.text=cod_reporte;
+                    option.text=objtext;
+                    obj_lista_sel.appendChild(option);//insertamos el elemento
+                }
+                else { // quitar una metodologia de la lista seleccionada y agregarla a la lista original
+                    var obj_lista=document.getElementById('lista'); //ponemos la referencia al select en una variable para no escribir tanto
+                    var option=window.opener.document.createElement("option");//creamos el elemento
+                    //option.value=objval;//asignamos valores a sus parametros
+                    option.value=obj_posresultado.value;//asignamos valores a sus parametros
+                    //option.text=obj[obj.selectedIndex].text;
+                    option.text=obj_posresultado.options[obj_posresultado.selectedIndex].text;
+                    obj_lista.appendChild(option);//insertamos el elemento
+//                    option.text=objtext;
+//                    obj_lista.appendChild(option);//insertamos el elemento                                     
+                }
+                 if (obj=='list'){
+                     aBorrar = obj;
+                     aBorrar.remove();
+                 }
+                 else{
+                    aBorrar = obj.options[obj.selectedIndex];
+                    aBorrar.parentNode.removeChild(aBorrar);
+                 }
+                
+                /*
+                 * leer lista seleccionada
+                 */
+                txt_id = "";
+                txt_text = "";
+                id_text = "";
+                for (i=0; i<obj_lista_sel.length;i++){
+                    txt_id = txt_id+obj_lista_sel.options[i].value+',';
+                    txt_text = txt_text+obj_lista_sel.options[i].text+',';
+                    id_text = id_text+obj_lista_sel.options[i].id+',';
+                }
+                document.getElementById('posresultados_sel').value = txt_id;
+                document.getElementById('text_posresultados_sel').value = txt_text;
+                document.getElementById('id_posresultados_sel').value = id_text;
+                $("#myModal").modal("hide");
+                
+                  
+               return false;
+               
+               //////////////////////////////////////////////////////////////////////////////
+               
               //alert(obj_posresultado+'/'+obj_posresultado.value+'/'+obj_posresultado.options[obj_posresultado.selectedIndex].text)
                 obj = obj_posresultado;
                 objtext=obj_posresultado.options[obj_posresultado.selectedIndex].text;
@@ -63,8 +132,9 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                 document.getElementById('posresultados_sel').value = txt_id;
                 document.getElementById('text_posresultados_sel').value = txt_text;
                 document.getElementById('id_posresultados_sel').value = id_text;
-            }
-            
+    $('#myModal').modal('hide');         
+   }
+           
             
         </script>
     </head>
@@ -109,7 +179,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
             <div class="panel-heading" style="background-color: #428bca">
             <center>
             <h3>Metodología: <strong><label id="nombre_prueba">'.$nombre_prueba.'</label> </strong></h3>
-                <h4><strong>Use doble clic para seleccionar los posibles resultados.</strong></h4>
+                <h4><strong>Dar un clic sobre la opción para seleccionar los posibles resultados.</strong></h4>
                 
             </center></div>     </font></strong>';       
            
@@ -129,7 +199,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
         while ($r = pg_fetch_array($consulta)){
            $metodologia=utf8_encode($r['posible_resultado']);
             if (!in_array($r['id'], $aposresultados)) 
-              $table .= "<option value='$r[id]' >$metodologia </option>";  
+              $table .= "<option value='$r[id]' data-toggle='modal' data-target='#myModal'>$metodologia </option>";  
         }
         $table .= "</select></td>";
         
@@ -163,8 +233,41 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
         <input type="hidden" name="id_posresultados_sel" id="id_posresultados_sel" value="<?php print $id_posresultados_sel; ?>">
         <br></div>
            
-           <div id="dialog-form"><center>
+<!--           <div id="dialog-form" class="modal"><center>
               <label>Seleccione el tipo de resultado en tabulador</label>
+              <select id="cmbcodigoresultado" name="codigoresultado" class="form-control height" style="width: 40%">
+                 <option value="0">Seleccione una opción</option>
+                 <?php
+//                 $d=$obj->buscarcodigores();
+//                 
+//                 while ($res=pg_fetch_array($d)){
+//                    echo ' <option value="'.$res['id'].'">'.$res['id'].'-'.$res['resultado'].'</option>';
+//                 }
+//                 
+                 ?>
+                 
+                 
+              </select>
+              </center>
+           </div>
+           
+           
+            Button trigger modal 
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  Launch demo modal
+</button>-->
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Seleccione el tipo de resultado en tabulador</h4>
+      </div>
+      <div class="modal-body">
+         <center>
+              <label></label>
               <select id="cmbcodigoresultado" name="codigoresultado" class="form-control height" style="width: 40%">
                  <option value="0">Seleccione una opción</option>
                  <?php
@@ -178,8 +281,16 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                  
                  
               </select>
-              </center>
-           </div>
+         </center>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" onclick="list_reload('list',1)">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
         </body>
     
     
