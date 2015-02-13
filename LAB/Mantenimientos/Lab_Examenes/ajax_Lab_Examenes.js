@@ -133,7 +133,8 @@ if (ValidarCampos())
         text_metodologias_sel=frmnuevo.text_metodologias_sel.value;
         id_metodologias_sel=frmnuevo.id_metodologias_sel.value;
         resultado=frmnuevo.resultado.value;
-        mismo=frmnuevo.mismo.value;
+        //mismo=frmnuevo.mismo.value;
+        mismo=0;
       // alert(sexo);
 	//codempresa=document.frmnuevo.txttxtcodempresa.value;
 	//alert(idestandar);

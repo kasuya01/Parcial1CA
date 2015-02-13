@@ -158,9 +158,9 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                <span class='glyphicon glyphicon-ok-circle'></span> 
                Aceptar
           </button><br/>
-          <input type="text" name="metodologias_sel" id="metodologias_sel" value="<?php print $metodologias_sel; ?>">
-          <input type="text" name="text_metodologias_sel" id="text_metodologias_sel" value="<?php print $text_metodologias_sel; ?>">
-          <input type="text" name="id_metodologias_sel" id="id_metodologias_sel" value="<?php print $id_metodologias_sel; ?>">
+          <input type="hidden" name="metodologias_sel" id="metodologias_sel" value="<?php print $metodologias_sel; ?>">
+          <input type="hidden" name="text_metodologias_sel" id="text_metodologias_sel" value="<?php print $text_metodologias_sel; ?>">
+          <input type="hidden" name="id_metodologias_sel" id="id_metodologias_sel" value="<?php print $id_metodologias_sel; ?>">
         <br></div>
         </body>
     

@@ -34,7 +34,7 @@ switch ($opcion)
                 $etiqueta=$_POST['etiqueta'];
                 $Urgente=$_POST['urgente'];
                 $sexo=$_POST['sexo'];
-                echo $metodologias_sel=$_POST['metodologias_sel'];
+                $metodologias_sel=$_POST['metodologias_sel'];
                 $text_metodologias_sel=$_POST['text_metodologias_sel'];
                 $id_metodologias_sel=$_POST['id_metodologias_sel'];
                 //echo $sexo;
@@ -87,8 +87,9 @@ switch ($opcion)
 		 }
                  
              }else{
+                $resultado='NULL';
                  
-                  If ($objdatos->IngExamenxEstablecimiento($idexamen,$nomexamen,$Hab,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$TiempoPrevio,$idsexo,$idestandar,$lugar,$metodologias_sel,$text_metodologias_sel, $id_metodologias_sel)==true)
+                  If ($objdatos->IngExamenxEstablecimiento($idexamen,$nomexamen,$Hab,$usuario,$IdFormulario,$IdEstandarResp,$plantilla,$letra,$Urgente,$ubicacion,$TiempoPrevio,$idsexo,$idestandar,$lugar,$metodologias_sel,$text_metodologias_sel, $id_metodologias_sel, $resultado)==true)
 		 {
                       // asignar_resultados($resultado);
                      echo "Registro Agregado";
@@ -323,7 +324,7 @@ switch ($opcion)
 			$codigo=$area.$consulta;
 			//document.frmnuevo.txtidexamen.value=idArea+numero;
 		}
-    		 echo "<input type='text' id='txtidexamen'  name='txtidexamen' value='".$codigo."'  />";
+    		 echo "<input type='text' id='txtidexamen' style='width:250px'  name='txtidexamen' value='".$codigo."'  />";
                    
     break;
 	case 6:
@@ -334,7 +335,7 @@ switch ($opcion)
 		$consultaex= $objdatos->ExamenesPorArea($idarea,$lugar);
 		//$dtMed=$obj->LlenarSubServ($proce);	
 		
-		$rslts = '<select name="cmbEstandar" id="cmbEstandar" size="1" style="width:250px" class="form-control height" >';
+		$rslts = '<select name="cmbEstandar" id="cmbEstandar" size="1" style="width:75%" class="form-control height" >';
 		$rslts .='<option value="0">--Seleccione un Examen--</option>';
 			
 		while ($rows =pg_fetch_array($consultaex)){
