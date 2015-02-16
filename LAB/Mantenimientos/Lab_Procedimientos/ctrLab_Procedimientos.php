@@ -453,10 +453,10 @@ case 7: //BUSQUEDA
 			  LEFT OUTER JOIN ctl_sexo                              cex  ON (cex.id  = lppe.idsexo AND cex.abreviatura != 'I')
 			  LEFT OUTER JOIN ctl_rango_edad 			cre  ON (cre.id  = lppe.idrangoedad)
 			  WHERE 
-                         --  lpla.idplantilla = 'E' 
-                          --AND lcee.condicion = 'H'
-                         --AND 
-                         lppe.idestablecimiento = $lugar";
+                            lpla.idplantilla = 'E' 
+                            AND lcee.condicion = 'H'
+                            AND 
+                            lppe.idestablecimiento = $lugar";
 
 	$ban=0;
 	//VERIFICANDO LOS POST ENVIADOS
@@ -791,10 +791,10 @@ case 8://PAGINACION DE BUSQUEDA
 			  LEFT OUTER JOIN ctl_sexo                              cex  ON (cex.id  = lppe.idsexo AND cex.abreviatura != 'I')
 			  LEFT OUTER JOIN ctl_rango_edad 			cre  ON (cre.id  = lppe.idrangoedad)
 			  WHERE 
-                           --lpla.idplantilla = 'E' 
-                          --AND lcee.condicion = 'H'
-                         --AND 
-                         lppe.idestablecimiento = $lugar AND";
+                                lpla.idplantilla = 'E' 
+                                AND lcee.condicion = 'H'
+                                AND 
+                                lppe.idestablecimiento = $lugar AND";
 
 	$ban=0;
 	//VERIFICANDO LOS POST ENVIADOS
