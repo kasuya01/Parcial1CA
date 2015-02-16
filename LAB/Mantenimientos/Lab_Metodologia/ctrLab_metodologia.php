@@ -864,6 +864,37 @@ switch ($opcion)
 		echo $rslts;
              
         break;
+        
+        case 12://fn pg
+           $idexamen=$_POST['idexamen'];
+           $idmetodologia=$_POST['idmetodologia'];
+           $rslts='';
+           $consultaex=$objdatos->buscarposresultmet($idexamen, $idmetodologia, $lugar);
+           if ($idmetodologia==0){
+              $rslts .= '<select name="cmbreporta" id="cmbreporta" size="1" class="form-control height" style="width:75%">';
+              $rslts.= '<option value="0" >--Seleccione una opción--</option>';
+//              $rslts.= '<option value="true" >Si</option>';
+//              $rslts.= '<option value="false" >No</option>';
+              $rslts .= '</select>';
+           }
+           else{
+              $consultaex=$objdatos->buscardatosmetodologia($idexamen, $idmetodologia, $lugar);
+            $rows =pg_fetch_array($consultaex);
+            $b_reporta=$rows['b_reporta'];
+           $rslts .= '<select name="cmbreporta" id="cmbreporta" size="1" class="form-control height" style="width:75%">';
+           if ($b_reporta=='t'){
+              $rslts.= '<option value="true" selected>Si</option>';
+              $rslts.= '<option value="false" >No</option>';
+            }   
+           else{
+              $rslts .='<option value="true" >Si</option>';	
+              $rslts .='<option value="false" selected>No</option>';               }		
+		$rslts .= '</select>';
+           }
+           
+		echo $rslts;
+             
+        break;
 }
 
 ?>

@@ -77,6 +77,26 @@ where id=$idmetodologia;";
 	   }
 	 }
    //fn pg
+         
+         //RECUPERAR metodologias POR examen
+        function buscarposresultmet($idexamen, $idmetodologia, $lugar)
+	 {
+		$con = new ConexionBD;
+	    //usamos el metodo conectar para realizar la conexion
+	    if($con->conectar()==true){
+	      $query = "select * 
+from lab_examen_metodologia  
+where id=$idmetodologia;";
+              
+              //echo $query;
+		 $result = pg_query($query);
+		 if (!$result)
+		   return false;
+		 else
+		   return $result;
+	   }
+	 }
+   //fn pg
    function posresultados(){
       /*
       * Julio Castillo
