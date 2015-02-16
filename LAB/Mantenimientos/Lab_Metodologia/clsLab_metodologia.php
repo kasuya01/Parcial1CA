@@ -113,6 +113,40 @@ and fechafin is null or date(fechafin)>=current_date;";
              return $result;
      }
    }
+   //INSERTA UN REGISTRO          
+	 function insertar($idexamen,$idmetodologia,$cmbreporta,$usuario,$lugar,$Fechaini,$Fechafin,$posresultados_sel,$text_posresultados_sel,$id_posresultados_sel)
+	 { //echo $idarea;
+	   $con = new ConexionBD;
+	   if($con->conectar()==true) 
+	   {
+            $query_up="update lab_examen_metodologia set b_reporta=$cmbreporta,fecha_inicio=$Fechaini, fecha_fin=$Fechafin where id=$idmetodologia;" ;
+            //echo $query_up;
+           $result=pg_query($query_up);
+           $aPosResult = explode(',',$posresultados_sel); 
+           $aPosResult_text = explode(',',$text_posresultados_sel); 
+           $aPosResult_id = explode(',',$id_posresultados_sel);  
+              $i=0;
+         if ($aPosResult[0]!=""){
+        for ($i=0;$i<(count($aPosResult)-1);$i++){
+            $query = "INSERT INTO lab_examen_metodo_pos_resultado
+		      (id_examen_metodologia, id_posible_resultado, fechainicio, fechafin, id_user, fecha_registro, id_codigoresultado) 
+                      VALUES($idmetodologia,$aPosResult[$i],$Fechaini,$Fechafin,$usuario,date_trunc('seconds',NOW()),$aPosResult_id[$i])";
+		//echo $query;
+	     $result = pg_query($query);
+           
+        }        
+       }
+           
+	   
+	
+	     if (!$result)
+	       return false;
+	     else
+	       return true;	   
+	   }
+	 }
+   
+   
          
          
          
@@ -121,24 +155,7 @@ and fechafin is null or date(fechafin)>=current_date;";
          
          
 
-	//INSERTA UN REGISTRO          
-	 function insertar($idarea,$idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,$lugar,$Fechaini,$Fechafin,$sexo,$redad)
-	 { //echo $idarea;
-	   $con = new ConexionBD;
-	   if($con->conectar()==true) 
-	   {
-	    $query = "INSERT INTO lab_datosfijosresultado
-		      (id_conf_examen_estab,unidades,rangoinicio,rangofin,nota,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,fechaini,fechafin,idsexo,idedad) 
-                      VALUES($idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,date_trunc('seconds',NOW()),$usuario,date_trunc('seconds', NOW()),$lugar,$Fechaini,$Fechafin,$sexo,$redad)";
-		//echo $query;
-	     $result = pg_query($query);
 	
-	     if (!$result)
-	       return false;
-	     else
-	       return true;	   
-	   }
-	 }
 	 //ACTUALIZA UN REGISTRO
 	 function actualizar($iddatosfijosresultado,$idarea,$idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,$lugar,$Fechaini,$Fechafin,$sexo,$redad)
 	 {
@@ -273,16 +290,16 @@ and fechafin is null or date(fechafin)>=current_date;";
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
 	   if($con->conectar()==true){
-	     $query = "SELECT * FROM lab_datosfijosresultado
-                       INNER JOIN lab_conf_examen_estab ON lab_datosfijosresultado.id_conf_examen_estab=lab_conf_examen_estab.id 
-                       INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
-                       INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
-                       INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
-                       LEFT JOIN ctl_sexo ON lab_datosfijosresultado.idsexo = ctl_sexo.id 
-                       INNER JOIN ctl_rango_edad ON lab_datosfijosresultado.idedad = ctl_rango_edad.id 
-                       WHERE lab_conf_examen_estab.idplantilla=1 AND lab_conf_examen_estab.condicion='H'AND lab_areasxestablecimiento.condicion='H'
-                       AND lab_datosfijosresultado.IdEstablecimiento=$lugar
-                       ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,lab_conf_examen_estab.nombre_examen";
+	     $query = "select (idestandar||'-'||nombre_examen) as nombre_examen, nombre_reporta, b_reporta
+                  from lab_examen_metodologia t01
+                  join lab_conf_examen_estab  t02 on (t02.id=t01.id_conf_exa_estab)
+                  join mnt_area_examen_establecimiento  t03 on (t03.id=t02.idexamen)
+                  join ctl_examen_servicio_diagnostico t04 on (t04.id=t03.id_examen_servicio_diagnostico)
+                  where id_metodologia is not null
+                  and t01.activo=true
+                  and condicion='H'
+                  and id_establecimiento=$lugar
+                  order by nombre_examen, nombre_reporta;";
                //echo $query;
 		 $numreg = pg_num_rows(pg_query($query));
 		 if (!$numreg )
@@ -367,37 +384,18 @@ and fechafin is null or date(fechafin)>=current_date;";
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
             if($con->conectar()==true){
-              $query = "SELECT    lab_datosfijosresultado.id,
-                                    lab_conf_examen_estab.codigo_examen,
-                                    lab_conf_examen_estab.nombre_examen,
-                                    lab_datosfijosresultado.unidades,
-                                    lab_datosfijosresultado.rangoinicio,
-                                    rangofin, 
-                                    lab_datosfijosresultado.nota, 
-                                    to_char(lab_datosfijosresultado.fechaini,'dd/mm/YYYY') AS FechaIni, 
-                                    to_char(lab_datosfijosresultado.fechafin,'dd/mm/YYYY') AS FechaFin,
-                                    ctl_sexo.nombre as sexo,
-                                    ctl_rango_edad.nombre as redad,
-                                    CASE lab_datosfijosresultado.fechafin 
-                                    WHEN lab_datosfijosresultado.fechafin THEN 'Inhabilitado'
-                                    ELSE 'Habilitado' END AS habilitado,
-                                    lab_datosfijosresultado.id as idatofijo
-                          FROM lab_datosfijosresultado
-                          INNER JOIN lab_conf_examen_estab              ON lab_datosfijosresultado.id_conf_examen_estab=lab_conf_examen_estab.id 
-                          INNER JOIN mnt_area_examen_establecimiento    ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
-                          INNER JOIN ctl_area_servicio_diagnostico      ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
-                          INNER JOIN lab_areasxestablecimiento          ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
-                          LEFT JOIN ctl_sexo                            ON lab_datosfijosresultado.idsexo = ctl_sexo.id 
-                          INNER JOIN ctl_rango_edad                     ON lab_datosfijosresultado.idedad = ctl_rango_edad.id 
-                          WHERE lab_conf_examen_estab.idplantilla=1 
-                          AND lab_conf_examen_estab.condicion='H'
-                          AND lab_areasxestablecimiento.condicion='H'
-                          AND lab_datosfijosresultado.IdEstablecimiento=$lugar
-                          ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,
-                          lab_conf_examen_estab.nombre_examen
-                          LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
-               
-              //  echo $query;
+              $query = "select idestandar, nombre_examen, nombre_reporta, b_reporta, t01.id as id
+               from lab_examen_metodologia t01
+               join lab_conf_examen_estab  t02 on (t02.id=t01.id_conf_exa_estab)
+               join mnt_area_examen_establecimiento  t03 on (t03.id=t02.idexamen)
+               join ctl_examen_servicio_diagnostico t04 on (t04.id=t03.id_examen_servicio_diagnostico)
+               where id_metodologia is not null
+               and t01.activo=true
+               and condicion='H'
+               and id_establecimiento=$lugar
+               order by idestandar,nombre_examen, nombre_reporta
+               LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+                //echo $query;
                     $result = pg_query($query);
                     if (!$result)
 			return false;
