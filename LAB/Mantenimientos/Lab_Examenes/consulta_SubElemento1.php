@@ -128,7 +128,7 @@ FormSubmit(); */
              * crear listado de resultados existentes
              */
             $consulta = $obj->resultados1($idconf);
-            $r = pg_fetch_array($consulta);
+           // $r = pg_fetch_array($consulta);
 
 
 

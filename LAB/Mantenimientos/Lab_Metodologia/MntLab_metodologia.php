@@ -28,13 +28,12 @@ $base_url  = $_SESSION['base_url'];
 <script language="JavaScript" >
     
 function Guardar(){
-   var cmbarea=document.getElementById('cmbArea').value;
    var cmbexamen=document.getElementById('cmbExamen').value;
+   var cmbmetodologia=document.getElementById('cmbMetodologia').value;
+   var cmbreporta=document.getElementById('cmbreporta').value;
    var txtfinicio=document.getElementById('txtFechainicio').value;
-   var sexo=document.getElementById('cmbSexo').value;
-   var edad=document.getElementById('cmbEdad').value;
-   if (cmbarea == 0 || cmbexamen == 0 ||  txtfinicio == "" || sexo == 0 || edad == 0)	
-	alert("Ingrese los datos");
+   if (cmbmetodologia == 0 || cmbexamen == 0 ||  txtfinicio == "" || cmbreporta==0)	
+	alert("Ingrese todos los datos requeridos por favor");
    else
    	IngresarRegistro();
 }
@@ -123,7 +122,7 @@ if ($nivel==33){
 			</td>
                     </tr>
                     <tr>
-                        <td width="17%" class="StormyWeatherFieldCaptionTD">Examen </td>
+                        <td width="17%" class="StormyWeatherFieldCaptionTD">Examen * </td>
                         <td class="StormyWeatherDataTD" colspan="3">
                             <div id="divExamen">
                                <select name="cmbExamen" id="cmbExamen" style="width:75%" class="form-control height" onchange="buscaranteriores();"> 
@@ -133,7 +132,7 @@ if ($nivel==33){
                         </td>
                     </tr>
                     <tr>
-                        <td width="17%" class="StormyWeatherFieldCaptionTD">Metodología </td>
+                        <td width="17%" class="StormyWeatherFieldCaptionTD">Metodología *</td>
                         <td class="StormyWeatherDataTD" colspan="3">
                             <div id="divMetodo">
                                <select name="cmbMetodologia" id="cmbExamen" style="width:75%" class="form-control height" onchange="buscareporta();"> 
@@ -144,7 +143,7 @@ if ($nivel==33){
                     </tr>
                     <tr>
                        
-                        <td width="17%" class="StormyWeatherFieldCaptionTD">Reporta</td>
+                        <td width="17%" class="StormyWeatherFieldCaptionTD">Reporta *</td>
                         <td class="StormyWeatherDataTD" colspan="3" title="Indicar si se mostrará el resultado de la metodología en el reporte final">
                            <div id="divReporta">
                               <select id="cmbreporta" name="cmbreporta" size="1" class="form-control height"  style="width:75%">                                              <option value="0" selected="selected">--Seleccione un opción--</option>
@@ -161,97 +160,24 @@ if ($nivel==33){
                             <input type="hidden" name="posresultados_sel" id="posresultados_sel">
                             <input type="hidden" name="text_posresultados_sel" id="text_posresultados_sel">
                             <input type="hidden" name="id_posresultados_sel" id="id_posresultados_sel">
-                            <button type='button' class='btn btn-default' disabled="disabled"  name="add_posresultado" id="add_posresultado" style="width:350px" onclick="
-                                popup('consulta_posresultados.php?form=frmnuevo&posresultados_sel='+document.getElementById('posresultados_sel').value+
+                            <button type='button' class='btn btn-default' disabled="disabled"  name="add_posresultado" id="add_posresultado" style="width:75%; text-align: left" onclick="popup('consulta_posresultados.php?form=frmnuevo&posresultados_sel='+document.getElementById('posresultados_sel').value+
                                         '&text_posresultados_sel='+document.getElementById('text_posresultados_sel').value+
                                         '&nombre='+$('#cmbMetodologia').text()+ '&id_posresultados_sel='+document.getElementById('id_posresultados_sel').value);"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Posibles Resultados:..</button>
                            
                         </td>      
-                     </tr>
+                     </tr>                    
                      <tr>
-			<td width="17%" class="StormyWeatherFieldCaptionTD">Unidades</td>
-                        <td class="StormyWeatherDataTD" colspan="3">
-                           <input name="txtunidades" type="text" id="txtunidades" size="10" style="width:250px" placeholder="Unidades" class="form-control height placeholder" /></td>
-                     </tr>
-                     <tr>
-                        <td width="17%" class="StormyWeatherFieldCaptionTD">Rango Inicial</td>
-                        <td class="StormyWeatherDataTD">
-                           <input name="txtrangoinicio" type="text" id="txtrangoinicio" size="6"  style="width:250px" placeholder="Ingrese Rango Inicial" class="form-control height placeholder" />		  
-			</td>      
-                          <td width="17%" class="StormyWeatherFieldCaptionTD" style="width:250px" >Rango Final</td>
-                        <td class="StormyWeatherDataTD">
-                            <input name="txtrangofin" type="text" id="txtrangofin" size="6" style="width:250px" placeholder="Ingrese Rango Final" class="form-control  height placeholder" />  
-			</td>      
-                     </tr>
-                     
-<!--                     <tr>
-                        <td colspan="2" class="StormyWeatherDataTD">
-                            <fieldset><span><center><h4>Rangos</h4></center></span>
-                                <table width="200" border="0" align="center" class="StormyWeatherFormTABLE">
-                                    <tr>
-                                        <td  class="StormyWeatherFieldCaptionTD">Inicio</td>
-                                        <td  class="StormyWeatherDataTD"><input name="txtrangoinicio" type="text" id="txtrangoinicio" size="6" ></td>
-                                        <td  class="StormyWeatherFieldCaptionTD">Fin </td>
-                                        <td  class="StormyWeatherDataTD"><input name="txtrangofin" type="text" id="txtrangofin" size="6" ></td>
-                                    </tr>
-                                </table>
-                            </fieldset>               
-			</td>
-                     </tr>-->
-                     <tr>
-                        <td class="StormyWeatherFieldCaptionTD">Observaci&oacute;n</td>
-                        <td  class="StormyWeatherDataTD" colspan="3">
-                            <textarea name="txtnota" cols="65" rows="3" id="txtnota" style="width:98%" class="form-control"></textarea>             
-			</td>
-                     </tr>
-                     <tr>
-                        <td class="StormyWeatherFieldCaptionTD">Fecha Inicio</td>
+                        <td class="StormyWeatherFieldCaptionTD">Fecha Inicio *</td>
                         <td  class="StormyWeatherDataTD">
-                            <input  name="txtFechainicio" type="text" id="txtFechainicio" size="25" class="date form-control  height placeholder"  placeholder="aaaa-mm-dd" style="width:250px"  value="<?php echo date("Y-m-d"); ?>"/>		  
+                            <input  name="txtFechainicio" type="text" id="txtFechainicio" size="25" class="date form-control  height placeholder"  placeholder="aaaa-mm-dd" style="width:100%"  value="<?php echo date("Y-m-d"); ?>"/>		  
 			</td>      
                           <td class="StormyWeatherFieldCaptionTD" style="width:250px" >Fecha Final</td>
                         <td  class="StormyWeatherDataTD">
-                            <input name="txtFechaFin" type="text" id="txtFechaFin" size="28" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" style="width:250px" />
+                            <input name="txtFechaFin" type="text" id="txtFechaFin" size="28" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" style="width:100%" />
 			</td>      
-                     </tr>
-                     
-                     
-<!--                     <tr>	
-			<td colspan="4" class="StormyWeatherDataTD">
-                            <table width="750" border="0" align="center" class="StormyWeatherFormTABLE">
-                                <tr>
-                                    <td class="StormyWeatherFieldCaptionTD">Fecha Inicio</td>
-                                    <td  class="StormyWeatherDataTD">
-                                        <input name="txtFechainicio" type="text" id="txtFechainicio" size="6" ><input name="button" type="button" id="trigger"  value="...">dd/mm/aaaa</td>
-                                    <td class="StormyWeatherFieldCaptionTD">Fecha Final</td>
-                                    <td  class="StormyWeatherDataTD">
-					<input name="txtFechaFin" type="text" id="txtFechaFin" size="6" ><input name="button2" type="button" id="trigger2" value="...">dd/mm/aaaa</td>	
-				</tr>
-                                
-                                <tr>   
-                                    <td width="20%" class="StormyWeatherFieldCaptionTD">Fecha Inicio</td>
-                                    <td class="StormyWeatherDataTD">
-                                        <input  name="txtFechainicio" type="text" id="txtFechainicio" size="25" class="date"  placeholder="aaaa-mm-dd">
-                                    </td>
-                                    <td class="StormyWeatherFieldCaptionTD"  width="15%">Fecha Fin</td>
-                                    <td class="StormyWeatherDataTD" width="20%">
-                                        <input name="txtFechaFin" type="text" id="txtFechaFin" size="28" class="date"  placeholder="aaaa-mm-dd">
-                                    </td>
-                                </tr>   
-                                
-                             </table>
-			</td>			
-                    </tr>-->
-                    <!--<tr>
-                        <td class="StormyWeatherDataTD" colspan="2" align="right">
-                            <input type="button" name="btnGuardar" value="Guardar" onClick="Guardar() ;">
-                            <input type="button" name="btnBuscar" value="Buscar" Onclick="Buscar() ;">
-                            <input type="button" name="btnCancelar" value="Cancelar" Onclick="Cancelar() ;">			
-			</td>
-                    </tr>-->
-                    
+                     </tr>          
                     <tr>  
-                            <td class="StormyWeatherDataTD" colspan="4" align="right">
+                            <td class="StormyWeatherDataTD" colspan="4" align="right"><br/>
                                 <button type='button' align="center" class='btn btn-primary'  onclick='Guardar(); '> <span   class='glyphicon glyphicon-floppy-disk'>    </span> Guardar </button>
                                 <button type='button' align="center" class='btn btn-primary'  onclick='Buscar(); '>  <span    class='glyphicon glyphicon-search'>         </span> Buscar </button>
                                 <button type='button' align="center" class='btn btn-primary'  onclick='Cancelar(); '><span  class='glyphicon glyphicon-refresh'>        </span> Nueva Busqueda</button>

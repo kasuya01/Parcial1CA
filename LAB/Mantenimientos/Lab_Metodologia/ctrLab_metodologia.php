@@ -18,21 +18,18 @@ switch ($opcion)
 	case 1:  //INSERTAR	
 		
 		$idexamen=$_POST['idexamen'];
-		$idarea=$_POST['idarea'];
-		$unidades=(empty($_POST['unidades'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidades']) . "'"; 
-                $nota=(empty($_POST['nota'])) ? 'NULL' : "'" . pg_escape_string($_POST['nota']) . "'";  
-                $sexo=$_POST['sexo'];    
-                if ($sexo==3)
-                    $sexo='NULL';
-                $redad=$_POST['redad']; 
-                $rangoinicio=(empty($_POST['rangoinicio'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangoinicio']) . "'";
-                $rangofin=(empty($_POST['rangofin'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangofin']) . "'";
+		$idmetodologia=$_POST['idmetodologia'];
+		$cmbreporta=$_POST['cmbreporta'];
+		
                 $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
 		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
+                $posresultados_sel=$_POST['posresultados_sel'];
+                $text_posresultados_sel=$_POST['text_posresultados_sel'];
+                $id_posresultados_sel=$_POST['id_posresultados_sel'];
                 
         
 
-		if ($objdatos->insertar($idarea,$idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,$lugar,$Fechaini,$Fechafin,$sexo,$redad)==true) 
+		if ($objdatos->insertar($idexamen,$idmetodologia,$cmbreporta,$usuario,$lugar,$Fechaini,$Fechafin,$posresultados_sel,$text_posresultados_sel,$id_posresultados_sel)==true) 
                      /*   && 
 		    ($Clases->insertar_labo($idarea,$idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,$lugar,$Fechaini,$Fechafin,$sexo,$redad)==true))*/
                 {
@@ -94,127 +91,38 @@ switch ($opcion)
 
 		//muestra los datos consultados en la tabla
 		  echo "<center >
-               <table border = 1 style='width: 80%;'  class='table table-hover table-bordered table-condensed table-white'>
+               <table border = 1 style='width: 60%;'  class='table table-hover table-bordered table-condensed table-white'>
 	           <thead>
                         <tr>
 				<th aling='center' > Modificar</td>
 				<!-- <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
-				<th > Habilitado              </th>
-                                <th > IdExamen              </th>
+                                <th > Cód. Estándar              </th>
 				<th > Examen                </th>
-				<th > Unidades              </th>	   
-				<th > Valores Normales      </th>
-				<th > Observacion           </th>
-                                <th > Sexo                  </th>
-                                <th > Rango de Edad         </th>
-				<th > Fecha Inicio          </th>	 
-				<th > Fecha Finalización    </th>
+				<th > Metodología              </th>	   
+				<th title='Reporta resultado en metodología'> Reporta Resultado      </th>
                         </tr>
                     </thead><tbody>
                     </center>";
 		while($row = pg_fetch_array($consulta)){
-                    $idatofijo=$row['idatofijo'];
-                    $habilitado= $row['habilitado'];
-                   
-                  if ($habilitado=='Habilitado'){
-                      
-                      echo "<tr>
+                     echo "<tr>
 				<td aling='center'> 
                                     <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
                                     onclick=\"pedirDatos('".$row['id']."')\"> </td>
-				<!--<td aling ='center'> 
-                                            <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-                                            onclick=\"eliminarDato('".$row['id']."')\"> 
-                                   </td> -->
-                                   
-                                    <td width='6%'><span style='color: #0101DF;'>
-                   	 <a style ='text-decoration:underline;cursor:pointer;' title='Al dar Click inhabilitará el dato fijo' onclick='Estado(\"".$row['idatofijo']."\",\"".$row['habilitado']."\")'>".$row['habilitado']."</a></td>
                                    
                                   
-				<td>". $row['codigo_examen'] ."</td>
+				<td>". $row['idestandar'] ."</td>
 				<td>".htmlentities($row['nombre_examen'])."</td>";
-			if (empty($row['unidades']))
-				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-			else
-				echo"<td>".htmlentities($row['unidades'])."</td>";
-					
-                        if ((empty($row['rangoInicio'])) && (empty($row['rangofin'])))
-                                echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-			else 
-                               echo "<td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
-			
-			if (empty($row['nota']))	
-                            echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-			else
-                            echo "<td>".htmlentities($row['nota'])."</td>";	
+			echo "<td>".$row['nombre_reporta']."</td>";	
                         
-                        if (empty($row['sexo']))
-                            echo "<td> Ambos </td>";
+                        if (($row['b_reporta'])=='t')
+                            echo "<td title='Reporta resultado de metodología'> Si  </td>";
                         else
-                            echo "<td>".$row['sexo']."</td>";
-                        
-                            echo "<td>".$row['redad']."</td>";
-			//echo $row[7];
-			if((empty($row[7])) || ($row[7]=="NULL") || ($row[7]=="00-00-0000"))
-				     echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
-				else
-					 echo"<td>".$row[7]."</td>";
-			if((empty($row[8])) || ($row[8]=="(NULL)") || ($row[8]=="00/00/0000"))
-			     echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
-			else
-					echo"<td>".$row[8]."</td></tr>";
+                            echo "<td title='No Reporta resultado de metodología'>No </td>";
             echo "</tr>";
-                      
-                      
-                  }ELSE{
-                    
-		  echo "<tr>
-				<td aling='center'> 
-                                    <img src='../../../Imagenes/Search.png' style=\"text-decoration:underline;cursor:pointer;\" 
-                                    onclick=\"pedirDatos('".$row['id']."')\"height='30' width='50'> </td>
-				<!--<td aling ='center'> 
-                                            <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-                                            onclick=\"eliminarDato('".$row['id']."')\"> 
-                                   </td> -->
-                                   <td>". $row['habilitado'] ."</td>
-				<td>". $row['codigo_examen'] ."</td>
-				<td>".htmlentities($row['nombre_examen'])."</td>";
-			if (empty($row['unidades']))
-				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-			else
-				echo"<td>".htmlentities($row['unidades'])."</td>";
-					
-                        if ((empty($row['rangoInicio'])) && (empty($row['rangofin'])))
-                                echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-			else 
-                               echo "<td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
-			
-			if (empty($row['nota']))	
-                            echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-			else
-                            echo "<td>".htmlentities($row['nota'])."</td>";	
-                        
-                        if (empty($row['sexo']))
-                            echo "<td> Ambos </td>";
-                        else
-                            echo "<td>".$row['sexo']."</td>";
-                        
-                            echo "<td>".$row['redad']."</td>";
-			//echo $row[7];
-			if((empty($row[7])) || ($row[7]=="NULL") || ($row[7]=="00-00-0000"))
-				     echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
-				else
-					 echo"<td>".$row[7]."</td>";
-			if((empty($row[8])) || ($row[8]=="(NULL)") || ($row[8]=="00/00/0000"))
-			     echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
-			else
-					echo"<td>".$row[8]."</td></tr>";
-            echo "</tr>";
-                  }
 		}
                   
                         
-	echo "</table>"; 
+	echo "</tbody></table>"; 
 		//determinando el numero de paginas
 		 $NroRegistros= $objdatos->NumeroDeRegistros($lugar);
 		 $PagAnt=$PagAct-1;

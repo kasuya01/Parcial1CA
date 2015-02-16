@@ -167,30 +167,38 @@ var opcion=9;
 function LimpiarCampos(){
 	document.getElementById('cmbArea').value="0";
 	document.getElementById('cmbExamen').value="0";
-        document.getElementById('cmbSexo').value="0";
-        document.getElementById('cmbEdad').value="0";
-	document.getElementById('txtunidades').value="";
-	document.getElementById('txtrangoinicio').value="";
-	document.getElementById('txtrangofin').value="";
-	document.getElementById('txtnota').value="";
+        document.getElementById('cmbMetodologia').value="0";
+        document.getElementById('cmbreporta').value="0";
 	document.getElementById('txtFechaFin').value="";
-	document.getElementById('txtFechainicio').value="";
+         var today = new Date();
+         var dd = today.getDate();
+         var mm = today.getMonth()+1; //January is 0!
+         var yyyy = today.getFullYear();
+
+         if(dd<10) {
+             dd='0'+dd
+         } 
+
+         if(mm<10) {
+             mm='0'+mm
+         } 
+
+         today = yyyy+'-'+mm+'-'+dd;
+	document.getElementById('txtFechainicio').value=today;
 }
 
 function IngresarRegistro(){ //INGRESAR REGISTROS
 	//donde se mostrar� lo resultados
 	//valores de los inputs
-	idarea=document.getElementById('cmbArea').value;
 	idexamen=document.getElementById('cmbExamen').value;
-        sexo=document.getElementById('cmbSexo').value;
-        redad=document.getElementById('cmbEdad').value;
-	unidades=document.getElementById('txtunidades').value;
-	rangoinicio=document.getElementById('txtrangoinicio').value;
-	rangofin=document.getElementById('txtrangofin').value;
+	idmetodologia=document.getElementById('cmbMetodologia').value;
+	cmbreporta=document.getElementById('cmbreporta').value;
 	Fechaini=document.getElementById('txtFechainicio').value;
 	Fechafin=document.getElementById('txtFechaFin').value;	
-	nota=document.getElementById('txtnota').value;
-	//alert (sexo+"--"+redad);
+        posresultados_sel=frmnuevo.posresultados_sel.value;
+        text_posresultados_sel=frmnuevo.text_posresultados_sel.value;
+        id_posresultados_sel=frmnuevo.id_posresultados_sel.value;
+	alert (idmetodologia+"--"+posresultados_sel);
 	var opcion=1;
 	Pag=1;
 	//instanciamos el objetoAjax
@@ -208,10 +216,7 @@ function IngresarRegistro(){ //INGRESAR REGISTROS
 	}
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
-	ajax.send("idarea="+idarea+"&opcion="+opcion+"&idexamen="+idexamen+
-        "&unidades="+escape(unidades)+"&Pag="+Pag+"&rangoinicio="+rangoinicio+
-        "&rangofin="+rangofin+"&nota="+escape(nota)+"&Fechaini="+Fechaini+
-        "&Fechafin="+Fechafin+"&sexo="+sexo+"&redad="+redad);
+	ajax.send("idmetodologia="+idmetodologia+"&opcion="+opcion+"&idexamen="+idexamen+"&cmbreporta="+ cmbreporta+"&Pag="+Pag+"&Fechaini="+Fechaini+"&Fechafin="+Fechafin+"&posresultados_sel="+posresultados_sel+"&text_posresultados_sel="+text_posresultados_sel+"&id_posresultados_sel="+id_posresultados_sel);
 }
 
 

@@ -18,11 +18,12 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
              * 
              */
             function list_reload(obj,acn){
-               alert (obj)
+               var eli=0;
                if (obj=='list'){
                   obj=$('#lista option:selected');
                   objval=$('#lista option:selected').val();
                   objtext=$('#lista option:selected').text();
+                  eli=1;
                }
                else{
                   obj_posresultado = obj;
@@ -38,6 +39,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                }
                
                   var obj_lista_sel=document.getElementById('lista_sel');
+                 
                   if (acn===1){ // si la accion en agregar una metodologia seleccionada
                     var option=window.opener.document.createElement("option");//creamos el elemento
                     option.value=objval;//asignamos valores a sus parametros
@@ -57,7 +59,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
 //                    option.text=objtext;
 //                    obj_lista.appendChild(option);//insertamos el elemento                                     
                 }
-                 if (obj=='list'){
+                 if (eli==1){
                      aBorrar = obj;
                      aBorrar.remove();
                  }
@@ -81,62 +83,68 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                 document.getElementById('text_posresultados_sel').value = txt_text;
                 document.getElementById('id_posresultados_sel').value = id_text;
                 $("#myModal").modal("hide");
-                
-                  
-               return false;
+                $("#cmbcodigoresultado option[value='0']").attr('selected', 'selected');
+              // return false;
                
                //////////////////////////////////////////////////////////////////////////////
                
               //alert(obj_posresultado+'/'+obj_posresultado.value+'/'+obj_posresultado.options[obj_posresultado.selectedIndex].text)
-                obj = obj_posresultado;
-                objtext=obj_posresultado.options[obj_posresultado.selectedIndex].text;
-                if (acn===1){
-                    //var forma_reporte = prompt("Por favor ingrese nombre que reporta", document.getElementById('nombre_prueba').innerHTML);
-                    var forma_reporte = prompt("Por favor ingrese nombre que reporta", obj_posresultado.options[obj_posresultado.selectedIndex].text);
-                }   
-                if(forma_reporte === null || forma_reporte === ""){
-                    return;
-                }
-                var obj_lista_sel=document.getElementById('lista_sel'); //ponemos la referencia al select en una variable para no escribir tanto
-                if (acn===1){ // si la accion en agregar una metodologia seleccionada
-                    var option=window.opener.document.createElement("option");//creamos el elemento
-                    option.value=obj_posresultado.value;//asignamos valores a sus parametros
-                    option.id=forma_reporte;
-                   // option.text=forma_reporte;
-                    option.text=obj_posresultado.options[obj_posresultado.selectedIndex].text;
-                    obj_lista_sel.appendChild(option);//insertamos el elemento
-                } else { // quitar una metodologia de la lista seleccionada y agregarla a la lista original
-                    var obj_lista=document.getElementById('lista'); //ponemos la referencia al select en una variable para no escribir tanto
-                    var option=window.opener.document.createElement("option");//creamos el elemento
-                    option.value=obj_posresultado.value;//asignamos valores a sus parametros
-                    //option.text=obj[obj.selectedIndex].text;
-                    option.text=obj_posresultado.options[obj_posresultado.selectedIndex].text;
-                    obj_lista.appendChild(option);//insertamos el elemento                                     
-                }
-                /*
-                 * borrar el item trasladado
-                 */
-                aBorrar = obj.options[obj.selectedIndex];
-                aBorrar.parentNode.removeChild(aBorrar);
-                /*
-                 * leer lista seleccionada
-                 */
-                txt_id = "";
-                txt_text = "";
-                id_text = "";
-                for (i=0; i<obj_lista_sel.length;i++){
-                    txt_id = txt_id+obj_lista_sel.options[i].value+',';
-                    txt_text = txt_text+obj_lista_sel.options[i].text+',';
-                    id_text = id_text+obj_lista_sel.options[i].id+',';
-                }
-                document.getElementById('posresultados_sel').value = txt_id;
-                document.getElementById('text_posresultados_sel').value = txt_text;
-                document.getElementById('id_posresultados_sel').value = id_text;
-    $('#myModal').modal('hide');         
+//                obj = obj_posresultado;
+//                objtext=obj_posresultado.options[obj_posresultado.selectedIndex].text;
+//                if (acn===1){
+//                    //var forma_reporte = prompt("Por favor ingrese nombre que reporta", document.getElementById('nombre_prueba').innerHTML);
+//                    var forma_reporte = prompt("Por favor ingrese nombre que reporta", obj_posresultado.options[obj_posresultado.selectedIndex].text);
+//                }   
+//                if(forma_reporte === null || forma_reporte === ""){
+//                    return;
+//                }
+//                var obj_lista_sel=document.getElementById('lista_sel'); //ponemos la referencia al select en una variable para no escribir tanto
+//                if (acn===1){ // si la accion en agregar una metodologia seleccionada
+//                    var option=window.opener.document.createElement("option");//creamos el elemento
+//                    option.value=obj_posresultado.value;//asignamos valores a sus parametros
+//                    option.id=forma_reporte;
+//                   // option.text=forma_reporte;
+//                    option.text=obj_posresultado.options[obj_posresultado.selectedIndex].text;
+//                    obj_lista_sel.appendChild(option);//insertamos el elemento
+//                } else { // quitar una metodologia de la lista seleccionada y agregarla a la lista original
+//                    var obj_lista=document.getElementById('lista'); //ponemos la referencia al select en una variable para no escribir tanto
+//                    var option=window.opener.document.createElement("option");//creamos el elemento
+//                    option.value=obj_posresultado.value;//asignamos valores a sus parametros
+//                    //option.text=obj[obj.selectedIndex].text;
+//                    option.text=obj_posresultado.options[obj_posresultado.selectedIndex].text;
+//                    obj_lista.appendChild(option);//insertamos el elemento                                     
+//                }
+//                /*
+//                 * borrar el item trasladado
+//                 */
+//                aBorrar = obj.options[obj.selectedIndex];
+//                aBorrar.parentNode.removeChild(aBorrar);
+//                /*
+//                 * leer lista seleccionada
+//                 */
+//                txt_id = "";
+//                txt_text = "";
+//                id_text = "";
+//                for (i=0; i<obj_lista_sel.length;i++){
+//                    txt_id = txt_id+obj_lista_sel.options[i].value+',';
+//                    txt_text = txt_text+obj_lista_sel.options[i].text+',';
+//                    id_text = id_text+obj_lista_sel.options[i].id+',';
+//                }
+//                document.getElementById('posresultados_sel').value = txt_id;
+//                document.getElementById('text_posresultados_sel').value = txt_text;
+//                document.getElementById('id_posresultados_sel').value = id_text;
+//    $('#myModal').modal('hide');         
    }
+   
+
+function abrirmodal(){
+    $('#myModal').modal('toggle');
+}
+   
            
             
         </script>
+        
     </head>
     <body>
         <div id="divmetodo" class="panel panel-primary">
@@ -190,16 +198,16 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
          * mostrar tabla con listas de metodologias
          */
         pg_result_seek($consulta, 0);
-        $table = "<br/><table align='center'  class='table table-bordered table-condensed table-white no-v-border' style='width:100%'><thead>";
+        $table = "<br/><table align='center'  class='table table-bordered table-condensed table-white no-v-border' style='width:100%' ond><thead>";
        // $table .= "<tr><head><center><label id='nombre_prueba'>".$nombre_prueba."</label></center></head></tr>";
         
         $table .= "<tr><th style='text-align:center; width:300px;'>Posible Resultado</th>"
                 . "<th style='text-align:center;width:300px;'>Selecci&oacute;n</th></tr></thead><tbody>";
-        $table .= "<td><select name='lista' id='lista' size=22 style='width: 100%;height:400px;' ondblclick='list_reload(this,1)'>";
+        $table .= "<td><select name='lista' id='lista' size=22 style='width: 100%;height:400px;' ondblclick='abrirmodal()'>";
         while ($r = pg_fetch_array($consulta)){
            $metodologia=utf8_encode($r['posible_resultado']);
             if (!in_array($r['id'], $aposresultados)) 
-              $table .= "<option value='$r[id]' data-toggle='modal' data-target='#myModal'>$metodologia </option>";  
+              $table .= "<option value='$r[id]'  data-target='#myModal'>$metodologia </option>";  
         }
         $table .= "</select></td>";
         
@@ -229,7 +237,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                Aceptar
           </button><br/>
         <input type="hidden" name="posresultados_sel" id="posresultados_sel" value="<?php print $posresultados_sel; ?>">
-        <input type="hidden" name="text_posresultados_sel" id="text_posresultados_sel" value="<?php print $text_posresultados_sel; ?>">
+        <input type="hidden" name="text_posresultados_sel" id="text_posresultados_sel" value="<?php print $text_posresultados_sel; ?>" >
         <input type="hidden" name="id_posresultados_sel" id="id_posresultados_sel" value="<?php print $id_posresultados_sel; ?>">
         <br></div>
            
