@@ -156,10 +156,14 @@ if ($nivel==33){
                     </tr>
                     <tr>
                         <td width="17%" class="StormyWeatherFieldCaptionTD">Posibles Resultados</td>
+                        
+                        
                         <td class="StormyWeatherDataTD" colspan="3">
-                            <input type="hidden" name="posresultados_sel" id="posresultados_sel">
+                           <div id="posresultprevios">
+                            <input type="hidden" name="posresultados_sel" id="posresultados_sel" value="">
                             <input type="hidden" name="text_posresultados_sel" id="text_posresultados_sel">
                             <input type="hidden" name="id_posresultados_sel" id="id_posresultados_sel">
+                           </div>
                             <button type='button' class='btn btn-default' disabled="disabled"  name="add_posresultado" id="add_posresultado" style="width:75%; text-align: left" onclick="popup('consulta_posresultados.php?form=frmnuevo&posresultados_sel='+document.getElementById('posresultados_sel').value+
                                         '&text_posresultados_sel='+document.getElementById('text_posresultados_sel').value+
                                         '&nombre='+$('#cmbMetodologia').text()+ '&id_posresultados_sel='+document.getElementById('id_posresultados_sel').value);"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Posibles Resultados:..</button>

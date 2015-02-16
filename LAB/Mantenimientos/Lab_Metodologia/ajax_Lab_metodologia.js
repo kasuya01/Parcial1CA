@@ -114,6 +114,7 @@ function buscareporta(){ //INGRESAR REGISTROS
                   document.getElementById('divReporta').innerHTML = ajax.responseText;
                   if (document.getElementById('cmbreporta')!=0){
                    document.frmnuevo.add_posresultado.disabled = false;
+                   buscaposresultprevios()
                      
                   }
 		}
@@ -127,6 +128,38 @@ function buscareporta(){ //INGRESAR REGISTROS
 }
 
 
+function buscaposresultprevios(){ //INGRESAR REGISTROS
+	//donde se mostrar� lo resultados
+	//valores de los inputs
+	idexamen=document.getElementById('cmbExamen').value;
+	idmetodologia=document.getElementById('cmbMetodologia').value;
+      //  alert (idmetodologia)
+          //  alert('iadrea: '+idarea+' /idexa:  '+idexamen+' /sexo:  '+sexo+'/edad:'+redad)
+            var opcion=12;
+            Pag=1;
+            //instanciamos el objetoAjax
+            ajax=objetoAjax();
+            //archivo que realizar� la operacion
+            ajax.open("POST", "ctrLab_metodologia.php",true);
+            ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+			//mostrar los nuevos registros en esta capa
+                       // alert (ajax.responseText)
+                  document.getElementById('divReporta').innerHTML = ajax.responseText;
+                  if (document.getElementById('cmbreporta')!=0){
+                   document.frmnuevo.add_posresultado.disabled = false;
+                   buscaposresultprevios()
+                     
+                  }
+		}
+	}
+            ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+            //enviando los valores
+            ajax.send("idmetodologia="+idmetodologia+"&opcion="+opcion+"&idexamen="+idexamen);
+        return false;
+	//alert (sexo+"--"+redad);
+	
+}
 
 
 ///Fin de funciones de metodologia
@@ -199,6 +232,7 @@ function IngresarRegistro(){ //INGRESAR REGISTROS
         text_posresultados_sel=frmnuevo.text_posresultados_sel.value;
         id_posresultados_sel=frmnuevo.id_posresultados_sel.value;
 	alert (idmetodologia+"--"+posresultados_sel);
+        return false
 	var opcion=1;
 	Pag=1;
 	//instanciamos el objetoAjax

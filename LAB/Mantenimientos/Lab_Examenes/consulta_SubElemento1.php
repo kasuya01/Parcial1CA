@@ -8,6 +8,7 @@ $base_url  = $_SESSION['base_url'];
  
 <html>
     <head>
+       <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
         <title>Seleccionar metodolog&iacute;as</title>
        <?php include_once $ROOT_PATH.'/public/css.php';?>
         <?php include_once $ROOT_PATH.'/public/js.php';?>
@@ -149,7 +150,7 @@ FormSubmit(); */
              
             $table .= "<td><select name='lista' id='lista' size=22 style='width: 300px' ondblclick='list_reload(this,1)'>";
             while ($r = pg_fetch_array($consulta)){
-                $table .= "<option value='$r[id]' >$r[resultado]</option>";  
+                $table .= "<option value='$r[id]' >".utf8_encode($r['resultado'])."</option>";  
             }
             $table .= "</select></td>";
 
