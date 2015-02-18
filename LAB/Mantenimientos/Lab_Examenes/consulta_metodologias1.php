@@ -11,7 +11,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
         <?php include_once $ROOT_PATH."/public/js.php";?>
         <script language="JavaScript" >
             /*
-             * Juio castillo
+             
              * 
              * recargar las listar de seleccion
              * para ver el efecto de agregar y quitar
@@ -74,7 +74,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
            
         <?php
         /* 
-         * Julio Castillo
+        
          */
         
         extract($_GET);

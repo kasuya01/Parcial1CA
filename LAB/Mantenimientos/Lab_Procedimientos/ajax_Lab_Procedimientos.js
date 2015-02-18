@@ -56,7 +56,7 @@ function LlenarRango(idexa)
 	}	
 }
 
-/*function Estado(idlppe,condicion){
+function Estado(idlppe,condicion){
 
 var opcion=9;
 	//alert(idexamen+"-"+condicion);
@@ -81,7 +81,7 @@ var opcion=9;
                        
 		 }
 	}	
-}*/
+}
 function show_event(Pag)
 {
 	opcion=4;
@@ -135,7 +135,7 @@ function DatosCompletos(tipo) {
 					error.push('Rango Edad');
 			}
                           if (document.getElementById('cmborden').value === "0") {
-					error.push('Rango');
+					error.push('Orden');
 			}
 			break;
 		case 2:
@@ -157,7 +157,7 @@ function DatosCompletos(tipo) {
 		    if (document.frmModificar.cmbEdad.value === "0") {
 					error.push('Rango Edad');
 			} if (document.frmModificar.cmborden.value === "0") {
-					error.push('Rango');
+					error.push('Orden');
 			}
 			break;
 	}

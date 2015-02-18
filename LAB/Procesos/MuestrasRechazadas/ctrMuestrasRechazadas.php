@@ -670,7 +670,7 @@ case 4:// Rechazar Muestra // se ah quitado esta opcion
 		//echo $IdSubEsp;
 		$dtExam=$objdatos-> ExamenesPorArea($idarea,$lugar);	
 		
-		$rslts = '<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:375px">';
+		$rslts = '<select name="cmbExamen" id="cmbExamen" class="form-control height placeholder" class="MailboxSelect" style="width:375px" style="width:375px">';
 		$rslts .='<option value="0"> Seleccione Examen </option>';
 			
 		while ($rows =pg_fetch_array($dtExam)){
