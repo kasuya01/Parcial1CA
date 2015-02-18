@@ -117,7 +117,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
        
         
         /*
-         * mostrar tabla con listas de metodologias
+         * mostrar tabla con listas 
          */
         pg_result_seek($consulta, 0);
         $table = "<br/><table align='center'  class='table table-bordered table-condensed table-white no-v-border' style='width:100%'><thead>";

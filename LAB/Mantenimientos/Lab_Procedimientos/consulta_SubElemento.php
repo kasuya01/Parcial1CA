@@ -116,7 +116,7 @@ $base_url  = $_SESSION['base_url'];
             $r = pg_fetch_array($consulta);
 
 
-
+            pg_result_seek($consulta, 0);
             /*
              * mostrar tabla con listas de resultados
              */

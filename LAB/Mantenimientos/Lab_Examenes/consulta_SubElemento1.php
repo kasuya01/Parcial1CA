@@ -130,7 +130,7 @@ FormSubmit(); */
             $consulta = $obj->resultados1($idconf);
             $r = pg_fetch_array($consulta);
 
-
+             pg_result_seek($consulta, 0);
 
             /*
              * mostrar tabla con listas de resultados

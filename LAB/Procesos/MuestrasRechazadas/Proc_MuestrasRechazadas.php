@@ -34,6 +34,17 @@ else{
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 <title>Reactivar Muestras Rechazadas</title>
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+
+
+
+<link rel="stylesheet" href="jquery-ui-1.10.2.sunny.css" />
+
+
+
 <script language="JavaScript" type="text/javascript" src="ajax_MuestrasRechazadas.js"></script>
 <?php include_once $ROOT_PATH.'/public/css.php';?>
 <?php include_once $ROOT_PATH.'/public/js.php';?>
@@ -49,9 +60,53 @@ function MostrarMuestrasRechazadas()
 		&& (document.getElementById('SegundoNombre').value=="") && (document.geElementById('PrimerApellido').value=="") 
 		&& (document.getElementById('SegundoApellido').value=="") && (document.getElementById('cmbTipoSolic').value == 0)){
 			alert("Ingrese un parametro de busqueda");
+                        
+                        
+                        /*$(function ()   {
+                    $("#dialog").dialog({
+                                autoOpen: false,
+                                modal: true,
+                                    buttons: {      
+                                                "Cerrar": function () 
+                                                            {
+                                                                $(this).dialog("close");
+                                                            }
+                                            }
+                                        });
+                            $("#abrir")
+                            //.button()
+                            //.click(function () {
+                            $("#dialog").dialog("open");
+                           // });
+                                });*/
+                        
+                        
+                        
+                        
+                        
+                        
+                        
 	 }
     else if (document.getElementById('cmbArea').value == 0){
-				alert ("Debe de ingresar un Área");
+				//alert ("Debe de ingresar un Área");
+                                  $(function ()   {
+                                  $("#dialog").dialog({
+                                    autoOpen: false,
+                                    modal: true,
+                                    buttons: {      
+                                                "Cerrar": function () 
+                                                            {
+                                                                $(this).dialog("close");
+                                                            }
+                                            }
+                                        });
+                            $("#abrir")
+                            //.button()
+                            //.click(function () {
+                            $("#dialog").dialog("open");
+                           // });
+                                });
+                                
 	}
 	   else {
                         jQuery('#divBusqueda').empty();
@@ -66,6 +121,7 @@ function MostrarMuestrasRechazadas()
 	
    
 }
+
 
 function BuscarExamen(idarea){
 
@@ -89,8 +145,18 @@ function BuscarServicio(IdServicio){
 
 </script>
 </head>
-<body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7">
+<!--<form class='contacto'>
+            <div><label>Tu Nombre:</label><input type='text' class='nombre' value=''></div>
+            <div><label>Tu Email:</label><input type='text' class='email' value=''></div>
+            <div><label>Asunto:</label><input type='text' class='asunto' value=''></div>
+            <div><label>Mensaje:</label><textarea rows='6' class='mensaje'></textarea></div>
+            <div><input type='submit' value='Envia Mensaje' class='boton'></div>
+        </form>-->
 
+<body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7">
+<div id="dialog" style='display:none;' title="¡Aviso!">
+    <p> <cente>¡Debe de ingresar un Área!!</cente></p>
+</div>
 <?php 
 
 if ($nivel==1){
@@ -118,7 +184,7 @@ if ($nivel==4){
 	</tr>
 	<tr>		
 		<td class="StormyWeatherFieldCaptionTD" width="20%">Tipo Establecimiento</td>
-		<td class="StormyWeatherDataTD"  width="35%"><select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)">
+		<td class="StormyWeatherDataTD"  width="35%"><select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)"  class="form-control height placeholder">
         	<option value="0">Seleccione un Tipo de Establecimiento</option>
 			<?php
 				$db = new ConexionBD;
@@ -137,7 +203,7 @@ if ($nivel==4){
         	<td class="StormyWeatherFieldCaptionTD"  width="20%">Establecimiento</td>
         	<td class="StormyWeatherDataTD"  width="35%">
 				<div id="divEstablecimiento">
-					<select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px">
+					<select name="cmbEstablecimiento" id="cmbEstablecimiento"  class="form-control height placeholder"  style="width:375px">
 						<option value="0" >Seleccione un Establecimiento</option>
 				<?php 
 				  echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
@@ -159,7 +225,7 @@ if ($nivel==4){
 	<tr>	
 		<td class="StormyWeatherFieldCaptionTD">Procedencia</td>
 		<td class="StormyWeatherDataTD">
-			<select name="CmbServicio" id="CmbServicio" style="width:405px" onChange="BuscarServicio(this.value)" >
+			<select name="CmbServicio" id="CmbServicio" style="width:405px"  class="form-control height placeholder" onChange="BuscarServicio(this.value)" >
 				<option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
 				<?php
 					$db = new ConexionBD;
@@ -187,18 +253,19 @@ if ($nivel==4){
 		<td class="StormyWeatherFieldCaptionTD">Servicio</td>
 		<td class="StormyWeatherDataTD">
 			<div id="divsubserv">
-				<select name="cmbSubServ" id="cmbSubServ" style="width:375px" >
+				<select name="cmbSubServ" id="cmbSubServ"   class="form-control height placeholder" style="width:375px" >
 					<option value="0" selected="selected"> Seleccione un Servicio </option>
 				</select>
 			</div>
 		</td>
 	</tr>
+        
 	<tr>
 		<td class="StormyWeatherFieldCaptionTD" width="22%" style="font-weight:bold">
 			<b>&Aacute;rea de Laboratorio*</b>
 		</td>
 		<td class="StormyWeatherDataTD" colspan="1" width="11%">
-			<select id="cmbArea" name="cmbArea" size="1" style="width:405px" onChange="BuscarExamen(this.value)">
+			<select id="cmbArea" name="cmbArea" size="1"   class="form-control height placeholder" style="width:405px" onChange="BuscarExamen(this.value)">
                             <!--<option value="0" >--Seleccione un &Aacute;rea--</option>-->
 				<?php
 				include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
@@ -214,7 +281,7 @@ if ($nivel==4){
 		<td  class="StormyWeatherFieldCaptionTD">Examen </td>
    		<td  class="StormyWeatherDataTD"  style="width:205px">
 			<div id="divExamen">
-				<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:375px"> 
+				<select name="cmbExamen" id="cmbExamen"  class="form-control height placeholder" class="MailboxSelect" style="width:375px"> 
 					<option value="0"> Seleccione Examen </option>
 				</select>
 			</div>
@@ -224,31 +291,31 @@ if ($nivel==4){
 	<tr>
 		
 		<td class="StormyWeatherFieldCaptionTD"  >Expediente</td>
-		<td  class="StormyWeatherDataTD" width="5%" ><input type="text" size="28" name="txtexpediente" id="txtexpediente" />
+		<td  class="StormyWeatherDataTD" width="5%" ><input type="text" size="28" name="txtexpediente" id="txtexpediente" style="width:75%" placeholder="Ingrese Expediente"  class="form-control height placeholder"/>
 		</td>
 		<td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Recepi&oacute;n</td>
-		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="28" name="txtfecharecep" id="txtfecharecep" class="date"  placeholder="aaaa-mm-dd" />
+		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="28" name="txtfecharecep" id="txtfecharecep"   placeholder="aaaa-mm-dd" style="width:75%"  class="date form-control  height placeholder"/>
 		</td>
 	</tr>
 	<tr>
 		<td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong>   </td> 
 		<td class="StormyWeatherDataTD" >
-			<input class="MailboxInput" maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre"></td> 
+			<input  maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre" style="width:75%" placeholder="Ingrese Primer Nombre"  class="form-control height placeholder"></td> 
 		<td class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Nombre</strong>   </td> <td class="StormyWeatherDataTD">
-			<input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre"></td> 
+			<input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre" style="width:75%" placeholder="Ingrese Segundo Nombre"  class="form-control height placeholder"></td> 
 	</tr>
 	<tr>
 		<td class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Apellido</strong></td> 
 		<td class="StormyWeatherDataTD">
-			<input class="MailboxInput" maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido"></td> 
+			<input  maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido" style="width:75%" placeholder="Ingrese Primer Apellido"  class="form-control height placeholder"></td> 
 		<td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Apellido</strong></td> 
 		<td class="StormyWeatherDataTD" >
-			<input class="MailboxInput" maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" ></td>
+			<input  maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" style="width:75%" placeholder="Ingrese Segundo Apellido"  class="form-control height placeholder" ></td>
 	</tr>
 	<tr>
 		<td class="StormyWeatherFieldCaptionTD" align="left" colspan="1" align="right">Tipo Solicitud</td>
 		<td class="StormyWeatherDataTD" colspan="3">
-			<select id="cmbTipoSolic" name="cmbTipoSolic" size="1" >
+			<select id="cmbTipoSolic" name="cmbTipoSolic" size="1" style="width:32%" class="form-control height placeholder">
 				<option value="0">Seleccione un Tipo de Solicitud</option>
 				<option value="1">URGENTE</option>
 				<option value="2">NORMAL</option>
@@ -265,7 +332,7 @@ if ($nivel==4){
             <tr>
                 <td class="StormyWeatherDataTD" colspan="4" align="right">
                         
-                                <button type='button' align="center" class='btn btn-primary' id='buscarsolicitud' onclick='MostrarMuestrasRechazadas(); '><span class='glyphicon glyphicon-search'></span> Buscar Solicitudes</button>
+                                <button type='button' align="center" class='btn btn-primary' id="abrir" onclick='MostrarMuestrasRechazadas(); '><span class='glyphicon glyphicon-search'></span> Buscar Solicitudes</button>
                                 <button type='button' align="center" class='btn btn-primary' id='nuevabusqueda' onclick="window.location.replace('Proc_MuestrasRechazadas.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
                 </td>
             </tr>

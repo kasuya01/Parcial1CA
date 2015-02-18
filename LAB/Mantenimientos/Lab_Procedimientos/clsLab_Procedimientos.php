@@ -304,16 +304,9 @@ class clsLab_Procedimientos {
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if($con->conectar()==true){
-          $query = /*"SELECT pr.id as id,
-                        pr.posible_resultado resultado
-                     FROM lab_posible_resultado pr
-                             LEFT JOIN (SELECT id, id_posible_resultado, id_subelemento, habilitado 
-                                        FROM lab_subelemento_posible_resultado spr 
-                                        WHERE spr.id_subelemento = '$id_subelemento' AND spr.habilitado = true) spr ON spr.id_posible_resultado = pr.id
-                     WHERE spr.id is null
-                     ORDER BY pr.posible_resultado";*/
+          $query = 
                   
-                  "select 	t01.id,
+                  "select 	t01.id as id,
 					t01.posible_resultado resultado
 				from lab_posible_resultado t01
 				left join  (select  id,
@@ -323,6 +316,7 @@ class clsLab_Procedimientos {
 						where t02.id_procedimientoporexamen=$idproce and t02.habilitado= true ) t02 on t02.id_posible_resultado=t01.id
 						WHERE t02.id is null 
 						ORDER BY t01.posible_resultado";
+        
 
              $result = pg_query($query);
              if (!$result)
@@ -707,9 +701,9 @@ class clsLab_Procedimientos {
 						LEFT OUTER JOIN ctl_sexo                    cex  ON (cex.id  = lppe.idsexo)
 						LEFT OUTER JOIN ctl_rango_edad              cre  ON (cre.id  = lppe.idrangoedad)
 						WHERE 
-                                                lcee.condicion = 'H' 
-                                                AND laxe.condicion = 'H' 
-                                                AND lpla.idplantilla = 'E' AND 
+                                               -- lcee.condicion = 'H' 
+                                                --AND laxe.condicion = 'H' 
+                                               -- AND lpla.idplantilla = 'E' AND 
                                                 lppe.idestablecimiento = $lugar
 						ORDER BY lcee.codigo_examen, lppe.id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
 
