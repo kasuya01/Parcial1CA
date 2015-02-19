@@ -867,31 +867,33 @@ switch ($opcion)
         
         case 12://fn pg
            $idexamen=$_POST['idexamen'];
-           $idmetodologia=$_POST['idmetodologia'];
+           $idmetodo=$_POST['idmetodologia'];
            $rslts='';
-           $consultaex=$objdatos->buscarposresultmet($idexamen, $idmetodologia, $lugar);
-           if ($idmetodologia==0){
-              $rslts .= '<select name="cmbreporta" id="cmbreporta" size="1" class="form-control height" style="width:75%">';
-              $rslts.= '<option value="0" >--Seleccione una opción--</option>';
-//              $rslts.= '<option value="true" >Si</option>';
-//              $rslts.= '<option value="false" >No</option>';
-              $rslts .= '</select>';
-           }
-           else{
-              $consultaex=$objdatos->buscardatosmetodologia($idexamen, $idmetodologia, $lugar);
-            $rows =pg_fetch_array($consultaex);
-            $b_reporta=$rows['b_reporta'];
-           $rslts .= '<select name="cmbreporta" id="cmbreporta" size="1" class="form-control height" style="width:75%">';
-           if ($b_reporta=='t'){
-              $rslts.= '<option value="true" selected>Si</option>';
-              $rslts.= '<option value="false" >No</option>';
-            }   
-           else{
-              $rslts .='<option value="true" >Si</option>';	
-              $rslts .='<option value="false" selected>No</option>';               }		
-		$rslts .= '</select>';
-           }
+           $idmetodologia="";
+           $textmetodologia="";
+           $idposresultmetodologia="";
            
+           $consultaex=$objdatos->buscarposresultmet($idmetodo);
+           $cuantos=pg_num_rows($consultaex);
+           if ($cuantos>0){
+              while ($row= pg_fetch_array($consultaex)){
+                 $idmetodologia.=$row['id_posible_resultado'].",";
+                 $textmetodologia.=$row['posible_resultado'].",";
+                 $idposresultmetodologia.=$row['id_codigoresultado'].",";
+              }
+              
+              $rslts .= ' <input type="hidden" name="posresultados_sel" id="posresultados_sel" value="'.$idmetodologia.'">
+           <input type="hidden" name="text_posresultados_sel" id="text_posresultados_sel" value="'.$textmetodologia.'">
+                            <input type="hidden" name="id_posresultados_sel" id="id_posresultados_sel" value="'.$idposresultmetodologia.'">';
+           
+           }
+           else{
+               $rslts .= ' <input type="hidden" name="posresultados_sel" id="posresultados_sel" value="">
+           <input type="hidden" name="text_posresultados_sel" id="text_posresultados_sel" value="">
+                            <input type="hidden" name="id_posresultados_sel" id="id_posresultados_sel" value="">';
+           }
+              //$rslts='0';
+                    
 		echo $rslts;
              
         break;

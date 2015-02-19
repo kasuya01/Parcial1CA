@@ -39,6 +39,8 @@ function Guardar(){
 }
 function LlenarComboExamen(idarea)
 {
+   $( "#add_posresultado" ).prop( "disabled", true );
+   document.getElementById('posresultados_sel').value="";
     //alert("aqui"+idarea);
   LlenarExamenes(idarea);
 }

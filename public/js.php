@@ -16,3 +16,5 @@
 <script type="text/javascript" src="<?php echo $base_url; ?>/Laboratorio/public/datepicker/jquery-ui-timepicker-es.js"></script>
 <script type="text/javascript" src="<?php echo $base_url; ?>/Laboratorio/public/datepicker/script.js"></script> 
 <script type="text/javascript" src="<?php echo $base_url; ?>/Laboratorio/public/js/funciones_generales.js"></script> 
+<script type="text/javascript" src="<?php echo $base_url; ?>/Laboratorio/public/package/lou-multi-select/js/jquery.multi-select.js"></script> 
+<script type="text/javascript" src="<?php echo $base_url; ?>/Laboratorio/public/package/quicksearch/jquery.quicksearch.js"></script> 

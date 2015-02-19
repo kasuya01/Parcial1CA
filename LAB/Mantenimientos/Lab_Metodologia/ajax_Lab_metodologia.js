@@ -62,6 +62,8 @@ function LlenarExamenes(idarea)
 function buscaranteriores(){ //INGRESAR REGISTROS
 	//donde se mostrar� lo resultados
 	//valores de los inputs
+      $( "#add_posresultado" ).prop( "disabled", true );
+      document.getElementById('posresultados_sel').value="";
 	idarea=document.getElementById('cmbArea').value;
 	idexamen=document.getElementById('cmbExamen').value;
         //alert (idexamen)
@@ -112,7 +114,7 @@ function buscareporta(){ //INGRESAR REGISTROS
 			//mostrar los nuevos registros en esta capa
                        // alert (ajax.responseText)
                   document.getElementById('divReporta').innerHTML = ajax.responseText;
-                  if (document.getElementById('cmbreporta')!=0){
+                  if (document.getElementById('cmbreporta').value!=0){
                    document.frmnuevo.add_posresultado.disabled = false;
                    buscaposresultprevios()
                      
@@ -133,7 +135,9 @@ function buscaposresultprevios(){ //INGRESAR REGISTROS
 	//valores de los inputs
 	idexamen=document.getElementById('cmbExamen').value;
 	idmetodologia=document.getElementById('cmbMetodologia').value;
-      //  alert (idmetodologia)
+        if (idmetodologia !=0){
+        alert (idmetodologia)
+        
           //  alert('iadrea: '+idarea+' /idexa:  '+idexamen+' /sexo:  '+sexo+'/edad:'+redad)
             var opcion=12;
             Pag=1;
@@ -143,19 +147,15 @@ function buscaposresultprevios(){ //INGRESAR REGISTROS
             ajax.open("POST", "ctrLab_metodologia.php",true);
             ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
-			//mostrar los nuevos registros en esta capa
-                       // alert (ajax.responseText)
-                  document.getElementById('divReporta').innerHTML = ajax.responseText;
-                  if (document.getElementById('cmbreporta')!=0){
-                   document.frmnuevo.add_posresultado.disabled = false;
-                   buscaposresultprevios()
-                     
-                  }
+                     // alert(ajax.responseText)
+                     document.getElementById('posresultprevios').innerHTML=ajax.responseText 
+                   	
 		}
 	}
             ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
             //enviando los valores
             ajax.send("idmetodologia="+idmetodologia+"&opcion="+opcion+"&idexamen="+idexamen);
+         }    
         return false;
 	//alert (sexo+"--"+redad);
 	

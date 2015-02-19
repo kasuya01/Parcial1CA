@@ -13,3 +13,4 @@
 
 <link type="text/css" href="<?php echo $base_url; ?>/Laboratorio/public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
 <link type="text/css" href="<?php echo $base_url; ?>/Laboratorio/public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+<link type="text/css" href="<?php echo $base_url; ?>/Laboratorio/public/package/lou-multi-select/css/multi-select.css" rel="stylesheet" />

@@ -58,6 +58,10 @@
 				<item labelText="Cantidades de Tinción (Plantilla D)" url="../../Mantenimientos/Lab_CantidadTincion/MntCantidadTincion.php"/>
 			<item labelText="Elementos de Tinción (Plantilla D)" url="../../Mantenimientos/Lab_ElementosTincion/MntElementosTincion.php"/>
 	    </menu>
+             <menu labelText="CATÁLOGOS">
+				<item labelText="Métodologias" url="../../Mantenimientos/ctl_metodologias/MntMetodologia.php"/>
+				<item labelText="Posibles Resultados" url="../../Mantenimientos/ctl_PosResultado/MntPosresultado.php"/>				
+		    </menu>
     </menu>
     <sep/>
 	

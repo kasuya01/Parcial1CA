@@ -79,16 +79,21 @@ where id=$idmetodologia;";
    //fn pg
          
          //RECUPERAR metodologias POR examen
-        function buscarposresultmet($idexamen, $idmetodologia, $lugar)
+        function buscarposresultmet($idmetodologia)
 	 {
 		$con = new ConexionBD;
 	    //usamos el metodo conectar para realizar la conexion
 	    if($con->conectar()==true){
-	      $query = "select * 
-from lab_examen_metodologia  
-where id=$idmetodologia;";
+	      $query = "select t01.id as idexametposres, nombre_reporta, id_codigoresultado,  id_posible_resultado, posible_resultado
+from lab_examen_metodo_pos_resultado t01
+join lab_examen_metodologia t02 on (t02.id=t01.id_examen_metodologia)
+join lab_posible_resultado t03 on (t03.id=t01.id_posible_resultado)
+               where id_examen_metodologia =$idmetodologia
+               and t01.habilitado= true
+               and (t01.fechafin between t01.fechainicio and current_date 
+               or t01.fechafin is null)";
               
-              //echo $query;
+             // echo $query;
 		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
