@@ -68,7 +68,26 @@ function Buscar(){
                 
                 )
                         {  
-                            alert("Debe de Ingresar un Parámetro de Búsqueda ");
+                            //alert("Debe de Ingresar un Parámetro de Búsqueda ");
+                            
+                            $(function ()   {
+                                  $("#dialog").dialog({
+                                    autoOpen: false,
+                                    modal: true,
+                                    buttons: {      
+                                                "Cerrar": function () 
+                                                            {
+                                                                $(this).dialog("close");
+                                                            }
+                                            }
+                                        });
+                            $("#abrir")
+                            //.button()
+                            //.click(function () {
+                            $("#dialog").dialog("open");
+                           // });
+                                });
+                            
                         }
                         else{
                             BuscarDatos();
@@ -113,7 +132,9 @@ function habilitar_metodologia(obj){
 </style>
 </head>
 <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" onLoad="show_event(1);">
-
+<div id="dialog" style='display:none;' title="¡Aviso!">
+    <p> <cente>¡Debe de Ingresar al un Parámetro de Búsqueda!!</cente></p>
+</div>
 <?php 
 if ($nivel==1){
 	include_once ('../../../PaginaPrincipal/index_laboratorio2.php');}
@@ -276,8 +297,8 @@ if ($nivel==33){
                         
                          <tr>  
                             <td class="StormyWeatherDataTD" colspan="6" align="right">
-                                <button type='button' align="center" class='btn btn-primary'  onclick='Guardar(); '><span class='glyphicon glyphicon-floppy-disk'></span> Guardar </button>
-                                <button type='button' align="center" class='btn btn-primary'  onclick='Buscar(); '><span class='glyphicon glyphicon-search'></span>  Buscar </button>
+                                <button type='button' align="center" class='btn btn-primary'   onclick='Guardar(); '><span class='glyphicon glyphicon-floppy-disk'></span> Guardar </button>
+                                <button type='button' align="center" class='btn btn-primary' id="abrir" onclick='Buscar(); '><span class='glyphicon glyphicon-search'></span>  Buscar </button>
                                 <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntProcedimientosExamen.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
                             </td>
                          </tr>

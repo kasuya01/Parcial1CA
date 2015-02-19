@@ -660,6 +660,7 @@ switch ($opcion)
 	      echo $rslts;	
 	break;
 	case 9://Llenar origen muestra
+//<<<<<<< HEAD
 		 $rslts='';
         $IdTipo=$_POST['IdTipo'];
                 $idexpediente=$_POST['idexpediente'];
@@ -669,6 +670,30 @@ switch ($opcion)
 		 
              $rslts = '<select name="cmbOrigen" id="cmbOrigen" class="form-control height" style="width:405px">';
 	     $rslts .='<option value="0">--Seleccione Origen de Muestra--</option>';
+/*=======
+<<<<<<< HEAD*/
+		 $rslts='';
+        $IdTipo=$_POST['IdTipo'];
+
+	     $dtTipo=$objdatos->LlenarCmbOrigenMuestra($IdTipo);
+		 $rslts = '<select name="cmbOrigen" id="cmbOrigen" class="form-control height" style="width:405px">';
+//=======
+		$rslts='';
+                $IdTipo=$_POST['IdTipo'];
+                $idexpediente=$_POST['idexpediente'];
+                $idsolicitud=$_POST['idsolicitud'];
+                
+               // echo  $IdTipo;
+               
+                
+                
+	    
+               $dtTipo=$objdatos->LlenarCmbOrigenMuestra($IdTipo);
+             
+		 $rslts = '<select name="cmbOrigen" id="cmbOrigen" style="width:375px">';
+//>>>>>>> roxy
+		 $rslts .='<option value="0">--Seleccione Origen de Muestra--</option>';
+
 		 while ($rows =pg_fetch_array($dtTipo)){
 		  	$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 	     }

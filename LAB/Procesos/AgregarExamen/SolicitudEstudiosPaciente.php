@@ -90,9 +90,19 @@ $base_url  = $_SESSION['base_url'];
 		<table width="90%" border="0" align="center" class="StormyWeatherFormTABLE">
 		    <tr class="CobaltButton"><td colspan="4" align="center"><h3>DATOS GENERALES</h3></td></tr>
 			<tr>
+<!--<<<<<<< HEAD-->
 
+				  <!--<td width="6%" class="StormyWeatherFieldCaptionTD" >Establecimiento Solicitante</td>
+				  <td width="12%" class="StormyWeatherDataTD" class="height" style="height: 25px"><?php echo $nombrEstab;?></td> -->
+
+<!--=======-->
+<!--<<<<<<< HEAD-->
 				  <td width="6%" class="StormyWeatherFieldCaptionTD" >Establecimiento Solicitante</td>
 				  <td width="12%" class="StormyWeatherDataTD" class="height" style="height: 25px"><?php echo $nombrEstab;?></td> 
+<!--=======-->
+                           <!-- <td width="6%" class="StormyWeatherFieldCaptionTD">Establecimiento Solicitante</td>
+                            <td width="12%" class="StormyWeatherDataTD"><?php echo $nombrEstab;?></td> -->
+
 
                                   <input type="hidden" name="txtidsolicitud" id="txtidsolicitud" value="<?php echo $idsolicitud ?>"/>
                                   <input type="hidden" name="txtidsoli" id="txtidsoli" value="<?php echo $idsolicitudPadre ?>"/>
@@ -102,12 +112,27 @@ $base_url  = $_SESSION['base_url'];
                                   <input type="hidden" name="txtfecharecep" id="txtfecharecep" value="<?php echo  $fecharecepcion ?>"/>
 			</tr>	   
 		 	<tr>
-			  <td width="6%" class="StormyWeatherFieldCaptionTD" >Procedencia</td>
+<!-- <<<<<<< HEAD-->
+			 <!-- <td width="6%" class="StormyWeatherFieldCaptionTD" >Procedencia</td>-->
+<!-- ======= -->
+<!-- <<<<<<< HEAD-->
+				  <td width="6%" class="StormyWeatherFieldCaptionTD" >Procedencia</td>
+
 				  <td width="12%" class="StormyWeatherDataTD" style="height: 25px"><?php echo $precedencia;?></td>
 				  </tr>
 				   <tr>
 				  <td width="6%" class="StormyWeatherFieldCaptionTD" >Servicio</td>
 				  <td width="12%" class="StormyWeatherDataTD" style="height: 25px"><?php echo $origen;?></td>
+<!-- <<<<<<< HEAD-->
+
+<!-- ======= -->
+<!-- =======-->
+                            <!--<td width="6%" class="StormyWeatherFieldCaptionTD">Procedenciaa</td>
+                            <td width="12%" class="StormyWeatherDataTD"><?php echo $precedencia;?></td>-->
+				  </tr>
+				   <tr>
+                            <td width="6%" class="StormyWeatherFieldCaptionTD">Servicio</td>
+			    <td width="12%" class="StormyWeatherDataTD"><?php echo $origen;?></td>
 
 			</tr>
 			<tr>
@@ -168,12 +193,27 @@ $base_url  = $_SESSION['base_url'];
                                 </div>    
                             </td>
 			<tr>
+<!--<<<<<<< HEAD
+=======
+<<<<<<< HEAD-->
+
 				<td width="6%" class="StormyWeatherFieldCaptionTD">Indicación</td>
 		        <td width="12%" class="StormyWeatherDataTD"><textarea name="txtindicacion" cols="50" id="txtindicacion" style="width:405px" class="form-control"></textarea></td>
 			</tr>
 			<tr>
 				<td width="6%" class="StormyWeatherFieldCaptionTD">Observación</td>
 		        <td width="12%" class="StormyWeatherDataTD"><textarea name="txtObservacion" cols="50" id="txtObservacion" style="width:405px" class="form-control"></textarea></td>
+<!--<<<<<<< HEAD-->
+
+<!-- ======= 
+=======-->
+                           <!--<td width="6%" class="StormyWeatherFieldCaptionTD">Indicación</td>
+                            <td width="12%" class="StormyWeatherDataTD"><textarea name="txtindicacion" cols="50" id="txtindicacion"></textarea></td>
+			--></tr>
+			<!--<tr>
+                            <td width="6%" class="StormyWeatherFieldCaptionTD">Observación</td>
+		        <td width="12%" class="StormyWeatherDataTD"><textarea name="txtObservacion" cols="50" id="txtObservacion"></textarea></td>
+                            -->
 
 			</tr>
 			<tr>
