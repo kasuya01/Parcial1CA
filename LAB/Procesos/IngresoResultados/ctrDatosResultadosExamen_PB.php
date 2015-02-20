@@ -20,7 +20,8 @@ switch ($opcion) {
 		$sexo 	  = $_POST['Sexo'];
                 $fecharealiz=$_POST['fecharealiz'];
                 $fecharesultado=$_POST['fecharesultado'];
-                
+                $f_tomamuestra=$_POST['f_tomamuestra'];
+                $tipomuestra=$_POST['tipomuestra'];
                // echo $fecharealiz."-".$fecharesultado;
                 $ConRangos       = $objdatos->ObtenerCodigoRango($fechanac);
 		$row_rangos      = pg_fetch_array($ConRangos);
@@ -117,7 +118,9 @@ switch ($opcion) {
 				
 				pg_free_result($consulta);
                                 $imprimir.= "<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
-                                             <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
+                                             <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />
+                                             <input type='hidden' name='txttipomuestra' id='txttipomuestra' disabled='disabled' value='".$tipomuestra."' />
+                                             <input type='hidden' name='txtf_tomamuestra' id='txtf_tomamuestra' disabled='disabled' value='".$f_tomamuestra."' />";
 				$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>";	//numero de cajas de texto dibujadas para subelementos
 				$imprimir .="<input  type='hidden' id='ocultoele' value='".$posele."'>"; //elementos
                                  
@@ -141,7 +144,7 @@ switch ($opcion) {
 				break;
 			default:
 				$consulta=$objdatos->LeerElementosExamen($idexamen,$lugar);
-				$imprimir="<table width='70%' border='0' align='center' class='StormyWeatherFormTABLE'>
+				$imprimir="<table width='80%' border='0' align='center' class='StormyWeatherFormTABLE'>
 					<tr  class='CobaltButton'>
 						<td>&nbsp;</td>
 						<td aling='center'>Resultado</td>
@@ -193,8 +196,8 @@ switch ($opcion) {
 								</td>";
                                                       
                                                 }
-							$imprimir.=     "<td width='20%' align='center' class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."
-									<td width='20%' align='center' class='StormyWeatherDataTD'>".$rowsub['rangoinicio']." - ".$rowsub['rangofin']."
+							$imprimir.=     "<td  align='center' class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."
+									 <td  align='center' class='StormyWeatherDataTD'>".$rowsub['rangoinicio']." - ".$rowsub['rangofin']."
 										<input name='txtcontrol[".$pos."]' type='hidden' id='txtcontrol[".$pos."]'>
                                                                                     
 									</td>
@@ -227,30 +230,34 @@ switch ($opcion) {
 							</tr>
 							<tr>
 								<td colspan='4' class='StormyWeatherDataTD'>&nbsp;</td>
-							</tr></table>";
+							</tr>";
 					}//else
                                     
 				}//while externo
                                 
 				pg_free_result($consulta);
                                  $imprimir.= "  <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
-                                                <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
-				$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>"	;	//numero de cajas de texto dibujadas para subelementos
-				$imprimir .="<input  type='hidden' id='ocultoele' value='".$posele."'>" ; //elementos
-				$imprimir.="<table width='70%' border='0' align='center' class='StormyWeatherFormTABLE'>
-					<tr>
-						<td class='StormyWeatherDataTD'>*Resultado Tabulador</td>
-						<td colspan='3' class='StormyWeatherDataTD'>
-							<select id='cmbTabulador' name='cmbTabulador' size='1'>
+                                                <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />
+                                                <input type='hidden' name='txttipomuestra' id='txttipomuestra' disabled='disabled' value='".$tipomuestra."' />
+                                                <input type='hidden' name='txtf_tomamuestra' id='txtf_tomamuestra' disabled='disabled' value='".$f_tomamuestra."' />";
+				   $imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>"	;	//numero de cajas de texto dibujadas para subelementos
+				   $imprimir .="<input  type='hidden' id='ocultoele' value='".$posele."'>" ; //elementos
+				    $imprimir.="
+					            <tr>
+						        <td class='StormyWeatherDataTD'>*Resultado Tabulador</td>
+						        <td colspan='3' class='StormyWeatherDataTD'>
+							    <select id='cmbTabulador' name='cmbTabulador' size='1'>
 								<option value='0' >--Seleccione Resultado--</option>";
 									$conResult=$objdatos->LlenarResultados($IdEstandar);
 									while ($rows =pg_fetch_array($conResult)) {
 										$imprimir.="<option value='" . $rows[0] ."' >".$rows[0]." - ".htmlentities($rows[1])."</option>";
 									}
-				$imprimir.="</select></td></tr></table>
-					<table width='70%' border='0' align='center' class='StormyWeatherFormTABLE'>
+				                $imprimir.="</select>
+                                                        </td>
+                                                    </tr>
+                                               
 						<tr class='StormyWeatherDataTD'>
-							<td colspan='3' class='StormyWeatherDataTD'>
+							<td colspan='4' class='StormyWeatherDataTD' align='right'>
 								<input type='button' name='Submit' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaB()'>
 							</td>
 						</tr>
@@ -282,8 +289,10 @@ switch ($opcion) {
                 $fecharesultado       = $_POST['fecharesultado'];
                 $subservicio          = $_POST['subservicio'];
                 $idestab              = $_POST['idestab'];
+                $f_tomamuestra        =$_POST['f_tomamuestra'];
+                $tipomuestra          =$_POST['tipomuestra'];
                 //echo $idestab;
-               // echo $fecharealiz."-".$fecharesultado;
+                //echo $f_tomamuestra."-".$tipomuestra;
 	   	$Consulta_Estab  = $objdatos->Nombre_Establecimiento($lugar);
 	   	$row_estab   	 = pg_fetch_array($Consulta_Estab);
 	   	$ConEstandar 	 = $objdatos->Obtener_Estandar($idexamen);
@@ -315,7 +324,7 @@ switch ($opcion) {
 		   		$row_area  		  = pg_fetch_array($consulta_datos);
 		   		$row_empleado 		  = pg_fetch_array($datos_empleado);
                                 $row_area['nombre_reporta'];
-	   			$imprimir="<table width='92%' align='center' >
+	   			$imprimir="<table width='100%' align='center' >
 				   		<tr>
 				   			<td colspan='1' align='left' width='20%'><img id='Image1' style='width: auto; height: 55px;' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
 				   			<td align='center' colspan='4' width='60%' class='Estilo5'>
@@ -332,8 +341,10 @@ switch ($opcion) {
 				   			<td colspan='2'>".$row_generales['fecha']."</td><input name='suEdad' id='suEdad'  type='hidden'  value='".$row_generales['fechanacimiento']."'/>
 				   		</tr>
 				   		<tr>
-				   			<td colspan='1'><strong>Expediente:</strong></td>
-				   			<td colspan='2'>".$row_generales['idnumeroexp']."</td>
+				   		        <td colspan='1'><strong>Expediente:</strong></td>
+				   		        <td colspan='2'>".$row_generales['idnumeroexp']."</td>
+                                                        <td colspan='1'><strong>Fecha Toma Muestra:</strong></td>
+				   			<td colspan='2'>".$f_tomamuestra."</td>
 				   		</tr>
 			   			<tr>    
                                                         <td colspan='1'><strong>Paciente:</strong></td>
@@ -450,7 +461,7 @@ switch ($opcion) {
 	            $imprimir .="<td colspan='3' align='right'>
 			                    <input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaB()'>
 			                    <input type='button' name='Imprimir'  id='Imprimir' value='Imprimir'
-			                    	Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\",\"".$valores_combos."\",".$idestab.") ;'>
+			                    	Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\",\"".$valores_combos."\",".$idestab.",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'>
 			                    <input type='button' id='btnSalir' value='Cerrar' onclick='Cerrar()'>
 			                </td>
 			            </tr>
@@ -476,7 +487,7 @@ switch ($opcion) {
 		        $nombreEmpleado   = $row_empleado['nombreempleado'];
                         
 		        $imprimir="<br>
-		        	<table width='95%' border='0' align='center' class='StormyWeatherFormTABLE'>
+		        	<table width='100%' border='0' align='center' >
 		        		<tr>
 			        		<td colspan='1' align='left' width='20%'><img id='Image1' style='width: auto; height: 55px;' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
 			        		<td align='center' colspan='4' width='60%' class='Estilo5'>
@@ -495,7 +506,9 @@ switch ($opcion) {
 		        		</tr>
 		        		<tr>
 		        			<td colspan='1'><strong>Expediente:</strong></td>
-		        			<td colspan='1'>".$row_generales['idnumeroexp']."</td>
+		        			<td colspan='2'>".$row_generales['idnumeroexp']."</td>
+                                                <td colspan='1'><strong>Fecha Toma Muestra:</strong></td>
+				   		<td colspan='2'>".$f_tomamuestra."</td>    
 		        		</tr>
 		        		<tr>
 		        			<td colspan='1'><strong>Paciente:</strong></td>
@@ -504,7 +517,7 @@ switch ($opcion) {
 		        		<tr>
 
 		        			<td colspan='1'><strong>Edad:</strong></td>
-		        			<td colspan='2'><div id='divsuedad'></div></td>
+		        			<td colspan='2'>".$row_generales['edad']."</td>
 		        			<td colspan='1'><strong>Sexo:</strong></td>
 		        			<td colspan='2'>".$row_generales['sexo']."</td>
 		        		</tr>
@@ -535,7 +548,7 @@ switch ($opcion) {
 		        		</tr>
 		        	</table>";
 
-		        $imprimir.="<table width='95%' border='0' align='center' >";
+		        $imprimir.="<table width='100%' border='0' align='center' >";
 		        $imprimir.= "<tr>
 				        <td width='25%'></td>
 				        <td width='25%'>Resultado</td>
@@ -602,7 +615,7 @@ switch ($opcion) {
 							<td colspan='5' align='center' >
 								<input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaB()'>
 								<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir'
-									Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\",\"".$valores_combos."\",".$idestab.") ;'>
+									Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\",\"".$valores_combos."\",".$idestab.",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'>
 								<input type='button' id='btnSalir' value='Cerrar' onclick='Cerrar()'>
 							</td>
 						</tr>

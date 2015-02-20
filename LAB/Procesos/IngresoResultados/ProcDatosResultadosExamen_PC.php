@@ -99,6 +99,10 @@ function RecogeValor() {
                     IdEstandar=escape(getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'var17=' )
                     IdHistorial=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'var19=' )
+                    f_tomamuestra=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'var20=' )
+                    tipomuestra=escape(getVars[i].substr(5));
             }
             
             document.frmnuevo.txtnec.value=nec;
@@ -177,6 +181,9 @@ function RecogeValor() {
 				<input type="hidden" name="txtprocedencia" id="txtprocedencia" />
 				<input type="hidden" name="txtorigen" id="txtorigen" />	
 				<input type="hidden" name="txtEstablecimiento" id="txtEstablecimiento" value="<?php echo $_GET['var13']?>" />
+                                 <input type="hidden" name="txtf_tomamuestra" id="txtf_tomamuestra" value="<?php echo $_GET['var19']?>" />
+                                <input type="hidden" name="txttipomuestra" id="txttipomuestra" value="<?php echo $_GET['var20']?>" />
+                               
 			</td>
 			
                     </tr>
@@ -224,6 +231,14 @@ function RecogeValor() {
             		<td width="35%" colspan="1"  class="StormyWeatherFieldCaptionTD">Examen</td>
             		<td width="65%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var2'] ?>
             			<input type="hidden" name="txtexamen" id="txtexamen" disabled="disabled" size="60" /></td>
+                    </tr>
+                    <tr>
+                        <td class="StormyWeatherFieldCaptionTD">Muestra Recibida</td>
+                        <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var20'] ?></td>
+                    </tr>
+                    <tr>
+                        <td class="StormyWeatherFieldCaptionTD">Fecha de Toma de Muestra</td>
+                        <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var19'] ?></td>
                     </tr>
                     <tr>
                         <td class="StormyWeatherFieldCaptionTD">Fecha y hora inicio Proceso</td>

@@ -228,7 +228,7 @@ function ObtenerFechaResultado($idsolicitud,$IdExamen,$lugar)
 	$con = new ConexionBD;
    if($con->conectar()==true)
    {
-      $query = "SELECT TO_CHAR(fecha_resultado,'dd/mm/YYYY HH12:MI:SS') AS FechaResultado
+      $query = "SELECT TO_CHAR(fecha_resultado,'dd/mm/YYYY HH12:MI') AS FechaResultado
 		FROM lab_resultados where idsolicitudestudio=$idsolicitud AND idestablecimiento=$lugar 
                 AND IdExamen=$IdExamen";
      
@@ -297,7 +297,7 @@ function MostrarDatosGenerales($idsolicitud,$lugar)
                     WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=ctl_atencion.nombre) THEN ctl_atencion.nombre
                 END
             END AS subservicio ,
-            ctl_area_atencion.nombre AS procedencia,to_char(lab_recepcionmuestra.fechahorareg,'dd/mm/YYYY HH12:MI:SS' ) AS fecharecep,
+            ctl_area_atencion.nombre AS procedencia,to_char(lab_recepcionmuestra.fechahorareg,'dd/mm/YYYY HH12:MI' ) AS fecharecep,
             (SELECT nombre FROM ctl_establecimiento WHERE id=sec_solicitudestudios.id_establecimiento_externo) AS estabext
             FROM lab_recepcionmuestra
             INNER JOIN sec_solicitudestudios                ON sec_solicitudestudios.id = lab_recepcionmuestra.idsolicitudestudio

@@ -18,6 +18,8 @@ switch ($opcion)
 	$idexamen=$_POST['idexamen'];
         $fecharealiz=$_POST['fecharealiz'];
         $fecharesultado=$_POST['fecharesultado'];
+        $f_tomamuestra=$_POST['f_tomamuestra'];
+        $tipomuestra=$_POST['tipomuestra'];
      //  echo $fecharealiz." * ".$fecharesultado;
 	$consulta=$objdatos->LeerAntibioticos($idtarjeta);
 	$pos=0;
@@ -40,6 +42,7 @@ switch ($opcion)
                                 <td width='20%' class='StormyWeatherDataTD'>
 					<input name='txtresultado[".$pos."]' type='text' id='txtresultado[".$pos."]' >
 					<input name='oidantibiotico[".$pos."]' type='hidden' id='oidantibiotico[".$pos."]' value='".$row['idantibiotico']."'></td>
+                                          
                                 <td width='20%' class='StormyWeatherDataTD'> 
                                     <select id='cmbresultado[".$pos."]' name='cmbresultado[".$pos."]'  size='1' style='width:205px'>
                                         <option value='0' >--Seleccione Resultado--</option>";
@@ -57,7 +60,9 @@ switch ($opcion)
 	}
 	pg_free_result($consulta);
         $imprimir.= "<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
-                     <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."'/>";
+                     <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."'/>
+                     <input type='hidden' name='txttipomuestra' id='txttipomuestra' disabled='disabled' value='".$tipomuestra."' />
+                     <input type='hidden' name='txtf_tomamuestra' id='txtf_tomamuestra' disabled='disabled' value='".$f_tomamuestra."' /> ";
 	$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>";
 
 	    $imprimir.="<tr>
@@ -78,7 +83,10 @@ switch ($opcion)
 
                 $fecharealiz=$_POST['fecharealiz'];
                 $fecharesultado=$_POST['fecharesultado'];
-
+                 $f_tomamuestra=$_POST['f_tomamuestra'];
+                 $tipomuestra=$_POST['tipomuestra'];
+                
+                
 		$idrecepcion= $_POST['idrecepcion'];
 		$iddetalle= $_POST['iddetalle'];
 
@@ -96,7 +104,7 @@ switch ($opcion)
                // echo $resultado;
                 $establecimiento=$_POST['estab'];
 
-              //  echo $fecharealiz." - ".$fecharesultado;
+               // echo $f_tomamuestra." - ".$tipomuestra;
           //echo " Solicitud=".$idsolicitud." empleado=".$idempleado." Examen=".$idexamen." detalle=".$iddetalle." detalle=".$establecimiento;
 		$Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
 		$row_estab = pg_fetch_array($Consulta_Estab);
@@ -119,20 +127,20 @@ switch ($opcion)
 		$row_observacion = pg_fetch_array($datos_observacion);
 		$row_nombrebacteria= pg_fetch_array($bateria);
                 $estabext=$row_generales['estabext'];
-		$imprimir="<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
+	     $imprimir="<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
                            <tr>
-                                  <td colspan='1' align='left' width='15%'><img id='Image1' style='width: auto; height: 55px;'  src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
-                                  <td align='center' colspan='4' width='70%' class='Estilo5'>
-                                            <p width='25'><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
-                                            <p width='50'><strong>".$row_generales['estabext']    ."</strong></p>
-                                           <p width='25'><strong>&Aacute;rea de ".htmlentities($row_area['nombrearea'])." </strong></p></td>
-                                  <td colspan='1' align='right' width='15%'><img id='Image3' style='width: auto; height: 55px;' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
+                                <td colspan='1' align='left' width='15%'><img id='Image1' style='width: auto; height: 55px;'  src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
+                                <td align='center' colspan='4' width='70%' class='Estilo5'>
+                                    <p width='25'><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
+                                    <p width='50'><strong>".$row_generales['estabext']    ."</strong></p>
+                                    <p width='25'><strong>&Aacute;rea de ".htmlentities($row_area['nombrearea'])." </strong></p></td>
+                                <td colspan='1' align='right' width='15%'><img id='Image3' style='width: auto; height: 55px;' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
                            </tr>
                            <tr>
-                                  <td colspan='6'>&nbsp;</td>
+                                <td colspan='6'>&nbsp;</td>
                            </tr>
                            <tr>
-                                  <td colspan='1' style='font:bold'><strong>Establecimiento solicitante:</strong></td>
+                                <td colspan='1' style='font:bold'><strong>Establecimiento solicitante:</strong></td>
                                   <td colspan='2'>".$row_generales['estabext']."</td>
                                   <td colspan='1' style='font:bold'><strong>Fecha Recepción:</strong></td>
                                   <td colspan='2'>".$row_generales['fecharecep']."</td>
@@ -141,7 +149,9 @@ switch ($opcion)
 
                            <tr>
                                   <td colspan='1' style='font:bold'><strong>Expediente:</strong></td>
-                                  <td colspan='5' >".$row_generales['numero']."</td>
+                                  <td colspan='2' >".$row_generales['numero']."</td>
+                                  <td colspan='1'><strong>Fecha Toma Muestra:</strong></td>
+				  <td colspan='2'>".$f_tomamuestra."</td>       
                            </tr>
                            <tr>
                                   <td colspan='1' style='font:bold'><strong>Paciente:</strong></td>
@@ -176,9 +186,7 @@ switch ($opcion)
                            </tr>
                            <tr>
                                 <td colspan='1'>Observación:</td>
-                                <td colspan='5'>".$observacion."
-
-                                </td>
+                                <td colspan='5'>".$observacion."</td>
                            </tr>
                            <tr>
                                   <td colspan='1'>Organismo:</td>
@@ -195,11 +203,11 @@ switch ($opcion)
                $imprimir.="<tr>
                                 <td colspan='6'>
                                    <table width='60%' border='0' align='left' cellspacing='0'>
-                                       <tr>
+                                        <tr>
                                            <td width='40%' >ANTIBIOTICO</td>
                                            <td width='20%' >LECTURA</td>
                                            <td width='40%' >INTERPRETACIÓN</td>
-                                       </tr>";
+                                        </tr>";
                                    pg_free_result($consulta_datos);
                                    pg_free_result($datos_generales);
                                    $pos=0;
@@ -225,16 +233,15 @@ switch ($opcion)
                                                  <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
 
                             $imprimir.="<tr>
-                                           <td colspan='6'>&nbsp;</td>
+                                            <td colspan='6'>&nbsp;</td>
                                         </tr>
                                         <tr>
-                                           <td colspan='6'>
+                                            <td colspan='6'>
                                                <input type='button' name='Guardar'  id='Guardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaC()'\>
-                                               <input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaC(".$idsolicitud.",\"".$idexamen."\",\"".$resultado."\",\"".$row_empleado['empleado']."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_antibioticos)."\",\"".$codigos_antibioticos."\",".$idbacteria.",\"".$cantidad."\",".$idtarjeta.",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".$idobservacion."\",\"".$valores_interpretacion."\");' />
+                                               <input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaC(".$idsolicitud.",\"".$idexamen."\",\"".$resultado."\",\"".$row_empleado['empleado']."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_antibioticos)."\",\"".$codigos_antibioticos."\",".$idbacteria.",\"".$cantidad."\",".$idtarjeta.",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".$idobservacion."\",\"".$valores_interpretacion."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\");' />
                                                <input type='button' name='Ingresar' id='Ingresar' value='Ingresar otro Resultado' onclick='IngresarOtro()'\>   
                                                <input type='button' id='btnSalir' value='cerrar' onclick='Cerrar()'
-                                           </td>
-
+                                            </td>
                                         </tr>
                                      </table>
                                   </td>
@@ -337,6 +344,10 @@ switch ($opcion)
 	$idarea=$_POST['idarea'];
 	$idtarjeta=$_POST['idtarjeta'];
 	$tiporespuesta=$_POST['tiporespuesta'];
+      //  $f_tomamuestra=$_POST['f_tomamuestra'];
+        //$tipomuestra=$_POST['tipomuestra'];
+        
+        // echo " opcion 4 ".$f_tomamuestra."  ".$tipomuestra;
 	$consulta_ob=$objdatos->LeerObservaciones($idarea,$tiporespuesta);
 
         $imprimir="<table class='StormyWeatherFormTABLE' width='100%' >
@@ -365,6 +376,7 @@ switch ($opcion)
 	$idarea=$_POST['idarea'];
 	$idsolicitud= $_POST['idsolicitud'];
 	$idempleado= $_POST['idempleado'];
+        
 	$observacion= (empty($_POST['observacion'])) ? ' ' : "'" . pg_escape_string($_POST['observacion']) . "'";
 
         $idobservacion=$_POST['idobservacion'];
@@ -372,7 +384,9 @@ switch ($opcion)
 	$establecimiento=$_POST['estab'];
         $fecharealiz=$_POST['fecharealiz'];
         $fecharesultado=$_POST['fecharesultado'];
-
+        $f_tomamuestra=$_POST['f_tomamuestra'];
+        $tipomuestra=$_POST['tipomuestra'];
+      //  echo " opcion 5 ".$f_tomamuestra."  ".$tipomuestra;
 	$Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
 	$row_estab = pg_fetch_array($Consulta_Estab);
 
@@ -408,7 +422,9 @@ switch ($opcion)
 
 			<tr>
 				<td colspan='1' style='font:bold'><strong>Expediente:</strong></td>
-				<td colspan='5'>".$row_generales['numero']."</td>
+				<td colspan='2'>".$row_generales['numero']."</td>
+                                <td colspan='1'><strong>Fecha Toma Muestra:</strong></td>
+				<td colspan='2'>".$f_tomamuestra."</td>    
                         </tr>
                         <tr>
 				<td colspan='1' style='font:bold'><strong>Paciente:</strong></td>
@@ -472,14 +488,15 @@ switch ($opcion)
 			<tr>
                                 <td colspan='5' align='center'>
 			                <input type='button' id='btnGuardar'  value='Guardar Resultados' onclick='GuardarResultadosNegativosPlantillaC()'>
-					<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaCN(".$idsolicitud.",\"".$idexamen."\",\"".$idarea."\",\"".$resultado."\",\"".htmlentities($row_empleado['empleado'])."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($row_observacion['observacion'])."\",\"".htmlentities($establecimiento)."\") ;' />
+					<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaCN(".$idsolicitud.",\"".$idexamen."\",\"".$idarea."\",\"".$resultado."\",\"".htmlentities($row_empleado['empleado'])."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($row_observacion['observacion'])."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;' />
+                                            
 					<input type='button' id='btnSalir' value='Cerrar' onclick='Cerrar()'>
 				</td>
 
 			</tr>
 		</div>
 	 </table>";
-
+//\"".htmlentities($establecimiento)."\",
 	echo $imprimir;
 	break;
 

@@ -15,6 +15,8 @@ $establecimiento=$_GET['var10'];
 $sexo=$_GET['var11'];
 $idedad=$_GET['var12'];
 $valores_combos= $_GET['var13'];
+$f_tomamuestra = $_GET['var14'];
+$tipomuestra   = $_GET['var15'];
 //echo $idsolicitud."Examen= ".$idexamen."Empleado= ".$responsable." procedencia= ".$procedencia."oreigen= ".$origen." comentario= ".$comentarios." valores= ".$valores."codigos= ".$codigos."observacio= ".$observacion."establecimiento= ".$establecimiento."sexo= ".$sexo." idedad= ".$idedad;
 //echo $responsable;
 
@@ -82,7 +84,7 @@ if ($IdEstandar=="H15"){
 	$vector_respuesta=EXPLODE("/",$valores);
 	$vector_comentarios=EXPLODE("/",$comentarios);?>
         $vector_combos    = EXPLODE("/",$valores_combos);
-            <table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
+            <table width='100%' border='0' align='center' class='StormyWeatherFormTABLE' cellspacing='0'>
 		<tr>
 			<td colspan="1" align="left" width="20%"><img id="Image1" style="width: auto; height: 55px;" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
                         <td align="center" colspan="4" width="60%" class="Estilo6">
@@ -96,46 +98,48 @@ if ($IdEstandar=="H15"){
                         <td colspan='6'>&nbsp;</td>
                 </tr>
 		<tr>
-			<td colspan='1' class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
+			<td colspan='1' class="Estilo6"><strong>Establecimiento Solicitante:</strong></td>
 			<td colspan='2' class="Estilo6"><?php echo $row_generales['estabext']?></td>
-			<td colspan='1' class="Estilo5"><strong>Fecha Resultado:</strong></td>
+			<td colspan='1' class="Estilo6"><strong>Fecha Resultado:</strong></td>
 			<td colspan='2' class="Estilo6"><?php echo $row_fecha['fecharesultado']?></td>
 				
 		</tr>
 		<tr>
-			<td colspan='1' class="Estilo5"><strong>NEC</strong></td>
+			<td colspan='1' class="Estilo6"><strong>NEC</strong></td>
 			<td colspan='2' class="Estilo7"><?php echo $row_generales['numero']?></td>
-                        <td colspan='1' class="Estilo5" ><strong>Fecha Recepción:</strong></td>
+                        <td colspan='1' class="Estilo6" ><strong>Fecha Recepción:</strong></td>
                         <td colspan='2' class="Estilo6" ><?php echo $row_generales['fecharecep']?></td>
                 </tr>
                 <tr>
-			<td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
-			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_generales['paciente'])?></td>
+			<td colspan='1' class="Estilo6"><strong>Paciente:</strong></td>
+			<td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['paciente'])?></td>
+                        <td colspan='1' class="Estilo6" ><strong>Fecha Toma Muestra:</strong></td>
+                        <td colspan='2' class="Estilo6" ><?php echo $f_tomamuestra ?></td>
 		</tr>
 		<tr>
-			<td colspan='1' class="Estilo5"><strong>Edad:</strong></td>
+			<td colspan='1' class="Estilo6"><strong>Edad:</strong></td>
 			<td colspan='2' class="Estilo6"><?php echo $row_generales['edad']?></td>
-			<td colspan='1' class="Estilo5"><strong>Sexo:</strong></td>
+			<td colspan='1' class="Estilo6"><strong>Sexo:</strong></td>
 			<td colspan='2' class="Estilo6"><?php echo $row_generales['sexo']?></td>
 		</tr>
 
 		<tr>
-			<td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>
+			<td colspan='1' class="Estilo6"><strong>Validado Por:</strong></td>
 			<td colspan='5' class="Estilo6"><?php echo $responsable?></td>
 		</tr>
                  <tr>
-			<td colspan='1' class="Estilo5"><strong>Procedencia:</strong></td>
+			<td colspan='1' class="Estilo6"><strong>Procedencia:</strong></td>
 			<td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['procedencia'])?></td>
 
-			<td colspan='1' class="Estilo5"><strong>Servicio:</strong></td>
+			<td colspan='1' class="Estilo6"><strong>Servicio:</strong></td>
 			<td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['subservicio'])?></td>
 		</tr>
 		<tr>
-			<td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
+			<td colspan='1' class="Estilo6"><strong>Examen Realizado:</strong></td>
 			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['nombre_reporta'])?></td>
 		</tr>
 		<tr>
-			<td colspan='1' class="Estilo5"><strong>Observacion:<strong></td>
+			<td colspan='1' class="Estilo6"><strong>Observacion:<strong></td>
 			<td colspan='5' class="Estilo6"><?php echo htmlentities($observacion)?></td>
 		</tr>
 			<?php pg_free_result($consulta_datos);
@@ -213,7 +217,7 @@ if ($IdEstandar=="H15"){
         $vector_combos    = EXPLODE("/",$valores_combos);
 	//echo $responsable;
 	?>
-	<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
+	<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE' cellspacing='0'>
 		<tr>
 			<td colspan="1" align="left" width="20%"><img id="Image1" style="width: auto; height: 55px;"  src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
                         <td align="center" colspan="4" width="60%" class="Estilo5">
@@ -234,15 +238,18 @@ if ($IdEstandar=="H15"){
 				
 		</tr>
 		<tr>
-			<td colspan='1' class="Estilo5"><strong>NEC</strong></td>
-			<td colspan='2' class="Estilo7"><?php echo $row_generales['numero'] ?></td>
+                        <td colspan='1' class="Estilo5" ><strong>Expediente:</strong></td>
+                        <td colspan='2' class="Estilo7" ><?php echo $row_generales['numero']?></td>
                         <td colspan='1' class="Estilo5" ><strong>Fecha Recepción:</strong></td>
                         <td colspan='2' class="Estilo6" ><?php echo $row_generales['fecharecep']?></td>
                 </tr>
                 <tr>
-			<td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
-			<td colspan='2' class="Estilo6"><?php echo $row_generales['paciente']?></td>
-		</tr>
+                        <td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
+                        <td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['paciente'])?></td>
+                        <td colspan='1' class="Estilo5" ><strong>Fecha Toma Muestra:</strong></td>
+                        <td colspan='2' class="Estilo6" ><?php echo $f_tomamuestra ?></td>
+                </tr>
+                
 		<tr>
 			<td colspan='1' class="Estilo5"><strong>Edad:</strong></td>
 			<td colspan='2' class="Estilo6"><?php echo $row_generales['edad']?></td>
@@ -281,7 +288,7 @@ if ($IdEstandar=="H15"){
 
                     <table width='90%' border='0' align='left' cellspacing="0">
 				<tr >
-                                        <td class="Estilo5" width='25%' align='left'  ><strong> Prueba </strong> </td>
+                                        <td class="Estilo5" width='25%' align='left'><strong> Prueba </strong> </td>
 					<td class="Estilo5" width='30%' align='left'><strong> Resultado </strong></td>
 					<td class="Estilo5" width='20%' align='center'><strong> Unidades </strong></td>
 					<td class="Estilo5" width='30%' align='center'><strong> Rango </strong></td>
@@ -291,20 +298,20 @@ if ($IdEstandar=="H15"){
 					{  ?>
 				<tr>
                             <?php   if($vector_combos[$pos]== NULL){  ?>
-					<td class="Estilo5" width='25%'align='left'><?php echo htmlentities($row['nombreprocedimiento'])?></td>
-                                        <td align='center' colspan='1'><?php echo htmlentities($vector_respuesta[$pos])?></td>
+					<td class="Estilo6" width='25%'align='left'><?php echo htmlentities($row['nombreprocedimiento'])?></td>
+                                        <td class="Estilo6" width='30%'align='left' colspan='1'><?php echo htmlentities($vector_respuesta[$pos])?></td>
                             <?php   }else {
                                       //  echo $pos;
                                         $conresult=$obj->BuscarResultado($vector_respuesta[$pos]);
                                         $row_dresult=  pg_fetch_array($conresult);?>
-                                        <td class="Estilo5" width='25%'align='left'><?php echo htmlentities($row['nombreprocedimiento'])?></td>
-                                        <td class="Estilo5" width='25%'align="left"><?php echo htmlentities($row_dresult['posible_resultado'])?></td>
+                                        <td class="Estilo6" width='25%'align='left'><?php echo htmlentities($row['nombreprocedimiento'])?></td>
+                                        <td class="Estilo6" width='30%'align="left"><?php echo htmlentities($row_dresult['posible_resultado'])?></td>
                                   
                          <?php      }?>            
 				<!--	<td class="Estilo5" width='30%'align='center'><input name='oidprueba[<?php $pos?>]' type='hidden' id='oidprueba[<?php $pos?>]' value='<?php $row['id']?>'><?php //echo htmlentities($vector_respuesta[$pos])?></td>-->
-					<td class="Estilo5" width='20%'align='left'><?php echo htmlentities($row['unidades'])?></td>
+					<td class="Estilo6" width='20%'align='left'><?php echo htmlentities($row['unidades'])?></td>
 
-					<td class="Estilo5" align='left' width='30%'><?php
+					<td class="Estilo6" align='left' width='30%'><?php
                                                      if((!empty($row['rangoinicio'])) AND (!empty($row['rangoinicio'])))
                                                            echo $row['rangoinicio']."-".$row['rangofin'];?></td>
 				</tr>

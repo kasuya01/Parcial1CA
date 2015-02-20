@@ -103,6 +103,10 @@ $area    = $_SESSION['Idarea'];
                     estabext=escape(getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'var19=' )
                     idestabext=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'var20=' )
+                    f_tomamuestra=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'var21=' )
+                    tipomuestra=escape(getVars[i].substr(5));
             }
            
             document.frmnuevo.txtnec.value=nec;
@@ -130,7 +134,7 @@ $area    = $_SESSION['Idarea'];
       //  $nombreEstab = $_GET['var17'];
        
         if($db->conectar()==true) {
-           $condatos = "SELECT t07.peso,t07.talla,t06.sct_name_es AS diagnostico,especificacion,conocido_por
+            $condatos = "SELECT t07.peso,t07.talla,t06.sct_name_es AS diagnostico,especificacion,conocido_por
                         FROM sec_historial_clinico               t01
                         INNER JOIN mnt_expediente                t02 ON (t02.id = t01.id_numero_expediente)
                         INNER JOIN mnt_paciente                  t03 ON (t03.id = t02.id_paciente)
@@ -178,15 +182,15 @@ $area    = $_SESSION['Idarea'];
                                     <input type="hidden" name="txtarea" id="txtarea" value="<?php echo $_GET['var4']?>"/>
                                     <input type="hidden" name="txtprocedencia" id="txtprocedencia" />
                                     <input type="hidden" name="txtorigen" id="txtorigen" />
-                                     <input type="hidden" name="txtsubservicio" id="txtsubservicio" value="<?php echo $_GET['var11']?>" />
-                                    
+                                    <input type="hidden" name="txtsubservicio" id="txtsubservicio" value="<?php echo $_GET['var11']?>" />
                                     <input type="hidden" name="txtFechaNac" id="txtFechaNac" value="<?php echo $_GET['var14']?>" />
                                     <input type="hidden" name="txtSexo" id="txtSexo" value="<?php echo $_GET['var15']?>" />
                                     <input type="hidden" name="txtIdEstandar" id="txtIdEstandar" value="<?php echo $_GET['var16']?>" />
                                     <input type="hidden" name="txtIdHistorial" id="txtIdHistorial" value="<?php echo $_GET['var17']?>" />
                                     <input type="hidden" name="txtEstablecimiento" id="txtEstablecimiento" value="<?php echo $_GET['var18']?>" />
                                     <input type="hidden" name="txtIdEstablecimiento" id="txtIdEstablecimiento" value="<?php echo $_GET['var19']?>" />
-                                   
+                                    <input type="hidden" name="txttipomuestra" id="txttipomuestra" value="<?php echo $_GET['var21']?>" />
+                                     <input type="hidden" name="txtf_tomamuestra" id="txtf_tomamuestra" value="<?php echo $_GET['var20']?>" />
                                 </td>
                             </tr>
                             <tr>
@@ -236,6 +240,18 @@ $area    = $_SESSION['Idarea'];
                                 <td class="StormyWeatherFieldCaptionTD">Examen </td>
                                 <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var2'] ?>
                                     <input type="hidden" name="txtexamen" id="txtexamen" disabled="disabled" size="60" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="StormyWeatherFieldCaptionTD">Muestra Recibida</td>
+                                <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var21'] ?>
+                                    
+                                </td>
+                            </tr>
+                             <tr>
+                                <td class="StormyWeatherFieldCaptionTD">Fecha de Toma de Muestra</td>
+                                <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var20'] ?>
+                                    
                                 </td>
                             </tr>
                             <tr>

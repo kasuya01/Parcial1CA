@@ -15,7 +15,9 @@ $procedencia=$_GET['var6'];
 $origen=$_GET['var7'];
 $observacion=$_GET['var8'];
 $establecimiento=$_GET['var9'];
-
+$f_tomamuestra=$_GET['var10'];
+//echo $f_tomamuestra;
+$tipomuestra=$_GET['var11'];
 $Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
 $row_estab = pg_fetch_array($Consulta_Estab);
 
@@ -105,7 +107,9 @@ function calc_edad()
                 </tr>
                 <tr>
                     <td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
-                    <td colspan='5' class="Estilo6"><?php echo htmlentities($row_generales['paciente'])?></td>
+                    <td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['paciente'])?></td>
+                    <td colspan='1' class="Estilo6" ><strong>Fecha Toma Muestra:</strong></td>
+                    <td colspan='2' class="Estilo6" ><?php echo $f_tomamuestra ?></td>
 		</tr>
 		<tr>
                     <td colspan='1' class="Estilo5"><strong>Edad:</strong></td>

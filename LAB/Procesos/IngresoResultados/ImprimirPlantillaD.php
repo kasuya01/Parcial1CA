@@ -11,6 +11,8 @@ $idexamen=$_GET['var2'];
 $idresultado=$_GET['var3'];
 $idempleado=$_GET['var4'];
 $establecimiento=$_GET['var5'];
+$f_tomamuestra=$_GET['var6'];
+$tipomuestra=$_GET['var7'];
 
 
 ?>
@@ -91,14 +93,16 @@ function calc_edad()
                            
 		</tr>
 		<tr>
-			<td colspan='1' class="Estilo5" style='font:bold'><strong>NEC</strong></td>
+			<td colspan='1' class="Estilo5" style='font:bold'><strong>Expediente</strong></td>
 			<td colspan='2' class="Estilo7"><?php echo $row_generales['numero']?></td>
                         <td colspan='1' class="Estilo5" ><strong>Fecha Recepción:</strong></td>
                         <td colspan='2' class="Estilo6" ><?php echo $row_generales['fecharecep']?></td>
                 </tr>
                 <tr>
 			<td colspan='1' class="Estilo5" style='font:bold'><strong>Paciente</strong></td>
-			<td colspan='5' class="Estilo6"><?php echo htmlentities($row_generales['paciente'])?></td>
+			<td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['paciente'])?></td>
+                        <td colspan='1' class="Estilo6" ><strong>Fecha Toma Muestra:</strong></td>
+                        <td colspan='2' class="Estilo6" ><?php echo $f_tomamuestra ?></td>
 		</tr>
 		<tr>    
                         <td colspan='1' class="Estilo5" style='font:bold'><strong>Edad:</strong></td>
