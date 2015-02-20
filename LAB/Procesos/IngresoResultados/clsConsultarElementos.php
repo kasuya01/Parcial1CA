@@ -66,7 +66,7 @@ class clsConsultarElementos {
     function ObtenerFechaResultado($idsolicitud,$IdExamen,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-            $query = "SELECT TO_CHAR(fecha_resultado,'DD/MM/YYYY HH:MI:SS AM') AS fecharesultado
+            $query = "SELECT TO_CHAR(fecha_resultado,'DD/MM/YYYY HH:MI') AS fecharesultado
                       FROM lab_resultados
                       WHERE idsolicitudestudio = $idsolicitud AND idestablecimiento = $lugar AND idexamen = $IdExamen";
             $result = @pg_query($query);
@@ -293,7 +293,7 @@ else
                                      WHERE ti01.id = t12.id_aten_area_mod_estab)
                              END AS procedencia, 
                              t01.numeromuestra,
-                             TO_CHAR(t01.fechahorareg,'DD/MM/YYYY HH:MI:SS AM') AS fecha,
+                             TO_CHAR(t01.fechahorareg,'DD/MM/YYYY HH:MI') AS fecha,
                              CASE WHEN t02.id_historial_clinico IS NOT NULL
                                  THEN t09.nombre
                                  ELSE (SELECT nombre FROM ctl_establecimiento WHERE id = t12.id_establecimiento)

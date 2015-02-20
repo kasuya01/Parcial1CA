@@ -24,6 +24,9 @@ $sexo                 = $_GET['var16'];
 $idedad               = $_GET['var17'];
 $valores_combos       = $_GET['var18'];
 $idestab              = $_GET['var19'];
+$f_tomamuestra        = $_GET['var20'];
+$tipomuestra          = $_GET['var21'];
+
 //echo $idestab ;
 ?>
 <html>
@@ -103,7 +106,7 @@ $idestab              = $_GET['var19'];
                                 <td colspan="1" align="right" width="20%"><img id="Image3" style='width: auto; height: 55px;' src="../../../Imagenes/paisanito.png" name="Image3"></td>
                             </tr>
                             <tr>
-                                <td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;</td>
+                                <td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             </tr>
                             <tr>
                                <td colspan='1' class="Estilo6"><strong> Establecimiento Solicitante:</strong></td>
@@ -114,19 +117,19 @@ $idestab              = $_GET['var19'];
                             </tr>
                             <tr>
                                <td colspan='1' class="Estilo6"><strong>Expediente:</strong></td>
-                               <td colspan='2' class="Estilo6"><?php echo $row_generales['idnumeroexp']?></td>
+                               <td colspan='2' class="Estilo7"><?php echo $row_generales['idnumeroexp']?></td>
                                <td colspan='1' class="Estilo6" ><strong>Fecha Recepción:</strong></td>
                                <td colspan='2' class="Estilo6" ><?php echo $row_generales['fecha']?></td>
                             </tr>
                             <tr>
                                <td colspan='1' class="Estilo6"><strong>Paciente:</strong></td>
                                <td colspan='2' class="Estilo6"><?php echo utf8_encode($row_generales['nombrepaciente'])?></td>
+                               <td colspan='1' class="Estilo6" ><strong>Fecha Toma Muestra:</strong></td>
+                               <td colspan='2' class="Estilo6" ><?php echo $f_tomamuestra ?></td>
                             </tr>
                             <tr>
                                 <td colspan='1' class="Estilo6"><strong>Edad:</strong></td>
-                                <td colspan='2' class="Estilo6"><?php echo$row_generales['edad']?>
-                                   
-                                </td>
+                                <td colspan='2' class="Estilo6"><?php echo $row_generales['edad']?></td>
                                 <td colspan='1' class="Estilo6"><strong>Sexo:</strong></td>
                                 <td colspan='1' class="Estilo6"><?php echo $row_generales['sexo']?></td>
                             </tr>
@@ -194,10 +197,10 @@ $idestab              = $_GET['var19'];
                                                 } else { 
                                             ?>
                                                     <tr>
-                                                        <td width='40%' class="Estilo6" class='StormyWeatherFieldCaptionTD'><strong><?php echo htmlentities($row['elemento'])?></strong></td>
-                                                        <td  width='25%' class="Estilo6"><?php echo htmlentities($vector_elementos[$posele])?></td>
-                                                        <td width='10%' class="Estilo6"><?php echo htmlentities($row['unidadelem'])?></td>
-                                                        <td class="Estilo5"><?php echo htmlentities($vector_controles_ele[$posele])."  ".htmlentities($row['unidadelem'])?></td>
+                                                        <td width='35%' class="Estilo6" class='StormyWeatherFieldCaptionTD'><strong><?php echo htmlentities($row['elemento'])?></strong></td>
+                                                        <td width='25%' class="Estilo6"><?php echo htmlentities($vector_elementos[$posele])?></td>
+                                                        <td width='20%' class="Estilo6"><?php echo htmlentities($row['unidadelem'])?></td>
+                                                        <td width='20%' class="Estilo6"><?php echo htmlentities($vector_controles_ele[$posele])."  ".htmlentities($row['unidadelem'])?></td>
                                                     </tr>
                                                 <?php
                                                     $posele = $posele+1;
@@ -278,27 +281,23 @@ $idestab              = $_GET['var19'];
                                 <td colspan='2' class="Estilo6"><?php echo $row_estabExt['nombre']?></td>
                                 <td colspan='1' class="Estilo5"><strong>Fecha Resultado:</strong></td>
                                 <td colspan='2' class="Estilo6"><?php echo $row_fecha['fecharesultado']?></td>
-                                <input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row_generales['fechanacimiento']?>>
+                                
                             </tr>
                             <tr>
-                                <td colspan='1' class="Estilo5"><strong>N&uacute;mero de Expediente:</strong></td>
+                                <td colspan='1' class="Estilo5"><strong>Expediente:</strong></td>
                                 <td colspan='2' class="Estilo6"><?php echo $row_generales['idnumeroexp']?></td>
                                 <td colspan='1' class="Estilo5" ><strong>Fecha Recepción:</strong></td>
                                 <td colspan='2' class="Estilo6" ><?php echo $row_generales['fecha']?></td>
                             </tr>
                             <tr>
                                 <td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
-                                <td colspan='5' class="Estilo6"><?php echo htmlentities($row_generales['nombrepaciente'])?></td>
+                                <td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['nombrepaciente'])?></td>
+                                <td colspan='1' class="Estilo5" ><strong>Fecha Toma Muestra:</strong></td>
+                                <td colspan='2' class="Estilo6" ><?php echo $f_tomamuestra ?></td>
                             </tr>
                             <tr>
                                 <td colspan='1' class="Estilo5"><strong>Edad:</strong></td>
-                                <td colspan='2' class="Estilo6">
-                                    <div id="divsuedad">
-                                        <script language="JavaScript" type="text/javascript">
-                                            calc_edad();
-                                        </script>
-                                    </div>
-                                </td>
+                                <td colspan='2' class="Estilo6"><?php echo $row_generales['edad']?></td>
                                  <td colspan='1' class="Estilo5"><strong>Sexo:</strong></td>
                                  <td colspan='2' class="Estilo6"><?php echo $row_generales['sexo']?></td>
                              </tr>

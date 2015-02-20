@@ -215,7 +215,8 @@ function DatosEmpleado($idempleado,$lugar)
 $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT CONCAT_WS(' ',nombre,NULL,apellido) as empleado 
+   
+       $query = "SELECT nombreempleado as empleado 
                FROM mnt_empleado WHERE id=$idempleado AND id_establecimiento=$lugar";
      $result = @pg_query($query);
      if (!$result)

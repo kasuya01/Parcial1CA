@@ -27,6 +27,8 @@ switch ($opcion)
 	$tab=$_POST['tab'];
         $fecharealiz=$_POST['fecharealiz'];
         $fecharesultado=$_POST['fecharesultado'];
+       // $f_tomamuestra=$_POST['f_tomamuestra'];
+       // $tipomuestra=$_POST['tipomuestra'];
         //echo $fecharealiz." - ".$fecharesultado;
 	//echo $idsolicitud."tab".$tab."detalle".$iddetalle;
 
@@ -61,8 +63,8 @@ switch ($opcion)
 				<td> $row[1] </td>
                             </tr>";
 		}
-                                 $resultado.= "  <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
-                                                <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
+                                 $resultado.= "<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
+                                               <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
 	   $resultado.="</table>";
 
 	echo $resultado;
@@ -73,6 +75,8 @@ switch ($opcion)
 	$idelemento= $_POST['idelemento'];
 	$idcantidad= $_POST['idcantidad'];
 	$idresultado= $_POST['idresultado'];
+        $f_tomamuestra=$_POST['f_tomamuestra'];
+        $tipomuestra=$_POST['tipomuestra'];
         //echo $idresultado; 
         //$fecharealiz=$_POST['fecharealiz'];
         //$fecharesultado=$_POST['fecharesultado'];
@@ -124,7 +128,9 @@ switch ($opcion)
 	$idresultado= $_POST['idresultado'];
 	$establecimiento=$_POST['estab'];
 	$tab= $_POST['tab'];
-	//echo $tab;
+        $f_tomamuestra=$_POST['f_tomamuestra'];
+        $tipomuestra=$_POST['tipomuestra'];
+	//echo $f_tomamuestra."  ".$tipomuestra;
 	$Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
 	$row_estab = pg_fetch_array($Consulta_Estab);
 
@@ -162,6 +168,8 @@ switch ($opcion)
                     <tr>
 			<td colspan='1' ><strong>Expediente:</strong></td>
 			<td colspan='2' >".$row_generales['numero']."</td>
+                        <td colspan='1'><strong>Fecha Toma Muestra:</strong></td>
+			<td colspan='2'>".$f_tomamuestra."</td>     
                     </tr>
                     <tr>
 			<td colspan='1' ><strong>Paciente:</strong></td>
@@ -221,7 +229,7 @@ switch ($opcion)
                    </tr>";
        $resultado.="<tr>
 			<td coslpan='6' aling='center'>
-				<input type='submit' id='btnImprimir' value='Imprimir' Onclick='ImprimirPlantillaD(".$idsolicitud.",\"".$idexamen."\",".$idresultado.",\"".$idempleado."\",\"".$establecimiento."\") ;' />
+				<input type='submit' id='btnImprimir' value='Imprimir' Onclick='ImprimirPlantillaD(".$idsolicitud.",\"".$idexamen."\",".$idresultado.",\"".$idempleado."\",\"".$establecimiento."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;' />
 				<input type='button' id='btnSalir' value='Cerrar' onclick='Cerrar()'>
 			</td>
                     </tr>

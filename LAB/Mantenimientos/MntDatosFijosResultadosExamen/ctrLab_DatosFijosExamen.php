@@ -258,7 +258,7 @@ switch ($opcion)
 	case 5:  
 		$idarea=$_POST['idarea'];
                 
-           	//echo "combo".$idarea; 
+           	//echo $idarea." estab=".$lugar; 
 	  	$rslts='';
 		$consultaex= $objdatos->ExamenesPorArea($idarea,$lugar);
 		//$dtMed=$obj->LlenarSubServ($proce);	
@@ -292,7 +292,7 @@ switch ($opcion)
                 $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
 		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
 		
-	  	
+	  	//echo $lugar;
 		$query = "SELECT lab_datosfijosresultado.id,
                                 lab_conf_examen_estab.codigo_examen,
                                 lab_conf_examen_estab.nombre_examen, 
@@ -576,90 +576,69 @@ switch ($opcion)
 		
 
 		$query = "SELECT lab_datosfijosresultado.id,
-                        lab_conf_examen_estab.codigo_examen as idexamen,
-                        lab_conf_examen_estab.nombre_examen as nombreexamen, 
-                        lab_datosfijosresultado.unidades,
-                        lab_datosfijosresultado.rangoinicio,
-                        rangofin, lab_datosfijosresultado.nota, 
-                        to_char(lab_datosfijosresultado.fechaini,'dd/mm/YYYY') AS FechaIni, 
-                        to_char(lab_datosfijosresultado.fechafin,'dd/mm/YYYY') AS FechaFin, 
-                        ctl_sexo.nombre as sexo,
-                        ctl_rango_edad.nombre as redad,
-                        CASE lab_datosfijosresultado.fechafin 
-                            WHEN lab_datosfijosresultado.fechafin THEN 'Inhabilitado'
-                            ELSE 'Habilitado' END AS habilitado,
-                        lab_datosfijosresultado.id as idatofijo
-                            FROM lab_datosfijosresultado
-                            INNER JOIN lab_conf_examen_estab           ON lab_datosfijosresultado.id_conf_examen_estab=lab_conf_examen_estab.id 
-                            INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
-                            INNER JOIN ctl_area_servicio_diagnostico   ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
-                            INNER JOIN lab_areasxestablecimiento       ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
-                            LEFT JOIN ctl_sexo                         ON lab_datosfijosresultado.idsexo = ctl_sexo.id 
-                            INNER JOIN ctl_rango_edad                  ON lab_datosfijosresultado.idedad = ctl_rango_edad.id 
+                                lab_conf_examen_estab.codigo_examen,
+                                lab_conf_examen_estab.nombre_examen, 
+                                lab_datosfijosresultado.unidades,
+                                lab_datosfijosresultado.rangoinicio,
+                                rangofin, lab_datosfijosresultado.nota, 
+                                to_char(lab_datosfijosresultado.fechaini,'dd/mm/YYYY') AS FechaIni, 
+                                to_char(lab_datosfijosresultado.fechafin,'dd/mm/YYYY') AS FechaFin, 
+                                ctl_sexo.nombre as sexo,
+                                ctl_rango_edad.nombre as redad,
+                                CASE lab_datosfijosresultado.fechafin 
+                                    WHEN lab_datosfijosresultado.fechafin THEN 'Inhabilitado'
+                                    ELSE 'Habilitado' END AS habilitado,
+                                    lab_datosfijosresultado.id as idatofijo
+                         FROM lab_datosfijosresultado
+                         INNER JOIN lab_conf_examen_estab           ON lab_datosfijosresultado.id_conf_examen_estab=lab_conf_examen_estab.id 
+                         INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
+                         INNER JOIN ctl_area_servicio_diagnostico   ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
+                         INNER JOIN lab_areasxestablecimiento       ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
+                         LEFT JOIN ctl_sexo                         ON lab_datosfijosresultado.idsexo = ctl_sexo.id 
+                         INNER JOIN ctl_rango_edad                  ON lab_datosfijosresultado.idedad = ctl_rango_edad.id 
                          WHERE lab_conf_examen_estab.idplantilla=1 
                          AND lab_conf_examen_estab.condicion='H' 
                          AND lab_areasxestablecimiento.condicion='H' 
-                         AND lab_datosfijosresultado.idestablecimiento=$lugar  and  ";
+                         AND lab_datosfijosresultado.idestablecimiento=$lugar   ";
 		$ban=0;
 		
 		//VERIFICANDO LOS POST ENVIADOS
-		if (!empty($_POST['idarea']))
-		{ $query .= " mnt_area_examen_establecimiento.id_area_servicio_diagnostico='".$_POST['idarea']."' AND"; }
-		//else{$ban=1;}
-		
-		if (!empty($_POST['idexamen']))
-		{ $query .= " lab_conf_examen_estab.id='".$_POST['idexamen']."' AND"; }
-	//	else{$ban=1;}
-		
-		if (!empty($_POST['unidades']))
-		{ $query .= " unidades='".$_POST['unidades']."' AND"; }
-		//else{$ban=1;}
-		
-		if (!empty($_POST['rangoinicio']))
-		{ $query .= " rangoinicio='".$_POST['rangoinicio']."' AND"; }
-		//else{$ban=1;}
-		
-		if (!empty($_POST['rangofin']))
-		{ $query .= " rangofin='".$_POST['rangofin']."' AND"; }
-		//else{$ban=1;}
+		$ban=0;
+                        //VERIFICANDO LOS POST ENVIADOS
+                        if (!empty($_POST['idarea']))
+                        { $query .= " AND  mnt_area_examen_establecimiento.id_area_servicio_diagnostico=".$_POST['idarea']."        "; }
 
-		if (!empty($_POST['nota']))
-		{ $query .= " nota='".$_POST['nota']."' AND"; }
-		//else{$ban=1;}
+                        if (!empty($_POST['idexamen']))
+                        { $query .= " AND lab_conf_examen_estab.id=".$_POST['idexamen']."     "; }
 
-		
+                       if (!empty($_POST['unidades']))
+                        { $query .= " AND unidades='".$_POST['unidades']."'     "; }
+
+                        if (!empty($_POST['rangoinicio']))
+                        { $query .= "AND  rangoinicio='".$_POST['rangoinicio']."'    "; }
+
+                        if (!empty($_POST['rangofin']))
+                        { $query .= " AND  rangofin='".$_POST['rangofin']."'     "; }
                         
-               if (!empty($_POST['nota']))
-                        { $query .= " nota='".$_POST['nota']."' AND"; }
+                         if (!empty($_POST['nota']))
+                        { $query .= " AND nota ILIKE '%".$_POST['nota']."%'     "; }
                         
+                      /*  if (!empty($_POST['sexo'])){
+                            if ($_POST['sexo']<>3)
+                              $query .= " AND ctl_sexo.id=".$_POST['sexo']."  ";
+                        }
+                        else
+                        { $query .= " AND ctl_sexo.id is null   "; }*/
                         
-                        
-                        
-             /*  if (!empty($_POST['sexo'])){
-                    if ($_POST['sexo']<>3)
-                        $query .= " ctl_sexo.id=".$_POST['sexo']." AND";
-               }
-               else
-                 { $query .= " ctl_sexo.id is null AND"; }*/
-                 
-                 
-                 
-                 
-                 
-                        
-              /*  if (!empty($_POST['redad']))
-                {   $query .= " ctl_rangoedad.id='".$_POST['redad']."' AND"; }*/
-                        
-                        
-                         if ( !empty( $_POST['sexo'] ) && $_POST['sexo'] !== '0' ) 
+                        if ( !empty( $_POST['sexo'] ) && $_POST['sexo'] !== '0' ) 
                             {
                               //  $query .= "  AND CASE WHEN ctl_sexo.id IS NULL THEN 'NULL' ELSE ctl_sexo.id::text END = '".$_POST['sexo']."'   ";
                         
                               if ( $_POST['sexo']==3){
                     
-                                            $query .= " ((ctl_sexo.id IS NULL) or (ctl_sexo.id=".$_POST['sexo']."))        ";
+                                            $query .= "AND ((ctl_sexo.id IS NULL) or (ctl_sexo.id=".$_POST['sexo']."))        ";
                              } else{
-                                    $query .=" ctl_sexo.id=".$_POST['sexo']."         ";
+                                    $query .="AND ctl_sexo.id=".$_POST['sexo']."         ";
                     
                                     }
                             }
@@ -667,19 +646,19 @@ switch ($opcion)
                         
                        
                         if (!empty($_POST['redad']))
-                        { $query .= "  ctl_rango_edad.id=".$_POST['redad']."      "; }
+                        { $query .= " AND ctl_rango_edad.id=".$_POST['redad']."      "; }
 
-                        
-                
-                if (!empty($_POST['Fechaini']))
-		{ 	$FechaI=explode('/',$_POST['Fechaini']);
-			$Fechaini=$FechaI[2].'/'.$FechaI[1].'/'.$FechaI[0];
-			$query .= " fechaini='".$Fechaini."' AND"; }
+                        if (!empty($_POST['Fechaini']))
+                        { 	/*$FechaI=explode('/',$_POST['Fechaini']);
+                                $Fechaini=$FechaI[2].'/'.$FechaI[1].'/'.$FechaI[0];*/
+                            
+                                $query .= " AND  lab_datosfijosresultado.fechaini='".$_POST['Fechaini']."'      "; }
 
-		if (!empty($_POST['Fechafin'])){
-			$FechaF=explode('/',$_POST['Fechafin']);
-	  		$Fechafin=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];
-			$query .= " fechafin='".$Fechafin."' AND"; } 
+                        if (!empty($_POST['Fechafin'])){
+                                /*$FechaF=explode('/',$_POST['Fechafin']);
+                                $Fechafin=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];*/
+                                $query .= " AND  fechafin='".$_POST['Fechafin']."'   "; } 
+
 	
 	if((empty($_POST['cargo'])) and (empty($_POST['idarea'])) and (empty($_POST['nomempleado'])) 
          and (empty($_POST['idempleado'])) and (empty($_POST['sexo'])) and (empty($_POST['redad'])))

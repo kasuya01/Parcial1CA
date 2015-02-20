@@ -23,6 +23,9 @@ $area=$_SESSION['Idarea'];
  $IdEstandar = $_GET['var16'];
  $IdHistorial = $_GET['var17'];
  $estabext = $_GET['var18'];
+ $f_tomamuestra  = $_GET['var19'];
+ $tipomuestra = $_GET['var20'];
+
    
 if($db->conectar()==true) {
            $condatos = "SELECT t07.peso,t07.talla,t06.sct_name_es AS diagnostico,especificacion,conocido_por
@@ -147,6 +150,8 @@ function CargarDatos(){
                             <input type="hidden" name="txtorigen" id="txtorigen"  value="<?php echo $origen;?>"/>
                             <input type="hidden" name="txtestablecimiento" id="txtestablecimiento" value="<?php echo $establecimiento;?>" />	
                             <input type="hidden" name="txtIdEstandar" id="txtIdEstandar" value="<?php echo $IdEstandar?>" />
+                            <input type="hidden" name="txtf_tomamuestra" id="txtf_tomamuestra" value="<?php echo $_GET['var19']?>" />
+                            <input type="hidden" name="txttipomuestra" id="txttipomuestra" value="<?php echo $_GET['var20']?>" />
                         </td>
                     </tr>
                     <tr>
@@ -185,6 +190,14 @@ function CargarDatos(){
                             <input type="hidden" name="txtexamen" id="txtexamen" disabled="disabled" size="60" />
 
                         </td>
+                    </tr>
+                    <tr>
+                        <td class="StormyWeatherFieldCaptionTD">Muestra Recibida</td>
+                        <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var20'] ?></td>
+                    </tr>
+                    <tr>
+                        <td class="StormyWeatherFieldCaptionTD">Fecha de Toma de Muestra</td>
+                        <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var19'] ?></td>
                     </tr>
                     <tr>
                         <td width="30%" class="StormyWeatherFieldCaptionTD">*Validado Por</td>

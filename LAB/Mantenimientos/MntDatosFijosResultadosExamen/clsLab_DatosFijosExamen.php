@@ -36,7 +36,7 @@ class clsLab_DatosFijosExamen
 	      
 		$query = "UPDATE lab_datosfijosresultado SET id_conf_examen_estab=$idexamen, 
 	    		  unidades=$unidades, rangoinicio=$rangoinicio , rangofin=$rangofin , nota=$nota,idsexo=$sexo,idedad=$redad,
-                          idusuariomod= $usuario, fechahoramod=NOW() ,FechaIni=$Fechaini,fechafin=$Fechafin 
+                          idusuariomod= $usuario, fechahoramod=date_trunc('seconds', NOW()) ,FechaIni=$Fechaini,fechafin=$Fechafin 
                           WHERE id=$iddatosfijosresultado AND idestablecimiento=$lugar";
                           //    echo $query;
                                 
@@ -166,7 +166,7 @@ class clsLab_DatosFijosExamen
                          AND mnt_area_examen_establecimiento.id_establecimiento=$lugar
                          ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico";
               
-            //  echo $query;
+           //  echo $query;
 		 $result = pg_query($query);
 		 if (!$result)
 		   return false;

@@ -23,6 +23,8 @@ case 1:
       //  echo $idexamen;
         $fecharealiz=$_POST['fecharealiz'];
         $fecharesultado=$_POST['fecharesultado'];
+        $f_tomamuestra=$_POST['f_tomamuestra'];
+        $tipomuestra=$_POST['tipomuestra'];
       //  echo $fecharealiz." - ".$fecharesultado;
         $ConEstandar=$obj->Obtener_Estandar($idexamen);
 	$CodEstandar= pg_fetch_array($ConEstandar);
@@ -70,7 +72,9 @@ case 1:
 				}
 				pg_free_result($consulta);
                                 $imprimir.= "  <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
-                                                <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
+                                                <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />
+                                               <input type='hidden' name='txttipomuestra' id='txttipomuestra' disabled='disabled' value='".$tipomuestra."' />
+                                             <input type='hidden' name='txtf_tomamuestra' id='txtf_tomamuestra' disabled='disabled' value='".$f_tomamuestra."' />";     
 				$imprimir.="
 				<tr><td class='StormyWeatherFieldCaptionTD'>*Resultado Tabulador</td>
 					<TD colspan='3' class='StormyWeatherDataTD'>
@@ -151,7 +155,9 @@ case 1:
 			}
                         pg_free_result($consulta);
                                     $imprimir.= "<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
-                                                 <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
+                                                 <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />
+                                                 <input type='hidden' name='txttipomuestra' id='txttipomuestra' disabled='disabled' value='".$tipomuestra."' />
+                                                 <input type='hidden' name='txtf_tomamuestra' id='txtf_tomamuestra' disabled='disabled' value='".$f_tomamuestra."' />";    
 					
 		$imprimir.="
 				<tr><td class='StormyWeatherFieldCaptionTD'>*Resultado Tabulador</td>
@@ -183,6 +189,9 @@ break;
 case 2://vista Previa de Resultado
                 $fecharealiz=$_POST['fecharealiz'];
                 $fecharesultado=$_POST['fecharesultado'];
+                $f_tomamuestra=$_POST['f_tomamuestra'];
+                $tipomuestra=$_POST['tipomuestra'];
+                
 		$Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
 		$row_estab = pg_fetch_array($Consulta_Estab);
 		$idexamen=$_POST['idexamen'];//*
@@ -314,11 +323,13 @@ case 2://vista Previa de Resultado
 					pg_free_result($consulta);
                                         // echo $idedad;
                                         $imprimir.= "  <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
-                                                       <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
+                                                       <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />
+                                                        <input type='hidden' name='txttipomuestra' id='txttipomuestra' disabled='disabled' value='".$tipomuestra."' />
+                                                        <input type='hidden' name='txtf_tomamuestra' id='txtf_tomamuestra' disabled='disabled' value='".$f_tomamuestra."' />";    
                                 $imprimir.="<tr>
 						<td colspan='4' align='rigth'>
 							<input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarPlantillaE()'>
-							<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaE(".$idsolicitud.",\"".$idexamen."\",\"".$row_empleado['empleado']."\",\"".$procedencia."\",\"".$row_generales['subservicio']."\",\"".$comentarios."\",\"".$valores."\",\"".$codigos."\",\"".$observacion."\",\"".htmlentities($establecimiento)."\",\"".$sexo."\",\"".$idedad."\") ;'>
+							<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaE(".$idsolicitud.",\"".$idexamen."\",\"".$row_empleado['empleado']."\",\"".$procedencia."\",\"".$row_generales['subservicio']."\",\"".$comentarios."\",\"".$valores."\",\"".$codigos."\",\"".$observacion."\",\"".htmlentities($establecimiento)."\",\"".$sexo."\",\"".$idedad."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'>
 							<input type='button' id='btnSalir' value='cerrar' onclick='Cerrar()'>
 						</td>                                                                                                                                                                                                      
                                             </tr>
@@ -367,8 +378,10 @@ case 2://vista Previa de Resultado
                             <td colspan='2'>".$row_generales['fecharecep']."</td>
 			</tr>
 			<tr>
-                            <td colspan='1'><strong>NEC</strong></td>
-                            <td colspan='5'>".$row_generales['numero']."</td>
+                            <td colspan='1'><strong>Expediente</strong></td>
+                            <td colspan='2'>".$row_generales['numero']."</td>
+                            <td colspan='1'><strong>Fecha Toma Muestra:</strong></td>
+			    <td colspan='2'>".$f_tomamuestra."</td>    
 			</tr>
                         <tr>
                             <td colspan='1'><strong>Paciente:</strong></td>
@@ -444,14 +457,16 @@ case 2://vista Previa de Resultado
                         }
                                 pg_free_result($consulta);
                                 $imprimir.= "  <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
-                                                <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
+                                                <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />
+                                                 <input type='hidden' name='txttipomuestra' id='txttipomuestra' disabled='disabled' value='".$tipomuestra."' />
+                                             <input type='hidden' name='txtf_tomamuestra' id='txtf_tomamuestra' disabled='disabled' value='".$f_tomamuestra."' />";     
                    $imprimir.="</table>
                             <td>
                         </tr>
                         <tr>
                             <td colspan='5' align='center'>
                                 <input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarPlantillaE()'>
-				<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaE(".$idsolicitud.",\"".$idexamen."\",\"".$row_empleado['empleado']."\",\"".$row_generales['procedencia']."\",\"".$row_generales['subservicio']."\",\"".$comentarios."\",\"".$valores."\",\"".$codigos."\",\"".$observacion."\",\"".htmlentities($establecimiento)."\",\"".$sexo."\",\"".$idedad."\",\"".$valores_combos."\");'>
+				<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaE(".$idsolicitud.",\"".$idexamen."\",\"".$row_empleado['empleado']."\",\"".$row_generales['procedencia']."\",\"".$row_generales['subservicio']."\",\"".$comentarios."\",\"".$valores."\",\"".$codigos."\",\"".$observacion."\",\"".htmlentities($establecimiento)."\",\"".$sexo."\",\"".$idedad."\",\"".$valores_combos."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\");'>
                          	<input type='button' id='btnSalir' value='cerrar' onclick='Cerrar()'>
                             </td>
 			</tr>";

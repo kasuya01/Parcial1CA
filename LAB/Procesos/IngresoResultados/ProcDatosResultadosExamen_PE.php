@@ -103,6 +103,10 @@ function VerResultados()
                     IdEstandar=escape(getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'var17=' )
                     IdHistorial=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'var19=' )
+                    f_tomamuestra=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'var20=' )
+                    tipomuestra=escape(getVars[i].substr(5));
             }
             
             document.frmnuevo.txtnec.value=nec;
@@ -164,17 +168,17 @@ function VerResultados()
 <form name="frmnuevo" method="get" action="../IngresoResultados/ProcDatosResultadosExamen_PA.php" enctype="multipart/form-data">
 <table width="80%" border="0" align="center" class="StormyWeatherFormTABLE">
 	<tr class="CobaltButton" >
-		<td colspan="5" align="center"> <h3>DATOS GENERALES</h3></td>
+	    <td colspan="5" align="center"> <h3>DATOS GENERALES</h3></td>
 	</tr>
 	<tr>
-		<td class="StormyWeatherFieldCaptionTD">Establecimiento Solicitante</td>
-		<td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var18'];?></td>
+	    <td class="StormyWeatherFieldCaptionTD">Establecimiento Solicitante</td>
+	    <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var18'];?></td>
 	</tr>
 	<tr>
-		<td class="StormyWeatherFieldCaptionTD">Procedencia</td>
-		<td class="StormyWeatherDataTD"><?php echo $_GET['var10'];?></td>
-                <td class="StormyWeatherFieldCaptionTD">Servicio</td>
-		<td class="StormyWeatherDataTD"><?php echo $_GET['var11'];?></td>
+	    <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
+	    <td class="StormyWeatherDataTD"><?php echo $_GET['var10'];?></td>
+            <td class="StormyWeatherFieldCaptionTD">Servicio</td>
+	    <td class="StormyWeatherDataTD"><?php echo $_GET['var11'];?></td>
 	</tr>
 	<tr>
             <td class="StormyWeatherFieldCaptionTD">NEC</td>
@@ -192,6 +196,8 @@ function VerResultados()
 		    <input type="hidden" name="txtestablecimiento" id="txtestablecimiento" value="<?php echo $_GET['var13']?>"/>
                     <input type="hidden" name="txtFechaNac" id="txtFechaNac" value="<?php echo $_GET['var14']?>" />
                     <input type="hidden" name="txtSexo" id="txtSexo" value="<?php echo $_GET['var15']?>" />
+                    <input type="hidden" name="txtf_tomamuestra" id="txtf_tomamuestra" value="<?php echo $_GET['var19']?>" />
+                    <input type="hidden" name="txttipomuestra" id="txttipomuestra" value="<?php echo $_GET['var20']?>" />
             </td>
         </tr>
 	<tr>
@@ -239,12 +245,20 @@ function VerResultados()
     </tr>
     <tr>
        	<td class="StormyWeatherFieldCaptionTD">Examen </td>
-		<td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var2'] ?>
+	<td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var2'] ?>
            	<input type="hidden" name="txtexamen" id="txtexamen" disabled="disabled" size="60" />
-		</td>
-        </tr>
-	<tr>
-	    <td class="StormyWeatherFieldCaptionTD">*Validado Por</td>
+	</td>
+    </tr>
+    <tr>
+        <td class="StormyWeatherFieldCaptionTD">Muestra Recibida</td>
+        <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var20'] ?></td>
+    </tr>
+    <tr>
+        <td class="StormyWeatherFieldCaptionTD">Fecha de Toma de Muestra</td>
+        <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var19'] ?></td>
+    </tr>
+    <tr>
+        <td class="StormyWeatherFieldCaptionTD">*Validado Por</td>
         <td class="StormyWeatherDataTD" colspan="4">
 			<div id="divEncargado">
 				 <select id="cmbEmpleados" name="cmbEmpleados" size="1">
@@ -285,33 +299,35 @@ function VerResultados()
 		</td>
 	</tr>
 	</table>
-    <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>
-    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon-i18n.min.js"></script>
-    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-es.js"></script>
-    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-sliderAccess.js"></script>
-    <script type="text/javascript" src="../../../public/datepicker/script.js">
-</script>  
-</form>
-</div>
-</td>
+                    <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
+                    <script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
+                    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>
+                    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon-i18n.min.js"></script>
+                    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-es.js"></script>
+                    <script type="text/javascript" src="../../../public/datepicker/jquery-ui-sliderAccess.js"></script>
+                    <script type="text/javascript" src="../../../public/datepicker/script.js">
+                </script>  
+            </form>
+        </div>
+    </td>
 </tr>
 <tr>
-<td>
-</td>
-</tr>
-<td>
-<div  id="divexamen" style="display:none">
-
-</div>
-</td>
+    <td>
+    </td>
 </tr>
 <tr>
-<td>
-<div  id="divresultado" style="display:none">
+    <td>
+        <div  id="divexamen" style="display:none">
 
-</div></td>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td>
+        <div  id="divresultado" style="display:none">
+
+        </div>
+    </td>
 </tr>
 </table>
 </body>
