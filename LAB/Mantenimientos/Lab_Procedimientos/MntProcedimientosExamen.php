@@ -133,7 +133,7 @@ function habilitar_metodologia(obj){
 </head>
 <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" onLoad="show_event(1);">
 <div id="dialog" style='display:none;' title="¡Aviso!">
-    <p> <cente>¡Debe de Ingresar al un Parámetro de Búsqueda!!</cente></p>
+    <p> <cente>¡Debe de Ingresar al menos un Parámetro de Búsqueda!!</cente></p>
 </div>
 <?php 
 if ($nivel==1){

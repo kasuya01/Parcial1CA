@@ -274,7 +274,7 @@ $rangoedad=$row['nombregrupoedad'];
                 } else {
                   ?>
     
-                    <tr>  
+        <tr>  
             <td class="StormyWeatherDataTD" colspan="6" align="right">
                 <button type='button' align="center" class='btn btn-primary'  onclick='Actualizar(); '><span class='glyphicon glyphicon-repeat'></span> Actualizar </button>
                 <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntProcedimientosExamen.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
@@ -282,7 +282,7 @@ $rangoedad=$row['nombregrupoedad'];
                 <input type="button" name="btnSubElementos" value="SubElementos" Onclick="MostrarSubElementos() ;">  
                 -->
                  </td>
-    </tr>
+        </tr>
     <?php 
                 }
                 
