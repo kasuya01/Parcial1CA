@@ -103,14 +103,14 @@ if ($nivel==4){
         <div  id="divInicial" >
             <form>
                 <p>&nbsp;</p>
-		<table align="center"  class="StormyWeatherFormTABLE" width="95%">
+		<table align="center"  class="StormyWeatherFormTABLE" width="90%">
 		<tr>
                     <td colspan="5" align="center" class="CobaltFieldCaptionTD"><h3><strong>Imprimir Resultados</strong></h3></td>
 		</tr>
 		<tr>		
                     <td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</td>
                     <td class="StormyWeatherDataTD">
-                        <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)">
+                        <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value) " class="form-control height">
                             <option value="0">Seleccione un Tipo de Establecimiento</option>
 			<?php
 				$db = new ConexionBD;
@@ -128,8 +128,8 @@ if ($nivel==4){
                     </td>
                     <td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
                     <td class="StormyWeatherDataTD" >
-			<div id="divEstablecimiento">
-                            <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px">
+			
+                            <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px" class="form-control height">
                             	<option value="0" >Seleccione un Establecimiento</option>
 				<?php 
 				  echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
@@ -146,13 +146,13 @@ if ($nivel==4){
                                         }
 				?>	
                             </select>
-			</div>
+			
                     </td>
                 </tr>
                 <tr>	
                     <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
                     <td class="StormyWeatherDataTD">
-			<select name="CmbServicio" id="CmbServicio" style="width:405px" onChange="BuscarServicio(this.value)" >
+			<select name="CmbServicio" id="CmbServicio" style="width:405px" onChange="BuscarServicio(this.value)" class="form-control height" >
                             <option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
 				<?php
                                     $db = new ConexionBD;
@@ -163,13 +163,7 @@ if ($nivel==4){
                                                       WHERE t01.id IN (
                                                       SELECT DISTINCT id_area_atencion 
                                                       FROM mnt_area_mod_estab WHERE id_establecimiento = $lugar)";
-                                            
-                                           /* "SELECT mse.id,mse.nombre 
-						FROM mnt_servicio_externo mse 
-						INNER JOIN mnt_servicio_externo_establecimiento msee 
-						ON mse.id=msee.id
-						WHERE   msee.id_establecimiento=$lugar";*/
-                                            
+                                                                                    
 						$resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
 						//por cada registro encontrado en la tabla me genera un <option>
 						while ($rows = pg_fetch_array($resultado)){
@@ -181,53 +175,53 @@ if ($nivel==4){
                     </td>
                     <td class="StormyWeatherFieldCaptionTD">Servicio</td>
                     <td class="StormyWeatherDataTD">
-			<div id="divsubserv">
-                            <select name="cmbSubServ" id="cmbSubServ" style="width:375px" >
+			
+                            <select name="cmbSubServ" id="cmbSubServ" style="width:375px" class="form-control height" >
 				<option value="0" selected="selected"> Seleccione un Servicio </option>
                             </select>
-			</div>
+			
                     </td>
                 </tr>
                 <tr> 
                     <td class="StormyWeatherFieldCaptionTD"  >Expediente</td>
                     <td  class="StormyWeatherDataTD" width="5%" >
-                         <div class="col-xs-9">
-                        <input  type="text" size="28" name="txtexpediente" id="txtexpediente" class="form-control" placeholder="Buscar Expediente"/>
-                         </div>
+                        
+                        <input  type="text" size="28" name="txtexpediente" id="txtexpediente" class="form-control height" style="width:375px"  placeholder="Buscar Expediente"/>
+                        
                          </td>
                     
                              <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Recepi&oacute;n</td>
                              <td class="StormyWeatherDataTD" width="5%">
-                                 <div class="col-xs-9"> 
-                                     <input type="text" size="28"  name="txtfecharecep" id="txtfecharecep" class="date form-control"   placeholder="aaaa-mm-dd"/>
-                                </div> 
+                                  
+                                     <input type="text" size="28"  name="txtfecharecep" id="txtfecharecep" class="form-control height"  placeholder="aaaa-mm-dd"/>
+                                 
                             </td>
                 </tr>
                 <tr>
                     <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong>   </td> 
                     <td class="StormyWeatherDataTD" >
-                        <div class="col-xs-9">
-                            <input  maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre" class="form-control" >
-                        </div>
+                        
+                            <input  maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre" class="form-control height" >
+                        
                     </td> 
                     <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Nombre</strong>   </td> <td class="StormyWeatherDataTD">
-                        <div class="col-xs-9">
-                                <input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre" class="form-control" >
-                        </div>
+                        
+                                <input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre" class="form-control height" >
+                        
                     </td> 
                 </tr>
                 <tr>
                     <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Apellido</strong></td> 
                     <td class="StormyWeatherDataTD">
-                        <div class="col-xs-9">
-                            <input  maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido" class="form-control">
-                        </div>
+                        
+                            <input  maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido" class="form-control height">
+                        
                     </td> 
                     <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Apellido</strong></td> 
                     <td class="StormyWeatherDataTD" >
-                        <div class="col-xs-9">
-                           <input  maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" class="form-control" >
-                         </div>
+                        
+                           <input  maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" class="form-control height" >
+                        
                     </td>
                 </tr>
                
