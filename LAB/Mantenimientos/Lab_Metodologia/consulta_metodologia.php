@@ -1,164 +1,128 @@
 <?php session_start();
-include_once("clsLab_DatosFijosExamen.php");
+include_once("clsLab_metodologia.php");
 $lugar=$_SESSION['Lugar'];
 $usuario=$_SESSION['Correlativo'];
 $area=$_SESSION['Idarea'];
 //consulta los datos por su id
-$iddatosfijosexamen=$_POST['iddatosfijosexamen'];
+$idmetodologia=$_POST['idmetodologia'];
 //echo $iddatosfijosexamen;
 //echo $iddatosfijosexamen;
-$obj = new clsLab_DatosFijosExamen;
+$obj = new clsLab_metodologia();
 
-$consulta1=$obj->consultarhabilitado($iddatosfijosexamen);
+$consulta1=$obj->consultarhabilitado($idmetodologia);
 $row = pg_fetch_array($consulta1);
-$habilitado=$row['habilitado'];
+$habilitado=$row['activo'];
 
 
-$consulta=$obj->consultarid($iddatosfijosexamen,$lugar);
+$consulta=$obj->consultarid($idmetodologia,$lugar);
 $row = pg_fetch_array($consulta);
 //$iddatosfijosexamen;
 //valores de las consultas
-$idarea=$row['idarea'];
+$idarea=$row['id_area'];
 //echo $idarea;
 $nombrearea=$row['nombrearea'];
-$idexamen=$row['idexamen'];
-//echo $idexamen;
+$idexamen=$row['id_examen'];
 $nombreexamen=$row['nombre_examen'];
-$unidades=$row['unidades'];
-//echo $unidades;
-$rangoinicio=$row['rangoinicio'];
-$rangofin=$row['rangofin'];
-$nota=$row['nota'];
-$Fechaini=$row['fechaini'];
-$Fechafin=$row['fechafin'];
-$idsexo=$row['idsexo'];
-$nombresexo=$row['sexo'];
-if (empty($idsexo)){
-    $idsexo=0;
-$nombresexo="Ambos";}    
+$nombrearea=$row['nombrearea'];
+$nombrereporta=$row['nombre_reporta'];
 
-$idedad=$row['idedad'];
-$rangoedad=$row['redad'];
-//echo $idsexo,$nombresexo;
+$Fechaini=$row['fecha_inicio'];
+$Fechafin=$row['fecha_fin'];
+$b_reporta=$row['b_reporta'];
+if ($b_reporta=='t'){
+    $reporta='true';
+}
+ else {
+    $reporta='false';
+}
+
 //muestra los datos consultados en los campos del formulario
 ?>
 
 <form name= "frmModificar" action="">
     <table width="50%" border="0" align="center" class="StormyWeatherFormTABLE">
         <tr>
-            <td colspan="3" align="center" class="CobaltFieldCaptionTD"><h3><strong>Datos Fijos de Resultados de Ex&aacute;menes de Laboratorio</h3></strong>
+            <td colspan=4" align="center" class="CobaltFieldCaptionTD"><h3><strong>Configuración de metodología</h3></strong>
             </td>
 	</tr>
 	<tr>
             <td width="17%" class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
-            <td width="83%" class="StormyWeatherDataTD">
-                <select id="cmbArea" name="cmbArea" size="1" onChange="LlenarComboExamen(this.value);">
-                    <option value="0" >--Seleccione un &Aacute;rea--</option>";
-                    <?php
-			include('../Lab_Areas/clsLab_Areas.php');
-			$objeareas=new clsLab_Areas;
-			$consulta= $objeareas->consultaractivas($lugar);
-			while($row = pg_fetch_array($consulta)){
-                            echo "<option value='".$row['id']."'>".$row['nombrearea']."</option>";
-                           
-                        }
-                            echo "<option value='" . $idarea . "' selected='selected'>" .htmlentities($nombrearea). "</option>";
-                    ?>		  
-		</select>
+            <td width="83%" class="StormyWeatherDataTD" colspan="3">
+               <input type="text" readonly="readonly" class="form-control height"  style="width:75%" id="Area" name="Area" value="<?php echo $nombrearea?>"
+               <input type="hidden" class="form-control height" id="cmbArea" name="cmbArea" value="<?php echo $idarea?>"
+
             </td>
         </tr>
         <tr>
             <td width="17%" class="StormyWeatherFieldCaptionTD">Examen </td>
-            <td width="83%" class="StormyWeatherDataTD">
-                <select id="cmbExamen" name="cmbExamen" size="1">
+            <td width="83%" class="StormyWeatherDataTD" colspan="3">
+               <input type="text" disabled class="form-control height" id="Examen" name="Examen" style="width:75%" value="<?php echo $nombreexamen; ?>">
+               <input type="hidden" id="cmbExamen" name="cmbExamen" value="<?php echo $idexamen; ?>">
+<!--                <select id="cmbExamen" name="cmbExamen" size="1">
                     <option value="0">--Seleccione un Examen--</option>";
                     <?php
-                        $consultaex = $obj->ExamenesPorArea($idarea,$lugar);
-                        while($row = pg_fetch_array($consultaex))
-                        {
-                            echo "<option value='" . $row['idexamen']. "'>" . $row['nombreexamen'] . "</option>";
-                        }						            	
-                            echo "<option value='" . $idexamen . "' selected='selected'>" .$nombreexamen. "</option>";
+//                        $consultaex = $obj->ExamenesPorArea($idarea,$lugar);
+//                        while($row = pg_fetch_array($consultaex))
+//                        {
+//                            echo "<option value='" . $row['idexamen']. "'>" . $row['nombreexamen'] . "</option>";
+//                        }						            	
+//                            echo "<option value='" . $idexamen . "' selected='selected'>" .$nombreexamen. "</option>";
                     ?>	
-		</select>
+		</select>-->
             </td>
         </tr>
         <tr>
-            <td width="17%" class="StormyWeatherFieldCaptionTD">Sexo</td>
-            <td width="83%"  class="StormyWeatherDataTD">
-                <select id="cmbSexo" name="cmbSexo" size="1" >
-                     <option value="3">--Seleccione Sexo--</option>  
-                     <option value="0">Ambos</option>
+            <td width="17%" class="StormyWeatherFieldCaptionTD">Metodología</td>
+            <td class="StormyWeatherDataTD" colspan="3">
+               <input type="text" readonly="readonly" class="form-control height"  style="width:75%" id="metodologia" name="metodologia" value="<?php echo $nombrereporta?>"/>
+               <input type="hidden" class="form-control height" id="cmbMetodologia" name="cmbMetodologia" value="<?php echo $idmetodologia?>"/>
+
+            </td>
+        </tr>
+        <tr>
+            <td width="17%" class="StormyWeatherFieldCaptionTD">Reporta</td>
+            <td class="StormyWeatherDataTD" colspan="3">
+               <select id="cmbreporta" name="cmbreporta" size="1" class="form-control height"  style="width:75%">   
                     <?php
-                            $consultaS= $obj->consultarsexo();
-                            while($row =pg_fetch_array($consultaS)){
-                                 echo "<option value='" . $row[0]. "'>". $row[1] . "</option>";
-
-                            }
-
-                            echo "<option value='" . $idsexo . "' selected='selected'>" .$nombresexo. "</option>";
-                    ?>        
-                </select>		  
+                    if ($b_reporta=='t'){
+                       echo ' <option value="true" selected >Si</option>
+                        <option value="false" >No</option>  ';
+                    }
+                     else {
+                          echo '<option value="true" >Si</option>
+                        <option value="false" selected >No</option>  ';
+                     }
+                   
+                    ?>                      
+               </select>		  
              </td>        
         </tr>
-         <tr>
-                <td width="17%" class="StormyWeatherFieldCaptionTD">Rango Edad</td>
-                <td width="83%"  class="StormyWeatherDataTD">
-                    <select id="cmbEdad" name="cmbEdad" size="1" >
-                        <option value="0" >--Seleccione un Rango de Edad--</option>
-                            <?php
-                                $conEdad = $obj->RangosEdades();
-                                while($row = pg_fetch_array($conEdad)){
-                                     echo "<option value='" . $row[0]. "'>". $row[1] . "</option>";
-                                }
-                                echo "<option value='" . $idedad . "' selected='selected'>" .$rangoedad. "</option>";
-                            ?>    
-                    </select>		  
-                </td>        
-        </tr>
-	<tr>
-            <td width="17%" class="StormyWeatherFieldCaptionTD">Unidades</td>
-            <td width="83%" class="StormyWeatherDataTD"><input name="txtunidades" type="text" id="txtunidades" value="<?php echo htmlentities($unidades); ?>" size="10"></td>
-   	</tr>
-       	<tr>
-            <td colspan="2" class="StormyWeatherDataTD">
-		<fieldset><span><center><h4>Rangos</h4></center></span>
-                    <table width="200" border="0" align="center" class="StormyWeatherFormTABLE">
-                        <tr>
-                                <td class="StormyWeatherFieldCaptionTD">Inicio</td>
-                                        <input type="hidden" name="txtoculto" id="txtoculto" size="50" value="<?php echo $iddatosfijosexamen; ?>" />
-                                <td class="StormyWeatherDataTD"> 
-                                        <input name="txtrangoinicio" type="text" id="txtrangoinicio" value="<?php echo $rangoinicio; ?>" size="6">
-                                </td>
-                                <td class="StormyWeatherFieldCaptionTD">Fin </td>
-                                <td class="StormyWeatherDataTD">
-                                        <input name="txtrangofin" type="text" id="txtrangofin" value="<?php echo $rangofin; ?>" size="6">
-                                </td>
-                        </tr>
-                    </table>
-                </fieldset>               
-            </td>
-        </tr>
-       	<tr>
-            <td class="StormyWeatherFieldCaptionTD">Observaci&oacute;n</td>
-            <td class="StormyWeatherDataTD">
-          	<textarea name="txtnota" cols="65" rows="3" id="txtnota" ><?php echo htmlentities($nota); ?></textarea>
-	    </td>
-       	</tr>
-	<tr>
-            <td colspan="2" class="StormyWeatherDataTD">
-                <table width="740" border="0" align="center" class="StormyWeatherFormTABLE">
-                    <tr>
-                        <td class="StormyWeatherFieldCaptionTD">Fecha Inicio</TD>
+           <tr>
+                        <td width="17%" class="StormyWeatherFieldCaptionTD">Posibles Resultados</td>
+                        
+                        
+                        <td class="StormyWeatherDataTD" colspan="3">
+                           <div id="posresultprevios">
+                            <input type="hidden" name="posresultados_sel" id="posresultados_sel" value="">
+                            <input type="hidden" name="text_posresultados_sel" id="text_posresultados_sel">
+                            <input type="hidden" name="id_posresultados_sel" id="id_posresultados_sel">
+                           </div>
+                            <button type='button' class='btn btn-default'  name="add_posresultado" id="add_posresultado" style="width:75%; text-align: left" onclick="popup('consulta_posresultados.php?form=frmModificar&posresultados_sel='+document.getElementById('posresultados_sel').value+
+                                        '&text_posresultados_sel='+document.getElementById('text_posresultados_sel').value+
+                                        '&nombre='+$('#cmbMetodologia').text()+ '&id_posresultados_sel='+document.getElementById('id_posresultados_sel').value+'&actualizar='+1);"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Posibles Resultados:..</button>
+                           
+                        </td>      
+                     </tr>                    
+                     <tr>
+                        <td class="StormyWeatherFieldCaptionTD">Fecha Inicio *</td>
                         <td  class="StormyWeatherDataTD">
-                            <input name="txtFechainicio1" type="text" id="txtFechainicio" value="<?php echo $Fechaini; ?>" size="8" >dd/mm/aaaa</td>
-                        <td class="StormyWeatherFieldCaptionTD">Fecha Final</D>
+                            <input  name="txtFechainicio" type="text" id="txtFechainicio" size="25" class="date form-control  height placeholder"  placeholder="aaaa-mm-dd" style="width:100%"  value="<?php echo $Fechaini ?>"/>		  
+			</td>      
+                          <td class="StormyWeatherFieldCaptionTD"  width="17%">Fecha Final</td>
                         <td  class="StormyWeatherDataTD">
-                            <input name="txtFechaFin1" type="text" id="txtFechaFin" value="<?php echo $Fechafin; ?>" size="8" >dd/mm/aaaa</td>	
-                    </tr>
-                </table>
-            </td>
-	</tr>	
+                           <input name="txtFechaFin" type="text" id="txtFechaFin" size="28" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" style="width:100%" value="<?php echo $Fechafin?>" />
+			</td>      
+                     </tr>     
 	<!--<tr>
             <td class="StormyWeatherDataTD" colspan="2" align="right">
 		<input type="button" name="btnGuardar" value="Actualizar" onClick="Actualizar() ;">
@@ -175,7 +139,7 @@ $rangoedad=$row['redad'];
         <tr>  
             <td class="StormyWeatherDataTD" colspan="6" align="right">
                 
-                <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntDatosFijosResultadosExamen.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+                <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntLab_metodologia.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
             </td>
         </tr>
         
@@ -185,8 +149,8 @@ $rangoedad=$row['redad'];
         
         <tr>  
             <td class="StormyWeatherDataTD" colspan="6" align="right">
-                <button type='button' align="center" class='btn btn-primary'  onclick='Actualizar(); '><span class='glyphicon glyphicon-repeat'></span> Actualizar </button>
-                <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntDatosFijosResultadosExamen.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+                <button type='button' align="center" class='btn btn-primary'  onclick='Guardar(); '><span class='glyphicon glyphicon-repeat'></span> Actualizar </button>
+                <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntLab_metodologia.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
             </td>
     </tr>
     <?php 
