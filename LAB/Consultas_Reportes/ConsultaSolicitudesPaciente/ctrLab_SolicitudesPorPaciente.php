@@ -284,7 +284,7 @@ switch ($opcion)
                                         <th>Fecha Consulta      </th>
                         </tr>
                     </thead><tbody>"; 
-        if(pg_num_rows($consulta)){
+        if(@pg_num_rows($consulta)){
             $pos = 0;
 
             while ($row = pg_fetch_array($consulta)) {
@@ -723,7 +723,7 @@ pg_free_result($consultadetalle);
 		$Idtipoesta=$_POST['idtipoesta'];
               // echo $Idtipoesta;
             	$dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
-              	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:375px">';
+              	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" class="form-control height"  style="width:375px">';
 		$rslts .='<option value="0"> Seleccione Establecimiento </option>';
                while ($rows =pg_fetch_array( $dtIdEstab)){
 		  $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
@@ -737,7 +737,7 @@ pg_free_result($consultadetalle);
              $IdServ=$_POST['IdServicio'];
 	   //  echo $IdServ;
 	     $dtserv=$objdatos->LlenarCmbServ($IdServ,$lugar);
-	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:375px">';
+	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" class="form-control height"  style="width:375px">';
 			$rslts .='<option value="0"> Seleccione Subespecialidad </option>';
 			while ($rows =pg_fetch_array($dtserv)){
 		  	$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';

@@ -23,14 +23,14 @@ function DatosCompletos()
     {
         resp = false;
     }
-    if (document.getElementById('txtnombretarjeta').value == "")
+    if (document.getElementById('txtFechainicio').value == "")
     {
         resp = false;
     }
-    if (document.getElementById('txtnombretarjeta').value == "")
+   /* if (document.getElementById('txtFechaFin').value == "")
     {
         resp = false;
-    }
+    }*/
     return resp;
 }
 /*function LimpiarControles()

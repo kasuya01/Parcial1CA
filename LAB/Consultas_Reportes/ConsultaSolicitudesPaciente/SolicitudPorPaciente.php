@@ -138,7 +138,7 @@ if ($nivel==33){
 			</tr>
 			<tr>		
 				<td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</td>
-		<td class="StormyWeatherDataTD"><select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)">
+		<td class="StormyWeatherDataTD"><select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)" class="form-control height placeholder">
         	<option value="0">Seleccione un Tipo de Establecimiento</option>
 			<?php
 				$db = new ConexionBD;
@@ -157,7 +157,7 @@ if ($nivel==33){
         	<td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
         	<td class="StormyWeatherDataTD" >
 				<div id="divEstablecimiento">
-					<select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px">
+					<select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px" class="form-control height placeholder">
 						<option value="0" >Seleccione un Establecimiento</option>
 				<?php 
 				  echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
@@ -183,7 +183,7 @@ if ($nivel==33){
 	<tr>	
 		<td class="StormyWeatherFieldCaptionTD">Procedencia</td>
 		<td class="StormyWeatherDataTD">
-			<select name="CmbServicio" id="CmbServicio" style="width:355px" onChange="BuscarServicio(this.value)" >
+			<select name="CmbServicio" id="CmbServicio" style="width:405px" onChange="BuscarServicio(this.value)" class="form-control height placeholder">
 				<option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
 				<?php
 					$db = new ConexionBD;
@@ -222,7 +222,7 @@ if ($nivel==33){
 		<td class="StormyWeatherFieldCaptionTD">Servicio</td>
 		<td class="StormyWeatherDataTD">
 			<div id="divsubserv">
-				<select name="cmbSubServ" id="cmbSubServ" style="width:375px" >
+				<select name="cmbSubServ" id="cmbSubServ" style="width:375px" class="form-control height placeholder">
 					<option value="0" selected="selected"> Seleccione un Servicio </option>
 				</select>
 			</div>
@@ -237,17 +237,17 @@ if ($nivel==33){
 		<td  class="StormyWeatherDataTD" width="1%" >
                     
                     <!--<input type="text" size="24" name="txtexpediente" id="txtexpediente" />-->
-                    <div class="col-xs-9"> 
-                     <input type="text" size="10" name="txtexpediente" id="txtexpediente" class="form-control" placeholder="Buscar Expediente" >
-                    </div>
+                    
+                     <input type="text" size="10" name="txtexpediente" id="txtexpediente" style="width:250px"  placeholder="Ingrese Expediente " class="form-control height placeholder"  >
+                    
                 </td>
 		
                 
                         <td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Recepi&oacute;n</td>
 		<td  class="StormyWeatherDataTD" width="20%" >
-                 <div class="col-xs-9"> 
-                        <input type="text" size="25" name="txtfecharecep" id="txtfecharecep" class="date"  placeholder="aaaa-mm-dd" />
-		  </div>
+                 
+                        <input type="text" size="25" name="txtfecharecep" id="txtfecharecep" style="width:250px" class="date form-control  height placeholder"  placeholder="aaaa-mm-dd" />
+		  
                 </td>
                 
                 
@@ -256,29 +256,29 @@ if ($nivel==33){
 	<tr>
 		<td  class="StormyWeatherFieldCaptionTD" ><strong>Primer Nombre&nbsp;</strong>   </td> 
                         <td class="StormyWeatherDataTD" >
-                            <div class="col-xs-9"> 
-                                <input width="20%" maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre" class="form-control" placeholder="">
-                            </div>
+                            
+                                <input width="20%" maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre" style="width:250px"  placeholder="Ingrese Primer Nombre " class="form-control height placeholder">
+                            
                         </td>
                 
                         <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Nombre</strong>   </td> <td class="StormyWeatherDataTD">
-                             <div class="col-xs-9"> 
-                                 <input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre"  class="form-control" placeholder="">
-                             </div>
+                             
+                                 <input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre"  style="width:250px"  placeholder="Ingrese Segundo Nombre " class="form-control height placeholder">
+                             
                         </td> 
 	</tr>
 	<tr>
 		<td class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Apellido</strong></td> 
 		<td class="StormyWeatherDataTD">
-                    <div class="col-xs-9">
-                        <input  maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido" class="form-control" placeholder="">
-                    </div>
+                   
+                        <input  maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido" style="width:250px"  placeholder="Ingrese Primer Apellido " class="form-control height placeholder">
+                    
                 </td> 
 		<td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Apellido</strong></td> 
 		<td class="StormyWeatherDataTD" >
-                    <div class="col-xs-9">
-                            <input  maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" class="form-control" placeholder="">
-                    </div>   
+                    
+                            <input  maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" style="width:250px"  placeholder="Ingrese Segundo Apellido" class="form-control height placeholder">
+                       
                 </td>
 	</tr>
                

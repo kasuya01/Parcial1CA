@@ -71,7 +71,8 @@ switch ($opcion) {
                         <th > <center> Indicaci&oacute;n </center></th>	   
                     </tr>
                 </thead><tbody>";
-
+ if(pg_num_rows($consulta))
+        {
         while ($row = pg_fetch_array($consulta)) {
           echo "<tr>
                     <td aling='center'> 
@@ -85,6 +86,10 @@ switch ($opcion) {
 					    <!-- indicacion-->	<td>" . htmlentities($row[5]) . "</td>
 					</tr>";
         }
+        } else 
+            {
+                 echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></tbody></table></div>";
+            }
         echo "</table>";
 
         //determinando el numero de paginas
@@ -136,7 +141,7 @@ switch ($opcion) {
         $consultaex = $objdatos->ExamenesPorArea($idarea);
         //echo $idarea; 
         $resultado = '';
-        $resultado = "<select id='cmbExamen' name='cmbExamen' size='1'>
+        $resultado = "<select id='cmbExamen' name='cmbExamen' size='1' style='width:235px' class='form-control height placeholder'>
 					<option value='0'>--Seleccione un Examen--</option>";
 
         while ($rowex = pg_fetch_array($consultaex)) {
@@ -257,7 +262,8 @@ switch ($opcion) {
                         <th > <center> Indicaci&oacute;n </center></th>	   
                     </tr>
                 </thead><tbody>";
-
+        if(pg_num_rows($consulta))
+        {
         while ($row = pg_fetch_array($consulta)) {
             echo "<tr>
 		  		<td aling='center'> 
@@ -271,6 +277,11 @@ switch ($opcion) {
 				<td>" . htmlentities($row[5]) . "</td>
 				</tr>";
         }
+         } else 
+            {
+                 echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></tbody></table></div>";
+            }
+        
         echo "</table>";
         
         //determinando el numero de paginas

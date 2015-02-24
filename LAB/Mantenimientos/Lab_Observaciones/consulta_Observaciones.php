@@ -36,7 +36,7 @@ $nombrearea=$row['nombrearea'];
         <input name="idobservacion" id="idobservacion" type="hidden" value="<?php echo $idobservacion; ?>" disabled="disabled" />   
         <td class="StormyWeatherFieldCaptionTD">C&oacute;digo del &Aacute;rea</td>
         <td class="StormyWeatherDataTD">
-			<select id="cmbArea" name="cmbArea" size="1">
+			<select id="cmbArea" name="cmbArea" size="1" style="width:250px" class="form-control">
 			<option value="0" >--Seleccione un Area--</option>";
 			<?php
 			include('../Lab_Areas/clsLab_Areas.php');
@@ -53,7 +53,7 @@ $nombrearea=$row['nombrearea'];
 	<tr>
         <td class="StormyWeatherFieldCaptionTD">Tipo Respuesta </td>
         <td class="StormyWeatherDataTD">
-			<select id="cmbTipoRespuesta" name="cmbTipoRespuesta" size="1" >
+			<select id="cmbTipoRespuesta" name="cmbTipoRespuesta" size="1" style="width:250px" class="form-control" >
 			<option value="0" >--Seleccione--</option>
 			<option value="P" >Positivo</option>
 			<option value="N" >Negativo</option>

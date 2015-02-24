@@ -133,7 +133,7 @@ if ($nivel==33){
 			<!--<input type="hidden" name="txtoculto" id="txtoculto" /> -->
 				<td align="center" class="StormyWeatherFieldCaptionTD">Tarjeta VITEK </td>
 				<td width="53%"  class="StormyWeatherDataTD">
-					<select name="cmbTarjetas" id="cmbTarjetas" onChange="LlenarLista(this.value);">
+					<select name="cmbTarjetas" id="cmbTarjetas" onChange="LlenarLista(this.value);" style="width:250px"  class="form-control height">
 					<option value="0" >--Seleccione una Tarjeta--</option>
 					<?php
 						include_once('../Lab_TarjetasVITEK/clsLab_TarjetasVITEK.php');

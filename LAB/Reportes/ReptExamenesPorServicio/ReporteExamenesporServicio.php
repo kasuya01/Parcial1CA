@@ -106,8 +106,8 @@ if ($nivel==33){
 		</tr>
 		<tr>
 			<td class="StormyWeatherFieldCaptionTD" >Procedencia</td>
-			<td  class="StormyWeatherDataTD" ><span class="StormyWeatherDataTD" >
-			  <select name="cmbProcedencia"  class="MailboxSelect" id="cmbProcedencia" onChange="BuscarSubServicio(this.value)"  >
+			<td  class="StormyWeatherDataTD" >
+			  <select name="cmbProcedencia"   id="cmbProcedencia" onChange="BuscarSubServicio(this.value)" class="form-control height" style="width:250px" >
                			 <option value="0">--Todas las Procedencia--</option>
          			<?php
 					include_once("../../../Conexion/ConexionBD.php");
@@ -131,11 +131,11 @@ if ($nivel==33){
 					}
 					?>
               </select>
-			</span></td>
+			</td>
 			<td class="StormyWeatherFieldCaptionTD">Servicio</td>
 			<td  class="StormyWeatherDataTD">
 				<div id="divSubServ">
-					<select name="cmbSubServicio" id="cmbSubServicio" class="MailboxSelect" style="width:220px"> 
+					<select name="cmbSubServicio" id="cmbSubServicio" class="form-control height" style="width:250px"> 
 						<option value="0">--Seleccione un Servicio--</option>
 					</select>
 				</div>		</td> 
@@ -145,12 +145,12 @@ if ($nivel==33){
                         
                         <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Inicio </td>
                         <td class="StormyWeatherDataTD" width="20%">
-                            <input type="text" size="22" name="txtfechainicio" id="txtfechainicio" class="date"  placeholder="aaaa-mm-dd"/>
+                            <input type="text" size="22" name="txtfechainicio" id="txtfechainicio" style="width:250px" class="date form-control  height placeholder"  placeholder="aaaa-mm-dd"/>
                     
                         
                         <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Final </td>
                         <td class="StormyWeatherDataTD" width="20%">
-                            <input type="text" size="22" name="txtfechafin" id="txtfechafin"  class="date"  placeholder="aaaa-mm-dd"/>
+                            <input type="text" size="22" name="txtfechafin" id="txtfechafin" style="width:250px" class="date form-control  height placeholder"  placeholder="aaaa-mm-dd"/>
                     
                         
                         

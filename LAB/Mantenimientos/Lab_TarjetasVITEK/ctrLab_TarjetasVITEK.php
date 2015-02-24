@@ -11,24 +11,37 @@ $Clases = new clsLabor_TarjetasVITEK;
 switch ($opcion) {
 	case 1:  //INSERTAR	
 		$nombretarjeta=$_POST['nombretarjeta'];
-
-		if (empty($_POST['Fechaini'])){
+                $Fechaini=$_POST['Fechaini'];
+                $Fechafin=$_POST['Fechafin'];
+                
+                $Fechaini="'".$Fechaini."'";
+                
+                
+                
+                if ($Fechafin==""){
+                    
+                    $Fechafin="NULL";
+                    
+                }  else {
+                    $Fechafin="'".$Fechafin."'";
+                }
+		/*if (empty($_POST['Fechaini'])){
 			$Fechaini="NULL";
-		} else{ 
+		} /*else{ 
 			$FechaI=explode('/',$_POST['Fechaini']);
 			$Fechaini= '\''.$FechaI[2].'/'.$FechaI[1].'/'.$FechaI[0].'\'';
-		}
-		if (empty($_POST['Fechafin'])){
+		}*/
+		/*if (empty($_POST['Fechafin'])){
 			$Fechafin="NULL";
-		} else{ 
+		}/* else{ 
 			$FechaF=explode('/',$_POST['Fechafin']);
 			$Fechafin= '\''.$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0].'\'';
-		}
+		}*/
 
 		if (($objdatos->insertar($nombretarjeta,$usuario,$lugar,$Fechaini,$Fechafin)==true)) {
 			echo "Registro Agregado";
 		} else{
-			echo "No se pudo actualizar";
+			echo "No se pudo Agregar";
 		}
 
 		break;
@@ -92,7 +105,8 @@ switch ($opcion) {
 			    </tr>
                     </thead><tbody>
                     </center>";
-
+ if(pg_num_rows($consulta))
+        {
 	    while($row = pg_fetch_array($consulta)){
 	    	echo "<tr>
 			    	<td aling='center'> 
@@ -107,7 +121,12 @@ switch ($opcion) {
 			    		<td>".htmlentities($row['fechafin'])." </td>
 			    	</tr>";
 	    }
-	    echo "</table>"; 
+	 } else 
+            {
+                 echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></tbody></table></div>";
+            }
+        
+        echo "</table>"; 
 
 		//determinando el numero de paginas
 	    $NroRegistros= $objdatos->NumeroDeRegistros($lugar);
@@ -152,23 +171,23 @@ switch ($opcion) {
 	    break;
     case 5: //Busqueda
         $nombretarjeta=$_POST['nombretarjeta'];
-        echo $fechaini=$_POST['Fechaini'];
+        $fechaini=$_POST['Fechaini'];
         $fechafin=$_POST['Fechafin'];
         
 
-        if (empty($_POST['Fechaini'])){
+        /*if (empty($_POST['Fechaini'])){
         	$Fechaini="NULL";
         }else{ 
         	$FechaI=explode('/',$_POST['Fechaini']);
         	$Fechaini= '\''.$FechaI[2].'/'.$FechaI[1].'/'.$FechaI[0].'\'';
-        }
+        }*/
 
-        if (empty($_POST['Fechafin'])){
+        /*if (empty($_POST['Fechafin'])){
         	$Fechafin="NULL";
         }else{ 
         	$FechaF=explode('/',$_POST['Fechafin']);
         	$Fechafin= '\''.$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0].'\'';	
-        }
+        }*/
         $query = "SELECT id,nombretarjeta,
                 TO_CHAR(fechaini::timestamp, 'DD/MM/YYYY') AS fechaini, 
                 TO_CHAR(fechafin::timestamp, 'DD/MM/YYYY') AS fechafin 
@@ -204,7 +223,7 @@ switch ($opcion) {
         	$ban=1;
         }
         
-        if ($ban==0){
+      //  if ($ban==0){
     		$query = substr($query ,0,strlen($query)-4);
 			//echo $query;
 			//para manejo de la paginacion
@@ -230,7 +249,8 @@ switch ($opcion) {
                     </thead><tbody>
                     </center>";
                 //echo $query;
-         
+         if(pg_num_rows($consulta))
+        {
                  while($row = pg_fetch_array($consulta)){
 	    	echo "<tr>
 			    	<td aling='center'> 
@@ -245,7 +265,12 @@ switch ($opcion) {
 			    		<td>".htmlentities($row['fechafin'])." </td>
 			    	</tr>";
 	    }
-	    echo "</table>"; 
+        } else 
+            {
+                 echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></tbody></table></div>";
+            }
+        
+        echo "</table>"; 
 
                 
             
@@ -288,7 +313,7 @@ switch ($opcion) {
 					 echo " <li ><a  href='javascript: show_event_search(".$i.")'>$i</a></li>";
                                      }
                     echo " </ul></center>";
-        }
+        //}
        	break;
 }
 ?>

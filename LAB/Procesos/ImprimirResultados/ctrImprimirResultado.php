@@ -253,17 +253,25 @@ switch ($opcion) {
 
         $consulta = $objdatos->consultarpag($query, $RegistrosAEmpezar, $RegistrosAMostrar);
         $NroRegistros = $objdatos->NumeroDeRegistros($query);
-
-        $imprimir = "<table width='85%' border='0' align='center'>
+if ( $NroRegistros==""){
+    $NroRegistros=0;
+    echo  "<table width='85%' border='0' align='center'>
 			<tr>
 				<td colspan='7' align='center' ><span style='color: #0101DF;'><h3><strong>TOTAL DE SOLICITUDES: " . $NroRegistros . "</strong></h3></span></td>
 			</tr>
 		</table> ";
-        
+    
+}else {
+       echo  "<table width='85%' border='0' align='center'>
+			<tr>
+				<td colspan='7' align='center' ><span style='color: #0101DF;'><h3><strong>TOTAL DE SOLICITUDES: " . $NroRegistros . "</strong></h3></span></td>
+			</tr>
+		</table> ";
+} 
 
         //<td>Fecha Recepci&oacute;n</td>
         
-        $imprimir.="<div class='table-responsive' style='width: 100%;'>
+        echo "<div class='table-responsive' style='width: 100%;'>
            <table width='97%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'><thead>
                     <tr>
 				<th>Fecha Recepci&oacute;n</th>
@@ -276,6 +284,8 @@ switch ($opcion) {
 				<th>Fecha Consulta</th>
 		     </tr></thead><tbody>";
         $pos = 0;
+        if(@pg_num_rows($consulta))
+        {
         while ($row = pg_fetch_array($consulta)) {
             //$Idsolic=$row['IdSolicitudEstudio'];
             //$fecha=$objdatos->BuscarRecepcion($Idsolic);
@@ -283,9 +293,9 @@ switch ($opcion) {
             //$fechacita=$objdatos->BuscarCita($Idsolic);
             //$cita= pg_fetch_array($fechacita);
             //if (!empty($recepcion)){
-            $imprimir .="<tr>
+            echo "<tr>
 				<td>" .htmlentities($row['fecharecepcion']). "</td>";
-            $imprimir .="<td><span style='color: #0101DF;'><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a>" .
+            echo "<td><span style='color: #0101DF;'><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a>" .
                     "<input name='idsolicitud[" . $pos . "]' id='idsolicitud[" . $pos . "]' type='hidden' size='60' value='" . $row[0] . "' />" .
                     "<input name='idexpediente[" . $pos . "]' id='idexpediente[" . $pos . "]' type='hidden' size='60' value='" . $row['idnumeroexp'] . "' />" .
                     "<input name='idestablecimiento[" . $pos . "]' id='idestablecimiento[" . $pos . "]' type='hidden' size='60' value='" . $IdEstab . "' /></td>" .
@@ -300,14 +310,21 @@ switch ($opcion) {
 
             $pos = $pos + 1;
         }
+         } else 
+            {
+                 echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></tbody></table></div>";
+            }
 
-        pg_free_result($consulta);
+        @pg_free_result($consulta);
 
-        $imprimir .= "<input type='hidden' name='oculto' id='text' value='" . $pos . "' /> 
+        echo  "<input type='hidden' name='oculto' id='text' value='" . $pos . "' /> 
   
 		</tbody></table></div>";
-        echo $imprimir;
+        
+        
+        //echo $imprimir;
 
+        
         //determinando el numero de paginas
         $PagAnt = $PagAct - 1;
         $PagSig = $PagAct + 1;
@@ -650,7 +667,7 @@ switch ($opcion) {
         $Idtipoesta = $_POST['idtipoesta'];
         // echo $Idtipoesta;
         $dtIdEstab = $objdatos->LlenarCmbEstablecimiento($Idtipoesta);
-        $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:375px">';
+        $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" class="form-control height"  style="width:375px">';
         $rslts .='<option value="0"> Seleccione Establecimiento </option>';
         while ($rows = pg_fetch_array($dtIdEstab)) {
             $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
@@ -664,7 +681,7 @@ switch ($opcion) {
         $IdServ = $_POST['IdServicio'];
         //  echo $IdServ;
         $dtserv = $objdatos->LlenarCmbServ($IdServ, $lugar);
-        $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:375px">';
+        $rslts = '<select name="cmbSubServ" id="cmbSubServ" class="form-control height"  style="width:375px">';
         $rslts .='<option value="0"> Seleccione Subespecialidad </option>';
         while ($rows = pg_fetch_array($dtserv)) {
             $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';

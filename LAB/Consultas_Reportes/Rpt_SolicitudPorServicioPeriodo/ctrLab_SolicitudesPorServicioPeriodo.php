@@ -493,7 +493,7 @@ pg_free_result($consultadetalle);
                 
                 if ($cantidad==0){
                     $dtmed=$objdatos->LlenarCmbMedicos($IdSubServicio);
-			$rslts = '<select name="cboMedicos" id="cboMedicos"  style="width:350px">';
+			$rslts = '<select name="cboMedicos" id="cboMedicos"  style="width:250px" class="form-control height">';
 				$rslts .='<option value="0">--NO HAY MEDICOS--</option>';
 				while ($rows =pg_fetch_array($dtmed)){
 					$rslts.= '<option value="' . $rows['idemp'] .'" >'. $rows['nombre'].'</option>';
@@ -505,7 +505,7 @@ pg_free_result($consultadetalle);
                 }else {
                 
 			$dtmed=$objdatos->LlenarCmbMedicos($IdSubServicio);
-			$rslts = '<select name="cboMedicos" id="cboMedicos"  style="width:350px">';
+			$rslts = '<select name="cboMedicos" id="cboMedicos"  style="width:250px" class="form-control height">';
 				$rslts .='<option value="0">--Seleccione un Medico--</option>';
 				while ($rows =pg_fetch_array($dtmed)){
 					$rslts.= '<option value="' . $rows['idemp'] .'" >'. $rows['nombre'].'</option>';
@@ -629,7 +629,7 @@ pg_free_result($consultadetalle);
 		$Idtipoesta=$_POST['idtipoesta'];
               // echo $Idtipoesta;
             	$dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
-              	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:375px" >';
+              	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:375px" class="form-control height" >';
 		$rslts .='<option value="0"> Seleccione Establecimiento </option>';
                while ($rows =pg_fetch_array( $dtIdEstab)){
 		  $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
@@ -647,7 +647,7 @@ pg_free_result($consultadetalle);
              $IdServ=$_POST['IdServicio'];
 	   //  echo $IdServ;
 	     $dtserv=$objdatos->LlenarCmbServ($IdServ,$lugar);
-	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:375px" onChange="BuscarMedicos(this.value)">';
+	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:375px" onChange="BuscarMedicos(this.value)" class="form-control height">';
 			$rslts .='<option value="0"> Seleccione Subespecialidad </option>';
 			while ($rows =pg_fetch_array($dtserv)){
 		  	$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';

@@ -63,7 +63,7 @@ if ($nivel==33){
     </tr> -->
     <tr>
         <td class="StormyWeatherFieldCaptionTD">Elemento Tinci&oacute;n </td>
-        <td class="StormyWeatherDataTD"><input type="text" name="txtElemTincion" id="txtElemTincion" size="35" />
+        <td class="StormyWeatherDataTD"><input type="text" name="txtElemTincion" id="txtElemTincion" size="35" class="form-control height"  placeholder="Ingrese Elemento Tinción..." />
                                         <input type="hidden" name="txtidElemTincion" id="txtidElemTincion" disabled="disabled" />
         </td>
           </tr>
