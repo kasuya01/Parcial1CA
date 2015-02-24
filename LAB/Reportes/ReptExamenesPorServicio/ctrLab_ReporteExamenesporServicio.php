@@ -626,7 +626,7 @@ else{ //reporte de todas las especialidades
 		//echo $proce;
 		$dtMed=$obj->LlenarSubServ($proce,$lugar);	
 		
-		$rslts = '<select name="cboMedicos" id="cmbSubServicio" class="MailboxSelect" style="width:250px">';
+		$rslts = '<select name="cboMedicos" id="cmbSubServicio" class="form-control height" style="width:250px">';
 		$rslts .='<option value="0">--Seleccione un Servicio--</option>';
 			
 		while ($rows =pg_fetch_array($dtMed)){

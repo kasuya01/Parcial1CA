@@ -48,6 +48,7 @@ $base_url  = $_SESSION['base_url'];
                         
                     }
                     
+             
                     // && (document.getElementById('txtnombretarjeta').value == "")
              
              
@@ -90,7 +91,7 @@ $base_url  = $_SESSION['base_url'];
 					        </tr-->
 					        <tr>
 					        	<td width="20%" class="StormyWeatherFieldCaptionTD">Nombre Tarjeta</td>
-					        	<td class="StormyWeatherDataTD"><input type="text" name="txtnombretarjeta" id="txtnombretarjeta" size="69" /></td>
+					        	<td class="StormyWeatherDataTD"><input type="text" name="txtnombretarjeta" id="txtnombretarjeta" class="form-control" placeholder="Ingrese Nombre de la Tarjeta"/></td>
 					        	<input type="hidden" name="txtidtarjeta" id="txtidtarjeta" disabled="disabled" />
 					        </tr>
 					        <tr>	
@@ -100,14 +101,14 @@ $base_url  = $_SESSION['base_url'];
                                                                  <tr>   
                                                                      <td width="21%" class="StormyWeatherFieldCaptionTD">Fecha Inicio</td>
                                                                      <td class="StormyWeatherDataTD">
-                                                                            <input name="txtFechainicio" type="text" id="txtFechainicio" size="25" class="date"  placeholder="aaaa-mm-dd">
+                                                                            <input name="txtFechainicio" type="text" id="txtFechainicio" size="25" style="width:269px" placeholder="aaaa-mm-dd"  class="date form-control height placeholder">
                                                                     </td>
                                                                     
                                                                     
                                                                     
                                                                      <td class="StormyWeatherFieldCaptionTD"  width="15%">Fecha Fin</td>
                                                                      <td class="StormyWeatherDataTD" width="20%">
-                                                                            <input name="txtFechaFin" type="text" id="txtFechaFin" size="28" class="date"  placeholder="aaaa-mm-dd">
+                                                                            <input name="txtFechaFin" type="text" id="txtFechaFin" size="28"   style="width:260px" placeholder="aaaa-mm-dd"  class="date form-control height placeholder">
                                                                     </td>
                                                                  </tr>   
                                                                     

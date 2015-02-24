@@ -30,8 +30,8 @@ onsubmit="enviarDatos(); return false">
 <!--</tr> -->
 <tr>
 	<td class="StormyWeatherFieldCaptionTD">Bacteria</td>
-	<td class="StormyWeatherDataTD"><input name="bacteria" id="bacteria" type="text" value="<?php echo htmlentities($bacteria); ?>" size="50" />
-            <input name="idbacteria" id="idbacteria" type="hidden" value="<?php echo $idbacteria; ?>" disabled="disabled" />
+	<td class="StormyWeatherDataTD"><input name="bacteria" id="bacteria" type="text" value="<?php echo htmlentities($bacteria); ?>" class="form-control" size="50" />
+            <input name="idbacteria" id="idbacteria" type="hidden" value="<?php echo $idbacteria; ?>"  disabled="disabled" />
             
         </td>    
 </tr>

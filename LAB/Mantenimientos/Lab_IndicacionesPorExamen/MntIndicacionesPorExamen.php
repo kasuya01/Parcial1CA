@@ -23,8 +23,33 @@ $base_url  = $_SESSION['base_url'];
 
 <script language="JavaScript" >
 function Guardar(){
-   	IngresarRegistro();
+    
+     if ((document.getElementById('cmbArea').value == 0)&&
+             (document.getElementById('cmbExamen').value == 0)&& 
+             (document.getElementById('txtindicacion').value == ""))
+             { $(function ()   {
+                                  $("#dialog1").dialog({
+                                    autoOpen: false,
+                                    modal: true,
+                                    buttons: {      
+                                                "Cerrar": function () 
+                                                            {
+                                                                $(this).dialog("close");
+                                                            }
+                                            }
+                                        });
+                            $("#guardar")
+                            $("#dialog1").dialog("open");
+                           
+                                });
+					
+		 }
+    
+   else{	
+        IngresarRegistro();
+       }
 }
+
 function LlenarComboExamen(idarea)
 {
     //alert(idarea); 
@@ -35,8 +60,22 @@ function Buscar(){
     if ((document.getElementById('cmbArea').value == 0)&&
              (document.getElementById('cmbExamen').value == 0)&& 
              (document.getElementById('txtindicacion').value == ""))
-		 {
-			alert("Debe de Ingresar un Parámetro de Búsqueda")		
+		 { $(function ()   {
+                                  $("#dialog").dialog({
+                                    autoOpen: false,
+                                    modal: true,
+                                    buttons: {      
+                                                "Cerrar": function () 
+                                                            {
+                                                                $(this).dialog("close");
+                                                            }
+                                            }
+                                        });
+                            $("#abrir")
+                            $("#dialog").dialog("open");
+                           
+                                });
+			//alert("Debe de Ingresar un Parámetro de Búsqueda")		
 		 }
                  else{
                    BuscarDatos();  
@@ -59,7 +98,12 @@ function Cancelar()
 
 
 <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" onLoad="show_event(1);">
-
+<div id="dialog" style='display:none;' title="¡Aviso!">
+    <p> <cente>¡Debe de Ingresar al menos un Parámetro de Búsqueda!!</cente></p>
+</div>
+    <div id="dialog1" style='display:none;' title="¡Aviso!">
+    <p> <cente>¡Complete los datos a Ingresar!!</cente></p>
+</div>
 <?php 
 
 if ($nivel==1){
@@ -85,7 +129,7 @@ if ($nivel==33){
 	<tr>
         <td class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
         <td class="StormyWeatherDataTD">
-			<select id="cmbArea" name="cmbArea" size="1" onChange="LlenarComboExamen(this.value);" style="width:235px">
+			<select id="cmbArea" name="cmbArea" size="1" onChange="LlenarComboExamen(this.value);" style="width:235px" class="form-control height placeholder">
 				<option value="0" >--Seleccione un &Aacute;rea--</option>
 				<?php
                                        $consulta= $objeareas->consultaractivas($lugar); 
@@ -100,7 +144,7 @@ if ($nivel==33){
         <td class="StormyWeatherFieldCaptionTD">Examen</td>
         <td class="StormyWeatherDataTD">
              <div id="divExamen">
-                <select name="cmbExamen" id="cmbExamen" style="width:235px"> 
+                <select name="cmbExamen" id="cmbExamen" style="width:235px" class="form-control height placeholder"> 
                     <option value="0">--Seleccione un Examen--</option>
                 </select>
             </div>
@@ -108,7 +152,8 @@ if ($nivel==33){
     </tr>
 	<tr>
         <td class="StormyWeatherFieldCaptionTD">Indicaci&oacute;n</td>
-        <td class="StormyWeatherDataTD"><textarea name="txtindicacion" cols="60" rows="4" style="width: 100%" id="txtindicacion"></textarea></td>
+        <td class="StormyWeatherDataTD">
+            <textarea name="txtindicacion" cols="60" rows="4" style="width: 100%" id="txtindicacion"  placeholder="Ingrese Indicación..." ></textarea></td>
     </tr>
     <!--<tr>
 		<td class="StormyWeatherDataTD" colspan="2" align="right">
@@ -122,8 +167,8 @@ if ($nivel==33){
     <tr>
                 <td class="StormyWeatherDataTD" colspan="6" align="right">
                                 
-                                <button type='button' align="center" class='btn btn-primary'  onclick='Guardar(); '><span class='glyphicon glyphicon-floppy-disk'></span> Guardar</button>
-                                <button type='button' align="center" class='btn btn-primary'  onclick='Buscar(); '><span class='glyphicon glyphicon-search'></span> Buscar </button>
+                                <button type='button' align="center" class='btn btn-primary' id="guardar" onclick='Guardar(); '><span class='glyphicon glyphicon-floppy-disk'></span> Guardar</button>
+                                <button type='button' align="center" class='btn btn-primary' id="abrir"  onclick='Buscar(); '><span class='glyphicon glyphicon-search'></span> Buscar </button>
                                 <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntIndicacionesPorExamen.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
                 
                 </td>

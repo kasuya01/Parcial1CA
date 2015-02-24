@@ -29,7 +29,7 @@ $Fechafin = $row[3];
         </tr-->
         <tr>
         <td   width="21%" class="StormyWeatherFieldCaptionTD">Nombre Tarjeta</td>
-            <td class="StormyWeatherDataTD"> <input name="nombretarjeta" id="nombretarjeta" type="text" value="<?php echo $nombretarjeta; ?>" size="40" />
+            <td class="StormyWeatherDataTD"> <input name="nombretarjeta" id="nombretarjeta" type="text" value="<?php echo $nombretarjeta; ?>" class="form-control height placeholder" />
                 <input name="idtarjeta" id="idtarjeta" type="hidden" value="<?php echo $idtarjeta; ?>" disabled="disabled" />
             </td>    
         </tr>
@@ -38,9 +38,21 @@ $Fechafin = $row[3];
                 <table width="100%" border="0" align="center" class="StormyWeatherFormTABLE">
                     <tr>
                         <td  width="20%" class="StormyWeatherFieldCaptionTD">Fecha Inicio</td>
-                        <td width="30%" class="StormyWeatherDataTD"><input name="txtFechainicio1" type="text" id="txtFechainicio" value="<?php echo $Fechaini; ?>" size="8" >dd/mm/aaaa</td>
+                        <td width="30%" class="StormyWeatherDataTD"><input name="txtFechainicio1" type="text" id="txtFechainicio" value="<?php echo $Fechaini; ?>" class="form-control height placeholder" size="69"></td>
                         <td width="20%" class="StormyWeatherFieldCaptionTD">Fecha Final</td>
-                        <td width="30%" class="StormyWeatherDataTD"><input name="txtFechaFin1" type="text" id="txtFechaFin" value="<?php echo $Fechafin; ?>" size="8" >dd/mm/aaaa</td>
+                        <td width="30%" class="StormyWeatherDataTD">
+                           <?php
+                           if ($Fechafin=="") {
+                           ?>    
+                             <input name="txtFechaFin1" type="text" id="txtFechaFin"    placeholder="Ingrese fecha dd/mm/aaa"  class="date form-control height placeholder" >
+                          <?php  } 
+                          else {
+                              ?>
+                             <input name="txtFechaFin1" type="text" id="txtFechaFin" value="<?php echo $Fechafin; ?>" class="form-control height placeholder" >
+                         <?php
+                          }
+                                    ?>
+                            </td>
                     </tr>
                 </table>
             </td>		

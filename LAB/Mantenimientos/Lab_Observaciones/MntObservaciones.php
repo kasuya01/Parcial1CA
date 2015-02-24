@@ -68,8 +68,8 @@ if ($nivel==33){
 	<tr>
         <td class="StormyWeatherFieldCaptionTD">C&oacute;digo del &Aacute;rea</td>
         <td class="StormyWeatherDataTD">
-            <input type="hidden" name="txtidobservacion" id="txtidobservacion" disabled="disabled" />
-			<select id="cmbArea" name="cmbArea" size="1">
+            <input type="hidden" name="txtidobservacion" id="txtidobservacion"  disabled="disabled" />
+			<select id="cmbArea" class="form-control height" style="width:250px" name="cmbArea" size="1">
 			<option value="0" >--Seleccione un &Aacute;rea--</option>
 			<?php
 			$objeareas=new clsLab_Areas;
@@ -84,8 +84,8 @@ if ($nivel==33){
 	<tr>
         <td class="StormyWeatherFieldCaptionTD">Tipo Respuesta </td>
         <td class="StormyWeatherDataTD">
-			<select id="cmbTipoRespuesta" name="cmbTipoRespuesta" size="1" >
-			<option value="0" >--Seleccione--</option>
+			<select id="cmbTipoRespuesta"  class="form-control height" style="width:250px" name="cmbTipoRespuesta" size="1" >
+			<option value="0" >--Seleccione Respuesta--</option>
 			<option value="P" >Positivo</option>
 			<option value="N" >Negativo</option>
 			<option value="O" >Otro</option>
@@ -94,7 +94,7 @@ if ($nivel==33){
     </tr>
     <tr>
         <td class="StormyWeatherFieldCaptionTD">Observaci&oacute;n </td>
-        <td class="StormyWeatherDataTD"><textarea name="txtobservacion" cols="60" id="txtobservacion"<span style="color: #0000FF;background-color:#87CEEB;"></textarea></td>
+        <td class="StormyWeatherDataTD"><textarea name="txtobservacion" cols="60" placeholder="Ingrese Observación... " id="txtobservacion"<span style="color: #0000FF;background-color:#87CEEB;"></textarea></td>
     </tr>
     
    <!-- <tr>

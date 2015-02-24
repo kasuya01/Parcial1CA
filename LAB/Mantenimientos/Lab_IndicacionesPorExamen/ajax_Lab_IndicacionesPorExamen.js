@@ -91,8 +91,8 @@ function IngresarRegistro(){ //INGRESAR REGISTROS
 	//donde se mostrar� lo resultados
 	//valores de los inputs
         
-        if (DatosCompletos())
-	{
+      /*  if (DatosCompletos())
+	{*/
         
         
 	idarea=document.getElementById('cmbArea').value;
@@ -119,10 +119,10 @@ function IngresarRegistro(){ //INGRESAR REGISTROS
 	//enviando los valores
 	ajax.send("idarea="+idarea+"&opcion="+opcion+"&idexamen="+idexamen+"&idindicacion="+idindicacion+"&Pag="+Pag+"&indicacion="+escape(indicacion));
   
-  }
+ /* }
 	else{
 		alert("Complete los datos a Ingresar");
-	}
+	}*/
 
 }
 

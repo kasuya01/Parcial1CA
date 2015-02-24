@@ -192,7 +192,7 @@ if ($nivel==33){
 		<tr>		
 			<td class="StormyWeatherFieldCaptionTD" width="15%">Tipo Establecimiento</td>
 			<td class="StormyWeatherDataTD" width="18%">
-				<select name="cmbTipoEstab" id="cmbTipoEstab" style="width:375px" onChange="BuscarEstablecimiento(this.value)"  >
+				<select name="cmbTipoEstab" id="cmbTipoEstab" style="width:375px" onChange="BuscarEstablecimiento(this.value)" class="form-control height"  >
         				<option value="0" >Seleccione un Tipo de Establecimiento</option>
 					<?php
 				$db = new ConexionBD;
@@ -213,7 +213,7 @@ if ($nivel==33){
         	<td class="StormyWeatherFieldCaptionTD" width="15%">Establecimiento</td>
         	<td class="StormyWeatherDataTD" width="18%" >
 				<div id="divEstablecimiento">
-					<select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px">
+					<select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px" class="form-control height">
 						<option value="0" >Seleccione un Establecimiento</option>
 							<?php 
 				  echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
@@ -236,7 +236,7 @@ if ($nivel==33){
 		<tr>	
 			<td class="StormyWeatherFieldCaptionTD" width="15%">Procedencia</td>
 			<td class="StormyWeatherDataTD" width="18%">
-				<select name="CmbServicio" id="CmbServicio" style="width:375px" onChange="BuscarServicio(this.value)" >
+				<select name="CmbServicio" id="CmbServicio" style="width:375px" onChange="BuscarServicio(this.value)" class="form-control height" >
 					<option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
 					<?php
 							$db = new ConexionBD;
@@ -268,7 +268,7 @@ if ($nivel==33){
 			<td class="StormyWeatherFieldCaptionTD" width="15%">Sub-Servicio</td>
 			<td class="StormyWeatherDataTD" width="18%">
 				<div id="divsubserv">
-					<select name="cmbSubServ" id="cmbSubServ" onChange="BuscarMedicos(this.value)" style="width:250px">
+					<select name="cmbSubServ" id="cmbSubServ" onChange="BuscarMedicos(this.value)" style="width:250px" class="form-control height">
 						<option value="0" selected="selected"> Seleccione un Servicio </option>
 					</select>
 				</div>
@@ -278,7 +278,8 @@ if ($nivel==33){
 			<td class="StormyWeatherFieldCaptionTD" width="15%" >Medicos</td>
 			<td  class="StormyWeatherDataTD"  width="18%" colspan="3">
 				<div id="divMedico">
-					<select name="cboMedicos" id="cboMedicos" class="MailboxSelect" style="width:250px"> 
+					<select name="cboMedicos" id="cboMedicos" 
+                                                style="width:250px" class="form-control height"> 
 						<option value="0">--Seleccione Un  Medico--</option>
 					</select>
 				</div>
@@ -288,12 +289,12 @@ if ($nivel==33){
 			
                         
                         <td class="StormyWeatherFieldCaptionTD" width="19%">Fecha  Inicio</td>
-		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="28" name="txtfechainicio" id="txtfechainicio" class="date"  placeholder="aaaa-mm-dd" />
+		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="28" name="txtfechainicio" id="txtfechainicio" style="width:250px" class="date form-control  height placeholder"  placeholder="aaaa-mm-dd" />
 		</td>
                         
                 
                             <td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Final</td>
-		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="28"  name="txtfechafin" id="txtfechafin" class="date"  placeholder="aaaa-mm-dd" />
+		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="28"  name="txtfechafin" id="txtfechafin" style="width:250px" class="date form-control  height placeholder"  placeholder="aaaa-mm-dd" />
 		</td>
                       
                         

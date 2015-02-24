@@ -301,7 +301,7 @@ case 3://LLENANDO COMBO subservicio
         
         $dtMed=$obj->ExamenesPorArea($idarea, $lugar);
 
-        $rslts = '<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:196px">';
+        $rslts = '<select name="cmbExamen" id="cmbExamen" class="form-control height" style="width:250px">';
         $rslts .='<option value="0">--Seleccione Examen--</option>';
         while ($rows =pg_fetch_array($dtMed)){
 			$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';

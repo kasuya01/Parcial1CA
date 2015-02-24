@@ -29,7 +29,7 @@ onsubmit="enviarDatos(); return false">
 	</tr> -->
 	<tr>
 		<td class="StormyWeatherFieldCaptionTD">Cantidad Tinci&oacute;n</td>
-		<td class="StormyWeatherDataTD"><input name="CanTin" id="CanTin" type="text" value="<?php echo htmlentities($CanTin); ?>" size="35" />
+		<td class="StormyWeatherDataTD"><input name="CanTin" id="CanTin" type="text" value="<?php echo htmlentities($CanTin); ?>" size="35" class="form-control height" />
                                                 <input name="idCanTin" id="idCanTin" type="hidden" value="<?php echo $idCanTin; ?>" disabled="disabled" />
                 </td>  
 	</tr>

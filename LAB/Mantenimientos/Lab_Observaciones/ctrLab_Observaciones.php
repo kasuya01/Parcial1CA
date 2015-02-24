@@ -64,7 +64,8 @@ switch ($opcion)
 		    <th> observacion </th>
                     <th> Tipo de Respuesta</th>		   
 	        </tr></thead><tbody>";
-    
+    if(pg_num_rows($consulta))
+        {
              while($row = pg_fetch_array($consulta)){
 		echo "<tr>
 			<td aling='center'> 
@@ -84,7 +85,12 @@ switch ($opcion)
 			     echo "<td>Otro</td>";						
 		  echo  "</tr>";
 		}
-		echo "</table>"; 
+         } else 
+            {
+                 echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></tbody></table></div>";
+            }
+        
+        echo "</table>";
 
 		//determinando el numero de paginas
 		 $NroRegistros= $objdatos->NumeroDeRegistros();
@@ -170,6 +176,8 @@ switch ($opcion)
 		    <th> observacion </th>
                     <th> Tipo de Respuesta</th>		   
 	        </tr></thead><tbody>";
+        if(pg_num_rows($consulta))
+        {
              while($row = @pg_fetch_array($consulta)){
 		echo "<tr>
 			<td aling='center'> 
@@ -189,7 +197,12 @@ switch ($opcion)
 			     echo "<td>Otro</td>";						
 		echo  "</tr>";
 		}
-		echo "</table>"; 
+        } else 
+            {
+                 echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></tbody></table></div>";
+            }
+        
+        echo "</table>";
 
 		//determinando el numero de paginas
 		 $NroRegistros= $objdatos->NumeroDeRegistrosbus($query_search);

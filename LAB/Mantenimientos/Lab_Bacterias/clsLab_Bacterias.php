@@ -121,7 +121,7 @@ function consultarpagbus($query,$RegistrosAEmpezar, $RegistrosAMostrar)
   } 	
 
 function NumeroDeRegistrosbus($query){
-   echo $query;
+   $query;
 	   //creamos el objeto $con a partir de la clase ConexionBD
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion

@@ -19,21 +19,73 @@ $base_url  = $_SESSION['base_url'];
 
                 function buscarbacte()
                 {
-                    if (document.getElementById('txtbacteria').value == 0) {
+                    if (document.getElementById('txtbacteria').value == 0) /*{
                         alert("Debe de Ingresar un Parámetro de Búsqueda ");
-                    }
-                    else {
-                        BuscarCodigo();
-                    }
+                    }*/
+            
+            
+             {  
+                            //alert("Debe de Ingresar un Parámetro de Búsqueda ");
+                            
+                            $(function ()   {
+                                  $("#dialog").dialog({
+                                    autoOpen: false,
+                                    modal: true,
+                                    buttons: {      
+                                                "Cerrar": function () 
+                                                            {
+                                                                $(this).dialog("close");
+                                                            }
+                                            }
+                                        });
+                            $("#abrir")
+                            //.button()
+                            //.click(function () {
+                            $("#dialog").dialog("open");
+                           // });
+                                });
+                            
+                        }
+                        else{
+                            BuscarCodigo();
+                        }
                     
-                    //idarea=document.getElementById('cmbArea').value;
-                    //BuscarObservacion();
+                }
+                
+                function guardarbacteria(){
+                    
+                    if (document.getElementById('txtbacteria').value == "")
+                    {$(function ()   {
+                                  $("#dialog1").dialog({
+                                    autoOpen: false,
+                                    modal: true,
+                                    buttons: {      
+                                                "Cerrar": function () 
+                                                            {
+                                                                $(this).dialog("close");
+                                                            }
+                                            }
+                                        });
+                            $("#guardar")
+                            $("#dialog1").dialog("open");
+                           
+                                });
+                        
+                    }else{
+                        IngresarRegistro();
+                    }
                 }
  </script>
 </head>
 
 <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" onLoad="show_event(1);">
-<?php 
+<div id="dialog" style='display:none;' title="¡Aviso!">
+    <p> <cente>¡Debe de Ingresar al menos un Parámetro de Búsqueda!!</cente></p>
+</div>
+    <div id="dialog1" style='display:none;' title="¡Aviso!">
+    <p> <cente>¡Complete los datos a Ingresar!!</cente></p>
+</div>
+    <?php 
 //$_SESSION['correlativo']=$_SESSION['correlativo'];
 if ($nivel==1){
 	include_once ('../../../PaginaPrincipal/index_laboratorio2.php');}
@@ -61,11 +113,11 @@ if ($nivel==33){
 </tr> -->
 <tr>
     <td class="StormyWeatherFieldCaptionTD">Bacteria </td>
-    <td class="StormyWeatherDataTD"> <input type="text" name="txtbacteria" id="txtbacteria" size="58" class="form-control"placeholder="Buscar Bacteria"/>
+    <td class="StormyWeatherDataTD"> <input type="text" name="txtbacteria" id="txtbacteria" size="58" class="form-control" placeholder="Buscar Bacteria"/>
         
         <input  type="hidden" name="txtidbacteria" id="txtidbacteria" disabled="disabled" />
        
-    </td> <td> <button type='button' align="center" class='btn btn-primary'  onclick='buscarbacte(); '><span class='glyphicon glyphicon-search'></span> Buscar </button>
+    </td> <td> <button type='button' align="center" id="abrir" class='btn btn-primary'  onclick='buscarbacte(); '><span class='glyphicon glyphicon-search'></span> Buscar </button>
                                  </td>
 </tr>
 <!--<tr>
@@ -77,7 +129,7 @@ if ($nivel==33){
 <tr>
                 <td class="StormyWeatherDataTD" colspan="6" align="right">
                                 
-                                <button type='submit' align="center" class='btn btn-primary'  ><span class='glyphicon glyphicon-floppy-disk'></span> Guardar</button>
+                    <button type='button' align="center"  id="guardar" class='btn btn-primary' onclick='guardarbacteria(); ' ><span class='glyphicon glyphicon-floppy-disk'></span> Guardar</button>
                                <!-- <button type='button' align="center" class='btn btn-primary'  onclick='buscarbacte(); '><span class='glyphicon glyphicon-search'></span> Buscar </button>
                                 --><button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntBacterias.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
                 

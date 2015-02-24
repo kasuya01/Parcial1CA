@@ -33,8 +33,8 @@ function LimpiarCampos(){
 }
 
 function IngresarRegistro(){ //INGRESAR REGISTROS	
-	if (DatosCompletos())
-	{	//donde se mostrar� lo resultados
+	/*if (DatosCompletos())
+	{*/	//donde se mostrar� lo resultados
 		divResultado = document.getElementById('divinicial');
 		//valores de los inputs
 		idbacteria=document.frmnuevo.txtidbacteria.value;
@@ -59,10 +59,10 @@ function IngresarRegistro(){ //INGRESAR REGISTROS
 		ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores
 		ajax.send("idbacteria="+idbacteria+"&bacteria="+bacteria+"&Pag="+Pag+"&opcion="+opcion);		
-	}
+	/*}
 	else{
 		alert("Complete los datos a Ingresar");
-	}	
+	}*/	
 }
 
 function pedirDatos(idbacteria){   //CARGAR DATOS A MODIFICAR

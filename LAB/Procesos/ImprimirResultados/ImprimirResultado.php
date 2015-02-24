@@ -110,7 +110,11 @@ if ($nivel==4){
 		<tr>		
                     <td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</td>
                     <td class="StormyWeatherDataTD">
+<<<<<<< HEAD
                         <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value) " class="form-control height">
+=======
+                        <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)" class="form-control height placeholder">
+>>>>>>> moises
                             <option value="0">Seleccione un Tipo de Establecimiento</option>
 			<?php
 				$db = new ConexionBD;
@@ -128,8 +132,13 @@ if ($nivel==4){
                     </td>
                     <td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
                     <td class="StormyWeatherDataTD" >
+<<<<<<< HEAD
 			
                             <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px" class="form-control height">
+=======
+			<div id="divEstablecimiento">
+                            <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px" class="form-control height placeholder">
+>>>>>>> moises
                             	<option value="0" >Seleccione un Establecimiento</option>
 				<?php 
 				  echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
@@ -152,7 +161,11 @@ if ($nivel==4){
                 <tr>	
                     <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
                     <td class="StormyWeatherDataTD">
+<<<<<<< HEAD
 			<select name="CmbServicio" id="CmbServicio" style="width:405px" onChange="BuscarServicio(this.value)" class="form-control height" >
+=======
+			<select name="CmbServicio" id="CmbServicio" style="width:405px" onChange="BuscarServicio(this.value)" class="form-control height placeholder">
+>>>>>>> moises
                             <option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
 				<?php
                                     $db = new ConexionBD;
@@ -175,8 +188,10 @@ if ($nivel==4){
                     </td>
                     <td class="StormyWeatherFieldCaptionTD">Servicio</td>
                     <td class="StormyWeatherDataTD">
+<<<<<<< HEAD
 			
                             <select name="cmbSubServ" id="cmbSubServ" style="width:375px" class="form-control height" >
+
 				<option value="0" selected="selected"> Seleccione un Servicio </option>
                             </select>
 			
@@ -185,22 +200,26 @@ if ($nivel==4){
                 <tr> 
                     <td class="StormyWeatherFieldCaptionTD"  >Expediente</td>
                     <td  class="StormyWeatherDataTD" width="5%" >
+<<<<<<< HEAD
                         
                         <input  type="text" size="28" name="txtexpediente" id="txtexpediente" class="form-control height" style="width:375px"  placeholder="Buscar Expediente"/>
+
                         
                          </td>
                     
                              <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Recepi&oacute;n</td>
                              <td class="StormyWeatherDataTD" width="5%">
+<<<<<<< HEAD
                                   
                                      <input type="text" size="28"  name="txtfecharecep" id="txtfecharecep" class="form-control height"  placeholder="aaaa-mm-dd"/>
                                  
-                            </td>
+            </td>
                 </tr>
                 <tr>
                     <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong>   </td> 
                     <td class="StormyWeatherDataTD" >
                         
+<<<<<<< HEAD
                             <input  maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre" class="form-control height" >
                         
                     </td> 
@@ -208,20 +227,27 @@ if ($nivel==4){
                         
                                 <input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre" class="form-control height" >
                         
+
                     </td> 
                 </tr>
                 <tr>
                     <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Apellido</strong></td> 
                     <td class="StormyWeatherDataTD">
                         
+<<<<<<< HEAD
                             <input  maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido" class="form-control height">
+
                         
                     </td> 
                     <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Apellido</strong></td> 
                     <td class="StormyWeatherDataTD" >
+<<<<<<< HEAD
                         
                            <input  maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" class="form-control height" >
                         
+=======
+                       
+
                     </td>
                 </tr>
                
