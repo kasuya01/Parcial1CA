@@ -10,11 +10,11 @@ class clsLab_Empleados {
     }
 
     //INSERTA UN REGISTRO          
-    function insertar($IdEmpleado, $lugar, $idarea, $nomempleado, $cargo, $usuario, $corr, $IdEstabExt) {
+    function insertar($IdEmpleado, $lugar, $idarea, $nombrecompleto,$nombre, $cargo, $usuario, $corr, $IdEstabExt, $apellido) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "INSERT INTO mnt_empleado(idempleado, id_establecimiento, id_tipo_empleado, idarea, nombreempleado, id_cargo_empleado, correlativo, idusuarioreg, fechahorareg, id_establecimiento_externo) 
-                            VALUES('$IdEmpleado',$lugar,(SELECT id FROM mnt_tipo_empleado WHERE codigo = 'LAB'),'$idarea',UPPER('$nomempleado'),'$cargo','$corr',$usuario,(SELECT date_trunc('seconds',(SELECT now()))),$IdEstabExt)";
+            $query = "INSERT INTO mnt_empleado(idempleado, id_establecimiento, id_tipo_empleado, idarea, nombre,apellido,nombreempleado, id_cargo_empleado, correlativo, idusuarioreg, fechahorareg, id_establecimiento_externo) 
+                            VALUES('$IdEmpleado',$lugar,(SELECT id FROM mnt_tipo_empleado WHERE codigo = 'LAB'),'$idarea', '$nombre', '$apellido', UPPER('$nombrecompleto'),'$cargo','$corr',$usuario,(SELECT date_trunc('seconds',(SELECT now()))),$IdEstabExt)";
             $result = @pg_query($query);
             
             if (!$result)
@@ -39,11 +39,11 @@ class clsLab_Empleados {
     }
 
     //ACTUALIZA UN REGISTRO
-    function actualizar($IdEmpleado, $lugar, $idarea, $nomempleado, $cargo, $usuario) {
+    function actualizar($IdEmpleado, $lugar, $idarea, $nombre,$apellido,$nombrecompleto, $cargo, $usuario) {
     //actualizar($idempleado,$idarea,$nomempleado,$cargo)
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "UPDATE mnt_empleado SET nombreempleado = UPPER('$nomempleado'), idarea = '$idarea', id_cargo_empleado = $cargo, idusuariomod ='$usuario', fechahoramod = (SELECT date_trunc('seconds',(SELECT now()))) WHERE idempleado = '$IdEmpleado' AND id_establecimiento = $lugar";
+            $query = "UPDATE mnt_empleado SET nombreempleado = UPPER('$nombrecompleto'), nombre='$nombre', apellido='$apellido', idarea = '$idarea', id_cargo_empleado = $cargo, idusuariomod ='$usuario', fechahoramod = (SELECT date_trunc('seconds',(SELECT now()))) WHERE idempleado = '$IdEmpleado' AND id_establecimiento = $lugar";
 
             $result = @pg_query($query);
             if (!$result)
@@ -99,6 +99,8 @@ class clsLab_Empleados {
         if ($con->conectar() == true) {
             $query = "SELECT t01.idempleado, 
                             t01.idarea,
+                            t01.nombre,
+                            t01.apellido,
                             t03.nombrearea,
                             t01.nombreempleado,
                             t02.id AS idcargoempleado,

@@ -12,15 +12,17 @@ $consulta   = $obj->consultarid($IdEmpleado, $lugar);
 $row        = pg_fetch_array($consulta);
 
 //valores de las consultas
-$codempleado     = $row['idempleado'];
-$idarea          = $row['idarea'];
-$nombreempleado  = $row['nombreempleado'];
-$nombrearea      = $row['nombrearea'];
-$idcargoempleado = $row['idcargoempleado'];
-$cargo           = $row['cargo'];
-$login           = $row['login'];
-$idmodalidad     = $row['idmodalidad'];
-$nombremodalidad = $row['nombremodalidad'];
+$codempleado        = $row['idempleado'];
+$idarea             = $row['idarea'];
+$nombre             = $row['nombre'];
+$apellido             = $row['apellido'];
+$nombreempleado     = $row['nombreempleado'];
+$nombrearea         = $row['nombrearea'];
+$idcargoempleado    = $row['idcargoempleado'];
+$cargo              = $row['cargo'];
+$login              = $row['login'];
+$idmodalidad        = $row['idmodalidad'];
+$nombremodalidad    = $row['nombremodalidad'];
 //muestra los datos consultados en los campos del formulario
 ?>
 
@@ -33,12 +35,12 @@ $nombremodalidad = $row['nombremodalidad'];
         </tr>         
         <tr>
             <td class="StormyWeatherFieldCaptionTD" width="40%">C&oacute;digo del Empleado </td>
-            <td class="StormyWeatherDataTD" width="60%"><input type="text" id="txtidempleado" name="txtidempleado" value="<?php echo $codempleado; ?>" disabled="disabled" /></td>
+            <td class="StormyWeatherDataTD" width="60%"><input type="text" id="txtidempleado" name="txtidempleado" value="<?php echo $codempleado; ?>" disabled="disabled" style="width:60%"  class="form-control height placeholder" /></td>
         </tr>
         <tr>
             <td class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
             <td class="StormyWeatherDataTD">
-                <select id="cmbArea" name="cmbArea" size="1" >			 
+                <select id="cmbArea" name="cmbArea" size="1" style="width:60%" class="form-control height" >			 
                     <?php
                     include('../Lab_Areas/clsLab_Areas.php');
                     $objeareas = new clsLab_Areas;
@@ -54,7 +56,7 @@ $nombremodalidad = $row['nombremodalidad'];
         <tr>
             <td class="StormyWeatherFieldCaptionTD"> Modalidad de Contrato</td>
             <td class="StormyWeatherDataTD">
-                <select id="cmbModalidad" name="cmbModalidad" size="1" >
+                <select id="cmbModalidad" name="cmbModalidad" size="1" style="width:60%" class="form-control height">
                     <?php
                         $objeareas = new clsLab_Empleados;
                         $consulta = $objeareas->consultarModalidad($lugar);
@@ -72,12 +74,16 @@ $nombremodalidad = $row['nombremodalidad'];
         </tr>
         <tr>
             <td class="StormyWeatherFieldCaptionTD">Nombre del Empleado</td>
-            <td class="StormyWeatherDataTD"><input type="text" id="txtnombreempleado" name="txtnombreempleado" size="40" value="<?php echo htmlentities($nombreempleado); ?>" /></td>
+            <td class="StormyWeatherDataTD"><input type="text" id="txtnombreempleado" style="width:60%" name="txtnombreempleado" class="form-control height placeholder"  size="40" value="<?php echo htmlentities($nombre); ?>" /></td>
+        </tr>
+        <tr>
+            <td class="StormyWeatherFieldCaptionTD">Apellido del Empleado</td>
+            <td class="StormyWeatherDataTD"><input type="text" id="txtapellido" style="width:60%" name="txtapellido" class="form-control height placeholder"  size="40" value="<?php echo htmlentities($apellido); ?>" /></td>
         </tr>
         <tr>
             <td class="StormyWeatherFieldCaptionTD">Cargo</td>
             <td class="StormyWeatherDataTD">
-                <select id="cmbCargo" name="cmbCargo" size="1">
+                <select id="cmbCargo" name="cmbCargo" size="1" style="width:60%" class="form-control height">
                     <option value="0">--Seleccione Cargo--</option>";
                     <?php
                     require_once('clsLab_Empleados.php');
@@ -93,13 +99,20 @@ $nombremodalidad = $row['nombremodalidad'];
         </tr>
         <tr>
             <td class="StormyWeatherFieldCaptionTD">Usuario</td>
-            <td class="StormyWeatherDataTD"><input type="text" id="txtlogin" name="txtlogin" size="40" value="<?php echo $login; ?>" /></td>
+            <td class="StormyWeatherDataTD"><input type="text" id="txtlogin"  style="width:60%" class="form-control height placeholder"  name="txtlogin" size="40" value="<?php echo $login; ?>" /></td>
         </tr>
-        <tr>
+       <!-- <tr>
             <td class="StormyWeatherDataTD" colspan="2" align="right" >
                 <input type="button" name="btnActualizar" value="Actualizar" onclick="Modificar();" />
                 <input type="button" name="btnNuevo" value="Nuevo" onClick="window.location.replace('MntEmpleados.php')" />
             </td>
-        </tr>
+        </tr>-->
+        
+                         <tr>  
+                            <td class="StormyWeatherDataTD" colspan="6" align="right">
+                                <button type='button' align="center" class='btn btn-primary'   onclick="Modificar();"><span class='glyphicon glyphicon-floppy-disk'></span> Actualizar </button>
+                                <button type='button' align="center" class='btn btn-primary' onClick="window.location.replace('MntEmpleados.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+                            </td>
+                         </tr>
     </table> 
 </form>

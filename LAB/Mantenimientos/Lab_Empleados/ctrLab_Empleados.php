@@ -5,20 +5,40 @@ include_once("clsLab_Empleados.php");
 $usuario = $_SESSION['Correlativo'];
 $lugar   = $_SESSION['Lugar'];
 $area    = $_SESSION['Idarea'];
+
+
 //variables POST
 $idempleado  = $_POST['idempleado'];
 $idarea      = $_POST['idarea'];
-$nomempleado = $_POST['nomempleado'];
+$nombre = $_POST['nomempleado'];
 $Pag         = $_POST['Pag'];
 $opcion      = $_POST['opcion'];
 $cargo       = $_POST['cargo'];
 $login       = $_POST['login'];
 $modalidad   = $_POST['modalidad'];
+//$apellido   = $_POST['txtapellido'];
+
+//$nombrecompleto= $nombre." ".$apellido;
 //actualiza los datos del empleados
 $objdatos = new clsLab_Empleados;
 //echo $idempleado;
 switch ($opcion) {
+    
+    
+    
     case 1:  //INSERTAR
+                $idempleado = $_POST['idempleado'];
+                $idarea     = $_POST['idarea'];
+                $nombre     = $_POST['nomempleado'];
+                $Pag        = $_POST['Pag'];
+                $opcion     = $_POST['opcion'];
+                $cargo      = $_POST['cargo'];
+                $login      = $_POST['login'];
+                $modalidad  = $_POST['modalidad'];
+                $apellido   = $_POST['txtapellido'];
+
+                $nombrecompleto= $apellido." ".$nombre;
+        
         $pass = "123";
         $corr = $objdatos->LeerUltimoCodigo($lugar);
         if (($cargo == 6) or ( $cargo == 10)) {
@@ -39,7 +59,7 @@ switch ($opcion) {
         }
 
         //echo $cargo."y nivel".$niv;
-        if (($objdatos->insertar($idempleado, $lugar, $idarea, $nomempleado, $cargo, $usuario, $corr, $IdEstabExt) == true) && ($objdatos->Insertar_Usuario($login, $idempleado, $pass, $niv, $lugar, $modalidad) == 1)) {
+        if (($objdatos->insertar($idempleado, $lugar, $idarea, $nombrecompleto,$nombre, $cargo, $usuario, $corr, $IdEstabExt, $apellido) == true) && ($objdatos->Insertar_Usuario($login, $idempleado, $pass, $niv, $lugar, $modalidad) == 1)) {
             echo "Registro Agregado";
         } else {
             echo "No se pudo Agregar el Registro";
@@ -47,6 +67,16 @@ switch ($opcion) {
         break;
     case 2:  //MODIFICAR      
 
+                $idempleado = $_POST['idempleado'];
+                $idarea     = $_POST['idarea'];
+                $nombre     = $_POST['nomempleado'];
+                $Pag        = $_POST['Pag'];
+                $opcion     = $_POST['opcion'];
+                $cargo      = $_POST['cargo'];
+                $login      = $_POST['login'];
+                $modalidad  = $_POST['modalidad'];
+                $apellido   = $_POST['txtapellido'];
+          $nombrecompleto= $apellido." ".$nombre;
         if (($cargo == 6) or ( $cargo == 10)) {
             $niv = 1;
         } else if ($cargo == 1) {
@@ -59,7 +89,7 @@ switch ($opcion) {
             $niv = 4;
         }
         //echo $cargo."y nivel".$niv;
-        If (($objdatos->actualizar($idempleado, $lugar, $idarea, $nomempleado, $cargo, $usuario) == true) &&
+        If (($objdatos->actualizar($idempleado, $lugar, $idarea, $nombre,$apellido,$nombrecompleto, $cargo, $usuario) == true) &&
                 ($objdatos->actualizar_Usuario($idempleado, $login, $niv, $lugar, $modalidad)) == true) {
             echo "Registro Actualizado";
         } else {
@@ -79,17 +109,21 @@ switch ($opcion) {
         $consulta = $objdatos->consultarpag($lugar, $RegistrosAEmpezar, $RegistrosAMostrar);
         
         //muestra los datos consultados en la tabla
-        echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
-		<tr>
-                    <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-                    <td aling='center' class='CobaltFieldCaptionTD'> Habilitado</td>
-                    <td aling='center' class='CobaltFieldCaptionTD'> C&oacute;digo Empleado </td>
-                    <td aling='center' class='CobaltFieldCaptionTD'> Nombre Empleado </td>
-                    <td aling='center' class='CobaltFieldCaptionTD'> Modalidad de Contrato</td>
-                    <td aling='center' class='CobaltFieldCaptionTD'> &Aacute;rea</td>
-                    <td aling='center' class='CobaltFieldCaptionTD'> Cargo </td>
-                    <td aling='center' class='CobaltFieldCaptionTD'> Usuario </td>
-		</tr>";
+       echo "<center >
+               <table border = 1 style='width: 80%;'  class='table table-hover table-bordered table-condensed table-white table-striped'>
+	           <thead>
+                        <tr>
+                            <th aling='center' > Modificar  </th>
+                            <th aling='center' > Habilitado </th>
+                            <th aling='center' > C&oacute;digo Empleado </th>
+                            <th aling='center' > Nombre Empleado </th>
+                            <th aling='center' > Modalidad de Contrato</th>
+                            <th aling='center' > &Aacute;rea</th>
+                            <th aling='center' > Cargo </th>
+                            <th aling='center' > Usuario </th>
+		   </tr>
+                   </thead><tbody>
+                    </center>";
         while ($row = pg_fetch_array($consulta)) {
             echo "<tr>
                     <td aling='center'> 
@@ -140,6 +174,15 @@ switch ($opcion) {
         echo "<td> <a onclick=\"show_event('$PagUlt')\" style='cursor: pointer;'>Ultimo</a></td>";
         echo "</tr>
 	    </table>";
+        
+         echo " <center> <ul class='pagination'>";
+                          for ($i=1 ; $i<=$PagUlt; $i++)
+                                    {
+                             
+					 echo " <li ><a  href='javascript: show_event(".$i.")'>$i</a></li>";
+                                     }
+                    echo " </ul></center>";
+        
         break;
     case 5:  //LEER ULTIMO CODIGO  
         $consulta = $objdatos->LeerUltimoCodigo($idarea);
@@ -197,34 +240,38 @@ switch ($opcion) {
                 $query .= " t01.idempleado ILIKE '%" . $_POST['idempleado'] . "%' AND";
             }
         }
-        if (!empty($_POST['nomempleado'])) {
-            $query .= " t01.nombreempleado ILIKE '%" . $_POST['nomempleado'] . "%' AND";
+        
+       if (!empty($_POST['nomempleado'])) {
+            $query .= " t01.nombre ILIKE '%" . $_POST['nomempleado'] . "%'      AND     ";
+        }
+        if (!empty($_POST['txtapellido'])) {
+            $query .= " t01.apellido ILIKE '%" . $_POST['txtapellido'] . "%'    AND         ";
         }
 
         if (!empty($_POST['idarea'])) {
-            $query .= " t01.idarea = " . $_POST['idarea'] . " AND";
+            $query .= " t01.idarea = " . $_POST['idarea'] . "   AND     ";
         }
 
         if (!empty($_POST['cargo'])) {
-            $query .= " t01.id_cargo_empleado = " . $_POST['cargo'] . " AND";
+            $query .= " t01.id_cargo_empleado = " . $_POST['cargo'] . "     AND     ";
         }
 
         if (!empty($_POST['login'])) {
-            $query .= " t04.username ILIKE '%" . $_POST['login'] . "%' AND";
+            $query .= " t04.username ILIKE '%" . $_POST['login'] . "%'  AND     ";
         }
 
         if (!empty($_POST['modalidad'])) {
-            $query .= " t04.id_modalidad_estab = " . $_POST['modalidad'] . " AND";
+            $query .= " t04.id_modalidad_estab = " . $_POST['modalidad'] . "    AND     ";
         }
 
-        if ((empty($_POST['cargo'])) and ( empty($_POST['idarea'])) and ( empty($_POST['nomempleado'])) and ( empty($_POST['idempleado'])) and ( empty($_POST['login'])) and (empty($_POST['modalidad']))) {
+        if ((empty($_POST['cargo'])) and ( empty($_POST['idarea'])) and ( empty($_POST['nomempleado'])) and ( empty($_POST['txtapellido'])) and ( empty($_POST['idempleado'])) and ( empty($_POST['login'])) and (empty($_POST['modalidad']))) {
             $ban = 1;
         }
 
 
         if ($ban == 0) {
             $query = substr($query, 0, strlen($query) - 4);
-            $query_search = $query . " AND id_tipo_empleado = (SELECT id FROM mnt_tipo_empleado WHERE codigo = 'LAB') AND correlativo !=0 AND t01.id_establecimiento = $lugar ORDER BY t01.idempleado";
+            $query_search = $query . "    id_tipo_empleado = (SELECT id FROM mnt_tipo_empleado WHERE codigo = 'LAB') AND correlativo !=0 AND t01.id_establecimiento = $lugar ORDER BY t01.idempleado";
             
             ////para manejo de la paginacion
             $RegistrosAMostrar = 4;
@@ -236,19 +283,23 @@ switch ($opcion) {
             $consulta = $objdatos->consultarpagbus($query_search, $RegistrosAEmpezar, $RegistrosAMostrar);
             // echo $consulta;
             //muestra los datos consultados en la tabla
-            echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
+            echo "<center >
+               <table border = 1 style='width: 80%;'  class='table table-hover table-bordered table-condensed table-white table-striped'>
+	           <thead>
                         <tr>
-                            <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-                            <td aling='center' class='CobaltFieldCaptionTD'> Habilitado</td>
-                            <td aling='center' class='CobaltFieldCaptionTD'> C&oacute;digo Empleado </td>
-                            <td aling='center' class='CobaltFieldCaptionTD'> Nombre Empleado </td>
-                            <td aling='center' class='CobaltFieldCaptionTD'> Modalidad de Contrato</td>
-                            <td aling='center' class='CobaltFieldCaptionTD'> &Aacute;rea</td>
-                            <td aling='center' class='CobaltFieldCaptionTD'> Cargo </td>
-			    <td aling='center' class='CobaltFieldCaptionTD'> Usuario </td>	    
-			 </tr>";
+                            <th aling='center' > Modificar</th>
+                            <th aling='center' > Habilitado</th>
+                            <th aling='center' > C&oacute;digo Empleado </th>
+                            <th aling='center' > Nombre Empleado </th>
+                            <th aling='center' > Modalidad de Contrato</th>
+                            <th aling='center' > &Aacute;rea</th>
+                            <th aling='center' > Cargo </th>
+			    <th aling='center' > Usuario </th>	    
+			 </tr>
+                   </thead><tbody>
+                    </center>";
 
-            while ($row = pg_fetch_array($consulta)) {
+            while ($row = @pg_fetch_array($consulta)) {
                 echo"<tr>	
                             <td aling='center'> 
 				<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
@@ -298,6 +349,14 @@ switch ($opcion) {
             echo "<td><a onclick=\"show_event_search('$PagUlt')\" style='cursor: pointer;'>Ultimo</a></td>";
             echo "</tr>
 		</table>";
+            
+             echo " <center> <ul class='pagination'>";
+                          for ($i=1 ; $i<=$PagUlt; $i++)
+                                    {
+                             
+					 echo " <li ><a  href='javascript: show_event_search(".$i.")'>$i</a></li>";
+                                     }
+                    echo " </ul></center>";
         }
         else {
             $query_search = $query . " AND id_tipo_empleado = (SELECT id FROM mnt_tipo_empleado WHERE codigo = 'LAB') order by t03.idarea, t01.idempleado";
@@ -312,17 +371,21 @@ switch ($opcion) {
             $consulta = $objdatos->consultarpagbus($query_search, $RegistrosAEmpezar, $RegistrosAMostrar);
             //echo $consulta;
             //muestra los datos consultados en la tabla
-            echo "<table border = 1 align='center' class='estilotabla'>
-		      <tr>
-			   <td aling='center' aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-			   <td aling='center' aling='center' class='CobaltFieldCaptionTD'> Eliminar</td>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Area</td>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Codigo Empleado </td>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Nombre Empleado </td>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Cargo </td>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Usuario </td>	   
-		     </tr>";
-            while ($row = pg_fetch_array($consulta)) {
+           echo "<center >
+               <table border = 1 style='width: 80%;'  class='table table-hover table-bordered table-condensed table-white table-striped'>
+	           <thead>
+                        <tr>
+			   <th aling='center' > Modificar</th>
+			   <th aling='center' > Eliminar</th>
+			   <th aling='center' > Area</th>
+			   <th aling='center' > Codigo Empleado </th>
+			   <th aling='center' > Nombre Empleado </th>
+			   <th aling='center' > Cargo </th>
+			   <th aling='center' > Usuario </th>	   
+		     </tr>
+                   </thead><tbody>
+                    </center>";
+            while ($row = @pg_fetch_array($consulta)) {
                 echo "<tr>	
                             <td aling='center'> 
                             	<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
@@ -371,6 +434,13 @@ switch ($opcion) {
             echo "<td> <a onclick=\"show_event('$PagUlt')\" style='cursor: pointer;'>Ultimo</a></td>";
             echo "</tr>
                 </table>";
+             echo " <center> <ul class='pagination'>";
+                          for ($i=1 ; $i<=$PagUlt; $i++)
+                                    {
+                             
+					 echo " <li ><a  href='javascript: show_event_search(".$i.")'>$i</a></li>";
+                                     }
+                    echo " </ul></center>";
         }
         break;
 
@@ -449,17 +519,21 @@ switch ($opcion) {
             $consulta = $objdatos->consultarpagbus($query_search, $RegistrosAEmpezar, $RegistrosAMostrar);
             //echo $consulta;
             //muestra los datos consultados en la tabla
-            echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
+           echo "<center >
+               <table border = 1 style='width: 80%;'  class='table table-hover table-bordered table-condensed table-white table-striped'>
+	           <thead>
                         <tr>
-                            <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-                            <td aling='center' class='CobaltFieldCaptionTD'> Habilitado</td>
-                            <td aling='center' class='CobaltFieldCaptionTD'> C&oacute;digo Empleado </td>
-                            <td aling='center' class='CobaltFieldCaptionTD'> Nombre Empleado </td>
-                            <td aling='center' class='CobaltFieldCaptionTD'> Modalidad de Contrato</td>
-			                <td aling='center' class='CobaltFieldCaptionTD'> &Aacute;rea</td>
-			                <td aling='center' class='CobaltFieldCaptionTD'> Cargo </td>
-                            <td aling='center' class='CobaltFieldCaptionTD'> Usuario </td>	    
-			</tr>";
+                            <th aling='center' > Modificar</th>
+                            <th aling='center' > Habilitado</th>
+                            <th aling='center' > C&oacute;digo Empleado </th>
+                            <th aling='center' > Nombre Empleado </th>
+                            <th aling='center' > Modalidad de Contrato</th>
+			    <th aling='center' > &Aacute;rea</th>
+			    <th aling='center' > Cargo </th>
+                            <th aling='center' > Usuario </th>	    
+			 </tr>
+                   </thead><tbody>
+                    </center>";
 
             while ($row = pg_fetch_array($consulta)) {
                 echo "<tr>	<td aling='center'> 
@@ -509,7 +583,15 @@ switch ($opcion) {
                 echo "<td> <a onclick=\"show_event_search('$PagSig')\">Siguiente</a> </td>";
             echo "<td> <a onclick=\"show_event_search('$PagUlt')\">Ultimo</a></td>";
             echo "</tr>
-			  </table>";
+			  </table>"; 
+            
+             echo " <center> <ul class='pagination'>";
+                          for ($i=1 ; $i<=$PagUlt; $i++)
+                                    {
+                             
+					 echo " <li ><a  href='javascript: show_event_search(".$i.")'>$i</a></li>";
+                                     }
+                    echo " </ul></center>";
 
             //echo $query_search;
         }
@@ -526,16 +608,20 @@ switch ($opcion) {
             $consulta = $objdatos->consultarpagbus($query_search, $RegistrosAEmpezar, $RegistrosAMostrar);
             //echo $consulta;
             //muestra los datos consultados en la tabla
-            echo "<table border = 1 align='center' class='estilotabla'>
-		      <tr>
-			   <td aling='center' aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-			   <td aling='center' aling='center' class='CobaltFieldCaptionTD'> Eliminar</td>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Area</td>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Codigo Empleado </td>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Nombre Empleado </td>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Cargo </td>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Usuario </td>
-		     </tr>";
+          echo "<center >
+               <table border = 1 style='width: 80%;'  class='table table-hover table-bordered table-condensed table-white table-striped'>
+	           <thead>
+                        <tr>
+			   <th aling='center' > Modificar</th>
+			   <th aling='center' > Eliminar</th>
+			   <th aling='center' > Area</th>
+			   <th aling='center' > Codigo Empleado </th>
+			   <th aling='center' > Nombre Empleado </th>
+			   <th aling='center' > Cargo </th>
+			   <th aling='center' > Usuario </th>
+		      </tr>
+                   </thead><tbody>
+                    </center>";
             while ($row = pg_fetch_array($consulta)) {
                 echo "<tr>
                             <td aling='center'> 
@@ -585,6 +671,14 @@ switch ($opcion) {
             echo "<td> <a onclick=\"show_event('$PagUlt')\">Ultimo</a></td>";
             echo"</tr>
 		       </table>";
+            
+             echo " <center> <ul class='pagination'>";
+                          for ($i=1 ; $i<=$PagUlt; $i++)
+                                    {
+                             
+					 echo " <li ><a  href='javascript: show_event_search(".$i.")'>$i</a></li>";
+                                     }
+                    echo " </ul></center>";
 
             //echo $query_search;
         }
