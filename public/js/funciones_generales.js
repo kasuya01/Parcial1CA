@@ -74,11 +74,39 @@ function valfechasolicita(obj, nombre) {
 
    if (fecha1 != "" && fecha2 > fechact)
    {
-      alert('La fecha de Solicitud de examen es mayor que la fecha actual')
+      alert('La fecha ingresada es mayor que la fecha actual')
       fechafin = getCurrentDateTime('yyyy-mm-dd');
       document.getElementById(nombre).value = fechafin;
       return false;
    }
+}
+
+
+function validafecha(obj, nombre, fechacompara) {
+//    alert(!$("#"+nombre).datepicker( "widget" ).is(":visible"))
+//   if (!$("#"+nombre).datepicker( "widget" ).is(":visible"))
+//   {
+//      alert ('paso')
+      //fecha0=document.getElementById('d_fechatoma').value;
+      fecha1 = obj;
+
+      fechact=fechacompara.replace(/[-: ]/g, "");
+   //var f0 = fecha0.split('-');
+   //var fechaPri = parseInt(f0[0]+f0[1]+f0[2]);
+      fecha2 = fecha1.replace(/[-: ]/g, "");
+      fecha2 =fecha2+'00';
+
+   //var f2 = fecha1.split('-');
+   //var fecha2 = parseInt(f2[0]+f2[1]+f2[2]+f2[3]+f2[4]);
+
+      if (fecha1 != "" && fecha2 < fechact)
+      {
+         alert('La fecha ingresada es menor que la fecha de toma de muestra')
+         fechafin = getCurrentDateTime('yyyy-mm-dd');
+         document.getElementById(nombre).value = fechafin;
+         return false;
+      }
+   //}
 }
 
 

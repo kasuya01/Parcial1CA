@@ -152,12 +152,12 @@ $rowpa = pg_fetch_array($datpac);
 			<td colspan='6' align='center' class="Estilo6"><strong>DETALLE DE RESULTADOS</strong></td>
 		</tr>
 	</table>
-	<table width='85%'  align='center' border='0' class='StormyWeatherFormTABLE'>
+	<table width='85%'  align='center' border='0' class='table table-bordered table-condensed table-white' >
 		<tr>
 			<td align='left' class='Estilo5'><strong>Prueba Realizada</strong></td>
 			<td align='center' class='Estilo5'><strong>Resultado</strong></td>
 			<td align='center' class='Estilo5'><strong>Unidades</strong></td>
-			<td align='center' class='Estilo5'><strong>Rangos Normales</strong></td>
+			<td align='left' class='Estilo5'><strong>Rangos Normales</strong></td>
 			<!--<td align='center' class='Estilo5'><strong>Lectura</strong></td>
 			<td align='center' class='Estilo5'><strong>Interpretaci&oacute;n</strong></td>-->
 			<td align='center' class='Estilo5'><strong>Observaci&oacute;n</strong></td>
@@ -168,13 +168,13 @@ $rowpa = pg_fetch_array($datpac);
 			<?php $pos=0;
 		while($rowdet = pg_fetch_array($consulta)){?>
 		<tr>
-			<td class="Estilo6" align="justify"><?php echo $rowdet['nombre_reporta']?></td>
+                   <td class="Estilo6" align="justify" style=" height: 20px;"><?php echo $rowdet['nombre_reporta']?></td>
 		<?php
                     //  echo $rowdet['IdDetalleSolicitud'] ."vector".$vector_codigos[$pos];
 		//if ($rowdet['IdDetalleSolicitud']== $vector_codigos[$pos]){
 		?>     	<td class='Estilo6' align='center'><?php echo $rowdet['resultado']?></td>
 			<td class='Estilo6' align='center'><?php echo $rowdet['unidades']?></td>
-			<td class='Estilo6' align='center'><?php echo $rowdet['rangoinicio']."-".$rowdet['rangofin']?></td>
+			<td class='Estilo6' align='left'><?php echo $rowdet['rangos']?></td>
 			<!--<td class='Estilo6' align='justify'><?php //echo htmlentities($vector_lecturas[$pos])?></td>
 		        <td class='Estilo6' align='justify'><?php //echo htmlentities($vector_inter[$pos])?></td>-->
 		        <td class='Estilo6' align='center'><?php echo $rowdet['observacion']?></td>

@@ -53,6 +53,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
 
 
 <script language="JavaScript" >
+   
 function Guardar(){
    	GuardarResultados();
 	//window.close();
@@ -195,6 +196,18 @@ LlenarComboMetodologia(idexamen, area);
 
 //alert(area);
 }
+
+
+
+jQuery(document).ready(function($){
+
+    $(".datepicker").datetimepicker({
+     onClose:  function() {
+                 validafecha($(this).val(), $(this).attr('name'),$('#fecha_tmuestra').val() ); 
+                }
+   });
+   
+});
 </script>
 
 </head>
@@ -315,7 +328,7 @@ $fechatomamues= isset($rowdeta['f_tomamuestra']) ? $rowdeta['f_tomamuestra'] : n
                                 <input type="hidden" name="txtnombrearea" id="txtnombrearea" disabled="disabled" size="60" />
                             </td>
                              <td class="StormyWeatherFieldCaptionTD">F. Toma Muestra</td>
-                            <td class="StormyWeatherDataTD" colspan="1"> <?php echo $fechatomamues ;?>
+                             <td class="StormyWeatherDataTD" colspan="1"> <?php echo $fechatomamues ;?><input type="hidden" id="fecha_tmuestra" name="f_tmuestra" value="<?php echo $fechatomamues;?>"/>
                             </td>
                         </tr>
                          <tr>
@@ -337,6 +350,19 @@ $fechatomamues= isset($rowdeta['f_tomamuestra']) ? $rowdeta['f_tomamuestra'] : n
                                         echo $Talla;?>
                             </td>
                         </tr>
+                        <?php
+                        $motive=$objdatos->consmotivo($solicitud,$lugar);
+                        if (pg_num_rows($motive)>0){
+                           $romo=pg_fetch_array($motive);
+                           $motivo=$romo['nombre'];
+                           echo '<tr>'
+                           . '<td class="StormyWeatherFieldCaptionTD">Motivo Solicitud: </td>'
+                                   . '<td  colspan="3" class="StormyWeatherDataTD">'.$motivo.'</td>'
+                           . '</tr>';
+                           }
+                        
+                        
+                        ?>
                        
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Examen </td>
@@ -364,11 +390,11 @@ $fechatomamues= isset($rowdeta['f_tomamuestra']) ? $rowdeta['f_tomamuestra'] : n
                          <tr>
                             <td class="StormyWeatherFieldCaptionTD" style="white-space: nowrap;">*Fecha Realización </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="datepicker form-control height" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" onchange="valfechasolicita(this, 'fecha_realizacion')"/>
+                               <input type="text" class="datepicker form-control height" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd hh:mi" onchange="valfechasolicita(this, 'fecha_realizacion');"  />
                             </td>
                              <td class="StormyWeatherFieldCaptionTD" width="196 px">*Fecha Reporte </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="datepicker form-control height" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  onchange="valfechasolicita(this, 'fecha_reporte')" style="width:90%"/>                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  /> 
+                                <input type="text" class="datepicker form-control height" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d H:m"); ?>"  onchange="valfechasolicita(this, 'fecha_reporte');" style="width:90%"/>                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  /> 
                             </td>
                         </tr>
                         <tr>

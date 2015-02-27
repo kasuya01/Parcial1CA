@@ -68,7 +68,7 @@ switch ($opcion)
 				</td><td>Unidades:</td>
                                 <td width='10%' align='left'>".$row['unidades']."</td></tr>
 				<tr><td>Rangos Normales:</td>
-                                <td width='15%'  align='center'>".$row['rangoinicio']."-".$row['rangofin']."</td><td colspan='2'></td>
+                                <td width='15%'  align='left' colspan='2'>".$row['rangos']."</td><td colspan='2'></td>
                             </tr>
                             <tr >
                                 <th  width='30%' >Observaci&oacute;n</td>
@@ -277,7 +277,7 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
                 while($row = pg_fetch_array($consulta))
                 {
              $Imprimir.="<tr>
-                             <td width='35%' align='justify'>".$row['nombre_reporta']."
+                             <td width='35%' align='justify'  style='height: 20px;'>".$row['nombre_reporta']."
                              <input name='oiddetalle[".$pos."]' type='hidden' id='oiddetalle[".$pos."]' value='".$row['iddetallesolicitud']."'>
                              <input name='oidexamen[".$pos."]' type='hidden' id='oidexamen[".$pos."]' value='".$row['id_conf_examen_estab']."'>
                              <input name='oidexametodologia[".$pos."]' type='hidden' id='oidexametodologia[".$pos."]' value='".$row['idexametodologia']."'>
@@ -293,10 +293,11 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
                   $Imprimir.="<input name='txttab[".$pos."]' type='hidden' id='txttab[".$pos."]' value='".$tab."'>";
            }
                 $Imprimir.="<td align='center'>".$row['unidades']."</td>";
-                    if ((isset($row['rangoinicio'])) && (isset($row['rangofin'])))
-                $Imprimir.="<td width='15%' align='center'>".$row['rangoinicio']."-".$row['rangofin']."</td>";
-                                              else
-                $Imprimir.="<td align='center'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td>";
+                 $Imprimir.="<td align='center'>".$row['rangos']."</td>";
+//                    if ((isset($row['rangoinicio'])) && (isset($row['rangofin'])))
+//                $Imprimir.="<td width='15%' align='center'>".$row['rangoinicio']."-".$row['rangofin']."</td>";
+//                                              else
+//                $Imprimir.="<td align='center'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td>";
                                        // <td align='center'>".htmlentities($vector_lecturas[$pos])."</td>
                                        // <td align='center'>".htmlentities($vector_inter[$pos])."</td>
                 $Imprimir.="<td align='center'>".$vector_obser[$pos]."</td>

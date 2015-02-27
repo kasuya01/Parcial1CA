@@ -162,7 +162,9 @@ class clsSolicitudesProcesadas {
         if ($con->conectar() == true) {
             $query = "select sse.id as idsolicitudestudio, sds.id as iddetallesolicitud, sse.id_establecimiento_externo, 
                       id_area_servicio_diagnostico, sds.id_conf_examen_estab,nombre_examen, id_area_servicio_diagnostico as idarea, ces.idestandar,
-                      ldf.unidades, ldf.rangoinicio, ldf.rangofin, lem.id as idexametodologia, nombre_reporta
+                      ldf.unidades, ldf.rangoinicio, ldf.rangofin, lem.id as idexametodologia, nombre_reporta, (case when rangofin is null and rangoinicio is not null then ('Mayor a '||rangoinicio||' '||unidades) 
+	     when rangoinicio is null and rangofin is not null then ('Menor a '||rangofin||' '||unidades) 
+	else (rangoinicio||' - '||rangofin||' '||unidades) end )as rangos
                       from sec_solicitudestudios 		sse
                       join sec_detallesolicitudestudios	sds on (sse.id=sds.idsolicitudestudio)
                       join lab_conf_examen_estab		lex on (lex.id=sds.id_conf_examen_estab)
@@ -182,7 +184,7 @@ class clsSolicitudesProcesadas {
             and lem.activo=true
             order by nombre_examen;";
 
-            //echo '<br><br>---'.$query.'---s<br><br>';
+           // echo '<br><br>---'.$query.'---s<br><br>';
             $result = @pg_query($query);
             if (!$result)
                 return false;
@@ -216,7 +218,9 @@ class clsSolicitudesProcesadas {
                             ORDER BY NombreExamen";*/
             $query = "select t01.id as iddetallesolicitud, t01.id_conf_examen_estab, t02.nombre_examen, t05.resultado, t04.unidades, 
 t04.rangoinicio, t04.rangofin, t05.observacion, t03.id_area_servicio_diagnostico, t07.idestandar,
-to_char(t05.fecha_resultado, 'dd/mm/yyyy') as fecharesultado, t06.nombre_reporta
+to_char(t05.fecha_resultado, 'dd/mm/yyyy') as fecharesultado, t06.nombre_reporta,(case when rangofin is null and rangoinicio is not null then ('Mayor a '||rangoinicio||' '||unidades) 
+	     when rangoinicio is null and rangofin is not null then ('Menor a '||rangofin||' '||unidades) 
+	else (rangoinicio||' - '||rangofin||' '||unidades) end )as rangos
                     from sec_detallesolicitudestudios 	t01
                     join lab_conf_examen_estab 		t02 on (t02.id=t01.id_conf_examen_estab)
                     join mnt_area_examen_establecimiento	t03 on (t03.id=t02.idexamen)
@@ -1185,6 +1189,51 @@ and (date(t02.fechafin) >= current_date or date(t02.fechafin) is null);";
 from sec_detallesolicitudestudios t01
 where t01.id=$iddetallesolicitud
 and idestablecimiento=$lugar;";
+            //echo $query;
+            $result = pg_query($query);
+            if (!$result) {
+                return false;
+            } else {
+                return $result;
+            }
+        }
+    }
+    //Fn PG
+    function consmotivo($idsolicitud, $lugar){
+         $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query= "select distinct(t04.id), nombre, t04.id_establecimiento, nombre_examen
+from sec_historial_clinico 	t01
+join tar_solicitud_fvih 	t02 on (t01.id=t02.id_historial_clinico)
+join tar_motivo_solicitud	t03 on (t03.id=t02.id_motivo_solicitud)
+join sec_solicitudestudios	t04 on (t01.id=t04.id_historial_clinico)
+join sec_detallesolicitudestudios t05 on (t04.id=t05.idsolicitudestudio)
+join lab_conf_examen_estab	t06 on (t06.id=t05.id_conf_examen_estab)  
+where t04.id=$idsolicitud
+and t04.id_establecimiento=$lugar
+and t06.nombre_examen ilike '%VIH%';";
+            //echo $query;
+            $result = pg_query($query);
+            if (!$result) {
+                return false;
+            } else {
+                return $result;
+            }
+        }
+    }
+    //Fn PG
+    function ConsDatoFijo($iddetallesolicitud,$lugar){
+         $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query= "select (case when rangofin is null and rangoinicio is not null then ('Valores Normales: Mayor a '||rangoinicio||'  Unidades: '||unidades) 
+	     when rangoinicio is null and rangofin is not null then ('Valores Normales: Menor a '||rangofin||'  Unidades: '||unidades) 
+	else ('Valores Normales: '||rangoinicio||' - '||rangofin||'  Unidades: '||unidades) end )as rangos
+from lab_datosfijosresultado t01
+join lab_conf_examen_estab t02 on (t02.id=t01.id_conf_examen_estab)
+join sec_detallesolicitudestudios t03 on (t02.id=t03.id_conf_examen_estab)
+where t03.id=$iddetallesolicitud
+and t03.idestablecimiento=$lugar
+and (t01.fechafin is null or t01.fechafin between fechaini and current_date);";
             //echo $query;
             $result = pg_query($query);
             if (!$result) {
