@@ -48,14 +48,9 @@ function LlenarComboExamen(idarea)
 function Buscar(){
  if ((document.getElementById('cmbArea').value == 0) 
         && (document.getElementById('cmbExamen').value == 0) 
-        && (document.getElementById('cmbSexo').value == 0)
-         && (document.getElementById('cmbEdad').value == 0)
-         && (document.getElementById('txtunidades').value == "")
-         && (document.getElementById('txtrangoinicio').value == "")
-         && (document.getElementById('txtrangofin').value == "")
-         && (document.getElementById('txtnota').value == "")
-         && (document.getElementById('txtFechainicio').value == "")
-         && (document.getElementById('txtFechaFin').value == ""))
+        && (document.getElementById('cmbMetodologia').value == 0)
+         && (document.getElementById('cmbreporta').value == 0)
+         && (document.getElementById('txtFechainicio').value == ""))
  {
     alert("Debe de Ingresar un Parámetro de Búsqueda "); 
  }
@@ -101,6 +96,7 @@ if ($nivel==33){
     <td>
         <div id="divFrmNuevo" >
             <form name="frmnuevo">
+               <input type="hidden" id="actualiza" name="actualiza" value="0"/>
                 <table width="50%" border="0" align="center" class="StormyWeatherFormTABLE">
                     <tr>
                         <td colspan="4" align="center" class="CobaltFieldCaptionTD">
@@ -168,7 +164,7 @@ if ($nivel==33){
                            </div>
                             <button type='button' class='btn btn-default' disabled="disabled"  name="add_posresultado" id="add_posresultado" style="width:75%; text-align: left" onclick="popup('consulta_posresultados.php?form=frmnuevo&posresultados_sel='+document.getElementById('posresultados_sel').value+
                                         '&text_posresultados_sel='+document.getElementById('text_posresultados_sel').value+
-                                        '&nombre='+$('#cmbMetodologia').text()+ '&id_posresultados_sel='+document.getElementById('id_posresultados_sel').value);"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Posibles Resultados:..</button>
+                                        '&nombre='+$('#cmbMetodologia').text()+ '&id_posresultados_sel='+document.getElementById('id_posresultados_sel').value+'&actualizar='+0) ;"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Posibles Resultados:..</button>
                            
                         </td>      
                      </tr>                    
@@ -185,7 +181,7 @@ if ($nivel==33){
                     <tr>  
                             <td class="StormyWeatherDataTD" colspan="4" align="right"><br/>
                                 <button type='button' align="center" class='btn btn-primary'  onclick='Guardar(); '> <span   class='glyphicon glyphicon-floppy-disk'>    </span> Guardar </button>
-                                <button type='button' align="center" class='btn btn-primary'  onclick='Buscar(); '>  <span    class='glyphicon glyphicon-search'>         </span> Buscar </button>
+<!--                                <button type='button' align="center" class='btn btn-primary'  onclick='Buscar(); '>  <span    class='glyphicon glyphicon-search'>         </span> Buscar </button>-->
                                 <button type='button' align="center" class='btn btn-primary'  onclick='Cancelar(); '><span  class='glyphicon glyphicon-refresh'>        </span> Nueva Busqueda</button>
                             </td>
                          </tr>
@@ -206,24 +202,6 @@ if ($nivel==33){
     </td>
 </tr>
 </table>
-		<!--<script type="text/javascript">
-			Calendar.setup(
-				{
-					inputField  : "txtFechainicio",         // el ID texto 
-					ifFormat    : "%d/%m/%Y",    // formato de la fecha
-					button      : "trigger"       // el ID del boton			  	  
-				}
-			);
-			Calendar.setup(
-				{
-				inputField  : "txtFechaFin",         // el ID texto 
-				ifFormat    : "%d/%m/%Y",    // formato de la fecha
-				button      : "trigger2"       // el ID del boton			  	  
-				}
-			);
-		</script> -->
-
-			
 
 </body>
 </html>

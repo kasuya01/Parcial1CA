@@ -195,7 +195,6 @@ switch ($opcion)
            	//echo "combo".$idarea; 
 	  	
 		echo $rslts;
-		
 
 	break;
 	
@@ -205,15 +204,9 @@ switch ($opcion)
 	case 7: //BUSQUEDA
 		$idexamen=$_POST['idexamen'];
 		$idarea=$_POST['idarea'];
-		              
-                $unidades=(empty($_POST['unidades'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidades']) . "'"; 
-                $nota=(empty($_POST['nota'])) ? 'NULL' : "'" . pg_escape_string($_POST['nota']) . "'";  
-                $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";        
-                $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'"; 
-                $rangoinicio=(empty($_POST['rangoinicio'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangoinicio']) . "'";
-                $rangofin=(empty($_POST['rangofin'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangofin']) . "'";
+		$idemetodologia=$_POST['idemetodologia'];
+		$idreporta=$_POST['idreporta'];		              
                 $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
-		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
 		
 	  	
 		$query = "SELECT lab_datosfijosresultado.id,

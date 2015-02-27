@@ -14,7 +14,7 @@ class clsLab_metodologia
 		$con = new ConexionBD;
 	    //usamos el metodo conectar para realizar la conexion
 	    if($con->conectar()==true){
-	      $query = " SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.nombre_examen, t03.* 
+	      $query = " SELECT distinct(lab_conf_examen_estab.id),lab_conf_examen_estab.nombre_examen
  FROM lab_conf_examen_estab
  INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
  join lab_examen_metodologia t03 on (lab_conf_examen_estab.id=t03.id_conf_exa_estab)
@@ -27,7 +27,7 @@ class clsLab_metodologia
  and condicion ='H'
  ORDER BY nombre_examen";
               
-            //  echo $query;
+              //echo $query;
 		 $result = pg_query($query);
 		 if (!$result)
 		   return false;
@@ -138,6 +138,27 @@ and fechafin is null or date(fechafin)>=current_date;";
              return $result;
      }
    }
+      //fn pg
+         
+         //RECUPERAR metodologias POR examen
+        function buscarposresultodo($idmetodologia)
+	 {
+		$con = new ConexionBD;
+	    //usamos el metodo conectar para realizar la conexion
+	    if($con->conectar()==true){
+	      $query = "select *
+from lab_examen_metodo_pos_resultado t01
+               where id_examen_metodologia =$idmetodologia";
+              
+             // echo $query;
+		 $result = pg_query($query);
+		 if (!$result)
+		   return false;
+		 else
+		   return $result;
+	   }
+	 }
+   
    //INSERTA UN REGISTRO          
 	 function insertar($idexamen,$idmetodologia,$cmbreporta,$usuario,$lugar,$Fechaini,$Fechafin,$posresultados_sel,$text_posresultados_sel,$id_posresultados_sel)
 	 { //echo $idarea;
@@ -150,20 +171,47 @@ and fechafin is null or date(fechafin)>=current_date;";
            $aPosResult = explode(',',$posresultados_sel); 
            $aPosResult_text = explode(',',$text_posresultados_sel); 
            $aPosResult_id = explode(',',$id_posresultados_sel);  
-              $i=0;
-         if ($aPosResult[0]!=""){
-        for ($i=0;$i<(count($aPosResult)-1);$i++){
-            $query = "INSERT INTO lab_examen_metodo_pos_resultado
+           $i=0;
+             
+            
+            //$ant=pg_fetch_array($anterioresactivos);
+            if ($aPosResult[0]!=""){
+               $query_upd = "update lab_examen_metodo_pos_resultado
+                  set id_user_mod=$usuario, 
+                     fecha_mod=date_trunc('seconds',NOW()),
+                        habilitado='false',
+                        fechafin=current_date
+                        where id_examen_metodologia= $idmetodologia";
+               // echo $query_upd;
+                 $result = pg_query($query_upd);
+            for ($i=0;$i<(count($aPosResult)-1);$i++){
+                $update=0;
+                $anterioresactivos=$this-> buscarposresultodo($idmetodologia);
+            while ($ant= pg_fetch_array($anterioresactivos)){
+               if ($ant['id_posible_resultado']==$aPosResult[$i]){
+                  $update=1;
+               }
+            }
+            if ($update==1){
+               $query = "update lab_examen_metodo_pos_resultado
+                  set id_user_mod=$usuario, 
+                     fecha_mod=date_trunc('seconds',NOW()),
+                     id_codigoresultado=$aPosResult_id[$i],
+                     fechafin=$Fechafin,
+                        habilitado='true'
+                        where id_examen_metodologia= $idmetodologia
+                        and id_posible_resultado=$aPosResult[$i]";
+            }
+            else{
+               $query = "INSERT INTO lab_examen_metodo_pos_resultado
 		      (id_examen_metodologia, id_posible_resultado, fechainicio, fechafin, id_user, fecha_registro, id_codigoresultado) 
                       VALUES($idmetodologia,$aPosResult[$i],$Fechaini,$Fechafin,$usuario,date_trunc('seconds',NOW()),$aPosResult_id[$i])";
-		//echo $query;
+            }
+            //echo $query;
 	     $result = pg_query($query);
            
-        }        
-       }
-           
-	   
-	
+            }        
+           }
 	     if (!$result)
 	       return false;
 	     else
@@ -172,7 +220,51 @@ and fechafin is null or date(fechafin)>=current_date;";
 	 }
    
    
-         
+           function consultarhabilitado($idmetodologia)
+       {
+         $con = new ConexionBD;
+         if($con->conectar()==true)
+         {
+           $query = "select * from lab_examen_metodologia 
+                     where activo=true 
+                     and (fecha_fin between fecha_inicio and current_date 
+                     or fecha_fin is null)
+                     and id=$idmetodologia";
+           $result = pg_query($query);
+           if (!$result)
+             return false;
+           else
+             return $result;
+          }
+        }
+
+      //fn pg
+	function consultarpag($lugar,$RegistrosAEmpezar, $RegistrosAMostrar)
+	{
+	   //creamos el objeto $con a partir de la clase ConexionBD
+	   $con = new ConexionBD;
+	   //usamos el metodo conectar para realizar la conexion
+            if($con->conectar()==true){
+              $query = "select idestandar, nombre_examen, nombre_reporta, b_reporta, t01.id as id
+               from lab_examen_metodologia t01
+               join lab_conf_examen_estab  t02 on (t02.id=t01.id_conf_exa_estab)
+               join mnt_area_examen_establecimiento  t03 on (t03.id=t02.idexamen)
+               join ctl_examen_servicio_diagnostico t04 on (t04.id=t03.id_examen_servicio_diagnostico)
+               where id_metodologia is not null
+               and t01.activo=true
+               and condicion='H'
+               and id_establecimiento=$lugar
+               order by idestandar,nombre_examen, nombre_reporta
+               LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+                //echo $query;
+                    $result = pg_query($query);
+                    if (!$result)
+			return false;
+                    else
+			return $result;
+            }
+	}  
+      
          
          
       /////////////////Fin funciones Metodologias
@@ -276,27 +368,23 @@ and fechafin is null or date(fechafin)>=current_date;";
 	  } 
 
 	//CONSULTA EXAMEN POR EL CODIGO
-	function consultarid($iddatosfijosresultado,$lugar)
+	function consultarid($idmetodologia,$lugar)
 	 {
 	   $con = new ConexionBD;
 	   if($con->conectar()==true)
 	   {
-	     $query = "SELECT lab_conf_examen_estab.id as idexamen,lab_conf_examen_estab.nombre_examen, 
-                        mnt_area_examen_establecimiento.id_area_servicio_diagnostico as idarea, nombrearea, lab_datosfijosresultado.unidades, rangoinicio, 
-                        rangofin,lab_datosfijosresultado.nota,lab_datosfijosresultado.idestablecimiento, 
-                        to_char( lab_datosfijosresultado.fechaini, 'dd/mm/YYYY' ) AS FechaIni,
-                        to_char( lab_datosfijosresultado.fechafin, 'dd/mm/YYYY' ) AS FechaFin, 
-                        ctl_sexo.id as idsexo, ctl_sexo.nombre as sexo,ctl_rango_edad.id as idedad,ctl_rango_edad.nombre as redad,lab_datosfijosresultado.id 
-                        FROM lab_datosfijosresultado
-                        INNER JOIN lab_conf_examen_estab ON lab_datosfijosresultado.id_conf_examen_estab=lab_conf_examen_estab.id 
-                        INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
-                        INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
-                        INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
-                        LEFT JOIN ctl_sexo ON lab_datosfijosresultado.idsexo = ctl_sexo.id 
-                        INNER JOIN ctl_rango_edad ON lab_datosfijosresultado.idedad = ctl_rango_edad.id 
-                        WHERE lab_datosfijosresultado.id=$iddatosfijosresultado
-		        AND lab_datosfijosresultado.idestablecimiento=$lugar
-		        ORDER BY lab_conf_examen_estab.nombre_examen";
+	     $query = "select idestandar, nombre_examen, nombre_reporta, b_reporta, t01.id as id, t05.id as id_area, nombrearea, t02.id as id_examen, t01.fecha_inicio, t01.fecha_fin
+                  from lab_examen_metodologia t01
+                  join lab_conf_examen_estab  t02 on (t02.id=t01.id_conf_exa_estab)
+                  join mnt_area_examen_establecimiento  t03 on (t03.id=t02.idexamen)
+                  join ctl_examen_servicio_diagnostico t04 on (t04.id=t03.id_examen_servicio_diagnostico)
+                  join ctl_area_servicio_diagnostico t05 on (t05.id=t03.id_area_servicio_diagnostico)
+                  where id_metodologia is not null
+                  and t01.activo=true
+                  and condicion='H'
+                  and id_establecimiento=$lugar
+                  and t01.id =$idmetodologia
+                  order by idestandar,nombre_examen, nombre_reporta;";
              //echo $query;
 	     $result = pg_query($query);
              
@@ -349,22 +437,6 @@ and fechafin is null or date(fechafin)>=current_date;";
 	  }	
           
           
-           function consultarhabilitado($iddatosfijosexamen)
-       {
-         $con = new ConexionBD;
-         if($con->conectar()==true)
-         {
-           $query = "select CASE lab_datosfijosresultado.fechafin 
-                     WHEN lab_datosfijosresultado.fechafin THEN 'Inhabilitado'
-                     ELSE 'Habilitado' END AS habilitado from  lab_datosfijosresultado   WHERE id=$iddatosfijosexamen";
-           $result = pg_query($query);
-           if (!$result)
-             return false;
-           else
-             return $result;
-          }
-        }
-
           
          //fn_pg          
         function Estadohabilitado($idatofijo,$usuario) {
@@ -402,33 +474,6 @@ and fechafin is null or date(fechafin)>=current_date;";
 	}
           
           
-	
-	function consultarpag($lugar,$RegistrosAEmpezar, $RegistrosAMostrar)
-	{
-	   //creamos el objeto $con a partir de la clase ConexionBD
-	   $con = new ConexionBD;
-	   //usamos el metodo conectar para realizar la conexion
-            if($con->conectar()==true){
-              $query = "select idestandar, nombre_examen, nombre_reporta, b_reporta, t01.id as id
-               from lab_examen_metodologia t01
-               join lab_conf_examen_estab  t02 on (t02.id=t01.id_conf_exa_estab)
-               join mnt_area_examen_establecimiento  t03 on (t03.id=t02.idexamen)
-               join ctl_examen_servicio_diagnostico t04 on (t04.id=t03.id_examen_servicio_diagnostico)
-               where id_metodologia is not null
-               and t01.activo=true
-               and condicion='H'
-               and id_establecimiento=$lugar
-               order by idestandar,nombre_examen, nombre_reporta
-               LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
-                //echo $query;
-                    $result = pg_query($query);
-                    if (!$result)
-			return false;
-                    else
-			return $result;
-            }
-	}  
-   
 	function consultarpagbus($query_search,$RegistrosAEmpezar, $RegistrosAMostrar)
 	{
 	   //creamos el objeto $con a partir de la clase ConexionBD

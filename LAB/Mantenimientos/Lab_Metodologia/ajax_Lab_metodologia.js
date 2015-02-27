@@ -37,25 +37,34 @@ function show_event(Pag)
 function LlenarExamenes(idarea)
 {         // alert (idarea);
 	var opcion=5;
+        jQuery.ajax({
+            type: "POST",
+            url: "ctrLab_metodologia.php",
+            data: { idarea: idarea, opcion: opcion },
+            success:function(data){
+               jQuery('#divExamen').empty();
+               jQuery('#divExamen').append(data);
+                buscaranteriores();
+            }
+ 
+        });
        //instanciamos el objetoAjax
-	ajax=objetoAjax();
-	//archivo que realizar� la operacion ->actualizacion.php
-	ajax.open("POST", "ctrLab_metodologia.php",true);
-	//muy importante este encabezado ya que hacemos uso de un formulario
-	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	//enviando los valores
-	ajax.send("idarea="+idarea+"&opcion="+opcion);
-	ajax.onreadystatechange=function() {
-		if (ajax.readyState==4) {
-                  //mostrar los nuevos registros en esta capa
-                  document.getElementById('divExamen').innerHTML = ajax.responseText;
-//                  document.getElementById('cmbMetodologia').value=0;
-//                  document.getElementById('cmbreporta').value=0;
-                   
-                   buscaranteriores()
-                        
-		}
-	}	
+//	ajax=objetoAjax();
+//	//archivo que realizar� la operacion ->actualizacion.php
+//	ajax.open("POST", "ctrLab_metodologia.php",true);
+//	//muy importante este encabezado ya que hacemos uso de un formulario	
+//	ajax.onreadystatechange=function() {
+//           console.log(ajax.readyState)
+//		if (ajax.readyState==4) {
+//                  //mostrar los nuevos registros en esta capa
+//                  document.getElementById('divExamen').innerHTML = ajax.responseText;
+//                   buscaranteriores()
+//                        
+//		}
+//	}
+//        ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+//	//enviando los valores
+//	ajax.send("idarea="+idarea+"&opcion="+opcion);
 }
 //fn pg
 
@@ -133,10 +142,11 @@ function buscareporta(){ //INGRESAR REGISTROS
 function buscaposresultprevios(){ //INGRESAR REGISTROS
 	//donde se mostrar� lo resultados
 	//valores de los inputs
-	idexamen=document.getElementById('cmbExamen').value;
-	idmetodologia=document.getElementById('cmbMetodologia').value;
+       
+            idexamen=document.getElementById('cmbExamen').value;
+            idmetodologia=document.getElementById('cmbMetodologia').value;
+        
         if (idmetodologia !=0){
-        alert (idmetodologia)
         
           //  alert('iadrea: '+idarea+' /idexa:  '+idexamen+' /sexo:  '+sexo+'/edad:'+redad)
             var opcion=12;
@@ -147,8 +157,9 @@ function buscaposresultprevios(){ //INGRESAR REGISTROS
             ajax.open("POST", "ctrLab_metodologia.php",true);
             ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
-                     // alert(ajax.responseText)
-                     document.getElementById('posresultprevios').innerHTML=ajax.responseText 
+                     // alert(ajax.responseText+'ajaaa' + actualiza)
+                 
+                     document.getElementById('posresultprevios').innerHTML=ajax.responseText;                 
                    	
 		}
 	}
@@ -160,6 +171,129 @@ function buscaposresultprevios(){ //INGRESAR REGISTROS
 	//alert (sexo+"--"+redad);
 	
 }
+
+
+function IngresarRegistro(){ //INGRESAR REGISTROS
+	//donde se mostrar� lo resultados
+	//valores de los inputs
+	idexamen=document.getElementById('cmbExamen').value;
+	idmetodologia=document.getElementById('cmbMetodologia').value;
+	cmbreporta=document.getElementById('cmbreporta').value;
+	Fechaini=document.getElementById('txtFechainicio').value;
+	Fechafin=document.getElementById('txtFechaFin').value;	
+        posresultados_sel=document.getElementById('posresultados_sel').value
+        text_posresultados_sel=document.getElementById('text_posresultados_sel').value;
+        id_posresultados_sel=document.getElementById('id_posresultados_sel').value;
+	//alert (idmetodologia+"--"+posresultados_sel);
+	var opcion=1;
+	Pag=1;
+	//instanciamos el objetoAjax
+	ajax=objetoAjax();
+	//archivo que realizar� la operacion
+	ajax.open("POST", "ctrLab_metodologia.php",true);
+        //alert(ajax.onreadystatechange);
+	ajax.onreadystatechange=function() {
+         //  alert(ajax.readyState)
+		if (ajax.readyState==4) {
+			//mostrar resultados en esta capa
+		
+        alert(ajax.responseText);
+			LimpiarCampos();
+			show_event(Pag);
+		}
+	}
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	//enviando los valores
+	ajax.send("idmetodologia="+idmetodologia+"&opcion="+opcion+"&idexamen="+idexamen+"&cmbreporta="+ cmbreporta+"&Pag="+Pag+"&Fechaini="+Fechaini+"&Fechafin="+Fechafin+"&posresultados_sel="+posresultados_sel+"&text_posresultados_sel="+text_posresultados_sel+"&id_posresultados_sel="+id_posresultados_sel);
+}
+
+
+function LimpiarCampos(){
+      window.location.replace('MntLab_metodologia.php')
+//	document.getElementById('cmbArea').value=0;
+//        LlenarComboExamen(0);
+////	document.getElementById('cmbExamen').value=0;
+////	document.getElementById('cmbMetodologia').value=0;
+////	document.getElementById('cmbreporta').value=0;
+//         var today = new Date();
+//         var dd = today.getDate();
+//         var mm = today.getMonth()+1; //January is 0!
+//         var yyyy = today.getFullYear();
+//
+//         if(dd<10) {
+//             dd='0'+dd
+//         } 
+//
+//         if(mm<10) {
+//             mm='0'+mm
+//         } 
+//
+//         today = yyyy+'-'+mm+'-'+dd;
+//	document.getElementById('txtFechainicio').value=today;
+}
+
+
+
+
+function pedirDatos(id){ //CARGAR DATOS A MODIFICAR
+	//donde se mostrar� el formulario con los datos
+	divFormulario = document.getElementById('divFrmModificar');
+	divFormularioNuevo=document.getElementById('divFrmNuevo');
+	//instanciamos el objetoAjax
+	ajax=objetoAjax();
+	//uso del medotod POST
+	ajax.open("POST", "consulta_metodologia.php");
+	ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+			//mostrar resultados en esta capa
+			document.getElementById('divFrmModificar').innerHTML = ajax.responseText
+			divFormularioNuevo.style.display="none";
+                        jQuery('form[name="frmnuevo"]').empty();
+			divFormulario.style.display="block";
+                        classdate();
+                        buscaposresultprevios();
+			
+		}
+	}
+	//como hacemos uso del metodo POST
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	//enviando el codigo f
+	//alert(iddatosfijosexamen);
+	ajax.send("idmetodologia="+ id);
+	
+}
+
+
+
+function BuscarDatos()
+{
+	var opcion=7;
+	Pag=1;
+    //valores de los cajas de texto
+	idarea=document.getElementById('cmbArea').value;
+	idexamen=document.getElementById('cmbExamen').value;	
+	idemetodologia=document.getElementById('cmbMetodologia').value;
+	idreporta=document.getElementById('cmbreporta').value;
+	Fechaini=document.getElementById('txtFechainicio').value;
+	
+	//instanciamos el objetoAjax
+	ajax=objetoAjax();
+	//archivo que realizar� la operacion ->actualizacion.php
+	ajax.open("POST", "ctrLab_metodologia.php",true);
+	//muy importante este encabezado ya que hacemos uso de un formulario
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	//enviando los valores
+	ajax.send("idarea="+idarea+"&opcion="+opcion+"&idexamen="+idexamen+"&idemetodologia="+idemetodologia+
+        "&Pag="+Pag+"&idreporta="+idreporta+"&Fechaini="+Fechaini);
+	ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+			//mostrar los nuevos registros en esta capa
+			document.getElementById('divinicial').innerHTML = ajax.responseText;
+			//alert(ajax.responseText);
+		}
+	}	
+}
+
 
 
 ///Fin de funciones de metodologia
@@ -196,88 +330,6 @@ var opcion=9;
 }
 
 
-
-function LimpiarCampos(){
-	document.getElementById('cmbArea').value="0";
-	document.getElementById('cmbExamen').value="0";
-        document.getElementById('cmbMetodologia').value="0";
-        document.getElementById('cmbreporta').value="0";
-	document.getElementById('txtFechaFin').value="";
-         var today = new Date();
-         var dd = today.getDate();
-         var mm = today.getMonth()+1; //January is 0!
-         var yyyy = today.getFullYear();
-
-         if(dd<10) {
-             dd='0'+dd
-         } 
-
-         if(mm<10) {
-             mm='0'+mm
-         } 
-
-         today = yyyy+'-'+mm+'-'+dd;
-	document.getElementById('txtFechainicio').value=today;
-}
-
-function IngresarRegistro(){ //INGRESAR REGISTROS
-	//donde se mostrar� lo resultados
-	//valores de los inputs
-	idexamen=document.getElementById('cmbExamen').value;
-	idmetodologia=document.getElementById('cmbMetodologia').value;
-	cmbreporta=document.getElementById('cmbreporta').value;
-	Fechaini=document.getElementById('txtFechainicio').value;
-	Fechafin=document.getElementById('txtFechaFin').value;	
-        posresultados_sel=frmnuevo.posresultados_sel.value;
-        text_posresultados_sel=frmnuevo.text_posresultados_sel.value;
-        id_posresultados_sel=frmnuevo.id_posresultados_sel.value;
-	alert (idmetodologia+"--"+posresultados_sel);
-        return false
-	var opcion=1;
-	Pag=1;
-	//instanciamos el objetoAjax
-	ajax=objetoAjax();
-	//archivo que realizar� la operacion
-	ajax.open("POST", "ctrLab_metodologia.php",true);
-	ajax.onreadystatechange=function() {
-		if (ajax.readyState==4) {
-			//mostrar resultados en esta capa
-		
-        alert(ajax.responseText);
-			LimpiarCampos();
-			show_event(Pag);
-		}
-	}
-	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	//enviando los valores
-	ajax.send("idmetodologia="+idmetodologia+"&opcion="+opcion+"&idexamen="+idexamen+"&cmbreporta="+ cmbreporta+"&Pag="+Pag+"&Fechaini="+Fechaini+"&Fechafin="+Fechafin+"&posresultados_sel="+posresultados_sel+"&text_posresultados_sel="+text_posresultados_sel+"&id_posresultados_sel="+id_posresultados_sel);
-}
-
-
-function pedirDatos(iddatosfijosexamen){ //CARGAR DATOS A MODIFICAR
-	//donde se mostrar� el formulario con los datos
-	divFormulario = document.getElementById('divFrmModificar');
-	divFormularioNuevo=document.getElementById('divFrmNuevo');
-	//instanciamos el objetoAjax
-	ajax=objetoAjax();
-	//uso del medotod POST
-	ajax.open("POST", "consulta_DatosFijosExamen.php");
-	ajax.onreadystatechange=function() {
-		if (ajax.readyState==4) {
-			//mostrar resultados en esta capa
-			document.getElementById('divFrmModificar').innerHTML = ajax.responseText
-			divFormularioNuevo.style.display="none";
-			divFormulario.style.display="block";
-			
-		}
-	}
-	//como hacemos uso del metodo POST
-	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	//enviando el codigo f
-	//alert(iddatosfijosexamen);
-	ajax.send("iddatosfijosexamen="+ iddatosfijosexamen );
-	
-}
 
 function enviarDatos(){//FUNCION PARA MODIFICAR
 	//donde se mostrar� lo resultados
@@ -360,41 +412,6 @@ function eliminarDato(iddatosfijosresultado){ //FUNCION PARA ELIMINACION
 }
 
 
-
-function BuscarDatos()
-{
-	var opcion=7;
-	Pag=1;
-    //valores de los cajas de texto
-	idarea=document.getElementById('cmbArea').value;
-	idexamen=document.getElementById('cmbExamen').value;	
-	unidades=document.getElementById('txtunidades').value;
-	rangoinicio=document.getElementById('txtrangoinicio').value;
-	rangofin=document.getElementById('txtrangofin').value;
-	nota=document.getElementById('txtnota').value;
-	Fechaini=document.getElementById('txtFechainicio').value;
-	Fechafin=document.getElementById('txtFechaFin').value;	
-	sexo=document.getElementById('cmbSexo').value;
-        redad=document.getElementById('cmbEdad').value;
-	
-	//instanciamos el objetoAjax
-	ajax=objetoAjax();
-	//archivo que realizar� la operacion ->actualizacion.php
-	ajax.open("POST", "ctrLab_metodologia.php",true);
-	//muy importante este encabezado ya que hacemos uso de un formulario
-	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	//enviando los valores
-	ajax.send("idarea="+idarea+"&opcion="+opcion+"&idexamen="+idexamen+"&unidades="+escape(unidades)+
-        "&Pag="+Pag+"&rangoinicio="+rangoinicio+"&rangofin="+rangofin+"&nota="+escape(nota)+
-        "&Fechaini="+Fechaini+"&Fechafin="+Fechafin+"&sexo="+sexo+"&redad="+redad);
-	ajax.onreadystatechange=function() {
-		if (ajax.readyState==4) {
-			//mostrar los nuevos registros en esta capa
-			document.getElementById('divinicial').innerHTML = ajax.responseText;
-			//alert(ajax.responseText);
-		}
-	}	
-}
 
 function MostraFormularioNuevo()
 {

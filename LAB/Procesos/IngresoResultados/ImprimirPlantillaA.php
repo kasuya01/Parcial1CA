@@ -161,13 +161,10 @@ $f_tomamuestra=$filares['f_tomamuestra'];
                             <td align="left" class="Estilo5"><strong>Prueba Realizada</strong></td>
                             <td align="center" class="Estilo5"><strong>Resultado</strong></td>
                             <td align="center" class="Estilo5"><strong>Unidades</strong></td>
-                            <td align="center" class="Estilo5"><strong>Rangos Normales</strong> </td>
-                            <td align="justify" class="Estilo5"><strong>Marca</strong></td>
-                            <td align="justify" class="Estilo5"><strong>Lectura</strong></td>
-                            <td align="justify" class="Estilo5"><strong>Interpretación</strong></td>
-                            <td align="justify" class="Estilo5"><strong>Observación</strong></td>
+                            <td align="justify" class="Estilo5"><strong>Rangos Normales</strong> </td>
+                            <td align="justify" class="Estilo5" colspan="3"><strong>Observación</strong></td>
                         </tr>
-                        <tr><td colspan="8"><hr></td><tr/>
+                        <tr><td colspan="7"><br></td><tr/>
                         <tr>
                             <td align="left" class="Estilo5"><?php echo $nexamen;?></td>
                             <td align="center" class="Estilo5"><?php echo $resultado?></td>
@@ -176,35 +173,34 @@ $f_tomamuestra=$filares['f_tomamuestra'];
                      <?php }else{?>
                             <td  align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                      <?php }  ?>
-                            <td align="center" class="Estilo5"><?php echo isset($fila['rangoinicio']) ? $fila['rangoinicio'] : null." - ".isset($fila['rangorin']) ? $fila['rangofin'] : null?></td>
-                     <?php if (!empty($marca)){ ?>
-                            <td align="justify" class="Estilo5"><?php echo $marca?></td>
-                     <?php }else{?>
-                            <td  align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                     <?php }
-                            if (!empty($lectura)){ ?>
-                            <td align="justify" class="Estilo5"><?php echo $lectura?></td>
-                     <?php }else{?>
-                            <td  align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                     <?php }
-                            if (!empty($lectura)){    ?>
-                            <td align="justify" class="Estilo5"><?php echo $interpretacion?></td>
-                     <?php }else{?>
-                            <td align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                     <?php }
+                            <td align="justify" class="Estilo5"><?php echo isset($fila['rangoinicio']) ? $fila['rangoinicio'] : null." - ".isset($fila['rangorin']) ? $fila['rangofin'] : null?></td>                   
+                     <?php 
                             if (!empty($observacion)){ ?>
-                            <td align="justify" class="Estilo5"><?php echo $observacion?></td>
+                            <td align="justify" class="Estilo5" colspan="3"><?php echo $observacion?></td>
                      <?php }else{?>
-                            <td  align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td  align="center" colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                      <?php } ?>
                         </tr>
                         <?php
-                     echo "<tr><td colspan='8'>&nbsp;</td></tr>";
+                     echo "<tr><td colspan='7'>&nbsp;</td></tr>";
           
          $met=$objdatos->buscarexamresult($iddetalle, $idsolicitud, $lugar, $idexamen, $sexo, $idedad);
          $cantmet=pg_num_rows($met);
          if ($cantmet>0){
-            echo "<tr><td colspan=1><br><i>Metodologías:</i></td></tr>";
+            echo "<tr><td colspan='7'><br/><hr style='width:100%;'></td></tr>";
+             echo "<tr><td colspan=1><b><u><i>Metodologías:</i></u></b><br/></td></tr>";
+            
+            
+           
+            echo '<tr >
+                     <td align="left" class="Estilo5"><strong>Metodología</strong></td>
+                     <td align="center" class="Estilo5"><strong>Resultado</strong></td>
+                     <td align="center" class="Estilo5"><strong>Unidades</strong></td>
+                     <td align="justify" class="Estilo5"><strong>Rangos Normales</strong> </td>
+                     <td align="justify" class="Estilo5"><strong>Marca</strong> </td>
+                     <td align="justify" class="Estilo5"><strong>Lectura</strong></td>
+                     <td align="justify" class="Estilo5"><strong>Observación</strong><br/></td>
+                   </tr><tr><td colspan="7"><br></td><tr/>';
             while ($rowme=pg_fetch_array($met)){
                 echo "<tr>
                         <td align='left' style='font:bold'  class='Estilo5'>".$rowme['nombre_metodologia']."</td>
@@ -213,7 +209,6 @@ $f_tomamuestra=$filares['f_tomamuestra'];
                         <td align='justify' class='Estilo5'>".$rowme['rangoinicio']." - ".$rowme['rangofin']."</td>
                         <td align='justify' class='Estilo5'>".$rowme['marca']."</td>
                         <td align='justify' class='Estilo5'>".$rowme['lectura']."</td>
-                        <td align='justify' class='Estilo5'></td>
                         <td align='justify' class='Estilo5'>".$rowme['observacion']."</td>
                     </tr>";
                 }

@@ -32,11 +32,12 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                
                if (acn==1){
                   codreporte=$('#cmbcodigoresultado option:selected').val();
-               }
-               if (codreporte==0){
-                  alert ('Seleccione una opción del resultado de tabulador por favor');
-                  return false
-               }
+                  if (codreporte==0){
+                              alert ('Seleccione una opción del resultado de tabulador por favor');
+                              return false
+                           }         
+                  }
+               
                
                   var obj_lista_sel=document.getElementById('lista_sel');
                  
@@ -233,6 +234,7 @@ function abrirmodal(){
         ?> 
         <div align="center"><br>
           <button type='button' class='btn btn-primary' id='Aceptar' onclick='cerrar(); '>
+             <input type="hidden" id="actualizar" name="actualizar" value="<?php echo $actualizar?>"
                <span class='glyphicon glyphicon-ok-circle'></span> 
                Aceptar
           </button><br/>

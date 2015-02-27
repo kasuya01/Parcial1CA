@@ -523,7 +523,7 @@ $imprimir="<form name='frmDatos'>
 		//echo $idarea;
 		$dtExam=$objdatos-> ExamenesPorArea($idarea,$lugar);	
 		
-		$rslts = '<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:375px">';
+		$rslts = '<select name="cmbExamen" id="cmbExamen" class="form-control height" style="width:375px">';
 		$rslts .='<option value="0">Seleccione Examen</option>';
 			
 		while ($rows =pg_fetch_array($dtExam)){
@@ -540,7 +540,7 @@ $imprimir="<form name='frmDatos'>
 		$Idtipoesta=$_POST['idtipoesta'];
                // echo $Idtipoesta;
             	$dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
-              	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:375px">';
+              	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:375px" class="form-control height">';
 		$rslts .='<option value="0">Seleccione Establecimiento</option>';
                while ($rows =pg_fetch_array( $dtIdEstab)){
 		  $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
@@ -554,7 +554,7 @@ $imprimir="<form name='frmDatos'>
          $IdServ=$_POST['IdServicio'];
 	    //  echo $IdServ;
 	     $dtserv=$objdatos->LlenarCmbServ($IdServ,$lugar);
-	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:375px">';
+	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:375px" class="form-control height">';
 		 $rslts .='<option value="0">Seleccione Subespecialidad</option>';
 			while ($rows =pg_fetch_array($dtserv)){
 				$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';

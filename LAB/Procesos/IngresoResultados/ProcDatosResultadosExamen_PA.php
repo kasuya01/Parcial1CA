@@ -262,6 +262,10 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
       $Diagnostico='-';
       $ConocidoPor='-';
   }
+  
+  $dato_fijo=$objdatos->ConsDatoFijo($iddetallesolicitud,$lugar);
+  $dfijo= pg_fetch_array($dato_fijo);
+  $valnor=$dfijo['rangos'];
 ?>
 
 
@@ -440,7 +444,7 @@ echo '<option value="xyz">Seleccione una opción</option>';
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Observaci&oacute;n</td>
-                            <td class="StormyWeatherDataTD" colspan="3"><textarea name="txtcomentario" cols="50" id="txtcomentario" class="form-control" style="width:96%"></textarea></td>
+                            <td class="StormyWeatherDataTD" colspan="3"><textarea name="txtcomentario" cols="50" id="txtcomentario" class="form-control placeholder" style="width:96%" placeholder="<?php echo $valnor;?>"></textarea></td>
                         </tr>
                         <tr>
                             <td  class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">*Resultado Tabulador</td>

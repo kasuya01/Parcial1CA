@@ -69,11 +69,11 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
            $est=@pg_fetch_array(pg_query($estado));
            $estado_solicitud=$est['estado'];
            
-            $aux_query  = "SELECT COUNT(id) AS numero FROM lab_proceso_establecimiento WHERE id_proceso_laboratorio = 3";
+            $aux_query  = "SELECT COUNT(id) AS numero FROM lab_proceso_establecimiento WHERE id_proceso_laboratorio = 3 and activo=true";
             $aux_result = @pg_query($aux_query);
             $sirecep=pg_fetch_array($aux_result);
 
-            if($sirecep[0] === 0) {
+            if($sirecep[0] === '0') {
                 $estado_detalle   = "PM";
             } else {
                 $estado_detalle   = "D";
