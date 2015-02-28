@@ -274,7 +274,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                                     <td colspan="3" align="left"><?php echo htmlentities($establecimiento); ?></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="1">No. Orden</td>
+                                    <td colspan="1">No. Orden:</td>
                                     <td colspan="1"><?php echo $idsolicitud ?></td>
                                     <td>Fecha Recepci&oacute;n:</td>
                                     <td><?php echo htmlentities($fechacita); ?></td>
@@ -384,7 +384,8 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                                     <tr>
                                         <td>
                                             <div id="botonimp"  >
-                                                <input type="button" name="btnImpSolicitud" id="btnImpSolicitud" value="Imprimir" onClick="window.print();"/>
+                                               <button type="button" name="btnImpSolicitud" id="btnImpSolicitud" onclick="window.print();" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span>&nbsp;Imprimir</button>
+<!--                                                <input type="button" name="btnImpSolicitud" id="btnImpSolicitud" value="Imprimir" onClick="window.print();"/>-->
                                             </div>
                                         </td>
                                     </tr>

@@ -517,6 +517,8 @@ switch ($opcion) {
 			<td colspan='2'>" . $origen . "</td>
                     </tr>
                     <tr>";
+          $met=$objdatos->buscarexamresult($iddetalle, $idsolicitud, $lugar, $idexamen, $sexo, $idedad);
+         $cantmet=pg_num_rows($met);
         $consulta_empleado = $objdatos->BuscarEmpleadoValidador($responsable, $lugar);
         $fila_empleado = pg_fetch_array($consulta_empleado); //$fila_empleado['NombreEmpleado'].
         $Imprimir.="
@@ -539,11 +541,11 @@ switch ($opcion) {
 
         $Imprimir.="<table width='100%'  align='center' border='0' class='StormyWeatherFormTABLE'>
                         <tr>";
-       if ($idmetodologia!=0){
-            $Imprimir.="<td colspan='9' align='center' >&nbsp;DETALLE DE RESULTADOS<br/><br></td>";
+       if ($cantmet!=0){
+            $Imprimir.="<td colspan='8' align='center' >&nbsp;DETALLE DE RESULTADOS<br/><br></td>";
         }
         else{
-           $Imprimir.="<td colspan='8' align='center' >&nbsp;DETALLE DE RESULTADOS<br/><br></td>";
+           $Imprimir.="<td colspan='5' align='center' >&nbsp;DETALLE DE RESULTADOS<br/><br></td>";
         }
         
                             
@@ -551,23 +553,27 @@ switch ($opcion) {
          $Imprimir.="</tr>
                         <tr >
                             <td align='center'><b>Prueba Realizada </b></td>";
-        if ($idmetodologia!=0){
+        if ($cantmet!=0){
             $Imprimir.="<td align='center'><b>Metodología </b></td>";
         }
         $Imprimir.="                    
                             <td align='center'><b>Resultado</b></td>
                             <td align='center'><b>Unidades</b></td>
-                            <td align='center'><b>Rangos Normales </b></td>
-                            <td align='center'><b>Marca</b></td>
-                            <td align='center'><b>Lectura</b></td>
-			    <td align='center'><b>Interpretaci&oacute;n</b></td>
-			    <td align='center'><b>Observaci&oacute;n</b></td>
-			</tr>";
-         if ($idmetodologia!=0){
-            $Imprimir.="<tr><td colspan='9'><hr style='width:90%'></td></tr>";
+                            <td align='center'><b>Rangos Normales </b></td>";
+        if ($cantmet!=0){
+         $Imprimir.=      " <td align='center'><b>Marca</b></td>
+                            <td align='center'><b>Lectura</b></td></td>";
+        }
+      else {
+         $Imprimir.=    "<td align='justify'><b>Observaci&oacute;n</b></td>
+                             </tr>";
+      }
+	 
+         if ($cantmet!=0){
+            $Imprimir.="<tr><td colspan='8'><hr style='width:90%'></td></tr>";
         }
         else{
-           $Imprimir.="<tr><td colspan='8'><hr style='width:90%'></td></tr>";
+           $Imprimir.="<tr><td colspan='5'><hr style='width:90%'></td></tr>";
         }       
                 
                         
@@ -578,30 +584,34 @@ switch ($opcion) {
 
         $Imprimir.="<tr>
                             <td align='center' style='font:bold'>" . $fila['nombre_examen'] . "</td>";
-        if ($idmetodologia!=0){
+        if ($cantmet!=0){
             $Imprimir.="<td align='center' style='font:bold'><strong>" . $fila['nombre_metodologia'] . "</strong></td>";
         }
         $Imprimir.="   
                             
 			    <td align='center'>" . $resultado . "<input type='hidden' id='resultado_' name='resultado_' value='" . $resultado . "'/><input type='hidden' id='idresultado_' name='idresultado_' value=".$idresultado." /></td>
 			    <td align='center'>" . $fila['unidades'] . "</td>
-			    <td align='center'>" . $fila['rangoinicio'] . " - " . $fila['rangofin'] . "</td>
-			    <td align='center'>" . $marca . "<input type='hidden' id='marca_' name='marca_' value='" . $marca . "'/></td>"
-                . "<td align='center'>" . $lectura . "<input type='hidden' id='lectura_' name='lectura_' value='" . $lectura . "'/></td>
-			    <td align='center'>" . $interpretacion . "<input type='hidden' id='interpretacion_' name='interpretacion_' value='" . $interpretacion . "'/></td>
-			    <td align='center'>" . $observacion . "<input type='hidden' id='observacion_' name='observacion_' value='" . $observacion . "'/></td>
+			    <td align='center'>" . $fila['rangoinicio'] . " - " . $fila['rangofin'] . "</td>";
+        if ($cantmet!=0){
+        $Imprimir.=" 
+			    <td align='center'>" . $marca . "</td>"
+                . "<td align='center'>" . $lectura . "</td>
+			    ";
+        }
+        $Imprimir.=" 
+			    <td align='justify'>" . $observacion . "<input type='hidden' id='observacion_' name='observacion_' value='" . $observacion . "'/><input type='hidden' id='marca_' name='marca_' value='" . $marca . "'/><input type='hidden' id='lectura_' name='lectura_' value='" . $lectura . "'/><input type='hidden' id='interpretacion_' name='interpretacion_' value='" . $interpretacion . "'/></td>
 			</tr>";
         $Imprimir.="<tr>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
+                            
                             <td>&nbsp;</td>";
-       if ($idmetodologia!=0){
-          $Imprimir.= " <td>&nbsp;</td></tr>
+       if ($cantmet!=0){
+          $Imprimir.= " <td>&nbsp;</td>
+                           <td>&nbsp;</td>
+                           <td>&nbsp;</td></tr>
                         </table>";
        }
        else{
@@ -974,7 +984,7 @@ switch ($opcion) {
 		    </table>";
                          $Imprimir.="<table width='100%'  align='center' border='0' class='StormyWeatherFormTABLE'>
                         <tr>
-                        <td colspan='8' align='center'><bold>&nbsp;DETALLE DE RESULTADOS</bold><br/><br></td>
+                        <td colspan='7 align='center'><bold>&nbsp;DETALLE DE RESULTADOS</bold><br/><br></td>
                         </tr>
                         ";
         
@@ -1042,46 +1052,50 @@ switch ($opcion) {
                         <td align='center'>Prueba Realizada </td>
                         <td align='center'>Resultado</td>
                         <td align='center'>Unidades</td>
-                        <td align='center'>Rangos Normales </td>
-                        <td align='center'>Marca </td>
-                        <td align='left'>Lectura</td>
-                        <td align='left'>Interpretaci&oacute;n</td>
-                        <td align='left'>Observaci&oacute;n</td>
+                        <td align='justify'>Rangos Normales </td>";
+         
+         $Imprimir.=" <td align='left' colspan='3'>Observaci&oacute;n</td>
                     </tr>
-                    <tr><td colspan='8'><hr style='width:90%'></td></tr>
+                    <tr><td colspan='7'><hr style='width:90%'></td></tr>
                     <tr>
                         <td align='center' style='font:bold'>".$v_examen."</td>
    <td align='center'>".$v_resultfin."</td>
                         <td align='center'>".$fila['unidades']."</td>
                         <td align='justify'>".$fila['rangoinicio']." - ".$fila['rangofin']."</td>
-                        <td align='justify'>".$v_marca."</td>
-                        <td align='justify'>".$v_lectura."</td>
-                        <td align='justify'>".$v_interpretacion."</td>
-                        <td align='justify'>".$v_obserrecep."</td>
+                        <td align='justify' colspan='3'>".$v_obserrecep."</td>
                     </tr>
-                    <tr><td colspan='8'>&nbsp;</td></tr>";
+                    <tr><td colspan='7'>&nbsp;</td></tr>";
           
          $met=$objdatos->buscarexamresult($iddetalle, $idsolicitud, $lugar, $idexamen, $sexo, $idedad);
          $cantmet=pg_num_rows($met);
          if ($cantmet>0){
-            $Imprimir.="<tr><td colspan=1><p align='center'><br><i>Metodologías:</i></p></td>"
-                    . "<td colspan='7'></td></tr>";
+            $Imprimir.="<tr><td colspan='7'><br/><hr style='width:100%;'></td></tr>"
+                    . "<tr><td colspan=1><p align='center'><br><u><i>Metodologías:</i></u></p></td>"
+                    . "<td colspan='6'></td></tr>"
+                    . "<tr>
+                        <td align='center' style='font:bold'>Metodología</td>
+   <td align='center'>Resultado</td>
+                        <td align='center'>Unidades</td>
+                        <td align='justify'>Rangos Normales</td>
+                        <td align='justify'>Marca</td>
+                        <td align='justify'>Lectura</td>
+                        <td align='justify'>Observación</td>
+                    </tr><tr><td colspan='7'><br></td></tr>";
             while ($rowme=pg_fetch_array($met)){
                 $Imprimir.="<tr>
                         <td align='center' style='font:bold'>".$rowme['nombre_metodologia']."</td>
    <td align='center'>".$rowme['resultado']."</td>
                         <td align='center'>".$rowme['unidades']."</td>
-                        <td align='center'>".$rowme['rangoinicio']." - ".$rowme['rangofin']."</td>
+                        <td align='justify'>".$rowme['rangoinicio']." - ".$rowme['rangofin']."</td>
                         <td align='justify'>".$rowme['marca']."</td>
                         <td align='justify'>".$rowme['lectura']."</td>
-                        <td align='justify'></td>
                         <td align='justify'>".$rowme['observacion']."</td>
                     </tr>"; 
                 
             }
          }
           
-         $Imprimir.="     <tr><td colspan='8'>&nbsp;</td></tr>
+         $Imprimir.="     <tr><td colspan='7'>&nbsp;</td></tr>
             </table>  
                     <table align='center' border='0'>
                     
