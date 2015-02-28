@@ -137,7 +137,7 @@ function RecogeValor()
 {
 var vtmp=location.search;
 var vtmp2 = vtmp.substring(1,vtmp.length);
-var query = unescape(top.location.search.substring(1));
+var query = decodeURI(top.location.search.substring(1));
 var getVars = query.split(/&/);
 for ( i = 0; i < getVars.length; i++)
 	{
@@ -229,13 +229,16 @@ $idarea=$_GET['var4'];
 $iddetallesolicitud=$_GET['var5'];
 $idexamen_=$_GET['var3'];
 $cant=$objdatos->buscarAnterioresPUnica($solicitud,$iddetallesolicitud, $idarea);
+
 if (pg_num_rows($cant)>0){
+   $buscarinfo=$objdatos->consfecha($solicitud, $iddetallesolicitud,  $lugar);
+$rowdeta=pg_fetch_array($buscarinfo);
+$fechatomamues= isset($rowdeta['f_tomamuestra']) ? $rowdeta['f_tomamuestra'] : null;
 if ($referido!="t"){
     
 $condatos=$objdatos->condatos($IdHistorial, $lugar);
-$buscarinfo=$objdatos->consfecha($solicitud, $iddetallesolicitud,  $lugar);
-$rowdeta=pg_fetch_array($buscarinfo);
-$fechatomamues= isset($rowdeta['f_tomamuestra']) ? $rowdeta['f_tomamuestra'] : null;
+
+
 /*
 
   if($db->conectar()==true){
@@ -367,7 +370,7 @@ $fechatomamues= isset($rowdeta['f_tomamuestra']) ? $rowdeta['f_tomamuestra'] : n
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Examen </td>
                             <td  colspan="3" class="StormyWeatherDataTD"> <?php echo $_GET['var2'];?>
-                                <input type="hidden" name="txtexamen" id="txtexamen" disabled="disabled" size="60"  />
+                               <input type="hidden" name="txtexamen" id="txtexamen" disabled="disabled" size="60"  value="<?php echo $_GET['var2'];?>"/>
                                  <input type="hidden" id="num_campos" name="num_campos" value="0" />
                                     <input type="hidden" id="cant_campos" name="cant_campos" value="0" />                
                             </td>

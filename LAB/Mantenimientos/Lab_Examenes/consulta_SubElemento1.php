@@ -172,7 +172,7 @@ FormSubmit(); */
             $metodologias_sel="";
             $table .= "<td><select name='lista_sel' id='lista_sel' size=22 style='width: 300px' ondblclick='list_reload(this,2)'>";
             while ($r = pg_fetch_array($consulta)){
-                    $table .= "<option value='$r[id]' >$r[resultado]</option>";
+                    $table .= "<option value='$r[id]' >".utf8_encode($r['resultado'])."</option>";
                     $metodologias_sel .= $r['id'].',';
             }
 

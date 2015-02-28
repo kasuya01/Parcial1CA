@@ -586,9 +586,11 @@ function CambiarEstadoSolicitud(estado, idsolicitud, posicion)
                 //mostrar los nuevos registros en esta capa
                 document.getElementById('divCambioEstado').style.display = "none";
                 document.getElementById('divCambioEstado').innerHTML = ajax.responseText;
+                
                 //verificando el cambio de estado
                 if (ajax.responseText.replace(/(\r\n|\n|\r| )/gm,'') == "Y")
                 {
+                   $(".datepicker").prop( "disabled", true );
                     //alert(ajax.responseText);
                     /* ****** ingresar datos temporales ********************* */
                     //IngresarDatosTemp(Solicitud,posicion);
