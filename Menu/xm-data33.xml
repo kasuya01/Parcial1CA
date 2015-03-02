@@ -26,6 +26,10 @@
  	   <item labelText="Consulta Muestras Pendientes" url= "../../../LAB/Consultas_Reportes/ConsultaMuestrasPendientes/Proc_ConsultaMuestrasPendientes.php"/>
 	  </menu>
 	   <sep/>
+            <menu labelText="REPORTES">
+		<item labelText="Reporte Resultados" url= "../LAB/Reportes/Reporte_Resultados/ReporteResultados.php"/>
+            </menu>
+	<sep/> 
             <menu labelText="CITAS">
 		<item labelText="Citas de Laboratorio" url="../../../LAB/Procesos/CitasServicio/busquedaexp.php"/>
 	</menu> <sep/>  

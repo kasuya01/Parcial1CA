@@ -23,7 +23,7 @@
 		<sep/>
 		
 		<menu labelText="REPORTES">
-			<item labelText="Imprimir Resultado" url="../../../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/> 
+			<item labelText="Reporte Resultados" url= "../../../LAB/Reportes/Reporte_Resultados/ReporteResultados.php"/> 
 		</menu>
 		<sep/>
             <menu labelText="CITAS">
