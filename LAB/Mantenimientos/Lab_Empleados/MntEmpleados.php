@@ -25,6 +25,7 @@ $base_url  = $_SESSION['base_url'];
 {
 
     var resp = true;
+    
     if (document.getElementById('txtidempleado').value == "")
     {
         resp = false;
