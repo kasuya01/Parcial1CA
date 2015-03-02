@@ -124,7 +124,7 @@ $base_url  = $_SESSION['base_url'];
                             $("#dialog1").dialog("open");
                              });
                     
-                   // alert("ingrese al menos un parametro de busqueda");
+                  //   alert("ingrese al menos un parametro de busqueda");
                 }else {
                   BuscarDatos();  
                 }
