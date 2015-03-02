@@ -256,7 +256,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado1, 
                     t01.indicacion AS indicacion,
                     t01.idempleado AS idempleado,t01.id_conf_examen_estab as idexamen,t07.fecha_nacimiento as fechanac,
-                    t19.id as idsexo, date (current_date)  - date (t07.fecha_nacimiento) as dias
+                    t19.id as idsexo, date (current_date)  - date (t07.fecha_nacimiento) as dias,t06.numero as expediente
             FROM sec_detallesolicitudestudios           t01 
             INNER JOIN sec_solicitudestudios            t02 	ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra             t03 	ON (t02.id = t03.idsolicitudestudio) 
@@ -342,7 +342,7 @@ UNION
                     t01.indicacion as indicacion,
                     t01.idempleado  as idempleado,t01.id_conf_examen_estab as idexamen,t07.fecha_nacimiento as fechanac,
                     t19.id as idsexo,
-                    date (current_date)  - date (t07.fecha_nacimiento) as dias
+                    date (current_date)  - date (t07.fecha_nacimiento) as dias,t06.numero as expediente
             FROM sec_detallesolicitudestudios           t01 
             INNER JOIN sec_solicitudestudios            t02 	ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra             t03 	ON (t02.id = t03.idsolicitudestudio) 
@@ -641,7 +641,7 @@ function MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar)
    if($con->conectar()==true)
    {
         $query ="SELECT 
-                    TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY HH12:MI:SS') AS fecharecepcion,
+                    TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY HH12:MI') AS fecharecepcion,
                     t06.numero AS idnumeroexp,
                     t01.id as iddetallesolicitud,
                     t02.id as idsolicitudestudio,
@@ -696,7 +696,8 @@ function MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar)
                     t26.resultado as resultado,
                     t26.lectura as lectura,
                     t26.interpretacion as interpretacion,
-                    t26.observacion as observacion
+                    t26.observacion as observacion,
+                    TO_CHAR(t01.f_tomamuestra, 'DD/MM/YYYY HH12:MI') AS f_tomamuestra
             FROM sec_detallesolicitudestudios           t01 
             INNER JOIN sec_solicitudestudios            t02 	ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra             t03 	ON (t02.id = t03.idsolicitudestudio) 
@@ -717,15 +718,15 @@ function MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar)
             INNER JOIN lab_tiposolicitud                t17 	ON (t17.id = t02.idtiposolicitud) 
             INNER JOIN ctl_examen_servicio_diagnostico  t18 	ON (t18.id = t05.id_examen_servicio_diagnostico) 
             INNER JOIN ctl_sexo                         t19 	ON (t19.id = t07.id_sexo)
-            left  join sec_diagnostico_paciente		t21     on (t21.id_historial_clinico=t09.id)
-            left join mnt_snomed_cie10 			t22     on (t22.id=t21.id_snomed)
-            left join sec_signos_vitales                t23     on (t23.id_historial_clinico=t09.id)
-            inner join ctl_area_servicio_diagnostico    t25     on (t25.id=t05.id_area_servicio_diagnostico)
-            left join lab_resultados                    t26  	on (t26.iddetallesolicitud=t01.id)
-            left join  mnt_empleado                     t24 	on (t24.id=t26.idempleado)
+            LEFT JOIN sec_diagnostico_paciente		t21     ON (t21.id_historial_clinico=t09.id)
+            LEFT JOIN mnt_snomed_cie10 			t22     ON (t22.id=t21.id_snomed)
+            LEFT JOIN sec_signos_vitales                t23     ON (t23.id_historial_clinico=t09.id)
+            LEFT JOIN ctl_area_servicio_diagnostico    t25      ON (t25.id=t05.id_area_servicio_diagnostico)
+            LEFT JOIN lab_resultados                    t26  	ON (t26.iddetallesolicitud=t01.id)
+            LEFT JOIN  mnt_empleado                     t24 	ON (t24.id=t26.idempleado)
                 WHERE   t02.id                  =$idsolicitud   
-                and     t01.id                  = $iddetalle      
-                and     t02.id_establecimiento  = $lugar 
+                AND     t01.id                  = $iddetalle      
+                AND     t02.id_establecimiento  = $lugar 
 
 UNION
 
@@ -788,7 +789,7 @@ UNION
                 t26.resultado as resultado,
                 t26.lectura as lectura,
                 t26.interpretacion as interpretacion,
-                t26.observacion as observacion
+                t26.observacion as observacion,TO_CHAR(t01.f_tomamuestra, 'DD/MM/YYYY HH12:MI') AS f_tomamuestra
             FROM sec_detallesolicitudestudios           t01 
             INNER JOIN sec_solicitudestudios            t02 	ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra             t03 	ON (t02.id = t03.idsolicitudestudio) 

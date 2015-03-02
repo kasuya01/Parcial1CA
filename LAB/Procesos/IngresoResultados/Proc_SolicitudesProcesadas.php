@@ -134,7 +134,7 @@ if (isset($_SESSION['Correlativo'])) {
                         <tr>		
                             <td class="StormyWeatherFieldCaptionTD" width="20%">Tipo Establecimiento</td>
                             <td class="StormyWeatherDataTD" width="35%">
-                               <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value)" class="form-control height">
+                               <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:415px" onChange="BuscarEstablecimiento(this.value)" class="form-control height">
                                     <option value="0" >Seleccione un Tipo de Establecimiento</option>
                                     <?php
                                     $db = new ConexionBD;

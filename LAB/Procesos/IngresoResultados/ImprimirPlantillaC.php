@@ -180,14 +180,14 @@ function calc_edad()
                 <td colspan='1' class="Estilo5"><strong>Organismo:</strong></td>
                 <td colspan='5' class="Estilo5"><?php echo htmlentities($row_det['bacteria']); ?></td>
             </tr>
-           <tr>
+            <tr>
                 <td colspan='2' class="Estilo5"><strong>Cultivo con Cuenta de Colonias:</strong></td>
                 <td colspan='1' class="Estilo5"><?php echo htmlentities($row_det['cantidad'])?></td>
-           </tr>
-           <tr>
+            </tr>
+            <tr>
 		<td colspan='6'>&nbsp;</td>
             </tr>
-           <tr> 
+            <tr> 
                 <td colspan='6'>
                     <table width='60%' border='0' align='left' class='StormyWeatherFormTABLE' cellspacing="0">
 
@@ -209,33 +209,33 @@ function calc_edad()
                                         <td colspan='2' class="Estilo5"> <?php echo htmlentities( $row_tarjeta['posible_resultado']) ?></td>
                                     </tr>
             
-                <?php
-                }?>
+                  <?php }?>
                                 </table>
                            </td>
                         </tr>
                         <tr>
-		<td colspan='6'>&nbsp;</td>
-           </tr> 
+                            <td colspan='6'>&nbsp;</td>
+                        </tr> 
            
                     </table><?php 
     }
 }?>
                 </td>
-        </tr>
+            </tr>
+            <tr>
+                <td colspan='6' class="Estilo6" width='70%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan='6' class="Estilo6" width='70%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan='2' class="Estilo6" width='70%'>&nbsp;&nbsp;&nbsp;</td>
+                <td colspan='1' class="Estilo6" width='6%'>&nbsp;&nbsp;SELLO:</td>
+                <td colspan='1' class="Estilo6" width='8%'>___________</td>
+                <td colspan='1' class="Estilo6" width='6%'>&nbsp;&nbsp;&nbsp;&nbsp;FIRMA:</td>
+                <td colspan='1' class="Estilo6"width='10%'>________________</td>
+            </tr>
     </table>
-
-    
-               
-               
-                  
-                   
-                  
-                  
-            
-            
-                
-
         <div id="boton">
             <table align='center' border="0">
                 <tr>

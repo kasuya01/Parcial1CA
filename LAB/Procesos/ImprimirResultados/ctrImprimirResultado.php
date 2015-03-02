@@ -141,7 +141,7 @@ switch ($opcion) {
             $cond2 = substr($cond2, 0, strlen($query) - 3);
         }
 
-        $query = "WITH tbl_servicio AS (
+      $query = "WITH tbl_servicio AS (
                     SELECT t02.id,
                         CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
@@ -409,6 +409,7 @@ if ( $NroRegistros==""){
         $FechaNac=$row['fechanac'];
         $dias=$row['dias'];
         $idsexo=$row['idsexo'];
+        $Expediente=$row['expediente'];
         
         $ConRangos = $objdatos->ObtenerCodigoRango($dias);
         $row_rangos = pg_fetch_array($ConRangos);
@@ -430,8 +431,10 @@ if ( $NroRegistros==""){
 			</tr>
 		        <tr>
 				<td>Paciente</td>
-				<td colspan='3'>" . htmlentities($paciente) . " 
+				<td colspan='1'>" . htmlentities($paciente) . " 
                         	     <input name='txtpaciente' id='txtpaciente' type='hidden' size='' value=$paciente disabled='disabled' /></td>
+                                <td>Expediente</td>
+                                <td>".$Expediente."</td>
                         </tr>
                         <tr>
 				<td>Conocido por</td>
