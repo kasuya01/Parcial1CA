@@ -7,8 +7,155 @@ class clsReporteTabuladores
 	 function clsReporteTabuladores()
 	 {
 	 }	
-	 
 	
+   //FN Pg
+   //
+   //
+   function ExamenesPorArea($idarea,$lugar)
+   {
+	$con = new ConexionBD;
+    //usamos el metodo conectar para realizar la conexion
+	if($con->conectar()==true){
+            $query = "SELECT t02.id,
+                     t02.codigo_examen AS idexamen,
+                     t02.nombre_examen AS nombreexamen,
+                     t03.idestandar
+                     FROM mnt_area_examen_establecimiento t01
+                     INNER JOIN lab_conf_examen_estab     t02 ON (t01.id = t02.idexamen)
+                     JOIN ctl_examen_servicio_diagnostico t03 ON (t03.id = t01.id_examen_servicio_diagnostico)
+                 WHERE t01.id_establecimiento = $lugar AND t01.id_area_servicio_diagnostico = $idarea
+                     AND t02.condicion = 'H'
+                 ORDER BY t02.nombre_examen";
+           // $query;
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+	}
+   }
+                //Funcion utilizada para el tabulador para Servicio d eProcedencia 
+ 	public function prxmes($mes, $anio, $lugar){
+           $con = new ConexionBD;
+    //usamos el metodo conectar para realizar la conexion
+	if($con->conectar()==true){
+	$sql = "select distinct(t02.idexamen)
+               from sec_detallesolicitudestudios 	t01 
+               join lab_resultados 			t02 on (t01.id=t02.iddetallesolicitud)
+               join ctl_establecimiento		t03 on (t03.id=t02.idestablecimiento)
+               where  extract('year' from fecha_resultado)=$year	
+               and extract('month' from fecha_resultado)=$mes
+               and estadodetalle in (6,7)
+               and t02.idestablecimiento=$lugar
+               order by t02.idexamen";	
+     //   echo '<br>'.$sql.'<br/>';
+	$result=  @pg_query($sql);
+	if (!$result)
+		return false;
+	else
+		return $result;
+	}
+   }//fin de la funcion consultarTipoResultado
+
+
+   public function pruebasid($id){
+      $con = new ConexionBD;
+      //usamos el metodo conectar para realizar la conexion
+      if($con->conectar()==true){
+       $sql = "select t01.id, t02.idestandar, t02.descripcion 
+            from lab_conf_examen_estab 	t01
+            join ctl_examen_servicio_diagnostico	t02 on (t02.id=t01.idestandarrep)
+            where t01.id=$id";
+//       $sql = "select t01.id, t03.idestandar, t03.descripcion  
+//            from lab_conf_examen_estab t01
+//            join mnt_area_examen_establecimiento t02 on (t02.id=t01.idexamen)
+//            join ctl_examen_servicio_diagnostico t03 on (t03.id=t02.id_examen_servicio_diagnostico)
+//            where t01.id =$id";
+           $result =  @pg_query($sql);
+       if (!$result)
+         return false;
+       else
+         return $result;
+      }
+   }
+ 
+//Funcion utilizada para el tabulador para resultado
+ 	public function prxdia($idpr, $idcod, $dia, $mes, $anio, $lugar){
+           $con = new ConexionBD;
+      //usamos el metodo conectar para realizar la conexion
+      if($con->conectar()==true){
+	$sql = "select count (case when id_codigoresultado=1 then 'uno' else null end) as res 
+from lab_resultado_metodologia t01
+join lab_examen_metodologia t02 on (t02.id=t01.id_examen_metodologia)
+join sec_detallesolicitudestudios t03 on (t03.id=t01.id_detallesolicitudestudio)
+where id_conf_exa_estab=$idpr
+and extract('year' from fecha_resultado)=$anio
+and extract('month' from fecha_resultado)=$mes
+and extract('day' from fecha_resultado)=$dia
+and estadodetalle in (6,7)
+and t03.idestablecimiento=$lugar;";	
+      //  echo '<br>'.$sql.'<br/>';
+	$result= pg_query($sql);
+	if (!$result)
+		return false;
+	else
+		return $result;
+	}//fin de la funcion consultarTipoResultado
+        }
+   
+    //Funcion utilizada para el tabulador para Servicio d eProcedencia 
+   public function prxservicio($idpr, $idcod, $dia, $mes, $anio, $regionid){
+   $sql = "select 
+count (case when id_estabsolicitud=$idcod then 'uno' else null end) as uno,
+count (case when id_estabsolicitud!=$idcod then 'cinco' else null end) as cuatro
+from lab_examenresultado ler
+inner join lab_detalleorden ldo on (ler.id_detalleorden= ldo.id and ler.i_idestabdetorden=ldo.i_idestablocal)
+inner join lab_solicitudorden lso on (ldo.id_solicitudorden=lso.id and lso.i_idestablocal=ldo.i_idestabsolorden)
+inner join establecimiento es on (lso.id_estabsolicitud=es.id) 
+where id_pruebadetsol=$idpr
+and (case $regionid 
+	when 0 then es.id>0 
+	else es.id in (select es.id 
+	from establecimiento es 
+	join establecimiento es2 on (es.id_establecimiento_padre=es2.id) 
+	where es2.id_establecimiento_padre=$regionid) end ) 
+and extract('year' from t_tiemporesultado)=$anio
+and extract('month' from t_tiemporesultado)=$mes
+and extract('day' from t_tiemporesultado)=$dia
+and id_estadodetorden=4
+and b_habilitadodetorden=true";	
+    //   echo '<br>'.$sql.'<br/>';
+	$result= $this->_ConexionBd->query($sql);
+	if (!$result)
+		return false;
+	else
+		return $result;
+	}//fin de la funcion consultarTipoResultado
+
+	
+         
+   //Fin funcion Postgres
+    
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+         
+         
  
     function LeerCodigosResultados(){
 	$con = new ConexionBD;
@@ -244,22 +391,7 @@ function CodigosEstardarxarea($IdArea,$lugar)
 	return $dt;
  }
  
- function ExamenesPorArea($idarea,$lugar)
-{
-	$con = new ConexionBD;
-    //usamos el metodo conectar para realizar la conexion
-	if($con->conectar()==true){
-		 $query = "SELECT lab_examenes.IdExamen,NombreExamen FROM lab_examenes 
-		       INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
-		       WHERE IdEstablecimiento = $lugar AND IdArea='$idarea'
-		       AND lab_examenesxestablecimiento.Condicion='H' ORDER BY NombreExamen ASC ";
-		 $result = @mysql_query($query);
-		 if (!$result)
-		   return false;
-		 else
-		   return $result;
-	}
-}
+ 
  
 }//CLASE
 ?>

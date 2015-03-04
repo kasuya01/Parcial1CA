@@ -97,3 +97,40 @@ function classdatepick(){
 	});
 }
 
+function mesanio() {
+
+    var dates = $( "#d_fecha" ).datepicker({
+      dateFormat: 'yy-mm',
+        changeMonth: true,
+        changeYear: true,
+        numberOfMonths: 1,
+        showButtonPanel: true,
+        showOn:'focus', 
+        autoclose: true,
+        yearRange: "-10:+0",
+        onSelect: function( selectedDate ) {
+				instance = $( this ).data( "datepicker" );
+				date = $.datepicker.parseDate(
+					instance.settings.dateFormat ||
+					$.datepicker._defaults.dateFormat,
+				selectedDate, instance.settings );
+			dates.not( this ).datepicker( "option", option, date );
+		},
+ 
+        onClose: function(dateText, inst) {  
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val(); 
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); 
+            $(this).val($.datepicker.formatDate('yy-mm', new Date(year, month, 1)));
+        },
+        onChange:function(dateText, inst){
+            $(".ui-datepicker-calendar").hide();
+        $("#ui-datepicker-div").position({
+            my: "center bottom",
+            at: "center bottom",
+            of: $('#d_fecha')
+        }); 
+       
+        }
+    });
+
+}
