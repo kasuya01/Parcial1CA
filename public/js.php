@@ -9,6 +9,7 @@
 ?>
 <script src="<?php echo $base_url; ?>/Laboratorio/public/js/jquery.min.js"></script>
 <script src="<?php echo $base_url; ?>/Laboratorio/public/package/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
+<script src="<?php echo $base_url; ?>/Laboratorio/public/package/bootstrap-3.2.0-dist/js/bootstrap-multiselect.js"></script>
 <!--llamado al archivo de funciones del calendario-->
 <!--<script type="text/javascript" src="<?php echo $base_url; ?>/Laboratorio/public/datepicker/jquery-1.11.1.min.js"></script>-->
 <script type="text/javascript" src="<?php echo $base_url; ?>/Laboratorio/public/datepicker/jquery-ui.min.js"></script>

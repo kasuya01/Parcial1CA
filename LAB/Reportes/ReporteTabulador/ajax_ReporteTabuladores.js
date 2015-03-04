@@ -84,6 +84,44 @@ function DatosCompletos()
 }
 
 
+function GenResultados(){
+   
+   
+}//fin funcion generarResultado
+
+//funcion prueba
+function enviaxfis2(){
+    var ban=0;
+    var idrol=$("#idrol").val()
+//    if (idrol==7){
+//        var regionid2=(document.getElementById('regionid2').value);
+//        if (regionid2==0){
+//           // alert ("No ha elegido la Región a consultar");
+//             $( "#dialog" ).dialog({
+//        autoOpen: false,
+//        modal: true       
+//        });
+//        $( "#dialog" ).dialog( "open" );
+//           ban=1;
+//            return false;
+//        }
+//    }
+    if (ban==0){
+    var i=0;
+    $.ajax({
+        type: "POST",
+        cache: false,
+    //    data: parametros,
+        success: function(response)
+        {
+            window.open(response);
+        }
+    });
+  }
+}
+
+
+
 //FUNCION PARA BUSCAR DATOS DE LA SOLICITUD
 function BuscarDatos()
 {	
@@ -160,6 +198,13 @@ function LlenarComboExamen(idarea)
 	  			//respuesta = ajax.responseText;	
 	 			// alert (respuesta)
 		 document.getElementById('divExamen').innerHTML = ajax.responseText;
+                 // $('#cmbExamen').multiselect();
+                  $('#cmbExamen').multiselect({
+                     buttonWidth: '73%',
+                     enableFiltering: true,
+                     enableCaseInsensitiveFiltering: true,
+                     inheritClass: true
+                 });
 			}	  	
 			
    		}
