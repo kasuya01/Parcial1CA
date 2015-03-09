@@ -1,11 +1,9 @@
 <?php
-error_reporting(E_ALL);
-
-/** PHPExcel */
-include_once '../../../public/PHPExcel/Classes/PHPExcel.php';
-include_once '../../../public/PHPExcel/Classes/PHPExcel/Writer/Excel2007.php';
-
 include_once("clsReporteTabuladores.php");
+/** Incluir la libreria PHPExcel */
+//require_once '../Classes/PHPExcel.php';
+include_once '../../../public/PHPExcel/Classes/PHPExcel.php';
+
 @session_start();
 //consulta todos los registros
 $nivel=$_SESSION['NIVEL'];
@@ -33,52 +31,22 @@ $idarea=$_POST['cmbArea'];
 //$idpruebas=$_POST['id_prueba'];
 $idpruebas= isset($_POST['cmbExamen']) ? $_POST['cmbExamen'] : null;
 $pruebas=count($idpruebas);
-if ($idarea!=0){
-   
-}
+//if ($idarea!=0){
+//   $idarea=
+//}
 
 if(!isset($_POST['d_fecha'])|| $d_fecha=="")
 	{
 	$d_fecha=date('Y-m');    
 	}
+//$d_fecha=date('Y-m');    
 
-//if ($rol!=4){
-//	$id_establecimiento=0;
-//}
-//else{
-//    $id_establecimiento=$idestable;
-//}
-//if ($rol==7){
-//    $regionid=$_POST['regionid'];
-//    $selreglab=@pg_fetch_array($objeto->sellabreg($regionid));
-//    $id_establecimiento=$selreglab['id'];
-//    $idestable=$id_establecimiento;
-//}
-//else
-//{
-//    $id_region=$_SESSION['s_idregion'];
-//    if ($id_nivel==3){
-//        $regionid=$id_region;
-//    }
-//    else{
-//        $regionid=0;
-//    }
-//}
 list($year, $month) = explode('-', $d_fecha);
 $num = cal_days_in_month(CAL_GREGORIAN, $month, $year); // 31
-//$filename = "Tabulador ".$mes.' '.$year. ".xlsx"; //GUARDANDO CON ESTE NOMBRE
-header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
-//header("Content-Disposition: attachment; filename=abc.xlsx");  //
-header("Content-Disposition: attachment;filename=Tabulador_".$month."-".$year.".xlsx");
-header("Expires: 0");
-header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-header("Cache-Control: private",false);
-
-
-$objPHPExcel = new PHPExcel();//crea un nuevo objeto de excel
+// Crea un nuevo objeto PHPExcel
+$objPHPExcel = new PHPExcel();
 $objPHPExcel->setActiveSheetIndex(0);
 $objPHPExcel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
-//$objPHPExcel->getActiveSheet()->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_LEGAL);
 $objPHPExcel->getActiveSheet()->setTitle($month.' '.$year);
 $styleArray = array(
        'borders' => array(
@@ -112,13 +80,14 @@ $styleArray3=array(
             'name'  => 'Verdana'
         ),
     );
-$objPHPExcel->getActiveSheet()->getStyle('A1:HZ5')->applyFromArray($styleArray1);
+$objPHPExcel->getActiveSheet()->getStyle('A1:ZZ5')->applyFromArray($styleArray1);
 $objPHPExcel->getActiveSheet()->getStyle('A3:A39')->applyFromArray($styleArray1);
-$objPHPExcel->getActiveSheet()->getStyle('B6:HZ40')->applyFromArray($styleArray2);
-for ($col = 'A'; $col != 'HZ'; $col++) {
+$objPHPExcel->getActiveSheet()->getStyle('B6:ZZ40')->applyFromArray($styleArray2);
+for ($col = 'A'; $col != 'ZZ'; $col++) {
 	//$objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
     $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setWidth(4.25);
 }
+
     $ini='B';
     $fin=$ini+14;
 $startletra='A';
@@ -136,14 +105,26 @@ if ($pruebas==0){ //Si no selecciono ninguna prueba por defecto le cargara el re
     while($resultser=@pg_fetch_array($prues)){
        $idpruebas[$var]=$resultser['id_pruebadetsol'];
        $var++;     
+    }
+}
+if ($pruebas==0){ //Si no selecciono ninguna prueba por defecto le cargara el reporte de todas las que tengan en el catalogo
+    $prues=$objeto->prxmes($month, $year, $lugar);
+    $pruebas=@pg_num_rows($prues);
+    $var=0;
+    while($resultser=@pg_fetch_array($prues)){
+       $idpruebas[$var]=$resultser['id_pruebadetsol'];
+       $var++;     
     } 
 }
 if ($pruebas!=0){
+   
  $cantcolafec=$pruebas*14; //--14 columnas
     for ($i=0; $i<$pruebas; $i++){
         $idpr=$idpruebas[$i];
         $rowprueba= @pg_fetch_array($objeto->pruebasid($idpr));        
         $vcodprue=$rowprueba['v_codprueba'];
+       
+        
             $codpro=0;
             $codres=0;
             for ($j=1; $j<=14; $j++){
@@ -236,6 +217,8 @@ if ($pruebas!=0){
                 $objPHPExcel->getActiveSheet()->getStyle($startletra.$final)->applyFromArray($styleArray1);
                 $objPHPExcel->getActiveSheet()->setCellValue($startletra.$final, '=SUM('.$startletra.'6:'.$startletra.$todos.')');
             }
+//            $starletrafin='D';
+//            $supto=15;
           $supto=$final;
           $supto++;
           $objPHPExcel->setActiveSheetIndex(0)->mergeCells($letini.$supto.':'.$starletrafin.$supto);
@@ -257,6 +240,7 @@ if ($pruebas!=0){
             $letini=$starletrafin;
             $unresul='0';
         }
+
         $objPHPExcel->getActiveSheet()->SetCellValue('A'.$supto, 'TOTAL');
 $final++;
 $objPHPExcel->setActiveSheetIndex(0)->mergeCells('A3:A5');
@@ -327,10 +311,76 @@ $objPHPExcel->getActiveSheet()->getPageSetup()->setFitToHeight(1);
 // Save Excel 2007 file
 
   
-  $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
-  $objWriter->save('php://output');
-   exit();
-// Echo done
+//  //$objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
+//  $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+//  $objWriter->save('php://output');
+//   exit();
+//// Echo done
+   
+   
+   
+   
+ 
+// Establecer la hoja activa, para que cuando se abra el documento se muestre primero.
+$objPHPExcel->setActiveSheetIndex(0);
+
+// Se modifican los encabezados del HTTP para indicar que se envia un archivo de Excel.
+//header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+//header('Content-Disposition: attachment;filename="pruebaReal.xlsx"');
+//header('Cache-Control: max-age=0');
+
+//$filename = "Tabulador ".$mes.' '.$year. ".xlsx"; //GUARDANDO CON ESTE NOMBRE
+header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
+//header("Content-Disposition: attachment; filename=abc.xlsx");  //
+header("Content-Disposition: attachment;filename=Tabulador_".$month."-".$year.".xlsx");
+header("Expires: 0");
+header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+header("Cache-Control: private",false);
+$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+//$objWriter->save('php://output');
+//$objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
+$objWriter->save('php://output');
 }
-echo "<font color='#C35617' align='center'><center><img src='/default/img/icons/warning.png'/>  NO EXISTEN REGISTROS RELACIONADOS CON LA B&Uacute;SQUEDA<br/><br/></center></font>";
+//
+//// Establecer propiedades
+//$objPHPExcel->getProperties()
+//->setCreator("Cattivo")
+//->setLastModifiedBy("Cattivo")
+//->setTitle("Documento Excel de Prueba")
+//->setSubject("Documento Excel de Prueba")
+//->setDescription("Demostracion sobre como crear archivos de Excel desde PHP.")
+//->setKeywords("Excel Office 2007 openxml php")
+//->setCategory("Pruebas de Excel");
+//
+//// Agregar Informacion
+//$objPHPExcel->setActiveSheetIndex(0)
+//->setCellValue('A1', 'Valor 1')
+//->setCellValue('B1', 'Valor 2')
+//->setCellValue('C1', 'Total')
+//->setCellValue('A2', '10')
+//->setCellValue('C2', '=sum(A2:B2)');
+//
+//// Renombrar Hoja
+//$objPHPExcel->getActiveSheet()->setTitle('Tecnologia Simple');
+//
+//// Establecer la hoja activa, para que cuando se abra el documento se muestre primero.
+//$objPHPExcel->setActiveSheetIndex(0);
+//
+//// Se modifican los encabezados del HTTP para indicar que se envia un archivo de Excel.
+////header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+////header('Content-Disposition: attachment;filename="pruebaReal.xlsx"');
+////header('Cache-Control: max-age=0');
+//
+////$filename = "Tabulador ".$mes.' '.$year. ".xlsx"; //GUARDANDO CON ESTE NOMBRE
+//header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
+////header("Content-Disposition: attachment; filename=abc.xlsx");  //
+//header("Content-Disposition: attachment;filename=Tabulador_".$month."-".$year.".xlsx");
+//header("Expires: 0");
+//header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+//header("Cache-Control: private",false);
+//$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+////$objWriter->save('php://output');
+////$objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
+//$objWriter->save('php://output');
+//exit;
 ?>

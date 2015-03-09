@@ -1,5 +1,6 @@
 #Archivos de conexion a la base de datos
 Conexion/*
+LAB/Reportes/ReporteTabulador/DBManager.php
 
 #Omitiendo Reportes
 Reportes/*.ods

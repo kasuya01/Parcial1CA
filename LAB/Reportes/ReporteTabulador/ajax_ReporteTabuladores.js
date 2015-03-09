@@ -206,10 +206,6 @@ function VistaPrevia()
  }
  
 
-
-
-
-
 function LlenarComboExamen(idarea)
 {
  	ajax=objetoAjax();
@@ -230,7 +226,7 @@ function LlenarComboExamen(idarea)
 		 document.getElementById('divExamen').innerHTML = ajax.responseText;
                  // $('#cmbExamen').multiselect();
                   $('#cmbExamen').multiselect({
-                     buttonWidth: '73%',
+                     buttonWidth: '100%',
                      enableFiltering: true,
                      enableCaseInsensitiveFiltering: true,
                      inheritClass: true

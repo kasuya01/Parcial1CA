@@ -4,7 +4,7 @@ $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea']; 
-$ROOT_PATH = $_SESSION['ROOT_PATH'];
+echo $ROOT_PATH = $_SESSION['ROOT_PATH'];
 
 //echo $lugar;
  ?>
@@ -54,10 +54,10 @@ function BuscarExamen(idarea){
 $(document).ready(function() {
         //$('#cmbExamen').multiselect();
          $('#cmbExamen').multiselect({
-            buttonWidth: '73%',
-             enableFiltering: true,
-             enableCaseInsensitiveFiltering: true,
-             inheritClass: true
+            buttonWidth: '100%',
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            inheritClass: true
            
         });
     });
@@ -96,7 +96,7 @@ $toy2=date('Y-m-d');
 ?><br>
 
 <!-- <form name=" cons_tabulador" onSubmit="return false;" action="excelOrd_x_id.php" method="post" target="_blank">-->
-<form name=" cons_tabulador" onSubmit="return enviaxfis()" action="excelOrd_x_id.php" method="post" target="_blank">
+<form name=" cons_tabulador" onSubmit="return enviaxfis()" action="excelOrd_x_id2.php" method="post" target="_blank">
 <table align="center" width="100%">
 
 <tr>
@@ -106,26 +106,26 @@ $toy2=date('Y-m-d');
       <div class="panel panel-primary">                        
          <div class="panel-heading"><h3>Tabulador</h3> </div>                        
           <div class="panel-body" id="pb-primervez">                            
-             <table class="table table-white no-v-border table-condensed" border="0" style="border:0px">                                     <tr><th>&Aacute;rea</th>
-                     <td> 
-                        <select id="cmbArea" name="cmbArea"  size="1" onChange="BuscarExamen(this.value)" style="width:405px; text-align: center;" class="form-control height">
-                           <?php
-                           echo '<option value="0" selected="selected">Seleccione una Area</option>';
-                           include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
-                           $objeareas = new clsLab_Areas;
-                           $consulta = $objeareas->consultaractivas($lugar);
-                           while ($row = pg_fetch_array($consulta)) {
-                               echo "<option value='" . $row['idarea'] . "'>" . htmlentities($row['nombrearea']) . "</option>";
-                           }
-                           ?>		  
-                        </select> 
-                     </td>
+            <table class="table table-white no-v-border table-condensed" border="0" style="border:0px; width: 100%" >                              <tr><th>&Aacute;rea</th>
+                  <td> 
+                     <select id="cmbArea" name="cmbArea"  size="1" onChange="BuscarExamen(this.value)" style="width:100%;" class="form-control height">
+                        <?php
+                        echo '<option value="0" selected="selected">Seleccione una Area</p></option>';
+                        include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
+                        $objeareas = new clsLab_Areas;
+                        $consulta = $objeareas->consultaractivas($lugar);
+                        while ($row = pg_fetch_array($consulta)) {
+                            echo "<option value='" . $row['idarea'] . "'>" . htmlentities($row['nombrearea']) . "</option>";
+                        }
+                        ?>		  
+                     </select> 
+                  </td>
                    </tr>
                    <tr>
                       <th>Examen</th>
                       <td>
                         <div id="divExamen">
-                           <select name="cmbExamen" id="cmbExamen" class="form-control height" style="width:405px" size="1"  multiple="multiple"> 
+                           <select name="cmbExamen" id="cmbExamen" class="form-control height" style="width:100%" size="1"  multiple="multiple"> 
                               
                            </select>
                        </div>
