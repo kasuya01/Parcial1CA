@@ -997,61 +997,12 @@ switch ($opcion) {
 		$v_lectura=$filares['lectura'];
 		$v_marca=$filares['marca'];
                 
-               
-         
-       /* 
-        *               <tr>
-                            <th style='font:bold'>Examen</th>
-                            <th style='font:bold'>Metodologia</th>
-                            <th style='font:bold'>Fecha Realización</th>
-                            <th style='font:bold'>Fecha Resultado</th>
-                            <th style='font:bold'>Responsable</th>
-                            <th style='font:bold'>Resultado</th>
-                            <th style='font:bold'>Unidades</th>
-                            <th style='font:bold'>Rangos Normales</th>
-                            <th style='font:bold'>Observación</th>
-                            <th style='font:bold'>Tabulador</th>
-                        </tr>
-        * if ($cantidadnum>0) {
-	for ($i=1; $i<=$cantidadnum; $i++){
-		$hdnidexamen_ = $_POST['hdnidexamen_'.$i];
-		$hdnIdMetodologia_ = $_POST['hdnIdMetodologia_'.$i];
-		$hdnResp_ = $_POST['hdnResp_'.$i];
-		$hdnFecProc_ =  (empty($_POST['hdnFecProc_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnFecProc_'.$i]) . "'";
-		
-		$hdnFecResu_ =  (empty($_POST['hdnFecResu_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnFecResu_'.$i]) . "'";		
-		$hdnResult_ =  (empty($_POST['hdnResult_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnResult_'.$i]) . "'";
-		$hdnObserva_=  (empty($_POST['hdnObserva_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnObserva_'.$i]) . "'";
-		$hdnCodResult_ = $_POST['hdnCodResult_'.$i];
-                
-                 $Imprimir.="<tr>";
-        $consulta_empleado = $objdatos->BuscarEmpleadoValidador($hdnResp_, $lugar);
-        $fila_empleado = pg_fetch_array($consulta_empleado); //$fila_empleado['NombreEmpleado'].
-         $nomcod = $objdatos->ObtenerNombreCodigo($hdnCodResult_);
-        $row_codigo = pg_fetch_array($nomcod);
-         $consulta2 = $objdatos->MostrarDatosFijosPlantillaA($hdnidexamen_, $lugar, $sexo, $idedad, $hdnIdMetodologia_);
-        $fila = pg_fetch_array($consulta2);
-
-        $Imprimir.="
-                        <tr>
-                        <td>".$fila['nombre_examen']."</td>
-                        <td>".$fila['nombre_metodologia'] ."</td>
-                        <td>".$hdnFecProc_."</td>
-                        <td>".$hdnFecResu_."</td>                        
-			<td  colspan='1' style='font:bold'>" . $fila_empleado['empleado'] . "</td>
-                        <td>".$hdnResult_."</td>
-                        <td>".$fila['unidades']."</td>
-                        <td>" . $fila['rangoinicio'] . " - " . $fila['rangofin'] . "</td>
-                        <td>".$hdnObserva_."</td>    
-                        <td>".$row_codigo['resultado']."</td> 
-                        </tr>";
-            }
-	}*/
+              
       
          $Imprimir.=" <tr>
                         <td align='center'>Prueba Realizada </td>
-                        <td align='center'>Resultado</td>
-                        <td align='center'>Unidades</td>
+                        <td align='justify'>Resultado</td>
+                        <td align='justify'>Unidades</td>
                         <td align='justify'>Rangos Normales </td>";
          
          $Imprimir.=" <td align='left' colspan='3'>Observaci&oacute;n</td>
@@ -1059,8 +1010,8 @@ switch ($opcion) {
                     <tr><td colspan='7'><hr style='width:90%'></td></tr>
                     <tr>
                         <td align='center' style='font:bold'>".$v_examen."</td>
-   <td align='center'>".$v_resultfin."</td>
-                        <td align='center'>".$fila['unidades']."</td>
+   <td align='justify'>".$v_resultfin."</td>
+                        <td align='justify'>".$fila['unidades']."</td>
                         <td align='justify'>".$fila['rangoinicio']." - ".$fila['rangofin']."</td>
                         <td align='justify' colspan='3'>".$v_obserrecep."</td>
                     </tr>
@@ -1069,27 +1020,20 @@ switch ($opcion) {
          $met=$objdatos->buscarexamresult($iddetalle, $idsolicitud, $lugar, $idexamen, $sexo, $idedad);
          $cantmet=pg_num_rows($met);
          if ($cantmet>0){
-            $Imprimir.="<tr><td colspan='7'><br/><hr style='width:100%;'></td></tr>"
-                    . "<tr><td colspan=1><p align='center'><br><u><i>Metodologías:</i></u></p></td>"
-                    . "<td colspan='6'></td></tr>"
+            $Imprimir.="<tr><td colspan=7><hr style='width:100%'></td>"
                     . "<tr>
-                        <td align='center' style='font:bold'>Metodología</td>
-   <td align='center'>Resultado</td>
-                        <td align='center'>Unidades</td>
-                        <td align='justify'>Rangos Normales</td>
-                        <td align='justify'>Marca</td>
-                        <td align='justify'>Lectura</td>
-                        <td align='justify'>Observación</td>
-                    </tr><tr><td colspan='7'><br></td></tr>";
+                        <td align='center'  style='font:bold'><i>Metodología</i></td>
+
+                        <td align='justify'><i>Marca</i></td>
+                        <td align='justify' colspan='2'><i>Lectura</td>
+                        <td align='justify' colspan='3'><i>Observación</i></td>
+                    </tr><tr><td colspan='7'> <hr style='width:90%'></td></tr>";
             while ($rowme=pg_fetch_array($met)){
                 $Imprimir.="<tr>
                         <td align='center' style='font:bold'>".$rowme['nombre_metodologia']."</td>
-   <td align='center'>".$rowme['resultado']."</td>
-                        <td align='center'>".$rowme['unidades']."</td>
-                        <td align='justify'>".$rowme['rangoinicio']." - ".$rowme['rangofin']."</td>
-                        <td align='justify'>".$rowme['marca']."</td>
-                        <td align='justify'>".$rowme['lectura']."</td>
-                        <td align='justify'>".$rowme['observacion']."</td>
+                        <td align='justify' >".$rowme['marca']."</td>
+                        <td align='justify' colspan='2'>".$rowme['lectura']."</td>
+                        <td align='justify' colspan='3'>".$rowme['observacion']."</td>
                     </tr>"; 
                 
             }

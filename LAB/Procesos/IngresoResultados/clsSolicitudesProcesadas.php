@@ -253,7 +253,7 @@ to_char(t05.fecha_resultado, 'dd/mm/yyyy') as fecharesultado, t06.nombre_reporta
     function BuscarEmpleadoValidador($responsable, $lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "select nombreempleado as empleado  
+            $query = "select (nombreempleado||' '||coalesce(numero_junta_vigilancia,''))  as empleado  
                 from mnt_empleado
                  where id=$responsable
                  and id_establecimiento=$lugar;";

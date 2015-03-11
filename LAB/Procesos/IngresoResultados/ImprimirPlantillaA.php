@@ -159,17 +159,17 @@ $f_tomamuestra=$filares['f_tomamuestra'];
                     <table width="100%"  align="center" border="0" cellspacing="0">
                         <tr >
                             <td align="left" class="Estilo5"><strong>Prueba Realizada</strong></td>
-                            <td align="center" class="Estilo5"><strong>Resultado</strong></td>
-                            <td align="center" class="Estilo5"><strong>Unidades</strong></td>
+                            <td align="justify" class="Estilo5"><strong>Resultado</strong></td>
+                            <td align="justify" class="Estilo5"><strong>Unidades</strong></td>
                             <td align="justify" class="Estilo5"><strong>Rangos Normales</strong> </td>
                             <td align="justify" class="Estilo5" colspan="3"><strong>Observación</strong></td>
                         </tr>
                         <tr><td colspan="7"><br></td><tr/>
                         <tr>
                             <td align="left" class="Estilo5"><?php echo $nexamen;?></td>
-                            <td align="center" class="Estilo5"><?php echo $resultado?></td>
+                            <td align="justify" class="Estilo5"><?php echo $resultado?></td>
                      <?php if (!empty($fila['unidades'])){ ?>
-                            <td align="center" class="Estilo5"><?php echo $fila['unidades'] ?></td>
+                            <td align="justify" class="Estilo5"><?php echo $fila['unidades'] ?></td>
                      <?php }else{?>
                             <td  align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                      <?php }  ?>
@@ -187,29 +187,18 @@ $f_tomamuestra=$filares['f_tomamuestra'];
          $met=$objdatos->buscarexamresult($iddetalle, $idsolicitud, $lugar, $idexamen, $sexo, $idedad);
          $cantmet=pg_num_rows($met);
          if ($cantmet>0){
-            echo "<tr><td colspan='7'><br/><hr style='width:100%;'></td></tr>";
-             echo "<tr><td colspan=1><b><u><i>Metodologías:</i></u></b><br/></td></tr>";
-            
-            
-           
             echo '<tr >
-                     <td align="left" class="Estilo5"><strong>Metodología</strong></td>
-                     <td align="center" class="Estilo5"><strong>Resultado</strong></td>
-                     <td align="center" class="Estilo5"><strong>Unidades</strong></td>
-                     <td align="justify" class="Estilo5"><strong>Rangos Normales</strong> </td>
-                     <td align="justify" class="Estilo5"><strong>Marca</strong> </td>
-                     <td align="justify" class="Estilo5"><strong>Lectura</strong></td>
-                     <td align="justify" class="Estilo5"><strong>Observación</strong><br/></td>
+                     <td align="left" class="Estilo5"><strong><i>Metodología</i></strong></td>
+                     <td align="justify" class="Estilo5"><strong><i>Marca</i></strong> </td>
+                     <td align="justify" class="Estilo5" colspan="2"><strong><i>Lectura</i></strong></td>
+                     <td align="justify" class="Estilo5" colspan="3"><strong><i>Observación</i></strong><br/></td>
                    </tr><tr><td colspan="7"><br></td><tr/>';
             while ($rowme=pg_fetch_array($met)){
                 echo "<tr>
                         <td align='left' style='font:bold'  class='Estilo5'>".$rowme['nombre_metodologia']."</td>
-   <td align='center'  class='Estilo5'>".$rowme['resultado']."</td>
-                        <td align='center'  class='Estilo5'>".$rowme['unidades']."</td>
-                        <td align='justify' class='Estilo5'>".$rowme['rangoinicio']." - ".$rowme['rangofin']."</td>
                         <td align='justify' class='Estilo5'>".$rowme['marca']."</td>
-                        <td align='justify' class='Estilo5'>".$rowme['lectura']."</td>
-                        <td align='justify' class='Estilo5'>".$rowme['observacion']."</td>
+                        <td align='justify' class='Estilo5' colspan='2'>".$rowme['lectura']."</td>
+                        <td align='justify' class='Estilo5' colspan='3'>".$rowme['observacion']."</td>
                     </tr>";
                 }
          }
