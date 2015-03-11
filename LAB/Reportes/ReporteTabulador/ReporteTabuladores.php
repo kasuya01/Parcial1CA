@@ -4,7 +4,7 @@ $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea']; 
-echo $ROOT_PATH = $_SESSION['ROOT_PATH'];
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
 
 //echo $lugar;
  ?>
