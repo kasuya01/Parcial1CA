@@ -188,7 +188,7 @@ function calc_edad()
 		<td colspan='6'>&nbsp;</td>
             </tr>
             <tr> 
-                <td colspan='6'>
+                <td colspan='6' align='left'>
                     <table width='60%' border='0' align='left' class='StormyWeatherFormTABLE' cellspacing="0">
 
                         <tr>

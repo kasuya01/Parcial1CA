@@ -54,7 +54,7 @@ switch ($opcion)
                 $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";        
                 $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'"; 
                 $rangoini=(empty($_POST['rangoini'])) ? 0 : "'" . pg_escape_string($_POST['rangoini']) . "'";
-                $rangofin=(empty($_POST['rangofin'])) ? 0 : "" . pg_escape_string($_POST['rangofin']) . "";
+                $rangofin=(empty($_POST['rangofin'])) ? 0 : "'" . pg_escape_string($_POST['rangofin']) . "'";
                 $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
 		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";   
               
@@ -194,8 +194,10 @@ switch ($opcion)
                 $nombresexo=$row['nombresexo'];
                 $idedad=$row['idedad'];
                 $rangoedad=$row['nombreedad'];
-                $rangoini=$row['rangoinicio'];
-                $rangofin=$row['rangofin'];
+                $rangoini=(empty($_POST['rangoini'])) ? 0 : "'" . pg_escape_string($_POST['rangoini']) . "'";
+                $rangofin=(empty($_POST['rangofin'])) ? 0 : "'" . pg_escape_string($_POST['rangofin']) . "'";
+                
+            //    echo "Rango Ini".$rangoini."Rango fin". $rangofin;
                 if (empty($row['idsexo'])){
                  $idsexo=0;
                 $nombresexo="Ambos";} 

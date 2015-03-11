@@ -281,6 +281,7 @@ function enviarDatosSubElemento()
 	Fechafin=document.frmModificar.txtFechaFin.value;
         sexo=document.frmModificar.cmbSexo.value;
         redad=document.frmModificar.cmbEdad.value;
+       // alert("Rango fin="+rangofin);
 	var opcion=2;	
 	Pag=1;
 	//instanciamos el objetoAjax

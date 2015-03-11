@@ -1899,7 +1899,8 @@ function MostrarDatos(posicion)
                     "&var20="+tipomuestra, "Resultados", "width=950,height=650,menubar=no,scrollbars=yes,location=no");
             break;
         case "4":
-            alert ("tipo_muestra="+tipomuestra+"& toma-muestra="+f_tomamuestra);
+           //
+           //  alert ("tipo_muestra="+tipomuestra+"& toma-muestra="+f_tomamuestra);
                 ventana_dos = window.open("ProcDatosResultadosExamen_PD.php?var1=" + idexpediente +
                     "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
