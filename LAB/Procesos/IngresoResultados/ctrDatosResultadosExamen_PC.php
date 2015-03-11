@@ -148,30 +148,30 @@ switch ($opcion)
                            </tr>
 
                            <tr>
-                                  <td colspan='1' style='font:bold'><strong>Expediente:</strong></td>
+                                  <td colspan='1'><strong>Expediente:</strong></td>
                                   <td colspan='2' >".$row_generales['numero']."</td>
                                   <td colspan='1'><strong>Fecha Toma Muestra:</strong></td>
 				  <td colspan='2'>".$f_tomamuestra."</td>       
                            </tr>
                            <tr>
-                                  <td colspan='1' style='font:bold'><strong>Paciente:</strong></td>
+                                  <td colspan='1'><strong>Paciente:</strong></td>
                                   <td colspan='5'>".htmlentities($row_generales['paciente'])."</td>
                            </tr>
                            <tr>
-                                  <td colspan='1' style='font:bold'><strong>Edad:</strong></td>
+                                  <td colspan='1'><strong>Edad:</strong></td>
                                   <td colspan='2'>".htmlentities($row_generales['edad'])."</td>
-                                  <td colspan='1' style='font:bold'><strong>Sexo:</strong></td>
+                                  <td colspan='1'><strong>Sexo:</strong></td>
                                   <td colspan='2'>".$row_generales['sexo']."</td>
                            </tr>
                            <tr>
-                                  <td colspan='1' style='font:bold'><strong>Procedencia:</strong></td>
-                                  <td colspan='2' style='font:bold'>".htmlentities($row_generales['procedencia'])."</td>
-                                  <td colspan='1' style='font:bold'><strong>Servicio:</strong></td>
-                                  <td colspan='2' style='font:bold'>".htmlentities($row_generales['subservicio'])."</td>
+                                  <td colspan='1' ><strong>Procedencia:</strong></td>
+                                  <td colspan='2' >".htmlentities($row_generales['procedencia'])."</td>
+                                  <td colspan='1' ><strong>Servicio:</strong></td>
+                                  <td colspan='2' >".htmlentities($row_generales['subservicio'])."</td>
                            </tr>
                            <tr>
-                                  <td colspan='1' style='font:bold'><strong>Examen Realizado:</strong></td>
-                                  <td colspan='5'style='font:bold'>".htmlentities($row_area['nombre_examen'])."</td>
+                                  <td colspan='1'><strong>Examen Realizado:</strong></td>
+                                  <td colspan='5'>".htmlentities($row_area['nombre_examen'])."</td>
                            </tr>
                            <tr>
                                   <td colspan='1'><strong>Validado Por:</strong></td>
@@ -181,8 +181,8 @@ switch ($opcion)
                                   <td colspan='6'>&nbsp;</td>
                            </tr>
                            <tr>
-                                  <td colspan='1'style='font:bold'><strong>Resultado:</strong></td>
-                                  <td colspan='5'style='font:bold'>Positivo</td>
+                                  <td colspan='1'><strong>Resultado:</strong></td>
+                                  <td colspan='5'>Positivo</td>
                            </tr>
                            <tr>
                                 <td colspan='1'>Observación:</td>

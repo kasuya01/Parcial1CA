@@ -38,7 +38,7 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
      $query = "UPDATE lab_subelementos SET subelemento='$subelemento',unidad=$unidad,rangoinicio=$rangoini,
                rangofin=$rangofin,fechaini=$Fechaini,fechafin=$Fechafin,idestablecimiento=$lugar,
                idsexo=$sexo,idedad=$redad WHERE id=$idsubelemento";
-  echo $query; 
+ // echo $query; 
      $result = pg_query($query);
 	 if (!$result)
        return false;

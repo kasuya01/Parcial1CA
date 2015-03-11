@@ -134,7 +134,7 @@ if (isset($_SESSION['Correlativo'])) {
                         <tr>		
                             <td class="StormyWeatherFieldCaptionTD" width="20%">Tipo Establecimiento</td>
                             <td class="StormyWeatherDataTD" width="35%">
-                               <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:415px" onChange="BuscarEstablecimiento(this.value)" class="form-control height">
+                               <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:443px" onChange="BuscarEstablecimiento(this.value)" class="form-control height">
                                     <option value="0" >Seleccione un Tipo de Establecimiento</option>
                                     <?php
                                     $db = new ConexionBD;
@@ -154,7 +154,7 @@ if (isset($_SESSION['Correlativo'])) {
                             <td class="StormyWeatherFieldCaptionTD" width="20%">Establecimiento</td>
                             <td class="StormyWeatherDataTD"  width="35%">
                                 <div id="divEstablecimiento">
-                                    <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px" class="form-control height"> <option value="0" >Seleccione un Establecimiento</option>
+                                    <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:510px" class="form-control height"> <option value="0" >Seleccione un Establecimiento</option>
                                         <?php
                                         echo '<option value="' . $lugar . '" selected="selected">' . htmlentities($nombrEstab) . '</option>';
                                         include_once("../../../Conexion/ConexionBD.php");
@@ -175,7 +175,7 @@ if (isset($_SESSION['Correlativo'])) {
                         <tr>	
                             <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
                             <td class="StormyWeatherDataTD">
-                                <select name="CmbServicio" id="CmbServicio" style="width:405px" onChange="BuscarServicio(this.value)" class="form-control height">
+                                <select name="CmbServicio" id="CmbServicio" style="width:443px" onChange="BuscarServicio(this.value)" class="form-control height">
                                     <option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
                                     <?php
                                     $db = new ConexionBD;
@@ -198,7 +198,7 @@ if (isset($_SESSION['Correlativo'])) {
                             <td class="StormyWeatherFieldCaptionTD">Servicio</td>
                             <td class="StormyWeatherDataTD">
                                 <div id="divsubserv">
-                                    <select name="cmbSubServ" id="cmbSubServ" style="width:375px" class="form-control height">
+                                    <select name="cmbSubServ" id="cmbSubServ" style="width:510px" class="form-control height">
                                         <option value="0" selected="selected"> Seleccione un Servicio </option>
                                     </select>
                                 </div>
@@ -232,7 +232,7 @@ if (isset($_SESSION['Correlativo'])) {
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD" align="left" ><strong>Tipo Solicitud</strong></td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbTipoSolic" name="cmbTipoSolic" size="1" style="width:405px" class="form-control height">
+                                <select id="cmbTipoSolic" name="cmbTipoSolic" size="1" style="width:443px" class="form-control height">
                                     <option value="0">Seleccione un Tipo de Solicitud</option>
                                     <?php
                                         $option=$obj->consultarTipoSolicitud();
