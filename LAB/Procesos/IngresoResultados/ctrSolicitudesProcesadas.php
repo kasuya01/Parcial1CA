@@ -33,6 +33,7 @@ switch ($opcion) {
         $query2="";
         $where_with="";
       //  echo $IdEstab." - ".$lugar;
+                
         if (!empty($_POST['IdEstab'])) {
            if ($_POST['IdEstab']<>$lugar){
                $cond1 .= " t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " AND";
@@ -40,7 +41,7 @@ switch ($opcion) {
            }
           
         }
-
+        
         if (!empty($_POST['IdServ'])) {
             $cond1 .= " t13.id  = " . $_POST['IdServ'] . " AND";
             $cond2 .= " t13.id  = " . $_POST['IdServ'] . " AND";
@@ -77,7 +78,7 @@ switch ($opcion) {
              $cond2 .= " t03.fecharecepcion = '" . $_POST['fecharecepcion'] . "' AND";
         }
 
-        if (!empty($_POST['PNombre'])) {
+          if (!empty($_POST['PNombre'])) {
             $cond1 .= " t07.primer_nombre ILIKE '" . $_POST['PNombre'] . "%' AND";
             $cond2 .= " t07.primer_nombre ILIKE '" . $_POST['PNombre'] . "%' AND";
         }
@@ -86,8 +87,7 @@ switch ($opcion) {
             $cond1 .= " t07.segundo_nombre ILIKE '" . $_POST['SNombre'] . "%' AND";
             $cond2 .= " t07.segundo_nombre ILIKE '" . $_POST['SNombre'] . "%' AND";
         }
-
-        if (!empty($_POST['PApellido'])) {
+         if (!empty($_POST['PApellido'])) {
             $cond1 .= " t07.primer_apellido ILIKE '" . $_POST['PApellido'] . "%' AND";
             $cond2 .= " t07.primer_apellido ILIKE '" . $_POST['PApellido'] . "%' AND";
         }
@@ -118,7 +118,7 @@ switch ($opcion) {
             //$query_search = $query . " ORDER BY t03.fecharecepcion DESC";
         }     
         //echo $cond2;
-        $query="WITH tbl_servicio AS (
+       $query="WITH tbl_servicio AS (
                     SELECT t02.id,
                         CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
@@ -647,7 +647,7 @@ switch ($opcion) {
 
         $dtExam = $objdatos->ExamenesPorArea($idarea, $lugar);
 
-        $rslts = '<select name="cmbExamen" id="cmbExamen" style="width:375px" class="form-control height">';
+        $rslts = '<select name="cmbExamen" id="cmbExamen" style="width:500px" class="form-control height">';
         $rslts .='<option value="0"> Seleccione Examen </option>';
 
         while ($rows = pg_fetch_array($dtExam)) {

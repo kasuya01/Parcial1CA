@@ -123,7 +123,7 @@ if (isset($_SESSION['Correlativo'])) {
 
             <div  id="divInicial" >
                 <form  method="get" action="ProcDatosResultadosExamen_PA.php" name="frmdatos_resultado" enctype="multipart/form-data">
-                    <table  align="center" class="StormyWeatherFormTABLE" width="83%">
+                    <table  align="center" class="StormyWeatherFormTABLE" width="67%">
                         <tr>
                             <td colspan="4" align="center" class="CobaltFieldCaptionTD">
                                 <h3>
@@ -134,27 +134,27 @@ if (isset($_SESSION['Correlativo'])) {
                         <tr>		
                             <td class="StormyWeatherFieldCaptionTD" width="20%">Tipo Establecimiento</td>
                             <td class="StormyWeatherDataTD" width="35%">
-                               <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:443px" onChange="BuscarEstablecimiento(this.value)" class="form-control height">
+                                <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:443px" onChange="BuscarEstablecimiento(this.value)" class="form-control height">
                                     <option value="0" >Seleccione un Tipo de Establecimiento</option>
                                     <?php
                                     $db = new ConexionBD;
-                                    if ($db->conectar() == true) {
-                                        $consulta = "SELECT id, nombre
-                                                     FROM ctl_tipo_establecimiento ORDER BY nombre";
-                                        $resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
-                                        //por cada registro encontrado en la tabla me genera un <option>
-                                        while ($rows = pg_fetch_array($resultado)) {
-                                            echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>';
+                                        if ($db->conectar() == true) {
+                                            $consulta = "SELECT id, nombre
+                                                         FROM ctl_tipo_establecimiento ORDER BY nombre";
+                                            $resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
+                                            //por cada registro encontrado en la tabla me genera un <option>
+                                            while ($rows = pg_fetch_array($resultado)) {
+                                                echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>';
+                                            }
+                                            echo '<option value="' . $tipo . '" selected="selected">' . htmlentities($nomtipo) . '</option>';
                                         }
-                                        echo '<option value="' . $tipo . '" selected="selected">' . htmlentities($nomtipo) . '</option>';
-                                    }
                                     ?>
                                 </select>
                             </td>
                             <td class="StormyWeatherFieldCaptionTD" width="20%">Establecimiento</td>
                             <td class="StormyWeatherDataTD"  width="35%">
                                 <div id="divEstablecimiento">
-                                    <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:510px" class="form-control height"> <option value="0" >Seleccione un Establecimiento</option>
+                                    <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:500px" class="form-control height"> <option value="0" >Seleccione un Establecimiento</option>
                                         <?php
                                         echo '<option value="' . $lugar . '" selected="selected">' . htmlentities($nombrEstab) . '</option>';
                                         include_once("../../../Conexion/ConexionBD.php");
@@ -198,7 +198,7 @@ if (isset($_SESSION['Correlativo'])) {
                             <td class="StormyWeatherFieldCaptionTD">Servicio</td>
                             <td class="StormyWeatherDataTD">
                                 <div id="divsubserv">
-                                    <select name="cmbSubServ" id="cmbSubServ" style="width:510px" class="form-control height">
+                                    <select name="cmbSubServ" id="cmbSubServ" style="width:500px" class="form-control height">
                                         <option value="0" selected="selected"> Seleccione un Servicio </option>
                                     </select>
                                 </div>
@@ -207,7 +207,7 @@ if (isset($_SESSION['Correlativo'])) {
                         <tr>                	
                             <td class="StormyWeatherFieldCaptionTD">&Aacute;rea de Laboratorio*</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbArea" name="cmbArea"  size="1" onChange="BuscarExamen(this.value)" style="width:405px" class="form-control height">
+                                <select id="cmbArea" name="cmbArea"  size="1" onChange="BuscarExamen(this.value)" style="width:443px" class="form-control height">
                                     <?php
                                     echo '<option value="' . $area1 . '" selected="selected">' . htmlentities($nomarea) . '</option>';
                                     include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
@@ -222,7 +222,7 @@ if (isset($_SESSION['Correlativo'])) {
                             <td  class="StormyWeatherFieldCaptionTD">Examen</td>
                             <td  class="StormyWeatherDataTD" >
                                 <div id="divExamen">
-                                    <select name="cmbExamen" id="cmbExamen" class="form-control height" style="width:375px" > 
+                                    <select name="cmbExamen" id="cmbExamen" class="form-control height" style="width:500px" > 
                                         <option value="0"> Seleccione Examen </option>
                                     </select>
                                 </div>
@@ -244,33 +244,33 @@ if (isset($_SESSION['Correlativo'])) {
                             </td>
                             <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Consulta</td>
                             <td  class="StormyWeatherDataTD" width="20%" >
-                                <input type="text" size="28" name="txtfechasolicitud" id="txtfechasolicitud" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" style="width:375px"/>
+                                <input type="text" size="28" name="txtfechasolicitud" id="txtfechasolicitud" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" style="width:500px"/>
                                
                             </td>
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD" >Expediente</td>
-                            <td  class="StormyWeatherDataTD"><input type="text" size="28" name="txtexpediente" id="txtexpediente"  class="form-control height" style="width:405px"/></td>
+                            <td  class="StormyWeatherDataTD"><input type="text" size="40" name="txtexpediente" id="txtexpediente"  class="form-control height" style="width:443px"/></td>
                             
                             <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Fecha Recepi&oacute;n</strong></td>
                             <td  class="StormyWeatherDataTD">
-                                <input type="text" size="28" name="txtfecharecep" id="txtfecharecep" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" style="width:375px"/>
+                                <input type="text" size="28" name="txtfecharecep" id="txtfecharecep" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" style="width:500px"/>
                             </td>
                         </tr>
                         <tr>
                             <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong>   </td> 
                             <td class="StormyWeatherDataTD" >
-                               <input maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre" class="form-control height" style="width:405px"/></td> 
+                               <input maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre" class="form-control height" style="width:443px"/></td> 
                             <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Nombre</strong>   </td> <td class="StormyWeatherDataTD">
-                                <input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre" class="form-control height" style="width:375px"/></td> 
+                                <input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre" class="form-control height" style="width:500px"/></td> 
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Apellido</strong></td> 
                             <td class="StormyWeatherDataTD">
-                               <input  maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido" class="form-control height" style="width:405px"/></td> 
+                               <input  maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido" class="form-control height" style="width:443px"/></td> 
                             <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Apellido</strong></td> 
                             <td class="StormyWeatherDataTD" >
-                                <input maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" class="form-control height" style="width:375px"/></td>
+                                <input maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" class="form-control height" style="width:500px"/></td>
                         </tr>
                         <!--<tr>
                             <td class="StormyWeatherDataTD" colspan="4" align="right">		

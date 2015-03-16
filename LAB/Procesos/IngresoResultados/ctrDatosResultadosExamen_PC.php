@@ -127,7 +127,7 @@ switch ($opcion)
 		$row_observacion = pg_fetch_array($datos_observacion);
 		$row_nombrebacteria= pg_fetch_array($bateria);
                 $estabext=$row_generales['estabext'];
-	     $imprimir="<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
+	     $imprimir="<table width='90%' border='0' align='center' class='StormyWeatherFormTABLE'>
                            <tr>
                                 <td colspan='1' align='left' width='15%'><img id='Image1' style='width: auto; height: 55px;'  src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
                                 <td align='center' colspan='4' width='70%' class='Estilo5'>

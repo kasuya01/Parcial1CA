@@ -100,24 +100,24 @@ function calc_edad()
         $ban=0;
 	$nombre=$row_area['nombrearea'];
 ?>
-	<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE' cellspacing="0">
+	<table width='95%' border='0' align='center' class='StormyWeatherFormTABLE' cellspacing="0">
             <tr>
-                <td colspan="1" align="left" width="20%"><img id="Image1" style="width: auto; height: 55px;" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
-                <td align="center" colspan="4" width="60%" ><span class="Estilo5">
+                <td colspan="1" align="left" width="15%"><img id="Image1" style="width: auto; height: 55px;" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
+                <td align="center" colspan="4" width="70%" ><span class="Estilo5">
                     <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
                     <p><strong><?php echo $row_estab['nombre'] ?></strong></p>
                     <p><strong>&Aacute;REA DE <?php echo htmlentities($row_area['nombrearea'])?> </strong></p></span>
                 </td>
-                <td colspan="1" align="right" width="20%"><img id="Image3" style="width: auto; height: 55px;" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
+                <td colspan="1" align="right" width="15%"><img id="Image3" style="width: auto; height: 55px;" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
             </tr>
             <tr>
-		<td colspan='6'>&nbsp;</td>
+		<td colspan='6' width="100%">&nbsp;</td>
             </tr>
             <tr>
-		<td colspan='1' class="Estilo5"><strong>Est. Solicitante:</strong></td>
-		<td colspan='2' class="Estilo6"><?php echo $row_generales['estabext']?></td>
-		<td colspan='1' class="Estilo5"><strong>Fecha Resultado:</strong></td>
-	  	<td colspan='2' class="Estilo6" colspan='1'><?php echo $row_fecha['fecharesultado']?></td>
+		<td colspan='1' class="Estilo5" width="25%"><strong>Establecimiento Solicitante:&nbsp;&nbsp;</strong></td>
+		<td colspan='2' class="Estilo6" width="25%"><?php echo $row_generales['estabext']?></td>
+		<td colspan='1' class="Estilo5" width="25%"><strong>Fecha Resultado:</strong></td>
+	  	<td colspan='2' class="Estilo6" width="25%"><?php echo $row_fecha['fecharesultado']?></td>
 			
             </tr>
 
@@ -151,9 +151,9 @@ function calc_edad()
             </tr>
             <tr>
                 <td colspan='1' class="Estilo5"><strong>Rsultado:</strong></td>
-                <td colspan='2' class="Estilo5">Positivo</td>
+                <td colspan='5' class="Estilo5">Positivo</td>
                 
-           </tr>  
+            </tr>  
             <tr>
 		<td colspan='6'>&nbsp;</td>
             </tr>
@@ -178,11 +178,11 @@ function calc_edad()
          while($row_det = pg_fetch_array($detalle)){?>
             <tr>
                 <td colspan='1' class="Estilo5"><strong>Organismo:</strong></td>
-                <td colspan='5' class="Estilo5"><?php echo htmlentities($row_det['bacteria']); ?></td>
+                <td colspan='5' class="Estilo5" align="left"><?php echo htmlentities($row_det['bacteria']); ?></td>
             </tr>
             <tr>
-                <td colspan='2' class="Estilo5"><strong>Cultivo con Cuenta de Colonias:</strong></td>
-                <td colspan='1' class="Estilo5"><?php echo htmlentities($row_det['cantidad'])?></td>
+                <td colspan='1' class="Estilo5" align="left" width="25%"><strong>Cultivo con Cuenta de Colonias:</strong></td>
+                <td colspan='5' class="Estilo5" aling="left" width="75%"><?php echo htmlentities($row_det['cantidad'])?></td>
             </tr>
             <tr>
 		<td colspan='6'>&nbsp;</td>
@@ -192,7 +192,7 @@ function calc_edad()
                     <table width='60%' border='0' align='left' class='StormyWeatherFormTABLE' cellspacing="0">
 
                         <tr>
-                            <td colspan='4'>
+                            <td colspan='4' align="left">
                                 <table width="100%" border="0" align="left" cellspacing="0" >
                                     <tr>
                                         <td colspan='1' class="Estilo5"><strong>ANTIBIOTICO</strong></td>
@@ -233,13 +233,13 @@ function calc_edad()
                 <td colspan='1' class="Estilo6" width='6%'>&nbsp;&nbsp;SELLO:</td>
                 <td colspan='1' class="Estilo6" width='8%'>___________</td>
                 <td colspan='1' class="Estilo6" width='6%'>&nbsp;&nbsp;&nbsp;&nbsp;FIRMA:</td>
-                <td colspan='1' class="Estilo6"width='10%'>________________</td>
+                <td colspan='1' class="Estilo6" width='10%'>________________</td>
             </tr>
     </table>
         <div id="boton">
             <table align='center' border="0">
                 <tr>
-                    <td colspan="7" align="center" >
+                    <td colspan="6" align="center" >
                         <input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
                         <input type="submit" name="btnSalir" id="btnSalir" value="Cerrar" Onclick="Cerrar() ;"/>
                     </td>
