@@ -765,7 +765,7 @@ function ObtenerCodigo($idarea){
       $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
     if($con->conectar()==true){
-    echo $query ="SELECT ctl_examen_servicio_diagnostico.id,idestandar,descripcion 
+    $query ="SELECT ctl_examen_servicio_diagnostico.id,idestandar,descripcion 
                   FROM ctl_examen_servicio_diagnostico 
                   INNER JOIN lab_estandarxgrupo ON lab_estandarxgrupo.id=ctl_examen_servicio_diagnostico.idgrupo
                   WHERE id_atencion=98 AND ctl_examen_servicio_diagnostico.activo=TRUE AND lab_estandarxgrupo.activo=TRUE

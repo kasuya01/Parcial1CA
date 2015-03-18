@@ -141,10 +141,10 @@ if ($nivel==33){
                     </tr>
                     <tr>
                        
-                        <td width="17%" class="StormyWeatherFieldCaptionTD">Reporta *</td>
-                        <td class="StormyWeatherDataTD" colspan="3" title="Indicar si se mostrará el resultado de la metodología en el reporte final">
+                       <td width="17%" class="StormyWeatherFieldCaptionTD" title="Indicar si se mostrará el nombre de la metodología en el reporte final">Reporta *</td>
+                        <td class="StormyWeatherDataTD" colspan="3" title="Indicar si se mostrará el nombre de la metodología en el reporte final">
                            <div id="divReporta">
-                              <select id="cmbreporta" name="cmbreporta" size="1" class="form-control height"  style="width:75%">                                              <option value="0" selected="selected">--Seleccione un opción--</option>
+                              <select id="cmbreporta" name="cmbreporta" size="1" class="form-control height"  style="width:75%" title="Indicar si se mostrará el nombre de la metodología en el reporte final">                                              <option value="0" selected="selected">--Seleccione un opción--</option>
                               <option value="true" >Si</option>
                               <option value="false" >No</option>     
                              </select>	
