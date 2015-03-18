@@ -59,7 +59,27 @@ function popup(URL) {
             obj1.disabled = false;
         }
     }
+    $(document).ready(function() {
+        $("#cmbEstandarRep").select2({
+           placeholder: "Seleccione un Estádar...",
+           allowClear: true,
+           dropdownAutoWidth: true
+        });
+        //$('#cmbExamen').multiselect();
+//         $('#cmbEstandarRep').multiselect({
+//            buttonWidth: '86.5%',
+//            enableFiltering: true,
+//            enableCaseInsensitiveFiltering: true,
+//            inheritClass: true
+//           
+//        });
+//         $('button.tabulador').removeClass('btn');
+    });
+
 </script>
+<!--<script type="text/javascript">
+    $('#cmbEstandarRep').multiselect();
+</script>-->
 </head>
 <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" onLoad="show_event(1);">
 
@@ -100,7 +120,7 @@ if ($nivel==33){
                                     <?php
                                         $consulta= $objeareas->consultaractivas($lugar);
 					while($row = pg_fetch_array($consulta)){
-                                            echo "<option value='" . $row['idarea']. "'>" . $row['nombrearea'] . "</option>";
+                                            echo "<option class='placeholder' value='" . $row['idarea']. "'>" . $row['nombrearea'] . "</option>";
 					}
                                     ?>		  
 				</select>
@@ -112,7 +132,7 @@ if ($nivel==33){
                                <div id="divExamen">
                                     <select name="cmbEstandar" id="cmbEstandar"  style="width:75%"  class="form-control height placeholder"> 
                                          
-                                             <option value="0">--Seleccione un Examen--</option>
+                                             <option value="0">Seleccione un Examen...</option>
                                               
                                     </select>
                                </div>
@@ -125,10 +145,10 @@ if ($nivel==33){
                            <tr>
                             <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo en tabulador</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbEstandarRep" name="cmbEstandarRep" size="1"style="width:75%" class="form-control height">
-                                    <option value="0">--Seleccione un Est&aacute;ndar--</option>
+                                <select id="cmbEstandarRep" name="cmbEstandarRep" size="10"style="width:75%; size: 10" class="height js-example-basic-single">
+                                    <option></option>
                                         <?php
-                                            $obje=new clsLab_CodigosEstandar;
+                                            //$obje=new clsLab_CodigosEstandar;
                                             $consulta= $obj->consultar_estandar();
                                             while($row = pg_fetch_array($consulta)){
                                                 echo "<option value='" . $row['0']. "'>" . $row['1'].'- '.$row['2'] . "</option>";

@@ -33,7 +33,7 @@ function LimpiarCampos(){
         document.frmnuevo.text_metodologias_sel.value="";
         document.frmnuevo.id_metodologias_sel.value="";
         
-        document.frmnuevo.inidate.valie="0";
+        document.frmnuevo.inidate.value="0";
 	document.frmnuevo.txtnombreexamen.focus();
         
         obj1 = document.frmnuevo.add_metodologia;
@@ -75,7 +75,7 @@ function ValidarCampos()
                          //alert(" 6 "+(document.getElementById('cmbUbicacion').value));
 		 }        
        
-	if (document.getElementById('cmbEstandarRep').value == "0")
+	if ($("#cmbEstandarRep").select2("val") == "" || $("#cmbEstandarRep").select2("val")==null)
 		 {
 			resp= false;
                          //alert(" 7 "+(document.getElementById('cmbEstandarRep').value));

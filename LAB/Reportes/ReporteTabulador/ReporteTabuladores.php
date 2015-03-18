@@ -52,13 +52,15 @@ function BuscarExamen(idarea){
 	}
 }
 $(document).ready(function() {
-        //$('#cmbExamen').multiselect();
-         $('#cmbExamen').multiselect({
-            buttonWidth: '100%',
-            enableFiltering: true,
-            enableCaseInsensitiveFiltering: true,
-            inheritClass: true
-           
+         $("#cmbExamen").select2({
+           placeholder: "Seleccione examenes",
+           allowClear: true,
+           dropdownAutoWidth: true
+        });
+         $("#cmbArea").select2({
+           placeholder: "Seleccione una Area",
+           allowClear: true,
+           dropdownAutoWidth: true
         });
     });
 
@@ -106,11 +108,11 @@ $toy2=date('Y-m-d');
       <div class="panel panel-primary">                        
          <div class="panel-heading"><h3>Tabulador</h3> </div>                        
           <div class="panel-body" id="pb-primervez">                            
-            <table class="table table-white no-v-border table-condensed" border="0" style="border:0px; width: 100%" >                              <tr><th>&Aacute;rea</th>
-                  <td> 
-                     <select id="cmbArea" name="cmbArea"  size="1" onChange="BuscarExamen(this.value)" style="width:100%;" class="form-control height">
+            <table class="table table-white no-v-border table-condensed" border="0" style="border:0px; width: 100%" >                              <tr><th width="15%">&Aacute;rea</th>
+                  <td width="85%"> 
+                     <select id="cmbArea" name="cmbArea"  size="1" onChange="BuscarExamen(this.value)" style="width:100%;" class="height placeholder js-example-basic-single">
                         <?php
-                        echo '<option value="0" selected="selected">Seleccione una Area</p></option>';
+                        echo '<option></option>';
                         include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
                         $objeareas = new clsLab_Areas;
                         $consulta = $objeareas->consultaractivas($lugar);
@@ -125,8 +127,8 @@ $toy2=date('Y-m-d');
                       <th>Examen</th>
                       <td>
                         <div id="divExamen">
-                           <select name="cmbExamen" id="cmbExamen" class="form-control height" style="width:100%" size="1"  multiple="multiple"> 
-                              
+                           <select name="cmbExamen" id="cmbExamen" class="height js-example-basic-multiple placeholder" style="width:100%" size="1" multiple="multiple"  > 
+                                
                            </select>
                        </div>
                       </td>
@@ -135,7 +137,7 @@ $toy2=date('Y-m-d');
                    <tr>
                        <th>Año-Mes</th>
                                                           <td>   
-                                                             <input type="text" id="d_fecha" name="d_fecha" style="width: 25%; text-align: center;" placeholder="<?php echo $toy; ?>"  class="datepicker form-control height"  autocomplete="off" />
+                                                             <input type="text" id="d_fecha" name="d_fecha" style="width: 25%; text-align: center; position: absolute; top: auto" placeholder="<?php echo $toy; ?>"  class="datepicker form-control height placeholder"  autocomplete="off" />
                                                               </td>
                    </tr>
                    <tr>

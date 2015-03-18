@@ -833,7 +833,7 @@ switch ($opcion)
            $idmetodologia=$_POST['idmetodologia'];
            $rslts='';
            if ($idmetodologia==0){
-              $rslts .= '<select name="cmbreporta" id="cmbreporta" size="1" class="form-control height" style="width:75%">';
+              $rslts .= '<select name="cmbreporta" id="cmbreporta" size="1" class="form-control height" style="width:75%" title="Indicar si se mostrará el nombre de la metodología en el reporte final">';
               $rslts.= '<option value="0" >--Seleccione una opción--</option>';
 //              $rslts.= '<option value="true" >Si</option>';
 //              $rslts.= '<option value="false" >No</option>';

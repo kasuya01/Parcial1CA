@@ -112,7 +112,8 @@ join lab_posible_resultado t03 on (t03.id=t01.id_posible_resultado)
         $query = "select * 
 from lab_posible_resultado lpr
 where habilitado=true
-and fechafin is null or date(fechafin)>=current_date;";
+and fechafin is null or date(fechafin)>=current_date
+order by posible_resultado";
 
            $result = pg_query($query);
            if (!$result)
