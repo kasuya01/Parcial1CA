@@ -375,6 +375,7 @@ function Buscarfechamuestra(IdTipo)
                     respuesta = ajax.responseText;	
 				// alert (respuesta)
                     document.getElementById('divfechatoma').innerHTML = respuesta;
+                     classdatepick();
 		}	  	
             }
    	}

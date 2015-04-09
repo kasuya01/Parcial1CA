@@ -898,24 +898,24 @@ function MostrarResultadoExamen(idsolicitud, iddetalle, idarea, idexamen, result
                 
                 
             
-        document.getElementById('fecha_realizacion').value="";
-        document.getElementById('fecha_reporte').value=document.getElementById('fecha_reporteaux').value;
-        if(idresultado=='x')
-            document.getElementById('txtresultado').value="";
-        else
-        {
-           $("#idresultado option[value='xyz']").attr('selected', 'selected');
-           //$("#cmbResultado2 option[value='0']").attr('selected', 'selected');
-           $("#cmbResultado2").append('<option value=0>Seleccione un resultado</option>');
-        }
+      //  document.getElementById('fecha_realizacion').value="";
+      //  document.getElementById('fecha_reporte').value=document.getElementById('fecha_reporteaux').value;
+//        if(idresultado=='x')
+//            document.getElementById('txtresultado').value="";
+//        else
+//        {
+//           $("#idresultado option[value='xyz']").attr('selected', 'selected');
+//           //$("#cmbResultado2 option[value='0']").attr('selected', 'selected');
+//           $("#cmbResultado2").append('<option value=0>Seleccione un resultado</option>');
+//        }
         //document.getElementById('txtlectura').value="";
       //  document.getElementById('txtinterpretacion').value="";
-        document.getElementById('txtcomentario').value="";
-        document.getElementById('txtlectura').value="";
-        document.getElementById('txtmarca').value="";
-        document.getElementById('txtinterpretacion').value="";
+      //  document.getElementById('txtcomentario').value="";
+      //  document.getElementById('txtlectura').value="";
+      //  document.getElementById('txtmarca').value="";
+      //  document.getElementById('txtinterpretacion').value="";
        // document.getElementById('cmbResultado2').value=0
-        document.getElementById('cmbEmpleados').value=0
+      //  document.getElementById('cmbEmpleados').value=0
         document.getElementById('cmbEmpleadosfin').value=0
         $("#cmbResultado2 option[value='0']").attr('selected', 'selected');        
                 //calc_edad();

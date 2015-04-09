@@ -146,7 +146,7 @@ class clsSolicitudesProcesadas {
 			when 0 then (lem.id>0 or lem.id is null)
 			else lem.id=$idmetodologia
 			end)";
-             // echo $query;
+              // echo $query;
             $result = @pg_query($query);
             if (!$result)
                 return false;
@@ -574,7 +574,7 @@ and b_reporta=true order by nombre_metodologia";
             $query="with tbl_datos_paciente as(
 select e.id as idexpediente, e.numero as numero, 
 concat_ws (' ',d.primer_apellido,d.segundo_apellido, d.apellido_casada, d.primer_nombre, d.segundo_nombre, d.tercer_nombre) as nombre,  
-s.nombre AS sexoconv, extract(year from age(fecha_nacimiento)) AS edad, conocido_por,id_sexo, id_establecimiento as idestab, telefono_casa, direccion, 
+s.nombre AS sexoconv, (select fn_calcular_edad (d.id, 'completa') ) AS edad, conocido_por,id_sexo, id_establecimiento as idestab, telefono_casa, direccion, 
 fecha_nacimiento, h.id as idhistoref, date (current_date)  - date (fecha_nacimiento) as dias, s.nombre as sexo
 FROM mnt_paciente d 
 JOIN mnt_expediente e ON (d.id=e.id_paciente) 
@@ -584,7 +584,7 @@ and habilitado=true
 union 
 select e.id as idexpediente, e.numero as numero, 
 concat_ws (' ',d.primer_apellido,d.segundo_apellido, d.apellido_casada, d.primer_nombre, d.segundo_nombre, d.tercer_nombre) as nombre, 
-s.nombre AS sexoconv, extract(year from age(fecha_nacimiento)) AS Edad,'' as conocido_por,  id_sexo, id_establecimiento_origen as idestab, '-', '-', 
+s.nombre AS sexoconv, (select fn_calcular_edad_referido(d.id, 'completa') ) AS edad,'' as conocido_por,  id_sexo, id_establecimiento_origen as idestab, '-', '-', 
 fecha_nacimiento, r.id as idhistoref, date (current_date)  - date (fecha_nacimiento) as dias, s.nombre as sexo
 FROM mnt_paciente_referido d
 JOIN mnt_expediente_referido e on (d.id= e.id_referido)
@@ -1024,6 +1024,48 @@ function CantMetodologia($idexamen) {
             }
         }
 }
+      //Fn_pg
+    //Funcion para consultar datos obligatorios de 
+    function calc_edad($idhistorial) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query="select fn_calcular_edad((select id_paciente 
+                     from mnt_expediente t01
+                     join sec_historial_clinico t02 on (t01.id=t02.id_numero_expediente) 
+                     where t02.id=$idhistorial ), 'completa') as edad;";
+             //echo $query;
+             $result = pg_query($query);
+             $edad=  pg_fetch_array($result);
+              $caledad= $edad['edad'];
+            if (!$result) {
+                return false;
+            } else {
+                return $caledad;
+            }
+        }
+}
+      //Fn_pg
+    //Funcion para consultar datos obligatorios de 
+    function calc_edadref($idhistref) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $query="select fn_calcular_edad_referido((select id_referido
+from mnt_expediente_referido  t01
+join mnt_dato_referencia t02 on (t01.id=t02.id_expediente_referido) 
+where t02.id=$idhistref), 'completa') as edad;
+
+";
+             //echo $query;
+             $result = pg_query($query);
+             $edad=  pg_fetch_array($result);
+              $caledad= $edad['edad'];
+            if (!$result) {
+                return false;
+            } else {
+                return $caledad;
+            }
+        }
+}
 //Fn PG  //Para quimica
 //Buscar si existen solicitudes anteriores con ese mismo detalle.
    function buscarAnteriores($idsolicitud,$iddetallesolicitud, $idarea){
@@ -1171,7 +1213,8 @@ and (date(t02.fechafin) >= current_date or date(t02.fechafin) is null);";
               and t01.habilitado=true 
               and t02.habilitado=true
               and (date(t01.fechafin) >= current_date or date(t01.fechafin) is null)
-              and (date(t02.fechafin) >= current_date or date(t02.fechafin) is null);";
+              and (date(t02.fechafin) >= current_date or date(t02.fechafin) is null)
+              order by posible_resultado;";
             //echo $query;
             $result = pg_query($query);
             if (!$result) {

@@ -7,10 +7,13 @@ $objdatos = new clsLab_TipoMuestrasPorExamen;
 //variables POST
 	//session_start();
 	$idexamen=$_POST['idexamen'];
-	$idarea=$_POST['idarea'];
-	$Pag =$_POST['Pag'];
+	//$idarea=$_POST['idarea'];
+	$idarea=isset($_POST['idarea']) ? $_POST['idarea'] : null ;
+	//$Pag =$_POST['Pag'];
+	$Pag =isset($_POST['Pag']) ? $_POST['Pag'] : null ;
 	$opcion=$_POST['opcion'];
-    $idtipomuestra=$_POST['idtipomuestra'];
+    //$idtipomuestra=$_POST['idtipomuestra'];
+    $idtipomuestra=isset($_POST['idtipomuestra']) ? $_POST['idtipomuestra'] : null ;
 
 switch ($opcion) 
 {

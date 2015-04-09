@@ -139,7 +139,7 @@ function consultarpagbus($query,$RegistrosAEmpezar, $RegistrosAMostrar)
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT * FROM lab_antibioticos ";
+     $query = "SELECT * FROM lab_posible_resultado ";
 	 $numreg = pg_num_rows(pg_query($query));
 	 if (!$numreg )
 	   return false;

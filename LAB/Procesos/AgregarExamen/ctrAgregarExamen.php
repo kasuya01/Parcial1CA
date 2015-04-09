@@ -778,11 +778,11 @@ switch ($opcion)
                 $consultadetalle=$objdatos->obtener_fecha_tomamuestra($idexpediente,$idsolicitud,$lugar,$IdTipo);
                 $row_detalle = pg_fetch_array($consultadetalle);
                 if (!empty($row_detalle[0]))
-                    $rslts .='<input type="text" class="datepicker" name="txttomamuestra" id="txttomamuestra" size="15"  value="'. $row_detalle['fechatomamuestra'].'"/>';
+                    $rslts .='<input type="text" style="width:405px" class="datepicker form-control height" name="txttomamuestra" id="txttomamuestra" size="15"  value="'. $row_detalle['fechatomamuestra'].'"/>';
                 else {
                      $consrecep=$objdatos->BuscarFechaRecepcion($idsolicitud,$lugar);
                      $row_recep = pg_fetch_array($consrecep);
-                     $rslts .='<input type="text" class="datepicker" name="txttomamuestra" id="txttomamuestra" size="15"  value="'. $row_recep['fecharecepcion'].'"/>';
+                     $rslts .='<input type="text" style="width:405px" class="datepicker form-control height" name="txttomamuestra" id="txttomamuestra" size="15"  value="'. $row_recep['fecharecepcion'].'"/>';
                 }
                 echo $rslts;
         break;
