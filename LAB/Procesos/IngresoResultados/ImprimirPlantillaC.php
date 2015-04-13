@@ -114,10 +114,10 @@ function calc_edad()
 		<td colspan='6' width="100%">&nbsp;</td>
             </tr>
             <tr>
-		<td colspan='1' class="Estilo5" width="25%"><strong>Establecimiento Solicitante:&nbsp;&nbsp;</strong></td>
-		<td colspan='2' class="Estilo6" width="25%"><?php echo $row_generales['estabext']?></td>
-		<td colspan='1' class="Estilo5" width="25%"><strong>Fecha Resultado:</strong></td>
-	  	<td colspan='2' class="Estilo6" width="25%"><?php echo $row_fecha['fecharesultado']?></td>
+		<td colspan='1' class="Estilo5" width="30%"><strong>Establecimiento Solicitante:&nbsp;&nbsp;</strong></td>
+		<td colspan='2' class="Estilo6" width="30%"><?php echo $row_generales['estabext']?></td>
+		<td colspan='1' class="Estilo5" width="20%"><strong>Fecha Resultado:</strong></td>
+	  	<td colspan='2' class="Estilo6" width="20%"><?php echo $row_fecha['fecharesultado']?></td>
 			
             </tr>
 

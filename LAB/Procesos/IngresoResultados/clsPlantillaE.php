@@ -237,8 +237,8 @@ function MostrarDatosGenerales($idsolicitud,$lugar)
              (mnt_expediente_referido.numero)
              ELSE (mnt_expediente.numero) end) as numero,
              (CASE WHEN sec_solicitudestudios.id_historial_clinico IS NULL THEN 
-             CONCAT_WS(' ',mnt_paciente_referido.primer_nombre,mnt_paciente_referido.segundo_nombre,mnt_paciente_referido.tercer_nombre,mnt_paciente_referido.primer_apellido,mnt_paciente_referido.segundo_apellido,
-             mnt_paciente_referido.apellido_casada) 
+             CONCAT_WS(' ',mnt_paciente_referido.primer_nombre,mnt_paciente_referido.segundo_nombre,mnt_paciente_referido.tercer_nombre,mnt_paciente_referido.primer_apellido,
+             mnt_paciente_referido.segundo_apellido,mnt_paciente_referido.apellido_casada) 
              ELSE CONCAT_WS(' ',mnt_paciente.primer_nombre,mnt_paciente.segundo_nombre,mnt_paciente.tercer_nombre,mnt_paciente.primer_apellido,
              mnt_paciente.segundo_apellido,mnt_paciente.apellido_casada) end) as paciente,
             (CASE WHEN sec_solicitudestudios.id_historial_clinico IS NULL THEN 
@@ -283,7 +283,7 @@ function MostrarDatosGenerales($idsolicitud,$lugar)
                     WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=ctl_atencion.nombre) THEN ctl_atencion.nombre
                 END
             END AS subservicio ,
-            ctl_area_atencion.nombre AS procedencia,to_char(lab_recepcionmuestra.fechahorareg,'dd/mm/YYYY HH12:MI:SS' ) AS fecharecep,
+            ctl_area_atencion.nombre AS procedencia,to_char(lab_recepcionmuestra.fechahorareg,'dd/mm/YYYY HH12:MI' ) AS fecharecep,
             (SELECT nombre FROM ctl_establecimiento WHERE id=sec_solicitudestudios.id_establecimiento_externo) AS estabext
             FROM lab_recepcionmuestra
             INNER JOIN sec_solicitudestudios                ON sec_solicitudestudios.id = lab_recepcionmuestra.idsolicitudestudio
@@ -317,7 +317,7 @@ function ObtenerFechaResultado($idsolicitud,$IdExamen,$lugar)
 	$con = new ConexionBD;
    if($con->conectar()==true)
    {
-      $query = "SELECT TO_CHAR(fecha_resultado,'dd/mm/YYYY HH12:MI:SS') AS fecharesultado
+      $query = "SELECT TO_CHAR(fecha_resultado,'dd/mm/YYYY HH12:MI') AS fecharesultado
                 FROM lab_resultados 
                 WHERE idsolicitudestudio=$idsolicitud AND idestablecimiento=$lugar 
                 AND idexamen=$IdExamen";
@@ -381,8 +381,8 @@ function LeerProcesoExamen($idexamen,$lugar,$sexo,$idedad)
             AND CURRENT_DATE BETWEEN lab_procedimientosporexamen.fechaini 
             AND CASE WHEN fechafin IS NULL THEN CURRENT_DATE ELSE lab_procedimientosporexamen.fechafin END
             AND (lab_procedimientosporexamen.idsexo=$sexo OR lab_procedimientosporexamen.idsexo IS NULL)
-            AND (lab_procedimientosporexamen.idrangoedad=$idedad OR lab_procedimientosporexamen.idrangoedad=4)";
-  //echo $query;
+            AND (lab_procedimientosporexamen.idrangoedad=$idedad OR lab_procedimientosporexamen.idrangoedad=4) ORDER BY orden";
+ //echo $query;
 	
 	 $result = @pg_query($query);
 	 
@@ -399,7 +399,9 @@ function leer_posibles_resultados_procedimientos($idprocedimiento){
             $query="SELECT id_posible_resultado,posible_resultado 
                     FROM lab_procedimiento_posible_resultado 
                     INNER JOIN lab_posible_resultado ON lab_posible_resultado.id = lab_procedimiento_posible_resultado.id_posible_resultado
-                    WHERE id_procedimientoporexamen=$idprocedimiento";
+                    WHERE lab_posible_resultado.habilitado=TRUE AND lab_procedimiento_posible_resultado.habilitado=TRUE 
+                    AND id_procedimientoporexamen=$idprocedimiento";
+           // echo $query;
 
             $result = @pg_query($query);
             

@@ -41,7 +41,7 @@ function ValidarContrasena()
                     <td width="80%" class="MailboxDataTD" ><input type="text" name="txtlogin" id="txtlogin"></td>
               </tr>
               <tr>
-                    <td class="MailboxFieldCaptionTD"><strong>Password</strong></td>
+                    <td class="MailboxFieldCaptionTD"><strong>Contraseña</strong></td>
                     <td class="MailboxDataTD"><input type="password" name="txtpassword" id="txtpassword"></td>
               </tr>
               <tr>
