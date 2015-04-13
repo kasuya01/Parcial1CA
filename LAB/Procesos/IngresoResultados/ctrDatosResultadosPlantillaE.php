@@ -310,12 +310,12 @@ case 2://vista Previa de Resultado
 					while($row = pg_fetch_array($consulta))//ELEMENTOS
 					{
                                 $imprimir.="<tr>
-						<td>".htmlentities($row['nombreprocedimiento'])."</td>
-						<td align='center'>
+						<td align='justify'>".htmlentities($row['nombreprocedimiento'])."</td>
+						<td align='justify'>
 							<input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['id']."'>".htmlentities($vector_respuesta[$pos]).
 					  "	</td>
-						<td>".$row['unidades']."</td>
-						<td align='center'>".htmlentities($vector_comentarios[$pos])."</td>
+						<td align='justify'>".$row['unidades']."</td>
+						<td align='justify'>".htmlentities($vector_comentarios[$pos])."</td>
 						<td>".htmlentities($row['unidades'])."</td>
                                             </tr>";
 					  $pos=$pos + 1;
@@ -429,8 +429,8 @@ case 2://vista Previa de Resultado
 	 //echo $establecimiento."$$ ".$sexo."%%".$idedad;
                     $imprimir.="<table width='100%' border='0' align='center' cellspacing='0'>
                                     <tr>
-                                        <td colspan='2' align='left' ><strong> Prueba </strong></td>
-                                        <td colspan='1' align='center'><strong> Resultado </strong> </td>
+                                        <td colspan='2' align='justify' ><strong> Prueba </strong></td>
+                                        <td colspan='1' align='justify'><strong> Resultado </strong> </td>
                                         <td colspan='1' align='center'><strong> Unidades </strong></td>
                                         <td colspan='2' align='center'><strong> Rango </strong></td>
                                     </tr>";
@@ -439,15 +439,15 @@ case 2://vista Previa de Resultado
                     while($row = pg_fetch_array($consulta))//ELEMENTOS
                     {
                        $imprimir.= "<tr>
-                                        <td align='left' colspan='2'>".htmlentities($row['nombreprocedimiento'])."</td>
+                                        <td align='justify' colspan='2'>".htmlentities($row['nombreprocedimiento'])."</td>
                                         ";
                         if($vector_combos[$pos]== NULL){  
-                            $imprimir.= "<td align='center' colspan='1'><input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['idprocedimiento']."'>".htmlentities($vector_respuesta[$pos]).
+                            $imprimir.= "<td aalign='justify' colspan='1'><input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['idprocedimiento']."'>".htmlentities($vector_respuesta[$pos]).
                                         "</td>";
                         }else{
                                 $conresult=$obj->BuscarResultado($vector_respuesta[$pos]);
                                 $row_dresult=  pg_fetch_array($conresult);
-                            $imprimir.="<td align='left' colspan='1'>".htmlentities($row_dresult['posible_resultado'])."<input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['idprocedimiento']."'></td>";
+                            $imprimir.="<td align='justify' colspan='1'>".htmlentities($row_dresult['posible_resultado'])."<input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['idprocedimiento']."'></td>";
                         }                                                                                   
                            $imprimir.= "<td align='center' colspan='1'>".htmlentities($row['unidades'])."</td>";
                            if((!empty($row['rangoinicio'])) AND (!empty($row['rangoinicio'])))

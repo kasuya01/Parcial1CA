@@ -381,8 +381,8 @@ function LeerProcesoExamen($idexamen,$lugar,$sexo,$idedad)
             AND CURRENT_DATE BETWEEN lab_procedimientosporexamen.fechaini 
             AND CASE WHEN fechafin IS NULL THEN CURRENT_DATE ELSE lab_procedimientosporexamen.fechafin END
             AND (lab_procedimientosporexamen.idsexo=$sexo OR lab_procedimientosporexamen.idsexo IS NULL)
-            AND (lab_procedimientosporexamen.idrangoedad=$idedad OR lab_procedimientosporexamen.idrangoedad=4)";
-  //echo $query;
+            AND (lab_procedimientosporexamen.idrangoedad=$idedad OR lab_procedimientosporexamen.idrangoedad=4) ORDER BY orden";
+ //echo $query;
 	
 	 $result = @pg_query($query);
 	 
@@ -399,7 +399,9 @@ function leer_posibles_resultados_procedimientos($idprocedimiento){
             $query="SELECT id_posible_resultado,posible_resultado 
                     FROM lab_procedimiento_posible_resultado 
                     INNER JOIN lab_posible_resultado ON lab_posible_resultado.id = lab_procedimiento_posible_resultado.id_posible_resultado
-                    WHERE id_procedimientoporexamen=$idprocedimiento";
+                    WHERE lab_posible_resultado.habilitado=TRUE AND lab_procedimiento_posible_resultado.habilitado=TRUE 
+                    AND id_procedimientoporexamen=$idprocedimiento";
+           // echo $query;
 
             $result = @pg_query($query);
             

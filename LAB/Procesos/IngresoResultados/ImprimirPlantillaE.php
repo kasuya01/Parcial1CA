@@ -51,9 +51,9 @@ function calc_edad()
 #boton{display:none;}
 }
 
- .Estilo5 {font-family: Helvetica; font-size: 8pt}
-    .Estilo6 {font-family: Helvetica; font-size: 7pt}
-    .Estilo7 {font-family: Helvetica; font-size: 9pt}
+ .Estilo5 {font-family: Helvetica; font-size: 9pt}
+    .Estilo6 {font-family: Helvetica; font-size: 8pt}
+    .Estilo7 {font-family: Helvetica; font-size: 10pt}
 
 -->
 </style>
@@ -232,9 +232,9 @@ if ($IdEstandar=="H15"){
                 </tr>
 		<tr>
 			<td colspan='1' class="Estilo5" width="30%" align="justify"><strong>Establecimiento Solicitante:</strong></td>
-			<td colspan='3' class="Estilo6" width="40%" align="justify"><?php echo $row_generales['estabext']?></td>
-			<td colspan='1' class="Estilo5" width="24%" align="justify"><strong>Fecha Resultado:</strong></td>
-			<td colspan='1' class="Estilo6" width="6%" align="justify"><?php echo $row_fecha['fecharesultado']?></td>
+			<td colspan='3' class="Estilo6" width="35%" align="justify"><?php echo $row_generales['estabext']?></td>
+			<td colspan='1' class="Estilo5" width="25%" align="justify"><strong>Fecha Resultado:</strong></td>
+			<td colspan='1' class="Estilo6" width="10%" align="justify"><?php echo $row_fecha['fecharesultado']?></td>
 				
 		</tr>
 		<tr>
@@ -257,22 +257,22 @@ if ($IdEstandar=="H15"){
 			<td colspan='1' class="Estilo6" align="justify"><?php echo $row_generales['sexo']?></td>
 		</tr>
 		<tr>
-			<td colspan='1' class="Estilo5" align='left'><strong>Procedencia:</strong></td>
-			<td colspan='3' class="Estilo6" align='left'><?php echo $row_generales['procedencia']?></td>
-			<td colspan='1' class="Estilo5" align='left'><strong>Servicio:</strong></td>
-			<td colspan='1' class="Estilo6" align='left'><?php echo $row_generales['subservicio']?></td>
+			<td colspan='1' class="Estilo5" align="justify"><strong>Procedencia:</strong></td>
+			<td colspan='3' class="Estilo6" aalign="justify"><?php echo $row_generales['procedencia']?></td>
+			<td colspan='1' class="Estilo5" align="justify"><strong>Servicio:</strong></td>
+			<td colspan='1' class="Estilo6" align="justify"><?php echo $row_generales['subservicio']?></td>
 		</tr>
 		<tr>
-			<td colspan='1' class="Estilo5" align='left'><strong>Examen Realizado:</strong></td>
-			<td colspan='5' class="Estilo6" align='left'><?php echo htmlentities($row_area['nombre_reporta'])?></td>
+			<td colspan='1' class="Estilo5" align="justify"><strong>Examen Realizado:</strong></td>
+			<td colspan='5' class="Estilo6" align="justify"><?php echo htmlentities($row_area['nombre_reporta'])?></td>
 		</tr>
 		<tr>
-			<td colspan='1' class="Estilo5" align='left'><strong>Validado Por:</strong></td>
-			<td colspan='5' class="Estilo6" align='left'><?php echo $responsable?></td>
+			<td colspan='1' class="Estilo5" align="justify"><strong>Validado Por:</strong></td>
+			<td colspan='5' class="Estilo6" align="justify"><?php echo $responsable?></td>
 		</tr>
 		<tr>
-			<td colspan='1' class="Estilo5" align='left'><strong>Observacion:</strong></td>
-			<td colspan='5' class="Estilo6" align='left'><?php echo $observacion?></td>
+			<td colspan='1' class="Estilo5" align="justify"><strong>Observacion:</strong></td>
+			<td colspan='5' class="Estilo6" align="justify"><?php echo $observacion?></td>
 		</tr>
                 <tr>
 			<td colspan='6' align="center"></td>
