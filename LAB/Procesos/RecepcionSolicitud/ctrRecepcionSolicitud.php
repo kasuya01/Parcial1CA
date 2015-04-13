@@ -338,4 +338,22 @@ switch ($opcion) {
         }
         echo json_encode($jsonresponse);
         break;
+    case 11:
+        $idrechazo = $_POST['idrechazo'];
+//       if ($idrechazo!=0){
+//            $query = $object->obteneropcionesrechazo();
+//       }
+//        
+//
+//        if($query !== false) {
+//            $jsonresponse['status'] = true;
+//            $jsonresponse['num_rows'] = pg_num_rows($query);
+//
+//            if(pg_num_rows($query) > 0)
+//                $jsonresponse['data']   = pg_fetch_all($query);
+//        } else {
+//            $jsonresponse['status'] = false;
+//        }
+//        echo json_encode($jsonresponse);
+        break;
 }

@@ -407,10 +407,12 @@ else
     function leer_posibles_resultados($idsubelemento){
          $con = new ConexionBD;
         if($con->conectar()==true) {
-            $query="SELECT id_posible_resultado,posible_resultado 
-                    FROM lab_subelemento_posible_resultado 
-                    INNER JOIN lab_posible_resultado ON lab_posible_resultado.id = lab_subelemento_posible_resultado.id_posible_resultado
-                    WHERE id_subelemento=$idsubelemento";
+            $query="SELECT id_posible_resultado,posible_resultado, t01.habilitado
+                    FROM lab_subelemento_posible_resultado t01
+                    INNER JOIN lab_posible_resultado t02 ON t02.id = t01.id_posible_resultado
+                    WHERE id_subelemento=$idsubelemento
+                    and t01.habilitado=true
+                    order by posible_resultado;";
 
             $result = @pg_query($query);
             

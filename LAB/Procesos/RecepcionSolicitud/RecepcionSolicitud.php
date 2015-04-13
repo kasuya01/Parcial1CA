@@ -103,14 +103,15 @@ for ($i = 0; $i < $NroRegistros; $i++) {
         echo "<div class='table-responsive' style='width: 100%;' style='align:center;'>          
            <table border = 0 align='center' class='table table-hover table-bordered table-condensed table-white' cellspacing='0' style='width:70%'><thead>
 		<tr>
-                    <td colspan='5' align='center' class='CobaltFieldCaptionTD'>ESTUDIOS SOLICITADOS</td>
+                    <td colspan='6' align='center' class='CobaltFieldCaptionTD'>ESTUDIOS SOLICITADOS</td>
 		</tr>
 		<tr class='StormyWeatherFieldCaptionTD'>
-                    <th >Código Prueba</th>
-                    <th >Cód. Area</th>
+                    <th>Código Prueba</th>
+                    <th>Cód. Area</th>
                     <th> Examen </th>
                     <th> Indicaciones </th>
                     <th> Fecha Tmx. </th>
+                    <th> Validar Muestra</th>
 		</tr></thead><tbody>";
         $detalle = $objdatos->BuscarDetalleSolicitud($idexpediente, $Nfechacita, $arraysolic[$i], $idEstablecimiento);
         $k=1;
@@ -133,6 +134,16 @@ for ($i = 0; $i < $NroRegistros; $i++) {
             if (($rows['idexamen'] == 'COA001')or ( $rows['idexamen'] == 'COA002') or ( $rows['idexamen'] == 'COA016')) {
                 $ban = 1;
             }
+            echo '<td><div id="opcionvalidar" width="100%">';
+            echo '<select id="validarmuestra" name="validarmuestra" onchange="OpcionRechazo(this.value)" class="form-control height">';
+            echo '<option value="0">Validada</option>';
+            $rechazo=$objdatos->opcionrechazo();
+            while ($rec=@pg_fetch_array($rechazo)){
+               echo '<option value="'.$rec["id"].'">'.$rec["estado"].'</option>';
+               
+            }
+            echo '</select>';
+            echo '</div></td>';
             echo "</tr>";
             $k++;
         }// while detalle

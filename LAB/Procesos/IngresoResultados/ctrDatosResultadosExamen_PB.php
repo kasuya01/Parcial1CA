@@ -370,17 +370,14 @@ switch ($opcion) {
 			   				<td colspan='1'><strong>Validado Por:</strong></td>
 			   				<td colspan='5'>".htmlentities($row_empleado['nombreempleado'])."</td>
 			   			</tr>
-			   			<tr>
-			   				<td colspan='1'><strong>Observacion:</strong></td>
-			   				<td colspan='4'>".htmlentities($observacion)."</td>
-			   			</tr>";
+			   			";
 	   			
 	   			$nomcod = $objdatos->ObtenerNombreCodigo($tab);
 	   			$row_codigo = pg_fetch_array($nomcod);
-                                 $imprimir.="<tr>
-		        			<td>Resultado Tabulador:</td><td colspan='5'>".$row_codigo[0]."</td>
-		        		</tr>
-		        	</table>";
+//                                 $imprimir.="<tr>
+//		        			<td>Resultado Tabulador:</td><td colspan='5'>".$row_codigo[0]."</td>
+//		        		</tr>
+		        	$imprimir.="</table>";
 	   			
 
 			   	$imprimir.="<table width='92%' border='0' align='center' >";
@@ -452,7 +449,10 @@ switch ($opcion) {
 					}
 
 				}
-				
+                    $imprimir .="<tr>
+                                    <td colspan='1'><strong>Observacion:</strong></td>
+                                    <td colspan='4'>".htmlentities($observacion)."</td>
+                                 </tr>";
 				pg_free_result($consulta);
 	            $imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>"	;	//numero de cajas de texto dibujadas para subelementos
 	            $imprimir .="<input  type='hidden' id='ocultoele' value='".$posele."'>"; //elementos
@@ -535,26 +535,22 @@ switch ($opcion) {
 		        		<tr>
 		        			<td colspan='1'><strong>Validado Por:</strong></td>
 		        			<td colspan='5'>".htmlentities($row_empleado['nombreempleado'])."</td>
-		        		</tr>
-		        		<tr>
-		        			<td colspan='1'><strong>Observacion:</strong></td>
-		        			<td colspan='5'>".htmlentities($observacion)."</td>
 		        		</tr>";
 		        
 		        $nomcod=$objdatos->ObtenerNombreCodigo($tab);
 		        $row_codigo= pg_fetch_array($nomcod);
 		        $imprimir.="<tr>
 		        			<td>Resultado Tabulador:</td><td colspan='5'>".$row_codigo[0]."</td>
-		        		</tr>
-		        	</table>";
+		        		</tr></table>";
 
-		        $imprimir.="<table width='100%' border='0' align='center' >";
+		        $imprimir.="<br><table width='100%' border='0' align='center' cellspacing='3' class='StormyWeatherFormTABLE'>";
 		        $imprimir.= "<tr>
 				        <td width='25%'></td>
-				        <td width='25%'>Resultado</td>
-				        <td width='10%'>Unidades</td>
-				        <td width='15%'>Rangos de referencia</td>
-				    </tr>";
+				        <td width='25%'><b>Resultado</b></td>
+				        <td width='10%'><b>Unidades</b></td>
+				        <td width='15%'><b>Rangos de referencia</b></td>
+				    </tr>
+                                    <tr><td colspan='4'><hr style='width:100%'></td></tr>";
 		    	
 		    	$pos    = 0;
 		    	$posele = 0;
@@ -567,7 +563,7 @@ switch ($opcion) {
 					$consulta2 = $objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
 		    while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
   			 $imprimir.="<tr>
-					<td width='35%'>".htmlentities($rowsub['subelemento'])."</td>";
+					<td width='35%'>&emsp;".htmlentities($rowsub['subelemento'])."</td>";
                             if  ($vector_combos[$pos]== NULL){  
 			     $imprimir.="<td width='25%'>".htmlentities($vector[$pos])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>";
                             }
@@ -607,12 +603,17 @@ switch ($opcion) {
 		pg_free_result($consulta_datos);
 		pg_free_result($datos_generales);
 
+				$imprimir .="<tr><td colspan='4'><hr></td></tr>
+                                   <tr>
+		        			<td colspan='1'><strong>Observacion:</strong></td>
+		        			<td colspan='5'>".htmlentities($observacion)."<br></td>
+		        		</tr>"	;	//numero de cajas de texto dibujadas para subelementos
 				$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>"	;	//numero de cajas de texto dibujadas para subelementos
 				$imprimir .="<input  type='hidden' id='ocultoele' value='".$posele."'>" ; //elementos
                                  $imprimir.="<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' value='".$fecharealiz."'>
                                              <input type='hidden' name='txtfresultado' id='txtfresultado' value='".$fecharesultado."' />";
 				$imprimir.="<tr>
-							<td colspan='5' align='center' >
+							<td colspan='5' align='center' ><br>
 								<input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaB()'>
 								<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir'
 									Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\",\"".$valores_combos."\",".$idestab.",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'>

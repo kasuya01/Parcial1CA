@@ -315,20 +315,18 @@ $tipomuestra          = $_GET['var21'];
                                 <td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>
                                 <td colspan='5' class="Estilo6"><?php echo htmlentities($responsable)?></td>
                             </tr>
-                            <tr>
-                                <td colspan='1' class="Estilo5"><strong>Observacion:</strong></td>
-                                <td colspan='5' class="Estilo6"><?php echo htmlentities($observacion)?></td>
-                            </tr>
                             <!--</table>-->
                             <tr>
-                                <td colspan='6'>
-                                    <table width='100%' border='0' align='center' Cellpadding="0"  cellspacing="0">
+                               <td colspan='6'><br>
+                                  
+                                    <table width='100%' border='0' align='center' Cellpadding="0"  cellspacing="3">
                                        <tr>
                                             <td width='30%' colspan='2' class='Estilo5'></td>
                                             <td width='20%' colspan='1' class='Estilo5'><strong>Resultado</strong></td>
                                             <td width='10%' colspan='1' class='Estilo5'><strong>Unidades</strong></td>
                                             <td width='40%' colspan='2' class='Estilo5'><strong>Rangos de Referencia</strong></td>
                                         </tr>
+                                        <tr><td colspan='6'><hr></td></tr>
                                     <?php
                                         $pos=0;
                                         $posele=0;
@@ -346,7 +344,7 @@ $tipomuestra          = $_GET['var21'];
                                                 while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
                                             ?>
                                         <tr>
-                                            <td width='30%' class="Estilo5" colspan='2'><?php echo htmlentities($rowsub['subelemento'])?></td>
+                                           <td width='30%' class="Estilo5" colspan='2'>&emsp;<?php echo htmlentities($rowsub['subelemento'])?></td>
                                               <?php
                                         if($vector_combos[$pos]== NULL){  
                                               ?>
@@ -403,8 +401,13 @@ $tipomuestra          = $_GET['var21'];
                                         pg_free_result($datos_generales);
                                     ?>
                             </tr>
+                            <tr><td colspan='6'><hr></td></tr>
                             <tr>
-                                <td colspan='6' class="Estilo6">&nbsp;</td>
+                                <td colspan='1' class="Estilo5"><strong>Observacion:</strong></td>
+                                <td colspan='5' class="Estilo6"><?php echo htmlentities($observacion)?></td>
+                            </tr>
+                            <tr>
+                               <td colspan='6' class="Estilo6"><br>&nbsp;</td>
                             </tr>
                             <tr>
                                 <td colspan='6' class="Estilo6">&nbsp;</td>

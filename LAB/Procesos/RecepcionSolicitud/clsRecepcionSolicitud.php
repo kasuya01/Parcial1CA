@@ -32,6 +32,26 @@ class clsRecepcionSolicitud {
         }
         return $resul;
     }
+//Fn_PG
+    function opcionrechazo() {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $NomAre = "select * from lab_estado_rechazo where habilitado=true ;";
+            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+        }
+        return $resul;
+    }
+//Fn_PG
+    function obteneropcionesrechazo() {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $NomAre = "select * from lab_posible_observacion 
+where habilitado=true
+order by posible_observacion;";
+            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+        }
+        return $resul;
+    }
 
     function LlenarEstablecimiento($Idtipo) {
         $con = new ConexionBD;

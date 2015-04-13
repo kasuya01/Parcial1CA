@@ -495,6 +495,29 @@ function RegistrarNumeroMuestra(posicion)//Registrando Numero de Muestra asociad
         }
     }
 }
+//Fn_PG
+//FUNCION PARA CREAR ARCHIVO DE LA SOLICITUD
+function OpcionRechazo(idrechazo) {
+    
+//    //alert(posicion)
+//    opcion = 11;
+//    //instanciamos el objetoAjax
+//    ajax = objetoAjax();
+//    //usando del medoto POST
+//    ajax.open("POST", "ctrRecepcionSolicitud.php", true);
+//    //muy importante este encabezado ya que hacemos uso de un formulario
+//    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+//    //enviando los valores
+//    ajax.send("&opcion=" + opcion + "&idrechazo=" + idrechazo);
+//    ajax.onreadystatechange = function() {
+//        if (ajax.readyState == 4) {
+//            if (ajax.status == 200)
+//            {
+//                ajax.responseText;
+//            }
+//        }
+//    }
+}
 
 //FUNCION PARA CREAR ARCHIVO DE LA SOLICITUD
 function Crear_Archivo(idsolicitud, posicion) {
