@@ -12,10 +12,9 @@ class clsLab_AntibioticosPorTarjeta
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-   
-   $query = "INSERT INTO lab_antibioticosportarjeta(idantibiotico,idtarjeta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento) 
-			  VALUES($idantibiotico,$idtarjeta,$usuario,NOW(),$usuario,NOW(),$lugar)";
-    $result = @pg_query($query);
+         $query = "INSERT INTO lab_antibioticosportarjeta(idantibiotico,idtarjeta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento) 
+		   VALUES($idantibiotico,$idtarjeta,$usuario,NOW(),$usuario,NOW(),$lugar)";
+         $result = @pg_query($query);
 	 
      if (!$result)
        return false;
@@ -28,8 +27,8 @@ class clsLab_AntibioticosPorTarjeta
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "UPDATE lab_antibioticosportarjeta SET idantibiotico=$idantibiotico, idtarjeta=$idtarjeta,idusuariomod=$usuario,fechahoramod=NOW() 
-			   WHERE id=$idantibioticoportarjeta";
+      $query = "UPDATE lab_antibioticosportarjeta SET idantibiotico=$idantibiotico, idtarjeta=$idtarjeta,idusuariomod=$usuario,fechahoramod=NOW() 
+		WHERE id=$idantibioticoportarjeta";
      $result = @pg_query($query);
 	 
      if (!$result)

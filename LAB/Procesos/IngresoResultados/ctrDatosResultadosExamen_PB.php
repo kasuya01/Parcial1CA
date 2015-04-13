@@ -489,100 +489,101 @@ switch ($opcion) {
 		        $imprimir="<br>
 		        	<table width='100%' border='0' align='center' >
 		        		<tr>
-			        		<td colspan='1' align='left' width='20%'><img id='Image1' style='width: auto; height: 55px;' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
-			        		<td align='center' colspan='4' width='60%' class='Estilo5'>
-			        			<p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
-			        			<p><strong>".$row_estab['nombre']."</strong></p>
-			        			<p><strong>&Aacute;REA DE ".htmlentities($row_area['nombrearea'])." </strong></p>
-			        		</td>
-			        		<td colspan='1' align='right' width='20%'><img id='Image3' style='width: auto; height: 55px;' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
+                                            <td colspan='1' align='left' width='20%'><img id='Image1' style='width: auto; height: 55px;' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
+                                            <td align='center' colspan='4' width='60%' class='Estilo5'>
+			        		<p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
+			        		<p><strong>".$row_estab['nombre']."</strong></p>
+			        		<p><strong>&Aacute;REA DE ".htmlentities($row_area['nombrearea'])." </strong></p>
+                                            </td>
+                                            <td colspan='1' align='right' width='20%'><img id='Image3' style='width: auto; height: 55px;' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
 		        		</tr>
+                                        <tr>
+                                            <td colspan='6'>&nbsp;</td>
+                                        </tr>
 		        		<tr>
-		        			<td colspan='1'><strong>Establecimiento Solicitante:</strong></td>
-		        			<td colspan='2'>".htmlentities($establecimiento)."</td>
-		        			<td colspan='1'><strong>Fecha Recepción:</strong></td>
-		        			<td colspan='2'>".$row_generales['fecha']."</td>
+                                            <td colspan='1'><strong>Establecimiento Solicitante:</strong></td>
+                                            <td colspan='2'>".htmlentities($row_estabExt['nombre'])."</td>
+                                            <td colspan='1'><strong>Fecha Recepción:</strong></td>
+                                            <td colspan='2'>".$row_generales['fecha']."</td>
 		        			<input name='suEdad' id='suEdad' type='hidden' value='".$row_generales['fechanacimiento']."'/>
 		        		</tr>
 		        		<tr>
-		        			<td colspan='1'><strong>Expediente:</strong></td>
-		        			<td colspan='2'>".$row_generales['idnumeroexp']."</td>
-                                                <td colspan='1'><strong>Fecha Toma Muestra:</strong></td>
-				   		<td colspan='2'>".$f_tomamuestra."</td>    
+                                            <td colspan='1'><strong>Expediente:</strong></td>
+                                            <td colspan='2'>".$row_generales['idnumeroexp']."</td>
+                                            <td colspan='1'><strong>Fecha Toma Muestra:</strong></td>
+                                            <td colspan='2'>".$f_tomamuestra."</td>    
 		        		</tr>
 		        		<tr>
-		        			<td colspan='1'><strong>Paciente:</strong></td>
-		        			<td colspan='2'>".htmlentities($row_generales['nombrepaciente'])."</td>
+                                            <td colspan='1'><strong>Paciente:</strong></td>
+                                            <td colspan='2'>".htmlentities($row_generales['nombrepaciente'])."</td>
 		        		</tr>
 		        		<tr>
-
-		        			<td colspan='1'><strong>Edad:</strong></td>
-		        			<td colspan='2'>".$row_generales['edad']."</td>
-		        			<td colspan='1'><strong>Sexo:</strong></td>
-		        			<td colspan='2'>".$row_generales['sexo']."</td>
+                                            <td colspan='1'><strong>Edad:</strong></td>
+                                            <td colspan='2'>".$row_generales['edad']."</td>
+                                            <td colspan='1'><strong>Sexo:</strong></td>
+                                            <td colspan='2'>".$row_generales['sexo']."</td>
 		        		</tr>
 		        		<tr>
-		        			<td colspan='1'><strong>Procedencia:</strong></td>
-		        			<td colspan='2'>".htmlentities($row_generales['procedencia'])."</td>
-		        			<td colspan='1'><strong>Servicio:</strong></td>
-		        			<td colspan='2'>".$subservicio."</td>
+                                            <td colspan='1'><strong>Procedencia:</strong></td>
+                                            <td colspan='2'>".htmlentities($row_generales['procedencia'])."</td>
+                                            <td colspan='1'><strong>Servicio:</strong></td>
+                                            <td colspan='2'>".$subservicio."</td>
 		        		</tr>
 		        		<tr>
-		        			<td colspan='1'><strong>Examen Realizado:</strong></td>
-		        			<td colspan='5'>".htmlentities($row_area['nombre_reporta'])."</td>
-		        		</tr>
-
-		        		<tr>
-		        			<td colspan='1'><strong>Validado Por:</strong></td>
-		        			<td colspan='5'>".htmlentities($row_empleado['nombreempleado'])."</td>
+                                            <td colspan='1'><strong>Examen Realizado:</strong></td>
+                                            <td colspan='5'>".htmlentities($row_area['nombre_reporta'])."</td>
 		        		</tr>
 		        		<tr>
-		        			<td colspan='1'><strong>Observacion:</strong></td>
-		        			<td colspan='5'>".htmlentities($observacion)."</td>
+                                            <td colspan='1'><strong>Validado Por:</strong></td>
+                                            <td colspan='5'>".htmlentities($row_empleado['nombreempleado'])."</td>
+		        		</tr>
+		        		<tr>
+                                            <td colspan='1'><strong>Observacion:</strong></td>
+                                            <td colspan='5'>".htmlentities($observacion)."</td>
 		        		</tr>";
 		        
 		        $nomcod=$objdatos->ObtenerNombreCodigo($tab);
 		        $row_codigo= pg_fetch_array($nomcod);
-		        $imprimir.="<tr>
-		        			<td>Resultado Tabulador:</td><td colspan='5'>".$row_codigo[0]."</td>
+		            $imprimir.="<tr>
+                                            <td>Resultado Tabulador:</td><td colspan='5'>".$row_codigo[0]."</td>
 		        		</tr>
-		        	</table>";
+                                    </table>";
 
 		        $imprimir.="<table width='100%' border='0' align='center' >";
-		        $imprimir.= "<tr>
-				        <td width='25%'></td>
-				        <td width='25%'>Resultado</td>
-				        <td width='10%'>Unidades</td>
-				        <td width='15%'>Rangos de referencia</td>
-				    </tr>";
+                            $imprimir.= "<tr>
+                                	    <td width='25%'></td>
+                                            <td width='25%'>Resultado</td>
+                                            <td width='10%'>Unidades</td>
+                                            <td width='15%'>Rangos de referencia</td>
+                                        </tr>";
 		    	
 		    	$pos    = 0;
 		    	$posele = 0;
 				
             while($row = pg_fetch_array($consulta)) { //ELEMENTOS
                 if($row['subelemento']=="S") {
-			$imprimir.= "<tr>
-					<td colspan='4' style='font:bold'><strong>".htmlentities($row['elemento'])."</strong></td>
-		  		     </tr>";
+			   $imprimir.= "<tr>
+                                            <td colspan='4' style='font:bold'><strong>".htmlentities($row['elemento'])."</strong></td>
+                                        </tr>";
 					$consulta2 = $objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
 		    while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
-  			 $imprimir.="<tr>
-					<td width='35%'>".htmlentities($rowsub['subelemento'])."</td>";
+                             $imprimir.="<tr>
+                                            <td width='35%'>".htmlentities($rowsub['subelemento'])."</td>";
                             if  ($vector_combos[$pos]== NULL){  
-			     $imprimir.="<td width='25%'>".htmlentities($vector[$pos])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>";
+                                $imprimir.="<td width='25%'>".htmlentities($vector[$pos])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>";
                             }
                             else{
                                             $conresult=$objdatos->BuscarResultado($vector[$pos]);
                                             $row_dresult=  pg_fetch_array($conresult);
-                            $imprimir.="<td width='25%'>".htmlentities($row_dresult['posible_resultado'])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>";
+                                $imprimir.="<td width='25%'>".htmlentities($row_dresult['posible_resultado'])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>";
                                         
                             }
-                        $imprimir.="<td width='10%'>".htmlentities($rowsub['unidad'])."</td>";
+                                $imprimir.="<td width='10%'>".htmlentities($rowsub['unidad'])."</td>";
 			if (empty($rowsub['rangoinicio']) AND empty($rowsub['rangofin']))
-			    $imprimir.= "<td >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+                               $imprimir.= "<td >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 			else
-			    $imprimir.= "<td width='15%'>".$rowsub['rangoinicio']." - ".$rowsub['rangofin']."</td> ";
-			  $imprimir.="</tr>";
+                                $imprimir.= "<td width='15%'>".$rowsub['rangoinicio']." - ".$rowsub['rangofin']."</td> ";
+                            $imprimir.="</tr>";
 					$pos = $pos + 1;
 		    }
 						
@@ -609,9 +610,9 @@ switch ($opcion) {
 
 				$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>"	;	//numero de cajas de texto dibujadas para subelementos
 				$imprimir .="<input  type='hidden' id='ocultoele' value='".$posele."'>" ; //elementos
-                                 $imprimir.="<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' value='".$fecharealiz."'>
+                                $imprimir.="<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' value='".$fecharealiz."'>
                                              <input type='hidden' name='txtfresultado' id='txtfresultado' value='".$fecharesultado."' />";
-				$imprimir.="<tr>
+			$imprimir.="<tr>
 							<td colspan='5' align='center' >
 								<input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaB()'>
 								<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir'

@@ -127,7 +127,7 @@ switch ($opcion)
 		$row_observacion = pg_fetch_array($datos_observacion);
 		$row_nombrebacteria= pg_fetch_array($bateria);
                 $estabext=$row_generales['estabext'];
-	     $imprimir="<table width='90%' border='0' align='center' class='StormyWeatherFormTABLE'>
+	     $imprimir="<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
                            <tr>
                                 <td colspan='1' align='left' width='15%'><img id='Image1' style='width: auto; height: 55px;'  src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
                                 <td align='center' colspan='4' width='70%' class='Estilo5'>
@@ -140,61 +140,61 @@ switch ($opcion)
                                 <td colspan='6'>&nbsp;</td>
                            </tr>
                            <tr>
-                                <td colspan='1' style='font:bold'><strong>Establecimiento solicitante:</strong></td>
-                                  <td colspan='2'>".$row_generales['estabext']."</td>
-                                  <td colspan='1' style='font:bold'><strong>Fecha Recepción:</strong></td>
-                                  <td colspan='2'>".$row_generales['fecharecep']."</td>
+                                <td colspan='1'><strong>Establecimiento solicitante:</strong></td>
+                                <td colspan='3' align='left'>".$row_generales['estabext']."</td>
+                                <td colspan='1' ><strong>Fecha Recepción:</strong></td>
+                                <td colspan='1' align='left'>".$row_generales['fecharecep']."</td>
 
                            </tr>
 
                            <tr>
                                   <td colspan='1'><strong>Expediente:</strong></td>
-                                  <td colspan='2' >".$row_generales['numero']."</td>
+                                  <td colspan='3' align='left'>".$row_generales['numero']."</td>
                                   <td colspan='1'><strong>Fecha Toma Muestra:</strong></td>
-				  <td colspan='2'>".$f_tomamuestra."</td>       
+				  <td colspan='1' align='left'>".$f_tomamuestra."</td>       
                            </tr>
                            <tr>
                                   <td colspan='1'><strong>Paciente:</strong></td>
-                                  <td colspan='5'>".htmlentities($row_generales['paciente'])."</td>
+                                  <td colspan='5' align='left'>".htmlentities($row_generales['paciente'])."</td>
                            </tr>
                            <tr>
                                   <td colspan='1'><strong>Edad:</strong></td>
-                                  <td colspan='2'>".htmlentities($row_generales['edad'])."</td>
+                                  <td colspan='3' align='left'>".htmlentities($row_generales['edad'])."</td>
                                   <td colspan='1'><strong>Sexo:</strong></td>
-                                  <td colspan='2'>".$row_generales['sexo']."</td>
+                                  <td colspan='1' align='left'>".$row_generales['sexo']."</td>
                            </tr>
                            <tr>
                                   <td colspan='1' ><strong>Procedencia:</strong></td>
-                                  <td colspan='2' >".htmlentities($row_generales['procedencia'])."</td>
+                                  <td colspan='3'align='left'>".htmlentities($row_generales['procedencia'])."</td>
                                   <td colspan='1' ><strong>Servicio:</strong></td>
-                                  <td colspan='2' >".htmlentities($row_generales['subservicio'])."</td>
+                                  <td colspan='1' align='left'>".htmlentities($row_generales['subservicio'])."</td>
                            </tr>
                            <tr>
                                   <td colspan='1'><strong>Examen Realizado:</strong></td>
-                                  <td colspan='5'>".htmlentities($row_area['nombre_examen'])."</td>
+                                  <td colspan='5' align='left'>".htmlentities($row_area['nombre_examen'])."</td>
                            </tr>
                            <tr>
                                   <td colspan='1'><strong>Validado Por:</strong></td>
-                                  <td colspan='5'>".htmlentities($row_empleado['empleado'])."</td>
+                                  <td colspan='5' align='left'>".htmlentities($row_empleado['empleado'])."</td>
                            </tr>
                            <tr>
                                   <td colspan='6'>&nbsp;</td>
                            </tr>
                            <tr>
                                   <td colspan='1'><strong>Resultado:</strong></td>
-                                  <td colspan='5'>Positivo</td>
+                                  <td colspan='5' align='left'>Positivo</td>
                            </tr>
                            <tr>
                                 <td colspan='1'>Observación:</td>
-                                <td colspan='5'>".$observacion."</td>
+                                <td colspan='5' align='left'>".$observacion."</td>
                            </tr>
                            <tr>
                                   <td colspan='1'>Organismo:</td>
-                                  <td colspan='5'>".htmlentities($row_nombrebacteria['bacteria'])."</td>
+                                  <td colspan='5' align='left'>".htmlentities($row_nombrebacteria['bacteria'])."</td>
                            </tr>
                            <tr>
                                   <td colspan='1' ><strong>Cultivo con cuenta de Colonias:</strong></td>
-                                  <td colspan='5'>".htmlentities($cantidad)."</td>
+                                  <td colspan='5' align='left' >".htmlentities($cantidad)."</td>
                            </tr>
                            <tr>
                                   <td colspan='6'>&nbsp;</td>
