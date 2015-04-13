@@ -177,7 +177,7 @@ $base_url  = $_SESSION['base_url'];
 				</td>
 			</tr>
 			<tr>
-			    <td width="6%" class="StormyWeatherFieldCaptionTD">Origen Muestra</td>
+			    <td width="8%" class="StormyWeatherFieldCaptionTD">Origen Muestra</td>
 		            <td width="12%" class="StormyWeatherDataTD">
 					<div id="divOrigen">
 						<select id="cmbOrigen" name="cmbOrigen" size="1" style="width:405px" class="form-control height">

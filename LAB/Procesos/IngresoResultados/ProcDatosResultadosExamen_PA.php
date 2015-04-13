@@ -242,6 +242,7 @@ if ($referido!="t"){
   
    // echo $IdHistorial.' -- lugar: '.$lugar; 
 $condatos=$objdatos->condatos($IdHistorial, $lugar);
+$edad=$objdatos->calc_edad($IdHistorial);
 
 /*
 
@@ -271,6 +272,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
       $Talla='-';
       $Diagnostico='-';
       $ConocidoPor='-';
+      $edad=$objdatos->calc_edadref($IdHistorial);
   }
   
   $dato_fijo=$objdatos->ConsDatoFijo($iddetallesolicitud,$lugar);
@@ -299,7 +301,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">NEC</td>
                             <td class="StormyWeatherDataTD"><?php echo $_GET['var1'];?>
-                            <td class="StormyWeatherFieldCaptionTD">No. Order</td>
+                            <td class="StormyWeatherFieldCaptionTD">No. Orden</td>
                             <td class="StormyWeatherDataTD"><?php echo $_GET['var6'];?></td>
                                 <input type="hidden" name="txtnec" id="txtnec" disabled="disabled" />
 			 	<input type="hidden" name="txtidsolicitud" id="txtidsolicitud" />
@@ -326,7 +328,10 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Conocido Por</td>
-                            <td colspan="3" class="StormyWeatherDataTD"><?php echo $ConocidoPor;?>
+                            <td colspan="1" class="StormyWeatherDataTD"><?php echo $ConocidoPor;?>
+                            </td>
+                            <td class="StormyWeatherFieldCaptionTD">Edad</td>
+                            <td colspan="1" class="StormyWeatherDataTD"><?php echo $edad;?>
                                
                             </td>
 			</tr>

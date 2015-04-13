@@ -526,7 +526,7 @@ switch ($opcion) {
 			<td  colspan='5' style='font:bold'>" . $fila_empleado['empleado'] . "
                             <input type='hidden' id='idempleado_' name='idempleado_' value='" . $responsable . "'/></td>
                     </tr>
-                    <tr>
+                   <tr style='display:none'>
                         <td colspan='1'><strong>Resultado Tabulador:</strong></td>";
         $nomcod = $objdatos->ObtenerNombreCodigo($cod);
         $row_codigo = pg_fetch_array($nomcod);

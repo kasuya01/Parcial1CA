@@ -37,19 +37,35 @@ class clsReporteTabuladores
 	}
    }
                 //Funcion utilizada para el tabulador para Servicio d eProcedencia 
- 	public function prxmes($mes, $anio, $lugar){
+ 	public function prxmes($mes, $anio, $lugar, $idarea){
            $con = new ConexionBD;
     //usamos el metodo conectar para realizar la conexion
 	if($con->conectar()==true){
-	$sql = "select distinct(t02.idexamen) as id_pruebadetsol
+//	$sql = "select distinct(t02.idexamen) as id_pruebadetsol
+//               from sec_detallesolicitudestudios 	t01 
+//               join lab_resultados 			t02 on (t01.id=t02.iddetallesolicitud)
+//               join ctl_establecimiento		t03 on (t03.id=t02.idestablecimiento)
+//               where  extract('year' from fecha_resultado)=$anio	
+//               and extract('month' from fecha_resultado)=$mes
+//               and estadodetalle in (6,7)
+//               and t02.idestablecimiento=$lugar
+//               order by t02.idexamen";	
+	$sql = " select distinct(t02.idexamen) as id_pruebadetsol, t06.idestandar
                from sec_detallesolicitudestudios 	t01 
                join lab_resultados 			t02 on (t01.id=t02.iddetallesolicitud)
-               join ctl_establecimiento		t03 on (t03.id=t02.idestablecimiento)
+               join ctl_establecimiento			t03 on (t03.id=t02.idestablecimiento)
+               join lab_conf_examen_estab		t04 on (t04.id=t02.idexamen)
+               join mnt_area_examen_establecimiento	t05 on (t05.id=t04.idexamen)
+               join ctl_examen_servicio_diagnostico	t06 on (t06.id=t05.id_examen_servicio_diagnostico)
                where  extract('year' from fecha_resultado)=$anio	
                and extract('month' from fecha_resultado)=$mes
                and estadodetalle in (6,7)
                and t02.idestablecimiento=$lugar
-               order by t02.idexamen";	
+               and (case  $idarea
+               when 0 then id_area_servicio_diagnostico >0
+               else id_area_servicio_diagnostico =$idarea
+               end)
+               order by t06.idestandar";	
      //   echo '<br>'.$sql.'<br/>';
 	$result=  @pg_query($sql);
 	if (!$result)

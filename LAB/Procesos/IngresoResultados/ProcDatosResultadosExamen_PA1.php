@@ -125,21 +125,7 @@ $idarea=$_GET['var4'];
 if ($referido!="t"){
     
 $condatos=$objdatos->condatos($IdHistorial, $lugar);
-
-/*
-
-  if($db->conectar()==true){
-        $condatos = "SELECT sec_examenfisico.Peso, sec_examenfisico.Talla, Diagnostico, ConocidoPor
-                     FROM sec_historial_clinico
-                     INNER JOIN mnt_expediente ON sec_historial_clinico.IdNumeroExp = mnt_expediente.IdNumeroExp
-                     INNER JOIN mnt_datospaciente ON mnt_expediente.IdPaciente = mnt_datospaciente.IdPaciente
-                     LEFT JOIN sec_diagnosticospaciente ON sec_historial_clinico.IdHistorialClinico = sec_diagnosticospaciente.IdHistorialClinico
-                     LEFT JOIN mnt_cie10 ON sec_diagnosticospaciente.IdDiagnostico1 = mnt_cie10.IdCie10
-                     LEFT JOIN sec_examenfisico ON sec_historial_clinico.IdHistorialClinico = sec_examenfisico.IdHistorialClinico
-                     WHERE sec_historial_clinico.IdHistorialClinico=$IdHistorial
-                     AND sec_historial_clinico.IdEstablecimiento =$lugar";
-
-        $resultado = mysql_query($condatos);*/
+$edad=$objdatos->calc_edad($IdHistorial);
 	$rows = pg_fetch_array($condatos);
         
         $Peso=$rows['peso'];
@@ -153,6 +139,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
       $Talla='-';
       $Diagnostico='-';
       $ConocidoPor='-';
+      $edad=$objdatos->calc_edadref($IdHistorial);
   }
 //$usuario=$_SESSION['correlativo'];
 //$IdEstandar=$_GET['var16'];
@@ -215,9 +202,12 @@ if (pg_num_rows($cant)>0){
 				</tr>
                                 <tr>
                                         <td class="StormyWeatherFieldCaptionTD">Conocido Por</td>
-                                         <td colspan="3" class="StormyWeatherDataTD"><?php echo $ConocidoPor;?>
-                            <input type="hidden" id="conocido_por" name="conocido_por" value="<?php echo $ConocidoPor;?>">
-                                        </td>
+                                         
+                                        
+                     <td colspan="1" class="StormyWeatherDataTD"><?php echo $ConocidoPor;?>
+                        <input type="hidden" id="conocido_por" name="conocido_por" value="<?php echo $ConocidoPor;?>"></td>
+                     <td class="StormyWeatherFieldCaptionTD">Edad</td>
+                     <td colspan="1" class="StormyWeatherDataTD"><?php echo $edad;?></td>
                                 </tr>
                                 <tr>
                                 <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
@@ -249,13 +239,13 @@ if (pg_num_rows($cant)>0){
                                                     echo $Talla." cm";?></td>
                                 </tr>
                                 <tr>
-                            <td class="StormyWeatherFieldCaptionTD">*Fecha Realización </td>
+                                   <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">*Fecha Realización </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="datepicker" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" />
+                                <input type="text" class="datepicker form-control height placeholder" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" />
                             </td>
-                             <td class="StormyWeatherFieldCaptionTD" width="196 px">*Fecha Reporte </td>
+                            <td class="StormyWeatherFieldCaptionTD" width="196 px" style="white-space:nowrap;">*Fecha Reporte </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="datepicker" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  /> 
+                                <input type="text" class="datepicker form-control height" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  /> 
                             </td>
                             </tr>
                                 <tr>

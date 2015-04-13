@@ -237,22 +237,8 @@ $fechatomamues= isset($rowdeta['f_tomamuestra']) ? $rowdeta['f_tomamuestra'] : n
 if ($referido!="t"){
     
 $condatos=$objdatos->condatos($IdHistorial, $lugar);
+$edad=$objdatos->calc_edad($IdHistorial);
 
-
-/*
-
-  if($db->conectar()==true){
-        $condatos = "SELECT sec_examenfisico.Peso, sec_examenfisico.Talla, Diagnostico, ConocidoPor
-                     FROM sec_historial_clinico
-                     INNER JOIN mnt_expediente ON sec_historial_clinico.IdNumeroExp = mnt_expediente.IdNumeroExp
-                     INNER JOIN mnt_datospaciente ON mnt_expediente.IdPaciente = mnt_datospaciente.IdPaciente
-                     LEFT JOIN sec_diagnosticospaciente ON sec_historial_clinico.IdHistorialClinico = sec_diagnosticospaciente.IdHistorialClinico
-                     LEFT JOIN mnt_cie10 ON sec_diagnosticospaciente.IdDiagnostico1 = mnt_cie10.IdCie10
-                     LEFT JOIN sec_examenfisico ON sec_historial_clinico.IdHistorialClinico = sec_examenfisico.IdHistorialClinico
-                     WHERE sec_historial_clinico.IdHistorialClinico=$IdHistorial
-                     AND sec_historial_clinico.IdEstablecimiento =$lugar";
-
-        $resultado = mysql_query($condatos);*/
 	$rows = pg_fetch_array($condatos);
         
         $Peso=isset($rows['Peso']) ? $rows['Peso'] : null;
@@ -265,6 +251,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
       $Talla='-';
       $Diagnostico='-';
       $ConocidoPor='-';
+      $edad=$objdatos->calc_edadref($IdHistorial);
   }
 ?>
 
@@ -313,9 +300,12 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                             </td>
                         </tr>
                         <tr>
-                            <td class="StormyWeatherFieldCaptionTD">Conocido Por</td>
-                            <td colspan="3" class="StormyWeatherDataTD"><?php echo $ConocidoPor;?>
-                            <input type="hidden" id="conocido_por" name="conocido_por" value="<?php echo $ConocidoPor;?>">
+                            <td class="StormyWeatherFieldCaptionTD">Conocido Por</td>          
+                            <td colspan="1" class="StormyWeatherDataTD"><?php echo $ConocidoPor;?>
+                               <input type="hidden" id="conocido_por" name="conocido_por" value="<?php echo $ConocidoPor;?>">
+                            </td>
+                            <td class="StormyWeatherFieldCaptionTD">Edad</td>
+                            <td colspan="1" class="StormyWeatherDataTD"><?php echo $edad;?>
                                
                             </td>
 			</tr>
@@ -502,7 +492,7 @@ $condatos=$objdatos->condatos($IdHistorial, $lugar);
                         <tr><td colspan="4"><center><br>
                         <div id="valresult" style="display:none; width: 80%;" >
                                 <br/>
-                        <fieldset><legend style="color:white; background-color: #428bca; height:45px; padding: 0.2em 0.5em; float:left;margin-bottom: 0px">Validar Prueba <small> <?php echo $_GET['var2'];?></small></legend>
+                        <fieldset><legend style="color:white; background-color: #428bca; height:45px; padding: 0.2em 0.5em; float:left;margin-bottom: 0px">VALIDAR PRUEBA <small> <?php echo $_GET['var2'];?></small></legend>
                 <table align="left" border="0"cellpadding="0" class="table table-bordered table-condensed table-white no-v-border">
                 <tr>
                    <td><b>Resultado Final:</b></td>

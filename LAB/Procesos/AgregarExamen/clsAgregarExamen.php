@@ -101,7 +101,8 @@ $con = new ConexionBD;
 		from lab_tipomuestraporexamen  t01
 		left join  lab_tipomuestra t02 on (t01.idtipomuestra=t02.id)
 		left join lab_conf_examen_estab t03 on (t03.id=t01.idexamen)
-		where t01.idexamen=$IdExamen";
+		where t01.idexamen=$IdExamen"
+                         . "and t01.habilitado=true";
                           
                           
                           

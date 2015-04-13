@@ -112,7 +112,8 @@ join lab_posible_resultado t03 on (t03.id=t01.id_posible_resultado)
         $query = "select * 
 from lab_posible_resultado lpr
 where habilitado=true
-and fechafin is null or date(fechafin)>=current_date;";
+and fechafin is null or date(fechafin)>=current_date
+order by posible_resultado";
 
            $result = pg_query($query);
            if (!$result)
@@ -168,6 +169,12 @@ from lab_examen_metodo_pos_resultado t01
             $query_up="update lab_examen_metodologia set b_reporta=$cmbreporta,fecha_inicio=$Fechaini, fecha_fin=$Fechafin where id=$idmetodologia;" ;
             //echo $query_up;
            $result=pg_query($query_up);
+           $d_fecha=date('Y-m-d');
+           if ($Fechafin <= $d_fecha)
+           {
+              $query="update lab_examen_metodologia set activo=false where id=$idmetodologia";
+              $result_q=pg_query($query);
+           }
            $aPosResult = explode(',',$posresultados_sel); 
            $aPosResult_text = explode(',',$text_posresultados_sel); 
            $aPosResult_id = explode(',',$id_posresultados_sel);  

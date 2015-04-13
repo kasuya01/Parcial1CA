@@ -225,12 +225,11 @@ function LlenarComboExamen(idarea)
 	 			// alert (respuesta)
 		 document.getElementById('divExamen').innerHTML = ajax.responseText;
                  // $('#cmbExamen').multiselect();
-                  $('#cmbExamen').multiselect({
-                     buttonWidth: '100%',
-                     enableFiltering: true,
-                     enableCaseInsensitiveFiltering: true,
-                     inheritClass: true
-                 });
+                   $("#cmbExamen").select2({
+                     placeholder: "--Seleccione examenes--",
+                     allowClear: true,
+                     dropdownAutoWidth: true
+                  });
 			}	  	
 			
    		}
