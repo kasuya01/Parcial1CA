@@ -103,7 +103,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
         echo "<div class='table-responsive' style='width: 100%;' style='align:center;'>          
            <table border = 0 align='center' class='table table-hover table-bordered table-condensed table-white' cellspacing='0' style='width:70%'><thead>
 		<tr>
-                    <td colspan='6' align='center' class='CobaltFieldCaptionTD'>ESTUDIOS SOLICITADOS</td>
+                    <td colspan='7' align='center' class='CobaltFieldCaptionTD'>ESTUDIOS SOLICITADOS</td>
 		</tr>
 		<tr class='StormyWeatherFieldCaptionTD'>
                     <th>Código Prueba</th>
@@ -112,21 +112,22 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                     <th> Indicaciones </th>
                     <th> Fecha Tmx. </th>
                     <th> Validar Muestra</th>
+                    <th id='colnewdate_' class='hide_me newdate'>Nueva Cita</th>
 		</tr></thead><tbody>";
         $detalle = $objdatos->BuscarDetalleSolicitud($idexpediente, $Nfechacita, $arraysolic[$i], $idEstablecimiento);
         $k=1;
         while ($rows = pg_fetch_array($detalle)) {
-          echo "<tr>
+          echo "<tr id='rowdetalle_".$k."'>
                     <td>" . $rows['idestandar'] . " </td>
                     <td>" . $rows['idarea'] . " </td>
-                    <td>" . htmlentities($rows['nombreexamen']) . "</td>";
+                    <td style='width:300px'>" . htmlentities($rows['nombreexamen']) . "</td>";
             if (!empty($rows['indicacion'])) {
                 echo "<td>" . htmlentities($rows['indicacion']) . "</td>";
             } else
-                echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+                echo "<td>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
                 $fecha= date('Y-m-d H:i');
                 $iddetalle=$rows['iddetalle'];
-            echo " <td style='width:225px'><input type='text' class='datepicker form-control height'  id='f_tomamuestra_".$k."' name='f_tomamuestra_'  value='". date('Y-m-d H:i')."' onchange=\"valfechasolicita(this, 'f_tomamuestra_".$k."')\" style='width:200px' />"
+            echo " <td style='width:150px'><input type='text' class='datepicker form-control height'  id='f_tomamuestra_".$k."' name='f_tomamuestra_'  value='". date('Y-m-d H:i')."' onchange=\"valfechasolicita(this, 'f_tomamuestra_".$k."')\" style='width:150px' />"
                     . "<input type='hidden' id='iddetalle_".$k."' name='iddetalle_' value='".$iddetalle."'/>"
                     . "<input type='hidden' id='hdn_numexOrd".$k."' name='hdn_numexOrd' value='".$k."'/>"
                     . "</td>";
@@ -134,8 +135,9 @@ for ($i = 0; $i < $NroRegistros; $i++) {
             if (($rows['idexamen'] == 'COA001')or ( $rows['idexamen'] == 'COA002') or ( $rows['idexamen'] == 'COA016')) {
                 $ban = 1;
             }
-            echo '<td><div id="opcionvalidar" width="100%">';
-            echo '<select id="validarmuestra" name="validarmuestra" onchange="OpcionRechazo(this.value)" class="form-control height">';
+            echo '<td style="width:250px"><div id="divopcionvalidar_'.$k.'" >';
+            echo '<input type="hidden" id="idk_'.$k.'" name="idk_'.$k.'" value="'.$k.'" />';
+            echo '<select id="validarmuestra_'.$k.'" name="validarmuestra_'.$k.'" onchange="OpcionRechazo(this.value, '.$k.')" class="form-control height" style="width:300px">';
             echo '<option value="0">Validada</option>';
             $rechazo=$objdatos->opcionrechazo();
             while ($rec=@pg_fetch_array($rechazo)){
@@ -143,7 +145,10 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                
             }
             echo '</select>';
-            echo '</div></td>';
+            echo '</div>'
+            . '<div id="divopcionrechazo_'.$k.'" style="style=width:250px;display:none"></div>'
+                    . '</td>';
+            echo '<td  id="colnewdate_" class="hide_me newdate"  style="width:100px"> <div id="divnewdate_'.$k.'" style="display:none"></div></td>';
             echo "</tr>";
             $k++;
         }// while detalle

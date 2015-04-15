@@ -277,6 +277,7 @@ function MostrarDatosGenerales(idexpediente, fechacita, idEstablecimiento) {
                 document.getElementById('divResultado').innerHTML = ajax.responseText;
             //    alert ('whaaa');
                 classdatepick();
+               //  $( ".datepicker" ).datepicker({  maxDate: new Date() });
               //  alert ('yeye');
                 //posicion=document.getElementById('topei').value;
                 calc_edad();
@@ -497,26 +498,81 @@ function RegistrarNumeroMuestra(posicion)//Registrando Numero de Muestra asociad
 }
 //Fn_PG
 //FUNCION PARA CREAR ARCHIVO DE LA SOLICITUD
-function OpcionRechazo(idrechazo) {
+function OpcionRechazo(idrechazo, k) {
     
-//    //alert(posicion)
-//    opcion = 11;
-//    //instanciamos el objetoAjax
-//    ajax = objetoAjax();
-//    //usando del medoto POST
-//    ajax.open("POST", "ctrRecepcionSolicitud.php", true);
-//    //muy importante este encabezado ya que hacemos uso de un formulario
-//    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-//    //enviando los valores
-//    ajax.send("&opcion=" + opcion + "&idrechazo=" + idrechazo);
-//    ajax.onreadystatechange = function() {
-//        if (ajax.readyState == 4) {
-//            if (ajax.status == 200)
-//            {
-//                ajax.responseText;
-//            }
-//        }
-//    }
+   //alert(posicion)
+   opcion = 11;
+   //instanciamos el objetoAjax
+   ajax = objetoAjax();
+   //usando del medoto POST
+   ajax.open("POST", "ctrRecepcionSolicitud.php", true);
+   //muy importante este encabezado ya que hacemos uso de un formulario
+   ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+   //enviando los valores
+   ajax.send("&opcion=" + opcion + "&idrechazo=" + idrechazo+"&idk="+ k);
+   ajax.onreadystatechange = function() {
+       if (ajax.readyState == 4) {
+         if (ajax.status == 200)
+         {
+            //mostrar los nuevos registros en esta capa
+            $("#rowdetalle_"+k).css("background-color", "#FFFFE6");
+            document.getElementById('divopcionvalidar_'+k).style.display = "none";
+            document.getElementById('divopcionrechazo_'+k).style.display = "block";
+            document.getElementById('divopcionrechazo_'+k).innerHTML = ajax.responseText;
+            // ajax.responseText;
+         }
+      }
+   }
+}
+//Fn_PG
+//FUNCION PARA CREAR ARCHIVO DE LA SOLICITUD
+function cancelrechazo(cmbrechazo, k) {
+    
+   //alert(cmbrechazo+' - '+k)
+
+    //instanciamos el objetoAjax
+    ajax = objetoAjax();
+    //usando del medoto POST
+    if (cmbrechazo=='xyz'){
+    //   alert ('entro')
+      document.getElementById('divopcionrechazo_'+k).style.display = "none";
+      document.getElementById('divopcionvalidar_'+k).style.display = "block";
+//      document.getElementById('divopcionvalidar_'+k).innerHTML = ajax.responseTex
+       $("#validarmuestra_"+k+" option[value='0']").attr('selected', 'selected'); 
+       $("#rowdetalle_"+k).css("background-color", "#FFFFFF");       
+      document.getElementById('divnewdate_'+k).style.display = "none";
+      document.getElementById('divnewdate_'+k).value="";
+    }
+    else{
+      opcion = 12;
+      temporal=$("#validarmuestra_"+k).val();
+      //if(temporal==1){
+         ajax = objetoAjax();
+         //usando del medoto POST
+         ajax.open("POST", "ctrRecepcionSolicitud.php", true);
+         //muy importante este encabezado ya que hacemos uso de un formulario
+         ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+         //enviando los valores
+
+         ajax.send("&opcion=" + opcion + "&cmbrechazo=" + cmbrechazo+"&idk="+ k+"&temporal="+temporal);
+         ajax.onreadystatechange = function() {
+             if (ajax.readyState == 4) {
+               if (ajax.status == 200)
+               {
+                  //mostrar los nuevos registros en esta capa
+               //   document.getElementById('colnewdate').style.display = "block";
+                 $( ".hide_me" ).removeClass( "hide_me" )
+                  document.getElementById('divnewdate_'+k).style.display = "block";
+                  document.getElementById('divnewdate_'+k).innerHTML = ajax.responseText;
+                   classdate();
+                   $('.date').datepicker({ minDate: 0 });
+                  // ajax.responseText;
+               }
+            }
+         }
+      //}
+    }
+
 }
 
 //FUNCION PARA CREAR ARCHIVO DE LA SOLICITUD

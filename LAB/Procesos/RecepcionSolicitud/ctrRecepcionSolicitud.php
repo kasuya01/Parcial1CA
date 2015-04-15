@@ -339,21 +339,39 @@ switch ($opcion) {
         echo json_encode($jsonresponse);
         break;
     case 11:
-        $idrechazo = $_POST['idrechazo'];
-//       if ($idrechazo!=0){
-//            $query = $object->obteneropcionesrechazo();
-//       }
-//        
-//
-//        if($query !== false) {
-//            $jsonresponse['status'] = true;
-//            $jsonresponse['num_rows'] = pg_num_rows($query);
-//
-//            if(pg_num_rows($query) > 0)
-//                $jsonresponse['data']   = pg_fetch_all($query);
-//        } else {
-//            $jsonresponse['status'] = false;
-//        }
-//        echo json_encode($jsonresponse);
+       $idrechazo = $_POST['idrechazo'];
+       $k = $_POST['idk'];
+       $rslts="";
+       if ($idrechazo!=0){
+            $query = $object->obteneropcionesrechazo();
+            $rslts  = '<select name="cmbrechazo_'.$k.'" id="cmbrechazo'.$k.'" class="form-control height" style="width:300px" onclick="cancelrechazo(this.value, '.$k.')">';
+            $rslts .='<option value="0">--Seleccione una opción--</option>';
+            while ($rows = pg_fetch_array($query)) {
+                $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
+            }
+            $rslts .='<option value="xyz">*Cancelar Rechazo</option>';
+        
+            $rslts .= '</select>';
+           }
+         echo $rslts;
+        break;
+        
+    case 12:
+       $idrechazo = $_POST['cmbrechazo'];
+       $k = $_POST['idk'];
+       $temporal = $_POST['temporal'];
+       $rslts="";
+       if ($temporal==1){
+       if ($idrechazo!=0 && $idrechazo!='xyz'){
+          //  $query = $object->obteneropcionesrechazo();
+         $rslts  = "<input type='text' class='date form-control height'  id='f_newdate_".$k."' name='f_newdate_'  value='". date('Y-m-d')."' onchange=\"valfechasolicita(this, 'f_newdate_".$k."')\" style='width:100px' />";
+           }
+       }
+      else {
+         
+            $rslts = "<p>Definitivo</p><input type='hidden' class='date form-control height'  id='f_newdate_".$k."' name='f_newdate_'  value='". date('Y-m-d')."' onchange=\"valfechasolicita(this, 'f_newdate_".$k."')\" style='width:100px' />";
+ 
+      }
+         echo $rslts;
         break;
 }
