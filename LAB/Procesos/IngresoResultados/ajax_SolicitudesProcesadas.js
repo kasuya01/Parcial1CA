@@ -1426,6 +1426,7 @@ function MostrarVistaPreviaPlantillaB(){
         idexamen = document.getElementById('txtidexamen').value;
         //observacion
         observacion = document.getElementById('txtobservacion').value;
+       // alert (observacion);
         //responsable(idempleado)
         idempleado = document.getElementById('cmbEmpleados').value;
 
@@ -1522,6 +1523,7 @@ function GuardarResultadosPlantillaB()
     idexamen = document.getElementById('txtidexamen').value;
     //observacion
     observacion = document.getElementById('txtobservacion').value;
+    alert(observacion);
     //responsable(idempleado)
     idempleado = document.getElementById('cmbEmpleados').value;
 
@@ -2357,13 +2359,13 @@ function CargarProcesosExamen(codigoex, fechanac, sexo,fecharealiz,fecharesultad
 
     opcion = 1;
     //alert(fecharealiz+" - "+fecharesultado);
-    observacion = document.getElementById('txtobservacion').value;
+    //observacion = document.getElementById('txtobservacion').value;
     ajax.open("POST", "ctrDatosResultadosPlantillaE.php", true);
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
-
-    ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&observacion=" + observacion +
+// "&observacion=" + observacion +
+    ajax.send("opcion=" + opcion + "&idexamen=" + idexamen +
              "&fechanac=" + fechanac + "&sexo=" + sexo + "&fecharealiz=" + fecharealiz + 
              "&fecharesultado="+fecharesultado+"&f_tomamuestra="+f_tomamuestra+"&tipomuestra="+tipomuestra);
     ajax.onreadystatechange = function()
@@ -2402,15 +2404,14 @@ function ValidarCamposPlantillaE()
 
 function MostrarVistaPreviaPlantillaE()
 {
-    //if (ValidarCamposPlantillaE())
-     //{
-
+   
         ajax = objetoAjax();
         idexamen = window.document.frmnuevo.txtidexamen.value;
         opcion = 2;
         idsolicitud = document.getElementById('txtidsolicitud').value;
         estab = document.getElementById('txtestablecimiento').value;
         observacion = document.getElementById('txtobservacion').value;
+        alert(observacion);
         idempleado = document.getElementById('cmbEmpleados').value;
         tab = document.getElementById('cmbTabulador').value;
         fechanac = document.getElementById('txtFechaNac').value;

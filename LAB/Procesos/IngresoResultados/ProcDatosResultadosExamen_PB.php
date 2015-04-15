@@ -190,7 +190,7 @@ $area    = $_SESSION['Idarea'];
                                     <input type="hidden" name="txtEstablecimiento" id="txtEstablecimiento" value="<?php echo $_GET['var18']?>" />
                                     <input type="hidden" name="txtIdEstablecimiento" id="txtIdEstablecimiento" value="<?php echo $_GET['var19']?>" />
                                     <input type="hidden" name="txttipomuestra" id="txttipomuestra" value="<?php echo $_GET['var21']?>" />
-                                     <input type="hidden" name="txtf_tomamuestra" id="txtf_tomamuestra" value="<?php echo $_GET['var20']?>" />
+                                    <input type="hidden" name="txtf_tomamuestra" id="txtf_tomamuestra" value="<?php echo $_GET['var20']?>" />
                                 </td>
                             </tr>
                             <tr>
@@ -264,12 +264,12 @@ $area    = $_SESSION['Idarea'];
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
+                           <!-- <tr>
                                 <td class="StormyWeatherFieldCaptionTD">Observaci&oacute;n </td>
                                 <td class="StormyWeatherDataTD" colspan="4">
                                     <textarea name="txtobservacion" cols="60" id="txtobservacion"></textarea>
                                 </td>
-                            </tr>
+                            </tr>-->
                             <tr>
                                 <td class="StormyWeatherFieldCaptionTD">*Fecha y hora inicio Proceso</td>
                                 <td class="StormyWeatherDataTD">

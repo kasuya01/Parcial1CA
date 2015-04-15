@@ -17,7 +17,7 @@ switch ($opcion)
 {
 case 1:
 	$idexamen=$_POST['idexamen'];
-	$observacion= $_POST['observacion'];
+	//$observacion= $_POST['observacion'];
         $fechanac=$_POST['fechanac'];
         $sexo=$_POST['sexo'];
       //  echo $idexamen;
@@ -109,7 +109,7 @@ case 1:
 		$consulta=$obj->LeerProcesoExamen($idexamen,$lugar,$sexo,$idedad);
 
 		$imprimir="
-			<table width='80%' border='0' align='center' class='StormyWeatherFormTABLE'>
+                        <table width='80%' border='0' align='center' class='StormyWeatherFormTABLE'>
 			    <tr class='CobaltButton'>
 				<td> Prueba </td>
 				<td> Resultado </td>
@@ -119,37 +119,33 @@ case 1:
 					$pos=0;
 			while($row = pg_fetch_array($consulta))//ELEMENTOS
 			{
-		$imprimir.= "<tr>
-					<td class='StormyWeatherFieldCaptionTD'>".$row['nombreprocedimiento']."</td>
-					<td class='StormyWeatherDataTD'>
-                                        <input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['idprocedimiento']."'>";
+	       $imprimir.= "<tr>
+				<td class='StormyWeatherFieldCaptionTD'>".$row['nombreprocedimiento']."</td>
+				<td class='StormyWeatherDataTD'>
+                                    <input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['idprocedimiento']."'>";
                                               $con_total=$obj->contar_posibles_resultados_procedimientos($row['idprocedimiento']);
                                                    $total=pg_fetch_array($con_total);
                                                    //echo $total[0];
-                                    if($total[0]>=1){  
-                                        $imprimir.= "<select id='txtresultado[".$pos."]' name='txtresultado[".$pos."]'  size='1' style='width:260px'>
-                                                    <option value='0' >--Seleccione Resultado--</option>";
+                                if($total[0]>=1){  
+                           $imprimir.= "<select id='txtresultado[".$pos."]' name='txtresultado[".$pos."]'  size='1' style='width:260px'>
+                                            <option value='0' >--Seleccione Resultado--</option>";
                                                     $con_result=$obj->leer_posibles_resultados_procedimientos($row['idprocedimiento']);
-                                                    while ($row_result=pg_fetch_array($con_result)) {
-                                                        $imprimir.="<option value='" . $row_result['id_posible_resultado'] . "'>" . htmlentities($row_result['posible_resultado']) . "</option>";
+                                      while ($row_result=pg_fetch_array($con_result)) {
+                                $imprimir.="<option value='" . $row_result['id_posible_resultado'] . "'>" . htmlentities($row_result['posible_resultado']) . "</option>";
                                                     }   
-                                        $imprimir.= "   <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]' value='".$pos."'></td> ";                
+                                $imprimir.= "   <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]' value='".$pos."'></td> ";                
                                                     
-                                    }
-                                    else{
+                                }
+                                else{
                                                                                                        
-				   $imprimir.= "
-						<input name='txtresultado[".$pos."]' type='text' id='txtresultado[".$pos."]'>
-                                                <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''  >   
-                                    </td>";
-                                                                                                       
-				                                                                     
-				                                                                    
-                                    }
-                                     $imprimir.="<td class='StormyWeatherDataTD' >".$row['unidades']."</td>
-				    <td class='StormyWeatherDataTD' aligh='center'>".$row['rangoinicio']."-".$row['rangofin']."
+			        $imprimir.= "
+                                        	<input name='txtresultado[".$pos."]' type='text' id='txtresultado[".$pos."]'>
+                                                <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''></td>";
+                                }
+                    $imprimir.="<td class='StormyWeatherDataTD' >".$row['unidades']."</td>
+		    	        <td class='StormyWeatherDataTD' aligh='center'>".$row['rangoinicio']."-".$row['rangofin']."
 					<input name='txtcomentario[".$pos."]' type='hidden' id='txtcomentario[".$pos."]'>
-				    </td> ";            
+				</td> ";            
                                                    
 					$pos=$pos + 1;
 			}
@@ -157,29 +153,36 @@ case 1:
                                     $imprimir.= "<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
                                                  <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />
                                                  <input type='hidden' name='txttipomuestra' id='txttipomuestra' disabled='disabled' value='".$tipomuestra."' />
-                                                 <input type='hidden' name='txtf_tomamuestra' id='txtf_tomamuestra' disabled='disabled' value='".$f_tomamuestra."' />";    
+                                                 <input type='hidden' name='txtf_tomamuestra' id='txtf_tomamuestra' disabled='disabled' value='".$f_tomamuestra."' />"; 
+                                  
 					
-		$imprimir.="
-				<tr><td class='StormyWeatherFieldCaptionTD'>*Resultado Tabulador</td>
-					<TD colspan='3' class='StormyWeatherDataTD'>
-						<select id='cmbTabulador' name='cmbTabulador' size='1'>
-							<option value='0' >--Seleccione Resultado--</option>";
-							$conResult=$obj->LlenarResultados($IdEstandar);
-							while ($rows =pg_fetch_array($conResult)){
-				$imprimir.="<option value='" . $rows[0] ."' >".$rows[0]." - ". htmlentities($rows[1])."</option>";
+		$imprimir.="<tr>
+                                <td class='StormyWeatherFieldCaptionTD'>Observaci&oacute;n </td>
+                                <td class='StormyWeatherDataTD' colspan='4'>
+                                    <textarea name='txtobservacion' cols='60' id='txtobservacion'></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class='StormyWeatherFieldCaptionTD'>*Resultado Tabulador</td>
+				<td colspan='3' class='StormyWeatherDataTD'>
+                                    <select id='cmbTabulador' name='cmbTabulador' size='1'>
+					<option value='0' >--Seleccione Resultado--</option>";
+					$conResult=$obj->LlenarResultados($IdEstandar);
+					while ($rows =pg_fetch_array($conResult)){
+			    $imprimir.="<option value='" . $rows[0] ."' >".$rows[0]." - ". htmlentities($rows[1])."</option>";
 							}
-			$imprimir.="</select></TD></tr>";
-		$imprimir.="
-				<tr>
-					<td colspan='5'  align='right' class='StormyWeatherDataTD'>
-						<input type='hidden' id='oculto' value='".$pos."'>
-						<input type='button' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaE()'>
-					</td>
-				</tr>
-				<tr>
-					<td colspan='5'>&nbsp;</td>
-				</tr>
-		   </table>";
+			$imprimir.="</select></td>"
+                         . "</tr>";
+		$imprimir.="<tr>
+				<td colspan='5'  align='right' class='StormyWeatherDataTD'>
+                                    <input type='hidden' id='oculto' value='".$pos."'>
+                                    <input type='button' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaE()'>
+				</td>
+			    </tr>
+			    <tr>
+				<td colspan='5'>&nbsp;</td>
+			    </tr>
+		        </table>";
 		echo $imprimir;
 			//mysql_free_result($consulta);
 		break;
@@ -283,10 +286,7 @@ case 2://vista Previa de Resultado
 					<td style='font:bold'><strong>Examen Realizado:</strong></td>
 					<td colspan='5'style='font:bold'>".htmlentities($row_area['nombre_examen'])."</td>
 				</tr>
-				<tr>
-					<td style='font:bold'><strong>Observacion:<strong></td>
-					<td colspan='5'>".htmlentities($observacion)."</td>
-				</tr>";
+				";
 				pg_free_result($consulta_datos);
 				pg_free_result($datos_generales);
 				$nomcod=$obj->ObtenerNombreCodigo($tab);
@@ -322,7 +322,11 @@ case 2://vista Previa de Resultado
 					}
 					pg_free_result($consulta);
                                         // echo $idedad;
-                                        $imprimir.= "  <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
+                              $imprimir.= " <tr>
+					<td style='font:bold'><strong>Observacion:<strong></td>
+					<td colspan='5'>".htmlentities($observacion)."</td>
+				</tr>
+                                <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
                                                        <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />
                                                         <input type='hidden' name='txttipomuestra' id='txttipomuestra' disabled='disabled' value='".$tipomuestra."' />
                                                         <input type='hidden' name='txtf_tomamuestra' id='txtf_tomamuestra' disabled='disabled' value='".$f_tomamuestra."' />";    
@@ -357,59 +361,55 @@ case 2://vista Previa de Resultado
         $vector_combos = EXPLODE("/",$valores_combos);
 //print_r($vector_respuesta);
 
-	$imprimir=" <table width='89%' border='0' align='center' class='StormyWeatherFormTABLE'>
+	$imprimir=" <table width='100%' border='0' align='center' >
                         <tr>
-                            <td colspan='1' align='left' width='20%'><img id='Image1' style='WIDTH: 80px; HEIGHT: 55px' height='86' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
+                            <td colspan='1' align='left' width='30%'><img id='Image1' style='WIDTH: 80px; HEIGHT: 55px' height='86' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
                             <td align='center' colspan='4' width='60%' class='Estilo5'>
                                 <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
                                 <p><strong>                       ".$row_estab['nombre']."</strong></p>
 				<p><strong>ÁREA DE ".htmlentities($row_area['nombrearea'])." </strong></p>
                             </td>
-                            <td colspan='1' align='right' width='20%'><img id='Image3' style='WIDTH: 110px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
+                            <td colspan='1' align='right' width='10%'><img id='Image3' style='WIDTH: 110px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
 			</tr>
                         <tr>
 			    
 <td colspan='6' align='center'></td>
 			</tr>
 			<tr>
-                            <td colspan='1' style='font:bold'>Establecimiento Solicitante:</td>
-                            <td colspan='2'>".$row_generales['estabext']."</td>
-                            <td colspan='1'><strong>Fecha de Recepción:</strong></td>
-                            <td colspan='2'>".$row_generales['fecharecep']."</td>
+                            <td colspan='1' width='30%'>Establecimiento Solicitante:</td>
+                            <td colspan='3' width='30%'>".$row_generales['estabext']."</td>
+                            <td colspan='1' width='30%'><strong>Fecha de Recepción:</strong></td>
+                            <td colspan='1' width='10%'>".$row_generales['fecharecep']."</td>
 			</tr>
 			<tr>
                             <td colspan='1'><strong>Expediente</strong></td>
-                            <td colspan='2'>".$row_generales['numero']."</td>
+                            <td colspan='3'>".$row_generales['numero']."</td>
                             <td colspan='1'><strong>Fecha Toma Muestra:</strong></td>
-			    <td colspan='2'>".$f_tomamuestra."</td>    
+			    <td colspan='1'>".$f_tomamuestra."</td>    
 			</tr>
                         <tr>
                             <td colspan='1'><strong>Paciente:</strong></td>
-                            <td colspan='2'>".htmlentities($row_generales['paciente'])."</td>
+                            <td colspan='5'>".htmlentities($row_generales['paciente'])."</td>
 			</tr>
 			<tr>
                             <td colspan='1'><strong>Edad:</strong></td>
-                            <td colspan='2'>".$row_generales['edad']."</td>
+                            <td colspan='3'>".$row_generales['edad']."</td>
                             <td colspan='1'><strong>Sexo:</strong></td>
-                            <td colspan='2'>".$row_generales['sexo']."</td>
+                            <td colspan='1'>".$row_generales['sexo']."</td>
 			</tr>
 			<tr>
-                            <td colspan='1' style='font:bold'><strong>Procedencia:</strong></td>
-                            <td colspan='2' style='font:bold'>".$row_generales['procedencia']."</td>
-                            <td colspan='1' style='font:bold'><strong>Servicio:</strong></td>
-                            <td colspan='2' style='font:bold'>".$row_generales['subservicio']."</td>
+                            <td colspan='1' ><strong>Procedencia:</strong></td>
+                            <td colspan='3' >".$row_generales['procedencia']."</td>
+                            <td colspan='1' ><strong>Servicio:</strong></td>
+                            <td colspan='1' >".$row_generales['subservicio']."</td>
 			</tr>
 			<tr>
-                            <td colspan='1' style='font:bold'><strong>Examen Realizado:</strong></td>
-                            <td colspan='5' style='font:bold'>".htmlentities($row_area['nombre_reporta'])."</td>
+                            <td colspan='1'><strong>Examen Realizado:</strong></td>
+                            <td colspan='5'>".htmlentities($row_area['nombre_reporta'])."</td>
 			</tr>
 			<tr>
                             <td colspan='1'><strong>Validado Por:</strong></td>
                             <td colspan='5'>".htmlentities($row_empleado['empleado'])."</td>
-			</tr>
-			<tr>
-                            <td colspan='1' style='font:bold'><strong>Observacion:<strong></td>
-                            <td colspan='5'>".htmlentities($observacion)."</td>
 			</tr>";
 				pg_free_result($consulta_datos);
 				pg_free_result($datos_generales);
@@ -417,7 +417,7 @@ case 2://vista Previa de Resultado
                                 $row_codigo= pg_fetch_array($nomcod);
 									//	echo $row_codigo[0];
             $imprimir.="<tr>
-                            <td style='font:bold' >Resultado Tabulador:</td>
+                            <td  >Resultado Tabulador:</td>
                             <td colspan='5'>".$row_codigo[0]."</td>
                         </tr>
                         <tr>
@@ -429,10 +429,13 @@ case 2://vista Previa de Resultado
 	 //echo $establecimiento."$$ ".$sexo."%%".$idedad;
                     $imprimir.="<table width='100%' border='0' align='center' cellspacing='0'>
                                     <tr>
-                                        <td colspan='2' align='justify' ><strong> Prueba </strong></td>
-                                        <td colspan='1' align='justify'><strong> Resultado </strong> </td>
-                                        <td colspan='1' align='center'><strong> Unidades </strong></td>
-                                        <td colspan='2' align='center'><strong> Rango </strong></td>
+                                        <td colspan='2' width='40%' align='justify' ><strong> Prueba </strong></td>
+                                        <td colspan='1' width='25%' align='justify'><strong> Resultado </strong> </td>
+                                        <td colspan='1' width='10%' align='justify'><strong> Unidades </strong></td>
+                                        <td colspan='2' width='10%' align='justify'><strong> Rango </strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan='6'><hr style='width:100%'></td>
                                     </tr>";
                                         $pos=0;
 
@@ -463,6 +466,29 @@ case 2://vista Previa de Resultado
                    $imprimir.="</table>
                             <td>
                         </tr>
+                        <tr>
+                            <td colspan='6'><hr style='width:100%'></td>
+                        </tr>
+                        <tr>
+                            <td colspan='1' style='font:bold'><strong>Observacion:<strong></td>
+                            <td colspan='5'>".htmlentities($observacion)."</td>
+			</tr>
+                        <tr>
+                    <td colspan='6' class='Estilo6'>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan='6' class='Estilo6'>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan='6' class='Estilo6'>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan='2' class='Estilo6' width='72%'>&nbsp;&nbsp;</td>
+                    <td colspan='1' class='Estilo6' width='6%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SELLO:</td>
+                    <td colspan='1' class='Estilo6' width='6%'>___________&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp</td>
+                    <td colspan='1' class='Estilo6' width='6%'>FIRMA:</td>
+                    <td colspan='2' class='Estilo6' width='10%'>________________&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td>
+                </tr>
                         <tr>
                             <td colspan='5' align='center'>
                                 <input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarPlantillaE()'>

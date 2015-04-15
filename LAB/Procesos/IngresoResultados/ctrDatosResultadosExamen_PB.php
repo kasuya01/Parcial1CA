@@ -144,29 +144,29 @@ switch ($opcion) {
 				break;
 			default:
 				$consulta=$objdatos->LeerElementosExamen($idexamen,$lugar);
-				$imprimir="<table width='80%' border='0' align='center' class='StormyWeatherFormTABLE'>
+			 $imprimir="<table width='75%' border='0' align='center' class='StormyWeatherFormTABLE'>
 					<tr  class='CobaltButton'>
-						<td>&nbsp;</td>
-						<td aling='center'>Resultado</td>
-						<td aling='center'>Unidades</td>
-						<td aling='center'>Rangos de Referencia</td>
+                                            <td>&nbsp;</td>
+                                            <td aling='center'>Resultado</td>
+                                            <td aling='center'>Unidades</td>
+                                            <td aling='center'>Rangos de Referencia</td>
 					</tr>";
 				$pos=0;
 				$posele=0;
                                 
-				while($row = pg_fetch_array($consulta)) { //ELEMENTOS
-                                    if($row['subelemento']=="S") {
-					$imprimir.= "
-                                            <tr class='StormyWeatherFieldCaptionTD'>
-						<td colspan='4' style='font:bold'>".htmlentities($row['elemento'])."</td>
-                                            </tr>";
+			   while($row = pg_fetch_array($consulta)) { //ELEMENTOS
+                                 if($row['subelemento']=="S") {
+			          $imprimir.= "
+                                        <tr class='StormyWeatherFieldCaptionTD'>
+                                            <td colspan='4' style='font:bold'>".htmlentities($row['elemento'])."</td>
+                                        </tr>";
 						$consulta2=$objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
 
-					while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
+                                    while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
                                             $imprimir.= "
-                                            <tr>
-						<td width='30%' class='StormyWeatherDataTD'>".htmlentities($rowsub['subelemento'])."</td>
-						<td width='25%' class='StormyWeatherDataTD'>";
+                                        <tr>
+                                            <td width='30%' class='StormyWeatherDataTD'>".htmlentities($rowsub['subelemento'])."</td>
+                                            <td width='25%' class='StormyWeatherDataTD'>";
                                              $imprimir.="<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>";
                                                    $con_total=$objdatos->contar_posibles_resultados($rowsub['idsubelemento']);
                                                    $total=pg_fetch_array($con_total);
@@ -177,9 +177,9 @@ switch ($opcion) {
                                                     $con_result=$objdatos->leer_posibles_resultados($rowsub['idsubelemento']);
                                                     while ($row_result=pg_fetch_array($con_result)) {
                                                         $imprimir.="<option value='" . $row_result['id_posible_resultado'] . "'>" . htmlentities($row_result['posible_resultado']) . "</option>";
-                                                       }   
+                                                    }   
                                                      
-                                                     $imprimir.= "   <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]' value='".$pos."'>  "; 
+                                                    $imprimir.= "<input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]' value='".$pos."'></td> "; 
                                                    // print_r($row_result);
                                                     //$tot=  count($row_result);
                                                     //echo $tot;
@@ -190,47 +190,45 @@ switch ($opcion) {
                                                 }
                                                 else{
                                                                            //  print_r($row_result);
-							$imprimir.= "  <input size='30' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]'>
-								 	<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>
-                                                                        <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''  >
-								</td>";
+                                                    $imprimir.= "<input size='30' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]'>
+								 <input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>
+                                                                 <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''  >
+					    </td>";
                                                       
                                                 }
-							$imprimir.=     "<td  align='center' class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."
-									 <td  align='center' class='StormyWeatherDataTD'>".$rowsub['rangoinicio']." - ".$rowsub['rangofin']."
-										<input name='txtcontrol[".$pos."]' type='hidden' id='txtcontrol[".$pos."]'>
-                                                                                    
-									</td>
-								</tr>";
+				$imprimir.="<td  align='center' class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."
+                                    	    <td  align='center' class='StormyWeatherDataTD'>".$rowsub['rangoinicio']." - ".$rowsub['rangofin']."
+						<input name='txtcontrol[".$pos."]' type='hidden' id='txtcontrol[".$pos."]'>
+                                            </td>
+					</tr>";
 							$pos=$pos + 1;
                                                     
                                         } //while interno
-						$imprimir.= "<tr>
-								<td colspan='4' class='StormyWeatherDataTD'>".htmlentities($row['observelem'])."</td>
-							</tr>
-							<tr>
-								<td colspan='4' class='StormyWeatherDataTD'>&nbsp;</td>
-							</tr>";
+			   $imprimir.= "<tr>
+			        	    <td colspan='4' class='StormyWeatherDataTD'>".htmlentities($row['observelem'])."</td>
+					</tr>
+					<tr>
+                                            <td colspan='4' class='StormyWeatherDataTD'>&nbsp;</td>
+					</tr>";
                                     } else {
-						$imprimir.="<tr>
-								<td style='font:bold'>".htmlentities($row['elemento'])."</td>
-								<td>
-									<input name='txtresultadoele[".$posele."]' type='text' id='txtresultadoele[".$posele."]'>
-									<input name='oidelemento[".$posele."]' type='hidden' id='oidelemento[".$posele."]' value='".$row['idelemento']."'>
-                                                                       
-								</td>
-								<td class='StormyWeatherDataTD'>".htmlentities($row['unidadelem'])."
-									<input name='txtcontrol[".$posele."]' type='hidden' id='txtcontrol[".$posele."]'>
-								</td>
-							</tr>";
+			    $imprimir.="<tr>
+                            		    <td style='font:bold'>".htmlentities($row['elemento'])."</td>
+                                            <td>
+						<input name='txtresultadoele[".$posele."]' type='text' id='txtresultadoele[".$posele."]'>
+						<input name='oidelemento[".$posele."]' type='hidden' id='oidelemento[".$posele."]' value='".$row['idelemento']."'>
+                                            </td>
+                                            <td class='StormyWeatherDataTD'>".htmlentities($row['unidadelem'])."
+						<input name='txtcontrol[".$posele."]' type='hidden' id='txtcontrol[".$posele."]'>
+                                            </td>
+					</tr>";
 						$posele=$posele+1;
 						$imprimir.= "
-							<tr>
-								<td colspan='4' class='StormyWeatherDataTD'>".htmlentities($row['observelem'])."</td>
-							</tr>
-							<tr>
-								<td colspan='4' class='StormyWeatherDataTD'>&nbsp;</td>
-							</tr>";
+					<tr>
+                                            <td colspan='4' class='StormyWeatherDataTD'>".htmlentities($row['observelem'])."</td>
+					</tr>
+					<tr>
+                                            <td colspan='4' class='StormyWeatherDataTD'>&nbsp;</td>
+					</tr>";
 					}//else
                                     
 				}//while externo
@@ -242,25 +240,31 @@ switch ($opcion) {
                                                 <input type='hidden' name='txtf_tomamuestra' id='txtf_tomamuestra' disabled='disabled' value='".$f_tomamuestra."' />";
 				   $imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>"	;	//numero de cajas de texto dibujadas para subelementos
 				   $imprimir .="<input  type='hidden' id='ocultoele' value='".$posele."'>" ; //elementos
-				    $imprimir.="
-					            <tr>
-						        <td class='StormyWeatherDataTD'>*Resultado Tabulador</td>
-						        <td colspan='3' class='StormyWeatherDataTD'>
-							    <select id='cmbTabulador' name='cmbTabulador' size='1'>
-								<option value='0' >--Seleccione Resultado--</option>";
-									$conResult=$objdatos->LlenarResultados($IdEstandar);
-									while ($rows =pg_fetch_array($conResult)) {
-										$imprimir.="<option value='" . $rows[0] ."' >".$rows[0]." - ".htmlentities($rows[1])."</option>";
+				    $imprimir.=" 
+                                        <tr>
+                                            <td class='StormyWeatherDataTD'>Observaci&oacute;n </td>
+                                            <td class='StormyWeatherDataTD' colspan='4'>
+                                                <textarea name='txtobservacion' cols='60' id='txtobservacion'></textarea>
+                                            </td>
+                                        </tr>
+					<tr>
+					    <td class='StormyWeatherDataTD'>*Resultado Tabulador</td>
+					    <td colspan='3' class='StormyWeatherDataTD'>
+					        <select id='cmbTabulador' name='cmbTabulador' size='1'>
+					            <option value='0' >--Seleccione Resultado--</option>";
+                                                        $conResult=$objdatos->LlenarResultados($IdEstandar);
+                                                        while ($rows =pg_fetch_array($conResult)) {
+					$imprimir.="<option value='" . $rows[0] ."' >".$rows[0]." - ".htmlentities($rows[1])."</option>";
 									}
-				                $imprimir.="</select>
-                                                        </td>
-                                                    </tr>
-                                               
-						<tr class='StormyWeatherDataTD'>
-							<td colspan='4' class='StormyWeatherDataTD' align='right'>
-								<input type='button' name='Submit' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaB()'>
-							</td>
-						</tr>
+				            $imprimir.="</select>
+                                                </td>
+                                            </tr>
+                                           
+                                            <tr class='StormyWeatherDataTD'>
+						<td colspan='4' class='StormyWeatherDataTD' align='right'>
+                                                    <input type='button' name='Submit' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaB()'>
+						</td>
+					    </tr>
 					</table>";
 				echo $imprimir;
 				break;
@@ -487,110 +491,112 @@ switch ($opcion) {
 		        $nombreEmpleado   = $row_empleado['nombreempleado'];
                         
 		        $imprimir="<br>
-		        	<table width='100%' border='0' align='center' >
-		        		<tr>
-                                            <td colspan='1' align='left' width='20%'><img id='Image1' style='width: auto; height: 55px;' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
-                                            <td align='center' colspan='4' width='60%' class='Estilo5'>
-			        		<p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
-			        		<p><strong>".$row_estab['nombre']."</strong></p>
-			        		<p><strong>&Aacute;REA DE ".htmlentities($row_area['nombrearea'])." </strong></p>
-                                            </td>
-                                            <td colspan='1' align='right' width='20%'><img id='Image3' style='width: auto; height: 55px;' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
-		        		</tr>
-                                        <tr>
-                                            <td colspan='6'>&nbsp;</td>
-                                        </tr>
-		        		<tr>
-                                            <td colspan='1'><strong>Establecimiento Solicitante:</strong></td>
-                                            <td colspan='2'>".htmlentities($row_estabExt['nombre'])."</td>
-                                            <td colspan='1'><strong>Fecha Recepción:</strong></td>
-                                            <td colspan='2'>".$row_generales['fecha']."</td>
-		        			<input name='suEdad' id='suEdad' type='hidden' value='".$row_generales['fechanacimiento']."'/>
-		        		</tr>
-		        		<tr>
-                                            <td colspan='1'><strong>Expediente:</strong></td>
-                                            <td colspan='2'>".$row_generales['idnumeroexp']."</td>
-                                            <td colspan='1'><strong>Fecha Toma Muestra:</strong></td>
-                                            <td colspan='2'>".$f_tomamuestra."</td>    
-		        		</tr>
-		        		<tr>
-                                            <td colspan='1'><strong>Paciente:</strong></td>
-                                            <td colspan='2'>".htmlentities($row_generales['nombrepaciente'])."</td>
-		        		</tr>
-		        		<tr>
-                                            <td colspan='1'><strong>Edad:</strong></td>
-                                            <td colspan='2'>".$row_generales['edad']."</td>
-                                            <td colspan='1'><strong>Sexo:</strong></td>
-                                            <td colspan='2'>".$row_generales['sexo']."</td>
-		        		</tr>
-		        		<tr>
-                                            <td colspan='1'><strong>Procedencia:</strong></td>
-                                            <td colspan='2'>".htmlentities($row_generales['procedencia'])."</td>
-                                            <td colspan='1'><strong>Servicio:</strong></td>
-                                            <td colspan='2'>".$subservicio."</td>
-		        		</tr>
-		        		<tr>
-                                            <td colspan='1'><strong>Examen Realizado:</strong></td>
-                                            <td colspan='5'>".htmlentities($row_area['nombre_reporta'])."</td>
-		        		</tr>
-		        		<tr>
-		        			<td colspan='1'><strong>Validado Por:</strong></td>
-		        			<td colspan='5'>".htmlentities($row_empleado['nombreempleado'])."</td>
-
-		        		</tr>";
+                            <table width='100%' border='0' align='center' Cellpadding='0'  cellspacing='0' >
+		        	<tr>
+                                    <td colspan='1' align='left' width='20%'><img id='Image1' style='width: auto; height: 55px;' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
+                                    <td align='center' colspan='4' width='60%' class='Estilo5'>
+			      		<p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
+			       		<p><strong>".$row_estab['nombre']."</strong></p>
+			       		<p><strong>&Aacute;REA DE ".htmlentities($row_area['nombrearea'])." </strong></p>
+                                    </td>
+                                    <td colspan='1' align='right' width='20%'><img id='Image3' style='width: auto; height: 55px;' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
+		        	</tr>
+                                <tr>
+                                    <td colspan='6'>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan='1'><strong>Establecimiento Solicitante:</strong></td>
+                                    <td colspan='3'>".htmlentities($row_estabExt['nombre'])."</td>
+                                    <td colspan='1'><strong>Fecha Recepción:</strong></td>
+                                    <td colspan='1'>".$row_generales['fecha']."</td>
+                                        <input name='suEdad' id='suEdad' type='hidden' value='".$row_generales['fechanacimiento']."'/>
+		        	</tr>
+		        	<tr>
+                                    <td colspan='1'><strong>Expediente:</strong></td>
+                                    <td colspan='3'>".$row_generales['idnumeroexp']."</td>
+                                    <td colspan='1'><strong>Fecha Toma Muestra:</strong></td>
+                                    <td colspan='1'>".$f_tomamuestra."</td>    
+		        	</tr>
+		        	<tr>
+                                    <td colspan='1'><strong>Paciente:</strong></td>
+                                    <td colspan='2'>".htmlentities($row_generales['nombrepaciente'])."</td>
+		        	</tr>
+		        	<tr>
+                                    <td colspan='1'><strong>Edad:</strong></td>
+                                    <td colspan='3'>".$row_generales['edad']."</td>
+                                    <td colspan='1'><strong>Sexo:</strong></td>
+                                    <td colspan='1'>".$row_generales['sexo']."</td>
+		        	</tr>
+		        	<tr>
+                                    <td colspan='1'><strong>Procedencia:</strong></td>
+                                    <td colspan='3'>".htmlentities($row_generales['procedencia'])."</td>
+                                    <td colspan='1'><strong>Servicio:</strong></td>
+                                    <td colspan='1'>".$subservicio."</td>
+		        	</tr>
+		        	<tr>
+                                    <td colspan='1'><strong>Examen Realizado:</strong></td>
+                                    <td colspan='5'>".htmlentities($row_area['nombre_reporta'])."</td>
+		        	</tr>
+		        	<tr>
+                                    <td colspan='1'><strong>Validado Por:</strong></td>
+                                    <td colspan='5'>".htmlentities($row_empleado['nombreempleado'])."</td>
+                        	</tr>";
 		        
 		        $nomcod=$objdatos->ObtenerNombreCodigo($tab);
 		        $row_codigo= pg_fetch_array($nomcod);
-		        $imprimir.="<tr>
-		        			<td>Resultado Tabulador:</td><td colspan='5'>".$row_codigo[0]."</td>
-		        		</tr></table>";
+		    $imprimir.="<tr>
+                                    <td>Resultado Tabulador:</td><td colspan='5'>".$row_codigo[0]."</td>
+		        	</tr>
+                            </table>";
 
-		        $imprimir.="<br><table width='100%' border='0' align='center' cellspacing='3' class='StormyWeatherFormTABLE'>";
-		        $imprimir.= "<tr>
-				        <td width='25%'></td>
-				        <td width='25%'><b>Resultado</b></td>
-				        <td width='10%'><b>Unidades</b></td>
-				        <td width='15%'><b>Rangos de referencia</b></td>
-				    </tr>
-                                    <tr><td colspan='4'><hr style='width:100%'></td></tr>";
+		   $imprimir.="<br>"
+                         . "<table width='100%' border='0' align='center' cellspacing='0'>";
+		   $imprimir.= "<tr>
+                                    <td width='25%'></td>
+				    <td width='25%'><b>Resultado</b></td>
+				    <td width='10%'><b>Unidades</b></td>
+				    <td width='15%'><b>Rangos de referencia</b></td>
+				</tr>
+                                <tr>
+                                    <td colspan='4'><hr style='width:100%'></td>
+                                </tr>";
 		    	
 		    	$pos    = 0;
 		    	$posele = 0;
 				
-            while($row = pg_fetch_array($consulta)) { //ELEMENTOS
-                if($row['subelemento']=="S") {
-			   $imprimir.= "<tr>
-                                            <td colspan='4' style='font:bold'><strong>".htmlentities($row['elemento'])."</strong></td>
-                                        </tr>";
-					$consulta2 = $objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
-		    while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
-  			 $imprimir.="<tr>
-					<td width='35%'>&emsp;".htmlentities($rowsub['subelemento'])."</td>";
-
-                            if  ($vector_combos[$pos]== NULL){  
-                                $imprimir.="<td width='25%'>".htmlentities($vector[$pos])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>";
-                            }
-                            else{
-                                            $conresult=$objdatos->BuscarResultado($vector[$pos]);
-                                            $row_dresult=  pg_fetch_array($conresult);
-                                $imprimir.="<td width='25%'>".htmlentities($row_dresult['posible_resultado'])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>";
+        while($row = pg_fetch_array($consulta)) { //ELEMENTOS
+            if($row['subelemento']=="S") {
+		   $imprimir.= "<tr>
+                                    <td colspan='4' style='font:bold'><strong>".htmlentities($row['elemento'])."</strong></td>
+                                </tr>";
+		    $consulta2 = $objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
+	        while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
+  		    $imprimir.="<tr>
+		  		    <td width='35%'>&emsp;".htmlentities($rowsub['subelemento'])."</td>";
+                    if  ($vector_combos[$pos]== NULL){  
+                        $imprimir.="<td width='25%'>".htmlentities($vector[$pos])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>";
+                        }
+                    else{
+                        $conresult=$objdatos->BuscarResultado($vector[$pos]);
+                        $row_dresult=  pg_fetch_array($conresult);
+                        $imprimir.="<td width='25%'>".htmlentities($row_dresult['posible_resultado'])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>";
                                         
-                            }
-                                $imprimir.="<td width='10%'>".htmlentities($rowsub['unidad'])."</td>";
-			if (empty($rowsub['rangoinicio']) AND empty($rowsub['rangofin']))
-                               $imprimir.= "<td >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-			else
-                                $imprimir.= "<td width='15%'>".$rowsub['rangoinicio']." - ".$rowsub['rangofin']."</td> ";
-                            $imprimir.="</tr>";
-					$pos = $pos + 1;
+                    }
+                        $imprimir.="<td width='10%'>".htmlentities($rowsub['unidad'])."</td>";
+		    if (empty($rowsub['rangoinicio']) AND empty($rowsub['rangofin']))
+                       $imprimir.= "<td >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+		    else
+                       $imprimir.= "<td width='15%'>".$rowsub['rangoinicio']." - ".$rowsub['rangofin']."</td> ";
+                   $imprimir.=" </tr>";
+			$pos = $pos + 1;
 		    }
 						
-			 $imprimir.= "<tr>
-			 		 <td colspan='5'>".htmlentities($row['observelem'])."</td>
-				      </tr>";
+		  $imprimir.= " <tr>
+		                    <td colspan='5'>".htmlentities($row['observelem'])."</td>
+				</tr>";
 		}else {
 			$imprimir.= "<tr>
-			 		 <td style='font:bold'  class='StormyWeatherFieldCaptionTD'>".htmlentities($row['elemento'])."</td>
+			 		 <td style='font:bold'  >".htmlentities($row['elemento'])."</td>
 					 <td>".htmlentities($vector_elementos[$posele])."<input name='oidelemento[".$posele."]' type='hidden' id='oidelemento[".$posele."]' value='".$row['idelemento']."'>			  </td>
 					 <td width='25%'>".htmlentities($row['unidadelem'])."</td>
 				     </tr>";
@@ -606,23 +612,23 @@ switch ($opcion) {
 		pg_free_result($consulta_datos);
 		pg_free_result($datos_generales);
 
-				$imprimir .="<tr><td colspan='4'><hr></td></tr>
+				$imprimir .="<tr><td colspan='6'><hr></td></tr>
                                    <tr>
 		        			<td colspan='1'><strong>Observacion:</strong></td>
 		        			<td colspan='5'>".htmlentities($observacion)."<br></td>
 		        		</tr>"	;	//numero de cajas de texto dibujadas para subelementos
-				$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>"	;	//numero de cajas de texto dibujadas para subelementos
-				$imprimir .="<input  type='hidden' id='ocultoele' value='".$posele."'>" ; //elementos
+				$imprimir.="<input  type='hidden' id='oculto' value='".$pos."'>"	;	//numero de cajas de texto dibujadas para subelementos
+				$imprimir.="<input  type='hidden' id='ocultoele' value='".$posele."'>" ; //elementos
                                 $imprimir.="<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' value='".$fecharealiz."'>
                                              <input type='hidden' name='txtfresultado' id='txtfresultado' value='".$fecharesultado."' />";
 				$imprimir.="<tr>
-							<td colspan='5' align='center' ><br>
-								<input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaB()'>
-								<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir'
-									Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\",\"".$valores_combos."\",".$idestab.",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'>
-								<input type='button' id='btnSalir' value='Cerrar' onclick='Cerrar()'>
-							</td>
-						</tr>
+                                                <td colspan='5' align='center' ><br>
+                                                    <input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaB()'>
+                                                    <input type='button' name='Imprimir'  id='Imprimir' value='Imprimir'
+							Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\",\"".$valores_combos."\",".$idestab.",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'>
+                                                    <input type='button' id='btnSalir' value='Cerrar' onclick='Cerrar()'>
+						</td>
+                                            </tr>
 					</table>";
 			echo $imprimir;
 			break;

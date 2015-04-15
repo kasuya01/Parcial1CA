@@ -51,7 +51,7 @@ function VerResultados()
         iddetalle=document.frmnuevo.txtiddetalle.value;
 	idarea=document.frmnuevo.txtarea.value;
 	resultado=document.frmnuevo.txtresultado.value;
-	observacion=document.frmnuevo.txtcomentario.value;
+	//observacion=document.frmnuevo.txtcomentario.value;
 	procedencia=document.frmnuevo.txtprocedencia.value;
 	origen=document.frmnuevo.txtorigen.value;
 	MostrarResultadoExamen(idsolicitud,iddetalle,idarea,idexamen,resultado,observacion,nombrearea,procedencia,origen);
@@ -267,12 +267,12 @@ function VerResultados()
 			</div>
 		</td>
         </tr>
-	<tr>
+	<!--<tr>
 		<td class="StormyWeatherFieldCaptionTD">Observaci&oacute;n </td>
 		<td class="StormyWeatherDataTD" colspan="4">
 			  <textarea name="txtobservacion" cols="60" id="txtobservacion"></textarea>
 		</td>
-	</tr>
+	</tr>-->
         <tr>
                 <td class="StormyWeatherFieldCaptionTD">*Fecha y hora inicio Proceso</td>
                 <td class="StormyWeatherDataTD">

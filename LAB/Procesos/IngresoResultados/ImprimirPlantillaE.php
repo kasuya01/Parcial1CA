@@ -293,6 +293,7 @@ if ($IdEstandar=="H15"){
 					<td class="Estilo5" width='25%' align="justify"><strong> Unidades </strong></td>
 					<td class="Estilo5" width='30%' align="justify"><strong> Rango </strong></td>
 				</tr>
+                                <tr><td colspan='6'><hr></td></tr>
 				<?php $pos=0;
 			while($row = pg_fetch_array($consulta))//ELEMENTOS
 					{  ?>
@@ -318,6 +319,7 @@ if ($IdEstandar=="H15"){
 					<?php  $pos=$pos + 1;
 			}
 			pg_free_result($consulta);?>
+                          <tr><td colspan='6'><hr></td></tr>      
                         </table>
                     </td>
                 </tr>
