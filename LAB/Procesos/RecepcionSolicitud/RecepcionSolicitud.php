@@ -8,7 +8,6 @@ $area    = $_SESSION['Idarea'];
 <script language="JavaScript" type="text/javascript" src="ajax_RecepcinSolicitud.js"></script>
 <?php 
 
-
 //variables POST
 $idexpediente = $_POST['idexpediente'];
 $fechacita    = $_POST['fechacita'];
@@ -16,6 +15,7 @@ $Nfecha       = explode("/", $fechacita);
 $Nfechacita = $Nfecha[2] . "/" . $Nfecha[1] . "/" . $Nfecha[0];
 $estado     = 'D';
 $idEstablecimiento = $_POST['idEstablecimiento'];
+$idsolicitud = $_POST['idsolicitud'];
 
 $arraysolic  = array();
 $arraypiloto = array();
@@ -58,7 +58,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                 </tr>
                 <tr>
                     <td class='StormyWeatherFieldCaptionTD'  width='20%'>Expediente</td>
-                    <td colspan='1' class='StormyWeatherDataTD' width='35%'><h3>" . htmlentities($row['idnumeroexp']) . "</h3></td>
+                    <td colspan='1' class='StormyWeatherDataTD' width='35%'><h3>" . htmlentities($row['idnumeroexp']) . "<input type='hidden' id='idhistorial' name='idhistorial' value='".$row['idhistorial']."'/> <input type='hidden' id='referido' name='referido' value='".$row['referido']."'/></h3></td>
                     <td class='StormyWeatherFieldCaptionTD' width='20%'>Paciente</td>
                     <td colspan='1' class='StormyWeatherDataTD' width='35%'>" . htmlentities($row['nombrepaciente']) . "
                         <input name='txtpaciente[" . $i . "]' id='txtpaciente[" . $i . "]' type='hidden' value='" . htmlentities($row['nombrepaciente']) . "' disabled='disabled' />
@@ -127,18 +127,20 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                 echo "<td>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
                 $fecha= date('Y-m-d H:i');
                 $iddetalle=$rows['iddetalle'];
+                $i_idexamen=$rows['i_idexamen'];
             echo " <td style='width:150px'><input type='text' class='datepicker form-control height'  id='f_tomamuestra_".$k."' name='f_tomamuestra_'  value='". date('Y-m-d H:i')."' onchange=\"valfechasolicita(this, 'f_tomamuestra_".$k."')\" style='width:150px' />"
                     . "<input type='hidden' id='iddetalle_".$k."' name='iddetalle_' value='".$iddetalle."'/>"
+                    . "<input type='hidden' id='i_idexamen_".$k."' name='i_idexamen_' value='".$i_idexamen."'/>"
                     . "<input type='hidden' id='hdn_numexOrd".$k."' name='hdn_numexOrd' value='".$k."'/>"
                     . "</td>";
             //***************** bandera ************************
             if (($rows['idexamen'] == 'COA001')or ( $rows['idexamen'] == 'COA002') or ( $rows['idexamen'] == 'COA016')) {
                 $ban = 1;
             }
-            echo '<td style="width:250px"><div id="divopcionvalidar_'.$k.'" >';
+            echo '<td style="width:250px"><div id="divopcionvalidar_'.$k.'"  style="display:block;">';
             echo '<input type="hidden" id="idk_'.$k.'" name="idk_'.$k.'" value="'.$k.'" />';
-            echo '<select id="validarmuestra_'.$k.'" name="validarmuestra_'.$k.'" onchange="OpcionRechazo(this.value, '.$k.')" class="form-control height" style="width:300px">';
-            echo '<option value="0">Validada</option>';
+            echo '<select id="validarmuestra_'.$k.'" name="validarmuestra_" onchange="OpcionRechazo(this.value, '.$k.')" class="form-control height" style="width:300px">';
+           // echo '<option value="0">Validada</option>';
             $rechazo=$objdatos->opcionrechazo();
             while ($rec=@pg_fetch_array($rechazo)){
                echo '<option value="'.$rec["id"].'">'.$rec["estado"].'</option>';
@@ -146,7 +148,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
             }
             echo '</select>';
             echo '</div>'
-            . '<div id="divopcionrechazo_'.$k.'" style="style=width:250px;display:none"></div>'
+            . '<div id="divopcionrechazo_'.$k.'" style="width:250px;display:none"></div>'
                     . '</td>';
             echo '<td  id="colnewdate_" class="hide_me newdate"  style="width:100px"> <div id="divnewdate_'.$k.'" style="display:none"></div></td>';
             echo "</tr>";
@@ -158,19 +160,22 @@ for ($i = 0; $i < $NroRegistros; $i++) {
         echo "</tbody></table></div>
               <table align='center' class='table table-condensed table-white' style='width:45%;border:0'><br>
                 <tr>
-                    <td align='right'>
-                        <button type='button'  name='btnActualizar[" . $i . "]' id='btnActualizar[" . $i . "]' align='right' style='text-align: right' class='btn btn-primary' onclick='AsignarNumeroMuestra(" . $i . ");'><span class='glyphicon glyphicon-check'></span>&nbsp;Procesar Solicitud </button>
-                        <input type='hidden' name='oculto' id='text' value='" . $i . "' />
-                    </td>
+                    <td align='center'>
+                        <button type='button'  name='btnActualizar[" . $i . "]' id='btnActualizar[" . $i . "]' align='right' style='text-align: right' class='btn btn-primary' onclick='AsignarNumeroMuestra(" . $i . ");'><span class='glyphicon glyphicon-check'></span>&nbsp;Procesar Solicitud </button>&nbsp;
+                        <button type='button'  name='btnRechazar[" . $i . "]' id='btnRechazar[" . $i . "]' align='right' style='text-align: right' class='btn btn-primary' data-toggle='modal' data-target='#myModal' ><span class='glyphicon glyphicon-remove'></span>&nbsp;Rechazar Solicitud </button>&nbsp;";
+        echo '<button type="button"  name="btnOtra" id="btnOtra" align="right" style="text-align: right" class="btn btn-primary" onclick="window.location.replace(\'Proc_RecepcionSolicitud.php\');"><span class="glyphicon glyphicon-refresh"></span>&nbsp;Ingresar otra solicitud </button>';
+//        echo 
+//                        <input type='hidden' name='oculto' id='text' value='" . $i . "' />
+//                        <button type='button'  name='btnOtra' id='btnOtra' align='right' style='text-align: right' class='btn btn-primary' onclick='window.location.replace(\'Proc_RecepcionSolicitud.php\);'><span class='glyphicon glyphicon-refresh'></span>&nbsp;Ingresar otra solicitud </button>   
+           echo "</td>
+                    </tr>
+                    <tr>
                     <td id='divoculto[" . $i . "]' style='display:none'><center>
                        
                          <button type='button'  name='btnImprimir[" . $i . "]' id='btnImprimir[" . $i . "]' align='right' style='text-align: right' class='btn btn-primary' onclick='ImprimirExamenes(" . $i . ");'><span class='glyphicon glyphicon-barcode'></span>&nbsp;Imprimir Viñetas </button>
                           <button type='button'  name='btnImpSolicitud[" . $i . "]' id='btnImpSolicitud[" . $i . "]' align='right' style='text-align: right' class='btn btn-primary' onclick='ImprimirSolicitud(" . $i . ");'><span class='glyphicon glyphicon-list-alt'></span>&nbsp;Imprimir Solicitud </button>  
                          </center>
-                         
-			</div>
-                    </td>
-              ";
+                    </td></tr></table>";
     }//del while
     echo "<input type='hidden' name='topei' id='topei' value='" . $NroRegistros . "' /> ";
 }
@@ -178,9 +183,59 @@ for ($i = 0; $i < $NroRegistros; $i++) {
 
 <!--    <table align="center">
         <tr>-->
-            <td>
+<!--            <td>
                <button type='button'  name='btnOtra' id='btnOtra' align='right' style='text-align: right' class='btn btn-primary' onclick='window.location.replace("Proc_RecepcionSolicitud.php");'><span class='glyphicon glyphicon-refresh'></span>&nbsp;Ingresar otra solicitud </button></td>
+ <button type="button"  name="btnOtra" id="btnOtra" align="right" style="text-align: right" class="btn btn-primary" onclick="window.location.replace('Proc_RecepcionSolicitud.php');"><span class="glyphicon glyphicon-refresh"></span>&nbsp;Ingresar otra solicitud </button></td>
+            
+            </td>-->
 <!--               <input type="button" name="btnOtra" id="btnOtra" value="Ingresar otra solicitud" onClick="window.location.replace('Proc_RecepcionSolicitud.php')"></td>-->
-        </tr>
-    </table>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Rechazar Solicitud</h4>
+      </div>
+      <div class="modal-body">
+         *<label>Tipo de Rechazo:</label>
+         <select style="width: 90%" class="form-control height" id="cmbrechazoest" name="cmbrechazoest" onclick="rechazosolicitud(this.value)">
+            <option value="0">Seleccione una opción</option>
+            <?php
+            $cmbrechazo1=$objdatos->opcionrechazo();
+            while ($cmb1=@pg_fetch_array($cmbrechazo1)){
+               if ($cmb1['id']!=1)
+               echo '<option value='.$cmb1["id"].'>'.$cmb1["estado"].'</option>';
+            }
+            ?>
+         </select>
+         <br>
+         <label>*Elija razón de rechazo de solicitud:</label>
+         <select style="width: 90%" class="form-control height" id="cmbrechazosol" name="cmbrechazosol">
+            <option value="0">Seleccione una opción</option>
+            <?php
+            $cmbrechazo=$objdatos->obteneropcionesrechazo();
+            while ($cmb=@pg_fetch_array($cmbrechazo)){
+               
+               echo '<option value='.$cmb["id"].'>'.$cmb["posible_observacion"].'</option>';
+            }
+            ?>
+         </select>
+         <br>
+         <div id="newdatesol" style="display: none; width: 100%" >
+            <label>*Fecha de nueva cita:</label>
+            <input type="text" class="date form-control height" id="fechanewcitasol" name="fechanewcitasol" style="width:105px">
+            <br>
+         </div>
+         <label>Observación:</label>
+         <textarea cols="35" rows="5" style="width: 90%" id="observacionrechazo" name="observacionrechazo"></textarea>
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-default" data-dismiss="modal" onclick="cancelarechazo()">Cerrar</button>
+        <button type="button" class="btn btn-primary" onclick="cancelarsolicitud()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>        
+    
 </form>

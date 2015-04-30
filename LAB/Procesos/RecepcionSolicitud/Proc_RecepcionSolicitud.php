@@ -97,7 +97,7 @@ if (isset($_SESSION['Correlativo'])) {
                                 if (date_cita!=''){
                                     k++;
                                 html = html + '<tr>\
-                                                <td><a href="#" onclick="VerificarExistencia('+' \''+val.numero_expediente+'\', \''+val.fecha_cita+'\', '+val.id_establecimiento+', true);return false;" style="padding-left:7px;">'+val.numero_expediente+'</a></td>\
+                                                <td><a href="#" onclick="VerificarExistencia('+' \''+val.numero_expediente+'\', \''+val.fecha_cita+'\', '+val.id_establecimiento+', true,'+val.id+');return false;" style="padding-left:7px;">'+val.numero_expediente+'</a><input id="idsolicitud" value="'+val.id+'" name="idsolicitud" type="hidden" /></td>\
                                                 <td>'+val.fecha_consulta+'</td>\
                                                 <td>'+date_cita+'</td>\
                                                 <td>'+val.nombre_paciente+'</td>\
@@ -200,7 +200,7 @@ if (isset($_SESSION['Correlativo'])) {
                                     </tr>
                                     <tr>
                                         <td class="StormyWeatherFieldCaptionTD">N&ordm; de Expediente </td>
-                                        <td class="StormyWeatherDataTD"><input type="text" name="txtidexpediente" id="txtidexpediente"  class='form-control height' style="width:400px"/></td>
+                                        <td class="StormyWeatherDataTD"><input type="text" name="txtidexpediente" id="txtidexpediente"  class='form-control height' style="width:400px"/><input type="hidden" id="idsolicitudtxt" name="idsolicitudtxt"></td>
                                     </tr>
                                     <tr>
                                         <td class="StormyWeatherFieldCaptionTD">Fecha de Cita</td>

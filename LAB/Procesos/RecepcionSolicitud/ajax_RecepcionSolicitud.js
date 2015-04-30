@@ -193,11 +193,11 @@ function BuscarDatos() {
     fechacita         = document.getElementById('txtfechasolicitud').value;
     idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
     $( "#divResultado" ).empty();
-    VerificarExistencia(idexpediente, fechacita, idEstablecimiento, false);
+    VerificarExistencia(idexpediente, fechacita, idEstablecimiento, false,0);
 }
 
 //FUNCION PARA VERIFICAR SI EXISTEN  DATOS DE LA SOLICITUD
-function VerificarExistencia(idexpediente, fechacita, idEstablecimiento, omitir_verificacion) {
+function VerificarExistencia(idexpediente, fechacita, idEstablecimiento, omitir_verificacion, idsolicitud) {
     if (DatosCompletos() || omitir_verificacion) {
         //divResultado=document.getElementById('divResultado');
         ajax = objetoAjax();
@@ -209,19 +209,16 @@ function VerificarExistencia(idexpediente, fechacita, idEstablecimiento, omitir_
         ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         //enviando los valores
         
-        ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&opcion=" + opcion + "&idEstablecimiento=" + idEstablecimiento);
+        ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&opcion=" + opcion + "&idEstablecimiento=" + idEstablecimiento+ "&idsolicitud=" + idsolicitud);
         ajax.onreadystatechange = function() {
             if (ajax.readyState == 4) {	//mostrar los nuevos registros en esta capa
                 if (ajax.status == 200) { //alert (ajax.responseText);
                     if (ajax.responseText.replace(/(\r\n|\n|\r| )/gm,'') == 'D') { //si existen datos para la solicitud
-                        MostrarDatosGenerales(idexpediente, fechacita, idEstablecimiento);
+                        MostrarDatosGenerales(idexpediente, fechacita, idEstablecimiento, idsolicitud);
                         
                     } else { //mueestra el mensaje de estado de la solicitud
                         alert(ajax.responseText);
                     }
-                    //console.log(ajax.responseText.replace(/(\r\n|\n|\r| )/gm,'').length);
-                    //console.log(ajax.responseText.replace(/(\r\n|\n|\r| )/gm,''));
-                    //document.getElementById('divResultado').innerHTML = ajax.responseText;
                 }
             }
         }
@@ -253,13 +250,11 @@ function LlenarEstablecimiento(IdTipoEstab)
 }
 
 //FUNCION PARA RECUPERAR LOS DATOS GENERALES DE LA SOLICITUD
-function MostrarDatosGenerales(idexpediente, fechacita, idEstablecimiento) {
+function MostrarDatosGenerales(idexpediente, fechacita, idEstablecimiento, idsolicitud) {
     //valores de los text
     document.getElementById('txtidexpediente').value = idexpediente;
     document.getElementById('txtfechasolicitud').value = fechacita;
-    // idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
 
-    //alert (idEstablecimiento);
     //instanciamos el objetoAjax
     ajax = objetoAjax();
     //usando del medoto POST
@@ -267,21 +262,16 @@ function MostrarDatosGenerales(idexpediente, fechacita, idEstablecimiento) {
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
-    ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&idEstablecimiento=" + idEstablecimiento);
+    ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&idEstablecimiento=" + idEstablecimiento+"&idsolicitud="+idsolicitud);
     ajax.onreadystatechange = function() {
         if (ajax.readyState == 4) {
             if (ajax.status == 200)
             {
-               
                 //mostrar los nuevos registros en esta capa
                 document.getElementById('divResultado').innerHTML = ajax.responseText;
-            //    alert ('whaaa');
                 classdatepick();
-               //  $( ".datepicker" ).datepicker({  maxDate: new Date() });
-              //  alert ('yeye');
-                //posicion=document.getElementById('topei').value;
+
                 calc_edad();
-                //alert(ajax.responseText);
             }
         }
     }
@@ -328,29 +318,7 @@ function MostrarTodos() {
         }
     });
     //
-    // //valores de los text
-    // idexpediente      = document.getElementById('txtidexpediente').value;
-    // fechacita         = document.getElementById('txtfechasolicitud').value;
-    // idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
-    //
-    // //instanciamos el objetoAjax
-    // ajax = objetoAjax();
-    // //usando del medoto POST
-    // ajax.open("POST", "RecepcionSolicitudTodos.php", true);
-    // //muy importante este encabezado ya que hacemos uso de un formulario
-    // ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    // //enviando los valores
-    // ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&idEstablecimiento=" + idEstablecimiento);
-    // ajax.onreadystatechange = function() {
-    //     if (ajax.readyState == 4) {
-    //         if (ajax.status == 200) {
-    //             //mostrar los nuevos registros en esta capa
-    //             document.getElementById('divResultado').innerHTML = ajax.responseText;
-    //             //posicion=document.getElementById('topei').value;
-    //             //alert(ajax.responseText);
-    //         }
-    //     }
-    // }
+
 }
 
 
@@ -393,8 +361,7 @@ function CambiarEstadoDetalleSolicitud(estado)
         {
             if (ajax.status == 200)
             {
-                //mostrar los nuevos registros en esta capa
-                //document.getElementById('divCambioEstado').innerHTML = ajax.responseText;
+                //mostrar los nuevos registros en esta capa 
                 alert(ajax.responseText);
             }
         }
@@ -412,19 +379,7 @@ function imprimiretiquetas(posicion)
 	ventana_secundaria = window.open("../../Consultas_Reportes/ConsultaSolicitudesPaciente/etiquetas.php?var1="+idexpediente+"&var2="+idsolicitud,"etiquetas",										"width=500,height=600,menubar=no,location=no,scrollbars=yes") ;
 		
 }
-/*function imprimiretiquetas(posicion)
-{//cambiar imprimir  etiquetas1.php  por imprimir.ph
-    idexpediente = document.getElementById('txtidexpediente').value;
-    fechacita    = document.getElementById('txtfechasolicitud').value;
-    idsolicitud  = document.getElementById('txtidsolicitud[' + posicion + ']').value;
-    idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
-    //alert (idexpediente+' *** '+fechacita+' *** '+idsolicitud+' *** '+idEstablecimiento);
-    
-    
-    ventana_secundaria = window.open("etiquetas.php?var1=" + idexpediente +
-            "&var2=" + fechacita + "&var3=" + idsolicitud + "&var4=" + idEstablecimiento, "etiquetas",
-            "width=400,height=600,menubar=no,location=no,scrollbars=yes");
-}*/
+
 
 function EnviarDatosSolicitud(posicion)
 {
@@ -450,12 +405,6 @@ function RegistrarNumeroMuestra(posicion)//Registrando Numero de Muestra asociad
     //usando del medoto POST
     opcion = 4;
    
-//    for (i=0; i<=canti; i++){
-//       j = parseInt(i)+1;					
-//       parametros=parametros+"&f_tomamuestra_"+j+"="+document.getElementById("f_tomamuestra_" + this.value).value;	
-//       parametros=parametros+"&f_tomamuestra_"+j+"="+document.getElementById("f_tomamuestra_" + this.value).value;	
-//    }
-    //alert(idsolicitud);
     ajax.open("POST", "ctrRecepcionSolicitud.php", true);
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -479,9 +428,8 @@ function RegistrarNumeroMuestra(posicion)//Registrando Numero de Muestra asociad
 
                         alert(ajax.responseText);
                         HabilitarBoton(idsolicitud, posicion);//habilitando el boton de Impresion de Vi�etas
-                        //alert("Aqui"+idsolicitud+" "+posicion )
-                        //Crear_Archivo(idsolicitud, posicion);
                         document.getElementById('btnActualizar[' + posicion + ']').disabled = true;
+                        document.getElementById('btnRechazar[' + posicion + ']').disabled = true;
                     }
                     else {
                         alert(ajax.responseText);
@@ -538,10 +486,15 @@ function cancelrechazo(cmbrechazo, k) {
       document.getElementById('divopcionrechazo_'+k).style.display = "none";
       document.getElementById('divopcionvalidar_'+k).style.display = "block";
 //      document.getElementById('divopcionvalidar_'+k).innerHTML = ajax.responseTex
-       $("#validarmuestra_"+k+" option[value='0']").attr('selected', 'selected'); 
+       $("#validarmuestra_"+k+" option[value='1']").attr('selected', 'selected'); 
        $("#rowdetalle_"+k).css("background-color", "#FFFFFF");       
       document.getElementById('divnewdate_'+k).style.display = "none";
-      document.getElementById('divnewdate_'+k).value="";
+     
+      $( "#divnewdate_"+k ).empty();
+     // alert ($('input[name="f_newdate_"]').length)
+      if ($('input[name="f_newdate_"]').length == 0){
+         $( ".newdate" ).addClass( "hide_me" );
+      }
     }
     else{
       opcion = 12;
@@ -565,7 +518,7 @@ function cancelrechazo(cmbrechazo, k) {
                   document.getElementById('divnewdate_'+k).style.display = "block";
                   document.getElementById('divnewdate_'+k).innerHTML = ajax.responseText;
                    classdate();
-                   $('.date').datepicker({ minDate: 0 });
+                   $('.date').datepicker({ minDate: 1 });
                   // ajax.responseText;
                }
             }
@@ -629,6 +582,8 @@ function IngresarDatosTemp(idsolicitud, posicion) {
 function CambiarEstadoSolicitud(estado, idsolicitud, posicion)
 {
     idexpediente = document.getElementById('txtidexpediente').value;
+    idhistorial = document.getElementById('idhistorial').value;
+    referido = document.getElementById('referido').value;
     Solicitud = document.getElementById('txtidsolicitud[' + posicion + ']').value;
     fechacita = "";
      cantresult=$('input[name="hdn_numexOrd"]').length;;
@@ -641,6 +596,24 @@ function CambiarEstadoSolicitud(estado, idsolicitud, posicion)
             j = parseInt(i)+1;
           parametros=parametros+"&f_tomamuestra_"+j+"="+document.getElementById("f_tomamuestra_" + this.value).value;
           parametros=parametros+"&iddetalle_"+j+"="+document.getElementById("iddetalle_" + this.value).value;
+          parametros=parametros+"&i_idexamen_"+j+"="+document.getElementById("i_idexamen_" + this.value).value;
+          validarmuestra=document.getElementById("validarmuestra_" + this.value).value;
+          parametros=parametros+"&validarmuestra_"+j+"="+validarmuestra
+          if (validarmuestra!=1){
+            cmbrechazo_= $("#cmbrechazo_"+this.value).val();
+             parametros=parametros+"&cmbrechazo_"+j+"="+cmbrechazo_;
+            //En casp que se necesite guardar la siguiente fecha de cita
+               if (validarmuestra==2){
+               parametros=parametros+"&cmbrechazo_"+j+"="+cmbrechazo_;
+               parametros=parametros+"&f_newdate_"+j+"="+$("#f_newdate_"+this.value).val();
+            }
+//            else{
+//               parametros=parametros+"&cmbrechazo_"+j+"=0";
+//            }
+          }
+          else{
+             parametros=parametros+"&cmbrechazo_"+j+"=0";
+          }
          }
          ); 
    }
@@ -657,7 +630,7 @@ function CambiarEstadoSolicitud(estado, idsolicitud, posicion)
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
-    ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&opcion=" + opcion + "&estado=" + estado + "&idsolicitud=" + idsolicitud + "&Solicitud=" + Solicitud+parametros);
+    ajax.send("idexpediente=" + idexpediente+ "&fechacita=" + fechacita + "&opcion=" + opcion + "&estado=" + estado + "&idsolicitud=" + idsolicitud + "&Solicitud=" + Solicitud+"&idhistorial="+idhistorial+"&referido="+referido+parametros);
     ajax.onreadystatechange = function() {
         if (ajax.readyState == 4) {
             if (ajax.status == 200)
@@ -759,3 +732,84 @@ function HabilitarBoton(idsolicitud, posicion) {
         }
     });
 }
+
+function rechazosolicitud(idcmbrechazoest){
+   if (idcmbrechazoest==2){
+      $( "#newdatesol" ).show();
+       classdate();
+       $('.date').datepicker({ minDate: 1 });
+   }
+   else{
+      $( "#newdatesol" ).hide();
+      $( "#newdatesol" ).val();
+      
+   }
+   $('select[id^=validarmuestra_]').each(function() { $(this).val(idcmbrechazoest);});
+   
+}
+//
+//function oprechazosolfull(idop){
+//   if (idop!=0){
+//      //$('select[id^=cmbrechazo_]').each(function() { $(this).val(idop);});
+//      $('input[id^=divopcionvalidar_]').each(function() { $(this).hide();});
+//      $('input[id^=divopcionrechazo_]').each(function() { $(this).show();});
+//      $('select[id^=cmbrechazo_]').each(function() { $(this).val(idop);});
+////      document.getElementById('divopcionvalidar_'+k).style.display = "none";
+////      document.getElementById('divopcionrechazo_'+k).style.display = "block";
+//   
+//   }
+////   else{
+////      $( "#newdatesol" ).hide();
+////   }
+////   $('select[id^=validarmuestra_]').each(function() { $(this).val(idcmbrechazoest);});
+////   
+//}
+
+
+function cancelarechazo(){
+   $('select[id^=validarmuestra_]').each(function() { $(this).val(1);});
+   $('#cmbrechazoest').val(0);
+   $('#cmbrechazosol').val(0);
+   $('#fechanewcitasol').val(null);
+   $('#observacionrechazo').val(null);
+   $('#newdatesol').hide();
+   
+   
+}
+
+function cancelarsolicitud(){
+   cmbrechazoest=$('#cmbrechazoest').val();
+   cmbrechazosol= $('#cmbrechazosol').val();
+   fechanewcitasol=$('#fechanewcitasol').val();
+   observacionrechazo=$('#observacionrechazo').val();
+   idsolicitud=$('input[id^="txtidsolicitud[0]"]').val();
+   pasar=1;
+   if ((cmbrechazoest==0)||(cmbrechazoest==0)){
+   pasar=0;
+   alert ("Favor verificar que ha completado todos los campos obligatorios")
+   return false;
+   }
+   if (cmbrechazoest==2 && fechanewcitasol==''){
+      alert ("Favor ingresar la fecha de la nueva cita")
+      return false;
+   }
+
+      jQuery.ajax({
+        url: 'ctrRecepcionSolicitud.php',
+        async: true,
+        dataType: 'json',
+        type: 'POST',
+        data: { opcion: 13 , cmbrechazoest: cmbrechazoest,cmbrechazosol: cmbrechazosol,fechanewcitasol: fechanewcitasol, observacionrechazo: observacionrechazo,idsolicitud:idsolicitud },
+        success: function(object) {
+            if(object.status) {
+                alert ('Solicitud cancelada');
+                  $('#myModal').modal('hide');
+                  window.location='Proc_RecepcionSolicitud.php'
+            } else {
+                alert('Error al cancelar la Solicitud')
+            }
+        }
+    });
+
+}
+
