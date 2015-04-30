@@ -1,14 +1,53 @@
 <?php 
-//include_once("../../../Conexion/ConexionBD.php");
+include_once("../../../Conexion/ConexionBD.php");
         //include($_SERVER['DOCUMENT_ROOT']."/Laboratorio/Conexion/ConexionBD.php");
-include_once("DBManager.php"); 
+//include_once("DBManager.php"); 
 //implementamos la clase lab_areas
-class clsReporteTabuladores
+class clsReporteDemanda
 {
-	 //constructor	
-	 function clsReporteTabuladores()
-	 {
-	 }	
+   //constructor	
+   function clsReporteDemanda()
+   {
+   }
+
+ function fechamuestra()
+   {
+	$con = new ConexionBD;
+    //usamos el metodo conectar para realizar la conexion
+	if($con->conectar()==true){
+            $query = "select to_char(current_date, 'YYYY-MM')||'-01' as fechamuestra";
+           // $query;
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+	}
+   }         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
 	
    //FN Pg
    //

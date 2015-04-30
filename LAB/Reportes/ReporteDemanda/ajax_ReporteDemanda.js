@@ -15,6 +15,143 @@ function objetoAjax(){
 	return xmlhttp;
 }
 
+////Funcion Demanda
+
+function LlenarComboExamen(idarea)
+{
+ 	ajax=objetoAjax();
+	opcion=2;
+   	ajax.open("POST", "ctrLab_ReporteDemanda.php",true);
+		  //muy importante este encabezado ya que hacemos uso de un formulario
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		  //enviando los valores
+                 // alert (idarea);
+	ajax.send("opcion="+opcion+"&idarea="+idarea);	 
+	ajax.onreadystatechange=function() 
+	{
+		
+		if (ajax.readyState == 4){//4 The request is complete
+			if (ajax.status == 200){//200 means no error.
+	  			//respuesta = ajax.responseText;	
+	 			// alert (respuesta)
+		 document.getElementById('divExamen').innerHTML = ajax.responseText;
+                 // $('#cmbExamen').multiselect();
+                   $("#cmbExamen").select2({
+                     placeholder: "--Seleccione examenes--",
+                     allowClear: true,
+                     dropdownAutoWidth: true
+                  });
+			}	  	
+			
+   		}
+   	}
+}
+
+
+function MostrarReporteDemanda()
+{
+   idarea=$('#cmbArea').val();
+   idexamen=$('#cmbExamen').val();
+   d_fechadesde=$('#d_fechadesde').val();
+   d_fechahasta=$('#d_fechahasta').val();
+  	ajax=objetoAjax();
+  	opcion=1;
+  	ajax.open("POST", "ctrLab_ReporteDemanda.php",true);
+  	//muy importante este encabezado ya que hacemos uso de un formulario
+  	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+  	//enviando los valores
+	ajax.send("opcion="+opcion+"&idarea="+idarea+"&idexamen="+idexamen+"&d_fechadesde="+d_fechadesde+"&d_fechahasta="+d_fechahasta);	
+	ajax.onreadystatechange=function() 
+	{
+		
+		if (ajax.readyState == 4){//4 The request is complete
+			if (ajax.status == 200){//200 means no error.
+				respuesta = ajax.responseText;	
+				// alert (respuesta)
+				document.getElementById('divEstablecimiento').innerHTML = respuesta;
+			}	  	
+		}
+   	}
+//        
+//         jQuery.ajaxSetup({
+//        error: function(jqXHR, exception) {
+//            if (jqXHR.status === 0) {
+//                alert('Not connect.\n Verify Network.');
+//            } else if (jqXHR.status == 404) {
+//                alert('Requested page not found. [404]');
+//            } else if (jqXHR.status == 500) {
+//                alert('Internal Server Error [500].');
+//            } else if (exception === 'parsererror') {
+//                alert('Requested JSON parse failed.');
+//            } else if (exception === 'timeout') {
+//                alert('Time out error.');
+//            } else if (exception === 'abort') {
+//                alert('Ajax request aborted.');
+//            } else {
+//                alert('Uncaught Error.\n' + jqXHR.responseText);
+//            }
+//        }
+//    });
+//
+//    jQuery.ajax({
+//        url: 'ctrLab_ReporteDemanda.php',
+//        async: true,
+//        dataType: 'json',
+//        type: 'POST',
+//        data: { opcion: 1, idarea:idarea, idexamen:idexamen, d_fechadesde:d_fechadesde, d_fechahasta:dfechahasta },
+//        success: function(object) {
+//            if(object.status) {
+//                var estado;
+//                
+//                if(object.data[0].numero === "0") {
+//                    estado = 'P';
+//                } else {
+//                    estado = 'R';
+//                }
+//
+//                idsolicitud = document.getElementById('txtidsolicitud[' + posicion + ']').value;
+//                valor = document.getElementById('txtprecedencia[' + posicion + ']').value;
+//                if (valor != " ") {
+//                    //VERIFICANDO QUE LA SOLICITUD HAYA SIDO PROCESADA
+//                    //Cambia el estado de la solicitud
+//                    CambiarEstadoSolicitud(estado, idsolicitud, posicion);
+//                    //CambiarEstadoDetalleSolicitud('TR');
+//                    //Habilita el boton para la impresion
+//                    div = document.getElementById('divoculto[' + posicion + ']');
+//                    div.style.display = "block";
+//                } else {
+//                    alert("No se encontraron datos que procesar...");
+//                }
+//            } else {
+//                alert('Error al actualizar el estado de la Solicitud')
+//            }
+//        }
+//    });
+}
+
+//
+////Fin Funcion Demanda
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //////////////////////////*************FUNCIONES PARA EL MANEJO DE CADENAS ELININACION DE ESPACIOS EN BLANCO **********//////////////////////
 function trim( str ) 
 {
@@ -167,7 +304,7 @@ function BuscarDatos()
 		//instanciamos el objetoAjax
 	ajax=objetoAjax();
 		//archivo que realizar� la operacion ->actualizacion.php
-	ajax.open("POST", "ctrLab_ReporteTabuladores.php",true);
+	ajax.open("POST", "ctrLab_ReporteDemanda.php",true);
 		//muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores
@@ -206,35 +343,6 @@ function VistaPrevia()
  }
  
 
-function LlenarComboExamen(idarea)
-{
- 	ajax=objetoAjax();
-	opcion=2;
-   	ajax.open("POST", "ctrLab_ReporteTabuladores.php",true);
-		  //muy importante este encabezado ya que hacemos uso de un formulario
-	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-		  //enviando los valores
-                 // alert (idarea);
-	ajax.send("opcion="+opcion+"&idarea="+idarea);	 
-	ajax.onreadystatechange=function() 
-	{
-		
-		if (ajax.readyState == 4){//4 The request is complete
-			if (ajax.status == 200){//200 means no error.
-	  			//respuesta = ajax.responseText;	
-	 			// alert (respuesta)
-		 document.getElementById('divExamen').innerHTML = ajax.responseText;
-                 // $('#cmbExamen').multiselect();
-                   $("#cmbExamen").select2({
-                     placeholder: "--Seleccione examenes--",
-                     allowClear: true,
-                     dropdownAutoWidth: true
-                  });
-			}	  	
-			
-   		}
-   	}
-}
 
 
 function Cerrar(){

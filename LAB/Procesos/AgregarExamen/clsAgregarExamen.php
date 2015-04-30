@@ -137,7 +137,8 @@ function BuscarExamen($idsolicitudPa,$idexamen,$lugar){
    //usamos el metodo conectar para realizar la conexion
 	if($con->conectar()==true){
 	   $query = "SELECT count(*) FROM sec_detallesolicitudestudios 
-                     WHERE id_conf_examen_estab='$idexamen' AND idsolicitudestudio=$idsolicitudPa";
+                     WHERE id_conf_examen_estab='$idexamen' AND idsolicitudestudio=$idsolicitudPa"
+                   . "and estadodetalle!=6 and id_estado_rechazo!=1;";
 	   /*"SELECT count(*) FROM sec_detallesolicitudestudios 
 				 WHERE IdExamen='$idexamen' AND IdEstablecimiento=$lugar AND IdSolicitudEstudio=$idsolicitud";*/
 			 

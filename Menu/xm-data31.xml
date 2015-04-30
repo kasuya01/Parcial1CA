@@ -7,31 +7,32 @@
           delaySubClose="500" 
          
           shadowOffset="1"
-		  overlapHack="true">
-    <menu>
-		<menu labelText="PROCESOS">
-			<item labelText="Ingresar Solicitud" url="../../../LAB/Procesos/Recepcion/RecepcionLab.php"/>	     
-			<item labelText="Recepción de Solicitudes" url="../../../LAB/Procesos/RecepcionSolicitud/Proc_RecepcionSolicitud.php"/>
-		</menu>
-		<sep/>
+          overlapHack="true">
+   <menu>
+      <menu labelText="PROCESOS">
+         <item labelText="Ingresar Solicitud" url="../../../LAB/Procesos/Recepcion/RecepcionLab.php"/>	     
+         <item labelText="Recepción de Solicitudes" url="../../../LAB/Procesos/RecepcionSolicitud/Proc_RecepcionSolicitud.php"/>
+      </menu>
+      <sep/>
 		
-		<menu labelText="CONSULTAS">
-			<item labelText="Consulta Resultados" url= "../../../LAB/Consultas_Reportes/Consulta_Resultados/ConsultaResultados.php"/>
-			<item labelText="Consulta Solicitudes por Paciente" url= "../../../LAB/Consultas_Reportes/ConsultaSolicitudesPaciente/SolicitudPorPaciente.php"/>
-			<item labelText="Consulta Citas Programadas" url= "../../../LAB/Consultas_Reportes/ConsultaCitas/CitasPorPaciente.php"/> 
-		</menu>
-		<sep/>
+      <menu labelText="CONSULTAS">
+         <item labelText="Consulta Resultados" url= "../../../LAB/Consultas_Reportes/Consulta_Resultados/ConsultaResultados.php"/>
+         <item labelText="Consulta Solicitudes por Paciente" url= "../../../LAB/Consultas_Reportes/ConsultaSolicitudesPaciente/SolicitudPorPaciente.php"/>
+         <item labelText="Consulta Citas Programadas" url= "../../../LAB/Consultas_Reportes/ConsultaCitas/CitasPorPaciente.php"/> 
+      </menu>
+      <sep/>
 		
-		<menu labelText="REPORTES">
-			<item labelText="Reporte Resultados" url= "../../../LAB/Reportes/Reporte_Resultados/ReporteResultados.php"/> 
-		</menu>
-		<sep/>
-            <menu labelText="CITAS">
-		<item labelText="Citas de Laboratorio" url="../../../LAB/Procesos/CitasServicio/busquedaexp.php"/>
-            </menu><sep/>  
-			<item labelText="CAMBIAR CLAVE" url="../../../LAB/Procesos/CambioClave/CambioClave.php"/>
-		<sep/>
-			<item labelText="CERRAR SESIÓN" url="../../../cerrarsesion.php"/>
-		<sep/>
-    </menu>
+      <menu labelText="REPORTES">
+         <item labelText="Reporte Resultados" url= "../../../LAB/Reportes/Reporte_Resultados/ReporteResultados.php"/> 
+      </menu>
+      <sep/>
+      <menu labelText="CITAS">
+         <item labelText="Citas de Laboratorio" url="../../../LAB/Procesos/CitasServicio/busquedaexp.php"/>
+      </menu>
+      <sep/>  
+      <item labelText="CAMBIAR CLAVE" url="../../../LAB/Procesos/CambioClave/CambioClave.php"/>
+      <sep/>
+      <item labelText="CERRAR SESIÓN" url="../../../cerrarsesion.php"/>
+      <sep/>
+   </menu>
 </menuinfo>
