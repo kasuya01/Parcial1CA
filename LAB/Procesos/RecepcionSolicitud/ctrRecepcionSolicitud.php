@@ -73,7 +73,8 @@ switch ($opcion) {
                       SET estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = '$idestado' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')), 
                       f_tomamuestra= '$hdnfechatmx_',
                       id_estado_rechazo=$hdnvalidarmuestra_,
-                      id_posible_observacion=$hdncmbrechazo_
+                      id_posible_observacion=$hdncmbrechazo_,
+                         f_estado=current_date
                                  WHERE idsolicitudestudio = $idsolicitud "
                           . "AND idestablecimiento = $lugar
                            and id= $hdniddeatalle_";
@@ -106,8 +107,9 @@ switch ($opcion) {
                   $query1 = "UPDATE sec_detallesolicitudestudios 
                       SET estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = '$idestado' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')), "
                           . "f_tomamuestra= '$hdnfechatmx_',"
-                          . " id_estado_rechazo=$hdnvalidarmuestra_,
-                              id_posible_observacion=$hdncmbrechazo_"
+                          . "id_estado_rechazo=$hdnvalidarmuestra_,
+                             id_posible_observacion=$hdncmbrechazo_,  "
+                          . "f_estado=current_date"
                           . "WHERE idsolicitudestudio = $idsolicitud "
                           . "AND idestablecimiento = $lugar
                            and id= $hdniddeatalle_";
