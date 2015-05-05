@@ -90,6 +90,7 @@ order by posible_observacion;";
     function buscarTodasSolicitudes($idexpediente, $fechacita, $lugar, $idEstablecimiento) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
+           $idexp=0;
 
             $query = "SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente, 
                              COALESCE(t05.numero,t10.numero) AS numero_expediente,
@@ -127,12 +128,17 @@ order by posible_observacion;";
 
             if($idexpediente !== '') {
                 $where = $where." AND (t05.numero = '$idexpediente' OR t10.numero = '$idexpediente')";
+                $idexp=1;
             }
 
             if($fechacita !== '') {
                 $where = $where." AND t02.fecha = '$fechacita'";
             }
-            
+            else {
+               if ($idexp==0)
+               $where = $where." AND date(t02.fecha) between date(current_date - interval '2 month') and current_date";
+            }
+
             $result = @pg_query($query.$where.$orderBy);
 
             if (!$result)
@@ -258,7 +264,9 @@ order by posible_observacion;";
                              t14.tiposolicitud,
                              t12.id AS iddiagnostico1, 
                              t12.sct_name_es,
-                             t05.conocido_por AS conocidopor
+                             t05.conocido_por AS conocidopor,
+                             t01.id as idhistorial,
+                             0 as referido
                       FROM  sec_historial_clinico                t01
                       INNER JOIN sec_solicitudestudios           t02 ON (t01.id = t02.id_historial_clinico)
                       LEFT  JOIN mnt_empleado                    t03 ON (t03.id = t01.id_empleado)
@@ -307,7 +315,9 @@ order by posible_observacion;";
                              t13.nombre,
                              TO_CHAR(t05.fecha_nacimiento, 'DD/MM/YYYY') AS fechanacimiento,
                              t01.id_establecimiento,
-                             t14.tiposolicitud
+                             t14.tiposolicitud,
+                             t02.id as idhistorial,
+                             1 as referido
                       FROM  sec_solicitudestudios                t01
                       INNER JOIN mnt_dato_referencia           	 t02 ON (t02.id = t01.id_dato_referencia)
                       LEFT  JOIN mnt_empleado                    t03 ON (t03.id = t02.id_empleado)
@@ -543,7 +553,8 @@ order by posible_observacion;";
                              t06.idsubservicio,
                              t02.id AS idsolicitudestudio,
                              t10.idestandar,
-                             t01.id as iddetalle
+                             t01.id as iddetalle, 
+                             t03.id as i_idexamen
                       FROM sec_detallesolicitudestudios 		 t01
                       INNER JOIN sec_solicitudestudios                   t02 ON (t02.id = t01.idsolicitudestudio)
                       INNER JOIN lab_conf_examen_estab 		         t03 ON (t03.id = t01.id_conf_examen_estab)
@@ -650,6 +661,19 @@ order by posible_observacion;";
             $query = "SELECT COUNT(id) AS numero FROM lab_proceso_establecimiento WHERE id_proceso_laboratorio = 3 and activo=true;";
 
             $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
+//Fn para cancelar la solicitud
+    function cancelarsolicitud($cmbrechazoest, $cmbrechazosol, $fechanewcitasol, $observacion, $idsolicitud, $usuario) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+         $query="select lab_cancelarsolicitud($cmbrechazoest, $cmbrechazosol, $fechanewcitasol, $observacion, $idsolicitud, $usuario)";
+              $result= @pg_query($query);
+            
             if (!$result)
                 return false;
             else

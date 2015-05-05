@@ -137,7 +137,8 @@ function BuscarExamen($idsolicitudPa,$idexamen,$lugar){
    //usamos el metodo conectar para realizar la conexion
 	if($con->conectar()==true){
 	   $query = "SELECT count(*) FROM sec_detallesolicitudestudios 
-                     WHERE id_conf_examen_estab='$idexamen' AND idsolicitudestudio=$idsolicitudPa";
+                     WHERE id_conf_examen_estab='$idexamen' AND idsolicitudestudio=$idsolicitudPa"
+                   . "and estadodetalle!=6 and id_estado_rechazo!=1;";
 	   /*"SELECT count(*) FROM sec_detallesolicitudestudios 
 				 WHERE IdExamen='$idexamen' AND IdEstablecimiento=$lugar AND IdSolicitudEstudio=$idsolicitud";*/
 			 
@@ -182,7 +183,7 @@ function insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo
             "INSERT  INTO sec_detallesolicitudestudios (idsolicitudestudio,idexamen,
 					id_conf_examen_estab,indicacion,estadodetalle,
 					idtipomuestra,idorigenmuestra,observacion,idestablecimiento,idestablecimientoexterno,
-					    idempleado,idusuarioreg,fechahorareg,'f_tomamuestra')
+					    idempleado,idusuarioreg,fechahorareg,'f_tomamuestra', id_estado_rechazo, f_estado)
 					    VALUES($idsolicitudPa,
                                                 $idexamen1,
 					      $IdExamen,
@@ -194,7 +195,7 @@ function insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo
 					      $lugar,
 					      $IdEstab,
 					      $Empleado,
-					      $usuario,NOW(),$fechatomamuestra)";
+					      $usuario,NOW(),$fechatomamuestra,1, current_date)";
             
             $result = @pg_query($query);
     //echo $query;
@@ -220,14 +221,14 @@ function insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo
             "INSERT  INTO sec_detallesolicitudestudios (idsolicitudestudio,idexamen,
 					id_conf_examen_estab,indicacion,estadodetalle,
 					idtipomuestra,observacion,idestablecimiento,idestablecimientoexterno,
-					    idempleado,idusuarioreg,fechahorareg,f_tomamuestra)
+					    idempleado,idusuarioreg,fechahorareg,f_tomamuestra,id_estado_rechazo, f_estado)
 					    VALUES($idsolicitudPa,$idexamen1,$IdExamen,'$indicacion', 5,
 					      $IdTipo,
 					      '$Observa',
 					      $lugar,
 					      $IdEstab,
 					      $Empleado,
-					      $usuario,NOW(),'$fechatomamuestra')";
+					      $usuario,date_trunc('seconds',NOW()),'$fechatomamuestra',1, current_date)";
             
             $result = @pg_query($query);
     //echo $query;
