@@ -122,7 +122,7 @@ if ($nivel==33){
 <table align="center" class="StormyWeatherFormTABLE" >
 	<tr>
     		<td colspan="5" align="center" class="CobaltFieldCaptionTD"><h3><strong>
-Consulta de Citas por Paciente</strong></h3></td>
+Consulta de Citas Programadas</strong></h3></td>
 	</tr>
 	<tr>		
 		<td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</td>

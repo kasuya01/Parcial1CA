@@ -7,6 +7,7 @@
           delaySubClose="500" 
    
           shadowOffset="1"
+
           overlapHack="true">
    <menu>
       <menu labelText="PROCESOS">
@@ -16,13 +17,14 @@
          <!--item labelText="Ingreso de Resultados Pendientes" url="../../../LAB/Procesos/SolicitudesPendientes/Proc_SolicitudesProcesadasPendientes.php"/-->
          <item labelText="Rechazar Muestras" url="../../../LAB/Procesos/RMAutomatizada/Proc_RMAutomatizada.php"/>
          <item labelText="Ractivar Muestras Rechazadas" url="../../../LAB/Procesos/MuestrasRechazadas/Proc_MuestrasRechazadas.php"/>
+
 			
          <!--<item labelText="Muestras Pendientes de Procesar" url="../../../LAB/Procesos/MuestrasPendientes/Proc_MuestrasPendientes.php"/>-->
          <item labelText="Eliminar Resultado" url="../../../LAB/Procesos/EliminarResultados/EliminarResultado.php"/>
          <item labelText="Agregar Examen a Solicitud" url="../../../LAB/Procesos/AgregarExamen/AgregarExamen.php"/>
       </menu>
       <sep/>
-      
+
       <menu labelText="MANTENIMIENTOS">
          <menu labelText="EXÁMENES">
             <item labelText="Exámenes" url="../../Mantenimientos/Lab_Examenes/MntExamenes.php"/>
@@ -63,6 +65,48 @@
          <item labelText="Consulta Muestras Pendientes" url= "../../../LAB/Consultas_Reportes/ConsultaMuestrasPendientes/Proc_ConsultaMuestrasPendientes.php"/>
       </menu>
       <sep/>
+=======
+		<menu labelText="MANTENIMIENTOS">
+			<menu labelText="EXÁMENES">
+				<item labelText="Exámenes" url="../../Mantenimientos/Lab_Examenes/MntExamenes.php"/>
+                                <item labelText="Metodologías por examen" url="../../Mantenimientos/Lab_Metodologia/MntLab_metodologia.php"/>
+				<!--<item labelText="Estándares de Laboratorio" url="../../Mantenimientos/Lab_CodigosEstandar/MntCodigosEstandar.php"/>-->
+				<item labelText="Indicaciones por Examen" url="../../Mantenimientos/Lab_IndicacionesPorExamen/MntIndicacionesPorExamen.php"/>
+				<item labelText="Procedimientos de Exámenes (Plantilla E)" url="../../Mantenimientos/Lab_Procedimientos/MntProcedimientosExamen.php"/>
+				<item labelText="Datos Fijos de resultados de Exámenes (Plantilla A)" url="../../Mantenimientos/MntDatosFijosResultadosExamen/MntDatosFijosResultadosExamen.php"/>
+				<item labelText="Elementos de Exámenes (Plantilla B)" url="../../Mantenimientos/MntElementosExamen/MntElementosExamen.php"/>
+			</menu>	
+			<menu labelText="MUESTRAS">
+				<item labelText="Tipos de Muestra" url="../../Mantenimientos/Lab_TipoMuestra/MntTipoMuestra.php"/>
+				<item labelText="Origenes de Muestra" url="../../Mantenimientos/Mnt_OrigenMuestra/MntOrigenMuestra.php"/>
+				<item labelText="Asignación de Muestras" url="../../Mantenimientos/Lab_TipoMuestrasPorExamen/MntTipoMuestrasPorExamen.php"/>
+			</menu>
+			<menu labelText="BACTERIOLOGÍA">
+				<item labelText="Bacterias" url="../../Mantenimientos/Lab_Bacterias/MntBacterias.php"/>
+				<item labelText="Antibióticos" url="../../Mantenimientos/Lab_Antibioticos/MntAntibioticos.php"/>
+				<item labelText="Observaciones" url="../../Mantenimientos/Lab_Observaciones/MntObservaciones.php"/>
+				<item labelText="Tarjetas VITEK" url="../../Mantenimientos/Lab_TarjetasVITEK/MntTarjetasVITEK.php"/>
+				<item labelText="Antibióticos por Tarjeta (Plantilla C)" url="../../Mantenimientos/Lab_AntibioticosPorTarjetas/MntAntibioticosPorTarjeta.php"/>
+				<item labelText="Cantidades de Tinción (Plantilla D)" url="../../Mantenimientos/Lab_CantidadTincion/MntCantidadTincion.php"/>
+				<item labelText="Elementos de Tinción (Plantilla D)" url="../../Mantenimientos/Lab_ElementosTincion/MntElementosTincion.php"/>
+		 	</menu>
+                        <menu labelText="CATÁLOGOS">
+				<item labelText="Métodologias" url="../../Mantenimientos/ctl_metodologias/MntMetodologia.php"/>
+				<item labelText="Posibles Resultados" url="../../Mantenimientos/ctl_PosResultado/MntPosresultado.php"/>				
+		    </menu>
+		</menu>
+		<sep/>
+		
+		<menu labelText="CONSULTAS">
+                        <item labelText="Consulta Resultados" url="../../../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/>
+			<item labelText="Solicitudes por Servicio" url= "../../../LAB/Consultas_Reportes/Rpt_SolicitudPorServicioPeriodo/SolicitudPorServicioPeriodo.php"/>
+			<item labelText="Consulta Resultados" url= "../../../LAB/Consultas_Reportes/Consulta_Resultados/ConsultaResultados.php"/>
+	     	<item labelText="Consulta Solicitudes por Paciente" url= "../../../LAB/Consultas_Reportes/ConsultaSolicitudesPaciente/SolicitudPorPaciente.php"/>
+			<item labelText="Consulta Muestras Rechazadas" url= "../../../LAB/Consultas_Reportes/ConsultaMuestrasRechazadas/Proc_ConsultaMuestrasRechazadas.php"/>
+			<item labelText="Consulta Muestras Pendientes" url= "../../../LAB/Consultas_Reportes/ConsultaMuestrasPendientes/Proc_ConsultaMuestrasPendientes.php"/>
+		</menu>
+		<sep/>
+>>>>>>> roxy
 		
       <menu labelText="REPORTES">
          <item labelText="Reporte Resultados" url= "../../../LAB/Reportes/Reporte_Resultados/ReporteResultados.php"/>

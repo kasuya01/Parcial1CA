@@ -8,7 +8,8 @@ $area=$_SESSION['Idarea'];
 ?>
 <html>
 <head> 
-<meta http-equiv="Content-type" content="text/html;charset=UTF-8">     
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">  
+
 <title>Mantenimiento de Examenes de Laboratorio</title>
 <script language="JavaScript" type="text/javascript" src="ajax_ElementosExamen.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">

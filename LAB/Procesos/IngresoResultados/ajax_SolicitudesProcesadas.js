@@ -2411,7 +2411,7 @@ function MostrarVistaPreviaPlantillaE()
         idsolicitud = document.getElementById('txtidsolicitud').value;
         estab = document.getElementById('txtestablecimiento').value;
         observacion = document.getElementById('txtobservacion').value;
-        alert(observacion);
+       // alert(observacion);
         idempleado = document.getElementById('cmbEmpleados').value;
         tab = document.getElementById('cmbTabulador').value;
         fechanac = document.getElementById('txtFechaNac').value;
@@ -2433,6 +2433,7 @@ function MostrarVistaPreviaPlantillaE()
                 valores += document.getElementById('txtresultado[' + i + ']').value + "/";
                 codigos += document.getElementById('oidprueba[' + i + ']').value + "/";
                 valores_combos += document.getElementById('totcombo[' + i + ']').value + "/";
+                //alert (valores_combos);
          
             }
         }

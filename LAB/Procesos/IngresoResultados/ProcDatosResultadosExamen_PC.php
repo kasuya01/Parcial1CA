@@ -259,7 +259,8 @@ function RecogeValor() {
 				   	</select>
 				</div>
 			</td>
-                    </tr>   
+                    </tr> 
+                   
                     <tr>
             		<td width="35%" class="StormyWeatherFieldCaptionTD">Resultado</td>
             		<td width="65%" class="StormyWeatherDataTD" colspan="4">
@@ -291,10 +292,10 @@ function RecogeValor() {
                         <td colspan="5" width="100%">
                             <div id="divResPositivo" style="display:none" >
                                 <table class="StormyWeatherFormTABLE" width="100%" >
-                                    <tr>
+                                   <!-- <tr>
                                         <td class="StormyWeatherFieldCaptionTD">Observación:</td>
                                         <td class="StormyWeatherDataTD"><textarea name="txtobservacion" type="text" id="txtobservacion" size="50" cols="50"></textarea></td>
-                                    </tr>
+                                    </tr>-->
                                    
                                     <tr>
                                         <td width="35%" class="StormyWeatherFieldCaptionTD">Organismos</td>

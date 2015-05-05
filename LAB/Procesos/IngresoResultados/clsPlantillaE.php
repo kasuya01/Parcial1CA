@@ -115,19 +115,19 @@ function CambiarEstadoDetalle($iddetalle)
  
  //FUNCI�N PARA CAMBIAR EL ESTADO DE LA SOLICITUD
   function CambiarEstadoSolicitud($idsolicitud){
-  $con = new ConexionBD;
-   if($con->conectar()==true){ 
-	$query="SELECT id,idexamen 
-                FROM sec_detallesolicitudestudios WHERE idsolicitudestudio=$idsolicitud 
-			AND EstadoDetalle <> 7 AND EstadoDetalle <> 6";
-	$detalle=pg_num_rows(pg_query($query));
-	if(empty($detalle)){
-		$query="UPDATE sec_solicitudestudios SET estado= 4 WHERE id=$idsolicitud"	;
-		$result=pg_query($query);		
-		return true;	  
-    }else
-		return false;
-   }
+    $con = new ConexionBD;
+     if($con->conectar()==true){ 
+          $query="SELECT id,idexamen 
+                  FROM sec_detallesolicitudestudios WHERE idsolicitudestudio=$idsolicitud 
+                          AND EstadoDetalle <> 7 AND EstadoDetalle <> 6";
+          $detalle=pg_num_rows(pg_query($query));
+          if(empty($detalle)){
+                  $query="UPDATE sec_solicitudestudios SET estado= 4 WHERE id=$idsolicitud"	;
+                  $result=pg_query($query);		
+                  return true;	  
+      }else
+                  return false;
+     }
    }
 
    function VerificarExistencia($idexamen,$idsolicitud,$iddetalle){
@@ -382,7 +382,7 @@ function LeerProcesoExamen($idexamen,$lugar,$sexo,$idedad)
             AND CASE WHEN fechafin IS NULL THEN CURRENT_DATE ELSE lab_procedimientosporexamen.fechafin END
             AND (lab_procedimientosporexamen.idsexo=$sexo OR lab_procedimientosporexamen.idsexo IS NULL)
             AND (lab_procedimientosporexamen.idrangoedad=$idedad OR lab_procedimientosporexamen.idrangoedad=4) ORDER BY orden";
- //echo $query;
+//echo $query;
 	
 	 $result = @pg_query($query);
 	 

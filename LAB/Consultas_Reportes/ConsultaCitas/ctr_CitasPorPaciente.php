@@ -271,7 +271,7 @@ switch ($opcion)
                             $imprimir= "<table width='80%' border='0'  align='center'>
           <center>
                 <tr>
-                        <td width='500'  align='center'  ><span style='color: #0101DF;'> <h4> TOTAL DE SOLICITUDES:".$NroRegistros."</h4></span></td>
+                        <td width='500'  align='center'  ><span style='color: #0101DF;'> <h4> TOTAL DE PACIENTES CITADOS:".$NroRegistros."</h4></span></td>
                 </tr>
                 </table>
                 
@@ -286,7 +286,7 @@ switch ($opcion)
                             $imprimir= "<table width='80%' border='0'  align='center'>
           <center>
                 <tr>
-                        <td width='500'  align='center'  ><span style='color: #0101DF;'> <h4> TOTAL DE SOLICITUDES:".$NroRegistros."</h4></span></td>
+                        <td width='500'  align='center'  ><span style='color: #0101DF;'> <h4> TOTAL DE PACIENTES CITADOS:".$NroRegistros."</h4></span></td>
                 </tr>
                 </table>
                 
