@@ -39,7 +39,7 @@
 		    </menu>	
 			<menu labelText="EXÁMENES">
 	            <item labelText="Exámenes" url="../LAB/Mantenimientos/Lab_Examenes/MntExamenes.php"/>
-                    <item labelText="Metodología" url="../LAB/Mantenimientos/Lab_Metodologia/MntLab_metodologia.php"/>
+                    <item labelText="Metodologías por examen" url="../LAB/Mantenimientos/Lab_Metodologia/MntLab_metodologia.php"/>
 				<!--<item labelText="Estándares de Laboratorio" url="../LAB/Mantenimientos/Lab_CodigosEstandar/MntCodigosEstandar.php"/>-->
 				<item labelText="Indicaciones por Examen" url="../LAB/Mantenimientos/Lab_IndicacionesPorExamen/MntIndicacionesPorExamen.php"/>
 				<item labelText="Procedimientos de Exámenes (Plantilla E)" url="../LAB/Mantenimientos/Lab_Procedimientos/MntProcedimientosExamen.php"/>
@@ -68,7 +68,7 @@
 	<sep/>
 	<menu labelText="CONSULTAS">
 	  	<item labelText="Solicitudes por Servicio" url= "../LAB/Consultas_Reportes/Rpt_SolicitudPorServicioPeriodo/SolicitudPorServicioPeriodo.php"/>
-	  	<item labelText="Consulta e Impresión de Resultados" url="../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/>
+	  	<item labelText="Consulta Resultados" url="../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/>
                       <!--url= "../LAB/Consultas_Reportes/Consulta_Resultados/ConsultaResultados.php"/>-->
                 <item labelText="Consulta Solicitudes por Paciente" url= "../LAB/Consultas_Reportes/ConsultaSolicitudesPaciente/SolicitudPorPaciente.php"/>
 		<item labelText="Consulta Citas Programadas" url= "../LAB/Consultas_Reportes/ConsultaCitas/CitasPorPaciente.php"/>

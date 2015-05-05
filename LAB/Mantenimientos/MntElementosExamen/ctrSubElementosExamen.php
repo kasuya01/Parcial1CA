@@ -49,15 +49,15 @@ switch ($opcion)
 	case 2:  //MODIFICAR   
 		$idsubelemento=$_POST['idsubelemento'];
 		//$unidad=$_POST['unidad'];
-		$subelemento=$_POST['subelemento'];
-                $unidad=(empty($_POST['unidad'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidad']) . "'"; 
+		$subelemento=utf8_encode($_POST['subelemento']);
+                $unidad=(empty($_POST['unidad'])) ? 'NULL' : "'" . pg_escape_string(utf8_encode($_POST['unidad'])) . "'"; 
                 $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";        
                 $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'"; 
                 $rangoini=(empty($_POST['rangoini'])) ? 0 : "'" . pg_escape_string($_POST['rangoini']) . "'";
                 $rangofin=(empty($_POST['rangofin'])) ? 0 : "'" . pg_escape_string($_POST['rangofin']) . "'";
                 $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
 		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";   
-              
+           //   echo $subelemento;
 		//echo $rangoini."-".$rangofin;
 		if ($objdatos->actualizar($idsubelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad)==true) 
                    //&& ($Clases->actualizar_labo($idsubelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad)==true)){

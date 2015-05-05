@@ -44,6 +44,7 @@ switch ($opcion) {
 						</tr>";
 				$pos=0;
 				$posele=0;
+                                /*asort($valores[58],SORT_NUMERIC);*/
 			while($row = pg_fetch_array($consulta)) { //ELEMENTOS
                             if($row['subelemento'] === "S") {
 			   	$imprimir.="<tr>
@@ -175,7 +176,10 @@ switch ($opcion) {
                                                        $imprimir.= "<select id='txtresultadosub[".$pos."]' name='txtresultadosub[".$pos."]'  size='1' style='width:260px'>
                                                                     <option value='0' >--Seleccione Resultado--</option>";
                                                     $con_result=$objdatos->leer_posibles_resultados($rowsub['idsubelemento']);
-                                                    while ($row_result=pg_fetch_array($con_result)) {
+                                                $orden= pg_fetch_all($con_result);//print_r($orden);
+                                                     /*asort($valores[58],SORT_NUMERIC);*/
+                                                $orden1=asort($orden,SORT_NUMERIC);
+                                                    foreach ($orden as $row_result) {
                                                         $imprimir.="<option value='" . $row_result['id_posible_resultado'] . "'>" . htmlentities($row_result['posible_resultado']) . "</option>";
                                                     }   
                                                      
@@ -549,7 +553,7 @@ switch ($opcion) {
 		        	</tr>
                             </table>";
 
-		   $imprimir.="<br>"
+		   $imprimir.=""
                          . "<table width='100%' border='0' align='center' cellspacing='0'>";
 		   $imprimir.= "<tr>
                                     <td width='25%'></td>

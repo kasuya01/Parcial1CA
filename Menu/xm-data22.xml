@@ -11,7 +11,7 @@
     <menu>
         <menu labelText="PROCESOS">
 			<item labelText="Recepción de Solicitudes" url="../../../LAB/Procesos/RecepcionSolicitud/Proc_RecepcionSolicitud.php"/>
-                      <item labelText="Recepción de Solicitudes en Área" url="../../../LAB/Procesos/SolicitudesPorArea/Proc_SolicitudesPorArea.php"/>
+                        <item labelText="Recepción de Solicitudes en Área" url="../../../LAB/Procesos/SolicitudesPorArea/Proc_SolicitudesPorArea.php"/>
 			<item labelText="Ingreso de Resultados" url="../../../LAB/Procesos/IngresoResultados/Proc_SolicitudesProcesadas.php"/>
 			<!--item labelText="Ingreso de Resultados Pendientes" url="../../../LAB/Procesos/SolicitudesPendientes/Proc_SolicitudesProcesadasPendientes.php"/-->
                         <item labelText="Rechazar Muestras" url="../../../LAB/Procesos/RMAutomatizada/Proc_RMAutomatizada.php"/>
@@ -26,7 +26,7 @@
 		<menu labelText="MANTENIMIENTOS">
 			<menu labelText="EXÁMENES">
 				<item labelText="Exámenes" url="../../Mantenimientos/Lab_Examenes/MntExamenes.php"/>
-                                <item labelText="Metodología" url="../../Mantenimientos/Lab_Metodologia/MntLab_metodologia.php"/>
+                                <item labelText="Metodologías por examen" url="../../Mantenimientos/Lab_Metodologia/MntLab_metodologia.php"/>
 				<!--<item labelText="Estándares de Laboratorio" url="../../Mantenimientos/Lab_CodigosEstandar/MntCodigosEstandar.php"/>-->
 				<item labelText="Indicaciones por Examen" url="../../Mantenimientos/Lab_IndicacionesPorExamen/MntIndicacionesPorExamen.php"/>
 				<item labelText="Procedimientos de Exámenes (Plantilla E)" url="../../Mantenimientos/Lab_Procedimientos/MntProcedimientosExamen.php"/>
@@ -55,7 +55,7 @@
 		<sep/>
 		
 		<menu labelText="CONSULTAS">
-                        <item labelText="Consulta e Impresión de Resultados" url="../../../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/>
+                        <item labelText="Consulta Resultados" url="../../../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/>
 			<item labelText="Solicitudes por Servicio" url= "../../../LAB/Consultas_Reportes/Rpt_SolicitudPorServicioPeriodo/SolicitudPorServicioPeriodo.php"/>
 			<item labelText="Consulta Resultados" url= "../../../LAB/Consultas_Reportes/Consulta_Resultados/ConsultaResultados.php"/>
 	     	<item labelText="Consulta Solicitudes por Paciente" url= "../../../LAB/Consultas_Reportes/ConsultaSolicitudesPaciente/SolicitudPorPaciente.php"/>

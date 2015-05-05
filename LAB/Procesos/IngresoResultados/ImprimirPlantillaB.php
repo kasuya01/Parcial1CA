@@ -53,9 +53,9 @@ $tipomuestra          = $_GET['var21'];
         #boton1{display:none;}
     }
 
-    .Estilo5 {font-family: Helvetica; font-size: 8.5pt}
-    .Estilo6 {font-family: Helvetica; font-size: 7.5pt}
-    .Estilo7 {font-family: Helvetica; font-size: 9.5pt}
+    .Estilo5 {font-family: Helvetica; font-size: 9pt}
+    .Estilo6 {font-family: Helvetica; font-size: 8pt}
+    .Estilo7 {font-family: Helvetica; font-size: 10pt}
     -->
 </style>
 </head>
@@ -95,7 +95,7 @@ $tipomuestra          = $_GET['var21'];
     ?>
                  <div  id="divImpresion1" >
                     <form name="frmimpresion1" >
-                        <table width='100%' align='center' class ='StormyWeatherFormTABLE'  cellspacing="0">
+                        <table width='100%' align='center' class ='StormyWeatherFormTABLE'  cellspacing="0" cellpadding="0">
                             <tr>
                                 <td colspan="1" align="left" width="15%"><img id="Image1" style='width: auto; height: 55px;' src="../../../Imagenes/escudo.png" name="Image1"></td>
                                 <td align="center" colspan="4" width="70%" class="Estilo6">
@@ -267,22 +267,23 @@ $tipomuestra          = $_GET['var21'];
                 
                     
                     
-                        <table width="100%" border="0" align="center"  cellspacing="0" >
+                        <table width="100%" border="0" align="center"  cellspacing="0%" cellpadding="0%" >
                             <tr>
-                                <td colspan="1" align="left" width="25%"><img id="Image1" style='width: auto; height: 55px;' src="../../../Imagenes/escudo.png"  name="Image1"></td>
+                                <td colspan="1" align="left" width="20%"><img id="Image1" style='width: auto; height: 55px;' src="../../../Imagenes/escudo.png"  name="Image1"></td>
                                 <td align="center" colspan="4" width="60%" class="Estilo6">
                                     <p><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
                                     <p><strong><?php echo $row_estab['nombre'] ?></strong></p>
                                     <p><strong>ÁREA DE <?php echo htmlentities($row_area['nombrearea'])?> </strong></p>
                                 </td>
-                                <td colspan="1" align="right" width="10%"><img id="Image3" style='width: auto; height: 55px;' src="../../../Imagenes/paisanito.png" name="Image3"></td>
+                                <td colspan="1" align="right" width="20%"><img id="Image3" style='width: auto; height: 55px;' src="../../../Imagenes/paisanito.png" name="Image3"></td>
                             </tr>
-                            
+                        </table><br>
+                        <table width="100%" border="0" align="center"  cellpadding="0%"  cellspacing="0%" >
                             <tr>
                                 <td colspan="1" class="Estilo5" width="28%" align="left"><strong>Establecimiento Solicitante:</strong></td>
-                                <td colspan="3" class="Estilo6" width="42%" align="left"> <?php echo $row_estabExt['nombre']?></td>
-                                <td colspan="1" class="Estilo5" width="23%" align="left"><strong>Fecha Resultado:</strong></td>
-                                <td colspan="1" class="Estilo6" width="10%" align="left"><?php echo $row_fecha['fecharesultado']?></td>
+                                <td colspan="3" class="Estilo6" width="38%" align="left"> <?php echo $row_estabExt['nombre']?></td>
+                                <td colspan="1" class="Estilo5" width="20%" align="left"><strong>Fecha Resultado:</strong></td>
+                                <td colspan="1" class="Estilo6" width="14%" align="left"><?php echo $row_fecha['fecharesultado']?></td>
                                 
                             </tr>
                             <tr>
@@ -317,11 +318,11 @@ $tipomuestra          = $_GET['var21'];
                                 <td colspan="1" class="Estilo5" align="left"><strong>Validado Por:</strong></td>
                                 <td colspan="5" class="Estilo6" align="left"><?php echo htmlentities($responsable)?></td>
                             </tr>
-                            <!--</table>-->
+                            <tr><td colspan="6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
                             <tr>
-                               <td colspan="6"><br>
+                               <td colspan="6">
                                   
-                                    <table width="100%" border="0" align="center" Cellpadding="0"  cellspacing="0">
+                                    <table width="100%" border="0" align="center" cellpadding="0%"  cellspacing="0%">
                                        <tr>
                                             <td width="25%" colspan="1" class="Estilo5"></td>
                                             <td width="20%" colspan="1" align="justify" class="Estilo5"><strong>Resultado</strong></td>
@@ -347,7 +348,7 @@ $tipomuestra          = $_GET['var21'];
                                             ?>
                                         <tr>
 
-                                            <td width="25%" class="Estilo5" colspan="1" align="justify"><?php echo htmlentities($rowsub['subelemento'])?></td>
+                                            <td width="25%" class="Estilo5" colspan="1" align="justify">&emsp;<?php echo htmlentities($rowsub['subelemento'])?></td>
 
                                               <?php
                                         if($vector_combos[$pos]== NULL){  
@@ -410,20 +411,17 @@ $tipomuestra          = $_GET['var21'];
                                 <td colspan="1" class="Estilo5" width="20%"><strong>Observacion:</strong></td>
                                 <td colspan="5" class="Estilo6" width="80%" align="justify"><?php echo  utf8_encode($observacion)?></td>
                             </tr>
-                            <tr>
-                               <td colspan="6" class="Estilo6"><br>&nbsp;</td>
-                            </tr>
+                            
                             <tr>
                                 <td colspan="6" class="Estilo6">&nbsp;</td>
                             </tr>
                             <tr>
                                 <td colspan="6" class="Estilo6">&nbsp;</td>
                             </tr>
-                            <tr><td colspan="1" class="Estilo6" width='52%'>&nbsp;&nbsp;</td>
-                                <td colspan="1" class="Estilo6" width='6%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SELLO:</td>
-                                <td colspan="1" class="Estilo6" width='6%'>___________&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp</td>
-                                <td colspan="1" class="Estilo6" width='6%'>FIRMA:</td>
-                                <td colspan="2" class="Estilo6"width='10%'>________________&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td>
+                            <tr>
+                                <td colspan="6" class="Estilo6" align='right'>
+                                    <br><br>Sello: _______________________ &nbsp;&nbsp;&nbsp;     Firma: _______________________
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="6">

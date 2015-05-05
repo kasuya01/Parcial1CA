@@ -23,7 +23,7 @@ switch ($opcion)
      //  echo $fecharealiz." * ".$fecharesultado;
 	$consulta=$objdatos->LeerAntibioticos($idtarjeta);
 	$pos=0;
-	$imprimir="<table width='70%' border='0' align='center' class='StormyWeatherFormTABLE'>
+	     $imprimir="<table width='70%' border='0' align='center' class='StormyWeatherFormTABLE'>
 			<tr>
 				<td width='40%' class='StormyWeatherFieldCaptionTD'> CULTIVO CON CUENTA DE COLONIAS</td>
 				<td width='60%' colspan='2' class='StormyWeatherDataTD'>
@@ -38,12 +38,12 @@ switch ($opcion)
 	while($row = pg_fetch_array($consulta))//ELEMENTOS)
 	{
 	    $imprimir.="<tr>
-	    	        	<td width='60%' class='StormyWeatherFieldCaptionTD'>".$row['antibiotico']."</td>
-                                <td width='20%' class='StormyWeatherDataTD'>
+	    	            <td width='60%' class='StormyWeatherFieldCaptionTD'>".$row['antibiotico']."</td>
+                            <td width='20%' class='StormyWeatherDataTD'>
 					<input name='txtresultado[".$pos."]' type='text' id='txtresultado[".$pos."]' >
 					<input name='oidantibiotico[".$pos."]' type='hidden' id='oidantibiotico[".$pos."]' value='".$row['idantibiotico']."'></td>
                                           
-                                <td width='20%' class='StormyWeatherDataTD'> 
+                            <td width='20%' class='StormyWeatherDataTD'> 
                                     <select id='cmbresultado[".$pos."]' name='cmbresultado[".$pos."]'  size='1' style='width:205px'>
                                         <option value='0' >--Seleccione Resultado--</option>";
                                     $con_result = $objdatos->consultar_resultados($row['idantibiotico']);
@@ -52,10 +52,11 @@ switch ($opcion)
                                     }
                                     
 		        $imprimir.="</select>
-                                </td>
-	        	    	
+                            </td>
+	        	   	
                                 
-			</tr>";
+			</tr>
+                       ";
 		$pos=$pos+1;
 	}
 	pg_free_result($consulta);
@@ -65,7 +66,12 @@ switch ($opcion)
                      <input type='hidden' name='txtf_tomamuestra' id='txtf_tomamuestra' disabled='disabled' value='".$f_tomamuestra."' /> ";
 	$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>";
 
-	    $imprimir.="<tr>
+	    $imprimir.="<tr><td class='StormyWeatherDataTD' colspan='3'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr> 
+                        <tr>
+                            <td class='StormyWeatherFieldCaptionTD'>Observación:</td>
+                            <td colspan='2'class='StormyWeatherDataTD'><textarea name='txtobservacion' type='text' id='txtobservacion' size='50' cols='50'></textarea></td>
+                        </tr>
+                <tr>
 				<td width='100%' colspan='3' class='StormyWeatherDataTD'  align='right'>
 				<input type='button' name='Submit' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaC()'>
 				</td>
@@ -180,14 +186,13 @@ switch ($opcion)
                            <tr>
                                   <td colspan='6'>&nbsp;</td>
                            </tr>
+                           <tr>   <td colspan='6'><hr></td>
+                           </tr>
                            <tr>
                                   <td colspan='1'><strong>Resultado:</strong></td>
                                   <td colspan='5' align='left'>Positivo</td>
                            </tr>
-                           <tr>
-                                <td colspan='1'>Observación:</td>
-                                <td colspan='5' align='left'>".$observacion."</td>
-                           </tr>
+                           
                            <tr>
                                   <td colspan='1'>Organismo:</td>
                                   <td colspan='5' align='left'>".htmlentities($row_nombrebacteria['bacteria'])."</td>
@@ -195,14 +200,12 @@ switch ($opcion)
                            <tr>
                                   <td colspan='1' ><strong>Cultivo con cuenta de Colonias:</strong></td>
                                   <td colspan='5' align='left' >".htmlentities($cantidad)."</td>
-                           </tr>
-                           <tr>
-                                  <td colspan='6'>&nbsp;</td>
                            </tr>";
 
-               $imprimir.="<tr>
+               $imprimir.="<tr><td colspan='6'><hr></td></tr>
+                            <tr>
                                 <td colspan='6'>
-                                   <table width='60%' border='0' align='left' cellspacing='0'>
+                                    <table width='60%' border='0' align='left' cellspacing='0'>
                                         <tr>
                                            <td width='40%' >ANTIBIOTICO</td>
                                            <td width='20%' >LECTURA</td>
@@ -214,17 +217,17 @@ switch ($opcion)
 
                            while($row = pg_fetch_array($consulta))//ELEMENTOS)
                            {
-                           $imprimir.="<tr>
-                                            <td width='40%'>".$row['antibiotico']."</td>
+                            $imprimir.="<tr>
+                                            <td width='40%'>&emsp;".$row['antibiotico']."</td>
                                             <td width='20%'>".htmlentities($vector_valores[$pos]).
-                                                   "<input name='oidantibiotico[".$pos."]' type='hidden' id='oidantibiotico[".$pos."]' value='".$row['idantibiotico']."'>
+                                               "<input name='oidantibiotico[".$pos."]' type='hidden' id='oidantibiotico[".$pos."]' value='".$row['idantibiotico']."'>
                                             </td>";
                           // echo $vector_interpretacion[$pos];
                                             $consulta_nombre=$objdatos->nombre_resultado($vector_interpretacion[$pos]);
                                             $row_nombre = pg_fetch_array($consulta_nombre);
                                             
                              $imprimir.="   <td width='40%'>".htmlentities( $row_nombre[0])."</td>
-                                       </tr>";
+                                        </tr>";
                                            $pos=$pos+1;
                            }
                                    pg_free_result($consulta);
@@ -232,9 +235,14 @@ switch ($opcion)
                                     $imprimir.= "<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
                                                  <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
 
-                            $imprimir.="<tr>
+                           $imprimir.=" <tr>
                                             <td colspan='6'>&nbsp;</td>
                                         </tr>
+                                        <tr>
+                                            <td colspan='1'>Observación:</td>
+                                            <td colspan='5' align='left'>".$observacion."</td>
+                                        </tr>
+                                       
                                         <tr>
                                             <td colspan='6'>
                                                <input type='button' name='Guardar'  id='Guardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaC()'\>
@@ -243,7 +251,7 @@ switch ($opcion)
                                                <input type='button' id='btnSalir' value='cerrar' onclick='Cerrar()'
                                             </td>
                                         </tr>
-                                     </table>
+                                    </table>
                                   </td>
                               </tr>
                            </table>";
