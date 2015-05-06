@@ -63,6 +63,8 @@ $obj = new clsReporteDemanda();
                   dropdownAutoWidth: true
                });
             });
+            
+            
 
          </script>
          <style type="text/css">
@@ -196,12 +198,12 @@ $obj = new clsReporteDemanda();
                                                      <select id="cmbArea" name="cmbArea" size="1" onChange="BuscarExamen(this.value)"> >
                                                              <option value="0" >--Seleccione un &Aacute;rea--</option>
                      <?php
-                     include ("clsReporteTabuladores.php");
-                     $obj = new clsReporteTabuladores;
-                     $consulta = $obj->consultaractivas($lugar);
-                     while ($row = mysql_fetch_array($consulta)) {
-                        echo "<option value='" . $row['IdArea'] . "'>" . $row['NombreArea'] . "</option>";
-                     }
+//                     include ("clsReporteTabuladores.php");
+//                     $obj = new clsReporteTabuladores;
+//                     $consulta = $obj->consultaractivas($lugar);
+//                     while ($row = mysql_fetch_array($consulta)) {
+//                        echo "<option value='" . $row['IdArea'] . "'>" . $row['NombreArea'] . "</option>";
+//                     }
                      ?>		  
                                                      </select>
                                              </td>
@@ -234,10 +236,86 @@ $obj = new clsReporteDemanda();
                              </table>-->
                      </form>
 
-
+ <div class="col-md-9" style="float:center; width: 65%">
                      <div id="divBusqueda">
+                        <?php
+//                       $var="1|2,3|1";
+//                       echo $var.'<br>';
+//                       $var1=explode(",", $var);
+//                        echo $num_tags = count($var1);
+//                        for ($i=0; $i<$num_tags; $i++){
+//                            $fin=explode("|", $var1[$i]);
+//                            echo 'i: '.$i.'  --Var: '.$var1[$i].'<br>';
+//                            echo 'fin1: '.$fin[0].' fin2: '.$fin[1].'<br>';
+//                        }
+//                       
+                        ?>
+<!--             
+          
+               <div class="panel panel-default">
+               <div class="panel-body">
 
+                    <div class="container">
+                       <h3>Reportes de demanda insatisfecha</h3>
+                       <div class="panel-group" id="accordion">
+                          <div class="panel panel-primary">
+
+                             <div class="panel-heading" >
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" style="color: white; text-align: left">
+                                   <h4 class="panel-title">
+                                      Total por tipo de demanda insatisfecha
+                                   </h4></a>
+                             </div>
+                             <div id="collapse1" class="panel-collapse collapse in">
+                                <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                                   sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                   quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+                             </div>
+                          </div>
+                          <div class="panel panel-primary">
+                             <div class="panel-heading">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" style="color: white; text-align: left">
+                                <h4 class="panel-title">
+                                  Collapsible Group 2
+                                </h4></a>
+                             </div>
+                             <div id="collapse2" class="panel-collapse collapse">
+                                <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                                   sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                   quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+                             </div>
+                          </div>
+                          <div class="panel panel-primary">
+                             <div class="panel-heading">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" style="color: white; text-align: left">
+                                <h4 class="panel-title">
+                                   Collapsible Group 3
+                                </h4></a>
+                             </div>
+                             <div id="collapse3" class="panel-collapse collapse">
+                                <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                                   sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                   quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+                             </div>
+                          </div>
+                       </div> 
+                    </div>                 
+                 
+               </div>
+             </div>         
+   
+   -->
+
+
+
+                        
+                        
+                     
+                     
+                     </div><!--Fin de divBusqueda-->
                      </div>
+    
+    
                      </body>
                      </html>
    <?php

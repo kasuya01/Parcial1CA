@@ -23,6 +23,152 @@ class clsReporteDemanda
             else
                 return $result;
 	}
+   }//Fin fechamuestra
+   
+   
+ function estadoRechazo()
+   {
+	$con = new ConexionBD;
+    //usamos el metodo conectar para realizar la conexion
+	if($con->conectar()==true){
+         $query = "select *,replace(estado, ' ', '') as rtab from lab_estado_rechazo "
+                    . "where id>1"
+                    . " and habilitado=true"
+                    . " order by id;";
+           // $query;
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+	}
+   }  
+   
+ function posiblesrechazos()
+   {
+	$con = new ConexionBD;
+    //usamos el metodo conectar para realizar la conexion
+	if($con->conectar()==true){
+           $query = "select * from lab_posible_observacion"
+                    . " where  habilitado=true"
+                    . " order by id;";
+           // $query;
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+	}
+   }  
+         
+
+ function getTotalEstado($area, $idarea, $exa, $examenes, $fecha, $d_fechadesde, $d_fechahasta)
+   {
+	$con = new ConexionBD;
+    //usamos el metodo conectar para realizar la conexion
+	if($con->conectar()==true){
+        $query = "select count(*) as cantidad, t02.estado, t02.id
+from sec_detallesolicitudestudios t01
+join lab_estado_rechazo t02 		on (t02.id=t01.id_estado_rechazo)
+join lab_conf_examen_estab t03		on (t03.id=t01.id_conf_examen_estab) 
+join mnt_area_examen_establecimiento t05 on (t05.id=t03.idexamen)
+where case $fecha
+	when 0 then t01.f_estado between date(to_char(current_date, 'YYYY-MM')||'-01') and '$d_fechahasta'
+	else t01.f_estado between '$d_fechadesde' and '$d_fechahasta'
+	end
+and case $area
+	when 0 then t05.id_area_servicio_diagnostico >=1
+	else t05.id_area_servicio_diagnostico=$idarea
+	end
+and case $exa
+	when 0 then t03.id >=1
+	else t03.id in ($examenes)
+	end
+group by t02.estado, t02.id
+having t02.id >1
+order by t02.id;";
+           // $query;
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+	}
+   }         
+
+ function resultadomotivo($area, $idarea, $exa, $examenes, $fecha, $d_fechadesde, $d_fechahasta)
+   {
+	$con = new ConexionBD;
+    //usamos el metodo conectar para realizar la conexion
+	if($con->conectar()==true){
+         $query = "select  posible_observacion, 
+                  count (case when id_estado_rechazo=2 then t02.estado end) as temporal,
+                  count (case when id_estado_rechazo=3 then t02.estado end) as definitivo
+                  from sec_detallesolicitudestudios t01 
+                  join lab_estado_rechazo t02 on (t02.id=t01.id_estado_rechazo) 
+                  join lab_conf_examen_estab t03	on (t03.id=t01.id_conf_examen_estab) 
+                  join lab_posible_observacion t04 on (t04.id=t01.id_posible_observacion)
+                  join mnt_area_examen_establecimiento t05 on (t05.id=t03.idexamen) 
+                  where case $fecha
+                        when 0 then t01.f_estado between date(to_char(current_date, 'YYYY-MM')||'-01') and '$d_fechahasta' 
+                        else t01.f_estado between '$d_fechadesde' and '$d_fechahasta' end 
+                  and case $area 
+                      when 0 then t05.id_area_servicio_diagnostico >=1 
+                      else t05.id_area_servicio_diagnostico=$idarea end 
+                  and case $exa 
+                      when 0 then t03.id >=1 
+                      else t03.id in ($examenes) end 
+                  group by posible_observacion, t04.id
+                  order by t04.posible_observacion;";
+           // $query;
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+	}
+   }         
+         
+
+ function resultadoposobservacion($area, $idarea, $exa, $examenes, $fecha, $d_fechadesde, $d_fechahasta, $idestrecha)
+   {
+	$con = new ConexionBD;
+    //usamos el metodo conectar para realizar la conexion
+	if($con->conectar()==true){
+        $query = "select nombrearea, nombre_examen
+      ,sum(b_ct)::int ct_total
+      ,count(*)::int  ct_distinct_b
+      ,array_to_string(array_agg(id_posible_observacion ||'|' || b_ct), ',') as idposres_cant
+from (
+	select count(*) as b_ct, nombrearea, nombre_examen, id_posible_observacion
+	from sec_detallesolicitudestudios t01  
+	join lab_conf_examen_estab t03		on (t03.id=t01.id_conf_examen_estab) --53
+	join mnt_area_examen_establecimiento t05 on (t05.id=t03.idexamen)
+	join ctl_area_servicio_diagnostico t06 	on (t06.id=t05.id_area_servicio_diagnostico)
+	 where case $fecha
+            when 0 then t01.f_estado between date(to_char(current_date, 'YYYY-MM')||'-01') and '$d_fechahasta'
+            else t01.f_estado between '$d_fechadesde' and '$d_fechahasta'
+            end
+         and case $area
+            when 0 then t05.id_area_servicio_diagnostico >=1
+            else t05.id_area_servicio_diagnostico=$idarea
+            end
+         and case $exa
+            when 0 then t03.id >=1
+            else t03.id in ($examenes)
+            end
+         and t01.id_estado_rechazo =$idestrecha
+        group by nombre_examen, nombrearea, id_posible_observacion 
+        order by nombrearea,nombre_examen, id_posible_observacion) t
+         group by nombrearea, nombre_examen
+         order by nombrearea, nombre_examen;";
+         // $query;
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+	}
    }         
          
          
