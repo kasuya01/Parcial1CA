@@ -50,28 +50,31 @@ function LlenarComboExamen(idarea)
 
 function MostrarReporteDemanda()
 {
-   idarea=$('#cmbArea').val();
-   idexamen=$('#cmbExamen').val();
-   d_fechadesde=$('#d_fechadesde').val();
-   d_fechahasta=$('#d_fechahasta').val();
-  	ajax=objetoAjax();
-  	opcion=1;
-  	ajax.open("POST", "ctrLab_ReporteDemanda.php",true);
-  	//muy importante este encabezado ya que hacemos uso de un formulario
-  	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-  	//enviando los valores
-	ajax.send("opcion="+opcion+"&idarea="+idarea+"&idexamen="+idexamen+"&d_fechadesde="+d_fechadesde+"&d_fechahasta="+d_fechahasta);	
-	ajax.onreadystatechange=function() 
-	{
-		
-		if (ajax.readyState == 4){//4 The request is complete
-			if (ajax.status == 200){//200 means no error.
-				respuesta = ajax.responseText;	
-				// alert (respuesta)
-				document.getElementById('divEstablecimiento').innerHTML = respuesta;
-			}	  	
-		}
-   	}
+   idarea = $('#cmbArea').val();
+   idexamen = $("#cmbExamen").select2('val');
+   d_fechadesde = $('#d_fechadesde').val();
+   d_fechahasta = $('#d_fechahasta').val();
+   ajax = objetoAjax();
+   opcion = 1;
+   ajax.open("POST", "ctrLab_ReporteDemanda.php", true);
+   //muy importante este encabezado ya que hacemos uso de un formulario
+   ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+   //enviando los valores
+   ajax.send("opcion=" + opcion + "&idarea=" + idarea + "&idexamen=" + idexamen
+           + "&d_fechadesde=" + d_fechadesde + "&d_fechahasta="
+           + d_fechahasta);
+   ajax.onreadystatechange = function ()
+   {
+
+      if (ajax.readyState == 4) {//4 The request is complete
+         if (ajax.status == 200) {//200 means no error.
+            respuesta = ajax.responseText;
+            // alert (respuesta)
+            document.getElementById('divBusqueda').innerHTML = respuesta;
+            $('#TabRechazo a:first').tab('show')
+         }
+      }
+   }
 //        
 //         jQuery.ajaxSetup({
 //        error: function(jqXHR, exception) {
