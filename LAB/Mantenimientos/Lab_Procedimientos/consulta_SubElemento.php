@@ -2,6 +2,45 @@
 
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
 $base_url  = $_SESSION['base_url'];
+
+
+    
+  /*  function existeOrden($idexamen){
+          $respuesta=0;
+          $objdatos = new clsLab_Procedimientos;
+          $consulta=$objdatos->llenarrangoproc($idexamen);
+          $hola=array();                      
+                                while ($row=pg_fetch_array($consulta))
+                                    {
+                                       /* if($row['orden']==$index)
+                                        {
+                                            $respuesta=1;
+                                        }else{
+                                           $respuesta=0; 
+                                        }
+                                        echo $row['orden'];  
+                                    $hola[]=$row['orden'];
+                                    }
+                                    
+           return $hola;                        
+        }*/
+  /*  function areglo ($arr,$dato){
+        $respuesta=0;
+        $max = sizeof($arr);
+        for ($index = 0 ; $index<$max; $index++) 
+            {
+               if($dato<>$arr[$index]){
+                   $respuesta=0;//no mostrar
+              }else{
+                    $respuesta=1;//si mostrar
+                    $index=$max;
+                    
+               } 
+            }
+            return $respuesta;    
+    }    */
+    
+
 ;?>
 <html>
     <head>

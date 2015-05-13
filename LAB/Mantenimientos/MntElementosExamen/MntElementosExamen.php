@@ -1,4 +1,6 @@
 <?php session_start();
+include("clsElementosExamen.php");
+$objele=new clsElementosExamen;
 $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
@@ -40,7 +42,11 @@ $base_url  = $_SESSION['base_url'];
 				LimpiarCampos();
 				show_event(1);
 			}
-
+                        function llenarcomboRango(idexa){
+                            //alert(idexa);
+                        LlenarRango(idexa)
+    
+                        }
 		</script>
 		<style type="text/css"></style>
 	</head>
@@ -69,7 +75,7 @@ $base_url  = $_SESSION['base_url'];
 			<tr>
                             <td width="17%" class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
                             <td width="83%" class="StormyWeatherDataTD">
-                                <select id="cmbArea" name="cmbArea" size="1" onChange="MostrarExamenes(this.value);">
+                                <select id="cmbArea" name="cmbArea" style="width:50%" onChange="MostrarExamenes(this.value);" class="form-control height">
                                     <option value="0" >--Seleccione un &Aacute;rea--</option>
                                         <?php
                                             include('../Lab_Areas/clsLab_Areas.php');
@@ -86,7 +92,7 @@ $base_url  = $_SESSION['base_url'];
                             <td width="17%" class="StormyWeatherFieldCaptionTD">Examen </td>
                             <td width="83%"  class="StormyWeatherDataTD">
                                 <div id="divExamen">
-                                    <select name="cmbExamen" id="cmbExamen" > 
+                                    <select name="cmbExamen" id="cmbExamen" style="width:50%" class="form-control height"> 
                                         <option value="0">--Seleccione un Examen--</option>
                                     </select>
 				</div>
@@ -95,12 +101,12 @@ $base_url  = $_SESSION['base_url'];
 			</tr>
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD">Elemento</td>
-                            <td class="StormyWeatherDataTD" ><textarea name="txtelemento" cols="75" rows="2" id="txtelemento"></textarea> 
+                            <td class="StormyWeatherDataTD" ><textarea name="txtelemento" cols="75" rows="2" id="txtelemento"  > </textarea> 
                             </td>
 			</tr>
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD">Unidad</td>
-                            <td class="StormyWeatherDataTD" ><input name="txtunidadele" type="text" id="txtunidadele" value="" size="15">
+                            <td class="StormyWeatherDataTD" ><input name="txtunidadele" type="text" id="txtunidadele" value="" size="15" >
                             </td>
 			</tr>
 			<tr>
@@ -110,7 +116,7 @@ $base_url  = $_SESSION['base_url'];
 			<tr>
                             <td width="17%" class="StormyWeatherFieldCaptionTD">SubElementos</td>
                             <td width="83%" class="StormyWeatherDataTD" >
-                                <select id="cmbSubElementos" name="cmbSubElementos" size="1">
+                                <select id="cmbSubElementos" name="cmbSubElementos" style="width:50%" class="form-control height">
                                     <option value="0" >--Seleccione--</option>
                                     <option value="S" >Si</option>
                                     <option value="N" >No</option>
@@ -133,6 +139,17 @@ $base_url  = $_SESSION['base_url'];
 				</table>
                             </td>				
 			</tr>
+                        <tr>
+                            <td width="17%" class="StormyWeatherFieldCaptionTD">Orden </td>
+                            <td width="83%"  class="StormyWeatherDataTD"> 
+                                <div id="divRango">
+                                    <select   name="cmborden"  id="cmborden" style="width:50%"  class="form-control height"> 
+                                        <option value="0">--Seleccione un Orden--</option>
+                                    
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>    
 			<tr>
                             <td colspan="2" class="StormyWeatherDataTD" align="right">
                                 <input type="button" name="Submit" value="Guardar" onClick="Guardar() ;">

@@ -100,7 +100,7 @@ switch ($opcion)
 				<th aling='center' > Modificar</td>
 				<!-- <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
 				<th > Habilitado              </th>
-                                <th > IdExamen              </th>
+                                
 				<th > Examen                </th>
 				<th > Unidades              </th>	   
 				<th > Valores Normales      </th>
@@ -131,7 +131,7 @@ switch ($opcion)
                    	 <a style ='text-decoration:underline;cursor:pointer;' title='Al dar Click inhabilitará el dato fijo' onclick='Estado(\"".$row['idatofijo']."\",\"".$row['habilitado']."\")'>".$row['habilitado']."</a></td>
                                    
                                   
-				<td>". $row['codigo_examen'] ."</td>
+				
 				<td>".htmlentities($row['nombre_examen'])."</td>";
 			if (empty($row['unidades']))
 				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
@@ -177,7 +177,7 @@ switch ($opcion)
                                             onclick=\"eliminarDato('".$row['id']."')\"> 
                                    </td> -->
                                    <td>". $row['habilitado'] ."</td>
-				<td>". $row['codigo_examen'] ."</td>
+				
 				<td>".htmlentities($row['nombre_examen'])."</td>";
 			if (empty($row['unidades']))
 				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
@@ -407,7 +407,7 @@ switch ($opcion)
 				<th aling='center' > Modificar</td>
 				<!-- <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
 				<th > Habilitado              </th>
-                                <th > IdExamen              </th>
+                                
 				<th > Examen                </th>
 				<th > Unidades              </th>	   
 				<th > Valores Normales      </th>
@@ -437,8 +437,7 @@ switch ($opcion)
                                     <td width='6%'><span style='color: #0101DF;'>
                    	 <a style ='text-decoration:underline;cursor:pointer;' onclick='Estado(\"".$row['idatofijo']."\",\"".$row['habilitado']."\")'>".$row['habilitado']."</a></td>
                                    
-                                  
-				<td>". $row['codigo_examen'] ."</td>
+                                			
 				<td>".htmlentities($row['nombre_examen'])."</td>";
 			if (empty($row['unidades']))
 				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
@@ -484,7 +483,7 @@ switch ($opcion)
                                             onclick=\"eliminarDato('".$row['id']."')\"> 
                                    </td> -->
                                    <td>". $row['habilitado'] ."</td>
-				<td>". $row['codigo_examen'] ."</td>
+				
 				<td>".htmlentities($row['nombre_examen'])."</td>";
 			if (empty($row['unidades']))
 				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
@@ -690,7 +689,7 @@ switch ($opcion)
 				<th aling='center' > Modificar</td>
 				<!-- <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
 				<th > Habilitado              </th>
-                                <th > IdExamen              </th>
+                                
 				<th > Examen                </th>
 				<th > Unidades              </th>	   
 				<th > Valores Normales      </th>
@@ -721,7 +720,7 @@ switch ($opcion)
                    	 <a style ='text-decoration:underline;cursor:pointer;' onclick='Estado(\"".$row['idatofijo']."\",\"".$row['habilitado']."\")'>".$row['habilitado']."</a></td>
                                    
                                   
-				<td>". $row['codigo_examen'] ."</td>
+				
 				<td>".htmlentities($row['nombre_examen'])."</td>";
 			if (empty($row['unidades']))
 				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
@@ -767,7 +766,7 @@ switch ($opcion)
                                             onclick=\"eliminarDato('".$row['id']."')\"> 
                                    </td> -->
                                    <td>". $row['habilitado'] ."</td>
-				<td>". $row['codigo_examen'] ."</td>
+				
 				<td>".htmlentities($row['nombre_examen'])."</td>";
 			if (empty($row['unidades']))
 				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";

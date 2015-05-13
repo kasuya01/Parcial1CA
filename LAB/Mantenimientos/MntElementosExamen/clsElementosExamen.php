@@ -94,20 +94,19 @@ function consultar($lugar){
  {
    $con = new ConexionBD;
    if($con->conectar()==true)
-   {  $query = "SELECT mnt_area_examen_establecimiento.id_area_servicio_diagnostico as idarea,nombrearea,
-                lab_conf_examen_estab.codigo_examen as idexamen,lab_conf_examen_estab.nombre_examen,
-                lab_elementos.id,elemento,
-                unidadelem,observelem,subelemento, lab_elementos.idestablecimiento,
-                to_char(fechaini,'dd/mm/YYYY')AS fechaini,
-                to_char(fechafin,'dd/mm/YYYY')AS fechafin  
-		FROM lab_elementos 
+   {  $query = "SELECT mnt_area_examen_establecimiento.id_area_servicio_diagnostico as idarea,nombrearea, lab_conf_examen_estab.codigo_examen as codexamen,
+                lab_conf_examen_estab.nombre_examen, lab_elementos.id,elemento, unidadelem,observelem,subelemento, lab_elementos.idestablecimiento, 
+                to_char(fechaini,'dd/mm/YYYY')AS fechaini, to_char(fechafin,'dd/mm/YYYY')AS fechafin,ctl_examen_servicio_diagnostico.id as cod,
+                ctl_examen_servicio_diagnostico.idestandar,lab_elementos.orden,lab_conf_examen_estab.id as idexamen  
+                FROM lab_elementos 
                 INNER JOIN lab_conf_examen_estab ON lab_elementos.id_conf_examen_estab=lab_conf_examen_estab.id 
-                INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
-                INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
-                INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
+                INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
+                INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
+                INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
+                INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id=mnt_area_examen_establecimiento.id_examen_servicio_diagnostico
                 WHERE lab_elementos.idestablecimiento=$lugar AND lab_elementos.id=$idelemento";
                 $result = pg_query($query);
-                //echo $query;
+               //echo $query;
      if (!$result)
        return false;
      else
@@ -221,7 +220,7 @@ function consultar($lugar){
      $query = "SELECT mnt_area_examen_establecimiento.id_area_servicio_diagnostico as idarea,nombrearea,lab_conf_examen_estab.codigo_examen as idexamen,lab_conf_examen_estab.nombre_examen, 
                lab_elementos.id as idelemento,Elemento, 
                (case when subelemento='S' then 'SI' else 'NO' end ) as subelemento,lab_elementos.idestablecimiento,unidadelem,
-               observelem, to_char(fechaini,'dd/mm/YYYY') AS fechaini, to_char(fechafin,'dd/mm/YYYY') AS fechafin 
+               observelem, to_char(fechaini,'dd/mm/YYYY') AS fechaini, to_char(fechafin,'dd/mm/YYYY') AS fechafin,lab_elementos.orden 
                FROM lab_elementos 
                INNER JOIN lab_conf_examen_estab ON lab_elementos.id_conf_examen_estab=lab_conf_examen_estab.id 
                INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
@@ -229,9 +228,9 @@ function consultar($lugar){
                INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
                WHERE lab_areasxestablecimiento.condicion='H' AND lab_conf_examen_estab.condicion='H' 
                AND lab_conf_examen_estab.idplantilla=2 AND lab_elementos.idestablecimiento=$lugar
-               ORDER BY lab_elementos.id_conf_examen_estab
+               ORDER BY lab_elementos.id_conf_examen_estab,lab_elementos.orden
                LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
-       // echo $query;
+       //echo $query;
      
 	 $result = pg_query($query);
 	 if (!$result)
@@ -255,7 +254,56 @@ function consultar($lugar){
 		   return $result;
 	   }
 	  } 
+          
+    
 //**********************************FIN FUNCIONES PARA MANEJO DE PAGINACION*****************************************/
+ function existeordenele($idexamen){
+         $con = new ConexionBD;
+		if ( $con->conectar()==true ) {
+			$query = "SELECT max(orden)+1 FROM lab_elementos where id_conf_examen_estab=$idexamen";
+			$result = pg_query( $query );
+                                      
+                    while ($row=pg_fetch_array($result))
+                    {
+                       $hola=$row[0];
+                    }
+                                    
+                    return $hola;          
+                    
+                }              
+ }
+ 
+ 
+ 
+ function llenarrangoele($idexamen) {
+	$con = new ConexionBD;
+	//usamos el metodo conectar para realizar la conexion
+	if ( $con->conectar()==true ) {
+          echo $query ="SELECT orden  
+                    FROM lab_elementos
+                    WHERE id_conf_examen_estab=$idexamen
+                    ORDER BY orden asc";
+
+	$result = @pg_query( $query );
+	if ( !$result )
+            return false;
+	else
+            return $result;
+	}
+ }
+ 
+ function Rangosele($idelemento) {
+		$con = new ConexionBD;
+		if ( $con->conectar()==true ) {
+			$query = "SELECT orden FROM lab_elementos where id=$idelemento";
+			$result = pg_query( $query );
+			if ( !$result )
+				return false;
+			else
+				return $result;
+		}
+
+	}
  
 }//CLASE
 /*

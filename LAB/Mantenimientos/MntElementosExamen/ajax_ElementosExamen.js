@@ -400,12 +400,13 @@ function show_event(Pag)
 }
 
 function show_subelemento(Pag,idelemento)
-{
+{ //alert(idelemento);
 	opcion=4;
 	idsubelemento="";
 	subelemento="";
 	elemento="";
 	unidad="";
+       // alert(idelemento);
 	//alert(idelemento);
 	ajax=objetoAjax();
 	ajax.open("POST", 'ctrSubElementosExamen.php', true);
@@ -454,10 +455,54 @@ function MostrarSubElementos()
   idelemento=document.frmModificar.idelemento.value;
   //alert(idelemento);
   elemento=document.frmModificar.txtelemento.value;
-  
+
+  examen=document.frmModificar.txtexamen.value;
+  idexamen=document.frmModificar.idexamen.value;
+  cod=document.frmModificar.cod.value;
+  //alert(idexamen);
   ventana_secundaria = window.open("MntSubElementosExamen.php?var1="+idelemento+
-			"&var2="+escape(elemento),"Resultados","width=1100,height=900,menubar=no,scrollbars=yes") ;
+    "&var2="+escape(elemento)+"&var3="+examen+"&var4="+idexamen+"&var5="+cod,"Resultados","width=1100,height=900,menubar=no,scrollbars=yes") ;
    
+}
+
+function LlenarRangoSub(idelemento)
+{
+	var opcion=11;
+   
+	 //instanciamos el objetoAjax
+	ajax=objetoAjax();
+	//archivo que realizar� la operacion ->actualizacion.php
+	ajax.open("POST", "ctrSubElementosExamen.php",true);
+	//muy importante este encabezado ya que hacemos uso de un formulario
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	//enviando los valores
+	ajax.send("idelemento="+idelemento+"&opcion="+opcion);
+	ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+			//mostrar los nuevos registros en esta capa
+			document.getElementById('divRango').innerHTML = ajax.responseText;
+		}
+	}	
+}
+
+function LlenarRango(idexa)
+{
+	var opcion=11;
+   
+	 //instanciamos el objetoAjax
+	ajax=objetoAjax();
+	//archivo que realizar� la operacion ->actualizacion.php
+	ajax.open("POST", "ctrElementosExamen.php",true);
+	//muy importante este encabezado ya que hacemos uso de un formulario
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	//enviando los valores
+	ajax.send("idexa="+idexa+"&opcion="+opcion);
+	ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+			//mostrar los nuevos registros en esta capa
+			document.getElementById('divRango').innerHTML = ajax.responseText;
+		}
+	}	
 }
 
 function MostrarFormularioNuevo()

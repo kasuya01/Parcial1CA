@@ -186,7 +186,7 @@ case 4:// PAGINACION
                                 <th   aling='center'> Modificar</th>
                                 <!--<th   aling='center'> Eliminar</th>-->
                                 <th aling='center' > Habilitado</th>
-                                <th> IdExamen          </th>
+                                <th> Orden        </th>
                                 <th> Examen            </th>
                                 
                                 <th> Procedimiento     </th>
@@ -196,7 +196,8 @@ case 4:// PAGINACION
                                 <th> Rango de Edad     </th>
                                 <th> Fecha Inicio      </th>
                                 <th> Fecha Finalización </th>
-                                <th> Orden </th>
+                                
+
                         </tr>
                    </thead><tbody>
                     </center>";
@@ -223,7 +224,7 @@ case 4:// PAGINACION
 			onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"> </td> -->
                       <td width='6%'><span style='color: #0101DF;'>
                    	 <a style ='text-decoration:underline;cursor:pointer;' onclick='Estado(\"".$row['idlppe']."\",\"".$row['habilitado']."\")'>".$row['cond']."</a></td>
-                    <td>".$row['idexamen']."</td>
+                    <td>".$row['orden']."</td>
                     <td>".htmlentities( $row['nombreexamen'] )."</td>
                    
                     <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
@@ -239,11 +240,11 @@ case 4:// PAGINACION
 		if ( ( empty( $row['fechafin'] ) ) || ( $row['fechafin']=="NULL" ) || ( $row['fechafin']=="00/00/0000" ) )
 			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 		else
-			echo "<td>".$row['fechafin']."</td>
-			          ";
-                 echo "<td>".$row['orden']."</td>
-			          ";
-		echo"</tr> ";
+			echo "<td>".$row['fechafin']."</td>";
+			        
+                
+			        
+		echo "</tr> ";
                      
                  }
                  else {
@@ -258,7 +259,7 @@ case 4:// PAGINACION
 			 <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
 			onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"> </td> -->
                       <td width='6%'>   ".$row['cond']."</td>
-                    <td>".$row['idexamen']."</td>
+                    <td>".$row['orden']."</td>
                     <td>".htmlentities( $row['nombreexamen'] )."</td>
                     <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
                     <td>".htmlentities( $row['unidades'] )."</td>
@@ -275,8 +276,7 @@ case 4:// PAGINACION
 		else
 			echo "<td>".$row['fechafin']."</td>
 			          ";
-                                  echo "<td>".$row['orden']."</td>
-			          ";
+                               //   echo "<td>".$row['orden']."</td>       ";
 		echo"</tr> ";
                 
                 
@@ -560,7 +560,7 @@ case 7: //BUSQUEDA
                                 <th   aling='center'> Modificar</th>
                                 <th aling='center' > Habilitado</th>
                                 <!--<th   aling='center'> Eliminar</th>-->
-                                <th> IdExamen          </th>
+                                <th> Orden          </th>
                                 <th> Examen            </th>
                                 <th> Procedimiento     </th>
                                 <th> Unidades          </th>
@@ -569,7 +569,7 @@ case 7: //BUSQUEDA
                                 <th> Rango de Edad     </th>
                                 <th> Fecha Inicio      </th>
                                 <th> Fecha Finalización </th>
-                                <th> Orden </th>
+                                
                         </tr>
                    </thead><tbody>
                     </center>";
@@ -615,7 +615,7 @@ case 7: //BUSQUEDA
 			onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"> </td> -->
                       <td width='6%'><span style='color: #0101DF;'>
                    	 <a style ='text-decoration:underline;cursor:pointer;' onclick='Estado(\"".$row['idlppe']."\",\"".$row['habilitado']."\")'>".$row['cond']."</a></td>
-                    <td>".$row['idexamen']."</td>
+                    <td>".$row['orden']."</td>
                     <td>".htmlentities( $row['nombreexamen'] )."</td>
                     <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
                     <td>".htmlentities( $row['unidades'] )."</td>
@@ -630,11 +630,9 @@ case 7: //BUSQUEDA
 		if ( ( empty( $row['fechafin'] ) ) || ( $row['fechafin']=="NULL" ) || ( $row['fechafin']=="00/00/0000" ) )
 			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 		else
-			echo "<td>".$row['fechafin']."</td>
-			          ";
-                 echo "<td>".$row['orden']."</td>
-			          ";
-		echo"</tr> ";
+			echo "<td>".$row['fechafin']."</td>";
+                // echo "<td>".$row['orden']."</td>         ";
+		echo "</tr> ";
                      
                  }
                  else {
@@ -647,7 +645,7 @@ case 7: //BUSQUEDA
 			 <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
 			onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"> </td> -->
                       <td width='6%'>   ".$row['cond']."</td>
-                    <td>".$row['idexamen']."</td>
+                    <td>".$row['orden']."</td>
                     <td>".htmlentities( $row['nombreexamen'] )."</td>
                     <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
                     <td>".htmlentities( $row['unidades'] )."</td>
@@ -662,10 +660,8 @@ case 7: //BUSQUEDA
 		if ( ( empty( $row['fechafin'] ) ) || ( $row['fechafin']=="NULL" ) || ( $row['fechafin']=="00/00/0000" ) )
 			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 		else
-			echo "<td>".$row['fechafin']."</td>
-			          ";
-                 echo "<td>".$row['orden']."</td>
-			          ";
+			echo "<td>".$row['fechafin']."</td> ";
+                 //echo "<td>".$row['orden']."</td>";
 		echo"</tr> ";
                      
                  }
@@ -879,7 +875,7 @@ case 8://PAGINACION DE BUSQUEDA
                                 <th   aling='center'> Modificar</th>
                                  <th aling='center' > Habilitado</th>
                                 <!--<th   aling='center'> Eliminar</th>-->
-                                <th> IdExamen          </th>
+                                <th> Orden          </th>
                                 <th> Examen            </th>
                                 <th> Procedimiento     </th>
                                 <th> Unidades          </th>
@@ -888,7 +884,7 @@ case 8://PAGINACION DE BUSQUEDA
                                 <th> Rango de Edad     </th>
                                 <th> Fecha Inicio      </th>
                                 <th> Fecha Finalización </th>
-                                <th> Orden </th>
+                                
                         </tr>
                    </thead><tbody>
                     </center>";
@@ -935,12 +931,12 @@ case 8://PAGINACION DE BUSQUEDA
 			onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"> </td> -->
                       <td width='6%'><span style='color: #0101DF;'>
                    	 <a style ='text-decoration:underline;cursor:pointer;' onclick='Estado(\"".$row['idlppe']."\",\"".$row['habilitado']."\")'>".$row['cond']."</a></td>
-                    <td>".$row['idexamen']."</td>
+                    <td>".$row['orden']."</td>
                     <td>".htmlentities( $row['nombreexamen'] )."</td>
                     <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
                     <td>".htmlentities( $row['unidades'] )."</td>
                     <td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
-		echo "<td>".$row['sexovn']."</td>
+	      echo "<td>".$row['sexovn']."</td>
                     <td>".$row['nombregrupoedad']."</td>";
 		if ( ( $row['fechaini']=="NULL" ) || ( $row['fechaini']=="00/00/0000" ) ||( empty( $row['fechaini'] ) ) )
 			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
@@ -950,10 +946,8 @@ case 8://PAGINACION DE BUSQUEDA
 		if ( ( empty( $row['fechafin'] ) ) || ( $row['fechafin']=="NULL" ) || ( $row['fechafin']=="00/00/0000" ) )
 			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 		else
-			echo "<td>".$row['fechafin']."</td>
-			          ";
-                 echo "<td>".$row['orden']."</td>
-			          ";
+			echo "<td>".$row['fechafin']."</td>";
+                 //echo "<td>".$row['orden']."</td>";
 		echo"</tr> ";
                      
                  }
@@ -967,7 +961,7 @@ case 8://PAGINACION DE BUSQUEDA
 			 <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
 			onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"> </td> -->
                       <td width='6%'>  ".$row['cond']."</td>
-                    <td>".$row['idexamen']."</td>
+                    <td>".$row['orden']."</td>
                     <td>".htmlentities( $row['nombreexamen'] )."</td>
                     <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
                     <td>".htmlentities( $row['unidades'] )."</td>
@@ -982,10 +976,8 @@ case 8://PAGINACION DE BUSQUEDA
 		if ( ( empty( $row['fechafin'] ) ) || ( $row['fechafin']=="NULL" ) || ( $row['fechafin']=="00/00/0000" ) )
 			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 		else
-			echo "<td>".$row['fechafin']."</td>
-			          ";
-                 echo "<td>".$row['orden']."</td>
-			          ";
+			echo "<td>".$row['fechafin']."</td>";
+                 //echo "<td>".$row['orden']."</td>";
 		echo"</tr> ";
                      
                  }

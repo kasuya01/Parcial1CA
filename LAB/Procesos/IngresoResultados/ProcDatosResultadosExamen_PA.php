@@ -347,7 +347,8 @@ $edad=$objdatos->calc_edad($IdHistorial);
                                 <input type="hidden" name="txtnombrearea" id="txtnombrearea" disabled="disabled" size="60" />
                             </td>
                             <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">F. Toma Muestra</td>
-                            <td class="StormyWeatherDataTD" colspan="1"> <?php echo $fechatomamues ;?><input type="hidden" id="fecha_tmuestra" name="f_tmuestra" value="<?php echo $fechatomamues;?>"/>
+                            <td class="StormyWeatherDataTD" colspan="1"> <?php echo $fechatomamues ;?>
+                                <input type="hidden" id="fecha_tmuestra" name="f_tmuestra" value="<?php echo $fechatomamues;?>"/>
                             </td>
                         </tr>
                          <tr>

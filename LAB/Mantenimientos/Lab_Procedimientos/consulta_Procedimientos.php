@@ -145,7 +145,8 @@ $rangoedad=$row['nombregrupoedad'];
                         <div id="divRango">
                             <select   name="cmborden"  id="cmborden"  style="width:50%"  class="form-control height" > 
                                 <option value="0">--Seleccione un Orden--</option>
-                                        <!--disabled="disabled"--><?php
+                                        <!--disabled="disabled"-->
+                                            <?php
                                 $conEdad = $obj->Rangos($idproce);
                                 while($row = pg_fetch_array($conEdad)){
                                 	if($row['orden'] === $orden){
@@ -163,9 +164,8 @@ $rangoedad=$row['nombregrupoedad'];
 
                                                     }
                                             
-                                            
-                                    	//echo "<option value='" . $row['$orden']. "'>". $row['$orden'] . "</option>";
-                                      
+                                         
+                                    	                                     
                                 }
                             ?>    
                                 </select>
@@ -181,7 +181,7 @@ $rangoedad=$row['nombregrupoedad'];
               <?php  
                 if ($habilitado=="f"){
                     
-                    ?>
+                    ?>llenarrangosubele(
                <td nowrap class="StormyWeatherFieldCaptionTD">Posibles Resultado </td>
                          <?php
                          echo "<td class='StormyWeatherDataTD'>

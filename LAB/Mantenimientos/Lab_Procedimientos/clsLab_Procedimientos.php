@@ -61,9 +61,9 @@ class clsLab_Procedimientos {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
 			 $query ="UPDATE lab_procedimientosporexamen SET nombreprocedimiento='$proce', id_conf_examen_estab ='$idexamen', unidades = '$unidades', rangoinicio=$rangoini,
-													rangofin=$rangofin, idusuariomod=$usuario, fechahoramod = NOW(), fechaini = $Fechaini, fechafin = $Fechafin,
-													idsexo = $sexo, idrangoedad = $redad, orden=$cmborden
-		 			 WHERE lab_procedimientosporexamen.id = $idproce AND idestablecimiento = $lugar";
+				  rangofin=$rangofin, idusuariomod=$usuario, fechahoramod = NOW(), fechaini = $Fechaini, fechafin = $Fechafin,
+				  idsexo = $sexo, idrangoedad = $redad, orden=$cmborden
+		 		  WHERE lab_procedimientosporexamen.id = $idproce AND idestablecimiento = $lugar";
 			$result = pg_query( $query );
 
 			//  echo "SIAP   ".$query;
@@ -116,7 +116,7 @@ class clsLab_Procedimientos {
 		}
 
 	}
-        
+     
         function RangosEdades() {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
@@ -270,6 +270,7 @@ class clsLab_Procedimientos {
 		   return $result;
 	   }
 	 }
+         
           function prueba_lab1($nombre){
            
             $con = new ConexionBD;
@@ -438,17 +439,18 @@ class clsLab_Procedimientos {
 		//usamos el metodo conectar para realizar la conexion
 		if ( $con->conectar()==true ) {
 
-			 $query ="SELECT lcee.id AS idexamen, 
+		
+                   $query ="SELECT lcee.id AS idexamen, 
                                             lcee.nombre_examen AS nombreexamen
                                     FROM mnt_area_examen_establecimiento maees
                                     INNER JOIN lab_conf_examen_estab    lcee ON (maees.id = lcee.idexamen)
                                     INNER JOIN lab_plantilla 		lpla ON (lpla.id  = lcee.idplantilla)
                                     WHERE maees.id_area_servicio_diagnostico = $idarea 
-                                    --AND lpla.idplantilla = 'E' 
+                                    AND lpla.id = 5 
                                     AND lcee.condicion='H' 
                                     AND maees.id_establecimiento = $lugar
                                     ORDER BY lcee.nombre_examen";
-
+                        
 			$result = @pg_query( $query );
 			if ( !$result )
 				return false;
@@ -514,9 +516,9 @@ class clsLab_Procedimientos {
 		//usamos el metodo conectar para realizar la conexion
 		if ( $con->conectar()==true ) {
 
-			  $query ="select id, orden  from lab_procedimientosporexamen where id_conf_examen_estab=$idexa";
+	            $query ="select id, orden  from lab_procedimientosporexamen where id_conf_examen_estab=$idexa";
 
-			$result = @pg_query( $query );
+		    $result = @pg_query( $query );
 			if ( !$result )
 				return false;
 			else

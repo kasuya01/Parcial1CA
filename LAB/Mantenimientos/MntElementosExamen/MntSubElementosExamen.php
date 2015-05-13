@@ -44,13 +44,24 @@ function RecogeValor()
                        idelemento = getVars[i].substr(5);
                 if ( getVars[i].substr(0,5) == 'var2=' )
                        elemento = getVars[i].substr(5);
+                if ( getVars[i].substr(0,5) == 'var3=' )
+                       examen = getVars[i].substr(5); 
+                if ( getVars[i].substr(0,5) == 'var4=' )
+                       idexamen = getVars[i].substr(5);
+                if ( getVars[i].substr(0,5) == 'var5=' )
+                       cod = getVars[i].substr(5);      
 
     }
 document.frmnuevo.idelemento.value=idelemento;
 //alert(idelemento);
 document.frmnuevo.txtelemento.value=elemento;
 
+document.frmnuevo.txtexamen.value=examen;
+document.frmnuevo.idexamen.value=idexamen;
+//document.frmnuevo.txtcod.value=cod;
+
 show_subelemento(1,idelemento);
+//llenarcomboRango(cod);
 }
 
 function Cancelar()
@@ -63,21 +74,22 @@ function Cancelar()
         myWindow=window.open(URL, '" + "', 'scrollbars=yes, width=700, height=500, left=100, top = 100');
     }
 
+/*function llenarcomboRango(idelemento){
+    //alert(idexa);
+    LlenarRango(idelemento);
+    
+}*/
 </script>
+
 
 </head>
 
 <body onLoad="RecogeValor();">
-<?/*php 
-session_start();
-$nivel=$_SESSION['NIVEL'];  
-if ($nivel==1){
-	include_once ('../../../PaginaPrincipal/index_laboratorio2.php');}
-if ($nivel==31){
-	include_once ('../../../PaginaPrincipal/index_laboratorio31.php');}
-if ($nivel==33){
-	include_once ('../../../PaginaPrincipal/index_laboratorio33.php');}
-*/?><br>
+    <?php
+        $idelemento=$_GET['var1'];
+        //echo $idele;
+    ?>
+<br>
 
 <table align="center" width="80%">
 <tr>
@@ -88,7 +100,14 @@ if ($nivel==33){
                     <tr>
                         <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3><strong>SubElementos de  Examen</h3></strong>
 			</td>
-                    </tr>	
+                    </tr>
+                    <tr>
+                    	<td class="StormyWeatherFieldCaptionTD">Examen</td>
+			<td colspan="3" class="StormyWeatherDataTD" width="63%">
+                        	<input name="idexamen" type="hidden" id="idexamen">
+                                <input name="txtexamen" type="text" id="txtexamen" value="" size="60" disabled="disabled">
+			</td>
+                    </tr>
                     <tr>
                     	<td class="StormyWeatherFieldCaptionTD" >Elemento</td>
 			<td colspan="3" class="StormyWeatherDataTD" width="63%">
@@ -96,13 +115,12 @@ if ($nivel==33){
 				<input name="txtelemento" type="text" id="txtelemento" value="" size="60" disabled="disabled">
 			</td>
                     </tr>
-                    
-			<tr>
-                            <td  class="StormyWeatherFieldCaptionTD" width="17%">SubElemento</td>
-                            <td colspan="3" class="StormyWeatherDataTD" width="63%"><input name="txtsubelemento" type="text" id="txtsubelemento" size="60">
-                            </td>
-                        </tr>
-                        <tr>
+                    <tr>
+                        <td  class="StormyWeatherFieldCaptionTD" width="17%">SubElemento</td>
+                        <td colspan="3" class="StormyWeatherDataTD" width="63%"><input name="txtsubelemento" type="text" id="txtsubelemento" size="60">
+                        </td>
+                    </tr>
+                    <tr>
                         <td  class="StormyWeatherFieldCaptionTD">Sexo</td>
                         <td colspan="3" class="StormyWeatherDataTD">
                             <select id="cmbSexo" name="cmbSexo" size="1" >
@@ -114,58 +132,85 @@ if ($nivel==33){
                                             echo "<option value='" . $row[0]. "'>". $row[1] . "</option>";
                                         }
                                     ?>        
-                              </select>		  
+                            </select>		  
 			</td>        
-                       </tr>
-                       <tr>
-                            <td class="StormyWeatherFieldCaptionTD">Rango Edad</td>
-                            <td colspan="3" class="StormyWeatherDataTD">
-                                <select id="cmbEdad" name="cmbEdad" size="1" >
-                                    <option value="0" >--Seleccione un Rango de Edad--</option>
+                    </tr>
+                    <tr>
+                        <td class="StormyWeatherFieldCaptionTD">Rango Edad</td>
+                        <td colspan="3" class="StormyWeatherDataTD">
+                            <select id="cmbEdad" name="cmbEdad" size="1" >
+                                <option value="0" >--Seleccione un Rango de Edad--</option>
                                     <?php
                                         $conEdad = $objdatos->RangosEdades();
                                         while($row = pg_fetch_array($conEdad)){
                                             echo "<option value='" . $row[0]. "'>". $row[1] . "</option>";
                                         }
                                     ?>    
-                                </select>		  
-                            </td>        
-                       </tr>
-			<tr>
-			    <td  class="StormyWeatherFieldCaptionTD" width="17%">Unidad</td>
-                            <td  colspan="3" class="StormyWeatherDataTD" width="63%"><input name="txtunidad" type="text" id="txtunidad" size="20">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="4" class="StormyWeatherDataTD" >
-                                <fieldset><legend><span>Rangos</span></legend>
-                                    <table width="200" border="0" align="center" class="StormyWeatherFormTABLE">
-                                        <tr>
-                                            <td class="StormyWeatherFieldCaptionTD">Inicio</td>
-                                            <td class="StormyWeatherDataTD"><input name="txtrangoini" type="text" id="txtrangoini" size="8" ></td>
-                                            <td class="StormyWeatherFieldCaptionTD" >Fin </td>
-                                            <td class="StormyWeatherDataTD"><input name="txtrangofin" type="text" id="txtrangofin" size="8" ></td>
-					</tr>
-                                    </table>
-				</fieldset>               
-                            </td>
-			</tr>
-			<tr>
-                            <td width="10%" class="StormyWeatherFieldCaptionTD">Fecha Inicio</TD>
-                            <td width="35%" class="StormyWeatherDataTD">
-                                <input name="txtFechainicio" type="text" id="txtFechainicio" size="10" >dd/mm/aaaa
-                            </td>
-			    <td  class="StormyWeatherFieldCaptionTD">Fecha Final</TD>
-                            <td  class="StormyWeatherDataTD">
-                                <input name="txtFechaFin" type="text" id="txtFechaFin" size="10" >dd/mm/aaaa
-                            </td>
-			</tr>	
-			<tr>
-                            <td colspan="4" class="StormyWeatherDataTD" align="right">
-                                <input type="button" name="Submit" value="Guardar" onClick="Guardar() ;">
-				<input type="button" name="Submit" value="Cerrar" onClick="window.close() ;">
-                            </td>
-			</tr>
+                            </select>		  
+                        </td>        
+                    </tr>
+                    <tr>
+                        <td  class="StormyWeatherFieldCaptionTD" width="17%">Unidad</td>
+                        <td  colspan="3" class="StormyWeatherDataTD" width="63%"><input name="txtunidad" type="text" id="txtunidad" size="20">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="StormyWeatherDataTD" >
+                            <fieldset><legend><span>Rangos</span></legend>
+                                <table width="200" border="0" align="center" class="StormyWeatherFormTABLE">
+                                    <tr>
+                                        <td class="StormyWeatherFieldCaptionTD">Inicio</td>
+                                        <td class="StormyWeatherDataTD"><input name="txtrangoini" type="text" id="txtrangoini" size="8" ></td>
+                                        <td class="StormyWeatherFieldCaptionTD" >Fin </td>
+                                        <td class="StormyWeatherDataTD"><input name="txtrangofin" type="text" id="txtrangofin" size="8" ></td>
+                                    </tr>
+                                </table>
+                            </fieldset>               
+                        </td>
+                    </tr>
+                    <tr>
+                        <td  class="StormyWeatherFieldCaptionTD">Fecha Inicio</TD>
+                        <td  class="StormyWeatherDataTD">
+                            <input name="txtFechainicio" type="text" id="txtFechainicio" size="10" >dd/mm/aaaa
+                        </td>
+			<td  class="StormyWeatherFieldCaptionTD">Fecha Final</TD>
+                        <td  class="StormyWeatherDataTD">
+                            <input name="txtFechaFin" type="text" id="txtFechaFin" size="10" >dd/mm/aaaa
+                        </td>
+                    </tr>
+                    <tr>
+                        <td  class="StormyWeatherFieldCaptionTD">Orden </td>
+                        <td  class="StormyWeatherDataTD" colspan="3">
+                            <select   name="cmborden"  id="cmborden" style="width:50%"  class="form-control height"  > 
+                                <option value="0">--Seleccione un Orden--</option>
+                                    <?php
+                                    
+                                        $datosDB=0;
+                                        $conOrden = $objdatos->llenarrangosubele($idelemento);
+                                        while($row = pg_fetch_array($conOrden)){
+                                            if($row['orden'] === $orden){
+                                                echo "<option value='" . $orden . "' selected='selected'>" .$orden. "</option>";}
+                                            else{
+                                                $datosDB=$objdatos->existeOrden($idelemento);
+                                            }
+                                        }
+                                        
+                                        for ($index = $datosDB ; $index <=25 ; $index++) 
+                                            {
+                                                echo '<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
+                                            }
+                                                                                         
+                                    ?>  
+                            </select>
+				</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="StormyWeatherDataTD" align="right">
+                            <input type="button" name="Submit" value="Guardar" onClick="Guardar() ;">
+                            <input type="button" name="Submit" value="Cerrar" onClick="window.close() ;">
+                        </td>
+                    </tr>
 		</table>
 		</form>
 		</div>
