@@ -575,7 +575,7 @@ function MostrarVistaPreviaPlantillaC()
         //enviando los valores
         ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idsolicitud=" + idsolicitud +
                 "&idrecepcion=" + idrecepcion + "&iddetalle=" + iddetalle + "&observacion=" + observacion +
-                "&idempleado=" + idempleado + "&valores_antibioticos=" + escape(valores_antibioticos) +
+                "&idempleado=" + idempleado + "&valores_antibioticos=" + encodeURIComponent(valores_antibioticos) +
                 "&codigos_antibioticos=" + codigos_antibioticos + "&idtarjeta=" + idtarjeta +
                 "&idbacteria=" + idbacteria + "&cantidad=" + encodeURIComponent(cantidad) +
                 "&estab=" + estab+"&idobservacion=" + idobservacion + "&fecharealiz=" + fecharealiz +

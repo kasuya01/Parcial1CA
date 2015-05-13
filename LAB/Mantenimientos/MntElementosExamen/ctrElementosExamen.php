@@ -78,6 +78,7 @@ switch ($opcion)
                         <tr>
                             <th aling='center' > Modificar</th>
                             <!--<th aling='center' class='CobaltFieldCaptionTD'> Eliminar</th>-->
+                            <th> Orden          </th>
                             <th> Examen             </th>
                             <th> Elemento           </th>
                             <th> Unidad             </th>
@@ -96,7 +97,8 @@ switch ($opcion)
 				<!--<td aling ='center'> 
 					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 					onclick=\"eliminarDato('".$row['idelemento']."')\"> </td>-->
-				<td>".$row['nombre_examen']."</td>
+				<td>".$row['orden']."</td>
+                                <td>".$row['nombre_examen']."</td>
 				<td>".htmlentities($row['elemento'])."</td>";
 				if (empty($row['unidadelem']))
 					echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
@@ -177,7 +179,7 @@ switch ($opcion)
                          THEN 'SI' 
                          ELSE 'NO' END ) AS subelemento,unidadelem,observelem,
                          to_char(fechaini,'dd/mm/YYYY') AS fechaini,
-                         to_char(fechafin,'dd/mm/YYYY') AS fechafin  
+                         to_char(fechafin,'dd/mm/YYYY') AS fechafin,lab_elementos.orden  
                          FROM lab_elementos  
 			 INNER JOIN lab_conf_examen_estab ON lab_elementos.id_conf_examen_estab=lab_conf_examen_estab.id 
                          INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
@@ -228,12 +230,12 @@ switch ($opcion)
 		}
 		if ($ban==0)
 		{    $query = substr($query ,0,strlen($query)-4);
-			 $query_search = $query. " ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,lab_elementos.id ";
+			 $query_search = $query. " ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,lab_elementos.id,lab_elementos.orden ";
 			 
 		}
 		else {
                         $query = substr($query ,0,strlen($query)-4);
-			$query_search = $query. " ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,lab_elementos.id";
+			$query_search = $query. " ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,lab_elementos.id,lab_elementos.orden";
 		}	
 	//echo $query_search;
 		////para manejo de la paginacion
@@ -247,26 +249,32 @@ switch ($opcion)
 		$consulta= $objdatos->consultarpagbus($query_search,$RegistrosAEmpezar, $RegistrosAMostrar);
 	
 		//muestra los datos consultados en la tabla
-	  echo "<table border = 1 align='center' class='StormyWeatherFormTABLE' width='85%'>
-		      <tr>
-			    <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-			    <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td>
-			    <td class='CobaltFieldCaptionTD'>  Examen </td>
-			    <td class='CobaltFieldCaptionTD'> Elemento </td>
-				<td class='CobaltFieldCaptionTD'> Unidad </td>
-				<td class='CobaltFieldCaptionTD'> Observación</td>
-				<td class='CobaltFieldCaptionTD'> Tiene Sub-Elemento</td>
-				<td class='CobaltFieldCaptionTD'> Fecha Inicio</td>	
-				<td class='CobaltFieldCaptionTD'> Fecha Fin</td>		
-		      </tr>";
+	  echo "<center >
+               <table border = 1 style='width: 90%;'  class='table table-hover table-bordered table-condensed table-white'>
+	           <thead>
+                        <tr>
+                            <th aling='center' > Modificar</th>
+                            <!--<th aling='center' class='CobaltFieldCaptionTD'> Eliminar</th>-->
+                            <th> Orden          </th>
+                            <th> Examen             </th>
+                            <th> Elemento           </th>
+                            <th> Unidad             </th>
+                            <th> Observación        </th>
+                            <th> Tiene Sub-Elemento </th>
+                            <th> Fecha Inicio       </th>	
+                            <th> Fecha Fin          </th>		
+                    	</tr>
+                    </thead><tbody>
+                </center>";
 		while($row = pg_fetch_array($consulta)){
 		echo "<tr>
 		        <td aling='center'> 
 				<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-				onclick=\"pedirDatos('".$row['id']."')\"> </td>
-			    <td aling ='center'> 
+				onclick=\"pedirDatos('".$row['id']."')\"> </td>";
+			   /* <td aling ='center'> 
 				<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-				onclick=\"eliminarDato('".$row['id']."')\"> </td>
+				onclick=\"eliminarDato('".$row['id']."')\"> </td>*/
+                      echo"  <td>".$row['orden']."</td>        
 			    <td>".$row['nombre_examen']."</td>
 			    <td>".htmlentities($row['elemento'])."</td>";
 			    
@@ -339,7 +347,7 @@ switch ($opcion)
                          THEN 'SI' 
                          ELSE 'NO' END ) AS subelemento,unidadelem,observelem,
                          to_char(fechaini,'dd/mm/YYYY') AS fechaini,
-                         to_char(fechafin,'dd/mm/YYYY') AS fechafin  
+                         to_char(fechafin,'dd/mm/YYYY') AS fechafin,lab_elementos.orden,lab_conf_examen_estab.id as idexamen  
                          FROM lab_elementos  
 			 INNER JOIN lab_conf_examen_estab ON lab_elementos.id_conf_examen_estab=lab_conf_examen_estab.id 
                          INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
@@ -407,27 +415,34 @@ switch ($opcion)
 		$consulta= $objdatos->consultarpagbus($query_search,$RegistrosAEmpezar, $RegistrosAMostrar);
 	
 		//muestra los datos consultados en la tabla
-		echo "<table border = 1 align='center' class='StormyWeatherFormTABLE' width='85%'>
-		      <tr>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Modificar</td>
-			   <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td>
-			   <td class='CobaltFieldCaptionTD'> Examen </td>
-			   <td class='CobaltFieldCaptionTD'> Elemento </td>
-			    <td class='CobaltFieldCaptionTD'> Unidad </td>
-				<td class='CobaltFieldCaptionTD'> Observación</td>
-				<td class='CobaltFieldCaptionTD'> Tiene Sub-Elemento</td>
-				<td class='CobaltFieldCaptionTD'> Fecha Inicio</td>	
-				<td class='CobaltFieldCaptionTD'> Fecha Fin</td>	
-		      </tr>";
+		 echo "<center >
+               <table border = 1 style='width: 90%;'  class='table table-hover table-bordered table-condensed table-white'>
+	           <thead>
+                        <tr>
+                            <th aling='center' > Modificar</th>
+                            <!--<th aling='center' class='CobaltFieldCaptionTD'> Eliminar</th>-->
+                            <th> Orden          </th>
+                            <th> Examen             </th>
+                            <th> Elemento           </th>
+                            <th> Unidad             </th>
+                            <th> Observación        </th>
+                            <th> Tiene Sub-Elemento </th>
+                            <th> Fecha Inicio       </th>	
+                            <th> Fecha Fin          </th>		
+                    	</tr>
+                    </thead><tbody>
+                </center>";
 		while($row = pg_fetch_array($consulta)){
 		echo "<tr>
 		           <td aling='center'> 
 				<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-				onclick=\"pedirDatos('".$row['id']."')\"> </td>
-			   <td aling ='center'> 
+				onclick=\"pedirDatos('".$row['id']."')\"> </td>";
+			/*   <td aling ='center'> 
 				<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-				onclick=\"eliminarDato('".$row['id']."')\"> </td>
-			   <td>".$row['nombre_examen']."</td>
+				onclick=\"eliminarDato('".$row['id']."')\"> </td>*/
+                            
+		echo "	   <td>".$row['orden']."</td>
+                           <td>".$row['nombre_examen']."</td>
 			   <td>".htmlentities($row['elemento'])."</td>";
 			   
 			    if (empty($row['unidadelem']))
@@ -494,7 +509,8 @@ switch ($opcion)
 		$consultaex= $objdatos->ExamenesPorArea($idarea,$lugar);
 		//$dtMed=$obj->LlenarSubServ($proce);	
 		
-		$rslts = '<select name="cmbExamen" id="cmbExamen" size="1" >';
+		$rslts = '<select name="cmbExamen" id="cmbExamen"  style="width:50%" class="form-control height" onChange="llenarcomboRango(this.value);">';
+                         
 		$rslts .='<option value="0">--Seleccione un Examen--</option>';
 			
 		while ($rows =pg_fetch_array($consultaex)){
@@ -505,6 +521,68 @@ switch ($opcion)
 		
   		
 	break;
-}
+        case 11:  //LLENAR COMBO DE RANGOS
+	$idexa=$_POST['idexa'];
+          //  echo $idexa; 
+          //  $idexa=$_POST['idexamen'];
+        $rslts='';
+        $datosDB=0;
+           $rslts = '<select name="cmborden" id="cmborden" style="width:50%"  class="form-control height"   >';
+           $rslts .='<option value="0">--Seleccione un Orden--</option>';
+        
+            
+                                     $datosDB=existeOrdenele($idexa);
+                                     
+                                    //echo  $datosDB[3];
+                                        for ($index = 1 ; $index <=25 ; $index++) 
+                                        {
+                                          $rest=areglo ($datosDB,$index);
+                                          if($rest==0){
+                                            $rslts.='<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
+                                          }
+                                            
+                           
+                                        }
+                                
+            $rslts .= '</select>';
+                            echo $rslts;
+	
+                      
 
+	break;
+}
+ function existeOrdenele($idexa){
+          $respuesta=0;
+          $objdatos = new clsElementosExamen;
+          $consulta=$objdatos->llenarrangoele($idexa);
+          $hola=array();                      
+                                while ($row=pg_fetch_array($consulta))
+                                    {
+                                       /* if($row['orden']==$index)
+                                        {
+                                            $respuesta=1;
+                                        }else{
+                                           $respuesta=0; 
+                                        }
+                                        echo $row['orden'];  */
+                                    $hola[]=$row['orden'];
+                                    }
+                                    
+           return $hola;                        
+        }
+    function areglo ($arr,$dato){
+        $respuesta=0;
+        $max = sizeof($arr);
+        for ($index = 0 ; $index<$max; $index++) 
+            {
+               if($dato<>$arr[$index]){
+                   $respuesta=0;//no mostrar
+              }else{
+                    $respuesta=1;//si mostrar
+                    $index=$max;
+                    
+               } 
+            }
+            return $respuesta;    
+    }    
 ?>

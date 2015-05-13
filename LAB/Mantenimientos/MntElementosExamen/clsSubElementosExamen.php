@@ -84,7 +84,8 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
          $con = new ConexionBD;
          if($con->conectar()==true)
          {
-           $query = "SELECT id, nombre FROM ctl_rango_edad";
+           $query = "SELECT id, nombre FROM ctl_rango_edad where cod_modulo='LAB' ORDER BY nombre";
+           
            $result = pg_query($query);
            if (!$result)
              return false;
@@ -93,6 +94,9 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
           }
 
         }
+        
+    
+        
   //CONSULTA LOS REGISTROS
  function consultar($idelemento){
    //creamos el objeto $con a partir de la clase ConexionBD
@@ -121,12 +125,14 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
                to_char(lab_subelementos.fechaini,'dd/mm/YYYY')AS FechaIni, 
                to_char(lab_subelementos.fechafin,'dd/mm/YYYY')AS FechaFin, 
                ctl_sexo.id as idsexo,ctl_sexo.nombre as nombresexo,ctl_rango_edad.id as idedad,
-               ctl_rango_edad.nombre as nombreedad FROM lab_elementos 
+               ctl_rango_edad.nombre as nombreedad,lab_subelementos.orden,lab_conf_examen_estab.nombre_examen 
+               FROM lab_elementos 
                INNER JOIN lab_subelementos ON lab_elementos.id=lab_subelementos.idelemento 
                LEFT JOIN ctl_sexo ON lab_subelementos.idsexo = ctl_sexo.id 
-               INNER JOIN ctl_rango_edad ON lab_subelementos.idedad = ctl_rango_edad.id 
+               INNER JOIN ctl_rango_edad ON lab_subelementos.idedad = ctl_rango_edad.id
+               INNER JOIN lab_conf_examen_estab ON lab_elementos.id_conf_examen_estab=lab_conf_examen_estab.id 
 	       WHERE lab_subelementos.id=$idsubelemento";
-   //echo $query;
+        //$query;
      $result = pg_query($query);
      if (!$result)
        return false;
@@ -135,7 +141,37 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
     }
   }
  
-//FUNCION PARA PBTENER ELEMENTOS DE UN EXAMEN PLANTILLA B
+ /* function RangosSubEle($idelemento) {
+		$con = new ConexionBD;
+		if ( $con->conectar()==true ) {
+			$query = "SELECT orden FROM lab_subelementos where id=$idelemento";
+			$result = pg_query( $query );
+			if ( !$result )
+				return false;
+			else
+				return $result;
+		}
+
+	}*/
+        
+  function existeOrden($idelemento){
+         $con = new ConexionBD;
+		if ( $con->conectar()==true ) {
+			$query = "SELECT max(orden)+1 FROM lab_subelementos where idelemento=$idelemento";
+			$result = pg_query( $query );
+                                      
+                    while ($row=pg_fetch_array($result))
+                    {
+                                       
+                        $hola=$row[0];
+                    }
+                                    
+                    return $hola;          
+                    
+                }              
+    }      
+    
+    //FUNCION PARA PBTENER ELEMENTOS DE UN EXAMEN PLANTILLA B
  function LeerElementosExamen($idexamen)
  {
    $con = new ConexionBD;
@@ -195,15 +231,16 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
                to_char(lab_subelementos.fechafin,'dd/mm/YYYY')AS FechaFin ,
                ctl_sexo.id as idsexo,ctl_sexo.nombre As nombresexo, ctl_rango_edad.id as idedad,
                ctl_rango_edad.nombre AS nombreedad,
-               ARRAY_AGG(lab_subelemento_posible_resultado.id) AS catalogo
+               ARRAY_AGG(lab_subelemento_posible_resultado.id) AS catalogo,lab_subelementos.orden
                FROM lab_elementos 
                INNER JOIN lab_subelementos ON lab_elementos.id=lab_subelementos.idelemento 
                LEFT JOIN ctl_sexo ON lab_subelementos.idsexo = ctl_sexo.id 
                INNER JOIN ctl_rango_edad ON lab_subelementos.idedad = ctl_rango_edad.id
-               LEFT JOIN lab_subelemento_posible_resultado ON lab_subelemento_posible_resultado.id_subelemento = lab_subelementos.id AND lab_subelemento_posible_resultado.habilitado=true
+               LEFT JOIN lab_subelemento_posible_resultado ON lab_subelemento_posible_resultado.id_subelemento = lab_subelementos.id 
+               AND lab_subelemento_posible_resultado.habilitado=true
                WHERE lab_elementos.id=$idelemento 
                GROUP BY lab_subelementos.id,lab_elementos.id,ctl_sexo.id,ctl_rango_edad.id
-               ORDER BY subelemento
+               ORDER BY orden
 	       LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
               // echo $query;
 	 $result = pg_query($query) or die(mysql_error());
@@ -436,7 +473,22 @@ function consultarpagbus($query_search,$RegistrosAEmpezar, $RegistrosAMostrar)
 	   }
 	 }
  
-  
+   function llenarrangosubele($idelemento) {
+	$con = new ConexionBD;
+	//usamos el metodo conectar para realizar la conexion
+	if ( $con->conectar()==true ) {
+           $query ="SELECT  orden  
+                    FROM lab_subelementos
+                    WHERE idelemento=$idelemento
+                    ORDER BY orden asc";
+
+			$result = @pg_query( $query );
+			if ( !$result )
+				return false;
+			else
+				return $result;
+		}
+	}
   
   
 }//CLASE}

@@ -219,7 +219,7 @@ switch ($opcion)
                            {
                             $imprimir.="<tr>
                                             <td width='40%'>&emsp;".$row['antibiotico']."</td>
-                                            <td width='20%'>".htmlentities($vector_valores[$pos]).
+                                            <td width='20%'>".$vector_valores[$pos].
                                                "<input name='oidantibiotico[".$pos."]' type='hidden' id='oidantibiotico[".$pos."]' value='".$row['idantibiotico']."'>
                                             </td>";
                           // echo $vector_interpretacion[$pos];

@@ -330,11 +330,11 @@ ELSE (sec_solicitudestudios.id_expediente) end) as idexpediente
   }
   
   
-  function EliminarResultado($idsolicitud,$iddetalle){
+  function EliminarResultado($idresultado){
      $con = new ConexionBD;
     if($con->conectar()==true)
     {
-         $query ="DELETE FROM lab_resultados WHERE idsolicitudestudio=$idsolicitud AND iddetallesolicitud=$iddetalle";
+         $query ="DELETE FROM lab_resultados WHERE id=$idresultado";
 	 $result = pg_query($query);
 	 if (!$result)
 	   return -1;
@@ -372,7 +372,7 @@ function EliminarResultadoMetodologia($iddetalle){
 
 
   
-    function ObtenerIdDetalleResultado($idresultado){
+function ObtenerIdDetalleResultado($idresultado){
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
@@ -387,7 +387,7 @@ function EliminarResultadoMetodologia($iddetalle){
  }
  
  
-   function ObtenerIdResultado($idsolicitud,$iddetalle){
+function ObtenerIdResultado($idsolicitud,$iddetalle){
         $con = new ConexionBD;
         if($con->conectar()==true)
         {
@@ -428,7 +428,7 @@ function EliminarResultadoMetodologia($iddetalle){
 		return $result;
   }
   }
-  
+  /*Elimina el Resultado de  una Tarjeta Vitek*/
  function EliminarResultadoTarjeta($iddetalleres){
   $con = new ConexionBD;
 	if($con->conectar()==true)
@@ -443,7 +443,23 @@ function EliminarResultadoMetodologia($iddetalle){
         }
   }
  
- /*Funcion para Actualizar el estado del detalla de la solicitud */
+  /* Función para Eliminar el resultado de la mertodología de una prueba*/
+  function Eliminar_metodologia($iddetalleres){
+      $con = new ConexionBD;
+	if($con->conectar()==true)
+	{
+		$query ="DELETE FROM lab_resultado_metodologia 
+                         WHERE id_detallesolicitudestudio=$iddetalleres";
+		$result = pg_query($query);
+		if (!$result)
+			return -1;
+		else 
+			return 1;
+        }
+  }
+  
+ 
+  /*Funcion para Actualizar el estado del detalla de la solicitud */
  function ActualizarEstadoDetalle($iddetalle)
  {
    $con = new ConexionBD;

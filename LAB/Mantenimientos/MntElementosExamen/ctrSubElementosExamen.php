@@ -36,9 +36,7 @@ switch ($opcion)
 		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";              
 		
         	if ($objdatos->insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad)==true) 
-                //&& ($Clases->insertar_labo($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad)==true)){
-		//if ($Clases->insertar_labo($idelemento,$unidad,$subelemento,$Fechaini,$Fechafin,$lugar)==true){
-			echo "Registro Agregado";
+                    echo "Registro Agregado";
 		//}
 		else
 			echo "No se pudo Ingresar el Registro";			
@@ -48,7 +46,7 @@ switch ($opcion)
 	break;
 	case 2:  //MODIFICAR   
 		$idsubelemento=$_POST['idsubelemento'];
-		//$unidad=$_POST['unidad'];
+		//$examen=$_POST['examen'];
 		$subelemento=utf8_encode($_POST['subelemento']);
                 $unidad=(empty($_POST['unidad'])) ? 'NULL' : "'" . pg_escape_string(utf8_encode($_POST['unidad'])) . "'"; 
                 $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";        
@@ -94,6 +92,7 @@ switch ($opcion)
 	        <tr>
                     <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>";
                echo "     <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td>
+                    <td class='CobaltFieldCaptionTD'> Orden </td>
                     <td class='CobaltFieldCaptionTD'> SubElemento </td>
                     <td class='CobaltFieldCaptionTD'> Unidad </td>
                     <td class='CobaltFieldCaptionTD'> Valores Normales </td>
@@ -111,6 +110,7 @@ switch ($opcion)
                     <td aling ='center'> 
 			<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 			onclick=\"eliminarDatoSubElemento('".$row['id']."')\"> </td>
+                            <td>".htmlentities($row['orden'])."</td>
                     <td>".htmlentities($row['subelemento'])."</td>";
            if (!empty($row['unidad']))            
               echo" <td>".htmlentities($row['unidad'])."</td>";
@@ -196,16 +196,26 @@ switch ($opcion)
                 $rangoedad=$row['nombreedad'];
                 $rangoini=(empty($_POST['rangoini'])) ? 0 : "'" . pg_escape_string($_POST['rangoini']) . "'";
                 $rangofin=(empty($_POST['rangofin'])) ? 0 : "'" . pg_escape_string($_POST['rangofin']) . "'";
+                $orden=$row['orden'];
+                $examen=$row['nombre_examen'];
+               // echo "orde=".$orden;
+               // $orden=$row['orden'];
                 
             //    echo "Rango Ini".$rangoini."Rango fin". $rangofin;
                 if (empty($row['idsexo'])){
-                 $idsexo=0;
-                $nombresexo="Ambos";} 
+                    $idsexo=0;
+                    $nombresexo="Ambos";} 
 	$imprimir="<form name= 'frmModificar' >
                         <table width='90%' border='0' align='center' class='StormyWeatherFormTABLE'>
                             <tr>
                                 <td colspan='4' class='CobaltFieldCaptionTD' align='center'><h3><strong>SubElementos de  Examen</strong></h3></td>
-                            </tr>	
+                            </tr>
+                            <tr>
+                                <td class='StormyWeatherFieldCaptionTD'>Elemento</td>
+                                <td colspan='3' class='StormyWeatherDataTD'>
+                                    <input name='txtexamen' type='text' id='txteaxmen' value='".htmlentities($examen)."' size='60' disabled='disabled'>
+                                </td>
+                            </tr>
                             <tr>
                                 <td class='StormyWeatherFieldCaptionTD'>Elemento</td>
                                 <td colspan='3' class='StormyWeatherDataTD'>
@@ -250,8 +260,8 @@ switch ($opcion)
                                 </td>        
                             </tr>
                             <tr>
-                                <td width='17%' class='StormyWeatherFieldCaptionTD'>Unidad</td>
-                                <td colspan='3' width='63%' class='StormyWeatherDataTD'>
+                                <td class='StormyWeatherFieldCaptionTD'>Unidad</td>
+                                <td colspan='3' Class='StormyWeatherDataTD'>
                                     <input name='txtunidad' type='text' id='txtunidad' value='".htmlentities($unidad)."' size='20'>
                                 </td>
                             </tr>
@@ -273,8 +283,8 @@ switch ($opcion)
                                 </td>
                             </tr>
                             <tr>
-				<td width='10%' class='StormyWeatherFieldCaptionTD'>Fecha Inicio</TD>
-				<td width='35%' class='StormyWeatherDataTD'>
+				<td  class='StormyWeatherFieldCaptionTD'>Fecha Inicio</TD>
+				<td class='StormyWeatherDataTD'>
 					<input name='txtFechainicio' type='text' id='txtFechainicio' size='10' value='".htmlentities($FechaIni)."'>dd/mm/aaaa
 				</td>
 				<td  class='StormyWeatherFieldCaptionTD'>Fecha Final</TD>
@@ -282,6 +292,41 @@ switch ($opcion)
                                         <input name='txtFechaFin' type='text' id='txtFechaFin' size='10' value='".htmlentities($FechaFin)."' >dd/mm/aaaa
 				</td>
                             </tr>
+                            <tr>
+                                <td  class='StormyWeatherFieldCaptionTD'>Orden </td>
+                                <td   class='StormyWeatherDataTD' colspan='3'>
+                                <select   name='cmborden'  id='cmborden' style='width:50%'  class='form-control height'  > 
+                                        <option value='0'>--Seleccione un Orden--</option>";
+                                       $datosDB=0;
+                                     //  echo $idele;
+                                        $conOrden = $objdatos->llenarrangosubele($idelemento);
+                                        while($row = pg_fetch_array($conOrden)){
+                                       // $row = pg_fetch_array($conOrden);
+                                            if($row['orden'] === $orden){
+                                            $imprimir.="<option value='" . $orden . "' selected='selected'>" .$orden. "</option>";}
+                                            else{
+                                                
+                                                $datosDB=$objdatos->existeOrden($idelemento);
+                                               
+                                            
+                                         
+                                    	                                     
+                                             }
+                                       }
+                                        for ($index = $datosDB ; $index <=25 ; $index++) 
+                                                {
+                                                     // $rest=$objdatos->arreglo ($datosDB,$index);
+                                                   // if($rest==0){
+                                                       $imprimir.='<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
+                                                   // }
+
+
+                                                    }
+                                   //   $imprimir.="<option value='" . $orden . "' selected='selected'>" .$orden. "</option>";
+                        $imprimir.="     </select>
+				</div>
+                            </td>
+        		</tr>
                             <tr>
                                  <td colspan='4' class='StormyWeatherDataTD' align='right'>
                                     <input type='button' name='Submit' value='Actualizar' onClick='enviarDatosSubElemento();'>
@@ -292,6 +337,37 @@ switch ($opcion)
                     </form>";
 		echo $imprimir;
 	break;
+        case 11:  //LLENAR COMBO DE RANGOS
+	$idele=$_POST['idelemento'];
+            
+           echo $idele; 
+        $rslts='';
+        
+           $rslts = '<select name="cmborden" id="cmborden" style="width:50%"  class="form-control height"   >';
+            $rslts .='<option value="0">--Seleccione un Orden--</option>';
+        
+            
+                                     $datosDB=existeOrden($idele);
+                                     
+                                    //echo  $datosDB[3];
+                                        for ($index = 1 ; $index <=10 ; $index++) 
+                                        {
+                                          $rest=areglo ($datosDB,$index);
+                                          if($rest==0){
+                                            $rslts.='<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
+                                          }
+                                            
+                           
+                                        }
+                                
+            $rslts .= '</select>';
+                            echo $rslts;
+	
+                      
+
+	break;
+        
+        
 		
 }
 

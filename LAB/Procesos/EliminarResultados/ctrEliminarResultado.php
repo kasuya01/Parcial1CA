@@ -367,18 +367,21 @@ switch ($opcion)
 			 if ($dato == 1){
                           //  echo "entro".$idplantilla;
 				switch($idplantilla){
-					case 1:
+					case 1:/* ELIMINAR PLANTILLA A */
 						if ($objdatos->EliminarResultado($idsolicitud,$iddetalle) == 1){
+                                                    if ($objdatos->Eliminar_metodologia($iddetalle) == 1){
 							//if (($objdatos->CambiarEstadoDetalle($iddetalle)==true)&&($objdatos->CambiarEstadoSolicitud($idsolicitud)==true))
 							if (($objdatos->ActualizarEstadoDetalle($iddetalle)==true)&&($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true)){
 								echo "Resultado Eliminado";}
+                                                                
+                                                    }            
 						}
 						else{
 							echo "No se pudo eliminar el registro";
 						}
 							//echo "ENTRO A";
                                          break;	
-					 case 2:
+					 case 2:/* ELIMINAR PLANTILLAS B,D Y E */
 					 case 4:
 					 case 5:
                                                //  echo $iddetalle;
@@ -386,7 +389,7 @@ switch ($opcion)
 						 $result=pg_fetch_array($r);
 						 $idresultado=$result[0];
                                                 // echo $idresultado;
-                                                 if($dr=$objdatos->EliminarResultadoMetodologia($iddetalle)==1){
+                                                 if($dr=$objdatos->Eliminar_metodologia($iddetalle)==1){
                                                      
                                                      if($dr=$objdatos->EliminarDetalleResultado($idresultado)==1){
                                                         
@@ -407,7 +410,7 @@ switch ($opcion)
 						  
 					  // echo "ENTRO B,D,E";
 					 break; 	
-					 case 3:
+                                        case 3: /* ELIMINAR PLANTILLA C */
 								
 						$r=$objdatos->ObtenerIdResultado($idsolicitud,$iddetalle);
 								//$idresultado=$result['IdResultado'];
@@ -427,10 +430,10 @@ switch ($opcion)
 									$detalle=pg_fetch_array($det);
 									$iddetalleres=$detalle[0];
 						 //		echo $idsolicitud."-".$iddetalle."-".$idresultado."-". $iddetalleres;
-                                                                      if($dr=$objdatos->EliminarResultadoMetodologia($iddetalle)==1){  
+                                                                      if($dr=$objdatos->Eliminar_metodologia($iddetalle)==1){  
                                                                             if($dr=$objdatos->EliminarResultadoTarjeta($iddetalleres)==1){
                                                                                 if($dr=$objdatos->EliminarDetalleResultado($idresultado)==1){
-                                                                                    if ($objdatos->EliminarResultado($idsolicitud,$iddetalle) == 1){
+                                                                                    if ($objdatos->EliminarResultado($idresultado) == 1){
                                                                                         if (($objdatos->ActualizarEstadoDetalle($iddetalle)==true)||($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true))
                                                                                             echo "Resultado Eliminado";
                                                                                         }
