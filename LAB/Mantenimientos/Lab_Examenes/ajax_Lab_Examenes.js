@@ -35,7 +35,7 @@ function LimpiarCampos(){
         
         document.frmnuevo.inidate.value="0";
 	document.frmnuevo.txtnombreexamen.focus();
-        
+        $('#cmbEstandarRep').select2('data', null);
         obj1 = document.frmnuevo.add_metodologia;
             obj1.disabled = true;
 }
@@ -133,6 +133,8 @@ if (ValidarCampos())
         text_metodologias_sel=frmnuevo.text_metodologias_sel.value;
         id_metodologias_sel=frmnuevo.id_metodologias_sel.value;
         resultado=frmnuevo.resultado.value;
+        resultado_nombre=frmnuevo.resultado_nombre.value;
+        id_resultado=frmnuevo.id_resultado.value;
         //mismo=frmnuevo.mismo.value;
         mismo=0;
       // alert(sexo);
@@ -151,7 +153,7 @@ if (ValidarCampos())
 			//mostrar resultados en esta capa
 			//document.getElementById('divinicial').innerHTML = ajax.responseText;
                         alert(ajax.responseText);
-			LimpiarCampos();
+			//LimpiarCampos();
 			show_event(Pag);
 		}
 	}
@@ -162,7 +164,7 @@ if (ValidarCampos())
 	"&idestandar="+idestandar+"&Pag="+Pag+"&opcion="+opcion+"&plantilla="+plantilla+"&ubicacion="+ubicacion+
 	"&idformulario="+idformulario+"&idestandarRep="+idestandarRep+"&etiqueta="+etiqueta+"&urgente="+urgente+
         "&sexo="+sexo+"&Hab="+Hab+"&tiempoprevio="+tiempoprevio+"&metodologias_sel="+metodologias_sel+"&text_metodologias_sel="+text_metodologias_sel+"&id_metodologias_sel="+id_metodologias_sel
-        +"&resultado="+resultado+"&mismo="+mismo);
+        +"&resultado="+resultado+"&resultado_nombre="+resultado_nombre+"&id_resultado="+id_resultado+"&mismo="+mismo);
    }
 
 else{
@@ -271,6 +273,7 @@ function pedirDatos(idexamen){ //CARGAR DATOS A MODIFICAR
 			divFormulario.innerHTML = ajax.responseText
 			divFormulario.style.display="block";
 			divFormularioNuevo.style.display="none";
+                        divFormularioNuevo.innerHTML="";
 		}
 	}
 	//como hacemos uso del metodo POST
@@ -306,6 +309,9 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
         metodologias_sel=frmModificar.metodologias_sel.value;
         text_metodologias_sel=frmModificar.text_metodologias_sel.value;
         id_metodologias_sel=frmModificar.id_metodologias_sel.value;
+        resultado=frmModificar.resultado.value;
+        resultado_nombre=frmModificar.resultado_nombre.value;
+        id_resultado=frmModificar.id_resultado.value;
 	//alert (text_metodologias_sel);
 	var opcion=2;	
 	Pag=1;
@@ -320,18 +326,19 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
 	ajax.send("idexamen="+idexamen+"&idarea="+idarea+"&nomexamen="+nomexamen+
 	"&idestandar="+idestandar+"&Pag="+Pag+"&opcion="+opcion+"&plantilla="+plantilla+"&ubicacion="+ubicacion+
 	"&idformulario="+idformulario+"&idestandarRep="+idestandarRep+"&Etiqueta="+Etiqueta+"&urgente="+urgente+
-        "&idsexo="+idsexo+"&Hab="+Hab+"&Tiempo="+Tiempo+"&idconf="+idconf+"&ctlidestandar="+ctlidestandar+"&metodologias_sel="+metodologias_sel+"&text_metodologias_sel="+text_metodologias_sel+"&id_metodologias_sel="+id_metodologias_sel);
+        "&idsexo="+idsexo+"&Hab="+Hab+"&Tiempo="+Tiempo+"&idconf="+idconf+"&ctlidestandar="+ctlidestandar+"&metodologias_sel="+metodologias_sel+"&text_metodologias_sel="+text_metodologias_sel+"&id_metodologias_sel="+id_metodologias_sel+"&resultado="+resultado+"&resultado_nombre="+resultado_nombre+"&id_resultado="+id_resultado);
 //+"&observacion="+observacion
 	ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
 			divResultado.style.display="block";
 			//mostrar los nuevos registros en esta capa
 			//divResultado.innerHTML = ajax.responseText
-                        //  alert(ajax.responseText);
+                          alert(ajax.responseText);
 			//una vez actualizacion ocultamos formulario
 			divFormulario.style.display="none";
 			divNuevo.style.display="block";
-                        LimpiarCampos();
+                        //LimpiarCampos();
+                        window.location='MntExamenes.php'
 			show_event(1);
 			//divInicio.style.display="none";
 		}

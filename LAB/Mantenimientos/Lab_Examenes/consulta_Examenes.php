@@ -40,6 +40,8 @@
     $metodologias=$row['metodologias'];
     $metodologias_text=$row['metodologias_text'];
     $id_metodologias_text=$row['id_metodologias_text'];
+    $id_posible_resultado=$row['id_posible_resultado'];
+    $posible_resultado=$row['posible_resultado'];
     
     
     /*
@@ -296,12 +298,20 @@
                 </tr>
                 <tr>
                                 <td nowrap class="StormyWeatherFieldCaptionTD">Posibles Resultado </td>
-                                 <?php
-                                 echo "<td class='StormyWeatherDataTD'>
-                                            <button type='button' style='width:250px; text-align:left;' name='add_presultado' id='add_presultado' align='center'  class='btn btn-default'  onclick='popup(".'"consulta_SubElemento1.php?idconf='.$idconf.'"'.")' >  <span class='glyphicon glyphicon-th-list'></span>  ..:Seleccionar Resultado:.. </button>
-                                            </td>"; ?>
+                                <td class='StormyWeatherDataTD'>
+                                  <input type="hidden" name="resultado" id="resultado" value="<?php print $id_posible_resultado; ?>">
+                            <input type="hidden" name="resultado_nombre" id="resultado_nombre" value="<?php print $posible_resultado; ?>">
+                            <input type="hidden" name="id_resultado" id="id_resultado">
+                            <button type='button' class='btn btn-default' name="add_presultado" id="add_presultado" style="width:250px; text-align: left;" onclick="
+                                popup('consulta_metodologias1.php?form=frmModificar&resultado='+frmModificar.resultado.value+
+                                        '&resultado_nombre='+frmModificar.resultado_nombre.value+
+                                        '&nombre='+$('input[name=txtnombreexamen]').val()+ '&id_resultado='+frmModificar.id_resultado.value);"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Resultado:..</button>
                                 
-                              
+                                 <?php
+//                                 echo "<button type='button' style='width:250px; text-align:left;' name='add_presultado' id='add_presultado' align='center'  class='btn btn-default'  onclick='popup(".'"consulta_SubElemento1.php?idconf='.$idconf.'"'.")' >  <span class='glyphicon glyphicon-th-list'></span>  ..:Seleccionar Resultado:.. </button>
+//                                            "; ?>
+                                
+                              </td>
                         </tr>       
 		<tr>
                     <td colspan="2" align="right" class="StormyWeatherDataTD">

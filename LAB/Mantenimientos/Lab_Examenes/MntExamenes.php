@@ -275,9 +275,9 @@ if ($nivel==33){
                             <input type="hidden" name="resultado_nombre" id="resultado_nombre">
                             <input type="hidden" name="id_resultado" id="id_resultado">
                             <button type='button' class='btn btn-default' disabled="disabled"  name="add_presultado" id="add_presultado" style="width:250px; text-align: left;" onclick="
-                                popup('consulta_metodologias1.php?form=frmnuevo&metodologias_sel='+document.getElementById('resultado').value+
-                                        '&text_metodologias_sel='+document.getElementById('resultado_nombre').value+
-                                        '&nombre='+document.getElementById('txtnombreexamen').value+ '&id_metodologias_sel='+document.getElementById('id_resultado').value);"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Resultado:..</button>
+                                popup('consulta_metodologias1.php?form=frmnuevo&resultado='+document.getElementById('resultado').value+
+                                        '&resultado_nombre='+document.getElementById('resultado_nombre').value+
+                                        '&nombre='+document.getElementById('txtnombreexamen').value+ '&id_resultado='+document.getElementById('id_resultado').value);"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Resultado:..</button>
                            
                         </td>
                         
