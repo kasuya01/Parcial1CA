@@ -1,7 +1,7 @@
 <?php 
-include_once("../../../Conexion/ConexionBD.php");
+//include_once("../../../Conexion/ConexionBD.php");
         //include($_SERVER['DOCUMENT_ROOT']."/Laboratorio/Conexion/ConexionBD.php");
-//include_once("DBManager.php"); 
+include_once("DBManager.php"); 
 //implementamos la clase lab_areas
 class clsReporteTabuladores
 {
