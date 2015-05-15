@@ -707,7 +707,7 @@ class clsLab_Procedimientos {
                                                 --AND laxe.condicion = 'H' 
                                                -- AND lpla.idplantilla = 'E' AND 
                                                 lppe.idestablecimiento = $lugar
-						ORDER BY lcee.codigo_examen, lppe.id LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+						ORDER BY lcee.codigo_examen, lppe.orden LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
 
 			$result = @pg_query( $query );
 			if ( !$result )

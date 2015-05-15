@@ -5,12 +5,15 @@ $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea']; 
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
 ?>
 <html>
 <head> 
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">  
 
 <title>Mantenimiento de Examenes de Laboratorio</title>
+<?php include_once $ROOT_PATH."/public/css.php";?>
+        <?php include_once $ROOT_PATH."/public/js.php";?>
 <script language="JavaScript" type="text/javascript" src="ajax_ElementosExamen.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
@@ -104,27 +107,27 @@ function Cancelar()
                     <tr>
                     	<td class="StormyWeatherFieldCaptionTD">Examen</td>
 			<td colspan="3" class="StormyWeatherDataTD" width="63%">
-                        	<input name="idexamen" type="hidden" id="idexamen">
-                                <input name="txtexamen" type="text" id="txtexamen" value="" size="60" disabled="disabled">
+                        	<input name="idexamen" type="hidden" id="idexamen" >
+                                <input name="txtexamen" type="text" id="txtexamen" value="" size="60"  class="form-control height" disabled="disabled">
 			</td>
                     </tr>
                     <tr>
                     	<td class="StormyWeatherFieldCaptionTD" >Elemento</td>
 			<td colspan="3" class="StormyWeatherDataTD" width="63%">
                         	<input name="idelemento" type="hidden" id="idelemento">
-				<input name="txtelemento" type="text" id="txtelemento" value="" size="60" disabled="disabled">
+				<input name="txtelemento" type="text" id="txtelemento" value="" size="60" disabled="disabled" class="form-control height">
 			</td>
                     </tr>
                     <tr>
                         <td  class="StormyWeatherFieldCaptionTD" width="17%">SubElemento</td>
-                        <td colspan="3" class="StormyWeatherDataTD" width="63%"><input name="txtsubelemento" type="text" id="txtsubelemento" size="60">
+                        <td colspan="3" class="StormyWeatherDataTD" width="63%"><input name="txtsubelemento" type="text" id="txtsubelemento" placeholder=" Nombre SubElemento" size="60" class="form-control height">
                         </td>
                     </tr>
                     <tr>
                         <td  class="StormyWeatherFieldCaptionTD">Sexo</td>
                         <td colspan="3" class="StormyWeatherDataTD">
-                            <select id="cmbSexo" name="cmbSexo" size="1" >
-                                <option value="3">Ninguno</option>
+                            <select id="cmbSexo" name="cmbSexo" size="1" class="form-control height">
+                                <option value="3">Seleccione Sexo </option>
                                 <option value="0">Ambos</option>
                                     <?php
                                         $consultaS= $objdatos->consultarsexo();
@@ -138,8 +141,8 @@ function Cancelar()
                     <tr>
                         <td class="StormyWeatherFieldCaptionTD">Rango Edad</td>
                         <td colspan="3" class="StormyWeatherDataTD">
-                            <select id="cmbEdad" name="cmbEdad" size="1" >
-                                <option value="0" >--Seleccione un Rango de Edad--</option>
+                            <select id="cmbEdad" name="cmbEdad" size="1"  class="form-control height">
+                                <option value="0" >Seleccione un Rango de Edad</option>
                                     <?php
                                         $conEdad = $objdatos->RangosEdades();
                                         while($row = pg_fetch_array($conEdad)){
@@ -151,38 +154,41 @@ function Cancelar()
                     </tr>
                     <tr>
                         <td  class="StormyWeatherFieldCaptionTD" width="17%">Unidad</td>
-                        <td  colspan="3" class="StormyWeatherDataTD" width="63%"><input name="txtunidad" type="text" id="txtunidad" size="20">
+                        <td  colspan="3" class="StormyWeatherDataTD" width="63%"><input name="txtunidad" type="text" id="txtunidad" size="20" class="form-control height" placeholder=" Ingrese Unidad">
                         </td>
                     </tr>
                     <tr>
                         <td colspan="4" class="StormyWeatherDataTD" >
-                            <fieldset><legend><span>Rangos</span></legend>
-                                <table width="200" border="0" align="center" class="StormyWeatherFormTABLE">
+                            <fieldset ><legend><span >Rangos</span></legend>
+                             <table width="200" border="0" align="center" class="StormyWeatherFormTABLE">
                                     <tr>
-                                        <td class="StormyWeatherFieldCaptionTD">Inicio</td>
-                                        <td class="StormyWeatherDataTD"><input name="txtrangoini" type="text" id="txtrangoini" size="8" ></td>
-                                        <td class="StormyWeatherFieldCaptionTD" >Fin </td>
-                                        <td class="StormyWeatherDataTD"><input name="txtrangofin" type="text" id="txtrangofin" size="8" ></td>
+                                        <td class="StormyWeatherFieldCaptionTD" width="15%">Inicio</td>
+                                        <td class="StormyWeatherDataTD"><input name="txtrangoini" type="text" id="txtrangoini" size="8"  placeholder="Rango Inicial" style="width:150px" class="form-control height placeholder"></td>
+                                        <td class="StormyWeatherFieldCaptionTD" style="width:200px">Fin </td>
+                                        <td class="StormyWeatherDataTD"><input name="txtrangofin" type="text" id="txtrangofin" size="8"  placeholder="Rango Final" style="width:150px" class="form-control height placeholder"></td>
                                     </tr>
                                 </table>
                             </fieldset>               
                         </td>
                     </tr>
+                    
+                   
                     <tr>
                         <td  class="StormyWeatherFieldCaptionTD">Fecha Inicio</TD>
                         <td  class="StormyWeatherDataTD">
-                            <input name="txtFechainicio" type="text" id="txtFechainicio" size="10" >dd/mm/aaaa
+                            <input name="txtFechainicio" type="text" id="txtFechainicio" size="10" style="width:250px" placeholder="aaaa-mm-dd" class="date form-control  height placeholder">
+                      
                         </td>
 			<td  class="StormyWeatherFieldCaptionTD">Fecha Final</TD>
                         <td  class="StormyWeatherDataTD">
-                            <input name="txtFechaFin" type="text" id="txtFechaFin" size="10" >dd/mm/aaaa
+                            <input name="txtFechaFin" type="text" id="txtFechaFin" size="10" width="17%" placeholder="aaaa-mm-dd" class="date form-control  height placeholder">
                         </td>
                     </tr>
                     <tr>
                         <td  class="StormyWeatherFieldCaptionTD">Orden </td>
                         <td  class="StormyWeatherDataTD" colspan="3">
                             <select   name="cmborden"  id="cmborden" style="width:50%"  class="form-control height"  > 
-                                <option value="0">--Seleccione un Orden--</option>
+                                <option value="0">Seleccione un Orden</option>
                                     <?php
                                     
                                         $datosDB=0;
@@ -207,8 +213,8 @@ function Cancelar()
                     </tr>
                     <tr>
                         <td colspan="4" class="StormyWeatherDataTD" align="right">
-                            <input type="button" name="Submit" value="Guardar" onClick="Guardar() ;">
-                            <input type="button" name="Submit" value="Cerrar" onClick="window.close() ;">
+                            <button type="button" name="Submit" class="btn btn-primary" value="Guardar" onClick="Guardar() ;"><span class='glyphicon glyphicon-floppy-disk'></span> Guardar </button>
+                            <button type="button" name="Submit" class="btn btn-primary" value="Cerrar"  onClick="window.close() ;">Cerrar </button>
                         </td>
                     </tr>
 		</table>

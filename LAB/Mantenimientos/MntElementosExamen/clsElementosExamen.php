@@ -9,13 +9,13 @@ class clsElementosExamen
  }	
 
 //INSERTA UN REGISTRO          
- function insertar($idexamen,$nomelemento,$subelemento,$usuario,$observacionele,$unidadele,$lugar,$Fechaini,$Fechafin)
+ function insertar($idexamen,$nomelemento,$subelemento,$usuario,$observacionele,$unidadele,$lugar,$Fechaini,$Fechafin,$orden)
  {
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_elementos(id_conf_examen_estab,elemento,subelemento,UnidadElem,ObservElem,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod,IdEstablecimiento,FechaIni,FechaFin) 
-    VALUES($idexamen,'$nomelemento','$subelemento',$unidadele,$observacionele,$usuario,NOW(),$usuario,NOW(),$lugar,$Fechaini,$Fechafin)";
+    $query = "INSERT INTO lab_elementos(id_conf_examen_estab,elemento,subelemento,UnidadElem,ObservElem,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod,IdEstablecimiento,FechaIni,FechaFin,orden) 
+    VALUES($idexamen,'$nomelemento','$subelemento',$unidadele,$observacionele,$usuario,NOW(),$usuario,NOW(),$lugar,$Fechaini,$Fechafin,$orden)";
      $result = pg_query($query);
  
      if (!$result)
@@ -26,14 +26,14 @@ class clsElementosExamen
  }
  
  //ACTUALIZA UN REGISTRO
- function actualizar($idelemento,$nomelemento,$subelemento,$unidadele,$observacionele,$usuario,$lugar,$Fechaini,$Fechafin)
+ function actualizar($idelemento,$nomelemento,$subelemento,$unidadele,$observacionele,$usuario,$lugar,$Fechaini,$Fechafin,$orden)
  {
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "UPDATE lab_elementos SET elemento='$nomelemento' , subelemento='$subelemento',unidadelem=$unidadele, 
+  echo   $query = "UPDATE lab_elementos SET elemento='$nomelemento' , subelemento='$subelemento',unidadelem=$unidadele, 
 		 observelem=$observacionele,idusuariomod='$usuario', fechahoramod=NOW(),fechaini=$Fechaini, 
-		 fechafin=$Fechafin WHERE id=$idelemento AND idestablecimiento=$lugar";
+		 fechafin=$Fechafin, orden=$orden WHERE id=$idelemento AND idestablecimiento=$lugar";
      //echo $query;
     $result = pg_query($query);
 	 if (!$result)
@@ -279,7 +279,7 @@ function consultar($lugar){
 	$con = new ConexionBD;
 	//usamos el metodo conectar para realizar la conexion
 	if ( $con->conectar()==true ) {
-          echo $query ="SELECT orden  
+        $query ="SELECT orden  
                     FROM lab_elementos
                     WHERE id_conf_examen_estab=$idexamen
                     ORDER BY orden asc";

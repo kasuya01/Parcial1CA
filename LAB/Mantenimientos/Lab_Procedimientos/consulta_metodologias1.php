@@ -109,7 +109,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
             <div class="panel-heading" style="background-color: #428bca">
             <center>
             <h3>Exámen:<strong><label id="nombre_prueba">'.$nombre_prueba.'</label> </strong></h3>
-                <h4><strong>Use doble clic para seleccionar el resultado</strong></h4>
+                <hGuardar4><strong>Use doble clic para seleccionar el resultado</strong></h4>
                 
             </center></div>     </font></strong>';       
            
