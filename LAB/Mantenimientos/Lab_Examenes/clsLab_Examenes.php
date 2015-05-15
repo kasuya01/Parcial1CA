@@ -266,7 +266,7 @@ values ($idmet, $aresultados[$i], current_date, true,$usuario, date_trunc('secon
 
          $aresultados = explode(',', $resultado);
          $aidresultados = explode(',', $id_resultado);
-         $cantaresultados = array_filter($aresultados);
+         $cantaresultados = count(array_filter($aresultados));
          /*
           * En caso de no haber ingresado ningún resultado
           */
@@ -332,7 +332,7 @@ values ($idmet, $aresultados[$i], current_date, true,$usuario, date_trunc('secon
             $posres="select * from lab_examen_posible_resultado where id_conf_examen_estab=$idconf;";
             $sql3="select * from lab_examen_metodo_pos_resultado where id_examen_metodologia=$idexameto;";
             //$resultpr=  pg_query($posres);
-             for ($j = 0; $j < count($aresultados) - 1; $j++) {
+             for ($j = 0; $j < count(array_filter($aresultados)); $j++) {
                 $bandera=0;
                 $bandexamet=0;
                 $query1 = pg_query($posres);
@@ -409,8 +409,9 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
             $bandexamet=0;
             $sql1 = "SELECT * FROM lab_examen_metodologia WHERE id_conf_exa_estab=$idconf and id_metodologia is not NULL";
             $metodologiassel="";
-            for ($i = 0; $i < count($aMetodologias) - 1; $i++) {
+            for ($i = 0; $i < count(array_filter($aMetodologias)) ; $i++) {
                // echo $band=0;
+              // echo 'i:'.$i.'---';
                $con = pg_query($sql1);
                while ($rome = pg_fetch_array($con)) {
                   if ($rome['id_metodologia'] == $aMetodologias[$i]) {
@@ -438,15 +439,14 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                else{
                   $metodologiassel=$metodologiassel.','.$idexameto;
                }
-             // echo  'metodologiassel: '.$metodologiassel.'<br/>';
+            //  echo  'metodologiassel: '.$metodologiassel.'<br/>';
                
                if ($cantaresultados>0){
                      //--1.Actualizar tabla lab_examen_posible_resultado 
                     $posres="select * from lab_examen_posible_resultado where id_conf_examen_estab=$idconf;";
                     //$sql3="select * from lab_examen_metodo_pos_resultado where id_examen_metodologia=$idexameto;";
                     //$resultpr=  pg_query($posres);
-                     for ($j = 0; $j < count($aresultados) - 1; $j++) {
-                        $bandera=0;
+                     for ($j = 0; $j < count(array_filter($aresultados)); $j++) {                                  $bandera=0;
                         $bandexamet=0;
                         $query1 = pg_query($posres);
                           while ($mpr = @pg_fetch_array($query1)) {
@@ -482,7 +482,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                $bandexamet=0;
                
             }
-           // echo  'metodologiassel: '.$metodologiassel.'<br/>';
+          //  echo  'metodologiassel: '.$metodologiassel.'   -cantaresultados:'.$cantaresultados.'<br/>';
 //            var_dump($metodologiassel);
             //actualizar la de lab_examen_metodo_pos_resultados, poner habilitado=false las metodologias que no fueron ingresadas ahorita
             

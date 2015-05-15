@@ -1,4 +1,9 @@
-<?php session_start();
+<?php 
+include ("clsReporteTabuladores.php");
+@session_start();
+//creando los objetos de las clases
+$obj = new clsReporteTabuladores;
+
  if(isset($_SESSION['Correlativo']) || isset($_SESSION["ADM"])){
 $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
@@ -53,12 +58,17 @@ function BuscarExamen(idarea){
 }
 $(document).ready(function() {
          $("#cmbExamen").select2({
-           placeholder: "Seleccione examenes",
+           placeholder: "Todos los examenes",
            allowClear: true,
            dropdownAutoWidth: true
         });
          $("#cmbArea").select2({
-           placeholder: "Seleccione una Area",
+           placeholder: "Todas las áreas",
+           allowClear: true,
+           dropdownAutoWidth: true
+        });
+         $("#idmntareamodestab").select2({
+           placeholder: "Todas las instituciones",
            allowClear: true,
            dropdownAutoWidth: true
         });
@@ -135,11 +145,27 @@ $toy2=date('Y-m-d');
                       
                    </tr>
                    <tr>
+                      <th>Institución</th>
+                      <td>
+<!--                         <select id="idmntareamodestab" name="idmntareamodestab" style="width:100%;" class="height placeholder js-example-basic-single">-->
+                             <select id="idmntareamodestab" name="idmntareamodestab"  size="1" style="width:100%;" class="height placeholder js-example-basic-single">
+                         <?php
+                         echo '<option></option>';
+                         $insti=$obj->buscarinstitucion($lugar);
+                         while ($rowi=  pg_fetch_array($insti)){
+                            echo '<option value='.$rowi["id"].'>'.$rowi["institucion"].'</option>';
+                         }
+                         ?>
+                         </select>  
+                      </td>
+                   </tr>
+                   <tr>
                        <th>Año-Mes</th>
                                                           <td>   
-                                                             <input type="text" id="d_fecha" name="d_fecha" style="width: 25%; text-align: center; position: absolute; top: auto" placeholder="<?php echo $toy; ?>"  class="datepicker form-control height placeholder"  autocomplete="off" />
+                                                             <input type="text" id="d_fecha" name="d_fecha" style="width: 25%; text-align: center; position: inherit; top: auto" placeholder="<?php echo $toy; ?>"  class="datepicker form-control height placeholder"  autocomplete="off" />
                                                               </td>
                    </tr>
+                   
                    <tr>
                       <td colspan="2" align="center"> 
                          <br/>
@@ -149,82 +175,6 @@ $toy2=date('Y-m-d');
          </div>                    
       </div>
    </div>
-<!--
-<div  id="divInicial" >
-
-<p>&nbsp;</p>
-	<table align="center"  class="StormyWeatherFormTABLE" width="70%">
-		<tr>
-			<td colspan="5" align="center" class="CobaltFieldCaptionTD">
-				<h3><strong>Tabulador Diario
-                                    </strong></h3>
-			</td>
-		</tr>
-		<tr>
-			<td class="StormyWeatherFieldCaptionTD" >Procedencia</td>
-			<td class="StormyWeatherDataTD">
-				<span class="StormyWeatherDataTD">
-					<select name="cmbProcedencia" class="MailboxSelect" id="cmbProcedencia" onChange="BuscarSubServicio(this.value)">
-						<option value="0">--Todas las Procedencia--</option>
-		         			<?php
-							/*include_once("../../../Conexion/ConexionBD.php");
-							$con = new ConexionBD;
-							if($con->conectar()==true){			  
-                                                            $consulta  = "SELECT IdServicio,NombreServicio FROM mnt_servicio 
-                                                                          WHERE IdTipoServicio<>'DCO' AND IdTipoServicio<>'FAR' ";
-                                                                          $resultado = @mysql_query($consulta) or die('La consulta fall&oacute;: ' . @mysql_error());
-									//por cada registro encontrado en la tabla me genera un <option>
-                                                                          while ($rows = @mysql_fetch_array($resultado)){
-										echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]). '</option>';
-									  }
-                                                                	@mysql_free_result($consulta); // Liberar memoria usada por consulta.
-							}*/
-						?>
-					</select>
-				</span>
-			</td>
-			<td class="StormyWeatherFieldCaptionTD">C&oacute;digo del &Aacute;rea</td>
-			<td class="StormyWeatherDataTD">
-				<select id="cmbArea" name="cmbArea" size="1" onChange="BuscarExamen(this.value)"> >
-					<option value="0" >--Seleccione un &Aacute;rea--</option>
-						<?php
-							include ("clsReporteTabuladores.php");
-							$obj = new clsReporteTabuladores;
-							$consulta= $obj->consultaractivas($lugar);
-							while($row = mysql_fetch_array($consulta)){
-								echo "<option value='" . $row['IdArea']. "'>" . $row['NombreArea'] . "</option>";
-							}
-										
-						?>		  
-				</select>
-			</td>
-                        <td  class="StormyWeatherFieldCaptionTD"> </td>
-                        <td  class="StormyWeatherDataTD" style="width:205px">
-                            <div id="divExamen">
-                                    <select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:250px"> 
-                                            <option value="0"> Seleccione Examen </option>
-                                    </select>
-                            </div>
-                        </td> 
-		</tr>
-		<tr>
-			<td class="StormyWeatherFieldCaptionTD" style="width:120px">Fecha Inicio </td>
-			<td class="StormyWeatherDataTD" style="width:210px">
-				<input type="text" name="txtfechainicio" id="txtfechainicio">
-				<input name="button" type="button" id="trigger"  value="...">
-			</td>
-			<td class="StormyWeatherFieldCaptionTD" style="width:120px">Fecha Final </td>
-			<td class="StormyWeatherDataTD" style="width:210px"><input type="text" name="txtfechafin" id="txtfechafin" />
-				<input name="button2" type="button" id="trigger2" value="...">
-			</td>
-		</tr>
-		<tr>
-			<td class="StormyWeatherDataTD" colspan="5" align="right">
-                            <input type="button" id="btnbuscar" value="Buscar" onClick="MostrarBusqueda();">
-			    <input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('ReporteTabuladores.php')">			
-			</td>
-		</tr>
-	</table>-->
 </form>
 
 

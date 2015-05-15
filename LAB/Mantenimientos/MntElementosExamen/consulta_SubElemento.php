@@ -1,6 +1,17 @@
+<?php
+include_once("clsSubElementosExamen.php");
+$obj = new clsSubElementosExamen;
+@session_start();
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+?>
+
+
 <html>
     <head>
-        <title>Seleccionar metodolog&iacute;as</title>
+       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Seleccionar Posibles Resultados</title>
+        <?php include_once $ROOT_PATH."/public/css.php";?>
+        <?php include_once $ROOT_PATH."/public/js.php";?>
         <script language="JavaScript" >
             /*
              * Juio castillo
@@ -52,17 +63,23 @@
         </script>
     </head>
     <body>
+        <div id="divmetodo" class="panel panel-primary">
         <form method="post">
-            <div id="">Use doble clic para seleccionar el resultado</div>
             <?php
+             echo '<strong><font color="white"> 
+            <div class="panel-heading" style="background-color: #428bca">
+            <center>
+            <h3>Use doble clic para seleccionar el resultado </h3>
+                <h4><strong>Dar un clic sobre la opción para seleccionar los posibles resultados.</strong></h4>
+                
+            </center></div>     </font></strong>'; 
             /* 
              * Julio Castillo
              */
 
             extract($_GET);
             extract($_POST);
-            include_once("clsSubElementosExamen.php");
-            $obj = new clsSubElementosExamen;
+            
             
             /*
              * verificar si se estan guardando los resultados
@@ -97,12 +114,13 @@
              */
             $result = $obj->get_subelemento($id_subelemento);
             $r = pg_fetch_array($result);
-            $table = "<table align='center'>";
+            $table = "<table align='center' class='table table-bordered table-condensed table-white no-v-border' style='width:100%'>";
             $table .= "<tr><head><center><label id='nombre_prueba'>".$r['subelemento_text']."</label></center></head></tr>";
-            $table .= "<tr><td>Resultados</td><td>Selección</td></tr>";
-            $table .= "<td><select name='lista' id='lista' size=22 style='width: 300px' ondblclick='list_reload(this,1)'>";
+            $table .= "<thead><tr><th>Resultados</th><th>Seleccionados</th></tr></thead>";
+            $table .= "<tbody><td width='50%'><select name='lista' id='lista' size=22 style='width: 100%; height:400px' ondblclick='list_reload(this,1)'>";
             while ($r = pg_fetch_array($consulta)){
-                $table .= "<option value='$r[id]' >$r[resultado]</option>";  
+               $resultado= utf8_encode($r[resultado]);
+                $table .= "<option value='$r[id]' >".$resultado."</option>";  
             }
             $table .= "</select></td>";
 
@@ -114,9 +132,9 @@
              */
             $consulta = $obj->resultados_seleccionados($id_subelemento);
             $metodologias_sel="";
-            $table .= "<td><select name='lista_sel' id='lista_sel' size=22 style='width: 300px' ondblclick='list_reload(this,2)'>";
+            $table .= "<td  width='50%'><select name='lista_sel' id='lista_sel' size=22 style='width: 100%; height:400px;' ondblclick='list_reload(this,2)'>";
             while ($r = pg_fetch_array($consulta)){
-                    $table .= "<option value='$r[id]' >$r[resultado]</option>";
+                    $table .= "<option value='$r[id]' >".utf8_encode($r[resultado])."</option>";
                     $metodologias_sel .= $r['id'].',';
             }
 
@@ -126,7 +144,7 @@
     //        while ($r = pg_fetch_array($consulta)){
     //            if (in_array($r['id_metodologia'], $aMetodologias)) $table .= "<option value='$r[id_metodologia]' >$r[metodologias]</option>";  
     //        }
-            $table .= "</select></td></tr></table>";
+            $table .= "</select></td></tr></tbody></table>";
 
             print utf8_decode($table);
             ?> 
@@ -134,5 +152,6 @@
             <input type="hidden" name="metodologias_sel" id="metodologias_sel" value="<?php print $metodologias_sel; ?>">
             <input type="hidden" name="id_subelemento" id="id_subelemento" value="<?php print $id_subelemento; ?>">
         </form>
-    </body>
+        </div>
+        </body>
 </html>

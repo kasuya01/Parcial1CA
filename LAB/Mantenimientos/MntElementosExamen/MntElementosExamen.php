@@ -70,11 +70,11 @@ $base_url  = $_SESSION['base_url'];
                 <form name="frmnuevo">
                     <table width="50%" border="0" align="center" class="StormyWeatherFormTABLE">
                         <tr>
-                            <td colspan="3" align="center" class="CobaltFieldCaptionTD"><h3><strong>Elementos de  Examen</h3></strong>	</td>
+                            <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3><strong>Elementos de  Examen</h3></strong>	</td>
 			</tr>	
 			<tr>
                             <td width="17%" class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
-                            <td width="83%" class="StormyWeatherDataTD">
+                            <td width="83%" colspan="3" class="StormyWeatherDataTD">
                                 <select id="cmbArea" name="cmbArea" style="width:50%" onChange="MostrarExamenes(this.value);" class="form-control height">
                                     <option value="0" >--Seleccione un &Aacute;rea--</option>
                                         <?php
@@ -90,7 +90,7 @@ $base_url  = $_SESSION['base_url'];
 			</tr>
 			<tr>
                             <td width="17%" class="StormyWeatherFieldCaptionTD">Examen </td>
-                            <td width="83%"  class="StormyWeatherDataTD">
+                            <td width="83%" colspan="3" class="StormyWeatherDataTD">
                                 <div id="divExamen">
                                     <select name="cmbExamen" id="cmbExamen" style="width:50%" class="form-control height"> 
                                         <option value="0">--Seleccione un Examen--</option>
@@ -101,21 +101,21 @@ $base_url  = $_SESSION['base_url'];
 			</tr>
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD">Elemento</td>
-                            <td class="StormyWeatherDataTD" ><textarea name="txtelemento" cols="75" rows="2" id="txtelemento"  > </textarea> 
+                            <td class="StormyWeatherDataTD" colspan="3" ><textarea name="txtelemento" cols="75" rows="2" id="txtelemento"  > </textarea> 
                             </td>
 			</tr>
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD">Unidad</td>
-                            <td class="StormyWeatherDataTD" ><input name="txtunidadele" type="text" id="txtunidadele" value="" size="15" >
+                            <td class="StormyWeatherDataTD" colspan="3" ><input name="txtunidadele" type="text" id="txtunidadele" value="" size="15" >
                             </td>
 			</tr>
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD">Observci&oacute;n o Interpretaci&oacute;n</td>
-                            <td class="StormyWeatherDataTD" ><textarea id="txtobservacionele" name="txtobservacionele" cols="75" rows="4"></textarea>
+                            <td class="StormyWeatherDataTD" colspan="3" ><textarea id="txtobservacionele" name="txtobservacionele" cols="75" rows="4"></textarea>
 			</tr>
 			<tr>
                             <td width="17%" class="StormyWeatherFieldCaptionTD">SubElementos</td>
-                            <td width="83%" class="StormyWeatherDataTD" >
+                            <td width="83%" class="StormyWeatherDataTD" colspan="3" >
                                 <select id="cmbSubElementos" name="cmbSubElementos" style="width:50%" class="form-control height">
                                     <option value="0" >--Seleccione--</option>
                                     <option value="S" >Si</option>
@@ -124,9 +124,9 @@ $base_url  = $_SESSION['base_url'];
                             </td>
 			</tr>
 			<tr>
-                            <td colspan="2" class="StormyWeatherDataTD">
-                                <table width="850" border="0" align="center" class="StormyWeatherFormTABLE">
-                                    <tr>
+<!--                           <td colspan="2" class="StormyWeatherDataTD">
+                               <table width="850" border="0" align="center" class="StormyWeatherFormTABLE">
+                                   <tr>-->
                                         <td width="17%" class="StormyWeatherFieldCaptionTD">Fecha Inicio</td>
 					<td width="35%" class="StormyWeatherDataTD">
                                             <input name="txtFechainicio" type="text" id="txtFechainicio" size="10" ><input name="button" type="button" id="trigger"  value="...">dd/mm/aaaa
@@ -135,13 +135,13 @@ $base_url  = $_SESSION['base_url'];
 					<td width="39%" class="StormyWeatherDataTD">
                                             <input name="txtFechaFin" type="text" id="txtFechaFin" size="10" ><input name="button2" type="button" id="trigger2" value="...">dd/mm/aaaa
 					</td>
-                                    </tr>	
+<!--                                    </tr>	
 				</table>
-                            </td>				
+                            </td>				-->
 			</tr>
                         <tr>
                             <td width="17%" class="StormyWeatherFieldCaptionTD">Orden </td>
-                            <td width="83%"  class="StormyWeatherDataTD"> 
+                            <td width="83%" colspan="3"  class="StormyWeatherDataTD"> 
                                 <div id="divRango">
                                     <select   name="cmborden"  id="cmborden" style="width:50%"  class="form-control height"> 
                                         <option value="0">--Seleccione un Orden--</option>
@@ -151,7 +151,7 @@ $base_url  = $_SESSION['base_url'];
                             </td>
                         </tr>    
 			<tr>
-                            <td colspan="2" class="StormyWeatherDataTD" align="right">
+                            <td colspan="4" class="StormyWeatherDataTD" align="right">
                                 <input type="button" name="Submit" value="Guardar" onClick="Guardar() ;">
 				<input type="button" name="Submit2" value="Buscar" Onclick="javascript:Buscar() ;">
 				<input type="button" name="Submit2" value="Nuevo" onClick="window.location.replace('MntElementosExamen.php')">	

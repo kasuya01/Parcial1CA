@@ -164,7 +164,7 @@ if ($nivel==33){
                            </div>
                             <button type='button' class='btn btn-default' disabled="disabled"  name="add_posresultado" id="add_posresultado" style="width:75%; text-align: left" onclick="popup('consulta_posresultados.php?form=frmnuevo&posresultados_sel='+document.getElementById('posresultados_sel').value+
                                         '&text_posresultados_sel='+document.getElementById('text_posresultados_sel').value+
-                                        '&nombre='+$('#cmbMetodologia').text()+ '&id_posresultados_sel='+document.getElementById('id_posresultados_sel').value+'&actualizar='+0) ;"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Posibles Resultados:..</button>
+                                        '&nombre='+$('#cmbMetodologia :selected').text()+ '&id_posresultados_sel='+document.getElementById('id_posresultados_sel').value+'&actualizar='+0) ;"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Posibles Resultados:..</button>
                            
                         </td>      
                      </tr>                    

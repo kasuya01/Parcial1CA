@@ -1,7 +1,7 @@
 <?php 
-//include_once("../../../Conexion/ConexionBD.php");
+include_once("../../../Conexion/ConexionBD.php");
         //include($_SERVER['DOCUMENT_ROOT']."/Laboratorio/Conexion/ConexionBD.php");
-include_once("DBManager.php"); 
+//include_once("DBManager.php"); 
 //implementamos la clase lab_areas
 class clsReporteTabuladores
 {
@@ -200,7 +200,34 @@ class clsReporteTabuladores
 		return $result;
 	}//fin de la funcion consultarTipoResultado
       }
-	
+
+//Fn Pg
+   public function buscarinstitucion($idestab) {
+      $con=new ConexionBD;
+      if ($con->conectar()==true){
+         $sql="select distinct t01.id,
+               (case when id_servicio_externo_estab is null then t05.nombre
+                    else t03.nombre end)   as institucion
+               from mnt_area_mod_estab t01
+               left join mnt_servicio_externo_establecimiento t02 on (t02.id=t01.id_servicio_externo_estab)
+               left join mnt_servicio_externo t03 on (t03.id=t02.id_servicio_externo)
+               join mnt_modalidad_establecimiento t04 on (t04.id=t01.id_modalidad_estab)
+               join ctl_modalidad t05 on (t05.id=t04.id_modalidad)
+               join fos_user_user t06 on (t01.id=t06.id_area_mod_estab)
+               where id_area_atencion=1
+               and enabled=true
+               and t06.id_establecimiento=$idestab
+               order by 1;";
+         $result=pg_query($sql);
+         if (!$result)
+            return false;
+         else
+            return $result;
+      }
+      
+   }
+      
+      
          
    //Fin funcion Postgres
     

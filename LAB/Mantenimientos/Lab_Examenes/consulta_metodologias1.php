@@ -246,7 +246,7 @@ function abrirmodal(){
                <span class='glyphicon glyphicon-ok-circle'></span> 
                Aceptar
           </button><br/>
-        <input type="hidden" name="resultado" id="resultado" value="<?php print resultado; ?>">
+        <input type="hidden" name="resultado" id="resultado" value="<?php print $resultado; ?>">
         <input type="hidden" name="resultado_nombre" id="resultado_nombre" value="<?php print $resultado_nombre; ?>" >
         <input type="hidden" name="id_resultado" id="id_resultado" value="<?php print $id_resultado; ?>">
         <br></div>

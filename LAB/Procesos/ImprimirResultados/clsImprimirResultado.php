@@ -697,7 +697,9 @@ function MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar)
                     t26.lectura as lectura,
                     t26.interpretacion as interpretacion,
                     t26.observacion as observacion,
-                    TO_CHAR(t01.f_tomamuestra, 'DD/MM/YYYY HH12:MI') AS f_tomamuestra
+                    TO_CHAR(t01.f_tomamuestra, 'DD/MM/YYYY HH12:MI') AS f_tomamuestra,
+                    TO_CHAR(t03.fechahorareg, 'DD/MM/YYYY HH12:MI') AS fecha,
+                    TO_CHAR(t26.fecha_resultado, 'DD/MM/YYYY HH12:MI') AS fecha_resultado
             FROM sec_detallesolicitudestudios           t01 
             INNER JOIN sec_solicitudestudios            t02 	ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra             t03 	ON (t02.id = t03.idsolicitudestudio) 
@@ -789,7 +791,9 @@ UNION
                 t26.resultado as resultado,
                 t26.lectura as lectura,
                 t26.interpretacion as interpretacion,
-                t26.observacion as observacion,TO_CHAR(t01.f_tomamuestra, 'DD/MM/YYYY HH12:MI') AS f_tomamuestra
+                t26.observacion as observacion,TO_CHAR(t01.f_tomamuestra, 'DD/MM/YYYY HH12:MI') AS f_tomamuestra,
+                TO_CHAR(t03.fechahorareg, 'DD/MM/YYYY HH12:MI') AS fecha,
+                TO_CHAR(t26.fecha_resultado, 'DD/MM/YYYY HH12:MI') AS fecha_resultado
             FROM sec_detallesolicitudestudios           t01 
             INNER JOIN sec_solicitudestudios            t02 	ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra             t03 	ON (t02.id = t03.idsolicitudestudio) 
@@ -826,6 +830,33 @@ UNION
        return $result;
     }
 }
+//Fn Pg
+    function buscarexamresult($iddetalle, $idsolicitud, $lugar, $idexamen, $sexo, $idedad) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+         $query="select lce.id  as idexamen, codigo_examen, nombre_examen, unidades, rangoinicio, rangofin,nombre_metodologia, id_metodologia, nombre_reporta, fechafin, fechaini, ldf.id,
+lrm.resultado, lrm.observacion, lrm.marca, lrm.lectura
+from lab_datosfijosresultado 	ldf
+join lab_conf_examen_estab	lce on (lce.id = ldf.id_conf_examen_estab)
+join lab_examen_metodologia 	lem on (lce.id = lem.id_conf_exa_estab)
+left join lab_metodologia	lme on (lme.id = lem.id_metodologia)
+join lab_resultado_metodologia 	lrm on (lem.id = lrm.id_examen_metodologia)
+where idestablecimiento=$lugar
+and id_conf_examen_estab=$idexamen
+and id_detallesolicitudestudio=$iddetalle
+and (current_date between fechaini and (case when date(fechafin) is null then current_date else fechafin end))
+and (ldf.idsexo is null or ldf.idsexo=$sexo)
+and (idedad=4 or idedad=$idedad)
+and b_reporta=true order by nombre_metodologia";
+            $result = @pg_query($query);
+           // $filares = pg_fetch_array($result);
+              // echo '<br\>'.$filares['idempleado'].'<br\>';
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
 
 function MostrarDatosGeneralesxId($idsolicitud,$iddetalle,$lugar,$IdResultado)
 {

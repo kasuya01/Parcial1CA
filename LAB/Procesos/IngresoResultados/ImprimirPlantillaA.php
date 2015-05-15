@@ -112,7 +112,7 @@ $f_tomamuestra=$filares['f_tomamuestra'];
 <!--                    <input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row['FechaNacimiento']?>>-->
             </tr>
             <tr>
-            	<td colspan="1" class="Estilo5"><strong>NEC:</strong></td>
+            	<td colspan="1" class="Estilo5"><strong>Expediente:</strong></td>
 		<td colspan="2" class="Estilo7"><?php echo $txtnec;?></td>
             	<td colspan="1" class="Estilo5"><strong>Fecha Resultado:</strong></td>
 		<td colspan="2" class="Estilo6"><?php echo $fechares;?></td>
