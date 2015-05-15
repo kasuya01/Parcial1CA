@@ -26,6 +26,7 @@ $idproce=0;
 <script language="JavaScript" >
 function Guardar(){
        	IngresarRegistro();
+        LimpiarCampos();
 }
 function AsignarIdExamen(idArea)
 {
@@ -33,7 +34,8 @@ function AsignarIdExamen(idArea)
 }
 function Modificar()
 { 
-	enviarDatos(); 
+	enviarDatos();
+        LimpiarCampos();
 }
 function LlenarComboExamen(idarea)
 {
@@ -145,8 +147,8 @@ if ($nivel==33){
                            <tr>
                             <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo en tabulador</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbEstandarRep" name="cmbEstandarRep" size="10"style="width:75%; size: 10" class="height js-example-basic-single">
-                                    <option></option>
+                                <select id="cmbEstandarRep" name="cmbEstandarRep" style="width:75%; size: 10" class="height js-example-basic-single">
+                                    <option value="0">Seleccione un Código...</option>
                                         <?php
                                             //$obje=new clsLab_CodigosEstandar;
                                             $consulta= $obj->consultar_estandar();

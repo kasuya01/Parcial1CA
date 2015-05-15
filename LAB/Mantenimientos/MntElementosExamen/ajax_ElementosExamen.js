@@ -55,6 +55,7 @@ function LimpiarCampos(){
 	document.frmnuevo.txtobservacionele.value="";
 	document.frmnuevo.txtFechainicio.value="";
 	document.frmnuevo.txtFechaFin.value="";
+         document.frmnuevo.cmborden.value="0";
 	
 }
 
@@ -66,7 +67,8 @@ function LimpiarSubElementos(){
         document.frmnuevo.txtrangoini.value="";
         document.frmnuevo.txtrangofin.value="";
         document.frmnuevo.cmbSexo.value="0";
-        document.frmnuevo.cmbEdad.value="0";        
+        document.frmnuevo.cmbEdad.value="0"; 
+        //document.frmnuevo.cmborden.value="0";
 	document.frmnuevo.txtsubelemento.focus();
 	
 }
@@ -95,7 +97,8 @@ function IngresarRegistro(){ //INGRESAR REGISTROS DE ELEMENTOS
 		observacionele=document.frmnuevo.txtobservacionele.value;
 		unidadele=document.frmnuevo.txtunidadele.value;
 		Fechaini=document.frmnuevo.txtFechainicio.value;
-		Fechafin=document.frmnuevo.txtFechaFin.value;	
+		Fechafin=document.frmnuevo.txtFechaFin.value;
+                orden=document.frmnuevo.cmborden.value;
 		//alert( rangoini+"***"+Fechafin);
 		var opcion=1;
 		Pag=1;
@@ -116,7 +119,7 @@ function IngresarRegistro(){ //INGRESAR REGISTROS DE ELEMENTOS
 	//enviando los valores
 	ajax.send("idexamen="+idexamen+"&idarea="+idarea+"&elemento="+escape(elemento)+
         "&subelemento="+subelemento+"&observacionele="+escape(observacionele)+"&unidadele="+escape(unidadele)+
-        "&Pag="+Pag+"&opcion="+opcion+"&Fechaini="+Fechaini+"&Fechafin="+Fechafin);
+        "&Pag="+Pag+"&opcion="+opcion+"&Fechaini="+Fechaini+"&Fechafin="+Fechafin+"&orden="+orden);
    }
    else{
 		alert("Complete los datos a Ingresar");
@@ -139,6 +142,7 @@ function IngresarRegistroSubElemento()
 	Fechafin=document.frmnuevo.txtFechaFin.value;
         sexo=document.frmnuevo.cmbSexo.value;
         redad=document.frmnuevo.cmbEdad.value;
+        orden=document.frmnuevo.cmborden.value;
         //alert(rangoini);
 	var opcion=1;
 	Pag=1;
@@ -159,7 +163,7 @@ function IngresarRegistroSubElemento()
 	//enviando los valores
 	ajax.send("subelemento="+subelemento+"&unidad="+unidad+
         "&rangoini="+rangoini+"&rangofin="+rangofin+"&idelemento="+idelemento+"&elemento="+elemento+
-        "&Pag="+Pag+"&opcion="+opcion+"&Fechaini="+Fechaini+"&Fechafin="+Fechafin+"&sexo="+sexo+"&redad="+redad);	
+        "&Pag="+Pag+"&opcion="+opcion+"&Fechaini="+Fechaini+"&Fechafin="+Fechafin+"&sexo="+sexo+"&redad="+redad+"&orden="+orden);	
    }
 
   else{
@@ -232,7 +236,8 @@ function enviarDatos(){
 	observacionele=document.frmModificar.txtobservacionele.value;
 	unidadele=document.frmModificar.txtunidadele.value;
 	Fechaini=document.frmModificar.txtFechainicio.value;
-	Fechafin=document.frmModificar.txtFechaFin.value;	
+	Fechafin=document.frmModificar.txtFechaFin.value;
+        orden=document.frmModificar.cmborden.value;
     //alert(Fechaini+"***"+Fechafin);
 	
 	var opcion=2;	
@@ -246,7 +251,7 @@ function enviarDatos(){
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
 	ajax.send("idexamen="+idexamen+"&idarea="+idarea+"&idelemento="+idelemento+"&elemento="+escape(elemento)+"&subelemento="+subelemento+"&observacionele="
-	+escape(observacionele)+"&unidadele="+escape(unidadele)+"&Pag="+Pag+"&opcion="+opcion+"&Fechaini="+Fechaini+"&Fechafin="+Fechafin);
+	+escape(observacionele)+"&unidadele="+escape(unidadele)+"&Pag="+Pag+"&opcion="+opcion+"&Fechaini="+Fechaini+"&Fechafin="+Fechafin+"&orden="+orden);
 	ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
 			divResultado.style.display="block";
@@ -281,6 +286,7 @@ function enviarDatosSubElemento()
 	Fechafin=document.frmModificar.txtFechaFin.value;
         sexo=document.frmModificar.cmbSexo.value;
         redad=document.frmModificar.cmbEdad.value;
+        orden=document.frmModificar.cmborden.value;
        // alert("Rango fin="+rangofin);
 	var opcion=2;	
 	Pag=1;
@@ -295,7 +301,7 @@ function enviarDatosSubElemento()
         //alert(rangoini+"-"+rangofin+"-"+sexo+"-"+redad);
 	ajax.send("idsubelemento="+idsubelemento+"&subelemento="+escape(subelemento)+"&unidad="+unidad+
         "&rangoini="+rangoini+"&rangofin="+rangofin+"&idelemento="+idelemento+"&elemento="+escape(elemento)+
-        "&Pag="+Pag+"&opcion="+opcion+"&Fechaini="+Fechaini+"&Fechafin="+Fechafin+"&sexo="+sexo+"&redad="+redad);	
+        "&Pag="+Pag+"&opcion="+opcion+"&Fechaini="+Fechaini+"&Fechafin="+Fechafin+"&sexo="+sexo+"&redad="+redad+"&orden="+orden);	
 	ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
 			divResultado.style.display="block";

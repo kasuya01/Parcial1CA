@@ -149,15 +149,16 @@ $rangoedad=$row['nombregrupoedad'];
                                             <?php
                                 $conEdad = $obj->Rangos($idproce);
                                 while($row = pg_fetch_array($conEdad)){
-                                	if($row['orden'] === $orden){
+                                	//if($row['orden'] === $orden){
                                 		echo "<option value='" . $orden . "' selected='selected'>" .$orden. "</option>";
-                                        } else
-                                            $datosDB=0;
-                                             $datosDB=existeOrden($idexamen);
-                                                for ($index = 1 ; $index <=10 ; $index++) 
+                                       // } else
+                                         /*   $datosDB=0;
+                                             $datosDB=existeOrden($idexamen);*/
+                                                for ($index = 1 ; $index <=25 ; $index++) 
                                                     {
-                                                      $rest=areglo ($datosDB,$index);
-                                                      if($rest==0){
+                                                      //$rest=areglo ($datosDB,$index);
+                                                     // if($rest==0){
+                                                      if($index<>$orden){    
                                                         echo '<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
                                                       }
 

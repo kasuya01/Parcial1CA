@@ -24,11 +24,11 @@ class clsLab_Empleados {
         }
     }
 
-    function Insertar_Usuario($login, $idempleado, $pass, $niv, $lugar, $modalidad) {
+    function Insertar_Usuario($login, $idempleado, $pass, $niv, $lugar, $modalidad,$pagador) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "INSERT INTO fos_user_user(id,username, username_canonical, email, email_canonical, enabled, password, locked, expired, roles, credentials_expired, firstname, lastname, gender, id_establecimiento, id_empleado, modulo, nivel, id_modalidad_estab) 
-                            VALUES((SELECT last_value FROM fos_user_user_id_seq)+1,'$login','$login','".$login."@salud.gob.sv','".$login."@salud.gob.sv',true,md5('$pass'),false,false,'a:0:{}',false,(SELECT nombre FROM mnt_empleado WHERE idempleado = '$idempleado'),(SELECT apellido FROM mnt_empleado WHERE idempleado = '$idempleado'),'u',$lugar,(SELECT id from mnt_empleado WHERE idempleado = '$idempleado'),'LAB',$niv,$modalidad);
+            $query = "INSERT INTO fos_user_user(id,username, username_canonical, email, email_canonical, enabled, password, locked, expired, roles, credentials_expired, firstname, lastname, gender, id_establecimiento, id_empleado, modulo, id_area_mod_estab, nivel, id_modalidad_estab) 
+                            VALUES((SELECT last_value FROM fos_user_user_id_seq)+1,'$login','$login','".$login."@salud.gob.sv','".$login."@salud.gob.sv',true,md5('$pass'),false,false,'a:0:{}',false,(SELECT nombre FROM mnt_empleado WHERE idempleado = '$idempleado'),(SELECT apellido FROM mnt_empleado WHERE idempleado = '$idempleado'),'u',$lugar,(SELECT id from mnt_empleado WHERE idempleado = '$idempleado'),'LAB',$pagador,$niv,$modalidad);
                       SELECT SETVAL('fos_user_user_id_seq', (SELECT MAX(id) FROM fos_user_user), true);";
             $result = pg_query($query);
             if (!$result)
@@ -296,8 +296,47 @@ class clsLab_Empleados {
                 return $result;
         }
     }
+
+
+function consultar_empleador($lugar){
+     $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if ($con->conectar() == true) {
+              $query = "SELECT A.id,D.nombre||coalesce('-'||F.nombre,'') as area FROM mnt_area_mod_estab A
+                        INNER JOIN ctl_area_atencion B on A.id_area_atencion=B.id
+                        LEFT JOIN mnt_servicio_externo_establecimiento C ON A.id_servicio_externo_estab=C.id
+                        LEFT JOIN mnt_servicio_externo F ON F.id=C.id_servicio_externo
+                        INNER JOIN mnt_modalidad_establecimiento E on A.id_modalidad_estab=E.id
+                        INNER JOIN ctl_modalidad D on E.id_modalidad=D.id
+                        WHERE B.id=1 and A.id_establecimiento=$lugar
+                        ORDER BY D.nombre"; 
+             $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+        return $result;}
 }
 
+function modificar_empleador($lugar,$empleador){
+     $con = new ConexionBD;
+        //usamos el metodo conectar para realizar la conexion
+        if ($con->conectar() == true) {
+              $query = "SELECT A.id,D.nombre||coalesce('-'||F.nombre,'') as area FROM mnt_area_mod_estab A
+                        INNER JOIN ctl_area_atencion B on A.id_area_atencion=B.id
+                        LEFT JOIN mnt_servicio_externo_establecimiento C ON A.id_servicio_externo_estab=C.id
+                        LEFT JOIN mnt_servicio_externo F ON F.id=C.id_servicio_externo
+                        INNER JOIN mnt_modalidad_establecimiento E on A.id_modalidad_estab=E.id
+                        INNER JOIN ctl_modalidad D on E.id_modalidad=D.id
+                        WHERE B.id=1 and A.id_establecimiento=$lugar AND A.id<>$empleador
+                        ORDER BY D.nombre"; 
+             $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+        return $result;}
+}
+
+}
 //CLASE
 class Estado {
 
@@ -316,6 +355,8 @@ class Estado {
         }
         $con->desconectar();
     }
+    
+    
 }
 //CLASE
 ?>

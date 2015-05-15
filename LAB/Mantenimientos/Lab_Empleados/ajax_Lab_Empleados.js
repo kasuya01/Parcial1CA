@@ -67,6 +67,7 @@ function IngresarRegistro() { //INGRESAR REGISTROS
         login = document.getElementById('txtlogin').value;
         modalidad = document.getElementById('cmbModalidad').value;
         txtapellido = document.getElementById('txtapellido').value;
+        pagador = document.getElementById('cmbPago').value;
         var opcion = 1;
         Pag = 1;
         //instanciamos el objetoAjax
@@ -85,7 +86,8 @@ function IngresarRegistro() { //INGRESAR REGISTROS
         }
         ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         //enviando los valores
-        ajax.send("idempleado=" + idempleado + "&idarea=" + idarea + "&nomempleado=" + nomempleado + "&cargo=" + cargo + "&login=" + login + "&Pag=" + Pag + "&opcion=" + opcion + "&modalidad=" + modalidad+ "&txtapellido=" + txtapellido);
+        ajax.send("idempleado=" + idempleado + "&idarea=" + idarea + "&nomempleado=" + nomempleado + "&cargo=" + cargo + "&login=" + login + "&Pag=" + Pag + "&opcion=" + opcion 
+                + "&modalidad=" + modalidad+ "&txtapellido=" + txtapellido+"&pagador="+pagador);
     //}
 
    /* else {

@@ -34,8 +34,8 @@ switch ($opcion)
                 $rangofin=(empty($_POST['rangofin'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangofin']) . "'";
                 $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
 		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";              
-		
-        	if ($objdatos->insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad)==true) 
+		$orden=$_POST['orden'];
+        	if ($objdatos->insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad,$orden)==true) 
                     echo "Registro Agregado";
 		//}
 		else
@@ -55,9 +55,10 @@ switch ($opcion)
                 $rangofin=(empty($_POST['rangofin'])) ? 0 : "'" . pg_escape_string($_POST['rangofin']) . "'";
                 $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
 		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";   
+                $orden=$_POST['orden'];
            //   echo $subelemento;
 		//echo $rangoini."-".$rangofin;
-		if ($objdatos->actualizar($idsubelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad)==true) 
+		if ($objdatos->actualizar($idsubelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad,$orden)==true) 
                    //&& ($Clases->actualizar_labo($idsubelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad)==true)){
 			echo "Registro Actualizado"; 
 		else 
@@ -88,29 +89,30 @@ switch ($opcion)
 		$consulta= $objdatos->consultarpag($idelemento,$RegistrosAEmpezar, $RegistrosAMostrar);
 
 		//muestra los datos consultados en la tabla
-	  echo "<table border = 1 align='center' class='StormyWeatherFormTABLE'>
-	        <tr>
-                    <td class='CobaltFieldCaptionTD' aling='center'> Modificar</td>";
-               echo "     <td class='CobaltFieldCaptionTD' aling='center'> Eliminar</td>
-                    <td class='CobaltFieldCaptionTD'> Orden </td>
-                    <td class='CobaltFieldCaptionTD'> SubElemento </td>
-                    <td class='CobaltFieldCaptionTD'> Unidad </td>
-                    <td class='CobaltFieldCaptionTD'> Valores Normales </td>
-                    <td class='CobaltFieldCaptionTD'> Rango Edad </td>
-                    <td class='CobaltFieldCaptionTD'> Sexo</td>
-		    <td class='CobaltFieldCaptionTD'> Fecha Inicio</td>	
-                    <td class='CobaltFieldCaptionTD'> Fecha Fin</td>
-                    <td class='CobaltFieldCaptionTD'> Atar a cat&aacute;logo</td>
-	        </tr>";
+	  echo "<center><table border = 1 style='width: 100%;' class='table table-hover table-bordered table-condensed table-white table-striped'>
+	           <thead>
+                    <th   aling='center'> Modificar</th>";
+               //echo "<th aling='center'> Eliminar</td>;
+                    echo "  <th > Orden </th>
+                    <th> SubElemento </th>
+                    <th> Unidad </th>
+                    <th> Valores Normales </th>
+                    <th> Rango Edad </th>
+                    <th> Sexo</td>
+		    <th> Fecha Inicio</th>	
+                    <th> Fecha Fin</th>
+                    <th> Atar a cat&aacute;logo</th>
+	        </tr> </thead><tbody>
+                    </center>";
     while($row = pg_fetch_array($consulta)){
           echo "<tr>
                     <td aling='center'> 
 			<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-			onclick=\"pedirDatosSubElementos('".$row['id']."')\"> </td>
-                    <td aling ='center'> 
+			onclick=\"pedirDatosSubElementos('".$row['id']."')\"> </td>";
+         /*    echo "   <td aling ='center'> 
 			<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-			onclick=\"eliminarDatoSubElemento('".$row['id']."')\"> </td>
-                            <td>".htmlentities($row['orden'])."</td>
+			onclick=\"eliminarDatoSubElemento('".$row['id']."')\"> </td>":*/
+                 echo "            <td>".htmlentities($row['orden'])."</td>
                     <td>".htmlentities($row['subelemento'])."</td>";
            if (!empty($row['unidad']))            
               echo" <td>".htmlentities($row['unidad'])."</td>";
@@ -213,7 +215,7 @@ switch ($opcion)
                             <tr>
                                 <td class='StormyWeatherFieldCaptionTD'>Elemento</td>
                                 <td colspan='3' class='StormyWeatherDataTD'>
-                                    <input name='txtexamen' type='text' id='txteaxmen' value='".htmlentities($examen)."' size='60' disabled='disabled'>
+                                    <input name='txtexamen' type='text' id='txteaxmen' value='".htmlentities($examen)."' size='60' disabled='disabled' class='form-control height'>
                                 </td>
                             </tr>
                             <tr>
@@ -221,19 +223,19 @@ switch ($opcion)
                                 <td colspan='3' class='StormyWeatherDataTD'>
                                         <input name='idelemento' type='hidden' id='idelemento' value='".$idelemento."' >
                                         <input name='idsubelemento' type='hidden' id='idsubelemento' value='".$idsubelemento."' >
-                                        <input name='txtelemento' type='text' id='txtelemento' value='".htmlentities($elemento)."' size='60' disabled='disabled'>
+                                        <input name='txtelemento' type='text' id='txtelemento' value='".htmlentities($elemento)."' size='60' disabled='disabled' class='form-control height'>
                                 </td>
                             </tr>
                             <tr>
                                 <td width='17%'  class='StormyWeatherFieldCaptionTD'>SubElemento</td>
                                 <td colspan='3' width='63%' class='StormyWeatherDataTD'>
-                                        <input name='txtsubelemento' type='text' id='txtsubelemento' value='".htmlentities($subelemento)."' size='60'>
+                                        <input name='txtsubelemento' type='text' id='txtsubelemento' value='".htmlentities($subelemento)."' size='60' class='form-control height'>
                                 </td>
                             </tr>
                             <tr>
                                 <td  class='StormyWeatherFieldCaptionTD'>Sexo</td>
                                 <td colspan='3' class='StormyWeatherDataTD'>
-                                    <select id='cmbSexo' name='cmbSexo' size='1' >
+                                    <select id='cmbSexo' name='cmbSexo' size='1' class='form-control height'>
                                              <option value='0'>Ambos</option>";
 
                                                 $consultaS= $objdatos->consultarsexo();
@@ -248,7 +250,7 @@ switch ($opcion)
                             <tr>
                                 <td class='StormyWeatherFieldCaptionTD'>Rango Edad</td>
                                 <td colspan='3' class='StormyWeatherDataTD'>
-                                    <select id='cmbEdad' name='cmbEdad' size='1' >
+                                    <select id='cmbEdad' name='cmbEdad' size='1' class='form-control height'>
                                         <option value='0' >--Seleccione un Rango de Edad--</option>";
 
                                             $conEdad = $objdatos->RangosEdades();
@@ -262,7 +264,7 @@ switch ($opcion)
                             <tr>
                                 <td class='StormyWeatherFieldCaptionTD'>Unidad</td>
                                 <td colspan='3' Class='StormyWeatherDataTD'>
-                                    <input name='txtunidad' type='text' id='txtunidad' value='".htmlentities($unidad)."' size='20'>
+                                    <input name='txtunidad' type='text' id='txtunidad' value='".htmlentities($unidad)."' size='20' class='form-control height'>
                                 </td>
                             </tr>
                             <tr>
@@ -285,7 +287,7 @@ switch ($opcion)
                             <tr>
 				<td  class='StormyWeatherFieldCaptionTD'>Fecha Inicio</TD>
 				<td class='StormyWeatherDataTD'>
-					<input name='txtFechainicio' type='text' id='txtFechainicio' size='10' value='".htmlentities($FechaIni)."'>dd/mm/aaaa
+					<input name='txtFechainicio' type='text' id='txtFechainicio' size='10' value='".htmlentities($FechaIni)."' >dd/mm/aaaa
 				</td>
 				<td  class='StormyWeatherFieldCaptionTD'>Fecha Final</TD>
 				<td  class='StormyWeatherDataTD'>
@@ -307,13 +309,10 @@ switch ($opcion)
                                             else{
                                                 
                                                 $datosDB=$objdatos->existeOrden($idelemento);
-                                               
-                                            
-                                         
-                                    	                                     
+                                                                            	                                     
                                              }
                                        }
-                                        for ($index = $datosDB ; $index <=25 ; $index++) 
+                                        for ($index = 1 ; $index <=25 ; $index++) 
                                                 {
                                                      // $rest=$objdatos->arreglo ($datosDB,$index);
                                                    // if($rest==0){
@@ -329,8 +328,9 @@ switch ($opcion)
         		</tr>
                             <tr>
                                  <td colspan='4' class='StormyWeatherDataTD' align='right'>
-                                    <input type='button' name='Submit' value='Actualizar' onClick='enviarDatosSubElemento();'>
-                                    <input type='button' name='btnCancelar' value='Cerrar' onClick='window.close();'>
+                                    <button type='button' name='Submit' value='Actualizar' class='btn btn-primary'  onClick='enviarDatosSubElemento();'><span class='glyphicon glyphicon-floppy-disk'></span> Actualizar </button>
+                                  
+                                    <button type='button' name='btnCancelar' value='Cerrar' class='btn btn-primary' onClick='window.close();'>Cerrar </button>
                                  </td>
                              </tr>
                         </table>

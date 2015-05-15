@@ -2,6 +2,7 @@
 session_start();
 include('clsLab_Empleados.php');
 include('../Lab_Areas/clsLab_Areas.php');
+$obj = new clsLab_Empleados;
 $nivel = $_SESSION['NIVEL'];
 $corr  = $_SESSION['Correlativo'];
 $lugar = $_SESSION['Lugar'];
@@ -200,12 +201,27 @@ $base_url  = $_SESSION['base_url'];
                                         <select id="cmbModalidad" name="cmbModalidad" size="1" style="width:60%" class="form-control height">
                                             <option value="0" >--Seleccione una modalidad--</option>
                                             <?php
-                                            $objeareas = new clsLab_Empleados;
-                                            $consulta = $objeareas->consultarModalidad($lugar);
+                                           
+                                            $consulta = $obj->consultarModalidad($lugar);
                                             while ($row = pg_fetch_array($consulta)) {
                                                 echo "<option value='" . $row[0] . "'>" . $row[1] . "</option>";
                                             }
                                             ?>        
+                                        </select>        
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td class="StormyWeatherFieldCaptionTD"> Pagado por</td>
+                                    <td class="StormyWeatherDataTD">
+                                        <select id="cmbPago" name="cmbPago" size="1" style="width:60%" class="form-control height">
+                                            <option value="0" >--Seleccione un Pagador--</option>
+                                            <?php
+                                           
+                                            $conempleador = $obj->consultar_empleador($lugar);
+                                            while ($row = pg_fetch_array($conempleador)) {
+                                                echo "<option value='" . $row[0] . "'>" . $row[1] . "</option>";
+                                            }
+                                            ?>    
                                         </select>        
                                     </td>
                                 </tr>

@@ -38,7 +38,7 @@ switch ($opcion) {
                 $apellido   = $_POST['txtapellido'];
 
                 $nombrecompleto= $apellido." ".$nombre;
-        
+                $pagador = $_POST['pagador'];
         $pass = "123";
         $corr = $objdatos->LeerUltimoCodigo($lugar);
         if (($cargo == 6) or ( $cargo == 10)) {
@@ -59,7 +59,7 @@ switch ($opcion) {
         }
 
         //echo $cargo."y nivel".$niv;
-        if (($objdatos->insertar($idempleado, $lugar, $idarea, $nombrecompleto,$nombre, $cargo, $usuario, $corr, $IdEstabExt, $apellido) == true) && ($objdatos->Insertar_Usuario($login, $idempleado, $pass, $niv, $lugar, $modalidad) == 1)) {
+        if (($objdatos->insertar($idempleado, $lugar, $idarea, $nombrecompleto,$nombre, $cargo, $usuario, $corr, $IdEstabExt, $apellido) == true) && ($objdatos->Insertar_Usuario($login, $idempleado, $pass, $niv, $lugar, $modalidad,$pagador) == 1)) {
             echo "Registro Agregado";
         } else {
             echo "No se pudo Agregar el Registro";

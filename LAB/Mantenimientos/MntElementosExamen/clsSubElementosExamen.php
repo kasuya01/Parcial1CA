@@ -9,14 +9,14 @@ class clsSubElementosExamen
  }	
 
 //INSERTA UN REGISTRO          
-function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad)
+function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad,$orden)
          
 {
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_subelementos(idelemento,unidad,subelemento,rangoinicio,rangofin,fechaini,fechafin,idestablecimiento,idsexo,idedad) 
-	      VALUES($idelemento,$unidad,'$subelemento',$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad)";
+   echo $query = "INSERT INTO lab_subelementos(idelemento,unidad,subelemento,rangoinicio,rangofin,fechaini,fechafin,idestablecimiento,idsexo,idedad,orden) 
+	      VALUES($idelemento,$unidad,'$subelemento',$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad,$orden)";
   //echo $query;
     $result = pg_query($query);
 	 
@@ -30,14 +30,14 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
  
 
  //ACTUALIZA UN REGISTRO
- function actualizar($idsubelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad)
+ function actualizar($idsubelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad,$orden)
  {					
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
      $query = "UPDATE lab_subelementos SET subelemento='$subelemento',unidad=$unidad,rangoinicio=$rangoini,
                rangofin=$rangofin,fechaini=$Fechaini,fechafin=$Fechafin,idestablecimiento=$lugar,
-               idsexo=$sexo,idedad=$redad WHERE id=$idsubelemento";
+               idsexo=$sexo,idedad=$redad, orden=$orden WHERE id=$idsubelemento";
  // echo $query; 
      $result = pg_query($query);
 	 if (!$result)

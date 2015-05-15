@@ -151,10 +151,12 @@ $base_url  = $_SESSION['base_url'];
                             </td>
                         </tr>    
 			<tr>
-                            <td colspan="4" class="StormyWeatherDataTD" align="right">
-                                <input type="button" name="Submit" value="Guardar" onClick="Guardar() ;">
-				<input type="button" name="Submit2" value="Buscar" Onclick="javascript:Buscar() ;">
-				<input type="button" name="Submit2" value="Nuevo" onClick="window.location.replace('MntElementosExamen.php')">	
+                            <td colspan="2" class="StormyWeatherDataTD" align="right">
+                                <button type="button" name="Submit" class="btn btn-primary" value="Guardar" onClick="Guardar() ;"><span class='glyphicon glyphicon-floppy-disk'></span> Guardar </button>
+                                 <!--<button type='button' align="center" class='btn btn-primary' id="abrir"  onclick='Guardar(); '><span class='glyphicon glyphicon-floppy-disk'></span> Guardar </button>-->
+				<button type="button" name="Submit2" class="btn btn-primary" value="Buscar" Onclick="javascript:Buscar();"> <span class='glyphicon glyphicon-search'></span>  Buscar </button>
+				<button type="button" name="Submit3"  class="btn btn-primary" value="Nuevo" onClick="window.location.replace('MntElementosExamen.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>	
+
                             </td>
 			</tr>
                     </table>

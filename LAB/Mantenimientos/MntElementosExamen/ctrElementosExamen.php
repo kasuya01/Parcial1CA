@@ -23,9 +23,10 @@ switch ($opcion)
                 $observacionele=(empty($_POST['observacionele'])) ? 'NULL' : "'" . pg_escape_string($_POST['observacionele']) . "'";  
 		$Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
                 $Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
+                $orden=$_POST['orden'];
 		
-            if ($objdatos->insertar($idexamen,$nomelemento,$subelemento,$usuario,$observacionele,$unidadele,$lugar,$Fechaini,$Fechafin)==true) 
-                /*&& ($Clases->insertar_labo($idexamen,$nomelemento,$subelemento,$usuario,$observacionele,$unidadele,$lugar,$Fechaini,$Fechafin)==true)){*/
+            if ($objdatos->insertar($idexamen,$nomelemento,$subelemento,$usuario,$observacionele,$unidadele,$lugar,$Fechaini,$Fechafin,$orden)==true) 
+            
 			echo "Registro Agregado";
 	   	
 	   	else
@@ -40,9 +41,10 @@ switch ($opcion)
                 $observacionele=(empty($_POST['observacionele'])) ? 'NULL' : "'" . pg_escape_string($_POST['observacionele']) . "'";  
 		$Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
                 $Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
-		
-		If ($objdatos->actualizar($idelemento,$nomelemento,$subelemento,$unidadele,$observacionele,$usuario,$lugar,$Fechaini,$Fechafin)==true) 
-                        /*&& $Clases->actualizar_labo($idelemento,$nomelemento,$subelemento,$unidadele,$observacionele,$usuario,$lugar,$Fechaini,$Fechafin)==true){*/
+		$orden=$_POST['orden'];
+            
+		If ($objdatos->actualizar($idelemento,$nomelemento,$subelemento,$unidadele,$observacionele,$usuario,$lugar,$Fechaini,$Fechafin,$orden)==true) 
+            
 			echo "Registro Actualizado";			
 		
 		else

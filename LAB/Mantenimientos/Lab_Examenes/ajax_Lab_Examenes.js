@@ -24,7 +24,8 @@ function LimpiarCampos(){
 	//document.frmnuevo.txtobservacion.value="";
         document.frmnuevo.cmbUbicacion.value="0";
 	document.frmnuevo.cmbFormularios.value="0";
-	document.frmnuevo.cmbEstandarRep.value="0";
+	document.getElementById('cmbEstandarRep').value="0";
+        
         document.frmnuevo.cmbEtiqueta.value="0";
         document.frmnuevo.cmbUrgente.value="0";
         document.frmnuevo.cmbsexo.value="0";

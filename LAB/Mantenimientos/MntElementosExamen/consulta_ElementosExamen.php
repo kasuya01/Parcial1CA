@@ -7,6 +7,7 @@ $obj = new clsElementosExamen;
 $lugar=$_SESSION['Lugar'];
 $usuario=$_SESSION['Correlativo'];
 $area=$_SESSION['Idarea'];
+
 //consulta los datos por su id
 $idelemento=$_POST['idelemento'];
 
@@ -154,10 +155,11 @@ $orden=$row['orden'];
 		</tr>
         <tr>
             <td colspan="2" class="StormyWeatherDataTD" align="right">
-				<input type="button" name="Submit" value="Actualizar" onClick="enviarDatos() ;">
-				<input type="button" name="Submit2" value="Buscar" Onclick="Buscar() ;">
-				<input type="button" name="Submit2" value="Nuevo" onClick="window.location.replace('MntElementosExamen.php')">			
-			   	<input type="button" name="btnSubElementos" value="SubElementos" Onclick="MostrarSubElementos() ;">   
+				<button type="button"  value="Actualizar" class="btn btn-primary" onClick="enviarDatos();"><span class="glyphicon glyphicon-repeat"></span> Actualizar </button>
+                                
+				<!--<button name="Submit2"  class="btn btn-primary" value="Buscar" Onclick="Buscar() ;"><span class='glyphicon glyphicon-search'></span>  Buscar </button>-->
+				<button name="Submit2" value="Nuevo" class="btn btn-primary" onClick="window.location.replace('MntElementosExamen.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>			
+			   	<input type="button" name="btnSubElementos"  class="btn btn-primary"value="SubElementos" Onclick="MostrarSubElementos() ;">   
 			</td>
         </tr>
          <?php

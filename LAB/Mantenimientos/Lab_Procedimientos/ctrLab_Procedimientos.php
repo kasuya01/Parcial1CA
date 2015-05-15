@@ -539,7 +539,7 @@ case 7: //BUSQUEDA
 		$query = substr( $query , 0, strlen( $query )-6 );
 	}
 
-	$query_search = $query. " ORDER BY lcee.codigo_examen";
+	$query_search = $query. " ORDER BY lcee.codigo_examen, lppe.orden";
 	//echo $query_search;
 	//ENVIANDO A EJECUTAR LA BUSQUEDA!!
 	//require_once("clsLab_Procedimientos.php");
@@ -854,7 +854,7 @@ case 8://PAGINACION DE BUSQUEDA
 		$query = substr( $query , 0, strlen( $query )-6 );
 	}
 
-	$query_search = $query. " ORDER BY lcee.codigo_examen";
+	$query_search = $query. " ORDER BY lcee.codigo_examen, lppe.orden";
 	//echo $query_search;
 	//ENVIANDO A EJECUTAR LA BUSQUEDA!!
 	//require_once("clsLab_Procedimientos.php");
