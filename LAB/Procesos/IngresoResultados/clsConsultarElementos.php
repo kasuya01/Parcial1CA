@@ -412,7 +412,7 @@ else
                     INNER JOIN lab_posible_resultado t02 ON t02.id = t01.id_posible_resultado
                     WHERE id_subelemento=$idsubelemento
                     and t01.habilitado=true
-                    order by posible_resultado desc;";
+                    order by char_length(posible_resultado),posible_resultado desc;";
 
             $result = @pg_query($query);
             
@@ -425,11 +425,11 @@ else
     function contar_posibles_resultados($idsubelemento){
          $con = new ConexionBD;
         if($con->conectar()==true) {
-           $query="SELECT count(*) 
+          $query="SELECT count(*) 
                     FROM lab_subelemento_posible_resultado 
                     INNER JOIN lab_posible_resultado ON lab_posible_resultado.id = lab_subelemento_posible_resultado.id_posible_resultado
-                    WHERE id_subelemento=$idsubelemento";
-
+                    WHERE id_subelemento=$idsubelemento
+                    and lab_subelemento_posible_resultado.habilitado=true";
             $result = @pg_query($query);
             
             if (!$result)

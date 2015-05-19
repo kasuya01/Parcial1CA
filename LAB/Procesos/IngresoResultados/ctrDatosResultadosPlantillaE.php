@@ -471,8 +471,9 @@ case 2://vista Previa de Resultado
                         </tr>
                         <tr>
                             <td colspan='1' style='font:bold'><strong>Observacion:<strong></td>
-                            <td colspan='5'>".htmlentities($observacion)."</td>
+                            <td colspan='5'>".$observacion."</td>
 			</tr>
+                         
                         <tr>
                     <td colspan='6' class='Estilo6'>&nbsp;</td>
                 </tr>

@@ -351,7 +351,7 @@ values ($idmet, $aresultados[$i], current_date, true,$usuario, date_trunc('secon
                        
                   }
                   if ($bandera==0){
-                     $sql2="insert into lab_examen_posible_resultado(id_conf_examen_estab, id_posible_resultado, fechainicio, habilitado, id_user, fecha_registro)
+                 echo    $sql2="insert into lab_examen_posible_resultado(id_conf_examen_estab, id_posible_resultado, fechainicio, habilitado, id_user, fecha_registro)
 values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seconds', NOW()))";
                      $query2=pg_query($sql2);
                   }

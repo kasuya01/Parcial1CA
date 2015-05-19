@@ -59,7 +59,7 @@ switch ($opcion) {
         }
 
         //echo $cargo."y nivel".$niv;
-        if (($objdatos->insertar($idempleado, $lugar, $idarea, $nombrecompleto,$nombre, $cargo, $usuario, $corr, $IdEstabExt, $apellido) == true) && ($objdatos->Insertar_Usuario($login, $idempleado, $pass, $niv, $lugar, $modalidad,$pagador) == 1)) {
+        if (($objdatos->insertar($idempleado, $lugar, $idarea, $nombrecompleto,$nombre, $cargo, $usuario, $corr, $IdEstabExt, $apellido) == true) && ($objdatos->Insertar_Usuario($login, $idempleado, $pass, $niv, $lugar, $modalidad, $pagador) == 1)) {
             echo "Registro Agregado";
         } else {
             echo "No se pudo Agregar el Registro";
@@ -76,6 +76,7 @@ switch ($opcion) {
                 $login      = $_POST['login'];
                 $modalidad  = $_POST['modalidad'];
                 $apellido   = $_POST['txtapellido'];
+                $pagador    = $_POST['pagador'];
           $nombrecompleto= $apellido." ".$nombre;
         if (($cargo == 6) or ( $cargo == 10)) {
             $niv = 1;
@@ -90,9 +91,9 @@ switch ($opcion) {
         }
         //echo $cargo."y nivel".$niv;
         If (($objdatos->actualizar($idempleado, $lugar, $idarea, $nombre,$apellido,$nombrecompleto, $cargo, $usuario) == true) &&
-                ($objdatos->actualizar_Usuario($idempleado, $login, $niv, $lugar, $modalidad)) == true) {
+           ($objdatos->actualizar_Usuario($idempleado, $login, $niv, $lugar, $modalidad,$pagador)) == true) {
             echo "Registro Actualizado";
-        } else {
+        }else{
             echo "No se pudo actualizar";
         }
         break;
@@ -207,12 +208,12 @@ switch ($opcion) {
 
     case 7: //BUSQUEDA
         $query = "SELECT t01.idempleado,
-                         t04.enabled AS estadocuenta, 
-                         CASE WHEN enabled = true THEN 'Habilitado'
-                              ELSE 'Inhabilitado' END AS Habilitado,
-                         t01.idarea,
-                         t03.nombrearea,
-                         t01.nombreempleado,
+                  t04.enabled AS estadocuenta, 
+                  CASE WHEN enabled = true THEN 'Habilitado'
+                  ELSE 'Inhabilitado' END AS Habilitado,
+                  t01.idarea,
+                  t03.nombrearea,
+                  t01.nombreempleado,
                          t02.id AS idcargoempleado,
                          t02.cargo,
                          t01.id_establecimiento AS idestablecimiento,

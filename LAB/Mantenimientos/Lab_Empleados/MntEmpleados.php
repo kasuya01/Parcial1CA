@@ -184,7 +184,7 @@ $base_url  = $_SESSION['base_url'];
                                     <td class="StormyWeatherFieldCaptionTD"> &Aacute;rea</td>
                                     <td class="StormyWeatherDataTD">
                                         <select id="cmbArea" name="cmbArea" size="1" onclick="AsignarCodigoEmpleado();"  style="width:60%" class="form-control height" >
-                                            <option value="0" >--Seleccione un &Aacute;rea--</option>
+                                            <option value="0" >Seleccione un &Aacute;rea</option>
                                             <?php
                                             $objeareas = new clsLab_Areas;
                                             $consulta = $objeareas->consultarareas($lugar);
@@ -199,7 +199,7 @@ $base_url  = $_SESSION['base_url'];
                                     <td class="StormyWeatherFieldCaptionTD"> Modalidad de Contrato</td>
                                     <td class="StormyWeatherDataTD">
                                         <select id="cmbModalidad" name="cmbModalidad" size="1" style="width:60%" class="form-control height">
-                                            <option value="0" >--Seleccione una modalidad--</option>
+                                            <option value="0" >Seleccione una modalidad</option>
                                             <?php
                                            
                                             $consulta = $obj->consultarModalidad($lugar);
@@ -211,10 +211,10 @@ $base_url  = $_SESSION['base_url'];
                                     </td>
                                 </tr>
                                  <tr>
-                                    <td class="StormyWeatherFieldCaptionTD"> Pagado por</td>
+                                    <td class="StormyWeatherFieldCaptionTD"> Fondo de Contratación</td>
                                     <td class="StormyWeatherDataTD">
                                         <select id="cmbPago" name="cmbPago" size="1" style="width:60%" class="form-control height">
-                                            <option value="0" >--Seleccione un Pagador--</option>
+                                            <option value="0" >Seleccione un Fondo de Contratación</option>
                                             <?php
                                            
                                             $conempleador = $obj->consultar_empleador($lugar);
@@ -238,7 +238,7 @@ $base_url  = $_SESSION['base_url'];
                                     <td class="StormyWeatherFieldCaptionTD">Cargo</td>
                                     <td class="StormyWeatherDataTD">
                                         <select id="cmbCargo" name="cmbCargo" size="1" style="width:60%" class="form-control height">
-                                            <option value="0">--Seleccione Cargo--</option>
+                                            <option value="0">Seleccione Cargo</option>
                                             <?php
                                             $objeareas = new clsLab_Empleados;
                                             $consulta = $objeareas->LeerCargos();
