@@ -15,7 +15,7 @@ $row        = pg_fetch_array($consulta);
 $codempleado        = $row['idempleado'];
 $idarea             = $row['idarea'];
 $nombre             = $row['nombre'];
-$apellido             = $row['apellido'];
+$apellido           = $row['apellido'];
 $nombreempleado     = $row['nombreempleado'];
 $nombrearea         = $row['nombrearea'];
 $idcargoempleado    = $row['idcargoempleado'];
@@ -23,6 +23,8 @@ $cargo              = $row['cargo'];
 $login              = $row['login'];
 $idmodalidad        = $row['idmodalidad'];
 $nombremodalidad    = $row['nombremodalidad'];
+$id_area_mod_estab  = $row['id_area_mod_estab'];
+$areamodestab       = $row['areamod'];
 //muestra los datos consultados en los campos del formulario
 ?>
 
@@ -59,19 +61,34 @@ $nombremodalidad    = $row['nombremodalidad'];
                 <select id="cmbModalidad" name="cmbModalidad" size="1" style="width:60%" class="form-control height">
                     <?php
                         $objeareas = new clsLab_Empleados;
-                        $consulta = $objeareas->consultarModalidad($lugar);
+                        $consulta = $objeareas->ModificarModalidad($lugar,$idmodalidad);
                         while ($row = pg_fetch_array($consulta)) {
                             
-                            if($row[0] == $idmodalidad)
+                           /* if($row[0] == $idmodalidad)
                                 echo "<option value='" . $idmodalidad . "' selected='selected'>" . htmlentities($nombremodalidad) . "</option>";
-                            else
+                            else*/
                                 echo "<option value='" . $row[0] . "'>" . htmlentities($row[1]) . "</option>";
                         }
-                        //echo "<option value='" . $idmodalidad . "' selected='selected'>" . htmlentities($nombremodalidad) . "</option>";
+                       echo "<option value='" . $idmodalidad . "' selected='selected'>" . htmlentities($nombremodalidad) . "</option>";
                     ?>        
                 </select>        
             </td>
         </tr>
+        <tr>
+            <td class="StormyWeatherFieldCaptionTD"> Fondo de Contratación</td>
+            <td class="StormyWeatherDataTD">
+                <select id="cmbPago" name="cmbPago" size="1" style="width:60%" class="form-control height">
+                    <option value="0" >--Seleccione Fondo de Contratación--</option>
+                    <?php
+                        $conempleador = $obj-> modificar_empleador($lugar,$id_area_mod_estab);
+                        while ($row = pg_fetch_array($conempleador)) {
+                            echo "<option value='" . $row[0] . "'>" . $row[1] . "</option>";
+                        }
+                         echo "<option value='" . $id_area_mod_estab  . "' selected='selected'>" . htmlentities($areamodestab) . "</option>";
+                    ?>    
+                </select>        
+                                    </td>
+                                </tr>
         <tr>
             <td class="StormyWeatherFieldCaptionTD">Nombre del Empleado</td>
             <td class="StormyWeatherDataTD"><input type="text" id="txtnombreempleado" style="width:60%" name="txtnombreempleado" class="form-control height placeholder"  size="40" value="<?php echo htmlentities($nombre); ?>" /></td>
