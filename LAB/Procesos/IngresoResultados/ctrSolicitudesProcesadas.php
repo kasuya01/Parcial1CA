@@ -647,7 +647,7 @@ switch ($opcion) {
 
         $dtExam = $objdatos->ExamenesPorArea($idarea, $lugar);
 
-        $rslts = '<select name="cmbExamen" id="cmbExamen" style="width:500px" class="form-control height">';
+        $rslts.= '<select name="cmbExamen" id="cmbExamen" style="width:500px" class="form-control height">';
         $rslts .='<option value="0"> Seleccione Examen </option>';
 
         while ($rows = pg_fetch_array($dtExam)) {

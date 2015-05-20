@@ -28,7 +28,7 @@ $con = new ConexionBD;
 			INNER JOIN ctl_tipo_establecimiento t02 ON (t02.id = t01.id_tipo_establecimiento)
 			WHERE t01.id = $lugar";
                         
-		$resul = pg_query($conNom) or die('La consulta fall&oacute;: ' . pg_error());
+		$resul = pg_query($conNom);
 	}
  return $resul;
 }
@@ -38,7 +38,7 @@ function DatosArea($area){
 	if($con->conectar()==true){			  
 		$NomAre = //"select NombreArea,Administrativa from lab_areas where IdArea='$area'";
                         "select nombrearea,administrativa from ctl_area_servicio_diagnostico where id=$area";
-                        $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+                        $resul = pg_query($NomAre);
 	}
  return $resul;
 }

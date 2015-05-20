@@ -252,4 +252,9 @@ document.getElementById('Botones').style.visibility="hidden";
 document.getElementById('Botones').style.visibility="block";
 
 }
+
+function carganombre(){
+   textareamodestab=$("#idmntareamodestab  option:selected").text();;
+   $("#nombareamodestab").val(textareamodestab);
+}
 	

@@ -1,10 +1,15 @@
 <?php
-include_once("clsReporteTabuladores.php");
+error_reporting(E_ALL);
+include_once '../../../public/PHPExcel/Classes/PHPExcel.php';
+include_once '../../../public/PHPExcel/Classes/PHPExcel/Writer/Excel2007.php';
+/** PHPExcel */
+//include_once '../../../../default/PHPExcel/Classes/PHPExcel.php';
+//include_once '../../../../default/PHPExcel/Classes/PHPExcel/Writer/Excel2007.php';
 /** Incluir la libreria PHPExcel */
 //require_once '../Classes/PHPExcel.php';
-include_once '../../../public/PHPExcel/Classes/PHPExcel.php';
-
+include_once("clsReporteTabuladores.php");
 @session_start();
+//ob_start();
 //consulta todos los registros
 $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
@@ -12,46 +17,85 @@ $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea']; 
 $lugar_name=$_SESSION['nombre_estab']; 
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
-
+//
 $objeto = new clsReporteTabuladores(); 
-
-//$rol = $_SESSION["s_rol"];
-//$id_nivel= $_SESSION["s_nivelacceso"];
-//$idpadre=$_SESSION['s_idpadre'];  
-//$idtipoestab=$_SESSION["s_idtipoestab"];
-//$idestable=$_SESSION["s_idestablec"];
-//$vestab=$_SESSION["s_establec"];
-//$id_nivel= $_SESSION["s_nivelacceso"];
-
-
 $d_fecha=$_POST['d_fecha'];
 $idarea=$_POST['cmbArea'];
+$idmntareamodestab=$_POST['idmntareamodestab'];
+//
+//echo '<br>Area post_'.$idarea;
+//echo '<br>dfecha_'.$d_fecha;
+//echo '<br>idmntareamodestab_'.$idmntareamodestab.'<br>';
+$reamde="";
+$nominsti="";
+if($idmntareamodestab==""){
+   $insti=$objeto->buscarinstitucion($lugar);
+   $cantins=@pg_num_rows($insti);
+//   if ($cantins==1){
+//      $rmntame=  pg_fetch_array($insti);
+//      $idmntareamodestab=$rmntame['id'];
+//      $reamde.=$idmntareamodestab.",";
+//      $nominsti.=$rmntame['institucion'].",";
+//      $cantis=1;
+//   }
+//   else{
+   
+      while ($rmntame=  pg_fetch_array($insti)){
+         $idmntareamodestab=$rmntame['id'];
+         $reamde.=$idmntareamodestab.",";
+         $nombreamd=$rmntame['institucion'];
+         $nominsti.=$nombreamd.",";
+     // }
+      }
+}
+else{
+   $reamde.=$idmntareamodestab.",";
+   $nominsti.=$_POST["nombareamodestab"].",";
+   $cantins=1;
+}
+//echo '<br>Vector:  '.count(array_filter(explode(',',$reamde))).'<br>Recmnarmoest: '.$reamde;
 //echo 'Area post_'.$idarea;
 //$idexamen=$_POST['cmbExamen'];
 
 //$idpruebas=$_POST['id_prueba'];
 $idpruebas= isset($_POST['cmbExamen']) ? $_POST['cmbExamen'] : null;
 $pruebas=count($idpruebas);
+//echo '<br>idpruebas_'.$idpruebas.' count_'.$pruebas;
 if ($idarea=='' || $idarea==NULL){
   // echo 'entro';
     $idarea=0;
 }
-//echo 'idarea:'. $idarea;
 if(!isset($_POST['d_fecha'])|| $d_fecha=="")
 	{
 	$d_fecha=date('Y-m');    
 	}
-//$d_fecha=date('Y-m');    
 
+
+
+$ame=0;
+//echo '<br>readmeantes:'.$reamde;
+//echo '<br>nombre:'.$nominsti;
+$exreadme=  explode(',',$reamde);
+$nomreadme=  explode(',',$nominsti);
+//
+//for ($ame=0; $ame <count(array_filter($exreadme)); $ame++){
+//   
+//}
 list($year, $month) = explode('-', $d_fecha);
 $num = cal_days_in_month(CAL_GREGORIAN, $month, $year); // 31
-// Crea un nuevo objeto PHPExcel
-$objPHPExcel = new PHPExcel();
-$objPHPExcel->setActiveSheetIndex(0);
-$objPHPExcel->getActiveSheet()->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_FOLIO)->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
 
-//$pageSetup->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_LEGAL)->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
-$objPHPExcel->getActiveSheet()->setTitle($month.' '.$year);
+
+//
+$filename = "Tabulador ".$mes.' '.$year. ".xlsx"; //GUARDANDO CON ESTE NOMBRE
+
+
+$objPHPExcel = new PHPExcel();
+for ($ame=0; $ame <count(array_filter($exreadme)); $ame++){
+   $objPHPExcel->createSheet();
+$objPHPExcel->setActiveSheetIndex($ame);
+$objPHPExcel->getActiveSheet()->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_FOLIO)->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+$objPHPExcel->getActiveSheet()->setTitle($nomreadme[$ame]);
+
 $styleArray = array(
        'borders' => array(
              'allborders' => array(
@@ -84,23 +128,23 @@ $styleArray3=array(
             'name'  => 'Verdana'
         ),
     );
-$objPHPExcel->getActiveSheet()->getStyle('A1:ZZ5')->applyFromArray($styleArray1);
-$objPHPExcel->getActiveSheet()->getStyle('A3:A39')->applyFromArray($styleArray1);
-$objPHPExcel->getActiveSheet()->getStyle('B6:ZZ40')->applyFromArray($styleArray2);
-for ($col = 'A'; $col != 'ZZ'; $col++) {
-	//$objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-    $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setWidth(3.05);
-}
-
-    $ini='B';
-    $fin=$ini+14;
-$startletra='A';
-$letini='B';
-$unresul='0';
-$o=5;
-$todos=$o+$num;
-$final=$todos+1;
-$var=0;
+   $objPHPExcel->getActiveSheet()->getStyle('A1:ZZ5')->applyFromArray($styleArray1);
+   $objPHPExcel->getActiveSheet()->getStyle('A3:A39')->applyFromArray($styleArray1);
+   $objPHPExcel->getActiveSheet()->getStyle('B6:ZZ40')->applyFromArray($styleArray2);
+   for ($col = 'A'; $col != 'ZZ'; $col++) {
+       $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setWidth(3.05);
+   }//fin for columnas aa a zz
+   $ini='B';
+   $fin=$ini+14;
+   $startletra='A';
+   $letini='B';
+   $unresul='0';
+   $o=5;
+   $todos=$o+$num;
+   $final=$todos+1;
+   $var=0;
+   //Desde aqui debo de configurar
+   
 //Si ha seleccionado algunas pruebas del catalogo
 if ($pruebas==0){ //Si no selecciono ninguna prueba por defecto le cargara el reporte de todas las que tengan en el catalogo
     $prues=$objeto->prxmes($month, $year, $lugar, $idarea);
@@ -120,7 +164,7 @@ if ($pruebas==0){ //Si no selecciono ninguna prueba por defecto le cargara el re
 //       $var++;     
 //    } 
 //}
-if ($pruebas!=0){
+//if ($pruebas!=0){
    
  $cantcolafec=$pruebas*14; //--14 columnas
     for ($i=0; $i<$pruebas; $i++){
@@ -292,46 +336,79 @@ $objPHPExcel->setActiveSheetIndex(0)->mergeCells('B'.$final.':'.'AZ'.$final);
 $objPHPExcel->getActiveSheet()->getStyle('A'.$final.':'.$starletrafin.$final)->applyFromArray($styleArray3);
   $objPHPExcel->getActiveSheet()->getStyle('A'.$final.':'.$starletrafin.$final)->getFont()->setSize(5);   
 //$objPHPExcel->getActiveSheet()->SetCellValue('B'.$final, 'Resultados: 1 NORMAL, 2 NEGATIVO, 3 ANORMAL, 4 POSITIVO, 5 MUESTRA INADECUADA, 6 OTROS, 7 REACTIVO, 8 INDETERMINADO Y 9 NO REACTIVO             PROCEDENCIA: 1 CONSULTA EXTERNA, 2 HOSPITALIZACION, 3 EMERGENCIA, 4 REFERIDO  Y 5 OTROS'  );
-$objPHPExcel->getActiveSheet()->freezePane('A6');
-$objPHPExcel->getActiveSheet()->getPageSetup()->setColumnsToRepeatAtLeftByStartAndEnd('A');
-$final=$final+2;
-$t2="\t\t\t\t";
-$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&C&H&C&9 MINISTERIO DE SALUD'."\n".' Tabulador Diario de Actividades de laboratorio Clinico'."\n".'Instituciones:  MINSAL ( X )    FOSALUD ()       Convenio ISSS()'."\n".'Establecimiento:'.$lugar_name."\t\t\t\t\t\t".'Sección:        '."\t\t\t\t".'Mes:'.$mes."\t".'Año: '.$year);
-//objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddFooter('Resultados: 1 NORMAL, 2 NEGATIVO, 3 ANORMAL, 4 POSITIVO, 5 MUESTRA INADECUADA, 6 OTROS, 7 REACTIVO, 8 INDETERMINADO Y 9 NO REACTIVO             PROCEDENCIA: 1 CONSULTA EXTERNA, 2 HOSPITALIZACION, 3 EMERGENCIA, 4 REFERIDO  Y 5 OTROS');
-//$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddFooter('&C&H&9Nombre del Responsable '.$t2.'Firma  del Profesional de laboratorio  '.$t2.' JVPLC &R&8 '."\n \n".'Pag. &P of &N');
-$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddFooter('&C&H&5Resultados: 1 NORMAL, 2 NEGATIVO, 3 ANORMAL, 4 POSITIVO, 5 MUESTRA INADECUADA, 6 OTROS, 7 REACTIVO, 8 INDETERMINADO y 9 NO REACTIVO             PROCEDENCIA: 1 CONSULTA EXTERNA, 2 HOSPITALIZACION, 3 EMERGENCIA, 4 REFERIDO  Y 5 OTROS'."\n \n \n \n \n \n \n \n \n".'&C&H&9Nombre del Responsable '.$t2.'Firma  del Profesional de laboratorio  '.$t2.' JVPLC &R&8 '."\n \n \n \n".'Pag. &P of &N');
-// Rename sheet
-$pageMargins = $objPHPExcel->getActiveSheet()->getPageMargins();
 
-// margin is set in inches (0.5cm)
-$margin = 0.8;
-$pageMargins->setTop($margin);
-$pageMargins->setBottom(1.10);
-$pageMargins->setLeft(0.4);
-$pageMargins->setRight(0.4);
-$pageMargins->setHeader(0.3);
-$pageMargins->setFooter(0.3);
-/*$pageMargins->setLeft($margin);
-$pageMargins->setRight($margin);*/
-$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToPage(true);
-$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToWidth(0);
-$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToHeight(1);
-//$objPHPExcel->getActiveSheet()->getHeaderFooter()->setAlignWithMargins(true);
-		
-// Save Excel 2007 file
+   //Hasta aqui debo de configurar
+   
+   
+   $objPHPExcel->getActiveSheet()->freezePane('A6');
+   $objPHPExcel->getActiveSheet()->getPageSetup()->setColumnsToRepeatAtLeftByStartAndEnd('A');
+   $final=$final+2;
+   $t2="\t\t\t\t";
+   
+   $objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&C&H&C&9 MINISTERIO DE SALUD'."\n".' Tabulador Diario de Actividades de laboratorio Clinico'."\n".'Institución:'.$nomreadme[$ame].' ( X )'."\n".'Establecimiento:'.$lugar_name."\t\t\t\t\t\t".'Sección:        '."\t\t\t\t".'Mes:'.$mes."\t".'Año: '.$year);
+   $objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddFooter('&C&H&5Resultados: 1 NORMAL, 2 NEGATIVO, 3 ANORMAL, 4 POSITIVO, 5 MUESTRA INADECUADA, 6 OTROS, 7 REACTIVO, 8 INDETERMINADO y 9 NO REACTIVO             PROCEDENCIA: 1 CONSULTA EXTERNA, 2 HOSPITALIZACION, 3 EMERGENCIA, 4 REFERIDO  Y 5 OTROS'."\n \n \n \n \n \n \n \n \n".'&C&H&9Nombre del Responsable '.$t2.'Firma  del Profesional de laboratorio  '.$t2.' JVPLC &R&8 '."\n \n \n \n".'Pag. &P of &N');
+   // Rename sheet
+   $pageMargins = $objPHPExcel->getActiveSheet()->getPageMargins();
 
-  
-//  //$objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
-//  $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-//  $objWriter->save('php://output');
-//   exit();
-//// Echo done
+   // margin is set in inches (0.5cm)
+   $margin = 0.8;
+   $pageMargins->setTop($margin);
+   $pageMargins->setBottom(1.10);
+   $pageMargins->setLeft(0.4);
+   $pageMargins->setRight(0.4);
+   $pageMargins->setHeader(0.3);
+   $pageMargins->setFooter(0.3);
+   $objPHPExcel->getActiveSheet()->getPageSetup()->setFitToPage(true);
+   $objPHPExcel->getActiveSheet()->getPageSetup()->setFitToWidth(0);
+   $objPHPExcel->getActiveSheet()->getPageSetup()->setFitToHeight(1);
    
-   
-   
-   
- 
-// Establecer la hoja activa, para que cuando se abra el documento se muestre primero.
+}//Fin del for
+
+
+//
+
+//De aqui en adelante ya lo puse
+//$objPHPExcel->getActiveSheet()->freezePane('A6');
+//$objPHPExcel->getActiveSheet()->getPageSetup()->setColumnsToRepeatAtLeftByStartAndEnd('A');
+//$final=$final+2;
+//$t2="\t\t\t\t";
+//$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&C&H&C&9 MINISTERIO DE SALUD'."\n".' Tabulador Diario de Actividades de laboratorio Clinico'."\n".'Instituciones:  MINSAL ( X )    FOSALUD ()       Convenio ISSS()'."\n".'Establecimiento:'.$lugar_name."\t\t\t\t\t\t".'Sección:        '."\t\t\t\t".'Mes:'.$mes."\t".'Año: '.$year);
+////objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddFooter('Resultados: 1 NORMAL, 2 NEGATIVO, 3 ANORMAL, 4 POSITIVO, 5 MUESTRA INADECUADA, 6 OTROS, 7 REACTIVO, 8 INDETERMINADO Y 9 NO REACTIVO             PROCEDENCIA: 1 CONSULTA EXTERNA, 2 HOSPITALIZACION, 3 EMERGENCIA, 4 REFERIDO  Y 5 OTROS');
+////$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddFooter('&C&H&9Nombre del Responsable '.$t2.'Firma  del Profesional de laboratorio  '.$t2.' JVPLC &R&8 '."\n \n".'Pag. &P of &N');
+//$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddFooter('&C&H&5Resultados: 1 NORMAL, 2 NEGATIVO, 3 ANORMAL, 4 POSITIVO, 5 MUESTRA INADECUADA, 6 OTROS, 7 REACTIVO, 8 INDETERMINADO y 9 NO REACTIVO             PROCEDENCIA: 1 CONSULTA EXTERNA, 2 HOSPITALIZACION, 3 EMERGENCIA, 4 REFERIDO  Y 5 OTROS'."\n \n \n \n \n \n \n \n \n".'&C&H&9Nombre del Responsable '.$t2.'Firma  del Profesional de laboratorio  '.$t2.' JVPLC &R&8 '."\n \n \n \n".'Pag. &P of &N');
+//// Rename sheet
+//$pageMargins = $objPHPExcel->getActiveSheet()->getPageMargins();
+//
+//// margin is set in inches (0.5cm)
+//$margin = 0.8;
+//$pageMargins->setTop($margin);
+//$pageMargins->setBottom(1.10);
+//$pageMargins->setLeft(0.4);
+//$pageMargins->setRight(0.4);
+//$pageMargins->setHeader(0.3);
+//$pageMargins->setFooter(0.3);
+///*$pageMargins->setLeft($margin);
+//$pageMargins->setRight($margin);*/
+//$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToPage(true);
+//$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToWidth(0);
+//$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToHeight(1);
+////$objPHPExcel->getActiveSheet()->getHeaderFooter()->setAlignWithMargins(true);
+//Hasta aqui me lleve
+//		
+//// Save Excel 2007 file
+//
+//  
+////  //$objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
+////  $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+////  $objWriter->save('php://output');
+////   exit();
+////// Echo done
+//   
+//   
+//   
+//   
+// 
+//// Establecer la hoja activa, para que cuando se abra el documento se muestre primero.
 $objPHPExcel->setActiveSheetIndex(0);
 
 // Se modifican los encabezados del HTTP para indicar que se envia un archivo de Excel.
@@ -350,8 +427,8 @@ $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 //$objWriter->save('php://output');
 //$objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
 $objWriter->save('php://output');
-}
-echo "<br><br/><br><br><font color='#C35617' align='center'><center><img src='../../../Imagenes/alerta.png' valign='middle'/>  NO EXISTEN REGISTROS RELACIONADOS CON LA B&Uacute;SQUEDA<br/><br/></center></font>";
+//}
+//echo "<br><br/><br><br><font color='#C35617' align='center'><center><img src='../../../Imagenes/alerta.png' valign='middle'/>  NO EXISTEN REGISTROS RELACIONADOS CON LA B&Uacute;SQUEDA<br/><br/></center></font>";
 //
 //// Establecer propiedades
 //$objPHPExcel->getProperties()
@@ -394,4 +471,92 @@ echo "<br><br/><br><br><font color='#C35617' align='center'><center><img src='..
 ////$objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
 //$objWriter->save('php://output');
 //exit;
+
+
+
+
+////Crear un objeto de excel
+//$objPHPExcel = new PHPExcel();//crea un nuevo objeto de excel
+//for ($ame=0; $ame <2; $ame++){
+//   $objPHPExcel->createSheet($ame);
+//$objPHPExcel->setActiveSheetIndex($ame);
+//$objPHPExcel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+////$objPHPExcel->getActiveSheet()->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_LEGAL);
+//$objPHPExcel->getActiveSheet()->setTitle($ame);
+//$styleArray = array(
+//       'borders' => array(
+//             'allborders' => array(
+//                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+//                    'color' => array('argb' => '000000'),
+//                    ),
+//              ),
+//       );
+//$styleArray1=array(
+//    'font'  => array(
+//        'bold'  => true,
+//        'color' => array('rgb' => '000000'),
+//            'size'  => 7,
+//            'name'  => 'Verdana'
+//        ),
+//    );
+//$styleArray2=array(
+//    'font'  => array(
+//        'bold'  => false,
+//        'color' => array('rgb' => '000000'),
+//            'size'  => 6,
+//            'name'  => 'Verdana'
+//        ),
+//    );
+//$styleArray3=array(
+//    'font'  => array(
+//        'bold'  => false,
+//        'color' => array('rgb' => '000000'),
+//            'size'  => 5.5,
+//            'name'  => 'Verdana'
+//        ),
+//    );
+////$objPHPExcel->getActiveSheet()->getStyle('A1:HZ5')->applyFromArray($styleArray1);
+////$objPHPExcel->getActiveSheet()->getStyle('A3:A39')->applyFromArray($styleArray1);
+////$objPHPExcel->getActiveSheet()->getStyle('B6:HZ40')->applyFromArray($styleArray2);
+////for ($col = 'A'; $col != 'HZ'; $col++) {
+////	//$objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+////    $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setWidth(4.25);
+////}
+////    $ini='B';
+////    $fin=$ini+14;
+////$startletra='A';
+////$letini='B';
+////$unresul='0';
+////$o=5;
+////$todos=$o+$num;
+////$final=$todos+1;
+////$var=0;
+////
+////$pageMargins = $objPHPExcel->getActiveSheet()->getPageMargins();
+////
+////// margin is set in inches (0.5cm)
+////$margin = 0.8;
+////$pageMargins->setTop($margin);
+////$pageMargins->setBottom($margin);
+////$pageMargins->setHeader(0.3);
+////$pageMargins->setFooter(0.3);
+/////*$pageMargins->setLeft($margin);
+////$pageMargins->setRight($margin);*/
+////$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToPage(true);
+////$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToWidth(0);
+////$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToHeight(1);
+//		
+//
+//}//fin for
+//
+//// Save Excel 2007 file
+//
+//  
+//  $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
+//  $objWriter->save('php://output');
+//   exit();
+//// Echo done
+//
+
+//ob_end_clean();
 ?>

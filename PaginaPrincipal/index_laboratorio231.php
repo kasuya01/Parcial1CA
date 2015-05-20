@@ -19,7 +19,7 @@ include_once("../Conexion/ConexionBD.php"); //Agregamos el Archivo con las clase
 
 
 
-	$Resultado = pg_query($SQL) or die('La consulta fall&oacute;: ' . pg_error());
+	$Resultado = pg_query($SQL);
 			$Rows = pg_fetch_array($Resultado);
 			$NombreEmpleado=$Rows['nombreempleado'];
 			$Establecimiento=$Rows['nombre'];

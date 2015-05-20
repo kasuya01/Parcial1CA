@@ -1,17 +1,15 @@
 <?php 
-include ("clsReporteTabuladores.php");
+include_once("clsReporteTabuladores.php");
 @session_start();
+$objeto = new clsReporteTabuladores(); 
 //creando los objetos de las clases
-$obj = new clsReporteTabuladores;
-
+//$objeto = new clsReporteTabuladores();
  if(isset($_SESSION['Correlativo']) || isset($_SESSION["ADM"])){
 $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea']; 
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
-
-//echo $lugar;
  ?>
 <html>
 <head>
@@ -147,16 +145,18 @@ $toy2=date('Y-m-d');
                    <tr>
                       <th>Institución</th>
                       <td>
-<!--                         <select id="idmntareamodestab" name="idmntareamodestab" style="width:100%;" class="height placeholder js-example-basic-single">-->
-                             <select id="idmntareamodestab" name="idmntareamodestab"  size="1" style="width:100%;" class="height placeholder js-example-basic-single">
                          <?php
+                          $insti=$objeto->buscarinstitucion($lugar);
+                        echo '<select id="idmntareamodestab" name="idmntareamodestab" style="width:100%;" class="height placeholder js-example-basic-single" onchange="carganombre()">';
                          echo '<option></option>';
-                         $insti=$obj->buscarinstitucion($lugar);
                          while ($rowi=  pg_fetch_array($insti)){
-                            echo '<option value='.$rowi["id"].'>'.$rowi["institucion"].'</option>';
+                            echo '<option value='.$rowi[0].'>'.$rowi[1].'</option>';
                          }
+                        
+                         
+                         echo '</select> '; 
+                         echo '<input id="nombareamodestab" value="nombareamodestab" type="hidden" />';
                          ?>
-                         </select>  
                       </td>
                    </tr>
                    <tr>

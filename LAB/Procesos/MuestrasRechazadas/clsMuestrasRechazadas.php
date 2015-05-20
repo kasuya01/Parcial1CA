@@ -17,7 +17,7 @@ class clsMuestrasRechazadas {
             $NomAre = "SELECT COUNT(id) 
 		        FROM lab_resultados   where  idsolicitudestudio=$idsolicitudPadre
                         and iddetallesolicitud=$idsolicitud";
-            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($NomAre);
         }
         return $resul;
     }
@@ -28,7 +28,7 @@ class clsMuestrasRechazadas {
             
            $NomAre = "select id from lab_resultados where  idsolicitudestudio=$idsolicitudPadre
                         and iddetallesolicitud=$idsolicitud ";
-            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($NomAre);
         }
         return $resul;
     }
@@ -39,7 +39,7 @@ class clsMuestrasRechazadas {
         if ($con->conectar() == true) {
             
           $NomAre = "select id  from lab_detalleresultado where idresultado=$idresulta ";
-            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($NomAre);
         }
         return $resul;
     }
@@ -51,7 +51,7 @@ class clsMuestrasRechazadas {
             
             $NomAre = "select * from  lab_examen_metodologia
                     where id_conf_exa_estab=(select id_conf_examen_estab from sec_detallesolicitudestudios where id=$idsolicitud and idsolicitudestudio=$idsolicitudPadre) ";
-            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($NomAre);
         }
         return $resul;
     }
@@ -64,7 +64,7 @@ class clsMuestrasRechazadas {
           $NomAre = "select idempleado from lab_resultados
             where idsolicitudestudio=$idsolicitudPadre    and iddetallesolicitud=$idsolicitud  
             and idexamen=(select id_conf_examen_estab from sec_detallesolicitudestudios where id=$idsolicitud and idsolicitudestudio=$idsolicitudPadre)";
-            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($NomAre);
         }
         return $resul;
     }
@@ -127,7 +127,7 @@ VALUES($idexmen_metodologia,
               INNER JOIN ctl_tipo_establecimiento ctes ON ces.id_tipo_establecimiento= ctes.id
               WHERE ces.id=$lugar"; */
 
-            $resul = pg_query($conNom) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($conNom);
         }
         return $resul;
     }
@@ -137,7 +137,7 @@ VALUES($idexmen_metodologia,
         if ($con->conectar() == true) {
             //$NomAre  = "select NombreArea,Administrativa from lab_areas where IdArea='$area'";
             $NomAre = "select nombrearea,administrativa from ctl_area_servicio_diagnostico where id=$area";
-            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($NomAre);
         }
         return $resul;
     }

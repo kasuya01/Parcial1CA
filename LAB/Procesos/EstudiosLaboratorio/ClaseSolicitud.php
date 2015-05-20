@@ -991,8 +991,8 @@ class CrearHistorialClinico{
             $res=  pg_query($seq);
             $row=  pg_fetch_row($res);
             $idseq=$row[0];
-         $sqlInsertCita= " insert into sec_historial_clinico (id, fechaconsulta, idsubservicio,        idusuarioreg, fechahorareg, piloto, ipaddress, idestablecimiento, idnumeroexp, id_numero_expediente, id_empleado)
-values($idseq,'$FechaConsulta', $IdSubServicio, $iduser,date_trunc('seconds',NOW()), 'V', '$ippc', $lugar, '$IdNumeroExp', $idexpediente, $IdEmpleado)";
+         $sqlInsertCita= " insert into sec_historial_clinico (id, fechaconsulta, idsubservicio,        idusuarioreg, fechahorareg, piloto, ipaddress, idestablecimiento, id_numero_expediente, id_empleado)
+values($idseq,'$FechaConsulta', $IdSubServicio, $iduser,date_trunc('seconds',NOW()), 'V', '$ippc', $lugar, $idexpediente, $IdEmpleado)";
     //echo $sqlInsertCita;
         }
         else{

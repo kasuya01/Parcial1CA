@@ -14,7 +14,7 @@ class clsSolicitudesProcesadas {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
             $NomAre = "SELECT nombrearea, administrativa FROM ctl_area_servicio_diagnostico where id =  $area";
-            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($NomAre);
         }
         return $resul;
     }
@@ -40,7 +40,7 @@ class clsSolicitudesProcesadas {
                         FROM ctl_establecimiento t01
 			INNER JOIN ctl_tipo_establecimiento t02 ON (t02.id = t01.id_tipo_establecimiento)
 			WHERE t01.id = $lugar";
-            $resul = pg_query($conNom) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($conNom);
         }
         return $resul;
     }
@@ -1214,7 +1214,7 @@ and (date(t02.fechafin) >= current_date or date(t02.fechafin) is null);";
               and t02.habilitado=true
               and (date(t01.fechafin) >= current_date or date(t01.fechafin) is null)
               and (date(t02.fechafin) >= current_date or date(t02.fechafin) is null)
-              order by posible_resultado;";
+              order by char_length(posible_resultado), posible_resultado;";
             //echo $query;
             $result = pg_query($query);
             if (!$result) {

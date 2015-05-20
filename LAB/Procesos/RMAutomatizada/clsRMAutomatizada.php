@@ -16,7 +16,7 @@ class clsRMAutomatizada {
             
              $NomAre = "select id from lab_resultados where  idsolicitudestudio=$idsolicitudPadre
                         and iddetallesolicitud=$idsolicitud ";
-            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($NomAre);
         }
         return $resul;
     }
@@ -30,7 +30,7 @@ class clsRMAutomatizada {
              $NomAre = "SELECT COUNT(id) 
 		        FROM lab_resultados   where  idsolicitudestudio=$idsolicitudPadre
                         and iddetallesolicitud=$idsolicitud";
-            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($NomAre);
         }
         return $resul;
     }
@@ -43,7 +43,7 @@ class clsRMAutomatizada {
         if ($con->conectar() == true) {
             
             $NomAre = "select id  from lab_detalleresultado where idresultado=$idresulta ";
-            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($NomAre);
         }
         return $resul;
     }
@@ -57,7 +57,7 @@ class clsRMAutomatizada {
             
             $NomAre = "select * from  lab_examen_metodologia
                     where id_conf_exa_estab=(select id_conf_examen_estab from sec_detallesolicitudestudios where id=$idsolicitud and idsolicitudestudio=$idsolicitudPadre) ";
-            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($NomAre);
         }
         return $resul;
     }
@@ -70,7 +70,7 @@ class clsRMAutomatizada {
             $NomAre = "select idempleado from lab_resultados
             where idsolicitudestudio=$idsolicitudPadre    and iddetallesolicitud=$idsolicitud  
             and idexamen=(select id_conf_examen_estab from sec_detallesolicitudestudios where id=$idsolicitud and idsolicitudestudio=$idsolicitudPadre)";
-            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($NomAre);
         }
         return $resul;
     }
@@ -84,7 +84,7 @@ class clsRMAutomatizada {
 					       and id_detallesolicitudestudio=$idsolicitud
 					       and id_empleado='$id_empleado'
                                                and resultado='PM' ";
-            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($NomAre);
         }
         return $resul;
     }
@@ -99,7 +99,7 @@ class clsRMAutomatizada {
 					       and id_detallesolicitudestudio=$idsolicitud
 					       and id_empleado='$id_empleado'
                                                and resultado='PM' ";
-            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($NomAre);
         }
         return $resul;
     }
@@ -112,7 +112,7 @@ class clsRMAutomatizada {
         if ($con->conectar() == true) {
             
           $NomAre = "SELECT COUNT(id) FROM lab_resultado_metodologia WHERE id=$idresultadometodologia";
-            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($NomAre);
         }
         return $resul;
     }
@@ -126,7 +126,7 @@ class clsRMAutomatizada {
         if ($con->conectar() == true) {
             
           $NomAre = "DELETE FROM lab_resultado_metodologia WHERE id=$idresultadometodologia";
-            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($NomAre);
         }
         return $resul;
     }
@@ -179,7 +179,7 @@ VALUES($idexmen_metodologia,
                         FROM ctl_establecimiento t01
 			INNER JOIN ctl_tipo_establecimiento t02 ON (t02.id = t01.id_tipo_establecimiento)
 			WHERE t01.id = $lugar";
-            $resul = pg_query($conNom) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($conNom);
         }
         return $resul;
     }
@@ -189,7 +189,7 @@ VALUES($idexmen_metodologia,
         if ($con->conectar() == true) {
             //$NomAre  ="select nombrearea,administrativa from ctl_area_servicio_diagnostico where id=$area";
             $NomAre = "select nombrearea,administrativa from ctl_area_servicio_diagnostico where id=$area";
-            $resul = pg_query($NomAre) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($NomAre);
         }
         return $resul;
     }

@@ -388,7 +388,7 @@ switch ($opcion)
 						 $r=$objdatos->ObtenerIdResultado($idsolicitud,$iddetalle);
 						 $result=pg_fetch_array($r);
 						 $idresultado=$result[0];
-                                                // echo $idresultado;
+                                                 echo $idresultado;
                                                  if($dr=$objdatos->Eliminar_metodologia($iddetalle)==1){
                                                      
                                                      if($dr=$objdatos->EliminarDetalleResultado($idresultado)==1){

@@ -18,7 +18,7 @@ $SQL = "SELECT t03.nombre,
         INNER JOIN ctl_establecimiento t03 ON (t03.id = t02.id_establecimiento)
         WHERE t02.id = '$cod' AND t02.id_establecimiento = $lugar AND t01.modulo='LAB'";
 
-$Resultado = pg_query($SQL) or die('La consulta fall&oacute;: ' . pg_error());
+$Resultado = pg_query($SQL);
 $Rows = pg_fetch_array($Resultado);
 
 $NombreEmpleado = $Rows['nombreempleado'];

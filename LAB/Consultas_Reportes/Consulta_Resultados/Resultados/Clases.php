@@ -177,7 +177,7 @@ function CalculoDias($Conectar,$fechanac){
                         
                        // echo $SQL;
 			
-                                $Resultado = pg_query($SQL) or die('La consulta fall&oacute;: ' . pg_error());
+                                $Resultado = pg_query($SQL);
 			
                                 return $Resultado;		
 		}
@@ -296,7 +296,7 @@ class Laboratorio{
 			
 			
 			
-			$Ejecutar = pg_query($SQL) or die('La consulta fall&oacute;: ' . pg_error());
+			$Ejecutar = pg_query($SQL);
 	
 			 $SQL2 = /*"select  DATE_FORMAT(FechaSolicitud,'%e/ %m / %Y') as FechaSolicitud,
 							case 1 when Estado='D' then 'No Procesada' 
@@ -432,7 +432,7 @@ class Laboratorio{
 						group by lab_examenes.IdArea order by lab_examenes.IdArea";
 											  
 
-			$Ejecutar = pg_query($SQL) or die('La consulta Fall&oacute;: ' . pg_error());
+			$Ejecutar = pg_query($SQL);
 
 			echo "<div class='outer'> 
 					  <div class='inner' >        
@@ -549,8 +549,8 @@ AND casd.id=$IdArea";
 			Order By lab_examenes.IdExamen";
 		// Si la Conexion es Buena, entonces ejecutamos la consulta (17-1 Parametros de la Consulta)
 		if($Conectar==true){							  
-			$Aceptados = pg_query($SQL) or die('La consulta Fall&oacute;: ' . pg_error());
-			$Rechazados = pg_query($SQL2) or die('La consulta Fall&oacute;: ' . pg_error());
+			$Aceptados = pg_query($SQL);
+			$Rechazados = pg_query($SQL2);
 			$Count=0;
 
 		 //	 Impresion de resultados segun la plantilla
@@ -944,7 +944,7 @@ AND casd.id=$IdArea";
                         
 		// Verificamos las funciones y ejecutamos	
 		if($Conectar==true){						  
-		   $ValidarElementos = pg_query($SQLElementos) or die('La consulta fall&oacute;: ' . pg_error());		
+		   $ValidarElementos = pg_query($SQLElementos);		
 	 	   $TieneElementos = pg_fetch_array($ValidarElementos);
 	   
 		
@@ -954,9 +954,9 @@ AND casd.id=$IdArea";
 	/******************************************************************************************************/
 			
 		if($TieneElementos['SubElemento']=='S'){				
-			$DetalleResultado = pg_query($SQL) or die('La consulta fall&oacute;: ' . pg_error());
-			$DetalleResultado2 = pg_query($SQL) or die('La consulta fall&oacute;: ' . pg_error());//paralelo
-			$ConsultaElementos= pg_query($SQL2) or die('La consulta fall&oacute;: ' . pg_error());
+			$DetalleResultado = pg_query($SQL);
+			$DetalleResultado2 = pg_query($SQL);//paralelo
+			$ConsultaElementos= pg_query($SQL2);
 			while($VectorElementos = pg_fetch_array($ConsultaElementos)){
 						$Elementos[]=$VectorElementos[1];
 						$NombreExamen[]=$VectorElementos[2];
@@ -1049,8 +1049,8 @@ AND casd.id=$IdArea";
 					ON lab_examenes.IdExamen=lab_resultados.IdExamen
 				WHERE sec_detallesolicitudestudios.IdDetalleSolicitud=$IdDetalleSolicitud";			
 				
-		$RespuestaNombre=pg_query($SQLNombre) or die('La consulta fall&oacute;: ' . pg_error());
-		$Elementos= pg_query($SQL1) or die('La consulta fall&oacute;: ' . pg_error());
+		$RespuestaNombre=pg_query($SQLNombre);
+		$Elementos= pg_query($SQL1);
 		$NombreExamen=pg_fetch_array($RespuestaNombre);
 			$tabla='<table with="100%" align="center">';		
 					echo "<div class='outer'> 
@@ -1065,7 +1065,7 @@ AND casd.id=$IdArea";
 				$ObservElem=$row["ObservElem"];
 				
 			$SQL2="select * from lab_detalleresultado where IdElemento=".$IdElemento." and IdResultado=".$IdResultado;
-				$resp=pg_query($SQL2) or die('La consulta fall&oacute;: ' . pg_error());
+				$resp=pg_query($SQL2);
 				
 				if($RespElemento=pg_fetch_array($resp)){
 				/*Si la respuesta esta en el Elemento*/
@@ -1094,7 +1094,7 @@ AND casd.id=$IdArea";
 					on lab_elementos.IdElemento=lab_subelementos.IdElemento
 					where lab_elementos.IdElemento=".$IdElemento." and lab_detalleresultado.IdResultado=".$IdResultado;
 					
-					$RespSubElemento=pg_query($SQL3) or die('La consulta fall&oacute;: ' . pg_error());
+					$RespSubElemento=pg_query($SQL3);
 				
 				//$tabla.='<tr><td colspan="4">Elemento</td></tr>';
 				$tabla.='<tr class="CobaltFieldCaptionTD"><td colspan="3">'.htmlentities($Elemento).'</td></tr>';
@@ -1166,11 +1166,11 @@ AND casd.id=$IdArea";
 								   ON lab_examenes.IdExamen= lab_resultados.IdExamen
                WHERE lab_resultados.IdDetalleSolicitud=$IdDetalleSolicitud";	 
 			 
-			$Antibioticos = pg_query($SQL) or die('La consulta Fall&oacute;: ' . pg_error());	
+			$Antibioticos = pg_query($SQL);	
 			$Count=0;
 			if($Resultado=='N' or $Resultado=='O' ){
 				if($Resultado=='N'){
-						 $Resultado = pg_query($SQL2) or die('La consulta Fall&oacute;: ' . pg_error());	
+						 $Resultado = pg_query($SQL2);	
 						 $Negativo = pg_fetch_array($Resultado);
 						 echo "<div class='outer'> 
 							  <div class='inner' >";  
@@ -1192,7 +1192,7 @@ AND casd.id=$IdArea";
 				}
 
 				if ($Resultado=='O'){
-						 $Resultado = pg_query($SQL2) or die('La consulta Fall&oacute;: ' . pg_error());	
+						 $Resultado = pg_query($SQL2);	
 						 $Negativo = pg_fetch_array($Resultado);
 						 echo "<div class='outer'> 
 							  <div class='inner' >";  
@@ -1290,7 +1290,7 @@ AND casd.id=$IdArea";
  		// Resultado NEGATIVO
 		
 			 
-			$Resultados = pg_query($SQL) or die('La consulta Fall&oacute;: ' . pg_error());	
+			$Resultados = pg_query($SQL);	
 			$Count=0;
 
 			while ($Resultado = pg_fetch_array($Resultados)){
@@ -1340,7 +1340,7 @@ AND casd.id=$IdArea";
 	              WHERE lab_resultados.IdDetalleSolicitud=$IdDetalleSolicitud     
 		      ORDER BY lab_procedimientosporexamen.idprocedimientoporexamen asc";
 			
-		$Resultados = pg_query($SQL) or die('La consulta Fall&oacute;: ' . pg_error());	
+		$Resultados = pg_query($SQL);	
 			$Count=0;
 
 			while ($Resultado = pg_fetch_array($Resultados)){ 
@@ -1484,7 +1484,7 @@ class Imagenologia{
 			$NroRegistros=mysql_num_rows($Ejecutar2);	
 				  
 		if($Conexion==true){						  
-		   $Solicitudes = pg_query($SQL) or die('La consulta fall&oacute;: ' . pg_error());		
+		   $Solicitudes = pg_query($SQL);		
 	 	   echo "<div  class='outer3'> 
 					  <div class='inner' >    
 						  <h3 align='center'>SOLICITUDES DE ESTUDIOS DE IMAGENOLOGIA</h3><br><br><br>
@@ -1549,7 +1549,7 @@ class Imagenologia{
 					  </tr>";	
 				
 		if($Conexion==true){						  
-		   $Solicitudes = pg_query($SQL) or die('La consulta fall&oacute;: ' . pg_error());		
+		   $Solicitudes = pg_query($SQL);		
 		   $Count=0;
    		   $Count2=0;
 		   while ($Resultado = pg_fetch_array($Solicitudes)){
@@ -1608,7 +1608,7 @@ class Imagenologia{
 				  </tr>";	
 	
 	if($Conexion==true){						  
-		   $ResultadosSQL = pg_query($SQL) or die('La consulta fall&oacute;: ' . pg_error());		
+		   $ResultadosSQL = pg_query($SQL);		
       
 
 		while ($Resultado = pg_fetch_array($ResultadosSQL)){

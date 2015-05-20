@@ -29,7 +29,7 @@ function DatosEstablecimiento($lugar){
             FROM ctl_establecimiento 
             INNER JOIN ctl_tipo_establecimiento ON ctl_establecimiento.id_tipo_establecimiento= ctl_tipo_establecimiento.id 
             WHERE ctl_establecimiento.id=$lugar";
-            $resul = pg_query($conNom) or die('La consulta fall&oacute;: ' . pg_error());
+            $resul = pg_query($conNom);
     }
  return $resul;
 }

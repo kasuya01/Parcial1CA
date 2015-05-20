@@ -20,7 +20,7 @@ $Conectar = $Conexion->Conectar();
             AND t02.id_establecimiento = $lugar
             AND t01.modulo = 'LAB'";
 
-$Resultado = pg_query($SQL) or die('La consulta fall&oacute;: ' . pg_error());
+$Resultado = pg_query($SQL);
 
 $Rows = pg_fetch_array($Resultado);
 

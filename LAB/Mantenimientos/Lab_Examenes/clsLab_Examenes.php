@@ -111,7 +111,7 @@ values ($idmet, $aresultados[$i], current_date, true,$usuario, date_trunc('secon
                     VALUES ($ultimo,$TiempoPrevio,98,$lugar,$usuario,NOW())";
 
          // echo $query2." - ".$ultimo." - ".$sqlText;
-         $dtSub = pg_query($sqlText) or die('La consulta fall&oacute;: ' . pg_error());
+         $dtSub = pg_query($sqlText);
 
          // echo $sqlText;
          if (!$result) {
@@ -180,7 +180,7 @@ values ($idmet, $aresultados[$i], current_date, true,$usuario, date_trunc('secon
                     VALUES ($ultimo,$TiempoPrevio,98,$lugar,$usuario,NOW())";
 
          // echo $query2." - ".$ultimo." - ".$sqlText;
-         $dtSub = pg_query($sqlText) or die('La consulta fall&oacute;: ' . pg_error());
+         $dtSub = pg_query($sqlText);
 
          // echo $sqlText;
          if (!$result) {
@@ -416,7 +416,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                while ($rome = pg_fetch_array($con)) {
                   if ($rome['id_metodologia'] == $aMetodologias[$i]) {
                      $sql = "UPDATE lab_examen_metodologia SET activo=true,fecha_inicio=NOW(),fecha_fin=NULL,nombre_reporta='$aMetodologias_id[$i]' WHERE id_conf_exa_estab=$idconf AND id_metodologia=$aMetodologias[$i] returning id;";
-                     $upd = pg_query($sql) or die('La consulta fall&oacute;: ' . pg_error());
+                     $upd = pg_query($sql);
                      $idexametodologia=  pg_fetch_array($upd);
                      $idexameto=$idexametodologia['id'];
                      //$metodologiassel=$metodologiassel.','.$idexameto;
@@ -428,7 +428,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                   // echo 'entro aqui';
                   $sql = "INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin,nombre_reporta) VALUES ($idconf, $aMetodologias[$i], true, NOW(), NULL,'$aMetodologias_id[$i]') returning id;";
                   // echo 'sql:'.$sql;
-                  $upd = pg_query($sql) or die('La consulta fall&oacute;: ' . pg_error());
+                  $upd = pg_query($sql);
                   $idexametodologia=  pg_fetch_array($upd);
                   $idexameto=$idexametodologia['id'];
                   //$metodologiassel=$metodologiassel.','.$idexameto;
@@ -507,13 +507,13 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
             $sqlText = "UPDATE cit_programacion_exams
                                      SET rangotiempoprev=$TiempoPrevio
                                      WHERE id_examen_establecimiento=$idconf";
-            // $dtSub = pg_query($sqlText) or die('La consulta fall&oacute;: ' . pg_error());      
+            // $dtSub = pg_query($sqlText);      
          } else {
             $sqlText = "INSERT INTO cit_programacion_exams (id_examen_establecimiento,rangotiempoprev,id_atencion,id_establecimiento,idusuarioreg,fechahorareg) 
                                      VALUES ($idconf,$TiempoPrevio,98,$lugar,$usuario,NOW())";
          }
          //echo $sqlText;
-         $dtSub = pg_query($sqlText) or die('La consulta fall&oacute;: ' . pg_error());
+         $dtSub = pg_query($sqlText);
          if (!$result && !$dtSub)
             return false;
          else {

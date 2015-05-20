@@ -710,7 +710,8 @@ function LlenarComboExamen(idarea)
 
         if (ajax.readyState == 4) {//4 The request is complete
             if (ajax.status == 200) {//200 means no error.
-                //respuesta = ajax.responseText;	
+                //respuesta = ajax.responseText;
+                //alert (ajax.responseText)	
                 // alert (respuesta)
                 document.getElementById('divExamen').innerHTML = ajax.responseText;
             }

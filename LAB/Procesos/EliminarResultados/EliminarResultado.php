@@ -103,7 +103,7 @@ if ($nivel==4){
                                                     if($db->conectar()==true){
                                                             $consulta  = "SELECT id,nombre 
                                                                           FROM ctl_tipo_establecimiento ORDER BY nombre";
-                                                            $resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
+                                                            $resultado = pg_query($consulta);
                                                             //por cada registro encontrado en la tabla me genera un <option>
                                                             while ($rows = pg_fetch_array($resultado)){
                                                                     echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
@@ -147,7 +147,7 @@ if ($nivel==4){
                                                                                   FROM ctl_area_atencion t01
                                                                                   WHERE t01.id IN (
                                                                                   SELECT DISTINCT id_area_atencion FROM mnt_area_mod_estab WHERE id_establecimiento = $lugar)";
-                                                                    $resultado = pg_query($consulta) or die('La consulta fall&oacute;: ' . pg_error());
+                                                                    $resultado = pg_query($consulta);
 
                                                                                     //por cada registro encontrado en la tabla me genera un <option>
                                                                                     while ($rows = pg_fetch_array($resultado)){
