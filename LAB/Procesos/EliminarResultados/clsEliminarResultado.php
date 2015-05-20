@@ -37,8 +37,9 @@ function DatosEstablecimiento($lugar){
 function LlenarCmbEstablecimiento($Idtipoesta){
 $con = new ConexionBD;
 	if($con->conectar()==true){
-		echo $sqlText= "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento=$Idtipoesta ORDER BY nombre";		
+		$sqlText= "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento=$Idtipoesta ORDER BY nombre";		
 		$dt = pg_query($sqlText) ;
+
 	}
 	return $dt;
 }
@@ -334,7 +335,7 @@ ELSE (sec_solicitudestudios.id_expediente) end) as idexpediente
      $con = new ConexionBD;
     if($con->conectar()==true)
     {
-         $query ="DELETE FROM lab_resultados WHERE id=$idresultado";
+       $query ="DELETE FROM lab_resultados WHERE id=$idresultado";
 	 $result = pg_query($query);
 	 if (!$result)
 	   return -1;
@@ -361,7 +362,7 @@ function EliminarResultadoMetodologia($iddetalle){
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-       $query="DELETE FROM lab_resultado_metodologia WHERE id_detallesolicitudestudio=$iddetalle";
+      $query="DELETE FROM lab_resultado_metodologia WHERE id_detallesolicitudestudio=$iddetalle";
        $result = pg_query($query);
 	 if (!$result)
 	   return -1;
@@ -376,7 +377,7 @@ function ObtenerIdDetalleResultado($idresultado){
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-   echo  $query ="SELECT * FROM lab_detalleresultado WHERE idresultado=$idresultado";
+     $query ="SELECT * FROM lab_detalleresultado WHERE idresultado=$idresultado";
 	 $result = @pg_query($query);
 	 if (!$result)
 	   return false;

@@ -31,7 +31,7 @@ class clsElementosExamen
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-  echo   $query = "UPDATE lab_elementos SET elemento='$nomelemento' , subelemento='$subelemento',unidadelem=$unidadele, 
+         $query = "UPDATE lab_elementos SET elemento='$nomelemento' , subelemento='$subelemento',unidadelem=$unidadele, 
 		 observelem=$observacionele,idusuariomod='$usuario', fechahoramod=NOW(),fechaini=$Fechaini, 
 		 fechafin=$Fechafin, orden=$orden WHERE id=$idelemento AND idestablecimiento=$lugar";
      //echo $query;
@@ -51,7 +51,7 @@ class clsElementosExamen
    if($con->conectar()==true) 
    {
      $query = "DELETE FROM lab_elementos WHERE id=$idelemento AND IdEstablecimiento=$lugar";
-     echo $query;
+    // echo $query;
      $result = pg_query($query);
 	 
      if (!$result)
@@ -292,15 +292,15 @@ function consultar($lugar){
 	}
  }
  
- function Rangosele($idelemento) {
-		$con = new ConexionBD;
-		if ( $con->conectar()==true ) {
-			$query = "SELECT orden FROM lab_elementos where id=$idelemento";
-			$result = pg_query( $query );
-			if ( !$result )
-				return false;
-			else
-				return $result;
+        function Rangosele($idelemento) {
+            $con = new ConexionBD;
+            if ( $con->conectar()==true ) {
+            	$query = "SELECT orden FROM lab_elementos where id=$idelemento";
+		$result = pg_query( $query );
+		if ( !$result )
+                    return false;
+		else
+                    return $result;
 		}
 
 	}

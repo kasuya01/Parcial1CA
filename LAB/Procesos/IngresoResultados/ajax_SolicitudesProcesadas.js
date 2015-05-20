@@ -1494,6 +1494,7 @@ function MostrarVistaPreviaPlantillaB(){
                 {  //mostrar los nuevos registros en esta capa
                     document.getElementById('divresultado').style.display = "block";
                     document.getElementById('divresultado').innerHTML = ajax.responseText;
+                     document.getElementById('Imprimir').style.visibility = "hidden";
                     //calc_edad();
                     //alert(ajax.responseText);
                 }
@@ -1582,7 +1583,7 @@ function GuardarResultadosPlantillaB()
                 //document.getElementById('btnGuardar').disabled=disabled;
                 alert(ajax.responseText);
                 document.getElementById('btnGuardar').style.visibility = 'hidden';
-                //document.getElementById('btnGuardar').style.visibility='hidden';
+                document.getElementById('Imprimir').style.visibility='visible';
             }
         }
     }

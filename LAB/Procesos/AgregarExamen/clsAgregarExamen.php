@@ -176,11 +176,7 @@ function insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query =/*"INSERT INTO sec_detallesolicitudestudios(IdSolicitudEstudio,IdExamen,Indicacion,EstadoDetalle,IdTipoMuestra,IdOrigenMuestra,
-             Observacion,IdEstablecimiento,IdEstablecimientoExterno,IdEmpleado,IdUsuarioReg,FechaHoraReg) 
-             VALUES($idsolicitud,'$IdExamen','$indicacion','PM',$IdTipo,$origen,'$Observa',$lugar,$IdEstab,'$Empleado',$usuario,NOW())";*/
-   
-            "INSERT  INTO sec_detallesolicitudestudios (idsolicitudestudio,idexamen,
+     $query = "INSERT  INTO sec_detallesolicitudestudios (idsolicitudestudio,idexamen,
 					id_conf_examen_estab,indicacion,estadodetalle,
 					idtipomuestra,idorigenmuestra,observacion,idestablecimiento,idestablecimientoexterno,
 					    idempleado,idusuarioreg,fechahorareg,'f_tomamuestra', id_estado_rechazo, f_estado)
@@ -214,21 +210,12 @@ function insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-        $query =/*"INSERT INTO sec_detallesolicitudestudios(IdSolicitudEstudio,IdExamen,Indicacion,EstadoDetalle,IdTipoMuestra,IdOrigenMuestra,
-             Observacion,IdEstablecimiento,IdEstablecimientoExterno,IdEmpleado,IdUsuarioReg,FechaHoraReg) 
-             VALUES($idsolicitud,'$IdExamen','$indicacion','PM',$IdTipo,$origen,'$Observa',$lugar,$IdEstab,'$Empleado',$usuario,NOW())";*/
-   
-            "INSERT  INTO sec_detallesolicitudestudios (idsolicitudestudio,idexamen,
-					id_conf_examen_estab,indicacion,estadodetalle,
-					idtipomuestra,observacion,idestablecimiento,idestablecimientoexterno,
-					    idempleado,idusuarioreg,fechahorareg,f_tomamuestra,id_estado_rechazo, f_estado)
-					    VALUES($idsolicitudPa,$idexamen1,$IdExamen,'$indicacion', 5,
-					      $IdTipo,
-					      '$Observa',
-					      $lugar,
-					      $IdEstab,
-					      $Empleado,
-					      $usuario,date_trunc('seconds',NOW()),'$fechatomamuestra',1, current_date)";
+        $query = "INSERT  INTO sec_detallesolicitudestudios (idsolicitudestudio,idexamen,
+		id_conf_examen_estab,indicacion,estadodetalle,
+		idtipomuestra,observacion,idestablecimiento,idestablecimientoexterno,
+		idempleado,idusuarioreg,fechahorareg,f_tomamuestra,id_estado_rechazo, f_estado)
+		VALUES($idsolicitudPa,$idexamen1,$IdExamen,'$indicacion', 5,$IdTipo,'$Observa',
+                $lugar,$IdEstab,$Empleado,$usuario,date_trunc('seconds',NOW()),'$fechatomamuestra',1, current_date)";
             
             $result = @pg_query($query);
     //echo $query;
