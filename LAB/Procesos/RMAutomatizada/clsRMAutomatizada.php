@@ -212,7 +212,7 @@ VALUES($idexmen_metodologia,
         if ($con->conectar() == true) {
             //$sqlText= "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$Idtipoesta' ORDER BY Nombre";		
             $sqlText = "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento=$Idtipoesta ORDER BY nombre";
-            $dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
+            $dt = pg_query($sqlText) ;
         }
         return $dt;
     }

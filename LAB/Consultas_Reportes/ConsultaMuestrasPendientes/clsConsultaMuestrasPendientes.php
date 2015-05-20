@@ -47,7 +47,7 @@ function LlenarCmbEstablecimiento($Idtipoesta){
 $con = new ConexionBD;
 	if($con->conectar()==true){
 		$sqlText=  "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento=$Idtipoesta ORDER BY nombre";
-                        $dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
+                        $dt = pg_query($sqlText) ;
 	}
 	return $dt;
 }
@@ -74,7 +74,7 @@ $con = new ConexionBD;
                             WHERE id_area_atencion = $IdServ and t02.id_establecimiento = $lugar
                             ORDER BY 2)
                         SELECT id, servicio FROM tbl_servicio WHERE servicio IS NOT NULL";
-		$dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
+		$dt = pg_query($sqlText) ;
 	}
 	return $dt;
 }

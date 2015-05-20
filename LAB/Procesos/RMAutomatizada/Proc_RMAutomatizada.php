@@ -150,7 +150,7 @@ if (isset($_SESSION['Correlativo'])) {
                                         if ($con->conectar() == true) {
                                             //$consulta  = "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$tipo' ORDER BY Nombre";
                                             $consulta = "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento='$tipo' ORDER BY nombre";
-                                            $resultado = @pg_query($consulta) or die('La consulta fall&oacute;: ' . @pg_error());
+                                            $resultado = @pg_query($consulta);
                                             //por cada registro encontrado en la tabla me genera un <option>
                                             while ($rows = @pg_fetch_array($resultado)) {
                                                 echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';

@@ -122,7 +122,7 @@ if ($nivel==33){
                                                                 SELECT DISTINCT id_area_atencion 
                                                                 FROM mnt_area_mod_estab WHERE id_establecimiento = $lugar)";
                                                         
-						$resultado = @pg_query($consulta) or die('La consulta fall&oacute;: ' . @pg_error());
+						$resultado = @pg_query($consulta);
 						//por cada registro encontrado en la tabla me genera un <option>
 					while ($rows = @pg_fetch_array($resultado)){
 						echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]). '</option>';

@@ -123,7 +123,7 @@ if ($nivel==4){
                                                             $con = new ConexionBD;
                                                             if($con->conectar()==true){			  
                                                                     $consulta  = "SELECT id,nombre FROM ctl_establecimiento where id_tipo_establecimiento=$tipo ORDER BY Nombre";
-                                                                    $resultado = @pg_query($consulta) or die('La consulta fall&oacute;: ' . @pg_error());
+                                                                    $resultado = @pg_query($consulta);
                                                                     //por cada registro encontrado en la tabla me genera un <option>
                                                                     while ($rows = @pg_fetch_array($resultado)){
                                                                             echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]). '</option>';

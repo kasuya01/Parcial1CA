@@ -47,7 +47,7 @@ $con = new ConexionBD;
 	if($con->conectar()==true){
 		 $sqlText= //"SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$Idtipoesta' ORDER BY Nombre";		
                             "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento=$Idtipoesta ORDER BY nombre";
-                        $dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
+                        $dt = pg_query($sqlText) ;
 	}
 	return $dt;
 }
@@ -81,7 +81,7 @@ $con = new ConexionBD;
                             ORDER BY 2)
                         SELECT id, servicio FROM tbl_servicio WHERE servicio IS NOT NULL";
                         
-		$dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
+		$dt = pg_query($sqlText) ;
 	}
 	return $dt;
 }
@@ -233,7 +233,7 @@ function ObtenerServicio($idSubEsp){
 $con = new ConexionBD;
 	if($con->conectar()==true){
 		$sqlText= "select  IdServicio from mnt_subservicio where IdSubServicio=$idSubEsp";
-		$dt = pg_query($sqlText) ;//or die('La consulta fall&oacute;:' . pg_error());
+		$dt = pg_query($sqlText) ;//;
                 return $dt;
 	}
 	
@@ -253,7 +253,7 @@ from mnt_empleado_especialidad_estab empest
 join mnt_empleado mem on (empest.id_empleado=mem.id)
 where id_aten_area_mod_estab=126";
                         
-		$dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
+		$dt = pg_query($sqlText) ;
 	}
 	return $dt;
 }
@@ -277,7 +277,7 @@ where id_aten_area_mod_estab=$idSubEsp  order by nombreempleado ";
                 else
                     return $dt;
                 
-		//$dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
+		//$dt = pg_query($sqlText) ;
 	}
 //	return $dt;
 }
@@ -304,7 +304,7 @@ function cantidadMedicos($idSubEsp)
                 else
                     return $dt;
                 
-		//$dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
+		//$dt = pg_query($sqlText) ;
 	}
 //	return $dt;
 }
@@ -321,7 +321,7 @@ function LlenarMedico($IdSubServicio,$lugar)
 from mnt_empleado_especialidad_estab empest
 join mnt_empleado mem on (empest.id_empleado=mem.id)
 where id_aten_area_mod_estab=$IdSubServicio";
-		$dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
+		$dt = pg_query($sqlText) ;
 	}
 	return $dt;
  }
