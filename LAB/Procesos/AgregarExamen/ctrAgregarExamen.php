@@ -707,7 +707,7 @@ switch ($opcion)
            
 	      echo $rslts;
 	break;
-	case 10:
+	case 10:/*    Agregar Examen   */
 		$idsolicitud=$_POST['idsolicitud'];
                 $idsolicitudPa=$_POST['idsoli']; //si!!
 		$IdExamen=$_POST['idExamen'];       // si!!
@@ -723,12 +723,8 @@ switch ($opcion)
                 
                 $consulta=$objdatos->opteneridexamen($IdExamen);
 		$row = pg_fetch_array($consulta);
-		 $idexamen1=$row['idexa'];
+		$idexamen1=$row['idexa'];
 		
-               
-                
-                
-                
 		$conExam=$objdatos->BuscarExamen($idsolicitudPa,$IdExamen,$lugar);
 		 $ExisExa=pg_fetch_array($conExam);
 		

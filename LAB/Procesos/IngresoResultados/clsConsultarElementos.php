@@ -149,7 +149,7 @@ else
    function VerificarExistencia($idexamen,$idsolicitud,$iddetalle){
        $con = new ConexionBD;
         if($con->conectar()==true) {
-         $query = "SELECT count(*) FROM lab_resultados WHERE idsolicitudestudio=$idsolicitud AND iddetallesolicitud= $iddetalle";
+        $query = "SELECT count(*) FROM lab_resultados WHERE idsolicitudestudio=$idsolicitud AND iddetallesolicitud= $iddetalle";
             $cantidad = pg_fetch_array(pg_query($query));
             return $cantidad[0];
         }
@@ -163,7 +163,7 @@ else
                       observacion,idempleado,idusuarioreg,fechahorareg,idestablecimiento,fecha_resultado) 
                       VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,'$observacion',$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,'$fecharesultado')
                       RETURNING id";
-          // echo $query;
+           $query;
             $result = pg_query($query);
 
             if ($row = pg_fetch_array($result)) {

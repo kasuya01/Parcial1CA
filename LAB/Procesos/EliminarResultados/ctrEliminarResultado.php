@@ -368,7 +368,10 @@ switch ($opcion)
                           //  echo "entro".$idplantilla;
 				switch($idplantilla){
 					case 1:/* ELIMINAR PLANTILLA A */
-						if ($objdatos->EliminarResultado($idsolicitud,$iddetalle) == 1){
+                                            $r=$objdatos->ObtenerIdResultado($idsolicitud,$iddetalle);
+					    $result=pg_fetch_array($r);
+					    $idresultado=$result[0];
+						if ($objdatos->EliminarResultado($idresultado) == 1){
                                                     if ($objdatos->Eliminar_metodologia($iddetalle) == 1){
 							//if (($objdatos->CambiarEstadoDetalle($iddetalle)==true)&&($objdatos->CambiarEstadoSolicitud($idsolicitud)==true))
 							if (($objdatos->ActualizarEstadoDetalle($iddetalle)==true)&&($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true)){
@@ -393,7 +396,8 @@ switch ($opcion)
                                                      
                                                      if($dr=$objdatos->EliminarDetalleResultado($idresultado)==1){
                                                         
-                                                         if ($objdatos->EliminarResultado($idsolicitud,$iddetalle) == 1){
+                                                         if ($objdatos->EliminarResultado($idresultado) == 1){
+                                                                       
                                                              
                                                                if (($objdatos->ActualizarEstadoDetalle($iddetalle)==true)||($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true))
                                                                       echo "Resultado Eliminado";
@@ -425,7 +429,8 @@ switch ($opcion)
 								switch($TipoResultado){
 								case 'Positivo':
 						//	 while($result = mysql_fetch_array($r)){
-									$idresultado=$result['id'];
+                                                                    $idresultado=$result['id'];
+                                                                    //echo $idresultado;
 									$det=$objdatos->ObtenerIdDetalleRes($idresultado);
 									$detalle=pg_fetch_array($det);
 									$iddetalleres=$detalle[0];
