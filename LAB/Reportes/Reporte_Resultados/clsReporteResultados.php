@@ -47,7 +47,7 @@ $con = new ConexionBD;
 	if($con->conectar()==true){
 		$sqlText= //"SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$Idtipoesta' ORDER BY Nombre";		
                             "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento=$Idtipoesta ORDER BY nombre";
-                        $dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
+                        $dt = pg_query($sqlText) ;
 	}
 	return $dt;
 }
@@ -76,7 +76,7 @@ $con = new ConexionBD;
                             ORDER BY 2)
                         SELECT id, servicio FROM tbl_servicio WHERE servicio IS NOT NULL";
                         
-		$dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
+		$dt = pg_query($sqlText) ;
 	}
 	return $dt;
 }
@@ -1647,7 +1647,7 @@ $con = new ConexionBD;
         /*return $result;
     
                         
-		$dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
+		$dt = pg_query($sqlText) ;
 	}
 	return $dt;*/
                 

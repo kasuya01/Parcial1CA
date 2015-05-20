@@ -100,7 +100,7 @@ function consultarareas($lugar){
                  
                  
                  
-	 $dt = pg_query($query) or die('La consulta fall&oacute;:' . pg_error());
+	 $dt = pg_query($query) ;
 	}
 	return $dt;
 }
@@ -114,7 +114,7 @@ $con = new ConexionBD;
                   "select id from ctl_area_atencion where id=$procedencia";
                   
                   
-	  $dt = pg_query( $query) or die('La consulta fall&oacute;:' . pg_error());
+	  $dt = pg_query( $query) ;
 	}
 	return $dt;
 }
@@ -132,7 +132,7 @@ $con = new ConexionBD;
        WHERE t01.id =$procedencia";
                   
                   
-	  $dt = pg_query( $query) or die('La consulta fall&oacute;:' . pg_error());
+	  $dt = pg_query( $query) ;
 	}
 	return $dt;
 }
@@ -201,7 +201,7 @@ $con = new ConexionBD;
                                         t11.nombre";
           
                   
- $dt = pg_query( $query) or die('La consulta fall&oacute;:' . pg_error());
+ $dt = pg_query( $query) ;
 	}
 	return $dt;
 
@@ -321,7 +321,7 @@ $con = new ConexionBD;
 	if($con->conectar()==true){
 	  $query="SELECT distinct mnt_subservicio.IdServicio, mnt_servicio.NombreServicio FROM   	  mnt_subservicio INNER JOIN mnt_servicio ON mnt_subservicio.IdServicio=mnt_servicio.IdServicio 
 	  ORDER BY mnt_subservicio.IdServicio";
-	  $dt = pg_query( $query) or die('La consulta fall&oacute;:' . pg_error());
+	  $dt = pg_query( $query) ;
 	}
 	return $dt;
 }*/	
@@ -343,7 +343,7 @@ ORDER BY mnt_subservicio.IdServicio";*/
                   ";
                   
                   
-	  $dt = pg_query( $query) or die('La consulta fall&oacute;:' . pg_error());
+	  $dt = pg_query( $query) ;
 	}
 	return $dt;
 }	
@@ -358,7 +358,7 @@ $con = new ConexionBD;
                     WHERE t01.id=1 and t01.nombre='Consulta Externa'";
                   
                   
-	  $dt = pg_query( $query) or die('La consulta fall&oacute;:' . pg_error());
+	  $dt = pg_query( $query) ;
 	}
 	return $dt;
 }
@@ -372,7 +372,7 @@ $con = new ConexionBD;
                     WHERE t01.id=2 and t01.nombre='Emergencia'";
                   
                   
-	  $dt = pg_query( $query) or die('La consulta fall&oacute;:' . pg_error());
+	  $dt = pg_query( $query) ;
 	}
 	return $dt;
 }
@@ -389,7 +389,7 @@ $con = new ConexionBD;
                     WHERE t01.id=3 and t01.nombre='Hospitalización'";
                   
                   
-	  $dt = pg_query( $query) or die('La consulta fall&oacute;:' . pg_error());
+	  $dt = pg_query( $query) ;
 	}
 	return $dt;
 }
@@ -427,7 +427,7 @@ order by NombreSubServicio";*/
                             ORDER BY 2)
                         SELECT id, servicio FROM tbl_servicio WHERE servicio IS NOT NULL";
 
-		$dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
+		$dt = pg_query($sqlText) ;
 	}
 	return $dt;
  }

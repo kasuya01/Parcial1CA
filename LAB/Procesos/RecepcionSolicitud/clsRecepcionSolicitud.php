@@ -58,7 +58,7 @@ order by posible_observacion;";
         if ($con->conectar() == true) {
             $sqlText = "SELECT id AS idestablecimiento, nombre FROM ctl_establecimiento where id_tipo_establecimiento = (SELECT id FROM ctl_tipo_establecimiento WHERE codigo = '$Idtipo') ORDER BY nombre";
 
-            $dt = pg_query($sqlText) or die('La consulta fall&oacute;:' . pg_error());
+            $dt = pg_query($sqlText) ;
         }
         return $dt;
     }
