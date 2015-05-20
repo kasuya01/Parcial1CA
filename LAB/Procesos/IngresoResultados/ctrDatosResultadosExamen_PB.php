@@ -20,7 +20,8 @@ switch ($opcion) {
 		$sexo 	  = $_POST['Sexo'];
                 $fecharealiz=$_POST['fecharealiz'];
                 $fecharesultado=$_POST['fecharesultado'];
-                $f_tomamuestra=$_POST['f_tomamuestra'];
+                $f_tomamuestra=$_POST['f_tomamuestra']; 
+               // echo $f_tomamuestra;
                 $tipomuestra=$_POST['tipomuestra'];
                // echo $fecharealiz."-".$fecharesultado;
                 $ConRangos       = $objdatos->ObtenerCodigoRango($fechanac);
@@ -32,7 +33,7 @@ switch ($opcion) {
 		$IdEstandar	 = $CodEstandar[1];
               // echo $idexamen;
 		switch ($codigo_estandar) {
-			case "H50":
+                    case "H50":
 				$consulta = $objdatos->LeerElementosExamen($idexamen,$lugar);
 
 				$imprimir="<table width='75%' border='0' align='center' class='StormyWeatherFormTABLE'>";
@@ -121,7 +122,7 @@ switch ($opcion) {
                                 $imprimir.= "<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
                                              <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />
                                              <input type='hidden' name='txttipomuestra' id='txttipomuestra' disabled='disabled' value='".$tipomuestra."' />
-                                             <input type='hidden' name='txtf_tomamuestra' id='txtf_tomamuestra' disabled='disabled' value='".$f_tomamuestra."' />";
+                                             <input type='text' name='txtf_tomamuestra' id='txtf_tomamuestra' disabled='disabled' value='".$f_tomamuestra."' />";
 				$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>";	//numero de cajas de texto dibujadas para subelementos
 				$imprimir .="<input  type='hidden' id='ocultoele' value='".$posele."'>"; //elementos
                                  
@@ -142,8 +143,8 @@ switch ($opcion) {
 				</table>";
 				
 				echo $imprimir;
-				break;
-			default:
+		    break;
+		    default:
 				$consulta=$objdatos->LeerElementosExamen($idexamen,$lugar);
 			 $imprimir="<table width='75%' border='0' align='center' class='StormyWeatherFormTABLE'>
 					<tr  class='CobaltButton'>
@@ -300,7 +301,7 @@ switch ($opcion) {
                 $f_tomamuestra        =$_POST['f_tomamuestra'];
                 $tipomuestra          =$_POST['tipomuestra'];
                 //echo $idestab;
-                //echo $f_tomamuestra."-".$tipomuestra;
+               // echo "fecha ".$f_tomamuestra."- tipo".$tipomuestra;
 	   	$Consulta_Estab  = $objdatos->Nombre_Establecimiento($lugar);
 	   	$row_estab   	 = pg_fetch_array($Consulta_Estab);
 	   	$ConEstandar 	 = $objdatos->Obtener_Estandar($idexamen);

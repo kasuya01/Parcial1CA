@@ -133,6 +133,7 @@ function enviarDatos() {//FUNCION PARA MODIFICAR
     login = document.frmModificar.txtlogin.value;
     modalidad = document.frmModificar.cmbModalidad.value;
     txtapellido = document.frmModificar.txtapellido.value;
+    pagador = document.frmModificar.cmbPago.value;
     var opcion = 2;
     Pag = 1;
     //instanciamos el objetoAjax
@@ -143,7 +144,8 @@ function enviarDatos() {//FUNCION PARA MODIFICAR
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
-    ajax.send("idempleado=" + idempleado + "&idarea=" + idarea + "&nomempleado=" + nomempleado + "&cargo=" + escape(cargo) + "&login=" + login + "&Pag=" + Pag + "&opcion=" + opcion + "&modalidad=" + modalidad + "&txtapellido=" + txtapellido);
+    ajax.send("idempleado=" + idempleado + "&idarea=" + idarea + "&nomempleado=" + nomempleado + "&cargo=" + escape(cargo) + "&login=" + login +
+             "&Pag=" + Pag + "&opcion=" + opcion + "&modalidad=" + modalidad + "&txtapellido=" + txtapellido+"&pagador="+pagador);
     ajax.onreadystatechange = function() {
         if (ajax.readyState == 4) {
             divResultado.style.display = "block";

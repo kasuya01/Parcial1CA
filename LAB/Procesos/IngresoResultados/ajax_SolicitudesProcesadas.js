@@ -1385,7 +1385,7 @@ function ValidarCamposPlantillaB()
 
     for (i = 0; i < document.getElementById('oculto').value; i++)
     {
-        if (document.getElementById('txtresultadosub[' + i + ']').value == "")
+        if ((document.getElementById('txtresultadosub[' + i + ']').value == "")||(document.getElementById('txtresultadosub[' + i + ']').value == 0))
         {
             resp = false;
         }
@@ -1393,7 +1393,7 @@ function ValidarCamposPlantillaB()
 
     for (i = 0; i < document.getElementById('ocultoele').value; i++)
     {
-        if (document.getElementById('txtresultadoele[' + i + ']').value == "")
+        if ((document.getElementById('txtresultadoele[' + i + ']').value == "")||(document.getElementById('txtresultadoele[' + i + ']').value == ""))
         {
             resp = false;
         }
@@ -1414,7 +1414,7 @@ function ValidarCamposPlantillaB()
 
 function MostrarVistaPreviaPlantillaB(){
 
-   /* if (ValidarCamposPlantillaB()) {*/
+    if (ValidarCamposPlantillaB()) {
         opcion = 2;
         //DATOS DE ENCABEZADO DE LOS RESULTADOS
         //solicitud estudio
@@ -1500,11 +1500,11 @@ function MostrarVistaPreviaPlantillaB(){
             }
         }
 
-   /* }
+    }
     else
     {
         alert("Complete los datos a Ingresar")
-    }*/
+    }
 
 }
 
@@ -1524,7 +1524,7 @@ function GuardarResultadosPlantillaB()
     idexamen = document.getElementById('txtidexamen').value;
     //observacion
     observacion = document.getElementById('txtobservacion').value;
-    alert(observacion);
+  //  alert(observacion);
     //responsable(idempleado)
     idempleado = document.getElementById('cmbEmpleados').value;
 
@@ -1707,22 +1707,23 @@ function CargarExamenes(idsolicitud, idarea, fechanac, sexo, idestandar, idhisto
 
 
 //FUNCION PARA CARGAR LOS ELEMENTOS Y SUBELEMENTOS DE UN EXAMEN
-function CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial,fecharealiz,fecharesultado,f_tomamuestra,tipomuestra)
-{
+function CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial,fecharealiz,fecharesultado,subservicio,f_tomamuestra,tipomuestra)
+{                              
     ajax = objetoAjax();
     idexamen = codigoex;
     FechaNac = fechanac;
     Sexo = sexo;
     opcion = 1;
-
+//alert (tipomuestra);
     //alert("Entro a cargar otros datos, opcion: "+opcion+"examen "+idexamen);
     ajax.open("POST", "ctrDatosResultadosExamen_PB.php", true);
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
+    i
     ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&FechaNac=" + FechaNac + "&Sexo=" + Sexo +
               "&idestandar=" + idestandar + "&idhistorial=" + idhistorial+"&fecharealiz="+fecharealiz+
-              "&fecharesultado="+fecharesultado+"&f_tomamuestra="+f_tomamuestra+"&tipomuestra="+tipomuestra);
+              "&fecharesultado="+fecharesultado+"&f_tomamuestra="+f_tomamuestra+"&tipomuestra="+tipomuestra+"&subservicio="+subservicio);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -1779,10 +1780,10 @@ function IngresarResultados() {
         fecharealiz = document.frmnuevo.txtresultrealiza.value;
         fecharesultado=document.frmnuevo.txtresultfin.value;
         subservicio=document.frmnuevo.txtsubservicio.value;
-        f_tomamuestra=document.frmnuevo.txtf_tomamuestra;
-        tipomuestra=document.frmnuevo.txttipomuestra;
+        f_tomamuestra=document.frmnuevo.txtf_tomamuestra.value;
+        tipomuestra=document.frmnuevo.txttipomuestra.value;
     
-       // alert (subservicio);
+      //  alert (tipomuestra);
         //alert (fecharealiz+'-'+fecharesultado);
         CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial,fecharealiz,fecharesultado,subservicio,f_tomamuestra,tipomuestra);
     } else {
@@ -1847,7 +1848,7 @@ function MostrarDatos(posicion)
     idestabext = document.getElementById('idestabext[' + posicion + ']').value;
     f_tomamuestra=document.getElementById('f_tomamuestra[' + posicion + ']').value;
     tipomuestra=document.getElementById('tipomuestra[' + posicion + ']').value;
-    //alert ()
+    //alert (f_tomamuestra);
     //alert ("Plnatilla="+plantilla+" Experiente="+idexpediente+" Solicitud="+idsolicitud+" idarea="+idarea+" idhistorial="+IdHistorial+" IdEstandar="+IdEstandar);
     //idhistorial=document.getElementById('idhistorial['+posicion+']').value;
     //alert(plantilla);
@@ -1868,7 +1869,7 @@ function MostrarDatos(posicion)
             else {
               //  alert(cant_metodologia)
                 if (cant_metodologia==0){
-                ventana_secundaria = window.open("ProcDatosResultadosExamen_PA.php?var1=" + idexpediente +
+                    ventana_secundaria = window.open("ProcDatosResultadosExamen_PA.php?var1=" + idexpediente +
                         "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                         "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                         "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
@@ -1884,13 +1885,13 @@ function MostrarDatos(posicion)
             }
             break;
         case "2":
-           //alert ("tipo_muestra="+tipomuestra+"& toma-muestra="+f_tomamuestra);
+          // alert (f_tomamuestra);
                 ventana_dos = window.open("ProcDatosResultadosExamen_PB.php?var1=" + idexpediente +
                     "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                     "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
                     "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+encodeURIComponent(estabext) + "&var19="+idestabext +
-                    "&var20="+f_tomamuestra + "&var21="+tipomuestra, "Resultados", "width=950,height=700,menubar=no,scrollbars=yes,location=no");
+                    "&var20="+ f_tomamuestra + "&var21="+tipomuestra, "Resultados", "width=950,height=700,menubar=no,scrollbars=yes,location=no");
             break;
         case "3":
            // alert ("tipo_muestra="+tipomuestra+"& toma-muestra="+f_tomamuestra);
@@ -1912,12 +1913,12 @@ function MostrarDatos(posicion)
                     "&var20="+ tipomuestra, "Resultados", "width=950,height=700,menubar=no,scrollbars=yes");
             break;
         case "5":
-           //  alert ("tipo_muestra="+tipomuestra+"& toma-muestra="+f_tomamuestra);
+          //alert (f_tomamuestra);
                 ventana_dos = window.open("ProcDatosResultadosExamen_PE.php?var1=" + idexpediente +
                     "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                     "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
-                    "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+estabext+"&var19="+f_tomamuestra+
+                    "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+estabext+"&var19="+ f_tomamuestra+ 
                     "&var20="+tipomuestra, "Resultados", "width=950,height=950,menubar=no,scrollbars=yes");
             break;
     }
@@ -2392,9 +2393,9 @@ function ValidarCamposPlantillaE()
     var resp = true;
 
     for (i = 0; i < document.getElementById('oculto').value; i++){
-       alert(document.getElementById('txtresultado[' + i + ']').value )
+       (document.getElementById('txtresultado[' + i + ']').value )
     
-        if (document.getElementById('txtresultado[' + i + ']').value == "") 
+        if ((document.getElementById('txtresultado[' + i + ']').value == "")||(document.getElementById('txtresultado[' + i + ']').value == 0)) 
         {
             resp = false;
         }
@@ -2405,23 +2406,21 @@ function ValidarCamposPlantillaE()
 
 function MostrarVistaPreviaPlantillaE()
 {
-   
-        ajax = objetoAjax();
-        idexamen = window.document.frmnuevo.txtidexamen.value;
-        opcion = 2;
-        idsolicitud = document.getElementById('txtidsolicitud').value;
-        estab = document.getElementById('txtestablecimiento').value;
-        observacion = document.getElementById('txtobservacion').value;
-       // alert(observacion);
-        idempleado = document.getElementById('cmbEmpleados').value;
-        tab = document.getElementById('cmbTabulador').value;
-        fechanac = document.getElementById('txtFechaNac').value;
-        sexo = document.getElementById('txtSexo').value;
-        fecharealiz = document.getElementById('txtresultrealiza').value;
-        fecharesultado=document.getElementById('txtfresultado').value;
-        f_tomamuestra=document.getElementById('txtf_tomamuestra').value;
-        tipomuestra=document.getElementById('txttipomuestra').value;
-        //alert (fecharesultado);
+   if (ValidarCamposPlantillaE()) {
+       // ajax = objetoAjax();
+       opcion = 2;
+       idexamen = document.getElementById('txtidexamen').value;
+       idsolicitud = document.getElementById('txtidsolicitud').value;
+       estab = document.getElementById('txtestablecimiento').value;
+       observacion = document.getElementById('txtobservacion').value;
+       idempleado = document.getElementById('cmbEmpleados').value;
+       tab = document.getElementById('cmbTabulador').value;
+       fechanac = document.getElementById('txtFechaNac').value;
+       sexo = document.getElementById('txtSexo').value;
+       fecharealiz = document.getElementById('txtresultrealiza').value;
+       fecharesultado=document.getElementById('txtfresultado').value;
+       f_tomamuestra=document.getElementById('txtf_tomamuestra').value;
+       tipomuestra=document.getElementById('txttipomuestra').value;
         //DATOS PARA EL DETALLE DE LOS RESULTADOS
         valores = "";
         codigos = "";
@@ -2451,7 +2450,7 @@ function MostrarVistaPreviaPlantillaE()
         ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
         //enviando los valores
-        ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idsolicitud=" + idsolicitud + "&observacion=" + escape(observacion) +
+        ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idsolicitud=" + idsolicitud + "&observacion=" + observacion +
                 "&idempleado=" + idempleado + "&valores=" + encodeURIComponent(valores) + "&codigos=" + codigos + "&comentarios=" + encodeURIComponent(comentarios) +
                 "&estab=" + estab + "&tab=" + tab + "&fechanac=" + fechanac + "&sexo=" + sexo + "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado +
                 "&valores_combos="+ valores_combos+"&f_tomamuestra="+f_tomamuestra+"&tipomuestra="+tipomuestra);
@@ -2467,10 +2466,11 @@ function MostrarVistaPreviaPlantillaE()
                 }
             }
         }
-   //  else
-   //  {
-    //     alert("Complete los datos a Ingresar")
-    // }
+    }
+   else
+    {
+       alert("Complete los datos a Ingresar");
+    }
 }
 
 function GuardarPlantillaE()
@@ -2511,8 +2511,8 @@ function GuardarPlantillaE()
     //enviando los valores
     //alert(tab);
     ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idsolicitud=" + idsolicitud + "&idrecepcion=" + idrecepcion +
-            "&iddetalle=" + iddetalle + "&observacion=" + encodeURIComponent(observacion) + "&idempleado=" + idempleado +
-            "&valores=" + encodeURIComponent(valores) + "&codigos=" + codigos + "&comentarios=" + encodeURIComponent(comentarios) + "&tab=" + tab +
+            "&iddetalle=" + iddetalle + "&observacion=" + observacion + "&idempleado=" + idempleado +
+            "&valores=" + encodeURIComponent(valores) + "&codigos=" + codigos + "&comentarios=" + comentarios + "&tab=" + tab +
             "&fecharealiz=" + fecharealiz + "&fecharesultado=" + fecharesultado + "&valores_combos="+valores_combos);
     ajax.onreadystatechange = function()
     {

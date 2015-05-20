@@ -418,7 +418,7 @@ function leer_posibles_resultados_procedimientos($idprocedimiento){
            $query="SELECT count(*)
                     FROM lab_procedimiento_posible_resultado 
                     INNER JOIN lab_posible_resultado ON lab_posible_resultado.id = lab_procedimiento_posible_resultado.id_posible_resultado
-                    WHERE id_procedimientoporexamen=$idprocedimiento";
+                    WHERE id_procedimientoporexamen=$idprocedimiento AND lab_procedimiento_posible_resultado.habilitado=TRUE";
 
             $result = @pg_query($query);
             
