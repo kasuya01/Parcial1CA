@@ -8,7 +8,8 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
 
 <html>
     <head>
-       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+       <meta charset="UTF-8">
+       <meta http-equiv="Content-Type" content="text/html" />
         <title>Seleccionar Posibles Resultados</title>
         <?php include_once $ROOT_PATH."/public/css.php";?>
         <?php include_once $ROOT_PATH."/public/js.php";?>
@@ -114,9 +115,10 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
              */
             $result = $obj->get_subelemento($id_subelemento);
             $r = pg_fetch_array($result);
-            $table = "<table align='center' class='table table-bordered table-condensed table-white no-v-border' style='width:100%'>";
-            $table .= "<tr><head><center><label id='nombre_prueba'>".$r['subelemento_text']."</label></center></head></tr>";
-            $table .= "<thead><tr><th>Resultados</th><th>Seleccionados</th></tr></thead>";
+             $table = "<center><span id='nombre_prueba'>".$r['subelemento_text']."</span></center>";
+            $table .= "<table align='center' class='table table-bordered table-condensed table-white no-v-border' style='width:100%'><thead>";
+           
+            $table .= "<tr><th>Resultados</th><th>Seleccionados</th></tr></thead>";
             $table .= "<tbody><td width='50%'><select name='lista' id='lista' size=22 style='width: 100%; height:400px' ondblclick='list_reload(this,1)'>";
             while ($r = pg_fetch_array($consulta)){
                $resultado= utf8_encode($r[resultado]);
@@ -146,7 +148,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
     //        }
             $table .= "</select></td></tr></tbody></table>";
 
-            print utf8_decode($table);
+            print ($table);
             ?> 
             <div align="center"><br><input type="submit" name="btnGuardar" value="Guardar"> <input type="button" value="Cancelar" onclick="window.close()"></div>
             <input type="hidden" name="metodologias_sel" id="metodologias_sel" value="<?php print $metodologias_sel; ?>">
