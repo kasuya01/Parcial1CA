@@ -22,6 +22,7 @@ $objeto = new clsReporteTabuladores();
 $d_fecha=$_POST['d_fecha'];
 $idarea=$_POST['cmbArea'];
 $idmntareamodestab=$_POST['idmntareamodestab'];
+$nombareamodestab=$_POST['nombareamodestab'];
 //
 //echo '<br>Area post_'.$idarea;
 //echo '<br>dfecha_'.$d_fecha;
@@ -49,8 +50,10 @@ if($idmntareamodestab==""){
       }
 }
 else{
+   $nombrearea=$objeto->nombreinstitucion($idmntareamodestab);
+   $namestab=  pg_fetch_array($nombrearea);
    $reamde.=$idmntareamodestab.",";
-   $nominsti.=$_POST["nombareamodestab"].",";
+   $nominsti.=$namestab['institucion'].",";
    $cantins=1;
 }
 //echo '<br>Vector:  '.count(array_filter(explode(',',$reamde))).'<br>Recmnarmoest: '.$reamde;
@@ -58,8 +61,7 @@ else{
 //$idexamen=$_POST['cmbExamen'];
 
 //$idpruebas=$_POST['id_prueba'];
-$idpruebas= isset($_POST['cmbExamen']) ? $_POST['cmbExamen'] : null;
-$pruebas=count($idpruebas);
+
 //echo '<br>idpruebas_'.$idpruebas.' count_'.$pruebas;
 if ($idarea=='' || $idarea==NULL){
   // echo 'entro';
@@ -91,6 +93,7 @@ $filename = "Tabulador ".$mes.' '.$year. ".xlsx"; //GUARDANDO CON ESTE NOMBRE
 
 $objPHPExcel = new PHPExcel();
 for ($ame=0; $ame <count(array_filter($exreadme)); $ame++){
+   $idame=$exreadme[$ame];
    $objPHPExcel->createSheet();
 $objPHPExcel->setActiveSheetIndex($ame);
 $objPHPExcel->getActiveSheet()->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_FOLIO)->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
@@ -144,10 +147,11 @@ $styleArray3=array(
    $final=$todos+1;
    $var=0;
    //Desde aqui debo de configurar
-   
+   $idpruebas= isset($_POST['cmbExamen']) ? $_POST['cmbExamen'] : null;
+$pruebas=count($idpruebas);
 //Si ha seleccionado algunas pruebas del catalogo
 if ($pruebas==0){ //Si no selecciono ninguna prueba por defecto le cargara el reporte de todas las que tengan en el catalogo
-    $prues=$objeto->prxmes($month, $year, $lugar, $idarea);
+    $prues=$objeto->prxmes($month, $year, $lugar, $idarea, $idame);
     $pruebas=@pg_num_rows($prues);
     $var=0;
     while($resultser=@pg_fetch_array($prues)){
@@ -187,7 +191,7 @@ if ($pruebas==0){ //Si no selecciono ninguna prueba por defecto le cargara el re
                         //manda a consultar la cantidad de resultados de acuerdo a :
                         //$idpr= id de la prueba; $j=codigo de la prueba que este pasando, 
                         //$n=dia por el que esta pasando;  $month=mes, $year=año
-                        $resultcant=@pg_fetch_array($objeto->prxdia($idpr, $j,$n, $month, $year, $lugar));  
+                        $resultcant=@pg_fetch_array($objeto->prxdia($idpr, $j,$n, $month, $year, $lugar, $idame));  
                         $valor=$resultcant['res'];
                         if ($valor==0){
                             $objPHPExcel->getActiveSheet()->SetCellValue($startletra.$o, '');
@@ -209,7 +213,7 @@ if ($pruebas==0){ //Si no selecciono ninguna prueba por defecto le cargara el re
                         //manda a consultar la cantidad de resultados de acuerdo a :
                         //$idpr= id de la prueba; $j=codigo de establecimiento, 
                         //$n=dia por el que esta pasando;  $month=mes, $year=año
-                        $resultser=@pg_fetch_array($objeto->prxservicio($idpr, $lugar,$n, $month, $year));            
+                        $resultser=@pg_fetch_array($objeto->prxservicio($idpr, $lugar,$n, $month, $year, $idame));            
                         if ($codpro==1){
                             $codser="uno";
                             $resuno=$resultser['uno'];
@@ -239,7 +243,7 @@ if ($pruebas==0){ //Si no selecciono ninguna prueba por defecto le cargara el re
                             }
                         } else if ($codpro==4){
                             $codser="cuatro";
-                            $resultser4=@pg_fetch_array($objeto->prxservicioref($idpr, $lugar,$n, $month, $year));     
+                            $resultser4=@pg_fetch_array($objeto->prxservicioref($idpr, $lugar,$n, $month, $year, $idame));     
                             $rescuatro=$resultser4['cuatro'];
                             if ($rescuatro==0){
                                 $objPHPExcel->getActiveSheet()->SetCellValue($startletra.$o, '');
@@ -269,20 +273,20 @@ if ($pruebas==0){ //Si no selecciono ninguna prueba por defecto le cargara el re
 //            $supto=15;
           $supto=$final;
           $supto++;
-          $objPHPExcel->setActiveSheetIndex(0)->mergeCells($letini.$supto.':'.$starletrafin.$supto);
-          $rowto= @pg_fetch_array($objeto->pruebatotallab($idpr, $month,$year,$lugar));        
+          $objPHPExcel->setActiveSheetIndex($ame)->mergeCells($letini.$supto.':'.$starletrafin.$supto);
+          $rowto= @pg_fetch_array($objeto->pruebatotallab($idpr, $month,$year,$lugar, $idame));        
           $totodos=$rowto['total'];
           $objPHPExcel->getActiveSheet()->SetCellValue($letini.$supto, $totodos);
           $objPHPExcel->getActiveSheet()->getStyle($letini.$supto)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
               $objPHPExcel->getActiveSheet()->getStyle($letini.$supto)->applyFromArray($styleArray1);
          // $final=$final-1;
          $objPHPExcel->getActiveSheet()->getStyle($letini.'3:'.$starletrafin.'3')->getFont()->setSize(7);   
-         $objPHPExcel->setActiveSheetIndex(0)->mergeCells($letini.'3:'.$starletrafin.'3');
+         $objPHPExcel->setActiveSheetIndex($ame)->mergeCells($letini.'3:'.$starletrafin.'3');
          $objPHPExcel->getActiveSheet()->SetCellValue($letini.'3', 'Código de Prueba: '.$vcodprue);
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells($letini.'4:'.$unresul.'4');
+        $objPHPExcel->setActiveSheetIndex($ame)->mergeCells($letini.'4:'.$unresul.'4');
          $objPHPExcel->getActiveSheet()->SetCellValue($letini.'4', 'Resultado');
          $unresul++;
-        $objPHPExcel->setActiveSheetIndex(0)->mergeCells($unresul.'4:'.$starletrafin.'4');
+        $objPHPExcel->setActiveSheetIndex($ame)->mergeCells($unresul.'4:'.$starletrafin.'4');
         $objPHPExcel->getActiveSheet()->SetCellValue($unresul.'4', 'Servicio de Procedencia');
             $starletrafin++;
             $letini=$starletrafin;
@@ -291,7 +295,7 @@ if ($pruebas==0){ //Si no selecciono ninguna prueba por defecto le cargara el re
 
         $objPHPExcel->getActiveSheet()->SetCellValue('A'.$supto, 'TOTAL');
 $final++;
-$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A3:A5');
+$objPHPExcel->setActiveSheetIndex($ame)->mergeCells('A3:A5');
 $objPHPExcel->getActiveSheet()->SetCellValue('A3', 'DIA');
     $k=5; //5 xq va despues de todos los encabezados
 for ($i=1;$i<=$num; $i++){
@@ -332,7 +336,7 @@ $mes="Enero";
 //Poner Borde hasta la ultima fila
 $objPHPExcel->getActiveSheet()->getStyle('A3:'.$starletrafin.$supto)->applyFromArray($styleArray);
 $final++;
-$objPHPExcel->setActiveSheetIndex(0)->mergeCells('B'.$final.':'.'AZ'.$final);
+$objPHPExcel->setActiveSheetIndex($ame)->mergeCells('B'.$final.':'.'AZ'.$final);
 $objPHPExcel->getActiveSheet()->getStyle('A'.$final.':'.$starletrafin.$final)->applyFromArray($styleArray3);
   $objPHPExcel->getActiveSheet()->getStyle('A'.$final.':'.$starletrafin.$final)->getFont()->setSize(5);   
 //$objPHPExcel->getActiveSheet()->SetCellValue('B'.$final, 'Resultados: 1 NORMAL, 2 NEGATIVO, 3 ANORMAL, 4 POSITIVO, 5 MUESTRA INADECUADA, 6 OTROS, 7 REACTIVO, 8 INDETERMINADO Y 9 NO REACTIVO             PROCEDENCIA: 1 CONSULTA EXTERNA, 2 HOSPITALIZACION, 3 EMERGENCIA, 4 REFERIDO  Y 5 OTROS'  );
