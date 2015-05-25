@@ -10,26 +10,31 @@
           overlapHack="true">
    <menu>
       <menu labelText="PROCESOS">
-         <item labelText="Recepción de Solicitudes por Área" url="../LAB/Procesos/SolicitudesPorArea/Proc_SolicitudesPorArea.php"/>
+          <item labelText="Ingresar Solicitud" url= "../LAB/Procesos/Recepcion/RecepcionLab.php"/>
+          <item labelText="Recepción de Solicitudes" url="../LAB/Procesos/RecepcionSolicitud/Proc_RecepcionSolicitud.php"/>
+         <!--<item labelText="Recepción de Solicitudes por Área" url="../LAB/Procesos/SolicitudesPorArea/Proc_SolicitudesPorArea.php"/>-->
          <item labelText="Ingreso de Resultados" url="../LAB/Procesos/IngresoResultados/Proc_SolicitudesProcesadas.php"/>
          <!--item labelText="Ingreso de Resultados Pendientes" url="../LAB/Procesos/SolicitudesPendientes/Proc_SolicitudesProcesadasPendientes.php"/-->
-         <item labelText="Rechazar Muestras" url="../LAB/Procesos/RMAutomatizada/Proc_RMAutomatizada.php"/>
-         <item labelText="Ractivar Muestras Rechazadas" url="../LAB/Procesos/MuestrasRechazadas/Proc_MuestrasRechazadas.php"/>
+         <!--<item labelText="Rechazar Muestras" url="../LAB/Procesos/RMAutomatizada/Proc_RMAutomatizada.php"/>
+         <item labelText="Ractivar Muestras Rechazadas" url="../LAB/Procesos/MuestrasRechazadas/Proc_MuestrasRechazadas.php"/>-->
          <!--  <item labelText="Muestras Pendientes Procesar" url="../LAB/Procesos/MuestrasPendientes/Proc_MuestrasPendientes.php"/>-->
          <!--<item labelText="Imprimir Resultado" url="../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/>-->
          <item labelText="Agregar Examen a Solicitud" url="../LAB/Procesos/AgregarExamen/AgregarExamen.php"/>
       </menu>
       <sep/>
       <menu labelText="CONSULTAS">
-         <item labelText="Consulta Resultados" url= "../LAB/Consultas_Reportes/Consulta_Resultados/ConsultaResultados.php"/>
+          <item labelText="Solicitudes por Servicio" url= "../LAB/Consultas_Reportes/Rpt_SolicitudPorServicioPeriodo/SolicitudPorServicioPeriodo.php"/>
+          <item labelText="Consulta e Impresión de Resultados" url="../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/>
          <item labelText="Consulta Solicitudes por Paciente" url= "../LAB/Consultas_Reportes/ConsultaSolicitudesPaciente/SolicitudPorPaciente.php"/>
-         <item labelText="Consulta Muestras Rechazadas" url= "../LAB/Consultas_Reportes/ConsultaMuestrasRechazadas/Proc_ConsultaMuestrasRechazadas.php"/>
-         <item labelText="Consulta Muestras Pendientes" url= "../LAB/Consultas_Reportes/ConsultaMuestrasPendientes/Proc_ConsultaMuestrasPendientes.php"/>
+         <item labelText="Consulta Citas Programadas" url= "../LAB/Consultas_Reportes/ConsultaCitas/CitasPorPaciente.php"/>
+         <!--<item labelText="Consulta Muestras Rechazadas" url= "../LAB/Consultas_Reportes/ConsultaMuestrasRechazadas/Proc_ConsultaMuestrasRechazadas.php"/>
+         <item labelText="Consulta Muestras Pendientes" url= "../LAB/Consultas_Reportes/ConsultaMuestrasPendientes/Proc_ConsultaMuestrasPendientes.php"/>-->
 	   
       </menu>
       <sep/>
       <menu labelText="REPORTES">
-         <item labelText="Reporte Resultados" url= "../LAB/Reportes/Reporte_Resultados/ReporteResultados.php"/>
+             <item labelText="Tabulador Mensual" url= "../LAB/Reportes/ReporteTabulador/ReporteTabuladores.php"/>
+                <item labelText="Reporte Resultados" url= "../LAB/Reportes/Reporte_Resultados/ReporteResultados.php"/>
       </menu> 
       <sep/>
       <menu labelText="CITAS">

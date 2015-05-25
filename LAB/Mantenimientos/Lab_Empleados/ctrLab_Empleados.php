@@ -41,7 +41,7 @@ switch ($opcion) {
                 $pagador = $_POST['pagador'];
         $pass = "123";
         $corr = $objdatos->LeerUltimoCodigo($lugar);
-        if (($cargo == 6) or ( $cargo == 10)) {
+        if ($cargo == 6)  {
             $niv = 1;
             $IdEstabExt = 'null';
         } else if ($cargo == 1) {
@@ -54,8 +54,18 @@ switch ($opcion) {
             $niv = 31;
             $IdEstabExt = 'null';
         } else if ($cargo == 11) {
+             $niv = 7; //Administrador DTIC
+            $IdEstabExt = 'null';
+         
+        } else if ($cargo == 11) {
             $niv = 4;
             $IdEstabExt = 1037; //Codigo del establecimiento de Laboratorio Central
+        }else if ($cargo == 12) {
+            $niv = 5; //Administrador Regional
+            $IdEstabExt = 'null';
+        } else if ($cargo == 13) {
+             $niv = 6; //Administrador Central 
+            $IdEstabExt = 'null';
         }
 
         //echo $cargo."y nivel".$niv;
@@ -82,12 +92,21 @@ switch ($opcion) {
             $niv = 1;
         } else if ($cargo == 1) {
             $niv = 2;
-        } else if (($cargo == 2) or ( $cargo == 8)) {
+        } else if($cargo == 2) {
             $niv = 33;
         } else if ($cargo == 7) {
             $niv = 31;
         } else if ($cargo == 11) {
             $niv = 4;
+               
+        } else if ($cargo == 10) {
+            $niv = 7;
+        
+        } else if ($cargo == 12) {
+            $niv = 5;
+       
+        } else if ($cargo == 13) {
+            $niv = 6;
         }
         //echo $cargo."y nivel".$niv;
         If (($objdatos->actualizar($idempleado, $lugar, $idarea, $nombre,$apellido,$nombrecompleto, $cargo, $usuario) == true) &&

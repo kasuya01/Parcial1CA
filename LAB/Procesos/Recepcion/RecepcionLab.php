@@ -13,12 +13,20 @@ $recepcion = new clsRecepcion;
 /***************/
 if ($nivel==1){
 	include_once ('../../../PaginaPrincipal/index_laboratorio2.php');}
+if ($nivel==2){
+	include_once ('../../../PaginaPrincipal/index_laboratorio22.php');}        
 if ($nivel==31){
 	include_once ('../../../PaginaPrincipal/index_laboratorio31.php');}
 if ($nivel==33){
 	include_once ('../../../PaginaPrincipal/index_laboratorio33.php');}
 if ($nivel==4){
-	include_once ('../../../PaginaPrincipal/index_laboratorio42.php');}            
+	include_once ('../../../PaginaPrincipal/index_laboratorio42.php');}  
+if ($nivel == 5) {
+        include_once ('../../../PaginaPrincipal/index_laboratorio52.php');}
+if ($nivel == 6) {
+        include_once ('../../../PaginaPrincipal/index_laboratorio62.php');}
+if ($nivel == 7) {
+        include_once ('../../../PaginaPrincipal/index_laboratorio72.php'); }         
 ?><br>
 <html>
 <head>

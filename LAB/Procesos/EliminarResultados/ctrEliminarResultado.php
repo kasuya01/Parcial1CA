@@ -391,7 +391,7 @@ switch ($opcion)
 						 $r=$objdatos->ObtenerIdResultado($idsolicitud,$iddetalle);
 						 $result=pg_fetch_array($r);
 						 $idresultado=$result[0];
-                                                 echo $idresultado;
+                                                // echo $idresultado;
                                                  if($dr=$objdatos->Eliminar_metodologia($iddetalle)==1){
                                                      
                                                      if($dr=$objdatos->EliminarDetalleResultado($idresultado)==1){
@@ -457,7 +457,7 @@ switch ($opcion)
 								break;
 								case 'N':
 								case 'O':
-										if($dr=$objdatos->EliminarResultadoMetodologia($iddetalle)==1){  
+										if($dr=$objdatos->Eliminar_Metodologia($iddetalle)==1){  
                                                                                     if ($objdatos->EliminarResultado($idsolicitud,$iddetalle) == 1){	 
 											if (($objdatos->ActualizarEstadoDetalle($iddetalle)==true)||($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true)){
 												echo "Resultado Eliminado";}

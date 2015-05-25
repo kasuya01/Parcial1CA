@@ -82,12 +82,10 @@ $obj = new clsReporteDemanda();
 
          <?php
          if ($nivel == 1) {
-            if (!isset($_SESSION["ADM"])) {
+            
                include_once ('../../../PaginaPrincipal/index_laboratorio2.php');
-            }
-         } else {
-            $NivelArchivo = "../../../../";
-            include('../../MenuADM/MenuADM.php');
+           
+         
          }
          if ($nivel == 2) {
             include_once ('../../../PaginaPrincipal/index_laboratorio22.php');
@@ -98,6 +96,12 @@ $obj = new clsReporteDemanda();
          if ($nivel == 33) {
             include_once ('../../../PaginaPrincipal/index_laboratorio33.php');
          }
+         if ($nivel == 5) {
+            include_once ('../../../PaginaPrincipal/index_laboratorio52.php');}
+        if ($nivel == 6) {
+            include_once ('../../../PaginaPrincipal/index_laboratorio62.php');}
+        if ($nivel == 7) {
+            include_once ('../../../PaginaPrincipal/index_laboratorio72.php'); } 
          $femu=@pg_fetch_array($obj->fechamuestra());
          $feact=$femu[0];
          $toy = date('Y-m');
