@@ -32,8 +32,7 @@ $password = htmlentities($_POST['txtpassword']);
         $_SESSION['nombre_estab']=$estab;
 
 	switch ($nivel) {
-	    case 1://Administrador y jefe del laboratorio
-		//$_SESSION['user']=$login;
+	    case 1://jefe del laboratorio
 			$_SESSION['NIVEL']=$nivel;
 	  		$_SESSION['Lugar']=$lugar;
 			$_SESSION['Idarea']=$area;
@@ -60,7 +59,7 @@ $password = htmlentities($_POST['txtpassword']);
 	    case 32://Toma de Muestras
 		//header("Location: ../Laboratorio/PaginaPrincipal/index_laboratorio232.html");
 	    break;
-	    case 33://Recepcion en el Area de Laboratorio
+	    case 33://Profesional de Laboratorio
                         $_SESSION['NIVEL']=$nivel;
                         $_SESSION['Lugar']=$lugar;
                         $_SESSION['Idarea']=$area;
@@ -77,6 +76,32 @@ $password = htmlentities($_POST['txtpassword']);
                 $_SESSION['IdEmpleado']=$cod;
                 header("Location: ../Laboratorio/PaginaPrincipal/index_laboratorio4.php");
             break;
+            case 5://Administrador Regional
+			$_SESSION['NIVEL']=$nivel;
+	  		$_SESSION['Lugar']=$lugar;
+			$_SESSION['Idarea']=$area;
+			$_SESSION['Correlativo']=$corr;
+                        $_SESSION['IdEmpleado']=$cod;
+			header("Location: ../Laboratorio/PaginaPrincipal/index_laboratorio5.php");
+	    break;
+            case 6://Administrador Central
+			$_SESSION['NIVEL']=$nivel;
+	  		$_SESSION['Lugar']=$lugar;
+			$_SESSION['Idarea']=$area;
+			$_SESSION['Correlativo']=$corr;
+                        $_SESSION['IdEmpleado']=$cod;
+			header("Location: ../Laboratorio/PaginaPrincipal/index_laboratorio6.php");
+	    break;
+            case 7://Administrador DTIC
+			$_SESSION['NIVEL']=$nivel;
+	  		$_SESSION['Lugar']=$lugar;
+			$_SESSION['Idarea']=$area;
+			$_SESSION['Correlativo']=$corr;
+                        $_SESSION['IdEmpleado']=$cod;
+			header("Location: ../Laboratorio/PaginaPrincipal/index_laboratorio7.php");
+	    break;
+        
+        
 	}  //switch de nivel
    }
    else

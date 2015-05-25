@@ -13,7 +13,7 @@ class clsLab_Empleados {
     function insertar($IdEmpleado, $lugar, $idarea, $nombrecompleto,$nombre, $cargo, $usuario, $corr, $IdEstabExt, $apellido) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-          echo '<br>'.  $query = "INSERT INTO mnt_empleado(idempleado, id_establecimiento, id_tipo_empleado, idarea, nombre,apellido,nombreempleado, id_cargo_empleado, correlativo, idusuarioreg, fechahorareg, id_establecimiento_externo) 
+          $query = "INSERT INTO mnt_empleado(idempleado, id_establecimiento, id_tipo_empleado, idarea, nombre,apellido,nombreempleado, id_cargo_empleado, correlativo, idusuarioreg, fechahorareg, id_establecimiento_externo) 
                             VALUES('$IdEmpleado',$lugar,(SELECT id FROM mnt_tipo_empleado WHERE codigo = 'LAB'),'$idarea', '$nombre', '$apellido', UPPER('$nombrecompleto'),'$cargo','$corr',$usuario,(SELECT date_trunc('seconds',(SELECT now()))),$IdEstabExt)";
             $result = @pg_query($query);
             
@@ -27,7 +27,7 @@ class clsLab_Empleados {
     function Insertar_Usuario($login, $idempleado, $pass, $niv, $lugar, $modalidad,$pagador) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-          echo '<br>'.   $query = "INSERT INTO fos_user_user(id,username, username_canonical, email, email_canonical, enabled, password, locked, expired, roles, credentials_expired, firstname, lastname, gender, id_establecimiento, id_empleado, modulo, id_area_mod_estab, nivel, id_modalidad_estab) 
+         $query = "INSERT INTO fos_user_user(id,username, username_canonical, email, email_canonical, enabled, password, locked, expired, roles, credentials_expired, firstname, lastname, gender, id_establecimiento, id_empleado, modulo, id_area_mod_estab, nivel, id_modalidad_estab) 
                                 VALUES((SELECT last_value FROM fos_user_user_id_seq)+1,'$login','$login','".$login."@salud.gob.sv','".$login."@salud.gob.sv',true,md5('$pass'),false,false,'a:0:{}',false,(SELECT nombre FROM mnt_empleado WHERE idempleado = '$idempleado'),(SELECT apellido FROM mnt_empleado WHERE idempleado = '$idempleado'),'u',$lugar,(SELECT id from mnt_empleado WHERE idempleado = '$idempleado'),'LAB',$pagador,$niv,$modalidad);
                       SELECT SETVAL('fos_user_user_id_seq', (SELECT MAX(id) FROM fos_user_user), true);";
             $result = pg_query($query);

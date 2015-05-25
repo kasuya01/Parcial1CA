@@ -17,6 +17,12 @@ if ($nivel == 31) {
 if ($nivel == 33) {
     include_once ('../../../PaginaPrincipal/index_laboratorio33.php');
 }
+if ($nivel == 5) {
+        include_once ('../../../PaginaPrincipal/index_laboratorio52.php');}
+if ($nivel == 6) {
+        include_once ('../../../PaginaPrincipal/index_laboratorio62.php');}
+if ($nivel == 7) {
+        include_once ('../../../PaginaPrincipal/index_laboratorio72.php'); } 
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
 include_once $ROOT_PATH."/public/css.php";
 include_once $ROOT_PATH."/public/js.php";

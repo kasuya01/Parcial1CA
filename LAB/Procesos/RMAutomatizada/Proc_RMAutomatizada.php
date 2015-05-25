@@ -111,6 +111,12 @@ if (isset($_SESSION['Correlativo'])) {
             if ($nivel == 4) {
                 include_once ('../../../PaginaPrincipal/index_laboratorio42.php');
             }
+            if ($nivel == 5) {
+                include_once ('../../../PaginaPrincipal/index_laboratorio52.php');}
+            if ($nivel == 6) {
+                include_once ('../../../PaginaPrincipal/index_laboratorio62.php');}
+            if ($nivel == 7) {
+                 include_once ('../../../PaginaPrincipal/index_laboratorio72.php'); } 
             ?>
             <br>
             <div  id="divInicial" >

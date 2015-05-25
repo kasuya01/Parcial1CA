@@ -335,7 +335,7 @@ ELSE (sec_solicitudestudios.id_expediente) end) as idexpediente
      $con = new ConexionBD;
     if($con->conectar()==true)
     {
-       $query ="DELETE FROM lab_resultados WHERE id=$idresultado";
+     echo "BR". $query ="DELETE FROM lab_resultados WHERE id=$idresultado";
 	 $result = pg_query($query);
 	 if (!$result)
 	   return -1;
@@ -348,7 +348,7 @@ ELSE (sec_solicitudestudios.id_expediente) end) as idexpediente
      $con = new ConexionBD;
 	if($con->conectar()==true)
 	{
-		$query ="DELETE FROM lab_detalleresultado WHERE idresultado=$idresultado";
+            echo "<br>". $query ="DELETE FROM lab_detalleresultado WHERE idresultado=$idresultado";
 		$result = pg_query($query);
 		if (!$result)
 			return -1;
@@ -357,21 +357,35 @@ ELSE (sec_solicitudestudios.id_expediente) end) as idexpediente
         }
   }
  
-function EliminarResultadoMetodologia($iddetalle){
+/*function EliminarResultadoMetodologia($iddetalle){
         
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-      $query="DELETE FROM lab_resultado_metodologia WHERE id_detallesolicitudestudio=$iddetalle";
+      echo "<br>".$query="DELETE FROM lab_resultado_metodologia WHERE id_detallesolicitudestudio=$iddetalle";
        $result = pg_query($query);
 	 if (!$result)
 	   return -1;
 	 else 
 	   return 1;
    }
-}
+}*/
 
-
+/* Función para Eliminar el resultado de la mertodología de una prueba*/
+  function Eliminar_metodologia($iddetalleres){
+      $con = new ConexionBD;
+	if($con->conectar()==true)
+	{
+		$query ="DELETE FROM lab_resultado_metodologia 
+                         WHERE id_detallesolicitudestudio=$iddetalleres";
+		$result = pg_query($query);
+		if (!$result)
+			return -1;
+		else 
+			return 1;
+        }
+  }
+  
   
 function ObtenerIdDetalleResultado($idresultado){
    $con = new ConexionBD;
@@ -434,7 +448,7 @@ function ObtenerIdResultado($idsolicitud,$iddetalle){
   $con = new ConexionBD;
 	if($con->conectar()==true)
 	{
-		$query ="DELETE FROM lab_resultadosportarjeta 
+		echo "<br>".$query ="DELETE FROM lab_resultadosportarjeta 
                          WHERE iddetalleresultado=$iddetalleres";
 		$result = pg_query($query);
 		if (!$result)
@@ -444,20 +458,6 @@ function ObtenerIdResultado($idsolicitud,$iddetalle){
         }
   }
  
-  /* Función para Eliminar el resultado de la mertodología de una prueba*/
-  function Eliminar_metodologia($iddetalleres){
-      $con = new ConexionBD;
-	if($con->conectar()==true)
-	{
-		$query ="DELETE FROM lab_resultado_metodologia 
-                         WHERE id_detallesolicitudestudio=$iddetalleres";
-		$result = pg_query($query);
-		if (!$result)
-			return -1;
-		else 
-			return 1;
-        }
-  }
   
  
   /*Funcion para Actualizar el estado del detalla de la solicitud */

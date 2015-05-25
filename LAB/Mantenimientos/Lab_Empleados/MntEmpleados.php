@@ -1,7 +1,7 @@
 <?php
-session_start();
 include('clsLab_Empleados.php');
 include('../Lab_Areas/clsLab_Areas.php');
+@session_start();
 $obj = new clsLab_Empleados;
 $nivel = $_SESSION['NIVEL'];
 $corr  = $_SESSION['Correlativo'];
@@ -160,6 +160,15 @@ $base_url  = $_SESSION['base_url'];
         }
         if ($nivel == 33) {
             include_once ('../../../PaginaPrincipal/index_laboratorio33.php');
+        }
+         if ($nivel == 5) {
+            include_once ('../../../PaginaPrincipal/index_laboratorio52.php');
+        }
+         if ($nivel == 6) {
+            include_once ('../../../PaginaPrincipal/index_laboratorio62.php');
+        }
+        if ($nivel == 7) {
+            include_once ('../../../PaginaPrincipal/index_laboratorio72.php');
         }
         ?><br>
 
