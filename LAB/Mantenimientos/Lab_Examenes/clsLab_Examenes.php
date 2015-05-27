@@ -222,7 +222,7 @@ values ($idmet, $aresultados[$i], current_date, true,$usuario, date_trunc('secon
          $aresultados = explode(',', $resultado);
          for ($i = 0; $i < (count($aresultados) - 1); $i++) {
 
-            echo $query = "UPDATE lab_examen_posible_resultado 
+            $query = "UPDATE lab_examen_posible_resultado 
                         SET habilitado = true,
                             fechafin = null,
                             id_user_mod = 8,
@@ -230,7 +230,7 @@ values ($idmet, $aresultados[$i], current_date, true,$usuario, date_trunc('secon
                         WHERE id_posible_resultado = '$aresultados[$i]' AND id_conf_examen_estab='$ultimo'";
             $result = pg_query($query);
             if (pg_affected_rows($result) == 0) {
-               echo $query = "INSERT INTO lab_examen_posible_resultado(
+               $query = "INSERT INTO lab_examen_posible_resultado(
                             id_conf_examen_estab, id_posible_resultado, fechainicio, fechafin, 
                             habilitado, id_user, fecha_registro, id_user_mod, fecha_mod)
                     VALUES ('$ultimo', '$aresultados[$i]', now(), null, 
@@ -351,7 +351,7 @@ values ($idmet, $aresultados[$i], current_date, true,$usuario, date_trunc('secon
                        
                   }
                   if ($bandera==0){
-                 echo    $sql2="insert into lab_examen_posible_resultado(id_conf_examen_estab, id_posible_resultado, fechainicio, habilitado, id_user, fecha_registro)
+                     $sql2="insert into lab_examen_posible_resultado(id_conf_examen_estab, id_posible_resultado, fechainicio, habilitado, id_user, fecha_registro)
 values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seconds', NOW()))";
                      $query2=pg_query($sql2);
                   }
@@ -1213,7 +1213,7 @@ order by posible_resultado;";
       $con = new ConexionBD;
       //usamos el metodo conectar para realizar la conexion
       if ($con->conectar() == true) {
-         echo $query = "select * from lab_codigosresultados order by id;";
+         $query = "select * from lab_codigosresultados order by id;";
 
          $result = pg_query($query);
          if (!$result)
