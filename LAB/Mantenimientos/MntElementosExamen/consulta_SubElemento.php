@@ -114,7 +114,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
              * mostrar tabla con listas de resultados
              */
             $result = $obj->get_subelemento($id_subelemento);
-            $r = pg_fetch_array($result);
+            //$r = pg_fetch_array($result);
              $table = "<center><span id='nombre_prueba'>".$r['subelemento_text']."</span></center>";
             $table .= "<table align='center' class='table table-bordered table-condensed table-white no-v-border' style='width:100%'><thead>";
            
