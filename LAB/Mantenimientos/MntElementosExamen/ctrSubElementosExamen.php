@@ -22,7 +22,8 @@ switch ($opcion)
 {
 	case 1:  //INSERTAR	
 		$idelemento=$_POST['idelemento'];
-		$subelemento=$_POST['subelemento'];
+		$subelemento=utf8_encode($_POST['subelemento']);
+                echo $subelemento;
 		$elemento=$_POST['elemento'];
 		//$unidad=$_POST['unidad'];
                 //$sexo=$_POST['sexo'];
@@ -48,6 +49,7 @@ switch ($opcion)
 		$idsubelemento=$_POST['idsubelemento'];
 		//$examen=$_POST['examen'];
 		$subelemento=utf8_encode($_POST['subelemento']);
+                
                 $unidad=(empty($_POST['unidad'])) ? 'NULL' : "'" . pg_escape_string(utf8_encode($_POST['unidad'])) . "'"; 
                 $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";        
                 $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'"; 
@@ -113,7 +115,7 @@ switch ($opcion)
 			<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 			onclick=\"eliminarDatoSubElemento('".$row['id']."')\"> </td>":*/
                  echo "            <td>".htmlentities($row['orden'])."</td>
-                    <td>".htmlentities($row['subelemento'])."</td>";
+                    <td>".$row['subelemento']."</td>";
            if (!empty($row['unidad']))            
               echo" <td>".htmlentities($row['unidad'])."</td>";
            else

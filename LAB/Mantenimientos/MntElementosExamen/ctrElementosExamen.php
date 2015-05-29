@@ -17,8 +17,8 @@ switch ($opcion)
 {
 	case 1:  //INSERTAR	
 		$idexamen=$_POST['idexamen'];
-		$nomelemento=$_POST['elemento'];	
-		$subelemento=$_POST['subelemento'];
+		$nomelemento= utf8_encode($_POST['elemento']);	
+		$subelemento= $_POST['subelemento'];
                 $unidadele=(empty($_POST['unidadele'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidadele']) . "'";
                 $observacionele=(empty($_POST['observacionele'])) ? 'NULL' : "'" . pg_escape_string($_POST['observacionele']) . "'";  
 		$Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
@@ -35,7 +35,7 @@ switch ($opcion)
 	break;
 	case 2:  //MODIFICAR  
 		$idelemento=$_POST['idelemento'];
-		$nomelemento=$_POST['elemento'];
+		$nomelemento=utf8_encode($_POST['elemento']);
 		$subelemento=$_POST['subelemento'];
 		$unidadele=(empty($_POST['unidadele'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidadele']) . "'";
                 $observacionele=(empty($_POST['observacionele'])) ? 'NULL' : "'" . pg_escape_string($_POST['observacionele']) . "'";  

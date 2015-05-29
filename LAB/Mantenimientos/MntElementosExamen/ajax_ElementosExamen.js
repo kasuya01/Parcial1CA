@@ -161,7 +161,7 @@ function IngresarRegistroSubElemento()
 	//alert (Fechaini+"--"+Fechafin);
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
-	ajax.send("subelemento="+subelemento+"&unidad="+unidad+
+	ajax.send("subelemento="+escape(subelemento)+"&unidad="+unidad+
         "&rangoini="+rangoini+"&rangofin="+rangofin+"&idelemento="+idelemento+"&elemento="+elemento+
         "&Pag="+Pag+"&opcion="+opcion+"&Fechaini="+Fechaini+"&Fechafin="+Fechafin+"&sexo="+sexo+"&redad="+redad+"&orden="+orden);	
    }

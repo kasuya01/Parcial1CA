@@ -15,7 +15,7 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-   echo $query = "INSERT INTO lab_subelementos(idelemento,unidad,subelemento,rangoinicio,rangofin,fechaini,fechafin,idestablecimiento,idsexo,idedad,orden) 
+      $query = "INSERT INTO lab_subelementos(idelemento,unidad,subelemento,rangoinicio,rangofin,fechaini,fechafin,idestablecimiento,idsexo,idedad,orden) 
 	      VALUES($idelemento,$unidad,'$subelemento',$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad,$orden)";
   //echo $query;
     $result = pg_query($query);
