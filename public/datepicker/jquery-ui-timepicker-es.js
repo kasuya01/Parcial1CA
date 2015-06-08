@@ -29,8 +29,11 @@
 		dateFormat: 'yy-mm-dd',
                 showMonthAfterYear: false,
 		yearSuffix: '',
-                controlType: 'select',
+                hourGrid: 4,
+                minuteGrid: 10,
                 timeFormat: 'HH:mm',
+              //  controlType: 'select',
+              //  timeFormat: 'HH:mm',
 		isRTL: false
 	};
 	$.timepicker.setDefaults($.timepicker.regional['es']);
