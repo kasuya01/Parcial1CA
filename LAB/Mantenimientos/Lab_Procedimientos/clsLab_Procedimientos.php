@@ -440,7 +440,18 @@ class clsLab_Procedimientos {
 		if ( $con->conectar()==true ) {
 
 		
-                   $query ="SELECT lcee.id AS idexamen, 
+                  $query ="SELECT lab_conf_examen_estab.id AS idexamen, lab_conf_examen_estab.nombre_examen AS nombreexamen 
+                    FROM mnt_area_examen_establecimiento  
+                    INNER JOIN lab_conf_examen_estab ON (mnt_area_examen_establecimiento.id = lab_conf_examen_estab.idexamen) 
+                    INNER JOIN lab_plantilla  ON (lab_plantilla.id = lab_conf_examen_estab.idplantilla) 
+                    INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id=mnt_area_examen_establecimiento.id_examen_servicio_diagnostico
+                    WHERE mnt_area_examen_establecimiento.id_area_servicio_diagnostico = $idarea AND lab_plantilla.id = 5 
+                    AND mnt_area_examen_establecimiento.activo=TRUE
+                    AND ctl_examen_servicio_diagnostico.activo=TRUE
+                    AND lab_conf_examen_estab.condicion='H' 
+                    AND mnt_area_examen_establecimiento.id_establecimiento = $lugar
+                    ORDER BY lab_conf_examen_estab.nombre_examen";
+                         /*"SELECT lcee.id AS idexamen, 
                                             lcee.nombre_examen AS nombreexamen
                                     FROM mnt_area_examen_establecimiento maees
                                     INNER JOIN lab_conf_examen_estab    lcee ON (maees.id = lcee.idexamen)
@@ -449,7 +460,7 @@ class clsLab_Procedimientos {
                                     AND lpla.id = 5 
                                     AND lcee.condicion='H' 
                                     AND maees.id_establecimiento = $lugar
-                                    ORDER BY lcee.nombre_examen";
+                                    ORDER BY lcee.nombre_examen";*/
                         
 			$result = @pg_query( $query );
 			if ( !$result )
@@ -583,7 +594,45 @@ class clsLab_Procedimientos {
 		$con = new ConexionBD;
 		//usamos el metodo conectar para realizar la conexion
 		if ( $con->conectar()==true ) {
-			$query =    "SELECT lcee.id,lcee.nombre_examen,
+			$query =  "SELECT lppe.id AS idprocedimientoporexamen,
+						lcee.codigo_examen AS idexamen,
+						lcee.nombre_examen AS nombreexamen,
+						lppe.nombreprocedimiento,
+						lppe.unidades,
+						lppe.rangoinicio,
+						lppe.rangofin,
+						TO_CHAR(lppe.fechaini::timestamp, 'DD/MM/YYYY')AS fechaini,
+						TO_CHAR(lppe.fechafin::timestamp, 'DD/MM/YYYY')AS fechafin,
+						CASE cex.id WHEN 1 THEN 'Masculino'
+						            WHEN 2 THEN 'Femenino'
+						            ELSE 'Ambos'
+						END AS sexovn,
+						cre.nombre AS nombregrupoedad,
+						(CASE WHEN lcee.condicion='H' THEN 'Inhabilitado'
+						WHEN lcee.condicion='I' THEN 'Habilitado' END) AS cond1,
+                                                
+
+                                                (CASE WHEN lppe.habilitado='t' THEN 'Habilitado'
+						WHEN lppe.habilitado='f' THEN 'Inhabilitado' END) AS cond,
+						lppe.habilitado,
+                                                lppe.id as idlppe,
+                                                mnt4.id as idmnt4,
+                                                lcee.condicion,
+                                                lppe.orden
+						FROM lab_procedimientosporexamen 		   lppe
+						INNER JOIN lab_conf_examen_estab		   lcee ON (lcee.id = lppe.id_conf_examen_estab)
+                                                INNER JOIN mnt_area_examen_establecimiento  mnt4 ON (mnt4.id = lcee.idexamen)
+						INNER JOIN ctl_area_servicio_diagnostico    casd ON (casd.id = mnt4.id_area_servicio_diagnostico)
+                                                INNER JOIN ctl_examen_servicio_diagnostico  cesd ON  cesd.id= mnt4.id_examen_servicio_diagnostico
+						INNER JOIN lab_areasxestablecimiento        laxe ON (casd.id = laxe.idarea)
+						INNER JOIN lab_plantilla                    lpla ON (lpla.id = lcee.idplantilla)
+						LEFT OUTER JOIN ctl_sexo                    cex  ON (cex.id  = lppe.idsexo)
+						LEFT OUTER JOIN ctl_rango_edad              cre  ON (cre.id  = lppe.idrangoedad)
+                                                
+						WHERE 
+                                               lcee.condicion = 'H' AND laxe.condicion = 'H' AND cesd.activo=TRUE AND 
+                                                lppe.idestablecimiento = $lugar";
+                                /*"SELECT lcee.id,lcee.nombre_examen,
                             lppe.nombreprocedimiento,
                             lppe.unidades,lppe.rangoinicio,
                             lppe.rangofin,(lppe.fechaini)AS fechaini,
@@ -596,7 +645,7 @@ class clsLab_Procedimientos {
                             left JOIN ctl_rango_edad cre ON lppe.idrangoedad = cre.id
                             WHERE lcee.condicion='H'
                                     AND lcee.condicion='H' AND lcee.idplantilla=5
-                                    AND lppe.idestablecimiento=$lugar";
+                                    AND lppe.idestablecimiento=$lugar";*/
 
 
 
@@ -669,7 +718,7 @@ class clsLab_Procedimientos {
 		$con = new ConexionBD;
 		//usamos el metodo conectar para realizar la conexion
 		if ( $con->conectar()==true ) {
-			   $query = "SELECT lppe.id AS idprocedimientoporexamen,
+			 $query = "SELECT lppe.id AS idprocedimientoporexamen,
 						lcee.codigo_examen AS idexamen,
 						lcee.nombre_examen AS nombreexamen,
 						lppe.nombreprocedimiento,
@@ -698,14 +747,14 @@ class clsLab_Procedimientos {
 						INNER JOIN lab_conf_examen_estab		   lcee ON (lcee.id = lppe.id_conf_examen_estab)
                                                 INNER JOIN mnt_area_examen_establecimiento  mnt4 ON (mnt4.id = lcee.idexamen)
 						INNER JOIN ctl_area_servicio_diagnostico    casd ON (casd.id = mnt4.id_area_servicio_diagnostico)
+                                                INNER JOIN ctl_examen_servicio_diagnostico  cesd ON  cesd.id= mnt4.id_examen_servicio_diagnostico
 						INNER JOIN lab_areasxestablecimiento        laxe ON (casd.id = laxe.idarea)
 						INNER JOIN lab_plantilla                    lpla ON (lpla.id = lcee.idplantilla)
 						LEFT OUTER JOIN ctl_sexo                    cex  ON (cex.id  = lppe.idsexo)
 						LEFT OUTER JOIN ctl_rango_edad              cre  ON (cre.id  = lppe.idrangoedad)
+                                                
 						WHERE 
-                                               -- lcee.condicion = 'H' 
-                                                --AND laxe.condicion = 'H' 
-                                               -- AND lpla.idplantilla = 'E' AND 
+                                               lcee.condicion = 'H' AND laxe.condicion = 'H' AND cesd.activo=TRUE AND 
                                                 lppe.idestablecimiento = $lugar
 						ORDER BY lcee.codigo_examen, lppe.orden LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
 

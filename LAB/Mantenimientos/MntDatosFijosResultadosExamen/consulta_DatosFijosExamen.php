@@ -46,13 +46,13 @@ $rangoedad=$row['redad'];
 <form name= "frmModificar" action="">
     <table width="50%" border="0" align="center" class="StormyWeatherFormTABLE">
         <tr>
-            <td colspan="3" align="center" class="CobaltFieldCaptionTD"><h3><strong>Datos Fijos de Resultados de Ex&aacute;menes de Laboratorio</h3></strong>
+            <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3><strong>Datos Fijos de Resultados de Ex&aacute;menes de Laboratorio</h3></strong>
             </td>
 	</tr>
 	<tr>
             <td width="17%" class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
-            <td width="83%" class="StormyWeatherDataTD">
-                <select id="cmbArea" name="cmbArea" size="1" onChange="LlenarComboExamen(this.value);">
+            <td width="83%" class="StormyWeatherDataTD" colspan="3">
+                <select id="cmbArea" name="cmbArea" size="1" style="width:75%" onChange="LlenarComboExamen(this.value);" class="form-control height">
                     <option value="0" >--Seleccione un &Aacute;rea--</option>";
                     <?php
 			include('../Lab_Areas/clsLab_Areas.php');
@@ -69,8 +69,8 @@ $rangoedad=$row['redad'];
         </tr>
         <tr>
             <td width="17%" class="StormyWeatherFieldCaptionTD">Examen </td>
-            <td width="83%" class="StormyWeatherDataTD">
-                <select id="cmbExamen" name="cmbExamen" size="1">
+            <td width="83%" class="StormyWeatherDataTD" colspan="3">
+                <select id="cmbExamen" name="cmbExamen" style="width:75%" size="1" class="form-control height"> 
                     <option value="0">--Seleccione un Examen--</option>";
                     <?php
                         $consultaex = $obj->ExamenesPorArea($idarea,$lugar);
@@ -85,8 +85,8 @@ $rangoedad=$row['redad'];
         </tr>
         <tr>
             <td width="17%" class="StormyWeatherFieldCaptionTD">Sexo</td>
-            <td width="83%"  class="StormyWeatherDataTD">
-                <select id="cmbSexo" name="cmbSexo" size="1" >
+            <td width="83%"  class="StormyWeatherDataTD" colspan="3">
+                <select id="cmbSexo" name="cmbSexo" size="1" style="width:75%" class="form-control height">
                      <option value="3">--Seleccione Sexo--</option>  
                      <option value="0">Ambos</option>
                     <?php
@@ -103,8 +103,8 @@ $rangoedad=$row['redad'];
         </tr>
          <tr>
                 <td width="17%" class="StormyWeatherFieldCaptionTD">Rango Edad</td>
-                <td width="83%"  class="StormyWeatherDataTD">
-                    <select id="cmbEdad" name="cmbEdad" size="1" >
+                <td width="83%" colspan="3" class="StormyWeatherDataTD">
+                    <select id="cmbEdad" name="cmbEdad" style="width:75%" size="1" class="form-control height">
                         <option value="0" >--Seleccione un Rango de Edad--</option>
                             <?php
                                 $conEdad = $obj->RangosEdades();
@@ -118,46 +118,35 @@ $rangoedad=$row['redad'];
         </tr>
 	<tr>
             <td width="17%" class="StormyWeatherFieldCaptionTD">Unidades</td>
-            <td width="83%" class="StormyWeatherDataTD"><input name="txtunidades" type="text" id="txtunidades" value="<?php echo htmlentities($unidades); ?>" size="10"></td>
+            <td width="83%" class="StormyWeatherDataTD" colspan="3"><input class="form-control height placeholder" size="10" style="width:250px" name="txtunidades" type="text" id="txtunidades" value="<?php echo htmlentities($unidades); ?>" size="10"></td>
    	</tr>
        	<tr>
-            <td colspan="2" class="StormyWeatherDataTD">
-		<fieldset><span><center><h4>Rangos</h4></center></span>
-                    <table width="200" border="0" align="center" class="StormyWeatherFormTABLE">
-                        <tr>
-                                <td class="StormyWeatherFieldCaptionTD">Inicio</td>
-                                        <input type="hidden" name="txtoculto" id="txtoculto" size="50" value="<?php echo $iddatosfijosexamen; ?>" />
-                                <td class="StormyWeatherDataTD"> 
-                                        <input name="txtrangoinicio" type="text" id="txtrangoinicio" value="<?php echo $rangoinicio; ?>" size="6">
-                                </td>
-                                <td class="StormyWeatherFieldCaptionTD">Fin </td>
-                                <td class="StormyWeatherDataTD">
-                                        <input name="txtrangofin" type="text" id="txtrangofin" value="<?php echo $rangofin; ?>" size="6">
-                                </td>
-                        </tr>
-                    </table>
-                </fieldset>               
+            <td  class="StormyWeatherFieldCaptionTD">Rango Inicio</td>
+                <input type="hidden" name="txtoculto" id="txtoculto" size="50"  value="<?php echo $iddatosfijosexamen; ?>" />
+            <td class="StormyWeatherDataTD" > 
+                <input name="txtrangoinicio" type="text" id="txtrangoinicio" style="width:250px" placeholder="Ingrese Rango Inicial" class="form-control height placeholder" value="<?php echo $rangoinicio; ?>" size="6">
+            </td>
+            <td class="StormyWeatherFieldCaptionTD" style="width:250px">Rango Final </td>
+            <td class="StormyWeatherDataTD">
+                <input name="txtrangofin" type="text" id="txtrangofin" style="width:250px" placeholder="Ingrese Rango Final" class="form-control  height placeholder"value="<?php echo $rangofin; ?>" size="6">
             </td>
         </tr>
-       	<tr>
+        <tr>
             <td class="StormyWeatherFieldCaptionTD">Observaci&oacute;n</td>
-            <td class="StormyWeatherDataTD">
-          	<textarea name="txtnota" cols="65" rows="3" id="txtnota" ><?php echo htmlentities($nota); ?></textarea>
+            <td class="StormyWeatherDataTD" colspan="3">
+          	<textarea name="txtnota" cols="65" rows="3" id="txtnota" style="width:98%" class="form-control"><?php echo htmlentities($nota); ?></textarea>
+                
 	    </td>
        	</tr>
 	<tr>
-            <td colspan="2" class="StormyWeatherDataTD">
-                <table width="740" border="0" align="center" class="StormyWeatherFormTABLE">
-                    <tr>
+            
                         <td class="StormyWeatherFieldCaptionTD">Fecha Inicio</TD>
                         <td  class="StormyWeatherDataTD">
-                            <input name="txtFechainicio1" type="text" id="txtFechainicio" value="<?php echo $Fechaini; ?>" size="8" >dd/mm/aaaa</td>
+                            <input name="txtFechainicio1" type="text" id="txtFechainicio" size="25" class="date form-control  height placeholder" placeholder="aaaa-mm-dd" value="<?php echo $Fechaini; ?>" size="8" ></td>
                         <td class="StormyWeatherFieldCaptionTD">Fecha Final</D>
                         <td  class="StormyWeatherDataTD">
-                            <input name="txtFechaFin1" type="text" id="txtFechaFin" value="<?php echo $Fechafin; ?>" size="8" >dd/mm/aaaa</td>	
-                    </tr>
-                </table>
-            </td>
+                            <input name="txtFechaFin1" type="text" id="txtFechaFin" size="25" class="date form-control  height placeholder" placeholder="aaaa-mm-dd" value="<?php echo $Fechafin; ?>" size="8" ></td>	
+                   
 	</tr>	
 	<!--<tr>
             <td class="StormyWeatherDataTD" colspan="2" align="right">

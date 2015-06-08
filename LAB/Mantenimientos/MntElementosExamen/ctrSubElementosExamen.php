@@ -23,7 +23,7 @@ switch ($opcion)
 	case 1:  //INSERTAR	
 		$idelemento=$_POST['idelemento'];
 		$subelemento=utf8_encode($_POST['subelemento']);
-                echo $subelemento;
+               // echo $subelemento;
 		$elemento=$_POST['elemento'];
 		//$unidad=$_POST['unidad'];
                 //$sexo=$_POST['sexo'];
@@ -180,7 +180,7 @@ switch ($opcion)
          echo "</tr>
 	         </table>";
 	break;
-	case 5:
+        case 5: /* Consulta sub-elemento */
 		              
                 $idsubelemento=$_POST['idsubelemento'];
 		
@@ -198,12 +198,25 @@ switch ($opcion)
                 $nombresexo=$row['nombresexo'];
                 $idedad=$row['idedad'];
                 $rangoedad=$row['nombreedad'];
-                $rangoini=(empty($_POST['rangoini'])) ? 0 : "'" . pg_escape_string($_POST['rangoini']) . "'";
-                $rangofin=(empty($_POST['rangofin'])) ? 0 : "'" . pg_escape_string($_POST['rangofin']) . "'";
+                // $rangoini=(empty($row['rangoinicio'])) ? 0 : "'" .pg_escape_string($row['rangoinicio']). "'";
+               //  echo $rangoini;
+               if(empty($row['rangoinicio']))
+                    $rangoini=0;
+                else
+                   $rangoini=$row['rangoinicio'];
+                   // ? 0 : "'" . pg_escape_string($_POST['rangoinicio']) . "'";
+                if(empty($row['rangofin']))
+                    $rangofin=0;
+                else
+                    
+                   $rangofin=$row['rangofin'];
+                
                 $orden=$row['orden'];
+                //echo $orden;
                 $examen=$row['nombre_examen'];
                // echo "orde=".$orden;
                // $orden=$row['orden'];
+             //   echo $rangoini."-". $rangofin;
                 
             //    echo "Rango Ini".$rangoini."Rango fin". $rangofin;
                 if (empty($row['idsexo'])){
@@ -307,13 +320,12 @@ switch ($opcion)
                                         while($row = pg_fetch_array($conOrden)){
                                        // $row = pg_fetch_array($conOrden);
                                             if($row['orden'] === $orden){
-                                            $imprimir.="<option value='" . $orden . "' selected='selected'>" .$orden. "</option>";}
+                                                $imprimir.="<option value='" . $row['orden'] . "' selected='selected'>" .$row['orden']. "</option>";}
                                             else{
-                                                
-                                                $datosDB=$objdatos->existeOrden($idelemento);
-                                                                            	                                     
-                                             }
-                                       }
+                                                $datosDB=$objdatos->existeOrden($idelemento,$idedad,$idsexo);
+                                               // echo $datosDB;
+                                            }
+                                        }
                                         for ($index = 1 ; $index <=25 ; $index++) 
                                                 {
                                                      // $rest=$objdatos->arreglo ($datosDB,$index);
