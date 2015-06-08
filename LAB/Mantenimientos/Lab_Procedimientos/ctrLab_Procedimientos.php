@@ -449,12 +449,13 @@ case 7: //BUSQUEDA
 			  INNER JOIN lab_conf_examen_estab 			lcee ON (lcee.id = lppe.id_conf_examen_estab)
 			  INNER JOIN lab_plantilla                              lpla ON (lpla.id = lcee.idplantilla)
 			  INNER JOIN mnt_area_examen_establecimiento            mnt4 ON (mnt4.id = lcee.idexamen)
+                          INNER JOIN ctl_examen_servicio_diagnostico cesd ON    cesd.id= mnt4.id_examen_servicio_diagnostico
 			  INNER JOIN ctl_area_servicio_diagnostico              casd ON (casd.id = mnt4.id_area_servicio_diagnostico)
 			  LEFT OUTER JOIN ctl_sexo                              cex  ON (cex.id  = lppe.idsexo AND cex.abreviatura != 'I')
 			  LEFT OUTER JOIN ctl_rango_edad 			cre  ON (cre.id  = lppe.idrangoedad)
 			  WHERE 
                             lpla.idplantilla = 'E' 
-                            AND lcee.condicion = 'H'
+                            AND lcee.condicion = 'H' AND cesd.activo=TRUE
                             AND 
                             lppe.idestablecimiento = $lugar";
 

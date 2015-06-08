@@ -158,10 +158,13 @@ class clsLab_DatosFijosExamen
 		$con = new ConexionBD;
 	    //usamos el metodo conectar para realizar la conexion
 	    if($con->conectar()==true){
-	      $query = " SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.nombre_examen 
+	       $query = " SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.nombre_examen 
                          FROM lab_conf_examen_estab
                          INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
+                         INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id=mnt_area_examen_establecimiento.id_examen_servicio_diagnostico
                          WHERE mnt_area_examen_establecimiento.id_area_servicio_diagnostico=$idarea
+                         AND mnt_area_examen_establecimiento.activo=TRUE
+                         AND ctl_examen_servicio_diagnostico.activo=TRUE    
                          AND lab_conf_examen_estab.idplantilla=1 AND lab_conf_examen_estab.condicion='H'
                          AND mnt_area_examen_establecimiento.id_establecimiento=$lugar
                          ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico";

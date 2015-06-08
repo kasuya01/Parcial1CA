@@ -132,7 +132,7 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
                INNER JOIN ctl_rango_edad ON lab_subelementos.idedad = ctl_rango_edad.id
                INNER JOIN lab_conf_examen_estab ON lab_elementos.id_conf_examen_estab=lab_conf_examen_estab.id 
 	       WHERE lab_subelementos.id=$idsubelemento";
-        //$query;
+       // echo $query;
      $result = pg_query($query);
      if (!$result)
        return false;
@@ -154,10 +154,10 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
 
 	}*/
         
-  function existeOrden($idelemento){
+  function existeOrden($idelemento,$idedad,$idsexo){
          $con = new ConexionBD;
 		if ( $con->conectar()==true ) {
-			$query = "SELECT max(orden)+1 FROM lab_subelementos where idelemento=$idelemento";
+			 $query = "SELECT max(orden)+1 FROM lab_subelementos where idsexo=$idsexo AND idedad=$idedad AND idelemento=$idelemento";
 			$result = pg_query( $query );
                                       
                     while ($row=pg_fetch_array($result))
@@ -477,7 +477,7 @@ function consultarpagbus($query_search,$RegistrosAEmpezar, $RegistrosAMostrar)
 	$con = new ConexionBD;
 	//usamos el metodo conectar para realizar la conexion
 	if ( $con->conectar()==true ) {
-           $query ="SELECT  orden  
+          $query ="SELECT  orden  
                     FROM lab_subelementos
                     WHERE idelemento=$idelemento
                     ORDER BY orden asc";

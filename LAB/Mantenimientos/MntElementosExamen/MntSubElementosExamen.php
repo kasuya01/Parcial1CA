@@ -101,7 +101,7 @@ function Cancelar()
             <form name="frmnuevo">
                 <table width="90%" border="0" align="center" class="StormyWeatherFormTABLE">
                     <tr>
-                        <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3><strong>SubElementos de  Examen</h3></strong>
+                        <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3><strong>SubElementos de Examen</h3></strong>
 			</td>
                     </tr>
                     <tr>
