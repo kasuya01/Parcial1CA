@@ -1143,6 +1143,7 @@ else
         else {
             a=document.getElementById('num_campos').value;
             document.getElementById('d_resultfin').value=document.getElementById('hdnFecResu_'+a).value;
+             document.getElementById('cmbEmpleadosfin').value=document.getElementById('hdnResp_'+a).value;
         if(canti==0){
             document.getElementById('v_resultfin').value=document.getElementById('hdnResult_'+a).value;
             }

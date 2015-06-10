@@ -1242,7 +1242,7 @@ and idestablecimiento=$lugar;";
         }
     }
     //Fn PG
-    function consmotivo($idsolicitud, $lugar){
+    function consmotivo($idsolicitud, $lugar,$prueba){
          $con = new ConexionBD;
         if ($con->conectar() == true) {
             $query= "select distinct(t04.id), nombre, t04.id_establecimiento, nombre_examen
@@ -1254,7 +1254,8 @@ join sec_detallesolicitudestudios t05 on (t04.id=t05.idsolicitudestudio)
 join lab_conf_examen_estab	t06 on (t06.id=t05.id_conf_examen_estab)  
 where t04.id=$idsolicitud
 and t04.id_establecimiento=$lugar
-and t06.nombre_examen ilike '%VIH%';";
+and t06.nombre_examen ilike '%VIH%'
+and '$prueba' ilike '%VIH%';";
             //echo $query;
             $result = pg_query($query);
             if (!$result) {

@@ -344,7 +344,7 @@ $edad=$objdatos->calc_edad($IdHistorial);
                             </td>
                         </tr>
                         <?php
-                        $motive=$objdatos->consmotivo($solicitud,$lugar);
+                        $motive=$objdatos->consmotivo($solicitud,$lugar, $_GET['var2']);
                         if (pg_num_rows($motive)>0){
                            $romo=pg_fetch_array($motive);
                            $motivo=$romo['nombre'];
