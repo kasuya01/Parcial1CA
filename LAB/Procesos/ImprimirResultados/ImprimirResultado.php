@@ -20,7 +20,6 @@ $nomtipo=$row[2];
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">    
 <title>Imprimir Resultado</title>
-<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <script language="JavaScript" type="text/javascript" src="ajax_ImprimirResultado.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
@@ -137,7 +136,7 @@ if ($nivel == 7) {
                     </td>
                     <td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
                     <td class="StormyWeatherDataTD" >
-<!--<<<<<<< HEAD-->
+
 			
                             <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px" class="form-control height">
 
@@ -163,9 +162,7 @@ if ($nivel == 7) {
                 <tr>	
                     <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
                     <td class="StormyWeatherDataTD">
-<!--<<<<<<< HEAD-->
-			<select name="CmbServicio" id="CmbServicio" style="width:405px" onChange="BuscarServicio(this.value)" class="form-control height" >
-
+                        <select name="CmbServicio" id="CmbServicio" style="width:405px" onChange="BuscarServicio(this.value)" class="form-control height" >
                             <option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
 				<?php
                                     $db = new ConexionBD;
@@ -205,13 +202,10 @@ if ($nivel == 7) {
                         <input  type="text" size="28" name="txtexpediente" id="txtexpediente" class="form-control height" style="width:375px"  placeholder="Buscar Expediente"/>
 
                         
-                         </td>
-                    
-                             <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Recepi&oacute;n</td>
-                             <td class="StormyWeatherDataTD" width="5%">
-
-                                  
-                                     <input type="text" size="28"  name="txtfecharecep" id="txtfecharecep" class="form-control height"  placeholder="aaaa-mm-dd"/>
+                    </td>
+                    <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Recepi&oacute;n</td>
+                    <td class="StormyWeatherDataTD" width="5%">
+                        <input type="text" size="28"  name="txtfecharecep" id="txtfecharecep" class="form-control height"  placeholder="aaaa-mm-dd"/>
                                  
             </td>
                 </tr>

@@ -438,7 +438,7 @@ if ( $NroRegistros==""){
                         </tr>
                         <tr>
 				<td>Conocido por</td>
-				<td colspan='3'>" . htmlentities($ConocidoPor) . " 
+		BuscarDatos		<td colspan='3'>" . htmlentities($ConocidoPor) . " 
 			     		<input name='txtpaciente' id='txtpaciente' type='hidden' size='70' value='" . $paciente . "' disabled='disabled' /></td>
 		   	</tr>
 			<tr>
@@ -502,35 +502,36 @@ if ( $NroRegistros==""){
             if ($fila['estado'] == "Resultado Completo") {
                 $imprimir .="<td><img src='../../../Iconos/impresion.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 				onclick=\"ImprimirDatos('" . $fila['iddetallesolicitud'] . "','" . $fila['idsolicitudestudio'] . "','" . $fila['idplantilla'] . "','$idexpediente','" . $fila['codigo_area'] . "','" . $fila['codigo_examen'] . "','" . $row['sexo'] . "','" . $FechaNac . "','" . $fila['idexamen'] . "','$subservicio', $idsexo, $idedad)\">
-					</td>
-					<td>" . htmlentities($fila['codigo_examen']) . "</td>
-					<td>" . htmlentities($fila['nombre_examen']) . "
+			    </td>
+			    <td>".htmlentities($fila['codigo_examen']) . "</td>
+			    <td>".htmlentities($fila['nombre_examen']) . "
 						<input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='" . $idexpediente . "' disabled='disabled'/>	
 						<input name='idsolicitud[" . $pos . "]' type='hidden' id='idsolicitud[" . $pos . "]' value='" . $fila['idsolicitudestudio'] . "'>
 						<input name='idarea[" . $pos . "]' type='hidden' id='idarea[" . $pos . "]' value='" . $fila['idarea'] . "'>
 						<input name='paciente[" . $pos . "]' type='hidden' id='paciente[" . $pos . "]' value='" . $row['paciente'] . "'>
 						<input name='idexamen[" . $pos . "]' type='hidden' id='idexamen[" . $pos . "]' value='" . $fila['idexamen'] . "' disabled='disabled' />
-					</td>	
-					<td>" . $fila['codigo_area'] . "</td>";
+			    </td>	
+			    <td>" . $fila['codigo_area'] . "</td>";
                 if (!empty($fila['indicacion'])) {
-                    $imprimir .="<td>" . htmlentities($fila['indicacion']) . "</td>";
-                } else {
-                    $imprimir .="<td>&nbsp;&nbsp;&nbsp;&nbsp</td>";
+               $imprimir .="<td>" . htmlentities($fila['indicacion']) . "</td>";
+                }else {
+               $imprimir .="<td>&nbsp;&nbsp;&nbsp;&nbsp</td>";
                 }
-                $imprimir .="<td>" . $fila['estado'] . "</td>
-				</tr>";
+               $imprimir .="<td>" . $fila['estado'] . "</td>
+	                </tr>";
             } else {
-                $imprimir .="<tr>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp</td>
-					<td>" . $fila['codigo_examen'] . "</td>
-					<td>" . htmlentities($fila['nombre_examen']) . "</td>	
-					<td>" . $fila['codigo_area'] . "</td>";
+           $imprimir .="<tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp</td>
+                            <td>" . $fila['codigo_examen'] . "</td>
+                            <td>" . htmlentities($fila['nombre_examen']) . "</td>	
+                            <td>" . $fila['codigo_area'] . "</td>";
                 if (!empty($fila['indicacion'])) {
-                    $imprimir .="<td>" . htmlentities($fila['indicacion']) . "</td>";
-                } else {
-                    $imprimir .="<td>&nbsp;&nbsp;&nbsp;&nbsp</td>";
+               $imprimir .="<td>" . htmlentities($fila['indicacion']) . "</td>";
+               }else {
+               $imprimir .="<td>&nbsp;&nbsp;&nbsp;&nbsp</td>";
                 }
-                $imprimir .="<td>" . $fila['estado'] . "</td></tr>";
+               $imprimir .="<td>".$fila['estado']."</td>
+                        </tr>";
             }
 
             $pos = $pos + 1;

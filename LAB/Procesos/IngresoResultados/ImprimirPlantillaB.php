@@ -380,6 +380,7 @@ $tipomuestra          = $_GET['var21'];
                                             <tr>
                                                 <td colspan="6" class="Estilo5" align="justify"><?php echo htmlentities($row['observelem'])?></td>
                                             </tr>
+                                            <tr><td colspan="6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
                                         <?php 
                                             } else {
                                         ?>

@@ -313,7 +313,7 @@ switch ($opcion) {
 	   	$ConRangos=$objdatos->ObtenerCodigoRango($fechanac);
 	   	$row_rangos=  pg_fetch_array($ConRangos);
 	   	$idedad=$row_rangos[0];
-
+                //echo $idsolicitud;
 	   	switch ($codigo_estandar) {
 	   		case "H50":
 		   		$cadena 		  = $valores_subelementos;
@@ -392,12 +392,12 @@ switch ($opcion) {
 			   	$imprimir.="<table width='92%' border='0' align='center' >";
 			   	pg_free_result($consulta_datos);
 			   	pg_free_result($datos_generales);
-			   	$imprimir.="<tr >
+			   	$imprimir.="<tr>
 			   			<td width='35%'></td>
 			   			<td width='25%'>Resultado</td>
 			   			<td width='20%'>Unidades</td>
 			   			<td width='60%'colspan='2'>Control Normal </td>
-			   		</tr>";
+			   		    </tr>";
 			   
 			   	$pos    = 0;
 			   	$posele = 0;
@@ -405,15 +405,15 @@ switch ($opcion) {
 				while($row = pg_fetch_array($consulta)) { //ELEMENTOS
 					if($row['subelemento']=="S") {
 						$imprimir.= "
-							<tr >
-								<td colspan='5' style='font:bold'><strong>".htmlentities($row['elemento'])."</strong></td>
-							</tr>";
+                                            <tr>
+						<td colspan='5' style='font:bold'><strong>".htmlentities($row['elemento'])."</strong></td>
+                                            </tr>";
 						$consulta2 = $objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
 
-					    while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
-							$imprimir.=
-				         		"<tr>
-					        		<td width='35%'>".htmlentities($rowsub['subelemento'])."</td>";
+					while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
+                                                $imprimir.=
+                                           "<tr>
+						<td width='35%'>".htmlentities($rowsub['subelemento'])."</td>";
                                                                
                                                  if($vector_combos[$pos]== NULL){  
 			                            $imprimir.="<td width='25%'>".htmlentities($vector[$pos])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>";
