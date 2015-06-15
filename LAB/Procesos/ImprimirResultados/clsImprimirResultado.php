@@ -531,7 +531,8 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
                 INNER JOIN lab_resultados ON lab_resultados.idexamen= lab_conf_examen_estab.id
                 WHERE lab_elementos.id_conf_examen_estab=$idexamen
                 AND iddetallesolicitud=$iddetalle AND lab_elementos.idestablecimiento=$lugar
-                AND lab_resultados.fecha_resultado BETWEEN lab_elementos.fechaini AND CASE WHEN fechafin IS NULL THEN CURRENT_DATE ELSE lab_elementos.fechafin END ORDER BY orden";
+                AND date(lab_resultados.fecha_resultado) BETWEEN lab_elementos.fechaini AND CASE WHEN fechafin IS NULL THEN CURRENT_DATE ELSE lab_elementos.fechafin END
+                ORDER BY orden";
         
 
 //echo $query;
@@ -576,16 +577,18 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
             lab_subelementos.unidad,
             lab_subelementos.rangoinicio,
             lab_subelementos.rangofin, 
-            lab_detalleresultado.observacion 
+            lab_detalleresultado.observacion,lab_detalleresultado.id_posible_resultado,posible_resultado  
             FROM lab_resultados 
               INNER JOIN lab_detalleresultado   ON lab_resultados.id=lab_detalleresultado.idresultado 
               INNER JOIN lab_subelementos       ON lab_detalleresultado.idsubelemento=lab_subelementos.id
+              LEFT JOIN lab_posible_resultado  ON lab_posible_resultado.id = lab_detalleresultado.id_posible_resultado
               WHERE idsolicitudestudio=$idsolicitud  
               AND iddetallesolicitud=$iddetalle  
               AND lab_subelementos.idelemento=$idelemento 
               AND (lab_subelementos.idsexo=(select id from ctl_sexo where nombre='$sexo')OR lab_subelementos.idsexo is NULL) 
               AND (idedad=4 OR idedad=$idedad)
               AND lab_subelementos.idestablecimiento=$lugar 
+              and (date(lab_resultados.fecha_resultado) between lab_subelementos.fechaini and (case when lab_subelementos.fechafin is null then current_date else lab_subelementos.fechafin end))    
              ORDER BY lab_subelementos.orden ";
          /*"SELECT lab_resultados.IdResultado, lab_detalleresultado.IdDetalleResultado, 
               lab_subelementos.IdElemento,lab_detalleresultado.IdSubElemento,lab_subelementos.SubElemento,
@@ -600,7 +603,7 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
               AND IF(lab_subelementos.FechaFin ='0000-00-00',CURDATE(),lab_subelementos.FechaFin) 
               AND (lab_subelementos.idsexo=$sexo OR lab_subelementos.idsexo=3) AND (idedad=4 OR idedad=$idedad)
 	      ORDER BY IdSubElemento ";*/
-       //echo $query;
+     //  echo $query;
 
      $result = @pg_query($query);
      if (!$result)
@@ -1128,15 +1131,17 @@ function LeerProcesoExamen($idsolicitud,$iddetalle)
 	$con = new ConexionBD;
    if($con->conectar()==true) 
    {
-	 $query ="SELECT lab_procedimientosporexamen.id,lab_procedimientosporexamen.nombreprocedimiento, 
+	$query ="SELECT lab_procedimientosporexamen.id,lab_procedimientosporexamen.nombreprocedimiento, 
                 lab_detalleresultado.resultado,lab_procedimientosporexamen.rangoinicio,
-                lab_procedimientosporexamen.rangofin,lab_procedimientosporexamen.unidades,lab_detalleresultado.observacion 
+                lab_procedimientosporexamen.rangofin,lab_procedimientosporexamen.unidades,lab_detalleresultado.observacion,
+                lab_detalleresultado.id_posible_resultado,lab_posible_resultado.posible_resultado 
                 FROM lab_resultados 
                 INNER JOIN lab_detalleresultado ON lab_detalleresultado.idresultado=lab_resultados.id 
                 INNER JOIN lab_procedimientosporexamen ON lab_detalleresultado.idprocedimiento=lab_procedimientosporexamen.id 
+                LEFT JOIN lab_posible_resultado ON lab_posible_resultado.id = lab_detalleresultado.id_posible_resultado
                 WHERE lab_resultados.iddetallesolicitud=$iddetalle AND lab_resultados.idsolicitudestudio=$idsolicitud 
                 AND CURRENT_DATE BETWEEN lab_procedimientosporexamen.fechaini 
-                AND CASE WHEN fechafin IS NULL THEN CURRENT_DATE ELSE lab_procedimientosporexamen.fechafin END
+                AND CASE WHEN  lab_procedimientosporexamen.fechafin IS NULL THEN CURRENT_DATE ELSE lab_procedimientosporexamen.fechafin END
                 ORDER BY id ASC ";
 
 	 $result = @pg_query($query);
@@ -1193,7 +1198,7 @@ function ObtenerFechaResultado($idsolicitud,$IdExamen,$lugar)
 	$con = new ConexionBD;
    if($con->conectar()==true)
    {
-      $query = "SELECT TO_CHAR(fecha_resultado,'dd/mm/YYYY HH12:MI:SS') AS fecharesultado
+      $query = "SELECT TO_CHAR(fecha_resultado,'dd/mm/YYYY HH12:MI') AS fecharesultado
                 FROM lab_resultados 
                 WHERE idsolicitudestudio=$idsolicitud AND idestablecimiento=$lugar 
                 AND idexamen=$IdExamen";
