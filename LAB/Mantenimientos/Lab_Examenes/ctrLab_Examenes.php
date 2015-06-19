@@ -479,7 +479,7 @@ switch ($opcion) {
          $query_search = $query . " ORDER BY ctl_area_servicio_diagnostico.idarea,lab_conf_examen_estab.nombre_examen";
       }
 
-      //echo $query_search;
+       $query_search;
       //para manejo de la paginacion
       $RegistrosAMostrar = 4;
       $RegistrosAEmpezar = ($_POST['Pag'] - 1) * $RegistrosAMostrar;

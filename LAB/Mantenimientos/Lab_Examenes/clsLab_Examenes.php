@@ -251,7 +251,7 @@ values ($idmet, $aresultados[$i], current_date, true,$usuario, date_trunc('secon
       if ($con->conectar() == true) {
          if ($IdFormulario == '0')
             $IdFormulario = 'NULL';
-         $query = "UPDATE lab_conf_examen_estab 
+        echo $query = "UPDATE lab_conf_examen_estab 
                               SET idusuariomod=$usuario,fechahoramod=NOW(),idformulario=$IdFormulario,
                               idestandarrep=$IdEstandarResp,IdPlantilla=$plantilla,impresion='$letra',urgente=$Urgente,ubicacion=$ubicacion,condicion='$Hab',nombre_examen='$nomexamen',idsexo=$idsexo
                               WHERE lab_conf_examen_estab.id=$idconf";
@@ -876,7 +876,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
       $con = new ConexionBD;
       //usamos el metodo conectar para realizar la conexion
       if ($con->conectar() == true) {
-         $query = "SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.codigo_examen as idexamen,
+        $query = "SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.codigo_examen as idexamen,
                              lab_conf_examen_estab.nombre_examen as nombreexamen, ctl_area_servicio_diagnostico.nombrearea,lab_plantilla.idplantilla,
                              ctl_examen_servicio_diagnostico.idestandar, 
                              (CASE WHEN lab_conf_examen_estab.ubicacion=0 THEN 'Todas las Procedencias' 
