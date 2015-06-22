@@ -114,8 +114,8 @@ $toy2=date('Y-m-d');
 
 <tr>
 <td align="center">
-
-   <div class="col-md-9" style="float:center; width: 45%">
+<center>
+   <div  style="width: 45%">
       <div class="panel panel-primary">                        
          <div class="panel-heading"><h3>Tabulador</h3> </div>                        
           <div class="panel-body" id="pb-primervez">                            
@@ -178,6 +178,7 @@ $toy2=date('Y-m-d');
          </div>                    
       </div>
    </div>
+</center></td></tr></table>
 </form>
 
 

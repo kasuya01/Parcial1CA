@@ -8,7 +8,6 @@ if (isset($_SESSION['Correlativo'])) {
     $ROOT_PATH = $_SESSION['ROOT_PATH'];
     $base_url  = $_SESSION['base_url'];
     include_once("clsSolicitudesProcesadas.php");
-    
     //consulta los datos por su id
     $obj      = new clsSolicitudesProcesadas;
     $consulta = $obj->DatosEstablecimiento($lugar);
@@ -101,7 +100,7 @@ if (isset($_SESSION['Correlativo'])) {
             </script>
 
         </head>
-        <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7">
+        <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" onload="BuscarExamen(<?php echo $area; ?>)">
             <?php
             if ($nivel == 1) {
                 include_once ('../../../PaginaPrincipal/index_laboratorio2.php');
@@ -220,7 +219,9 @@ if (isset($_SESSION['Correlativo'])) {
                                     $objeareas = new clsLab_Areas;
                                     $consulta = $objeareas->consultaractivas($lugar);
                                     while ($row = pg_fetch_array($consulta)) {
+                                       if ($row['idarea']!=$area){
                                         echo "<option value='" . $row['idarea'] . "'>" . htmlentities($row['nombrearea']) . "</option>";
+                                       }
                                     }
                                     ?>		  
                                 </select> 

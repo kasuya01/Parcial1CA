@@ -106,7 +106,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
              * crear listado de resultados existentes
              */
             $consulta = $obj->resultados($id_subelemento);
-            $r = pg_fetch_array($consulta);
+          //  $r = pg_fetch_array($consulta);
 
 
 
@@ -148,7 +148,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
     //        }
             $table .= "</select></td></tr></tbody></table>";
 
-            print ($table);
+            print utf8_decode($table);
             ?> 
             <div align="center"><br><input type="submit" name="btnGuardar" value="Guardar"> <input type="button" value="Cancelar" onclick="window.close()"></div>
             <input type="hidden" name="metodologias_sel" id="metodologias_sel" value="<?php print $metodologias_sel; ?>">
