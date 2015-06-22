@@ -13,7 +13,22 @@ function ValidarContrasena()
 </head>
 <body>
 <center>
-		<table width="100%" border="0" bgcolor="#FFFFFF">
+   <table width="100%" border="0" bgcolor="#FFFFFF">
+		<tr>
+                   <td colspan="2"><center>
+                      <img id="Image1" height="86"  src="../../Laboratorio/Imagenes/header-SUIS.png"  name="Image1"></center>
+                   </td>
+               </tr>
+<!--		    <td><img id="Image1" style="width: 181px; height: 76px;" height="86"  src="../../Laboratorio/Imagenes/paisanito.png" width="210" name="Image1"></td> 
+		    <td style="vertical-align:top">
+                       <h2 align="center" >Ministerio de Salud<br> Sistema de Informaci&oacute;n de Atenci&oacute;n de Pacientes<br><br></td>-->
+<!--                <tr>
+                   <td colspan="2" style="vertical-align: top"> <h2> <font face="Verdana" size="2" align="center">Usuario:. <font color="#ff0000" size="2"><strong>'.$NombreEmpleado.'</strong></font></font></h2></td>
+                </tr>-->
+ 
+  
+</table>
+<!--		<table width="100%" border="0" bgcolor="#FFFFFF">
 		<tr>
 		    <td align="left"><img id="Image1" style="width: 181px; height: 76px;" height="86" src="./Imagenes/paisanito.png" width="210" name="Image1"></td> 
 		    <td style="vertical-align:top">
@@ -23,7 +38,7 @@ function ValidarContrasena()
   <font face="Verdana" size="2" align="center"><font color="#ff0000" size="2"><strong></strong></font></font></h2>
   </td>
   </tr>
-</table>
+</table>-->
 </center><br><br><br>
 <form action="validar.php" method="post" enctype="multipart/form-data" >
 <table align="center" width="100%" border="0" class="MailboxFormTABLE">
@@ -53,5 +68,10 @@ function ValidarContrasena()
 </table>
 
 </form>
+<!--<div id="footer" style="bottom: 0; position: absolute; width:80%; margin: 0px auto;">
+   <center>
+      <img src="../Laboratorio/Imagenes/footer-SUIS.png" width="90%" height="15px"/></center><br>
+
+</div>-->
 </body>
 </html>

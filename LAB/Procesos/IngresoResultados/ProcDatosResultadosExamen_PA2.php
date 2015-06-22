@@ -387,7 +387,7 @@ $edad=$objdatos->calc_edad($IdHistorial);
                             </td>
                              <td class="StormyWeatherFieldCaptionTD" width="196 px">*Fecha Reporte </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="datepicker form-control height" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d H:m"); ?>"  onchange="valfechasolicita(this, 'fecha_reporte');" style="width:90%"/>                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  /> 
+                                <input type="text" class="datepicker form-control height" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d H:i"); ?>"  onchange="valfechasolicita(this, 'fecha_reporte');" style="width:90%"/>                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d H:i"); ?>"  /> 
                             </td>
                         </tr>
                         <tr>

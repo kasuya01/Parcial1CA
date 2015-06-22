@@ -55,3 +55,9 @@ table thead {
 .hide_me {
   display: none!important;
 }
+#footer{
+  width: 100%;
+  height: 100px;
+  position: absolute;
+  bottom: 0 !important;
+}

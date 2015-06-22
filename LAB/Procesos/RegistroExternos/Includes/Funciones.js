@@ -233,7 +233,8 @@ function VerificarExistente(){
         document.getElementById('SegundoApellido_Name').value = SegundoApellido;
         document.getElementById('CasadaApellido_Name').value = CasadaApellido;
         document.getElementById('FechaNacimiento_Name').value = FechaNacimiento;
-        document.getElementById('Sexo_Name').value = id_sexo;
+        if (id_sexo==null)
+            document.getElementById('Sexo_Name').value = id_sexo;
         document.getElementById('NombreMadre_Name').value = NombreMadre;
         document.getElementById('NombrePadre_Name').value = NombrePadre;
         document.getElementById('NombreResponsable_Name').value = NombreResponsable;

@@ -138,7 +138,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
       <td nowrap class="CobaltFieldCaptionTD" align="center"><strong>Sexo: <font color="#ff0000">*</font></strong></td> 
       <td class="CobaltDataTD">
       <select id="Sexo_Name" class="form-control height" style="WIDTH: 190px;">
-                  <option value="0" selected="selected">Seleccionar</option>
+                  <option value="0" selected>Seleccionar</option>
                   <option value="1">Masculino</option>
 		  <option value="2">Femenino</option>
         </select></td>   

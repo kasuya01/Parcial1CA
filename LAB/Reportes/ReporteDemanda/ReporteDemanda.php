@@ -114,8 +114,8 @@ $obj = new clsReporteDemanda();
 
                <tr>
                   <td align="center">
-
-                     <div class="col-md-9" style="float:center; width: 45%">
+               <center>
+                     <div style="width: 45%">
                         <div class="panel panel-primary">                        
                            <div class="panel-heading"><h3>Demanda Insatisfecha</h3> </div>                        
                            <div class="panel-body" id="pb-primervez">                            
@@ -234,13 +234,13 @@ $obj = new clsReporteDemanda();
                                      <tr>
                                              <td class="StormyWeatherDataTD" colspan="5" align="right">
                                                  <input type="button" id="btnbuscar" value="Buscar" onClick="MostrarBusqueda();">
-                                                 <input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('ReporteTabuladores.php')">			
-                                             </td>
+                                                 <input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('ReporteTabuladores.php')">	-->		
+               </center>    </td>
                                      </tr>
-                             </table>-->
+                             </table>
                      </form>
-
- <div class="col-md-9" style="float:center; width: 65%">
+      <center>
+ <div style="width: 65%">
                      <div id="divBusqueda">
                         <?php
 //                       $var="1|2,3|1";
@@ -317,7 +317,7 @@ $obj = new clsReporteDemanda();
                      
                      
                      </div><!--Fin de divBusqueda-->
-                     </div>
+ </div></center>
     
     
                      </body>
