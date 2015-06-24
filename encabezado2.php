@@ -1,7 +1,9 @@
 <?php
 session_start();
 include_once("../Conexion/ConexionBD.php"); //Agregamos el Archivo con las clases y funciones a utilizar
-
+?>
+<link rel="stylesheet" type="text/css" href="./public/css/corelayout.css">
+<?php
 $nivel = $_SESSION['NIVEL'];
 $lugar = $_SESSION['Lugar'];
 $area  = $_SESSION['Idarea'];
@@ -31,12 +33,11 @@ echo '<!-- Start Required XML Menu markup for head tag -->
         <link href="../Menu/xm-style.css" rel="stylesheet" type="text/css">
         <script src="../Menu/xm-menu.js" type="text/javascript"></script>
       <!-- End Required XML Menu markup for head tag --><center>
-      <table width="100%" border="0" bgcolor="#FFFFFF">
-		<tr>
-                   <td colspan="2">
-                          <center> <img id="Image1" src="../../Laboratorio/Imagenes/header-SUIS.png" name="Image1" align="center"></center>
-                        </td>
-                    </tr>
+      <div id="bannerlogo">
+        <img id="img-large" src="./Imagenes/header-SUIS.png"  >
+        <img id="img-small" src="./Imagenes/header-SUIS_small.png" >
+   </div>';
+echo '<table width="100%" border="0" bgcolor="#FFFFFF">
                      <tr>
                         <td style="vertical-align:top">
  		<h2 align="center" > ' . htmlentities($Establecimiento) . '</br>

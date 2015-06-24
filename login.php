@@ -10,24 +10,21 @@ function ValidarContrasena()
 </script>
 </style>
 <link rel="stylesheet" type="text/css" href="./Themes/Mailbox/Style.css">
+<link rel="stylesheet" type="text/css" href="./public/css/corelayout.css">
 </head>
 <body>
 <center>
-   <table width="100%" border="0" bgcolor="#FFFFFF">
+   <div id="bannerlogo">
+        <img id="img-large" src="../../Laboratorio/Imagenes/header-SUIS.png"  >
+        <img id="img-small" src="../../Laboratorio/Imagenes/header-SUIS_small.png" >
+   </div>
+<!--   <table width="100%" border="0" bgcolor="#FFFFFF">
 		<tr>
                    <td colspan="2"><center>
                       <img id="Image1" height="86"  src="../../Laboratorio/Imagenes/header-SUIS.png"  name="Image1"></center>
                    </td>
                </tr>
-<!--		    <td><img id="Image1" style="width: 181px; height: 76px;" height="86"  src="../../Laboratorio/Imagenes/paisanito.png" width="210" name="Image1"></td> 
-		    <td style="vertical-align:top">
-                       <h2 align="center" >Ministerio de Salud<br> Sistema de Informaci&oacute;n de Atenci&oacute;n de Pacientes<br><br></td>-->
-<!--                <tr>
-                   <td colspan="2" style="vertical-align: top"> <h2> <font face="Verdana" size="2" align="center">Usuario:. <font color="#ff0000" size="2"><strong>'.$NombreEmpleado.'</strong></font></font></h2></td>
-                </tr>-->
- 
-  
-</table>
+</table>-->
 <!--		<table width="100%" border="0" bgcolor="#FFFFFF">
 		<tr>
 		    <td align="left"><img id="Image1" style="width: 181px; height: 76px;" height="86" src="./Imagenes/paisanito.png" width="210" name="Image1"></td> 

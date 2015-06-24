@@ -42,6 +42,20 @@ class clsRecepcion {
         }
       }
 //Fn PG
+    function seleccionarestablecimientos($Idtipo, $lugar, $idext) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $sqlText = "select id,nombre from ctl_establecimiento where id_tipo_establecimiento not in (12,13,29,28) order by nombre;";
+            $dt = pg_query($sqlText);
+            if (!$dt){
+                return false;
+            }
+            else {
+                return $dt;
+            }
+        }
+      }
+//Fn PG
     function LlenarCmbServ($IdServ, $lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {

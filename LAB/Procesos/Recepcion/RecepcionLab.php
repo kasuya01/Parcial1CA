@@ -53,7 +53,16 @@ if ($nivel == 7) {
 		</style>
 <?php include_once $ROOT_PATH."/public/css.php";?>
 <?php include_once $ROOT_PATH."/public/js.php";?>
-<script language="javascript">
+<script  type="text/javascript">
+       $(document).ready(function() {
+         $("#cmb_establecimiento").select2({
+           allowClear: true,
+           dropdownAutoWidth: true
+        });
+    });
+    
+</script>
+<script  type="text/javascript">
 var miPopup
 function fillEstablecimiento(idtipoEstab){
   accion=8;
@@ -581,6 +590,22 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
     var url = "../EstudiosLaboratorio/Solicitud.php?"+Parametros;
     window.open(url,"Solicitudes","fullscreen=yes, toolbar=no, scrollbars=yes");
 }
+//Funcion de cambio de est externo
+function cambioestexterno(){
+    est=$('#cmb_establecimiento').val();   
+   // document.getElementById("IdEstablecimientoExterno").value = est;
+    $('#IdEstablecimientoExterno').val($('#cmb_establecimiento').val())
+}
+//
+//$(document).ready(function() {
+//         $("#cmb_establecimiento").select2({
+//           placeholder: "Establecimientos",
+//           allowClear: true,
+//           dropdownAutoWidth: true
+//        });
+//    });
+    
+    
 
 
 </script>
@@ -590,23 +615,51 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
 
 <!--<link href="../../../css/paginalab.css" rel="stylesheet" type="text/css" />-->
 <form name="frmdatosexpediente" action="" method="post">	
-<table border = 0 class="CobaltFormTABLE" cellspacing="0" cellpadding="3" align="center">
-	<tr>
-		<td colspan="3" align="center" class="CobaltFieldCaptionTD">
-			<H3><strong>Verificar Expediente</strong></H3>
-		</td>
-	  </tr>
-	<tr>
-		<td class="StormyWeatherFieldCaptionTD" align="center">Expediente</td>
-                <td class="StormyWeatherDataTD"><br/>
-			<input id="txtexp" class="CobaltInput" style="width:188px; height:20px" size="26"  >
-                        <input type="hidden" id="IdCitaServApoyo">
-                        <input type="hidden" id="IdEstablecimientoExterno">
-                        <button type="button" id="btnverificar" name="btnverificar" class='btn btn-primary' onclick="searchpac()"><span class='glyphicon glyphicon glyphicon-search'>&nbsp;Verificar</button>
-<!--                        <input type="button" value="Verificar" id="btnverificar" onClick="searchpac();">-->
-		</td> 
-	</tr>     
-</table>	
+   <div  style="width: 45%">
+      <div class="panel panel-primary">                        
+         <div class="panel-heading" style="padding: 2px !important"><h3>Verificar Expediente</h3> </div>                        
+          <div class="panel-body" id="pb-primervez">  
+            <table border = 0 class="table table-white no-v-border table-condensed" border="0" style="border:0px; width: 100%; margin-bottom: 2px !important;" cellspacing="0" cellpadding="3" align="center">
+<!--
+                     <tr>
+                        <td colspan="3" align="center" class="CobaltFieldCaptionTD">
+                           <H3><strong>Verificar Expediente</strong></H3>
+                        </td>
+                     </tr>-->
+                     <tr>
+                              <th>Establecimiento</th>
+                              <td> <select id="cmb_establecimiento" name="cmb_establecimiento" style="width:100%; size: 10" class="height placeholder js-example-basic-single" onchange="cambioestexterno();">
+                                                    <?php
+
+                                                        //$obje=new clsLab_CodigosEstandar;
+                                                        $consulta= $recepcion->seleccionarestablecimientos();
+                                                        while($row = pg_fetch_array($consulta)){
+                                                           if ($row['id']==$lugar){
+                                                              echo '<option value="'.$lugar.'" selected>'.$row['nombre'].'</option>';
+                                                           }
+                                                            echo "<option value='" . $row['id']. "'>" . $row['nombre'] . "</option>";
+                                                        }
+                                                                            //mysql_free_result($row);		
+                                                    ?>		 		
+                                            </select>   </td>
+                     </tr>
+                     <tr>
+                            <td>Expediente</td>
+                            <td>
+                                    <input id="txtexp" class="form-control height" style="width:188px; height:20px" size="26"  >
+                                    <input type="hidden" id="IdCitaServApoyo">
+                                    <input type="hidden" id="IdEstablecimientoExterno" >
+                                    
+            <!--                        <input type="button" value="Verificar" id="btnverificar" onClick="searchpac();">-->
+                            </td> 
+                    </tr>     
+                    <tr><td colspan="2" align="right">
+                       <button type="button" id="btnverificar" name="btnverificar" class='btn btn-primary' onclick="searchpac()"><span class='glyphicon glyphicon glyphicon-search'>&nbsp;Verificar</button>
+                       </td></tr>
+            </table>	
+             </div>
+      </div>
+    </div>
 </form>
 <div id="DatosPaciente"></div>
  <div id="lyLaboratorio" style="display:none; position:relative;">
@@ -734,12 +787,6 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
 <p align="center"><!-- END Record NewRecord1 --></p>
 <p align="center">&nbsp;</p>
 </body>
- <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
-<script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>
-<script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-es.js"></script>
-<script type="text/javascript" src="../../../public/datepicker/script.js"></script>    
-    
 </html>
 <?php
 }

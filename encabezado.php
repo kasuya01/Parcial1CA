@@ -1,13 +1,13 @@
 <?php
 session_start();
 include_once("../Conexion/ConexionBD.php"); //Agregamos el Archivo con las clases y funciones a utilizar
-
 $nivel = $_SESSION['NIVEL'];
 $lugar = $_SESSION['Lugar'];
 $area  = $_SESSION['Idarea'];
 $corr  = $_SESSION['Correlativo'];
 $cod   = $_SESSION['IdEmpleado'];
-
+$ROOT_PATH = $_SESSION['ROOT_PATH'];
+include_once $ROOT_PATH.'/public/css.php';
 // Creamos un objeto Conexion, Paciente
 $Conexion = new ConexionBD;
 $Conectar = $Conexion->Conectar();
@@ -27,16 +27,12 @@ $Rows = pg_fetch_array($Resultado);
 $NombreEmpleado  = $Rows['nombreempleado'];
 $Establecimiento = $Rows['nombre'];
 
-echo '<!-- Start Required XML Menu markup for head tag -->
-        <link href="../Menu/xm-style.css" rel="stylesheet" type="text/css">
-        <script src="../Menu/xm-menu.js" type="text/javascript"></script>
-      <!-- End Required XML Menu markup for head tag --><center>
-      <table width="100%" border="0" bgcolor="#FFFFFF">
-		<tr>
-                   <td colspan="2">
-                          <center> <img id="Image1" src="../../Laboratorio/Imagenes/header-SUIS.png" name="Image1" align="center"></center>
-                        </td>
-                    </tr>
+echo '<center>
+      <div id="bannerlogo">
+        <img id="img-large" src="/Laboratorio/Imagenes/header-SUIS.png">
+        <img id="img-small" src="/Laboratorio/Imagenes/header-SUIS_small.png" >
+   </div>';
+echo '<table width="100%" border="0" bgcolor="#FFFFFF">
                      <tr>
                         <td style="vertical-align:top">
  		<h2 align="center" > ' . htmlentities($Establecimiento) . '</br>
@@ -44,4 +40,5 @@ echo '<!-- Start Required XML Menu markup for head tag -->
             </td>
                      </tr>
      </table>';
+
 ?>
