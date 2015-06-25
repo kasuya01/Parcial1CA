@@ -252,7 +252,7 @@ switch($Proceso){
 	$nec=$_POST['nec'];
 	$idext=$_POST['idext'];
       //  echo 'idext'.$idext.'<br\>';
-	$NecEncontrado=$recepcion->ValidarExpediente($nec, $idext);
+	$NecEncontrado=$recepcion->ValidarExpediente($nec, $idext, $lugar);
 		
 	if($NecEncontrado > 0){
 		echo 0;
@@ -386,14 +386,12 @@ switch($Proceso){
     else{
         //echo 'Entro al else';
          $rslts='</br><form name="" action="" method="post">
-        <table border = 1 class="CobaltFormTABLE" cellspacing="0" cellpadding="0" align="center">
-              <tr>
-                      <td class="StormyWeatherFieldCaptionTD" ><br>Paciente no encontrado. Registrar paciente.<br/>&nbsp;</td>
-                      <td class="StormyWeatherDataTD"><br>
-                      <button type="button" id="Registrar" name="Registrar" style="WIDTH: 170px; HEIGHT: 33px" onclick="abreVentana('.$nec.')" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-search">&nbsp;Registrar Paciente</button><br/>&nbsp;
-                      </td> 
-              </tr>
-      </table>
+             <div  style="width: 40%">
+      <div class="panel panel-info">                        
+         <div class="panel-heading" style="padding: 2px 15px !important">
+         <h4>Paciente no encontrado....&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id="Registrar" name="Registrar" style="WIDTH: 170px; HEIGHT: 33px" onclick="abreVentana('.$nec.')" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-search">&nbsp;Registrar Paciente</button></h4> </div> 
+            </div></div>
+       
       </form>';   
             
        }

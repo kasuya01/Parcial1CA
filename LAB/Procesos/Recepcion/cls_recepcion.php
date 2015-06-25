@@ -275,11 +275,11 @@ WHERE IdArea='$IdArea'AND  lab_examenesxestablecimiento.Condicion='H'  AND IdEst
     }
 
 //FN PG
-    function ValidarExpediente($nec, $idext) {
+    function ValidarExpediente($nec, $idext, $lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
            // echo 'idext: '.$idext;
-            if ($idext==0){
+            if ($idext==$lugar){
             //    echo 'IF';
             $query_Search = "SELECT e.numero
 , (primer_apellido||' '||coalesce(segundo_apellido,'' )||' '||coalesce(apellido_casada,'')
@@ -349,6 +349,7 @@ WHERE e.numero ='$nec'";
                 FROM mnt_paciente d 
                 JOIN mnt_expediente e ON (d.id=e.id_paciente) 
                 JOIN ctl_sexo s on (s.id=d.id_sexo)
+                where e.id_establecimiento=$idext
                 union 
                 select e.id as idexpediente, e.numero as numero, 
                 concat_ws (' ',d.primer_apellido,d.segundo_apellido, d.apellido_casada, d.primer_nombre, d.segundo_nombre, d.tercer_nombre) as nombre, 

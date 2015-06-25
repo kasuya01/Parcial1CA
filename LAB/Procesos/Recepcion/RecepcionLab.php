@@ -648,7 +648,7 @@ function cambioestexterno(){
                             <td>
                                     <input id="txtexp" class="form-control height" style="width:188px; height:20px" size="26"  >
                                     <input type="hidden" id="IdCitaServApoyo">
-                                    <input type="hidden" id="IdEstablecimientoExterno" >
+                                    <input type="hidden" id="IdEstablecimientoExterno" value="<?php echo $lugar; ?>">
                                     
             <!--                        <input type="button" value="Verificar" id="btnverificar" onClick="searchpac();">-->
                             </td> 
