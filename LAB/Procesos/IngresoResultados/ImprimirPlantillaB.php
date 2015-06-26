@@ -277,7 +277,7 @@ $tipomuestra          = $_GET['var21'];
                                 </td>
                                 <td colspan="1" align="right" width="20%"><img id="Image3" style='width: auto; height: 55px;' src="../../../Imagenes/paisanito.png" name="Image3"></td>
                             </tr>
-                        </table><br>
+                        </table>
                         <table width="100%" border="0" align="center"  cellpadding="0%"  cellspacing="0%" >
                             <tr>
                                 <td colspan="1" class="Estilo5" width="28%" align="left"><strong>Establecimiento Solicitante:</strong></td>
@@ -348,20 +348,20 @@ $tipomuestra          = $_GET['var21'];
                                             ?>
                                         <tr>
 
-                                            <td width="25%" class="Estilo5" colspan="1" align="justify">&emsp;<?php echo htmlentities($rowsub['subelemento'])?></td>
+                                            <td width="25%" class="Estilo5" colspan="1" align="justify">&emsp;<?php echo utf8_encode($rowsub['subelemento'])?></td>
 
                                               <?php
                                         if($vector_combos[$pos]== NULL){  
                                               ?>
-                                            <td width="25%" class="Estilo5" colspan="1" align="justify"><?php echo htmlentities($vector[$pos])?></td>
+                                            <td width="25%" class="Estilo5" colspan="1" align="justify"><?php echo utf8_encode($vector[$pos])?></td>
                                                         
                                             <?php }
                                         else{
                                                         $conresult=$obj->BuscarResultado($vector[$pos]);
                                                         $row_dresult=  pg_fetch_array($conresult);?>
-                                            <td width="25%" class="Estilo5" align="justify" colspan='1'><?php echo htmlentities($row_dresult['posible_resultado'])?></td> 
+                                            <td width="25%" class="Estilo5" align="justify" colspan='1'><?php echo utf8_encode($row_dresult['posible_resultado'])?></td> 
                                   <?php }?>          
-                                            <td width="15%" class="Estilo5" align="justify" colspan='1'>&nbsp;&nbsp;<?php echo htmlentities($rowsub['unidad'])?></td>
+                                            <td width="15%" class="Estilo5" align="justify" colspan='1'>&nbsp;&nbsp;<?php echo utf8_encode($rowsub['unidad'])?></td>
                                                     <?php
                                         if ((!empty($rowsub['rangoinicio'])) AND (!empty($rowsub['rangofin']))) { 
                                                     ?>
@@ -378,22 +378,23 @@ $tipomuestra          = $_GET['var21'];
                                         }
                                             ?>
                                             <tr>
-                                                <td colspan="6" class="Estilo5" align="justify"><?php echo htmlentities($row['observelem'])?></td>
+                                                <td colspan="6" class="Estilo5" align="justify"><?php echo utf8_encode($row['observelem'])?></td>
                                             </tr>
                                             <tr><td colspan="6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
                                         <?php 
-                                            } else {
+                                            } else 
+                                                {
                                         ?>
                                                 <tr>
-                                                    <td class="Estilo5"  colspan="3" align="justify" ><?php echo htmlentities($row['elemento'])?></td>
-                                                    <td class="Estilo5"  colspan="1" align="justify"><?php echo htmlentities($vector_elementos[$posele])?></td>
-                                                    <td class="Estilo6"  colspan="1" align="justify"><?php echo htmlentities($row['unidadelem'])?></td>
+                                                    <td class="Estilo5"  colspan="3" align="justify" ><?php echo utf8_encode($row['elemento'])?></td>
+                                                    <td class="Estilo5"  colspan="1" align="justify"><?php echo ($vector_elementos[$posele])?></td>
+                                                    <td class="Estilo6"  colspan="1" align="justify"><?php echo utf8_encode($row['unidadelem'])?></td>
                                                 </tr>
                                             <?php
                                                 $posele=$posele+1;
                                             ?>
                                                 <tr>
-                                                    <td colspan='5' class="Estilo6" align="justify"><?php echo htmlentities($row['observelem'])?></td>
+                                                    <td colspan='5' class="Estilo6" align="justify"><?php echo utf8_encode($row['observelem'])?></td>
                                                 </tr>
                                     </table>
                                 </td>

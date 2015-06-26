@@ -139,7 +139,7 @@ case 1:
                                 else{
                                                                                                        
 			        $imprimir.= "
-                                        	<textarea name='txtresultado[".$pos."]' type='text' id='txtresultado[".$pos."]' cols='50' ></textarea>
+                                        	<textarea name='txtresultado[".$pos."]' type='text' id='txtresultado[".$pos."]' cols='50' onKeyPress='return acceptNum(event)'></textarea>
                                                 <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''></td>";
                                 }
                     $imprimir.="<td class='StormyWeatherDataTD' >".$row['unidades']."</td>";

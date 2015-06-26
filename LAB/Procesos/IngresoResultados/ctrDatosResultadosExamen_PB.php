@@ -145,8 +145,8 @@ switch ($opcion) {
 				echo $imprimir;
 		    break;
 		    default:
-				$consulta=$objdatos->LeerElementosExamen($idexamen,$lugar);
-			 $imprimir="<table width='75%' border='0' align='center' class='StormyWeatherFormTABLE'>
+			$consulta=$objdatos->LeerElementosExamen($idexamen,$lugar);
+			$imprimir="<table width='75%' border='0' align='center' class='StormyWeatherFormTABLE'>
 					<tr  class='CobaltButton'>
                                             <td>&nbsp;</td>
                                             <td aling='center'>Resultado</td>
@@ -195,7 +195,7 @@ switch ($opcion) {
                                                 }
                                                 else{
                                                                            //  print_r($row_result);
-                                                    $imprimir.= "<input size='30' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]'>
+                                                    $imprimir.= "<input size='30' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]' onKeyPress='return acceptNum(event)'>
 								 <input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>
                                                                  <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''  >
 					    </td>";
@@ -484,7 +484,7 @@ switch ($opcion) {
 		        $vector 	   = EXPLODE("/",$cadena);
 		        $vector_elementos  = EXPLODE("/",$valores_elementos);
                         $vector_combos     = EXPLODE("/", $datos_combos);
-                       // print_r($vector_combos);
+                     //   print_r($vector);
 				//$obj 			  = new clsConsultarElementos;
 		        $consulta 	  = $objdatos->LeerElementosExamen($idexamen,$lugar);
 		        $consulta_datos   = $objdatos->LeerDatos($idexamen);
@@ -572,19 +572,19 @@ switch ($opcion) {
         while($row = pg_fetch_array($consulta)) { //ELEMENTOS
             if($row['subelemento']=="S") {
 		   $imprimir.= "<tr>
-                                    <td colspan='4' style='font:bold'><strong>".htmlentities($row['elemento'])."</strong></td>
+                                    <td colspan='4' style='font:bold'><strong>".utf8_decode($row['elemento'])."</strong></td>
                                 </tr>";
 		    $consulta2 = $objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
 	        while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
   		    $imprimir.="<tr>
 		  		    <td width='35%'>&emsp;".htmlentities($rowsub['subelemento'])."</td>";
                     if  ($vector_combos[$pos]== NULL){  
-                        $imprimir.="<td width='25%'>".htmlentities($vector[$pos])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>";
+                        $imprimir.="<td width='25%'>".utf8_encode($vector[$pos])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."' ></td>";
                         }
                     else{
                         $conresult=$objdatos->BuscarResultado($vector[$pos]);
                         $row_dresult=  pg_fetch_array($conresult);
-                        $imprimir.="<td width='25%'>".htmlentities($row_dresult['posible_resultado'])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>";
+                        $imprimir.="<td width='25%'>".  utf8_encode($row_dresult['posible_resultado'])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>";
                                         
                     }
                         $imprimir.="<td width='10%'>".htmlentities($rowsub['unidad'])."</td>";

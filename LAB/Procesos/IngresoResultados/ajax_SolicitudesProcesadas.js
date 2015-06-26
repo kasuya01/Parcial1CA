@@ -1573,7 +1573,7 @@ function GuardarResultadosPlantillaB()
             "&iddetalle=" + iddetalle + "&observacion=" + observacion + "&idempleado=" + idempleado + "&procedencia=" + procedencia + "&origen=" + origen + "&valores_subelementos=" +
             encodeURIComponent(valores_subelementos) + "&codigos_subelementos=" + codigos_subelementos + "&valores_elementos=" + encodeURIComponent(valores_elementos) +
             "&codigos_elementos=" + codigos_elementos + "&controles=" + encodeURIComponent(controles) + "&controles_ele=" + encodeURIComponent(controles_ele) + "&tab=" + tab +
-            "&fecharealiz="+ fecharealiz + "&fecharesultado="+fecharesultado+"&valores_combos="+ valores_combos);
+            "&fecharealiz="+ fecharealiz + "&fecharesultado="+fecharesultado+"&valores_combos="+encodeURIComponent(valores_combos));
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)

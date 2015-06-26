@@ -124,6 +124,13 @@ function VerResultados()
         }
 
 //FUNCION PARA VERIFICAR DATOS REQUERIDOS EN RESULTADOS
+ var nav4 = window.Event ? true : false;
+        function acceptNum(evt){
+        var key = nav4 ? evt.which : evt.keyCode;
+       // alert(key);
+       //return ((key < 13) || (key >= 48 && key <= 57) || (key>=97 && key<=122) ||(key>=65 && key<=90) || key==32 || key==46 || key==209 || key==241) ;//47 es '/', 46 es '.' 32 'space'
+       return ((key!=47) && (key!=92));//47 es '/', 46 es '.' 32 'space'
+        }//Filtracion de teclas
 
 </script>
 <?php   

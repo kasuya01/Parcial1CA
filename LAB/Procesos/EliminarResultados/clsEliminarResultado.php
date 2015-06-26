@@ -348,7 +348,7 @@ ELSE (sec_solicitudestudios.id_expediente) end) as idexpediente
      $con = new ConexionBD;
 	if($con->conectar()==true)
 	{
-            echo "<br>". $query ="DELETE FROM lab_detalleresultado WHERE idresultado=$idresultado";
+            $query ="DELETE FROM lab_detalleresultado WHERE idresultado=$idresultado";
 		$result = pg_query($query);
 		if (!$result)
 			return -1;

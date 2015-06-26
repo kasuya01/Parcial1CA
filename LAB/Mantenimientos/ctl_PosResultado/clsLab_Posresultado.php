@@ -37,7 +37,7 @@ function actualizar($idposresultado,$posresultado,$cmbEstado,$usuario)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "UPDATE lab_posible_resultado SET posible_resultado='$posresultado',
+     $query = "UPDATE lab_posible_resultado SET posible_resultado='$posresultado',
             habilitado='$cmbEstado',
             id_user='$usuario',
             fecha_mod=date_trunc('seconds',NOW()) 
