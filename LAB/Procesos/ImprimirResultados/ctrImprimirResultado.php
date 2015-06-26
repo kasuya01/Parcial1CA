@@ -669,7 +669,7 @@ if ( $NroRegistros==""){
     case 6:// Llenar Combo Establecimiento
         $rslts = '';
         $Idtipoesta = $_POST['idtipoesta'];
-        // echo $Idtipoesta;
+         //echo $Idtipoesta;
         $dtIdEstab = $objdatos->LlenarCmbEstablecimiento($Idtipoesta);
         $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" class="form-control height"  style="width:375px">';
         $rslts .='<option value="0"> Seleccione Establecimiento </option>';

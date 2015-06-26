@@ -44,7 +44,7 @@ function calc_edad()
         #boton1{display:none;}
     }
 
-    .Estilo5 {font-family: Helvetica; font-size: 9pt}
+    .Estilo5 {font-family: Helvetica; font-size: 8.5pt}
     .Estilo6 {font-family: Helvetica; font-size: 8pt}
     .Estilo7 {font-family: Helvetica; font-size: 10pt}
     -->
@@ -97,10 +97,7 @@ function calc_edad()
 
                          <td colspan="1" align="right" width="20%"><img id="Image3" style="WIDTH: 110px; HEIGHT: 55px" height="86" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
 		</tr>
-                <tr>
-			<td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;</td>
-		</tr>
-                <tr>
+               <tr>
 			<td colspan='1' class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
 			<td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['estabext'])?></td>
 			<td colspan='1' class="Estilo5"><strong>Fecha Resultado:</strong></td>

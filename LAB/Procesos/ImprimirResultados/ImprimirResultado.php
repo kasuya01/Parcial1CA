@@ -68,6 +68,14 @@ function BuscarServicio(IdServicio){
 
 }
 
+  $(document).ready(function() {
+        $("#cmbEstandarRep").select2({
+           placeholder: "Seleccione un Estádar...",
+           allowClear: true,
+           dropdownAutoWidth: true
+        });
+    
+    });
 </script>
 <style type="text/css">
 <!--
@@ -107,43 +115,37 @@ if ($nivel == 7) {
 <tr>
     <td>
         <div  id="divInicial" >
-            <form>
-                <p>&nbsp;</p>
-		<table align="center"  class="StormyWeatherFormTABLE" width="90%">
+            <form method="get" action="ImprimirResultado.php" name="frmdatos" enctype="multipart/form-data">
+           	<table align="center"  class="StormyWeatherFormTABLE" width="97%">
 		<tr>
                     <td colspan="5" align="center" class="CobaltFieldCaptionTD"><h3><strong>Imprimir Resultados</strong></h3></td>
 		</tr>
 		<tr>		
                     <td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</td>
                     <td class="StormyWeatherDataTD">
-<!--<<<<<<< HEAD-->
-                        <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value) " class="form-control height">
-
+                        <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:443px" onChange="LlenarComboEstablecimiento(this.value); " class="form-control height">
                             <option value="0">Seleccione un Tipo de Establecimiento</option>
 			<?php
 				$db = new ConexionBD;
 				if($db->conectar()==true){
-					$consulta  = "SELECT id,nombre FROM ctl_tipo_establecimiento ORDER BY nombre";
-					$resultado = pg_query($consulta);
-					//por cada registro encontrado en la tabla me genera un <option>
-					while ($rows = pg_fetch_array($resultado)){
-						echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
-					}
-						echo '<option value="'. $tipo .'" selected="selected">' .htmlentities($nomtipo). '</option>';
+                                    $consulta  = "SELECT id,nombre FROM ctl_tipo_establecimiento ORDER BY nombre";
+                                    $resultado = pg_query($consulta);
+                                    //por cada registro encontrado en la tabla me genera un <option>
+                                    while ($rows = pg_fetch_array($resultado)){
+					echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
+                                    }
+					echo '<option value="'. $tipo .'" selected="selected">' .htmlentities($nomtipo). '</option>';
 				}
 			?>
                         </select>
                     </td>
                     <td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
-                    <td class="StormyWeatherDataTD" >
-
-			
-                            <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px" class="form-control height">
-
-                            	<option value="0" >Seleccione un Establecimiento</option>
-				<?php 
-				  echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
-                                  	include_once("../../../Conexion/ConexionBD.php");
+                    <td class="StormyWeatherDataTD" > <div id="divEstablecimiento">
+                        <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:500px" class="height js-example-basic-single">
+                            <option value="0" >Seleccione un Establecimiento</option>
+                            <?php 
+                                echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
+                                     	include_once("../../../Conexion/ConexionBD.php");
 					$con = new ConexionBD;
 					if($con->conectar()==true){			  
 						//$consulta  = "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$tipo' ORDER BY Nombre";
@@ -155,14 +157,14 @@ if ($nivel == 7) {
                                                 }
                                         }
 				?>	
-                            </select>
+                            </select>  </div>
 			
                     </td>
                 </tr>
                 <tr>	
                     <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
                     <td class="StormyWeatherDataTD">
-                        <select name="CmbServicio" id="CmbServicio" style="width:405px" onChange="BuscarServicio(this.value)" class="form-control height" >
+                        <select name="CmbServicio" id="CmbServicio" style="width:443px" onChange="BuscarServicio(this.value)" class="form-control height" >
                             <option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
 				<?php
                                     $db = new ConexionBD;
@@ -187,7 +189,7 @@ if ($nivel == 7) {
                     <td class="StormyWeatherDataTD">
 
 			
-                            <select name="cmbSubServ" id="cmbSubServ" style="width:375px" class="form-control height" >
+                            <select name="cmbSubServ" id="cmbSubServ" style="width:500px" class="form-control height" >
 
 				<option value="0" selected="selected"> Seleccione un Servicio </option>
                             </select>
@@ -199,7 +201,7 @@ if ($nivel == 7) {
                     <td  class="StormyWeatherDataTD" width="5%" >
 
                         
-                        <input  type="text" size="28" name="txtexpediente" id="txtexpediente" class="form-control height" style="width:375px"  placeholder="Buscar Expediente"/>
+                        <input  type="text" size="28" name="txtexpediente" id="txtexpediente" class="form-control height" style="width:443px"  placeholder="Buscar Expediente"/>
 
                         
                     </td>
@@ -249,7 +251,7 @@ if ($nivel == 7) {
                 
                 
                 <tr>
-			<td  colspan="5" align="right">  
+			<td  colspan="5" align="right" class="StormyWeatherDataTD">  
                            <br>
                                     <!-- <input type="button" id="btnbuscar"  class="fg-button ui-state-default ui-corner-all  value="Buscar" onClick="MostrarBusqueda();"> -->
                                     <!-- <input type="button" id="btnClear" value="Nueva Busqueda"  onClick="window.location.replace('ImprimirResultado.php')">	-->
