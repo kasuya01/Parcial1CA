@@ -159,7 +159,8 @@ if (isset($_SESSION['Correlativo'])) {
                             <td class="StormyWeatherFieldCaptionTD" width="20%">Establecimiento</td>
                             <td class="StormyWeatherDataTD"  width="35%">
                                 <div id="divEstablecimiento">
-                                    <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:500px" class="form-control height"> <option value="0" >Seleccione un Establecimiento</option>
+                                    <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:500px" class="form-control height"> 
+                                        <option value="0" >Seleccione un Establecimiento</option>
                                         <?php
                                         echo '<option value="' . $lugar . '" selected="selected">' . htmlentities($nombrEstab) . '</option>';
                                         include_once("../../../Conexion/ConexionBD.php");

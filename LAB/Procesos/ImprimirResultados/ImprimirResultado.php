@@ -1,4 +1,5 @@
-<?php session_start();
+<?php 
+session_start();
  if(isset($_SESSION['Correlativo'])){
 $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
@@ -26,7 +27,6 @@ $nomtipo=$row[2];
 <!--referencias del estilo del calendario-->
 <link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
 <link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />
-
 <!--llamado al archivo de funciones del calendario-->
 <?php include_once $ROOT_PATH."/public/css.php";?>
 <?php include_once $ROOT_PATH."/public/js.php";?>
@@ -68,14 +68,7 @@ function BuscarServicio(IdServicio){
 
 }
 
-  $(document).ready(function() {
-        $("#cmbEstandarRep").select2({
-           placeholder: "Seleccione un Estádar...",
-           allowClear: true,
-           dropdownAutoWidth: true
-        });
-    
-    });
+
 </script>
 <style type="text/css">
 <!--
@@ -141,8 +134,8 @@ if ($nivel == 7) {
                     </td>
                     <td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
                     <td class="StormyWeatherDataTD" > <div id="divEstablecimiento">
-                        <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:500px" class="height js-example-basic-single">
-                            <option value="0" >Seleccione un Establecimiento</option>
+                        <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:500px" class="form-control height">
+                           <option value="0" >Seleccione un Establecimiento</option>
                             <?php 
                                 echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
                                      	include_once("../../../Conexion/ConexionBD.php");

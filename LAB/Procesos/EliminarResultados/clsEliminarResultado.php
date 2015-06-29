@@ -35,7 +35,7 @@ function DatosEstablecimiento($lugar){
 }
 
 function LlenarCmbEstablecimiento($Idtipoesta){
-$con = new ConexionBD;
+    $con = new ConexionBD;
 	if($con->conectar()==true){
 		$sqlText= "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento=$Idtipoesta ORDER BY nombre";		
 		$dt = pg_query($sqlText) ;
@@ -335,7 +335,7 @@ ELSE (sec_solicitudestudios.id_expediente) end) as idexpediente
      $con = new ConexionBD;
     if($con->conectar()==true)
     {
-     echo "BR". $query ="DELETE FROM lab_resultados WHERE id=$idresultado";
+        $query ="DELETE FROM lab_resultados WHERE id=$idresultado";
 	 $result = pg_query($query);
 	 if (!$result)
 	   return -1;

@@ -4,6 +4,7 @@ session_start();
 $usuario = $_SESSION['Correlativo'];
 $lugar = $_SESSION['Lugar'];
 $area = $_SESSION['Idarea'];
+
 include ("clsImprimirResultado.php");
 
 //variables POST
@@ -671,8 +672,8 @@ if ( $NroRegistros==""){
         $Idtipoesta = $_POST['idtipoesta'];
          //echo $Idtipoesta;
         $dtIdEstab = $objdatos->LlenarCmbEstablecimiento($Idtipoesta);
-        $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" class="form-control height"  style="width:375px">';
-        $rslts .='<option value="0"> Seleccione Establecimiento </option>';
+        $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:500px" class="form-control height">';
+                  $rslts .='<option value="0"> Seleccione Establecimiento </option>';
         while ($rows = pg_fetch_array($dtIdEstab)) {
             $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
         }
@@ -680,6 +681,7 @@ if ( $NroRegistros==""){
         $rslts .= '</select>';
         echo $rslts;
         break;
+                
     case 7:// Llenar combo Subservicio
         $rslts = '';
         $IdServ = $_POST['IdServicio'];

@@ -1,5 +1,4 @@
-<?php
-session_start();
+<?php //session_start();
 include_once("../Conexion/ConexionBD.php"); //Agregamos el Archivo con las clases y funciones a utilizar
 $nivel = $_SESSION['NIVEL'];
 $lugar = $_SESSION['Lugar'];
