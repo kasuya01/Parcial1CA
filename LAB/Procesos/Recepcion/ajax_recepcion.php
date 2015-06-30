@@ -19,7 +19,7 @@ switch($Proceso){
 		$Idtipo=$_POST['idtipoEstab'];
 		$idext=$_POST['idext'];
              $dtIdEstab=$recepcion->LlenarCmbEstablecimiento($Idtipo, $lugar,$idext);
-              $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:350px">';
+              $rslts = '<select name="cmbEstablecimiento" class="form-control height" id="cmbEstablecimiento" style="width:350px">';
               $rows=  pg_fetch_array($dtIdEstab);
                $rslts.= '<option value="' . $rows['idestablecimiento'] .'" >'. $rows['nombre'].'</option>';
 		//$rslts .='<option value="0">--Seleccione Establecimiento--</option>';
@@ -36,7 +36,7 @@ switch($Proceso){
              $rslts='';
 		$Idestab=$_POST['idestab'];
              $dtIdEstab=$recepcion->tipoestactual($Idestab);
-              $rslts = '<select name="cmbTipoEstab" id="cmbTipoEstab" style="width:350px"  onFocus="fillEstablecimiento(this.value)">';
+              $rslts = '<select name="cmbTipoEstab" id="cmbTipoEstab" class="form-control height" style="width:350px"  onFocus="fillEstablecimiento(this.value)">';
               $rows=  pg_fetch_array($dtIdEstab);
               // $rslts.= '<option value="' . $rows['idestablecimiento'] .'" >'. $rows['nombre'].'</option>';
                $rslts.= '<option value="' . $rows['idtipoestablecimiento'] . '" selected="selected" >' . $rows['nombretipoestablecimiento'] . '</option>';
@@ -56,7 +56,7 @@ switch($Proceso){
               $IdServ=$_POST['idserv'];
 	    //  echo $IdServ;
 	      $dtserv=$recepcion->LlenarCmbServ($IdServ,$lugar);
-	      	$rslts = '<select name="cmbSubServ" id="cmbSubServ" onChange="fillMed(this.value)" style="width:350px">';
+	      	$rslts = '<select name="cmbSubServ" id="cmbSubServ" onChange="fillMed(this.value)" style="width:350px" class="form-control height">';
 			$rslts .='<option value="0">--Seleccione Subespecialidad--</option>';
 			while ($rows =pg_fetch_array($dtserv)){
 		  	$rslts.= '<option value="' . $rows['id'] .'" >'. $rows['servicio'].'</option>';
@@ -71,7 +71,7 @@ switch($Proceso){
                $idSubEsp=$_POST['idSubEsp'];
                //echo $idSubEsp; 
                $dtmed=$recepcion->LlenarCmbMed($idSubEsp,$lugar);
-               $rslts = '<select name="cmbMedico" id="cmbMedico"  style="width:350px">';
+               $rslts = '<select name="cmbMedico" id="cmbMedico"  style="width:350px" class="form-control height">';
 				$rslts .='<option value="0">--selecione un M&eacute;dico--</option>';
 				while ($rows =pg_fetch_array($dtmed)){
 					$rslts.= '<option value="'.$rows['idemp'].'" >'. $rows['nombre'].'</option>';
@@ -145,7 +145,7 @@ switch($Proceso){
 		$IdMuestra=$_POST['id_muestra'];	
 		$dtMed=$recepcion->LlenarCmbOrigen($IdMuestra);
 			
-		$rslts = '<select id="cboOrigen" style="width:250px">';
+		$rslts = '<select id="cboOrigen" style="width:250px" >';
 		$rslts .='<option value="0">--Seleccione Estudios--</option>';
 			
 		while ($rows =mysql_fetch_array($dtMed)){
@@ -337,11 +337,11 @@ switch($Proceso){
         //mysql_fetch_row($DatosPaciente);
         $nec = "'".$nec."'";
        // echo ' DatosPac: '.$DatosPaciente;
-
+$rslts='';
         if($DatosPaciente !=0 )
         {
     //    echo 'entroooooooooo a if';
-	$rslts='</br><form name="" action="" method="post">
+	$rslts.='</br><form name="" action="" method="post">
         <table border = 0 class="CobaltFormTABLE" cellspacing="0" cellpadding="0" style="height:200px" align="center">
               <tr>
                       <td colspan="3" align="center" class="CobaltFieldCaptionTD">
@@ -379,20 +379,41 @@ switch($Proceso){
                       <td class="StormyWeatherDataTD">
                               <input id="ConocidoPor" class="CobaltInput" style="width:400px; height:100%" size="26" value="'.$DatosPaciente["conocido_por"].'" >
                       </td> 
-              </tr>
-      </table>
+              </tr>';
+//        if ($lugar!=$idext){
+//           $rslts.= '<tr><td class="StormyWeatherFieldCaptionTD" colspan="2" align="right">'
+//           . '<button id="modificardatos" name="modificardatos"  class="btn btn-primary" onclick="abreVentana('.$nec.', '.$idext.')" ><span class="glyphicon glyphicon-pencil">Modificar Datos</button>'
+//                   . '</td>'
+//           . '</tr>';
+//        }
+              
+    echo '</table>
       </form>';
         }
     else{
-        //echo 'Entro al else';
+       if ($idext!=$lugar){
+           //echo 'Entro al else';
          $rslts='</br><form name="" action="" method="post">
              <div  style="width: 40%">
       <div class="panel panel-info">                        
          <div class="panel-heading" style="padding: 2px 15px !important">
-         <h4>Paciente no encontrado....&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id="Registrar" name="Registrar" style="WIDTH: 170px; HEIGHT: 33px" onclick="abreVentana('.$nec.')" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-search">&nbsp;Registrar Paciente</button></h4> </div> 
+         <h4>Paciente no encontrado....&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id="Registrar" name="Registrar" style="WIDTH: 170px; HEIGHT: 33px" onclick="abreVentana('.$nec.', '.$idext.')" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-search">&nbsp;Registrar Paciente</button></h4> </div> 
             </div></div>
        
-      </form>';   
+      </form>';  
+       }
+       else{
+           //echo 'Entro al else';
+         $rslts='</br><form name="" action="" method="post">
+             <div  style="width: 40%">
+      <div class="panel panel-info">                        
+         <div class="panel-heading" style="padding: 2px 15px !important">
+         <h4>Paciente no encontrado, favor ingresarlo en el área de Archivo ....&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4> </div> 
+            </div></div>
+       
+      </form>';  
+       }
+        
             
        }
         echo $rslts;

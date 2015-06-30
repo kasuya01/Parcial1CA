@@ -141,11 +141,11 @@ function GuardarInformacionExterna(){
 		return false;
 	}
 	
-	if(document.getElementById('NombreMadre_Name').value==""){
-		alert(".: Error: No puede dejar el NOMBRE DE LA MADRE en blanco");
-		document.getElementById('NombreMadre_Name').focus();
-		return false;
-	}
+//	if(document.getElementById('NombreMadre_Name').value==""){
+//		alert(".: Error: No puede dejar el NOMBRE DE LA MADRE en blanco");
+//		document.getElementById('NombreMadre_Name').focus();
+//		return false;
+//	}
        
 	
 	
@@ -168,6 +168,7 @@ function GuardarInformacionExterna(){
                         //alert(ajax.responseText);
                        // alert(IdExpediente+' - '+IdCitaServApoyo+' - '+IdNumeroExpRef+' '+IdEstablecimientoExterno)
                        // return false;
+                     //  alert (IdExpediente+' - '+IdCitaServApoyo+' - '+IdEstablecimientoExterno+' - '+IdNumeroExpRef)
                         window.opener.pegarExp(IdExpediente,IdCitaServApoyo,IdEstablecimientoExterno, IdNumeroExpRef);
                         window.close();                     
 		}
@@ -198,7 +199,7 @@ function Enviodatos(){
 function VerificarExistente(){
 	
 	var C = document.getElementById('Externo');
-	var D = document.getElementById('Busqueda');
+	//var D = document.getElementById('Busqueda');
 //var PrimerNombre_Name = document.getElementById('PrimerNombre_Name');
         var NEC = document.getElementById('nec').value;
         var idnumeroexpediente = document.getElementById('idnumeroexpediente').value;
@@ -224,7 +225,7 @@ function VerificarExistente(){
 		return false;
 	}        
         
-	D.style.display = "none";
+	//D.style.display = "none";
 	C.style.display = "inline";
         document.getElementById('PrimerNombre_Name').value = PrimerNombre;
         document.getElementById('SegundoNombre_Name').value = SegundoNombre;
@@ -233,8 +234,9 @@ function VerificarExistente(){
         document.getElementById('SegundoApellido_Name').value = SegundoApellido;
         document.getElementById('CasadaApellido_Name').value = CasadaApellido;
         document.getElementById('FechaNacimiento_Name').value = FechaNacimiento;
-        if (id_sexo==null)
-            document.getElementById('Sexo_Name').value = id_sexo;
+        document.getElementById('Sexo_Name').value = id_sexo;
+        if (id_sexo==null || id_sexo=='')
+            document.getElementById('Sexo_Name').value = 0;
         document.getElementById('NombreMadre_Name').value = NombreMadre;
         document.getElementById('NombrePadre_Name').value = NombrePadre;
         document.getElementById('NombreResponsable_Name').value = NombreResponsable;
@@ -243,6 +245,12 @@ function VerificarExistente(){
 	document.getElementById('Edad').value=Edad;
 	document.getElementById('Edadini').value=Edad;
 	document.getElementById('PrimerApellido_Name').focus();		
+}
+function isnumberdata(edad){
+   edadval=edad.value;
+   if(!IsNumeric(edadval)) {
+      document.getElementById('Edad').value='';
+   }
 }
 
 function esEdadValida(edad){
@@ -278,8 +286,21 @@ function esEdadValida(edad){
       
 }
 
-function limpiarcampoedad(campo){
-    document.getElementById(campo).value=''
+function limpiarcampoedad(campo,edad){
+   
+   edadval=document.getElementById('Edad').value
+   //alert (edadval)
+if(isNaN(edadval)) {   
+      document.getElementById('Edad').value='';
+   }
+    //document.getElementById(campo).value=''
+//    edadval=edad.value;
+//   // alert (edadval)
+//   if(isNaN(edadval)) {    
+//      alert ('entrto')
+//      document.getElementById('Edad').value='';
+//      document.getElementById('FechaNacimiento_Name').value='';
+//   }
     /*$(campo).attr('placeholder','');*/
         
 }
