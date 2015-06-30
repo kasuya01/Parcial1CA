@@ -1,5 +1,5 @@
 <?php
-//include_once("../../../Conexion/ConexionBD.php"); //Agregamos el Archivo con las clases y funciones a utilizar
+include_once("../../../Conexion/ConexionBD.php"); //Agregamos el Archivo con las clases y funciones a utilizar
 include_once ("../../../encabezado.php");
 @session_start();
 $nivel = $_SESSION['NIVEL'];

@@ -363,9 +363,14 @@ accion=7;
 }
 
  
-function abreVentana(nec){ //datospacfisttime
+function abreVentana(nec, idest){ //datospacfisttime
     window.close("../RegistroExternos/Busqueda.php");
-    miPopup = window.open("../RegistroExternos/Busqueda.php?nec="+nec,"miwin","width=1000,height=550,scrollbars=yes"); 
+    estabnombre=$('#cmb_establecimiento option:selected').text();
+    idexpedienteex=$("#idexpediente").val();
+     if (idexpedienteex=='' || idexpedienteex==null){
+       idexpedienteex=0;
+    }
+    miPopup = window.open("../RegistroExternos/Busqueda.php?nec="+nec+"&idest="+idest+"&estabnombre="+estabnombre+"&idexpedienteex="+idexpedienteex,"miwin","width=1000,height=550,scrollbars=yes"); 
     miPopup.focus(); 
 } 
 
@@ -389,10 +394,10 @@ function NoEncontrado(nec)
 	  sendReq.onreadystatechange = procesaEsp;
 	  sendReq.open("POST", 'ajax_recepcion.php', true);
 	  sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-	
+          idext=document.getElementById('IdEstablecimientoExterno').value;
 	  var param = 'Proceso=DatosPaciente';
 	  param +='&nec='+nec;
-	  param +='&idext=0';
+	  param +='&idext='+idext;
 	  sendReq.send(param);    
 }
 
@@ -677,7 +682,7 @@ function cambioestexterno(){
                     <td class="StormyWeatherFieldCaptionTD" >Tipo Establecimiento</td>
                     <td class="StormyWeatherDataTD">
                          <div id="lyTipoEstab">
-                            <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:350px"  onFocus="fillEstablecimiento(this.value)">
+                            <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:350px" class="form-control height"  onFocus="fillEstablecimiento(this.value)">
                                     <?php //  <option value="0" selected="selected">--Seleccione un tipo de Establecimiento--</option>
                                     $tipoest=$recepcion->tipoestactual($lugar);
                                     $rows=  pg_fetch_array($tipoest);
@@ -705,7 +710,7 @@ function cambioestexterno(){
                     <td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
                     <td class="StormyWeatherDataTD">
                             <div id="lyEstab">
-                                    <select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:350px">
+                                    <select name="cmbEstablecimiento"  id="cmbEstablecimiento" style="width:350px" class="form-control height js-example-basic-single">
                                             <option value="0">--Seleccione Establecimiento--</option>
                                     </select>
                             </div>
@@ -715,7 +720,7 @@ function cambioestexterno(){
             <tr>
                     <td class="StormyWeatherFieldCaptionTD">Procedencia:&nbsp;</td>
                     <td class="StormyWeatherDataTD" >
-                            <select name="CmbServicio" id="CmbServicio" style="width:350px" onChange="fillservicio(this.value)" >
+                            <select name="CmbServicio" id="CmbServicio" class="form-control height" style="width:350px" onChange="fillservicio(this.value)" >
                                     <option value="0" selected="selected">--Seleccione Procedencia--</option>
                                     <?php
                                     $tiposerv=$recepcion->tipoestservicio($lugar);
@@ -741,7 +746,7 @@ function cambioestexterno(){
                     <td class="StormyWeatherFieldCaptionTD">SubServicio:&nbsp;</td>
                     <td class="StormyWeatherDataTD">
                             <div id="lysubserv">
-                               <select name="cmbSubServ" id="cmbSubServ"  style="width:350px">
+                               <select name="cmbSubServ" id="cmbSubServ"  style="width:350px" class="form-control height">
                                             <option value="0" selected="selected">--Seleccione Subespecialidad--</option>
 
                                     </select>
@@ -752,7 +757,7 @@ function cambioestexterno(){
                     <td class="StormyWeatherFieldCaptionTD">M&eacute;dico&nbsp;</td>
                     <td class="StormyWeatherDataTD">
                             <div id="lyMed">
-                               <select name="cmbMedico" id="cmbMedico" onChange="fillMed(this.value)" style="width:350px">
+                               <select name="cmbMedico" class="form-control height" id="cmbMedico" onChange="fillMed(this.value)" style="width:350px">
                                             <option value="0" selected="selected">--Seleccione M&eacute;dico&nbsp;--</option>
 
                                     </select>
