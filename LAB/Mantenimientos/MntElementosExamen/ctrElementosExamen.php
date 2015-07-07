@@ -536,7 +536,8 @@ switch ($opcion)
                                      $datosDB=existeOrdenele($idexa);
                                      
                                     //echo  $datosDB[3];
-                                        for ($index = 1 ; $index <=25 ; $index++) 
+                                       // for ($index = 1 ; $index <=25 ; $index++) 
+                                      for ($index = $datosDB ; $index <=25 ; $index++) 
                                         {
                                           $rest=areglo ($datosDB,$index);
                                           if($rest==0){

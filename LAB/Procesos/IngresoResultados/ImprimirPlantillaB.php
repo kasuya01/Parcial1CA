@@ -27,7 +27,7 @@ $idestab              = $_GET['var19'];
 $f_tomamuestra        = $_GET['var20'];
 $tipomuestra          = $_GET['var21'];
 
-//echo $idestab ;
+//echo $valores_subelementos ;
 ?>
 <html>
 <head>
@@ -53,9 +53,11 @@ $tipomuestra          = $_GET['var21'];
         #boton1{display:none;}
     }
 
-    .Estilo5 {font-family: Helvetica; font-size: 9pt}
-    .Estilo6 {font-family: Helvetica; font-size: 8pt}
-    .Estilo7 {font-family: Helvetica; font-size: 10pt}
+    .Estilo5 {font-family: Helvetica; font-size: 8pt}
+    .Estilo6 {font-family: Helvetica; font-size: 7.5pt}
+    .Estilo7 {font-family: Helvetica; font-size: 9pt}
+    
+
     -->
 </style>
 </head>
@@ -109,10 +111,10 @@ $tipomuestra          = $_GET['var21'];
                                 <td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             </tr>
                             <tr>
-                               <td colspan='1' class='Estilo6' width="26%"><strong> Establecimiento Solicitante:</strong></td>
+                               <td colspan='1' class='Estilo6' width="28%"><strong> Establecimiento Solicitante:</strong></td>
                                <td colspan='2' class='Estilo6' width="39%"><?php echo $row_estabExt['nombre']?></td>
-                               <td colspan='1' class='Estilo6' width="20%"><strong>Fecha Resultado:</strong></td>
-                               <td colspan='2' class='Estilo6' width="15%"><?php echo $row_fecha['fecharesultado']?></td>
+                               <td colspan='1' class='Estilo6' width="19%"><strong>Fecha Resultado:</strong></td>
+                               <td colspan='2' class='Estilo6' width="14%"><?php echo $row_fecha['fecharesultado']?></td>
                                
                             </tr>
                             <tr>
@@ -179,7 +181,7 @@ $tipomuestra          = $_GET['var21'];
                                                 ?>
                                                         <tr>
                                                             <td width='35%' class='Estilo6'><?php echo htmlentities($rowsub['subelemento'])?></td>
-                                                            <td width='25%' class='Estilo6'><?php echo htmlentities($vector[$pos])?></td>
+                                                            <td width='25%' class='Estilo6'><?php echo utf8_encode($vector[$pos])?></td>
                                                             <td width='20%' class='Estilo6'><?php echo htmlentities($rowsub['unidad'])?></td>
                                                             <td width='20%' class='Estilo6'><?php echo htmlentities($vector_controles[$pos])." ".htmlentities($rowsub['unidad'])?> </td>
                                                         </tr>
@@ -263,11 +265,9 @@ $tipomuestra          = $_GET['var21'];
                 $ConRangos  = $obj->ObtenerCodigoRango($row_generales['fechanac']);
                 $row_rangos = pg_fetch_array($ConRangos);
                 $idedad     = $row_rangos[0];
+           //   echo $cadena; 
         ?>
-                
-                    
-                    
-                        <table width="100%" border="0" align="center"  cellspacing="0%" cellpadding="0%" >
+                <table width="100%" border="0" align="center"  cellspacing="0%" cellpadding="0%" >
                             <tr>
                                 <td colspan="1" align="left" width="20%"><img id="Image1" style='width: auto; height: 55px;' src="../../../Imagenes/escudo.png"  name="Image1"></td>
                                 <td align="center" colspan="4" width="60%" class="Estilo6">
@@ -281,8 +281,8 @@ $tipomuestra          = $_GET['var21'];
                         <table width="100%" border="0" align="center"  cellpadding="0%"  cellspacing="0%" >
                             <tr>
                                 <td colspan="1" class="Estilo5" width="28%" align="left"><strong>Establecimiento Solicitante:</strong></td>
-                                <td colspan="3" class="Estilo6" width="38%" align="left"> <?php echo $row_estabExt['nombre']?></td>
-                                <td colspan="1" class="Estilo5" width="20%" align="left"><strong>Fecha Resultado:</strong></td>
+                                <td colspan="3" class="Estilo6" width="39%" align="left"> <?php echo $row_estabExt['nombre']?></td>
+                                <td colspan="1" class="Estilo5" width="19%" align="left"><strong>Fecha Resultado:</strong></td>
                                 <td colspan="1" class="Estilo6" width="14%" align="left"><?php echo $row_fecha['fecharesultado']?></td>
                                 
                             </tr>
@@ -318,7 +318,8 @@ $tipomuestra          = $_GET['var21'];
                                 <td colspan="1" class="Estilo5" align="left"><strong>Validado Por:</strong></td>
                                 <td colspan="5" class="Estilo6" align="left"><?php echo htmlentities($responsable)?></td>
                             </tr>
-                            <tr><td colspan="6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+                            <tr>
+                                <td colspan="6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
                             <tr>
                                <td colspan="6">
                                   
@@ -329,7 +330,7 @@ $tipomuestra          = $_GET['var21'];
                                             <td width="15%" colspan="1" align="justify" class="Estilo5"><strong>Unidades</strong></td>
                                             <td width="40%" colspan="3" align="justify" class="Estilo5"><strong>&nbsp;&nbsp;Rangos de Referencia</strong></td>
                                         </tr>
-                                        <tr><td colspan='6'><hr></td></tr>
+                                        <tr><td colspan="6"><hr></td></tr>
                                     <?php
                                         $pos=0;
                                         $posele=0;
@@ -348,18 +349,18 @@ $tipomuestra          = $_GET['var21'];
                                             ?>
                                         <tr>
 
-                                            <td width="25%" class="Estilo5" colspan="1" align="justify">&emsp;<?php echo utf8_encode($rowsub['subelemento'])?></td>
+                                            <td width="25%" class="Estilo5" colspan="1" align="justify">&emsp;<?php echo $rowsub['subelemento']?></td>
 
                                               <?php
                                         if($vector_combos[$pos]== NULL){  
                                               ?>
-                                            <td width="25%" class="Estilo5" colspan="1" align="justify"><?php echo utf8_encode($vector[$pos])?></td>
+                                            <td width="25%" class="Estilo5" colspan="1" align="justify"><?php echo $vector[$pos]?></td>
                                                         
                                             <?php }
                                         else{
                                                         $conresult=$obj->BuscarResultado($vector[$pos]);
                                                         $row_dresult=  pg_fetch_array($conresult);?>
-                                            <td width="25%" class="Estilo5" align="justify" colspan='1'><?php echo utf8_encode($row_dresult['posible_resultado'])?></td> 
+                                            <td width="25%" class="Estilo5" align="justify" colspan='1'><?php echo $row_dresult['posible_resultado']?></td> 
                                   <?php }?>          
                                             <td width="15%" class="Estilo5" align="justify" colspan='1'>&nbsp;&nbsp;<?php echo utf8_encode($rowsub['unidad'])?></td>
                                                     <?php
@@ -377,17 +378,19 @@ $tipomuestra          = $_GET['var21'];
                                                     $pos=$pos + 1;
                                         }
                                             ?>
-                                            <tr>
-                                                <td colspan="6" class="Estilo5" align="justify"><?php echo utf8_encode($row['observelem'])?></td>
-                                            </tr>
-                                            <tr><td colspan="6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+                                        <tr>
+                                            <td colspan="6" class="Estilo5" align="justify"><?php echo utf8_encode($row['observelem'])?></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        </tr>
                                         <?php 
                                             } else 
                                                 {
                                         ?>
                                                 <tr>
                                                     <td class="Estilo5"  colspan="3" align="justify" ><?php echo utf8_encode($row['elemento'])?></td>
-                                                    <td class="Estilo5"  colspan="1" align="justify"><?php echo ($vector_elementos[$posele])?></td>
+                                                    <td class="Estilo5"  colspan="1" align="justify"><?php echo utf8_encode($vector_elementos[$posele])?></td>
                                                     <td class="Estilo6"  colspan="1" align="justify"><?php echo utf8_encode($row['unidadelem'])?></td>
                                                 </tr>
                                             <?php

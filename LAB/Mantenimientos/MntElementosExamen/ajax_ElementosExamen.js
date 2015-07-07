@@ -600,18 +600,12 @@ function MostrarExamenes(idarea)
 	
 	ajax=objetoAjax();
 	var opcion=9;
-	idexamen="";
-        idelemento="";
-	subelemento="";
-	elemento="";
-	observacionele="";
-	unidadele="";
-	Pag="";
+	
 	ajax.open("POST", 'ctrElementosExamen.php', true);
 	ajax.onreadystatechange = function()
 	{ 	if (ajax.readyState==4) 
-		{  document.getElementById('divExamen').innerHTML = ajax.responseText;
-		  
+		{  
+                    document.getElementById('divExamen').innerHTML = ajax.responseText;
 		}
 	}
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");

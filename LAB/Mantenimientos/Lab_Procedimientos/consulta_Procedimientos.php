@@ -300,13 +300,13 @@ $rangoedad=$row['nombregrupoedad'];
           $hola=array();                      
                                 while ($row=pg_fetch_array($consulta))
                                     {
-                                       /* if($row['orden']==$index)
+                                        if($row['orden']==$index)
                                         {
                                             $respuesta=1;
                                         }else{
                                            $respuesta=0; 
                                         }
-                                        echo $row['orden'];  */
+                                        echo $row['orden']; 
                                     $hola[]=$row['orden'];
                                     }
                                     

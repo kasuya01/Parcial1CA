@@ -125,13 +125,13 @@ function DatosCompletos(tipo) {
 			if (document.getElementById('txtproc').value === "") {
 					error.push('Procedimiento');	
 			}
-		    if (document.getElementById('txtFechainicio').value === "") {
+                        if (document.getElementById('txtFechainicio').value === "") {
 					error.push('Fecha de Inicio');		
 			}
-		    if (document.getElementById('cmbSexo').value === "0") {
+                        if (document.getElementById('cmbSexo').value === "0") {
 					error.push('Sexo');
 			}
-		    if (document.getElementById('cmbEdad').value === "0") {
+                        if (document.getElementById('cmbEdad').value === "0") {
 					error.push('Rango Edad');
 			}
                           if (document.getElementById('cmborden').value === "0") {

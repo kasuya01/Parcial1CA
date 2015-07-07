@@ -60,7 +60,7 @@ class clsLab_Procedimientos {
 	function actualizar( $idproce, $proce, $idarea, $idexamen, $unidades, $rangoini, $rangofin, $usuario, $lugar, $Fechaini, $Fechafin, $sexo, $redad,$cmborden ) {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
-			echo $query ="UPDATE lab_procedimientosporexamen SET nombreprocedimiento='$proce', id_conf_examen_estab ='$idexamen', unidades = '$unidades', rangoinicio=$rangoini,
+			$query ="UPDATE lab_procedimientosporexamen SET nombreprocedimiento='$proce', id_conf_examen_estab ='$idexamen', unidades = '$unidades', rangoinicio=$rangoini,
 				  rangofin=$rangofin, idusuariomod=$usuario, fechahoramod = NOW(), fechaini = $Fechaini, fechafin = $Fechafin,
 				  idsexo = $sexo, idrangoedad = $redad, orden=$cmborden
 		 		  WHERE lab_procedimientosporexamen.id = $idproce AND idestablecimiento = $lugar";
@@ -393,7 +393,7 @@ class clsLab_Procedimientos {
 	function consultarid( $idproce, $lugar ) {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
-		echo	 $query ="SELECT lppe.id AS idprocedimientoporexamen,
+		 $query ="SELECT lppe.id AS idprocedimientoporexamen,
 							lcee.id AS idexamen,
 							lcee.nombre_examen AS nombreexamen,
 							casd.id AS idarea,

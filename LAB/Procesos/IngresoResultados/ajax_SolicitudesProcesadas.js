@@ -1463,7 +1463,7 @@ function MostrarVistaPreviaPlantillaB(){
                 valores_combos += document.getElementById('totcombo[' + i + ']').value + "/";
                 codigos_subelementos += document.getElementById('oidsubelemento[' + i + ']').value + "/";
                 controles += document.getElementById('txtcontrol[' + i + ']').value + "/";
-               // alert(valores_combos);
+                //alert(valores_combos);
             }
         }
         
@@ -1482,8 +1482,8 @@ function MostrarVistaPreviaPlantillaB(){
         //ajax.send("opcion="+opcion+"&idexamen="+idexamen);
         ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idsolicitud=" + idsolicitud + "&idrecepcion=" + idrecepcion +
                 "&iddetalle=" + iddetalle + "&observacion=" + observacion + "&idempleado=" + idempleado + "&procedencia=" + escape(procedencia) +
-                "&origen=" + escape(origen) + "&valores_subelementos=" + encodeURIComponent(valores_subelementos) + "&codigos_subelementos=" + codigos_subelementos +
-                "&valores_elementos=" + encodeURIComponent(valores_elementos) + "&codigos_elementos=" + codigos_elementos + "&controles=" + encodeURIComponent(controles) +
+                "&origen=" + escape(origen) + "&valores_subelementos=" + escape(valores_subelementos) + "&codigos_subelementos=" + codigos_subelementos +
+                "&valores_elementos=" + escape(valores_elementos) + "&codigos_elementos=" + codigos_elementos + "&controles=" + encodeURIComponent(controles) +
                 "&controles_ele=" + encodeURIComponent(controles_ele) + "&estab=" + encodeURIComponent(estab) + "&tab=" + tab + "&fechanac=" + fechanac + "&sexo=" + sexo+
                 "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado+"&subservicio="+subservicio+"&valores_combos="+ valores_combos+"&idestab="+idestab+
                 "&f_tomamuestra="+f_tomamuestra+"&tipomuestra="+encodeURIComponent(tipomuestra));
