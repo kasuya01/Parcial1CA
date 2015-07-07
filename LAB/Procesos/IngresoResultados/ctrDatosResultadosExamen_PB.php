@@ -110,7 +110,7 @@ switch ($opcion) {
                                                
 						$posele=$posele + 1;
 						$imprimir.= "<tr>
-								<td rowspan='1' colspan='5' class='StormyWeatherDataTD'>".htmlentities($row['observelem'])."</td>
+					htmlentities(			<td rowspan='1' colspan='5' class='StormyWeatherDataTD'>".htmlentities($row['observelem'])."</td>
 							</tr>
 							<tr>
 								<td colspan='5' class='StormyWeatherDataTD'>&nbsp;</td>
@@ -165,6 +165,7 @@ switch ($opcion) {
 						$consulta2=$objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
 
                                     while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
+                                        
                                             $imprimir.= "
                                         <tr>
                                             <td width='30%' class='StormyWeatherDataTD'>".htmlentities($rowsub['subelemento'])."</td>
@@ -284,6 +285,7 @@ switch ($opcion) {
 	   	$observacion 	      = $_POST['observacion'];
 	   	$idempleado	      = $_POST['idempleado'];
 	   	$valores_subelementos = $_POST['valores_subelementos'];
+               // echo $valores_subelementos;
 	   	$codigos_subelementos = $_POST['codigos_subelementos'];
 	   	$valores_elementos    = $_POST['valores_elementos'];
 	   	$codigos_elementos    = $_POST['codigos_elementos'];
@@ -298,8 +300,8 @@ switch ($opcion) {
                 $fecharesultado       = $_POST['fecharesultado'];
                 $subservicio          = $_POST['subservicio'];
                 $idestab              = $_POST['idestab'];
-                $f_tomamuestra        =$_POST['f_tomamuestra'];
-                $tipomuestra          =$_POST['tipomuestra'];
+                $f_tomamuestra        = $_POST['f_tomamuestra'];
+                $tipomuestra          = $_POST['tipomuestra'];
                 //echo $idestab;
                // echo "fecha ".$f_tomamuestra."- tipo".$tipomuestra;
 	   	$Consulta_Estab  = $objdatos->Nombre_Establecimiento($lugar);
@@ -413,7 +415,7 @@ switch ($opcion) {
 					while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
                                                 $imprimir.=
                                            "<tr>
-						<td width='35%'>".htmlentities($rowsub['subelemento'])."</td>";
+						<td width='35%'>". htmlentities( $rowsub['subelemento'])."</td>";
                                                                
                                                  if($vector_combos[$pos]== NULL){  
 			                            $imprimir.="<td width='25%'>".htmlentities($vector[$pos])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>";
@@ -577,14 +579,14 @@ switch ($opcion) {
 		    $consulta2 = $objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
 	        while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
   		    $imprimir.="<tr>
-		  		    <td width='35%'>&emsp;".htmlentities($rowsub['subelemento'])."</td>";
+		  		    <td width='35%'>&emsp;". htmlentities($rowsub['subelemento'])."</td>";
                     if  ($vector_combos[$pos]== NULL){  
                         $imprimir.="<td width='25%'>".utf8_encode($vector[$pos])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."' ></td>";
                         }
                     else{
                         $conresult=$objdatos->BuscarResultado($vector[$pos]);
                         $row_dresult=  pg_fetch_array($conresult);
-                        $imprimir.="<td width='25%'>".  utf8_encode($row_dresult['posible_resultado'])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>";
+                        $imprimir.="<td width='25%'>".$row_dresult['posible_resultado']."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>";
                                         
                     }
                         $imprimir.="<td width='10%'>".htmlentities($rowsub['unidad'])."</td>";
@@ -630,7 +632,7 @@ switch ($opcion) {
                                                 <td colspan='5' align='center' ><br>
                                                     <input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaB()'>
                                                     <input type='button' name='Imprimir'  id='Imprimir' value='Imprimir'
-							Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\",\"".$valores_combos."\",".$idestab.",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'>
+							Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".utf8_encode($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\",\"".$valores_combos."\",".$idestab.",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'>
                                                     <input type='button' id='btnSalir' value='Cerrar' onclick='Cerrar()'>
 						</td>
                                             </tr>

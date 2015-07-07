@@ -77,17 +77,17 @@ function Cancelar()
         myWindow=window.open(URL, '" + "', 'scrollbars=yes, width=700, height=500, left=100, top = 100');
     }
 
-/*function llenarcomboRango(idelemento){
+function llenarcomboRango(idelemento){
     //alert(idexa);
     LlenarRango(idelemento);
     
-}*/
+}
 </script>
 
 
 </head>
 
-<body onLoad="RecogeValor();">
+<body onLoad="RecogeValor(); llenarrangosubele()">
     <?php
         $idelemento=$_GET['var1'];
         //echo $idele;
@@ -108,7 +108,7 @@ function Cancelar()
                     	<td class="StormyWeatherFieldCaptionTD">Examen</td>
 			<td colspan="3" class="StormyWeatherDataTD" width="63%">
                         	<input name="idexamen" type="hidden" id="idexamen" >
-                                <input name="txtexamen" type="text" id="txtexamen" value="" size="60"  class="form-control height" disabled="disabled">
+                                <input name="txtexamen" type="text" id="txtexamen" value="" size="60" disabled="disabled" class="form-control height" >
 			</td>
                     </tr>
                     <tr>
@@ -120,7 +120,7 @@ function Cancelar()
                     </tr>
                     <tr>
                         <td  class="StormyWeatherFieldCaptionTD" width="17%">SubElemento</td>
-                        <td colspan="3" class="StormyWeatherDataTD" width="63%"><input name="txtsubelemento" type="text" id="txtsubelemento" placeholder=" Nombre SubElemento" size="60" class="form-control height">
+                        <td colspan="3" class="StormyWeatherDataTD" width="63%"><input name="txtsubelemento" type="text" id="txtsubelemento" placeholder=" Nombre SubElemento" size="60" onclick="llenarcomboRango(idelemento);" class="form-control height">
                         </td>
                     </tr>
                     <tr>
@@ -187,7 +187,7 @@ function Cancelar()
                     <tr>
                         <td  class="StormyWeatherFieldCaptionTD">Orden </td>
                         <td  class="StormyWeatherDataTD" colspan="3">
-                            <select   name="cmborden"  id="cmborden" style="width:50%"  class="form-control height"  > 
+                            <select   name="cmborden"  id="cmborden" style="width:50%"  class="form-control height" onclick="llenarorden()" > 
                                 <option value="0">Seleccione un Orden</option>
                                     <?php
                                     
@@ -197,7 +197,7 @@ function Cancelar()
                                             if($row['orden'] === $orden){
                                                 echo "<option value='" . $orden . "' selected='selected'>" .$orden. "</option>";}
                                             else{
-                                                $datosDB=$objdatos->existeOrden($idelemento);
+                                                $datosDB=$objdatos->existeOrden($idelemento,$idedad,$idsexo);
                                             }
                                         }
                                         

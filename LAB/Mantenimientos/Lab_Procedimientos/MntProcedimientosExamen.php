@@ -36,8 +36,6 @@ function Guardar(){
    	IngresarRegistro();
 }
 
-
-
 function LlenarComboExamen(idArea)
 {
   //alert  (idArea);

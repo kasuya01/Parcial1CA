@@ -282,7 +282,7 @@ function consultar($lugar){
 	$con = new ConexionBD;
 	//usamos el metodo conectar para realizar la conexion
 	if ( $con->conectar()==true ) {
-        $query ="SELECT orden  
+        echo $query ="SELECT orden  
                     FROM lab_elementos
                     WHERE id_conf_examen_estab=$idexamen
                     ORDER BY orden asc";
