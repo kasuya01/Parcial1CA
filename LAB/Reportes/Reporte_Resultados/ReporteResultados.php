@@ -131,6 +131,7 @@ if ($nivel == 7) {
 					$resultado = pg_query($consulta);
 					//por cada registro encontrado en la tabla me genera un <option>
 					while ($rows = pg_fetch_array($resultado)){
+                                           if ($rows[0]!=$tipo)
 						echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
 					}
 						echo '<option value="'. $tipo .'" selected="selected">' .htmlentities($nomtipo). '</option>';
@@ -140,7 +141,7 @@ if ($nivel == 7) {
                     </td>
                     <td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
                     <td class="StormyWeatherDataTD" >
-
+                       <div id="divEstablecimiento">
 			
                             <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px" class="form-control height">
 
@@ -160,7 +161,7 @@ if ($nivel == 7) {
                                         }
 				?>	
                             </select>
-			
+                       </div>
                     </td>
                 </tr>
                 <tr>	

@@ -207,6 +207,7 @@ jQuery(document).ready(function($){
     $(".datepicker").datetimepicker({
      onClose:  function() {
                  validafecha($(this).val(), $(this).attr('name'),$('#fecha_tmuestra').val() ); 
+                 valfechasolicita($(this).val(), $(this).attr('name'));
                 }
    });
    
@@ -396,11 +397,11 @@ $edad=$objdatos->calc_edad($IdHistorial);
                          <tr>
                             <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">Fecha Realización </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                               <input type="text" class="datepicker form-control height placeholder" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" onchange="valfechasolicita(this, 'fecha_realizacion')" style="width:100%"/>
+                               <input type="text" class="datepicker form-control height placeholder" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" style="width:100%"/>
                             </td>
                              <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">Fecha Reporte </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="datepicker form-control height" name="fecha_reporte" id="fecha_reporte" size="60" style="width:90%"  value="<?php echo date("Y-m-d H:i"); ?>"   onchange="valfechasolicita(this, 'fecha_reporte')"/><input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d H:i"); ?>"  /> 
+                                <input type="text" class="datepicker form-control height" name="fecha_reporte" id="fecha_reporte" size="60" style="width:90%"  value="<?php echo date("Y-m-d H:i"); ?>"  /><input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d H:i"); ?>"  /> 
                             </td>
                         </tr>
                         <tr>

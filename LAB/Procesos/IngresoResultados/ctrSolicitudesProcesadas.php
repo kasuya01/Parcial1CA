@@ -950,7 +950,7 @@ switch ($opcion) {
 
                     <tr>
                     	<td colspan='1' style='font:bold'><strong>NEC:</strong></td>
-			<td colspan='2'>" . $txtnec . "</td>
+			<td colspan='2'>" . $txtnec . "<input type='hidden' id='idexpedientenec' name='idexpedientenec' value='".$txtnec."'/></td>
                     	<td colspan='1' style='font:bold'><strong>Fecha Resultado:</strong></td>
 			<td colspan='2'>" . $d_resultfin . "</td></tr>
 		    <tr>
@@ -1048,8 +1048,9 @@ switch ($opcion) {
                     </tr>
                     <tr>
                         <td colspan='8' align='center' >
-                        <button name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $v_resultfin. "\",\"" . $d_resultfin . "\", \"" . $v_lectura . "\",\"" . $v_interpretacion . "\",\"" . $v_obserrecep. "\",\"" . $cmbEmpleadosfin . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec. "\",\"" . $proce. "\",\"" . $origen . "\",\"" . $iddetalle  . "\") ;' class='btn btn-primary'><span class='glyphicon glyphicon-print'></span>&nbsp;Imprimir</button>
-                            <button name='btnSalir' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' class='btn btn-primary' ><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br><br/>
+                        <button name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $v_resultfin. "\",\"" . $d_resultfin . "\", \"" . $v_lectura . "\",\"" . $v_interpretacion . "\",\"" . $v_obserrecep. "\",\"" . $cmbEmpleadosfin . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec. "\",\"" . $proce. "\",\"" . $origen . "\",\"" . $iddetalle  . "\") ;' class='btn btn-primary'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
+                            <button name='btnSalir' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' class='btn btn-primary' ><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button>
+                            <button name='btnAdd' id='btnAdd' value='Agregar Examen' Onclick='addexamen() ;' class='btn btn-primary' ><span class='glyphicon glyphicon-plus-sign'></span>&nbsp;Agregar Examen</button><br><br/>
                         </td>
                     </tr></table>";
         echo $Imprimir;

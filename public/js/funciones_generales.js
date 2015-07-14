@@ -45,8 +45,7 @@ function getCurrentDateTime(format) {
 function valfechasolicita(obj, nombre) {
 
    //fecha0=document.getElementById('d_fechatoma').value;
-   fecha1 = obj.value;
-   //alert (nombre+'/'+fecha1)
+   fecha1 = obj;
    var fecha_actual = new Date();
    var dia = fecha_actual.getDate()
    var mes = fecha_actual.getMonth() + 1

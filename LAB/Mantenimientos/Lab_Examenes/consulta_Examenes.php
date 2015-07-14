@@ -41,7 +41,7 @@
     $metodologias_text=$row['metodologias_text'];
     $id_metodologias_text=$row['id_metodologias_text'];
     $id_posible_resultado=$row['id_posible_resultado'];
-    $posible_resultado=$row['posible_resultado'];
+    $posible_resultado=  utf8_decode($row['posible_resultado']);
     
     
     /*
@@ -69,6 +69,18 @@
 
 //echo "al cargar ".$Impresion;
 ?>
+<script type="text/javascript">
+//   function mypopup(){
+//      resultado=frmModificar.resultado.value;
+//      resultado_nombre=frmModificar.resultado_nombre.value;
+//      nombre=$('input[name=txtnombreexamen]').val();
+//      id_resultado=frmModificar.id_resultado.value); 
+//      alert (resultado_nombre);
+//      window.open('consulta_metodologias1.php?form=frmModificar&resultado='+resultado+
+//                                        '&resultado_nombre='+resultado_nombre+
+//                                        '&nombre='+nombre+ '&id_resultado='+id_resultado)
+//   }
+</script>
 
 <form name= "frmModificar" >
 	<input name="opcion" type="hidden" value="N" />
@@ -169,14 +181,28 @@
 			<div id="divFormulariosC">
                         	<select name="cmbConForm" size="1" id="cmbConForm"  style="width:75%" class="form-control height"> ";
                                  <?php 
+                                 $b=0;
+                                  if ($IdFormulario==null || $IdFormulario=''){
+                                     echo "<option value='0' selected='selected'>Ninguno</option>";
+//                                            echo "<option value='" . $IdFormulario . "' selected='selected'>".htmlentities($NombreForm)."</option>";
+//                                 }
+//                                       else{
+//                                            
+//                                            $b=1;
+                                   }
+                                   else{
+                                   echo "<option value='0'>Ninguno</option>";   
+                                    echo "<option value='" . $IdFormulario . "' selected='selected'>".htmlentities($NombreForm)."</option>";  
+                                   }                               
                                  $consulta= $obj->consultar_formularios($lugar);
                                             while($row = pg_fetch_array($consulta)){
-                                                echo "<option value='" . $row['0']. "'>" .$row['1'] . "</option>";
+                                               if ($IdFormulario!=$row['0'])
+                                                echo "<option value='" . $row['0']. "' >" .$row['1'] . "</option>";              
+                                               else 
+                                                  echo "<option value='" . $IdFormulario . "' selected='selected'>".htmlentities($NombreForm)."</option>";  
                                             }
-                                 if (!empty($IdFormulario))	
-                                            echo "<option value='" . $IdFormulario . "' selected='selected'>".htmlentities($NombreForm)."</option>";
-                                       else
-                                            echo "<option value='0' selected='selected'>Ninguno</option>";?>
+                                
+                                           ?>
 				</select>
 			</div>
                     </td>
@@ -302,10 +328,11 @@
                                   <input type="hidden" name="resultado" id="resultado" value="<?php print $id_posible_resultado; ?>">
                             <input type="hidden" name="resultado_nombre" id="resultado_nombre" value="<?php print $posible_resultado; ?>">
                             <input type="hidden" name="id_resultado" id="id_resultado">
-                            <button type='button' class='btn btn-default' name="add_presultado" id="add_presultado" style="width:250px; text-align: left;" onclick="
+<!--                            <button type='button' class='btn btn-default' name="add_presultado" id="add_presultado" style="width:250px; text-align: left;" onclick="
                                 popup('consulta_metodologias1.php?form=frmModificar&resultado='+frmModificar.resultado.value+
                                         '&resultado_nombre='+frmModificar.resultado_nombre.value+
-                                        '&nombre='+$('input[name=txtnombreexamen]').val()+ '&id_resultado='+frmModificar.id_resultado.value);"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Resultado:..</button>
+                                        '&nombre='+$('input[name=txtnombreexamen]').val()+ '&id_resultado='+frmModificar.id_resultado.value);"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Resultado:..</button>-->
+                            <button type='button' class='btn btn-default' name="add_presultado" id="add_presultado" style="width:250px; text-align: left;" onclick="mypopup();"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Resultado:..</button>
                                 
                                  <?php
 //                                 echo "<button type='button' style='width:250px; text-align:left;' name='add_presultado' id='add_presultado' align='center'  class='btn btn-default'  onclick='popup(".'"consulta_SubElemento1.php?idconf='.$idconf.'"'.")' >  <span class='glyphicon glyphicon-th-list'></span>  ..:Seleccionar Resultado:.. </button>

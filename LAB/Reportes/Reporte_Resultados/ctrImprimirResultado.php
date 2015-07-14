@@ -66,11 +66,14 @@ switch ($opcion) {
 
 
 
-
         if (!empty($_POST['IdEstab'])) {
             if ($_POST['IdEstab'] <> $lugar) {
                 $cond1 .=$cond0 . "  t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " ";
                 $cond2 .=$cond0 . "  t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " ";
+            }
+            else{
+                $cond1 .=$cond0 . "  t02.id_establecimiento_externo = " . $lugar . " ";
+                $cond2 .=$cond0 . "  t02.id_establecimiento_externo = " . $lugar . " ";
             }
         }
 
@@ -146,13 +149,14 @@ switch ($opcion) {
             $ban = 1;
         }
 
-        if ($ban == 0) {
+//        if ($ban == 0) {
+//
+//            $cond1 = substr($cond1, 0, strlen($query) - 3);
+//            $cond2 = substr($cond2, 0, strlen($query) - 3);
+//        }
 
-            $cond1 = substr($cond1, 0, strlen($query) - 3);
-            $cond2 = substr($cond2, 0, strlen($query) - 3);
-        }
 
-      $query = "WITH tbl_servicio AS (
+        $query = "WITH tbl_servicio AS (
                     SELECT t02.id,
                         CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
@@ -439,7 +443,7 @@ if ( $NroRegistros==""){
 
         $imprimir = "<br> <form name='frmDatos'>
             <div class='table-responsive' style='width: 80%;'>
-                <table width='70%' border='0' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                <table width='70%' border='0' class='table table-hover table-bordered table-condensed table-white'>
 			<thead>
                                     <tr>
                                             <th colspan='4' align='center' style='background-color: #428bca; color: #ffffff'>
@@ -526,9 +530,9 @@ if ( $NroRegistros==""){
                                             <div class='panel-body'> </div>
                                         </div>";*/
                 
-               $print.= "<div class='panel panel-success'>
-                                        <div class='panel-heading mouse-pointer' role='tab' id='heading- data-toggle='collapse' >
-                                            <h4 class='panel-title'>
+               $print.= "<div class='panel panel-info'>
+                                        <div class='panel-heading mouse-pointer' role='tab' id='heading-URI' data-toggle='collapse' >
+                                            <h4 class='panel-title' style='text-align:left'>
                                                 ".$area['nombre']."
                                             </h4>
                                         </div>
@@ -681,6 +685,7 @@ if ( $NroRegistros==""){
         // ¿ obtenerDatosGenerales ??
         $objdatos = new clsReporteResultados;
         $datosGenerales= $objdatos->obtenerDatosGenerales($idHistorialClinico, $idDatoReferencia, $idEstablecimiento);
+
         
         
         return count($datosGenerales) > 0 ? $datosGenerales[0] : null;
@@ -817,22 +822,22 @@ return $plantillas;
                     }
                 }
                 break;
-            case 'D':
-                if( ! isset($exams[ $newExam[2] ]['elementos']) ){
-        $exams[ $newExam[2] ]['elementos'] = array();
-        }
-
-                if($row['codigo_estado_detalle'] === 'RC') {
-                    $newElement = array(
-                        $row['id_elemento_tincion'],
-                        $row['nombre_elemento_tincion'],
-                        $row['nombre_cantidad_tincion'],
-                        $row['id_cantidad_tincion']
-                    );
-
-                    $exams[ $newExam[2] ]['elementos'] = addTincionElementToExam($exams[ $newExam[2] ]['elementos'], $newElement);
-                }
-                break;
+//            case 'D':
+//                if( ! isset($exams[ $newExam[2] ]['elementos']) ){
+//        $exams[ $newExam[2] ]['elementos'] = array();
+//        }
+//
+//                if($row['codigo_estado_detalle'] === 'RC') {
+//                    $newElement = array(
+//                        $row['id_elemento_tincion'],
+//                        $row['nombre_elemento_tincion'],
+//                        $row['nombre_cantidad_tincion'],
+//                        $row['id_cantidad_tincion']
+//                    );
+//
+//                    $exams[ $newExam[2] ]['elementos'] = addTincionElementToExam($exams[ $newExam[2] ]['elementos'], $newElement);
+//                }
+//                break;
             default:
                 if( ! isset($exams[ $newExam[2] ]['procedimientos']) ){
         $exams[ $newExam[2] ]['procedimientos'] = array();
@@ -1100,21 +1105,25 @@ function headerLayout($examen, $examStatus) {
 function  MuestrasRechazadas($rm) {
     $html = '';
     $html.= "<div class='panel panel-warning'>
-                                        <div class='panel-heading mouse-pointer' role='tab' id='heading- data-toggle='collapse' >
-                                            <h4 class='panel-title'>
-                                                Muestras Rechazadas
+                                        <div class='panel-heading mouse-pointer' role='tab' id='heading-URI' data-toggle='collapse' >
+                                            <h4 class='panel-title' style='text-align:left;'>MUESTRAS RECHAZADAS
                                             </h4>
+                                        </div>
+                        </div>";
+    $html.= "<div class='panel panel-primary'>
+                                        <div class='panel-heading mouse-pointer' role='tab' id='heading- data-toggle='collapse' >
+                                            
                                         
                         </div>";
-    $html.="<table class='table table-hover table-bordered table-condensed table-white'>
-                <thead class='th-background'>
+    $html.="<table class='table table-hover  table-condensed table-white' >
+                <thead>
                     <tr>
-                        <th>Nombre del Examen</th>
-                        <th>Estado</th>
-                        <th>Motivo de Rechazo</th>
+                        <th style='background-color:#FFFFF2 !important;'>Nombre del Examen</th>
+                        <th style='background-color:#FFFFF2 !important;'>Estado</th>
+                        <th style='background-color:#FFFFF2 !important;'>Motivo de Rechazo</th>
                     </tr>
                 </thead>
-                <tbody class='tb-background'>";
+                <tbody>";
     
     if(count($rm) > 0) {
         foreach($rm as $examen) {
@@ -1126,7 +1135,7 @@ function  MuestrasRechazadas($rm) {
         }
     } else {
         $html.=" <tr>
-                    <td>No existen examenes para mostrar...</td>
+                    <td>No existen examenes rechazados...</td>
                 </tr>";
     }
     
@@ -1343,7 +1352,7 @@ function plantillaD($examen) {
             foreach ($examen['elementos'] as $elemento){
 
                 $html.="<tr>
-                            <td>". $elemento['nombre']."</td>
+                            <td>".$elemento['nombre']."</td>
                             <td>".$elemento['cantidad']."</td>
                         </tr>";
                 }
@@ -1357,13 +1366,7 @@ function plantillaE($examen) {
     //var_dump($examen);
 $html="";
     //$html.="plantillaE";
-        $html.="
-            <div class='row' style='font-size: 17px;padding-top: 20px;padding-bottom: 20px;'>
-                <div class='col-md-12 col-sm-12'>
-                    Observaci&oacute;n: <strong>". $examen['resultadoFinal']['observacion']."</strong>
-                </div>
-            </div>
-            <table class='table table-white'>
+        $html.="<table class='table table-white'>
             <thead>
                 <tr>
                     <th>Prueba</th>
@@ -1391,7 +1394,13 @@ $html="";
                     </tr>';
                 }
         $html.="  </tbody>
-                    </table>";
+                    </table>
+                    <div class='row' style='font-size: 17px;padding-top: 20px;padding-bottom: 20px;'>
+                <div class='col-md-12 col-sm-12'>
+                    Observaci&oacute;n: <strong>". $examen['resultadoFinal']['observacion']."</strong>
+                </div>
+            </div>";
+        
 
             
      return $html;
