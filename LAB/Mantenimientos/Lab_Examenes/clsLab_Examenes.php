@@ -251,7 +251,7 @@ values ($idmet, $aresultados[$i], current_date, true,$usuario, date_trunc('secon
       if ($con->conectar() == true) {
          if ($IdFormulario == '0')
             $IdFormulario = 'NULL';
-        echo $query = "UPDATE lab_conf_examen_estab 
+            $query = "UPDATE lab_conf_examen_estab 
                               SET idusuariomod=$usuario,fechahoramod=NOW(),idformulario=$IdFormulario,
                               idestandarrep=$IdEstandarResp,IdPlantilla=$plantilla,impresion='$letra',urgente=$Urgente,ubicacion=$ubicacion,condicion='$Hab',nombre_examen='$nomexamen',idsexo=$idsexo
                               WHERE lab_conf_examen_estab.id=$idconf";
@@ -609,7 +609,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
 				  FROM mnt_formularios 
 				  INNER JOIN mnt_formulariosxestablecimiento    
 				  ON mnt_formularios.id=mnt_formulariosxestablecimiento.idformulario
-		                  WHERE idestablecimiento=$lugar";
+		                  WHERE idestablecimiento=$lugar and mnt_formularios.activo=true";
          // echo $query;
          $result = pg_query($query);
          if (!$result)
@@ -694,11 +694,11 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                         LEFT JOIN lab_metodologia m ON m.id = em.id_metodologia
                         WHERE em.id_conf_exa_estab = $idexamen AND em.activo=true AND em.id_metodologia is not null
                         GROUP BY em.id_conf_exa_estab) as id_metodologias_text,
-                     (SELECT array_to_string(array_agg(t02.id), ',') as posibleresultado 
+                     (SELECT array_to_string(array_agg(t02.id order by t02.posible_resultado), ',') as posibleresultado 
                         from lab_examen_posible_resultado t01
                         join lab_posible_resultado t02 			on (t02.id=t01.id_posible_resultado)
                         where id_conf_examen_estab=$idexamen and t01.habilitado=true)as id_posible_resultado,
-                     (SELECT array_to_string(array_agg(posible_resultado), ',') as posibleresultado 
+                     (SELECT array_to_string(array_agg(posible_resultado order by t02.posible_resultado), ',') as posibleresultado 
                         from lab_examen_posible_resultado t01
                         join lab_posible_resultado t02 			on (t02.id=t01.id_posible_resultado)
                         where id_conf_examen_estab=$idexamen and t01.habilitado=true) as posible_resultado

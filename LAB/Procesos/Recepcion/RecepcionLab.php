@@ -780,10 +780,13 @@ function cambioestexterno(){
                                     </script>-->
             </tr>
             <tr>
-                    <td class="StormyWeatherFieldCaptionTD">Agregar Examenes</td>
+                <td class="StormyWeatherDataTD" colspan="2">                   
+            <center> <button type="button" id="btnverificar" name="btnverificar" class='btn btn-primary' onclick="searchpac()"><span class='glyphicon glyphicon-plus'>&nbsp;Agregar Examenes</button></center>
+                </td>
+<!--                    <td class="StormyWeatherFieldCaptionTD">Agregar Examenes</td>
                     <td class="StormyWeatherDataTD">
                             <input type="button" value=" Seleccionar " id="Examen" onclick="Examenes();">
-                    </td> 
+                    </td> -->
             </tr>            
         </table>
     </form>

@@ -204,6 +204,7 @@ jQuery(document).ready(function($){
     $(".datepicker").datetimepicker({
      onClose:  function() {
                  validafecha($(this).val(), $(this).attr('name'),$('#fecha_tmuestra').val() ); 
+                 valfechasolicita($(this).val(), $(this).attr('name'));
                 }
    });
    
@@ -383,11 +384,11 @@ $edad=$objdatos->calc_edad($IdHistorial);
                          <tr>
                             <td class="StormyWeatherFieldCaptionTD" style="white-space: nowrap;">*Fecha Realización </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                               <input type="text" class="datepicker form-control height" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd hh:mi" onchange="valfechasolicita(this, 'fecha_realizacion');"  />
+                               <input type="text" class="datepicker form-control height" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd hh:mi"  />
                             </td>
                              <td class="StormyWeatherFieldCaptionTD" width="196 px">*Fecha Reporte </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="datepicker form-control height" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d H:i"); ?>"  onchange="valfechasolicita(this, 'fecha_reporte');" style="width:90%"/>                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d H:i"); ?>"  /> 
+                                <input type="text" class="datepicker form-control height" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d H:i"); ?>"   style="width:90%"/>                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d H:i"); ?>"  /> 
                             </td>
                         </tr>
                         <tr>
@@ -526,7 +527,7 @@ echo '<option value="xyz">Seleccione una opción</option>';
                         </td>
                         <td align="right"><b>F. Emisión Resultado final:</b></td>
                         <td colspan="1" >
-                                 <input type="text" class="datepicker form-control height" name="d_resultfin" id="d_resultfin" size="60"  value="<?php echo date("Y-m-d h:m"); ?>" onchange="valfechasolicita(this, 'd_resultfin')"  />	<input type="hidden" name="fechaact" id="fechaact" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />	
+                                 <input type="text" class="datepicker form-control height" name="d_resultfin" id="d_resultfin" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />	<input type="hidden" name="fechaact" id="fechaact" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />	
                         </td>
                 </tr>
                 <tr>
@@ -585,7 +586,7 @@ echo '<option value="xyz">Seleccione una opción</option>';
                          <button type="button" align="center" class="btn btn-primary" onclick="ValidarResultado();" title="Validar y Finalizar"><span class='glyphicon glyphicon-check'></span>&nbsp;Validar</button>
 	<!--<button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="enviarDatosResult(0,0);" title="Guardar sin validar">Guardar</button>-->
        
-		<button type="button" align="center" class="btn btn-primary" title="Regresar a Inicio"  onclick="Cerrar();"><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Regresar</button>
+		<button type="button" align="center" class="btn btn-primary" title="Regresar a Inicio"  onclick="Cerrar();"><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button>
 	
 	</center>  
                           </div>
@@ -626,13 +627,13 @@ else{
                
 }
 ?>
- <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
+<!-- <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon-i18n.min.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-es.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui-sliderAccess.js"></script>
-                <script type="text/javascript" src="../../../public/datepicker/script.js"></script>    
+                <script type="text/javascript" src="../../../public/datepicker/script.js"></script>    -->
     
 </body>
 </html>

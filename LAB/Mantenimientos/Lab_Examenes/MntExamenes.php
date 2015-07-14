@@ -53,6 +53,14 @@ function Cancelar()
 function popup(URL) {
         myWindow=window.open(URL, '" + "', 'scrollbars=yes, width=700, height=700, left=100, top = 100');
     }
+function mypopup(){
+      resultado=frmModificar.resultado.value;
+      resultado_nombre=frmModificar.resultado_nombre.value;
+      nombre=$('input[name=txtnombreexamen]').val();
+      id_resultado=frmModificar.id_resultado.value; 
+      window.open('consulta_metodologias1.php?form=frmModificar&resultado='+resultado+
+                                        '&resultado_nombre='+encodeURIComponent(resultado_nombre)+'&nombre='+nombre+ '&id_resultado='+id_resultado, '" + "', 'scrollbars=yes, width=700, height=700, left=100, top = 100');
+   }
     function habilitar_metodologia(obj){
         if(obj.value !== "") {
             obj1 = document.getElementById('add_metodologia');

@@ -45,8 +45,7 @@ $con = new ConexionBD;
 function LlenarCmbEstablecimiento($Idtipoesta){
 $con = new ConexionBD;
 	if($con->conectar()==true){
-		$sqlText= //"SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$Idtipoesta' ORDER BY Nombre";		
-                            "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento=$Idtipoesta ORDER BY nombre";
+		$sqlText= "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento=$Idtipoesta ORDER BY nombre";
                         $dt = pg_query($sqlText) ;
 	}
 	return $dt;
@@ -1421,7 +1420,7 @@ function DatosResultadoPlanCPositivoxId($idsolicitud,$iddetalle,$Idresultado)
 function obtenerResultadoSolicitudExamen($idHistorialClinico, $idDatoReferencia, $idEstablecimiento){
 $con = new ConexionBD;
 	if($con->conectar()==true){
-		$sql = "SELECT DISTINCT t05.id AS id_area,
+           $sql="SELECT DISTINCT t05.id AS id_area,
                        t05.idarea AS codigo_area,
                        t05.nombrearea AS nombre_area,
                        t10.id AS id_plantilla,
@@ -1429,7 +1428,7 @@ $con = new ConexionBD;
                        t10.plantilla AS nombre_plantilla,
                        t06.id AS id_examen,
                        t06.idestandar AS codigo_examen,
-                       t06.descripcion AS nombre_examen,
+                       t03.nombre_examen,
                        t07.id AS id_estado_solicitud,
                        t07.idestado AS codigo_estado_solicitud,
                        t07.descripcion AS nombre_estado_solicitud,
@@ -1437,8 +1436,13 @@ $con = new ConexionBD;
                        t08.idestado AS codigo_estado_detalle,
                        t08.descripcion AS nombre_estado_detalle,
                        t01.observacion AS detalle_observacion,
+                       t01.f_tomamuestra AS fecha_toma_muestra,
                        t25.id AS id_empleado,
                        t25.nombreempleado AS nombre_empleado,
+                       t26.id AS id_estado_rechazo,
+                       t26.estado AS nombre_estado_rechazo,
+                       t27.id AS id_observacion_rechazo,
+                       t27.posible_observacion AS nombre_observacion_rechazo,
                        TO_CHAR(t17.fecha_resultado, 'dd/mm/yyyy') AS fecha_resultado,
                        CASE WHEN t03.urgente = 1 AND t02.estado = 1
                             THEN 'SI'
@@ -1485,10 +1489,10 @@ $con = new ConexionBD;
                        t20.rango_fin_subelemento,
                        t20.control_normal_subelemento,
                        t20.pb_subelemento_orden,
-                       t21.id_elemento_tincion,
+                       /*t21.id_elemento_tincion,
                        t21.nombre_elemento_tincion,
                        t21.id_cantidad_tincion,
-                       t21.nombre_cantidad_tincion,
+                       t21.nombre_cantidad_tincion,*/
                        t22.id_procedimiento,
                        t22.nombre_procedimiento,
                        t22.unidad_procedimiento,
@@ -1574,7 +1578,7 @@ $con = new ConexionBD;
                     LEFT  JOIN lab_posible_resultado ti05 ON (ti05.id = ti03.id_posible_resultado)
                     LEFT  JOIN lab_posible_resultado ti06 ON (ti06.id = ti04.id_posible_resultado)
                 ) t20 ON (t03.id = t20.id_examen_elemento AND (t17.id = t20.id_resultado_elemento OR t17.id = t20.id_resultado_subelemento))
-                LEFT JOIN (
+                /*LEFT JOIN (
                     SELECT ti07.id AS id_elemento_tincion,
                            ti07.elementotincion AS nombre_elemento_tincion,
                            ti11.id AS id_cantidad_tincion,
@@ -1588,7 +1592,7 @@ $con = new ConexionBD;
                     LEFT  JOIN lab_detalleresultado        ti09 ON (ti07.id = ti09.id_elementotincion)
                     LEFT  JOIN lab_posible_resultado       ti10 ON (ti10.id = ti09.id_posible_resultado)
                     LEFT  JOIN lab_cantidadestincion       ti11 ON (ti11.id = ti09.idcantidad)
-                ) t21 ON (t03.id = t21.id_examen AND t17.id = t21.id_resultado_tincion)
+                ) t21 ON (t03.id = t21.id_examen AND t17.id = t21.id_resultado_tincion)*/
                 LEFT JOIN (
                     SELECT ti12.id AS id_procedimiento,
                            ti12.nombreprocedimiento AS nombre_procedimiento,
@@ -1627,15 +1631,232 @@ $con = new ConexionBD;
                     LEFT  JOIN lab_resultadosportarjeta   ti21 ON (ti19.id = ti21.iddetalleresultado AND ti18.id = ti21.idantibiotico)
                     LEFT  JOIN lab_posible_resultado      ti22 ON (ti22.id = ti21.id_posible_resultado)
                 ) t23 ON (t17.id = t23.id_resultado)
-                LEFT JOIN lab_observaciones t24 ON (t24.id = t17.id_observacion)
-                LEFT JOIN mnt_empleado      t25 ON (t25.id = t17.idempleado)
+                LEFT JOIN lab_observaciones       t24 ON (t24.id = t17.id_observacion)
+                LEFT JOIN mnt_empleado            t25 ON (t25.id = t17.idempleado)
+                LEFT JOIN lab_estado_rechazo      t26 ON (t26.id = t01.id_estado_rechazo)
+                LEFT JOIN lab_posible_observacion t27 ON (t27.id = t01.id_posible_observacion)
                 WHERE     CASE WHEN $idHistorialClinico:: integer != 0
                           THEN t11.id = $idHistorialClinico
                           ELSE t14.id = $idDatoReferencia
                           END
                          AND t02.id_establecimiento_externo = $idEstablecimiento
-                          
-                ORDER BY t20.pb_elemento_orden, t20.pb_subelemento_orden";
+                ORDER BY t20.pb_elemento_orden, t20.pb_subelemento_orden;";
+           
+//		$sql = "SELECT DISTINCT t05.id AS id_area,
+//                       t05.idarea AS codigo_area,
+//                       t05.nombrearea AS nombre_area,
+//                       t10.id AS id_plantilla,
+//                       t10.idplantilla AS codigo_plantilla,
+//                       t10.plantilla AS nombre_plantilla,
+//                       t06.id AS id_examen,
+//                       t06.idestandar AS codigo_examen,
+//                       t06.descripcion AS nombre_examen,
+//                       t07.id AS id_estado_solicitud,
+//                       t07.idestado AS codigo_estado_solicitud,
+//                       t07.descripcion AS nombre_estado_solicitud,
+//                       t08.id AS id_estado_detalle,
+//                       t08.idestado AS codigo_estado_detalle,
+//                       t08.descripcion AS nombre_estado_detalle,
+//                       t01.observacion AS detalle_observacion,
+//                       t25.id AS id_empleado,
+//                       t25.nombreempleado AS nombre_empleado,
+//                       TO_CHAR(t17.fecha_resultado, 'dd/mm/yyyy') AS fecha_resultado,
+//                       CASE WHEN t03.urgente = 1 AND t02.estado = 1
+//                            THEN 'SI'
+//                            ELSE 'NO'
+//                       END AS urgente,
+//                       t17.id AS id_resultado,
+//                       t17.resultado,
+//                       t17.lectura,
+//                       t17.interpretacion,
+//                       t17.observacion AS resultado_observacion,
+//                       t18.id AS id_posible_resultado,
+//                       t18.posible_resultado AS nombre_posible_resultado,
+//                       CASE t10.idplantilla WHEN 'B'
+//                            THEN NULL
+//                            ELSE t19.unidades
+//                       END AS unidades,
+//                       CASE t10.idplantilla WHEN 'B'
+//                            THEN NULL
+//                            ELSE t19.rangoinicio
+//                       END AS rango_inicio,
+//                       CASE t10.idplantilla WHEN 'B'
+//                            THEN NULL
+//                            ELSE t19.rangofin
+//                       END AS rango_fin,
+//                       t20.id_elemento,
+//                       t20.nombre_elemento,
+//                       t20.id_resultado_elemento,
+//                       t20.id_detalleresultado_elemento,
+//                       t20.resultado_elemento,
+//                       t20.id_posible_resultado_elemento,
+//                       t20.nombre_posible_resultado_elemento,
+//                       t20.unidad_elemento,
+//                       t20.control_normal_elemento,
+//                       t20.pb_elemento_orden,
+//                       t20.id_subelemento,
+//                       t20.nombre_subelemento,
+//                       t20.id_resultado_subelemento,
+//                       t20.id_detalleresultado_subelemento,
+//                       t20.resultado_subelemento,
+//                       t20.id_posible_resultado_subelemento,
+//                       t20.nombre_posible_resultado_subelemento,
+//                       t20.unidad_subelemento,
+//                       t20.rango_inicio_subelemento,
+//                       t20.rango_fin_subelemento,
+//                       t20.control_normal_subelemento,
+//                       t20.pb_subelemento_orden,
+//                       t21.id_elemento_tincion,
+//                       t21.nombre_elemento_tincion,
+//                       t21.id_cantidad_tincion,
+//                       t21.nombre_cantidad_tincion,
+//                       t22.id_procedimiento,
+//                       t22.nombre_procedimiento,
+//                       t22.unidad_procedimiento,
+//                       t22.rango_inicio_procedimiento,
+//                       t22.rango_fin_procedimiento,
+//                       t22.resultado_procedimiento,
+//                       t22.id_posible_resultado_procedimiento,
+//                       t22.nombre_posible_resultado_procedimiento,
+//                       t22.control_diario_procedimiento,
+//                       t23.id_bacteria,
+//                       t23.nombre_bacteria,
+//                       t23.cantidad_bacterias,
+//                       t24.id AS id_observacion_bacteria,
+//                       t24.observacion AS nombre_observacion_bacteria,
+//                       t24.tiporespuesta AS codigo_observacion_bacteria,
+//                       t23.id_tarjeta,
+//                       t23.nombre_tarjeta,
+//                       t23.id_antibiotico,
+//                       t23.nombre_antibiotico,
+//                       t23.id_resultado_antibiotico,
+//                       t23.resultado_antibiotico,
+//                       t23.lectura_antibiotico,
+//                       t23.id_posible_resultado_antibiotico,
+//                       t23.nombre_posible_resultado_antibiotico
+//                FROM sec_detallesolicitudestudios          t01
+//                INNER JOIN sec_solicitudestudios           t02 ON (t02.id = t01.idsolicitudestudio)
+//                INNER JOIN lab_conf_examen_estab           t03 ON (t03.id = t01.id_conf_examen_estab)
+//                INNER JOIN mnt_area_examen_establecimiento t04 ON (t04.id = t03.idexamen)
+//                INNER JOIN ctl_area_servicio_diagnostico   t05 ON (t05.id = t04.id_area_servicio_diagnostico)
+//                INNER JOIN ctl_examen_servicio_diagnostico t06 ON (t06.id = t04.id_examen_servicio_diagnostico)
+//                INNER JOIN ctl_estado_servicio_diagnostico t07 ON (t07.id = t02.estado)
+//                INNER JOIN ctl_estado_servicio_diagnostico t08 ON (t08.id = t01.estadodetalle)
+//                INNER JOIN mnt_empleado                    t09 ON (t09.id = t01.idempleado)
+//                INNER JOIN lab_plantilla                   t10 ON (t10.id = t03.idplantilla)
+//                LEFT  JOIN sec_historial_clinico           t11 ON (t11.id = t02.id_historial_clinico)
+//                LEFT  JOIN mnt_expediente                  t12 ON (t12.id = t11.id_numero_expediente)
+//                LEFT  JOIN mnt_paciente                    t13 ON (t13.id = t12.id_paciente)
+//                LEFT  JOIN mnt_dato_referencia             t14 ON (t14.id = t02.id_dato_referencia)
+//                LEFT  JOIN mnt_expediente_referido         t15 ON (t15.id = t14.id_expediente_referido)
+//                LEFT  JOIN mnt_paciente_referido           t16 ON (t16.id = t15.id_referido)
+//                LEFT  JOIN lab_resultados                  t17 ON (t01.id = t17.iddetallesolicitud)
+//                LEFT  JOIN lab_posible_resultado           t18 ON (t18.id = t17.id_posible_resultado)
+//                LEFT  JOIN lab_datosfijosresultado         t19 ON (t03.id = t19.id_conf_examen_estab
+//                        AND (t19.idsexo IS NULL OR t19.idsexo = CASE WHEN t11.id IS NOT NULL THEN t13.id_sexo ELSE t16.id_sexo END)
+//                        AND (t19.idedad = 4 OR t19.idedad = (
+//                                    SELECT id
+//                                    FROM ctl_rango_edad
+//                                    WHERE (DATE(CURRENT_DATE) - CASE WHEN t11.id IS NOT NULL THEN t13.fecha_nacimiento ELSE t16.fecha_nacimiento END BETWEEN edad_minima_dias AND edad_maxima_dias)
+//                                    AND cod_modulo = 'LAB'
+//                                    AND id != 4
+//                                )
+//                            )
+//                        AND t19.fechafin IS NULL
+//                    )
+//                LEFT JOIN (
+//                    SELECT ti01.id AS id_elemento,
+//                           ti01.elemento AS nombre_elemento,
+//                           ti01.unidadelem AS unidad_elemento,
+//                           ti04.resultado AS resultado_elemento,
+//                           ti04.observacion AS control_normal_elemento,
+//                           ti04.idresultado AS id_resultado_elemento,
+//                           ti04.id AS id_detalleresultado_elemento,
+//                           ti06.id AS id_posible_resultado_elemento,
+//                           ti06.posible_resultado AS nombre_posible_resultado_elemento,
+//                           ti01.orden AS pb_elemento_orden,
+//                           ti02.id AS id_subelemento,
+//                           ti02.subelemento AS nombre_subelemento,
+//                           ti02.unidad AS unidad_subelemento,
+//                           ti02.rangoinicio AS rango_inicio_subelemento,
+//                           ti02.rangofin AS rango_fin_subelemento,
+//                           ti03.resultado AS resultado_subelemento,
+//                           ti03.observacion AS control_normal_subelemento,
+//                           ti03.idresultado AS id_resultado_subelemento,
+//                           ti03.id AS id_detalleresultado_subelemento,
+//                           ti05.id AS id_posible_resultado_subelemento,
+//                           ti05.posible_resultado AS nombre_posible_resultado_subelemento,
+//                           ti01.id_conf_examen_estab AS id_examen_elemento,
+//                           ti02.orden AS pb_subelemento_orden
+//                    FROM lab_elementos  ti01
+//                    INNER JOIN lab_subelementos      ti02 ON (ti01.id = ti02.idelemento)
+//                    LEFT  JOIN lab_detalleresultado  ti03 ON (ti02.id = ti03.idsubelemento)
+//                    LEFT  JOIN lab_detalleresultado  ti04 ON (ti01.id = ti04.idelemento)
+//                    LEFT  JOIN lab_posible_resultado ti05 ON (ti05.id = ti03.id_posible_resultado)
+//                    LEFT  JOIN lab_posible_resultado ti06 ON (ti06.id = ti04.id_posible_resultado)
+//                ) t20 ON (t03.id = t20.id_examen_elemento AND (t17.id = t20.id_resultado_elemento OR t17.id = t20.id_resultado_subelemento))
+//                LEFT JOIN (
+//                    SELECT ti07.id AS id_elemento_tincion,
+//                           ti07.elementotincion AS nombre_elemento_tincion,
+//                           ti11.id AS id_cantidad_tincion,
+//                           ti11.cantidadtincion AS nombre_cantidad_tincion,
+//                           ti09.idresultado AS id_resultado_tincion,
+//                           ti10.id AS id_posible_resultado_tincion,
+//                           ti10.posible_resultado AS nombre_posible_resultado_tincion,
+//                           ti08.id_conf_examen_estab AS id_examen
+//                    FROM lab_elementostincion              ti07
+//                    INNER JOIN lab_examen_elementostincion ti08 ON (ti07.id = ti08.id_elementostincion)
+//                    LEFT  JOIN lab_detalleresultado        ti09 ON (ti07.id = ti09.id_elementotincion)
+//                    LEFT  JOIN lab_posible_resultado       ti10 ON (ti10.id = ti09.id_posible_resultado)
+//                    LEFT  JOIN lab_cantidadestincion       ti11 ON (ti11.id = ti09.idcantidad)
+//                ) t21 ON (t03.id = t21.id_examen AND t17.id = t21.id_resultado_tincion)
+//                LEFT JOIN (
+//                    SELECT ti12.id AS id_procedimiento,
+//                           ti12.nombreprocedimiento AS nombre_procedimiento,
+//                           ti12.unidades AS unidad_procedimiento,
+//                           ti12.rangoinicio AS rango_inicio_procedimiento,
+//                           ti12.rangofin AS rango_fin_procedimiento,
+//                           ti13.resultado AS resultado_procedimiento,
+//                           ti14.id AS id_posible_resultado_procedimiento,
+//                           ti14.posible_resultado AS nombre_posible_resultado_procedimiento,
+//                           ti13.observacion AS control_diario_procedimiento,
+//                           ti13.idresultado AS id_resultado_procedimiento,
+//                           ti12.id_conf_examen_estab AS id_examen
+//                    FROM lab_procedimientosporexamen ti12
+//                    LEFT JOIN lab_detalleresultado   ti13 ON (ti12.id = ti13.idprocedimiento)
+//                    LEFT JOIN lab_posible_resultado  ti14 ON (ti14.id = ti13.id_posible_resultado)
+//                ) t22 ON (t03.id = t22.id_examen AND t17.id = t22.id_resultado_procedimiento)
+//                LEFT JOIN (
+//                    SELECT ti20.id AS id_bacteria,
+//                           ti20.bacteria AS nombre_bacteria,
+//                           ti19.cantidad AS cantidad_bacterias,
+//                           ti16.id AS id_tarjeta,
+//                           ti16.nombretarjeta AS nombre_tarjeta,
+//                           ti18.id AS id_antibiotico,
+//                           ti18.antibiotico AS nombre_antibiotico,
+//                           ti21.id AS id_resultado_antibiotico,
+//                           ti21.resultado AS resultado_antibiotico,
+//                           ti21.valor AS lectura_antibiotico,
+//                           ti22.id AS id_posible_resultado_antibiotico,
+//                           ti22.posible_resultado AS nombre_posible_resultado_antibiotico,
+//                           ti19.idresultado AS id_resultado
+//                    FROM lab_tarjetasvitek                ti16
+//                    INNER JOIN lab_antibioticosportarjeta ti17 ON (ti16.id = ti17.idtarjeta)
+//                    INNER JOIN lab_antibioticos           ti18 ON (ti18.id = ti17.idantibiotico)
+//                    LEFT  JOIN lab_detalleresultado       ti19 ON (ti16.id = ti19.idtarjeta)
+//                    LEFT  JOIN lab_bacterias              ti20 ON (ti20.id = ti19.idbacteria)
+//                    LEFT  JOIN lab_resultadosportarjeta   ti21 ON (ti19.id = ti21.iddetalleresultado AND ti18.id = ti21.idantibiotico)
+//                    LEFT  JOIN lab_posible_resultado      ti22 ON (ti22.id = ti21.id_posible_resultado)
+//                ) t23 ON (t17.id = t23.id_resultado)
+//                LEFT JOIN lab_observaciones t24 ON (t24.id = t17.id_observacion)
+//                LEFT JOIN mnt_empleado      t25 ON (t25.id = t17.idempleado)
+//                WHERE     CASE WHEN $idHistorialClinico:: integer != 0
+//                          THEN t11.id = $idHistorialClinico
+//                          ELSE t14.id = $idDatoReferencia
+//                          END
+//                         AND t02.id_establecimiento_externo = $idEstablecimiento
+//                          
+//                ORDER BY t20.pb_elemento_orden, t20.pb_subelemento_orden";
 
         /*$stm = $conn->prepare($sql);
         $stm->bindValue(':idHistorialClinico', $idHistorialClinico);
