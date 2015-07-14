@@ -440,12 +440,22 @@ if ( $NroRegistros==""){
         
         
         //  DATOS GENERALES
+        
+         $idexpediente       = $_POST['idexpediente'];
+        $idsolicitud        = $_POST['idsolicitud'];
+        $idHistorialClinico = $_POST['idHistorialClinico'];
+        $idDatoReferencia   = $_POST['idDatoReferencia'];
+        $idEstablecimiento  = $_POST['IdEstablecimiento'];
+        $subservicio        =$_POST['subservicio'];
 
         $imprimir = "<br> <form name='frmDatos'>
             <div class='table-responsive' style='width: 80%;'>
                 <table width='70%' border='0' class='table table-hover table-bordered table-condensed table-white'>
 			<thead>
-                                    <tr>
+                        <tr><td colspan='4' background-color='white'>";
+        $imprimir.='<a href="pdfOrd_x_id.php?idexpediente='.$idexpediente.'&idsolicitud='.$idsolicitud.'&idHistorialClinico='.$idHistorialClinico.'&idDatoReferencia='.$idDatoReferencia.'&IdEstablecimiento='.$idEstablecimiento.'&subservicio='.$subservicio.'&title=\'PDF\'" target="_blank"><img align="right" src="../../../Imagenes/pdf2.png" title="Exportar a PDF" alt="Exportar a PDF" style="padding-right:5px"></a></td></tr>';
+        
+        $imprimir.="<tr>
                                             <th colspan='4' align='center' style='background-color: #428bca; color: #ffffff'>
                                                     <h3>  <center>  <strong>DATOS SOLICITUD</strong>   </center>  </h3></th>
                                     </tr>
