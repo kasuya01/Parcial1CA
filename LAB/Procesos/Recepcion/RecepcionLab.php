@@ -781,7 +781,7 @@ function cambioestexterno(){
             </tr>
             <tr>
                 <td class="StormyWeatherDataTD" colspan="2">                   
-            <center> <button type="button" id="btnverificar" name="btnverificar" class='btn btn-primary' onclick="searchpac()"><span class='glyphicon glyphicon-plus'>&nbsp;Agregar Examenes</button></center>
+            <center> <button type="button" id="Examen" name="Examen" class='btn btn-primary' onclick="Examenes()"><span class='glyphicon glyphicon-plus'>&nbsp;Agregar Examenes</button></center>
                 </td>
 <!--                    <td class="StormyWeatherFieldCaptionTD">Agregar Examenes</td>
                     <td class="StormyWeatherDataTD">
