@@ -156,7 +156,7 @@ switch ($opcion) {
 //        }
 
 
-        $query = "WITH tbl_servicio AS (
+      $query = "WITH tbl_servicio AS (
                     SELECT t02.id,
                         CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
@@ -175,8 +175,8 @@ switch ($opcion) {
                     WHERE $where_with t02.id_establecimiento = $lugar
                     ORDER BY 2)
                  SELECT 
+                distinct on (t02.id_historial_clinico)t02.id_historial_clinico,
                 t02.id,
-                t02.id_historial_clinico,
                 t02.id_dato_referencia,
                 TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                 t06.numero AS idnumeroexp, 
@@ -187,14 +187,13 @@ switch ($opcion) {
                 t14.nombre, 
                 TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud, 
                 (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-                CASE t02.estado 
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada'
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='R') THEN 'Recibida'
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='P') THEN 'En Proceso'    
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' 
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
+               (select descripcion as estado
+               from sec_solicitudestudios t1
+               join ctl_estado_servicio_diagnostico t2 on (t2.id=t1.estado)
+               where id_historial_clinico=t02.id_historial_clinico
+               group by id_historial_clinico, t2.id,descripcion
+               order by t2.id asc
+               limit 1) AS estado,
             TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta
             FROM sec_solicitudestudios t02                
             INNER JOIN lab_recepcionmuestra t03                 ON (t03.idsolicitudestudio=t02.id) 
@@ -216,8 +215,8 @@ switch ($opcion) {
            UNION
 
             SELECT 
-            t02.id, 
-            t02.id_historial_clinico,
+            distinct on (t02.id_historial_clinico)t02.id_historial_clinico,
+            t02.id,
             t02.id_dato_referencia,
             TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
             t06.numero AS idnumeroexp,
@@ -228,14 +227,13 @@ switch ($opcion) {
             t14.nombre,
             TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud, 
             (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-            CASE t02.estado 
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada'
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='R') THEN 'Recibida'
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='P') THEN 'En Proceso'    
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' 
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
+            (select descripcion as estado
+            from sec_solicitudestudios t1
+            join ctl_estado_servicio_diagnostico t2 on (t2.id=t1.estado)
+            where id_historial_clinico=t02.id_historial_clinico
+            group by id_historial_clinico, t2.id,descripcion
+            order by t2.id asc
+            limit 1) AS estado,
             TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta
             FROM sec_solicitudestudios t02                    	   
             INNER JOIN lab_recepcionmuestra t03                     ON (t03.idsolicitudestudio=t02.id) 
@@ -317,7 +315,7 @@ if ( $NroRegistros==""){
             echo "<td><span style='color: #0101DF;'><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a>" .
                     "<input name='idhistorialclinico[" . $pos . "]' id='idhistorialclinico[" . $pos . "]' type='hidden' size='60' value='" . $row['id_historial_clinico'] . "' />" .
                     "<input name='iddatoreferencia[" . $pos . "]' id='iddatoreferencia[" . $pos . "]' type='hidden' size='60' value='" . $row['id_dato_referencia'] . "' />" .
-                    "<input name='idsolicitud[" . $pos . "]' id='idsolicitud[" . $pos . "]' type='hidden' size='60' value='" . $row[0] . "' />" .
+                    "<input name='idsolicitud[" . $pos . "]' id='idsolicitud[" . $pos . "]' type='hidden' size='60' value='" . $row[1] . "' />" .
                     "<input name='idexpediente[" . $pos . "]' id='idexpediente[" . $pos . "]' type='hidden' size='60' value='" . $row['idnumeroexp'] . "' />" .
                     "<input name='idestablecimiento[" . $pos . "]' id='idestablecimiento[" . $pos . "]' type='hidden' size='60' value='" . $IdEstab . "' /></td>" .
                     "<input name='subservicio[".$pos."]' id='subservicio[".$pos."]' type='hidden' size='60' value='".$row['nombresubservicio']."' />".
@@ -747,7 +745,7 @@ return $plantillas;
 
         switch ($row['codigo_estado_detalle']) {
             case 'RM':
-                $exams[ $newExam[2] ]['motivo_rechazo'] = $row['detalle_observacion'];
+                $exams[ $newExam[2] ]['motivo_rechazo'] = $row['nombre_observacion_rechazo'];
                 break;
             case 'RC':
     $exams[ $newExam[2] ]['resultadoFinal'] = array(

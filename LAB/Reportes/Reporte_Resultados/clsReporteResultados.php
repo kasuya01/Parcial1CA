@@ -1420,7 +1420,7 @@ function DatosResultadoPlanCPositivoxId($idsolicitud,$iddetalle,$Idresultado)
 function obtenerResultadoSolicitudExamen($idHistorialClinico, $idDatoReferencia, $idEstablecimiento){
 $con = new ConexionBD;
 	if($con->conectar()==true){
-           $sql="SELECT DISTINCT t05.id AS id_area,
+         $sql="SELECT DISTINCT t05.id AS id_area,
                        t05.idarea AS codigo_area,
                        t05.nombrearea AS nombre_area,
                        t10.id AS id_plantilla,
@@ -1640,7 +1640,7 @@ $con = new ConexionBD;
                           ELSE t14.id = $idDatoReferencia
                           END
                          AND t02.id_establecimiento_externo = $idEstablecimiento
-                ORDER BY t20.pb_elemento_orden, t20.pb_subelemento_orden;";
+                ORDER BY 1,id_estado_detalle, t20.pb_elemento_orden, t20.pb_subelemento_orden;";
            
                 $result = pg_query($sql);
       if (!$result)
@@ -1752,7 +1752,7 @@ function obtenerDatosGenerales($idHistorialClinico, $idDatoReferencia, $idEstabl
 }
 
 //Fn_PG
-function grupoprueconsul($i_idsolicitud, $i_idestablocal)
+function grupoprueconsul($i_idsolicitud, $i_idestablocal, $idHistorialClinico, $idDatoReferencia)
 {
    $con = new ConexionBD;
    if($con->conectar()==true)
@@ -1764,7 +1764,10 @@ function grupoprueconsul($i_idsolicitud, $i_idestablocal)
          join mnt_area_examen_establecimiento t04 on (t04.id=t03.idexamen)
          join ctl_examen_servicio_diagnostico t05 on (t05.id=t04.id_examen_servicio_diagnostico)
          join lab_estandarxgrupo 	     t06 on (t06.id=t05.idgrupo)
-         where t01.id=$i_idsolicitud
+         where (CASE WHEN $idHistorialClinico:: integer != 0
+                          THEN t01.id_historial_clinico = $idHistorialClinico
+                          ELSE t01.id_dato_referencia = $idDatoReferencia
+                          END)
          and estado!=6
          and estadodetalle!=6
          and t01.id_establecimiento=$i_idestablocal

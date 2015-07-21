@@ -91,8 +91,8 @@ function GenResultados(){
 
 //funcion prueba
 function enviaxfis(){
-    var ban=0;
-    var idrol=$("#idrol").val()
+//    var ban=0;
+//    var idrol=$("#idrol").val()
 //    if (idrol==7){
 //        var regionid2=(document.getElementById('regionid2').value);
 //        if (regionid2==0){
@@ -103,21 +103,21 @@ function enviaxfis(){
 //        });
 //        $( "#dialog" ).dialog( "open" );
 //           ban=1;
-//            return false;
+////            return false;
+////        }
+////    }
+//    if (ban==0){
+//    var i=0;
+//    $.ajax({
+//        type: "POST",
+//        cache: false,
+//    //    data: parametros,
+//        success: function(response)
+//        {
+//            window.open(response);
 //        }
-//    }
-    if (ban==0){
-    var i=0;
-    $.ajax({
-        type: "POST",
-        cache: false,
-    //    data: parametros,
-        success: function(response)
-        {
-            window.open(response);
-        }
-    });
-  }
+//    });
+//  }
 }
 //funcion prueba
 function enviaxfis2(){

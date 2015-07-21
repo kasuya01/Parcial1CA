@@ -594,6 +594,7 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
 //return false;
     var url = "../EstudiosLaboratorio/Solicitud.php?"+Parametros;
     window.open(url,"Solicitudes","fullscreen=yes, toolbar=no, scrollbars=yes");
+    limpiar();
 }
 //Funcion de cambio de est externo
 function cambioestexterno(){

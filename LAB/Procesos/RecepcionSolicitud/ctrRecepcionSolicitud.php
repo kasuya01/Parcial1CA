@@ -64,7 +64,22 @@ switch ($opcion) {
                         $result0 = pg_query($query0);
                      }
                   } else {
-                     $idestado = 'PM';
+                     $sql3="select t3.id_area_servicio_diagnostico 
+                     from  lab_conf_examen_estab t2 
+                     join mnt_area_examen_establecimiento t3 on (t3.id=t2.idexamen)
+                     where t2.id=$hdni_idexamen_;";
+//                     $sql3="select t4.id
+//                     from  lab_conf_examen_estab t2 
+//                     join ctl_examen_servicio_diagnostico t3 on (t3.id=t2.idestandarrep)
+//                     join lab_estandarxgrupo t4 on (t4.id=t3.idgrupo)
+//                     where t2.id=$hdni_idexamen_";
+                     $result3=pg_query($sql3);
+                     $rowtmu=  pg_fetch_array($result3);
+                     //14 es examen referido
+                     if ($rowtmu[0]==14) 
+                          $idestado='RC';
+                     else
+                        $idestado = 'PM';
                   }
                   //  (a_idhistorial integer, a_newfechacita date, a_iddetallesolicitud integer, a_idsolicitudestudio integer, a_idexamen integer,  a_idusuarioreg integer, referido integer)
                   // echo 'idestado:'.$idestado.'    hdni_idexamen:'.$hdni_idexamen_.'<br\>';
@@ -101,10 +116,25 @@ switch ($opcion) {
                         $result0 = pg_query($query0);
                      }
                   } else {
-                     $idestado = 'D';
+                     $sql3="select t3.id_area_servicio_diagnostico 
+                     from  lab_conf_examen_estab t2 
+                     join mnt_area_examen_establecimiento t3 on (t3.id=t2.idexamen)
+                     where t2.id=$hdni_idexamen_;";
+//                     $sql3="select t4.id
+//                     from  lab_conf_examen_estab t2 
+//                     join ctl_examen_servicio_diagnostico t3 on (t3.id=t2.idestandarrep)
+//                     join lab_estandarxgrupo t4 on (t4.id=t3.idgrupo)
+//                     where t2.id=$hdni_idexamen_";
+                     $result3=pg_query($sql3);
+                     $rowtmu=  pg_fetch_array($result3);
+                     //14 es examen referido
+                     if ($rowtmu[0]==14) 
+                          $idestado='RC';
+                     else
+                          $idestado = 'D';
                   }
 
-                  $query1 = "UPDATE sec_detallesolicitudestudios 
+                      $query1 = "UPDATE sec_detallesolicitudestudios 
                       SET estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = '$idestado' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')), "
                           . "f_tomamuestra= '$hdnfechatmx_',"
                           . "id_estado_rechazo=$hdnvalidarmuestra_,
