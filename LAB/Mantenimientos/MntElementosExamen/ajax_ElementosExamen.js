@@ -185,7 +185,9 @@ function pedirDatos(idelemento){ //CARGAR DATOS A MODIFICAR
 			divFormulario.innerHTML = ajax.responseText
 			divFormulario.style.display="block";
 			divFormularioNuevo.style.display="none";
+                        classdate();
 		}
+                 
 	}
 	//como hacemos uso del metodo POST
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
@@ -212,7 +214,9 @@ function pedirDatosSubElementos(idsubelemento)
 			divFormulario.innerHTML = ajax.responseText
 			divFormulario.style.display="block";
 			divFormularioNuevo.style.display="none";
+                        classdate();
 		}
+                 
 	}
 	//como hacemos uso del metodo POST
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
@@ -235,8 +239,8 @@ function enviarDatos(){
 	subelemento=document.frmModificar.cmbSubElementos.value;
 	observacionele=document.frmModificar.txtobservacionele.value;
 	unidadele=document.frmModificar.txtunidadele.value;
-	Fechaini=document.frmModificar.txtFechainicio.value;
-	Fechafin=document.frmModificar.txtFechaFin.value;
+	Fechaini=document.frmModificar.txtFechainicio1.value;
+	Fechafin=document.frmModificar.txtFechaFin1.value;
         orden=document.frmModificar.cmborden.value;
     //alert(Fechaini+"***"+Fechafin);
 	
@@ -282,8 +286,8 @@ function enviarDatosSubElemento()
         rangoini=document.frmModificar.txtrangoini.value;
 	rangofin=document.frmModificar.txtrangofin.value;
 	unidad=document.frmModificar.txtunidad.value;
-	Fechaini=document.frmModificar.txtFechainicio.value;
-	Fechafin=document.frmModificar.txtFechaFin.value;
+	Fechaini=document.frmModificar.txtFechainicio1.value;
+	Fechafin=document.frmModificar.txtFechaFin1.value;
         sexo=document.frmModificar.cmbSexo.value;
         redad=document.frmModificar.cmbEdad.value;
         orden=document.frmModificar.cmborden.value;

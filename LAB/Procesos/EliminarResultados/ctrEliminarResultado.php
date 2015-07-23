@@ -110,15 +110,31 @@ switch ($opcion)
                     LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
                     WHERE $where_with t02.id_establecimiento = $lugar
                     ORDER BY 2)
-            
-                SELECT DISTINCT t02.id AS idsolicitudestudio, TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
-                t03.numeromuestra, t06.numero AS idnumeroexp, t03.id AS idrecepcionmuestra, 
-                CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido, t07.segundo_apellido,
-                t07.apellido_casada) AS paciente, t20.servicio AS nombresubservicio, t13.nombre AS nombreservicio, t02.impresiones,
-                t14.nombre, t09.id AS idhistorialclinico, TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud, 
-                t17.tiposolicitud AS prioridad, t07.fecha_nacimiento AS fechanacimiento, t19.id AS sexo,
-                t02.id_establecimiento_externo, (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-                false AS referido,(SELECT descripcion FROM ctl_estado_servicio_diagnostico WHERE id=t02.estado) AS estado ,t02.id_expediente
+            SELECT ordenar.* FROM (
+                SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
+                t02.id AS idsolicitudestudio, 
+                t03.numeromuestra, 
+                t06.numero AS idnumeroexp, 
+                t03.id AS idrecepcionmuestra, 
+                CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,
+                t07.tercer_nombre,
+                t07.primer_apellido, 
+                t07.segundo_apellido,
+                t07.apellido_casada) AS paciente, 
+                t20.servicio AS nombresubservicio, 
+                t13.nombre AS nombreservicio, 
+                t02.impresiones,
+                t14.nombre, 
+                t09.id AS idhistorialclinico, 
+                TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud, 
+                t17.tiposolicitud AS prioridad, 
+                t07.fecha_nacimiento AS fechanacimiento, 
+                t19.id AS sexo,
+                t02.id_establecimiento_externo, 
+                (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
+                false AS referido,
+                (SELECT descripcion FROM ctl_estado_servicio_diagnostico WHERE id=t02.estado) AS estado ,
+                t02.id_expediente
                 FROM sec_solicitudestudios t02  
                 INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio) 
                 INNER JOIN mnt_expediente t06 ON (t06.id = t02.id_expediente) 
@@ -134,11 +150,16 @@ switch ($opcion)
                 INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud) 
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo) 
                 INNER JOIN tbl_servicio t20 ON (t20.id = t10.id AND t20.servicio IS NOT NULL) 
+                
+
+
+
+
                 WHERE (t16.idestado = 'P' OR t16.idestado = 'C') AND t02.id_establecimiento = $lugar AND $condf1
         
                 UNION
 
-                SELECT DISTINCT t02.id AS idsolicitudestudio,TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,  
+                SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion, t02.id AS idsolicitudestudio, 
                 t03.numeromuestra, t06.numero AS idnumeroexp, t03.id AS idrecepcionmuestra, 
                 CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido, t07.apellido_casada) AS paciente, 
                 t11.nombre AS nombresubservicio, t13.nombre AS nombreservicio, t02.impresiones, t14.nombre, t09.id AS idhistorialclinico,
@@ -160,7 +181,10 @@ switch ($opcion)
                 INNER JOIN ctl_estado_servicio_diagnostico t16 ON (t16.id = t02.estado) 
                 INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud) 
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo) 
-                WHERE (t16.idestado = 'P' OR t16.idestado = 'C') AND t02.id_establecimiento = $lugar AND $condf2";
+                WHERE (t16.idestado = 'P' OR t16.idestado = 'C') AND t02.id_establecimiento = $lugar AND $condf2 ) ordenar
+ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
+            
+         //   echo $query;
 		
 		$consulta=$objdatos->BuscarSolicitudesPaciente($query); 
 		$NroRegistros= $objdatos->NumeroDeRegistros($query);				

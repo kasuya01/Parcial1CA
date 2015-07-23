@@ -217,13 +217,13 @@ switch ($opcion)
 		{ $query .= " subelemento = '".$_POST['subelemento']."' AND"; }
 		
 		if (!empty($_POST['Fechaini']))
-		{ 	$FechaI=explode('/',$_POST['Fechaini']);
-			$Fechaini=$FechaI[2].'/'.$FechaI[1].'/'.$FechaI[0];
+		{ 	$FechaI=explode('-',$_POST['Fechaini']);
+			$Fechaini=$FechaI[2].'-'.$FechaI[1].'-'.$FechaI[0];
 			$query .= " fechaini='".$Fechaini."' AND"; }
 
 		if (!empty($_POST['Fechafin'])){
-			$FechaF=explode('/',$_POST['Fechafin']);
-	  		$Fechafin=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];
+			$FechaF=explode('-',$_POST['Fechafin']);
+	  		$Fechafin=$FechaF[2].'-'.$FechaF[1].'-'.$FechaF[0];
 			$query .= " fechafin=".$Fechafin." AND"; } 			
      //  else{$ban=1;}
 		if((empty($_POST['idarea'])) and (empty($_POST['idexamen'])) and (empty($_POST['elemento'])) and (empty($_POST['unidadele'])) and (empty($_POST['observacionele'])) and (empty($_POST['subelemento'])) and (empty($_POST['Fechafin'])) and (empty($_POST['Fechaini'])))
@@ -276,23 +276,23 @@ switch ($opcion)
 			   /* <td aling ='center'> 
 				<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 				onclick=\"eliminarDato('".$row['id']."')\"> </td>*/
-                      echo"  <td>".$row['orden']."</td>        
+                      echo" <td>".$row['orden']."</td>        
 			    <td>".$row['nombre_examen']."</td>
 			    <td>".htmlentities($row['elemento'])."</td>";
 			    
-				if (empty($row['unidadelem']))
-					echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-				else 
+			    if (empty($row['unidadelem']))
+				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+			    else 
 			        echo"<td>".htmlentities($row['unidadelem'])."</td>";
 				
-				if (empty($row['observelem']))
-					echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-				else 		
-					echo"<td>".htmlentities($row['observelem'])."</td>";
+			    if (empty($row['observelem']))
+				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+			    else 		
+				echo"<td>".htmlentities($row['observelem'])."</td>";
 				
 				echo"<td>".htmlentities($row['subelemento'])."</td>";
 				//echo $row['fechaini'];
-				if (($row['fechaini']=="(NULL)") || (empty($row['fechaini'])))
+			  if (($row['fechaini']=="(NULL)") || (empty($row['fechaini'])))
 					echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 				else 		
 					echo "<td>".htmlentities($row['fechaini'])."</td>";

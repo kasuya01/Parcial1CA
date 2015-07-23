@@ -26,7 +26,7 @@ class clsLab_Procedimientos {
          for ($i=0;$i<(count($aresultados)-1);$i++){
              
              
-              $query = "UPDATE lab_procedimiento_posible_resultado 
+            echo  $query = "UPDATE lab_procedimiento_posible_resultado 
                         SET habilitado = true,
                             fechafin = null,
                             id_user_mod = 8,

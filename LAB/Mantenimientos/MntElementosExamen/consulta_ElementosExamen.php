@@ -27,6 +27,7 @@ $nombreexamen=$row['nombre_examen'];
 $nombrearea=$row['nombrearea'];
 $Fechaini=$row['fechaini'];
 $Fechafin=$row['fechafin'];
+//echo $Fechaini." - ".$Fechafin; 
 $orden=$row['orden'];
 
 //echo $Fechaini."".$Fechafin;
@@ -35,9 +36,9 @@ $orden=$row['orden'];
 
 <form name= "frmModificar" >
   <input name="opcion" type="hidden" value="N" />
-  <table width="50%" border="0" align="center" class="StormyWeatherFormTABLE">
+  <table width="45%" border="0" align="center" class="StormyWeatherFormTABLE">
 		<tr>
-                    <td colspan="3" align="center" class="CobaltFieldCaptionTD"><h3><strong>Elementos de  Examen</h3></strong>
+                    <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3><strong>Elementos de  Examen</h3></strong>
                     </td>
 		</tr>	
 		<tr>
@@ -47,7 +48,7 @@ $orden=$row['orden'];
                         <input name="cod" id="cod" type="hidden" value="<?php echo $cod ?>" />
                         <input name="txtexamen" id="txtexamen" type="hidden" value="<?php echo $nombreexamen ?>" />
                     </td>
-                    <td width="83%" class="StormyWeatherDataTD">
+                    <td width="83%" class="StormyWeatherDataTD" colspan="3">
 			<select id="cmbArea" name="cmbArea" style="width:50%" onChange="MostrarExamenes(this.value);" class="form-control height">
                             <option value="0" >--Seleccione un &Aacute;rea--</option>
 				<?php
@@ -63,7 +64,7 @@ $orden=$row['orden'];
                 </tr>
                 <tr>
 		    <td width="17%" class="StormyWeatherFieldCaptionTD">Examen </td>
-                    <td width="83%" class="StormyWeatherDataTD">
+                    <td width="83%" class="StormyWeatherDataTD" colspan="3">
                         <select id="cmbExamen" name="cmbExamen" style="width:50%" class="form-control height">
                             <option value="0">--Seleccione un Examen--</option>
 				<?php
@@ -79,19 +80,19 @@ $orden=$row['orden'];
 		</tr>
 		<tr>
                     <td class="StormyWeatherFieldCaptionTD">Elemento</td>
-		    <td class="StormyWeatherDataTD"><textarea name="txtelemento" cols="75" rows="2" id="txtelemento"><?php echo htmlentities($nombreelemento); ?></textarea>              
+		    <td class="StormyWeatherDataTD" colspan="3"><textarea name="txtelemento" cols="75" rows="2" id="txtelemento"><?php echo htmlentities($nombreelemento); ?></textarea>              
                 </tr>
 		<tr>
 		    <td class="StormyWeatherFieldCaptionTD">Unidad</td>
-		    <td class="StormyWeatherDataTD"><input name="txtunidadele" type="text" id="txtunidadele" value="<?php echo htmlentities($unidadele); ?>" size="15"></td>
+		    <td class="StormyWeatherDataTD" colspan="3"><input name="txtunidadele" type="text" id="txtunidadele" value="<?php echo htmlentities($unidadele); ?>" size="15"></td>
                 </tr>
 		<tr>
 		    <td class="StormyWeatherFieldCaptionTD">Observci&oacute;n o Interpretaci&oacute;n</td>
-		    <td class="StormyWeatherDataTD"><textarea name="txtobservacionele" cols="75" rows="4"><?php echo htmlentities($observacionele); ?></textarea>
+		    <td class="StormyWeatherDataTD" colspan="3"><textarea name="txtobservacionele" cols="75" rows="4"><?php echo htmlentities($observacionele); ?></textarea>
 		</tr>
 		<tr>
 		    <td width="17%" class="StormyWeatherFieldCaptionTD">SubElementos</td>
-		    <td width="83%" class="StormyWeatherDataTD">
+		    <td width="83%" class="StormyWeatherDataTD" colspan="3">
                         <select id="select" name="cmbSubElementos" style="width:50%" class="form-control height" >
                             <option value="0" >--Seleccione--</option>
                             <option value="S" >Si</option>
@@ -107,22 +108,20 @@ $orden=$row['orden'];
 			</td>
 	    </tr>
 		<tr>
-        	<td colspan="2" class="StormyWeatherDataTD">
-				<table width="850" border="0" align="center" class="StormyWeatherFormTABLE">
-					<tr>
-						<td width="15%" class="StormyWeatherFieldCaptionTD">Fecha Inicio</TD>
-						<td width="30%" class="StormyWeatherDataTD">
-							<input name="txtFechainicio1" type="text" id="txtFechainicio" value="<?php echo $Fechaini; ?>" size="8" >dd/mm/aaaa</td>
-						<td width="13%" class="StormyWeatherFieldCaptionTD">Fecha Final</D>
-						<td width="30%" class="StormyWeatherDataTD">
-							<input name="txtFechaFin1" type="text" id="txtFechaFin" value="<?php echo $Fechafin; ?>" size="8" >dd/mm/aaaa</td>
-					</tr>
-				</table>
-			</td>		
-		</tr>
+                            <td class="StormyWeatherFieldCaptionTD" style="width:150px">Fecha Inicio *</td>
+                            <td  class="StormyWeatherDataTD">
+                               <input  name="txtFechainicio1" type="text" id="txtFechainicio1" size="20" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" style="width:75%"  value="<?php echo $Fechaini; ?>"/>		  
+                                 
+			
+                            </td>      
+                            <td class="StormyWeatherFieldCaptionTD" style="width:150px" >Fecha Final</td>
+                            <td  class="StormyWeatherDataTD">
+                                <input name="txtFechaFin1" type="text" id="txtFechaFin1" size="20" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" style="width:75%" value="<?php echo $Fechafin; ?>" />
+                            </td>      
+                        </tr>   
                 <tr>
                             <td width="17%" class="StormyWeatherFieldCaptionTD">Orden </td>
-                            <td width="83%"  class="StormyWeatherDataTD"> <div id="divRango">
+                            <td width="83%"  class="StormyWeatherDataTD" colspan="3"> <div id="divRango">
                                 <select   name="cmborden"  id="cmborden"  style="width:50%"  class="form-control height" > 
                                     <option value="0">--Seleccione un Orden--</option>
                                     <?php 
@@ -154,7 +153,7 @@ $orden=$row['orden'];
                            </td>		
 		</tr>
         <tr>
-            <td colspan="2" class="StormyWeatherDataTD" align="right">
+            <td colspan="4" class="StormyWeatherDataTD" align="right">
 				<button type="button"  value="Actualizar" class="btn btn-primary" onClick="enviarDatos();"><span class="glyphicon glyphicon-repeat"></span> Actualizar </button>
                                 
 				<!--<button name="Submit2"  class="btn btn-primary" value="Buscar" Onclick="Buscar() ;"><span class='glyphicon glyphicon-search'></span>  Buscar </button>-->

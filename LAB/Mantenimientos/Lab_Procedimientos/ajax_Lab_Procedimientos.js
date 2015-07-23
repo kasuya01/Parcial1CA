@@ -277,6 +277,7 @@ function pedirDatos(idproce){ //CARGAR DATOS A MODIFICAR
 			document.getElementById('divFrmModificar').innerHTML = ajax.responseText
 			divFormularioNuevo.style.display="none";
 			divFormulario.style.display="block"; 
+                        classdate();
 		}
 	}
 	//como hacemos uso del metodo POST

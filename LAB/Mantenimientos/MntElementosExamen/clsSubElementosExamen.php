@@ -120,10 +120,23 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
  {
    $con = new ConexionBD;
    if($con->conectar()==true)
-   { $query = "SELECT lab_subelementos.id,lab_subelementos.subelemento,unidad,lab_elementos.id,elemento,
+   { 
+//       $query = "SELECT lab_subelementos.id,lab_subelementos.subelemento,unidad,lab_elementos.id,elemento,
+//               lab_subelementos.idestablecimiento,rangoinicio,rangofin, 
+//               to_char(lab_subelementos.fechaini,'dd/mm/YYYY')AS FechaIni, 
+//               to_char(lab_subelementos.fechafin,'dd/mm/YYYY')AS FechaFin, 
+//               ctl_sexo.id as idsexo,ctl_sexo.nombre as nombresexo,ctl_rango_edad.id as idedad,
+//               ctl_rango_edad.nombre as nombreedad,lab_subelementos.orden,lab_conf_examen_estab.nombre_examen 
+//               FROM lab_elementos 
+//               INNER JOIN lab_subelementos ON lab_elementos.id=lab_subelementos.idelemento 
+//               LEFT JOIN ctl_sexo ON lab_subelementos.idsexo = ctl_sexo.id 
+//               INNER JOIN ctl_rango_edad ON lab_subelementos.idedad = ctl_rango_edad.id
+//               INNER JOIN lab_conf_examen_estab ON lab_elementos.id_conf_examen_estab=lab_conf_examen_estab.id 
+//	       WHERE lab_subelementos.id=$idsubelemento";
+       $query = "SELECT lab_subelementos.id,lab_subelementos.subelemento,unidad,lab_elementos.id,elemento,
                lab_subelementos.idestablecimiento,rangoinicio,rangofin, 
-               to_char(lab_subelementos.fechaini,'dd/mm/YYYY')AS FechaIni, 
-               to_char(lab_subelementos.fechafin,'dd/mm/YYYY')AS FechaFin, 
+               lab_subelementos.fechaini AS FechaIni, 
+               lab_subelementos.fechafin AS FechaFin, 
                ctl_sexo.id as idsexo,ctl_sexo.nombre as nombresexo,ctl_rango_edad.id as idedad,
                ctl_rango_edad.nombre as nombreedad,lab_subelementos.orden,lab_conf_examen_estab.nombre_examen 
                FROM lab_elementos 

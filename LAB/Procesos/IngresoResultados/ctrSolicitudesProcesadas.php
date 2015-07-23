@@ -136,8 +136,8 @@ switch ($opcion) {
                     LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
                     WHERE $where_with t02.id_establecimiento = $lugar
                     ORDER BY 2)
-            
-                SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
+                    SELECT ordenar.* FROM (
+                       SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                        t02.id AS idsolicitudestudio,
                        t04.idplantilla, 
                        t01.id AS iddetallesolicitud,
@@ -239,8 +239,9 @@ switch ($opcion) {
                 INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico) 
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo)
                
-                WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $lugar AND $cond2"; 
-
+                WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $lugar AND $cond2) ordenar
+                ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC"; 
+//ECHO $query;
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);
         
         echo "<div class='table-responsive' style='width: 80%;'>

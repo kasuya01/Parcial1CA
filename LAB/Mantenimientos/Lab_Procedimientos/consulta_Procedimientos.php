@@ -231,13 +231,13 @@ $rangoedad=$row['nombregrupoedad'];
 				<tr>
 					<td width="19%" class="StormyWeatherFieldCaptionTD">Fecha Inicio</TD>
 					<td  class="StormyWeatherDataTD">
-						<input name="txtFechainicio1" type="text" id="txtFechainicio" style="width:260px"   class="form-control height placeholder" value="<?php echo $Fechaini; ?>" size="28" >
+						<input name="txtFechainicio1" type="text" id="txtFechainicio1" style="width:260px"   class="form-control height placeholder" value="<?php echo $Fechaini; ?>" size="28" >
                                         </td>
 					<td width="17%" class="StormyWeatherFieldCaptionTD">Fecha Final</D>
 					<td  class="StormyWeatherDataTD">
                                          <?php  if($Fechafin==""){
                                              ?>
-                                            <input name="txtFechaFin1" type="text" id="txtFechaFin" style="width:280px"   class="form-control height placeholder" placeholder="Ingrese Fecha  dd/mm/aaaa" size="28" >
+                                            <input name="txtFechaFin1" type="text" id="txtFechaFin1" style="width:280px"   class="form-control height placeholder" placeholder="Ingrese Fecha  dd/mm/aaaa" size="28" >
                                               <?php 
                                             }else {
                                                ?>

@@ -251,7 +251,7 @@ values ($idmet, $aresultados[$i], current_date, true,$usuario, date_trunc('secon
       if ($con->conectar() == true) {
          if ($IdFormulario == '0')
             $IdFormulario = 'NULL';
-        echo $query = "UPDATE lab_conf_examen_estab 
+         $query = "UPDATE lab_conf_examen_estab 
                               SET idusuariomod=$usuario,fechahoramod=NOW(),idformulario=$IdFormulario,
                               idestandarrep=$IdEstandarResp,IdPlantilla=$plantilla,impresion='$letra',urgente=$Urgente,ubicacion=$ubicacion,condicion='$Hab',nombre_examen='$nomexamen',idsexo=$idsexo
                               WHERE lab_conf_examen_estab.id=$idconf";

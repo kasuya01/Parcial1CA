@@ -16,12 +16,12 @@ $base_url  = $_SESSION['base_url'];
 			<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 			<link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 		<!--referencias del estilo del calendario-->
-			<link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
-			<link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />
-		<!--llamado al archivo de funciones del calendario-->
+<!--			<link rel="stylesheet" type="text/css" media="all" href="../../../calendarstructure/skins/aqua/theme.css" title="Aqua" />
+			<link rel="alternate stylesheet" type="text/css" media="all" href="../../../calendarstructure/calendar-blue.css" title="blue" />-->
+<!--		llamado al archivo de funciones del calendario
 			<script type="text/javascript" src="../../../calendarstructure/calendar.js"></script>
 			<script type="text/javascript" src="../../../calendarstructure/calendar-es.js"></script>
-			<script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
+			<script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>-->
 			<?php include_once $ROOT_PATH.'/public/css.php';?>
                         <?php include_once $ROOT_PATH.'/public/js.php';?>
                         <script language="JavaScript" >
@@ -74,7 +74,7 @@ $base_url  = $_SESSION['base_url'];
         <td>
             <div  id="divFrmNuevo" >
                 <form name="frmnuevo">
-                    <table width="50%" border="0" align="center" class="StormyWeatherFormTABLE">
+                    <table width="45%" border="0" align="center" class="StormyWeatherFormTABLE">
                         <tr>
                             <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3><strong>Elementos de  Examen</h3></strong>	</td>
 			</tr>	
@@ -129,22 +129,17 @@ $base_url  = $_SESSION['base_url'];
 				</select>
                             </td>
 			</tr>
-			<tr>
-<!--                           <td colspan="2" class="StormyWeatherDataTD">
-                               <table width="850" border="0" align="center" class="StormyWeatherFormTABLE">
-                                   <tr>-->
-                                        <td width="17%" class="StormyWeatherFieldCaptionTD">Fecha Inicio</td>
-					<td width="35%" class="StormyWeatherDataTD">
-                                            <input name="txtFechainicio" type="text" id="txtFechainicio" size="10" ><input name="button" type="button" id="trigger"  value="...">dd/mm/aaaa
-					</td>
-					<td width="13%" class="StormyWeatherFieldCaptionTD">Fecha Final</td>
-					<td width="39%" class="StormyWeatherDataTD">
-                                            <input name="txtFechaFin" type="text" id="txtFechaFin" size="10" ><input name="button2" type="button" id="trigger2" value="...">dd/mm/aaaa
-					</td>
-<!--                                    </tr>	
-				</table>
-                            </td>				-->
-			</tr>
+			
+                        <tr>
+                            <td class="StormyWeatherFieldCaptionTD" style="width:150px">Fecha Inicio *</td>
+                            <td  class="StormyWeatherDataTD">
+                                <input  name="txtFechainicio" type="text" id="txtFechainicio" size="20" class="date form-control  height placeholder"  placeholder="aaaa-mm-dd" style="width:75%"  value="<?php //echo date("Y-m-d"); ?>"/>		  
+                            </td>      
+                            <td class="StormyWeatherFieldCaptionTD" style="width:150px" >Fecha Final</td>
+                            <td  class="StormyWeatherDataTD">
+                                <input name="txtFechaFin" type="text" id="txtFechaFin" size="20" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" style="width:75%" />
+                            </td>      
+                        </tr>    
                         <tr>
                             <td width="17%" class="StormyWeatherFieldCaptionTD">Orden </td>
                             <td width="83%" colspan="3"  class="StormyWeatherDataTD"> 
@@ -184,21 +179,22 @@ $base_url  = $_SESSION['base_url'];
         </td>
     </tr>
 </table>
-	<script type="text/javascript">
+	
+	</body>
+</html>
+<script type="text/javascript">
 		Calendar.setup(
 		{
-			inputField  : "txtFechainicio",         // el ID texto 
+			inputField  : "txtFechainicio1",         // el ID texto 
 			ifFormat    : "%d/%m/%Y",    // formato de la fecha
 			button      : "trigger"       // el ID del boton			  	  
 		}
 		);
 		Calendar.setup(
 		{
-			inputField  : "txtFechaFin",         // el ID texto 
+			inputField  : "txtFechaFin1",         // el ID texto 
 			ifFormat    : "%d/%m/%Y",    // formato de la fecha
 			button      : "trigger2"       // el ID del boton			  	  
 		}
 		);
 	</script>
-	</body>
-</html>

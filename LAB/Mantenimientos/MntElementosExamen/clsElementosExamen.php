@@ -94,9 +94,22 @@ function consultar($lugar){
  {
    $con = new ConexionBD;
    if($con->conectar()==true)
-   {  $query = "SELECT mnt_area_examen_establecimiento.id_area_servicio_diagnostico as idarea,nombrearea, lab_conf_examen_estab.codigo_examen as codexamen,
+   {  
+//       $query = "SELECT mnt_area_examen_establecimiento.id_area_servicio_diagnostico as idarea,nombrearea, lab_conf_examen_estab.codigo_examen as codexamen,
+//                lab_conf_examen_estab.nombre_examen, lab_elementos.id,elemento, unidadelem,observelem,subelemento, lab_elementos.idestablecimiento, 
+//                to_char(fechaini,'dd/mm/YYYY')AS fechaini, to_char(fechafin,'dd/mm/YYYY')AS fechafin,ctl_examen_servicio_diagnostico.id as cod,
+//                ctl_examen_servicio_diagnostico.idestandar,lab_elementos.orden,lab_conf_examen_estab.id as idexamen  
+//                FROM lab_elementos 
+//                INNER JOIN lab_conf_examen_estab ON lab_elementos.id_conf_examen_estab=lab_conf_examen_estab.id 
+//                INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
+//                INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
+//                INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
+//                INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id=mnt_area_examen_establecimiento.id_examen_servicio_diagnostico
+//                WHERE lab_elementos.idestablecimiento=$lugar AND lab_elementos.id=$idelemento";
+//                $result = pg_query($query);
+       $query = "SELECT mnt_area_examen_establecimiento.id_area_servicio_diagnostico as idarea,nombrearea, lab_conf_examen_estab.codigo_examen as codexamen,
                 lab_conf_examen_estab.nombre_examen, lab_elementos.id,elemento, unidadelem,observelem,subelemento, lab_elementos.idestablecimiento, 
-                to_char(fechaini,'dd/mm/YYYY')AS fechaini, to_char(fechafin,'dd/mm/YYYY')AS fechafin,ctl_examen_servicio_diagnostico.id as cod,
+                fechaini AS fechaini, fechafin AS fechafin,ctl_examen_servicio_diagnostico.id as cod,
                 ctl_examen_servicio_diagnostico.idestandar,lab_elementos.orden,lab_conf_examen_estab.id as idexamen  
                 FROM lab_elementos 
                 INNER JOIN lab_conf_examen_estab ON lab_elementos.id_conf_examen_estab=lab_conf_examen_estab.id 
@@ -282,7 +295,7 @@ function consultar($lugar){
 	$con = new ConexionBD;
 	//usamos el metodo conectar para realizar la conexion
 	if ( $con->conectar()==true ) {
-        echo $query ="SELECT orden  
+         $query ="SELECT orden  
                     FROM lab_elementos
                     WHERE id_conf_examen_estab=$idexamen
                     ORDER BY orden asc";

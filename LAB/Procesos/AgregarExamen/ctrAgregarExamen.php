@@ -156,8 +156,8 @@ switch ($opcion)
                     LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
                     WHERE $where_with t02.id_establecimiento = $lugar
                     ORDER BY 2)
-                 SELECT 
-                t02.id, 
+                SELECT ordenar.* FROM (    
+                SELECT t02.id, 
                 TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                 t06.numero AS idnumeroexp, 
                 CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,
@@ -228,7 +228,8 @@ switch ($opcion)
             INNER JOIN cit_citas_serviciodeapoyo t15                ON (t15.id_solicitudestudios=t02.id) 
             INNER JOIN lab_tiposolicitud t17 			    ON (t17.id = t02.idtiposolicitud) 
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-            AND t02.id_establecimiento =$lugar $cond2   order by fecharecepcion desc  ";
+            AND t02.id_establecimiento =$lugar $cond2 ) ordenar
+                ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC"; 
           
     
         $consulta=$objdatos->BuscarSolicitudesPaciente($query); 

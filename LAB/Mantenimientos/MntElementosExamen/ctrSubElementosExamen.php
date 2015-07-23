@@ -302,11 +302,13 @@ switch ($opcion)
                             <tr>
 				<td  class='StormyWeatherFieldCaptionTD'>Fecha Inicio</TD>
 				<td class='StormyWeatherDataTD'>
-					<input name='txtFechainicio' type='text' id='txtFechainicio' size='10' value='".htmlentities($FechaIni)."' >dd/mm/aaaa
-				</td>
+					<input name='txtFechainicio1' type='text' id='txtFechainicio1' size='10'  class='date form-control height placeholder' placeholder='aaaa-mm-dd' style='width:75%' value='".$FechaIni."'/>
+				        
+                                </td>
+                                
 				<td  class='StormyWeatherFieldCaptionTD'>Fecha Final</TD>
 				<td  class='StormyWeatherDataTD'>
-                                        <input name='txtFechaFin' type='text' id='txtFechaFin' size='10' value='".htmlentities($FechaFin)."' >dd/mm/aaaa
+                                        <input name='txtFechaFin1' type='text' id='txtFechaFin1' size='10' class='date form-control height placeholder' placeholder='aaaa-mm-dd' style='width:75%' value='".$FechaFin."'/ >
 				</td>
                             </tr>
                             <tr>
