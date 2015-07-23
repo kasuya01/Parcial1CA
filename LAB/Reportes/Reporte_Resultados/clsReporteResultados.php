@@ -45,8 +45,7 @@ $con = new ConexionBD;
 function LlenarCmbEstablecimiento($Idtipoesta){
 $con = new ConexionBD;
 	if($con->conectar()==true){
-		$sqlText= //"SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$Idtipoesta' ORDER BY Nombre";		
-                            "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento=$Idtipoesta ORDER BY nombre";
+		$sqlText= "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento=$Idtipoesta ORDER BY nombre";
                         $dt = pg_query($sqlText) ;
 	}
 	return $dt;
@@ -1421,7 +1420,7 @@ function DatosResultadoPlanCPositivoxId($idsolicitud,$iddetalle,$Idresultado)
 function obtenerResultadoSolicitudExamen($idHistorialClinico, $idDatoReferencia, $idEstablecimiento){
 $con = new ConexionBD;
 	if($con->conectar()==true){
-		$sql = "SELECT DISTINCT t05.id AS id_area,
+         $sql="SELECT DISTINCT t05.id AS id_area,
                        t05.idarea AS codigo_area,
                        t05.nombrearea AS nombre_area,
                        t10.id AS id_plantilla,
@@ -1429,7 +1428,7 @@ $con = new ConexionBD;
                        t10.plantilla AS nombre_plantilla,
                        t06.id AS id_examen,
                        t06.idestandar AS codigo_examen,
-                       t06.descripcion AS nombre_examen,
+                       t03.nombre_examen,
                        t07.id AS id_estado_solicitud,
                        t07.idestado AS codigo_estado_solicitud,
                        t07.descripcion AS nombre_estado_solicitud,
@@ -1437,8 +1436,13 @@ $con = new ConexionBD;
                        t08.idestado AS codigo_estado_detalle,
                        t08.descripcion AS nombre_estado_detalle,
                        t01.observacion AS detalle_observacion,
+                       t01.f_tomamuestra AS fecha_toma_muestra,
                        t25.id AS id_empleado,
                        t25.nombreempleado AS nombre_empleado,
+                       t26.id AS id_estado_rechazo,
+                       t26.estado AS nombre_estado_rechazo,
+                       t27.id AS id_observacion_rechazo,
+                       t27.posible_observacion AS nombre_observacion_rechazo,
                        TO_CHAR(t17.fecha_resultado, 'dd/mm/yyyy') AS fecha_resultado,
                        CASE WHEN t03.urgente = 1 AND t02.estado = 1
                             THEN 'SI'
@@ -1485,10 +1489,10 @@ $con = new ConexionBD;
                        t20.rango_fin_subelemento,
                        t20.control_normal_subelemento,
                        t20.pb_subelemento_orden,
-                       t21.id_elemento_tincion,
+                       /*t21.id_elemento_tincion,
                        t21.nombre_elemento_tincion,
                        t21.id_cantidad_tincion,
-                       t21.nombre_cantidad_tincion,
+                       t21.nombre_cantidad_tincion,*/
                        t22.id_procedimiento,
                        t22.nombre_procedimiento,
                        t22.unidad_procedimiento,
@@ -1574,7 +1578,7 @@ $con = new ConexionBD;
                     LEFT  JOIN lab_posible_resultado ti05 ON (ti05.id = ti03.id_posible_resultado)
                     LEFT  JOIN lab_posible_resultado ti06 ON (ti06.id = ti04.id_posible_resultado)
                 ) t20 ON (t03.id = t20.id_examen_elemento AND (t17.id = t20.id_resultado_elemento OR t17.id = t20.id_resultado_subelemento))
-                LEFT JOIN (
+                /*LEFT JOIN (
                     SELECT ti07.id AS id_elemento_tincion,
                            ti07.elementotincion AS nombre_elemento_tincion,
                            ti11.id AS id_cantidad_tincion,
@@ -1588,7 +1592,7 @@ $con = new ConexionBD;
                     LEFT  JOIN lab_detalleresultado        ti09 ON (ti07.id = ti09.id_elementotincion)
                     LEFT  JOIN lab_posible_resultado       ti10 ON (ti10.id = ti09.id_posible_resultado)
                     LEFT  JOIN lab_cantidadestincion       ti11 ON (ti11.id = ti09.idcantidad)
-                ) t21 ON (t03.id = t21.id_examen AND t17.id = t21.id_resultado_tincion)
+                ) t21 ON (t03.id = t21.id_examen AND t17.id = t21.id_resultado_tincion)*/
                 LEFT JOIN (
                     SELECT ti12.id AS id_procedimiento,
                            ti12.nombreprocedimiento AS nombre_procedimiento,
@@ -1627,30 +1631,17 @@ $con = new ConexionBD;
                     LEFT  JOIN lab_resultadosportarjeta   ti21 ON (ti19.id = ti21.iddetalleresultado AND ti18.id = ti21.idantibiotico)
                     LEFT  JOIN lab_posible_resultado      ti22 ON (ti22.id = ti21.id_posible_resultado)
                 ) t23 ON (t17.id = t23.id_resultado)
-                LEFT JOIN lab_observaciones t24 ON (t24.id = t17.id_observacion)
-                LEFT JOIN mnt_empleado      t25 ON (t25.id = t17.idempleado)
+                LEFT JOIN lab_observaciones       t24 ON (t24.id = t17.id_observacion)
+                LEFT JOIN mnt_empleado            t25 ON (t25.id = t17.idempleado)
+                LEFT JOIN lab_estado_rechazo      t26 ON (t26.id = t01.id_estado_rechazo)
+                LEFT JOIN lab_posible_observacion t27 ON (t27.id = t01.id_posible_observacion)
                 WHERE     CASE WHEN $idHistorialClinico:: integer != 0
                           THEN t11.id = $idHistorialClinico
                           ELSE t14.id = $idDatoReferencia
                           END
                          AND t02.id_establecimiento_externo = $idEstablecimiento
-                          
-                ORDER BY t20.pb_elemento_orden, t20.pb_subelemento_orden";
-
-        /*$stm = $conn->prepare($sql);
-        $stm->bindValue(':idHistorialClinico', $idHistorialClinico);
-        $stm->bindValue(':idDatoReferencia', $idDatoReferencia);
-        $stm->bindValue(':idEstablecimiento', $idEstablecimiento);
-        $stm->execute();*/
-        //$result = $stm->fetchAll();
-
-        /*return $result;
-    
-                        
-		$dt = pg_query($sqlText) ;
-	}
-	return $dt;*/
-                
+                ORDER BY 1,id_estado_detalle, t20.pb_elemento_orden, t20.pb_subelemento_orden;";
+           
                 $result = pg_query($sql);
       if (!$result)
        return false;
@@ -1688,6 +1679,7 @@ function obtenerDatosGenerales($idHistorialClinico, $idDatoReferencia, $idEstabl
 
                 SELECT DISTINCT t02.nombre AS nombre_establecimiento,
                        TO_CHAR(t01.fecha_solicitud, 'DD/MM/YYYY') AS fecha_solicitud,
+                       TO_CHAR(t21.fecharecepcion, 'DD/MM/YYYY') AS fecha_recepcion,
                        CASE WHEN t03.id IS NOT NULL
                             THEN t04.numero
                             ELSE t13.numero
@@ -1742,6 +1734,7 @@ function obtenerDatosGenerales($idHistorialClinico, $idDatoReferencia, $idEstabl
                 LEFT  JOIN mnt_area_mod_estab      t18 ON (t18.id = t16.id_area_mod_estab)
                 LEFT  JOIN ctl_area_atencion       t19 ON (t19.id = t18.id_area_atencion)
                 LEFT  JOIN mnt_empleado            t20 ON (t20.id = t12.id_empleado)
+                INNER JOIN lab_recepcionmuestra	   t21 ON(t01.id=t21.idsolicitudestudio)
                 WHERE CASE WHEN $idHistorialClinico::integer != 0
                         THEN t03.id = $idHistorialClinico
                         ELSE t12.id = $idDatoReferencia
@@ -1756,6 +1749,35 @@ function obtenerDatosGenerales($idHistorialClinico, $idDatoReferencia, $idEstabl
      else
        return $result;
     }
+}
+
+//Fn_PG
+function grupoprueconsul($i_idsolicitud, $i_idestablocal, $idHistorialClinico, $idDatoReferencia)
+{
+   $con = new ConexionBD;
+   if($con->conectar()==true)
+   {
+      $sql="select distinct t06.id as idgrupo, t06.nombregrupo, t06.idgrupo as codgrupo
+         from sec_solicitudestudios t01
+         join sec_detallesolicitudestudios t02 on (t01.id=t02.idsolicitudestudio)
+         join lab_conf_examen_estab t03 on (t03.id=t02.id_conf_examen_estab)
+         join mnt_area_examen_establecimiento t04 on (t04.id=t03.idexamen)
+         join ctl_examen_servicio_diagnostico t05 on (t05.id=t04.id_examen_servicio_diagnostico)
+         join lab_estandarxgrupo 	     t06 on (t06.id=t05.idgrupo)
+         where (CASE WHEN $idHistorialClinico:: integer != 0
+                          THEN t01.id_historial_clinico = $idHistorialClinico
+                          ELSE t01.id_dato_referencia = $idDatoReferencia
+                          END)
+         and estado!=6
+         and estadodetalle!=6
+         and t01.id_establecimiento=$i_idestablocal
+         order by 2;";
+      $result=pg_query($sql);
+      if (!$result)
+       return false;
+      else
+       return $result;
+   }
 }
 /********************************************************************************/
 

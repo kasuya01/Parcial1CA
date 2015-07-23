@@ -594,6 +594,7 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
 //return false;
     var url = "../EstudiosLaboratorio/Solicitud.php?"+Parametros;
     window.open(url,"Solicitudes","fullscreen=yes, toolbar=no, scrollbars=yes");
+    limpiar();
 }
 //Funcion de cambio de est externo
 function cambioestexterno(){
@@ -780,10 +781,13 @@ function cambioestexterno(){
                                     </script>-->
             </tr>
             <tr>
-                    <td class="StormyWeatherFieldCaptionTD">Agregar Examenes</td>
+                <td class="StormyWeatherDataTD" colspan="2">                   
+            <center> <button type="button" id="Examen" name="Examen" class='btn btn-primary' onclick="Examenes()"><span class='glyphicon glyphicon-plus'>&nbsp;Agregar Examenes</button></center>
+                </td>
+<!--                    <td class="StormyWeatherFieldCaptionTD">Agregar Examenes</td>
                     <td class="StormyWeatherDataTD">
                             <input type="button" value=" Seleccionar " id="Examen" onclick="Examenes();">
-                    </td> 
+                    </td> -->
             </tr>            
         </table>
     </form>

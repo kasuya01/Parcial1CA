@@ -94,7 +94,7 @@ ELSE
 CASE WHEN id_servicio_externo_estab IS NOT NULL 
 	THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
      WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=cat.nombre)
-	THEN cat.nombre
+	THEN cat.nombre||'-'||cmo.nombre
 END
 END AS servicio 
 from ctl_atencion cat 
@@ -102,7 +102,9 @@ join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
 join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
 LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id
 LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id
-where id_area_atencion=$IdServ
+join mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab)
+join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
+where  mnt_2.id=$IdServ
 and mnt_3.id_establecimiento=$lugar
 order by 2)
 select id, servicio from tbl_servicio where servicio is not null;
@@ -430,10 +432,12 @@ WHERE e.numero ='$nec'";
     function tipoestservicio($idestablecimiento) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $sql = "select distinct(caa.id), nombre 
+            $sql = "select distinct(mame.id), (caa.nombre||'-'||cmo.nombre) as nombre
                 from ctl_area_atencion caa
                 join mnt_area_mod_estab mame on(caa.id=mame.id_area_atencion)
-                where id_establecimiento=$idestablecimiento";
+                join mnt_modalidad_establecimiento mme on (mme.id=mame.id_modalidad_estab)
+                join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
+                where mame.id_establecimiento=$idestablecimiento";
             $result = pg_query($sql);
             if (!$result) {
                 return false;

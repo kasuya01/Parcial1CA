@@ -1,5 +1,10 @@
 <?php
 include_once ('public/fpdf/table/class.fpdf.php');
+include_once ('public/fpdf/table/class.fpdf_table.php');
+//include_once ('public/fpdf/table/class.multicelltag.php');
+//include_once ('public/fpdf/table/header_footer.inc');
+//include_once ('public/fpdf/table/table_def.inc');
+
 
 
 class PDF_PgSQL_Table extends FPDF

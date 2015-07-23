@@ -1363,6 +1363,17 @@ function VerResultados2(parametros)
 
 }//fin mostrarresultados plantillaA2
 
+//fn pg
+function addexamen(){
+idexpediente=$("#idexpedientenec").val();idexpediente.value;
+idsolicitud=document.frmDatos.idsolicitud.value;
+fecharecepcion=document.frmDatos.fecharecepcion.value;
+//idestablecimiento=document.frmDatos.idestablecimiento.value;
+//alert (fecharecepcion)
+ventana_secundaria = window.open("../AgregarExamen/SolicitudEstudiosPaciente.php?var1="+idexpediente+
+  "&var2="+idsolicitud+"&var3="+idestablecimiento+"&var4="+fecharecepcion,"solicitud","width=800,height=700,menubar=no,location=no,scrollbars=yes"); 
+}
+
 
 
 
