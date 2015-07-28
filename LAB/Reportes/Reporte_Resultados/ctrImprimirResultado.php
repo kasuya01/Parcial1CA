@@ -194,7 +194,7 @@ switch ($opcion) {
                group by id_historial_clinico, t2.id,descripcion
                order by t2.id asc
                limit 1) AS estado,
-            TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta
+            TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta, t02.id_establecimiento_externo
             FROM sec_solicitudestudios t02                
             INNER JOIN lab_recepcionmuestra t03                 ON (t03.idsolicitudestudio=t02.id) 
 	    INNER JOIN mnt_expediente t06                       ON (t06.id = t02.id_expediente) 
@@ -234,7 +234,7 @@ switch ($opcion) {
             group by id_historial_clinico, t2.id,descripcion
             order by t2.id asc
             limit 1) AS estado,
-            TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta
+            TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta, t02.id_establecimiento_externo
             FROM sec_solicitudestudios t02                    	   
             INNER JOIN lab_recepcionmuestra t03                     ON (t03.idsolicitudestudio=t02.id) 
             INNER JOIN mnt_dato_referencia t09                      ON t09.id=t02.id_dato_referencia 
@@ -317,7 +317,7 @@ if ( $NroRegistros==""){
                     "<input name='iddatoreferencia[" . $pos . "]' id='iddatoreferencia[" . $pos . "]' type='hidden' size='60' value='" . $row['id_dato_referencia'] . "' />" .
                     "<input name='idsolicitud[" . $pos . "]' id='idsolicitud[" . $pos . "]' type='hidden' size='60' value='" . $row[1] . "' />" .
                     "<input name='idexpediente[" . $pos . "]' id='idexpediente[" . $pos . "]' type='hidden' size='60' value='" . $row['idnumeroexp'] . "' />" .
-                    "<input name='idestablecimiento[" . $pos . "]' id='idestablecimiento[" . $pos . "]' type='hidden' size='60' value='" . $IdEstab . "' /></td>" .
+                    "<input name='idestablecimiento[" . $pos . "]' id='idestablecimiento[" . $pos . "]' type='hidden' size='60' value='" . $row['id_establecimiento_externo'] . "' /></td>" .
                     "<input name='subservicio[".$pos."]' id='subservicio[".$pos."]' type='hidden' size='60' value='".$row['nombresubservicio']."' />".
                     "<td>" . htmlentities($row['paciente']) . "</td>
 				 <td>" . htmlentities($row['nombresubservicio']) . "</td>
@@ -1148,9 +1148,11 @@ function  MuestrasRechazadas($rm) {
 }
 
 function plantillas($examen, $pType){
+ //  if ($pType!='C'){
     $plantilla = 'plantilla'.$pType;
     
     return $plantilla($examen);
+ //  }
 }
 //PLANTILLA A
 function plantillaA($examen) {
@@ -1270,7 +1272,7 @@ function plantillaC($examen) {
     <div class='col-md-12 col-sm-12'>
         Resultado: <strong>";
                              if( $examen['resultadoFinal']['id_posible_resultado'] !== null || $examen['resultadoFinal']['id_posible_resultado'] != '' ){
-                                 $html.="   ". $examen['resultadoFinal']['ombre_posible_resultado']."   ";
+                                 $html.="   ". $examen['resultadoFinal']['nombre_posible_resultado']."   ";
                                 } else {
                                           $html.=  "    ".$examen['resultadoFinal']['resultado']."   ";
                                                     
