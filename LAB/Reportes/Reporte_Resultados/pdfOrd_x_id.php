@@ -392,6 +392,7 @@ class PDF extends PDF_PgSQL_Table
                             $row['nombre_posible_resultado'],
                             $row['cantidad_bacterias']
                         );
+                         $exams[ $newExam[2] ]['bacterias'] = $this->addBacterToExamn($exams[ $newExam[2] ]['bacterias'], $newBacter, $row);
 
                     }
                 }
@@ -774,6 +775,194 @@ function plantillaE($examen) {
 
         return $procedures;
     }//fin addProcedureToExam
+// PLANTILLA C
+function plantillaC($examen) {
+    $html="";
+    //$html.="plantillaC";
+    if( $examen['resultadoFinal']['id_posible_resultado'] !== null || $examen['resultadoFinal']['id_posible_resultado'] != '' ){
+            $resfinnombre_c="   ". $examen['resultadoFinal']['nombre_posible_resultado']."   ";
+   } else {
+$resfinnombre_c="    ".$examen['resultadoFinal']['resultado']."   ";
+
+   }
+   $this->SetX(7);
+      $this->SetFont('Arial','B',9);
+      $this->Cell(70, 5, 'RESULTADO:', 0, 0, 'L');
+      $this->SetFont('Arial','B',9);
+      $this->Cell(120, 5, $resfinnombre_c, 0, 1, 'L');
+//    $html.="<div class='row' style='font-size: 17px;padding-top: 20px;padding-bottom: 20px;'>
+//    <div class='col-md-12 col-sm-12'>
+//        Resultado: <strong>";
+//                             
+//               $html.= "</strong>
+//                </div>";
+               
+     if( $examen['resultadoFinal']['id_observacion'] !==(null) ){
+         $this->Cell(0, 6, $examen['resultadoFinal']['nombre_observacion'], 0, 1, 'C');
+//             $html.="<div class='col-md-12 col-sm-12'>
+//                    Observacion: <strong>".$examen['resultadoFinal']['nombre_observacion']."</strong>
+//                </div>";
+            }
+//            $html.="</div>";
+ if (count($examen['bacterias']) > 0) {
+ //if ($examen['bacterias'] |length > 0 ){
+//  $html.=  "<table class='table table-white'>
+//        <tbody>";
+            foreach ($examen['bacterias'] as $bacteria){
+               $this->SetX(7);
+           // {% for bacteria in examen.bacterias %}
+            $this->SetFont('Arial','B',9);
+            $this->Cell(70,5,'ORGANISMO:',0,0,'L', true);
+            $this->SetFont('Arial','',9);
+            $this->Cell(120,5,utf8_decode($bacteria['nombre']),0,1,'L');
+            $this->SetFont('Arial','B',9);
+            $this->SetX(7);
+            $this->Cell(70,5,'CULTIVO CON CUENTA DE COLONIAS:',0,0,'L', true);
+            $this->SetFont('Arial','',9);
+            $this->Cell(120,5,utf8_decode($bacteria['cantidad']),0,1,'L');
+            $this->Ln(1);
+             $this->SetX(7);
+            $this->SetFillColor(200,200,200);
+            $this->SetFont('Arial','B',9);
+            $this->Cell(105,5,utf8_decode('ANTIBIOTICO'),0,0,'L', true);
+            $this->Cell(30,5,utf8_decode('LECTURA'),0,0,'L', true);
+            $this->Cell(53,5,utf8_decode('INTERPRETACIÓN'),0,1,'L', true);
+            //$this->Cell(53,5,utf8_decode('OBSERVACIONES'),0,1,'L', true);
+            $this->Ln(1);
+            $ye=$this->GetY();
+            $this->SetDrawColor(4,79,144);
+            $this->Line(7,$ye,195,$ye);
+            $this->Ln(0);
+            $this->SetFont('Arial','',10);       
+            $this->SetWidths(array(55, 30, 50, 53));
+            $this->SetX(7);
+//              $html.="  <tr>
+//                    <td colspan='4'>
+//                        <div class='row'>
+//                            <div class='col-md-12 col-sm-12'>
+//                                <table class='heading-bact-pc'>
+//                                    <tbody>
+//                                        <tr>
+//                                            <td>Organismo:</td>
+//                                            <td style='padding-left:15px;'><strong>".$bacteria['nombre']."</strong></td>
+//                                        </tr>
+//                                        <tr>
+//                                            <td>Cultivo con cuenta de Colonias:</td>
+//                                            <td style='padding-left:15px;'><strong>".$bacteria['cantidad']."</strong></td>
+//                                        </tr>
+//                                    </tbody>
+//                                </table>
+//                            </div>
+//                        </div>
+//                    </td>
+//                </tr>
+//                <tr style='font-weight: bold;'>
+//                    <td></td>
+//                    <td>Antibiotico</td>
+//                    <td>Lectura</td>
+//                    <td>Interpretacion</td>
+//                </tr>";
+               foreach ($bacteria['tarjetas'] as $tarjeta){
+                        foreach ($tarjeta['antibioticos'] as $antibiotico){
+                            if($antibiotico['id_posible_resultado'] !== null || $antibiotico['id_posible_resultado'] !== '') {
+                                 $nombreposres_c=$antibiotico['nombre_posible_resultado' ];
+                             }else {
+                               $nombreposres_c=$antibiotico['resultado'];
+                                          }
+                           $this->SetWidths(array(105, 30, 53));
+                           $this->Ln(1);
+                           $this->Row1(array(utf8_decode($antibiotico['nombre']),utf8_decode($antibiotico['lectura']),utf8_decode($nombreposres_c) ));
+                           
+//                                $html.="  <tr>
+//                                      <td></td>
+//                                      <td>". $antibiotico['nombre']."</td>
+//                                      <td>".$antibiotico['lectura']."</td>
+//                                      <td>";
+//                                          //{% if antibiotico.id_posible_resultado is not null or antibiotico.id_posible_resultado != '' %}
+//                                          
+//                                     $html.= "</td>
+//                                  </tr>";
+                        }
+                }
+                $this->Ln(3);
+            }
+//       $html.= "</tbody>
+//                </table>";
+      //return $html;
+}
+}//Fin plantillaC
+//Fn addBacterToExam
+ function addBacterToExamn($bacters, $newBacter, $row) {
+        if( ! isset($bacters[ $newBacter[1] ]) )
+            {
+                    $bacters[ $newBacter[1] ] = array(
+                                        'id'                       => $newBacter[0],
+                                        'nombre'                   => $newBacter[1],
+                                        'id_resultado'             => $newBacter[2],
+                                        'resultado'                => $newBacter[3],
+                                        'id_posible_resultado'     => $newBacter[4],
+                                        'nombre_posible_resultado' => $newBacter[5],
+                                        'cantidad'                 => $newBacter[6]
+                                                    );
+            }
+
+        if( ! isset($bacters[ $newBacter[1] ]['tarjetas']) )
+            {
+                    $bacters[ $newBacter[1] ]['tarjetas'] = array();
+            }
+
+        $newCard = array(
+            $row['id_tarjeta'],
+            $row['nombre_tarjeta']
+        );
+
+        $bacters[ $newBacter[1] ]['tarjetas'] = $this->addCardToBacter($bacters[ $newBacter[1] ]['tarjetas'], $newCard, $row);
+
+        return $bacters;
+    }//fin addBacterToExam
+    //Fn addCardToBacter
+     
+    function addCardToBacter($cards, $newCards, $row) {
+        if( ! isset($cards[ $newCards[1] ]) )
+            {
+                            $cards[ $newCards[1] ] = array(
+                                        'id'             => $newCards[0],
+                                        'nombre'         => $newCards[1]);
+            }
+
+        if( ! isset($cards[ $newCards[1] ]['antibioticos']) ){
+            $cards[ $newCards[1] ]['antibioticos'] = array();
+        }
+
+        $newAntibiotic = array(
+            $row['id_antibiotico'],
+            $row['nombre_antibiotico'],
+            $row['resultado_antibiotico'],
+            $row['lectura_antibiotico'],
+            $row['id_posible_resultado_antibiotico'],
+            $row['nombre_posible_resultado_antibiotico']
+        );
+
+        $cards[ $newCards[1] ]['antibioticos'] = $this->addAntibioticToCard($cards[ $newCards[1] ]['antibioticos'], $newAntibiotic);
+
+        return $cards;
+    }//fn addCardToBacter
+    
+    //fn addAntibioticToCard
+    function addAntibioticToCard($antibiotics, $newAntibiotic) {
+        if( ! isset($antibiotics[ $newAntibiotic[1] ]) ){
+$antibiotics[ $newAntibiotic[1] ] = array(
+                                        'id'                       => $newAntibiotic[0],
+                                        'nombre'                   => $newAntibiotic[1],
+                                        'resultado'                => $newAntibiotic[2],
+                                        'lectura'                  => $newAntibiotic[3],
+                                        'id_posible_resultado'     => $newAntibiotic[4],
+                                        'nombre_posible_resultado' => $newAntibiotic[5]
+);
+}
+
+        return $antibiotics;
+    }//fn addAntibioticToCard
 
 
 
