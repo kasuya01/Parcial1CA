@@ -29,8 +29,7 @@ $Fechaini=$row['fechaini'];
 $Fechafin=$row['fechafin'];
 //echo $Fechaini." - ".$Fechafin; 
 $orden=$row['orden'];
-
-//echo $Fechaini."".$Fechafin;
+//echo"examen= ".$idexamen. "ORDEN= ".$orden;
 //muestra los datos consultados en los campos del formulario
 ?>
 
@@ -122,33 +121,18 @@ $orden=$row['orden'];
                 <tr>
                             <td width="17%" class="StormyWeatherFieldCaptionTD">Orden </td>
                             <td width="83%"  class="StormyWeatherDataTD" colspan="3"> <div id="divRango">
-                                <select   name="cmborden"  id="cmborden"  style="width:50%"  class="form-control height" > 
+                                <select   name="cmborden"  id="cmborden"  style="width:50%"  class="form-control height" >
                                     <option value="0">--Seleccione un Orden--</option>
-                                    <?php 
-                                 $datosDB=0;
-                                   // echo "<option value='" . $orden . "' selected='selected'>" .$orden. "</option>";
-                                $conorden = $obj->llenarrangoele($idexamen);
-                                while($row = pg_fetch_array($conorden)){
-                                	if($row['orden'] === $orden){
-                                		echo "<option value='" . $orden . "' selected='selected'>" .$orden. "</option>";
-                                        } else{
-                                            
-                                            $datosDB=$obj->existeOrdenele($idexamen);
-                                            for ($index = 1 ; $index <=25; $index++) 
-                                                    {
-                                                      $rest=areglo ($datosDB,$index);
-                                                      if($rest==0){
-                                                        echo '<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
-                                                      }
-
-
-                                            }
-                                        }    
-                                         
-                                    	                                     
-                                   }
-                             
+                                    <?php  
+                                        echo "<option value='" . $orden . "' selected='selected'>" .$orden. "</option>";
+                                        for ($index = 1 ; $index <=25 ; $index++){
+                                            if($index <> $orden){
+                                                echo '<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
+                                            }    
+                                        }
                                     ?> 
+                                    
+                                    
                                 </select>
                            </td>		
 		</tr>
@@ -161,43 +145,7 @@ $orden=$row['orden'];
 			   	<input type="button" name="btnSubElementos"  class="btn btn-primary"value="SubElementos" Onclick="MostrarSubElementos() ;">   
 			</td>
         </tr>
-         <?php
-        function existeOrden($idexamen){
-          $respuesta=0;
-          //$objdatos = new clsElementosExamen;
-          $consulta=$obj->llenarrangoele($idexamen);
-          $hola=array();                      
-                                while ($row=pg_fetch_array($consulta))
-                                    {
-                                       /* if($row['orden']==$index)
-                                        {
-                                            $respuesta=1;
-                                        }else{
-                                           $respuesta=0; 
-                                        }
-                                        echo $row['orden'];  */
-                                    $hola[]=$row['orden'];
-                                    }
-                                    
-           return $hola;                        
-        }
     
-        function areglo ($arr,$dato){
-        $respuesta=0;
-        $max = sizeof($arr);
-        for ($index = 0 ; $index<$max; $index++) 
-            {
-               if($dato<>$arr[$index]){
-                   $respuesta=0;//no mostrar
-              }else{
-                    $respuesta=1;//si mostrar
-                    $index=$max;
-                    
-               } 
-            }
-            return $respuesta;    
-    }
-    ?>
   </table>
   
 </form>

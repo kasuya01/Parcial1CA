@@ -11,7 +11,7 @@ $area=$_SESSION['Idarea'];
 $idsubelemento=$_POST['idsubelemento'];
 $subelemento=$_POST['subelemento'];
 $elemento=$_POST['elemento'];*/
-$Pag =$_POST['Pag'];
+//$Pag =$_POST['Pag'];
 $opcion=$_POST['opcion'];
 //$unidad=$_POST['unidad'];
 
@@ -250,7 +250,7 @@ switch ($opcion)
                             <tr>
                                 <td  class='StormyWeatherFieldCaptionTD'>Sexo</td>
                                 <td colspan='3' class='StormyWeatherDataTD'>
-                                    <select id='cmbSexo' name='cmbSexo' size='1' class='form-control height'>
+                                    <select id='cmbSexo' name='cmbSexo' size='1' class='form-control height' >
                                              <option value='0'>Ambos</option>";
 
                                                 $consultaS= $objdatos->consultarsexo();
@@ -328,7 +328,7 @@ switch ($opcion)
                                                // echo $datosDB;
                                             }
                                         }
-                                        for ($index = 1 ; $index <=25 ; $index++) 
+                                        for ($index = 1 ; $index <=15 ; $index++) 
                                                 {
                                                      // $rest=$objdatos->arreglo ($datosDB,$index);
                                                    // if($rest==0){
@@ -354,27 +354,52 @@ switch ($opcion)
 		echo $imprimir;
 	break;
         case 11:  //LLENAR COMBO DE RANGOS
-	$idele=$_POST['idelemento'];
-            
-           echo $idele; 
+	$idelemento=$_POST['idelemento'];
+        $subelemento=utf8_encode($_POST['subelemento']);    
+           //echo $idele; 
         $rslts='';
         
-           $rslts = '<select name="cmborden" id="cmborden" style="width:50%"  class="form-control height"   >';
+           $rslts = '<select name="cmborden" id="cmborden" style="width:50%"  class="form-control height" OnChance="Llenarorden1();   >';
             $rslts .='<option value="0">--Seleccione un Orden--</option>';
-        
-            
-                                     $datosDB=existeOrden($idele);
+            //"onclick="Llenarorden1();"
+                            $conBuscar=$objdatos->BuscarExisteOrden($idelemento,$subelemento);
+                            $rowBuscar = pg_fetch_array($conBuscar);
+                            if(!empty($rowBuscar[0])){
+                                $orden=$rowBuscar[0];
+                            }
+                            else {
+                                $conorden=$objdatos->ObtenerNuevoOrden($idelemento);
+                                $roworden=pg_fetch_array($conorden);
+                                $orden=$roworden[0];
+                                
+                            }
+                              $conorden1=$objdatos->ObtenerNuevoOrden($idelemento);
+                                $roworden1=pg_fetch_array($conorden1);
+                                $total=$roworden1[0];
+                          //  $total=$orden;
+                           // echo $total;
+                            //echo $orden;
+                           //  $rslts.="<option value='" . $orden . "' selected='selected'>" .$orden. "</option>";
+                                        for ($index = 1 ; $index <=$total ; $index++){
+                                            if($index <> $orden){
+                                                $rslts.= '<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
+                                            } 
+                                            else{
+                                                $rslts.="<option value='" . $orden . "' selected='selected'>" .$orden. "</option>";
+                                            }
+                                        }
+                                 //    $datosDB=existeOrden($idele);
                                      
                                     //echo  $datosDB[3];
-                                        for ($index = 1 ; $index <=10 ; $index++) 
+                                      /*  for ($index = 1 ; $index <=10 ; $index++) 
                                         {
-                                          $rest=areglo ($datosDB,$index);
-                                          if($rest==0){
+                                        //  $rest=areglo ($datosDB,$index);
+                                         // if($rest==0){
                                             $rslts.='<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
-                                          }
+                                          //}
                                             
                            
-                                        }
+                                        }*/
                                 
             $rslts .= '</select>';
                             echo $rslts;

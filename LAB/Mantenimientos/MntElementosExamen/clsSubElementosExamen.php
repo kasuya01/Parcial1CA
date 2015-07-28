@@ -490,6 +490,7 @@ function consultarpagbus($query_search,$RegistrosAEmpezar, $RegistrosAMostrar)
 	$con = new ConexionBD;
 	//usamos el metodo conectar para realizar la conexion
 	if ( $con->conectar()==true ) {
+        /*Aqui entra*/
             $query ="SELECT  orden  
                     FROM lab_subelementos
                     WHERE idelemento=$idelemento
@@ -502,7 +503,31 @@ function consultarpagbus($query_search,$RegistrosAEmpezar, $RegistrosAMostrar)
 				return $result;
 		}
 	}
+  function BuscarExisteOrden($idelemento,$subelemento){
+      $con = new ConexionBD;
+	//usamos el metodo conectar para realizar la conexion
+	if ( $con->conectar()==true ) {
+           $query ="select distinct orden from lab_subelementos  where idelemento=$idelemento and subelemento ilike '$subelemento'";
+           $result = @pg_query( $query );
+            if ( !$result )
+		return false;
+            else
+		return $result;
+        }
+  }
   
+  function ObtenerNuevoOrden($idelemento){
+       $con = new ConexionBD;
+	//usamos el metodo conectar para realizar la conexion
+	if ( $con->conectar()==true ) {
+           $query ="select max(orden)+1 from lab_subelementos  where idelemento=$idelemento ";
+          $result = @pg_query( $query );
+            if ( !$result )
+		return false;
+            else
+		return $result;
+        }    
+  }
   
 }//CLASE}
 

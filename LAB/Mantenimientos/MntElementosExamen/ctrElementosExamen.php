@@ -42,13 +42,17 @@ switch ($opcion)
 		$Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
                 $Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
 		$orden=$_POST['orden'];
-            
+                            
+                if (empty($Fechafin))
+                    $orden=$_POST['orden'];
+                else
+                    $orden=0;
+                
+               // echo "sale".$orden;
 		If ($objdatos->actualizar($idelemento,$nomelemento,$subelemento,$unidadele,$observacionele,$usuario,$lugar,$Fechaini,$Fechafin,$orden)==true) 
-            
-			echo "Registro Actualizado";			
-		
+                    echo "Registro Actualizado";			
 		else
-			echo "No se pudo actualizar";
+                    echo "No se pudo actualizar";
 		
 		
 	break;
@@ -524,22 +528,22 @@ switch ($opcion)
   		
 	break;
         case 11:  //LLENAR COMBO DE RANGOS
-	$idexa=$_POST['idexa'];
-          //  echo $idexa; 
+            $idexa=$_POST['idexa'];
+           // echo "Aqui".$idexa; 
           //  $idexa=$_POST['idexamen'];
-        $rslts='';
-        $datosDB=0;
-           $rslts = '<select name="cmborden" id="cmborden" style="width:50%"  class="form-control height"   >';
-           $rslts .='<option value="0">--Seleccione un Orden--</option>';
+            $rslts='';
+            $datosDB=0;
+            $rslts = '<select name="cmborden" id="cmborden" style="width:50%"  class="form-control height"   >';
+            $rslts .='<option value="0">--Seleccione un Orden--</option>';
         
             
                                      $datosDB=existeOrdenele($idexa);
                                      
-                                    //echo  $datosDB[3];
+                                   //echo  $datosDB;
                                        // for ($index = 1 ; $index <=25 ; $index++) 
-                                      for ($index = $datosDB ; $index <=25 ; $index++) 
+                                      for ($index = $datosDB[0]; $index <=25 ; $index++) 
                                         {
-                                          $rest=areglo ($datosDB,$index);
+                                          $rest=areglo($datosDB,$index);
                                           if($rest==0){
                                             $rslts.='<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
                                           }
@@ -558,21 +562,23 @@ switch ($opcion)
           $respuesta=0;
           $objdatos = new clsElementosExamen;
           $consulta=$objdatos->llenarrangoele($idexa);
+          $index=0;
           $hola=array();                      
                                 while ($row=pg_fetch_array($consulta))
                                     {
-                                       /* if($row['orden']==$index)
+                                        if($row['orden']==$index)
                                         {
                                             $respuesta=1;
                                         }else{
                                            $respuesta=0; 
                                         }
-                                        echo $row['orden'];  */
+                                       // echo "aqui1".$row['orden']; 
                                     $hola[]=$row['orden'];
                                     }
                                     
            return $hola;                        
         }
+        
     function areglo ($arr,$dato){
         $respuesta=0;
         $max = sizeof($arr);

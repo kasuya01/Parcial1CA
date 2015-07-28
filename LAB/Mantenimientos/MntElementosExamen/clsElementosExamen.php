@@ -276,7 +276,7 @@ function consultar($lugar){
  function existeordenele($idexamen){
          $con = new ConexionBD;
 		if ( $con->conectar()==true ) {
-			$query = "SELECT max(orden)+1 FROM lab_elementos where id_conf_examen_estab=$idexamen";
+			ECHO $query = "SELECT max(orden) FROM lab_elementos where id_conf_examen_estab=$idexamen";
 			$result = pg_query( $query );
                                       
                     while ($row=pg_fetch_array($result))
@@ -295,7 +295,7 @@ function consultar($lugar){
 	$con = new ConexionBD;
 	//usamos el metodo conectar para realizar la conexion
 	if ( $con->conectar()==true ) {
-         $query ="SELECT orden  
+          $query ="SELECT orden  
                     FROM lab_elementos
                     WHERE id_conf_examen_estab=$idexamen
                     ORDER BY orden asc";

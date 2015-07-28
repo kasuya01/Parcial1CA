@@ -494,6 +494,30 @@ function LlenarRangoSub(idelemento)
 		}
 	}	
 }
+/*Nueva Función*/
+function Llenarorden(){
+   var opcion=11;
+   idelemento=document.frmnuevo.idelemento.value;
+   subelemento=document.frmnuevo.txtsubelemento.value;
+    
+   // alert("idelemento= "+idelemento+"Subelemento= "+subelemento);
+    //instanciamos el objetoAjax
+	ajax=objetoAjax();
+	//archivo que realizar� la operacion ->actualizacion.php
+	ajax.open("POST", "ctrSubElementosExamen.php",true);
+	//muy importante este encabezado ya que hacemos uso de un formulario
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	//enviando los valores
+	ajax.send("idelemento="+idelemento+"&opcion="+opcion+"&subelemento="+subelemento);
+	ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+			//mostrar los nuevos registros en esta capa
+			document.getElementById('divOrden').innerHTML = ajax.responseText;
+		}
+	}	
+   
+    
+}
 
 function LlenarRango(idexa)
 {

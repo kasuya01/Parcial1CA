@@ -82,12 +82,15 @@ function llenarcomboRango(idelemento){
     LlenarRango(idelemento);
     
 }
+function Llenarorden1(){
+    Llenarorden();
+}
 </script>
 
 
 </head>
 
-<body onLoad="RecogeValor(); llenarrangosubele()">
+<body onLoad="RecogeValor(); ">
     <?php
         $idelemento=$_GET['var1'];
         //echo $idele;
@@ -126,7 +129,7 @@ function llenarcomboRango(idelemento){
                     <tr>
                         <td  class="StormyWeatherFieldCaptionTD">Sexo</td>
                         <td colspan="3" class="StormyWeatherDataTD">
-                            <select id="cmbSexo" name="cmbSexo" size="1" class="form-control height">
+                            <select id="cmbSexo" name="cmbSexo" size="1" class="form-control height" "Onclick="Llenarorden1();"
                                 <option value="3">Seleccione Sexo </option>
                                 <option value="0">Ambos</option>
                                     <?php
@@ -186,12 +189,14 @@ function llenarcomboRango(idelemento){
                     </tr>
                     <tr>
                         <td  class="StormyWeatherFieldCaptionTD">Orden </td>
-                        <td  class="StormyWeatherDataTD" colspan="3">
-                            <select   name="cmborden"  id="cmborden" style="width:50%"  class="form-control height" onclick="llenarorden()" > 
-                                <option value="0">Seleccione un Orden</option>
-                                    <?php
-                                    
-                                        $datosDB=0;
+                        <td  class="StormyWeatherDataTD" colspan="3"> 
+                            <div id="divOrden">
+                              <div id="orden">  <select   name="cmborden"  id="cmborden" style="width:50%"  class="form-control height"  onclick="Llenarorden1();" OnChance="Llenarorden1();"> 
+                                    <option value="0">Seleccione un Orden</option>
+                               
+                                        <?php
+                                    //
+                                       /* $datosDB=0;
                                         $conOrden = $objdatos->llenarrangosubele($idelemento);
                                         while($row = pg_fetch_array($conOrden)){
                                             if($row['orden'] === $orden){
@@ -204,11 +209,10 @@ function llenarcomboRango(idelemento){
                                         for ($index = $datosDB ; $index <=25 ; $index++) 
                                             {
                                                 echo '<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
-                                            }
-                                                                                         
-                                    ?>  
-                            </select>
-				</div>
+                                            }*/
+                                       ?>    
+                                </select>
+                            </div>
                         </td>
                     </tr>
                     <tr>
