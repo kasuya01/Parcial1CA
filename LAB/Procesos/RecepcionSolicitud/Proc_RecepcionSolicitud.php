@@ -82,6 +82,7 @@ if (isset($_SESSION['Correlativo'])) {
                                                     <th>Fecha Consulta</th>\
                                                     <th>Fecha Cita</th>\
                                                     <th>Nombre Paciente</th>\
+                                                    <th>Procedencia</th>\
                                                     <th>Estado</th>\
                                                     <th>Tipo Solicitud</th>\
                                                 </tr>\
@@ -101,6 +102,7 @@ if (isset($_SESSION['Correlativo'])) {
                                                 <td>'+val.fecha_consulta+'</td>\
                                                 <td>'+date_cita+'</td>\
                                                 <td>'+val.nombre_paciente+'</td>\
+                                                <td>'+val.servicio+'</td>\
                                                 <td>'+val.estado+'</td>\
                                                 <td>'+val.tiposolicitud+'</td>\
                                             </tr>';

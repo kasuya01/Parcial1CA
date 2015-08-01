@@ -29,10 +29,10 @@
 		dateFormat: 'yy-mm-dd',
                 showMonthAfterYear: false,
 		yearSuffix: '',
-                hourGrid: 4,
-                minuteGrid: 10,
+              //  hourGrid: 4,
+               // minuteGrid: 10,
                 timeFormat: 'HH:mm',
-              //  controlType: 'select',
+                controlType: 'select',
               //  timeFormat: 'HH:mm',
 		isRTL: false
 	};

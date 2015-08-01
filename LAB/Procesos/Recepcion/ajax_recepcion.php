@@ -341,7 +341,7 @@ $rslts='';
         if($DatosPaciente !=0 )
         {
     //    echo 'entroooooooooo a if';
-	$rslts.='</br><form name="" action="" method="post">
+	$rslts.='</br><form name="frmverificardatospac" id="frmverificardatospac" action="" method="post">
         <table border = 0 class="CobaltFormTABLE" cellspacing="0" cellpadding="0" style="height:200px" align="center">
               <tr>
                       <td colspan="3" align="center" class="CobaltFieldCaptionTD">

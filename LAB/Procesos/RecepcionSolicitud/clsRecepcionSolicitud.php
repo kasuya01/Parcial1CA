@@ -92,7 +92,32 @@ order by posible_observacion;";
         if ($con->conectar() == true) {
            $idexp=0;
 
-            $query = "SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente, 
+            $query = "with tbl_servicio as (select mnt_3.id,
+               CASE
+               WHEN mnt_3.nombre_ambiente IS NOT NULL
+               THEN  	
+                       CASE WHEN id_servicio_externo_estab IS NOT NULL
+                               THEN mnt_ser.abreviatura ||'-->' ||mnt_3.nombre_ambiente
+                               ELSE mnt_3.nombre_ambiente
+                       END
+
+               ELSE
+               CASE WHEN id_servicio_externo_estab IS NOT NULL 
+                       THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
+                    WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=cat.nombre)
+                       THEN cat.nombre||'-'||cmo.nombre
+               END
+               END AS servicio 
+               from ctl_atencion cat 
+               join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
+               join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
+               LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id
+               LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id
+               join mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab)
+               join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
+               where   mnt_3.id_establecimiento=$lugar
+               order by 2) 
+SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente, 
                              COALESCE(t05.numero,t10.numero) AS numero_expediente,
                              TO_CHAR(t02.fecha, 'DD/MM/YYYY') AS fecha_cita,
                              COALESCE(TO_CHAR(t03.fechaconsulta, 'DD/MM/YYYY'),'referido') AS fecha_consulta,
@@ -108,7 +133,7 @@ order by posible_observacion;";
                                 WHEN 'C' then 'Completa'
                              END AS estado,
                              COALESCE(t03.idestablecimiento,t10.id_establecimiento) AS id_establecimiento,
-                              tiposolicitud
+                              tiposolicitud,t14.id as idmnatenareamodestab, t14.servicio as servicio
                       FROM sec_solicitudestudios                 t01
                       left JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
                       LEFT JOIN sec_historial_clinico            t03 ON (t03.id = t01.id_historial_clinico)
@@ -119,7 +144,8 @@ order by posible_observacion;";
                       left join mnt_dato_referencia t12 on (t12.id=t01.id_dato_referencia)
                       LEFT JOIN mnt_expediente_referido          t10 ON (t10.id = t12.id_expediente_referido)
                       LEFT JOIN mnt_paciente_referido            t11 ON (t11.id = t10.id_referido)
-                      LEFT JOIN lab_tiposolicitud		 t13 ON (t13.id = t01.idtiposolicitud)";
+                      LEFT JOIN lab_tiposolicitud		 t13 ON (t13.id = t01.idtiposolicitud)
+                      LEFT JOIN tbl_servicio		         t14 ON	(t14.id=t03.idsubservicio)	";
 
             $where = " WHERE t01.id_establecimiento = $lugar 
                          AND t04.idestado = 'D'              AND t06.codigo_busqueda = 'DCOLAB'";
