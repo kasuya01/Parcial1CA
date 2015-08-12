@@ -451,10 +451,10 @@ switch ($opcion) {
       if ($temporal == 2) {
          if ($idrechazo != 0 && $idrechazo != 'xyz') {
             //  $query = $object->obteneropcionesrechazo();
-            $rslts = "<input type='text' class='date form-control height placeholder'  id='f_newdate_" . $k . "' name='f_newdate_'  placeholder='aaaa-mm-dd' onchange=\"valfechasolicita(this, 'f_newdate_" . $k . "')\" style='width:105px' />";
+            $rslts = "<input type='text' class='date form-control height placeholder'  id='f_newdate_" . $k . "' name='f_newdate_'  placeholder='aaaa-mm-dd' onchange=\"valfechasolicita(this.value, 'f_newdate_" . $k . "')\" style='width:105px' />";
          }
       } else {
-         $rslts = "<p>Definitivo</p><input type='hidden' class='date form-control height'  id='f_newdate_" . $k . "' name='f_newdate_'  value='" . date('Y-m-d') . "' onchange=\"valfechasolicita(this, 'f_newdate_" . $k . "')\" style='width:100px' />";
+         $rslts = "<p>Definitivo</p><input type='hidden' class='date form-control height'  id='f_newdate_" . $k . "' name='f_newdate_'  value='" . date('Y-m-d') . "' onchange=\"valfechasolicita(this.value, 'f_newdate_" . $k . "')\" style='width:100px' />";
       }
       echo $rslts;
       break;

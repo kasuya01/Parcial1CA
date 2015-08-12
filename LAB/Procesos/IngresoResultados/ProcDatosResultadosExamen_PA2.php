@@ -455,7 +455,7 @@ $edad=$objdatos->calc_edad($IdHistorial);
                             <?php 
                           }?>
                            <td colspan="4" style="text-align:right">
-                               <button type="button" align="right" id="agregarresults" class="btn btn-primary" onclick="agregaresultado('0');"><span class='glyphicon glyphicon-plus-sign'></span>&nbsp;Agregar Resultado </button>                                
+                              <a href="#masunoresultado">  <button type="button" align="right" id="agregarresults" class="btn btn-primary" onclick="agregaresultado('0');"><span class='glyphicon glyphicon-plus-sign'></span>&nbsp;Agregar Resultado </button>       </a>                         
                             </td>
                         </tr>
                         
@@ -571,8 +571,8 @@ echo '<option value="xyz">Seleccione una opción</option>';
                          
                 <p><center><br />
 <!--                        <div id="responde2" style="display: block">-->
-                                <button type="button" align="center" class="btn btn-primary" onclick="enviarDatosResult(1,0);" ><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar</button>
-                                <button type="button" align="center" class="btn btn-primary" onclick="Cerrar();"><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cancelar</button>
+<a href="#divresultado2">    <button type="button" align="center" class="btn btn-primary" onclick="enviarDatosResult(1,0);" ><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar</button></a>
+   <button type="button" align="center" class="btn btn-primary" onclick="Cerrar();"><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cancelar</button> 
                   
                                 </center></p>
                         </div>
@@ -583,7 +583,7 @@ echo '<option value="xyz">Seleccione una opción</option>';
                      <td colspan="6" align="center">
                          <div id="responde" style="display: none">
                             <center><br>
-                         <button type="button" align="center" class="btn btn-primary" onclick="ValidarResultado();" title="Validar y Finalizar"><span class='glyphicon glyphicon-check'></span>&nbsp;Validar</button>
+                               <a href="#valresult">      <button type="button" align="center" class="btn btn-primary" onclick="ValidarResultado();" title="Validar y Finalizar"><span class='glyphicon glyphicon-check'></span>&nbsp;Validar</button></a>
 	<!--<button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="enviarDatosResult(0,0);" title="Guardar sin validar">Guardar</button>-->
        
 		<button type="button" align="center" class="btn btn-primary" title="Regresar a Inicio"  onclick="Cerrar();"><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button>

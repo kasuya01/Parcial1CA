@@ -23,6 +23,7 @@ switch ($opcion)
         $fecha_realizacion=$_POST['fecha_realizacion'];
         $fecha_reporte=$_POST['fecha_reporte'];
         $txtnec=$_POST['txtnec'];
+        $observaciongnral=$_POST['observaciongnral'];
         $consulta2 = $objdatos->MostrarResultadoGeneralesPA1($idsolicitud, $lugar, $idarea);
         $row2 = pg_fetch_array($consulta2);
          $nombre = $row2['nombrearea'];
@@ -73,7 +74,7 @@ switch ($opcion)
                             <tr >
                                 <th  width='30%' >Observaci&oacute;n</td>
 				<td width='30%' colspan='3'>
-                                    <textarea name='txtobser[".$pos."]' cols='52' style='width:100%' id='txtobser[".$pos."]'></textarea>
+                                    <textarea name='txtobser[".$pos."]' cols='52' style='width:100%' id='txtobser[".$pos."]'>".$observaciongnral."</textarea>
 				</td>
                             </tr>
                                                         
@@ -270,7 +271,7 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
                             <td align='center'>Rangos Normales </td>";
                         /*    <td align='center'>Lectura</td>
                             <td align='center'>Interpretaci&oacute;n</td>*/
-              $Imprimir.="  <td align='center'>Observaci&oacute;n</td>
+              $Imprimir.="  <td align='left'>Observaci&oacute;n</td>
                         </tr>
                         <tr><td colspan='5'><hr></td></tr>";
                             $pos=0;
@@ -300,7 +301,7 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
 //                $Imprimir.="<td align='center'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td>";
                                        // <td align='center'>".htmlentities($vector_lecturas[$pos])."</td>
                                        // <td align='center'>".htmlentities($vector_inter[$pos])."</td>
-                $Imprimir.="<td align='center'>".$vector_obser[$pos]."</td>
+                $Imprimir.="<td align='left'>".$vector_obser[$pos]."</td>
                                     </tr>";
                                 $pos=$pos + 1;
                             }

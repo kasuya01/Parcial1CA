@@ -900,6 +900,7 @@ function MostrarResultadoExamen(idsolicitud, iddetalle, idarea, idexamen, result
             {  //mostrar los nuevos registros en esta capa
                 document.getElementById('divresultado').style.display = "block";
                 document.getElementById('divresultado').innerHTML = ajax.responseText;
+                  window.location.href = '#divresultado';
                 
                 
                 
@@ -1362,6 +1363,7 @@ function VerResultados2(parametros)
                 $('#valresult').css('display','none');
                 document.getElementById('divresultado2').style.display = "block";
                 document.getElementById('divresultado2').innerHTML = ajax.responseText;
+                window.location.href = '#divresultado2';
               //  calc_edad();
             }
         }
@@ -1696,7 +1698,7 @@ function LlenarComboMetodologia(idexamen, area)
 
 }
 
-function CargarExamenes(idsolicitud, idarea, fechanac, sexo, idestandar, idhistorial, fecha_realizacion, fecha_reporte, txtnec)
+function CargarExamenes(idsolicitud, idarea, fechanac, sexo, idestandar, idhistorial, fecha_realizacion, fecha_reporte, txtnec, observaciongnral)
 {
     ajax = objetoAjax();
     FechaNac = fechanac;
@@ -1710,7 +1712,7 @@ function CargarExamenes(idsolicitud, idarea, fechanac, sexo, idestandar, idhisto
     // alert (FechaNac+" - "+Sexo+" - "+idhistorial);
     //alert("historial="+idhistorial);
     ajax.send("opcion=" + opcion + "&idsolicitud=" + idsolicitud + "&idarea=" + idarea +
-            "&FechaNac=" + FechaNac + "&Sexo=" + Sexo + "&IdEstandar=" + idestandar + "&idhistorial=" + idhistorial+ "&fecha_realizacion=" + fecha_realizacion+ "&fecha_reporte=" + fecha_reporte+ "&txtnec=" + txtnec);
+            "&FechaNac=" + FechaNac + "&Sexo=" + Sexo + "&IdEstandar=" + idestandar + "&idhistorial=" + idhistorial+ "&fecha_realizacion=" + fecha_realizacion+ "&fecha_reporte=" + fecha_reporte+ "&txtnec=" + txtnec+"&observaciongnral="+observaciongnral);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -1832,7 +1834,8 @@ function IngresarTodosResultados()
         fecha_reporte = document.frmnuevo.fecha_reporte.value;
         fecha_reporte = document.frmnuevo.fecha_reporte.value;
         txtnec = document.frmnuevo.txtnec.value;
-        CargarExamenes(idsolicitud, idarea, fechanac, sexo, idestandar, idhistorial, fecha_realizacion, fecha_reporte, txtnec);
+        observaciongnral=document.frmnuevo.observaciongnral.value
+        CargarExamenes(idsolicitud, idarea, fechanac, sexo, idestandar, idhistorial, fecha_realizacion, fecha_reporte, txtnec, observaciongnral);
     }
     else
     {
@@ -2080,6 +2083,7 @@ function MostrarVistaPreviaPlantillaA1()
                     document.getElementById('divresultado').style.display = "block";
                     document.getElementById('divresultado').innerHTML = ajax.responseText;
                     //calc_edad();
+                    window.location.href = '#divresultado';
                 }
             }
         }

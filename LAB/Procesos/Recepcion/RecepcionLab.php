@@ -59,6 +59,18 @@ if ($nivel == 7) {
            allowClear: true,
            dropdownAutoWidth: true
         });
+         $("#CmbServicio").select2({
+           allowClear: true,
+           dropdownAutoWidth: true
+    });
+        $("#cmbSubServ").select2({
+            allowClear: true,
+            dropdownAutoWidth: true
+         });
+         $("#cmbMedico").select2({
+                           allowClear: true,
+                           dropdownAutoWidth: true
+                        });
     });
     
 </script>
@@ -172,7 +184,7 @@ function fillMed(idSubEsp){
 	  param += '&idSubEsp='+idSubEsp;
 	  sendReq.send(param);  	
 	}
-}
+}//fillMed
 
 function fillestudios(idarea){
 accion=2;
@@ -197,7 +209,7 @@ accion=2;
 	  param += '&id_area='+idarea;
 	  sendReq.send(param);  	
 	}
-}
+}//fillestudios
 
 function fillmuestra(idestudio){
 accion=3;
@@ -402,11 +414,16 @@ function NoEncontrado(nec)
 }
 
 function limpiar(){
-	document.getElementById('cmbarea').value=0;
-	document.getElementById('cboEstudio').value=0;
-	document.getElementById('cboMuestra').value=0;
-	document.getElementById('cboOrigen').value=0;
-	document.getElementById('Indicacion').value="";
+   document.getElementById("frmdatosexpediente").reset();
+   document.getElementById("frmverificardatospac").reset();
+   document.getElementById("frmdatosgenerales").reset();
+    document.getElementById('lyLaboratorio').style.display="none"
+    document.getElementById('DatosPaciente').style.display="none"
+//	document.getElementById('cmbarea').value=0;
+//	document.getElementById('cboEstudio').value=0;
+//	document.getElementById('cboMuestra').value=0;
+//	document.getElementById('cboOrigen').value=0;
+//	document.getElementById('Indicacion').value="";
 }
 
 function IsNumeric(sText){//funcion para verificar si el dato que entra es numerico
@@ -458,6 +475,10 @@ function procesaEsp(){
 	  switch(accion){
 		case 1:
 		  	document.getElementById('lyMed').innerHTML = respuesta;
+                        $("#cmbMedico").select2({
+                           allowClear: true,
+                           dropdownAutoWidth: true
+                        });
 			break;
 		case 2:
 			document.getElementById('lyEstudio').innerHTML = respuesta;
@@ -505,9 +526,14 @@ function procesaEsp(){
 			break;
 		case 9:
 		  	document.getElementById('lysubserv').innerHTML = respuesta;
+                        $("#cmbSubServ").select2({
+                           allowClear: true,
+                           dropdownAutoWidth: true
+                        });
 			break;
 		case 10:
 		  	document.getElementById('DatosPaciente').innerHTML = respuesta;
+		  	document.getElementById('DatosPaciente').style.display="block"
                         document.getElementById('lyLaboratorio').style.display="block"; //
                        // document.getElementById('cmbTipoEstab').focus();
                         
@@ -524,12 +550,13 @@ function procesaEsp(){
                         //document.getElementById('cmbTipoEstab').focus();style.display="block"  enable = true
                         break;
 		case 11:
-                    //alert ('case11')
+                        $('#DatosPaciente').show();
 		  	document.getElementById('DatosPaciente').innerHTML = respuesta;
                         document.getElementById('lyLaboratorio').style.display="none";
                         //document.getElementById('cmbTipoEstab').focus();disabled = true
                         break;
                 case 12:
+                        $('#lyTipoEstab').show();
 		  	document.getElementById('lyTipoEstab').innerHTML = respuesta;
                         document.getElementById('cmbTipoEstab').focus();
 			break;
@@ -620,57 +647,59 @@ function cambioestexterno(){
 <body text="#000000" class="CobaltPageBody" onLoad="frmdatosexpediente.txtexp.focus();">
 
 <!--<link href="../../../css/paginalab.css" rel="stylesheet" type="text/css" />-->
-<form name="frmdatosexpediente" action="" method="post">	
-   <div  style="width: 45%">
-      <div class="panel panel-primary">                        
-         <div class="panel-heading" style="padding: 2px !important"><h3>Verificar Expediente</h3> </div>                        
-          <div class="panel-body" id="pb-primervez">  
-            <table border = 0 class="table table-white no-v-border table-condensed" border="0" style="border:0px; width: 100%; margin-bottom: 2px !important;" cellspacing="0" cellpadding="3" align="center">
-<!--
-                     <tr>
-                        <td colspan="3" align="center" class="CobaltFieldCaptionTD">
-                           <H3><strong>Verificar Expediente</strong></H3>
-                        </td>
-                     </tr>-->
-                     <tr>
-                              <th>Establecimiento</th>
-                              <td> <select id="cmb_establecimiento" name="cmb_establecimiento" style="width:100%; size: 10" class="height placeholder js-example-basic-single" onchange="cambioestexterno();">
-                                                    <?php
+<div  style="width: 50%">
+   <div class="panel panel-primary"  style="border:0px; height: 100%"> 
+      <div class="panel-heading" style="padding: 2px !important; width: 45%; min-width: 507px;"><h3>Verificar Expediente</h3> </div>   
+      <form name="frmdatosexpediente" id="frmdatosexpediente" action="" method="post">	
 
-                                                        //$obje=new clsLab_CodigosEstandar;
-                                                        $consulta= $recepcion->seleccionarestablecimientos();
-                                                        while($row = pg_fetch_array($consulta)){
-                                                           if ($row['id']==$lugar){
-                                                              echo '<option value="'.$lugar.'" selected>'.$row['nombre'].'</option>';
+                                 
+      <div class="panel-body" id="pb-primervez" style="width:45%; border: 1px solid; border-color: #428BCA;min-width: 507px;">  
+               <table border = 0 class="table table-white no-v-border table-condensed" border="0" style="border:0px; width: 100%; margin-bottom: 2px !important;" cellspacing="0" cellpadding="3" align="center">
+   <!--
+                        <tr>
+                           <td colspan="3" align="center" class="CobaltFieldCaptionTD">
+                              <H3><strong>Verificar Expediente</strong></H3>
+                           </td>
+                        </tr>-->
+                        <tr>
+                                 <th>Establecimiento</th>
+                                 <td> <select id="cmb_establecimiento" name="cmb_establecimiento" style="width:100%; size: 10" class="height placeholder js-example-basic-single" onchange="cambioestexterno();">
+                                                       <?php
+
+                                                           //$obje=new clsLab_CodigosEstandar;
+                                                           $consulta= $recepcion->seleccionarestablecimientos();
+                                                           while($row = pg_fetch_array($consulta)){
+                                                              if ($row['id']==$lugar){
+                                                                 echo '<option value="'.$lugar.'" selected>'.$row['nombre'].'</option>';
+                                                              }
+                                                               echo "<option value='" . $row['id']. "'>" . $row['nombre'] . "</option>";
                                                            }
-                                                            echo "<option value='" . $row['id']. "'>" . $row['nombre'] . "</option>";
-                                                        }
-                                                                            //mysql_free_result($row);		
-                                                    ?>		 		
-                                            </select>   </td>
-                     </tr>
-                     <tr>
-                            <td>Expediente</td>
-                            <td>
-                                    <input id="txtexp" class="form-control height" style="width:188px; height:20px" size="26"  >
-                                    <input type="hidden" id="IdCitaServApoyo">
-                                    <input type="hidden" id="IdEstablecimientoExterno" value="<?php echo $lugar; ?>">
-                                    
-            <!--                        <input type="button" value="Verificar" id="btnverificar" onClick="searchpac();">-->
-                            </td> 
-                    </tr>     
-                    <tr><td colspan="2" align="right">
-                       <button type="button" id="btnverificar" name="btnverificar" class='btn btn-primary' onclick="searchpac()"><span class='glyphicon glyphicon glyphicon-search'>&nbsp;Verificar</button>
-                       <button type="button" id="Nuevo" name="Nuevo" class='btn btn-primary' onclick="window.location.replace('RecepcionLab.php')"><span class='glyphicon '>&nbsp;Nueva Búsqueda</button>
-                       </td></tr>
-            </table>	
-             </div>
-      </div>
-    </div>
-</form>
-<div id="DatosPaciente"></div>
- <div id="lyLaboratorio" style="display:none; position:relative;">
-     <form name="frmdatosgenerales" action="" method="post">  
+                                                                               //mysql_free_result($row);		
+                                                       ?>		 		
+                                               </select>  
+                                 </td>
+                        </tr>
+                        <tr>
+                               <td>Expediente</td>
+                               <td>
+                                       <input id="txtexp" class="form-control height" style="width:188px; height:20px" size="26"  >
+                                       <input type="hidden" id="IdCitaServApoyo">
+                                       <input type="hidden" id="IdEstablecimientoExterno" value="<?php echo $lugar; ?>">
+
+               <!--                        <input type="button" value="Verificar" id="btnverificar" onClick="searchpac();">-->
+                               </td> 
+                       </tr>     
+                       <tr><td colspan="2" align="right">
+                            <button type="button" id="btnverificar" name="btnverificar" class='btn btn-primary' onclick="searchpac()"><span class='glyphicon glyphicon glyphicon-search'>&nbsp;Verificar</button>
+                            <button type="button" id="Nuevo" name="Nuevo" class='btn btn-primary' onclick="window.location.replace('RecepcionLab.php')"><span class='glyphicon '>&nbsp;Nueva Búsqueda</button>                                
+                        </td></tr>
+               </table>	
+                </div>
+         
+   </form>
+<div id="DatosPaciente" style="display:none;"></div>
+<div id="lyLaboratorio" class="panel panel-body" style="display:none;">
+     <form name="frmdatosgenerales" id="frmdatosgenerales" action="" method="post">  
         <table cellspacing="0" cellpadding="0" align="center" border=0 class="StormyWeatherFormTABLE" style="height:275px">
             <tr>&nbsp;</tr>
             <tr>
@@ -716,13 +745,13 @@ function cambioestexterno(){
                                             <option value="0">--Seleccione Establecimiento--</option>
                                     </select>
                             </div>
-                        <input id="lugar" type="hidden" value="<?php echo $lugar?>" >
+                        <input id="lugar" type="hidden" value="<?php echo $lugar?>" />
                     </td>
             </tr>
             <tr>
                     <td class="StormyWeatherFieldCaptionTD">Procedencia:&nbsp;</td>
                     <td class="StormyWeatherDataTD" >
-                            <select name="CmbServicio" id="CmbServicio" class="form-control height" style="width:350px" onChange="fillservicio(this.value)" >
+                            <select name="CmbServicio" id="CmbServicio" class="js-example-basic-single" style="width:350px" onChange="fillservicio(this.value)" >
                                     <option value="0" selected="selected">--Seleccione Procedencia--</option>
                                     <?php
                                     $tiposerv=$recepcion->tipoestservicio($lugar);
@@ -748,7 +777,7 @@ function cambioestexterno(){
                     <td class="StormyWeatherFieldCaptionTD">SubServicio:&nbsp;</td>
                     <td class="StormyWeatherDataTD">
                             <div id="lysubserv">
-                               <select name="cmbSubServ" id="cmbSubServ"  style="width:350px" class="form-control height">
+                               <select name="cmbSubServ" id="cmbSubServ"  style="width:350px" class="js-example-basic-single">
                                             <option value="0" selected="selected">--Seleccione Subespecialidad--</option>
 
                                     </select>
@@ -759,7 +788,7 @@ function cambioestexterno(){
                     <td class="StormyWeatherFieldCaptionTD">M&eacute;dico&nbsp;</td>
                     <td class="StormyWeatherDataTD">
                             <div id="lyMed">
-                               <select name="cmbMedico" class="form-control height" id="cmbMedico" onChange="fillMed(this.value)" style="width:350px">
+                               <select name="cmbMedico" class="js-example-basic-single" id="cmbMedico" onChange="fillMed(this.value)" style="width:350px">
                                             <option value="0" selected="selected">--Seleccione M&eacute;dico&nbsp;--</option>
 
                                     </select>
@@ -770,22 +799,21 @@ function cambioestexterno(){
                     <td class="StormyWeatherFieldCaptionTD" align="center">Fecha en que paso Consulta</td>
                     <td class="StormyWeatherDataTD" colspan="2">
                         <input name="Input" class="date" id="txtconsulta" style="width:188px; height:20px" size="26" placeholder="aaaa-mm-dd">
-<!--                            <input type="button" value="..." id="trigger">&nbsp;&nbsp;aaaa-mm-dd</td>
-                                    <script type="text/javascript">
-                                            Calendar.setup(
-                                            {
-                                            inputField  : "txtconsulta",         // el ID texto 
-                                            ifFormat    : "%Y-%m-%d",    // formato de la fecha "%d/%m/%Y"
-                                            button      : "trigger"       // el ID del boton			  	  
-                                            }
-                                            );
-                                    </script>-->
+                    </td>
             </tr>
             <tr>
+<<<<<<< HEAD
                 <td class="StormyWeatherDataTD" colspan="3">                   
             <center> <button type="button" id="Examen" name="Examen" class='btn btn-primary' onclick="Examenes()"><span class='glyphicon glyphicon-plus'>&nbsp;Agregar Examenes</button>&nbsp;&nbsp;&nbsp;
                      <button type="button" id="Nuevo" name="Nuevo" class='btn btn-primary' onclick="window.location.replace('RecepcionLab.php')"><span class='glyphicon '>&nbsp;Nueva Búsqueda</button>
                     </center>
+=======
+                <td class="StormyWeatherDataTD" colspan="2">                   
+            <center> 
+               <button type="button" id="Examen" name="Examen" class='btn btn-primary' onclick="Examenes()"><span class='glyphicon glyphicon-plus'>&nbsp;Agregar Examenes</button>
+              
+            </center>
+>>>>>>> desarrollo
                 </td>
 <!--                    <td class="StormyWeatherFieldCaptionTD">Agregar Examenes</td>
                     <td class="StormyWeatherDataTD">
@@ -795,6 +823,10 @@ function cambioestexterno(){
         </table>
     </form>
 
+ </div>
+</div>
+      
+</div>
 
 <p align="center"><!-- END Record NewRecord1 --></p>
 <p align="center">&nbsp;</p>

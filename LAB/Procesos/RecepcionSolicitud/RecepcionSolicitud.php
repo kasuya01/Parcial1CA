@@ -128,7 +128,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                 $fecha= date('Y-m-d H:i');
                 $iddetalle=$rows['iddetalle'];
                 $i_idexamen=$rows['i_idexamen'];
-            echo " <td style='width:150px'><input type='text' class='datepicker form-control height'  id='f_tomamuestra_".$k."' name='f_tomamuestra_'  value='". date('Y-m-d H:i')."' onchange=\"valfechasolicita(this, 'f_tomamuestra_".$k."')\" style='width:150px' />"
+            echo " <td style='width:150px'><input type='text' class='datepicker form-control height'  id='f_tomamuestra_".$k."' name='f_tomamuestra_'  value='". date('Y-m-d H:i')."' onchange=\"valfechasolicita(this.value, 'f_tomamuestra_".$k."')\" style='width:150px' />"
                     . "<input type='hidden' id='iddetalle_".$k."' name='iddetalle_' value='".$iddetalle."'/>"
                     . "<input type='hidden' id='i_idexamen_".$k."' name='i_idexamen_' value='".$i_idexamen."'/>"
                     . "<input type='hidden' id='hdn_numexOrd".$k."' name='hdn_numexOrd' value='".$k."'/>"

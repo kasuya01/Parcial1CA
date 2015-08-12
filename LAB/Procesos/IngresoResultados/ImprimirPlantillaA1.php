@@ -160,7 +160,7 @@ $rowpa = pg_fetch_array($datpac);
 			<td align='left' class='Estilo5'><strong>Rangos Normales</strong></td>
 			<!--<td align='center' class='Estilo5'><strong>Lectura</strong></td>
 			<td align='center' class='Estilo5'><strong>Interpretaci&oacute;n</strong></td>-->
-			<td align='center' class='Estilo5'><strong>Observaci&oacute;n</strong></td>
+			<td align='left' class='Estilo5'><strong>Observaci&oacute;n</strong></td>
                         <td align='center' class='Estilo5'><strong>Fecha Resultado</strong></td>
 
 		</tr>
@@ -177,7 +177,7 @@ $rowpa = pg_fetch_array($datpac);
 			<td class='Estilo6' align='left'><?php echo $rowdet['rangos']?></td>
 			<!--<td class='Estilo6' align='justify'><?php //echo htmlentities($vector_lecturas[$pos])?></td>
 		        <td class='Estilo6' align='justify'><?php //echo htmlentities($vector_inter[$pos])?></td>-->
-		        <td class='Estilo6' align='center'><?php echo $rowdet['observacion']?></td>
+		        <td class='Estilo6' align='left'><?php echo $rowdet['observacion']?></td>
                         <td class='Estilo6' align='center'><?php echo $rowdet['fecharesultado']?></td>
 		</tr>
 		<?php
