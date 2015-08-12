@@ -1,21 +1,18 @@
 <?php session_start();
-include('../Lab_Areas/clsLab_Areas.php');
 include_once("clsLab_Procedimientos.php");
+include('../Lab_Areas/clsLab_Areas.php');
+$objeareas=new clsLab_Areas;
+$obj = new clsLab_Procedimientos;
+
 $lugar=$_SESSION['Lugar'];
 $usuario=$_SESSION['Correlativo'];
 $area=$_SESSION['Idarea'];
 //consulta los datos por su id
 $idproce=$_POST['idproce'];
 
- $idproce;
-$obj = new clsLab_Procedimientos;
-
-
 $consulta1=$obj->consulhabilitado($idproce);
 $row = pg_fetch_array($consulta1);
 $habilitado=$row['habilitado'];
-
-//echo $habilitado;
 
 $consulta=$obj->consultarid($idproce,$lugar);
 $row = pg_fetch_array($consulta);
@@ -23,7 +20,7 @@ $row = pg_fetch_array($consulta);
 //valores de las consultas
 //$nombreelemento=$row['elemento'];
 
-$orden=$row['orden'];
+//muestra los datos consultados en los campos del formulario
 $idarea=$row['idarea'];
 $nombrearea=$row['nombrearea'];
 $idexamen=$row['idexamen'];
@@ -33,26 +30,25 @@ $unidades=$row['unidades'];
 $rangoini=$row['rangoinicio'];
 $rangofin=$row['rangofin'];
 $Fechaini=$row['fechaini'];
-/*list($anio, $mes, $dia) = split('[/.-]', $Fechaini);
-$Fechaini = $anio . "/" . $mes . "/" . $dia;*/
-
 $Fechafin=$row['fechafin'];
-/*if($Fechafin !== null) {
-	list($anio, $mes, $dia) = split('[/.-]', $Fechafin);
-	$Fechafin = $anio . "/" . $mes . "/" . $dia;*/
-//}
 $idsexo=$row['idsexo'];
 $nombresexo=$row['sexovn'];
 $idedad=$row['idedad'];
 $rangoedad=$row['nombregrupoedad'];
-//muestra los datos consultados en los campos del formulario
+$orden=$row['orden'];
+/*list($anio, $mes, $dia) = split('[/.-]', $Fechaini);
+$Fechaini = $anio . "/" . $mes . "/" . $dia;*/
 
+//$Fechafin=$row['fechafin'];
+/*if($Fechafin !== null) {
+	list($anio, $mes, $dia) = split('[/.-]', $Fechafin);
+	$Fechafin = $anio . "/" . $mes . "/" . $dia;*/
+//}
 
 
 ?>
 <form name= "frmModificar" action="" >
-<table width="5
-55%" border="0" align="center" class="StormyWeatherFormTABLE">
+<table width="55%" border="0" align="center" class="StormyWeatherFormTABLE">
 	<tr>
 		<td colspan="2" class="CobaltFieldCaptionTD" align="center"><h3><strong>Procedimientos de Ex&aacute;menes de Laboratorio</strong></h3>
 		</td>
@@ -63,7 +59,7 @@ $rangoedad=$row['nombregrupoedad'];
 			<select id="cmbArea" name="cmbArea" size="1"  style="width:50%"  class="form-control height" onChange="LlenarComboExamen(this.value);">
 				<option value="0" >--Seleccione un &Aacute;rea--</option>
 				<?php
-					$objeareas=new clsLab_Areas;
+					
                     $consulta= $objeareas->consultaractivas($lugar);
                     while($row = pg_fetch_array($consulta)){
                         if($row['idarea'] === $idarea)
@@ -155,18 +151,15 @@ $rangoedad=$row['nombregrupoedad'];
                                          /*   $datosDB=0;
                                              $datosDB=existeOrden($idexamen);*/
                                                 for ($index = 1 ; $index <=25 ; $index++) 
-                                                    {
+                                                {
                                                       //$rest=areglo ($datosDB,$index);
                                                      // if($rest==0){
                                                       if($index<>$orden){    
-                                                        echo '<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
+                                                           echo '<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
                                                       }
 
 
-                                                    }
-                                            
-                                         
-                                    	                                     
+                                                }                   
                                 }
                             ?>    
                                 </select>
@@ -202,11 +195,7 @@ $rangoedad=$row['nombregrupoedad'];
                 ?> 
                        
          </tr>
-        
-        
-        
-        
-    	<tr>
+       	<tr>
         	<td colspan="2" class="StormyWeatherDataTD">
 			
 			<table width="850" border="0" align="center" class="StormyWeatherFormTABLE">
@@ -226,24 +215,24 @@ $rangoedad=$row['nombregrupoedad'];
 		</td>
     	</tr>
     	<tr>
-        	<td colspan="2" class="StormyWeatherDataTD">
-				<table width="850" border="0" align="center" class="StormyWeatherFormTABLE">
-				<tr>
-					<td width="19%" class="StormyWeatherFieldCaptionTD">Fecha Inicio</TD>
-					<td  class="StormyWeatherDataTD">
-						<input name="txtFechainicio1" type="text" id="txtFechainicio1" style="width:260px"   class="form-control height placeholder" value="<?php echo $Fechaini; ?>" size="28" >
-                                        </td>
-					<td width="17%" class="StormyWeatherFieldCaptionTD">Fecha Final</D>
-					<td  class="StormyWeatherDataTD">
-                                         <?php  if($Fechafin==""){
-                                             ?>
-                                            <input name="txtFechaFin1" type="text" id="txtFechaFin1" style="width:280px"   class="form-control height placeholder" placeholder="Ingrese Fecha  dd/mm/aaaa" size="28" >
-                                              <?php 
-                                            }else {
-                                               ?>
-                                              <input name="txtFechaFin1" type="text" id="txtFechaFin" style="width:280px"   class="form-control height placeholder" value="<?php echo $Fechafin; ?>" size="28" >
+            <td colspan="2" class="StormyWeatherDataTD">
+                <table width="850" border="0" align="center" class="StormyWeatherFormTABLE">
+                    <tr>
+			<td width="19%" class="StormyWeatherFieldCaptionTD">Fecha Inicio</TD>
+			<td  class="StormyWeatherDataTD">
+                            <input name="txtFechainicio1" type="text" id="txtFechainicio1" size="20" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" value="<?php echo $Fechaini; ?>"/>
+                            
+                        </td>
+			<td width="17%" class="StormyWeatherFieldCaptionTD">Fecha Final</D>
+			<td  class="StormyWeatherDataTD">
+                             <?php  if($Fechafin==""){ ?>
+                                        <input name="txtFechaFin1" type="text" id="txtFechaFin1" style="width:75%" class="date form-control height placeholder" placeholder="Ingrese Fecha  dd/mm/aaaa" size="20" />
                                         
-                                           <?php  } ?>
+                                         
+                             <?php  }else {?>
+                                        <input name="txtFechaFin1" type="text" id="txtFechaFin1" style="width:75%"   class="date form-control height placeholder" value="<?php echo $Fechafin; ?>" size="20" />
+                                      
+                             <?php  } ?>
                                             
                                             
 					<!--	<input name="txtFechaFin1" type="text" id="txtFechaFin" style="width:200px"   class="form-control height placeholder" value="<?php echo $Fechafin; ?>" size="28" >

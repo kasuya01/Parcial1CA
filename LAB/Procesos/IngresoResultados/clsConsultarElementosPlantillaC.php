@@ -39,7 +39,7 @@ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$obs
                observacion,resultado,idempleado,idusuarioreg,fechahorareg,idestablecimiento,id_observacion,fecha_resultado) 
 	       VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,
                '$observacion','$NomResultado',$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,$idobservacion,'$fecharesultado')RETURNING id";
-       $query;
+      //echo $query;
                 $result = pg_query($query);
                 
                 if($row = pg_fetch_array($result)) {
@@ -91,7 +91,7 @@ function insertar_detalle($idresultado,$ibacteria,$idtarjeta,$cantidad,$lugar)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_detalleresultado(idresultado,idbacteria,idtarjeta,cantidad,idestablecimiento) 
+        $query = "INSERT INTO lab_detalleresultado(idresultado,idbacteria,idtarjeta,cantidad,idestablecimiento) 
 			  VALUES($idresultado,$ibacteria,$idtarjeta,'$cantidad',$lugar)";
 	$query2="SELECT MAX(id) FROM lab_detalleresultado;";
 

@@ -644,7 +644,7 @@ function MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar)
    if($con->conectar()==true)
    {
         $query ="SELECT 
-                    TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY HH12:MI') AS fecharecepcion,
+                    TO_CHAR(t03.fechahorareg, 'DD/MM/YYYY HH12:MI') AS fecharecepcion,
                     t06.numero AS idnumeroexp,
                     t01.id as iddetallesolicitud,
                     t02.id as idsolicitudestudio,

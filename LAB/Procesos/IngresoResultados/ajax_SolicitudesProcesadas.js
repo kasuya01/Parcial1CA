@@ -340,8 +340,8 @@ function GuardarResultadosPlantillaA()
                 alert(ajax.responseText);
                 document.getElementById('btnGuardar').style.visibility = 'hidden';
                 document.getElementById('btningresar').style.visibility = 'hidden';
-                 document.getElementById('Imprimir').style.display = "initial";
-                 document.getElementById('divexamen').style.display = "none";
+                document.getElementById('Imprimir').style.display = "initial";
+                document.getElementById('divexamen').style.display = "none";
                 document.getElementById('agregarresults').style.visibility = 'hidden';
                 
                
@@ -589,6 +589,7 @@ function MostrarVistaPreviaPlantillaC()
                 {  //mostrar los nuevos registros en esta capa
                     document.getElementById('divresultado').style.display = "block";
                     document.getElementById('divresultado').innerHTML = ajax.responseText;
+                    document.getElementById('Imprimir').style.visibility = "hidden";
                    // calc_edad();
 
                 }
@@ -669,7 +670,9 @@ function GuardarResultadosPlantillaC()
             if (ajax.status == 200)
             {  //mostrar los nuevos registros en esta capa
                 alert(ajax.responseText);
-                document.getElementById('Guardar').style.visibility = "hidden";
+                document.getElementById('btnGuardar').style.visibility = 'hidden';
+                document.getElementById('Imprimir').style.visibility='visible';
+                //document.getElementById('btnGuardar').style.visibility = "hidden";
 
 
 
@@ -776,7 +779,8 @@ function PreviosNegativos()
         idarea = document.frmnuevo.txtarea.value;
         idsolicitud = document.frmnuevo.txtidsolicitud.value;
         idempleado = document.frmnuevo.cmbEmpleados.value;
-        observacion = document.frmnuevo.cmbObservacion.value;
+       // observacion = document.frmnuevo.cmbObservacion.value;
+       // alert("ajax"+observacion);
         idobservacion = document.getElementById('cmbObservacion').value;
         resultado = document.frmnuevo.cmbResultado.value;
         estab = document.frmnuevo.txtEstablecimiento.value;
@@ -799,9 +803,10 @@ function PreviosNegativos()
         ajax.open("POST", "ctrDatosResultadosExamen_PC.php", true);
         ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idtarjeta=" + idtarjeta + "&tiporespuesta=" + tiporespuesta +
-                "&idarea=" + idarea + "&idsolicitud=" + idsolicitud + "&idempleado=" + idempleado + "&observacion=" + encodeURIComponent(observacion) +
+                "&idarea=" + idarea + "&idsolicitud=" + idsolicitud + "&idempleado=" + idempleado + 
                 "&resultado=" + resultado + "&estab=" + estab + "&idobservacion=" + idobservacion + "&fecharealiz=" + fecharealiz + "&fecharesultado=" + fecharesultado+
                 "&f_tomamuestra="+f_tomamuestra+"&tipomuestra="+tipomuestra);
+        //"&observacion=" + encodeURIComponent(observacion) +
         ajax.onreadystatechange = function()
         {
             if (ajax.readyState == 4)
@@ -835,7 +840,7 @@ function GuardarResultadosNegativosPlantillaC()
     //idexamen
     idexamen = document.getElementById('txtidexamen').value;
     //observacion
-    observacion = document.getElementById('txtobservacion').value;
+   // observacion = document.getElementById('txtobservacion').value;
     idobservacion = document.getElementById('cmbObservacion').value;
     resultado = document.getElementById('cmbResultado').value;
     idempleado = document.getElementById('cmbEmpleados').value;
@@ -844,8 +849,9 @@ function GuardarResultadosNegativosPlantillaC()
     ajax.open("POST", "ctrDatosResultadosExamen_PC.php", true);
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     ajax.send("opcion=" + opcion + "&idsolicitud=" + idsolicitud + "&idrecepcion=" + idrecepcion + "&iddetalle=" + iddetalle +
-            "&idexamen=" + idexamen + "&observacion=" + escape(observacion) + "&resultado=" + resultado + "&idempleado=" + idempleado + "&idobservacion="+ idobservacion + 
+            "&idexamen=" + idexamen + "&resultado=" + resultado + "&idempleado=" + idempleado + "&idobservacion="+ idobservacion + 
             "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado);
+    // "&observacion=" + escape(observacion) +
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)

@@ -240,11 +240,11 @@ ELSE (sec_solicitudestudios.id_expediente) end) as idexpediente
 	}
  }
   //DATOS DEL DETALLE DE LA SOLICITUD
-  function DatosDetalleSolicitud($idsolicitud)
-  {
-	$con = new ConexionBD;
-   if($con->conectar()==true) 
-   {
+function DatosDetalleSolicitud($idsolicitud)
+{
+    $con = new ConexionBD;
+    if($con->conectar()==true) 
+    {
 	   $query = "SELECT ctl_area_servicio_diagnostico.idarea AS IdArea,lab_conf_examen_estab.codigo_examen AS IdExamen,nombre_examen,
             indicacion,fecha_solicitud,idsolicitudestudio,sec_detallesolicitudestudios.id as IdDetalleSolicitud,lab_plantilla.id as idplantilla,
             (CASE sec_detallesolicitudestudios.estadodetalle WHEN 1 THEN 'Digitado' 
@@ -267,7 +267,7 @@ ELSE (sec_solicitudestudios.id_expediente) end) as idexpediente
 	     else
 	       return $result;	   
    }
- }
+}
 
 
  
@@ -335,7 +335,7 @@ ELSE (sec_solicitudestudios.id_expediente) end) as idexpediente
      $con = new ConexionBD;
     if($con->conectar()==true)
     {
-        $query ="DELETE FROM lab_resultados WHERE id=$idresultado";
+       $query ="DELETE FROM lab_resultados WHERE id=$idresultado";
 	 $result = pg_query($query);
 	 if (!$result)
 	   return -1;
@@ -372,12 +372,12 @@ ELSE (sec_solicitudestudios.id_expediente) end) as idexpediente
 }*/
 
 /* Función para Eliminar el resultado de la mertodología de una prueba*/
-  function Eliminar_metodologia($iddetalleres){
+  function Eliminar_metodologia($iddetalle){
       $con = new ConexionBD;
 	if($con->conectar()==true)
 	{
 		$query ="DELETE FROM lab_resultado_metodologia 
-                         WHERE id_detallesolicitudestudio=$iddetalleres";
+                         WHERE id_detallesolicitudestudio=$iddetalle";
 		$result = pg_query($query);
 		if (!$result)
 			return -1;
@@ -406,7 +406,7 @@ function ObtenerIdResultado($idsolicitud,$iddetalle){
         $con = new ConexionBD;
         if($con->conectar()==true)
         {
-         $query ="SELECT id,resultado 
+             $query ="SELECT id,resultado 
                   FROM lab_resultados 
                   WHERE idsolicitudestudio=$idsolicitud AND iddetallesolicitud=$iddetalle";
               $result = @pg_query($query);
@@ -448,7 +448,7 @@ function ObtenerIdResultado($idsolicitud,$iddetalle){
   $con = new ConexionBD;
 	if($con->conectar()==true)
 	{
-		echo "<br>".$query ="DELETE FROM lab_resultadosportarjeta 
+		$query ="DELETE FROM lab_resultadosportarjeta 
                          WHERE iddetalleresultado=$iddetalleres";
 		$result = pg_query($query);
 		if (!$result)

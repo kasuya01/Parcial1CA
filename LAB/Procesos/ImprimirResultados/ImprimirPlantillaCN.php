@@ -107,6 +107,7 @@ $row_estab = pg_fetch_array($Consulta_Estab);
 				 <td style='font:bold'><strong>Validado Por</strong></td>
 				 <td colspan='2'><?php echo htmlentities($responsable) ?></td>
 			</tr>
+                          <tr><td colspan='6'><hr></td></tr> 
 			<tr>
 				 <td style='font:bold'><strong>Resultado</strong></td>
 					<?php 	pg_free_result($consulta_datos);
@@ -136,6 +137,11 @@ $row_estab = pg_fetch_array($Consulta_Estab);
 			<tr>
 				<td colspan='5'>&nbsp;</td>
 			</tr>
+                         <tr>
+                            <td colspan="6" class="Estilo6" align='right'>
+                                <br><br>Sello: _______________________ &nbsp;&nbsp;&nbsp;     Firma: _______________________
+                            </td>
+                        </tr>
 		</table></div></td></tr>
         <tr class="5"><td>
 		 	<div id="boton">

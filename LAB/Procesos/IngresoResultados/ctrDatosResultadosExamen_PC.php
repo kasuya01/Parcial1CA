@@ -186,8 +186,7 @@ switch ($opcion)
                            <tr>
                                   <td colspan='6'>&nbsp;</td>
                            </tr>
-                           <tr>   <td colspan='6'><hr></td>
-                           </tr>
+                           <tr>  <td colspan='6'><hr></td></tr>
                            <tr>
                                   <td colspan='1'><strong>Resultado:</strong></td>
                                   <td colspan='5' align='left'>Positivo</td>
@@ -238,6 +237,11 @@ switch ($opcion)
                            $imprimir.=" <tr>
                                             <td colspan='6'>&nbsp;</td>
                                         </tr>
+                                      
+                                    </table>
+                                  </td>
+                              </tr>
+                               
                                         <tr>
                                             <td colspan='1'>Observación:</td>
                                             <td colspan='5' align='left'>".$observacion."</td>
@@ -245,15 +249,14 @@ switch ($opcion)
                                        
                                         <tr>
                                             <td colspan='6'>
-                                               <input type='button' name='Guardar'  id='Guardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaC()'\>
+                                               <input type='button' name='btnGuardar'  id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaC()'>
+                                               
                                                <input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaC(".$idsolicitud.",\"".$idexamen."\",\"".$resultado."\",\"".$row_empleado['empleado']."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_antibioticos)."\",\"".$codigos_antibioticos."\",".$idbacteria.",\"".$cantidad."\",".$idtarjeta.",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".$idobservacion."\",\"".$valores_interpretacion."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\");' />
+                                              
                                                <input type='button' name='Ingresar' id='Ingresar' value='Ingresar otro Resultado' onclick='IngresarOtro()'\>   
                                                <input type='button' id='btnSalir' value='cerrar' onclick='Cerrar()'
                                             </td>
                                         </tr>
-                                    </table>
-                                  </td>
-                              </tr>
                            </table>";
 			   //<td><input type='button' name='Ingresar' id='Ingresar' value='Ingresar otro Resultado' onclick='IngresarOtro()'\><input type='button'  name='Submit' value='Cerrar' Onclick='salir();'></td>
 	echo $imprimir;
@@ -385,9 +388,10 @@ switch ($opcion)
 	$idsolicitud= $_POST['idsolicitud'];
 	$idempleado= $_POST['idempleado'];
         
-	$observacion= (empty($_POST['observacion'])) ? ' ' : "'" . pg_escape_string($_POST['observacion']) . "'";
-
+	//$observacion= (empty($_POST['observacion'])) ? ' ' : "'" . pg_escape_string($_POST['observacion']) . "'";
+        
         $idobservacion=$_POST['idobservacion'];
+       // echo "id=".$idobservacion; 
 	$resultado=$_POST['resultado'];
 	$establecimiento=$_POST['estab'];
         $fecharealiz=$_POST['fecharealiz'];
@@ -463,6 +467,9 @@ switch ($opcion)
                         <tr>
                                 <td colspan='6'>&nbsp;</td>
                         </tr>
+                        <tr>
+                                <td colspan='6'><hr></td>
+                        </tr>
 			<tr>
 				<td colspan='1'><strong>Resultado</strong></td>";
 	pg_free_result($consulta_datos);
@@ -515,11 +522,15 @@ case 6:
 	$idempleado= $_POST['idempleado'];
 	$idrecepcion= $_POST['idrecepcion'];
 	$iddetalle= $_POST['iddetalle'];
-	$observacion= (empty($_POST['observacion'])) ? 'NULL' : "'" . pg_escape_string($_POST['observacion']) . "'";
+	
         $idobservacion=$_POST['idobservacion'];
 	$resultado=$_POST['resultado'];
         $fecharealiz=$_POST['fecharealiz'];
         $fecharesultado=$_POST['fecharesultado'];
+        $datos_observacion=$objdatos->LeerObservacion($idobservacion);
+	$row_observacion = pg_fetch_array($datos_observacion);
+        //$observacion= (empty($row_observacion['observacion'])) ? 'NULL' : "'" . pg_escape_string($row_observacion['observacion']) . "'";
+        $observacion=$row_observacion['observacion'];
       //  echo $fecharealiz." - ".$fecharesultado;
      //echo "Examen=".$idexamen." - soli=".$idsolicitud." - empleado=".$idempleado." - idrecepcion=".$idrecepcion." - iddetalle=".$iddetalle." - observacion=".$observacion." - resultado=".$resultado;
 	if ($resultado=="N")

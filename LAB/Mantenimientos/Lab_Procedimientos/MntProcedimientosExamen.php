@@ -332,7 +332,7 @@ if ($nivel == 7) {
     </tr>
 </table>
 	<script type="text/javascript">
-		Calendar.setup(
+	/*	Calendar.setup(
 		{
 			inputField  : "txtFechainicio",         // el ID texto 
 			ifFormat    : "%d/%m/%Y",    // formato de la fecha
@@ -345,7 +345,7 @@ if ($nivel == 7) {
 			ifFormat    : "%d/%m/%Y",    // formato de la fecha
 			button      : "trigger2"       // el ID del boton			  	  
 		}
-		);
+		);*/
 	</script>
 </body>
 </html>

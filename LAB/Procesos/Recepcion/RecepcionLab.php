@@ -661,6 +661,7 @@ function cambioestexterno(){
                     </tr>     
                     <tr><td colspan="2" align="right">
                        <button type="button" id="btnverificar" name="btnverificar" class='btn btn-primary' onclick="searchpac()"><span class='glyphicon glyphicon glyphicon-search'>&nbsp;Verificar</button>
+                       <button type="button" id="Nuevo" name="Nuevo" class='btn btn-primary' onclick="window.location.replace('RecepcionLab.php')"><span class='glyphicon '>&nbsp;Nueva Búsqueda</button>
                        </td></tr>
             </table>	
              </div>
@@ -781,8 +782,10 @@ function cambioestexterno(){
                                     </script>-->
             </tr>
             <tr>
-                <td class="StormyWeatherDataTD" colspan="2">                   
-            <center> <button type="button" id="Examen" name="Examen" class='btn btn-primary' onclick="Examenes()"><span class='glyphicon glyphicon-plus'>&nbsp;Agregar Examenes</button></center>
+                <td class="StormyWeatherDataTD" colspan="3">                   
+            <center> <button type="button" id="Examen" name="Examen" class='btn btn-primary' onclick="Examenes()"><span class='glyphicon glyphicon-plus'>&nbsp;Agregar Examenes</button>&nbsp;&nbsp;&nbsp;
+                     <button type="button" id="Nuevo" name="Nuevo" class='btn btn-primary' onclick="window.location.replace('RecepcionLab.php')"><span class='glyphicon '>&nbsp;Nueva Búsqueda</button>
+                    </center>
                 </td>
 <!--                    <td class="StormyWeatherFieldCaptionTD">Agregar Examenes</td>
                     <td class="StormyWeatherDataTD">

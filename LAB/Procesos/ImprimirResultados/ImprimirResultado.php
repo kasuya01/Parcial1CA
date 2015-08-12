@@ -200,7 +200,7 @@ if ($nivel == 7) {
                     </td>
                     <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Recepi&oacute;n</td>
                     <td class="StormyWeatherDataTD" width="5%">
-                        <input type="text" size="28"  name="txtfecharecep" id="txtfecharecep" class="form-control height"  placeholder="aaaa-mm-dd"/>
+                        <input type="text" size="28"  name="txtfecharecep" id="txtfecharecep" class="date form-control height placeholder"  placeholder="aaaa-mm-dd"/>
                                  
             </td>
                 </tr>

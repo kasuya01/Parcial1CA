@@ -134,6 +134,7 @@ function calc_edad()
                 <tr>
                     <td colspan='6'>&nbsp;</td>
                 </tr>
+                 <tr><td colspan='6'><hr></td></tr> 
 		<tr>
                      <td colspan='1' class="Estilo5"><strong>Resultado:</strong></td>
 					<?php 	pg_free_result($consulta_datos);
@@ -157,7 +158,11 @@ function calc_edad()
 				<td colspan='1' class="Estilo5"><strong>Observaci&oacute;n:</strong></td>
 				<td colspan='5' class="Estilo6"><?php echo htmlentities($observacion)?></td>
 			</tr>
-
+                        <tr>
+                            <td colspan="6" class="Estilo6" align='right'>
+                                <br><br>Sello: _______________________ &nbsp;&nbsp;&nbsp;     Firma: _______________________
+                            </td>
+                        </tr>
 		</table></div>
         </td></tr>
         <tr class="5"><td>

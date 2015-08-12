@@ -148,7 +148,7 @@ function DatosCompletos(tipo) {
 			if (document.frmModificar.txtproc.value === "") {
 					error.push('Procedimiento');	
 			}
-		    if (document.frmModificar.txtFechainicio.value === "") {
+		    if (document.frmModificar.txtFechainicio1.value === "") {
 					error.push('Fecha de Inicio');		
 			}
 		    if (document.frmModificar.cmbSexo.value === "0") {
@@ -325,8 +325,8 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
 		rangofin=document.frmModificar.txtrangofin.value;
 		//nota=document.frmModificar.txtnota.value;
 		idproce=document.frmModificar.txtoculto.value;
-		Fechaini=document.frmModificar.txtFechainicio.value;
-		Fechafin=document.frmModificar.txtFechaFin.value;
+		Fechaini=document.frmModificar.txtFechainicio1.value;
+		Fechafin=document.frmModificar.txtFechaFin1.value;
 		sexo=document.frmModificar.cmbSexo.value;
                 redad=document.frmModificar.cmbEdad.value;
                  cmborden=document.frmModificar.cmborden.value;

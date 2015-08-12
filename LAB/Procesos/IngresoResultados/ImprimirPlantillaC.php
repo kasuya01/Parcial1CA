@@ -169,7 +169,11 @@ function calc_edad()
                 <td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>
                 <td colspan='5' class="Estilo6"><?php echo $row_totresult['nombreempleado'];?></td>
            </tr>
-                
+              <tr>
+                <td colspan='1' class="Estilo5"><strong>Observación:</strong></td>
+                <td colspan='3' class="Estilo5" align="justify"><?php echo $row_totresult['observacion']; ?></td>
+            </tr>    
+             
             
  <?php
    $detalle = $obj->obtener_detalle_resultado($row_totresult['idresultado']);
@@ -183,22 +187,21 @@ function calc_edad()
                 <td colspan='1' class="Estilo5" align="left" width="25%"><strong>Cultivo con Cuenta de Colonias:</strong></td>
                 <td colspan='5' class="Estilo5" aling="left" width="75%"><?php echo htmlentities($row_det['cantidad'])?></td>
             </tr>
-            <tr>
-		<td colspan='6'>&nbsp;</td>
-            </tr>
+             <tr><td colspan='6'><hr></td></tr>
+            
             
             <tr> 
                 <td colspan='6' align='left'>
-                    <table width='60%' border='0' align='left' cellspacing="0%" cellpadding="0%">
+                    <table width='100%' border='0' align='left' cellspacing="0%" cellpadding="0%">
 
                         <tr>
                             <td colspan='4' align="left">
                                 <table width="100%" border="0" align="left" cellspacing="0" >
                                     
                                     <tr>
-                                        <td colspan='1' class="Estilo5"><strong>ANTIBIOTICO</strong></td>
-                                        <td colspan='1' class="Estilo5"><strong>LECTURA</strong></td>
-                                        <td colspan='2' class="Estilo5"><strong>INTERPRETACI&Oacute;N</strong></td>
+                                        <td colspan='1' width="25%" class="Estilo5"><strong>ANTIBIOTICO</strong></td>
+                                        <td colspan='1' width="20%" class="Estilo5"><strong>LECTURA</strong></td>
+                                        <td colspan='2' width="55%" class="Estilo5"><strong>INTERPRETACI&Oacute;N</strong></td>
                                     </tr>
          <?php
                      $res_tarjeta= $obj->obtener_resultadoxtarjeta($row_det['iddetalleresultado']);
@@ -215,29 +218,31 @@ function calc_edad()
                            </td>
                         </tr>
                         <tr>
-                <td colspan='6' class="Estilo6" width='70%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td colspan='6' class="Estilo6" width='100%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
             </tr>
                         
-                        <tr>
-                <td colspan='1' class="Estilo5"><strong>Observación:</strong></td>
-                <td colspan='3' class="Estilo5" align="justify"><?php echo $row_totresult['observacion']; ?></td>
-            </tr> 
-             <tr>
-                <td colspan='6' class="Estilo6" width='70%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-            </tr>
+                     
             
-            
-                    </table><?php 
-    }
-}?>
-                </td>
-            </tr>
-                            
-           <tr>
+            <tr>
                                 <td colspan="6" class="Estilo6" align='right'>
                                     <br><br>Sello: _______________________ &nbsp;&nbsp;&nbsp;     Firma: _______________________
                                 </td>
                             </tr>
+             <tr>
+                <td colspan='6' class="Estilo6" width='100%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            </tr>                
+            
+                    </table><?php 
+    }//while del detalle
+}?>
+                </td>
+            </tr>
+                            
+          <!-- <tr>
+                                <td colspan="6" class="Estilo6" align='right'>
+                                    <br><br>Sello: _______________________ &nbsp;&nbsp;&nbsp;     Firma: _______________________
+                                </td>
+                            </tr>-->
     </table>
         <div id="boton">
             <table align='center' border="0">

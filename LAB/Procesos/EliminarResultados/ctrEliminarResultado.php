@@ -190,9 +190,9 @@ ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
 		$NroRegistros= $objdatos->NumeroDeRegistros($query);				
 
      $imprimir="<table width='85%' border='0' align='center'>
-			<tr>
-				<td colspan='7' align='center' ><h3><strong>TOTAL DE SOLICITUDES: ".$NroRegistros."</strong></h3></td>
-			</tr>
+		    <tr>
+			<td colspan='7' align='center' ><h3><strong>TOTAL DE SOLICITUDES: ".$NroRegistros."</strong></h3></td>
+		    </tr>
 		</table> "; 
     $imprimir.="<center><div class='table-responsive' style='width: 80%;'>
         <table width='85%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
@@ -386,7 +386,7 @@ ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
 		$idexpediente=$_POST['idexpediente'];
 		$idsolicitud=$_POST['idsolicitud'];
                 $idplantilla=$_POST['idplantilla'];
-                //echo " idsolicitud=".$idsolicitud." iddetalle=".$iddetalle." idplantilla=$idplantilla".
+                echo "iddetalle=".$iddetalle ;
 		$dato=$objdatos->VerificaDetalle($idsolicitud,$iddetalle);
 			 if ($dato == 1){
                           //  echo "entro".$idplantilla;
@@ -445,7 +445,7 @@ ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
 								
 						while($result = pg_fetch_array($r)){
 						    $idresultado=$result['id'];
-								//echo $idresultado;
+								
 								//$tr=$objetos->ObtenerTipoResultado($idresultado);
 								//$tipo=mysql_fetch_array($tr);
 					            $TipoResultado=$result['resultado'];
@@ -460,7 +460,7 @@ ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
 									$iddetalleres=$detalle[0];
 						 //		echo $idsolicitud."-".$iddetalle."-".$idresultado."-". $iddetalleres;
                                                                       if($dr=$objdatos->Eliminar_metodologia($iddetalle)==1){  
-                                                                            if($dr=$objdatos->EliminarResultadoTarjeta($iddetalleres)==1){
+                                                                                                                                                                   if($dr=$objdatos->EliminarResultadoTarjeta($iddetalleres)==1){
                                                                                 if($dr=$objdatos->EliminarDetalleResultado($idresultado)==1){
                                                                                     if ($objdatos->EliminarResultado($idresultado) == 1){
                                                                                         if (($objdatos->ActualizarEstadoDetalle($iddetalle)==true)||($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true))
@@ -479,10 +479,12 @@ ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
 									
 							
 								break;
-								case 'N':
-								case 'O':
-										if($dr=$objdatos->Eliminar_Metodologia($iddetalle)==1){  
-                                                                                    if ($objdatos->EliminarResultado($idsolicitud,$iddetalle) == 1){	 
+								case 'Negativo':
+								case '---':
+									echo "idresultado=".$idresultado." iddetalle=".$iddetalle;
+                                                                        
+                                                                               if($dr=$objdatos->Eliminar_Metodologia($iddetalle)==1){  
+                                                                                    if ($objdatos->EliminarResultado($idresultado) == 1){	 
 											if (($objdatos->ActualizarEstadoDetalle($iddetalle)==true)||($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true)){
 												echo "Resultado Eliminado";}
                                                                                     }            
