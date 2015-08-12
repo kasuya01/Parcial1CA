@@ -59,6 +59,18 @@ if ($nivel == 7) {
            allowClear: true,
            dropdownAutoWidth: true
         });
+         $("#CmbServicio").select2({
+           allowClear: true,
+           dropdownAutoWidth: true
+    });
+        $("#cmbSubServ").select2({
+            allowClear: true,
+            dropdownAutoWidth: true
+         });
+         $("#cmbMedico").select2({
+                           allowClear: true,
+                           dropdownAutoWidth: true
+                        });
     });
     
 </script>
@@ -463,6 +475,10 @@ function procesaEsp(){
 	  switch(accion){
 		case 1:
 		  	document.getElementById('lyMed').innerHTML = respuesta;
+                        $("#cmbMedico").select2({
+                           allowClear: true,
+                           dropdownAutoWidth: true
+                        });
 			break;
 		case 2:
 			document.getElementById('lyEstudio').innerHTML = respuesta;
@@ -510,6 +526,10 @@ function procesaEsp(){
 			break;
 		case 9:
 		  	document.getElementById('lysubserv').innerHTML = respuesta;
+                        $("#cmbSubServ").select2({
+                           allowClear: true,
+                           dropdownAutoWidth: true
+                        });
 			break;
 		case 10:
 		  	document.getElementById('DatosPaciente').innerHTML = respuesta;
@@ -530,12 +550,13 @@ function procesaEsp(){
                         //document.getElementById('cmbTipoEstab').focus();style.display="block"  enable = true
                         break;
 		case 11:
-                    //alert ('case11')
+                        $('#DatosPaciente').show();
 		  	document.getElementById('DatosPaciente').innerHTML = respuesta;
                         document.getElementById('lyLaboratorio').style.display="none";
                         //document.getElementById('cmbTipoEstab').focus();disabled = true
                         break;
                 case 12:
+                        $('#lyTipoEstab').show();
 		  	document.getElementById('lyTipoEstab').innerHTML = respuesta;
                         document.getElementById('cmbTipoEstab').focus();
 			break;
@@ -729,7 +750,7 @@ function cambioestexterno(){
             <tr>
                     <td class="StormyWeatherFieldCaptionTD">Procedencia:&nbsp;</td>
                     <td class="StormyWeatherDataTD" >
-                            <select name="CmbServicio" id="CmbServicio" class="form-control height" style="width:350px" onChange="fillservicio(this.value)" >
+                            <select name="CmbServicio" id="CmbServicio" class="js-example-basic-single" style="width:350px" onChange="fillservicio(this.value)" >
                                     <option value="0" selected="selected">--Seleccione Procedencia--</option>
                                     <?php
                                     $tiposerv=$recepcion->tipoestservicio($lugar);
@@ -755,7 +776,7 @@ function cambioestexterno(){
                     <td class="StormyWeatherFieldCaptionTD">SubServicio:&nbsp;</td>
                     <td class="StormyWeatherDataTD">
                             <div id="lysubserv">
-                               <select name="cmbSubServ" id="cmbSubServ"  style="width:350px" class="form-control height">
+                               <select name="cmbSubServ" id="cmbSubServ"  style="width:350px" class="js-example-basic-single">
                                             <option value="0" selected="selected">--Seleccione Subespecialidad--</option>
 
                                     </select>
@@ -766,7 +787,7 @@ function cambioestexterno(){
                     <td class="StormyWeatherFieldCaptionTD">M&eacute;dico&nbsp;</td>
                     <td class="StormyWeatherDataTD">
                             <div id="lyMed">
-                               <select name="cmbMedico" class="form-control height" id="cmbMedico" onChange="fillMed(this.value)" style="width:350px">
+                               <select name="cmbMedico" class="js-example-basic-single" id="cmbMedico" onChange="fillMed(this.value)" style="width:350px">
                                             <option value="0" selected="selected">--Seleccione M&eacute;dico&nbsp;--</option>
 
                                     </select>

@@ -56,7 +56,7 @@ switch($Proceso){
               $IdServ=$_POST['idserv'];
 	    //  echo $IdServ;
 	      $dtserv=$recepcion->LlenarCmbServ($IdServ,$lugar);
-	      	$rslts = '<select name="cmbSubServ" id="cmbSubServ" onChange="fillMed(this.value)" style="width:350px" class="form-control height">';
+	      	$rslts = '<select name="cmbSubServ" id="cmbSubServ" onChange="fillMed(this.value)" style="width:350px" class="js-example-basic-single">';
 			$rslts .='<option value="0">--Seleccione Subespecialidad--</option>';
 			while ($rows =pg_fetch_array($dtserv)){
 		  	$rslts.= '<option value="' . $rows['id'] .'" >'. $rows['servicio'].'</option>';
@@ -71,7 +71,7 @@ switch($Proceso){
                $idSubEsp=$_POST['idSubEsp'];
                //echo $idSubEsp; 
                $dtmed=$recepcion->LlenarCmbMed($idSubEsp,$lugar);
-               $rslts = '<select name="cmbMedico" id="cmbMedico"  style="width:350px" class="form-control height">';
+               $rslts = '<select name="cmbMedico" id="cmbMedico"  style="width:350px" class="js-example-basic-single">';
 				$rslts .='<option value="0">--selecione un M&eacute;dico--</option>';
 				while ($rows =pg_fetch_array($dtmed)){
 					$rslts.= '<option value="'.$rows['idemp'].'" >'. $rows['nombre'].'</option>';
@@ -336,7 +336,7 @@ switch($Proceso){
         //echo "  datos paciente ". count($DatosPaciente);
         //mysql_fetch_row($DatosPaciente);
         $nec = "'".$nec."'";
-       // echo ' DatosPac: '.$DatosPaciente;
+        
 $rslts='';
         if($DatosPaciente !=0 )
         {
@@ -393,8 +393,8 @@ $rslts='';
     else{
        if ($idext!=$lugar){
            //echo 'Entro al else';
-         $rslts='</br><form name="" action="" method="post">
-             <div  style="width: 40%">
+         $rslts='</br><form name="pacnoencontrado" action="" method="post">
+             <div  style="width: 100%">
       <div class="panel panel-info">                        
          <div class="panel-heading" style="padding: 2px 15px !important">
          <h4>Paciente no encontrado....&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id="Registrar" name="Registrar" style="WIDTH: 170px; HEIGHT: 33px" onclick="abreVentana('.$nec.', '.$idext.')" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-search">&nbsp;Registrar Paciente</button></h4> </div> 
@@ -404,8 +404,8 @@ $rslts='';
        }
        else{
            //echo 'Entro al else';
-         $rslts='</br><form name="" action="" method="post">
-             <div  style="width: 40%">
+         $rslts='</br><form name="pacnoencontrado" action="" method="post">
+             <div  style="width: 100%">
       <div class="panel panel-info">                        
          <div class="panel-heading" style="padding: 2px 15px !important">
          <h4>Paciente no encontrado, favor ingresarlo en el área de Archivo ....&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4> </div> 
@@ -416,6 +416,7 @@ $rslts='';
         
             
        }
+       //$rslts.= ' DatosPac: '.$DatosPaciente;
         echo $rslts;
         break;
 }

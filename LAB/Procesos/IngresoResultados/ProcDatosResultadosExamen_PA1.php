@@ -258,6 +258,13 @@ if (pg_num_rows($cant)>0){
                                               </div>
                                         </td>
                                 </tr>
+                                <tr>
+                                        <td class="StormyWeatherFieldCaptionTD">Observación</td>
+                                        <td colspan="3" class="StormyWeatherDataTD">
+                                              
+                                           <textarea id="observaciongnral" name="observaciongnral" cols="81%" rows="3"></textarea>
+                                        </td>
+                                </tr>
                                 <tr>	 
                                    <td class="StormyWeatherDataTD" colspan="4" align="right"><br>
                                               <button type="button" id="btningresar" name="btningresar" align="right" class="btn btn-primary" value="Ingresar Resultados" Onclick="IngresarTodosResultados() ;"> <span class='glyphicon glyphicon-check'></span>&nbsp;Ingresar Resultados</button>
