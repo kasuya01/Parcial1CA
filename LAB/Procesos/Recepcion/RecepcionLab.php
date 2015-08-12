@@ -647,7 +647,7 @@ function cambioestexterno(){
 <body text="#000000" class="CobaltPageBody" onLoad="frmdatosexpediente.txtexp.focus();">
 
 <!--<link href="../../../css/paginalab.css" rel="stylesheet" type="text/css" />-->
-<div  style="width: 50%">
+<div  style="width: 100%" >
    <div class="panel panel-primary"  style="border:0px; height: 100%"> 
       <div class="panel-heading" style="padding: 2px !important; width: 45%; min-width: 507px;"><h3>Verificar Expediente</h3> </div>   
       <form name="frmdatosexpediente" id="frmdatosexpediente" action="" method="post">	
@@ -700,7 +700,7 @@ function cambioestexterno(){
 <div id="DatosPaciente" style="display:none;"></div>
 <div id="lyLaboratorio" class="panel panel-body" style="display:none;">
      <form name="frmdatosgenerales" id="frmdatosgenerales" action="" method="post">  
-        <table cellspacing="0" cellpadding="0" align="center" border=0 class="StormyWeatherFormTABLE" style="height:275px">
+        <table cellspacing="0" cellpadding="0" align="center" border=1 class="StormyWeatherFormTABLE" style="height:275px">
             <tr>&nbsp;</tr>
             <tr>
                     <td colspan="3" align="center" class="CobaltFieldCaptionTD">
@@ -802,18 +802,13 @@ function cambioestexterno(){
                     </td>
             </tr>
             <tr>
-<<<<<<< HEAD
-                <td class="StormyWeatherDataTD" colspan="3">                   
-            <center> <button type="button" id="Examen" name="Examen" class='btn btn-primary' onclick="Examenes()"><span class='glyphicon glyphicon-plus'>&nbsp;Agregar Examenes</button>&nbsp;&nbsp;&nbsp;
-                     <button type="button" id="Nuevo" name="Nuevo" class='btn btn-primary' onclick="window.location.replace('RecepcionLab.php')"><span class='glyphicon '>&nbsp;Nueva Búsqueda</button>
-                    </center>
-=======
+
                 <td class="StormyWeatherDataTD" colspan="2">                   
             <center> 
                <button type="button" id="Examen" name="Examen" class='btn btn-primary' onclick="Examenes()"><span class='glyphicon glyphicon-plus'>&nbsp;Agregar Examenes</button>
-              
+               <button type="button" id="Nuevo" name="Nuevo" class='btn btn-primary' onclick="window.location.replace('RecepcionLab.php')"><span class='glyphicon '>&nbsp;Nueva Búsqueda</button>
             </center>
->>>>>>> desarrollo
+
                 </td>
 <!--                    <td class="StormyWeatherFieldCaptionTD">Agregar Examenes</td>
                     <td class="StormyWeatherDataTD">
