@@ -424,6 +424,7 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
 		//	echo $ban ."-".$ban1;
 			echo "Los resultados no pueden ser guardados consulte al Administrador...";
 		}
+                
 
 		//*************************************************************************
 

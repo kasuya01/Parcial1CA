@@ -554,17 +554,6 @@ echo '<option value="xyz">Seleccione una opción</option>';
                                 </div>										
                         </td>
                 </tr>
-             <!--   <tr>
-                        <td><b>Validaci&oacute;n Prueba:</b></td>
-                        <td colspan="4">
-                                <select id="i_estresultfin" name="i_estresultfin" style="width:100%"> 
-                                        <option value="1" selected><b><i>Aceptada</i></b></option> 
-                                        <option value="0"><b><i>Rechazada</i></b></option> 
-                        </select>										
-                        </td>
-                </tr>
--->
-               
                 </table>
                 </fieldset>
 
