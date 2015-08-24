@@ -66,7 +66,7 @@ switch ($opcion)
                 /* Códigos de Procedencia */
                 $NumProce=$obj->NumeroDeProcedencias();
                 $ConProce=$obj->LeerProcedencias();
-		
+		//print_r($ConProce);
                 
                 while ($rowproce=mysql_fetch_array($ConProce)){
 			$arraycod[$k]=$rowproce[0];
@@ -78,7 +78,7 @@ switch ($opcion)
                     $cadProce=$cadProce."sum(if(mnt_servicio.IdProcedencia=$arraycod[$l],1,0)) AS $arrayProce[$l],";
 		}
                   
-                 // echo $cadProce;
+                  //echo $cadProce;
 		
                  /* Códigos Estandar de los examenes */
                   
@@ -93,10 +93,10 @@ switch ($opcion)
                 }
                // print_r($arrayidExa);
                
-               /* for($i=0;$i<$NumExam;$i++){
+                for($i=0;$i<$NumExam;$i++){
                    $cadExam=$cadExam." AND ".$arrayidExa[$i];
                     
-                }*/
+                }
                // echo $cadExam;
                 /***************************/
                 $fechauno = $FechaI2;
@@ -107,8 +107,8 @@ switch ($opcion)
                     {
                         if(strtotime($fechados) != strtotime($fechaaamostar))
                         {  
-                            $arrayfechas[$q]=date("Y-m-j", strtotime($fechaaamostar));
-                            $arraydia[$q]=substr(date("Y-m-j", strtotime($fechaaamostar)),8,2);
+                            $arrayfechas[$q]=$fechaaamostar;
+                            $arraydia[$q]=substr($fechaaamostar,8,2);
                             //echo substr($fechaaamostar,8,2);
                             
                            //echo "$fechaaamostar<br />";
@@ -127,7 +127,7 @@ switch ($opcion)
                     }
                     //print_r($arraydia);
                     
-                   //print_r($arrayfechas);
+                   // print_r($arrayfechas);
                     $Tdias=count($arraydia);
                    // echo $Tdias;
                   
@@ -136,22 +136,25 @@ switch ($opcion)
 		
 		$total=$NumCod+$NumProce;
                // echo $total;
-echo "<table width='50%' higth='10%' border='0' align='center'>
-        <tr align='center'>
-            <td colspan='28' align='center'>
+echo "<table width='100%' higth='10%' border='0' align='center'>
+        <tr>
+            <td colspan='8' align='center'>
                 <h3><strong>TABULADOR DIARIO DE ACTIVIDADES DE LABORATORIO CLINICO</h3></strong>
             </td>
 	</tr>
-        <tr align='center' colspan='18'>
-            <td>Establecimiento: ".$rowDatos['Nombre']."</td>
-            <td Colspan='2'>".$rowDatos['Nombre']."</td></tr>
-        <tr align='center' colspan='28'><td>Secci&oacute;n:</td>
-            <td>".$rowDatos['Nombrearea']."</td></tr>
-         <tr align='center'> <td colspan='4'>Per&iacute;odo del: ".$fechainicio." al ".$fechafin."</td>
+        <tr>
+            <td>Establecimiento:</td>
+            <td Colspan='3'>".$rowDatos['Nombre']."</td>
+        </tr>
+        <tr>
+            <td>Secci&oacute;n:</td>
+            <td>".$rowDatos['Nombrearea']."</td>
+        </tr>
+         <tr><td colspan='4'>Per&iacute;odo del: ".$fechainicio." al ".$fechafin."</td>
         </tr>
       </table>";
         
-echo"<table border='1' cellspacing='0' >
+echo"<table border='1' cellspacing='0' width='100%'>
         <tr>
             <td rowspan='3'>DIA</td>";
                for($t=0; $t<$NumExam;$t++){
@@ -167,16 +170,16 @@ echo"<table border='1' cellspacing='0' >
           <tr>";
         for($t=0; $t<$NumExam;$t++){
              for ($n=0;$n<$NumCod;$n++){
-                  echo "<td  colspan='1' width='2%'>".$arrayidCod[$n]."</td>";
+                  echo "<td >".$arrayidCod[$n]."</td>";
              }
              for ($p=0;$p<$NumProce;$p++){
-                  echo "<td colspan='1' width='2%'>".$arraycod[$p]."</td>";
+                  echo "<td>".$arraycod[$p]."</td>";
              }
          }            
      echo"</tr>
           <tr>";
           for ($r=0;$r<$Tdias;$r++){
-                   echo"<td colspan='1' width='2%'>".$arraydia[$r]."</td>";
+                   echo"<td>".$arraydia[$r]."</td>";
                    for($t=0; $t<$NumExam;$t++){
                         $query="SELECT day(lab_resultados.FechaHoraReg) as dia,$cadCod $cadProce
 			lab_resultados.FechaHoraReg
@@ -200,24 +203,32 @@ echo"<table border='1' cellspacing='0' >
 			{   $query = substr($query ,0,strlen($query)-3);
 				$query_search = $query. " GROUP BY day(lab_resultados.FechaHoraReg) ORDER BY month(lab_resultados.FechaHoraReg),dia asc";
 			}
-                    //www echo $query_search;
+                   
+                        //echo $query_search;
                          $contador=$obj->ContarDatos($query_search);
                         // echo $contador;
                          if ($contador >0){
                             $consulta=$obj->BuscarExamenesporCodigo($query_search);
                            while ($row = mysql_fetch_array($consulta)){
+                               //print_r($row);
+                              // echo"<td>".$row[0]."</td>";
+                            //   if (($row[0])!=0){
                                   for ($q=1;$q<=$total;$q++){
                                        if (!empty($row[$q]))
-                                           echo "<td width='2%'>".$row[$q]."</td>";
+                                           echo "<td>".$row[$q]."</td>";
                                        else
-                                           echo "<td width='2%'>0</td>";
+                                           echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>";
                                    }// del for 
-                             
+                              /* }else{
+                                    for ($q=0;$q<=$total;$q++)
+                                         echo "<td>0</td>";
+
+                                    }*/
                            }//while
-                         }else{
+                         }else {
                                for ($q=1;$q<=$total;$q++)
-                                   echo "<td width='2%'>0</td>";
-                          }
+                                   echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+                           }
                 
                         
                    }//for de examenes
@@ -227,7 +238,93 @@ echo"<table border='1' cellspacing='0' >
         
   echo" </tr>
      </table>";
-                  
+                     //   }
+                        
+                 /*   echo"</tr>
+                    <tr>";
+            for ($l=0;$r<$Tdias;$r++){
+               echo "<tr>
+                         <td>".$arraydia[$r]."</td>
+                     </tr>";
+            }
+           echo"</table>
+            </td>";*/
+                     
+
+          /*  $Codexam=$obj->CodigosEstardarxarea($IdArea,$lugar);
+             while ($rowexa=mysql_fetch_array($Codexam)){
+                 for($s=0;$s<$Tdias;$s++){
+             
+                     $query="SELECT day(lab_resultados.FechaHoraReg) as dia,$cadCod $cadProce
+			lab_resultados.FechaHoraReg
+			FROM lab_resultados 
+			INNER JOIN lab_examenes ON lab_resultados.IdExamen= lab_examenes.IdExamen
+			INNER JOIN sec_solicitudestudios ON lab_resultados.IdSolicitudEstudio=sec_solicitudestudios.IdSolicitudEstudio
+			INNER JOIN sec_historial_clinico ON sec_solicitudestudios.IdHistorialClinico=sec_historial_clinico.IdHistorialClinico
+			INNER JOIN mnt_subservicio ON sec_historial_clinico.IdSubServicio=mnt_subservicio.IdSubServicio
+                        INNER JOIN mnt_servicio ON mnt_subservicio.IdServicio=mnt_servicio.IdServicio
+			WHERE  lab_examenes.IdEstandar='".$rowexa[0]."' 
+                        AND date(lab_resultados.FechaHoraReg)='".$arrayfechas[$s]."' AND";
+
+			$ban=0;
+			//VERIFICANDO LOS POST ENVIADOS
+			/*if ((!empty($_POST['fechainicio'])) and (!empty($_POST['fechafin'])))
+			   { $query .= "  lab_resultados.FechaHoraReg BETWEEN '$FechaI2' AND '$FechaF2' AND";}*/
+        
+			/*if (!empty($_POST['area']))
+				{ $query .= " IdArea='".$_POST['area']."' AND";}
+        
+			if((empty($_POST['area'])) and (empty($_POST['fechainicio'])) and (empty($_POST['fechafin'])))
+			{
+				$ban=1;
+			}
+        
+			if ($ban==0)
+			{   $query = substr($query ,0,strlen($query)-3);
+				$query_search = $query. " GROUP BY day(lab_resultados.FechaHoraReg) ORDER BY month(lab_resultados.FechaHoraReg);";
+			}
+                        
+                        echo $query_search;
+                        
+                        
+                    $consulta=$obj->BuscarExamenesporCodigo($query_search);
+                    $row = mysql_fetch_array($consulta);
+                   
+                 /* echo "<td> 
+                            <table border='1'  cellspacing='0'>
+                                <tr>    
+                                    <td colspan='14'> Codigo Prueba: ".$rowexa[0]."</td>
+                                
+                                </tr>
+                                <tr>
+                                    <td colspan='9'> Resultado</td>
+                                    <td colspan='5'> Servicio de Procedencia</td>
+                                </tr>
+                                <tr>";
+                                    for ($n=0;$n<$NumCod;$n++){
+                                       echo "<td >".$arrayidCod[$n]."</td>";
+                                    }
+                                    for ($p=0;$p<$NumProce;$p++){
+                                         echo "<td>".$arraycod[$p]."</td>";
+                                    }            
+                            echo "</tr>
+                                  <tr>";
+                       for($s=)      
+                        for ($q=1;$q<=$total;$q++){
+                            if (!empty($row[$q]))
+                                echo "<td>".$row[$q]."</td>";
+                            else
+                                echo "<td> 0 </td>";
+                        }
+                         echo "</tr>
+                                
+                        </table></td>";*/
+                    
+		  
+			
+          //  }
+         //   echo"</tr></table>";
+          //   }
     break;	
     case 3://LLENANDO COMBO subservicio
 	
@@ -253,11 +350,11 @@ echo"<table border='1' cellspacing='0' >
 		$idarea=$_POST['idarea'];
 		//echo $IdSubEsp;
 		$dtExam=$obj->ExamenesPorArea($idarea,$lugar);	
-		$rslts = '<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:250px">';
-		$rslts .='<option value="0"> Seleccione Examen </option>';
+		$rslts = '<select id="cmbExamen" name="cmbExamen" class="height js-example-basic-multiple" style="width:100%" multiple="multiple">';
+		$rslts .='<option></option>';
 			
-		while ($rows =mysql_fetch_array($dtExam)){
-			$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
+		while ($rows =pg_fetch_array($dtExam)){
+			$rslts.= '<option value="' . $rows['id'] .'" >'. htmlentities($rows['idestandar']).'  &#09;'. htmlentities($rows['nombreexamen']).'</option>';
 		}
 				
 		$rslts .= '</select>';

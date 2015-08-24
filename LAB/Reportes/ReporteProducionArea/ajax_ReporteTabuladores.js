@@ -84,37 +84,102 @@ function DatosCompletos()
 }
 
 
+function GenResultados(){
+   
+   
+}//fin funcion generarResultado
+
+//funcion prueba
+function enviaxfis(){
+//    var ban=0;
+//    var idrol=$("#idrol").val()
+//    if (idrol==7){
+//        var regionid2=(document.getElementById('regionid2').value);
+//        if (regionid2==0){
+//           // alert ("No ha elegido la Región a consultar");
+//             $( "#dialog" ).dialog({
+//        autoOpen: false,
+//        modal: true       
+//        });
+//        $( "#dialog" ).dialog( "open" );
+//           ban=1;
+////            return false;
+////        }
+////    }
+//    if (ban==0){
+//    var i=0;
+//    $.ajax({
+//        type: "POST",
+//        cache: false,
+//    //    data: parametros,
+//        success: function(response)
+//        {
+//            window.open(response);
+//        }
+//    });
+//  }
+}
+//funcion prueba
+function enviaxfis2(){
+    var ban=0;
+    var idrol=$("#idrol").val()
+//    if (idrol==7){
+//        var regionid2=(document.getElementById('regionid2').value);
+//        if (regionid2==0){
+//           // alert ("No ha elegido la Región a consultar");
+//             $( "#dialog" ).dialog({
+//        autoOpen: false,
+//        modal: true       
+//        });
+//        $( "#dialog" ).dialog( "open" );
+//           ban=1;
+//            return false;
+//        }
+//    }
+    if (ban==0){
+    var i=0;
+    $.ajax({
+        type: "POST",
+        cache: false,
+    //    data: parametros,
+        success: function(response)
+        {
+            window.open(response);
+        }
+    });
+  }
+}
+
+
+
 //FUNCION PARA BUSCAR DATOS DE LA SOLICITUD
-function BuscarDatos(pag)
+function BuscarDatos()
 {	
-	//alert (pag);
-	//if (DatosCompletos())
-	//{	
-		opcion=1;
-		procedencia=document.getElementById('cmbProcedencia').value;
-		subservicio=document.getElementById('cmbSubServicio').value;
-		fechainicio=document.getElementById('txtfechainicio').value;
-		fechafin=document.getElementById('txtfechafin').value;
-		
+	
+	opcion=1;
+	//procedencia=document.getElementById('cmbProcedencia').value;
+	area=document.getElementById('cmbArea').value;
+        examen=document.getElementById('cmbExamen').value;
+	fechainicio=document.getElementById('txtfechainicio').value;
+	fechafin=document.getElementById('txtfechafin').value;
+		//alert(area+" ## "+examen+" ## "+area+" ## "+fechainicio+" ## "+fechafin);
+                //alert(examen);
 		//instanciamos el objetoAjax
-		ajax=objetoAjax();
+	ajax=objetoAjax();
 		//archivo que realizar� la operacion ->actualizacion.php
-		ajax.open("POST", "ctrLab_ReporteTabularores.php",true);
+	ajax.open("POST", "ctrLab_ReporteTabuladores.php",true);
 		//muy importante este encabezado ya que hacemos uso de un formulario
-		ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores
-		ajax.send("procedencia="+procedencia+"&opcion="+opcion+"&fechainicio="+fechainicio+"&fechafin="+fechafin+"&subservicio="+subservicio+"&pag="+pag);
-		ajax.onreadystatechange=function() {
-			if (ajax.readyState==4) {
-				//mostrar los nuevos registros en esta capa
-				document.getElementById('divBusqueda').innerHTML = ajax.responseText;
-				//alert(ajax.responseText);
-			}
+	ajax.send("opcion="+opcion+"&fechainicio="+fechainicio+"&fechafin="+fechafin+"&area="+area+"&examen="+examen)
+	ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+			//mostrar los nuevos registros en esta capa
+			document.getElementById('divBusqueda').innerHTML = ajax.responseText;
+			//alert(ajax.responseText);
+		}
 	}	
-	//}
-	//else{
-		//alert("Complete los datos para la busqueda");
-	//}
+	
 }
 
 
@@ -129,7 +194,7 @@ function MostrarDatos(posicion)
   
  }
 
- function VistaPrevia()
+function VistaPrevia()
 {
 		especialidad=document.getElementById('cboSubEspecialidades').value;
 		fechainicio=document.getElementById('txtfechainicio').value;
@@ -140,69 +205,37 @@ function MostrarDatos(posicion)
   
  }
  
- function CargarDatosFormulario(especialidad,fechainicio,fechafin,medico)
+
+function LlenarComboExamen(idarea)
 {
-	ajax=objetoAjax();
-	opcion=4;
-	//especialidad="";
-	//fechainicio="";
-	idexpediente="";
-	idsubespecialidad="";
-	//medico="";
-	pag="";
-	idsolicitud="";
-	//estado="";
-	ajax.open("POST", "ctrLab_SolicitudesPorServicioPeriodo.php",true);
+ 	ajax=objetoAjax();
+	opcion=2;
+   	ajax.open("POST", "ctrLab_ReporteTabuladores.php",true);
 		  //muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		  //enviando los valores
-	//ajax.send("opcion="+opcion+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud);
-	ajax.send("opcion="+opcion+"&especialidad="+especialidad+"&idsolicitud="+idsolicitud+"&especialidad="+especialidad+"&fechainicio="+fechainicio+"&fechafin="+fechafin+"&idsubespecialidad="+idsubespecialidad+"&medico="+medico+"&idsolicitud"+idsolicitud+"&idexpediente="+idexpediente+"&pag="+pag);
-	ajax.onreadystatechange=function() 
-	{
-		if (ajax.readyState==4) 
-		{	 if (ajax.status == 200)
-			{  //mostrar los nuevos registros en esta capa
-			  document.getElementById('divFormulario').innerHTML = ajax.responseText;
-			 }
-	     }
-	}
-}
-
-
-function LlenarComboSubServicio(proce)
-{
-  // alert(idsubespecialidad);
-	ajax=objetoAjax();
-    idexpediente="";
-    idsolicitud="";
-	especialidad="";
-	fechainicio="";
-	fechafin="";
-	medico="";
-	pag="";
-    opcion=3;
-   ajax.open("POST", "ctrLab_ReporteExamenesporServicio.php",true);
-		  //muy importante este encabezado ya que hacemos uso de un formulario
-	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-		  //enviando los valores
-	//ajax.send("opcion="+opcion+"&idarea="+area+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud);
-	
-ajax.send("opcion="+opcion+"&idexpediente="+idexpediente+
-             "&idsolicitud="+idsolicitud+"&especialidad="+especialidad+"&fechainicio="+fechainicio+"&fechafin="+fechafin+"&medico="+medico+"&pag="+pag+"&proce="+proce);
-			 
+                 // alert (idarea);
+	ajax.send("opcion="+opcion+"&idarea="+idarea);	 
 	ajax.onreadystatechange=function() 
 	{
 		
-	 if (ajax.readyState == 4){//4 The request is complete
-		if (ajax.status == 200){//200 means no error.
-	 // respuesta = ajax.responseText;	
-	 // alert (respuesta)
-	 
-	}	  	document.getElementById('divSubServ').innerHTML = ajax.responseText;
-   }
-   }
+		if (ajax.readyState == 4){//4 The request is complete
+			if (ajax.status == 200){//200 means no error.
+	  			//respuesta = ajax.responseText;	
+	 			// alert (respuesta)
+		 document.getElementById('divExamen').innerHTML = ajax.responseText;
+                 // $('#cmbExamen').multiselect();
+                   $("#cmbExamen").select2({
+                     placeholder: "--Seleccione examenes--",
+                     allowClear: true,
+                     dropdownAutoWidth: true
+                  });
+			}	  	
+			
+   		}
+   	}
 }
+
 
 function Cerrar(){
 	//window.opener.location.href = window.opener.location.href;
@@ -218,5 +251,10 @@ document.getElementById('Botones').style.visibility="hidden";
  document.getElementById('divFormulario').style.display="block";
 document.getElementById('Botones').style.visibility="block";
 
+}
+
+function carganombre(){
+   textareamodestab=$("#idmntareamodestab  option:selected").text();;
+   $("#nombareamodestab").val(textareamodestab);
 }
 	

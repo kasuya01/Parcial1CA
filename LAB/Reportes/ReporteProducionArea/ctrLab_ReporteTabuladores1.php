@@ -26,7 +26,7 @@ switch ($opcion)
 		$arrayareas = array();
 		$cadena="";
 	
-	    $consulta=$obj->LeerAreas($lugar);
+	    //$consulta=$obj->LeerAreas($lugar);
 		$consulta=$obj->LeerCodigos();
 		$NroRegistros= $obj->NumeroDeCodigos($lugar);
 		while ($rowareas=mysql_fetch_array($consulta)){
@@ -102,31 +102,31 @@ switch ($opcion)
 	     	        <tr>
 	     	      		<td colspan='28' align='center'><a href='".$nombrearchivo."'><H5>DESCARGAR REPORTE EXCEL <img src='../../../Imagenes/excel.gif'></H5></a></td>
 	                </tr>";
-         $imprimir="<tr>
-						<td colspan='28' align='center'><h3>REGISTRO DE EXAMENES PRACTICADOS A LOS DIFERENTES SERVICIOS SEPARADOS POR SECCION</h3></td>
-					</tr>
-					<tr>
-						<td colspan='28' align='center' ><h4>PROCEDENCIA:".$rowServicio['NombreServicio']."</h4></td>
-					</tr>
-					<tr>
-						<td colspan='28' align='center'><h4>PERIODO DEL:  ".$FechaI2." AL ".$FechaF2."</h4></td>
-					</tr>
-	        	</table>";
+              $imprimir="<tr>
+                        	<td colspan='28' align='center'><h3>REGISTRO DE EXAMENES PRACTICADOS A LOS DIFERENTES SERVICIOS SEPARADOS POR SECCION</h3></td>
+			</tr>
+			<tr>
+				<td colspan='28' align='center' ><h4>PROCEDENCIA:".$rowServicio['NombreServicio']."</h4></td>
+			</tr>
+			<tr>
+				<td colspan='28' align='center'><h4>PERIODO DEL:  ".$FechaI2." AL ".$FechaF2."</h4></td>
+			</tr>
+	            </table>";
     $imprimir.="<table width='90%' border='1' align='center' >
-					<tr style='background:#BBBEC9'>
-						<td class='CobaltFieldCaptionTD' width='20%'><strong>Servicio</strong></td>";
+                    <tr style='background:#BBBEC9'>
+			<td class='CobaltFieldCaptionTD' width='20%'><strong>Servicio</strong></td>";
 			while ($rowarea=mysql_fetch_array($consultaAreas)){
 			$imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>".htmlentities($rowarea['NombreArea'])."</strong></td>";
 			}
-		    $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>TOTAL</strong></td></tr>";
-					while ($row = mysql_fetch_array($consulta)){
-		$imprimir.="<tr>
-						<td width='10%'>".$row['origen']."</td>";
-						for($x=0;$x<$NroRegistros;$x++){ 	
-			$imprimir.="<td width='10%'>".$row[$arraynombres[$x]]."</td>";
-						}
-			$imprimir.="<td width='14%'><strong>".$row['total']."</strong></td>
-			        	</tr>";
+	    $imprimir.="<td class='CobaltFieldCaptionTD' width='12%'><strong>TOTAL</strong></td></tr>";
+			while ($row = mysql_fetch_array($consulta)){
+	$imprimir.="<tr>
+			<td width='10%'>".$row['origen']."</td>";
+			for($x=0;$x<$NroRegistros;$x++){ 	
+	     $imprimir.="<td width='10%'>".$row[$arraynombres[$x]]."</td>";
+			}
+	     $imprimir.="<td width='14%'><strong>".$row['total']."</strong></td>
+		    >";
 			        }
     $imprimir.="</table>";
 			
