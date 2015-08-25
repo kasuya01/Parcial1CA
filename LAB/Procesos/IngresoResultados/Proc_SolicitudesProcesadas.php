@@ -45,9 +45,8 @@ if (isset($_SESSION['Correlativo'])) {
                     var error = [];
                     var errorMessage = "";
                     
-                    if ((document.getElementById('cmbArea').value === "0") || (document.getElementById('cmbTipoEstab').value === "0") || (document.getElementById('cmbEstablecimiento').value === "0")) {
-                        if(document.getElementById('cmbArea').value === "0")
-                            error.push('Area de Laboratorio');
+                    if ((document.getElementById('cmbTipoEstab').value === "0") || (document.getElementById('cmbEstablecimiento').value === "0")) {
+                      
                         
                         if(document.getElementById('cmbTipoEstab').value === "0")
                             error.push('Tipo de Establecimiento');
@@ -214,8 +213,9 @@ if (isset($_SESSION['Correlativo'])) {
                             <td class="StormyWeatherFieldCaptionTD">&Aacute;rea de Laboratorio*</td>
                             <td class="StormyWeatherDataTD">
                                 <select id="cmbArea" name="cmbArea"  size="1" onChange="BuscarExamen(this.value)" style="width:443px" class="form-control height">
+                                     <option value="0" >Seleccione un Área</option>
                                     <?php
-                                    echo '<option value="' . $area1 . '" selected="selected">' . htmlentities($nomarea) . '</option>';
+                                   // echo '<option value="' . $area1 . '" selected="selected">' . htmlentities($nomarea) . '</option>';
                                     include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
                                     $objeareas = new clsLab_Areas;
                                     $consulta = $objeareas->consultaractivas($lugar);

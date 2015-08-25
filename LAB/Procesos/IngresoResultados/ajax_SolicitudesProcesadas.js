@@ -1972,6 +1972,7 @@ function Cerrar()
 function SolicitudesPorArea() {
     ajax   = objetoAjax();
     opcion = 1;
+    
     idarea         = document.getElementById('cmbArea').value;
     idexpediente   = document.getElementById('txtexpediente').value;
     idexamen       = document.getElementById('cmbExamen').value;
@@ -1985,7 +1986,7 @@ function SolicitudesPorArea() {
     PApellido      = document.getElementById('PrimerApellido').value;
     SApellido      = document.getElementById('SegundoApellido').value;
     TipoSolic      = document.getElementById('cmbTipoSolic').value;
-
+//alert(idarea);
     ajax.open("POST", "ctrSolicitudesProcesadas.php", true);
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");

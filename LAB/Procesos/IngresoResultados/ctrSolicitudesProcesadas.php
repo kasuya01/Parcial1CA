@@ -32,9 +32,9 @@ switch ($opcion) {
         $query="";
         $query2="";
         $where_with="";
-      //  echo $IdEstab." - ".$lugar;
+        
                 
-        if (!empty($_POST['IdEstab'])) {
+        if ($_POST['IdEstab']<>0) {
            if ($_POST['IdEstab']<>$lugar){
                $cond1 .= " t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " AND";
                $cond2 .= " t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " AND";
@@ -42,7 +42,7 @@ switch ($opcion) {
           
         }
         
-        if (!empty($_POST['IdServ'])) {
+        if ($_POST['IdServ'] <> 0) {
             $cond1 .= " t13.id  = " . $_POST['IdServ'] . " AND";
             $cond2 .= " t13.id  = " . $_POST['IdServ'] . " AND";
             $where_with = "id_area_atencion = $IdServ AND ";
@@ -53,17 +53,17 @@ switch ($opcion) {
             $cond2 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
         }
 
-        if (!empty($_POST['idarea'])) {
+        if ($_POST['idarea'] <> 0) {
             $cond1 .= " t08.id = " . $_POST['idarea'] . " AND";
             $cond2 .= " t08.id = " . $_POST['idarea'] . " AND";
         }
 
-        if (!empty($_POST['idexpediente'])) {
+        if ($_POST['idexpediente'] <> 0) {
             $cond1 .= " t06.numero = '" . $_POST['idexpediente'] . "' AND";
             $cond2 .= " t06.numero = '" . $_POST['idexpediente'] . "' AND";
         }
 
-        if (!empty($_POST['idexamen'])) {
+        if ($_POST['idexamen'] <> 0) {
              $cond1 .= " t04.id = " . $_POST['idexamen'] . " AND";
              $cond2 .= " t04.id = " . $_POST['idexamen'] . " AND";
         }
@@ -92,31 +92,45 @@ switch ($opcion) {
             $cond2 .= " t07.primer_apellido ILIKE '" . $_POST['PApellido'] . "%' AND";
         }
 
+
         if (!empty($_POST['SApellido'])) {
             $cond1 .= " t07.segundo_apellido ILIKE '" . $_POST['SApellido'] . "%' AND";
             $cond2 .= " t07.segundo_apellido ILIKE '" . $_POST['SApellido'] . "%' AND";
         }
-
-        if (!empty($_POST['TipoSolic'])) {
-            $cond1 .= " t17.idtiposolicitud = '" . $_POST['TipoSolic'] . "' AND";
-            $cond2 .= " t17.idtiposolicitud = '" . $_POST['TipoSolic'] . "' AND";
+//echo $TipoSolic;        
+        if ($TipoSolic != '0') {
+            //echo "Entro". $TipoSolic;  
+            $cond1 .= " t17.idtiposolicitud = '" . $TipoSolic . "' AND";
+            $cond2 .= " t17.idtiposolicitud = '" . $TipoSolic . "' AND";
+           
+           //echo " EntroCon1=".$cond1;
         }
 
-        if ((empty($_POST['idexpediente'])) AND ( empty($_POST['idarea'])) AND ( empty($_POST['fechasolicitud']))
+        /*if ((empty($_POST['idexpediente'])) AND ( $_POST['idarea']===0) AND ( empty($_POST['fechasolicitud']))
                 AND ( empty($_POST['IdEstab'])) AND ( empty($_POST['IdServ'])) AND ( empty($_POST['IdSubServ']))
                 AND ( empty($_POST['PNombre'])) AND ( empty($_POST['SNombre'])) AND ( empty($_POST['PApellido']))
-                AND ( empty($_POST['SApellido'])) AND ( empty($_POST['idexamen'])) AND ( empty($_POST['TipoSolic']))) {
+                AND ( empty($_POST['SApellido'])) AND ( empty($_POST['idexamen'])) AND ( empty($_POST['TipoSolic']))) {*/
+        if((empty($cond1)) AND (empty($cond2))){
             $ban = 1;
         }
-        
+        else{
+            $ban = 0;
+        }
+     //   echo "BAN = ".$ban;
         if ($ban == 0) {
 
             $cond1 = substr($cond1, 0, strlen($query) - 3);
             $cond2 = substr($cond2, 0, strlen($query) - 3);
-            
-          //  echo $query1;
+            $var1 = $lugar." AND ".$cond1;
+            $var2 = $lugar." AND ".$cond2;
+            //  echo $query1;
             //$query_search = $query . " ORDER BY t03.fecharecepcion DESC";
-        }     
+        }   
+        else{
+            
+            $var1 = $lugar;
+            $var2 = $lugar;
+        }
         //echo $cond2;
        $query="WITH tbl_servicio AS (
                     SELECT t02.id,
@@ -163,8 +177,8 @@ switch ($opcion) {
                        t02.id_establecimiento_externo as IdEstab,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
                        false AS referido, to_char(t01.f_tomamuestra,'dd/mm/YYYY HH12:MI' ) as f_tomamuestra,
-                       
-                       (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra
+                       (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
+                       t17.idtiposolicitud
                 FROM sec_detallesolicitudestudios t01 
                 INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio) 
                 INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio) 
@@ -187,7 +201,7 @@ switch ($opcion) {
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo)
                 INNER JOIN tbl_servicio t20 ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
                
-                WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $lugar AND $cond1
+                WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var1
         
                 UNION
 
@@ -217,7 +231,8 @@ switch ($opcion) {
                        t02.id_establecimiento_externo,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
                        true AS referido,TO_CHAR(t01.f_tomamuestra,'dd/mm/YYYY HH12:MI') as f_tomamuestra,
-                       (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra
+                       (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
+                       t17.idtiposolicitud
                 FROM sec_detallesolicitudestudios t01 
                 INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio) 
                 INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio) 
@@ -239,7 +254,7 @@ switch ($opcion) {
                 INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico) 
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo)
                
-                WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $lugar AND $cond2) ordenar
+                WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var2) ordenar
                 ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC"; 
 //ECHO $query;
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);
