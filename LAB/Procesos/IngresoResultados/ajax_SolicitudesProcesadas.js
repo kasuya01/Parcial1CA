@@ -1870,7 +1870,9 @@ function MostrarDatos(posicion)
     idestabext = document.getElementById('idestabext[' + posicion + ']').value;
     f_tomamuestra=document.getElementById('f_tomamuestra[' + posicion + ']').value;
     tipomuestra=document.getElementById('tipomuestra[' + posicion + ']').value;
-    //alert (f_tomamuestra);
+    idareaPA=document.getElementById('idareaPA[' + posicion + ']').value;
+    
+  // alert (idareaPA);
     //alert ("Plnatilla="+plantilla+" Experiente="+idexpediente+" Solicitud="+idsolicitud+" idarea="+idarea+" idhistorial="+IdHistorial+" IdEstandar="+IdEstandar);
     //idhistorial=document.getElementById('idhistorial['+posicion+']').value;
     //alert(plantilla);
@@ -1881,25 +1883,25 @@ function MostrarDatos(posicion)
     switch (plantilla)
     {
         case "1":
-            if (idarea == 12) {
+            if (idareaPA == 12) {
                 ventana_secundaria = window.open("ProcDatosResultadosExamen_PA1.php?var1=" + idexpediente +
-                        "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
+                        "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idareaPA + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                         "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                         "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
-                        "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+estabext, "Resultados", "width=1200,height=700,menubar=no,scrollbars=yes,location=no");
+                        "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+estabext , "Resultados", "width=1200,height=700,menubar=no,scrollbars=yes,location=no");
             }
             else {
               //  alert(cant_metodologia)
                 if (cant_metodologia==0){
                     ventana_secundaria = window.open("ProcDatosResultadosExamen_PA.php?var1=" + idexpediente +
-                        "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
+                        "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idareaPA + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                         "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                         "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
                         "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext, "Resultados", "width=1200,height=700,scrollbars=yes,location=no");
                 }
                 else{
                    ventana_secundaria = window.open("ProcDatosResultadosExamen_PA2.php?var1=" + idexpediente +
-                        "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
+                        "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idareaPA + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                         "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                         "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
                         "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext, "Resultados", "width=1200,height=700,scrollbars=yes,location=no"); 

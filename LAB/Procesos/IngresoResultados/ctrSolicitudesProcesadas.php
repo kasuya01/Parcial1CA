@@ -178,7 +178,7 @@ switch ($opcion) {
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
                        false AS referido, to_char(t01.f_tomamuestra,'dd/mm/YYYY HH12:MI' ) as f_tomamuestra,
                        (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
-                       t17.idtiposolicitud
+                       t17.idtiposolicitud,t08.id as idarea
                 FROM sec_detallesolicitudestudios t01 
                 INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio) 
                 INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio) 
@@ -232,7 +232,7 @@ switch ($opcion) {
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
                        true AS referido,TO_CHAR(t01.f_tomamuestra,'dd/mm/YYYY HH12:MI') as f_tomamuestra,
                        (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
-                       t17.idtiposolicitud
+                       t17.idtiposolicitud,t08.id as idarea
                 FROM sec_detallesolicitudestudios t01 
                 INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio) 
                 INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio) 
@@ -307,6 +307,7 @@ switch ($opcion) {
                         "<input name='idestabext[" . $pos . "]' id='idestabext[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idestab"]) . "'/>" .
                         "<input name='f_tomamuestra[" . $pos . "]' id='f_tomamuestra[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["f_tomamuestra"]) . "'/>" .
                         "<input name='tipomuestra[" . $pos . "]' id='tipomuestra[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["tipomuestra"]) . "'/>" .
+                        "<input name='idareaPA[" . $pos . "]' id='idareaPA[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idarea"]) . "'/>" .
                         "<td width='20%'>" . htmlentities($row['paciente']) . "</td>
                         <td width='7%'>" . $row['codigoexamen'] . "</td>
                         <td width='20%'>" . htmlentities($row['nombreexamen']) . "</td>

@@ -205,7 +205,7 @@ if ($nivel == 7) {
                     <td  class="StormyWeatherDataTD" width="5%" >
 
                         
-                        <input  type="text" size="28" name="txtexpediente" id="txtexpediente" class="form-control height" style="width:375px"  placeholder="Buscar Expediente"/>
+                        <input  type="text" size="28" name="txtexpediente" id="txtexpediente" class="form-control height" style="width:405px"  placeholder="Buscar Expediente"/>
 
                         
                          </td>
