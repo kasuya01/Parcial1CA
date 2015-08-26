@@ -261,8 +261,50 @@ class clsReporteTabuladores
          
       }
       
-   }     
+   }
+   
+   function fillGruposPruebas() {
+   /*
+    * Funcion para listado de grupos de pruebas de laboratorio
+    */
+   
+      $con=new ConexionBD();
+      if ($con->conectar()==true){
+         $sql="SELECT id, (idgrupo || ' - ' || nombregrupo) as nombre 
+               FROM lab_estandarxgrupo
+               WHERE activo=TRUE
+               ORDER BY nombregrupo;";
+         $result=@pg_query($sql);
+         if (!$result)
+            return false;
+         else
+            return $result;
+      }
+   }
+   
+   function BuscarPruebas($idSeccion) {
+   /*
+    * Funcion para buscar pruebas de laboratorio
+    */
+      $con=new ConexionBD();
+      if ($con->conectar()==true){
+         $sql="SELECT id, (idestandar || ' - ' || descripcion) as nombre 
+               FROM ctl_examen_servicio_diagnostico
+               WHERE activo=TRUE AND idgrupo='$idSeccion'
+               ORDER BY idestandar;";
+         $result=@pg_query($sql);
+         if (!$result)
+            return false;
+         else
+            return $result;
+      }
+   }
    //Fin funcion Postgres
 
+   
+   
+   
+   
+   
 }//CLASE
 ?>

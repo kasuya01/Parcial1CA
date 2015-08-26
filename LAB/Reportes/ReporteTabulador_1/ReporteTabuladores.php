@@ -61,7 +61,7 @@ $(document).ready(function() {
            dropdownAutoWidth: true
         });
          $("#cmbArea").select2({
-           placeholder: "Todas las áreas",
+           placeholder: "Todas las secciones",
            allowClear: true,
            dropdownAutoWidth: true
         });
@@ -119,16 +119,16 @@ $toy2=date('Y-m-d');
       <div class="panel panel-primary">                        
          <div class="panel-heading"><h3>Tabulador</h3> </div>                        
           <div class="panel-body" id="pb-primervez">                            
-            <table class="table table-white no-v-border table-condensed" border="0" style="border:0px; width: 100%" >                              <tr><th width="15%">&Aacute;rea</th>
+              <table class="table table-white no-v-border table-condensed" border="0" style="border:0px; width: 100%" >
+                  <tr><th width="15%">Secci&oacute;n o grupo</th>
                   <td width="85%"> 
                      <select id="cmbArea" name="cmbArea"  size="1" onChange="BuscarExamen(this.value)" style="width:100%;" class="height placeholder js-example-basic-single">
                         <?php
                         echo '<option></option>';
-                        include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
-                        $objeareas = new clsLab_Areas;
-                        $consulta = $objeareas->consultaractivas($lugar);
+                        //include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
+                        $consulta = $objeto->fillGruposPruebas();
                         while ($row = pg_fetch_array($consulta)) {
-                            echo "<option value='" . $row['idarea'] . "'>" . htmlentities($row['nombrearea']) . "</option>";
+                            echo "<option value='" . $row['id'] . "'>" . htmlentities($row['nombre']) . "</option>";
                         }
                         ?>		  
                      </select> 
