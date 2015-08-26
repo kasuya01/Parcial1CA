@@ -349,12 +349,12 @@ echo"<table border='1' cellspacing='0' width='100%'>
 		
 		$idarea=$_POST['idarea'];
 		//echo $IdSubEsp;
-		$dtExam=$obj->BuscarPruebas($idarea,$lugar);	
+		$dtExam=$obj->ExamenesPorArea($idarea,$lugar);	
 		$rslts = '<select id="cmbExamen" name="cmbExamen" class="height js-example-basic-multiple" style="width:100%" multiple="multiple">';
 		$rslts .='<option></option>';
 			
 		while ($rows =pg_fetch_array($dtExam)){
-			$rslts.= '<option value="' . $rows['id'] .'" >'. htmlentities($rows['nombre']).'</option>';
+			$rslts.= '<option value="' . $rows['id'] .'" >'. htmlentities($rows['idestandar']).'  &#09;'. htmlentities($rows['nombreexamen']).'</option>';
 		}
 				
 		$rslts .= '</select>';
