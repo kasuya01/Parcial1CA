@@ -189,13 +189,13 @@ ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
 		$consulta=$objdatos->BuscarSolicitudesPaciente($query); 
 		$NroRegistros= $objdatos->NumeroDeRegistros($query);				
 
-     $imprimir="<table width='85%' border='0' align='center'>
+     $imprimir="<table width='80%' border='0' align='center'>
 		    <tr>
 			<td colspan='7' align='center' ><h3><strong>TOTAL DE SOLICITUDES: ".$NroRegistros."</strong></h3></td>
 		    </tr>
 		</table> "; 
-    $imprimir.="<center><div class='table-responsive' style='width: 80%;'>
-        <table width='85%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+    $imprimir.="<center><div class='table-responsive' style='width: 70%;'>
+        <table width='75%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
 			<thead><tr>
 				<th>Fecha Recepci&oacute;n</th>
 				<th>NEC </th>
@@ -230,7 +230,7 @@ ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
 				 <td>".htmlentities($row['nombreservicio'])."</td>
 				 <td>".htmlentities($row['estabext'])."</td>
 				 <td>".$row['estado']."</td>
-				 <td>".$row['fechasolicitud']."</td>
+				 <td width='5%'>".$row['fechasolicitud']."</td>
 			</tr>";
 
 				$pos=$pos + 1;
@@ -528,7 +528,7 @@ case 5://LLENANDO COMBO DE Examenes
 		$Idtipoesta=$_POST['idtipoesta'];
               // echo $Idtipoesta;
             	$dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
-              	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:375px">';
+              	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:440px" class="form-control height">';
 		$rslts .='<option value="0"> Seleccione Establecimiento </option>';
                while ($rows =pg_fetch_array( $dtIdEstab)){
 		  $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
@@ -542,7 +542,7 @@ case 5://LLENANDO COMBO DE Examenes
              $IdServ=$_POST['IdServicio'];
 	   //  echo $IdServ;
 	     $dtserv=$objdatos->LlenarCmbServ($IdServ,$lugar);
-	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:375px">';
+	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:500px" class="form-control height">';
 			$rslts .='<option value="0"> Seleccione Subespecialidad </option>';
 			while ($rows =pg_fetch_array($dtserv)){
 		  	$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
@@ -551,6 +551,8 @@ case 5://LLENANDO COMBO DE Examenes
 	      $rslts .='</select>';
 	      echo $rslts;
         break;	
+        
+      
 
 }//switch de opciones
 
