@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.9.4" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.0     http://pear.php.net/dtd/package-2.0.xsd">
+ <name>PHPExcel</name>
+ <channel>pear.pearplex.net</channel>
+ <summary>PHP Excel classes</summary>
+ <description>Project providing a set of classes for the PHP programming language, which allow you to write
+                to Excel 2007 files and read from Excel 2007 files.</description>
+ <lead>
+  <name>Maarten Balliauw</name>
+  <user>maartenba</user>
+  <email>maarten@phpexcel.net</email>
+  <active>yes</active>
+ </lead>
+ <date>2013-06-02</date>
+ <time>14:41:44</time>
+ <version>
+  <release>1.7.9</release>
+  <api>1.7.9</api>
+ </version>
+ <stability>
+  <release>stable</release>
+  <api>stable</api>
+ </stability>
+ <license uri="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt">LGPL</license>
+ <notes>
+This package ONLY contains the class files, not the documentation and example code. Please refer to
+http://www.codeplex.com/PHPExcel for those files.
+ </notes>
+ <contents>
+  <dir baseinstalldir="PHPExcel" name="/">
+   <file baseinstalldir="PHPExcel" md5sum="8cbb65b8d294e466c30508f3557a57f6" name="/PHPExcel/Autoloader.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="5931387670312f9ffc89c9d481ab65ec" name="/PHPExcel/CachedObjectStorageFactory.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="bad980d744ea69ec27ae323f49cabcbf" name="/PHPExcel/Calculation.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="b172cb7cd18ceeee71946ddf2594d1e5" name="/PHPExcel/Cell.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="1eeef0644ccfd2804aa5d5799d28f987" name="/PHPExcel/Chart.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="68dab2de2aa0acf93b6833c94da26001" name="/PHPExcel/Comment.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="041e146d5b3ebcf0a3f0791acf7112e6" name="/PHPExcel/DocumentProperties.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="dee6f89981c9322705d4c6f5c805f971" name="/PHPExcel/DocumentSecurity.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="df0a0f5efbd51fe525ae5466273e4539" name="/PHPExcel/Exception.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="22e98b6e30a20d70ce84763a0e0d8c97" name="/PHPExcel/HashTable.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="1672eca6417e415d5262a413f3c94c13" name="/PHPExcel/IComparable.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="a83e389eb615dc1514f3ed88cebc5c04" name="/PHPExcel/IOFactory.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="56946d20dacb1945a28f0573380ee610" name="/PHPExcel/NamedRange.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="5f4cf1546bc3b38ee6a2f3141567b73b" name="/PHPExcel/ReferenceHelper.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="12231fe018d0b0b80ed04a030f4abb81" name="/PHPExcel/RichText.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="148110da283a3c83bca0f0b4965ebfed" name="/PHPExcel/Settings.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="3bc146b3092bdf8221d0205d41a2f5b6" name="/PHPExcel/Style.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="8ccd5868224880b63eae08e90b86dccd" name="/PHPExcel/Worksheet.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="d3f40fdf8acdbe35b84437c43f4400ad" name="/PHPExcel/WorksheetIterator.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="a6b0592c8236e5e0a723cbae9a8fbe21" name="/PHPExcel/CachedObjectStorage/APC.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="07b215a4322e840e4fde28bfc5995358" name="/PHPExcel/CachedObjectStorage/CacheBase.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="968a4a0ecb2d2b4df384d5e2178e6a26" name="/PHPExcel/CachedObjectStorage/DiscISAM.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="bd5df0ab418c0ebda5750b0d3ffa5592" name="/PHPExcel/CachedObjectStorage/ICache.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="b6e8b11b0f0626f8762dddecf84a3802" name="/PHPExcel/CachedObjectStorage/Igbinary.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="cbbaf4f91a6655682e823fcbead02661" name="/PHPExcel/CachedObjectStorage/Memcache.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="6dec289f01bd9092baca130e11c2bf89" name="/PHPExcel/CachedObjectStorage/Memory.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="556e1a2696c17807a157e4c1bff59ce2" name="/PHPExcel/CachedObjectStorage/MemoryGZip.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="407f5c922331df34f2daa97b11181af3" name="/PHPExcel/CachedObjectStorage/MemorySerialized.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="63b8e9dcb4b61fd8cfef70865708b948" name="/PHPExcel/CachedObjectStorage/PHPTemp.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="07b2bf2ab8eb0f65b0f52edb78d0b7cf" name="/PHPExcel/CachedObjectStorage/SQLite.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="687b5c2705dd330192d67afcf4053bd7" name="/PHPExcel/CachedObjectStorage/SQLite3.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="0a577e360de79ed2bceba4820a3c14ee" name="/PHPExcel/CachedObjectStorage/Wincache.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="c4584b7d01a04d5b186d338ec5106b80" name="/PHPExcel/CalcEngine/CyclicReferenceStack.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="e67aedaf58405f79ed2418941fbf11d3" name="/PHPExcel/CalcEngine/Logger.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="ab904aab1bcc467235e18b72775298f5" name="/PHPExcel/Calculation/Database.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="767ea93c0d381572cc62f19b4248027e" name="/PHPExcel/Calculation/DateTime.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="607f51f51237874ba6276781dd89775a" name="/PHPExcel/Calculation/Engineering.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="4aaa9e0fceb23b398e08f41d2719c074" name="/PHPExcel/Calculation/Exception.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="a4efb5b302924554ee1d0962e4f2c25d" name="/PHPExcel/Calculation/ExceptionHandler.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="beaa4a74012bda59bcdf55651c58be01" name="/PHPExcel/Calculation/Financial.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="73b882ba8b18c6ee2bd7ec942451a4f7" name="/PHPExcel/Calculation/FormulaParser.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="a4c95bee043cc4e068766af39f15c006" name="/PHPExcel/Calculation/FormulaToken.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="d15db78c5e17367e00fe7cbada879896" name="/PHPExcel/Calculation/Function.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="a44608185f9bc21f28dd0173739f023b" name="/PHPExcel/Calculation/functionlist.txt" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="e3a0aa6779fdfd5b816b717493c600fc" name="/PHPExcel/Calculation/Functions.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="3594debbfd5a09b3062a10abb239eeee" name="/PHPExcel/Calculation/Logical.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="c89e0ff392ff00d43a599ed57aad3787" name="/PHPExcel/Calculation/LookupRef.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="3b3f8b9be1dd6f7461fd7a398a14e0cc" name="/PHPExcel/Calculation/MathTrig.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="ec1427be0b186e9d5658d9197c367366" name="/PHPExcel/Calculation/Statistical.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="1fe1fca8efd632ed2c7db54d912b443b" name="/PHPExcel/Calculation/TextData.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="6ccd994cb987e9ca54b46f19a2c523dc" name="/PHPExcel/Calculation/Token/Stack.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="4335d175362cabf53e611a49ba3f9b11" name="/PHPExcel/Cell/AdvancedValueBinder.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="88126e61b01b4b6575e95645df6262b8" name="/PHPExcel/Cell/DataType.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="fdc60573f73b4aca9379737cdf04ba05" name="/PHPExcel/Cell/DataValidation.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="30852c4797568a208d216cd1c3624920" name="/PHPExcel/Cell/DefaultValueBinder.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="7636749c8f5289ed421b3ba4eef0ddd4" name="/PHPExcel/Cell/Hyperlink.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="ad4fc3ec0f8864a5857e1cb31d7b5aae" name="/PHPExcel/Cell/IValueBinder.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="46ec0b8768341a3d868769a3796fbe24" name="/PHPExcel/Chart/DataSeries.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="e033d530fe64f1a3b183753862f57825" name="/PHPExcel/Chart/DataSeriesValues.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="ac0bbca0498e33e9f0de905a51e6afdf" name="/PHPExcel/Chart/Exception.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="a88c42bc330e809244eec73a93674aed" name="/PHPExcel/Chart/Layout.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="fb8398bbbaabba86c2dc2dba6042dec4" name="/PHPExcel/Chart/Legend.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="007803721a2f7e088253b338604bc677" name="/PHPExcel/Chart/PlotArea.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="28eb54895458b04168a6c8896f29650a" name="/PHPExcel/Chart/Title.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="89db17b5184a530a4ebc094cc14cac6c" name="/PHPExcel/Chart/Renderer/jpgraph.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="6ce1c907ce7043d81288b98e1ffd8c35" name="/PHPExcel/Chart/Renderer/PHP Charting Libraries.txt" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="91c091edf895f386c98eff8891be7dc4" name="/PHPExcel/locale/cs/config" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="3c02c6f568c8539dfc759a64b6e3e45b" name="/PHPExcel/locale/cs/functions" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="188f8656f07afcc0e964bc27dfd120d7" name="/PHPExcel/locale/da/config" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="a21edfd3dd4b107afb2143a8242bda09" name="/PHPExcel/locale/da/functions" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="8ed67198ac2b0909fabb754e9183aa5c" name="/PHPExcel/locale/de/config" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="f20f569b03dec9db66e2ba4f9bbd63df" name="/PHPExcel/locale/de/functions" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="da6278535c9ba08ccc0b6c69994a3afe" name="/PHPExcel/locale/en/uk/config" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="3ce90cc0372612305e7c205250739c9b" name="/PHPExcel/locale/es/config" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="4633fea4e8fb9196bbb3f5536cbf1b8c" name="/PHPExcel/locale/es/functions" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="f5901971d2db41dbc58968c6519e953f" name="/PHPExcel/locale/fi/config" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="8181d7cb3cd48f2d26ca4f94637147f6" name="/PHPExcel/locale/fi/functions" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="98aeaa6a3c72e7cf49deda57f0f89e5e" name="/PHPExcel/locale/fr/config" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="6047225c999ebb3810524ffce07782f2" name="/PHPExcel/locale/fr/functions" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="801b3eb79e96d50f9b81a1c8251a2d36" name="/PHPExcel/locale/hu/config" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="867260bb518058b60e95487a48a62505" name="/PHPExcel/locale/hu/functions" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="0e1154818d44802042c57a871a6ca4ea" name="/PHPExcel/locale/it/config" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="e0c63b7bdd65cd42ec51dd52edb6b5c3" name="/PHPExcel/locale/it/functions" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="776ed62baca1492442d5157912084a2d" name="/PHPExcel/locale/nl/config" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="2ef4ec6ce652f34a250601147e4c93a0" name="/PHPExcel/locale/nl/functions" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="4964e2d79994296016176be9d832fd47" name="/PHPExcel/locale/no/config" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="9dbbbdf8d4f8123342fc7678d48c2597" name="/PHPExcel/locale/no/functions" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="6ee12e163f1a620bd2209207aa6c018f" name="/PHPExcel/locale/pl/config" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="e5d1ff36b15687de8de554f644da712e" name="/PHPExcel/locale/pl/functions" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="f3109e8666cb5a21b02c8f04b68bbc81" name="/PHPExcel/locale/pt/config" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="d7cd17cfee5fddc681e19f9e59ddd133" name="/PHPExcel/locale/pt/functions" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="c2ebb907e782e1e12029c32f2d4fc96a" name="/PHPExcel/locale/pt/br/config" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="c4790f115b3abc4a12c66b943c1902a9" name="/PHPExcel/locale/pt/br/functions" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="2952505c61598b67147e76ebcbe48097" name="/PHPExcel/locale/ru/config" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="d7e509bd604c1ce20d8e2ebc0517efad" name="/PHPExcel/locale/ru/functions" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="c6b731121cb6eed88f6a717b2fb1d629" name="/PHPExcel/locale/sv/config" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="c61ab2dbccc729b8587a118debbce06b" name="/PHPExcel/locale/sv/functions" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="f956fc4c334acd7e5c56686faa07d89e" name="/PHPExcel/locale/tr/config" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="c1881a6003d97eb9ffc4da5f8bdca686" name="/PHPExcel/locale/tr/functions" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="63a3b3cfcb75b9f30f42bdfb5cb22373" name="/PHPExcel/Reader/Abstract.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="c3fac65ef5775e69200a138fd9977680" name="/PHPExcel/Reader/CSV.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="8712fd8e1e1b9842e32a8dfb65512e26" name="/PHPExcel/Reader/DefaultReadFilter.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="37d9c2943aa9c58b899cdf961de87900" name="/PHPExcel/Reader/Excel5.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="350b5f0afda36f1c1cd19b495addc5bb" name="/PHPExcel/Reader/Excel2003XML.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="f6d8efb02e69cf9aa169154672bc6c3c" name="/PHPExcel/Reader/Excel2007.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="5306127312a36fe3b94be88155705e22" name="/PHPExcel/Reader/Exception.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="239f735bc5a1e7fd6a453aa00abdea41" name="/PHPExcel/Reader/Gnumeric.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="5dff9713a1c26cbf0cd2334dcbf8a805" name="/PHPExcel/Reader/HTML.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="e89824b800d0ec6c6cb3b50265b0ca3b" name="/PHPExcel/Reader/IReader.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="9ee28260206d6f54a7298f789a88cc82" name="/PHPExcel/Reader/IReadFilter.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="54cbefca364a95ec9d8fb51f0f78ef67" name="/PHPExcel/Reader/OOCalc.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="ae386c557fe8bce7ba73be81d831ed6a" name="/PHPExcel/Reader/SYLK.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="1234570bbd8a594368b196d917595c8b" name="/PHPExcel/Reader/Excel5/Escher.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="3f4201695e13d3c3f8d4df7a71c7e70c" name="/PHPExcel/Reader/Excel2007/Chart.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="64c34a405f3508d313d2533622e6d601" name="/PHPExcel/Reader/Excel2007/Theme.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="9366a41eb36695a1594f341ec8744b0d" name="/PHPExcel/RichText/ITextElement.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="35d39b69c199ae671a0cd40367c54068" name="/PHPExcel/RichText/Run.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="cd7b31eabc2103f5f1786143e268b2ef" name="/PHPExcel/RichText/TextElement.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="62d0a22d5891a52aa4cfd87220ab7d26" name="/PHPExcel/Shared/CodePage.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="3ed2358805623f9ec9059685c22277d8" name="/PHPExcel/Shared/Date.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="f13d682a8b69ca733e0bf1a1f926b7be" name="/PHPExcel/Shared/Drawing.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="4e9bbfc058fdcff0b0a54213f4b88676" name="/PHPExcel/Shared/Escher.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="91808a4c763d5c0303545bb997af1259" name="/PHPExcel/Shared/Excel5.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="9e868675b84552d982a842145106388a" name="/PHPExcel/Shared/File.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="39ff07d96229470ad8ca980a99277560" name="/PHPExcel/Shared/Font.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="e9042b477814247c6860233246c57163" name="/PHPExcel/Shared/OLE.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="8565546ff88c7e9252d95b02e90f4ba9" name="/PHPExcel/Shared/OLERead.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="9b93a9ca52859eca0dc9da432081dc4c" name="/PHPExcel/Shared/PasswordHasher.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="97ff308a9b42e11e13d4f25d5e7a6380" name="/PHPExcel/Shared/String.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="6cdfee8162a875cd124fad74684ae12a" name="/PHPExcel/Shared/TimeZone.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="d00db119b5cb406dd9d7867728ddb913" name="/PHPExcel/Shared/XMLWriter.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="d39889569cee85b1ec689630529d74ec" name="/PHPExcel/Shared/ZipArchive.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="073af44f5664b7121c12f22fa6f312fe" name="/PHPExcel/Shared/ZipStreamWrapper.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="484348682fbbf15f4bfba6d8b8260544" name="/PHPExcel/Shared/Escher/DgContainer.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="d9857893ad07ed585f3b37b853e65fb6" name="/PHPExcel/Shared/Escher/DggContainer.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="c05f23fb5b80a6d029dc8a5844481703" name="/PHPExcel/Shared/Escher/DgContainer/SpgrContainer.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="0b1ae6188ba14a858957f4e189e96ce5" name="/PHPExcel/Shared/Escher/DgContainer/SpgrContainer/SpContainer.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="387fa818c2cd26d72d6fa13674993cfc" name="/PHPExcel/Shared/Escher/DggContainer/BstoreContainer.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="3155031f2ecda55e440ce52b55d19322" name="/PHPExcel/Shared/Escher/DggContainer/BstoreContainer/BSE.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="9d6e2b1ba5c5db73a7b2d4d335193288" name="/PHPExcel/Shared/Escher/DggContainer/BstoreContainer/BSE/Blip.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="bb25fb4dcf5c745c711643f1578944df" name="/PHPExcel/Shared/JAMA/CHANGELOG.TXT" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="4cd066bfbbf816d406d4343970f029b4" name="/PHPExcel/Shared/JAMA/CholeskyDecomposition.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="932bdce69cd84691658ee4ebde954d1b" name="/PHPExcel/Shared/JAMA/EigenvalueDecomposition.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="0b7c9cb30c4f266489e94e39de7bc8eb" name="/PHPExcel/Shared/JAMA/LUDecomposition.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="7df53375d2ba071872f4f0d78eb08b50" name="/PHPExcel/Shared/JAMA/Matrix.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="b66080d9f6ee6863cdb2a90e90d0dff4" name="/PHPExcel/Shared/JAMA/QRDecomposition.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="b0e3e59ac4a59d120775fd038d8bc693" name="/PHPExcel/Shared/JAMA/SingularValueDecomposition.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="eb649938f2a91662ca060d49414ce4cb" name="/PHPExcel/Shared/JAMA/utils/Error.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="0497fc1a8fa4467c01aaaffc4eb7ae61" name="/PHPExcel/Shared/JAMA/utils/Maths.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="bb9a5a9d582ebce38b2819ac4bcc9c74" name="/PHPExcel/Shared/OLE/ChainedBlockStream.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="7ecb0c1313a804acf7cca3bfc2af5371" name="/PHPExcel/Shared/OLE/PPS.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="7f90ecb330695a1f3d6e3b7212bfd804" name="/PHPExcel/Shared/OLE/PPS/File.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="c852953f1a43c07d64966072fcd914bd" name="/PHPExcel/Shared/OLE/PPS/Root.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="f14599a2f089f6ff8c97e2baa4e3d575" name="/PHPExcel/Shared/PCLZip/gnu-lgpl.txt" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="3ee0a4d8a06cedc0a56f29e8f351ef72" name="/PHPExcel/Shared/PCLZip/pclzip.lib.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="0d82536577908a1f78e1b5c6220f5810" name="/PHPExcel/Shared/PCLZip/readme.txt" role="data" />
+   <file baseinstalldir="PHPExcel" md5sum="df4b9edc7862b1e443d27954aeec31e6" name="/PHPExcel/Shared/trend/bestFitClass.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="3414e528b905e5c053d7824bcd1a0483" name="/PHPExcel/Shared/trend/exponentialBestFitClass.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="6344ca96392ad1dec1ab18c42622fa91" name="/PHPExcel/Shared/trend/linearBestFitClass.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="32f217b415dfddf2b1fa9633f2384acd" name="/PHPExcel/Shared/trend/logarithmicBestFitClass.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="1fbaf407fd712f77275c1c4b55ea512f" name="/PHPExcel/Shared/trend/polynomialBestFitClass.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="f2c919a5cb650d3375688471afacec02" name="/PHPExcel/Shared/trend/powerBestFitClass.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="238149d0927ae1b811dbaa79ec04c116" name="/PHPExcel/Shared/trend/trendClass.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="c2cfecea67a9de39f1de23329acc4d1e" name="/PHPExcel/Style/Alignment.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="3bf3bc83ee3f1fec6a2308d9f8ebae7e" name="/PHPExcel/Style/Border.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="26d6e72dfe3cff5ff2ce0da0f4d0c7b8" name="/PHPExcel/Style/Borders.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="cb69130716c411dd94aed9f038e95386" name="/PHPExcel/Style/Color.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="9d0d1036ca796f874ac28c1aa2d7e8b4" name="/PHPExcel/Style/Conditional.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="7a5fd2a9e96f441e17c5029bd9225ada" name="/PHPExcel/Style/Fill.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="d08eac75931dc0fc511e2bb3d2c58143" name="/PHPExcel/Style/Font.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="9e901449908c9eeb12ce90f75c60870a" name="/PHPExcel/Style/NumberFormat.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="0b2db14fa98db2d4a3437bde4c0d8225" name="/PHPExcel/Style/Protection.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="37b9133cb511fda2404c4ed1ce31bd94" name="/PHPExcel/Style/Supervisor.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="ab69522cea609067b9803e09dcfcf127" name="/PHPExcel/Worksheet/AutoFilter.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="0a2756d6835201582ce0868024e0efeb" name="/PHPExcel/Worksheet/BaseDrawing.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="a9ecbf77b708747409e9e087707bf5ef" name="/PHPExcel/Worksheet/CellIterator.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="04f6789bbc700d4b06f7ea164b0c8ca1" name="/PHPExcel/Worksheet/ColumnDimension.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="75f9733cea087d4d9aab289a1f43f212" name="/PHPExcel/Worksheet/Drawing.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="b8198614b872a2b96cbe1c1fe35cabe3" name="/PHPExcel/Worksheet/HeaderFooter.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="51b19a71710fbae500eb4c686c495010" name="/PHPExcel/Worksheet/HeaderFooterDrawing.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="bb320ef66b6261077d477b0f40af98a4" name="/PHPExcel/Worksheet/MemoryDrawing.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="3269a04f4470c6ef1a95e1cd02413a5e" name="/PHPExcel/Worksheet/PageMargins.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="686555ca7e94e285cb63bf9e5cbd9765" name="/PHPExcel/Worksheet/PageSetup.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="ac90a1916024fef242f4cfe1139257cd" name="/PHPExcel/Worksheet/Protection.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="4c739ce5a4da22baa7e9ec80eaff0079" name="/PHPExcel/Worksheet/Row.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="5174c390221ddd04fbc598046e352b29" name="/PHPExcel/Worksheet/RowDimension.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="2110f16bc8f67abf7cfeed1db95d9671" name="/PHPExcel/Worksheet/RowIterator.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="5332477555bc2fca47d3e0e28baa8dc6" name="/PHPExcel/Worksheet/SheetView.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="6470c57a0ebc157b6ded59e8d1c21fb6" name="/PHPExcel/Worksheet/AutoFilter/Column.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="dd2a14d891e300f159a1ae72ae3adbe0" name="/PHPExcel/Worksheet/AutoFilter/Column/Rule.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="b3ca42c560465f5de5910198007e1451" name="/PHPExcel/Worksheet/Drawing/Shadow.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="1a94f12e2e15dc2e53072d4275e602bd" name="/PHPExcel/Writer/Abstract.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="2e3ce8e515fb3d603a70ebeafd8d3375" name="/PHPExcel/Writer/CSV.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="e099ba5039d753214c05cb58989af708" name="/PHPExcel/Writer/Excel5.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="b4fee081a6d4ba2c46eccebfb5a2d30f" name="/PHPExcel/Writer/Excel2007.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="1c590f27bb66c2e261f1f964f9315b07" name="/PHPExcel/Writer/Exception.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="218e2368d218bee81a2bedcbf5581d46" name="/PHPExcel/Writer/HTML.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="ca15aed30a483541354e4699173372b5" name="/PHPExcel/Writer/IWriter.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="0dc528dddddf6e3741da7405b9c5ed3d" name="/PHPExcel/Writer/PDF.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="3414b4248380751454fab475ed7fe914" name="/PHPExcel/Writer/Excel5/BIFFwriter.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="f9fe22541718ae970a8f9ddf5c4d5a75" name="/PHPExcel/Writer/Excel5/Escher.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="3d7f5cc6ef5824834ffd576fe4ab7692" name="/PHPExcel/Writer/Excel5/Font.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="498e101fafc1bb2f8a8ebb8fa6eb087b" name="/PHPExcel/Writer/Excel5/Parser.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="8a787c85aa57de3376640d2d54d477c9" name="/PHPExcel/Writer/Excel5/Workbook.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="db4b55aca30ba34a620dc7c7fb2c9350" name="/PHPExcel/Writer/Excel5/Worksheet.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="ad7440f84d2658eedaa4e84bbe8a28c3" name="/PHPExcel/Writer/Excel5/Xf.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="528094ab44e190ff74a873f6894cf26b" name="/PHPExcel/Writer/Excel2007/Chart.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="a9cb1396312086b4439726cfd9128cbf" name="/PHPExcel/Writer/Excel2007/Comments.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="65c2cfbd8f0d4ce845fee8876f4e7c95" name="/PHPExcel/Writer/Excel2007/ContentTypes.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="9f05ec177f1c3057df29efd630bfc8c6" name="/PHPExcel/Writer/Excel2007/DocProps.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="3f9aec31a99197f6eabfc417de2d376a" name="/PHPExcel/Writer/Excel2007/Drawing.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="13b5555a89d5c3630c1d5b578f81aa7b" name="/PHPExcel/Writer/Excel2007/Rels.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="73ebe74cfa250f36acfb632bdff93ca2" name="/PHPExcel/Writer/Excel2007/StringTable.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="e4d0a9b21fd2ea50209552372ac5f57a" name="/PHPExcel/Writer/Excel2007/Style.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="adb568642bf50b8e371bad00686ed3de" name="/PHPExcel/Writer/Excel2007/Theme.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="ca08b7953cca7bf1ec2b8b52476774bf" name="/PHPExcel/Writer/Excel2007/Workbook.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="37ef34d6ae3a4289dcdefe91a5f23093" name="/PHPExcel/Writer/Excel2007/Worksheet.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="bcf2e1a9e0e64e6147feab9131e1e09d" name="/PHPExcel/Writer/Excel2007/WriterPart.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="d9879b5d6c988071480f8bd543fcc4d2" name="/PHPExcel/Writer/PDF/Core.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="3250c43b534e43f5c99a93ea9a6349ad" name="/PHPExcel/Writer/PDF/DomPDF.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="0f87ce0463933261663bb4aa9da2c17c" name="/PHPExcel/Writer/PDF/mPDF.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="585d11aa3a038d0623c18bbd1602a56a" name="/PHPExcel/Writer/PDF/tcPDF.php" role="php" />
+   <file baseinstalldir="PHPExcel" md5sum="ed6fe6d7d155039ca37a3d0ba9b0d11e" name="PHPExcel.php" role="php" />
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.2.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0</min>
+   </pearinstaller>
+   <extension>
+    <name>zip</name>
+    <min>1.8.0</min>
+   </extension>
+  </required>
+ </dependencies>
+ <phprelease />
+ <changelog>
+  <release>
+   <version>
+    <release>1.7.9</release>
+    <api>1.7.9</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2013-06-02</date>
+   <license uri="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt">LGPL</license>
+   <notes>
+This package ONLY contains the class files, not the documentation and example code. Please refer to
+http://www.codeplex.com/PHPExcel for those files.
+   </notes>
+  </release>
+ </changelog>
+</package>

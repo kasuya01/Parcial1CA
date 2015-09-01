@@ -1,6 +1,9 @@
 <?php session_start();
 include_once("../../../Conexion/ConexionBD.php");
 $db = new ConexionBD;
+include ("clsConsultarElementos.php");
+$objdatos = new clsConsultarElementos;
+
 $usuario = $_SESSION['Correlativo'];
 $lugar   = $_SESSION['Lugar'];
 $area    = $_SESSION['Idarea'];
@@ -138,29 +141,29 @@ $area    = $_SESSION['Idarea'];
         $Pac         = $_GET['var7'];
         $IdEstandar  = $_GET['var16'];
         $IdHistorial = $_GET['var17'];
-       // $idarea      = $_GET['idarea'];
+        $idsolicitud=$_GET['var6'];
+        $iddetallesolicitud=$_GET['var5'];
+        $idarea=$_GET['var4'];
+        $cant=$objdatos->buscarAnterioresPUnica($solicitud,$iddetallesolicitud);
+       // $total=pg_num_rows($cant);
+        echo $cant[0];
+ /*if($cant>0){*/
        // echo $idarea."-".$_GET['var3'];
       //  $nombreEstab = $_GET['var17'];
-       
-        if($db->conectar()==true) {
-            $condatos = "SELECT t07.peso,t07.talla,t06.sct_name_es AS diagnostico,especificacion,conocido_por
-                        FROM sec_historial_clinico               t01
-                        INNER JOIN mnt_expediente                t02 ON (t02.id = t01.id_numero_expediente)
-                        INNER JOIN mnt_paciente                  t03 ON (t03.id = t02.id_paciente)
-                        LEFT OUTER JOIN sec_diagnostico_paciente t04 ON (t01.id = t04.id_historial_clinico)
-                        LEFT OUTER JOIN mnt_snomed_cie10         t06 ON (t06.id = t04.id_snomed)
-                        LEFT OUTER JOIN sec_signos_vitales       t07 ON (t01.id = t07.id_historial_clinico)
-                        WHERE t01.id = $IdHistorial AND t01.idestablecimiento = $lugar";
-
-            $resultado = pg_query($condatos);
-            $rows = pg_fetch_array($resultado);
+        $datoscon = $objdatos->DatosConsulta($IdHistorial,$lugar);
+        $rows = pg_fetch_array($datoscon);
 
             $Peso=$rows['peso'];
             $Talla=$rows['talla'];
             $Diagnostico=$rows['diagnostico'];
             $Especificacion=$rows['especificacion'];
             $ConocidoPor=$rows['conocido_por'];
-        }
+            
+            
+              
+        //}
+        
+       // $idarea      = $_GET['idarea'];
         ?>
 </script>
 </head>
@@ -282,12 +285,12 @@ $area    = $_SESSION['Idarea'];
                             <tr>
                                 <td class="StormyWeatherFieldCaptionTD">*Fecha y hora inicio Proceso</td>
                                 <td class="StormyWeatherDataTD">
-                                        <input type="text" class="datepicker" id="txtresultrealiza"  name="txtresultrealiza" size="15">										
+                                        <input type="text" class="date" id="txtresultrealiza"  name="txtresultrealiza" size="15">										
                                 </td>
                             
                                 <td class="StormyWeatherFieldCaptionTD">*Fecha Resultado</td>
                                 <td class="StormyWeatherDataTD">
-                                        <input type="text" class="datepicker" name="txtresultfin" id="txtresultfin" size="15"  value="<?php echo date("Y-m-d h:m"); ?>"  />	
+                                        <input type="text" class="date" name="txtresultfin" id="txtresultfin" size="15"  value="<?php echo date("Y-m-d"); ?>"  />	
                                 </td>
                             </tr>
                             <?php 
@@ -323,6 +326,16 @@ $area    = $_SESSION['Idarea'];
         </td>
     </tr>
 </table>
+     <?php
+/*}
+else{
+ echo '<center><br><br><h1><img src="../../../Imagenes/alerta.png" valign="middle"/>'
+   . '&nbsp;'
+            . 'El resultado del exámen seleccionado del expediente "'.$_GET['var1'].'",<br/> ya fue ingresado.</h1> ';
+            echo " <button type='submit' class='btn btn-primary' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' /><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button></center>";
+               
+}*/
+?>
 <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="../../../public/datepicker/jquery-ui.min.js"></script>
     <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>

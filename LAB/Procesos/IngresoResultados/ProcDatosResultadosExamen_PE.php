@@ -45,7 +45,7 @@ function ValidarCampos()
 function VerResultados()
 {
     if (ValidarCampos())
- {
+    {
 	idexamen=document.frmnuevo.txtidexamen.value;
 	idsolicitud=document.frmnuevo.txtidsolicitud.value;
         iddetalle=document.frmnuevo.txtiddetalle.value;
@@ -56,9 +56,9 @@ function VerResultados()
 	origen=document.frmnuevo.txtorigen.value;
 	MostrarResultadoExamen(idsolicitud,iddetalle,idarea,idexamen,resultado,observacion,nombrearea,procedencia,origen);
 	//alert(resultado);
-	}
-	 else
-   {    alert("Complete la Informacion Requerida");   }
+    }
+    else
+    {    alert("Complete la Informacion Requerida");   }
 }
 
  function RecogeValor() {
@@ -121,7 +121,7 @@ function VerResultados()
 
             LlenarComboResponsable(area);
 
-        }
+ }
 
 //FUNCION PARA VERIFICAR DATOS REQUERIDOS EN RESULTADOS
  var nav4 = window.Event ? true : false;
@@ -160,7 +160,7 @@ function VerResultados()
               $ConocidoPor=$rows['conocido_por'];
               $Especificacion=$rows['especificacion'];
               //echo $Peso." * ".$Talla." * ".$Diagnostico." * ".$ConocidoPor;
-          }
+        }
 ?>
 </head>
 
@@ -283,12 +283,12 @@ function VerResultados()
         <tr>
                 <td class="StormyWeatherFieldCaptionTD">*Fecha y hora inicio Proceso</td>
                 <td class="StormyWeatherDataTD">
-                     <input type="text" class="datepicker" id="txtresultrealiza"  name="txtresultrealiza" size="15">										
+                     <input type="text" class="date" id="txtresultrealiza"  name="txtresultrealiza" size="15">										
                 </td>
                             
                 <td class="StormyWeatherFieldCaptionTD">*Fecha Resultado</td>
                 <td class="StormyWeatherDataTD" colspan="2">
-                    <input type="text" class="datepicker" name="txtresultfin" id="txtresultfin" size="15"  value="<?php echo date("Y-m-d h:m"); ?>"  />	
+                    <input type="text" class="date" name="txtresultfin" id="txtresultfin" size="15"  value="<?php echo date("Y-m-d"); ?>"  />	
                 </td>
         </tr>
 	   <?php 

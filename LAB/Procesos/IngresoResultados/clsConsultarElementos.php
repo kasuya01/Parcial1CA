@@ -66,7 +66,7 @@ class clsConsultarElementos {
     function ObtenerFechaResultado($idsolicitud,$IdExamen,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-            $query = "SELECT TO_CHAR(fecha_resultado,'DD/MM/YYYY HH:MI') AS fecharesultado
+            $query = "SELECT TO_CHAR(fecha_resultado,'DD/MM/YYYY') AS fecharesultado
                       FROM lab_resultados
                       WHERE idsolicitudestudio = $idsolicitud AND idestablecimiento = $lugar AND idexamen = $IdExamen";
             $result = @pg_query($query);
@@ -293,7 +293,7 @@ else
                                      WHERE ti01.id = t12.id_aten_area_mod_estab)
                              END AS procedencia, 
                              t01.numeromuestra,
-                             TO_CHAR(t01.fechahorareg,'DD/MM/YYYY HH:MI') AS fecha,
+                             TO_CHAR(t01.fechahorareg,'DD/MM/YYYY') AS fecha,
                              CASE WHEN t02.id_historial_clinico IS NOT NULL
                                  THEN t09.nombre
                                  ELSE (SELECT nombre FROM ctl_establecimiento WHERE id = t12.id_establecimiento)
@@ -452,5 +452,49 @@ else
         }       
         
     }
+    
+    
+    function DatosConsulta($IdHistorial,$lugar){
+          $con = new ConexionBD;
+        if($con->conectar()==true) {
+             $query = "SELECT t07.peso,t07.talla,t06.sct_name_es AS diagnostico,especificacion,conocido_por
+                        FROM sec_historial_clinico               t01
+                        INNER JOIN mnt_expediente                t02 ON (t02.id = t01.id_numero_expediente)
+                        INNER JOIN mnt_paciente                  t03 ON (t03.id = t02.id_paciente)
+                        LEFT OUTER JOIN sec_diagnostico_paciente t04 ON (t01.id = t04.id_historial_clinico)
+                        LEFT OUTER JOIN mnt_snomed_cie10         t06 ON (t06.id = t04.id_snomed)
+                        LEFT OUTER JOIN sec_signos_vitales       t07 ON (t01.id = t07.id_historial_clinico)
+                        WHERE t01.id = $IdHistorial AND t01.idestablecimiento = $lugar";
+             $result = @pg_query($query);
+             if (!$result)
+                return false;
+            else
+                return $result;
+        }
+        
+    }
+    //Buscar si existen solicitudes anteriores con ese mismo detalle.
+   function buscarAnterioresPUnica($idsolicitud,$iddetallesolicitud){
+         $con = new ConexionBD;
+        if ($con->conectar() == true) {
+          $query= "select nombre_examen, sds.id as iddetallesolicitud, lce.id as idexamen 
+from sec_solicitudestudios sse
+join sec_detallesolicitudestudios sds 	on (sse.id = sds.idsolicitudestudio)
+join lab_conf_examen_estab lce 		on (lce.id = sds.id_conf_examen_estab)
+join mnt_area_examen_establecimiento mae on(mae.id = lce.idexamen)
+where estadodetalle not in (6,7)
+and sse.id=$idsolicitud
+and sds.id=$iddetallesolicitud
+--and mae.id_area_servicio_diagnostico = $idarea
+order by nombre_examen;";
+          //echo $query;
+            $result = pg_num_rows(pg_query($query));
+            if (!$result) {
+                return false;
+            } else {
+                return $result;
+            }
+        }
+    }//fin BuscarAnterioresPUnica
 }//CLASE
 ?>
