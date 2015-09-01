@@ -259,8 +259,8 @@ switch ($opcion) {
 //ECHO $query;
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);
         
-        echo "<div class='table-responsive' style='width: 80%;'>
-            <table width='81%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+        echo "<div class='table-responsive' style='width: 90%;'>
+            <table width='100%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
                 <thead><tr>
                     <th>Muestra </th>
                     <th>NEC </th>
@@ -282,8 +282,8 @@ switch ($opcion) {
                 $consmet=$objdatos->CantMetodologia($row["idexamen"]);
              //   echo 'Consmet: '.$consmet;
                 echo "<tr>
-                        <td width='5%'>" . $row['numeromuestra'] . "</td>
-                        <td width='7%'><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a></td>" .
+                        <td width='3%'>" . $row['numeromuestra'] . "</td>
+                        <td width='3%'><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a></td>" .
                         "<input name='idsolicitud[" . $pos . "]' id='idsolicitud[" . $pos . "]' type='hidden' size='60' value='" . $row["idsolicitudestudio"] . "' />" .
                         "<input name='idexpediente[" . $pos . "]' id='idexpediente[" . $pos . "]' type='hidden' size='60' value='" . $row["idnumeroexp"] . "' />" .
                         "<input name='paciente[" . $pos . "]' id='paciente[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["paciente"]) . "' />" .
@@ -308,15 +308,15 @@ switch ($opcion) {
                         "<input name='f_tomamuestra[" . $pos . "]' id='f_tomamuestra[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["f_tomamuestra"]) . "'/>" .
                         "<input name='tipomuestra[" . $pos . "]' id='tipomuestra[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["tipomuestra"]) . "'/>" .
                         "<input name='idareaPA[" . $pos . "]' id='idareaPA[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idarea"]) . "'/>" .
-                        "<td width='20%'>" . htmlentities($row['paciente']) . "</td>
-                        <td width='7%'>" . $row['codigoexamen'] . "</td>
-                        <td width='20%'>" . htmlentities($row['nombreexamen']) . "</td>
-                        <td width='12%'>" . htmlentities($row['nombresubservicio']) . "</td>
-                        <td width='10%'>" . htmlentities($row['nombreservicio']) . "</td>
-                        <td width='20%'>" . htmlentities($row['estabext']) . "</td>
-                        <td width='10%'>" . ($row['fechasolicitud']) . "</td>
-                        <td width='10%'>" . ($row['fecharecepcion']) . "</td>
-                        <td width='10%'>" . ($row['prioridad']) . "</td>
+                        "<td width='18%'>" . htmlentities($row['paciente']) . "</td>
+                        <td width='3%'>" . $row['codigoexamen'] . "</td>
+                        <td width='27%'>" . htmlentities($row['nombreexamen']) . "</td>
+                        <td width='10%'>" . htmlentities($row['nombresubservicio']) . "</td>
+                        <td width='8%'>" . htmlentities($row['nombreservicio']) . "</td>
+                        <td width='21%'>" . htmlentities($row['estabext']) . "</td>
+                        <td width='5%'>" . ($row['fechasolicitud']) . "</td>
+                        <td width='5%'>" . ($row['fecharecepcion']) . "</td>
+                        <td width='3%'>" . ($row['prioridad']) . "</td>
                     </tr>";
                 $pos = $pos + 1;
             }
@@ -696,7 +696,7 @@ switch ($opcion) {
         $IdServ = $_POST['IdServicio'];
         //  echo $IdServ;
         $dtserv = $objdatos->LlenarCmbServ($IdServ, $lugar);
-        $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:375px" class="form-control height">';
+        $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:500px" class="form-control height">';
         $rslts .='<option value="0"> Seleccione un Servicio </option>';
         while ($rows = pg_fetch_array($dtserv)) {
             $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
@@ -790,7 +790,7 @@ switch ($opcion) {
         $flag=0;
         
         if ($cantidadnum>0) {
-	for ($i=1; $i<=$cantidadnum; $i++){
+	    for ($i=1; $i<=$cantidadnum; $i++){
 		$hdnidexamen_ = $_POST['hdnidexamen_'.$i];
 		$hdnIdMetodologia_ = $_POST['hdnIdMetodologia_'.$i];
 		$hdnResp_ = $_POST['hdnResp_'.$i];
@@ -832,7 +832,7 @@ switch ($opcion) {
 		//$hdnLecExa_ = (empty($_POST['hdnLectExa_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnLectExa_'.$i]) . "'";
 		//$examenid= $objeto->crearDetalleResultado($hdnIdpruebaest_,$hdnFecProc_, $hdnFecResu_, $hdnIdPosResult_, $hdnPosResult_,$hdnIdPosObser_,		$hdnPosObser_, $hdnIdTipoRes_,$hdnIdProce_, $hdnMarReac_,$hdnLecExa_, $i_idemppl, $idestabres, $i_iddetorden);
 		
-		}
+	    }
 	}
 	$estorden=0;
         //Si valido los datos ingresara aca porque val=1;

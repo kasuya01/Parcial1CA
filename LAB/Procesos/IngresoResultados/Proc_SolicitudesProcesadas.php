@@ -185,11 +185,22 @@ if (isset($_SESSION['Correlativo'])) {
                                     <?php
                                     $db = new ConexionBD;
                                     if ($db->conectar() == true) {
-                                        $consulta = "SELECT t01.id,
+                                          $consulta = "SELECT mnt_area_mod_estab.id as codigo ,CASE WHEN id_servicio_externo_estab IS NOT NULL THEN mnt_servicio_externo.abreviatura ||'-->'  || ctl_area_atencion.nombre
+                                                       ELSE 
+                                                              ctl_modalidad.nombre ||'-->' || ctl_area_atencion.nombre 
+                                                       END
+                                                       FROM mnt_area_mod_estab
+                                                       INNER JOIN  ctl_area_atencion  on  ctl_area_atencion.id = mnt_area_mod_estab.id_area_atencion
+                                                       --LEFT JOIN mnt_aten_area_mod_estab ON (ctl_area_atencion.id = mnt_aten_area_mod_estab.id_atencion) 
+                                                       INNER JOIN ctl_modalidad ON ctl_modalidad.id = mnt_area_mod_estab.id_modalidad_estab
+                                                       LEFT JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab.id_servicio_externo_estab) 
+                                                       LEFT JOIN mnt_servicio_externo ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo) 
+                                                       ORDER by mnt_area_mod_estab.id,ctl_modalidad.nombre,ctl_area_atencion.nombre ";
+                                       /* $consulta = "SELECT t01.id,
                                                                  t01.nombre
                                                           FROM ctl_area_atencion t01
                                                           WHERE t01.id IN (
-                                                                SELECT DISTINCT id_area_atencion FROM mnt_area_mod_estab WHERE id_establecimiento = $lugar)";
+                                                                SELECT DISTINCT id_area_atencion FROM mnt_area_mod_estab WHERE id_establecimiento = $lugar)";*/
                                         $resultado = pg_query($consulta);
 
                                         //por cada registro encontrado en la tabla me genera un <option>
@@ -258,7 +269,7 @@ if (isset($_SESSION['Correlativo'])) {
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD" >Expediente</td>
-                            <td  class="StormyWeatherDataTD"><input type="text" size="40" name="txtexpediente" id="txtexpediente"  class="form-control height" style="width:443px"/></td>
+                            <td  class="StormyWeatherDataTD"><input type="text" size="40" name="txtexpediente" id="txtexpediente"  class="form-control height" style="width:443px" placeholder="Ingrese Expediente"/></td>
                             
                             <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Fecha Recepi&oacute;n</strong></td>
                             <td  class="StormyWeatherDataTD">
@@ -268,17 +279,17 @@ if (isset($_SESSION['Correlativo'])) {
                         <tr>
                             <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong>   </td> 
                             <td class="StormyWeatherDataTD" >
-                               <input maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre" class="form-control height" style="width:443px"/></td> 
+                               <input maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre" class="form-control height" style="width:443px" placeholder="Ingrese Primer Nombre"/></td> 
                             <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Nombre</strong>   </td> <td class="StormyWeatherDataTD">
-                                <input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre" class="form-control height" style="width:500px"/></td> 
+                                <input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre" class="form-control height" style="width:500px" placeholder="Ingrese Segundo Nombre"/></td> 
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Apellido</strong></td> 
                             <td class="StormyWeatherDataTD">
-                               <input  maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido" class="form-control height" style="width:443px"/></td> 
+                               <input  maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido" class="form-control height" style="width:443px" placeholder="Ingrese Primer Apellido"/></td> 
                             <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Apellido</strong></td> 
                             <td class="StormyWeatherDataTD" >
-                                <input maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" class="form-control height" style="width:500px"/></td>
+                                <input maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" class="form-control height" style="width:500px" placeholder="Ingrese Segundo Apellido"/></td>
                         </tr>
                         <!--<tr>
                             <td class="StormyWeatherDataTD" colspan="4" align="right">		

@@ -277,8 +277,8 @@ switch ($opcion)
      
      
    
-     echo "<center> <div class='table-responsive' style='width: 80%;'>
-         <table width='95%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+     echo "<center> <div class='table-responsive' style='width: 70%;'>
+         <table width='75%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
                 <thead><tr>
 			<th>Fecha Recepci&oacute;n</th>
 				<th>NEC </th>
@@ -294,8 +294,8 @@ switch ($opcion)
 
             while ($row = pg_fetch_array($consulta)) {
                 echo "<tr>
-				   <td width='8%'>".$row['fecharecepcion']."</td>
-				   <td width='8%'><span style='color: #0101DF;'>
+				   <td width='5%' >".$row['fecharecepcion']."</td>
+				   <td ><span style='color: #0101DF;'>
 					   <a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(".$pos.");'>".
 					   $row['idnumeroexp']."</a>". 
 					   "</td>". 
@@ -304,12 +304,12 @@ switch ($opcion)
 					   "<input name='idexpediente[".$pos."]' id='idexpediente[".$pos."]' type='hidden' size='60' value='".$row['idnumeroexp']."' />".
 					   "<input name='idestablecimiento[".$pos."]' id='idestablecimiento[".$pos."]' type='hidden' size='60' value='".$IdEstab."' />".
                                            "<input name='fecharecepcion[".$pos."]' id='fecharecepcion[".$pos."]' type='hidden' size='60' value='".$fecharecepcion."' />".
-				  "<td width='25%'>".$row['paciente']."</td>
-				  <td width='15%'>".htmlentities($row['nombresubservicio'])."</td>
-				   <td width='15%'>".htmlentities($row['nombreservicio'])."</td>
-                                   <td width='20%'>".htmlentities($row['estabext'])."</td>
-				   <td width='30%'>".$row['estado']."</td>
-                                   <td width='15%'>".$row['fecchaconsulta']."</td>
+				  "<td>".$row['paciente']."</td>
+				   <td>".htmlentities($row['nombresubservicio'])."</td>
+				   <td>".htmlentities($row['nombreservicio'])."</td>
+                                   <td>".htmlentities($row['estabext'])."</td>
+				   <td>".$row['estado']."</td>
+                                   <td width='5%'>".$row['fecchaconsulta']."</td>
 				  
                                       
 				 </tr>";
@@ -634,10 +634,10 @@ switch ($opcion)
    	break;
 	case 7:// Llenar combo Subservicio
    	     $rslts='';
-         $IdServ=$_POST['IdServicio'];
+             $IdServ=$_POST['IdServicio'];
 	   //  echo $IdServ;
 	     $dtserv=$objdatos->LlenarCmbServ($IdServ,$lugar);
-	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" class="form-control height" style="width:375px">';
+	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:500px" class="form-control height" >';
 			$rslts .='<option value="0"> Seleccione Subespecialidad </option>';
 			while ($rows =pg_fetch_array($dtserv)){
 		  	$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
@@ -645,6 +645,9 @@ switch ($opcion)
 				
 	      $rslts .='</select>';
 	      echo $rslts;
+              
+              
+            
         break;	
 	case 8://Llenar tipo muestra
 		 $rslts='';
@@ -691,8 +694,7 @@ switch ($opcion)
 //               $dtTipo=$objdatos->LlenarCmbOrigenMuestra($IdTipo);
 //             
 //		 $rslts = '<select name="cmbOrigen" id="cmbOrigen" style="width:375px">';
-////>>>>>>> roxy
-//		 $rslts .='<option value="0">--Seleccione Origen de Muestra--</option>';
+///		 $rslts .='<option value="0">--Seleccione Origen de Muestra--</option>';
 
 		 while ($rows =pg_fetch_array($dtTipo)){
 		  	$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
@@ -755,14 +757,7 @@ switch ($opcion)
 			}
                             
                             }
-                     /* echo "que tiene  ".  $origen;
-		// echo $idsolicitud." - ".$IdExamen." - ".$indicacion." - ".$IdTipo." - ".$Observa." - ".$lugar." - ".$Empleado." - ".$usuario;
-			if ($objdatos->insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$origen)==true){
-				echo "Examen Agregado";
-			}
-			else{
-				echo "No se pudo Agregar el Examen";
-			}*/
+                     
 		}
 		
 	break;

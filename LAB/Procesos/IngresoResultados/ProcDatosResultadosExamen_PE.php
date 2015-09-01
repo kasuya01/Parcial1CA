@@ -45,7 +45,7 @@ function ValidarCampos()
 function VerResultados()
 {
     if (ValidarCampos())
- {
+    {
 	idexamen=document.frmnuevo.txtidexamen.value;
 	idsolicitud=document.frmnuevo.txtidsolicitud.value;
         iddetalle=document.frmnuevo.txtiddetalle.value;
@@ -56,9 +56,9 @@ function VerResultados()
 	origen=document.frmnuevo.txtorigen.value;
 	MostrarResultadoExamen(idsolicitud,iddetalle,idarea,idexamen,resultado,observacion,nombrearea,procedencia,origen);
 	//alert(resultado);
-	}
-	 else
-   {    alert("Complete la Informacion Requerida");   }
+    }
+    else
+    {    alert("Complete la Informacion Requerida");   }
 }
 
  function RecogeValor() {
@@ -121,7 +121,7 @@ function VerResultados()
 
             LlenarComboResponsable(area);
 
-        }
+ }
 
 //FUNCION PARA VERIFICAR DATOS REQUERIDOS EN RESULTADOS
  var nav4 = window.Event ? true : false;
@@ -160,7 +160,7 @@ function VerResultados()
               $ConocidoPor=$rows['conocido_por'];
               $Especificacion=$rows['especificacion'];
               //echo $Peso." * ".$Talla." * ".$Diagnostico." * ".$ConocidoPor;
-          }
+        }
 ?>
 </head>
 
