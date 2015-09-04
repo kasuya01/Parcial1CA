@@ -284,10 +284,8 @@ ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
                             <td class='StormyWeatherDataTD'>".$precedencia."</td>
                             <th class='StormyWeatherFieldCaptionTD'>Origen: </th>
                             <td class='StormyWeatherDataTD'>".htmlentities($origen)."
-                                    <input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled' />
-                                    <input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled' />
-
-                            </td>
+                                    <input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled'/>
+                                    <input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled'/></td>
                     </tr>
                     <tr>
                             <th class='StormyWeatherFieldCaptionTD'>Medico: </th>
@@ -386,7 +384,7 @@ ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
 		$idexpediente=$_POST['idexpediente'];
 		$idsolicitud=$_POST['idsolicitud'];
                 $idplantilla=$_POST['idplantilla'];
-                echo "iddetalle=".$iddetalle ;
+               // echo "iddetalle=".$iddetalle ;
 		$dato=$objdatos->VerificaDetalle($idsolicitud,$iddetalle);
 			 if ($dato == 1){
                           //  echo "entro".$idplantilla;

@@ -231,9 +231,9 @@ if (isset($_SESSION['Correlativo'])) {
                                     $objeareas = new clsLab_Areas;
                                     $consulta = $objeareas->consultaractivas($lugar);
                                     while ($row = pg_fetch_array($consulta)) {
-                                       if ($row['idarea']!=$area){
+                                      // if ($row['idarea']!=$area){
                                         echo "<option value='" . $row['idarea'] . "'>" . htmlentities($row['nombrearea']) . "</option>";
-                                       }
+                                       //}
                                     }
                                     ?>		  
                                 </select> 
