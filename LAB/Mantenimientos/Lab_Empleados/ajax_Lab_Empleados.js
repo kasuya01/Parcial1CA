@@ -23,12 +23,29 @@ function LimpiarCampos() {
     document.getElementById('cmbCargo').value = "0";
     document.getElementById('txtlogin').value = "";
     document.getElementById('txtapellido').value = "";
+    document.getElementById('cmbPago').value = "0";
+    document.getElementById('cmbModalidad').value = "0";
+    
+    
 }
 
 function ValidarCampos()
 {
 
     var resp = true;
+     if (document.getElementById('cmbArea').value == "0")
+    {
+        resp = false;
+    }
+    if (document.getElementById('cmbModalidad').value == "0")
+    {
+        resp = false;
+    }
+     if (document.getElementById('cmbPago').value == "0")
+    {
+        resp = false;
+    }
+    
     if (document.getElementById('txtidempleado').value == "")
     {
         resp = false;
@@ -37,10 +54,7 @@ function ValidarCampos()
     {
         resp = false;
     }
-    if (document.getElementById('cmbArea').value == "0")
-    {
-        resp = false;
-    }
+   
     if (document.getElementById('cmbCargo').value == "0")
     {
         resp = false;
@@ -49,10 +63,7 @@ function ValidarCampos()
     {
         resp = false;
     }
-    if (document.getElementById('cmbModalidad').value == "0")
-    {
-        resp = false;
-    }
+    
 
     return resp;
 }

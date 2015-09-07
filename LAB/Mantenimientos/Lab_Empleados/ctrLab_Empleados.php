@@ -69,11 +69,16 @@ switch ($opcion) {
         }
 
         //echo $cargo."y nivel".$niv;
-        if (($objdatos->insertar($idempleado, $lugar, $idarea, $nombrecompleto,$nombre, $cargo, $usuario, $corr, $IdEstabExt, $apellido) == true) && ($objdatos->Insertar_Usuario($login, $idempleado, $pass, $niv, $lugar, $modalidad, $pagador) == 1)) {
-            echo "Registro Agregado";
-        } else {
-            echo "No se pudo Agregar el Registro";
+        $Elogin=$objdatos->VerificaLogin($login,$lugar);
+        if($Elogin==0){  
+            if (($objdatos->insertar($idempleado, $lugar, $idarea, $nombrecompleto,$nombre, $cargo, $usuario, $corr, $IdEstabExt, $apellido) == true) && ($objdatos->Insertar_Usuario($login, $idempleado, $pass, $niv, $lugar, $modalidad, $pagador) == 1)) {
+                echo "Registro Agregado";
+            } else {
+                echo "No se pudo Agregar el Registro";
+            }
         }
+        else 
+            echo "Usuario Ya existe, debe elegir otro";	
         break;
     case 2:  //MODIFICAR      
 

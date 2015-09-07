@@ -99,6 +99,17 @@ class clsSolicitudesProcesadas {
         }
         return $dt;
     }
+    
+     function LlenarTodosEstablecimientos() {
+        
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $sqlText = "SELECT id, nombre FROM ctl_establecimiento ORDER BY nombre";
+            $dt = pg_query($sqlText) ;
+        }
+        return $dt;
+    }
+    
 
 //FUNCIÓN PARA LLENAR EL COMBO DE SERVICIOS
     function LlenarCmbServ($IdServ, $lugar) {
