@@ -397,7 +397,7 @@ $edad=$objdatos->calc_edad($IdHistorial);
                          <tr>
                             <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">Fecha Realización </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                               <input type="text" class="datepicker form-control height placeholder" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" style="width:100%"/>
+                               <input type="text" class="date form-control height placeholder" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" style="width:100%" onchange="validafecha(this.value,'fecha_realizacion' ,$('#fecha_tmuestra').val() ); valdatesolicita(this.value, 'fecha_realizacion');"/>
                             </td>
                              <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">Fecha Reporte </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 

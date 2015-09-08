@@ -13,6 +13,12 @@
 		$idsolicitudestudio=$_POST["idsolicitudestudio"];
 		$SolicitudLab->Impresiones($Bandera,$IdHistorialClinico, $idsolicitudestudio);
    break;
+   case "SolicitudUrgente":
+		$Bandera=$_POST["Bandera"];
+		$IdHistorialClinico=$_POST["IdHistorialClinico"];
+		$idsolicitudestudio=$_POST["idsolicitudestudio"];
+		$SolicitudLab->SolicitudUrgente($Bandera,$IdHistorialClinico, $idsolicitudestudio);
+   break;
 
    case "Combos":
 	    $IdExamen=$_POST["IdExamen"];
@@ -124,15 +130,17 @@
    break;
 
    case "ActualizarDatos":
-	$IdDetalle=$_POST["IdDetalle"];		 
- 	$Indicacion=$_POST["Indicacion"];				
- 	$Detalle=$_POST["Detalle"];				
-        if ($Detalle==1){
-            $cambioEstado=$SolicitudLab->ActualizarSolicitud($IdDetalle, $Detalle);
-            
-        }
-	$St=$SolicitudLab->ActualizarIndicacion($IdDetalle,$Indicacion);
-        echo $St. '-'.$IdDetalle.'-'.$Indicacion;
+	$IdDetalle=$_POST["IdDetalle"];	
+      $Indicacion=(empty($_POST['Indicacion'])) ? 'NULL' : "'" . pg_escape_string(trim($_POST['Indicacion'])) . "'";
+ 	//$Indicacion=$_POST["Indicacion"];				
+ 	$ftomamx=$_POST["ftomamx"];				
+ 	//$Detalle=$_POST["Detalle"];				
+//        if ($Detalle==1){
+//            $cambioEstado=$SolicitudLab->ActualizarSolicitud($IdDetalle, $ftomamx);
+//            
+//        }
+	$St=$SolicitudLab->ActualizarIndicacion($IdDetalle,$Indicacion, $ftomamx);
+        echo $St. '-'.$IdDetalle.'-'.$Indicacion.'-'.$ftomamx;
    break;
    
    case "EliminarSolicitud":

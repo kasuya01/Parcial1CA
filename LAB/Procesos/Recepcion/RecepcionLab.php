@@ -68,9 +68,9 @@ if ($nivel == 7) {
             dropdownAutoWidth: true
          });
          $("#cmbMedico").select2({
-                           allowClear: true,
-                           dropdownAutoWidth: true
-                        });
+            allowClear: true,
+            dropdownAutoWidth: true
+         });
     });
     
 </script>
@@ -304,11 +304,11 @@ accion=6;
             idext=0;
         }
        // alert(nec+' - '+idext)
-	if(!IsNumeric(document.getElementById('txtexp').value)){
-		alert('Por favor solo introduzca numeros en este campo') 
-		document.getElementById('txtexp').focus();
-		return false;
-	}	
+//	if(!IsNumeric(document.getElementById('txtexp').value)){
+//		alert('Por favor solo introduzca numeros en este campo') 
+//		document.getElementById('txtexp').focus();
+//		return false;
+//	}	
 	
 	if(document.getElementById('txtexp').value==""){
 		alert(".: Error: Debe Ingresar un Numero de Expediente");
@@ -682,7 +682,7 @@ function cambioestexterno(){
                         <tr>
                                <td>Expediente</td>
                                <td>
-                                       <input id="txtexp" class="form-control height" style="width:188px; height:20px" size="26"  >
+                                  <input id="txtexp" class="form-control height" style="width:188px; height:20px" size="26" maxlength="15" >
                                        <input type="hidden" id="IdCitaServApoyo">
                                        <input type="hidden" id="IdEstablecimientoExterno" value="<?php echo $lugar; ?>">
 

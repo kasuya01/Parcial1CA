@@ -520,7 +520,7 @@ indicacion, sds.idtipomuestra,tipomuestra, idorigenmuestra, origenmuestra,
 case when id_historial_clinico is null then id_dato_referencia
 else id_historial_clinico
 end as idhistorialclinico,  id_atencion, estado, sds.idsolicitudestudio, 
-codigo_examen,nombre_examen,urgente 
+codigo_examen,nombre_examen,urgente, to_char(f_tomamuestra, 'YYYY-MM-DD HH24:MI') as f_tomamuestra
 from sec_solicitudestudios sse 
 left join sec_historial_clinico shc 			on (sse.id_historial_clinico=shc.id)
 join sec_detallesolicitudestudios sds 		on (sds.idsolicitudestudio= sse.id)
@@ -684,7 +684,7 @@ where idsolicitudestudio=$Respuesta3";
      }
  }//fin impresionessol
 //Fn Pg
- function ActualizarSolicitud($iddetalle){
+ function ActualizarSolicitud($iddetalle, $ftomamx){
      $Conexion=new ConexionBD();
      $conectar=$Conexion->conectar();
      if ($conectar==true){
@@ -721,11 +721,14 @@ function BorrarExamen($IdDetalle){
         }//fin conectar
 }// Fin función Recuperar Muestra
 //Fn PG
-function ActualizarIndicacion($IdDetalle,$Indicacion){
+function ActualizarIndicacion($IdDetalle,$Indicacion, $ftomamx){
 		$Conexion=new ConexionBD();
 		$conectar=$Conexion->conectar();
 		$SQL="UPDATE sec_detallesolicitudestudios
-			  SET indicacion='$Indicacion'
+			  SET indicacion=$Indicacion,
+                             f_tomamuestra='$ftomamx',
+                             id_estado_rechazo=1,
+                             f_estado=current_date
 			  WHERE id=$IdDetalle;";
                 
                 $Ejecutar=  pg_query($SQL);
@@ -773,6 +776,28 @@ function Impresiones($Bandera,$IdHistorialClinico, $idsol){
 
 	$sql="update sec_solicitudestudios 
             set Impresiones='$Bandera' 
+            where id_atencion= (select id from ctl_atencion where codigo_busqueda= 'DCOLAB')
+            and id=$idsol;";
+        $Ejecutar=  pg_query($sql);
+        if (!$Ejecutar){
+            return false;
+        }
+        else{
+            return true;
+        }
+/*
+	$sql="update sec_solicitudestudios set Impresiones='".$Bandera."' where IdServicio='DCOLAB' and IdHistorialClinico='".$IdHistorialClinico."'";*/
+		
+			//$Ejecutar = mysql_query($sql) or die('La consulta fall&oacute;: ' . mysql_error());
+}
+
+//Fn PG
+function SolicitudUrgente($Bandera,$IdHistorialClinico, $idsol){
+		$Conexion=new ConexionBD();
+		$conectar=$Conexion->conectar();
+
+	$sql="update sec_solicitudestudios 
+            set idtiposolicitud='$Bandera' 
             where id_atencion= (select id from ctl_atencion where codigo_busqueda= 'DCOLAB')
             and id=$idsol;";
         $Ejecutar=  pg_query($sql);

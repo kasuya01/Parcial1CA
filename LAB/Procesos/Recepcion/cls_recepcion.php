@@ -432,12 +432,24 @@ WHERE e.numero ='$nec'";
     function tipoestservicio($idestablecimiento) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $sql = "select distinct(mame.id), (caa.nombre||'-'||cmo.nombre) as nombre
-                from ctl_area_atencion caa
-                join mnt_area_mod_estab mame on(caa.id=mame.id_area_atencion)
-                join mnt_modalidad_establecimiento mme on (mme.id=mame.id_modalidad_estab)
-                join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
-                where mame.id_establecimiento=$idestablecimiento";
+//            $sql = "select distinct(mame.id), (caa.nombre||'-'||cmo.nombre) as nombre
+//                from ctl_area_atencion caa
+//                join mnt_area_mod_estab mame on(caa.id=mame.id_area_atencion)
+//                join mnt_modalidad_establecimiento mme on (mme.id=mame.id_modalidad_estab)
+//                join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
+//                where mame.id_establecimiento=$idestablecimiento";
+           $sql="SELECT mnt_area_mod_estab.id as codigo,
+               CASE WHEN id_servicio_externo_estab IS NOT NULL 
+                       THEN mnt_servicio_externo.abreviatura ||'--'  || ctl_area_atencion.nombre
+                       ELSE       ctl_modalidad.nombre ||'--' || ctl_area_atencion.nombre 
+                       END as nombre
+               FROM mnt_area_mod_estab
+               INNER JOIN  ctl_area_atencion  on  ctl_area_atencion.id = mnt_area_mod_estab.id_area_atencion
+               INNER JOIN ctl_modalidad ON ctl_modalidad.id = mnt_area_mod_estab.id_modalidad_estab
+               LEFT JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab.id_servicio_externo_estab) 
+               LEFT JOIN mnt_servicio_externo ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo) 
+               WHERE mnt_area_mod_estab.id_establecimiento=$idestablecimiento
+               ORDER by mnt_area_mod_estab.id,ctl_modalidad.nombre,ctl_area_atencion.nombre";
             $result = pg_query($sql);
             if (!$result) {
                 return false;
