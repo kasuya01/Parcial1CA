@@ -27,6 +27,17 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
 <link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />-->
 
 <script language="JavaScript" >
+   
+jQuery(document).ready(function($){
+
+    $(".datepicker").datetimepicker({
+     onClose:  function() {
+              //   validafecha($(this).val(), $(this).attr('name'),$('#fecha_tmuestra').val() ); 
+                 valfechasolicita($(this).val(), $(this).attr('name'));
+                }
+   });
+   
+});
 function Guardar(){
    	GuardarResultadosPlantillaA();
 	//window.close();
@@ -241,7 +252,7 @@ if (pg_num_rows($cant)>0){
                                 <tr>
                                    <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">*Fecha Realización </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="datepicker form-control height placeholder" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" />
+                                <input type="text" class="date form-control height placeholder" name="fecha_realizacion" id="fecha_realizacion" size="60" onchange="valdatesolicita(this.value, 'fecha_realizacion');"  placeholder="aaaa-mm-dd" />
                             </td>
                             <td class="StormyWeatherFieldCaptionTD" width="196 px" style="white-space:nowrap;">*Fecha Reporte </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 

@@ -201,10 +201,10 @@ LlenarComboMetodologia(idexamen, area);
 
 jQuery(document).ready(function($){
 
-    $(".datepicker").datetimepicker({
+    $(".date").datepicker({
      onClose:  function() {
-                 validafecha($(this).val(), $(this).attr('name'),$('#fecha_tmuestra').val() ); 
-                 valfechasolicita($(this).val(), $(this).attr('name'));
+                 validafecha($(this).val(), $(this).attr('name'),$('#dateftomamx').val() ); 
+                 valdatesolicita($(this).val(), $(this).attr('name'));
                 }
    });
    
@@ -235,6 +235,11 @@ if (pg_num_rows($cant)>0){
    $buscarinfo=$objdatos->consfecha($solicitud, $iddetallesolicitud,  $lugar);
 $rowdeta=pg_fetch_array($buscarinfo);
 $fechatomamues= isset($rowdeta['f_tomamuestra']) ? $rowdeta['f_tomamuestra'] : null;
+
+//echo strtotime(date( 'Y-m-d', $fechatomamues ));
+$timeftomamx = strtotime($fechatomamues);
+$dateftomamx = date("Y-m-d", $timeftomamx);
+
 if ($referido!="t"){
     
 $condatos=$objdatos->condatos($IdHistorial, $lugar);
@@ -322,7 +327,9 @@ $edad=$objdatos->calc_edad($IdHistorial);
                                 <input type="hidden" name="txtnombrearea" id="txtnombrearea" disabled="disabled" size="60" />
                             </td>
                              <td class="StormyWeatherFieldCaptionTD">F. Toma Muestra</td>
-                             <td class="StormyWeatherDataTD" colspan="1"> <?php echo $fechatomamues ;?><input type="hidden" id="fecha_tmuestra" name="f_tmuestra" value="<?php echo $fechatomamues;?>"/>
+                             <td class="StormyWeatherDataTD" colspan="1"> <?php echo $fechatomamues ;?>
+                                <input type="hidden" id="fecha_tmuestra" name="f_tmuestra" value="<?php echo $fechatomamues;?>"/>
+                                <input type="hidden" id="dateftomamx" name="dateftomamx" value="<?php echo $dateftomamx;?>"/>
                             </td>
                         </tr>
                          <tr>
@@ -384,11 +391,12 @@ $edad=$objdatos->calc_edad($IdHistorial);
                          <tr>
                             <td class="StormyWeatherFieldCaptionTD" style="white-space: nowrap;">*Fecha Realización </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                               <input type="text" class="datepicker form-control height" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd hh:mi"  />
+<!--                               <input type="text" class="date form-control height" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd"  onchange="validafecha(this.value,'fecha_realizacion' ,<?php echo "'". $dateftomamx."'" ;?>); valdatesolicita(this.value, 'fecha_realizacion');"/>-->
+                               <input type="text" class="date form-control height" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" />
                             </td>
                              <td class="StormyWeatherFieldCaptionTD" width="196 px">*Fecha Reporte </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="datepicker form-control height" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d H:i"); ?>"   style="width:90%"/>                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d H:i"); ?>"  /> 
+                                <input type="text" class="date form-control height" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d"); ?>"   style="width:90%"/>                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d"); ?>"  /> 
                             </td>
                         </tr>
                         <tr>
@@ -527,7 +535,7 @@ echo '<option value="xyz">Seleccione una opción</option>';
                         </td>
                         <td align="right"><b>F. Emisión Resultado final:</b></td>
                         <td colspan="1" >
-                                 <input type="text" class="datepicker form-control height" name="d_resultfin" id="d_resultfin" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />	<input type="hidden" name="fechaact" id="fechaact" size="60"  value="<?php echo date("Y-m-d h:m"); ?>"  />	
+                                 <input type="text" class="date form-control height" name="d_resultfin" id="d_resultfin" size="60"  value="<?php echo date("Y-m-d"); ?>"  />	<input type="hidden" name="fechaact" id="fechaact" size="60"  value="<?php echo date("Y-m-d"); ?>"  />	
                         </td>
                 </tr>
                 <tr>
