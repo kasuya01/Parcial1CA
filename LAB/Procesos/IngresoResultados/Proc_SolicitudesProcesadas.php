@@ -42,39 +42,39 @@ if (isset($_SESSION['Correlativo'])) {
              <?php include_once $ROOT_PATH."/public/css.php";?>
             <script language="JavaScript" type="text/javascript">
                 function MostrarSolicitudes() {
-                    var error = [];
-                    var errorMessage = "";
+                    //var error = [];
+                    //var errorMessage = "";
                     
-                    if ((document.getElementById('cmbTipoEstab').value === "0") || (document.getElementById('cmbEstablecimiento').value === "0")) {
+                    //if ((document.getElementById('cmbTipoEstab').value === "") || (document.getElementById('cmbEstablecimiento').value === "")) {
                       
                         
-                        if(document.getElementById('cmbTipoEstab').value === "0")
-                            error.push('Tipo de Establecimiento');
+                      //  if(document.getElementById('cmbTipoEstab').value === "0")
+                        //    error.push('Tipo de Establecimiento');
                         
-                        if(document.getElementById('cmbEstablecimiento').value === "0")
-                            error.push('Establecimiento');
+                        //if(document.getElementById('cmbEstablecimiento').value === "0")
+                          //  error.push('Establecimiento');
                         
                         
-                        for (i = 0; i < error.length; i++) {
-                            errorMessage += error[i] + "\n";
-                        }
+                        //for (i = 0; i < error.length; i++) {
+                          //  errorMessage += error[i] + "\n";
+                       // }
                         
-                        if(error.length === 1)
-                            errorMessage = "Error...\n\nEl siguiente campo es requerido: \n\n" + errorMessage;
-                        else
-                            errorMessage = "Error...\n\nLos siguientes campos son requeridos: \n\n" + errorMessage;
+                        //if(error.length === 1)
+                          //  errorMessage = "Error...\n\nEl siguiente campo es requerido: \n\n" + errorMessage;
+                        //else
+                        //    errorMessage = "Error...\n\nLos siguientes campos son requeridos: \n\n" + errorMessage;
                         
-                        alert(errorMessage);
+                      //  alert(errorMessage);
 
-                    } else {
-                        jQuery('#divBusqueda').empty();
-                        jQuery('#divBusqueda').append('<center><img id="wait" src="<?php echo $base_url; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" style="color:#888888;font-weight: bold;">Buscando...</div></center>');
+                   // } else {
+                     //   jQuery('#divBusqueda').empty();
+                       // jQuery('#divBusqueda').append('<center><img id="wait" src="<?php //echo $base_url; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" style="color:#888888;font-weight: bold;">Buscando...</div></center>');
                         
-                        setTimeout(function() {
-                            jQuery('#divBusqueda').empty();
+                       // setTimeout(function() {
+                         // jQuery('#divBusqueda').empty();
                             SolicitudesPorArea();
-                        }, 500);
-                    }
+                       // }, 500);
+                  //  }
                 }
                 
                 function BuscarEstablecimiento(idtipoesta) {
@@ -97,7 +97,15 @@ if (isset($_SESSION['Correlativo'])) {
                 
              //   llenarComboTipoSolicitud();
             </script>
-
+            <?php include_once $ROOT_PATH."/public/css.php";?>
+            <?php include_once $ROOT_PATH."/public/js.php";?>
+            <script  type="text/javascript">
+                $(document).ready(function() {
+                $("#cmbEstablecimiento").select2({
+                 allowClear: true,
+            dropdownAutoWidth: true
+             });
+        });</script>
         </head>
         <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" onload="BuscarExamen(<?php echo $area; ?>)">
             <?php
@@ -125,7 +133,7 @@ if (isset($_SESSION['Correlativo'])) {
             ?><br>
 
 
-            <div  id="divInicial" >
+            <div  id="divInicial" style="height: 35%">
                 <form  method="get" action="ProcDatosResultadosExamen_PA.php" name="frmdatos_resultado" enctype="multipart/form-data">
                     <table  align="center" class="StormyWeatherFormTABLE" width="67%">
                         <tr>
@@ -139,7 +147,7 @@ if (isset($_SESSION['Correlativo'])) {
                             <td class="StormyWeatherFieldCaptionTD" width="20%">Tipo Establecimiento</td>
                             <td class="StormyWeatherDataTD" width="35%">
                                 <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:443px" onChange="BuscarEstablecimiento(this.value)" class="form-control height">
-                                    <option value="0" >Seleccione un Tipo de Establecimiento</option>
+                                    <option value="0" > Todos los Tipo de Establecimiento</option>
                                     <?php
                                     $db = new ConexionBD;
                                         if ($db->conectar() == true) {
@@ -158,14 +166,17 @@ if (isset($_SESSION['Correlativo'])) {
                             <td class="StormyWeatherFieldCaptionTD" width="20%">Establecimiento</td>
                             <td class="StormyWeatherDataTD"  width="35%">
                                 <div id="divEstablecimiento">
-                                    <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:500px" class="form-control height"> 
-                                        <option value="0" >Seleccione un Establecimiento</option>
+                                    <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:500px"  class="js-example-basic-single"> 
+                                    
+                                      <!--  <option value="0" >Todos los Establecimientos</option>-->
                                         <?php
+                                        //class="js-example-basic-single"
                                         echo '<option value="' . $lugar . '" selected="selected">' . htmlentities($nombrEstab) . '</option>';
                                         include_once("../../../Conexion/ConexionBD.php");
                                         $con = new ConexionBD;
                                         if ($con->conectar() == true) {
-                                            $consulta = "SELECT id, nombre FROM ctl_establecimiento where id_tipo_establecimiento = $tipo ORDER BY nombre";
+                                            $consulta = "SELECT id, nombre FROM ctl_establecimiento  ORDER BY nombre";
+                                           // where id_tipo_establecimiento = $tipo
                                             $resultado = @pg_query($consulta);
                                             //por cada registro encontrado en la tabla me genera un <option>
                                             while ($rows = @pg_fetch_array($resultado)) {
@@ -231,9 +242,9 @@ if (isset($_SESSION['Correlativo'])) {
                                     $objeareas = new clsLab_Areas;
                                     $consulta = $objeareas->consultaractivas($lugar);
                                     while ($row = pg_fetch_array($consulta)) {
-                                       if ($row['idarea']!=$area){
+                                      // if ($row['idarea']!=$area){
                                         echo "<option value='" . $row['idarea'] . "'>" . htmlentities($row['nombrearea']) . "</option>";
-                                       }
+                                       //}
                                     }
                                     ?>		  
                                 </select> 

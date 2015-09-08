@@ -146,7 +146,7 @@ $area    = $_SESSION['Idarea'];
         $idarea=$_GET['var4'];
         $cant=$objdatos->buscarAnterioresPUnica($solicitud,$iddetallesolicitud);
        // $total=pg_num_rows($cant);
-        echo $cant[0];
+       // echo $cant[0];
  /*if($cant>0){*/
        // echo $idarea."-".$_GET['var3'];
       //  $nombreEstab = $_GET['var17'];

@@ -32,13 +32,17 @@ switch ($opcion) {
         $query="";
         $query2="";
         $where_with="";
-        
+        //echo $IdEstab; 
                 
         if ($_POST['IdEstab']<>0) {
            if ($_POST['IdEstab']<>$lugar){
                $cond1 .= " t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " AND";
                $cond2 .= " t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " AND";
-           }
+            }
+            else {
+               $cond1 .= " t02.id_establecimiento_externo = " . $lugar . " AND";
+               $cond2 .= " t02.id_establecimiento_externo = " . $lugar . " AND";
+            }
           
         }
         
@@ -624,7 +628,7 @@ switch ($opcion) {
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             
-                            <td>&nbsp;</td>";
+                            <Seleccione untd>&nbsp;</td>";
        if ($cantmet!=0){
           $Imprimir.= " <td>&nbsp;</td>
                            <td>&nbsp;</td>
@@ -679,14 +683,23 @@ switch ($opcion) {
     case 6:// Llenar Combo Establecimiento
         $rslts = '';
         $Idtipoesta = $_POST['idtipoesta'];
+        
         // echo $Idtipoesta;
-        $dtIdEstab = $objdatos->LlenarCmbEstablecimiento($Idtipoesta);
-        $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:500px" class="form-control height">';
-        $rslts .='<option value="0"> Seleccione Establecimiento </option>';
-        while ($rows = pg_fetch_array($dtIdEstab)) {
-            $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
-        }
-
+        if ($Idtipoesta<>0){
+            $dtIdEstab = $objdatos->LlenarCmbEstablecimiento($Idtipoesta);
+            $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:500px" class="js-example-basic-single">';
+           // $rslts .='<option value="0"> Seleccione Establecimiento </option>';
+            while ($rows = pg_fetch_array($dtIdEstab)) {
+                $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
+            }
+        }else{
+             $dtIdEstab = $objdatos->LlenarTodosEstablecimientos();
+              $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:500px" class="js-example-basic-single">';
+            $rslts .='<option value="0"> Seleccione Establecimiento </option>';
+            while ($rows = pg_fetch_array($dtIdEstab)) {
+                $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
+            }
+        }    
         $rslts .= '</select>';
         echo $rslts;
         break;

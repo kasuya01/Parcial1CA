@@ -9,6 +9,18 @@ class clsLab_Empleados {
         
     }
 
+    function VerificaLogin($login,$lugar){
+         $con = new ConexionBD;
+        if ($con->conectar() == true) {
+          $query = "SELECT * FROM fos_user_user WHERE username='$login'";
+            $numreg = pg_num_rows(pg_query($query));
+            if (!$numreg)
+                return false;
+            else
+                return $numreg;
+        }
+        
+    }
     //INSERTA UN REGISTRO          
     function insertar($IdEmpleado, $lugar, $idarea, $nombrecompleto,$nombre, $cargo, $usuario, $corr, $IdEstabExt, $apellido) {
         $con = new ConexionBD;

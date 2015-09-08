@@ -195,6 +195,10 @@ function LlenarComboEstablecimiento(idtipoesta)
                 respuesta = ajax.responseText;
                 // alert (respuesta)
                 document.getElementById('divEstablecimiento').innerHTML = respuesta;
+                $("#cmbEstablecimiento").select2({
+                    allowClear: true,
+                    dropdownAutoWidth: true
+                });
             }
         }
     }
