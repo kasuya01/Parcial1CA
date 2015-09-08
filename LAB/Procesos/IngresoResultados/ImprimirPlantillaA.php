@@ -109,21 +109,23 @@ $fechares = date("Y-m-d", $timefresult);
             <tr>
                 <td colspan="1" class="Estilo5"><strong>Establecimiento:</strong></td>
 		<td colspan="2" class="Estilo6"><?php echo $row_estab2['nombre'];?></td>
-		<td colspan="1" class="Estilo5"><strong>Fecha Recepción:</strong></td>
-		<td colspan="2" class="Estilo6"><?php echo $row['fecharecepcion'];?></td>
+                <td colspan="1" class="Estilo5"><strong>Fecha Toma Muestra:</strong></td>
+		<td colspan="2" class="Estilo6"><?php echo $f_tomamuestra;?></td>
+		
 <!--                    <input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row['FechaNacimiento']?>>-->
             </tr>
             <tr>
             	<td colspan="1" class="Estilo5"><strong>Expediente:</strong></td>
 		<td colspan="2" class="Estilo7"><?php echo $txtnec;?></td>
-            	<td colspan="1" class="Estilo5"><strong>Fecha Resultado:</strong></td>
-		<td colspan="2" class="Estilo6"><?php echo $fechares;?></td>
+                <td colspan="1" class="Estilo5"><strong>Fecha Recepción:</strong></td>
+		<td colspan="2" class="Estilo6"><?php echo $row['fecharecepcion'];?></td>
+            	
             </tr>
             <tr>
 		<td colspan="1" class="Estilo5"><strong>Paciente:</strong></td>
 		<td colspan="2" class="Estilo6"><?php echo  $rowpa['nombre'];?></td>
-                <td colspan="1" class="Estilo5"><strong>Fecha Toma Muestra:</strong></td>
-		<td colspan="2" class="Estilo6"><?php echo $f_tomamuestra;?></td>
+                <td colspan="1" class="Estilo5"><strong>Fecha Resultado:</strong></td>
+		<td colspan="2" class="Estilo6"><?php echo $fechares;?></td>
             </tr>
             <tr>
 		<td colspan="1" class="Estilo5"><strong>Edad:</strong></td>

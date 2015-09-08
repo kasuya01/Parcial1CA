@@ -505,22 +505,23 @@ switch ($opcion) {
                     <tr>
                     	<td colspan='1' style='font:bold'><strong>Establecimiento:</strong></td>
                     	<td colspan='2' style='font:bold'>" . $establecimiento . "</td>
-                    	<td colspan='1'style='font:bold'><strong>Fecha Recepción:</strong></td>
-                    	<td colspan='2' style='font:bold'>" . $row['fecharecepcion'] . "<input name='suEdad' id='suEdad'  type='hidden'  value='" . $rowpa['fecha_nacimiento'] . "'/></td>
+                        <td colspan='1' style='font:bold'><strong>Fecha Toma Muestra:</strong></td>
+			<td colspan='2' style='font:bold'>" . $f_tomamuestra . "</td>    
                     </tr>
 
                     <tr>
                     	<td colspan='1' style='font:bold'><strong>NEC:</strong></td>
 			<td colspan='2' style='font:bold'>" . $txtnec . "</td>
-                            <td colspan='1' style='font:bold'><strong>Fecha Reporte:</strong></td>
-			<td colspan='2' style='font:bold'>" . $fecha_reporta . "
-                        <input type='hidden' id='fecha_reporte_' name='fecha_reporte_' value='" . $fecha_reporta . "'/>
-                        <input type='hidden' id='fecha_realiza_' name='fecha_realiza_' value='" . $fecha_realizacion . "'/></td></tr>
+                        <td colspan='1'style='font:bold'><strong>Fecha Recepción:</strong></td>
+                    	<td colspan='2' style='font:bold'>" . $row['fecharecepcion'] . "<input name='suEdad' id='suEdad'  type='hidden'  value='" . $rowpa['fecha_nacimiento'] . "'/></td>    
+                    </tr>
 		    <tr>
                         <td colspan='1' style='font:bold'><strong>Paciente:</strong></td>
 			<td colspan='2' style='font:bold'>" . $rowpa['nombre'] . "</td>
-                        <td colspan='1' style='font:bold'><strong>Fecha Toma Muestra:</strong></td>
-			<td colspan='2' style='font:bold'>" . $f_tomamuestra . "</td>
+                        <td colspan='1' style='font:bold'><strong>Fecha Reporte:</strong></td>
+			<td colspan='2' style='font:bold'>" . $fecha_reporta . "
+                        <input type='hidden' id='fecha_reporte_' name='fecha_reporte_' value='" . $fecha_reporta . "'/>
+                        <input type='hidden' id='fecha_realiza_' name='fecha_realiza_' value='" . $fecha_realizacion . "'/></td>
                     </tr>
                     <tr>
 			<td colspan='1' style='font:bold'><strong>Edad:</strong></td>
@@ -652,7 +653,7 @@ switch ($opcion) {
                         <tr>
                             <td colspan='7' align='center' >
                             <button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarResultados();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>
-                            <button style='display:none' type='button' id='Imprimir' name='Imprimir' align='center' class='btn btn-primary' title='Imprimir'  onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $resultado . "\",\"" . $fecha_reporta . "\", \"" . $lectura . "\",\"" . $interpretacion . "\",\"" . $observacion . "\",\"" . $responsable . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec . "\",\"" . $proce . "\",\"" . $origen . "\",\"" . $iddetalle . "\",\"" . $marca . "\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Imprimir</button>
+                            <button style='display:none' type='button' id='Imprimir' name='Imprimir' align='center' class='btn btn-primary' title='Imprimir'  onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $resultado . "\",\"" . $fecha_reporta . "\", \"" . $lectura . "\",\"" . $interpretacion . "\",\"" . $observacion . "\",\"" . $responsable . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec . "\",\"" . $proce . "\",\"" . $origen . "\",\"" . $iddetalle . "\",\"" . $marca . "\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
                             
                             <button type='button' id='btnSalir' align='center' class='btn btn-primary' title='Cerrar'  onclick='Cerrar();'><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br/><br><br/>
                             </td>
@@ -976,21 +977,22 @@ switch ($opcion) {
                          
                     	<td colspan='1' style='font:bold'><strong>Establecimiento:</strong></td>
                     	<td colspan='2' style='font:bold'>" . $establecimiento . "</td>
-                         
-                    	<td colspan='1'style='font:bold'><strong>Fecha Recepción:</strong></td>
-                    	<td colspan='2' style='font:bold'>" . $row['fecharecepcion'] . "<input name='suEdad' id='suEdad'  type='hidden'  value='" . $rowpa['fecha_nacimiento'] . "'/></td>
+                        <td colspan='1' style='font:bold'><strong>Fecha Toma Muestra:</strong></td>
+			<td colspan='2'>" . $f_tomamuestra . "</td>                    	
                     </tr>
 
                     <tr>
                     	<td colspan='1' style='font:bold'><strong>NEC:</strong></td>
 			<td colspan='2'>" . $txtnec . "<input type='hidden' id='idexpedientenec' name='idexpedientenec' value='".$txtnec."'/></td>
-                    	<td colspan='1' style='font:bold'><strong>Fecha Resultado:</strong></td>
-			<td colspan='2'>" . $d_resultfin . "</td></tr>
+                        <td colspan='1'style='font:bold'><strong>Fecha Recepción:</strong></td>
+                    	<td colspan='2' style='font:bold'>" . $row['fecharecepcion'] . "<input name='suEdad' id='suEdad'  type='hidden'  value='" . $rowpa['fecha_nacimiento'] . "'/></td>
+                    </tr>
 		    <tr>
                         <td colspan='1' style='font:bold'><strong>Paciente:</strong></td>
-			<td colspan='2' >" . $rowpa['nombre'] . "</td>
-                           <td colspan='1' style='font:bold'><strong>Fecha Toma Muestra:</strong></td>
-			<td colspan='2'>" . $f_tomamuestra . "</td></tr>
+                        <td colspan='2' >" . $rowpa['nombre'] . "</td>
+			<td colspan='1' style='font:bold'><strong>Fecha Resultado:</strong></td>
+			<td colspan='2'>" . $d_resultfin . "</td>
+</tr>
                     </tr>
                     <tr>
 			<td colspan='1' style='font:bold'><strong>Edad:</strong></td>
