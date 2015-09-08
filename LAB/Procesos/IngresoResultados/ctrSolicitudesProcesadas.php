@@ -628,7 +628,7 @@ switch ($opcion) {
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             
-                            <Seleccione untd>&nbsp;</td>";
+                            <td>&nbsp;</td>";
        if ($cantmet!=0){
           $Imprimir.= " <td>&nbsp;</td>
                            <td>&nbsp;</td>
@@ -949,6 +949,9 @@ switch ($opcion) {
         $responsable=$filares['idempleado'];
         $f_tomamuestra=$filares['f_tomamuestra'];
         
+        
+        $timefresult = strtotime($d_resultfin);
+         $d_resultfin = date("Y-m-d", $timefresult);
     //    $proce = $row['procedencia'];
 
        // $Cuentadias = $objdatos->CalculoDias($fechanac);

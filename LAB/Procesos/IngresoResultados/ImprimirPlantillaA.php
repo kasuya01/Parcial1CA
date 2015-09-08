@@ -87,6 +87,8 @@ $observacion=$filares['observacion'];
 $responsable=$filares['idempleado'];
 $nexamen=$filares['nombre_examen'];
 $f_tomamuestra=$filares['f_tomamuestra'];
+$timefresult = strtotime($fechares);
+$fechares = date("Y-m-d", $timefresult);
  //echo 'emp:'.$responsable;
 ?>
 <div  id="divImpresion" >

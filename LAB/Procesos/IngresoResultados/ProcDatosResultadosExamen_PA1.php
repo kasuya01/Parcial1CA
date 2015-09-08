@@ -30,10 +30,9 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
    
 jQuery(document).ready(function($){
 
-    $(".datepicker").datetimepicker({
+     $(".date").datepicker({
      onClose:  function() {
-              //   validafecha($(this).val(), $(this).attr('name'),$('#fecha_tmuestra').val() ); 
-                 valfechasolicita($(this).val(), $(this).attr('name'));
+                 valdatesolicita($(this).val(), $(this).attr('name'));
                 }
    });
    
@@ -252,11 +251,11 @@ if (pg_num_rows($cant)>0){
                                 <tr>
                                    <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">*Fecha Realización </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="date form-control height placeholder" name="fecha_realizacion" id="fecha_realizacion" size="60" onchange="valdatesolicita(this.value, 'fecha_realizacion');"  placeholder="aaaa-mm-dd" />
+                                <input type="text" class="date form-control height placeholder" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" />
                             </td>
                             <td class="StormyWeatherFieldCaptionTD" width="196 px" style="white-space:nowrap;">*Fecha Reporte </td>
                             <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="datepicker form-control height" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d H:i"); ?>"  />                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d H:i"); ?>"  /> 
+                                <input type="text" class="date form-control height" name="fecha_reporte" id="fecha_reporte" size="40"  value="<?php echo date("Y-m-d"); ?>"  />                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d"); ?>"  /> 
                             </td>
                             </tr>
                                 <tr>
