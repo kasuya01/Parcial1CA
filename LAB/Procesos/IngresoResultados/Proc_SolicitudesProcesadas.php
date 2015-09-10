@@ -133,11 +133,11 @@ if (isset($_SESSION['Correlativo'])) {
             ?><br>
 
 
-            <div  id="divInicial" style="height: 35%">
+            <div  id="divInicial" style="height: 40%">
                 <form  method="get" action="ProcDatosResultadosExamen_PA.php" name="frmdatos_resultado" enctype="multipart/form-data">
-                    <table  align="center" class="StormyWeatherFormTABLE" width="67%">
+                    <table  align="center" class="StormyWeatherFormTABLE" width="67%" pos>
                         <tr>
-                            <td colspan="4" align="center" class="CobaltFieldCaptionTD">
+                            <td colspan="4" align="center" class="CobaltFieldCaptionTD" >
                                 <h3>
                                     <strong>Ingreso de Resultados</strong>
                                 </h3>
@@ -322,7 +322,7 @@ if (isset($_SESSION['Correlativo'])) {
                     </table>
                 </form>
             </div>
-            <div id="divBusqueda">
+            <div id="divBusqueda" style="height:60%; position:absolute ; top:550px; left:30px  "  >
 
             </div>
             <div id="divResultado">

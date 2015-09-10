@@ -263,7 +263,7 @@ switch ($opcion) {
 //ECHO $query;
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);
         
-        echo "<div class='table-responsive' style='width: 90%;'>
+        echo "<div class='table-responsive' style='width: 100%;'>
             <table width='100%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
                 <thead><tr>
                     <th>Muestra </th>
