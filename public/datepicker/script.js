@@ -90,7 +90,7 @@ function classdate() {
 }
 function classdatepick(){
    $.timepicker.setDefaults( $.timepicker.regional['es']);
-      $('.datepicker').on('click', function() {
+      $('body').on('click', '.datepicker', function() {
 		$(this).datetimepicker({showOn:'focus', changeMonth: true,showWeek: true,
 			changeYear: true,  firstDay: 0, dateFormat: 'yy-mm-dd', yearRange: "-120:+0"}).focus();
                         

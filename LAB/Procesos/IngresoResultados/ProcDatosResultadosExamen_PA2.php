@@ -29,28 +29,6 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
 
    
 
-  
-<!--
-<script type="text/javascript" src="../../../public/datepicker/dp/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="../../../public/datepicker/dp/jquery-ui.min.js"></script>
-<script type="text/javascript" src="../../../public/datepicker/dp/jquery-ui-timepicker-addon.js"></script>
-<script type="text/javascript" src="../../../public/datepicker/dp/jquery-ui-timepicker-addon-i18n.min.js"></script>
-<script type="text/javascript" src="../../../public/datepicker/dp/jquery-ui-sliderAccess.js"></script>
-
-
-<script type="text/javascript" src="../../../public/js/jquery.js"></script>
-<script language = "javascript" type="application/x-javascript" src="../../../public/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.js">
-<script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-addon.js"></script>
-    <script type="text/javascript" src="../../../public/datepicker/i18n/jquery-ui-timepicker-es.js"></script>
- <script type="text/javascript" src="../../../public/datepicker/jquery-ui.js"></script>
-<script language = "javascript" type="application/x-javascript" src="../../../public/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.js">
-<script type="text/javascript" src="../../../public/datepicker/date.js"></script>
-<script type="text/javascript" src="../../../public/datepicker/jquery.ui.datepicker-es.js"></script>
-
-
-</script>
--->
-
 
 <script language="JavaScript" >
    
@@ -192,8 +170,6 @@ document.frmnuevo.txtnombrearea.value=nombrearea;
 document.frmnuevo.referido.value=referido;
 //document.frmnuevo.txtEstablecimiento.value=establecimiento;
 LlenarComboMetodologia(idexamen, area);
-
-
 //alert(area);
 }
 
@@ -229,6 +205,9 @@ $referido=$_GET['referido'];
 $idarea=$_GET['var4'];
 $iddetallesolicitud=$_GET['var5'];
 $idexamen_=$_GET['var3'];
+$idexpediente_=$_GET['var1'];
+$fecha_recepcion_=$_GET['fecha_recepcion'];
+$idestabext_=$_GET['var19'];
 $cant=$objdatos->buscarAnterioresPUnica($solicitud,$iddetallesolicitud, $idarea);
 
 if (pg_num_rows($cant)>0){
@@ -279,7 +258,9 @@ $edad=$objdatos->calc_edad($IdHistorial);
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">NEC</td>
-                            <td class="StormyWeatherDataTD"><?php echo $_GET['var1'];?>
+                            <td class="StormyWeatherDataTD"><?php echo $idexpediente_;?>
+                               <input type="hidden" id="idexpediente_" name="idexpediente_" value="<?php echo $idexpediente_;?>"/>
+                               
                             <td class="StormyWeatherFieldCaptionTD">No. Order</td>
                             <td class="StormyWeatherDataTD"><?php echo $_GET['var6'];?></td>
                                 <input type="hidden" name="txtnec" id="txtnec" disabled="disabled" />
@@ -297,6 +278,9 @@ $edad=$objdatos->calc_edad($IdHistorial);
                                 <input type="hidden" name="txtIdEstandar" id="txtIdEstandar" value="<?php echo $_GET['var16']?>" />
                                 <input type="hidden" name="txtIdHistorial" id="txtIdHistorial" value="<?php echo $_GET['var17']?>" />
                                 <input type="hidden" name="referido" id="referido" value="<?php echo $_GET['referido']?>" />
+                                <input type="hidden" name="solicitud_" id="solicitud_" value="<?php echo $solicitud;?>" />
+                                <input type="hidden" id="fecharecepcion" name="fecharecepcion" value="<?php echo $fecha_recepcion_;?>"/>
+                                <input type="hidden" id="idestabext_" name="idestabext_" value="<?php echo $idestabext_;?>"/>
                             </td>
                         </tr>
                         <tr>
@@ -570,6 +554,8 @@ echo '<option value="xyz">Seleccione una opción</option>';
 <!--                        <div id="responde2" style="display: block">-->
 <a href="#divresultado2">    <button type="button" align="center" class="btn btn-primary" onclick="enviarDatosResult(1,0);" ><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar</button></a>
    <button type="button" align="center" class="btn btn-primary" onclick="Cerrar();"><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cancelar</button> 
+   
+  
                   
                                 </center></p>
                         </div>
@@ -583,7 +569,7 @@ echo '<option value="xyz">Seleccione una opción</option>';
                                <a href="#valresult">      <button type="button" align="center" class="btn btn-primary" onclick="ValidarResultado();" title="Validar y Finalizar"><span class='glyphicon glyphicon-check'></span>&nbsp;Validar</button></a>
 	<!--<button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="enviarDatosResult(0,0);" title="Guardar sin validar">Guardar</button>-->
        
-		<button type="button" align="center" class="btn btn-primary" title="Regresar a Inicio"  onclick="Cerrar();"><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button>
+                           <button type="button" align="center" class="btn btn-primary" title="Regresar a Inicio"  onclick="Cerrar();"><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button>
 	
 	</center>  
                           </div>
@@ -631,6 +617,10 @@ else{
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-es.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui-sliderAccess.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/script.js"></script>    -->
-    
+   
+<!-- Button trigger modal -->
+ 
+   <?php// include_once 'ProcDatosResultadosModal_PA.php';?>
+  
 </body>
 </html>

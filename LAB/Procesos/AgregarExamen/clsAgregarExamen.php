@@ -146,7 +146,9 @@ function BuscarExamen($idsolicitudPa,$idexamen,$lugar){
 	if($con->conectar()==true){
 	   $query = "SELECT count(*) FROM sec_detallesolicitudestudios 
                      WHERE id_conf_examen_estab='$idexamen' AND idsolicitudestudio=$idsolicitudPa"
-                   . "and estadodetalle!=6 and id_estado_rechazo!=1;";
+                   . "and estadodetalle!=6 "
+                   . "and (id_estado_rechazo in (1)
+                   or id_estado_rechazo is null)";
 	   /*"SELECT count(*) FROM sec_detallesolicitudestudios 
 				 WHERE IdExamen='$idexamen' AND IdEstablecimiento=$lugar AND IdSolicitudEstudio=$idsolicitud";*/
 			 
@@ -187,7 +189,7 @@ function insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo
      $query = "INSERT  INTO sec_detallesolicitudestudios (idsolicitudestudio,idexamen,
 					id_conf_examen_estab,indicacion,estadodetalle,
 					idtipomuestra,idorigenmuestra,observacion,idestablecimiento,idestablecimientoexterno,
-					    idempleado,idusuarioreg,fechahorareg,'f_tomamuestra', id_estado_rechazo, f_estado)
+					    idempleado,idusuarioreg,fechahorareg,f_tomamuestra, id_estado_rechazo, f_estado)
 					    VALUES($idsolicitudPa,
                                                 $idexamen1,
 					      $IdExamen,
@@ -199,7 +201,7 @@ function insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo
 					      $lugar,
 					      $IdEstab,
 					      $Empleado,
-					      $usuario,NOW(),$fechatomamuestra,1, current_date)";
+					      $usuario,NOW(),'$fechatomamuestra',1, current_date)";
             
             $result = @pg_query($query);
     //echo $query;
@@ -527,7 +529,8 @@ UNION
    if($con->conectar()==true) 
    {
       $query="SELECT 
-sec_detallesolicitudestudios.f_tomamuestra as fechatomamuestra,lab_recepcionmuestra.fechahorareg as fecharecepcion
+to_char(sec_detallesolicitudestudios.f_tomamuestra, 'yyyy-mm-dd hh24:mi' )as fechatomamuestra,to_char(lab_recepcionmuestra.fechahorareg, 'yyyy-mm-dd hh24:mi' )as fecharecepcion
+FROM sec_detallesolicitudestudios 
 FROM sec_detallesolicitudestudios 
 INNER JOIN sec_solicitudestudios ON sec_detallesolicitudestudios.idsolicitudEstudio=sec_solicitudestudios.id
 INNER JOIN lab_conf_examen_estab ON sec_detallesolicitudestudios.idExamen=lab_conf_examen_estab.id
@@ -548,7 +551,7 @@ WHERE sec_solicitudestudios.id=$idsolicitud AND sec_solicitudestudios.id_estable
      $con = new ConexionBD;
      if($con->conectar()==true)
      {
-         $query="SELECT lab_recepcionmuestra.fechahorareg as fecharecepcion
+         $query="SELECT to_char(lab_recepcionmuestra.fechahorareg, 'yyyy-mm-dd hh24:mi') as fecharecepcion
                  FROM sec_solicitudestudios 
                  INNER JOIN lab_recepcionmuestra ON lab_recepcionmuestra.idsolicitudestudio=sec_solicitudestudios.id
                  WHERE sec_solicitudestudios.id=$idsolicitud AND sec_solicitudestudios.id_establecimiento=$lugar";

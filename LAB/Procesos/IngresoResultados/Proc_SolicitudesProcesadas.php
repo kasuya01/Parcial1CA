@@ -37,9 +37,10 @@ if (isset($_SESSION['Correlativo'])) {
             <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
             <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
             <title>Ingreso de Resultados</title>
-            <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script>
+            
             <?php include_once $ROOT_PATH."/public/js.php";?>
              <?php include_once $ROOT_PATH."/public/css.php";?>
+            <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script>
             <script language="JavaScript" type="text/javascript">
                 function MostrarSolicitudes() {
                     //var error = [];

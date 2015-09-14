@@ -227,6 +227,9 @@ $solicitud=$_GET['var6'];
 $referido=$_GET['referido'];
 $iddetallesolicitud=$_GET['var5'];
 $idarea=$_GET['var4'];
+$idexpediente_=$_GET['var1'];
+$fecha_recepcion_=$_GET['fecha_recepcion'];
+$idestabext_=$_GET['var19'];
 $cant=$objdatos->buscarAnterioresPUnica($solicitud,$iddetallesolicitud, $idarea);
  
 if (pg_num_rows($cant)>0){
@@ -304,6 +307,7 @@ $edad=$objdatos->calc_edad($IdHistorial);
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">NEC</td>
                             <td class="StormyWeatherDataTD"><?php echo $_GET['var1'];?>
+                                <input type="hidden" id="idexpediente_" name="idexpediente_" value="<?php echo $idexpediente_;?>"/>
                             <td class="StormyWeatherFieldCaptionTD">No. Orden</td>
                             <td class="StormyWeatherDataTD"><?php echo $_GET['var6'];?></td>
                                 <input type="hidden" name="txtnec" id="txtnec" disabled="disabled" />
@@ -321,6 +325,9 @@ $edad=$objdatos->calc_edad($IdHistorial);
                                 <input type="hidden" name="txtIdEstandar" id="txtIdEstandar" value="<?php echo $_GET['var16']?>" />
                                 <input type="hidden" name="txtIdHistorial" id="txtIdHistorial" value="<?php echo $_GET['var17']?>" />
                                 <input type="hidden" name="referido" id="referido" value="<?php echo $_GET['referido']?>" />
+                                 <input type="hidden" name="solicitud_" id="solicitud_" value="<?php echo $solicitud;?>" />
+                                <input type="hidden" id="fecharecepcion" name="fecharecepcion" value="<?php echo $fecha_recepcion_;?>"/>
+                                <input type="hidden" id="idestabext_" name="idestabext_" value="<?php echo $idestabext_;?>"/>
                             </td>
                         </tr>
                         <tr>
