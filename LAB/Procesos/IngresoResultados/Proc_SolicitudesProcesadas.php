@@ -15,13 +15,13 @@ if (isset($_SESSION['Correlativo'])) {
 
     $ConArea = $obj->DatosArea($area);
     $rowArea = pg_fetch_array($ConArea);
-    
+
     //valores de las consultas
     $tipo       = $row[0];
     $nombrEstab = $row[1];
     $nomtipo    = $row[2];
     $tipoarea   = $rowArea[1];
-    
+
     if ($tipoarea == 'S') {
         $area1 = 0;
         $nomarea = "Seleccione un Area";
@@ -45,39 +45,39 @@ if (isset($_SESSION['Correlativo'])) {
                 function MostrarSolicitudes() {
                     //var error = [];
                     //var errorMessage = "";
-                    
+
                     //if ((document.getElementById('cmbTipoEstab').value === "") || (document.getElementById('cmbEstablecimiento').value === "")) {
-                      
-                        
+
+
                       //  if(document.getElementById('cmbTipoEstab').value === "0")
                         //    error.push('Tipo de Establecimiento');
-                        
+
                         //if(document.getElementById('cmbEstablecimiento').value === "0")
                           //  error.push('Establecimiento');
-                        
-                        
+
+
                         //for (i = 0; i < error.length; i++) {
                           //  errorMessage += error[i] + "\n";
                        // }
-                        
+
                         //if(error.length === 1)
                           //  errorMessage = "Error...\n\nEl siguiente campo es requerido: \n\n" + errorMessage;
                         //else
                         //    errorMessage = "Error...\n\nLos siguientes campos son requeridos: \n\n" + errorMessage;
-                        
+
                       //  alert(errorMessage);
 
                    // } else {
                      //   jQuery('#divBusqueda').empty();
                        // jQuery('#divBusqueda').append('<center><img id="wait" src="<?php //echo $base_url; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" style="color:#888888;font-weight: bold;">Buscando...</div></center>');
-                        
+
                        // setTimeout(function() {
                          // jQuery('#divBusqueda').empty();
                             SolicitudesPorArea();
                        // }, 500);
                   //  }
                 }
-                
+
                 function BuscarEstablecimiento(idtipoesta) {
                     LlenarComboEstablecimiento(idtipoesta);
                 }
@@ -95,7 +95,7 @@ if (isset($_SESSION['Correlativo'])) {
                 function BuscarServicio(IdServicio) {
                     LlenarComboServicio(IdServicio);
                 }
-                
+
              //   llenarComboTipoSolicitud();
             </script>
             <?php include_once $ROOT_PATH."/public/css.php";?>
@@ -130,11 +130,11 @@ if (isset($_SESSION['Correlativo'])) {
             if ($nivel == 6) {
                 include_once ('../../../PaginaPrincipal/index_laboratorio62.php');}
             if ($nivel == 7) {
-                include_once ('../../../PaginaPrincipal/index_laboratorio72.php'); } 
+                include_once ('../../../PaginaPrincipal/index_laboratorio72.php'); }
             ?><br>
 
 
-            <div  id="divInicial" style="height: 35%">
+            <div  id="divInicial">
                 <form  method="get" action="ProcDatosResultadosExamen_PA.php" name="frmdatos_resultado" enctype="multipart/form-data">
                     <table  align="center" class="StormyWeatherFormTABLE" width="67%">
                         <tr>
@@ -144,7 +144,7 @@ if (isset($_SESSION['Correlativo'])) {
                                 </h3>
                             </td>
                         </tr>
-                        <tr>		
+                        <tr>
                             <td class="StormyWeatherFieldCaptionTD" width="20%">Tipo Establecimiento</td>
                             <td class="StormyWeatherDataTD" width="35%">
                                 <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:443px" onChange="BuscarEstablecimiento(this.value)" class="form-control height">
@@ -167,8 +167,8 @@ if (isset($_SESSION['Correlativo'])) {
                             <td class="StormyWeatherFieldCaptionTD" width="20%">Establecimiento</td>
                             <td class="StormyWeatherDataTD"  width="35%">
                                 <div id="divEstablecimiento">
-                                    <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:500px"  class="js-example-basic-single"> 
-                                    
+                                    <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:500px"  class="js-example-basic-single">
+
                                       <!--  <option value="0" >Todos los Establecimientos</option>-->
                                         <?php
                                         //class="js-example-basic-single"
@@ -184,12 +184,12 @@ if (isset($_SESSION['Correlativo'])) {
                                                 echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
                                             }
                                         }
-                                        ?>	
+                                        ?>
                                     </select>
                                 </div>
                             </td>
                         </tr>
-                        <tr>	
+                        <tr>
                             <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
                             <td class="StormyWeatherDataTD">
                                 <select name="CmbServicio" id="CmbServicio" style="width:443px" onChange="BuscarServicio(this.value)" class="form-control height">
@@ -198,15 +198,15 @@ if (isset($_SESSION['Correlativo'])) {
                                     $db = new ConexionBD;
                                     if ($db->conectar() == true) {
                                           $consulta = "SELECT mnt_area_mod_estab.id as codigo ,CASE WHEN id_servicio_externo_estab IS NOT NULL THEN mnt_servicio_externo.abreviatura ||'-->'  || ctl_area_atencion.nombre
-                                                       ELSE 
-                                                              ctl_modalidad.nombre ||'-->' || ctl_area_atencion.nombre 
+                                                       ELSE
+                                                              ctl_modalidad.nombre ||'-->' || ctl_area_atencion.nombre
                                                        END
                                                        FROM mnt_area_mod_estab
                                                        INNER JOIN  ctl_area_atencion  on  ctl_area_atencion.id = mnt_area_mod_estab.id_area_atencion
-                                                       --LEFT JOIN mnt_aten_area_mod_estab ON (ctl_area_atencion.id = mnt_aten_area_mod_estab.id_atencion) 
+                                                       --LEFT JOIN mnt_aten_area_mod_estab ON (ctl_area_atencion.id = mnt_aten_area_mod_estab.id_atencion)
                                                        INNER JOIN ctl_modalidad ON ctl_modalidad.id = mnt_area_mod_estab.id_modalidad_estab
-                                                       LEFT JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab.id_servicio_externo_estab) 
-                                                       LEFT JOIN mnt_servicio_externo ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo) 
+                                                       LEFT JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab.id_servicio_externo_estab)
+                                                       LEFT JOIN mnt_servicio_externo ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo)
                                                        ORDER by mnt_area_mod_estab.id,ctl_modalidad.nombre,ctl_area_atencion.nombre ";
                                        /* $consulta = "SELECT t01.id,
                                                                  t01.nombre
@@ -232,7 +232,7 @@ if (isset($_SESSION['Correlativo'])) {
                                 </div>
                             </td>
                         </tr>
-                        <tr>                	
+                        <tr>
                             <td class="StormyWeatherFieldCaptionTD">&Aacute;rea de Laboratorio*</td>
                             <td class="StormyWeatherDataTD">
                                 <select id="cmbArea" name="cmbArea"  size="1" onChange="BuscarExamen(this.value)" style="width:443px" class="form-control height">
@@ -247,17 +247,17 @@ if (isset($_SESSION['Correlativo'])) {
                                         echo "<option value='" . $row['idarea'] . "'>" . htmlentities($row['nombrearea']) . "</option>";
                                        //}
                                     }
-                                    ?>		  
-                                </select> 
+                                    ?>
+                                </select>
                             </td>
                             <td  class="StormyWeatherFieldCaptionTD">Examen</td>
                             <td  class="StormyWeatherDataTD" >
                                 <div id="divExamen">
-                                    <select name="cmbExamen" id="cmbExamen" class="form-control height" style="width:500px" > 
+                                    <select name="cmbExamen" id="cmbExamen" class="form-control height" style="width:500px" >
                                         <option value="0"> Seleccione Examen </option>
                                     </select>
                                 </div>
-                            </td> 
+                            </td>
 
                         </tr>
                         <tr>
@@ -276,35 +276,35 @@ if (isset($_SESSION['Correlativo'])) {
                             <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Consulta</td>
                             <td  class="StormyWeatherDataTD" width="20%" >
                                 <input type="text" size="28" name="txtfechasolicitud" id="txtfechasolicitud" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" style="width:500px"/>
-                               
+
                             </td>
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD" >Expediente</td>
                             <td  class="StormyWeatherDataTD"><input type="text" size="40" name="txtexpediente" id="txtexpediente"  class="form-control height" style="width:443px" placeholder="Ingrese Expediente"/></td>
-                            
+
                             <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Fecha Recepi&oacute;n</strong></td>
                             <td  class="StormyWeatherDataTD">
                                 <input type="text" size="28" name="txtfecharecep" id="txtfecharecep" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" style="width:500px"/>
                             </td>
                         </tr>
                         <tr>
-                            <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong>   </td> 
+                            <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong>   </td>
                             <td class="StormyWeatherDataTD" >
-                               <input maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre" class="form-control height" style="width:443px" placeholder="Ingrese Primer Nombre"/></td> 
+                               <input maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre" class="form-control height" style="width:443px" placeholder="Ingrese Primer Nombre"/></td>
                             <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Nombre</strong>   </td> <td class="StormyWeatherDataTD">
-                                <input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre" class="form-control height" style="width:500px" placeholder="Ingrese Segundo Nombre"/></td> 
+                                <input  maxlength="35" size="28" name="SegundoNombre" id="SegundoNombre" class="form-control height" style="width:500px" placeholder="Ingrese Segundo Nombre"/></td>
                         </tr>
                         <tr>
-                            <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Apellido</strong></td> 
+                            <td class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Apellido</strong></td>
                             <td class="StormyWeatherDataTD">
-                               <input  maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido" class="form-control height" style="width:443px" placeholder="Ingrese Primer Apellido"/></td> 
-                            <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Apellido</strong></td> 
+                               <input  maxlength="35" size="28" name="PrimerApellido" id="PrimerApellido" class="form-control height" style="width:443px" placeholder="Ingrese Primer Apellido"/></td>
+                            <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Segundo Apellido</strong></td>
                             <td class="StormyWeatherDataTD" >
                                 <input maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" class="form-control height" style="width:500px" placeholder="Ingrese Segundo Apellido"/></td>
                         </tr>
                         <!--<tr>
-                            <td class="StormyWeatherDataTD" colspan="4" align="right">		
+                            <td class="StormyWeatherDataTD" colspan="4" align="right">
                                 <input type="button" name="Submit" value="Buscar Solicitudes" onClick="MostrarSolicitudes()">
                                 <input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('Proc_SolicitudesProcesadas.php')">
 
@@ -312,28 +312,24 @@ if (isset($_SESSION['Correlativo'])) {
                         </tr>-->
                         <tr>
                             <td class="StormyWeatherDataTD" colspan="4" align="right">
-                        
+
                                                 <button type='button' align="center" class='btn btn-primary' id='buscarsolicitud' onclick='MostrarSolicitudes(); '><span class='glyphicon glyphicon-search'></span> Buscar Solicitudes</button>
                                                 <button type='button' align="center" class='btn btn-primary' id='nuevabusqueda' onclick="window.location.replace('Proc_SolicitudesProcesadas.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
-                                                                                                                                                                                    
+
                             </td>
                         </tr>
-                        
-                        
+
+
                     </table>
                 </form>
             </div>
             <div id="divBusqueda">
-
             </div>
             <div id="divResultado">
-
             </div>
             <div id="divCambioEstado">
-
             </div>
             <div id="divImprimir">
-
             </div>
         </body>
     </html>
