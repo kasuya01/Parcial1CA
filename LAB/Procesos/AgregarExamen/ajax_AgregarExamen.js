@@ -356,6 +356,32 @@ function LlenarComboOrigen1(IdTipo){
 
 }
 
+function LlenarComboEstablecimiento(idtipoesta)
+{
+  	ajax=objetoAjax();
+  	opcion=6;
+  	ajax.open("POST", "ctrAgregarExamen.php",true);
+  	//muy importante este encabezado ya que hacemos uso de un formulario
+  	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+  	//enviando los valores
+	ajax.send("opcion="+opcion+"&idtipoesta="+idtipoesta);	
+	ajax.onreadystatechange=function() 
+	{
+		
+		if (ajax.readyState == 4){//4 The request is complete
+			if (ajax.status == 200){//200 means no error.
+				respuesta = ajax.responseText;	
+				// alert (respuesta)
+				document.getElementById('divEstablecimiento').innerHTML = respuesta;
+                                 $("#cmbEstablecimiento").select2({
+                                 allowClear: true,
+                                 dropdownAutoWidth: true
+                });
+			}	  	
+		}
+   	}
+}
+
 function Buscarfechamuestra(IdTipo)
 {
   	ajax=objetoAjax();

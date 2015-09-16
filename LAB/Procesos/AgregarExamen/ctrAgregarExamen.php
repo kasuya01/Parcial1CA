@@ -46,78 +46,92 @@ switch ($opcion)
         
         
       //  echo $IdEstab." - ".$lugar;
-        if (!empty($_POST['IdEstab'])) {
+       /* if (!empty($_POST['IdEstab'])) {
            if ($_POST['IdEstab']<>$lugar){
                $cond1 .=$cond0. "  t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " ";
                $cond2 .=$cond0. "  t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " ";
            }
           
-        }
+        }*/
+          if ($_POST['IdEstab']<>0) {
+                    if ($_POST['IdEstab']<>$lugar){
+                        $cond1 .= "t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " AND";
+                        $cond2 .= "t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " AND";
+                    }
+                    else{
+                         $cond1 .= "t02.id_establecimiento_externo = " . $lugar . " AND";
+                         $cond2 .= "t02.id_establecimiento_externo = " . $lugar . " AND";
+                    }
+                   
+                 }
         
-        if (!empty($_POST['IdSubServ'])) {
-            $cond1 .= $cond0." t10.id = " . $_POST['IdSubServ'] . "    ";
-            $cond2 .= $cond0." t10.id = " . $_POST['IdSubServ'] . "   ";
-        }
-
-        if (!empty($_POST['IdServ'])) {
-            $cond1 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . "     ";
-            $cond2 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . "     ";
-            $where_with = "id_area_atencion = $IdServ AND ";
-        }
-
+      
         
+         if (!empty($_POST['IdServ'])) {
+                     $cond1 .= " t13.id  = " . $_POST['IdServ'] . " AND";
+                     $cond2 .= " t13.id  = " . $_POST['IdServ'] . " AND";
+                     $where_with = "id_area_atencion = $IdServ AND ";
+                 }
 
+                 if (!empty($_POST['IdSubServ'])) {
+                     $cond1 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
+                     $cond2 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
+                 }
+        
+        
+        
+        
         if (!empty($_POST['idarea'])) {
-            $cond1 .= " and t08.id = " . $_POST['idarea'] . " ";
-            $cond2 .= " and t08.id = " . $_POST['idarea'] . " ";
+            $cond1 .= "t08.id = " . $_POST['idarea'] . "AND";
+            $cond2 .= "t08.id = " . $_POST['idarea'] . "AND";
         }
 
         if (!empty($_POST['idexpediente'])) {
           $idexpediente="'".$idexpediente."'";
             
-            $cond1 .= "and t06.numero = '".$_POST['idexpediente'] ."'    ";
-            $cond2 .= "and t06.numero = '".$_POST['idexpediente'] ."'   ";
+            $cond1 .= "t06.numero = '".$_POST['idexpediente'] ."' AND";
+            $cond2 .= "t06.numero = '".$_POST['idexpediente'] ."' AND";
         }
 
         if (!empty($_POST['idexamen'])) {
-             $cond1 .= " and t04.id = " . $_POST['idexamen'] . " ";
-             $cond2 .= " and t04.id = " . $_POST['idexamen'] . " ";
+             $cond1 .= "t04.id = " . $_POST['idexamen'] . "AND";
+             $cond2 .= "t04.id = " . $_POST['idexamen'] . "AND";
         }
 
         if (!empty($_POST['fechasolicitud'])) {
-             $cond1 .= " and t02.fecha_solicitud = '" . $_POST['fechasolicitud'] . "' ";
-             $cond2 .= " and  t02.fecha_solicitud = '" . $_POST['fechasolicitud'] . "' ";
+             $cond1 .= "t02.fecha_solicitud = '".$_POST['fechasolicitud']."' AND ";
+             $cond2 .= "t02.fecha_solicitud = '".$_POST['fechasolicitud']."' AND ";
         }
 
         if (!empty($_POST['fechaconsulta'])) {
-             $cond1 .= " and t03.fecharecepcion = '".$_POST['fechaconsulta']."'       ";
-             $cond2 .= " and t03.fecharecepcion = '".$_POST['fechaconsulta']."'       ";
+             $cond1 .= "t03.fecharecepcion = '".$_POST['fechaconsulta']."' AND";
+             $cond2 .= "t03.fecharecepcion = '".$_POST['fechaconsulta']."' AND";
         }
 
         if (!empty($_POST['primernombre'])) {
           
-            $cond1 .= " and t07.primer_nombre  ILIKE  '".$_POST['primernombre']."%'      ";
-            $cond2 .= " and  t07.primer_nombre ILIKE  '".$_POST['primernombre']."%'      ";
+            $cond1 .= " t07.primer_nombre ILIKE  '%".$_POST['primernombre']."%' AND";
+            $cond2 .= " t07.primer_nombre ILIKE  '%".$_POST['primernombre']."%' AND";
         }
 
         if (!empty($_POST['segundonombre'])) {
-             $cond1 .= " and t07.segundo_nombre  ILIKE '". $_POST['segundonombre'] ."%'       ";
-             $cond2 .= " and t07.segundo_nombre  ILIKE '". $_POST['segundonombre'] ."%'       ";
+             $cond1 .= " t07.segundo_nombre  ILIKE '%". $_POST['segundonombre'] ."%' AND";
+             $cond2 .= " t07.segundo_nombre  ILIKE '%". $_POST['segundonombre'] ."%' AND";
         }
 
         if (!empty($_POST['primerapellido'])) {
-            $cond1 .= " and  t07.primer_apellido ILIKE '".$_POST['primerapellido']."%'         ";
-            $cond2 .="  and  t07.primer_apellido ILIKE '".$_POST['primerapellido']."%'         ";
+            $cond1 .= " t07.primer_apellido ILIKE '%".$_POST['primerapellido']."%' AND";
+            $cond2 .= " t07.primer_apellido ILIKE '%".$_POST['primerapellido']."%' AND";
         }
 
         if (!empty($_POST['segundoapellido'])) {
-            $cond1 .=" and t07.segundo_apellido ILIKE '".$_POST['segundoapellido']."%'       ";
-            $cond2 .=" and t07.segundo_apellido ILIKE '".$_POST['segundoapellido']."%'       ";
+            $cond1 .=" t07.segundo_apellido ILIKE '%".$_POST['segundoapellido']."%' AND";
+            $cond2 .=" t07.segundo_apellido ILIKE '%".$_POST['segundoapellido']."%' AND";
         }
 
         if (!empty($_POST['TipoSolic'])) {
-            $cond1 .= " and t17.idtiposolicitud = '".$_POST['TipoSolic']."'  ";
-            $cond2 .= " and t17.idtiposolicitud = '".$_POST['TipoSolic']."'  ";
+            $cond1 .= "t17.idtiposolicitud = '".$_POST['TipoSolic']."' AND";
+            $cond2 .= "t17.idtiposolicitud = '".$_POST['TipoSolic']."' AND";
         }
 
         if ((empty($_POST['idexpediente'])) AND ( empty($_POST['idarea'])) AND ( empty($_POST['fecha']))
@@ -131,12 +145,17 @@ switch ($opcion)
 
             $cond1 = substr($cond1, 0, strlen($query) - 3);
             $cond2 = substr($cond2, 0, strlen($query) - 3);
-            
+            $var1 = $lugar." AND ".$cond1;
+            $var2 = $lugar." AND ".$cond2;
           //  echo $query1;
            // $query_search = 
-           //echo $cond1;
+        //echo $cond1;
             //echo $cond2;
-        }     
+        }
+        else{
+            $var1 = $lugar;
+            $var2 = $lugar;
+        }
        // echo $cond2;
           $query= "WITH tbl_servicio AS (
                     SELECT t02.id,
@@ -190,7 +209,7 @@ switch ($opcion)
             INNER JOIN lab_tiposolicitud t17                    ON (t17.id = t02.idtiposolicitud) 
             INNER JOIN tbl_servicio t20                         ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-            AND t02.id_establecimiento = $lugar $cond1
+            AND t02.id_establecimiento = $var1
             
         
            UNION
@@ -228,7 +247,7 @@ switch ($opcion)
             INNER JOIN cit_citas_serviciodeapoyo t15                ON (t15.id_solicitudestudios=t02.id) 
             INNER JOIN lab_tiposolicitud t17 			    ON (t17.id = t02.idtiposolicitud) 
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-            AND t02.id_establecimiento =$lugar $cond2 ) ordenar
+            AND t02.id_establecimiento =$var2 ) ordenar
                 ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC"; 
           
     
@@ -240,17 +259,11 @@ switch ($opcion)
 				
 	$consulta=$objdatos->consultarpag($query,$RegistrosAEmpezar,$RegistrosAMostrar);
 	$NroRegistros= $objdatos->NumeroDeRegistros($query);
-				
-    
-    
-	    
-		
-		
-		$NroRegistros= $objdatos->NumeroDeRegistros($query);	
-                
-                    if ($NroRegistros=="")
-            {
-                     $NroRegistros=0;
+	$NroRegistros= $objdatos->NumeroDeRegistros($query);	
+               
+        if ($NroRegistros=="")
+        {
+            $NroRegistros=0;
             
              echo "<table width='35%' border='0'  align='center'>
                     <center>
@@ -261,7 +274,7 @@ switch ($opcion)
                     </center>
                 </table> "; 
             
-            }else {
+        }else {
                        echo "<table width='35%' border='0'  align='center'>
                     <center>
                         <tr>
@@ -532,7 +545,7 @@ switch ($opcion)
 			$pos=0;
 	while($fila = pg_fetch_array($consultadetalle)){
                     $imprimir .= "<tr>
-                                    <td width='10%'>".$fila['codigo_examen']."</td>
+                                    <td width='10%'>".$fila['idestandar']."</td>
                                     <td width='39%'>".htmlentities($fila['nombre_examen'])."</td>	
                                     <td width='7%'>".$fila['codigo_area']."</td>";	
             	if (!empty($fila['indicacion'])){     				
@@ -621,14 +634,23 @@ switch ($opcion)
 	case 6:// Llenar Combo Establecimiento
 		$rslts='';
 		$Idtipoesta=$_POST['idtipoesta'];
-              // echo $Idtipoesta;
-            	$dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
-              	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" class="form-control height" style="width:375px">';
-		$rslts .='<option value="0"> Seleccione Establecimiento </option>';
-               while ($rows =pg_fetch_array( $dtIdEstab)){
-		  $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
-	       }
-				
+                
+                if ($Idtipoesta<>0){
+                    $dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
+                    $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:500px" class="js-example-basic-single">';
+                    //$rslts .='<option value="0"> Seleccione Establecimiento </option>';
+                    while ($rows =pg_fetch_array( $dtIdEstab)){
+                        $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
+                    }
+		}else{
+                    $dtIdEstab = $objdatos->LlenarTodosEstablecimientos();
+                    $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:500px" class="js-example-basic-single">';
+                    $rslts .='<option value="0"> Seleccione Establecimiento </option>';
+                    while ($rows = pg_fetch_array($dtIdEstab)) {
+                        $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
+                    }
+                }    	
+          			
 		$rslts .= '</select>';
 		echo $rslts;
    	break;

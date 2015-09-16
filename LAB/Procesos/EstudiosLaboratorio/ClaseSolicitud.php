@@ -809,6 +809,20 @@ function Impresiones($Bandera,$IdHistorialClinico, $idsol){
 	return $vareturn[0];
  }
  
+ function VerificarExisteSolicitud($IdSubServicio,$IdEmpleado,$FechaConsulta){
+     $con = new ConexionBD;
+        if ($con->conectar()==true){
+            $query="select * from sec_historial_clinico where idsubservicio= $IdSubServicio AND id_empleado= $IdEmpleado AND fechaconsulta='$FechaConsulta'";
+            $db= pg_num_rows($query);
+	    $result = pg_fetch_array($db);
+        }
+         if (!$result)
+            return false;
+         else
+            return $result;
+     
+ }
+         
 function CrearNuevaSolicitudUrgente($IdHistorialClinico,$IdEstablecimiento,$IdDetalle){
     $Conexion=new ConexionBD();
     $conectar=$Conexion->conectar();

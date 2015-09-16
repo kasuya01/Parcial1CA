@@ -413,6 +413,28 @@ function NoEncontrado(nec)
 	  sendReq.send(param);    
 }
 
+
+/*function VerificarSolicitud(){
+    
+    accion=13:
+    sendReq.onreadystatechange = procesaEsp;
+    sendReq.open("POST", 'ajax_recepcion.php', true);
+    sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');  
+    IdEstablecimiento = document.getElementById("cmbEstablecimiento").value;// establecimiento que solicita el estudio
+    lugar = document.getElementById("lugar").value;
+    IdSubServicio = document.getElementById("cmbSubServ").value;
+    IdEmpleado = document.getElementById("cmbMedico").value;
+    FechaConsulta = document.getElementById("txtconsulta").value;
+    var param ='ExistenciaSolicitud';
+    param +='&IdEstablecimiento='+IdEstablecimiento;
+    param +='&lugar='+lugar;
+    param +='&IdSubServicio='+IdSubServicio; 
+    param +='&IdEmpleado='+IdSubServicioIdEmpleado;  
+    param +='&FechaConsulta='+FechaConsulta;  
+    sendReq.send(param);   
+}*/
+
+
 function limpiar(){
    document.getElementById("frmdatosexpediente").reset();
    document.getElementById("frmverificardatospac").reset();
@@ -570,7 +592,7 @@ function procesaEsp(){
 //pegar el correlativo del paciente externo para la busqueda y prescribir los examenes
 function pegarExp(IdExpediente,IdCitaServApoyo,IdEstablecimientoExterno,IdNumeroExpRef){
     //alert(IdExpediente+'-'+IdCitaServApoyo+' -'+IdEstablecimientoExterno+' '+IdNumeroExpRef)
-//    document.getElementById("txtexp").value = IdExpediente;
+    //document.getElementById("txtexp").value = IdExpediente;
     document.getElementById("IdCitaServApoyo").value = IdCitaServApoyo;
     document.getElementById("IdEstablecimientoExterno").value = IdEstablecimientoExterno;
     document.getElementById("txtexp").value = IdNumeroExpRef;
@@ -600,6 +622,8 @@ function Examenes(){
        alert (mensaje)
         return false;
     }
+   
+    
     /*
     var IdHistorialClinico = document.getElementById("IdHistorialClinico").value;
     var IdSubEspecialidad = document.getElementById("IdSubEspecialidad").value;

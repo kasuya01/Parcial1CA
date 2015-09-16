@@ -51,6 +51,16 @@ $con = new ConexionBD;
 	return $dt;
 }
 
+function LlenarTodosEstablecimientos() {
+        
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $sqlText = "SELECT id, nombre FROM ctl_establecimiento ORDER BY nombre";
+            $dt = pg_query($sqlText) ;
+        }
+        return $dt;
+    }
+
 function LlenarCmbServ($IdServ,$lugar){
 $con = new ConexionBD;
 	if($con->conectar()==true){
@@ -411,7 +421,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
 			t01.indicacion as indicacion,
-                        t01.idempleado as idempleado,t03.fechahorareg as fechatomamuestra,t06.numero as expediente
+                        t01.idempleado as idempleado,t03.fechahorareg as fechatomamuestra,t06.numero as expediente,t18.idestandar
                    
 		   
             FROM sec_detallesolicitudestudios t01 
@@ -485,7 +495,7 @@ UNION
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
 			t01.indicacion AS indicacion,
-                        t01.idempleado  AS idempleado,t03.fechahorareg AS fechatomamuestra,t06.numero as expediente
+                        t01.idempleado  AS idempleado,t03.fechahorareg AS fechatomamuestra,t06.numero as expediente,t18.idestandar
                         
             FROM sec_detallesolicitudestudios t01 
             INNER JOIN sec_solicitudestudios t02 		ON (t02.id = t01.idsolicitudestudio) 

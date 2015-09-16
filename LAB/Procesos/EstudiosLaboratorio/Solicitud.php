@@ -1,6 +1,7 @@
 <?php
 include_once("../../../Conexion/ConexionBD.php");
 include_once("ClaseSolicitud.php"); //Agregamos el Archivo con las clases y funciones a utilizar
+
 @session_start();
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
 // Creamos un objeto Conexion, Paciente, Laboratorio
@@ -20,6 +21,7 @@ $FechaConsulta = $_GET["FechaConsulta"];
 $IdCitaServApoyo = $_GET["IdCitaServApoyo"];
 $sexo = $_GET["Sexo"];
 $idexpediente = $_GET["idexpediente"];
+
 //echo '<br\>.Idexpediente: '.$idexpediente.' IdNumeroExp:'.$IdNumeroExp. '  numhistorial: '.$_GET["IdHistorialClinico"].'  issethist: '.isset( $_GET["IdHistorialClinico"]);
 //IdHistorialClinico = $_GET["IdHistorialClinico"];
 $IdHistorialClinico = isset($_GET['IdHistorialClinico']) ? $_GET['IdHistorialClinico'] : null ;
@@ -33,6 +35,8 @@ if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
     $ippc = $_SERVER['HTTP_X_FORWARDED_FOR'];
 else
     $ippc = $_SERVER['REMOTE_ADDR'];
+
+
 /* * *************************************************************** */
 $Historial = new CrearHistorialClinico;
    if (!isset( $_GET["IdHistorialClinico"])|| $IdHistorialClinico==''){

@@ -44,6 +44,17 @@ function LlenarCmbEstablecimiento($Idtipoesta){
 	return $dt;
 }
 
+ function LlenarTodosEstablecimientos() {
+        
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $sqlText = "SELECT id, nombre FROM ctl_establecimiento ORDER BY nombre";
+            $dt = pg_query($sqlText) ;
+        }
+        return $dt;
+    }
+    
+
 function LlenarCmbServ($IdServ,$lugar){
 $con = new ConexionBD;
 	if($con->conectar()==true){

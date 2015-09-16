@@ -243,11 +243,11 @@ function RecogeValor() {
                     <tr>
                         <td class="StormyWeatherFieldCaptionTD">Fecha y hora inicio Proceso</td>
                         <td class="StormyWeatherDataTD">
-                            <input type="text" class="datepicker" id="txtresultrealiza"  name="txtresultrealiza" size="15">										
+                            <input type="text" class="date" id="txtresultrealiza"  name="txtresultrealiza" size="15">										
                         </td>
                         <td class="StormyWeatherFieldCaptionTD">Fecha Resultado</td>
                         <td class="StormyWeatherDataTD" colspan="2">
-                            <input type="text" class="datepicker" name="txtresultfin" id="txtresultfin" size="15"  value="<?php echo date("Y-m-d h:m"); ?>"/>	
+                            <input type="text" class="date" name="txtresultfin" id="txtresultfin" size="15"  value="<?php echo date("Y-m-d"); ?>"/>	
                         </td>
                     </tr>
                     <tr>
