@@ -21,6 +21,16 @@ $nomtipo=$row[2];
 <title>Eliminar Resultado</title>
 
 <script language="JavaScript" type="text/javascript" src="ajax_EliminarResultado.js"></script>
+  <?php include_once $ROOT_PATH."/public/css.php";?>
+  <?php include_once $ROOT_PATH."/public/js.php";?>
+    <script  type="text/javascript">
+        $(document).ready(function() {
+            $("#cmbEstablecimiento").select2({
+                allowClear: true,
+                dropdownAutoWidth: true
+            });
+        });
+    </script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 <?php include_once $ROOT_PATH.'/public/css.php';?>
@@ -28,12 +38,12 @@ $nomtipo=$row[2];
 <script language="JavaScript" type="text/javascript">
 function MostrarBusqueda()
 {
-    if ((document.getElementById('txtexpediente').value == "") && (document.getElementById('PrimerNombre').value =="") && (document.getElementById('SegundoNombre').value == "") && (document.getElementById('PrimerApellido').value =="") && (document.getElementById('SegundoApellido').value == "") && (document.getElementById('cmbEstablecimiento').value ==0) && (document.getElementById('CmbServicio').value == 0) && (document.getElementById('txtfechaRecep').value == "")&&(document.getElementById('cmbSubServ').value ==0)) {
+  /*  if ((document.getElementById('txtexpediente').value == "") && (document.getElementById('PrimerNombre').value =="") && (document.getElementById('SegundoNombre').value == "") && (document.getElementById('PrimerApellido').value =="") && (document.getElementById('SegundoApellido').value == "") && (document.getElementById('cmbEstablecimiento').value ==0) && (document.getElementById('CmbServicio').value == 0) && (document.getElementById('txtfechaRecep').value == "")&&(document.getElementById('cmbSubServ').value ==0)) {
 	   alert(escape("Ingrese un parametro de busqueda"));
 	  // document.getElementById('txtexpediente').focus();
 	   }
-    else{	 
-	   BuscarDatos();}
+    else{	*/ 
+	   BuscarDatos();//}
 }
 
 function ImprimirExamenes()
@@ -100,8 +110,9 @@ if ($nivel == 7) {
                             <td colspan="5" align="center" class="CobaltFieldCaptionTD"><h3><strong>Eliminar Resultados</strong></h3></td>
                         </tr>
                         <tr>		
-                                  <td class="StormyWeatherFieldCaptionTD" width="20%">Tipo Establecimiento</td>
-                                    <td class="StormyWeatherDataTD"  width="35%">
+                            <td class="StormyWeatherFieldCaptionTD" width="20%">Tipo Establecimiento</td>
+                            
+                            <td class="StormyWeatherDataTD"  width="35%">
                                             <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:443px" onChange="BuscarEstablecimiento(this.value)" class="form-control height">
                                                     <option value="0" >Seleccione un Tipo de Establecimiento</option>
                                                     <?php
@@ -114,21 +125,22 @@ if ($nivel == 7) {
                                                             while ($rows = pg_fetch_array($resultado)){
                                                                     echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
                                                             }
-                                                            echo '<option value="'. $tipo .'" selected="selected">' .htmlentities($nomtipo). '</option>';
+                                                           // echo '<option value="'. $tipo .'" selected="selected">' .htmlentities($nomtipo). '</option>';
                                                     }
                                                     ?>
                                             </select>
                                     </td>
                                     <td class="StormyWeatherFieldCaptionTD"  width="20%">Establecimiento</td>
                                     <td class="StormyWeatherDataTD" width="35%">
-                                            <div id="divEstablecimiento">
-                                                    <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:500px" class="form-control height"> 
-                                                            <option value="0" >Seleccione un Establecimiento</option>
+                                            <div id="divEstablecimiento" >
+                                                    <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:500px" class="js-example-basic-single"> 
+                                                     <!--       <option value="0" >Seleccione un Establecimiento</option>-->
                                                             <?php echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
                                                             include_once("../../../Conexion/ConexionBD.php");
                                                             $con = new ConexionBD;
                                                             if($con->conectar()==true){			  
-                                                                    $consulta  = "SELECT id,nombre FROM ctl_establecimiento where id_tipo_establecimiento=$tipo ORDER BY Nombre";
+                                                                    $consulta  = "SELECT id,nombre FROM ctl_establecimiento  ORDER BY Nombre";
+                                                                    //where id_tipo_establecimiento=$tipo
                                                                     $resultado = @pg_query($consulta);
                                                                     //por cada registro encontrado en la tabla me genera un <option>
                                                                     while ($rows = @pg_fetch_array($resultado)){
@@ -137,6 +149,7 @@ if ($nivel == 7) {
                                                             }
                                                             ?>	
                                                     </select>
+                                                       
                                             </div>
                                     </td>
                             </tr>
@@ -225,18 +238,8 @@ if ($nivel == 7) {
                             
                     </table>
                 </form>
-<script type="text/javascript">
-		Calendar.setup(
-		    {
-		      inputField  : "txtfechaRecep",         // el ID texto 
-		      ifFormat    : "%d/%m/%Y",    // formato de la fecha
-		      button      : "trigger"       // el ID del boton			  	  
-		    }
-		);
-		
-</script>
 </div>
-<div id="divBusqueda">
+<div id="divBusqueda" >
 
 </div>
 <div id="divSolicitud">

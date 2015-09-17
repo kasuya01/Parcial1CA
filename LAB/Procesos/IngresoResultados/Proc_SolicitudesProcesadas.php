@@ -67,14 +67,13 @@ if (isset($_SESSION['Correlativo'])) {
                       //  alert(errorMessage);
 
                    // } else {
-                     //   jQuery('#divBusqueda').empty();
-                       // jQuery('#divBusqueda').append('<center><img id="wait" src="<?php //echo $base_url; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" style="color:#888888;font-weight: bold;">Buscando...</div></center>');
-
-                       // setTimeout(function() {
-                         // jQuery('#divBusqueda').empty();
+                        jQuery('#divBusqueda').empty();
+                        jQuery('#divBusqueda').append('<center><img id="wait" src="<?php //echo $base_url; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" style="color:#888888;font-weight: bold;">Buscando...</div></center>');
+                        
+                       setTimeout(function() {
+                       jQuery('#divBusqueda').empty();
                             SolicitudesPorArea();
-                       // }, 500);
-                  //  }
+                        }, 500);
                 }
 
                 function BuscarEstablecimiento(idtipoesta) {
@@ -103,7 +102,7 @@ if (isset($_SESSION['Correlativo'])) {
                 $(document).ready(function() {
                 $("#cmbEstablecimiento").select2({
                  allowClear: true,
-            dropdownAutoWidth: true
+                 dropdownAutoWidth: true
              });
         });</script>
         </head>
@@ -135,9 +134,9 @@ if (isset($_SESSION['Correlativo'])) {
 
             <div  id="divInicial">
                 <form  method="get" action="ProcDatosResultadosExamen_PA.php" name="frmdatos_resultado" enctype="multipart/form-data">
-                    <table  align="center" class="StormyWeatherFormTABLE" width="67%">
+                    <table  align="center" class="StormyWeatherFormTABLE" width="67%" pos>
                         <tr>
-                            <td colspan="4" align="center" class="CobaltFieldCaptionTD">
+                            <td colspan="4" align="center" class="CobaltFieldCaptionTD" >
                                 <h3>
                                     <strong>Ingreso de Resultados</strong>
                                 </h3>
@@ -158,7 +157,7 @@ if (isset($_SESSION['Correlativo'])) {
                                             while ($rows = pg_fetch_array($resultado)) {
                                                 echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>';
                                             }
-                                            echo '<option value="' . $tipo . '" selected="selected">' . htmlentities($nomtipo) . '</option>';
+                                            //echo '<option value="' . $tipo . '" selected="selected">' . htmlentities($nomtipo) . '</option>';
                                         }
                                     ?>
                                 </select>
@@ -224,7 +223,7 @@ if (isset($_SESSION['Correlativo'])) {
                             </td>
                             <td class="StormyWeatherFieldCaptionTD">Servicio</td>
                             <td class="StormyWeatherDataTD">
-                                <div id="divsubserv">
+                                <div id="divsubserv" >
                                     <select name="cmbSubServ" id="cmbSubServ" style="width:500px" class="form-control height">
                                         <option value="0" selected="selected"> Seleccione un Servicio </option>
                                     </select>
@@ -332,7 +331,7 @@ if (isset($_SESSION['Correlativo'])) {
             </div>
         </body>
     </html>
-    <?php
+    <?php //style="height:60%; position:absolute ; top:550px; left:30px  "
 } else {
     ?>
     <script language="javascript">

@@ -182,7 +182,7 @@ switch ($opcion) {
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
                        false AS referido, to_char(t01.f_tomamuestra,'dd/mm/YYYY HH12:MI' ) as f_tomamuestra,
                        (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
-                       t17.idtiposolicitud,t08.id as idarea
+                       t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar
                 FROM sec_detallesolicitudestudios t01 
                 INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio) 
                 INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio) 
@@ -236,7 +236,7 @@ switch ($opcion) {
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
                        true AS referido,TO_CHAR(t01.f_tomamuestra,'dd/mm/YYYY HH12:MI') as f_tomamuestra,
                        (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
-                       t17.idtiposolicitud,t08.id as idarea
+                       t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar
                 FROM sec_detallesolicitudestudios t01 
                 INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio) 
                 INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio) 
@@ -263,7 +263,7 @@ switch ($opcion) {
 //ECHO $query;
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);
         
-        echo "<div class='table-responsive' style='width: 90%;'>
+        echo "<div class='table-responsive' style='width:93%;'>
             <table width='100%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
                 <thead><tr>
                     <th>Muestra </th>
@@ -313,7 +313,7 @@ switch ($opcion) {
                         "<input name='tipomuestra[" . $pos . "]' id='tipomuestra[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["tipomuestra"]) . "'/>" .
                         "<input name='idareaPA[" . $pos . "]' id='idareaPA[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idarea"]) . "'/>" .
                         "<td width='18%'>" . htmlentities($row['paciente']) . "</td>
-                        <td width='3%'>" . $row['codigoexamen'] . "</td>
+                        <td width='3%'>" . $row['estandar'] . "</td>
                         <td width='27%'>" . htmlentities($row['nombreexamen']) . "</td>
                         <td width='10%'>" . htmlentities($row['nombresubservicio']) . "</td>
                         <td width='8%'>" . htmlentities($row['nombreservicio']) . "</td>
