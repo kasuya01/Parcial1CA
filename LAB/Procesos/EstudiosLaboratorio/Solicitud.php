@@ -62,6 +62,10 @@ $_SESSION["lugar"] = $lugar;
         <link rel="stylesheet" type="text/css" href="./Estilo.css">
         <?php include_once $ROOT_PATH."/public/css.php";?>
         <?php include_once $ROOT_PATH."/public/js.php";?>
+            <script languaje="javascript">
+               var band=0;
+             //  var id_solicitud=null;
+            </script>
             <script language="javascript" src="./ajax.js"></script>
     </head>
 

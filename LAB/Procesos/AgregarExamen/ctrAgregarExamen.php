@@ -2,7 +2,7 @@
 $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
-include ("clsAgregarExamen.php");
+include ("../AgregarExamen/clsAgregarExamen.php");
 
 //variables POST
 $opcion=$_POST['opcion'];
@@ -618,7 +618,7 @@ switch ($opcion)
 		$idarea=$_POST['idarea'];
 		//echo $IdSubEsp;
 		$dtExam=$objdatos->ExamenesPorArea($idarea,$lugar);	
-		$rslts = '<select name="cmbExamen" id="cmbExamen"  onchange="LlenarComboMuestra1(this.value)" class="form-control height" style="width:405px">';
+		$rslts = '<select name="cmbExamen" id="cmbExamen"  onchange="LlenarComboMuestra1(this.value)" class="form-control height"  style="width:405px !important" size="1">';
 		$rslts .='<option value="0"> Seleccione Examen </option>';
 			
 		while ($rows =pg_fetch_array($dtExam)){
@@ -765,7 +765,7 @@ switch ($opcion)
 				echo "Examen Agregado!!";
 			}
 			else{
-				echo "No se pudo Agregar el Examen!!";
+				echo "No se pudo Agregar el Examen!!".$idsolicitudPa.'-'.$idexamen1.'-'.$IdExamen.'-'.$indicacion.'-'.$IdTipo.'-'.$Observa.'-'.$lugar.'-'.$Empleado.'-'.$usuario.'-'.$IdEstab.'-'.$fechatomamuestra;
 			}
                        
                         }
@@ -775,7 +775,7 @@ switch ($opcion)
 				echo "Examen Agregado!!";
 			}
 			else{
-				echo "No se pudo Agregar el Examen!!";
+				echo "No se pudo Agregar el Examen!!".$idsolicitudPa.'-'.$idexamen1.'-'.$IdExamen.'-'.$indicacion.'-'.$IdTipo.'-'.$Observa.'-'.$lugar.'-'.$Empleado.'-'.$usuario.'-'.$IdEstab.'-'.$fechatomamuestra.'-'.$origen;
 			}
                             
                             }

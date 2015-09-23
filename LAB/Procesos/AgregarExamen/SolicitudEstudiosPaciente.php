@@ -1,5 +1,5 @@
 <?php session_start();
-include_once("clsAgregarExamen.php");
+include_once("../AgregarExamen/clsAgregarExamen.php");
 if(isset($_SESSION['Correlativo']))
 {
 $usuario=$_SESSION['Correlativo'];
@@ -11,27 +11,17 @@ $base_url  = $_SESSION['base_url'];
 
 
 ?>
-<html>
-<head>
-<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-<!--<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />-->
-<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
-<link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
-<link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
-<link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
-<title>Datos del Generales de la Solicitud</title>
-<?php include_once $ROOT_PATH.'/public/css.php';?>
-<?php include_once $ROOT_PATH.'/public/js.php';?>
-<script language="JavaScript" type="text/javascript" src="ajax_AgregarExamen.js"></script>
 
-</head>
 <?php 
 	$idexpediente=$_GET['var1'];	
 	$idsolicitud=$_GET['var2'];
 	$idestablecimiento=$_GET['var3'];
         $fecharecepcion=$_GET['var4'];
-	//echo  $fecharecepcion;
-	//echo $usuario."##".$idsolicitud;
+        $banderacerrar=$_GET['var5'];
+        if ($banderacerrar==''){
+           $banderacerrar=0;
+        }
+	//echo $usuario."##".$idsolicitud.'<br>';
 	$obj = new clsAgregarExamen;
 	//$ConEmp=$obj->ObtenerCodigoTecnico($usuario);
 	//$rowEmp=pg_fetch_array($ConEmp);
@@ -48,7 +38,7 @@ $base_url  = $_SESSION['base_url'];
 	$row = pg_fetch_array($consulta);
 	
 	
-//valores de las consultas
+//valores de las consultas                        console.log(modalBody);
 
 	//obteniedo los datos generales de la solicitud
 	//valores de las consultas
@@ -83,8 +73,28 @@ $base_url  = $_SESSION['base_url'];
 	        //recuperando los valores del detalle de la solicitud
 	        //$consultadetalle=$obj->obtener_fecha_tomamuestra($idexpediente,$idsolicitud,$lugar);
  //               $row_detalle = pg_fetch_array($con_detalle);
-?>
+if ($banderacerrar==0){
+                ?>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+<!--<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />-->
+<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
+<link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+<link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+<link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+<title>Datos del Generales de la Solicitud</title>
+<?php include_once $ROOT_PATH.'/public/css.php';?>
+<?php include_once $ROOT_PATH.'/public/js.php';?>
+
+
+</head>
 <body >
+   <?php
+  
+}//fin if $banderacerrar
+echo' <script language="JavaScript" type="text/javascript" src="../AgregarExamen/ajax_AgregarExamen.js"></script>';
+   ?>
 <div id="divFormulario">
     <form name="frmDatos">
 		<table width="90%" border="0" align="center" class="StormyWeatherFormTABLE">
@@ -190,7 +200,7 @@ $base_url  = $_SESSION['base_url'];
 			<tr>
                             <td width="6%" colspan="2" class="StormyWeatherFieldCaptionTD" align="right">
 					<!--<input type="button" name="Submit" value="Guardar Cambios" Onclick="GuardarExamen();"> -->
-                                        <button type='button' align="center" class='btn btn-primary' id='buscarsolicitud' onclick='GuardarExamen(); '><span class='glyphicon glyphicon-floppy-save'></span> Guardar Cambios</button>
+                                        <button type='button' align="center" class='btn btn-primary' id='buscarsolicitud' onclick='GuardarExamen(<?php echo $banderacerrar;?>); '><span class='glyphicon glyphicon-floppy-save'></span> Guardar Cambios</button>
                             </td>
                         </tr>
 			
@@ -198,9 +208,13 @@ $base_url  = $_SESSION['base_url'];
 	</form>
 </div>
 
+   <?php 
+   if ($banderacerrar==0){
+                ?>
 </body>
 </html>
 <?php
+                }//fin if bandera==0
 }
 else{?>
 <script language="javascript">

@@ -13,7 +13,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">  
 <title>Resultados de Examenes de Laboratorio </title>
-<script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script> 
+
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 <style type="text/css">
@@ -22,7 +22,8 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
 			input { width:250px; border: 2px solid #CCC; line-height:20px;height:20px; border-radius:3px; padding:2px; }
 		</style>
 <?php include_once $ROOT_PATH."/public/css.php";?>
-            <?php include_once $ROOT_PATH."/public/js.php";?>
+<?php include_once $ROOT_PATH."/public/js.php";?>
+                <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script> 
 <!--<link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
 <link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />-->
 
@@ -131,7 +132,9 @@ $referido=$_GET['referido'];
 $iddetallesolicitud=$_GET['var5'];
 $idsolicitud=$_GET['var6'];
 $idarea=$_GET['var4'];
-
+$idexpediente_=$_GET['var1'];
+$fecha_recepcion_=$_GET['fecha_recepcion'];
+$idestabext_=$_GET['var19'];
 if ($referido!="t"){
     
 $condatos=$objdatos->condatos($IdHistorial, $lugar);
@@ -183,25 +186,29 @@ if (pg_num_rows($cant)>0){
 					<td colspan="3" class="StormyWeatherDataTD"><?php echo $_GET['var11'];?></td>
 				</tr>
 				<tr>
-					<td class="StormyWeatherFieldCaptionTD">NEC</td>
-					<td class="StormyWeatherDataTD"><?php echo $_GET['var1'];?></td>
-					<td class="StormyWeatherFieldCaptionTD">No. Order</td>
-					<td class="StormyWeatherDataTD"><?php echo $_GET['var6'];?>
-						<input type="hidden" name="txtnec" id="txtnec" disabled="disabled" />
-						<input type="hidden" name="txtidsolicitud" id="txtidsolicitud" />
-						<input type="hidden" name="txtiddetalle" id="txtiddetalle" />
-						<!--<input type="hidden" name="txtidexamen" id="txtidexamen" />-->
-						<input type="hidden" name="txtidrecepcion" id="txtidrecepcion" />
-						<input type="hidden" name="txtarea" id="txtarea" />
-						<input type="hidden" name="txtprocedencia" id="txtprocedencia" value="<?php echo $_GET['var10']?>" />
-						<input type="hidden" name="txtorigen" id="txtorigen" value="<?php echo $_GET['var11']?>"/>
-						<input type="hidden" name="txtimpresion" id="txtimpresion" />
-						<input type="hidden" name="txtEstablecimiento" id="txtEstablecimiento" value="<?php echo $_GET['var13']?>" />	
-						<input type="hidden" name="txtFechaNac" id="txtFechaNac" value="<?php echo $_GET['var14']?>" />
-                                                <input type="hidden" name="txtSexo" id="txtSexo" value="<?php echo $_GET['var15']?>" />
-                                                <input type="hidden" name="txtIdEstandar" id="txtIdEstandar" value="<?php echo $_GET['var16']?>" />
-                                                <input type="hidden" name="txtIdHistorial" id="txtIdHistorial" value="<?php echo $_GET['var17']?>" />
-                                                <input type="hidden" name="referido" id="referido" value="<?php echo $_GET['referido']?>" />
+                                    <td class="StormyWeatherFieldCaptionTD">NEC</td>
+                                    <td class="StormyWeatherDataTD"><?php echo $_GET['var1'];?>
+                                    <input type="hidden" id="idexpediente_" name="idexpediente_" value="<?php echo $idexpediente_;?>"/></td>
+                                    <td class="StormyWeatherFieldCaptionTD">No. Order</td>
+                                    <td class="StormyWeatherDataTD"><?php echo $_GET['var6'];?>
+                                            <input type="hidden" name="txtnec" id="txtnec" disabled="disabled" />
+                                            <input type="hidden" name="txtidsolicitud" id="txtidsolicitud" />
+                                            <input type="hidden" name="txtiddetalle" id="txtiddetalle" />
+                                            <!--<input type="hidden" name="txtidexamen" id="txtidexamen" />-->
+                                            <input type="hidden" name="txtidrecepcion" id="txtidrecepcion" />
+                                            <input type="hidden" name="txtarea" id="txtarea" />
+                                            <input type="hidden" name="txtprocedencia" id="txtprocedencia" value="<?php echo $_GET['var10']?>" />
+                                            <input type="hidden" name="txtorigen" id="txtorigen" value="<?php echo $_GET['var11']?>"/>
+                                            <input type="hidden" name="txtimpresion" id="txtimpresion" />
+                                            <input type="hidden" name="txtEstablecimiento" id="txtEstablecimiento" value="<?php echo $_GET['var13']?>" />	
+                                            <input type="hidden" name="txtFechaNac" id="txtFechaNac" value="<?php echo $_GET['var14']?>" />
+                                            <input type="hidden" name="txtSexo" id="txtSexo" value="<?php echo $_GET['var15']?>" />
+                                            <input type="hidden" name="txtIdEstandar" id="txtIdEstandar" value="<?php echo $_GET['var16']?>" />
+                                            <input type="hidden" name="txtIdHistorial" id="txtIdHistorial" value="<?php echo $_GET['var17']?>" />
+                                            <input type="hidden" name="referido" id="referido" value="<?php echo $_GET['referido']?>" />
+                                            <input type="hidden" name="solicitud_" id="solicitud_" value="<?php echo $idsolicitud;?>" />
+                                          <input type="hidden" id="fecharecepcion" name="fecharecepcion" value="<?php echo $fecha_recepcion_;?>"/>
+                                          <input type="hidden" id="idestabext_" name="idestabext_" value="<?php echo $idestabext_;?>"/>
 				</tr>
                                 
 				<tr>

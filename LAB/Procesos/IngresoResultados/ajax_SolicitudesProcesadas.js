@@ -1,5 +1,9 @@
 var ventana_secundaria;
 
+modal_elements.push({
+   id: 'addexam_modal', func:'crearmodal', header:'Agregar Examen', footer:'', widthModal: '900'
+});
+
 function objetoAjax() {
     var xmlhttp = false;
     try {
@@ -263,6 +267,7 @@ function GuardarResultados()
                 alert(ajax.responseText);
                 document.getElementById('btnGuardar').style.visibility = 'hidden';
                 document.getElementById('Imprimir').style.display = 'initial';
+                document.getElementById('addexam_modal').style.display = 'initial';
 
 
             }
@@ -345,9 +350,11 @@ function GuardarResultadosPlantillaA()
                 document.getElementById('btnGuardar').style.visibility = 'hidden';
                 document.getElementById('btningresar').style.visibility = 'hidden';
                 document.getElementById('Imprimir').style.display = "initial";
+                document.getElementById('addexam_modal').style.display = 'initial';
                 document.getElementById('divexamen').style.display = "none";
-                document.getElementById('agregarresults').style.visibility = 'hidden';
-                
+                if  ($("#agregarresults" ).length){
+                  document.getElementById('agregarresults').style.visibility = 'hidden';
+               }
                
             }
         }
@@ -1375,20 +1382,6 @@ function VerResultados2(parametros)
 
 }//fin mostrarresultados plantillaA2
 
-//fn pg
-function addexamen(){
-idexpediente=$("#idexpedientenec").val();idexpediente.value;
-idsolicitud=document.frmDatos.idsolicitud.value;
-fecharecepcion=document.frmDatos.fecharecepcion.value;
-//idestablecimiento=document.frmDatos.idestablecimiento.value;
-//alert (fecharecepcion)
-ventana_secundaria = window.open("../AgregarExamen/SolicitudEstudiosPaciente.php?var1="+idexpediente+
-  "&var2="+idsolicitud+"&var3="+idestablecimiento+"&var4="+fecharecepcion,"solicitud","width=800,height=700,menubar=no,location=no,scrollbars=yes"); 
-}
-
-
-
-
 function ValidarCamposPlantillaA()
 {
     var resp = true;
@@ -1843,7 +1836,7 @@ function IngresarTodosResultados()
     }
     else
     {
-        alert("Por favor ingrese los campos obligatorios(*)1");
+        alert("Por favor ingrese los campos obligatorios(*)");
     }
 }
 
@@ -1875,7 +1868,7 @@ function MostrarDatos(posicion)
     f_tomamuestra=document.getElementById('f_tomamuestra[' + posicion + ']').value;
     tipomuestra=document.getElementById('tipomuestra[' + posicion + ']').value;
     idareaPA=document.getElementById('idareaPA[' + posicion + ']').value;
-    
+    fecha_recepcion=document.getElementById('fecha_recepcion[' + posicion + ']').value;
   // alert (idareaPA);
     //alert ("Plnatilla="+plantilla+" Experiente="+idexpediente+" Solicitud="+idsolicitud+" idarea="+idarea+" idhistorial="+IdHistorial+" IdEstandar="+IdEstandar);
     //idhistorial=document.getElementById('idhistorial['+posicion+']').value;
@@ -1892,7 +1885,7 @@ function MostrarDatos(posicion)
                         "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idareaPA + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                         "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                         "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
-                        "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+estabext , "Resultados", "width=1200,height=700,menubar=no,scrollbars=yes,location=no");
+                        "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+estabext+"&var19="+idestabext+"&fecha_recepcion="+fecha_recepcion , "Resultados", "width=1200,height=900,menubar=no,scrollbars=yes,location=no");
             }
             else {
               //  alert(cant_metodologia)
@@ -1901,14 +1894,14 @@ function MostrarDatos(posicion)
                         "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idareaPA + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                         "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                         "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
-                        "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext, "Resultados", "width=1200,height=700,scrollbars=yes,location=no");
+                        "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext+"&var19="+idestabext+"&fecha_recepcion="+fecha_recepcion , "Resultados", "width=1200,height=900,scrollbars=yes,location=no");
                 }
                 else{
                    ventana_secundaria = window.open("ProcDatosResultadosExamen_PA2.php?var1=" + idexpediente +
                         "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idareaPA + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                         "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                         "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
-                        "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext, "Resultados", "width=1200,height=700,scrollbars=yes,location=no"); 
+                        "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext+"&var19="+idestabext+"&fecha_recepcion="+fecha_recepcion, "Resultados", "width=1200,height=900,scrollbars=yes,location=no"); 
                 }
             }
             break;
@@ -2700,4 +2693,83 @@ function buscarPosResMet(idexametodologia)
             }
         }
     }
+}
+
+//fn pg
+function crearmodal() {
+  var idsolicitud=jQuery("#solicitud_").val();
+  var content='';
+  content+= crearmodaladdexam(idsolicitud);
+  content+='<div id="agregarexamen">';
+  content+= detallemodaladdexam(idsolicitud)
+  content+='</div>';
+
+   return content;
+}
+
+function crearmodaladdexam(idsolicitud){
+   var content='';
+   var idexpediente=$("#idexpediente_").val();
+   var fecharecepcion=$("#fecharecepcion").val();
+   var idestablecimiento=$("#idestabext_").val();
+   var banderacerrar=1;
+   jQuery.ajax({
+      url: "../AgregarExamen/SolicitudEstudiosPaciente.php",
+      type: "GET",
+      async: false,
+      data: {var1:idexpediente, var2:idsolicitud, var3:idestablecimiento, var4:fecharecepcion, var5:banderacerrar},
+      dataType: "html",
+      success: function(html) {
+         content+=html;
+      }
+      
+  
+   });
+   return content;
+}
+function detallemodaladdexam(idsolicitud){
+   var content= '';
+   jQuery.ajax({
+      url: "ctrSolicitudesProcesadas.php",
+      method: "POST",
+      async: false,
+      data: {solicitud: idsolicitud, opcion: 16 },
+      dataType: "json",
+      success: function (object) {
+         if (object.status) {            
+            content +=
+                     '<table class="table table-bordered table-condensed table-hover table-white">'+
+                     '<thead>'+
+                        '<tr><th colspan="2">'+
+                        '<center>Listado de examenes solicitados en la orden de laboratorio'+
+                        '</center></th></tr>'+
+                        '<tr><th>Exámen</th>'+
+                        '<th>Estado</th>'+
+                        '</tr>'+
+                     '</thead>'+
+                     '<tbody>';
+            jQuery.each(object.data,function(index, value){
+               content+='<tr><td> '+value.nombre_examen+'</td>'+
+                        '<td> '+value.descripcion+'</td></tr>';
+            });
+            
+            content+='</tbody></table>';
+         }
+      }
+   });
+   
+   return content;
+}
+
+function reloaddetallemodal(idsolicitud){
+   var content='';
+   
+  jQuery('#agregarexamen').empty();
+  content=detallemodaladdexam(idsolicitud);
+  jQuery('#agregarexamen').append(content);
+}
+
+
+function inicia_elementos(){
+      classdatepick();
 }

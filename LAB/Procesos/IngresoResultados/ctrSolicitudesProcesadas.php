@@ -285,6 +285,8 @@ switch ($opcion) {
             while ($row = pg_fetch_array($consulta)) {
                 $consmet=$objdatos->CantMetodologia($row["idexamen"]);
              //   echo 'Consmet: '.$consmet;
+               $timefrecep = strtotime($row['fecharecepcion']);
+               $datefrecep = date("Y-m-d", $timefrecep);
                 echo "<tr>
                         <td width='3%'>" . $row['numeromuestra'] . "</td>
                         <td width='3%'><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a></td>" .
@@ -312,6 +314,7 @@ switch ($opcion) {
                         "<input name='f_tomamuestra[" . $pos . "]' id='f_tomamuestra[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["f_tomamuestra"]) . "'/>" .
                         "<input name='tipomuestra[" . $pos . "]' id='tipomuestra[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["tipomuestra"]) . "'/>" .
                         "<input name='idareaPA[" . $pos . "]' id='idareaPA[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idarea"]) . "'/>" .
+                        "<input name='fecha_recepcion[" . $pos . "]' id='fecha_recepcion[" . $pos . "]' type='hidden' size='60' value='" . $datefrecep . "'/>" .
                         "<td width='18%'>" . htmlentities($row['paciente']) . "</td>
                         <td width='3%'>" . $row['estandar'] . "</td>
                         <td width='27%'>" . htmlentities($row['nombreexamen']) . "</td>
@@ -654,6 +657,7 @@ switch ($opcion) {
                             <td colspan='7' align='center' >
                             <button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarResultados();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>
                             <button style='display:none' type='button' id='Imprimir' name='Imprimir' align='center' class='btn btn-primary' title='Imprimir'  onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $resultado . "\",\"" . $fecha_reporta . "\", \"" . $lectura . "\",\"" . $interpretacion . "\",\"" . $observacion . "\",\"" . $responsable . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec . "\",\"" . $proce . "\",\"" . $origen . "\",\"" . $iddetalle . "\",\"" . $marca . "\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
+                              <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true' style='display:none; height:20px'><button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>
                             
                             <button type='button' id='btnSalir' align='center' class='btn btn-primary' title='Cerrar'  onclick='Cerrar();'><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br/><br><br/>
                             </td>
@@ -1083,9 +1087,11 @@ switch ($opcion) {
                     </tr>
                     <tr>
                         <td colspan='8' align='center' >
+                        
                         <button name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $v_resultfin. "\",\"" . $d_resultfin . "\", \"" . $v_lectura . "\",\"" . $v_interpretacion . "\",\"" . $v_obserrecep. "\",\"" . $cmbEmpleadosfin . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec. "\",\"" . $proce. "\",\"" . $origen . "\",\"" . $iddetalle  . "\") ;' class='btn btn-primary'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
-                            <button name='btnSalir' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' class='btn btn-primary' ><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button>
-                            <button name='btnAdd' id='btnAdd' value='Agregar Examen' Onclick='addexamen() ;' class='btn btn-primary' ><span class='glyphicon glyphicon-plus-sign'></span>&nbsp;Agregar Examen</button><br><br/>
+                            
+                            <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true'><button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>
+                            <button name='btnSalir' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' class='btn btn-primary' ><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br><br/>
                         </td>
                     </tr></table>";
         echo $Imprimir;
@@ -1166,5 +1172,18 @@ switch ($opcion) {
         
         echo $resultado;
       break;
+    case 16:
+       $idsolicitud=$_POST['solicitud'];
+      $result = $objdatos->buscartodosexamens($idsolicitud);
+        if ($result !== false) {
+            $jsonresponse['status'] = true;
+            $jsonresponse['data'] = pg_fetch_all($result);
+        } else {
+            $jsonresponse['status'] = false;
+        }
+
+          echo json_encode($jsonresponse);
+      break;
+            
 }
 ?>

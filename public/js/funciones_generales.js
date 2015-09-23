@@ -28,6 +28,9 @@
 })($.fn.attr);
 //fin Funcion que permite obtener los atributos de un elemento como un objeto json
 
+//Declaracion de variables 
+var modal_elements=[];
+
 //Función para pedir el formato de fecha deseado
 function getCurrentDateTime(format) {
    var today = new Date();
@@ -263,6 +266,124 @@ jQuery(document).ready(function ($) {
          this.qs2.cache();
       }
    });
+   
+   //Modal
+     $('body').append('\
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">\
+            <div class="modal-dialog">\
+                <div class="modal-content">\
+                    <div class="modal-header">\
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>\
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>\
+                    </div>\
+                    <div class="modal-body">\
+                    </div>\
+                    <div class="modal-footer">\
+                        <button type="button" class="btn btn-default" data-dismiss="modal" style="color: #636363;font-weight: bold;">Cerrar</button>\
+                    </div>\
+                </div>\
+            </div>\
+        </div>');
+
+    $("body").on('click', 'a[data-modal-enabled="true"]', function(e){       
+        var currentIDM = $(this).attr("id");
+        if (!(typeof modal_elements === 'undefined') && modal_elements.length != 0) {
+            for (var i = 0; i < modal_elements.length; i++) {
+                if (currentIDM == modal_elements[i].id) {
+                    if (modal_elements[i].empty != true) {
+                        /*Limpiando los elementos del modal*/
+                        $('#myModal div.modal-header h4#myModalLabel').empty();
+                        $('#myModal div.modal-body').empty();
+                        $('#myModal div.modal-footer').empty();
+
+                        /*Verificando el contendio a mostrar*/
+                        if (typeof modal_elements[i].header === 'undefined' || modal_elements[i].header == '') {
+                            modal_elements[i].header = 'Detalle';
+                        }
+
+                        if (typeof modal_elements[i].func === 'undefined' || modal_elements[i].func == '') {
+                            modal_elements[i].func = 'defalutlModalBodyMessage';
+                        }
+
+                        if (typeof modal_elements[i].parameters === 'undefined' || modal_elements[i].func == '') {
+                            var modalBody = window[modal_elements[i].func]();
+                        } else {
+                            var modalBody = window[modal_elements[i].func](modal_elements[i].parameters);
+                        }
+
+                        /*Estableciendo los nuevos valores del modal*/
+                        $('#myModal div.modal-header h4#myModalLabel').append(modal_elements[i].header);
+                        if (modalBody != '') {
+                            $('#myModal div.modal-body').append(modalBody);
+                            if (typeof modal_elements[i].closeBtnName === 'undefined' || modal_elements[i].closeBtnName == '') {
+                                $('#myModal div.modal-footer').append(modal_elements[i].footer + '<button type="button" class="btn btn-default" data-dismiss="modal" style="color: #636363;font-weight: bold;">Cerrar</button>');
+                            } else {
+                                $('#myModal div.modal-footer').append(modal_elements[i].footer + '<button type="button" class="btn btn-default" data-dismiss="modal" style="color: #636363;font-weight: bold;">'+modal_elements[i].closeBtnName+'</button>');
+                            }
+                        } else {
+                            $('#myModal div.modal-body').append(window['defalutlModalBodyMessage']());
+                            $('#myModal div.modal-footer').append('<button type="button" class="btn btn-default" data-dismiss="modal" style="color: #636363;font-weight: bold;">Cerrar</button>');
+                        }
+
+                        if (typeof modal_elements[i].afterLoadCallFunction !== 'undefined' && modal_elements[i].afterLoadCallFunction != '') {
+                            window[modal_elements[i].afterLoadCallFunction]();
+                        }
+
+                        if (typeof modal_elements[i].widthModal !== 'undefined' && modal_elements[i].widthModal != '') {
+                            /*$('div#myModal').css({ 'width': modal_elements[i].widthModal+'px', 'margin-left': '-'+(modal_elements[i].widthModal/2)+'px' });*/
+                            $('div#myModal div.modal-dialog').css({ 'width': modal_elements[i].widthModal+'px' });
+                        }
+
+                    } else {
+                        if (typeof modal_elements[i].emptyMessage === 'undefined') {
+                            var mBody = '<i class="icon-exclamation-sign" style="margin-right:7px;"></i>\
+                                         No se ha seleccionado ningun elemento del cual se puedan mostrar los detalles,\
+                                         por favor seleccione uno e intente nuevamente.';
+
+                            modal_elements[i].emptyMessage = [ {emptyMTitle: 'Elemento no seleccionado', emptyMBody: mBody } ];
+                        } else  {
+
+                            if (typeof modal_elements[i].emptyMessage[0].emptyMTitle === 'undefined' || modal_elements[i].emptyMessage[0].emptyMTitle == '') {
+                                modal_elements[i].emptyMessage[0].emptyMTitle = 'Elemento no seleccionado';
+                            }
+
+                            if (typeof modal_elements[i].emptyMessage[0].emptyMBody === 'undefined' || modal_elements[i].emptyMessage[0].emptyMBody == '') {
+                                modal_elements[i].emptyMessage[0].emptyMBody = '<i class="icon-exclamation-sign" style="margin-right:7px;"></i>\
+                                         No se ha seleccionado ningun elemento del cual se puedan mostrar los detalles,\
+                                         por favor seleccione uno e intente nuevamente.';
+                            }
+                        }
+
+                        $('#myModal div.modal-header h4#myModalLabel').empty();
+                        $('#myModal div.modal-body').empty();
+                        $('#myModal div.modal-footer').empty();
+
+                        $('#myModal div.modal-header h4#myModalLabel').append(modal_elements[i].emptyMessage[0].emptyMTitle);
+                        $('#myModal div.modal-body').append(modal_elements[i].emptyMessage[0].emptyMBody);
+                        $('#myModal div.modal-footer').append('<button class="action" data-dismiss="modal" aria-hidden="true"><span class="label">Cerrar</span></button>');
+                    }
+                }
+            }
+        } else {
+            $('#myModal div.modal-header h4#myModalLabel').empty();
+            $('#myModal div.modal-body').empty();
+            $('#myModal div.modal-footer').empty();
+
+            $('#myModal div.modal-header h4#myModalLabel').append('Error!!!');
+            $('#myModal div.modal-body').append('<div class="alert alert-error">\
+                                                     <h4>Oops! ha ocurrido un error</h4>\
+                                                     Lo sentimos pero ha ocurrido un error, por favor intente nuevamente, si el problema persiste por favor contacte con el administrador\
+                                                 </div>');
+            $('#myModal div.modal-footer').append('<button class="action" data-dismiss="modal" aria-hidden="true"><span class="label">Cerrar</span></button>');
+
+        }
+    });
+    
+    
+   
+   //Fin Modal
+   
+   
 });
 
 /*
@@ -337,3 +458,22 @@ function initializeSwitchOnOff(element, onLabel, offLabel, float) {
         outDiv.attr('style', outDiv.attr('style') + ' float:'+float+';');
     }
 }
+
+//funcion Modal
+
+function defalutlModalBodyMessage(e) {
+
+    e = typeof e !== 'undefined' ? e : '';
+
+    var html = '<div class="alert alert-block alert-error">\
+                <h4>Error al cargar el elemento</h4>\
+                Lo sentimos, hubo un problema al cargar la vista, \
+                por favor intente nuevamente.<br /> \
+                Si el problema persiste por favor contacte al administrador...</div>';
+
+    if(e != '') {
+        html = html + '<p><b>Detalle del Error</b><br />' + e + '</p>';
+    }
+    return html;
+}
+

@@ -136,7 +136,7 @@ switch ($opcion)
         }
         else{
             echo '<center><br><br><h1><img src="../../../Imagenes/warning.png" valign="middle"/>'
-            . 'Los resultados de los examenes de '.$rowpa['nombre'].', en esta área ya fueron ingresados.</h1> ';
+            . 'Favor de Revisar la correcta configuración de los exámenes solicitados, tanto en tipo de muestra y datos fijos.</h1> ';
             echo " <button type='submit' class='fg-button ui-state-default ui-corner-all' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' /><span class='glyphicon glyphicon-remove-sign'></span>Cerrar</button></center>";
                                         
         }
@@ -317,6 +317,7 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
                                       <input  type='hidden' id='oculto' value='".$pos."'>
                                       <button type='submit' class='btn btn-primary' id='btnGuardar' value='Guardar Resultados' Onclick='GuardarResultadosPlantillaA();' /><span class='glyphicon glyphicon-remove-sign'></span>Guardar Resultados</button>
                                       <button style='display:none' type='button' class='btn btn-primary'  name='Imprimir'  id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaA1(".$idsolicitud.",\"".$idarea."\",\"".$responsable."\", \"".$valores_resultados."\",\"".$codigos_resultados."\",\"".$valores_obser."\",\"".$codigos_examenes."\",\"".$establecimiento."\",\"".$sexo."\",\"".$idedad."\",\"".$examen_metodologia."\",\"".$txtnec."\",\"".$fecha_reporte."\",\"".$procedencia."\",\"".$origen."\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
+                                         <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true' style='display:none; height:20px'><button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>
                                                     <button type='submit' class='btn btn-primary' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' /><span class='glyphicon glyphicon-remove-sign'></span>Cerrar</button><br/>
                                             <br></td>
                                 </tr>

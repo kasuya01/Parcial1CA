@@ -8,6 +8,8 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
 $conectar = 1;
 $IdHistorialClinico = $_GET["IdHistorialClinico"];
 $IdCitaServApoyo = $_GET["IdCitaServApoyo"];
+$band = isset($_GET["band"]) ? $_GET["band"] : 0;
+
 // echo '<br/>idcitaservapoyo: '.$IdCitaServApoyo;
 $IdEstablecimiento = $_SESSION["IdEstablecimiento"]; //Elegido en el combo
 $IdNumeroExp = $_SESSION["IdNumeroExp"];
@@ -43,6 +45,10 @@ if ($IdCitaServApoyo == "") {
       <link rel="stylesheet" type="text/css" href="./Estilo.css"></link>
       <?php include_once $ROOT_PATH . "/public/css.php"; ?>
       <?php include_once $ROOT_PATH . "/public/js.php"; ?>
+      <script languaje="javascript">
+         var band=<?php echo $band; ?>;
+         var id_solicitud=<?php echo $IdSolicitudEstudio;?>;
+      </script>
       <script language="javascript" src="./ajax.js"></script>
    </head>
 
@@ -116,7 +122,7 @@ if ($IdCitaServApoyo == "") {
 //                  echo "<td><div style='display:none'><input type='checkbox' id='tiposol" . $Respuesta['idexamen'] . "' name='tiposol" . $Respuesta['idexamen'] . "' data-switch-enabled='true' ><div></td>";
 //              }
                echo "<input type='hidden' name='IdDetalle" . $Respuesta['idexamen'] . "' Id='IdDetalle" . $Respuesta['idexamen'] . "'value='" . $Respuesta['iddetallesolicitud'] . "'></td>";
-               echo "<td><input type='checkbox' name='ExamenesLab' value='" . $Respuesta['idexamen'] . "'/></td>";
+               echo "<td><input type='checkbox' id='ExamenesLab' name='ExamenesLab' value='" . $Respuesta['idexamen'] . "'/></td>";
                /*  $Resp       uesta3=$Laboratorio->RecuperarData($IdHistorialClinico,$IdEstablecimiento,$Bandera);
                  if ($Respuesta3!=NULL || $Respuesta3!=''){
                  $buscadetsol=$Laboratorio->buscardetsol($Respuesta3);
@@ -168,7 +174,7 @@ if ($IdCitaServApoyo == "") {
                                 <span class='glyphicon glyphicon-plus'></span> 
                                 Agregar Examen
                              </button>
-                            <button type='button' class='btn btn-primary' id='Terminar' onclick='Urgente($IdSolicitudEstudio); '>
+                            <button type='button' class='btn btn-primary' id='Terminar' onclick='GuardarCambios($IdSolicitudEstudio); '>
                                 <span class='glyphicon glyphicon-ok'></span> 
                                 Terminar Solitud
                              </button>

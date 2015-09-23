@@ -185,7 +185,7 @@ function BuscarDatos(pag)
 		//alert (fechaconsulta);
 		ajax=objetoAjax();
 		//archivo que realizar� la operacion ->actualizacion.php
-		ajax.open("POST", "ctrAgregarExamen.php",true);
+		ajax.open("POST", "../AgregarExamen/ctrAgregarExamen.php",true);
 		//muy importante este encabezado ya que hacemos uso de un formulario
 		ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores
@@ -207,7 +207,7 @@ function CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento,fechar
 	especialidad=0;
 		
 	//alert(fecharecepcion);
-	ajax.open("POST", "ctrAgregarExamen.php",true);
+	ajax.open("POST", "../AgregarExamen/ctrAgregarExamen.php",true);
 		  //muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		  //enviando los valores
@@ -233,7 +233,7 @@ function CargarDatosFormularioSolicitud(idexpediente,idsolicitud,idestablecimien
 {
 	ajax=objetoAjax();
 	opcion=3;
-	ajax.open("POST", "ctrAgregarExamen.php",true);
+	ajax.open("POST", "../AgregarExamen/ctrAgregarExamen.php",true);
 		  //muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		  //enviando los valores
@@ -257,7 +257,7 @@ function LlenarComboExamen(idarea)
       //alert ("qqq");
  	ajax=objetoAjax();
 	opcion=5;
-   	ajax.open("POST", "ctrAgregarExamen.php",true);
+   	ajax.open("POST", "../AgregarExamen/ctrAgregarExamen.php",true);
 		  //muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		  //enviando los valores
@@ -283,7 +283,7 @@ function LlenarComboMuestra1(IdExamen)
 	ajax=objetoAjax();
 	opcion=8;
         txtIdexpediente
-	ajax.open("POST", "ctrAgregarExamen.php",true);
+	ajax.open("POST", "../AgregarExamen/ctrAgregarExamen.php",true);
   	//muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
@@ -308,7 +308,7 @@ function LlenarComboOrigen1(IdTipo){
         
         idexpediente=document.getElementById('txtIdexpediente').value;
 	idsolicitud=document.getElementById('txtidsolicitud').value;
-	ajax.open("POST", "ctrAgregarExamen.php",true);
+	ajax.open("POST", "../AgregarExamen/ctrAgregarExamen.php",true);
   	//muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
@@ -336,7 +336,7 @@ function LlenarComboOrigen1(IdTipo){
         
         idexpediente=document.getElementById('txtIdexpediente').value;
 	idsolicitud=document.getElementById('txtidsolicitud').value;
-	ajax.open("POST", "ctrAgregarExamen.php",true);
+	ajax.open("POST", "../AgregarExamen/ctrAgregarExamen.php",true);
   	//muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
@@ -389,7 +389,7 @@ function Buscarfechamuestra(IdTipo)
         idexpediente=document.getElementById('txtIdexpediente').value;
 	idsolicitud=document.getElementById('txtidsolicitud').value;
         fecharecep=document.getElementById('txtfecharecep').value;
-  	ajax.open("POST", "ctrAgregarExamen.php",true);
+  	ajax.open("POST", "../AgregarExamen/ctrAgregarExamen.php",true);
   	//muy importante este encabezado ya que hacemos uso de un formulario
   	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
   	//enviando los valores
@@ -411,7 +411,7 @@ function LlenarComboServicio(IdServicio)
 {
 	ajax=objetoAjax();
 	opcion=7;
-  	ajax.open("POST", "ctrAgregarExamen.php",true);
+  	ajax.open("POST", "../AgregarExamen/ctrAgregarExamen.php",true);
 	//muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
@@ -454,7 +454,7 @@ function imprimiretiquetas()
 		
 }
 
-function GuardarExamen()
+function GuardarExamen(cerrar)
 {
     
 	ajax=objetoAjax();
@@ -473,7 +473,7 @@ function GuardarExamen()
                 fechatomamuestra=document.getElementById('txttomamuestra').value;
                // alert(tipoMuestra+"**"+OrigenMuestra);
 		//alert(idsolicitud+"%%"+IdEmpleado+"%%"+tipoMuestra);
-		ajax.open("POST", "ctrAgregarExamen.php",true);
+		ajax.open("POST", "../AgregarExamen/ctrAgregarExamen.php",true);
     //alert(IdEmpleado);
     
     
@@ -490,7 +490,20 @@ function GuardarExamen()
 				{  //mostrar los nuevos registros en esta capa
 				 	alert(ajax.responseText);
 					//CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento)
-                                         window.close();
+                                       $("#cmbArea").val(0);
+                                       $("#cmbExamen").val(0);
+                                       $("#cmbMuestra").val(0);
+                                       var opt_sel = $('#cmbOrigen option:selected');
+                                       opt_sel.val(0);
+                                       opt_sel.text('--Seleccione Origen Muestra--');
+                                       $("#txttomamuestra").val('');
+                                       $("#txtindicacion").val('');
+                                       $("#txtObservacion").val('');
+                                       if (cerrar==0)
+                                          window.close();
+                                       else{
+                                           reloaddetallemodal(idsolicitud);
+                                       }
                                 }
 		     }
 		}
