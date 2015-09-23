@@ -32,6 +32,14 @@ function CerrarVentana(){
 	window.close();
 }
 
+
+jQuery(document).ready(function ($) {
+   if (band!=0){
+      eliminarsolicitud(id_solicitud);
+   }
+});
+
+
 function AgregarExamen(){
 	var IdHistorialClinico=document.getElementById('IdHistorialClinico').value;
 	var idexpediente=document.getElementById('idexpediente').value;
@@ -62,8 +70,12 @@ function AgregarExamen(){
 
 }
 
-function ListaExamenes(IdHistorialClinico,IdCitaServApoyo){
-	window.location.href='ExamenesSolicitados.php?IdHistorialClinico='+IdHistorialClinico+'&IdCitaServApoyo='+IdCitaServApoyo;
+function ListaExamenes(IdHistorialClinico,IdCitaServApoyo, band){
+   if (band=='undefined' || band=='' || band==null){
+      band=0;
+   }
+   window.location.href='ExamenesSolicitados.php?IdHistorialClinico='+IdHistorialClinico+'&IdCitaServApoyo='+IdCitaServApoyo+'&band='+band;
+      
         classdatepick();
 	//MostrarDetalle(IdHistorialClinico);
 }
@@ -416,15 +428,18 @@ function Retraso(ID){
 		var IdExamen;
 		var IdDetalle;
 		var Contar=document.getElementById('total').value;
-                var  IdHistorialClinico=document.getElementById('IdHistorialClinico').value;
+                var IdHistorialClinico=document.getElementById('IdHistorialClinico').value;
                 var  IdCitaServApoyo=document.getElementById('IdCitaServApoyo').value;
 		accion=4;
 		var j=0;
 		var i=0;
+                var k=0;
               
 // Comprobar todos los check box que esten chekeados,.....
-
-	
+         console.log(Contar+'-'+band)
+	if (Contar==0 && band!=0){
+           eliminarsolicitud(band);
+        }
 	if(Contar==1 && document.Editar.ExamenesLab.checked == true){	
         /**** Pasos para Guardar los datos***/
         // Parametros del Detalle de los examenes
@@ -438,96 +453,90 @@ function Retraso(ID){
                 ObjetoAjax.onreadystatechange = CargarContenido();
                 ObjetoAjax.open("POST", 'Procesar.php', true);
                 ObjetoAjax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-
                 // Declaración de parámetros
-
                 var Proceso='GuardarCambios';
                 var param = 'Proceso='+Proceso;
-
                 // Concatenación y Envío de Parámetros          
                 param += '&IdDetalle='+IdDetalle;
                 ObjetoAjax.send(param); 
                 ObjetoAjax.onreadystatechange=function() {
                   if (ObjetoAjax.readyState==4) 
                   {
-                     if (band==0)
-                        ListaExamenes(IdHistorialClinico,IdCitaServApoyo)
+                     ListaExamenes(IdHistorialClinico,IdCitaServApoyo, band);
                   }
                }
 	}
-	else{ if (Contar==1 && document.Editar.ExamenesLab.checked == false){	
-            IdExamen=document.Editar.ExamenesLab.value;
-                IdDetalle=document.getElementById("IdDetalle"+IdExamen).value;
-            Indicacion=document.getElementById("Indicacion"+IdExamen).value;
-            ftomamx=document.getElementById("ftomamx"+IdExamen).value;                    
-	}
-	else{
-	
-		for (i=0;i<document.Editar.ExamenesLab.length;i++){
-			// Si esta checkeado entonces que Borre los datos en la base de datos...!
-				IdExamen=document.Editar.ExamenesLab[i].value;
-				Indicacion=document.getElementById("Indicacion"+IdExamen).value;
-				IdDetalle=document.getElementById("IdDetalle"+IdExamen).value;                                
-				ftomamx=document.getElementById("ftomamx"+IdExamen).value;                                
-			if (document.Editar.ExamenesLab[i].checked == true) {					
-					/**** Pasos para Guardar los datos***/
-					// Crear Objeto Ajax
-						ObjetoAjax=NuevoAjax();			
+	else{ 
+       /***/
+         $('input[name="ExamenesLab"]').each(function(index) {
+            //console.log($(this).val(), index);
+            IdExamen=$(this).val();
+            Indicacion=$('#Indicacion'+IdExamen).val();
+            IdDetalle=$('#IdDetalle'+IdExamen).val(); 
+            ftomamx=$('#ftomamx'+IdExamen).val(); 
+             if($(this).is(':checked')){
+               ObjetoAjax=NuevoAjax();			
 						
-						// Hacer el Request y llamar o Dibujar el Resultado
-                                                
-						ObjetoAjax.onreadystatechange = CargarContenido();
-                                             
-						ObjetoAjax.open("POST", 'Procesar.php', true);
-						ObjetoAjax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-						
-						// Declaración de parámetros
-						
-						var Proceso='GuardarCambios';
-						var param = 'Proceso='+Proceso;
-						
-						// Concatenación y Envío de Parámetros
-						param += '&IdDetalle='+IdDetalle;
-						ObjetoAjax.send(param); 
-			} // Fin If
+               // Hacer el Request y llamar o Dibujar el Resultado
 
-			// De lo Contrario si no esta checkeado que verifique si hay que actualizar datos
-			else{
-                           //if(Indicacion != ""){
-                           // Crear Objeto Ajax
-                           ObjetoAjax=NuevoAjax();			
+               ObjetoAjax.onreadystatechange = CargarContenido();
 
-                           // Hacer el Request y llamar o Dibujar el Resultado
-                           ObjetoAjax.onreadystatechange = CargarContenido();
-                           ObjetoAjax.open("POST", 'Procesar.php', true);
-                           ObjetoAjax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+               ObjetoAjax.open("POST", 'Procesar.php', true);
+               ObjetoAjax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 
-                           // Declaración de parámetros
+               // Declaración de parámetros
 
-                           var Proceso='ActualizarDatos';
-                           var param = 'Proceso='+Proceso;
+               var Proceso='GuardarCambios';
+               var param = 'Proceso='+Proceso;
 
-                           // Concatenación y Envío de Parámetros
-                           param += '&IdDetalle='+IdDetalle+"&Indicacion="+Indicacion+"&ftomamx="+ftomamx;
-                           ObjetoAjax.send(param); 
-                              //} // Fin Else para Actualizar Datos
+               // Concatenación y Envío de Parámetros
+               param += '&IdDetalle='+IdDetalle;
+               ObjetoAjax.send(param);
+            }
+            else{
+               k=1;
+               ObjetoAjax=NuevoAjax();			
 
-				
-				
-			}
-					
-		} // Fin For	
-		 ObjetoAjax.onreadystatechange=function() {
-	if (ObjetoAjax.readyState==4) 
-	{
-           if (band==0)
-		 ListaExamenes(IdHistorialClinico,IdCitaServApoyo)
-	}
-  }
+               // Hacer el Request y llamar o Dibujar el Resultado
+               ObjetoAjax.onreadystatechange = CargarContenido();
+               ObjetoAjax.open("POST", 'Procesar.php', true);
+               ObjetoAjax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+
+               // Declaración de parámetros
+
+               var Proceso='ActualizarDatos';
+               var param = 'Proceso='+Proceso;
+
+               // Concatenación y Envío de Parámetros
+               param += '&IdDetalle='+IdDetalle+"&Indicacion="+Indicacion+"&ftomamx="+ftomamx;
+               ObjetoAjax.send(param); 
+                  //} // Fin Else para Actualizar Datos	
+            }
+            
+         });
+		ObjetoAjax.onreadystatechange=function() {
+               if (ObjetoAjax.readyState==4) 
+               {
+                  if (band==0)
+                        ListaExamenes(IdHistorialClinico,IdCitaServApoyo)
+                  else{
+                     if (k==0){
+                        ListaExamenes(IdHistorialClinico,IdCitaServApoyo, band)
+                     }
+                     else{
+                         ListaExamenes(IdHistorialClinico,IdCitaServApoyo,0)
+                         //alert('no es cerrar')
+                        window.close();
+                     }
+                    // 
+                  //  alert ('cerrar')
+                  }
+               }
+            }
     
                 
 	}// Fin Else
-        }//fin else
+       // }//fin else
 //alert (parametros)
   //ObjetoAjax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                
@@ -650,29 +659,21 @@ function CargarContenido(){
 /************************************************************************************************/
 /* 			Funcion Para Verificar si el Examen es Urgente.. Crea una Solicitud NUEVA 								*/
 /************************************************************************************************/
-function Urgente(idsolicitud){	
-    alert (idsolicitud)
-    // Definicion de Variables
-    var IdHistorialClinico=document.Editar.IdHistorialClinico.value;
-    var largo=document.getElementById('totalurgente').value;
-    var detalles_urgente=new Array(); 
-    var e=0;
-    var i;       
+
+ //fn pg
+ //Eliminar solicitud completa
+ function eliminarsolicitud(idsolicitud){
     var cuantos = document.getElementById('total').value;
     if (cuantos ==0){
-      //Detalle=document.getElementById("Detalle"+IdExamen).value;
       // Crear Objeto Ajax
       var eliminar = confirm("No ha seleccionado ningún examen, desea eliminar la solicitud")
     //  alert (eliminar)
       if (eliminar) {			
-         //	alert('IR a eliminar'+ idsolicitud)
       // Hacer el Request y llamar o Dibujar el Resultado
       ObjetoAjax2=NuevoAjax();	
 
       ObjetoAjax2.onreadystatechange = function(){
           if(ObjetoAjax2.readyState==4){
-        //      alert('Oajax2: '+ObjetoAjax2.responseText);
-
              window.close();
           }
       }
@@ -686,44 +687,8 @@ function Urgente(idsolicitud){
           return false;
       }
     }
-    
-    GuardarCambios(idsolicitud);
-    //return false;
-   //alert (largo) 
-    if (largo >0){
-    for (i=1;i< largo;i++){
-        if (document.getElementById('Detalle'+[i]).checked==true){ 
-            //alert (document.getElementById('Detalle'+[i]).value)
-            detalles_urgente[e]=document.getElementById('Detalle'+[i]).value;// se captura y se almacena en el vector            
-            e++;
-        }
-    }
-     }//fin if largo >0
-    
-   //  alert('Cuantos: '+cuantos+' - '+largo+' - '+IdHistorialClinico)
-    
-    //los examenes que pueden borrarse 
-   
-    var cadena_ref=detalles_urgente.toString();// se convierte a string    
-
-  //alert (cadena_ref+'--'+IdHistorialClinico);    
-
-        ObjetoAjax=NuevoAjax();		
-    // Hacer el Request y llamar o Dibujar el Resultado
-    ObjetoAjax.onreadystatechange = function(){
-        if(ObjetoAjax.readyState==4){
-        //    alert('RT: '+ObjetoAjax.responseText);
-           //+
-           // window.close();
-        }
-    }
-    
-    ObjetoAjax.open("GET","Procesar.php?Proceso=VerificarSolicitudUrgente"+"&IdDetallesUrgentes="+cadena_ref+"&IdHistorialClinico="+IdHistorialClinico+"&cuantos="+cuantos+"&idsolicitud="+idsolicitud,true);
-    ObjetoAjax.send(null);
-    
-    return false;
-	
- }
+ }//fin eliminarsolicitud
+ 
  //fn pg
  function updatealldates(){
     $( "input[name^='ftomamx']" ).val( $('#fgentomamxgen').val() );

@@ -416,9 +416,15 @@ function NoEncontrado(nec)
 function limpiar(){
    document.getElementById("frmdatosexpediente").reset();
    document.getElementById("frmverificardatospac").reset();
-   document.getElementById("frmdatosgenerales").reset();
+  // document.getElementById("frmdatosgenerales").reset();
+    
+    $('#CmbServicio').select2('val', 0);
+    $('#cmbSubServ').select2('val', 0);
+    $('#cmbMedico').select2('val', 0);
+    $('#txtconsulta').val('');
     document.getElementById('lyLaboratorio').style.display="none"
     document.getElementById('DatosPaciente').style.display="none"
+
 //	document.getElementById('cmbarea').value=0;
 //	document.getElementById('cboEstudio').value=0;
 //	document.getElementById('cboMuestra').value=0;
