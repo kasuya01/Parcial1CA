@@ -436,7 +436,7 @@ function Retraso(ID){
                 var k=0;
               
 // Comprobar todos los check box que esten chekeados,.....
-         console.log(Contar+'-'+band)
+         //console.log(Contar+'-'+band)
 	if (Contar==0 && band!=0){
            eliminarsolicitud(band);
         }

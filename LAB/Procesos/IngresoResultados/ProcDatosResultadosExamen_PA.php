@@ -242,32 +242,20 @@ $rowdeta=pg_fetch_array($buscarinfo);
 $fechatomamues= isset($rowdeta['f_tomamuestra']) ? $rowdeta['f_tomamuestra'] : null;
 $timeftomamx = strtotime($fechatomamues);
 $dateftomamx = date("Y-m-d", $timeftomamx);
-
-
+//para calcular la fecha de cuando fue la toma de muestra y no la actual
+$fechadatosfijos=$rowdeta['fechadatosfijos'];
 if ($referido!="t"){
   
    // echo $IdHistorial.' -- lugar: '.$lugar; 
-$condatos=$objdatos->condatos($IdHistorial, $lugar);
+$condatos=$objdatos->condatos($IdHistorial, $lugar, $fechadatosfijos);
 $edad=$objdatos->calc_edad($IdHistorial);
 
-/*
-
-  if($db->conectar()==true){
-        $condatos = "SELECT sec_examenfisico.Peso, sec_examenfisico.Talla, Diagnostico, ConocidoPor
-                     FROM sec_historial_clinico
-                     INNER JOIN mnt_expediente ON sec_historial_clinico.IdNumeroExp = mnt_expediente.IdNumeroExp
-                     INNER JOIN mnt_datospaciente ON mnt_expediente.IdPaciente = mnt_datospaciente.IdPaciente
-                     LEFT JOIN sec_diagnosticospaciente ON sec_historial_clinico.IdHistorialClinico = sec_diagnosticospaciente.IdHistorialClinico
-                     LEFT JOIN mnt_cie10 ON sec_diagnosticospaciente.IdDiagnostico1 = mnt_cie10.IdCie10
-                     LEFT JOIN sec_examenfisico ON sec_historial_clinico.IdHistorialClinico = sec_examenfisico.IdHistorialClinico
-                     WHERE sec_historial_clinico.IdHistorialClinico=$IdHistorial
-                     AND sec_historial_clinico.IdEstablecimiento =$lugar";
-
-        $resultado = mysql_query($condatos);*/
 	$rows = pg_fetch_array($condatos);
         
         $Peso=$rows['peso'];
         $Talla=$rows['talla'];
+        $dias=$rows['dias'];
+        $id_sexo=$rows['id_sexo'];
         //$Diagnostico=$rows['diagnostico'];
         $Diagnostico=isset($rows['diagnostico']) ? $rows['diagnostico'] : null;
        // $ConocidoPor=$rows['conocidoPor'];
@@ -278,10 +266,17 @@ $edad=$objdatos->calc_edad($IdHistorial);
       $Talla='-';
       $Diagnostico='-';
       $ConocidoPor='-';
+      $condatos=$objdatos->condatosref($IdHistorial, $lugar, $fechadatosfijos);
+      $rows = pg_fetch_array($condatos);
       $edad=$objdatos->calc_edadref($IdHistorial);
+      $dias=$rows['dias'];
+      $id_sexo=$rows['id_sexo'];
   }
-  
-  $dato_fijo=$objdatos->ConsDatoFijo($iddetallesolicitud,$lugar);
+   $ConRangos=$objdatos->ObtenerCodigoRango($dias);
+   $row_rangos= pg_fetch_array($ConRangos);
+   $idedad=$row_rangos[0];
+
+  $dato_fijo=$objdatos->ConsDatoFijo($iddetallesolicitud,$lugar, $id_sexo, $idedad);
   $dfijo= pg_fetch_array($dato_fijo);
   $valnor=$dfijo['rangos'];
 ?>
@@ -302,7 +297,7 @@ $edad=$objdatos->calc_edad($IdHistorial);
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Establecimiento Solicitante</td>
-                            <td colspan="3" class="StormyWeatherDataTD"><?php echo $_GET['var13'];?></td>
+                            <td colspan="3" class="StormyWeatherDataTD"><?php echo $_GET['var18'];?></td>
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">NEC</td>

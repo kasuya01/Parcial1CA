@@ -219,9 +219,10 @@ $fechatomamues= isset($rowdeta['f_tomamuestra']) ? $rowdeta['f_tomamuestra'] : n
 $timeftomamx = strtotime($fechatomamues);
 $dateftomamx = date("Y-m-d", $timeftomamx);
 
+$fechadatosfijos=$rowdeta['fechadatosfijos'];
 if ($referido!="t"){
     
-$condatos=$objdatos->condatos($IdHistorial, $lugar);
+$condatos=$objdatos->condatos($IdHistorial, $lugar, $fechadatosfijos);
 $edad=$objdatos->calc_edad($IdHistorial);
 
 	$rows = pg_fetch_array($condatos);
@@ -254,7 +255,7 @@ $edad=$objdatos->calc_edad($IdHistorial);
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Establecimiento Solicitante</td>
-                            <td colspan="3" class="StormyWeatherDataTD"><?php echo $_GET['var13'];?></td>
+                            <td colspan="3" class="StormyWeatherDataTD"><?php echo $_GET['var18'];?></td>
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">NEC</td>

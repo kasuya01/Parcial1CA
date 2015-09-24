@@ -89,7 +89,6 @@ $nexamen=$filares['nombre_examen'];
 $f_tomamuestra=$filares['f_tomamuestra'];
 $timefresult = strtotime($fechares);
 $fechares = date("Y-m-d", $timefresult);
- //echo 'emp:'.$responsable;
 ?>
 <div  id="divImpresion" >
     <form name="frmimpresion" >
@@ -177,7 +176,13 @@ $fechares = date("Y-m-d", $timefresult);
                      <?php }else{?>
                             <td  align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                      <?php }  ?>
-                            <td align="justify" class="Estilo5"><?php echo isset($fila['rangoinicio']) ? $fila['rangoinicio'] : null." - ".isset($fila['rangorin']) ? $fila['rangofin'] : null?></td>                   
+                            <td align="justify" class="Estilo5">
+                               <?php 
+                               $rinicial=isset($fila['rangoinicio']) ? $fila['rangoinicio'] : null;
+                               $rfinal=isset($fila['rangofin']) ? $fila['rangofin'] : null;
+                                echo $rinicial." - ".$rfinal;
+                                ?>
+                            </td>                   
                      <?php 
                             if (!empty($observacion)){ ?>
                             <td align="justify" class="Estilo5" colspan="3"><?php echo $observacion?></td>
