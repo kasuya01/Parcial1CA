@@ -29,7 +29,10 @@ if (isset($_SESSION['Correlativo'])) {
         $area1 = $area;
         $nomarea = $rowArea[0];
     }
-
+    $idSolicitud      = $_POST['idSolicitud'] ? $_POST['idSolicitud'] : '';
+    $fechaCita        = $_POST['fechaCita'] ? $_POST['fechaCita'] : '';
+    $numeroExpediente = $_POST['numeroExpediente'] ? $_POST['numeroExpediente'] : '';
+    $idExpediente     = $_POST['idExpediente'] ? $_POST['idExpediente'] : '';
     ?>
     <html>
         <head>
@@ -42,6 +45,17 @@ if (isset($_SESSION['Correlativo'])) {
             <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
             <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
             <script language="JavaScript" >
+                jQuery(document).ready(function($) {
+                    var idSolicitud = '<?php echo $idSolicitud; ?>';
+                    var fechaCita = '<?php echo $fechaCita; ?>';
+                    var numeroExpediente = '<?php echo $numeroExpediente; ?>';
+
+                    if(idSolicitud !== 'undefined' && idSolicitud !== null && idSolicitud !== '') {
+                        $('#txtidexpediente').val(numeroExpediente);
+                        $('#txtfechasolicitud').val(fechaCita);
+                    }
+                });
+
                 function BuscarEstablecimiento(IdTipoEstab) {
                     LlenarEstablecimiento(IdTipoEstab);
                 }

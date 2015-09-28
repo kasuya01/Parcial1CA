@@ -418,7 +418,7 @@ function Retraso(ID){
 		var Contar=document.getElementById('total').value;
                 var  IdHistorialClinico=document.getElementById('IdHistorialClinico').value;
                 var  IdCitaServApoyo=document.getElementById('IdCitaServApoyo').value;
-		accion=4;
+		var accion=4;
 		var j=0;
 		var i=0;
               
@@ -651,7 +651,7 @@ function CargarContenido(){
 /* 			Funcion Para Verificar si el Examen es Urgente.. Crea una Solicitud NUEVA 								*/
 /************************************************************************************************/
 function Urgente(idsolicitud){	
-    alert (idsolicitud)
+    //alert (idsolicitud);
     // Definicion de Variables
     var IdHistorialClinico=document.Editar.IdHistorialClinico.value;
     var largo=document.getElementById('totalurgente').value;
@@ -659,20 +659,22 @@ function Urgente(idsolicitud){
     var e=0;
     var i;       
     var cuantos = document.getElementById('total').value;
+   // alert('aqui 0');
     if (cuantos ==0){
+     //   alert('aqui Entrando');
       //Detalle=document.getElementById("Detalle"+IdExamen).value;
       // Crear Objeto Ajax
-      var eliminar = confirm("No ha seleccionado ningún examen, desea eliminar la solicitud")
+      var eliminar = confirm("No ha seleccionado ningún examen, desea eliminar la solicitud");
     //  alert (eliminar)
       if (eliminar) {			
          //	alert('IR a eliminar'+ idsolicitud)
       // Hacer el Request y llamar o Dibujar el Resultado
       ObjetoAjax2=NuevoAjax();	
-
+      //alert('aqui 1');
       ObjetoAjax2.onreadystatechange = function(){
           if(ObjetoAjax2.readyState==4){
         //      alert('Oajax2: '+ObjetoAjax2.responseText);
-
+           // alert('aqui 2');
              window.close();
           }
       }
@@ -683,6 +685,7 @@ function Urgente(idsolicitud){
 
       }
       else{
+        //  alert('aqui 3');
           return false;
       }
     }

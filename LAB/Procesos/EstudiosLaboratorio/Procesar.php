@@ -140,7 +140,7 @@
 //            
 //        }
 	$St=$SolicitudLab->ActualizarIndicacion($IdDetalle,$Indicacion, $ftomamx);
-        echo $St. '-'.$IdDetalle.'-'.$Indicacion.'-'.$ftomamx;
+       // echo $St. '-'.$IdDetalle.'-'.$Indicacion.'-'.$ftomamx;
    break;
    
    case "EliminarSolicitud":

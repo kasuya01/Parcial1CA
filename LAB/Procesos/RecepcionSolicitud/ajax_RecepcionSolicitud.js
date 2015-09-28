@@ -327,13 +327,13 @@ function calc_edad()
     var total = document.getElementById('topei').value;
     //alert(posicion);
 
-    for (i = 0; i < document.getElementById('topei').value; i++) {
-        fecnac1 = document.getElementById('suEdad[' + i + ']').value;
-        fecnac2 = fecnac1.substring(0, 10);
-        suEdades = calcular_edad(fecnac2);
+    //for (i = 0; i < document.getElementById('topei').value; i++) {
+        //fecnac1 = document.getElementById('suEdad[' + i + ']').value;
+        //fecnac2 = fecnac1.substring(0, 10);
+        //suEdades = calcular_edad(fecnac2);
         // alert(suEdades);
-        document.getElementById('divsuedad[' + i + ']').innerHTML = suEdades;
-    }
+        //document.getElementById('divsuedad[' + i + ']').innerHTML = suEdades;
+    //}
 }
 
 

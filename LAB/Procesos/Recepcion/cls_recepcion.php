@@ -408,6 +408,27 @@ WHERE e.numero ='$nec'";
         }
         return $totalRegs;
     }
+    
+    function VerificarExisteSolicitud($IdSubServicio,$IdEmpleado,$FechaConsulta,$idexpediente,$IdEstabExt,$lugar){
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $SQL = "SELECT sec_solicitudestudios.id, sec_solicitudestudios.estado, to_char(cit_citas_serviciodeapoyo.fecha, 'YYYY-MM-DD') AS fecha_cita,
+                    ctl_estado_servicio_diagnostico.descripcion
+                          FROM sec_historial_clinico
+                          INNER JOIN sec_solicitudestudios ON sec_solicitudestudios.id_historial_clinico= sec_historial_clinico.id
+                          INNER JOIN ctl_estado_servicio_diagnostico ON ctl_estado_servicio_diagnostico.id = sec_solicitudestudios.estado
+                          LEFT  JOIN cit_citas_serviciodeapoyo ON (sec_solicitudestudios.id = cit_citas_serviciodeapoyo.id_solicitudestudios)
+                          WHERE sec_historial_clinico.idsubservicio=$IdSubServicio AND sec_historial_clinico.id_empleado= $IdEmpleado 
+                          AND sec_historial_clinico.fechaconsulta='$FechaConsulta' AND sec_solicitudestudios.id_expediente=$idexpediente";
+            $result = pg_query($SQL); 
+
+        }
+        if (!$result) {
+            return false;
+        } else {
+            return $result;
+        }
+    }
 
 //FN PG
 //funcion para consultar tipo de hospital al que pertenece el establecimiento

@@ -62,15 +62,15 @@ if ($nivel == 7) {
          $("#CmbServicio").select2({
            allowClear: true,
            dropdownAutoWidth: true
-    });
+        });
         $("#cmbSubServ").select2({
             allowClear: true,
             dropdownAutoWidth: true
-         });
+        });
          $("#cmbMedico").select2({
             allowClear: true,
             dropdownAutoWidth: true
-         });
+        });
     });
     
 </script>
@@ -85,25 +85,26 @@ function fillEstablecimiento(idtipoEstab){
   
 	if(idtipoEstab==0){ 
 	  alert("Seleccione un tipo de establecimiento!");
-	} else{
+	}
+        else{
 		  
-	  if (window.XMLHttpRequest) {
-		sendReq = new XMLHttpRequest();
-	  } else if(window.ActiveXObject) {
-		sendReq = new ActiveXObject("Microsoft.XMLHTTP");
-	  } else{
-	  	alert("no pudo crearse el objeto")
-	  }
+            if (window.XMLHttpRequest) {
+                    sendReq = new XMLHttpRequest();
+            } else if(window.ActiveXObject) {
+                    sendReq = new ActiveXObject("Microsoft.XMLHTTP");
+            } else{
+                    alert("no pudo crearse el objeto")
+            }
 
-	  sendReq.onreadystatechange = procesaEsp;
-	  sendReq.open("POST", 'ajax_recepcion.php', true);
-	  sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-	
-	  var param = 'Proceso=fillEstab';
-	  param += '&idtipoEstab='+idtipoEstab;
-	  param += '&idext='+idext;
-          
-	  sendReq.send(param);  	
+              sendReq.onreadystatechange = procesaEsp;
+              sendReq.open("POST", 'ajax_recepcion.php', true);
+              sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+
+              var param = 'Proceso=fillEstab';
+              param += '&idtipoEstab='+idtipoEstab;
+              param += '&idext='+idext;
+
+              sendReq.send(param);  	
 	}
 }
 
@@ -334,6 +335,55 @@ accion=6;
 	  sendReq.send(param);
 }
  
+ 
+ function BuscarExistenciaSolicitud(){
+    accion=13;
+    
+    var IdNumeroExp = document.getElementById("IdNumeroExp").value;
+    var IdEstablecimiento = document.getElementById("cmbEstablecimiento").value;// establecimiento que solicita el estudio
+    var lugar = document.getElementById("lugar").value;
+    var IdSubServicio = document.getElementById("cmbSubServ").value;
+    var IdEmpleado = document.getElementById("cmbMedico").value;
+    var FechaConsulta = document.getElementById("txtconsulta").value;
+   // var IdCitaServApoyo = document.getElementById("IdCitaServApoyo").value;
+  //  var Sexo = document.getElementById("tiposexo").value;
+    var idexpediente = document.getElementById("idexpediente").value;
+        // alert ("algo :"+idexpediente);
+        
+     var mensaje="";
+    if (FechaConsulta==''){
+        mensaje +="Ingrese el dato de la Fecha de la consulta ";
+    }   
+    if (IdSubServicio==0){
+        mensaje +="\nIngrese el dato del subservicio"
+    }
+    if (mensaje !=''){
+       alert (mensaje)
+        return false;
+    }
+        
+    if (window.XMLHttpRequest) {
+		sendReq = new XMLHttpRequest();
+	  } else if(window.ActiveXObject) {
+		sendReq = new ActiveXObject("Microsoft.XMLHTTP");
+	  } else{
+	  	alert("no pudo crearse el objeto")
+	  }
+
+	  sendReq.onreadystatechange = procesaEsp;
+	  sendReq.open("POST", 'ajax_recepcion.php', true);
+	  sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+	
+	  var param = 'Proceso=VerificarSolicitud';
+	  param += '&IdNumeroExp='+IdNumeroExp+'&IdEstablecimiento='+IdEstablecimiento+
+                   '&lugar='+lugar+'&IdSubServicio='+IdSubServicio+
+                   '&FechaConsulta='+FechaConsulta+'&idexpediente='+idexpediente+'&IdEmpleado='+IdEmpleado;
+        //  param += '&idext='+idext;
+         // alert (param)
+	  sendReq.send(param);
+    
+}
+ 
 function guardar(){
 accion=7;
 	nec=document.getElementById('txtexp').value;
@@ -342,7 +392,8 @@ accion=7;
 	SubServ=document.getElementById('cmbSubServ').value;
 	med=document.getElementById('cmbMedico').value;
 	fcon=document.getElementById('txtconsulta').value;
-//alert (nec+"-"+establecimiento+"-"+Serv+"-"+SubServ+"-"+med+"-"+fcon);
+
+        //alert (nec+"-"+establecimiento+"-"+Serv+"-"+SubServ+"-"+med+"-"+fcon);
 	
 	if(document.getElementById('txtexp').value==""){
 		alert(".: Error: Debe Ingresar un Numero de Expediente");
@@ -413,28 +464,6 @@ function NoEncontrado(nec)
 	  sendReq.send(param);    
 }
 
-
-/*function VerificarSolicitud(){
-    
-    accion=13:
-    sendReq.onreadystatechange = procesaEsp;
-    sendReq.open("POST", 'ajax_recepcion.php', true);
-    sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');  
-    IdEstablecimiento = document.getElementById("cmbEstablecimiento").value;// establecimiento que solicita el estudio
-    lugar = document.getElementById("lugar").value;
-    IdSubServicio = document.getElementById("cmbSubServ").value;
-    IdEmpleado = document.getElementById("cmbMedico").value;
-    FechaConsulta = document.getElementById("txtconsulta").value;
-    var param ='ExistenciaSolicitud';
-    param +='&IdEstablecimiento='+IdEstablecimiento;
-    param +='&lugar='+lugar;
-    param +='&IdSubServicio='+IdSubServicio; 
-    param +='&IdEmpleado='+IdSubServicioIdEmpleado;  
-    param +='&FechaConsulta='+FechaConsulta;  
-    sendReq.send(param);   
-}*/
-
-
 function limpiar(){
    document.getElementById("frmdatosexpediente").reset();
    document.getElementById("frmverificardatospac").reset();
@@ -491,9 +520,9 @@ function cargar(){
 function procesaEsp(){
  if (sendReq.readyState == 4){//4 The request is complete
    if (sendReq.status == 200){//200 means no error.
-	  respuesta = sendReq.responseText;	
-//	  alert ('RESPUESTA: '+respuesta+':FIN RESPUESTA');
-//          return false;
+	  respuesta = sendReq.responseText;
+	  //alert ('RESPUESTA '+respuesta+' FIN RESPUESTA');
+          //return false;
 	  switch(accion){
 		case 1:
 		  	document.getElementById('lyMed').innerHTML = respuesta;
@@ -582,8 +611,31 @@ function procesaEsp(){
 		  	document.getElementById('lyTipoEstab').innerHTML = respuesta;
                         document.getElementById('cmbTipoEstab').focus();
 			break;
+                        
+                case 13:
+                        respuesta= JSON.parse(sendReq.responseText);
+
+                        if(respuesta.status) {
+                            if (respuesta.data[0].estado === '1') { // estado es DIGITADA
+                                //redireccionando al paso de recepción de solicitud
+                                $('#idSolicitud').val(respuesta.data[0].id);
+                                $('#fechaCita').val(respuesta.data[0].fecha_cita);
+                                $('#numeroExpediente').val($('#IdNumeroExp').val());
+                                $('#idExpediente').val($('#idexpediente').val());
+                                 
+                                $('form#frm_send_recepcion').submit();
+                            } else {
+                                alert ("Ya existe una solicitud con estos datos y su estado es "+respuesta.data[0].descripcion); 
+                                limpiar();
+                            }
+                        } else {
+                            Examenes();
+                            limpiar();
+                        }
+                break;        
+                        
 		}		
-	}else {
+    }else {
 	  alert('Se han presentado problemas en la petición');
     }
   }  
@@ -600,7 +652,9 @@ function pegarExp(IdExpediente,IdCitaServApoyo,IdEstablecimientoExterno,IdNumero
 }
 
 
-function Examenes(){
+
+function Examenes()
+{
     // POP UP DE EXAMENES DE LABORATORIO
     var IdNumeroExp = document.getElementById("IdNumeroExp").value;
     var IdEstablecimiento = document.getElementById("cmbEstablecimiento").value;// establecimiento que solicita el estudio
@@ -643,9 +697,11 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
 // alert (IdEstablecimiento+ ' -- ' +lugar+ ' -- ' + IdSubServicio+ ' -- ' +IdEmpleado+ ' -- ' +FechaConsulta);
 //alert (Parametros)
 //return false;
-    var url = "../EstudiosLaboratorio/Solicitud.php?"+Parametros;
-    window.open(url,"Solicitudes","fullscreen=yes, toolbar=no, scrollbars=yes");
-    limpiar();
+    
+    
+        var url = "../EstudiosLaboratorio/Solicitud.php?"+Parametros;
+        window.open(url,"Solicitudes","fullscreen=yes, toolbar=no, scrollbars=yes");
+        limpiar();
 }
 //Funcion de cambio de est externo
 function cambioestexterno(){
@@ -721,6 +777,12 @@ function cambioestexterno(){
                 </div>
          
    </form>
+    <form id="frm_send_recepcion" action="../RecepcionSolicitud/Proc_RecepcionSolicitud.php" method="POST" style="display:none;">
+        <input type="hidden" id="idSolicitud" name="idSolicitud" value="" />
+        <input type="hidden" id="fechaCita" name="fechaCita" value="" />
+        <input type="hidden" id="numeroExpediente" name="numeroExpediente" value="" />
+        <input type="hidden" id="idExpediente" name="idExpediente" value="" />
+    </form>
 <div id="DatosPaciente" style="display:none;"></div>
 <div id="lyLaboratorio" class="panel panel-body" style="display:none;">
      <form name="frmdatosgenerales" id="frmdatosgenerales" action="" method="post">  
@@ -829,7 +891,7 @@ function cambioestexterno(){
 
                 <td class="StormyWeatherDataTD" colspan="2">                   
             <center> 
-               <button type="button" id="Examen" name="Examen" class='btn btn-primary' onclick="Examenes()"><span class='glyphicon glyphicon-plus'>&nbsp;Agregar Examenes</button>
+               <button type="button" id="Examen" name="Examen" class='btn btn-primary' onclick="BuscarExistenciaSolicitud()"><span class='glyphicon glyphicon-plus'>&nbsp;Agregar Examenes</button>
                <button type="button" id="Nuevo" name="Nuevo" class='btn btn-primary' onclick="window.location.replace('RecepcionLab.php')"><span class='glyphicon '>&nbsp;Nueva Búsqueda</button>
             </center>
 
