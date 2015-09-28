@@ -272,7 +272,7 @@ switch($Proceso){
             $Nfn=$Nfecha[2]."-".$Nfecha[1]."-".$Nfecha[0];	
             $fechareg = date("Y-m-d h:i:s");
 
-                $NecNuevo=$recepcion->ModificacionExpDatosPac($pn,$pa,$sxn,$Nfn,$fechareg,$lugar);
+            $NecNuevo=$recepcion->ModificacionExpDatosPac($pn,$pa,$sxn,$Nfn,$fechareg,$lugar);
 
             echo $NecNuevo; 
 	break;
@@ -351,7 +351,7 @@ switch($Proceso){
                     <td class="StormyWeatherFieldCaptionTD">Expediente</td>
                     <td class="StormyWeatherDataTD">
                         <input id="IdNumeroExp" class="CobaltInput" style="width:400px; height:100%" size="26" value="'.$DatosPaciente["numero"].'" >
-                        <input type="hidden" id="idexpediente" name="idexpediente" value="'.$DatosPaciente["idexpediente"].' " style="height:100%">
+                        <input type="hidden" id="idexpediente" name="idexpediente" value="'.$DatosPaciente["idexpediente"].'" style="height:100%">
                     </td> 
                 </tr>
                 <tr>
@@ -418,26 +418,30 @@ switch($Proceso){
        //$rslts.= ' DatosPac: '.$DatosPaciente;
         echo $rslts;
         break;
-}
-       /* case 'ExistenciaSolicitud':
-            
+
+        case 'VerificarSolicitud':
+            $IdNumeroExp=$POST['IdNumeroExp'];
             $Establecimiento=$_POST['establecimiento'];
             $lugar = $_POST['lugar'];
             $IdSubServicio = $_POST['IdSubServicio'];
-            $IdEmpleado = $_POST['IdEmpleado'];}
+            $IdEmpleado = $_POST['IdEmpleado'];
             $FechaConsulta=$_POST['FechaConsulta'];
-            
-            $ContSolic=$recepcion->VerificarExisteSolicitud($IdSubServicio,$IdEmpleado,$FechaConsulta,$IdEstabExt,$lugar);
-            
-            if($ContSolic <=1)
-		echo 1;
-            else
-		echo 0;
-               	
-      //  echo '<br/><br/>IDEXT: '.$idext.'<br/>';
-        //$DatosPaciente=$recepcion->DatosPaciente($nec, $idext);
-        break;   */
+            $idexpediente=$_POST['idexpediente'];
+             //  echo $idexpediente;      
+
+            $ContSolic=$recepcion->VerificarExisteSolicitud($IdSubServicio,$IdEmpleado,$FechaConsulta,$idexpediente,$IdEstabExt,$lugar);
+
+            if($ContSolic !== false) {
+                $jsonresponse['status'] = true;
+                $jsonresponse['data']   = pg_fetch_all($ContSolic);
+            } else {
+                $jsonresponse['status'] = false;
+            }
+
+            echo json_encode($jsonresponse);
+            return;
+        break;  
         
-        
+   }     
 
 ?>

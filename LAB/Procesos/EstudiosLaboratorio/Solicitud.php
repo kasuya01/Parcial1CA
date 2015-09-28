@@ -27,6 +27,8 @@ $idexpediente = $_GET["idexpediente"];
 $IdHistorialClinico = isset($_GET['IdHistorialClinico']) ? $_GET['IdHistorialClinico'] : null ;
 //echo 'idexp: '.$idexpediente;
 $FechaSolicitud = $FechaConsulta;
+
+
 /* PARA OBTENER LA IP REAL DE LA PC QUE SE CONECTA */
 if (!empty($_SERVER['HTTP_CLIENT_IP']))
     $ippc = $_SERVER['HTTP_CLIENT_IP'];

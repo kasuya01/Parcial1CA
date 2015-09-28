@@ -430,7 +430,7 @@ function Retraso(ID){
 		var Contar=document.getElementById('total').value;
                 var IdHistorialClinico=document.getElementById('IdHistorialClinico').value;
                 var  IdCitaServApoyo=document.getElementById('IdCitaServApoyo').value;
-		accion=4;
+		var accion=4;
 		var j=0;
 		var i=0;
                 var k=0;
@@ -664,14 +664,15 @@ function CargarContenido(){
  //Eliminar solicitud completa
  function eliminarsolicitud(idsolicitud){
     var cuantos = document.getElementById('total').value;
+   // alert('aqui 0');
     if (cuantos ==0){
       // Crear Objeto Ajax
-      var eliminar = confirm("No ha seleccionado ningún examen, desea eliminar la solicitud")
+      var eliminar = confirm("No ha seleccionado ningún examen, desea eliminar la solicitud");
     //  alert (eliminar)
       if (eliminar) {			
       // Hacer el Request y llamar o Dibujar el Resultado
       ObjetoAjax2=NuevoAjax();	
-
+      //alert('aqui 1');
       ObjetoAjax2.onreadystatechange = function(){
           if(ObjetoAjax2.readyState==4){
              window.close();
@@ -684,6 +685,7 @@ function CargarContenido(){
 
       }
       else{
+        //  alert('aqui 3');
           return false;
       }
     }
