@@ -621,20 +621,25 @@ function procesaEsp(){
                 case 13:
                         respuesta= JSON.parse(sendReq.responseText);
 
-                        if(respuesta.status) {
+                        if(respuesta.status && respuesta.data !== undefined && respuesta.data !== false) {
                             if (respuesta.data[0].estado === '1') { // estado es DIGITADA
                                 //redireccionando al paso de recepción de solicitud
-                                $('#idSolicitud').val(respuesta.data[0].id);
-                                $('#fechaCita').val(respuesta.data[0].fecha_cita);
-                                $('#numeroExpediente').val($('#IdNumeroExp').val());
-                                $('#idExpediente').val($('#idexpediente').val());
+                                if(confirm(".:La Solicitud ya fue ingresada por el medico desea recepcionarla?")){
+                                    $('#idSolicitud').val(respuesta.data[0].id);
+                                    $('#fechaCita').val(respuesta.data[0].fecha_cita);
+                                    $('#numeroExpediente').val($('#IdNumeroExp').val());
+                                    $('#idExpediente').val($('#idexpediente').val());
                                  
-                                $('form#frm_send_recepcion').submit();
+                                    $('form#frm_send_recepcion').submit();
+                                }
+                                else
+                                    limpiar();
+                                    
                             } else {
                                 alert ("Ya existe una solicitud con estos datos y su estado es "+respuesta.data[0].descripcion); 
                                 limpiar();
                             }
-                        } else {
+                        }else {
                             Examenes();
                             limpiar();
                         }

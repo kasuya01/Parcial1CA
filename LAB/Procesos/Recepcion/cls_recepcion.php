@@ -412,7 +412,7 @@ WHERE e.numero ='$nec'";
     function VerificarExisteSolicitud($IdSubServicio,$IdEmpleado,$FechaConsulta,$idexpediente,$IdEstabExt,$lugar){
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $SQL = "SELECT sec_solicitudestudios.id, sec_solicitudestudios.estado, to_char(cit_citas_serviciodeapoyo.fecha, 'YYYY-MM-DD') AS fecha_cita,
+           $SQL = "SELECT sec_solicitudestudios.id, sec_solicitudestudios.estado, to_char(cit_citas_serviciodeapoyo.fecha, 'YYYY-MM-DD') AS fecha_cita,
                     ctl_estado_servicio_diagnostico.descripcion
                           FROM sec_historial_clinico
                           INNER JOIN sec_solicitudestudios ON sec_solicitudestudios.id_historial_clinico= sec_historial_clinico.id
