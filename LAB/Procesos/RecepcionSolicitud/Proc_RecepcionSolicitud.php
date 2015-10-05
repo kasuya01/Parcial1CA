@@ -33,6 +33,7 @@ if (isset($_SESSION['Correlativo'])) {
     $fechaCita        = $_POST['fechaCita'] ? $_POST['fechaCita'] : '';
     $numeroExpediente = $_POST['numeroExpediente'] ? $_POST['numeroExpediente'] : '';
     $idExpediente     = $_POST['idExpediente'] ? $_POST['idExpediente'] : '';
+     
     ?>
     <html>
         <head>
@@ -53,6 +54,7 @@ if (isset($_SESSION['Correlativo'])) {
                     if(idSolicitud !== 'undefined' && idSolicitud !== null && idSolicitud !== '') {
                         $('#txtidexpediente').val(numeroExpediente);
                         $('#txtfechasolicitud').val(fechaCita);
+                        BuscarDatos();
                     }
                 });
 

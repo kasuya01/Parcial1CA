@@ -745,13 +745,13 @@ switch ($opcion)
                 $fechatomamuestra=$_POST['fechatomamuestra'];
                // echo $fechatomamuestra;
                 
-                
+              //echo 'idtipo='.$IdTipo."**".$origen.'**'.$idsolicitud."%%".$IdEmpleado."%%".$idsolicitudPa.'//'.$IdExamen.'**'.$IdEstab;  
                 $consulta=$objdatos->opteneridexamen($IdExamen);
 		$row = pg_fetch_array($consulta);
 		$idexamen1=$row['idexa'];
 		
 		$conExam=$objdatos->BuscarExamen($idsolicitudPa,$IdExamen,$lugar);
-		 $ExisExa=pg_fetch_array($conExam);
+		$ExisExa=pg_fetch_array($conExam);
 		
 		if($ExisExa[0]>=1){	
 			echo "El examen ya existe en la solicitud";
@@ -760,25 +760,26 @@ switch ($opcion)
                     
                     
                     if ($origen==0){
-                        
-                                if ($objdatos->insertar_Examensin($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$fechatomamuestra)==true){
+                        //$var=$objdatos->insertar_Examensin($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$fechatomamuestra);
+                      //echo $var;
+                            if (($objdatos->insertar_Examensin($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$fechatomamuestra)==1) && ($objdatos-> ActualizarSolicitudEstudio($idsolicitudPa)==TRUE)){
 				echo "Examen Agregado!!";
-			}
-			else{
+                            }
+                            else{
 				echo "No se pudo Agregar el Examen!!".$idsolicitudPa.'-'.$idexamen1.'-'.$IdExamen.'-'.$indicacion.'-'.$IdTipo.'-'.$Observa.'-'.$lugar.'-'.$Empleado.'-'.$usuario.'-'.$IdEstab.'-'.$fechatomamuestra;
 			}
                        
-                        }
-                        else {
+                    }
+                    else{
                                 
-                                if ($objdatos->insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$origen,$fechatomamuestra)==true){
+                        if (($objdatos->insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$origen,$fechatomamuestra)==1) && ($objdatos-> ActualizarSolicitudEstudio($idsolicitudPa)==TRUE)){
 				echo "Examen Agregado!!";
 			}
 			else{
 				echo "No se pudo Agregar el Examen!!".$idsolicitudPa.'-'.$idexamen1.'-'.$IdExamen.'-'.$indicacion.'-'.$IdTipo.'-'.$Observa.'-'.$lugar.'-'.$Empleado.'-'.$usuario.'-'.$IdEstab.'-'.$fechatomamuestra.'-'.$origen;
 			}
                             
-                            }
+                    }
                      
 		}
 		

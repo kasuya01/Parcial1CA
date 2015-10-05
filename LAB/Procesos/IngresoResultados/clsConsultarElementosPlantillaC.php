@@ -85,6 +85,32 @@ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$obs
    }*/
 }
 
+function insertarAntibiograma($iddetalle,$idexamen,$codigoResultado,$usuario,$fecharealiz,$fecharesultado,$idempleado){
+     $con = new ConexionBD;
+   if($con->conectar()==true) 
+   {
+       $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen  AND activo = true";
+                    //AND id_metodologia IS NULL
+                    $result = pg_query($query);
+                    if($result && pg_num_rows($result) == 1) {
+                        $row_exam_metod = pg_fetch_array($result);
+                        $id_exam_metod = $row_exam_metod[0];
+                        $id_exam_metod;
+                        $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
+                                  VALUES($id_exam_metod, $iddetalle, $codigoResultado, $usuario, date_trunc('seconds',NOW()),'$fecharealiz','$fecharesultado',$idempleado)";
+                        
+                        $result = pg_query($query);
+                        
+                         if($result)  
+                            return true;
+                        else    
+                            return false;
+                        
+                    }
+   }
+}
+
+
 // INSERTAR DETALLE DE LOS RESULTADOS 
 function insertar_detalle($idresultado,$ibacteria,$idtarjeta,$cantidad,$lugar)
  {
@@ -519,6 +545,29 @@ function LeerTarjeta($lugar)
        return $result;
     }
   }
+  
+  function buscarAnterioresPUnica($idsolicitud, $iddetallesolicitud, $idarea) {
+      $con = new ConexionBD;
+      if ($con->conectar() == true) {
+     $query = "select nombre_examen, sds.id as iddetallesolicitud, lce.id as idexamen 
+    from sec_solicitudestudios sse
+    join sec_detallesolicitudestudios sds 	on (sse.id = sds.idsolicitudestudio)
+    join lab_conf_examen_estab lce 		on (lce.id = sds.id_conf_examen_estab)
+    join mnt_area_examen_establecimiento mae on(mae.id = lce.idexamen)
+    where estadodetalle not in (6,7)
+    and sse.id=$idsolicitud
+    and sds.id=$iddetallesolicitud
+    and mae.id_area_servicio_diagnostico = $idarea
+    order by nombre_examen;";
+         // echo $query;
+         $result = pg_query($query);
+         if (!$result) {
+            return false;
+         } else {
+            return $result;
+         }
+      }
+   }
   
 }//CLASE
 ?>

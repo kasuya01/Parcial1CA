@@ -881,7 +881,8 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                              lab_conf_examen_estab.nombre_examen as nombreexamen, ctl_area_servicio_diagnostico.nombrearea,lab_plantilla.idplantilla,
                              ctl_examen_servicio_diagnostico.idestandar, 
                              (CASE WHEN lab_conf_examen_estab.ubicacion=0 THEN 'Todas las Procedencias' 
-                             WHEN lab_conf_examen_estab.ubicacion=1 THEN 'Hospitalización y Emergencia' 
+                             WHEN lab_conf_examen_estab.ubicacion=1 THEN 'Hospitalización y Emergencia'
+                             WHEN lab_conf_examen_estab.ubicacion=3 THEN 'Ninguna'
                              WHEN lab_conf_examen_estab.ubicacion=4 THEN 'Laboratorio' END ) AS Ubicacion, 
                              (SELECT idestandar FROM ctl_examen_servicio_diagnostico 
                              WHERE lab_conf_examen_estab.idestandarrep=ctl_examen_servicio_diagnostico.id) AS estandarrep, 

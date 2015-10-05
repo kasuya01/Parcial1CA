@@ -180,7 +180,7 @@ switch ($opcion) {
                        t18.idestandar,
                        t02.id_establecimiento_externo as IdEstab,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-                       false AS referido, to_char(t01.f_tomamuestra,'dd/mm/YYYY HH12:MI' ) as f_tomamuestra,
+                       false AS referido, f_tomamuestra,
                        (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
                        t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar
                 FROM sec_detallesolicitudestudios t01 
@@ -234,7 +234,7 @@ switch ($opcion) {
                        t18.idestandar,
                        t02.id_establecimiento_externo,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-                       true AS referido,TO_CHAR(t01.f_tomamuestra,'dd/mm/YYYY HH12:MI') as f_tomamuestra,
+                       true AS referido,f_tomamuestra,
                        (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
                        t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar
                 FROM sec_detallesolicitudestudios t01 
@@ -340,7 +340,7 @@ switch ($opcion) {
     case 2://LLENANDO COMBO DE EMPLEADOS
         $idarea = $_POST['idarea'];
        // echo $idarea;
-        $resultado = "<select id='cmbEmpleados' name='cmbEmpleados' size='1' style='width:96%' class='form-control height'>
+        $resultado = "<select id='cmbEmpleados' name='cmbEmpleados' size='1' style='width:100%' class='form-control height'>
                         <option value='0' >Seleccione...</option>";
         require_once('clsSolicitudesProcesadas.php');
         $obje = new clsSolicitudesProcesadas;

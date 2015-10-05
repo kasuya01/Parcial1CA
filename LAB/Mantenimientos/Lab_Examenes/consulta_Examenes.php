@@ -158,16 +158,27 @@
                             if ($ubicacion=='0'){
                                 echo "<option value='".$ubicacion."' selected='selected'> Todas las procediencias </option>";
 				echo "<option value='1' >Hospitalización y Emergencia</option>";
+                                echo "<option value='3' >Ninguna</option>";
                                 echo "<option value='4' >Laboratorio</option>";
                             }
                             if ($ubicacion=='1'){
                             	echo "<option value='".$ubicacion."' selected='selected'>Hospitalización y Emergencia</option>";
 				echo "<option value='0' >Todas las procediencias</option>
+                                      <option value='3' >Ninguna</option>
                                       <option value='4' >Laboratorio</option>";
                             }
-                             if ($ubicacion=='4'){
+                            
+                            if ($ubicacion=='3'){
+                            	echo "<option value='".$ubicacion."' selected='selected'>Ninguna</option>";
+				echo "<option value='0'>Todas las procediencias</option>
+                                      <option value='1' >Hospitalización y Emergencia</option>
+                                      <option value='4'>Hospitalización y Emergencia</option>";
+                            }
+                            
+                            if ($ubicacion=='4'){
                             	echo "<option value='".$ubicacion."' selected='selected'>Laboratorio</option>";
 				echo "<option value='0'>Todas las procediencias</option>
+                                      <option value='3' >Ninguna</option>
                                       <option value='4'>Hospitalización y Emergencia</option>";
                             }
                             

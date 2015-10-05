@@ -138,7 +138,9 @@ switch ($opcion) {
 				            $imprimir.="</select></td></tr>";
                                 
 				$imprimir.="<tr>
-						<td colspan='5'><input type='button' name='Submit' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaB()'></td>
+						<td colspan='5'>
+                                                    <input type='button' name='Submit' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaB()'>
+                                                </td>
 					    </tr>
 				</table>";
 				
@@ -175,7 +177,7 @@ switch ($opcion) {
                                                    $total=pg_fetch_array($con_total);
                                                    //echo $total[0];
                                                 if($total[0]>=1){      
-                                                       $imprimir.= "<select id='txtresultadosub[".$pos."]' name='txtresultadosub[".$pos."]'  size='1' style='width:260px'>
+                                                       $imprimir.= "<select id='txtresultadosub[".$pos."]' name='txtresultadosub[".$pos."]'  size='1' style='width:270px' class='form-control  height'>
                                                                     <option value='0' >--Seleccione Resultado--</option>";
                                                     $con_result=$objdatos->leer_posibles_resultados($rowsub['idsubelemento']);
                                                 $orden= pg_fetch_all($con_result);//print_r($orden);
@@ -196,7 +198,8 @@ switch ($opcion) {
                                                 }
                                                 else{
                                                                            //  print_r($row_result);
-                                                    $imprimir.= "<input size='30' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]' onKeyPress='return acceptNum(event)'>
+                                                    // <input size='30' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]' onKeyPress='return acceptNum(event)'>
+                                                    $imprimir.= "<textarea name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]' cols='30' onKeyPress='return acceptNum(event)'></textarea>
 								 <input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>
                                                                  <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''  >
 					    </td>";
@@ -256,7 +259,7 @@ switch ($opcion) {
 					<tr>
 					    <td class='StormyWeatherDataTD'>*Resultado Tabulador</td>
 					    <td colspan='3' class='StormyWeatherDataTD'>
-					        <select id='cmbTabulador' name='cmbTabulador' size='1'>
+					        <select id='cmbTabulador' name='cmbTabulador' size='1' class='form-control height'>
 					            <option value='0' >--Seleccione Resultado--</option>";
                                                         $conResult=$objdatos->LlenarResultados($IdEstandar);
                                                         while ($rows =pg_fetch_array($conResult)) {
@@ -268,10 +271,12 @@ switch ($opcion) {
                                            
                                             <tr class='StormyWeatherDataTD'>
 						<td colspan='4' class='StormyWeatherDataTD' align='right'>
-                                                    <input type='button' name='Submit' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaB()'>
-						</td>
+                                                    <button type='button' id='Submit' align='center' class='btn btn-primary' title='Vista Previa de Resultados'  onclick='MostrarVistaPreviaPlantillaB();'>&nbsp;Vista Previa de Resultados</button>
+                                                    
+                                                </td>						
 					    </tr>
 					</table>";
+                                            //<input type='button' name='Submit' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaB();'/>
 				echo $imprimir;
 				break;
 		}
@@ -629,11 +634,14 @@ switch ($opcion) {
                                 $imprimir.="<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' value='".$fecharealiz."'>
                                              <input type='hidden' name='txtfresultado' id='txtfresultado' value='".$fecharesultado."' />";
 				$imprimir.="<tr>
-                                                <td colspan='5' align='center' ><br>
-                                                    <input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaB()'>
-                                                    <input type='button' name='Imprimir'  id='Imprimir' value='Imprimir'
-							Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".utf8_encode($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\",\"".$valores_combos."\",".$idestab.",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'>
-                                                    <input type='button' id='btnSalir' value='Cerrar' onclick='Cerrar()'>
+                                                <td colspan='5' align='center' ><br>";
+                                                   // <input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaB()'>
+                                //        <input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".utf8_encode($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\",\"".$valores_combos."\",".$idestab.",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'>
+                                // <input type='button' id='btnSalir' value='Cerrar' onclick='Cerrar()'>
+                                $imprimir.= "<button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarResultadosPlantillaB();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>
+                                             <button type='button' id='Imprimir' align='center' class='btn btn-primary' title='Imprimir Resultados' Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".utf8_encode($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\",\"".$valores_combos."\",".$idestab.",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Imprimir Resultado</button>
+                                             <button type='button' id='btnSalir' align='center' class='btn btn-primary' title='Cerrar'  onclick='Cerrar();'><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br/><br><br/>     
+                                                   
 						</td>
                                             </tr>
 					</table>";

@@ -23,7 +23,7 @@ switch ($opcion)
      //  echo $fecharealiz." * ".$fecharesultado;
 	$consulta=$objdatos->LeerAntibioticos($idtarjeta);
 	$pos=0;
-	     $imprimir="<table width='70%' border='0' align='center' class='StormyWeatherFormTABLE'>
+	     $imprimir="<table width='75%' border='0' align='center' class='StormyWeatherFormTABLE'>
 			<tr>
 				<td width='40%' class='StormyWeatherFieldCaptionTD'> CULTIVO CON CUENTA DE COLONIAS</td>
 				<td width='60%' colspan='2' class='StormyWeatherDataTD'>
@@ -44,7 +44,7 @@ switch ($opcion)
 					<input name='oidantibiotico[".$pos."]' type='hidden' id='oidantibiotico[".$pos."]' value='".$row['idantibiotico']."'></td>
                                           
                             <td width='20%' class='StormyWeatherDataTD'> 
-                                    <select id='cmbresultado[".$pos."]' name='cmbresultado[".$pos."]'  size='1' style='width:205px'>
+                                    <select id='cmbresultado[".$pos."]' name='cmbresultado[".$pos."]'  size='1' class='form-control height'>
                                         <option value='0' >--Seleccione Resultado--</option>";
                                     $con_result = $objdatos->consultar_resultados($row['idantibiotico']);
                                     while ($row_result = pg_fetch_array($con_result)) {
@@ -71,13 +71,14 @@ switch ($opcion)
                             <td class='StormyWeatherFieldCaptionTD'>Observación:</td>
                             <td colspan='2'class='StormyWeatherDataTD'><textarea name='txtobservacion' type='text' id='txtobservacion' size='50' cols='50'></textarea></td>
                         </tr>
-                <tr>
-				<td width='100%' colspan='3' class='StormyWeatherDataTD'  align='right'>
-				<input type='button' name='Submit' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaC()'>
-				</td>
-			</tr>
+                        <tr>
+                            <td width='100%' colspan='3' class='StormyWeatherDataTD'  align='right'>
+                                
+                                <button type='button' id='Submit' align='center' class='btn btn-primary' title='Vista Previa de Resultados'  onclick='MostrarVistaPreviaPlantillaC();'>&nbsp;Vista Previa de Resultados</button>
+                            </td>
+                        </tr>
 	           </table>";
-
+//<input type='button' name='Submit' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaC()'>
 	echo $imprimir;
 
    break;
@@ -242,23 +243,33 @@ switch ($opcion)
                                   </td>
                               </tr>
                                
-                                        <tr>
-                                            <td colspan='1'>Observación:</td>
-                                            <td colspan='5' align='left'>".$observacion."</td>
-                                        </tr>
-                                       
+                                <tr>
+                                    <td colspan='1'>Observación:</td>
+                                    <td colspan='5' align='left'>".$observacion."</td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </td>
+                                </tr>
                                         <tr>
                                             <td colspan='6'>
-                                               <input type='button' name='btnGuardar'  id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaC()'>
-                                               
-                                               <input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaC(".$idsolicitud.",\"".$idexamen."\",\"".$resultado."\",\"".$row_empleado['empleado']."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_antibioticos)."\",\"".$codigos_antibioticos."\",".$idbacteria.",\"".$cantidad."\",".$idtarjeta.",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".$idobservacion."\",\"".$valores_interpretacion."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\");' />
                                               
-                                               <input type='button' name='Ingresar' id='Ingresar' value='Ingresar otro Resultado' onclick='IngresarOtro()'\>   
-                                               <input type='button' id='btnSalir' value='cerrar' onclick='Cerrar()'
+                                               <button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarResultadosPlantillaC();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>
+                                               <button type='button' id='Imprimir' align='center' class='btn btn-primary' title='Imprimir Resultados' Onclick='ImprimirPlantillaC(".$idsolicitud.",\"".$idexamen."\",\"".$resultado."\",\"".$row_empleado['empleado']."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_antibioticos)."\",\"".$codigos_antibioticos."\",".$idbacteria.",\"".$cantidad."\",".$idtarjeta.",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".$idobservacion."\",\"".$valores_interpretacion."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\");'><span class='glyphicon glyphicon-print'></span>&nbsp;Imprimir Resultado</button>
+                                               <button type='button' id='Ingresar' align='center' class='btn btn-primary' title='Ingresar otro Resultado'  onclick='IngresarOtro();'>&nbsp;Ingresar otro Resultado</button>     
+                                               <button type='button' id='btnSalir' align='center' class='btn btn-primary' title='Cerrar'  onclick='Cerrar();'><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br/><br><br/>     
                                             </td>
                                         </tr>
                            </table>";
 			   //<td><input type='button' name='Ingresar' id='Ingresar' value='Ingresar otro Resultado' onclick='IngresarOtro()'\><input type='button'  name='Submit' value='Cerrar' Onclick='salir();'></td>
+                           // <input type='button' name='btnGuardar'  id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaC()'>
+                           // <input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaC(".$idsolicitud.",\"".$idexamen."\",\"".$resultado."\",\"".$row_empleado['empleado']."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_antibioticos)."\",\"".$codigos_antibioticos."\",".$idbacteria.",\"".$cantidad."\",".$idtarjeta.",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".$idobservacion."\",\"".$valores_interpretacion."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\");' />
+                           //<input type='button' name='Ingresar' id='Ingresar' value='Ingresar otro Resultado' onclick='IngresarOtro()'\>   
+                           //<input type='button' id='btnSalir' value='cerrar' onclick='Cerrar()'
 	echo $imprimir;
 	break;
 
@@ -305,9 +316,10 @@ switch ($opcion)
                 if ($resultado=="P")
                 {
                       $codigoResultado=4;
+                      $CodAntibiograma=6;
                       $ultimo= $objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado);
-
-                      if ($ultimo != "")
+                      $antibiograma= $objdatos->insertarAntibiograma($iddetalle,$idexamen,$CodAntibiograma,$usuario,$fecharealiz,$fecharesultado,$idempleado);
+                      if (($ultimo != "") && ($antibiograma==TRUE))
                       {
                               $idresultado=$ultimo;
                               //insertando el detalle
@@ -344,7 +356,8 @@ switch ($opcion)
                                       echo "Los resultados no pueden ser guardados consulte al Administrador...";
                               }
                   }
-
+                  
+                  
                 }
                 else{ echo "Los resultados no pueden ser guardados consulte al Administrador...";}
    break;
@@ -363,9 +376,9 @@ switch ($opcion)
 
         $imprimir="<table class='StormyWeatherFormTABLE' width='100%' >
             	   <tr>
-                        <td width='40%' class='StormyWeatherFieldCaptionTD'>Observaci&oacute;n</td>
-			<td width='60%' class='StormyWeatherDataTD' >
-                            <select id='cmbObservacion' name='cmbObservacion' size='1' >
+                        <td width='35%' class='StormyWeatherFieldCaptionTD'>Observaci&oacute;n</td>
+			<td width='65%' class='StormyWeatherDataTD' >
+                            <select id='cmbObservacion' name='cmbObservacion' size='1' style='width:100%' class='form-control height' >
                                 <option value='0' >--Seleccione Observaci&oacute;n--</option>";
                                    while($row = pg_fetch_array($consulta_ob)){
                                      $imprimir.="<option value='" . $row['idobservacion']. "'>" . $row['observacion'] . "</option>";
@@ -498,20 +511,21 @@ switch ($opcion)
 			<tr>
 			  	<td colspan='6' align='center'>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 			</tr>
-
+                        <br>
 		<div id='divBotones'>
 			<tr>
-                                <td colspan='5' align='center'>
-			                <input type='button' id='btnGuardar'  value='Guardar Resultados' onclick='GuardarResultadosNegativosPlantillaC()'>
-					<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaCN(".$idsolicitud.",\"".$idexamen."\",\"".$idarea."\",\"".$resultado."\",\"".htmlentities($row_empleado['empleado'])."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($row_observacion['observacion'])."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;' />
-                                            
-					<input type='button' id='btnSalir' value='Cerrar' onclick='Cerrar()'>
-				</td>
-
-			</tr>
+                            <td colspan='6' align='center'>
+                                <button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarResultadosNegativosPlantillaC();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>
+				<button type='button' id='Imprimir' align='center' class='btn btn-primary' title='Imprimir Resultados' Onclick='ImprimirPlantillaCN(".$idsolicitud.",\"".$idexamen."\",\"".$idarea."\",\"".$resultado."\",\"".htmlentities($row_empleado['empleado'])."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($row_observacion['observacion'])."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Imprimir Resultado</button>        
+				<button type='button' id='btnSalir' align='center' class='btn btn-primary' title='Cerrar'  onclick='Cerrar();'><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button>
+			    </td>
+                        </tr>
 		</div>
 	 </table>";
-//\"".htmlentities($establecimiento)."\",
+           //<input type='button' id='btnGuardar'  value='Guardar Resultados' onclick='GuardarResultadosNegativosPlantillaC()'>
+           //<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaCN(".$idsolicitud.",\"".$idexamen."\",\"".$idarea."\",\"".$resultado."\",\"".htmlentities($row_empleado['empleado'])."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($row_observacion['observacion'])."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;' />
+           //<input type='button' id='btnSalir' value='Cerrar' onclick='Cerrar()'>
+           //\"".htmlentities($establecimiento)."\",
 	echo $imprimir;
 	break;
 

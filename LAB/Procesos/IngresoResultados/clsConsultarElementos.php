@@ -474,27 +474,27 @@ else
         
     }
     //Buscar si existen solicitudes anteriores con ese mismo detalle.
-   function buscarAnterioresPUnica($idsolicitud,$iddetallesolicitud){
-         $con = new ConexionBD;
-        if ($con->conectar() == true) {
-          $query= "select nombre_examen, sds.id as iddetallesolicitud, lce.id as idexamen 
-from sec_solicitudestudios sse
-join sec_detallesolicitudestudios sds 	on (sse.id = sds.idsolicitudestudio)
-join lab_conf_examen_estab lce 		on (lce.id = sds.id_conf_examen_estab)
-join mnt_area_examen_establecimiento mae on(mae.id = lce.idexamen)
-where estadodetalle not in (6,7)
-and sse.id=$idsolicitud
-and sds.id=$iddetallesolicitud
---and mae.id_area_servicio_diagnostico = $idarea
-order by nombre_examen;";
-          //echo $query;
-            $result = pg_num_rows(pg_query($query));
-            if (!$result) {
-                return false;
-            } else {
-                return $result;
-            }
-        }
-    }//fin BuscarAnterioresPUnica
+  function buscarAnterioresPUnica($idsolicitud, $iddetallesolicitud, $idarea) {
+      $con = new ConexionBD;
+      if ($con->conectar() == true) {
+    $query = "select nombre_examen, sds.id as iddetallesolicitud, lce.id as idexamen 
+    from sec_solicitudestudios sse
+    join sec_detallesolicitudestudios sds 	on (sse.id = sds.idsolicitudestudio)
+    join lab_conf_examen_estab lce 		on (lce.id = sds.id_conf_examen_estab)
+    join mnt_area_examen_establecimiento mae on(mae.id = lce.idexamen)
+    where estadodetalle not in (6,7)
+    and sse.id=$idsolicitud
+    and sds.id=$iddetallesolicitud
+    and mae.id_area_servicio_diagnostico = $idarea
+    order by nombre_examen;";
+         // echo $query;
+         $result = pg_query($query);
+         if (!$result) {
+            return false;
+         } else {
+            return $result;
+         }
+      }
+   }
 }//CLASE
 ?>

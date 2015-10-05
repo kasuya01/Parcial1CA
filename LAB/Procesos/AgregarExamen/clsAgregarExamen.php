@@ -154,11 +154,9 @@ function BuscarExamen($idsolicitudPa,$idexamen,$lugar){
 	$con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
 	if($con->conectar()==true){
-	   $query = "SELECT count(*) FROM sec_detallesolicitudestudios 
-                     WHERE id_conf_examen_estab='$idexamen' AND idsolicitudestudio=$idsolicitudPa"
-                   . "and estadodetalle!=6 "
-                   . "and (id_estado_rechazo in (1)
-                   or id_estado_rechazo is null)";
+	    $query = "SELECT count(*) FROM sec_detallesolicitudestudios 
+                     WHERE id_conf_examen_estab='$idexamen' AND idsolicitudestudio=$idsolicitudPa
+                      and estadodetalle!=6 and (id_estado_rechazo in (1) or id_estado_rechazo is null)";
 	   /*"SELECT count(*) FROM sec_detallesolicitudestudios 
 				 WHERE IdExamen='$idexamen' AND IdEstablecimiento=$lugar AND IdSolicitudEstudio=$idsolicitud";*/
 			 
@@ -238,7 +236,7 @@ function insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo
                 $lugar,$IdEstab,$Empleado,$usuario,date_trunc('seconds',NOW()),'$fechatomamuestra',1, current_date)";
             
             $result = @pg_query($query);
-    //echo $query;
+       //echo $query;
 	 
      if (!$result)
        return false;
@@ -248,7 +246,20 @@ function insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo
  }
 
  
- 
+ function ActualizarSolicitudEstudio($idsolicitud){
+  $con = new ConexionBD;
+   if($con->conectar()==true) 
+   {
+      $query = "UPDATE sec_solicitudestudios SET estado = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = 'P') WHERE id = $idsolicitud";
+      $result = @pg_query($query);
+    //echo $query;
+	 
+     if (!$result)
+       return false;
+     else
+       return true;
+   } 
+ }
 
 function ObtenerCodigoTecnico($usuario){
 

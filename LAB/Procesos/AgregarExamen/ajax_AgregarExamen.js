@@ -456,7 +456,6 @@ function imprimiretiquetas()
 
 function GuardarExamen(cerrar)
 {
-    
 	ajax=objetoAjax();
 	opcion=10;
 	//DATOS DE ENCABEZADO DE LOS RESULTADOS
@@ -471,7 +470,7 @@ function GuardarExamen(cerrar)
                 IdEstab=document.getElementById('txtIdEstablecimiento').value;
                 OrigenMuestra=document.getElementById('cmbOrigen').value;
                 fechatomamuestra=document.getElementById('txttomamuestra').value;
-               // alert(tipoMuestra+"**"+OrigenMuestra);
+               // alert(tipoMuestra+"**"+OrigenMuestra+'**'+idsolicitud+"%%"+IdEmpleado+"%%"+idsoli+'//'+idExamen+'**'+IdEstab);
 		//alert(idsolicitud+"%%"+IdEmpleado+"%%"+tipoMuestra);
 		ajax.open("POST", "../AgregarExamen/ctrAgregarExamen.php",true);
     //alert(IdEmpleado);
@@ -488,8 +487,9 @@ function GuardarExamen(cerrar)
 			if (ajax.readyState==4) 
 			{	if (ajax.status == 200)
 				{  //mostrar los nuevos registros en esta capa
-				 	alert(ajax.responseText);
-					//CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento)
+                                    
+				//document.getElementById('otrospace').innerHTML=ajax.responseText;
+                                        //CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento)
                                        $("#cmbArea").val(0);
                                        $("#cmbExamen").val(0);
                                        $("#cmbMuestra").val(0);
@@ -499,8 +499,10 @@ function GuardarExamen(cerrar)
                                        $("#txttomamuestra").val('');
                                        $("#txtindicacion").val('');
                                        $("#txtObservacion").val('');
-                                       if (cerrar==0)
+                                       if (cerrar==0){                                          
+                                          alert(ajax.responseText);
                                           window.close();
+                                      }
                                        else{
                                            reloaddetallemodal(idsolicitud);
                                        }

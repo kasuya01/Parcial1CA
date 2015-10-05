@@ -165,7 +165,7 @@ case 1:
                             <tr>
                                 <td class='StormyWeatherFieldCaptionTD'>*Resultado Tabulador</td>
 				<td colspan='3' class='StormyWeatherDataTD'>
-                                    <select id='cmbTabulador' name='cmbTabulador' size='1'>
+                                    <select id='cmbTabulador' name='cmbTabulador' size='1' class='form-control height'>
 					<option value='0' >--Seleccione Resultado--</option>";
 					$conResult=$obj->LlenarResultados($IdEstandar);
 					while ($rows =pg_fetch_array($conResult)){
@@ -176,7 +176,8 @@ case 1:
 		$imprimir.="<tr>
 				<td colspan='5'  align='right' class='StormyWeatherDataTD'>
                                     <input type='hidden' id='oculto' value='".$pos."'>
-                                    <input type='button' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaE()'>
+                                    
+                                    <button type='button' id='Submit' align='center' class='btn btn-primary' title='Vista Previa de Resultados'  onclick='MostrarVistaPreviaPlantillaE();'>&nbsp;Vista Previa de Resultados</button>
 				</td>
 			    </tr>
 			    <tr>
@@ -185,6 +186,7 @@ case 1:
 		        </table>";
 		echo $imprimir;
 			//mysql_free_result($consulta);
+                //
 		break;
 		}
 break;
@@ -483,22 +485,21 @@ case 2://vista Previa de Resultado
                 <tr>
                     <td colspan='6' class='Estilo6'>&nbsp;</td>
                 </tr>
-                <tr>
-                    <td colspan='2' class='Estilo6'>&nbsp;&nbsp;</td>
-                    <td colspan='1' class='Estilo6' >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SELLO:</td>
-                    <td colspan='1' class='Estilo6' >___________&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp</td>
-                    <td colspan='1' class='Estilo6' >FIRMA:</td>
-                    <td colspan='2' class='Estilo6' >________________&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td>
-                </tr>
+             
                         <tr>
                             <td colspan='5' align='center'>
-                                <input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarPlantillaE()'>
-				<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaE(".$idsolicitud.",\"".$idexamen."\",\"".$row_empleado['empleado']."\",\"".$row_generales['procedencia']."\",\"".$row_generales['subservicio']."\",\"".$comentarios."\",\"".$valores."\",\"".$codigos."\",\"".$observacion."\",\"".htmlentities($establecimiento)."\",\"".$sexo."\",\"".$idedad."\",\"".$valores_combos."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\");'>
-                         	<input type='button' id='btnSalir' value='cerrar' onclick='Cerrar()'>
+                                
+                                <button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarPlantillaE();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>
+                                <button type='button' id='Imprimir' align='center' class='btn btn-primary' title='Imprimir Resultados' Onclick='ImprimirPlantillaE(".$idsolicitud.",\"".$idexamen."\",\"".$row_empleado['empleado']."\",\"".$row_generales['procedencia']."\",\"".$row_generales['subservicio']."\",\"".$comentarios."\",\"".$valores."\",\"".$codigos."\",\"".$observacion."\",\"".htmlentities($establecimiento)."\",\"".$sexo."\",\"".$idedad."\",\"".$valores_combos."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\");'><span class='glyphicon glyphicon-print'></span>&nbsp;Imprimir Resultado</button>				
+                                <button type='button' id='btnSalir' align='center' class='btn btn-primary' title='Cerrar'  onclick='Cerrar();'><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br/><br><br/>     
+
+                         	
                             </td>
 			</tr>";
 	$imprimir.="</table>";
-
+//<input type='button' id='btnGuardar' value='Guardar Resultados' onclick='GuardarPlantillaE()'>
+//<input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaE(".$idsolicitud.",\"".$idexamen."\",\"".$row_empleado['empleado']."\",\"".$row_generales['procedencia']."\",\"".$row_generales['subservicio']."\",\"".$comentarios."\",\"".$valores."\",\"".$codigos."\",\"".$observacion."\",\"".htmlentities($establecimiento)."\",\"".$sexo."\",\"".$idedad."\",\"".$valores_combos."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\");'>        
+        //<input type='button' id='btnSalir' value='cerrar' onclick='Cerrar()'>
    echo $imprimir;
    }
    break;

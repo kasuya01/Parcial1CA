@@ -197,6 +197,7 @@ if ($nivel == 7) {
                                     <option value="" >--Seleccione--</option>
                                     <option value="0" >Todas las procediencias</option>
                                     <option value="1" >Hospitalización y Emergencia</option>
+                                    <option value="3" >Ninguna</option>
                                     <option value="4" >Laboratorio</option>
 				</select>
                             </td>
