@@ -8,7 +8,7 @@ $area  = $_SESSION['Idarea'];
 $corr  = $_SESSION['Correlativo'];
 $cod   = $_SESSION['IdEmpleado'];
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
-include_once $ROOT_PATH.'encabezado.php';
+include_once $ROOT_PATH.'/encabezado.php';
 
 
 
