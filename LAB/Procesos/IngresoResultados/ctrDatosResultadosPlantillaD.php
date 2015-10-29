@@ -87,9 +87,7 @@ switch ($opcion)
 	$reg=$obj->ValidacionElemento($idresultado,$idelemento);
 
 	if($reg == 0)
-	 {
-
-		$obj->insertar_elemento($idresultado,$idelemento,$idcantidad,$lugar);
+	 {  $obj->insertar_elemento($idresultado,$idelemento,$idcantidad,$lugar);
 		//consultando los resultados ingresados
 		//$idresultado=$ultimo;
 		$consulta=$obj->MostrarElementosAgregados($idresultado);
@@ -207,34 +205,43 @@ switch ($opcion)
                     <tr>
 			<td colspan='1'>&nbsp;</td>
                         <td colspan='4' aling='center' >
-                        	<table width='100%' border='0'aling='center' cellspacing='0' >
-                                    <tr>
-                                        <td  aling='center' ><strong>Elemento de Tinci&oacute;n</strong>
-					</td>
-					<td  aling='center' ><strong>Cantidad</strong>
-					</td>
-                                    </tr>";
+                            <table width='100%' border='0'aling='center' cellspacing='0' >
+                                <tr>
+                                    <td  aling='center' ><strong>Elemento de Tinci&oacute;n</strong></td>
+				    <td  aling='center' ><strong>Cantidad</strong></td>
+                                </tr>";
 			while($row = pg_fetch_array($consulta)){
-	$resultado.= "              <tr>
-					<td>$row[0]</td>
-					<td>$row[1]</td>
-                                    </tr>";
+	$resultado.= "          <tr>
+				    <td>$row[0]</td>
+				    <td>$row[1]</td>
+                                </tr>";
 			}
 			pg_free_result($consulta);
 			pg_free_result($consulta_datos);
 			pg_free_result($datos_generales);
-                   $resultado.="</table>
-                       </td>
-                       <td colspan='1'>&nbsp;</td>
-                   </tr>";
-       $resultado.="<tr>
-			<td coslpan='6' aling='center'>
-				<input type='submit' id='btnImprimir' value='Imprimir' Onclick='ImprimirPlantillaD(".$idsolicitud.",\"".$idexamen."\",".$idresultado.",\"".$idempleado."\",\"".$establecimiento."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;' />
-				<input type='button' id='btnSalir' value='Cerrar' onclick='Cerrar()'>
-			</td>
+                $resultado.="</table>
+                        </td>
+                        <td colspan='1'>&nbsp;</td>
                     </tr>
-		</table>";
+                    <tr>
+                        <td colspan='3'>&nbsp;</td>
+			<td coslpan='1'>
+		            <button style='display:block' type='button' class='btn btn-primary'  name='Imprimir'  id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaD(".$idsolicitud.",\"".$idexamen."\",".$idresultado.",\"".$idempleado."\",\"".$establecimiento."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
+                        </td>
+                        <td colspan='1'><a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true' style='display:block; height:20px'>
+                            <button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>
+                        </td>
+                        <td coslpan='1'>
+                            <button type='button' id='btnSalir' align='center' class='btn btn-primary' title='Cerrar' onclick='Cerrar();'><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button>
+                        </td>
+                    </tr>
+                </table>";
+   
 	echo $resultado;
+        //<input type='submit' id='btnImprimir' value='Imprimir' Onclick='ImprimirPlantillaD(".$idsolicitud.",\"".$idexamen."\",".$idresultado.",\"".$idempleado."\",\"".$establecimiento."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;' />
+                                    
+	//			<input type='button' id='btnSalir' value='Cerrar' onclick='Cerrar()'>
+        // <button type='button' id='Imprimir' name='Imprimir' align='center' class='btn btn-primary' title='Imprimir'  Onclick='ImprimirPlantillaD(".$idsolicitud.",\"".$idexamen."\",".$idresultado.",\"".$idempleado."\",\"".$establecimiento."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;' ><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
    break;
 
    case 4:

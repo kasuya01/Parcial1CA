@@ -111,15 +111,14 @@ if ($nivel == 7) {
                         </tr>
                         <tr>		
                             <td class="StormyWeatherFieldCaptionTD" width="20%">Tipo Establecimiento</td>
-                            
                             <td class="StormyWeatherDataTD"  width="35%">
-                                            <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:443px" onChange="BuscarEstablecimiento(this.value)" class="form-control height">
-                                                    <option value="0" >Seleccione un Tipo de Establecimiento</option>
-                                                    <?php
-                                                    $db = new ConexionBD;
-                                                    if($db->conectar()==true){
-                                                            $consulta  = "SELECT id,nombre 
-                                                                          FROM ctl_tipo_establecimiento ORDER BY nombre";
+                                <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:443px" onChange="BuscarEstablecimiento(this.value)" class="form-control height">
+                                    <option value="0" >Seleccione un Tipo de Establecimiento</option>
+                                    <?php
+                                        $db = new ConexionBD;
+                                        if($db->conectar()==true){
+                                            $consulta  = "SELECT id,nombre 
+                                                     FROM ctl_tipo_establecimiento ORDER BY nombre";
                                                             $resultado = pg_query($consulta);
                                                             //por cada registro encontrado en la tabla me genera un <option>
                                                             while ($rows = pg_fetch_array($resultado)){
@@ -134,7 +133,7 @@ if ($nivel == 7) {
                                     <td class="StormyWeatherDataTD" width="35%">
                                             <div id="divEstablecimiento" >
                                                     <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:500px" class="js-example-basic-single"> 
-                                                     <!--       <option value="0" >Seleccione un Establecimiento</option>-->
+                                                            <option value="0" >Seleccione un Establecimiento</option>
                                                             <?php echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
                                                             include_once("../../../Conexion/ConexionBD.php");
                                                             $con = new ConexionBD;
@@ -171,7 +170,7 @@ if ($nivel == 7) {
                                                        INNER JOIN ctl_modalidad ON ctl_modalidad.id = mnt_area_mod_estab.id_modalidad_estab
                                                        LEFT JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab.id_servicio_externo_estab) 
                                                        LEFT JOIN mnt_servicio_externo ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo) 
-                                                       ORDER by mnt_area_mod_estab.id,ctl_modalidad.nombre,ctl_area_atencion.nombre";
+                                                       ORDER by ctl_modalidad.nombre,ctl_area_atencion.nombre";
                                                                        /*     "SELECT t01.id,
                                                                                   t01.nombre
                                                                                   FROM ctl_area_atencion t01

@@ -19,7 +19,7 @@ $consulta= $objareas->LeerTipoMuestra();
 ?>
 <form name= "frmModificar" action="" onsubmit="enviarDatos(); return false">
   <input name="opcion" type="hidden" value="N" />
-<table width="60%" border="0" align="center" class="StormyWeatherFormTABLE">
+<table width="25%" border="0" align="center" class="StormyWeatherFormTABLE">
 	<tr>
 		<td colspan="2" class="CobaltFieldCaptionTD" align="center"><h3><strong>Mantenimiento de Origen de Muestra</strong></h3>
 		</td>
@@ -27,24 +27,21 @@ $consulta= $objareas->LeerTipoMuestra();
 	<tr>
 	    <td class="StormyWeatherFieldCaptionTD">Tipo Muestra</td>
 	    <td class="StormyWeatherDataTD">
-			<select id="cmbTipoMuestra" name="cmbTipoMuestra" size="1">
-            <option value="0">--Seleccione un Tipo de Muestra--</option>
-            <?php
+		<select id="cmbTipoMuestra" name="cmbTipoMuestra" size="1" class="form-control height">
+                    <option value="0">--Seleccione un Tipo de Muestra--</option>
+                    <?php
 			 //include('clsMnt_OrigenMuestra.php');
-			
-			
-                        
 			while($row = pg_fetch_array($consulta)){
                             if ($row['id']!=$idtipomuestra){
-			  echo "<option value='" . $row['id']. "'>" .$row['tipomuestra']. "</option>";
-			}
+                                echo "<option value='" . $row['id']. "'>" .$row['tipomuestra']. "</option>";
+                            }
                         
                         }
                         
 			echo "<option value='" . $idtipomuestra . "' selected='selected'>" .$tipomuestra. "</option>";
 			?>
-             </select>
-		</td>
+                </select>
+	    </td>
 	</tr>
 	<tr>
 		<td class="StormyWeatherFieldCaptionTD">Nombre del &Aacute;rea</td>
@@ -52,8 +49,10 @@ $consulta= $objareas->LeerTipoMuestra();
 	</tr>
 	<tr>
 		<td colspan="2" align="right" class="StormyWeatherDataTD">
-			<input type="submit" align="right" name="btnActualizar" value="Actualizar"/>	
-			<input type="button" name="btnNuevo" id="btnNuevo" value="Cancelar" onClick="window.location.replace('MntOrigenMuestra.php')">
+                        <button type="button"  value="btnActualizar" class="btn btn-primary" onClick="enviarDatos();"><span class="glyphicon glyphicon-repeat"></span> Actualizar </button>
+                        <button name="btnNuevo" value="Nuevo" class="btn btn-primary" onClick="window.location.replace('MntOrigenMuestra.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+			<!--<input type="submit" align="right" name="btnActualizar" value="Actualizar"/>	
+			<input type="button" name="btnNuevo" id="btnNuevo" value="Cancelar" onClick="window.location.replace('MntOrigenMuestra.php')">-->
 		</td>
 	</tr>
 		

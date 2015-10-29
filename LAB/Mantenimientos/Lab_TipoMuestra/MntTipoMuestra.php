@@ -25,6 +25,7 @@ function LimpiarControles()
 }
 function Cancelar()
 {
+    LimpiarCampos(); 
     show_event(1);
 }
 
@@ -71,10 +72,13 @@ if ($nivel == 7) {
     </tr>
     <tr>
         <td class="StormyWeatherDataTD" colspan="2" align="right">
-            <input type="button" name="Submit" value="Guardar" onClick="GuardarRegistro();">
+            <!--<input type="button" name="Submit" value="Guardar" onClick="GuardarRegistro();">-->
+            <button type='button' align="center" class='btn btn-primary' id="abrir"  onclick='GuardarRegistro(); '><span class='glyphicon glyphicon-floppy-disk'></span> Guardar </button>
+            <button type='button' align="center" class='btn btn-primary' id='submit' onclick='BuscarCodigo(); '><span class='glyphicon glyphicon-refresh'> </span> Buscar</button> 
+           <button type='button' align="center" class='btn btn-primary'  onclick='Cancelar(); '><span  class='glyphicon glyphicon-refresh'>        </span> Nueva Busqueda</button>
+	    <!--<input type="button" name="Submit" value="Buscar" onClick="BuscarCodigo();">
 	    <input type="button" name="Submit" value="Buscar" onClick="BuscarCodigo();">
-	   <!-- <input type="button" name="Submit" value="Buscar" onClick="BuscarCodigo();">-->
-	    <input type="button" name="btnNuevo" id="btnNuevo" value="Cancelar" onClick="window.location.replace('MntTipoMuestra.php')">
+	    <input type="button" name="btnNuevo" id="btnNuevo" value="Cancelar" onClick="window.location.replace('MntTipoMuestra.php')">-->
         </td>
     </tr>
 </table>

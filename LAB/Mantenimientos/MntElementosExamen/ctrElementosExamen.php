@@ -14,23 +14,23 @@ $opcion=$_POST['opcion'];
 //actualiza los datos del empleados
 
 switch ($opcion) 
+
 {
 	case 1:  //INSERTAR	
 		$idexamen=$_POST['idexamen'];
 		$nomelemento= utf8_encode($_POST['elemento']);	
 		$subelemento= $_POST['subelemento'];
                 $unidadele=(empty($_POST['unidadele'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidadele']) . "'";
-                $observacionele=(empty($_POST['observacionele'])) ? 'NULL' : "'" . pg_escape_string($_POST['observacionele']) . "'";  
+                $observacionele=(empty($_POST['observacionele'])) ? 'NULL' : "'" . pg_escape_string(utf8_encode($_POST['observacionele'])) . "'";  
 		$Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
                 $Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
                 $orden=$_POST['orden'];
 		
-            if ($objdatos->insertar($idexamen,$nomelemento,$subelemento,$usuario,$observacionele,$unidadele,$lugar,$Fechaini,$Fechafin,$orden)==true) 
-            
-			echo "Registro Agregado";
-	   	
+
+                if ($objdatos->insertar($idexamen,$nomelemento,$subelemento,$usuario,$observacionele,$unidadele,$lugar,$Fechaini,$Fechafin,$orden)==true) 
+                    echo "Registro Agregado";
 	   	else
-			echo "No se pudo Agregar el Elemento";			
+                    echo "No se pudo Agregar el Elemento";	
 	   	
 	break;
 	case 2:  //MODIFICAR  
@@ -38,15 +38,15 @@ switch ($opcion)
 		$nomelemento=utf8_encode($_POST['elemento']);
 		$subelemento=$_POST['subelemento'];
 		$unidadele=(empty($_POST['unidadele'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidadele']) . "'";
-                $observacionele=(empty($_POST['observacionele'])) ? 'NULL' : "'" . pg_escape_string($_POST['observacionele']) . "'";  
+                $observacionele=(empty($_POST['observacionele'])) ? 'NULL' : "'" . pg_escape_string(utf8_encode($_POST['observacionele'])) . "'";  
 		$Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
                 $Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
 		$orden=$_POST['orden'];
                             
-                if (empty($Fechafin))
+            /*    if (empty($Fechafin))
                     $orden=$_POST['orden'];
                 else
-                    $orden=0;
+                    $orden=0;*/
                 
                // echo "sale".$orden;
 		If ($objdatos->actualizar($idelemento,$nomelemento,$subelemento,$unidadele,$observacionele,$usuario,$lugar,$Fechaini,$Fechafin,$orden)==true) 
@@ -533,11 +533,9 @@ switch ($opcion)
           //  $idexa=$_POST['idexamen'];
             $rslts='';
             $datosDB=0;
-            $rslts = '<select name="cmborden" id="cmborden" style="width:50%"  class="form-control height"   >';
+            $rslts = '<select name="cmborden" id="cmborden" style="width:50%"  class="form-control height">';
             $rslts .='<option value="0">--Seleccione un Orden--</option>';
-        
-            
-                                     $datosDB=existeOrdenele($idexa);
+                $datosDB=existeOrdenele($idexa);
                                      
                                    //echo  $datosDB;
                                        // for ($index = 1 ; $index <=25 ; $index++) 

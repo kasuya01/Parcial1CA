@@ -111,41 +111,41 @@ function calc_edad()
                 <td colspan="1" align="right" width="20%"><img id="Image3" style="width: auto; height: 55px;" src="../../../Imagenes/paisanito.png" width="210" name="Image3"></td>
             </tr>
         </table>
-    <table width='100%' border='0' align='center' cellspacing="0%" cellpadding="0%">
+        <table width='100%' border='0' align='center' cellspacing="0%" cellpadding="0%">
             <tr>
 		<td colspan='6' width="100%">&nbsp;</td>
             </tr>
             <tr>
 		<td colspan="1" class="Estilo5" width="27%" align="left"><strong>Establecimiento Solicitante:&nbsp;&nbsp;</strong></td>
-		<td colspan="2" class="Estilo6" width="37%" align="left"><?php echo $row_generales['estabext']?></td>
+		<td colspan="3" class="Estilo6" width="37%" align="left"><?php echo $row_generales['estabext']?></td>
 		<td colspan="1" class="Estilo5" width="20%" align="left"><strong>Fecha Resultado:</strong></td>
-	  	<td colspan="2" class="Estilo6" width="16%" align="left"><?php echo $row_fecha['fecharesultado']?></td>
+	  	<td colspan="1" class="Estilo6" width="16%" align="left"><?php echo $row_fecha['fecharesultado']?></td>
 			
             </tr>
 
             <tr>
             	<td colspan="1" class="Estilo5" ><strong>Expediente:</strong></td>
-              	<td colspan="2" class="Estilo7" align="left" ><?php echo $row_generales['numero']?></td>
+              	<td colspan="3" class="Estilo7" align="left" ><?php echo $row_generales['numero']?></td>
                 <td colspan="1" class="Estilo5" ><strong>Fecha Recepción:</strong></td>
-                <td colspan="2" class="Estilo6" align="left"><?php echo $row_generales['fecharecep']?></td>
+                <td colspan="1" class="Estilo6" align="left"><?php echo $row_generales['fecharecep']?></td>
             </tr>
             <tr>
 		<td colspan="1" class="Estilo5"><strong>Paciente:</strong></td>
-            	<td colspan="2" class="Estilo6" align="left"><?php echo htmlentities($row_generales['paciente'])?></td>
+            	<td colspan="3" class="Estilo6" align="left"><?php echo htmlentities($row_generales['paciente'])?></td>
                 <td colspan="1" class="Estilo6" ><strong>Fecha Toma Muestra:</strong></td>
-                <td colspan="2" class="Estilo6" align="left"><?php echo $f_tomamuestra ?></td>
+                <td colspan="1" class="Estilo6" align="left"><?php echo $f_tomamuestra ?></td>
             </tr>
             <tr>
 		<td colspan="1" class="Estilo5"><strong>Edad:</strong></td>
-		<td colspan="2" class="Estilo6" align="left"><?php echo $row_generales['edad']?></td>
+		<td colspan="3" class="Estilo6" align="left"><?php echo $row_generales['edad']?></td>
 		<td colspan='1' class="Estilo5"><strong>Sexo:</strong></td>
-		<td colspan='2' class="Estilo6" align="left"><?php echo $row_generales['sexo'];?></td>
+		<td colspan='1' class="Estilo6" align="left"><?php echo $row_generales['sexo'];?></td>
             </tr>
              <tr>
 		<td colspan='1' class="Estilo5"><strong>Procedencia:</strong></td>
-		<td colspan='2' class="Estilo6" align="left" ><?php echo htmlentities($row_generales['procedencia']);?></td>
+		<td colspan='3' class="Estilo6" align="left" ><?php echo htmlentities($row_generales['procedencia']);?></td>
 		<td colspan='1' class="Estilo5"><strong>Servicio:</strong></td>
-		<td colspan='2' class="Estilo6" align="left"><?php echo htmlentities($row_generales['subservicio']);?></td>
+		<td colspan='1' class="Estilo6" align="left"><?php echo htmlentities($row_generales['subservicio']);?></td>
             </tr>
             <tr>
 		<td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
@@ -193,7 +193,6 @@ function calc_edad()
             <tr> 
                 <td colspan='6' align='left'>
                     <table width='100%' border='0' align='left' cellspacing="0%" cellpadding="0%">
-
                         <tr>
                             <td colspan='4' align="left">
                                 <table width="100%" border="0" align="left" cellspacing="0" >
@@ -206,31 +205,28 @@ function calc_edad()
          <?php
                      $res_tarjeta= $obj->obtener_resultadoxtarjeta($row_det['iddetalleresultado']);
                     //$row_tarjeta= pg_fetch_array($res_tarjeta);
-                        while($row_tarjeta = pg_fetch_array($res_tarjeta)){?>
+                            while($row_tarjeta = pg_fetch_array($res_tarjeta)){?>
                                     <tr>
                                         <td colspan='1' class="Estilo5">&emsp;<?php echo $row_tarjeta['antibiotico']?></td>
                                         <td colspan='1' class="Estilo5"><?php echo htmlentities($row_tarjeta['valor'])?></td>
                                         <td colspan='2' class="Estilo5"> <?php echo htmlentities( $row_tarjeta['posible_resultado']) ?></td>
                                     </tr>
             
-                  <?php }?>
-                                </table>
-                           </td>
+                      <?php }?>
+                                 </table>
+                            </td>
                         </tr>
                         <tr>
-                <td colspan='6' class="Estilo6" width='100%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-            </tr>
-                        
-                     
-            
-            <tr>
-                                <td colspan="6" class="Estilo6" align='right'>
+                            <td colspan='6' class="Estilo6" width='100%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" class="Estilo6" align='right'>
                                     <br><br>Sello: _______________________ &nbsp;&nbsp;&nbsp;     Firma: _______________________
-                                </td>
-                            </tr>
-             <tr>
-                <td colspan='6' class="Estilo6" width='100%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-            </tr>                
+                            </td>
+                        </tr>
+                        <tr>
+                           <td colspan='6' class="Estilo6" width='100%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                       </tr>                
             
                     </table><?php 
     }//while del detalle
@@ -238,12 +234,8 @@ function calc_edad()
                 </td>
             </tr>
                             
-          <!-- <tr>
-                                <td colspan="6" class="Estilo6" align='right'>
-                                    <br><br>Sello: _______________________ &nbsp;&nbsp;&nbsp;     Firma: _______________________
-                                </td>
-                            </tr>-->
-    </table>
+        
+        </table>
         <div id="boton">
             <table align='center' border="0">
                 <tr>

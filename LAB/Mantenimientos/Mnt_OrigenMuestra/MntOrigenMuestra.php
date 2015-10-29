@@ -54,13 +54,13 @@ if ($nivel == 7) {
 <td>
 <div  id="divFrmNuevo" >
 <form name="frmnuevo" action="" onSubmit="IngresarRegistro(); return false">
-<table width="60%" border="1" align="center" class="StormyWeatherFormTABLE">
+<table width="25%" border="1" align="center" class="StormyWeatherFormTABLE">
   <tr>
 	  <td colspan="2" align="center" class="CobaltFieldCaptionTD"><h3><strong>Mantenimiento de Origen de Muestra</h3></strong></td>
   </tr>
    <tr>
        <td class="StormyWeatherFieldCaptionTD"><strong>Tipo Muestra </strong></td>
-       <td class="StormyWeatherDataTD"><select id="cmbTipoMuestra" name="cmbTipoMuestra" size="1">
+       <td class="StormyWeatherDataTD"><select id="cmbTipoMuestra" name="cmbTipoMuestra" size="1" class="form-control height">
             <option value="0">--Seleccione un Tipo de Muestra --</option>
                
 			<?php
@@ -82,11 +82,15 @@ if ($nivel == 7) {
 	
      <tr>
          <td colspan="2" align="right" class="StormyWeatherDataTD">
-                <input type="submit" name="Submit" value="Guardar">
-		<input type="button" name="Submit" value="Buscar" onClick="BuscarCodigo();">
-	        <input type="button" name="Submit" value="Cancelar" onClick="window.location.replace('MntOrigenMuestra.php')">
-         </td>
-         
+               <button type="button" name="Guardar" class="btn btn-primary" value="Guardar" onClick="IngresarRegistro() ;"><span class='glyphicon glyphicon-floppy-disk'></span> Guardar </button>
+               <button type="button" name="Buscar" class="btn btn-primary" value="Buscar" Onclick="BuscarCodigo();"> <span class='glyphicon glyphicon-search'></span>  Buscar </button>
+	       <button type="button" name="Cancelar"  class="btn btn-primary" value="Cancelar" onClick="window.location.replace('MntOrigenMuestra.php')"><span class='glyphicon glyphicon-refresh'></span> Cancelar</button>	
+	        
+                
+         </td> 
+     <!--<input type="submit" name="Submit" value="Guardar">-->
+     <!--<input type="button" name="Submit" value="Buscar" onClick="BuscarCodigo();">-->
+     <!--<input type="button" name="Submit" value="Cancelar" onClick="window.location.replace('MntOrigenMuestra.php')">  -->
      </tr>
   </table>
 </form>

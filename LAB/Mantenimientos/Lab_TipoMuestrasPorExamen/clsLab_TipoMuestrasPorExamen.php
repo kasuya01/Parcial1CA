@@ -146,13 +146,14 @@ and idtipomuestra =$idtipomuestra";
 	$con = new ConexionBD;
     //usamos el metodo conectar para realizar la conexion
     if($con->conectar()==true){
-      $query ="SELECT mnt_area_examen_establecimiento.id, nombre_examen, lab_conf_examen_estab.id as idexamen 
+     $query ="SELECT mnt_area_examen_establecimiento.id, nombre_examen, lab_conf_examen_estab.id as idexamen 
                    FROM lab_conf_examen_estab  
                    JOIN mnt_area_examen_establecimiento  ON (lab_conf_examen_estab.idexamen = mnt_area_examen_establecimiento.id) 
                    INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id=mnt_area_examen_establecimiento.id_examen_servicio_diagnostico
                    WHERE condicion='H' AND mnt_area_examen_establecimiento.activo=true 
                    AND mnt_area_examen_establecimiento.activo=TRUE
                    AND ctl_examen_servicio_diagnostico.activo=TRUE
+                   AND lab_conf_examen_estab.condicion='H'
                    AND id_establecimiento=$lugar
                    AND id_area_servicio_diagnostico=$idarea
                    ORDER BY nombre_examen";

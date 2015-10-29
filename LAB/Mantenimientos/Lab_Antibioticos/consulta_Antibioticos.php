@@ -34,8 +34,10 @@ $antibiotico=$row[1];
                         </td>    
 		</tr>
 			<td class="StormyWeatherDataTD" colspan="2" align="right">
-				<input type="button" name="btnActualizar" value="Actualizar" onclick="ActualizarDatos()" />
-				<input type="button" name="btnNuevo" value="Nuevo" onClick="window.location.replace('MntAntibioticos.php')" />
+				<button type="button"  value="btnActualizar" class="btn btn-primary" onClick="ActualizarDatos();"><span class="glyphicon glyphicon-repeat"></span> Actualizar </button>
+                                <button type="button" name="Cancelar"  class="btn btn-primary" value="Cancelar" onClick="window.location.replace('MntAntibioticos.php'"><span class='glyphicon glyphicon-refresh'></span> Nuevo</button>
+                                <!--<input type="button" name="btnActualizar" value="Actualizar" onclick="ActualizarDatos()" />
+				<input type="button" name="btnNuevo" value="Nuevo" onClick="window.location.replace('MntAntibioticos.php')" />-->
 			</td>
 
 	</table>

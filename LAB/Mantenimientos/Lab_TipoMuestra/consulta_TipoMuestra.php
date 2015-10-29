@@ -28,8 +28,10 @@ $nombre=$row['tipomuestra'];
 </tr>
 <tr>
 	<td class="StormyWeatherDataTD" colspan="2" align="right">
-		<input type="button" name="btnActualizar" value="Actualizar" onclick="ModificarRegistro();" />
-		<input type="button" name="btnNuevo" id="btnNuevo" value="Cancelar" onClick="window.location.replace('MntTipoMuestra.php')">
+                <button type='button' align="center" class='btn btn-primary' id='btnActualizar' onclick='ModificarRegistro(); '><span class='glyphicon glyphicon-repeat'></span> Actualizar </button>
+		<!--<input type="button" name="btnActualizar" value="Actualizar" onclick="ModificarRegistro();" />
+		<input type="button" name="btnNuevo" id="btnNuevo" value="Cancelar" onClick="window.location.replace('MntTipoMuestra.php')">-->
+                <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('MntTipoMuestra.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
 	</td>
 </tr>
 </table>

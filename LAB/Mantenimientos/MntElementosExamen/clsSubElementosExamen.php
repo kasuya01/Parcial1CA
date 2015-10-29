@@ -16,7 +16,7 @@ function insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini
    if($con->conectar()==true) 
    {
       $query = "INSERT INTO lab_subelementos(idelemento,unidad,subelemento,rangoinicio,rangofin,fechaini,fechafin,idestablecimiento,idsexo,idedad,orden) 
-	      VALUES($idelemento,$unidad,'$subelemento',$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad,$orden)";
+	      VALUES($idelemento,'$unidad','$subelemento',$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad,$orden)";
   //echo $query;
     $result = pg_query($query);
 	 
@@ -486,6 +486,24 @@ function consultarpagbus($query_search,$RegistrosAEmpezar, $RegistrosAMostrar)
 	   }
 	 }
  
+        function BuscarElemento($idelemento){
+            $con = new ConexionBD;
+	//usamos el metodo conectar para realizar la conexion
+            if ( $con->conectar()==true ) {
+        /*Aqui entra*/
+                $query ="SELECT  count(*) as total 
+                        FROM lab_subelementos
+                        WHERE idelemento=$idelemento";
+                $result = @pg_query($query);
+	            if ( !$result )
+			return false;
+		    else
+			return $result;
+		}
+            
+            
+        }
+         
    function llenarrangosubele($idelemento) {
 	$con = new ConexionBD;
 	//usamos el metodo conectar para realizar la conexion
@@ -496,11 +514,11 @@ function consultarpagbus($query_search,$RegistrosAEmpezar, $RegistrosAMostrar)
                     WHERE idelemento=$idelemento
                     ORDER BY orden asc";
 
-			$result = @pg_query( $query );
-			if ( !$result )
-				return false;
-			else
-				return $result;
+	    $result = @pg_query($query);
+	            if ( !$result )
+			return false;
+		    else
+			return $result;
 		}
 	}
   function BuscarExisteOrden($idelemento,$subelemento){

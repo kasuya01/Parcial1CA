@@ -526,21 +526,21 @@ pg_free_result($consultadetalle);
 	$fechafin=$_POST['fechafin'];
 	$medico=$_POST['medico'];
     	$query = "SELECT  sec_historial_clinico.IdNumeroExp,sec_solicitudestudios.IdSolicitudEstudio,
-	      DATE_FORMAT(sec_solicitudestudios.FechaSolicitud ,'%e/ %m / %Y') AS FechaSolicitud,mnt_subservicio.NombreSubServicio AS origen, mnt_servicio.NombreServicio AS procedencia,mnt_empleados.NombreEmpleado AS medico, 
-          CONCAT_WS(' ',PrimerApellido,NULL,SegundoApellido,',',PrimerNombre,NULL,SegundoNombre) as NombrePaciente,
-              CASE sec_solicitudestudios.Estado 
-				WHEN 'D' THEN 'Digitada'
-	      WHEN 'R' THEN 'Recibida'
-	      WHEN 'P' THEN 'En Proceso'    
-	      WHEN 'C' THEN 'Completa' END AS Estado
-	      FROM sec_historial_clinico 
-	      INNER JOIN sec_solicitudestudios ON sec_historial_clinico.IdHistorialClinico=sec_solicitudestudios.IdHistorialClinico
-	      INNER JOIN mnt_subservicio ON sec_historial_clinico.IdSubServicio=mnt_subservicio.IdSubServicio
-	      INNER JOIN mnt_servicio ON mnt_subservicio.IdServicio= mnt_servicio.IdServicio 
-              INNER JOIN mnt_empleados ON sec_historial_clinico.IdEmpleado= mnt_empleados.IdEmpleado
-              INNER JOIN mnt_expediente ON sec_solicitudestudios.IdNumeroExp= mnt_expediente.IdNumeroExp
-              INNER JOIN mnt_datospaciente ON mnt_expediente.IdPaciente= mnt_datospaciente.IdPaciente
-              WHERE  sec_solicitudestudios.IdServicio ='DCOLAB' AND";
+                  DATE_FORMAT(sec_solicitudestudios.FechaSolicitud ,'%e/ %m / %Y') AS FechaSolicitud,mnt_subservicio.NombreSubServicio AS origen, mnt_servicio.NombreServicio AS procedencia,mnt_empleados.NombreEmpleado AS medico, 
+                  CONCAT_WS(' ',PrimerApellido,NULL,SegundoApellido,',',PrimerNombre,NULL,SegundoNombre) as NombrePaciente,
+                  CASE sec_solicitudestudios.Estado 
+                    WHEN 'D' THEN 'Digitada'
+                    WHEN 'R' THEN 'Recibida'
+                    WHEN 'P' THEN 'En Proceso'    
+                    WHEN 'C' THEN 'Completa' END AS Estado
+                  FROM sec_historial_clinico 
+                  INNER JOIN sec_solicitudestudios ON sec_historial_clinico.IdHistorialClinico=sec_solicitudestudios.IdHistorialClinico
+                  INNER JOIN mnt_subservicio ON sec_historial_clinico.IdSubServicio=mnt_subservicio.IdSubServicio
+                  INNER JOIN mnt_servicio ON mnt_subservicio.IdServicio= mnt_servicio.IdServicio 
+                  INNER JOIN mnt_empleados ON sec_historial_clinico.IdEmpleado= mnt_empleados.IdEmpleado
+                  INNER JOIN mnt_expediente ON sec_solicitudestudios.IdNumeroExp= mnt_expediente.IdNumeroExp
+                  INNER JOIN mnt_datospaciente ON mnt_expediente.IdPaciente= mnt_datospaciente.IdPaciente
+                  WHERE  sec_solicitudestudios.IdServicio ='DCOLAB' AND";
 		$ban=0;
 			//VERIFICANDO LOS POST ENVIADOS
 		if (!empty($_POST['especialidad']))
@@ -628,15 +628,34 @@ pg_free_result($consultadetalle);
 		$rslts='';
 		$Idtipoesta=$_POST['idtipoesta'];
               // echo $Idtipoesta;
-            	$dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
+            /*	$dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
               	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:375px" class="form-control height" >';
 		$rslts .='<option value="0"> Seleccione Establecimiento </option>';
                while ($rows =pg_fetch_array( $dtIdEstab)){
 		  $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
-	       }
-				
+	       }*/
+		 if ($Idtipoesta<>0){
+                    $dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
+                    $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:500px height:20px " class="js-example-basic-single">';
+                    //$rslts .='<option value="0"> Seleccione Establecimiento </option>';
+                    while ($rows =pg_fetch_array( $dtIdEstab)){
+                        $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
+                    }
+		}else{
+                    $dtIdEstab = $objdatos->LlenarTodosEstablecimientos();
+                    $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:500px" class="js-example-basic-single">';
+                    $rslts .='<option value="0"> Seleccione Establecimiento </option>';
+                    while ($rows = pg_fetch_array($dtIdEstab)) {
+                        $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
+                    }
+                }   
+                
 		$rslts .= '</select>';
 		echo $rslts;
+                
+                	
+                
+                
    	break;
         
         

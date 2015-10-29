@@ -17,20 +17,6 @@ $nombrEstab=$row[1];
 $nomtipo=$row[2];
  ?>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <html lang = "en">
 <head>
     <meta charset="utf-8" />
@@ -60,11 +46,6 @@ $nomtipo=$row[2];
 <?php include_once $ROOT_PATH.'/public/js.php';?>
 
  
-
-
-
-
-
 <script language="JavaScript" type="text/javascript">
     
 
@@ -209,7 +190,7 @@ if ($nivel == 7) {
 					while ($rows = pg_fetch_array($resultado)){
 						echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
 					}
-						echo '<option value="'. $tipo .'" selected="selected">' .htmlentities($nomtipo). '</option>';
+						//echo '<option value="'. $tipo .'" selected="selected">' .htmlentities($nomtipo). '</option>';
                                                 
                                                 
 				}
@@ -221,19 +202,19 @@ if ($nivel == 7) {
 				<div id="divEstablecimiento">
 					<select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px" class="form-control height">
 						<option value="0" >Seleccione un Establecimiento</option>
-							<?php 
-				  echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
-		              	include_once("../../../Conexion/ConexionBD.php");
-					$con = new ConexionBD;
-					if($con->conectar()==true){			  
-						//$consulta  = "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$tipo' ORDER BY Nombre";
-                                                $consulta  = "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento='$tipo' ORDER BY nombre";
-						$resultado = @pg_query($consulta);
-						//por cada registro encontrado en la tabla me genera un <option>
-						while ($rows = @pg_fetch_array($resultado)){
-							echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]). '</option>';
-						}
-		            }
+                                            <?php 
+                                                echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
+                                                include_once("../../../Conexion/ConexionBD.php");
+                                                $con = new ConexionBD;
+                                                if($con->conectar()==true){			  
+                                                        //$consulta  = "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$tipo' ORDER BY Nombre";
+                                                        $consulta  = "SELECT id,nombre FROM ctl_establecimiento ORDER BY nombre";
+                                                        $resultado = @pg_query($consulta);
+                                                        //por cada registro encontrado en la tabla me genera un <option>
+                                                        while ($rows = @pg_fetch_array($resultado)){
+                                                                echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]). '</option>';
+                                                        }
+                                                }
 				?>		
 						</select>
 			    </div>
@@ -247,16 +228,17 @@ if ($nivel == 7) {
 					<?php
 							$db = new ConexionBD;
 							if($db->conectar()==true){
-								$consulta  = /*"SELECT mnt_servicio.IdServicio,mnt_servicio.NombreServicio FROM mnt_servicio 
-								INNER JOIN mnt_servicioxestablecimiento 
-								ON mnt_servicio.IdServicio=mnt_servicioxestablecimiento.IdServicio
-								WHERE IdTipoServicio<>'DCO' AND IdTipoServicio<>'FAR' AND IdEstablecimiento=$lugar";*/
-                                                                        "SELECT t01.id,
-                                                                 t01.nombre
-                                                          FROM ctl_area_atencion t01
-                                                          WHERE t01.id IN (
-                                                                SELECT DISTINCT id_area_atencion 
-                                                                FROM mnt_area_mod_estab WHERE id_establecimiento = $lugar)";
+								$consulta  = "SELECT mnt_area_mod_estab.id as codigo ,CASE WHEN id_servicio_externo_estab IS NOT NULL THEN mnt_servicio_externo.abreviatura ||'-->'  || ctl_area_atencion.nombre
+                                                       ELSE 
+                                                              ctl_modalidad.nombre ||'-->' || ctl_area_atencion.nombre 
+                                                       END
+                                                       FROM mnt_area_mod_estab
+                                                       INNER JOIN  ctl_area_atencion  on  ctl_area_atencion.id = mnt_area_mod_estab.id_area_atencion
+                                                       --LEFT JOIN mnt_aten_area_mod_estab ON (ctl_area_atencion.id = mnt_aten_area_mod_estab.id_atencion) 
+                                                       INNER JOIN ctl_modalidad ON ctl_modalidad.id = mnt_area_mod_estab.id_modalidad_estab
+                                                       LEFT JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab.id_servicio_externo_estab) 
+                                                       LEFT JOIN mnt_servicio_externo ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo) 
+                                                       ORDER by ctl_modalidad.nombre,ctl_area_atencion.nombre";
                                                                         
 								$resultado = pg_query($consulta);
 													

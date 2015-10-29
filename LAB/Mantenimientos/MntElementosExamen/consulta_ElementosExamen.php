@@ -20,6 +20,7 @@ $subelemento=$row['subelemento'];
 $nombreelemento=$row['elemento'];
 $cod=$row['cod'];
 $unidadele=$row['unidadelem'];
+//$unidadele=(empty($row['unidadelem'])) ? '' : "'" . pg_escape_string($row['unidadelem']) . "'";
 $observacionele=$row['observelem'];
 $idexamen=$row['idexamen'];
 $idarea=$row['idarea'];

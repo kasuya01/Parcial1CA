@@ -14,8 +14,8 @@ class clsElementosExamen
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_elementos(id_conf_examen_estab,elemento,subelemento,UnidadElem,ObservElem,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod,IdEstablecimiento,FechaIni,FechaFin,orden) 
-    VALUES($idexamen,'$nomelemento','$subelemento',$unidadele,$observacionele,$usuario,NOW(),$usuario,NOW(),$lugar,$Fechaini,$Fechafin,$orden)";
+    echo $query = "INSERT INTO lab_elementos(id_conf_examen_estab,elemento,subelemento,UnidadElem,ObservElem,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod,IdEstablecimiento,FechaIni,FechaFin,orden) 
+    VALUES($idexamen,'$nomelemento','$subelemento','$unidadele',$observacionele,$usuario,NOW(),$usuario,NOW(),$lugar,$Fechaini,$Fechafin,$orden)";
      $result = pg_query($query);
  
      if (!$result)
@@ -34,7 +34,7 @@ class clsElementosExamen
          $query = "UPDATE lab_elementos SET elemento='$nomelemento' , subelemento='$subelemento',unidadelem=$unidadele, 
 		 observelem=$observacionele,idusuariomod='$usuario', fechahoramod=NOW(),fechaini=$Fechaini, 
 		 fechafin=$Fechafin, orden=$orden WHERE id=$idelemento AND idestablecimiento=$lugar";
-     //echo $query;
+      $query;
     $result = pg_query($query);
 	 if (!$result)
        return false;

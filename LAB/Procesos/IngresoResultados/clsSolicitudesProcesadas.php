@@ -548,7 +548,7 @@ and t01.idestablecimiento=$lugar;";
    function ftomamuestra($iddetalle, $lugar) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "select * from sec_detallesolicitudestudios where id= $iddetalle and idestablecimiento=$lugar;";
+      $query = "select * from sec_detallesolicitudestudios where id= $iddetalle and idestablecimiento=$lugar;";
          $result = @pg_query($query);
          // $filares = pg_fetch_array($result);
          // echo '<br\>'.$filares['idempleado'].'<br\>';
