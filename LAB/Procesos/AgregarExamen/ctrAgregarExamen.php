@@ -157,22 +157,29 @@ switch ($opcion)
             $var2 = $lugar;
         }
        // echo $cond2;
-          $query= "WITH tbl_servicio AS (
-                    SELECT t02.id,
-                        CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
-                                 ELSE t02.nombre_ambiente
-                            END
-                        ELSE
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'--> ' || t01.nombre
-                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
-                            END
-                        END AS servicio 
-                    FROM  ctl_atencion                  t01 
-                    INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
-                    INNER JOIN mnt_area_mod_estab           t03 ON (t03.id = t02.id_area_mod_estab)
-                    LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
-                    LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
+          $query= "WITH tbl_servicio AS ( SELECT t02.id, 
+                CASE WHEN t02.nombre_ambiente IS NOT NULL THEN 
+                    CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' || t02.nombre_ambiente 
+                            --ELSE t02.nombre_ambiente 
+                    END 
+                    ELSE 
+                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre 
+                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)  
+                                   -- THEN t07.nombre||'-'||t01.nombre
+                                    THEN t01.nombre
+                    END 
+
+                END AS servicio,
+               (CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->'  || t06.nombre
+                    ELSE   t07.nombre ||'-->' || t06.nombre
+                END) as procedencia
+                FROM ctl_atencion t01 
+                INNER JOIN mnt_aten_area_mod_estab t02 ON (t01.id = t02.id_atencion) 
+                INNER JOIN mnt_area_mod_estab t03 ON (t03.id = t02.id_area_mod_estab) 
+                LEFT JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab) 
+                LEFT JOIN mnt_servicio_externo t05 ON (t05.id = t04.id_servicio_externo) 
+                INNER JOIN  ctl_area_atencion t06  on  t06.id = t03.id_area_atencion
+                INNER JOIN ctl_modalidad  t07 ON t07.id = t03.id_modalidad_estab
                     WHERE $where_with t02.id_establecimiento = $lugar
                     ORDER BY 2)
                 SELECT ordenar.* FROM (    
@@ -182,7 +189,7 @@ switch ($opcion)
                 CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,
                 t07.segundo_apellido,t07.apellido_casada) AS paciente,
                 t20.servicio AS nombresubservicio,
-                t13.nombre AS nombreservicio, 
+                t20.procedencia AS nombreservicio, 
                 t14.nombre, 
                 TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud, 
                 (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,

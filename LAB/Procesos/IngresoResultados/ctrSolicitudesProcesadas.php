@@ -47,9 +47,9 @@ switch ($opcion) {
         }
         
         if ($_POST['IdServ'] <> 0) {
-            $cond1 .= " t13.id  = " . $_POST['IdServ'] . " AND";
-            $cond2 .= " t13.id  = " . $_POST['IdServ'] . " AND";
-            $where_with = "id_area_atencion = $IdServ AND ";
+            $cond1 .= " t12.id  = " . $_POST['IdServ'] . " AND";
+            $cond2 .= " t12.id  = " . $_POST['IdServ'] . " AND";
+            $where_with = "t03.id = $IdServ AND ";
         }
 
         if (!empty($_POST['IdSubServ'])) {
@@ -136,24 +136,30 @@ switch ($opcion) {
             $var2 = $lugar;
         }
         //echo $cond2;
-       $query="WITH tbl_servicio AS (
-                    SELECT t02.id,
-                        CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
-                                 ELSE t02.nombre_ambiente
-                            END
-                        ELSE
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'--> ' || t01.nombre
-                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
-                            END
-                        END AS servicio 
-                    FROM  ctl_atencion                  t01 
-                    INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
-                    INNER JOIN mnt_area_mod_estab           t03 ON (t03.id = t02.id_area_mod_estab)
-                    LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
-                    LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
-                    WHERE $where_with t02.id_establecimiento = $lugar
-                    ORDER BY 2)
+       $query=" WITH tbl_servicio AS ( SELECT t02.id, 
+                CASE WHEN t02.nombre_ambiente IS NOT NULL THEN 
+                    CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' || t02.nombre_ambiente 
+                            --ELSE t02.nombre_ambiente 
+                    END 
+                    ELSE 
+                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre 
+                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)  
+                                    --THEN t07.nombre||'-'||t01.nombre
+                                    THEN t01.nombre
+                    END 
+
+                END AS servicio,
+               (CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->'  || t06.nombre
+                    ELSE   t07.nombre ||'-->' || t06.nombre
+                END) as procedencia
+                FROM ctl_atencion t01 
+                INNER JOIN mnt_aten_area_mod_estab t02 ON (t01.id = t02.id_atencion) 
+                INNER JOIN mnt_area_mod_estab t03 ON (t03.id = t02.id_area_mod_estab) 
+                LEFT JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab) 
+                LEFT JOIN mnt_servicio_externo t05 ON (t05.id = t04.id_servicio_externo) 
+                INNER JOIN  ctl_area_atencion t06  on  t06.id = t03.id_area_atencion
+                INNER JOIN ctl_modalidad  t07 ON t07.id = t03.id_modalidad_estab
+                WHERE t02.id_establecimiento =  $lugar ORDER BY 2)
                     SELECT ordenar.* FROM (
                        SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                        t02.id AS idsolicitudestudio,
@@ -169,7 +175,7 @@ switch ($opcion) {
                        CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,
                        t07.segundo_apellido,t07.apellido_casada) AS paciente,
                        t20.servicio AS nombresubservicio,
-                       t13.nombre AS nombreservicio, 
+                       t20.procedencia AS nombreservicio, 
                        t02.impresiones, 
                        t14.nombre, 
                        t09.id AS idhistorialclinico,
@@ -180,7 +186,7 @@ switch ($opcion) {
                        t18.idestandar,
                        t02.id_establecimiento_externo as IdEstab,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-                       false AS referido, f_tomamuestra,
+                       false AS referido, TO_CHAR(f_tomamuestra,'dd/mm/YYYY HH12:MI') AS f_tomamuestra,
                        (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
                        t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar
                 FROM sec_detallesolicitudestudios t01 
@@ -234,7 +240,7 @@ switch ($opcion) {
                        t18.idestandar,
                        t02.id_establecimiento_externo,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-                       true AS referido,f_tomamuestra,
+                       true AS referido,TO_CHAR(f_tomamuestra,'dd/mm/YYYY HH12:MI') AS f_tomamuestra, 
                        (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
                        t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar
                 FROM sec_detallesolicitudestudios t01 
@@ -317,10 +323,10 @@ switch ($opcion) {
                         "<input name='fecha_recepcion[" . $pos . "]' id='fecha_recepcion[" . $pos . "]' type='hidden' size='60' value='" . $datefrecep . "'/>" .
                         "<td width='18%'>" . htmlentities($row['paciente']) . "</td>
                         <td width='3%'>" . $row['estandar'] . "</td>
-                        <td width='27%'>" . htmlentities($row['nombreexamen']) . "</td>
-                        <td width='10%'>" . htmlentities($row['nombresubservicio']) . "</td>
-                        <td width='8%'>" . htmlentities($row['nombreservicio']) . "</td>
-                        <td width='21%'>" . htmlentities($row['estabext']) . "</td>
+                        <td width='22%'>" . htmlentities($row['nombreexamen']) . "</td>
+                        <td width='13%'>" . htmlentities($row['nombresubservicio']) . "</td>
+                        <td width='12%'>" . htmlentities($row['nombreservicio']) . "</td>
+                        <td width='15%'>" . htmlentities($row['estabext']) . "</td>
                         <td width='5%'>" . ($row['fechasolicitud']) . "</td>
                         <td width='5%'>" . ($row['fecharecepcion']) . "</td>
                         <td width='3%'>" . ($row['prioridad']) . "</td>
@@ -657,7 +663,8 @@ switch ($opcion) {
                             <td colspan='7' align='center' >
                             <button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarResultados();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>
                             <button style='display:none' type='button' id='Imprimir' name='Imprimir' align='center' class='btn btn-primary' title='Imprimir'  onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $resultado . "\",\"" . $fecha_reporta . "\", \"" . $lectura . "\",\"" . $interpretacion . "\",\"" . $observacion . "\",\"" . $responsable . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec . "\",\"" . $proce . "\",\"" . $origen . "\",\"" . $iddetalle . "\",\"" . $marca . "\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
-                              <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true' style='display:none; height:20px'><button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>
+                            <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true' style='display:none; height:20px'>
+                            <button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>
                             
                             <button type='button' id='btnSalir' align='center' class='btn btn-primary' title='Cerrar'  onclick='Cerrar();'><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br/><br><br/>
                             </td>
@@ -1090,7 +1097,8 @@ switch ($opcion) {
                         
                         <button name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $v_resultfin. "\",\"" . $d_resultfin . "\", \"" . $v_lectura . "\",\"" . $v_interpretacion . "\",\"" . $v_obserrecep. "\",\"" . $cmbEmpleadosfin . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec. "\",\"" . $proce. "\",\"" . $origen . "\",\"" . $iddetalle  . "\") ;' class='btn btn-primary'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
                             
-                            <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true'><button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>
+                            <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true'>
+                            <button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>
                             <button name='btnSalir' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' class='btn btn-primary' ><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br><br/>
                         </td>
                     </tr></table>";

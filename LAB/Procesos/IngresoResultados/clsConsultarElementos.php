@@ -159,7 +159,7 @@ else
     function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$responsable,$usuario,$tab,$fecharealiz,$fecharesultado,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-          $query = "INSERT INTO lab_resultados (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
+              $query = "INSERT INTO lab_resultados (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
                       observacion,idempleado,idusuarioreg,fechahorareg,idestablecimiento,fecha_resultado) 
                       VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,'$observacion',$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,'$fecharesultado')
                       RETURNING id";
@@ -168,7 +168,7 @@ else
 
             if ($row = pg_fetch_array($result)) {
 
-               $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen AND activo = true";
+                $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen AND activo = true";
                 $result = pg_query($query);
 
                 if($result && pg_num_rows($result) == 1) {
@@ -176,7 +176,7 @@ else
 
                     $id_exam_metod = $row_exam_metod[0];
 
-                $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, idusuarioreg, fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
+                  $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, idusuarioreg, fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
                             VALUES($id_exam_metod, $iddetalle, $tab, $usuario, date_trunc('seconds',NOW()),'$fecharealiz','$fecharesultado',$responsable)";
 
                     $result = pg_query($query);
@@ -201,7 +201,7 @@ else
     function insertar_elementos($idresultado,$idelemento,$resultado,$control_ele,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-              $query = "INSERT INTO lab_detalleresultado(idresultado,idelemento,resultado,observacion,idestablecimiento) 
+             $query = "INSERT INTO lab_detalleresultado(idresultado,idelemento,resultado,observacion,idestablecimiento) 
                       VALUES($idresultado,$idelemento,'$resultado','$control_ele',$lugar)";
             
             $result = @pg_query($query);
@@ -213,7 +213,7 @@ else
         }
     }
 
-    //SUBELEMENTOS
+    //SUBELEMENTOS ,$posresult
     function insertar_subelementos($idresultado,$idsubelemento,$resultado,$control,$lugar,$pos) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
@@ -224,7 +224,7 @@ else
             else{
                 
                 $query = "INSERT INTO lab_detalleresultado(idresultado,idsubelemento,id_posible_resultado,observacion,idestablecimiento) 
-                          VALUES($idresultado,$idsubelemento,'$resultado','$control',$lugar)";
+                          VALUES($idresultado,$idsubelemento,'$resultado','$control',$lugar)";//,'$posresult' //resultado,
             }
             $result = @pg_query($query);
 

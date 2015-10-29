@@ -53,10 +53,6 @@ switch ($opcion) {
 
         $idexpediente = "'" . $idexpediente . "'";
         $cond0 = "and";
-
-
-
-
         if (!empty($_POST['IdEstab'])) {
             if ($_POST['IdEstab'] <> $lugar) {
                 $cond1 .=$cond0 . "  t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " ";
@@ -74,9 +70,6 @@ switch ($opcion) {
             $cond2 .=$cond0 . "  t13.id  = " . $_POST['IdServ'] . "     ";
             $where_with = "id_area_atencion = $IdServ AND ";
         }
-
-
-
         if (!empty($_POST['idarea'])) {
             $cond1 .= " and t08.id = " . $_POST['idarea'] . " ";
             $cond2 .= " and t08.id = " . $_POST['idarea'] . " ";
@@ -142,7 +135,7 @@ switch ($opcion) {
             $cond2 = substr($cond2, 0, strlen($query) - 3);
         }
 
-      $query = "WITH tbl_servicio AS (
+    $query = "WITH tbl_servicio AS (
                     SELECT t02.id,
                         CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
@@ -273,48 +266,47 @@ if ( $NroRegistros==""){
         //<td>Fecha Recepci&oacute;n</td>
         
         echo "<div class='table-responsive' style='width: 100%;'>
-           <table width='97%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'><thead>
-                    <tr>
-				<th>Fecha Recepci&oacute;n</th>
-				<th>NEC </th>
-				<th>Nombre Paciente</th>
-				<th>Origen</th>
-				<th>Procedencia</th>
-				<th>Establecimiento</th>
-				<th>Estado Solicitud</th>
-				<th>Fecha Consulta</th>
-		     </tr></thead><tbody>";
+            <table width='97%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'><thead>
+                <tr>
+		    <th>Fecha Recepci&oacute;n</th>
+		    <th>NEC </th>
+		    <th>Nombre Paciente</th>
+		    <th>Origen</th>
+		    <th>Procedencia</th>
+		    <th>Establecimiento</th>
+		    <th>Estado Solicitud</th>
+		    <th>Fecha Consulta</th>
+		</tr></thead><tbody>";
         $pos = 0;
         if(@pg_num_rows($consulta))
         {
-        while ($row = pg_fetch_array($consulta)) {
-            //$Idsolic=$row['IdSolicitudEstudio'];
-            //$fecha=$objdatos->BuscarRecepcion($Idsolic);
-            //$recepcion= pg_fetch_array($fecha);
-            //$fechacita=$objdatos->BuscarCita($Idsolic);
-            //$cita= pg_fetch_array($fechacita);
-            //if (!empty($recepcion)){
-            echo "<tr>
-				<td>" .htmlentities($row['fecharecepcion']). "</td>";
-            echo "<td><span style='color: #0101DF;'><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a>" .
-                    "<input name='idsolicitud[" . $pos . "]' id='idsolicitud[" . $pos . "]' type='hidden' size='60' value='" . $row[0] . "' />" .
-                    "<input name='idexpediente[" . $pos . "]' id='idexpediente[" . $pos . "]' type='hidden' size='60' value='" . $row['idnumeroexp'] . "' />" .
-                    "<input name='idestablecimiento[" . $pos . "]' id='idestablecimiento[" . $pos . "]' type='hidden' size='60' value='" . $IdEstab . "' /></td>" .
-                    "<input name='subservicio[".$pos."]' id='subservicio[".$pos."]' type='hidden' size='60' value='".$row['nombresubservicio']."' />".
-                    "<td>" . htmlentities($row['paciente']) . "</td>
-				 <td>" . htmlentities($row['nombresubservicio']) . "</td>
-				 <td>" . htmlentities($row['nombreservicio']) . "</td>
-				 <td>" . htmlentities($row['estabext']) . "</td>
-				 <td>" . $row['estado'] . "</td>
-				 <td>" . $row['fecchaconsulta'] . "</td>
-			</tr>";
+            while ($row = pg_fetch_array($consulta)) {
+                //$Idsolic=$row['IdSolicitudEstudio'];
+                //$fecha=$objdatos->BuscarRecepcion($Idsolic);
+                //$recepcion= pg_fetch_array($fecha);
+                //$fechacita=$objdatos->BuscarCita($Idsolic);
+                //$cita= pg_fetch_array($fechacita);
+                //if (!empty($recepcion)){
+              echo "<tr>
+                        <td>" .htmlentities($row['fecharecepcion']). "</td>";
+                  echo "<td><span style='color: #0101DF;'><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a>" .
+                            "<input name='idsolicitud[" . $pos . "]' id='idsolicitud[" . $pos . "]' type='hidden' size='60' value='" . $row[0] . "' />" .
+                            "<input name='idexpediente[" . $pos . "]' id='idexpediente[" . $pos . "]' type='hidden' size='60' value='" . $row['idnumeroexp'] . "' />" .
+                            "<input name='idestablecimiento[" . $pos . "]' id='idestablecimiento[" . $pos . "]' type='hidden' size='60' value='" . $IdEstab . "' /></td>" .
+                            "<input name='subservicio[".$pos."]' id='subservicio[".$pos."]' type='hidden' size='60' value='".$row['nombresubservicio']."' />".
+                       "<td>" . htmlentities($row['paciente']) . "</td>
+                        <td>" . htmlentities($row['nombresubservicio']) . "</td>
+                        <td>" . htmlentities($row['nombreservicio']) . "</td>
+                        <td>" . htmlentities($row['estabext']) . "</td>
+                        <td>" . $row['estado'] . "</td>
+                        <td>" . $row['fecchaconsulta'] . "</td>
+                    </tr>";
 
-            $pos = $pos + 1;
-        }
-         } else 
-            {
-                 echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></tbody></table></div>";
+                $pos = $pos + 1;
             }
+        }else{
+              echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></tbody></table></div>";
+        }
 
         @pg_free_result($consulta);
 
@@ -339,37 +331,32 @@ if ( $NroRegistros==""){
         //una unidad para obtener la ultima pagina
         if ($Res > 0)
             $PagUlt = floor($PagUlt) + 1;
-        echo "<table align='center'>
-		       <tr>
-				<td colspan=3 align='center'> <strong>Pagina " . $PagAct . "/" . $PagUlt . "</strong> </td>
-	               </tr>
-		       <tr>
-				<td><a onclick=\"BuscarDatos('1')\">Primero</a> </td>";
+      echo "<table align='center'>
+		<tr>
+                    <td colspan=3 align='center'> <strong>Pagina " . $PagAct . "/" . $PagUlt . "</strong> </td>
+	        </tr>
+		<tr>
+                    <td><a onclick=\"BuscarDatos('1')\">Primero</a> </td>";
         //// desplazamiento
 
         if ($PagAct > 1)
-            echo "<td> <a onclick=\"BuscarDatos('$PagAnt')\">Anterior</a> </td>";
+              echo "<td> <a onclick=\"BuscarDatos('$PagAnt')\">Anterior</a> </td>";
         if ($PagAct < $PagUlt)
-            echo "<td> <a onclick=\"BuscarDatos('$PagSig')\">Siguiente</a> </td>";
-        echo "<td> <a onclick=\"BuscarDatos('$PagUlt')\">Ultimo</a></td></tr>
-                 </table>";
-        echo "<table align='center'>
-			<tr align='center'><td  colspan='2' width='25%'>";
-        
-        
-        echo " <center> <ul class='pagination'>";
-		 $numPags ='';
-			 for ($i=1 ; $i<=$PagUlt; $i++){
-                              
-					 echo " <li ><a  href='javascript: BuscarDatos(".$i.")'>$i</a></li>";
+              echo "<td> <a onclick=\"BuscarDatos('$PagSig')\">Siguiente</a> </td>";
+              echo "<td> <a onclick=\"BuscarDatos('$PagUlt')\">Ultimo</a></td>
+                </tr>
+            </table>";
+      echo "<table align='center'>
+		<tr align='center'><td  colspan='2' width='25%'>";
+      echo " <center> <ul class='pagination'>";
+            $numPags ='';
+	    for ($i=1 ; $i<=$PagUlt; $i++){
+                echo " <li ><a  href='javascript: BuscarDatos(".$i.")'>$i</a></li>";
                                 
-			 }
-				
-                 echo " </ul></center>";
+	    }
+                echo " </ul></center>";
 
-
-
-        break;
+    break;
 
     case 2:  // solicitud estudios
 
@@ -502,7 +489,7 @@ if ( $NroRegistros==""){
             $imprimir .= "<tr>";
             if ($fila['estado'] == "Resultado Completo") {
                 $imprimir .="<td><img src='../../../Iconos/impresion.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-				onclick=\"ImprimirDatos('" . $fila['iddetallesolicitud'] . "','" . $fila['idsolicitudestudio'] . "','" . $fila['idplantilla'] . "','$idexpediente','" . $fila['codigo_area'] . "','" . $fila['codigo_examen'] . "','" . $row['sexo'] . "','" . $FechaNac . "','" . $fila['idexamen'] . "','$subservicio', $idsexo, $idedad)\">
+				onclick=\"ImprimirDatos('" . $fila['iddetallesolicitud'] . "','" . $fila['idsolicitudestudio'] . "','" . $fila['idplantilla'] . "','$idexpediente','" . $fila['codigo_area'] . "','" . $fila['codigo_examen'] . "','" . $row['sexo'] . "','" . $FechaNac . "','" . $fila['idexamen'] . "','" . $fila['idestandar'] . "','$subservicio', $idsexo, $idedad)\">
 			    </td>
 			    <td>".htmlentities($fila['codigo_examen']) . "</td>
 			    <td>".htmlentities($fila['nombre_examen']) . "
@@ -511,7 +498,7 @@ if ( $NroRegistros==""){
 						<input name='idarea[" . $pos . "]' type='hidden' id='idarea[" . $pos . "]' value='" . $fila['idarea'] . "'>
 						<input name='paciente[" . $pos . "]' type='hidden' id='paciente[" . $pos . "]' value='" . $row['paciente'] . "'>
 						<input name='idexamen[" . $pos . "]' type='hidden' id='idexamen[" . $pos . "]' value='" . $fila['idexamen'] . "' disabled='disabled' />
-			    </td>	
+			    </td>               <input name='idestandar[" . $pos . "]' type='hidden' id='idestandar[" . $pos . "]' value='" . $fila['idestandar'] . "' disabled='disabled' />
 			    <td>" . $fila['codigo_area'] . "</td>";
                 if (!empty($fila['indicacion'])) {
                $imprimir .="<td>" . htmlentities($fila['indicacion']) . "</td>";

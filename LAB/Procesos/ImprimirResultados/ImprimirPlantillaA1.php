@@ -112,17 +112,20 @@ $row_estab = pg_fetch_array($Consulta_Estab);
             <td colspan="2" class="Estilo6"><?php echo $row['fecharecepcion'];?></td>
 		<input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row['fecharecepcion']?>>
 	</tr>
-
+        <tr>
+            <td colspan="1" class="Estilo5" align="left"><strong>Expediente:</strong></td>
+            <td colspan="2" class="Estilo7" align="left"><?php echo $row['idnumeroexp']?></td>
+            <td colspan="1" class="Estilo5" align="left"><strong>Fecha Recepción:</strong></td>
+	    <td colspan="2" class="Estilo6" align="left"><?php echo $row['fecharecepcion']?></td>
+        </tr>
 	<tr>
-            <td colspan='1' class="Estilo5"><strong>NEC</strong></td>
-            <td colspan='5' class="Estilo7"><?php echo $row['idnumeroexp']?></td>
-
+            <td colspan="1" class="Estilo5" align="left"><strong>Paciente:</strong></td>
+            <td colspan="2" class="Estilo6" align="left"><?php echo htmlentities($row['paciente'])?></td>
+	    <td colspan="1" class="Estilo5" align="left"><strong>Fecha Toma Muestra:</strong></td>
+            <td colspan="2" class="Estilo6" align="left"><?php echo $row['f_tomamuestra']?></td>    
         </tr>
 
-        <tr>
-            <td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
-            <td colspan='5' class="Estilo6"><?php echo htmlentities($row['paciente'])?></td>
- 	</tr>
+        
 	<tr>
             <td colspan='1' class="Estilo5"><strong>Edad:</strong></td>
             <td colspan="2" class="Estilo6"><?php echo htmlentities($row['edad'])?></td>

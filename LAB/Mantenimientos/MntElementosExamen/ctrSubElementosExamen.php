@@ -28,7 +28,8 @@ switch ($opcion)
 		//$unidad=$_POST['unidad'];
                 //$sexo=$_POST['sexo'];
                 //$redad=$_POST['redad'];
-                $unidad=(empty($_POST['unidad'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidad']) . "'"; 
+               // $unidad=(empty($_POST['unidad'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidad']) . "'"; 
+                $unidad=$_POST['unidad'];
                 $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";        
                 $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'"; 
                 $rangoini=(empty($_POST['rangoini'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangoini']) . "'";
@@ -354,40 +355,73 @@ switch ($opcion)
 		echo $imprimir;
 	break;
         case 11:  //LLENAR COMBO DE RANGOS
-	$idelemento=$_POST['idelemento'];
-        $subelemento=utf8_encode($_POST['subelemento']);    
+            $idelemento=$_POST['idelemento'];
+            $subelemento=utf8_encode($_POST['subelemento']);    
            //echo $idele; 
-        $rslts='';
+            $rslts='';
         
-           $rslts = '<select name="cmborden" id="cmborden" style="width:50%"  class="form-control height" OnChance="Llenarorden1();   >';
+            $rslts = '<select name="cmborden" id="cmborden" style="width:50%"  class="form-control height" OnChance="Llenarorden1(); onclick="Llenarorden1();">';
             $rslts .='<option value="0">--Seleccione un Orden--</option>';
             //"onclick="Llenarorden1();"
+            
+              /*  $conelem=$objdatos->BuscarElemento($idelemento);
+                $rowtotal = pg_fetch_array($conelem);
+                $total=$rowtotal[0];
+                if ($total=0){
+                    $orden=1;
+                    $rslts.='<OPTION VALUE="'.$orden.'">'.$orden.'</OPTION>'; 
+                    for ($index = $orden+1 ; $index <=25 ; $index++) 
+                                        {
+                                        //  $rest=areglo ($datosDB,$index);
+                                         // if($rest==0){
+                                            $rslts.='<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
+                                          //}
+                                            
+                           
+                                         }
+                }
+                else{*/
+                        
                             $conBuscar=$objdatos->BuscarExisteOrden($idelemento,$subelemento);
                             $rowBuscar = pg_fetch_array($conBuscar);
+                             $orden=$rowBuscar[0];
+                            // echo "encontrado".$orden;
                             if(!empty($rowBuscar[0])){
                                 $orden=$rowBuscar[0];
+                                //echo "orden no vacio".$orden;
+                                 for ($index = 1 ; $index <=10 ; $index++) 
+                                        {
+                                        //  $rest=areglo ($datosDB,$index);
+                                         // if($rest==0){
+                                        $rslts.='<OPTION VALUE="'.$index.'">'.$index.'</OPTION>'; }
                             }
                             else {
                                 $conorden=$objdatos->ObtenerNuevoOrden($idelemento);
                                 $roworden=pg_fetch_array($conorden);
                                 $orden=$roworden[0];
-                                
+                                if (empty($orden))
+                                    $orden=1; 
+                                   // $rslts='<OPTION VALUE="'.$orden.'"  selected="selected">'.$orden.'</OPTION>';
+                                    for ($index = 1 ; $index <=10 ; $index++) 
+                                        {
+                                         if($index <> $orden){
+                                                $rslts.= '<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
+                                            } else {
+                                                 $rslts.="<option value='" . $orden . "' selected='selected'>" .$orden. "</option>";
+                                            }
+                                        //  $rest=areglo ($datosDB,$index);
+                                         // if($rest==0){
+                                        }
+                               //echo "orden vacio".$orden;  
                             }
-                              $conorden1=$objdatos->ObtenerNuevoOrden($idelemento);
+                                $conorden1=$objdatos->ObtenerNuevoOrden($idelemento);
                                 $roworden1=pg_fetch_array($conorden1);
                                 $total=$roworden1[0];
                           //  $total=$orden;
                            // echo $total;
                             //echo $orden;
                            //  $rslts.="<option value='" . $orden . "' selected='selected'>" .$orden. "</option>";
-                                        for ($index = 1 ; $index <=$total ; $index++){
-                                            if($index <> $orden){
-                                                $rslts.= '<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
-                                            } 
-                                            else{
-                                                $rslts.="<option value='" . $orden . "' selected='selected'>" .$orden. "</option>";
-                                            }
-                                        }
+                                       
                                  //    $datosDB=existeOrden($idele);
                                      
                                     //echo  $datosDB[3];
@@ -399,8 +433,10 @@ switch ($opcion)
                                           //}
                                             
                            
-                                        }*/
-                                
+                                         }*/
+                                        
+               // }
+                            
             $rslts .= '</select>';
                             echo $rslts;
 	

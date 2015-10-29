@@ -76,7 +76,7 @@ $row_cantidad=pg_fetch_array($Catidad);
 			$row_generales= pg_fetch_array($datos_generales);
 			$consulta_area=$obj->LeerDatos($idexamen);
 			$row_area= pg_fetch_array($consulta_area);
-                        $FechaRes = $obj->ObtenerFechaResultado($idsolicitud,$idexamen,$lugar);
+                        $FechaRes = $obj->ObtenerFechaResultado($idsolicitud,$iddetalle,$lugar);
                         $row_fecha = pg_fetch_array($FechaRes);            
                         
                         
@@ -100,41 +100,41 @@ $row_cantidad=pg_fetch_array($Catidad);
 			    </tr>
 			    <tr>
                                 <td colspan='1' class="Estilo5" width="27%" class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
-				<td colspan='2' class="Estilo6" width="37%"><?php echo $row_generales['estabext']?></td>
+				<td colspan='3' class="Estilo6" width="37%"><?php echo $row_generales['estabext']?></td>
 				<td colspan='1' class="Estilo5" width="20%"><strong>Fecha Resultado:</strong></td>
-			  	<td colspan='2' class="Estilo6" width="16%"><?php echo $row_fecha['fecharesultado']?></td>
+			  	<td colspan='1' class="Estilo6" width="16%"><?php echo $row_fecha['fecharesultado']?></td>
                             </tr>
     			    <tr>
                                 <td colspan='1' class="Estilo5"><strong>Expediente:</strong></td>
-			  	<td colspan='2' class="Estilo7"><?php echo $row_generales['idnumeroexp']?></td>
+			  	<td colspan='3' class="Estilo7"><?php echo $row_generales['idnumeroexp']?></td>
                                 <td colspan='1' class="Estilo5" ><strong>Fecha Recepción:</strong></td>
-                                <td colspan='2' class="Estilo6" ><?php echo $row_generales['fecharecepcion']?></td>
+                                <td colspan='1' class="Estilo6" ><?php echo $row_generales['fecharecepcion']?></td>
                             </tr>
                             <tr>
                                 <td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
-				<td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['paciente'])?></td>
+				<td colspan='3' class="Estilo6"><?php echo htmlentities($row_generales['paciente'])?></td>
                                 <td colspan='1' class="Estilo5" ><strong>Fecha Toma Muestra:</strong></td>
-                                <td colspan='2' class="Estilo6" ><?php echo $row_generales['f_tomamuestra'] ?></td>
+                                <td colspan='1' class="Estilo6" ><?php echo $row_generales['f_tomamuestra'] ?></td>
                             </tr>
                             <tr>
 				<td colspan='1' class="Estilo5"><strong>Edad:</strong></td>
-				<td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['edad'])?></td>
+				<td colspan='3' class="Estilo6"><?php echo htmlentities($row_generales['edad'])?></td>
 				<td colspan='1' class="Estilo5"><strong>Sexo:</strong></td>
-			  	<td colspan='2' class="Estilo6"><?php echo $row_generales['sexo'];?></td>
+			  	<td colspan='1' class="Estilo6"><?php echo $row_generales['sexo'];?></td>
                             </tr>
                             <tr>
 				<td colspan='1' class="Estilo5"><strong>Procedencia:</strong></td>
-				<td colspan='2' class="Estilo6"><?php echo htmlentities($row_generales['nombreservicio']);?></td>
+				<td colspan='3' class="Estilo6"><?php echo htmlentities($row_generales['nombreservicio']);?></td>
 				<td colspan='1' class="Estilo5"><strong>Servicio:</strong></td>
-				<td colspan='2' class="Estilo6" ><?php echo htmlentities($subservicio);?></td>
+				<td colspan='1' class="Estilo6" ><?php echo htmlentities($subservicio);?></td>
                             </tr>
                             <tr>
 				<td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
-				<td colspan='2' class="Estilo6"><?php echo htmlentities($row_area['nombre_examen']);?></td>
+				<td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['nombre_examen']);?></td>
                             </tr>
                             <tr>
                                 <td colspan='1' class="Estilo5"><strong>Resultado:</strong></td>
-                                <td colspan='2' class="Estilo6">Positivo</td>
+                                <td colspan='5' class="Estilo6">Positivo</td>
                             </tr>
                            
                                 <?php 
@@ -246,7 +246,7 @@ $row_cantidad=pg_fetch_array($Catidad);
 		        $Observ= $obj->ObtenerObservacion($idsolicitud,$iddetalle);
 		        $row_observ= pg_fetch_array($Observ);
 		        $Observacion=$row_observ['observacion'];
-                        $FechaRes = $obj->ObtenerFechaResultado($idsolicitud,$idexamen,$lugar);
+                        $FechaRes = $obj->ObtenerFechaResultado($idsolicitud,$iddetalle,$lugar);
                         $row_fecha = pg_fetch_array($FechaRes);
 			//$nombre=$row_area['NombreArea'];
 			?>
@@ -266,42 +266,42 @@ $row_cantidad=pg_fetch_array($Catidad);
                                         <tr>
                                             <td colspan="6">&nbsp;</td>
                                         </tr>
+                                    </table>
+                                    <table width='100%' border='0' align='center' class='StormyWeatherFormTABLE' cellspacing="0">
 					<tr>
-                                            <td colspan="1" class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
-                                            <td colspan="2" class="Estilo6"><?php echo $row_generales['estabext']?></td>
-                                            <td colspan="1" class="Estilo5"><strong>Fecha Resultado:</strong></td>
-                                            <td colspan="2" class="Estilo6"><?php echo $row_fecha['fecharesultado']?></td>
-						
-					</tr>
-					<tr>
-                                            <td colspan="1" class="Estilo5"><strong>Expediente:</strong></td>
-                                            <td colspan="2" class="Estilo7"><?php echo $row_generales['idnumeroexp']?></td>
-                                            <td colspan="1" class="Estilo5" ><strong>Fecha Toma Muestra:</strong></td>
-                                            <td colspan="1" class="Estilo6" ><?php echo $row_generales['f_tomamuestra'] ?></td>
+                                            <td colspan='1' class="Estilo5" width="27%" class="Estilo5"><strong>Establecimiento Solicitante:</strong></td>
+                                            <td colspan='3' class="Estilo6" width="37%"><?php echo $row_generales['estabext']?></td>
+                                            <td colspan='1' class="Estilo5" width="20%"><strong>Fecha Resultado:</strong></td>
+                                            <td colspan='1' class="Estilo6" width="16%"><?php echo $row_fecha['fecharesultado']?></td>
                                         </tr>
                                         <tr>
-                                            <td colspan="1" class="Estilo5"><strong>Paciente:</strong></td>
-                                            <td colspan="2" class="Estilo6"><?php echo htmlentities($row_generales['paciente'])?></td>
-					</tr>
-					<tr>
-                                            <td colspan="1" class="Estilo5"><strong>Edad:</strong></td>
-                                            <td colspan="2" class="Estilo6"><?php echo htmlentities($row_generales['edad'])?></td>
-                                            </td>
-
-                                            <td colspan="1" class="Estilo5"><strong>Sexo:</strong></td>
-                                            <td colspan="2" class="Estilo6" align="left"><?php echo $row_generales['sexo']?></td>
-					</tr>
-					<tr>
-                                            <td colspan="1" class="Estilo5"><strong>Procedencia:</strong></td>
-                                            <td colspan="2"class="Estilo6"><?php echo htmlentities($row_generales['nombreservicio'])?></td>
-
-                                            <td colspan="1" class="Estilo5"><strong>Origen:</strong></td>
-                                            <td colspan="2" class="Estilo6"><?php echo htmlentities($subservicio)?></td>
-					</tr>
-					<tr>
-                                            <td colspan="1" class="Estilo5"><strong>Examen Realizado:</strong></td>
-                                            <td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['nombre_examen'])?></td>
-					</tr>
+                                            <td colspan='1' class="Estilo5"><strong>Expediente:</strong></td>
+                                            <td colspan='3' class="Estilo7"><?php echo $row_generales['idnumeroexp']?></td>
+                                            <td colspan='1' class="Estilo5" ><strong>Fecha Recepción:</strong></td>
+                                            <td colspan='1' class="Estilo6" ><?php echo $row_generales['fecharecepcion']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
+                                            <td colspan='3' class="Estilo6"><?php echo htmlentities($row_generales['paciente'])?></td>
+                                            <td colspan='1' class="Estilo5" ><strong>Fecha Toma Muestra:</strong></td>
+                                            <td colspan='1' class="Estilo6" ><?php echo $row_generales['f_tomamuestra'] ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan='1' class="Estilo5"><strong>Edad:</strong></td>
+                                            <td colspan='3' class="Estilo6"><?php echo htmlentities($row_generales['edad'])?></td>
+                                            <td colspan='1' class="Estilo5"><strong>Sexo:</strong></td>
+                                            <td colspan='1' class="Estilo6"><?php echo $row_generales['sexo'];?></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan='1' class="Estilo5"><strong>Procedencia:</strong></td>
+                                            <td colspan='3' class="Estilo6"><?php echo htmlentities($row_generales['nombreservicio']);?></td>
+                                            <td colspan='1' class="Estilo5"><strong>Servicio:</strong></td>
+                                            <td colspan='1' class="Estilo6" ><?php echo htmlentities($subservicio);?></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
+                                            <td colspan='5' class="Estilo6"><?php echo htmlentities($row_area['nombre_examen']);?></td>
+                                        </tr>
 					<tr>
                                             <td colspan="1" class="Estilo5"><strong>Validado Por:</strong></td>
                                             <td colspan='5' class="Estilo6"><?php echo $row_generales['empleado']; ?></td>
@@ -332,10 +332,10 @@ $row_cantidad=pg_fetch_array($Catidad);
                                             <td colspan='5'>&nbsp;</td>
 					</tr>
                                          <tr>
-                            <td colspan="6" class="Estilo6" align='right'>
-                                <br><br>Sello: _______________________ &nbsp;&nbsp;&nbsp;     Firma: _______________________
-                            </td>
-                        </tr>
+                                            <td colspan="6" class="Estilo6" align='right'>
+                                                <br><br>Sello: _______________________ &nbsp;&nbsp;&nbsp;     Firma: _______________________
+                                            </td>
+                                        </tr>
                                     </table>
 				</div>
                                 <div id="boton">

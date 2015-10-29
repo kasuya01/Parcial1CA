@@ -82,9 +82,9 @@ switch ($opcion)
 	//DIBUJANDO EL FORMULARIO NUEVAMENTE
 		$idarea=$_POST['idarea'];
           //  echo 'idearea<br\>'.$idarea.'-fin<br\>';
-		$resultado= "<select id='cmbExamen' name='cmbExamen' size='1'onchange='BuscandoAsociados();' >";
+		$resultado= "<select id='cmbExamen' name='cmbExamen' size='1' onchange='BuscandoAsociados();' class='form-control height' >";
 					//// LLENAR EL COMBO ////
-				$consultaex= $objdatos->ExamenesPorArea($idarea,$lugar);
+		  $consultaex= $objdatos->ExamenesPorArea($idarea,$lugar);
                                 
                 if (pg_num_rows($consultaex)>0){
                       $resultado .= "<option value='0'>--Seleccione un Examen--</option>";

@@ -146,7 +146,7 @@ function CambiarEstadoDetalle($iddetalle)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-         $query = "INSERT INTO lab_resultados (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
+       $query = "INSERT INTO lab_resultados (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
                    observacion,idempleado,idusuarioreg,fechahorareg,idestablecimiento,fecha_resultado) 
                    VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,'$observacion',$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,'$fecharesultado')
                    RETURNING id";
@@ -156,7 +156,7 @@ function CambiarEstadoDetalle($iddetalle)
          $idultimo=$row[0];
            //echo $idultimo;
          if ($idultimo>0) {
-               $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen AND activo = true";
+              $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen AND activo = true";
                          
                $result = pg_query($query);
                 
@@ -193,12 +193,12 @@ function CambiarEstadoDetalle($iddetalle)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {    if ($pos==NULL){
-            $query = "INSERT INTO lab_detalleresultado(idresultado,idprocedimiento,resultado,observacion,idestablecimiento) 
+           $query = "INSERT INTO lab_detalleresultado(idresultado,idprocedimiento,resultado,observacion,idestablecimiento) 
 		      VALUES($idresultado,$idproceso,'$resultado','$comentario',$lugar)";
             
         }
         else{
-             $query = "INSERT INTO lab_detalleresultado(idresultado,idprocedimiento,id_posible_resultado,observacion,idestablecimiento) 
+           $query = "INSERT INTO lab_detalleresultado(idresultado,idprocedimiento,id_posible_resultado,observacion,idestablecimiento) 
 		       VALUES($idresultado,$idproceso,'$resultado','$comentario',$lugar)";
         }
        $result = @pg_query($query);
@@ -314,7 +314,7 @@ function MostrarDatosGenerales($idsolicitud,$lugar)
 //FUNCION FECHA DE RESULTADO
 function ObtenerFechaResultado($idsolicitud,$IdExamen,$lugar)
 {
-	$con = new ConexionBD;
+    $con = new ConexionBD;
    if($con->conectar()==true)
    {//HH12:MI
       $query = "SELECT TO_CHAR(fecha_resultado,'dd/mm/YYYY') AS fecharesultado

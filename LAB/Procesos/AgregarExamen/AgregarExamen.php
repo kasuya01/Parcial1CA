@@ -172,7 +172,7 @@ if ($nivel == 7) {
                             <td class="StormyWeatherDataTD" width="35%">
 				<div id="divEstablecimiento">
                                     <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:500px" class="js-example-basic-single">
-					<!--  	<option value="0" >Seleccione un Establecimiento</option>-->
+					  	<option value="0" >Seleccione un Establecimiento</option>
                                         <?php 
                                             echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
                                                 include_once("../../../Conexion/ConexionBD.php");
@@ -195,7 +195,7 @@ if ($nivel == 7) {
                             <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
                             <td class="StormyWeatherDataTD">
                                 <select name="CmbServicio" id="CmbServicio" style="width:443px" onChange="BuscarServicio(this.value)"  class="form-control height">
-                                    <option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
+                                   <option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
                                         <?php
                                             $db = new ConexionBD;
                                             if($db->conectar()==true){

@@ -454,6 +454,7 @@ function ImprimirPlantillaD(idsolicitud, idexamen, idresultado, idempleado, esta
 function ImprimirPlantillaE(idsolicitud, idexamen, responsable, procedencia, origen, cometarios, valores, codigos, observacion, estab, sexo, idedad, valores_combos,f_tomamuestra,tipomuestra) {
 //alert (idsolicitud+" examen= "+idexamen+" responsable= "+responsable+" procedencia= "+procedencia+
 //"origen= "+origen+" cometarios= "+cometarios+" valores= "+valores+" codigos= "+codigos+" observacion= "+observacion+" estab= "+estab+" sexo "+sexo+" edad= "+idedad);
+//alert(f_tomamuestra);
     ventana_secundaria = window.open("ImprimirPlantillaE.php?var1=" + idsolicitud +
             "&var2=" + idexamen + "&var3=" + responsable +
             "&var4=" + procedencia + "&var5=" + origen +
@@ -600,7 +601,7 @@ function MostrarVistaPreviaPlantillaC()
                 {  //mostrar los nuevos registros en esta capa
                     document.getElementById('divresultado').style.display = "block";
                     document.getElementById('divresultado').innerHTML = ajax.responseText;
-                    document.getElementById('Imprimir').style.visibility = "hidden";
+                   // document.getElementById('Imprimir').style.visibility = "hidden";
                    // calc_edad();
 
                 }
@@ -681,11 +682,21 @@ function GuardarResultadosPlantillaC()
             if (ajax.status == 200)
             {  //mostrar los nuevos registros en esta capa
                 alert(ajax.responseText);
-                document.getElementById('btnGuardar').style.visibility = 'hidden';
-                document.getElementById('Imprimir').style.visibility='visible';
+                 document.getElementById('btnGuardar').style.visibility = 'hidden';
+                document.getElementById('Imprimir').style.display = 'initial';
+                document.getElementById('addexam_modal').style.display = 'initial';
+                document.getElementById('divexamen').style.display = "none";
+                if  ($("#agregarresults" ).length){
+                  document.getElementById('agregarresults').style.visibility = 'hidden';
+                
+                
+                
+                //document.getElementById('btnGuardar').style.visibility = 'hidden';
+                //document.getElementById('Imprimir').style.visibility='visible';
                 //document.getElementById('btnGuardar').style.visibility = "hidden";
-
-
+               // document.getElementById('addexam_modal').style.display = 'initial';
+                
+               }
 
             }
         }
@@ -873,11 +884,14 @@ function GuardarResultadosNegativosPlantillaC()
                 document.getElementById('divresultado').style.display = "block";
                 document.getElementById('divexamen').style.display = "none";
                 document.getElementById('btnGuardar').style.visibility = 'hidden';
-
+                document.getElementById('Imprimir').style.display = 'initial';
+                document.getElementById('addexam_modal').style.display = 'initial';
+                if  ($("#agregarresults" ).length){
+                  document.getElementById('agregarresults').style.visibility = 'hidden';
+                }
             }
         }
     }
-
 }
 
 
@@ -1511,7 +1525,7 @@ function MostrarVistaPreviaPlantillaB(){
                 {  //mostrar los nuevos registros en esta capa
                     document.getElementById('divresultado').style.display = "block";
                     document.getElementById('divresultado').innerHTML = ajax.responseText;
-                     document.getElementById('Imprimir').style.visibility = "hidden";
+                    // document.getElementById('Imprimir').style.visibility = "hidden";
                     //calc_edad();
                     //alert(ajax.responseText);
                 }
@@ -1567,7 +1581,8 @@ function GuardarResultadosPlantillaB()
             valores_combos += document.getElementById('totcombo[' + i + ']').value + "/";
             codigos_subelementos += document.getElementById('oidsubelemento[' + i + ']').value + "/";
             controles += document.getElementById('txtcontrol[' + i + ']').value + "/";
-            
+           // posresult+= document.getElementById('oposible_res[' + i + ']').value + "/"; 
+           // alert (posresult);
         }
     }
     if (document.getElementById('ocultoele').value > 0)
@@ -1590,6 +1605,7 @@ function GuardarResultadosPlantillaB()
             encodeURIComponent(valores_subelementos) + "&codigos_subelementos=" + codigos_subelementos + "&valores_elementos=" + encodeURIComponent(valores_elementos) +
             "&codigos_elementos=" + codigos_elementos + "&controles=" + encodeURIComponent(controles) + "&controles_ele=" + encodeURIComponent(controles_ele) + "&tab=" + tab +
             "&fecharealiz="+ fecharealiz + "&fecharesultado="+fecharesultado+"&valores_combos="+encodeURIComponent(valores_combos));
+    //+"& posresult="+ posresult
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -1600,11 +1616,17 @@ function GuardarResultadosPlantillaB()
                 //document.getElementById('btnGuardar').disabled=disabled;
                 alert(ajax.responseText);
                 document.getElementById('btnGuardar').style.visibility = 'hidden';
-                document.getElementById('Imprimir').style.visibility='visible';
+                document.getElementById('Imprimir').style.display = 'initial';
+                document.getElementById('addexam_modal').style.display = 'initial';
+                document.getElementById('divexamen').style.display = "block";
+                if  ($("#agregarresults" ).length){
+                  document.getElementById('agregarresults').style.visibility = 'hidden';
+               }
             }
         }
     }
 }
+
 //Fn PG
 //FUNCION LLENAR COMBO DE RESPONSABLES
 function LlenarComboResponsable(idarea)
@@ -2154,6 +2176,10 @@ function GuardarPlantillaD()
                     document.getElementById('divresultado').innerHTML = ajax.responseText;
                     document.getElementById('divBotonPrevie').style.display = "block";
                     document.getElementById('divBotonGuardar').style.display = "none";
+                    document.getElementById('addexam_modal').style.display = 'initial';
+                    if  ($("#agregarresults" ).length){
+                        document.getElementById('agregarresults').style.visibility = 'hidden';
+                    }
 
                 }
             }
@@ -2219,6 +2245,12 @@ function GuardarElemento()
                         document.getElementById('divresultado').innerHTML = ajax.responseText;
                         document.getElementById('divBotonPrevie').style.display = "block";
                         document.getElementById('divBotonGuardar').style.display = "none";
+                        document.getElementById('addexam_modal').style.display = 'initial';
+                    if  ($("#agregarresults" ).length){
+                        document.getElementById('agregarresults').style.visibility = 'hidden';
+                    }
+                        
+                        
                     }
                 }
             }
@@ -2291,6 +2323,11 @@ function VistaPrevia()
                 document.getElementById('divpreview').innerHTML = ajax.responseText;
                 document.getElementById('divBotonPrevie').style.display = "block";
                 document.getElementById('divBotonGuardar').style.display = "none";
+                //document.getElementById('Imprimir').style.display = 'initial';
+                //document.getElementById('addexam_modal').style.display = 'initial';
+                //if  ($("#agregarresults" ).length){
+                 // document.getElementById('agregarresults').style.visibility = 'hidden';
+               // }
                 //calc_edad();
             }
         }
@@ -2456,7 +2493,7 @@ function MostrarVistaPreviaPlantillaE()
                 valores += document.getElementById('txtresultado[' + i + ']').value + "/";
                 codigos += document.getElementById('oidprueba[' + i + ']').value + "/";
                 valores_combos += document.getElementById('totcombo[' + i + ']').value + "/";
-                //alert (valores_combos);
+              //  alert (codigos);
          
             }
         }
@@ -2497,8 +2534,7 @@ function MostrarVistaPreviaPlantillaE()
 }
 
 function GuardarPlantillaE()
-{
-    ajax = objetoAjax();
+{    ajax = objetoAjax();
     idexamen = document.frmnuevo.txtidexamen.value;
     opcion = 3;
     //solicitud estudio
@@ -2524,7 +2560,7 @@ function GuardarPlantillaE()
             codigos += document.getElementById('oidprueba[' + i + ']').value + "/";
             comentarios += document.getElementById('txtcomentario[' + i + ']').value + "/";
             valores_combos += document.getElementById('totcombo[' + i + ']').value + "/";
-           // alert(valores_combos);
+           // alert(codigos);
         }
     }
 
@@ -2545,6 +2581,11 @@ function GuardarPlantillaE()
             {  //mostrar los nuevos registros en esta capa
                 alert(ajax.responseText);
                 document.getElementById('btnGuardar').style.visibility = 'hidden';
+                document.getElementById('Imprimir').style.display = 'initial';
+                document.getElementById('addexam_modal').style.display = 'initial';
+                if  ($("#agregarresults" ).length){
+                  document.getElementById('agregarresults').style.visibility = 'hidden';
+                }
 
             }
         }

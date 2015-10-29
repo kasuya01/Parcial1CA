@@ -348,7 +348,9 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                 </tr>
                 <tr>
                  <td>
-                    <div  id="divresultado" style="display:none" ></div>
+                     <div  id="divresultado" style="display:none" >
+                         
+                     </div>
                 </td>
             </tr>
         </table>

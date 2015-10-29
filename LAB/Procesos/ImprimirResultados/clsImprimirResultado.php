@@ -256,7 +256,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado1, 
                     t01.indicacion AS indicacion,
                     t01.idempleado AS idempleado,t01.id_conf_examen_estab as idexamen,t07.fecha_nacimiento as fechanac,
-                    t19.id as idsexo, date (current_date)  - date (t07.fecha_nacimiento) as dias,t06.numero as expediente
+                    t19.id as idsexo, date (current_date)  - date (t07.fecha_nacimiento) as dias,t06.numero as expediente,t18.idestandar as idestandar
             FROM sec_detallesolicitudestudios           t01 
             INNER JOIN sec_solicitudestudios            t02 	ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra             t03 	ON (t02.id = t03.idsolicitudestudio) 
@@ -283,7 +283,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
             LEFT JOIN mnt_empleado 			t24     ON (t09.id_empleado=t24.id) 
             LEFT JOIN ctl_area_servicio_diagnostico    t25     ON (t25.id=t05.id_area_servicio_diagnostico)
             
-            WHERE  t02.id=$idsolicitud and  t06.numero='$idexpediente'
+            WHERE  t02.id=$idsolicitud AND t08.idarea <> 'TMU' and t06.numero='$idexpediente' 
 
 UNION
 
@@ -342,7 +342,7 @@ UNION
                     t01.indicacion as indicacion,
                     t01.idempleado  as idempleado,t01.id_conf_examen_estab as idexamen,t07.fecha_nacimiento as fechanac,
                     t19.id as idsexo,
-                    date (current_date)  - date (t07.fecha_nacimiento) as dias,t06.numero as expediente
+                    date (current_date)  - date (t07.fecha_nacimiento) as dias,t06.numero as expediente,t18.idestandar as idestandar
             FROM sec_detallesolicitudestudios           t01 
             INNER JOIN sec_solicitudestudios            t02 	ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra             t03 	ON (t02.id = t03.idsolicitudestudio) 
@@ -366,7 +366,7 @@ UNION
             left  join mnt_empleado 			t24     on (t09.id_empleado=t24.id) 
             inner join ctl_area_servicio_diagnostico    t25     on (t25.id=t05.id_area_servicio_diagnostico)
             
-            WHERE   t02.id=$idsolicitud and  t06.numero='$idexpediente'  order by codigo_area";
+            WHERE   t02.id=$idsolicitud AND t08.idarea <> 'TMU' and t06.numero='$idexpediente'  order by codigo_area";
                  
 		//echo $query;
 		$result = @pg_query($query);
@@ -619,7 +619,7 @@ function LeerDatos($idexamen)
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-         $query = "SELECT lcee.id,
+        $query = "SELECT lcee.id,
                     lcee.nombre_examen  as nombre_examen,
                     casd.nombrearea  as nombrearea
                     FROM mnt_area_examen_establecimiento maees
@@ -644,7 +644,7 @@ function MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar)
    if($con->conectar()==true)
    {
         $query ="SELECT 
-                    TO_CHAR(t03.fechahorareg, 'DD/MM/YYYY HH12:MI') AS fecharecepcion,
+                    TO_CHAR(t03.fechahorareg, 'DD/MM/YYYY') AS fecharecepcion,
                     t06.numero AS idnumeroexp,
                     t01.id as iddetallesolicitud,
                     t02.id as idsolicitudestudio,
@@ -701,7 +701,7 @@ function MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar)
                     t26.interpretacion as interpretacion,
                     t26.observacion as observacion,
                     TO_CHAR(t01.f_tomamuestra, 'DD/MM/YYYY HH12:MI') AS f_tomamuestra,
-                    TO_CHAR(t03.fechahorareg, 'DD/MM/YYYY HH12:MI') AS fecha,
+                    TO_CHAR(t03.fechahorareg, 'DD/MM/YYYY ') AS fecha,
                     TO_CHAR(t26.fecha_resultado, 'DD/MM/YYYY HH12:MI') AS fecha_resultado
             FROM sec_detallesolicitudestudios           t01 
             INNER JOIN sec_solicitudestudios            t02 	ON (t02.id = t01.idsolicitudestudio) 
@@ -1131,9 +1131,9 @@ function LeerProcesoExamen($idsolicitud,$iddetalle)
 	$con = new ConexionBD;
    if($con->conectar()==true) 
    {
-	$query ="SELECT lab_procedimientosporexamen.id,lab_procedimientosporexamen.nombreprocedimiento, 
+	 $query ="SELECT lab_procedimientosporexamen.id,lab_procedimientosporexamen.nombreprocedimiento, 
                 lab_detalleresultado.resultado,lab_procedimientosporexamen.rangoinicio,
-                lab_procedimientosporexamen.rangofin,lab_procedimientosporexamen.unidades,lab_detalleresultado.observacion,
+                lab_procedimientosporexamen.rangofin,lab_procedimientosporexamen.unidades,lab_detalleresultado.observacion as comentario,
                 lab_detalleresultado.id_posible_resultado,lab_posible_resultado.posible_resultado 
                 FROM lab_resultados 
                 INNER JOIN lab_detalleresultado ON lab_detalleresultado.idresultado=lab_resultados.id 
@@ -1193,15 +1193,15 @@ function ObtenerCantidadResultados($idsolicitud,$iddetalle)
  }
  
 //FUNCION FECHA DE RESULTADO
-function ObtenerFechaResultado($idsolicitud,$IdExamen,$lugar)
+function ObtenerFechaResultado($idsolicitud,$iddetalle,$lugar)
 {
 	$con = new ConexionBD;
    if($con->conectar()==true)
    {
-      $query = "SELECT TO_CHAR(fecha_resultado,'dd/mm/YYYY HH12:MI') AS fecharesultado
+     $query = "SELECT TO_CHAR(fecha_resultado,'dd/mm/YYYY') AS fecharesultado
                 FROM lab_resultados 
                 WHERE idsolicitudestudio=$idsolicitud AND idestablecimiento=$lugar 
-                AND idexamen=$IdExamen";
+                AND iddetallesolicitud =$iddetalle";
      $result = pg_query($query);
      if (!$result)
        return false;

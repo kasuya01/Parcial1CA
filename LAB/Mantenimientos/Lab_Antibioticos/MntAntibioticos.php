@@ -59,11 +59,15 @@ if ($nivel == 7) {
 				</tr>
 				<tr>
 					<td class="StormyWeatherDataTD" colspan="2" align="right">
-						<input type="submit" name="Submit" value="Guardar" onClick="Guardar()">
-						<input type="button" name="Submit" value="Buscar" onClick="BuscarCodigo();">
-						<input type="button" name="btnNuevo" id="btnNuevo" value="Cancelar" onClick="window.location.replace('MntAntibioticos.php')"></td>
-                                                                                                                        
-                </tr>
+                                                <button type="button" name="Guardar" class="btn btn-primary" value="Guardar" onClick="IngresarRegistro() ;"><span class='glyphicon glyphicon-floppy-disk'></span> Guardar </button>
+						<button type="button" name="Buscar" class="btn btn-primary" value="Buscar" Onclick="BuscarCodigo();"> <span class='glyphicon glyphicon-search'></span>  Buscar </button>
+						<button type="button" name="Cancelar"  class="btn btn-primary" value="Cancelar" onClick="window.location.replace('MntAntibioticos.php')"><span class='glyphicon glyphicon-refresh'></span> Cancelar</button>
+					</td>
+                                              <!--    <input type="submit" name="Submit" value="Guardar" onClick="Guardar()"> 
+                                                      <input type="button" name="Submit" value="Buscar" onClick="BuscarCodigo();">
+                                                      <input type="button" name="btnNuevo" id="btnNuevo" value="Cancelar" onClick="window.location.replace('MntAntibioticos.php')">
+                                                -->                                                                     
+                                </tr>
 			</table>
 			</form>
 			</div>

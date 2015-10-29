@@ -77,15 +77,15 @@ if ($nivel == 7) {
 </div>
 <div  id="divFrmNuevo" >
 <form name="frmnuevo">
-<table width="60%" border="0" align="center" class="StormyWeatherFormTABLE">
+<table width="40%" border="0" align="center" class="StormyWeatherFormTABLE">
     <tr>
         <td colspan="2" class="CobaltFieldCaptionTD" align="center"><h3><strong>Asociaci&oacute;n de Tipos de Muestra por Examen</strong></h3>
 	</td>
     </tr>
     <tr>
-        <td class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
-        <td class="StormyWeatherDataTD">
-            <select id="cmbArea" name="cmbArea" size="1" onChange="LlenarExamenes(this.value);">
+        <td class="StormyWeatherFieldCaptionTD" colspan="1">&Aacute;rea</td>
+        <td class="StormyWeatherDataTD" colspan="1">
+            <select id="cmbArea" name="cmbArea" size="1" onChange="LlenarExamenes(this.value);" class="form-control height">
                 <option value="0" >--Seleccione un &Aacute;rea--</option>
                     <?php
 			
@@ -99,9 +99,9 @@ if ($nivel == 7) {
      </tr>
      <tr>
         <td class="StormyWeatherFieldCaptionTD">Examen </td>
-        <td class="StormyWeatherDataTD">
+        <td class="StormyWeatherDataTD" colspan="1">
             <div id="divExamen">
-                <select id="cmbExamen" name="cmbExamen" size="1">
+                <select id="cmbExamen" name="cmbExamen" size="1" class="form-control height">
                     <option value="0">--Seleccione un Examen--</option>
 			
 		</select>
@@ -110,7 +110,7 @@ if ($nivel == 7) {
     </tr>
     <tr>		  
         <td colspan="2">
-            <table width="100%" height="100%" border="0"  class="StormyWeatherFormTABLE"  >
+            <table width="100%" height="80%" border="0"  class="StormyWeatherFormTABLE"  >
                 <tr>
                     <td class="StormyWeatherFieldCaptionTD" width="45%"><div align="center">Tipos de Muestra </div>
                     </td>
@@ -141,8 +141,10 @@ if ($nivel == 7) {
                 </tr>
                 <tr>
                     <td colspan="3" align="right" class="StormyWeatherDataTD">
-                        <input type="button" name="Submit" value="Guardar Muestras" onClick="Guardar() ;" >
-                        <input type="button" name="submit1" value="Eliminar Muestra" onClick="Eliminar() ;" >
+                        <!--<input type="button" name="Submit" value="Guardar Muestras" onClick="Guardar() ;" >-->
+                        <button type='button' align="center" class='btn btn-primary' id="abrir"  onclick='Guardar(); '><span class='glyphicon glyphicon-floppy-disk'></span> Guardar </button>
+                        <!--<input type="button" name="submit1" value="Eliminar Muestra" onClick="Eliminar() ;" >-->
+                        <button type='button' aling='center' class='btn btn-primary' id='submit1' onclick='Eliminar();'>Eliminar Muestra</button> 
                     </td>
                
 		</tr>
