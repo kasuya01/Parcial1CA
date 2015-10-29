@@ -1,5 +1,5 @@
 <?php //session_start();
-include_once("../Conexion/ConexionBD.php"); //Agregamos el Archivo con las clases y funciones a utilizar
+include_once("Conexion/ConexionBD.php"); //Agregamos el Archivo con las clases y funciones a utilizar
 $nivel = $_SESSION['NIVEL'];
 $lugar = $_SESSION['Lugar'];
 $area  = $_SESSION['Idarea'];
@@ -7,6 +7,10 @@ $corr  = $_SESSION['Correlativo'];
 $cod   = $_SESSION['IdEmpleado'];
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
 include_once $ROOT_PATH.'/public/css.php';
+?>
+
+<link rel="shortcut icon" href="/Laboratorio/Imagenes/favicon.ico" />
+<?php
 // Creamos un objeto Conexion, Paciente
 $Conexion = new ConexionBD;
 $Conectar = $Conexion->Conectar();

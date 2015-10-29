@@ -11,6 +11,7 @@ function ValidarContrasena()
 </style>
 <link rel="stylesheet" type="text/css" href="./Themes/Mailbox/Style.css">
 <link rel="stylesheet" type="text/css" href="./public/css/corelayout.css">
+<link rel="shortcut icon" href="/Laboratorio/Imagenes/favicon.ico" />
 </head>
 <body>
 <center>

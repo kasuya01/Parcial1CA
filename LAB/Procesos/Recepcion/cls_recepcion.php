@@ -45,7 +45,13 @@ class clsRecepcion {
     function seleccionarestablecimientos($Idtipo, $lugar, $idext) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $sqlText = "select id,nombre from ctl_establecimiento where id_tipo_establecimiento not in (12,13,29,28) order by nombre;";
+           // $sqlText = "select id,nombre from ctl_establecimiento where id_tipo_establecimiento not in (12,13,29,28) order by nombre;";
+            $sqlText = "
+select t01.id, case when t02.nombre ilike '%isss%' then (t01.nombre||' - ' ||t02.nombre)
+		else t01.nombre end as nombre, id_tipo_establecimiento 
+from ctl_establecimiento 	t01
+join ctl_tipo_establecimiento 	t02 on (t02.id=t01.id_tipo_establecimiento)
+where id_tipo_establecimiento not in (12,13,29,28) order by id_tipo_establecimiento,  t01.nombre;";
             $dt = pg_query($sqlText);
             if (!$dt){
                 return false;

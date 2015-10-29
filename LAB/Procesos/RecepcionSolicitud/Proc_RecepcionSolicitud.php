@@ -29,7 +29,6 @@ if (isset($_SESSION['Correlativo'])) {
         $area1 = $area;
         $nomarea = $rowArea[0];
     }
-
     ?>
     <html>
         <head>
