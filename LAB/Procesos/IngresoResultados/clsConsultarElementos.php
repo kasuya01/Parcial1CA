@@ -485,7 +485,7 @@ else
     where estadodetalle not in (6,7)
     and sse.id=$idsolicitud
     and sds.id=$iddetallesolicitud
-    and mae.id_area_servicio_diagnostico = $idarea
+    --and mae.id_area_servicio_diagnostico = $idarea
     order by nombre_examen;";
          // echo $query;
          $result = pg_query($query);

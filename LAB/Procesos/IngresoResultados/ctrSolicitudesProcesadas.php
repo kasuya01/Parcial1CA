@@ -17,7 +17,7 @@ switch ($opcion) {
         $IdEstab        = $_POST['IdEstab'];
         $IdServ         = $_POST['IdServ'];
         $IdSubServ      = $_POST['IdSubServ'];
-        $idarea         = $_POST['idarea'];
+        echo $idarea         = $_POST['idarea'];
         $idexamen       = $_POST['idexamen'];
         $idexpediente   = $_POST['idexpediente'];
         $fechasolicitud = $_POST['fechasolicitud'];
