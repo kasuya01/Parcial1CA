@@ -91,6 +91,9 @@ order by posible_observacion;";
         $con = new ConexionBD;
         if ($con->conectar() == true) {
            $idexp=0;
+//Consulta modificada temporal hasta realizar modulo de citas y  modifico que desde seguimiento ingrese 
+           //fecha de cita de laboratorio asi que en recepcion no mostrara las fechas de cita que no son urgentes
+           //linea original: TO_CHAR(t02.fecha, 'DD/MM/YYYY') AS fecha_cita,
 
             $query = "with tbl_servicio as (select mnt_3.id,
                CASE

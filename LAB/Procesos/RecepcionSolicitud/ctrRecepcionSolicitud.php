@@ -431,7 +431,7 @@ switch ($opcion) {
       $rslts = "";
       if ($idrechazo != 1) {
          $query = $object->obteneropcionesrechazo();
-         $rslts = '<select name="cmbrechazo_' . $k . '" id="cmbrechazo_' . $k . '" class="form-control height" style="width:300px" onclick="cancelrechazo(this.value, ' . $k . ')">';
+         $rslts = '<select name="cmbrechazo_' . $k . '" id="cmbrechazo_' . $k . '" class="form-control height" style="width:100%" onclick="cancelrechazo(this.value, ' . $k . ')">';
          $rslts .='<option value="0" selected>--Seleccione una opción--</option>';
          while ($rows = pg_fetch_array($query)) {
             $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';

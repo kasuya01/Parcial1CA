@@ -812,5 +812,9 @@ function cancelarsolicitud(){
         }
     });
 
-}
+};
 
+ //fn pg
+ function updatealldates(){
+    $( "input[name^='f_tomamuestra_']" ).val( $('#fgentomamxgen').val() );
+ };
