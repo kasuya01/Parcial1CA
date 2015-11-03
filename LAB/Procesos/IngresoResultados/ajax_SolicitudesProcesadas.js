@@ -1582,7 +1582,7 @@ function GuardarResultadosPlantillaB()
             codigos_subelementos += document.getElementById('oidsubelemento[' + i + ']').value + "/";
             controles += document.getElementById('txtcontrol[' + i + ']').value + "/";
            // posresult+= document.getElementById('oposible_res[' + i + ']').value + "/"; 
-           // alert (posresult);
+          // alert (valores_combos);
         }
     }
     if (document.getElementById('ocultoele').value > 0)

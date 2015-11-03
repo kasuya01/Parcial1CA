@@ -198,8 +198,16 @@ function CambiarEstadoDetalle($iddetalle)
             
         }
         else{
-           $query = "INSERT INTO lab_detalleresultado(idresultado,idprocedimiento,id_posible_resultado,observacion,idestablecimiento) 
-		       VALUES($idresultado,$idproceso,'$resultado','$comentario',$lugar)";
+             $query1="SELECT posible_resultado FROM lab_posible_resultado where id=$resultado";
+                $result1 = pg_query($query1);
+                $row= pg_fetch_array($result1);
+                
+               // $dato = $result1;
+                if($result1) {
+                    $dato = $row[0];
+                    $query = "INSERT INTO lab_detalleresultado(idresultado,idprocedimiento,resultado,id_posible_resultado,observacion,idestablecimiento) 
+                              VALUES($idresultado,$idproceso,'$dato','$resultado','$comentario',$lugar)";
+                }
         }
        $result = @pg_query($query);
      if (!$result)

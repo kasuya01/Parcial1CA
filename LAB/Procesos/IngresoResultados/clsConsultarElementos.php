@@ -159,16 +159,16 @@ else
     function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$responsable,$usuario,$tab,$fecharealiz,$fecharesultado,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-              $query = "INSERT INTO lab_resultados (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
+            $query = "INSERT INTO lab_resultados (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
                       observacion,idempleado,idusuarioreg,fechahorareg,idestablecimiento,fecha_resultado) 
                       VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,'$observacion',$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,'$fecharesultado')
                       RETURNING id";
-           $query;
+           //$query;
             $result = pg_query($query);
 
             if ($row = pg_fetch_array($result)) {
 
-                $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen AND activo = true";
+             echo   $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen AND activo = true";
                 $result = pg_query($query);
 
                 if($result && pg_num_rows($result) == 1) {
@@ -176,7 +176,7 @@ else
 
                     $id_exam_metod = $row_exam_metod[0];
 
-                  $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, idusuarioreg, fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
+               echo   $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, idusuarioreg, fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
                             VALUES($id_exam_metod, $iddetalle, $tab, $usuario, date_trunc('seconds',NOW()),'$fecharealiz','$fecharesultado',$responsable)";
 
                     $result = pg_query($query);
@@ -201,7 +201,7 @@ else
     function insertar_elementos($idresultado,$idelemento,$resultado,$control_ele,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-             $query = "INSERT INTO lab_detalleresultado(idresultado,idelemento,resultado,observacion,idestablecimiento) 
+            $query = "INSERT INTO lab_detalleresultado(idresultado,idelemento,resultado,observacion,idestablecimiento) 
                       VALUES($idresultado,$idelemento,'$resultado','$control_ele',$lugar)";
             
             $result = @pg_query($query);
@@ -218,13 +218,21 @@ else
         $con = new ConexionBD;
         if($con->conectar()==true) {
             if ($pos==NULL){
-                $query = "INSERT INTO lab_detalleresultado(idresultado,idsubelemento,resultado,observacion,idestablecimiento) 
+               $query = "INSERT INTO lab_detalleresultado(idresultado,idsubelemento,resultado,observacion,idestablecimiento) 
                           VALUES($idresultado,$idsubelemento,'$resultado','$control',$lugar)";
             }
             else{
+                $query1="SELECT posible_resultado FROM lab_posible_resultado where id=$resultado";
+                $result1 = pg_query($query1);
+                $row= pg_fetch_array($result1);
                 
-                $query = "INSERT INTO lab_detalleresultado(idresultado,idsubelemento,id_posible_resultado,observacion,idestablecimiento) 
-                          VALUES($idresultado,$idsubelemento,'$resultado','$control',$lugar)";//,'$posresult' //resultado,
+               // $dato = $result1;
+                if($result1) {
+                    $dato = $row[0];
+                    $query = "INSERT INTO lab_detalleresultado(idresultado,idsubelemento,resultado,id_posible_resultado,observacion,idestablecimiento) 
+                              VALUES($idresultado,$idsubelemento,'$dato','$resultado','$control',$lugar)";//,'$posresult' //resultado,
+                              
+                }
             }
             $result = @pg_query($query);
 
@@ -477,16 +485,15 @@ else
   function buscarAnterioresPUnica($idsolicitud, $iddetallesolicitud, $idarea) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-    $query = "select nombre_examen, sds.id as iddetallesolicitud, lce.id as idexamen 
-    from sec_solicitudestudios sse
-    join sec_detallesolicitudestudios sds 	on (sse.id = sds.idsolicitudestudio)
-    join lab_conf_examen_estab lce 		on (lce.id = sds.id_conf_examen_estab)
-    join mnt_area_examen_establecimiento mae on(mae.id = lce.idexamen)
-    where estadodetalle not in (6,7)
-    and sse.id=$idsolicitud
-    and sds.id=$iddetallesolicitud
-    --and mae.id_area_servicio_diagnostico = $idarea
-    order by nombre_examen;";
+   $query = "select nombre_examen, sds.id as iddetallesolicitud, lce.id as idexamen 
+          from sec_solicitudestudios sse
+          join sec_detallesolicitudestudios sds 	on (sse.id = sds.idsolicitudestudio)
+          join lab_conf_examen_estab lce 		on (lce.id = sds.id_conf_examen_estab)
+          join mnt_area_examen_establecimiento mae on(mae.id = lce.idexamen)
+          where estadodetalle not in (6,7)
+          and sse.id=$idsolicitud
+          and sds.id=$iddetallesolicitud
+          order by nombre_examen";
          // echo $query;
          $result = pg_query($query);
          if (!$result) {

@@ -66,7 +66,7 @@ case 1:
                                             $total=pg_fetch_array($con_total);
                                                    //echo $total[0];
                                             if($total[0]>=1){  
-                                    $imprimir.= "<select id='txtresultado[".$pos."]' name='txtresultado[".$pos."]' size='1' style='width:260px'>
+                                    $imprimir.= "<select id='txtresultado[".$pos."]' name='txtresultado[".$pos."]' size='1' style='width:260px'  class='form-control height'>
                                                     <option value='0' >--Seleccione Resultado--</option>";
                                                     $con_result=$obj->leer_posibles_resultados_procedimientos($row['idprocedimiento']);
                                                     while ($row_result=pg_fetch_array($con_result)) {
@@ -148,7 +148,7 @@ case 1:
                                                    $total=pg_fetch_array($con_total);
                                                    //echo $total[0];
                                 if($total[0]>=1){  
-                           $imprimir.= "<select id='txtresultado[".$pos."]' name='txtresultado[".$pos."]'  size='1' style='width:260px'>
+                           $imprimir.= "<select id='txtresultado[".$pos."]' name='txtresultado[".$pos."]'  size='1' style='width:260px' class='form-control  height'>
                                             <option value='0' >--Seleccione Resultado--</option>";
                                                     $con_result=$obj->leer_posibles_resultados_procedimientos($row['idprocedimiento']);
                                       while ($row_result=pg_fetch_array($con_result)) {

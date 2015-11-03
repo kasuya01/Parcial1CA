@@ -185,12 +185,12 @@ switch ($opcion) {
                                                    $total=pg_fetch_array($con_total);
                                                    //echo $total[0];
                                                 if($total[0]>=1){      
-                                                       $imprimir.= "<select id='txtresultadosub[".$pos."]' name='txtresultadosub[".$pos."]'  size='1' style='width:270px' class='form-control  height'>
+                                                   $imprimir.= "<select id='txtresultadosub[".$pos."]' name='txtresultadosub[".$pos."]'  size='1' style='width:270px' class='form-control  height'>
                                                                     <option value='0' >--Seleccione Resultado--</option>";
                                                     $con_result=$objdatos->leer_posibles_resultados($rowsub['idsubelemento']);
-                                                $orden= pg_fetch_all($con_result);//print_r($orden);
+                                                    $orden= pg_fetch_all($con_result);//print_r($orden);
                                                      /*asort($valores[58],SORT_NUMERIC);*/
-                                                $orden1=asort($orden,SORT_NUMERIC);
+                                                    $orden1=asort($orden,SORT_NUMERIC);
                                                     foreach ($orden as $row_result) {
                                                         $imprimir.="<option value='" . $row_result['id_posible_resultado'] . "'>" . htmlentities($row_result['posible_resultado']) . "</option>";
                                                     }   
@@ -694,7 +694,7 @@ switch ($opcion) {
 		$tamano_vector 		  = count($vector);
 		$tamano_vectorele 	  = count($vector_elementos);
 		$vector_controles 	  = EXPLODE("/",$controles);
-		$vector_controles_ele = EXPLODE("/",$controles_ele);
+		$vector_controles_ele     = EXPLODE("/",$controles_ele);
                 $vector_combos            = explode("/",$valores_combos);
 		$tab 			  = $_POST['tab'];
   		$fecharealiz=$_POST['fecharealiz'];
