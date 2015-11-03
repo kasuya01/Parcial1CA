@@ -7,6 +7,10 @@ $corr  = $_SESSION['Correlativo'];
 $cod   = $_SESSION['IdEmpleado'];
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
 include_once $ROOT_PATH.'/public/css.php';
+?>
+
+<link rel="shortcut icon" href="/Laboratorio/Imagenes/favicon.ico" />
+<?php
 // Creamos un objeto Conexion, Paciente
 $Conexion = new ConexionBD;
 $Conectar = $Conexion->Conectar();

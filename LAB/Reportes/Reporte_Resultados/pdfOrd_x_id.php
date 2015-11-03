@@ -787,9 +787,9 @@ $resfinnombre_c="    ".$examen['resultadoFinal']['resultado']."   ";
    }
    $this->SetX(7);
       $this->SetFont('Arial','B',9);
-      $this->Cell(70, 5, 'RESULTADO:', 0, 0, 'L');
-      $this->SetFont('Arial','B',9);
-      $this->Cell(120, 5, $resfinnombre_c, 0, 1, 'L');
+      $this->Cell(0, 5, 'RESULTADO:'.$resfinnombre_c, 0,1, 'C');
+     // $this->SetFont('Arial','B',9);
+      //$this->Cell(120, 5, $resfinnombre_c, 0, 1, 'L');
 //    $html.="<div class='row' style='font-size: 17px;padding-top: 20px;padding-bottom: 20px;'>
 //    <div class='col-md-12 col-sm-12'>
 //        Resultado: <strong>";
@@ -811,24 +811,33 @@ $resfinnombre_c="    ".$examen['resultadoFinal']['resultado']."   ";
             foreach ($examen['bacterias'] as $bacteria){
                $this->SetX(7);
            // {% for bacteria in examen.bacterias %}
+            $this->SetFillColor(255,255,255);
+            //$this->Line(7,$ye,195,$ye);
+            $this->Ln(1);
+//            $ye=$this->GetY();
+//            $this->SetDrawColor(230,230,230);
+//            $this->Line(7,$ye,195,$ye);
+            $this->SetX(7);
+            $this->SetLineWidth(0.1);
             $this->SetFont('Arial','B',9);
-            $this->Cell(70,5,'ORGANISMO:',0,0,'L', true);
+            $this->Cell(70,5,'ORGANISMO:','LT',0,'L', true);
             $this->SetFont('Arial','',9);
-            $this->Cell(120,5,utf8_decode($bacteria['nombre']),0,1,'L');
+            $this->Cell(118,5,utf8_decode($bacteria['nombre']),'TR',1,'L');
             $this->SetFont('Arial','B',9);
             $this->SetX(7);
-            $this->Cell(70,5,'CULTIVO CON CUENTA DE COLONIAS:',0,0,'L', true);
+            $this->Cell(70,5,'CULTIVO CON CUENTA DE COLONIAS:','L',0,'L', true);
             $this->SetFont('Arial','',9);
-            $this->Cell(120,5,utf8_decode($bacteria['cantidad']),0,1,'L');
-            $this->Ln(1);
-             $this->SetX(7);
+            $this->Cell(118,5,utf8_decode($bacteria['cantidad']),'R',1,'L');
+            //$this->Ln(1);
+            $this->SetX(7);
             $this->SetFillColor(200,200,200);
             $this->SetFont('Arial','B',9);
-            $this->Cell(105,5,utf8_decode('ANTIBIOTICO'),0,0,'L', true);
+            
+            $this->Cell(105,5,utf8_decode('ANTIBIOTICO'),'L',0,'L', true);
             $this->Cell(30,5,utf8_decode('LECTURA'),0,0,'L', true);
-            $this->Cell(53,5,utf8_decode('INTERPRETACIÓN'),0,1,'L', true);
+            $this->Cell(53,5,utf8_decode('INTERPRETACIÓN'),'R',1,'L', true);
             //$this->Cell(53,5,utf8_decode('OBSERVACIONES'),0,1,'L', true);
-            $this->Ln(1);
+      //     $this->Ln(1);
             $ye=$this->GetY();
             $this->SetDrawColor(4,79,144);
             $this->Line(7,$ye,195,$ye);
@@ -871,6 +880,7 @@ $resfinnombre_c="    ".$examen['resultadoFinal']['resultado']."   ";
                                           }
                            $this->SetWidths(array(105, 30, 53));
                            $this->Ln(1);
+                           $this->SetX(10);
                            $this->Row1(array(utf8_decode($antibiotico['nombre']),utf8_decode($antibiotico['lectura']),utf8_decode($nombreposres_c) ));
                            
 //                                $html.="  <tr>

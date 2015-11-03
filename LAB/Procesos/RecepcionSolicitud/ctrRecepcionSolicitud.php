@@ -277,14 +277,15 @@ switch ($opcion) {
       $idsolicitud = $_POST['idsolicitud'];
 
       //Asignando el Numero de Muestra y Registrando la recepcion
-      if ($con->conectar() == true) {
-         $query = "SELECT coalesce(MAX(t01.numeromuestra),0) + 1 AS numeromuestra
+     // if ($con->conectar() == true) {
+       /*  $query = "SELECT coalesce(MAX(t01.numeromuestra),0) + 1 AS numeromuestra
                       FROM lab_recepcionmuestra        t01
 		      INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
 		      WHERE  date(t01.fecharecepcion) = current_date  
-                      AND t02.id_establecimiento = $lugar";
-         $result = @pg_query($query);
-         if (!$result)
+                      AND t02.id_establecimiento = $lugar";*/
+         $result=$object->maxrecepcionmuestra($lugar);
+         //$result = @pg_query($query);
+         if ($result==false)
             echo "N";
          else {
             $row = pg_fetch_array($result);
@@ -293,16 +294,17 @@ switch ($opcion) {
                $numero = 1;
             }
             //Registro de la recepcion
-            $query_insert = "INSERT INTO lab_recepcionmuestra(idsolicitudestudio, numeromuestra, fechacita, fecharecepcion, idusuarioreg, fechahorareg, idestablecimiento)
+            $result_insert=$object->insertrecepcionmuestra($idsolicitud, $numero, $fechacita, $lugar, $usuario);
+            /*$query_insert = "INSERT INTO lab_recepcionmuestra(idsolicitudestudio, numeromuestra, fechacita, fecharecepcion, idusuarioreg, fechahorareg, idestablecimiento)
                                  VALUES($idsolicitud, $numero, '$fechacita', TO_DATE(NOW()::text, 'YYYY-MM-DD'), $usuario ,date_trunc('seconds', now()), $lugar)";
-            $result_insert = @pg_query($query_insert);
-            if (!$result_insert) {
+            $result_insert = @pg_query($query_insert);*/
+            if ($result_insert==false) {
                echo "NN";
             } else {
                //Asignando el Numero de la muestra
                echo "El Numero de Muestra asignado es: " . $numero;
             }
-         }
+         //}
       }
       break;
    case 5:
@@ -429,7 +431,7 @@ switch ($opcion) {
       $rslts = "";
       if ($idrechazo != 1) {
          $query = $object->obteneropcionesrechazo();
-         $rslts = '<select name="cmbrechazo_' . $k . '" id="cmbrechazo_' . $k . '" class="form-control height" style="width:300px" onclick="cancelrechazo(this.value, ' . $k . ')">';
+         $rslts = '<select name="cmbrechazo_' . $k . '" id="cmbrechazo_' . $k . '" class="form-control height" style="width:100%" onclick="cancelrechazo(this.value, ' . $k . ')">';
          $rslts .='<option value="0" selected>--Seleccione una opción--</option>';
          while ($rows = pg_fetch_array($query)) {
             $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
@@ -460,24 +462,44 @@ switch ($opcion) {
       break;
 
    case 13:
+      //Ingresando a lab_recepcionmuestra
+      //$fechacita = $_POST['fechacita'];
+      
+
+//         $result=$object->maxrecepcionmuestra($lugar);
+//         if ($result!=false){
+//            $row = pg_fetch_array($result);
+//            $numero = $row['numeromuestra'];
+//            if ($numero == "") {
+//               $numero = 1;
+//            }
+//            //Registro de la recepcion
+//            $result_insert=$object->insertarrecepcionmuestra($idsolicitud, $numero, $fechacita, $lugar, $usuario);          
+//         //}
+//      }
+      //fin recepcionmuestra
+      
+      
       $jsonresponse['status'] = true;
 
       $cmbrechazoest = $_POST['cmbrechazoest'];
       $cmbrechazosol = $_POST['cmbrechazosol'];
       $idsolicitud = $_POST['idsolicitud'];
+      $fecpure=  new DateTime($_POST['fechacita']);
+      $fechacita=$fecpure->format('Y-m-d');
+     // $idsolicitud = $_POST['idsolicitud'];
 
       //$fechanewcitasol = isset($_POST['fechanewcitasol']) ? $_POST['fechanewcitasol']
       $fechanewcitasol=(empty($_POST['fechanewcitasol'])) ? 'NULL' : "'" . pg_escape_string(trim($_POST['fechanewcitasol'])) . "'";
+      $fechacita=(empty($fechacita)) ? 'NULL' : "'" . pg_escape_string(trim($fechacita)) . "'";
 //      $observacionrechazo = isset($_POST['observacionrechazo']) ? $_POST['observacionrechazo']
       $observacionrechazo = (empty($_POST['observacionrechazo'])) ? 'NULL' : "'" . pg_escape_string(trim($_POST['observacionrechazo'])) . "'";
 
       $rslts = "";
       $cancelarsol = $object->cancelarsolicitud($cmbrechazoest, $cmbrechazosol,
-              $fechanewcitasol, $observacionrechazo, $idsolicitud, $usuario);
+              $fechanewcitasol, $observacionrechazo, $idsolicitud, $usuario, $fechacita, $lugar);
       
      /// var_dump($cancelarsol);
-      
-
       if ($cancelarsol == true) {
          $jsonresponse['status'] = true;
       } else

@@ -21,6 +21,7 @@ $marca=$_GET['var15'];
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <title>Resultados de Examenes de Laboratorio </title>
 <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script>
+<link rel="shortcut icon" href="/Laboratorio/Imagenes/favicon.ico" />
 <!--<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">-->
 <script language="JavaScript">
@@ -89,7 +90,6 @@ $nexamen=$filares['nombre_examen'];
 $f_tomamuestra=$filares['f_tomamuestra'];
 $timefresult = strtotime($fechares);
 $fechares = date("Y-m-d", $timefresult);
- //echo 'emp:'.$responsable;
 ?>
 <div  id="divImpresion" >
     <form name="frmimpresion" >
@@ -177,7 +177,13 @@ $fechares = date("Y-m-d", $timefresult);
                      <?php }else{?>
                             <td  align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                      <?php }  ?>
-                            <td align="justify" class="Estilo5"><?php echo isset($fila['rangoinicio']) ? $fila['rangoinicio'] : null." - ".isset($fila['rangorin']) ? $fila['rangofin'] : null?></td>                   
+                            <td align="justify" class="Estilo5">
+                               <?php 
+                               $rinicial=isset($fila['rangoinicio']) ? $fila['rangoinicio'] : null;
+                               $rfinal=isset($fila['rangofin']) ? $fila['rangofin'] : null;
+                                echo $rinicial." - ".$rfinal;
+                                ?>
+                            </td>                   
                      <?php 
                             if (!empty($observacion)){ ?>
                             <td align="justify" class="Estilo5" colspan="3"><?php echo $observacion?></td>

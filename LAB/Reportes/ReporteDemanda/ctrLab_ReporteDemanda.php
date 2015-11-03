@@ -53,7 +53,6 @@ switch ($opcion)
       $rslt.='   <div class="panel panel-default">
                <div class="panel-body">
 
-                    <div class="container">
                        <h3>Reportes de demanda insatisfecha desde '.$d_fechadesde.' hasta '.$d_fechahasta.'
                           <div class="pull-right mouse-pointer" id="expand-compress-btn" data-toggle="tooltip" data-placement="top" title="" data-original-title="Expandir/Contraer resultados"><span class="fa fa-expand" style="padding-right:15px;"></span></div></h3>
                        <div class="panel-group" id="accordion">';
@@ -135,10 +134,10 @@ switch ($opcion)
          
          $estrechazo=$obj->estadoRechazo();
           while ($row2=pg_fetch_array($estrechazo)){
-         $rslt.='<div role="tabpanel" class="tab-pane" id="'.$row2['rtab'].'">';
+         $rslt.='<div role="tabpanel" class="tab-pane" id="'.$row2['rtab'].'" style="overflow-x: scroll; overflow-y:visible;">';
          $idposiblerec=$obj->posiblesrechazos();
             $rslt.='<br><p>Detalle de '.$row2['estado'].' por Área y Examen</p><br>'
-                    . '<table  class="table table-hover table-bordered table-condensed table-white" style="width:100%"><thead>';
+                    . '<table  class="table table-hover table-bordered table-condensed table-white" ><thead>';
             
             $rslt.='<tr><th rowspan=2 style="vertical-align:middle">Área</th>';
             $rslt.='<th rowspan=2 style="vertical-align:middle; width:40%">Prueba</th>';
@@ -217,150 +216,11 @@ switch ($opcion)
       
       
       $rslt.= ' </div> 
-                    </div>                 
+                                    
                  
                </div>
              </div>     ';
       
-    
-      
-//      
-//      
-//      
-//      
-//      
-//      $resultgetDatosGenerales = getDatosGenerales($idHistorialClinico,
-//              $idDatoReferencia, $idEstablecimiento);
-//
-//
-//      $consulta = $objdatos->obtenerDatosGenerales($idHistorialClinico,
-//              $idDatoReferencia, $idEstablecimiento);
-//      $row = @pg_fetch_array($consulta);
-//
-//
-//      $nombre_establecimiento = $row['nombre_establecimiento'];
-//      $procedencia = $row['procedencia'];
-//      $servicio = $row['servicio'];
-//      $nombre_empleado = $row['nombre_empleado'];
-//      $numero_expediente = $row['numero_expediente'];
-//      $nombre_paciente = $row['nombre_paciente'];
-//      $fecha_solicitud = $row['fecha_solicitud'];
-//
-//
-//      //  DATOS GENERALES
-//
-//      $imprimir = "<br> <form name='frmDatos'>
-//            <div class='table-responsive' style='width: 80%;'>
-//                <table width='70%' border='0' align='center' class='table table-hover table-bordered table-condensed table-white'>
-//			<thead>
-//                                    <tr>
-//                                            <th colspan='4' align='center' style='background-color: #428bca; color: #ffffff'>
-//                                                    <h3>  <center>  <strong>DATOS SOLICITUD</strong>   </center>  </h3></th>
-//                                    </tr>
-//                        </thead><tbody>
-//			<tr>
-//
-//				<td>Establecimiento</td>
-//                                <td colspan='3'>" . $nombre_establecimiento . "</td>
-//			</tr>
-//		        <tr>
-//				<td>Procedencia</td>
-//				<td colspan='1'>" . $procedencia . " 
-//                        </tr>
-//                        <tr>
-//                                <td>Origen</td>
-//                                <td>" . $servicio . "</td>
-//                        </tr>
-//                        <tr>
-//				<td>M&eacute;dico</td>
-//				<td colspan='3'>" . $nombre_empleado . "
-//			</tr>
-//                        <tr>
-//				<td>No. Expediente</td>
-//				<td>" . $numero_expediente . "</td>
-//			</tr>
-//                        <tr>
-//				<td>Nombre Paciente</td>
-//				<td>" . $nombre_paciente . "</td>
-//			</tr>
-//                        <tr>
-//                                <td>Fecha Recepción</td>
-//                                <td colspan='3'>" . $fecha_solicitud . "</td>
-//                        </tr>
-//                </tbody>
-//            </table>
-//        </div>";
-//
-//      echo $imprimir;
-//
-//
-//
-//      /*
-//       * Impresion de Resutlados
-//       */
-//      $print = '';
-//
-//      $print .= MuestrasRechazadas($resultgetExamnResult['RM']);
-//
-//      if (count($resultgetExamnResult['RC']) > 0) {
-//         foreach ($resultgetExamnResult['RC'] as $area) {
-//            //----areas
-//            /* <div class="panel panel-primary">
-//              <div class="panel-heading mouse-pointer" role="tab" id="heading-{{ area.codigo }}" data-toggle="collapse" data-target="#area-{{ area.codigo }}" aria-expanded="false" aria-controls="area-{{ area.codigo }}">
-//              <h4 class="panel-title">
-//              {{area.nombre}}
-//              </h4>
-//              </div>
-//              <div id="area-{{ area.codigo }}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-area-{{ area.codigo }}">
-//              <div class="panel-body">
-//              <div class="table-responsive">
-//              {% set arrayPlantillas = ['A','B','C','D','E'] %}
-//              {% for pType in arrayPlantillas %}
-//              {% if area.plantillas[pType] is defined %}
-//              {% include 'MinsalLaboratorioBundle:Custom:SecSolicitudestudios/bodyLayout.html.twig' with {'pType': pType} %}
-//              {% endif %}
-//              {% endfor %}
-//              </div>
-//              </div>
-//              </div>
-//              </div> */
-//            // <div class="panel panel-success">...</div>
-//
-//
-//
-//
-//            /* $print.= "<div class='panel-heading mouse-pointer' role='tab' id='heading".$area['codigo']."' data-toggle='collapse' data-target='#".$area['codigo']."' ".$aria."-expanded='false' aria-controls='".$area.['codigo']."'>
-//              <h4 class='panel-title'>
-//              ".$area['nombre']."
-//              </h4>
-//              </div>
-//              <div id='".$area['codigo']."' class='panel-collapse collapse in' role='tabpanel' aria-labelledby='heading-".$area['codigo']."'>
-//              <div class='panel-body'> </div>
-//              </div>"; */
-//
-//            $print.= "<div class='panel panel-success'>
-//                                        <div class='panel-heading mouse-pointer' role='tab' id='heading- data-toggle='collapse' >
-//                                            <h4 class='panel-title'>
-//                                                " . $area['nombre'] . "
-//                                            </h4>
-//                                        </div>
-//                        </div>";
-//
-//            $arrayPlantillas = ['A', 'B', 'C', 'D', 'E'];
-//            foreach ($arrayPlantillas as $pType) {
-//               if (array_key_exists($pType, $area['plantillas'])) {
-//                  $print .= bodyLayout($area, $pType);
-//               }
-//            }
-//         }
-//      } else {
-//         //  $print = 'Los examenes no han sido procesados aun...';
-//         {
-//            $print = " <table > <tr><td colspan='11'><span style='color: #575757;'>Los examenes no han sido procesados aun...</span></td></tr></tbody></table></div>";
-//         }
-//      }
-
-
       echo $rslt;
       break;
 

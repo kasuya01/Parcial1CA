@@ -91,6 +91,9 @@ order by posible_observacion;";
         $con = new ConexionBD;
         if ($con->conectar() == true) {
            $idexp=0;
+//Consulta modificada temporal hasta realizar modulo de citas y  modifico que desde seguimiento ingrese 
+           //fecha de cita de laboratorio asi que en recepcion no mostrara las fechas de cita que no son urgentes
+           //linea original: TO_CHAR(t02.fecha, 'DD/MM/YYYY') AS fecha_cita,
 
             $query = "with tbl_servicio as (select mnt_3.id,
                CASE
@@ -694,10 +697,10 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
         }
     }
 //Fn para cancelar la solicitud
-    function cancelarsolicitud($cmbrechazoest, $cmbrechazosol, $fechanewcitasol, $observacion, $idsolicitud, $usuario) {
+    function cancelarsolicitud($cmbrechazoest, $cmbrechazosol, $fechanewcitasol, $observacion, $idsolicitud, $usuario, $fechacita, $lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-         $query="select lab_cancelarsolicitud($cmbrechazoest, $cmbrechazosol, $fechanewcitasol, $observacion, $idsolicitud, $usuario)";
+        $query="select lab_cancelarsolicitud($cmbrechazoest, $cmbrechazosol, $fechanewcitasol, $observacion, $idsolicitud, $usuario, $fechacita, $lugar)";
               $result= @pg_query($query);
             
             if (!$result)
@@ -706,6 +709,34 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
                 return $result;
         }
     }
+    function maxrecepcionmuestra ($lugar){
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+           $query = "SELECT coalesce(MAX(t01.numeromuestra),0) + 1 AS numeromuestra
+                      FROM lab_recepcionmuestra        t01
+		      INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
+		      WHERE  date(t01.fecharecepcion) = current_date  
+                      AND t02.id_establecimiento = $lugar";
+         $result = @pg_query($query);
+          if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }//fin maxrecepcionmuestra
+    function insertrecepcionmuestra ($idsolicitud, $numero, $fechacita, $lugar, $usuario){
+        $con = new ConexionBD;
+    if ($con->conectar() == true) {
+         $query_insert = "INSERT INTO lab_recepcionmuestra(idsolicitudestudio, numeromuestra, fechacita, fecharecepcion, idusuarioreg, fechahorareg, idestablecimiento)
+                                 VALUES($idsolicitud, $numero, '$fechacita', TO_DATE(NOW()::text, 'YYYY-MM-DD'), $usuario ,date_trunc('seconds', now()), $lugar)";
+            $result_insert = @pg_query($query_insert);
+          if (!$result_insert)
+                return false;
+            else
+                return $result_insert;
+    }
+    }//fn insertrecepcionmuestra 
+    
 }
 //CLASE
 ?>

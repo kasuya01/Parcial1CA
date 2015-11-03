@@ -783,6 +783,7 @@ function cancelarsolicitud(){
    fechanewcitasol=$('#fechanewcitasol').val();
    observacionrechazo=$('#observacionrechazo').val();
    idsolicitud=$('input[id^="txtidsolicitud[0]"]').val();
+   fechacita = $('input[id^="txtfecha[0]"]').val();
    pasar=1;
    if ((cmbrechazoest==0)||(cmbrechazoest==0)){
    pasar=0;
@@ -799,7 +800,7 @@ function cancelarsolicitud(){
         async: true,
         dataType: 'json',
         type: 'POST',
-        data: { opcion: 13 , cmbrechazoest: cmbrechazoest,cmbrechazosol: cmbrechazosol,fechanewcitasol: fechanewcitasol, observacionrechazo: observacionrechazo,idsolicitud:idsolicitud },
+        data: { opcion: 13 , cmbrechazoest: cmbrechazoest,cmbrechazosol: cmbrechazosol,fechanewcitasol: fechanewcitasol, observacionrechazo: observacionrechazo,idsolicitud:idsolicitud, fechacita:fechacita },
         success: function(object) {
             if(object.status) {
                 alert ('Solicitud cancelada');
@@ -811,5 +812,9 @@ function cancelarsolicitud(){
         }
     });
 
-}
+};
 
+ //fn pg
+ function updatealldates(){
+    $( "input[name^='f_tomamuestra_']" ).val( $('#fgentomamxgen').val() );
+ };
