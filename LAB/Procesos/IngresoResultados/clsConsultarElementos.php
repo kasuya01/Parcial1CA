@@ -168,7 +168,7 @@ else
 
             if ($row = pg_fetch_array($result)) {
 
-             echo   $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen AND activo = true";
+                $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen AND activo = true";
                 $result = pg_query($query);
 
                 if($result && pg_num_rows($result) == 1) {
@@ -176,7 +176,7 @@ else
 
                     $id_exam_metod = $row_exam_metod[0];
 
-               echo   $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, idusuarioreg, fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
+                 $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, idusuarioreg, fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
                             VALUES($id_exam_metod, $iddetalle, $tab, $usuario, date_trunc('seconds',NOW()),'$fecharealiz','$fecharesultado',$responsable)";
 
                     $result = pg_query($query);
