@@ -15,3 +15,7 @@
 <link type="text/css" href="<?php echo $base_url; ?>/Laboratorio/public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
 <link type="text/css" href="<?php echo $base_url; ?>/Laboratorio/public/package/select2-3.4.5/select2.css" rel="stylesheet" />
 <link type="text/css" href="<?php echo $base_url; ?>/Laboratorio/public/package/lou-multi-select/css/multi-select.css" rel="stylesheet" />
+<link type="text/css" href="<?php echo $base_url; ?>/Laboratorio/public/package/lou-multi-select/css/multi-select.css" rel="stylesheet" />
+<link type="text/css" href="<?php echo $base_url; ?>/Laboratorio/public/package/AdminLTE/dist/css/AdminLTE.min.css" rel="stylesheet" />
+<link type="text/css" href="<?php echo $base_url; ?>/Laboratorio/public/package/AdminLTE/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" />
+<link rel="shortcut icon" href="/Laboratorio/Imagenes/favicon.ico" />

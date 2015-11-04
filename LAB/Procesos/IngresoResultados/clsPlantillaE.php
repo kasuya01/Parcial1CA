@@ -198,6 +198,7 @@ function CambiarEstadoDetalle($iddetalle)
             
         }
         else{
+
              $query1="SELECT posible_resultado FROM lab_posible_resultado where id=$resultado";
                 $result1 = pg_query($query1);
                 $row= pg_fetch_array($result1);
@@ -208,6 +209,7 @@ function CambiarEstadoDetalle($iddetalle)
                     $query = "INSERT INTO lab_detalleresultado(idresultado,idprocedimiento,resultado,id_posible_resultado,observacion,idestablecimiento) 
                               VALUES($idresultado,$idproceso,'$dato','$resultado','$comentario',$lugar)";
                 }
+
         }
        $result = @pg_query($query);
      if (!$result)

@@ -29,11 +29,13 @@ if (isset($_SESSION['Correlativo'])) {
         $area1 = $area;
         $nomarea = $rowArea[0];
     }
+
     $idSolicitud      = $_POST['idSolicitud'] ? $_POST['idSolicitud'] : '';
     $fechaCita        = $_POST['fechaCita'] ? $_POST['fechaCita'] : '';
     $numeroExpediente = $_POST['numeroExpediente'] ? $_POST['numeroExpediente'] : '';
     $idExpediente     = $_POST['idExpediente'] ? $_POST['idExpediente'] : '';
      
+
     ?>
     <html>
         <head>

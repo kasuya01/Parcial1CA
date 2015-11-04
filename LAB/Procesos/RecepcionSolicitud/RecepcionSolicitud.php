@@ -110,7 +110,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                     <th>Cód. Area</th>
                     <th> Examen </th>
                     <th> Indicaciones </th>
-                    <th> Fecha Tmx. </th>
+                    <th >Fecha Toma Mx.<br/><input type='text' placeholder='aaaa-mm-dd HH:MM' class='datepicker form-control height' title='Seleccione la Fecha de toma de muestra igual para actualizar la de todas las pruebas.' id='fgentomamxgen'  name='fgentomamx' style='width:150px' value='" . $fecha . "' onchange= \"valfechasolicita(this.value, 'fgentomamxgen'), updatealldates()\"  ></th>
                     <th> Validar Muestra</th>
                     <th id='colnewdate_' class='hide_me newdate'>Nueva Cita</th>
 		</tr></thead><tbody>";
@@ -137,7 +137,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
             if (($rows['idexamen'] == 'COA001')or ( $rows['idexamen'] == 'COA002') or ( $rows['idexamen'] == 'COA016')) {
                 $ban = 1;
             }
-            echo '<td style="width:250px"><div id="divopcionvalidar_'.$k.'"  style="display:block;">';
+            echo '<td style="width:250px"><div id="divopcionvalidar_'.$k.'"  style="display:block; width:100%">';
             echo '<input type="hidden" id="idk_'.$k.'" name="idk_'.$k.'" value="'.$k.'" />';
             echo '<select id="validarmuestra_'.$k.'" name="validarmuestra_" onchange="OpcionRechazo(this.value, '.$k.')" class="form-control height" style="width:300px">';
            // echo '<option value="0">Validada</option>';
@@ -148,7 +148,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
             }
             echo '</select>';
             echo '</div>'
-            . '<div id="divopcionrechazo_'.$k.'" style="width:250px;display:none"></div>'
+            . '<div id="divopcionrechazo_'.$k.'" style="width:100%;display:none"></div>'
                     . '</td>';
             echo '<td  id="colnewdate_" class="hide_me newdate"  style="width:100px"> <div id="divnewdate_'.$k.'" style="display:none"></div></td>';
             echo "</tr>";

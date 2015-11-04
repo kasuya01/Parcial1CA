@@ -1037,10 +1037,10 @@ and idhistoref=$idhistoref;";
 
    //Fn_pg
    //Funcion para consultar datos obligatorios de 
-   function condatos($idhistorialclinico, $lugar) {
+   function condatos($idhistorialclinico, $lugar, $fechadatosfijos) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "select sef.peso, sef.talla, (sct_name_es ||', ' ||especificacion) as diagnostico, conocido_por 
+         $query = "select sef.peso, sef.talla, (sct_name_es ||', ' ||especificacion) as diagnostico, conocido_por, (date('$fechadatosfijos')  - date (fecha_nacimiento)) as dias, id_sexo
                     from sec_historial_clinico shc 
                     join mnt_expediente mex on (mex.id = shc.id_numero_expediente) 
                     join mnt_paciente mpa on (mpa.id = mex.id_paciente) 
@@ -1049,6 +1049,26 @@ and idhistoref=$idhistoref;";
                     left join sec_signos_vitales sef on (shc.id = sef.id_historial_clinico)
                     where shc.id=$idhistorialclinico
                     and shc.idestablecimiento=$lugar";
+         //echo $query;
+         $result = pg_query($query);
+         if (!$result) {
+            return false;
+         } else {
+            return $result;
+         }
+      }
+   }
+   //Fn_pg
+   //Funcion para consultar datos obligatorios de 
+   function condatosref($idhistorial, $lugar, $fechadatosfijos) {
+      $con = new ConexionBD;
+      if ($con->conectar() == true) {
+         $query = "select (date('$fechadatosfijos')  - date (fecha_nacimiento)) as dias, id_sexo
+from mnt_dato_referencia shc 
+join mnt_expediente_referido mex on (mex.id = shc.id_expediente_referido) 
+join mnt_paciente_referido mpa on (mpa.id = mex.id_referido) 
+where shc.id=$idhistorial
+and shc.id_establecimiento=$lugar";
          //echo $query;
          $result = pg_query($query);
          if (!$result) {
@@ -1269,7 +1289,8 @@ and (date(t02.fechafin) >= current_date or date(t02.fechafin) is null);";
    function consfecha($idsolicitud, $iddetallesolicitud, $lugar) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "select * 
+         $query = "select * , case when f_tomamuestra is not null then date(f_tomamuestra)
+		else date(fechahorareg) end as fechadatosfijos
 from sec_detallesolicitudestudios t01
 where t01.id=$iddetallesolicitud
 and idestablecimiento=$lugar;";
@@ -1309,18 +1330,20 @@ and '$prueba' ilike '%VIH%';";
    }
 
    //Fn PG
-   function ConsDatoFijo($iddetallesolicitud, $lugar) {
+   function ConsDatoFijo($iddetallesolicitud, $lugar, $id_sexo, $idedad) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "select (case when rangofin is null and rangoinicio is not null then ('Valores Normales: Mayor a '||rangoinicio||'  Unidades: '||unidades) 
-	     when rangoinicio is null and rangofin is not null then ('Valores Normales: Menor a '||rangofin||'  Unidades: '||unidades) 
-	else ('Valores Normales: '||rangoinicio||' - '||rangofin||'  Unidades: '||unidades) end )as rangos
+        $query = "select (case when rangofin is null and rangoinicio is not null then ('Valores Normales: Mayor a '||rangoinicio||(case when unidades is null then '' else (' Unidades: '||unidades) end )) 
+	when rangoinicio is null and rangofin is not null then ('Valores Normales: Menor a '||rangofin||(case when unidades is null then '' else (' Unidades: '||unidades) end )) 
+	else ('Valores Normales: '||rangoinicio||' - '||rangofin|| (case when unidades is null then '' else (' Unidades: '||unidades) end )) end )as rangos 
 from lab_datosfijosresultado t01
 join lab_conf_examen_estab t02 on (t02.id=t01.id_conf_examen_estab)
 join sec_detallesolicitudestudios t03 on (t02.id=t03.id_conf_examen_estab)
 where t03.id=$iddetallesolicitud
 and t03.idestablecimiento=$lugar
-and (t01.fechafin is null or t01.fechafin between fechaini and current_date);";
+and (t01.fechafin is null or t01.fechafin between fechaini and current_date)
+and (t01.idsexo is null or t01.idsexo=$id_sexo)
+and (idedad=4 or idedad=$idedad);";
          //echo $query;
          $result = pg_query($query);
          if (!$result) {

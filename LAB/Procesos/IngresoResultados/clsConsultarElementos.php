@@ -230,10 +230,10 @@ else
                 if($result1) {
                     $dato = $row[0];
                     $query = "INSERT INTO lab_detalleresultado(idresultado,idsubelemento,resultado,id_posible_resultado,observacion,idestablecimiento) 
-                              VALUES($idresultado,$idsubelemento,'$dato','$resultado','$control',$lugar)";//,'$posresult' //resultado,
-                              
+                              VALUES($idresultado,$idsubelemento,'$dato','$resultado','$control',$lugar)";                           
                 }
-            }
+            }    
+
             $result = @pg_query($query);
 
             if (!$result)

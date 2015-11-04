@@ -135,9 +135,14 @@ $idarea=$_GET['var4'];
 $idexpediente_=$_GET['var1'];
 $fecha_recepcion_=$_GET['fecha_recepcion'];
 $idestabext_=$_GET['var19'];
+
+$buscarinfo=$objdatos->consfecha($idsolicitud, $iddetallesolicitud,  $lugar);
+//echo 'bucarinfo: '.$buscarinfo;
+$rowdeta=pg_fetch_array($buscarinfo);
+$fechadatosfijos=$rowdeta['fechadatosfijos'];
 if ($referido!="t"){
     
-$condatos=$objdatos->condatos($IdHistorial, $lugar);
+$condatos=$objdatos->condatos($IdHistorial, $lugar, $fechadatosfijos);
 $edad=$objdatos->calc_edad($IdHistorial);
 	$rows = pg_fetch_array($condatos);
         
@@ -175,7 +180,7 @@ if (pg_num_rows($cant)>0){
 				</tr>
 				<tr>
 					<td class="StormyWeatherFieldCaptionTD">Establecimiento Solicitante</td>
-		  			<td colspan="3" class="StormyWeatherDataTD"><?php echo $_GET['var13'];?></td>
+		  			<td colspan="3" class="StormyWeatherDataTD"><?php echo $_GET['var18'];?></td>
 				</tr>
 				<tr>
 					<td class="StormyWeatherFieldCaptionTD">Procedencia</td>

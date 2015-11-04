@@ -28,6 +28,7 @@ $origen =$_GET['var17'];
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <title>Resultados de Examenes de Laboratorio </title>
 <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script>
+<link rel="shortcut icon" href="/Laboratorio/Imagenes/favicon.ico" />
 <style type="text/css">
 <!--
 @media print{
