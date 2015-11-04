@@ -222,10 +222,17 @@ else
                           VALUES($idresultado,$idsubelemento,'$resultado','$control',$lugar)";
             }
             else{
+                $query1="SELECT posible_resultado FROM lab_posible_resultado where id=$resultado";
+                $result1 = pg_query($query1);
+                $row= pg_fetch_array($result1);
                 
-                $query = "INSERT INTO lab_detalleresultado(idresultado,idsubelemento,id_posible_resultado,observacion,idestablecimiento) 
-                          VALUES($idresultado,$idsubelemento,'$resultado','$control',$lugar)";//,'$posresult' //resultado,
-            }
+               // $dato = $result1;
+                if($result1) {
+                    $dato = $row[0];
+                    $query = "INSERT INTO lab_detalleresultado(idresultado,idsubelemento,resultado,id_posible_resultado,observacion,idestablecimiento) 
+                              VALUES($idresultado,$idsubelemento,'$dato','$resultado','$control',$lugar)";                           
+                }
+            }    
             $result = @pg_query($query);
 
             if (!$result)
