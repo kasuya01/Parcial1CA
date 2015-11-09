@@ -127,24 +127,30 @@ switch ($opcion)
        // echo $cond2;
          
         
-        $query="WITH tbl_servicio AS (
-                    SELECT t02.id,
-                        CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
-                                 ELSE t02.nombre_ambiente
-                            END
-                        ELSE
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'--> ' || t01.nombre
-                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
-                            END
-                        END AS servicio 
-                    FROM  ctl_atencion                  t01 
-                    INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
-                    INNER JOIN mnt_area_mod_estab           t03 ON (t03.id = t02.id_area_mod_estab)
-                    LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
-                    LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
-                    WHERE $where_with t02.id_establecimiento = $lugar
-                    ORDER BY 2)
+     $query="WITH tbl_servicio AS ( SELECT t02.id, 
+                CASE WHEN t02.nombre_ambiente IS NOT NULL THEN 
+                    CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' || t02.nombre_ambiente 
+                            --ELSE t02.nombre_ambiente 
+                    END 
+                    ELSE 
+                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre 
+                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)  
+                                    --THEN t07.nombre||'-'||t01.nombre
+                                    THEN t01.nombre
+                    END 
+
+                END AS servicio,
+               (CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->'  || t06.nombre
+                    ELSE   t07.nombre ||'-->' || t06.nombre
+                END) as procedencia
+                FROM ctl_atencion t01 
+                INNER JOIN mnt_aten_area_mod_estab t02 ON (t01.id = t02.id_atencion) 
+                INNER JOIN mnt_area_mod_estab t03 ON (t03.id = t02.id_area_mod_estab) 
+                LEFT JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab) 
+                LEFT JOIN mnt_servicio_externo t05 ON (t05.id = t04.id_servicio_externo) 
+                INNER JOIN  ctl_area_atencion t06  on  t06.id = t03.id_area_atencion
+                INNER JOIN ctl_modalidad  t07 ON t07.id = t03.id_modalidad_estab
+                WHERE t02.id_establecimiento =  $lugar ORDER BY 2)
             
                     SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                        t01.id ,
@@ -347,7 +353,7 @@ switch ($opcion)
 	$idexpediente=$_POST['idexpediente'];
 	$idsolicitud=$_POST['idsolicitud'];
 	$idarea=$_POST['idarea'];
-	$idsolicitud=$_POST['idsolicitud'];   
+	//$idsolicitud=$_POST['idsolicitud'];   
         $subservicio=$_POST['subservicio'];
         //echo $subservicio;
                 //$establecimiento=$_POST['establecimiento'];
@@ -665,49 +671,59 @@ case 4:// Rechazar Muestra // se ah quitado esta opcion
 		
 	break;
 	case 5://LLENANDO COMBO DE Examenes
-		$rslts  ='';
-		$idarea =$_POST['idarea'];
-		//echo $IdSubEsp;
-		$dtExam=$objdatos-> ExamenesPorArea($idarea,$lugar);	
-		
-		$rslts = '<select name="cmbExamen" id="cmbExamen" class="form-control height placeholder" class="MailboxSelect" style="width:375px" style="width:375px">';
-		$rslts .='<option value="0"> Seleccione Examen </option>';
-			
-		while ($rows =pg_fetch_array($dtExam)){
-			$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
-		}
-				
-		$rslts .= '</select>';
-		echo $rslts;
+		$rslts = '';
+                $idarea = $_POST['idarea'];
+
+                $dtExam = $objdatos->ExamenesPorArea($idarea, $lugar);
+
+                $rslts.= '<select name="cmbExamen" id="cmbExamen" style="width:500px" class="form-control height">';
+                $rslts .='<option value="0"> Seleccione Examen </option>';
+
+                while ($rows = pg_fetch_array($dtExam)) {
+                    $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[2]) . '</option>';
+                }
+
+                $rslts .= '</select>';
+                echo $rslts;
 	break;
 	case 6:// Llenar Combo Establecimiento
-		$rslts      ='';
-		$Idtipoesta =$_POST['idtipoesta'];
-              // echo $Idtipoesta;
-            	$dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
-              	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:375px">';
-		$rslts .='<option value="0"> Seleccione Establecimiento </option>';
-               while ($rows =pg_fetch_array( $dtIdEstab)){
-		  $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
-	       }
-				
-		$rslts .= '</select>';
-		echo $rslts;
+                $rslts = '';
+                $Idtipoesta = $_POST['idtipoesta'];
+
+                // echo $Idtipoesta;
+                if ($Idtipoesta<>0){
+                    $dtIdEstab = $objdatos->LlenarCmbEstablecimiento($Idtipoesta);
+                    $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:500px" class="form-control height">';
+                   $rslts .='<option value="0"> Seleccione Establecimiento </option>';
+                    while ($rows = pg_fetch_array($dtIdEstab)) {
+                        $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
+                    }
+                }else{
+                     $dtIdEstab = $objdatos->LlenarTodosEstablecimientos();
+                      $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:500px" class="form-control height">';
+                    $rslts .='<option value="0"> Seleccione Establecimiento </option>';
+                    while ($rows = pg_fetch_array($dtIdEstab)) {
+                        $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
+                    }
+                }    
+                $rslts .= '</select>';
+                echo $rslts;
+                    
    	break;
 	case 7:// Llenar combo Subservicio
-   	     $rslts ='';
-             $IdServ=$_POST['IdServicio'];
-	   //  echo $IdServ;
-	     $dtserv=$objdatos->LlenarCmbServ($IdServ,$lugar);
-	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:375px">';
-			$rslts .='<option value="0"> Seleccione Subespecialidad </option>';
-			while ($rows =pg_fetch_array($dtserv))
-                        {
-                                $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
-	       		}
-				
-	      $rslts .='</select>';
-	      echo $rslts;
+   	     $rslts = '';
+             $IdServ = $_POST['IdServicio'];
+            //  echo $IdServ;
+            $dtserv = $objdatos->LlenarCmbServ($IdServ, $lugar);
+            $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:500px" class="form-control height">';
+            $rslts .='<option value="0"> Seleccione un Servicio </option>';
+            while ($rows = pg_fetch_array($dtserv)) {
+                $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
+            }
+
+            $rslts .='</select>';
+            echo $rslts;
+	    
         break;	
 
 

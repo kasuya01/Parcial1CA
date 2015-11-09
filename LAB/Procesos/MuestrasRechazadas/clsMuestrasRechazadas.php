@@ -167,62 +167,57 @@ VALUES($idexmen_metodologia,
 
     function LlenarCmbServ($IdServ, $lugar) {
         $con = new ConexionBD;
+      if ($con->conectar() == true) {
+         $sqlText = "with tbl_servicio as (select mnt_3.id,
+                        CASE
+                        WHEN mnt_3.nombre_ambiente IS NOT NULL
+                        THEN  	
+                                CASE WHEN id_servicio_externo_estab IS NOT NULL
+                                        THEN mnt_ser.abreviatura ||'-->' ||mnt_3.nombre_ambiente
+                                        ELSE mnt_3.nombre_ambiente
+                                END
 
-        if ($con->conectar() == true) {
-            /* $sqlText = "SELECT mnt_subservicio.IdSubServicio,mnt_subservicio.NombreSubServicio
-              FROM mnt_subservicio
-              INNER JOIN mnt_subservicioxestablecimiento ON mnt_subservicio.IdSubServicio=mnt_subservicioxestablecimiento.IdSubServicio
-              WHERE mnt_subservicio.IdServicio='$IdServ' AND IdEstablecimiento=$lugar
-              ORDER BY NombreSubServicio"; */
-            $sqlText = "WITH tbl_servicio AS (
-                            SELECT t02.id,
-                                CASE WHEN t02.nombre_ambiente IS NOT NULL THEN  	
-                                    CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
-                                         ELSE t02.nombre_ambiente
-                                    END
-                                ELSE
-                                    CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'--> ' || t01.nombre
-                                         WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
-                                    END
-                                END AS servicio 
-                            FROM  ctl_atencion 				    t01 
-                            INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
-                            INNER JOIN mnt_area_mod_estab 	   	    t03 ON (t03.id = t02.id_area_mod_estab)
-                            LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
-                            LEFT  JOIN mnt_servicio_externo 		    t05 ON (t05.id = t04.id_servicio_externo)
-                            WHERE id_area_atencion = $IdServ and t02.id_establecimiento = $lugar
-                            ORDER BY 2)
-                        SELECT id, servicio FROM tbl_servicio WHERE servicio IS NOT NULL";
-            $dt = pg_query($sqlText) ;
-        }
-        return $dt;
+                        ELSE
+                        CASE WHEN id_servicio_externo_estab IS NOT NULL 
+                                THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
+                             WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=cat.nombre)
+                                THEN cmo.nombre||'-'||cat.nombre
+                        END
+                        END AS servicio 
+                        from ctl_atencion cat 
+                        join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
+                        join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
+                        LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id
+                        LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id
+                        join mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab)
+                        join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
+                        where  mnt_2.id=$IdServ
+                        and mnt_3.id_establecimiento=$lugar
+                        order by 2)
+                        select id, servicio from tbl_servicio where servicio is not null";
+         $dt = pg_query($sqlText);
+      }
+      return $dt;
     }
 
     function ExamenesPorArea($idarea, $lugar) {
         $con = new ConexionBD;
-        //usamos el metodo conectar para realizar la conexion
-        if ($con->conectar() == true) {
-            $query = /* "SELECT lab_examenes.IdExamen,NombreExamen FROM lab_examenes 
-                      INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
-                      WHERE IdEstablecimiento = $lugar AND IdArea='$idarea'
-                      AND lab_examenesxestablecimiento.Condicion='H' ORDER BY NombreExamen ASC "; */
-
-                    "SELECT lcee.id,lcee.nombre_examen 
-                    FROM mnt_area_examen_establecimiento maees
-                    INNER JOIN lab_conf_examen_estab lcee ON maees.id= lcee.idexamen 
-                    WHERE maees.id_area_servicio_diagnostico=$idarea
-                    AND maees.id_establecimiento=$lugar
-                    AND lcee.condicion= 'H'
-                    ORDER BY lcee.nombre_examen asc";
-
-
-
-            $result = @pg_query($query);
-            if (!$result)
-                return false;
-            else
-                return $result;
-        }
+      //usamos el metodo conectar para realizar la conexion
+      if ($con->conectar() == true) {
+         $query = "SELECT t02.id,
+                             t02.codigo_examen AS idexamen,
+                             t02.nombre_examen AS nombreexamen
+                      FROM mnt_area_examen_establecimiento t01
+                      INNER JOIN lab_conf_examen_estab     t02 ON (t01.id = t02.idexamen)
+                      WHERE t01.id_establecimiento = $lugar AND t01.id_area_servicio_diagnostico = $idarea
+                          AND t02.condicion = 'H'
+                      ORDER BY t02.nombre_examen";
+         $result = @pg_query($query);
+         if (!$result)
+            return false;
+         else
+            return $result;
+      }
     }
 
     //FUNCION PARA ACTUALIZAR OBSERVACION DEL EXAMEN QUE HA SIDO RECHAZADO EN UNA SOLICITUD
@@ -428,7 +423,7 @@ VALUES($idexmen_metodologia,
     function DatosDetalleSolicitud($idarea, $idsolicitud) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $query = "SELECT lab_examenes.IdExamen,NombreExamen,TipoMuestra,Indicacion 
+          echo  $query = "SELECT lab_examenes.IdExamen,NombreExamen,TipoMuestra,Indicacion 
 		     FROM sec_detallesolicitudestudios 
 		     INNER JOIN lab_examenes     ON sec_detallesolicitudestudios.IdExamen=lab_examenes.IdExamen
 		     INNER JOIN lab_tipomuestra  ON lab_tipomuestra.IdTipoMuestra=sec_detallesolicitudestudios.IdTipoMuestra
@@ -444,7 +439,7 @@ VALUES($idexmen_metodologia,
     function DatosExamen($idarea, $idsolicitud, $idexamen) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-        $query = "select lcee.codigo_examen,
+         echo    $query = "select lcee.codigo_examen,
                         lcee.nombre_examen,
                         ltm.tipomuestra,
                         sdses.indicacion,
@@ -480,11 +475,11 @@ VALUES($idexmen_metodologia,
     function CambiarEstadoSolicitudProceso3($idexpediente, $fechasolicitud, $estadosolicitud, $idsolicitudPadre) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-           $query = "select  COUNT(id) from  sec_detallesolicitudestudios
+           echo $query = "select  COUNT(id) from  sec_detallesolicitudestudios
 		  WHERE idsolicitudestudio=$idsolicitudPadre AND (estadodetalle<>(SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado ='PM'))";
             $detalle = pg_fetch_array(pg_query($query));
             if ($detalle[0] == 0) {
-                $query1 = /* "UPDATE sec_solicitudestudios SET estado='C' WHERE IdSolicitudEstudio=$idsolicitud"; */
+              echo $query1 = /* "UPDATE sec_solicitudestudios SET estado='C' WHERE IdSolicitudEstudio=$idsolicitud"; */
                         "UPDATE sec_solicitudestudios SET estado=(SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado ='C')
                          --fecha_solicitud= now(),
                          --fechahorareg=current_timestamp
@@ -493,7 +488,7 @@ VALUES($idexmen_metodologia,
                 return true;
             }
             if ($detalle[0] >= 1) {
-                 $query1 = /* "UPDATE sec_solicitudestudios SET estado='P' WHERE IdSolicitudEstudio=$idsolicitud"; */
+                echo $query1 = /* "UPDATE sec_solicitudestudios SET estado='P' WHERE IdSolicitudEstudio=$idsolicitud"; */
                         "UPDATE sec_solicitudestudios SET estado=(SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado ='P')
                             --fecha_solicitud= now(),
                             --fechahorareg=current_timestamp
@@ -508,18 +503,11 @@ VALUES($idexmen_metodologia,
     function CambiarEstadoDetalle($idsolicitud, $estado, $observacion) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-             $query = /*   "UPDATE sec_detallesolicitudestudios ,sec_solicitudestudios 
-                      SET sec_detallesolicitudestudios.estadodetalle=$estado,sec_detallesolicitudestudios.observacion=' '
-                      WHERE sec_detallesolicitudestudios.idsolicitudestudio=$idsolicitud AND
-                      sec_solicitudestudios.id_atencion=98 AND sec_detallesolicitudestudios.idexamen LIKE '%$idarea%'
-                      AND sec_detallesolicitudestudios.estadodetalle='RM'"; */
-
-
-
-                    "UPDATE sec_detallesolicitudestudios 
-                    SET estadodetalle=(SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado ='$estado'),
-                    observacion='$observacion'
-                    WHERE sec_detallesolicitudestudios.id=$idsolicitud";
+           echo  $query = "UPDATE sec_detallesolicitudestudios 
+                           SET estadodetalle=(SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado ='$estado'),
+                           observacion='$observacion',id_estado_rechazo=1,f_estado=NULL,id_posible_observacion=NULL
+                           WHERE sec_detallesolicitudestudios.id=$idsolicitud";
+           
 
             $result = @pg_query($query);
             if (!$result)
@@ -541,7 +529,7 @@ VALUES($idexmen_metodologia,
 
                     "UPDATE sec_detallesolicitudestudios 
              SET estadodetalle=$estado,
-	     observacion='$observacion'
+	     observacion='$observacion',id_estado_rechazo=1,f_estado=NULL,id_posible_observacion=NULL
             WHERE sec_detallesolicitudestudios.id=$idsolicitud ";
 
             $result = @pg_query($query);

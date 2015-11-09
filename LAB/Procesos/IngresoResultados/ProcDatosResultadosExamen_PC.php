@@ -105,6 +105,10 @@ function RecogeValor() {
                     f_tomamuestra=escape(getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'var20=' )
                     tipomuestra=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'var21=' )
+                    idestabext=escape(getVars[i].substr(5));
+                 if ( getVars[i].substr(0,5) == '$fecha_recepcion_=' )
+                    $fecha_recepcion_=escape(getVars[i].substr(5));
             }
             
             document.frmnuevo.txtnec.value=nec;
@@ -208,6 +212,10 @@ function RecogeValor() {
                                         <input type="hidden" name="txtEstablecimiento" id="txtEstablecimiento" value="<?php echo $_GET['var13']?>" />
                                         <input type="hidden" name="txtf_tomamuestra" id="txtf_tomamuestra" value="<?php echo $_GET['var19']?>" />
                                         <input type="hidden" name="txttipomuestra" id="txttipomuestra" value="<?php echo $_GET['var20']?>" />
+                                        <input type="hidden" name="solicitud_" id="solicitud_" value="<?php echo $_GET['var6'];?>" />
+                                        <input type="hidden" name="idexpediente_" id="idexpediente_"  value="<?php echo $_GET['var1'];?>"/>
+                                        <input type="hidden" name="fecharecepcion" id="fecharecepcion"  value="<?php echo $_GET['fecha_recepcion'];?>"/>
+                                        <input type="hidden" name="idestabext_" id="idestabext_"  value="<?php echo $_GET['var21'];?>"/>
 
                                     </td>
                                 </tr>

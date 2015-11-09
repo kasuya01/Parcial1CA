@@ -113,6 +113,8 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                     f_tomamuestra=escape(getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'var21=' )
                     tipomuestra=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == '$fecha_recepcion_=' )
+                    $fecha_recepcion_=escape(getVars[i].substr(5));
             }
            
             document.frmnuevo.txtnec.value=nec;
@@ -157,7 +159,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
         $IdEstandar  = $_GET['var16'];
         $IdHistorial = $_GET['var17'];
         $idsolicitud=$_GET['var6'];
-        
+        $fecha_recepcion_=$_GET['fecha_recepcion'];
         $iddetallesolicitud=$_GET['var5'];
         $idarea=$_GET['var4'];
         //$idsolicitud;
@@ -221,6 +223,11 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                                             <input type="hidden" name="txtIdEstablecimiento" id="txtIdEstablecimiento" value="<?php echo $_GET['var19']?>" />
                                             <input type="hidden" name="txttipomuestra" id="txttipomuestra" value="<?php echo $_GET['var21']?>" />
                                             <input type="hidden" name="txtf_tomamuestra" id="txtf_tomamuestra" value="<?php echo $_GET['var20']?>" />
+                                            <input type="hidden" name="solicitud_" id="solicitud_" value="<?php echo $_GET['var6'];?>" />
+                                            <input type="hidden" id="idexpediente_" name="idexpediente_" value="<?php echo $_GET['var1'];?>"/>
+                                            <input type="hidden" id="fecharecepcion" name="fecharecepcion" value="<?php echo $_GET['fecha_recepcion'];?>"/>
+                                            <input type="hidden" id="idestabext_" name="idestabext_" value="<?php echo $_GET['var19'];?>"/>
+                                            
                                         </td>
                                     </tr>
                                     <tr>

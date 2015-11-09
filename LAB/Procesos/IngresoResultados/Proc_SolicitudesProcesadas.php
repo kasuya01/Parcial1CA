@@ -1,4 +1,4 @@
-<?php
+<?php 
 session_start();
 if (isset($_SESSION['Correlativo'])) {
     $nivel = $_SESSION['NIVEL'];

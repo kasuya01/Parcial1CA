@@ -131,13 +131,13 @@ if ($nivel == 7) {
                                     </td>
                                     <td class="StormyWeatherFieldCaptionTD"  width="20%">Establecimiento</td>
                                     <td class="StormyWeatherDataTD" width="35%">
-                                            <div id="divEstablecimiento" >
-                                                    <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:500px" class="js-example-basic-single"> 
-                                                            <option value="0" >Seleccione un Establecimiento</option>
-                                                            <?php echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
-                                                            include_once("../../../Conexion/ConexionBD.php");
-                                                            $con = new ConexionBD;
-                                                            if($con->conectar()==true){			  
+                                        <div id="divEstablecimiento" >
+                                            <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:500px" class="js-example-basic-single"> 
+                                                <option value="0" >Seleccione un Establecimiento</option>
+                                    <?php echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
+                                                    include_once("../../../Conexion/ConexionBD.php");
+                                                    $con = new ConexionBD;
+                                                    if($con->conectar()==true){			  
                                                                     $consulta  = "SELECT id,nombre FROM ctl_establecimiento  ORDER BY Nombre";
                                                                     //where id_tipo_establecimiento=$tipo
                                                                     $resultado = @pg_query($consulta);

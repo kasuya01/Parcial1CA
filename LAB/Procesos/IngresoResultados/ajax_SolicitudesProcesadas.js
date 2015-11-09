@@ -1891,7 +1891,7 @@ function MostrarDatos(posicion)
     tipomuestra=document.getElementById('tipomuestra[' + posicion + ']').value;
     idareaPA=document.getElementById('idareaPA[' + posicion + ']').value;
     fecha_recepcion=document.getElementById('fecha_recepcion[' + posicion + ']').value;
-  // alert (idareaPA);
+  // alert (idestabext);
     //alert ("Plnatilla="+plantilla+" Experiente="+idexpediente+" Solicitud="+idsolicitud+" idarea="+idarea+" idhistorial="+IdHistorial+" IdEstandar="+IdEstandar);
     //idhistorial=document.getElementById('idhistorial['+posicion+']').value;
     //alert(plantilla);
@@ -1934,7 +1934,7 @@ function MostrarDatos(posicion)
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                     "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
                     "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+encodeURIComponent(estabext) + "&var19="+idestabext +
-                    "&var20="+ f_tomamuestra + "&var21="+tipomuestra, "Resultados", "width=950,height=700,menubar=no,scrollbars=yes,location=no");
+                    "&var20="+ f_tomamuestra + "&var21="+tipomuestra +"&fecha_recepcion="+fecha_recepcion, "Resultados", "width=950,height=700,menubar=no,scrollbars=yes,location=no");
             break;
         case "3":
            // alert ("tipo_muestra="+tipomuestra+"& toma-muestra="+f_tomamuestra);
@@ -1943,7 +1943,7 @@ function MostrarDatos(posicion)
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                     "&var12=" + impresion + "&var13=" + estab +"&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar + "&var17=" + IdHistorial +
                     "&referido=" + referido + "&var18="+estabext +"&var19="+f_tomamuestra+
-                    "&var20="+tipomuestra, "Resultados", "width=950,height=650,menubar=no,scrollbars=yes,location=no");
+                    "&var20="+tipomuestra+"&fecha_recepcion="+fecha_recepcion+"&var21="+idestabext, "Resultados", "width=950,height=650,menubar=no,scrollbars=yes,location=no");
             break;
         case "4":
            //
@@ -1953,16 +1953,16 @@ function MostrarDatos(posicion)
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                     "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac+ "&var15=" + Sexo +"&var16=" + IdEstandar +
                     "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext+"&var18="+estabext+"&var19="+f_tomamuestra+
-                    "&var20="+ tipomuestra, "Resultados", "width=950,height=700,menubar=no,scrollbars=yes");
+                    "&var20="+ tipomuestra+"&fecha_recepcion="+fecha_recepcion+"&var21="+idestabext, "Resultados", "width=950,height=700,menubar=no,scrollbars=yes");
             break;
         case "5":
-          //alert (f_tomamuestra);
+          //alert (idestabext);
                 ventana_dos = window.open("ProcDatosResultadosExamen_PE.php?var1=" + idexpediente +
                     "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                     "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
                     "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+estabext+"&var19="+ f_tomamuestra+ 
-                    "&var20="+tipomuestra, "Resultados", "width=950,height=950,menubar=no,scrollbars=yes");
+                    "&var20="+tipomuestra+"&fecha_recepcion="+fecha_recepcion+"&var21="+idestabext, "Resultados", "width=950,height=950,menubar=no,scrollbars=yes");
             break;
     }
 
@@ -2754,19 +2754,19 @@ function crearmodaladdexam(idsolicitud){
    var fecharecepcion=$("#fecharecepcion").val();
    var idestablecimiento=$("#idestabext_").val();
    var banderacerrar=1;
-   jQuery.ajax({
-      url: "../AgregarExamen/SolicitudEstudiosPaciente.php",
-      type: "GET",
-      async: false,
-      data: {var1:idexpediente, var2:idsolicitud, var3:idestablecimiento, var4:fecharecepcion, var5:banderacerrar},
-      dataType: "html",
-      success: function(html) {
-         content+=html;
-      }
+  jQuery.ajax({
+    url: "../AgregarExamen/SolicitudEstudiosPaciente.php",
+    type: "GET",
+    async: false,
+    data: {var1:idexpediente, var2:idsolicitud, var3:idestablecimiento, var4:fecharecepcion, var5:banderacerrar},
+    dataType: "html",
+    success: function(html) {
+     content+=html;
+    }
       
   
-   });
-   return content;
+  });
+  return content;
 }
 function detallemodaladdexam(idsolicitud){
    var content= '';

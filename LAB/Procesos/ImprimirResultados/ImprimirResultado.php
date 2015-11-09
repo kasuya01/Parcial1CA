@@ -150,7 +150,8 @@ if ($nivel == 7) {
                                                 }
                                         }
 				?>	
-                            </select>  </div>
+                            </select>  
+                        </div>
 			
                     </td>
                 </tr>
