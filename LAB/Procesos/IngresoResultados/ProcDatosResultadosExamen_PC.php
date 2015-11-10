@@ -38,6 +38,8 @@ $obj=new clsConsultarElementosPlantillaC;
 <link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
 <link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
 <script language="JavaScript" >
+//Recarga funcion buscar de la página padre
+window.onunload = refreshParent;  
 function Guardar(){
    	IngresarRegistro();
 }

@@ -2814,3 +2814,8 @@ function reloaddetallemodal(idsolicitud){
 function inicia_elementos(){
       classdatepick();
 }
+
+function refreshParent() {
+        //window.opener.location.reload();
+        opener.MostrarSolicitudes();
+    }
