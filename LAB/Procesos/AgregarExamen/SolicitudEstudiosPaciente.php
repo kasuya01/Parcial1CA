@@ -122,14 +122,9 @@ echo' <script language="JavaScript" type="text/javascript" src="../AgregarExamen
 				  <td width="6%" class="StormyWeatherFieldCaptionTD" >Servicio</td>
 				  <td width="12%" class="StormyWeatherDataTD" style="height: 25px"><?php echo $origen;?></td>
 
-                            <!--<td width="6%" class="StormyWeatherFieldCaptionTD">Procedenciaa</td>
-                            <td width="12%" class="StormyWeatherDataTD"><?php echo $precedencia;?></td>-->
+                       
 				  </tr>
-				   <tr>
-                            <td width="6%" class="StormyWeatherFieldCaptionTD">Servicio</td>
-			    <td width="12%" class="StormyWeatherDataTD"><?php echo $origen;?></td>
-
-			</tr>
+				
 			<tr>
 		        <td width="6%" class="StormyWeatherFieldCaptionTD" >NEC</td> 
                         <td width="12%" class="StormyWeatherDataTD" style="height: 25px"><?php echo $idexpediente; ?>
