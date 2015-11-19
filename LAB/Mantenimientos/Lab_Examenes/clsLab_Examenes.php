@@ -14,18 +14,22 @@ class clsLab_Examenes {
            $IdFormulario, $IdEstandarResp, $plantilla, $letra, $Urgente,
            $ubicacion, $TiempoPrevio, $sexo, $idestandar, $lugar,
            $metodologias_sel, $text_metodologias_sel, $id_metodologias_sel,
-           $resultado, $id_resultado) {
+           $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil) {
 
       $con = new ConexionBD;
       if ($con->conectar() == true) {
          if ($IdFormulario == '0')
             $IdFormulario = 'NULL';
+         $nextid="select nextval('lab_conf_examen_estab_id_seq')"; 
+                    $sql=  pg_query($nextid);
+                    $nextseq=  pg_fetch_array($sql);
+                    $ultimo=$nextseq[0];
          $query = "INSERT INTO lab_conf_examen_estab
-                (condicion,idformulario,urgente,impresion,ubicacion,codigosumi,
+                (id, condicion,idformulario,urgente,impresion,ubicacion,codigosumi,
                  idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idexamen,idestandarrep,idplantilla,nombre_examen,
                  idsexo,codigo_examen) 
                  VALUES
-                 ('$Hab',$IdFormulario,$Urgente,'$letra',$ubicacion,NULL,$usuario,NOW(),$usuario,NOW(),$idestandar,
+                 ($ultimo,'$Hab', $IdFormulario,$Urgente,'$letra',$ubicacion,NULL,$usuario,NOW(),$usuario,NOW(),$idestandar,
                    $IdEstandarResp,$plantilla,'$nomexamen',$sexo,'$idexamen') ";
          // echo $query;	
          $result = pg_query($query);
@@ -34,14 +38,14 @@ class clsLab_Examenes {
          //ingresar resultados 
          /*
           * 
-
+         
           */
 
 
-         $query2 = "select COALESCE(max(id),1) from lab_conf_examen_estab";
-         $result2 = pg_query($query2);
-         $row2 = pg_fetch_array($result2);
-         $ultimo = $row2[0];
+//         $query2 = "select COALESCE(max(id),1) from lab_conf_examen_estab";
+//         $result2 = pg_query($query2);
+//         $row2 = pg_fetch_array($result2);
+//         $ultimo = $row2[0];
 
          $aresultados = explode(',', $resultado);
          $aidresultados = explode(',', $id_resultado);
@@ -52,7 +56,7 @@ class clsLab_Examenes {
                             fechafin = null,
                             id_user_mod = $usuario,
                             fecha_mod = now()
-                        WHERE id_posible_resultado = '$aresultados[$i]' AND id_conf_examen_estab='$ultimo'";
+                        WHERE id_posible_resultado = '$aresultados[$i]' AND id_conf_examen_estab=$ultimo";
             $result = pg_query($query);
             if (pg_affected_rows($result) == 0) {
                $query = "INSERT INTO lab_examen_posible_resultado(
@@ -65,18 +69,19 @@ class clsLab_Examenes {
          }
 
          // fin ingresar resultados
-
-
-
-         $query2 = "select COALESCE(max(id),1) from lab_conf_examen_estab";
-         $result2 = pg_query($query2);
-         $row2 = pg_fetch_array($result2);
-         $ultimo = $row2[0];
+//
+//
+//
+//         $query2 = "select COALESCE(max(id),1) from lab_conf_examen_estab";
+//         $result2 = pg_query($query2);
+//         $row2 = pg_fetch_array($result2);
+//         $ultimo = $row2[0];
          //echo 'met_sel:'.$metodologias_sel;
 
          /*
           * crear examen - metodologias 
           */
+        // echo 'MetodologiasSel:'.$metodologias_sel.'---';
          $aMetodologias = explode(',', $metodologias_sel);
          $aMetodologias_text = explode(',', $text_metodologias_sel);
          $aMetodologias_id = explode(',', $id_metodologias_sel);
@@ -114,12 +119,42 @@ values ($idmet, $aresultados[$i], current_date, true,$usuario, date_trunc('secon
          $dtSub = pg_query($sqlText);
 
          // echo $sqlText;
-         if (!$result) {
+       
+         //asignar posibles resultados
+         
+         //Asignar posibles tipos de muestra
+         
+         $aTipoMuestra = explode(',', $cmbTipoMuestra);
+        // echo 'cmbTipomuestra'.$cmbTipoMuestra.'-----'.count($aTipoMuestra);
+         //echo 'amet:'.count($aMetodologias). ' /met: '. $aMetodologias[0];
+         /*
+          * actualizar o crear examen metodología
+          */
+         $i = 0;
+         if ($aTipoMuestra[0] != "") {
+            for ($i = 0; $i < (count(array_filter($aTipoMuestra))); $i++) {
+               $sql = "INSERT INTO lab_tipomuestraporexamen(idtipomuestra,idusuarioreg, fechahorareg, idexamen) VALUES ($aTipoMuestra[$i], $usuario,  date_trunc('seconds', NOW()), $ultimo)";
+               pg_query($sql);
+            }
+         }
+         
+         //********Asignar a perfil
+          //Asignar posibles tipos de muestra
+         $aPerfil = explode(',', $cmbPerfil);
+        // echo 'aperfil:'.$aPerfil.'----0'.count($aPerfil);
+       
+         $i = 0;
+         if ($aPerfil[0] != "") {
+            for ($i = 0; $i < (count(array_filter($aPerfil)) ); $i++) {
+               $sql = "INSERT INTO lab_perfil_prueba(id_perfil,id_conf_examen_estab, id_establecimiento, fecha_inicio, fechahorareg, idusuarioreg) VALUES ($aPerfil[$i], $ultimo, $lugar, current_date,  date_trunc('seconds', NOW()), $usuario)";
+               pg_query($sql);
+            }
+         }
+           if (!$result) {
             return false;
          } else {
             return true;
          }
-         //asignar posibles resultados
       }
    }
 
@@ -246,7 +281,7 @@ values ($idmet, $aresultados[$i], current_date, true,$usuario, date_trunc('secon
            $IdFormulario, $IdEstandarResp, $plantilla, $letra, $Urgente,
            $ubicacion, $Hab, $TiempoPrevio, $idsexo, $idestandar,
            $ctlidestandar, $metodologias_sel, $text_metodologias_sel,
-           $id_metodologias_sel, $resultado, $id_resultado) {
+           $id_metodologias_sel, $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil ) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
          if ($IdFormulario == '0')
@@ -515,6 +550,86 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
          }
          //echo $sqlText;
          $dtSub = pg_query($sqlText);
+         
+         //**Actualizar los tipos de muestra
+         
+         
+         $atipomuestra = explode(',', $cmbTipoMuestra);
+         $cantipomuestra=count(array_filter($atipomuestra));
+         
+         $sql6="update lab_tipomuestraporexamen 
+               set habilitado=false, 
+               idusuariomod=$usuario, 
+               fechahoramod=date_trunc('seconds', NOW()) 
+               where idexamen=$idconf  
+               and habilitado=true;";
+         
+         $queryposres3=  pg_query($sql6);
+         if ($cantipomuestra>0){
+            $sql7="select * from lab_tipomuestraporexamen where idexamen =$idconf";
+            for ($k=0; $k< $cantipomuestra; $k++){
+               $bande=0;
+               $query7= pg_query($sql7);
+               while ($tmu=@pg_fetch_array($query7)){
+                  if ($tmu['idtipomuestra']==$atipomuestra[$k]){
+                     $sql8="update lab_tipomuestraporexamen 
+                           set habilitado=true, 
+                           idusuariomod=$usuario, 
+                           fechahoramod=date_trunc('seconds', NOW()) 
+                           where idexamen=$idconf  
+                           and idtipomuestra=$atipomuestra[$k];";
+                     $query8=  pg_query($sql8);
+                     $bande=1;
+                  }
+               }
+               if ($bande==0){
+                  $sql9="insert into lab_tipomuestraporexamen (idtipomuestra, idusuarioreg, fechahorareg, idexamen, habilitado) values ($atipomuestra[$k], $usuario, date_trunc('seconds', NOW()), $idconf, true)";
+                  $query9= pg_query($sql9);
+               }
+               
+            }
+         }
+         //-***Fin actualizar tipos de muestra
+         //**Actualizar los perfiles
+         $aperfil = explode(',', $cmbPerfil);
+         $cantperfil=count(array_filter($aperfil));
+         
+         $sqlA="update lab_perfil_prueba 
+            set habilitado=false,
+             idusuariomod=$usuario, 
+            fechahoramod=date_trunc('seconds', NOW())
+            where id_conf_examen_estab=$idconf
+            and habilitado=true;";
+         $queryA=pg_query($sqlA);
+         if ($cantperfil>0){
+            $sqlB="select * from lab_perfil_prueba where id_conf_examen_estab=$idconf;";
+            for($l=0; $l<$cantperfil; $l++){
+               $bandl=0;
+               $queryB=  pg_query($sqlB);
+               while ($per=@pg_fetch_array($queryB)){
+                  if($per['id_perfil']==$aperfil[$l]){
+                     $sqlC="update lab_perfil_prueba 
+                           set habilitado=true,
+                            idusuariomod=$usuario, 
+                           fechahoramod=date_trunc('seconds', NOW())
+                           where id_conf_examen_estab=$idconf
+                           and id_perfil=$aperfil[$l];";
+                     $queryC=  pg_query($sqlC);
+                     $bandl=1;
+                  }
+               }
+               if ($bandl==0){
+                  $sqlD="insert into lab_perfil_prueba (id_perfil, id_conf_examen_estab, id_establecimiento,  habilitado, fechahorareg, idusuarioreg) values($aperfil[$l], $idconf, $lugar, true,date_trunc('seconds', NOW()),$usuario );";
+                  $queryD=  pg_query($sqlD);
+                  
+               }
+               
+            }
+         }
+         
+         //-***Fin actualizar perfiles 
+         
+         
          if (!$result && !$dtSub)
             return false;
          else {
@@ -702,7 +817,9 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                      (SELECT array_to_string(array_agg(posible_resultado order by t02.posible_resultado), ',') as posibleresultado 
                         from lab_examen_posible_resultado t01
                         join lab_posible_resultado t02 			on (t02.id=t01.id_posible_resultado)
-                        where id_conf_examen_estab=$idexamen and t01.habilitado=true) as posible_resultado
+                        where id_conf_examen_estab=$idexamen and t01.habilitado=true) as posible_resultado,
+                     (SELECT array_to_string(array_agg(t02.id order by t02.tipomuestra), ',') as posibleresultado from lab_tipomuestraporexamen t01 join lab_tipomuestra t02 on (t02.id=t01.idtipomuestra) where idexamen=$idexamen and t01.habilitado=true) as id_tipo_muestra,
+                     (select array_to_string(array_agg(t02.id order by t02.nombre), ',') from lab_perfil_prueba t01 join lab_perfil  t02 on (t02.id=t01.id_perfil) where id_conf_examen_estab=$idexamen and t01.habilitado=true) as id_perfil
                     FROM lab_conf_examen_estab 
                     INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
                     INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
@@ -1217,6 +1334,32 @@ order by posible_resultado;";
       if ($con->conectar() == true) {
          $query = "select * from lab_codigosresultados order by id;";
 
+         $result = pg_query($query);
+         if (!$result)
+            return false;
+         else
+            return $result;
+      }
+   }
+   
+    //Funcion utilizada para seleccionar los tipos de muestras
+   function tipo_muestra() {
+      $con = new ConexionBD;
+      if ($con->conectar() == true) {
+         $query = "select * from lab_tipomuestra where habilitado=true order by tipomuestra";
+         $result = pg_query($query);
+         if (!$result)
+            return false;
+         else
+            return $result;
+      }
+   }
+   
+    //Funcion utilizada para seleccionar los perfiles
+   function perfil() {
+      $con = new ConexionBD;
+      if ($con->conectar() == true) {
+         $query = "select * from lab_perfil";
          $result = pg_query($query);
          if (!$result)
             return false;

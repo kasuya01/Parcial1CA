@@ -110,7 +110,7 @@ class PDF extends PDF_PgSQL_Table
                 $this->SetFont('Arial','B',9);
 		$this->Cell(40,5,'Nombre Paciente',0,0,'L', true);
 		$this->SetFont('Arial','',9);
-		$this->Cell(65,5,$nombre_paciente,0,1,'L');
+		$this->Cell(65,5,utf8_decode($nombre_paciente),0,1,'L');
 	//	$this->SetFillColor(224,235,255);
                  $this->SetFont('Arial','B',9);
 		$this->Cell(40,5,'Procedencia',0,0,'L', true);
@@ -134,7 +134,7 @@ class PDF extends PDF_PgSQL_Table
 		//$this->SetFillColor(224,235,255);
                 $this->Cell(40,5,utf8_decode('Médico'),0,0,'L', true);
 		 $this->SetFont('Arial','',9);
-		$this->Cell(65,5,$nombre_empleado,0,1,'L');
+		$this->Cell(65,5,utf8_decode($nombre_empleado),0,1,'L');
 
                 $this->Line(5,70,200,70);   //si es horizonatal: Line(74,19.5,220,19.5) si es vertical: Line(5,81,200,81);
 		//salto de linea
@@ -657,7 +657,7 @@ function plantillaB($examen) {
          $this->Row1(array(utf8_decode($subelemnomb_b),  utf8_decode($subelemres_b), utf8_decode($subeleunit_b) , utf8_decode($subelecontnormal_b)));   
         }
     }
-    $this->Ln(1);
+    $this->Ln(2);
 
    }//fin plantilla B
    
@@ -818,6 +818,7 @@ $resfinnombre_c="    ".$examen['resultadoFinal']['resultado']."   ";
 //            $this->SetDrawColor(230,230,230);
 //            $this->Line(7,$ye,195,$ye);
             $this->SetX(7);
+            $this->SetDrawColor(165,165,165);
             $this->SetLineWidth(0.1);
             $this->SetFont('Arial','B',9);
             $this->Cell(70,5,'ORGANISMO:','LT',0,'L', true);
@@ -839,7 +840,7 @@ $resfinnombre_c="    ".$examen['resultadoFinal']['resultado']."   ";
             //$this->Cell(53,5,utf8_decode('OBSERVACIONES'),0,1,'L', true);
       //     $this->Ln(1);
             $ye=$this->GetY();
-            $this->SetDrawColor(4,79,144);
+            $this->SetDrawColor(194,194,194);
             $this->Line(7,$ye,195,$ye);
             $this->Ln(0);
             $this->SetFont('Arial','',10);       
@@ -894,6 +895,9 @@ $resfinnombre_c="    ".$examen['resultadoFinal']['resultado']."   ";
 //                                  </tr>";
                         }
                 }
+                $ye=$this->GetY();
+            //$this->SetDrawColor(4,79,144);
+            $this->Line(7,$ye,195,$ye);
                 $this->Ln(3);
             }
 //       $html.= "</tbody>
