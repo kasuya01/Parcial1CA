@@ -26,7 +26,8 @@ $idproce=0;
 <script language="JavaScript" >
 function Guardar(){
        	IngresarRegistro();
-        LimpiarCampos();
+        
+       
 }
 function AsignarIdExamen(idArea)
 {
@@ -35,7 +36,7 @@ function AsignarIdExamen(idArea)
 function Modificar()
 { 
 	enviarDatos();
-        LimpiarCampos();
+        //LimpiarCampos();
 }
 function LlenarComboExamen(idarea)
 {
@@ -69,12 +70,80 @@ function mypopup(){
             obj1.disabled = false;
         }
     }
-    $(document).ready(function() {
+    function iniciarselects2(){
         $("#cmbEstandarRep").select2({
            placeholder: "Seleccione un Estádar...",
            allowClear: true,
            dropdownAutoWidth: true
         });
+        $("#cmbArea").select2({
+           placeholder: "Seleccione una Área...",
+           allowClear: true,
+           dropdownAutoWidth: true
+        });
+        $("#cmbEstandar").select2({
+           placeholder: "Seleccione un Exámen...",
+           allowClear: true,
+           dropdownAutoWidth: true
+        });
+        
+        $("#cmbPlantilla").select2({
+           placeholder: "Seleccione una Plantilla...",
+           allowClear: true,
+           dropdownAutoWidth: true
+        });
+        
+        $("#cmbUbicacion").select2({
+           placeholder: "Seleccione una Opción...",
+           allowClear: true,
+           dropdownAutoWidth: true
+        });
+        
+        $("#cmbFormularios").select2({
+         //  placeholder: "Seleccione un Formulario...",
+           allowClear: true,
+           dropdownAutoWidth: true
+        });
+        
+        $("#cmbEtiqueta").select2({
+          // placeholder: "Seleccione un Tipo de etiqueta...",
+           allowClear: true,
+           dropdownAutoWidth: true
+        });
+        
+        $("#cmbsexo").select2({
+          // placeholder: "Seleccione un Tipo de etiqueta...",
+           allowClear: true,
+           dropdownAutoWidth: true
+        });
+        
+        $("#cmbUrgente").select2({
+          // placeholder: "Seleccione un Tipo de etiqueta...",
+           allowClear: true,
+           dropdownAutoWidth: true
+        });
+                
+        $("#cmbHabilitar").select2({
+          // placeholder: "Seleccione un Tipo de etiqueta...",
+           allowClear: true,
+           dropdownAutoWidth: true
+        });
+                
+        $("#cmbTipoMuestra").select2({
+           placeholder: "Seleccione al menos un tipo de muestra...",
+           allowClear: true,
+           dropdownAutoWidth: true
+        });
+                
+        $("#cmbPerfil").select2({
+           placeholder: "Seleccione los perfiles a los que pertenece la prueba...",
+           allowClear: true,
+           dropdownAutoWidth: true
+        });
+    }
+    $(document).ready(function() {
+      iniciarselects2();
+        
         //$('#cmbExamen').multiselect();
 //         $('#cmbEstandarRep').multiselect({
 //            buttonWidth: '86.5%',
@@ -131,8 +200,8 @@ if ($nivel == 7) {
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo del &Aacute;rea</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbArea" name="cmbArea" size="1"  onChange="LlenarComboExamen(this.value);" style="width:75%" class="form-control height">
-                                    <option value="0" >--Seleccione un &Aacute;rea--</option>
+                                <select id="cmbArea" name="cmbArea" size="1"  onChange="LlenarComboExamen(this.value);" style="width:75%" class=""height js-example-basic-single">
+                                    <option value="0" >Seleccione un &Aacute;rea...</option>
                                     <?php
                                         $consulta= $objeareas->consultaractivas($lugar);
 					while($row = pg_fetch_array($consulta)){
@@ -146,7 +215,7 @@ if ($nivel == 7) {
                             <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo del Est&aacute;ndar</td>
                             <td class="StormyWeatherDataTD">
                                <div id="divExamen">
-                                    <select name="cmbEstandar" id="cmbEstandar"  style="width:75%"  class="form-control height placeholder"> 
+                                    <select name="cmbEstandar" id="cmbEstandar"  style="width:75%"  class=""height js-example-basic-single"> 
                                          
                                              <option value="0">Seleccione un Examen...</option>
                                               
@@ -177,8 +246,8 @@ if ($nivel == 7) {
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD" >Plantilla</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbPlantilla" name="cmbPlantilla" size="1" style="width:75%" class="form-control height">
-                                    <option value="0">--Seleccione una Plantilla--</option>
+                                <select id="cmbPlantilla" name="cmbPlantilla" size="1" style="width:75%" class="height js-example-basic-single">
+                                    <option value="0">Seleccione una Plantilla...</option>
                                         <?php
                                             $obje=new clsLab_Examenes;
                                             $consulta= $obje->LeerPlantilla();
@@ -193,8 +262,8 @@ if ($nivel == 7) {
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD"><strong>Solicitado en </strong> </td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbUbicacion" name="cmbUbicacion" size="1" style="width:75%" class="form-control height">
-                                    <option value="" >--Seleccione--</option>
+                                <select id="cmbUbicacion" name="cmbUbicacion" size="1" style="width:75%" class="height js-example-basic-single">
+<!--                                    <option value="" >Seleccione una Opción...</option>-->
                                     <option value="0" >Todas las procediencias</option>
                                     <option value="1" >Hospitalización y Emergencia</option>
                                     <option value="3" >Ninguna</option>
@@ -207,7 +276,7 @@ if ($nivel == 7) {
                             <td width="17%" class="StormyWeatherFieldCaptionTD">Formulario para Examen</td>
                             <td width="83%"  class="StormyWeatherDataTD">
                              
-                                    <select name="cmbFormularios" id="cmbFormularios" size="1" style="width:75%" class="form-control height"> 
+                                    <select name="cmbFormularios" id="cmbFormularios" size="1" style="width:75%" class="height js-example-basic-single"> 
                                         <option value="0">Ninguno</option>
                                         <?php
                                             $consulta= $obj->consultar_formularios($lugar);
@@ -222,9 +291,9 @@ if ($nivel == 7) {
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD" >Tipo Etiqueta</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbEtiqueta" name="cmbEtiqueta" size="1" style="width:75%" class="form-control height">
-                                    <option value="0">--Seleccione un un tipo de etiqueta--</option>
-                                    <option value="G">General</option>
+                                <select id="cmbEtiqueta" name="cmbEtiqueta" size="1" style="width:75%" class="height js-example-basic-single">
+<!--                                    <option value="0">--Seleccione un un tipo de etiqueta--</option>-->
+                                    <option value="G" selected>General</option>
                                     <option value="O">Especial</option>
 				</select>
                             </td>
@@ -232,21 +301,21 @@ if ($nivel == 7) {
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Examen Solicitado Urgente</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbUrgente" name="cmbUrgente" size="1" style="width:75%" class="form-control height">
+                                <select id="cmbUrgente" name="cmbUrgente" size="1" style="width:75%" class="height js-example-basic-single">
                                     <option value="0">No</option>
                                     <option value="1">Si</option>
                                 </select>    
                             </td>
                         </tr>
                         <tr>
-                            <td class="StormyWeatherFieldCaptionTD">Sexo al que se le realiza la prueba</td>
-                            <td class="StormyWeatherDataTD">
-                                <select id="cmbsexo" name="cmbsexo" size="1" style="width:75%" class="form-control">
-                                     <option value="0">Ninguno</option>
-                                     <option value="4">Ambos</option>
+                           <td class="StormyWeatherFieldCaptionTD" title="Sexo  al que se le realiza la prueba">Sexo</td>
+                           <td class="StormyWeatherDataTD">
+                                <select id="cmbsexo" name="cmbsexo" size="1" style="width:75%" class="height js-example-basic-single" >
+<!--                                     <option value="0">Ninguno</option>-->
+                                     <option value="4" selected>Ambos</option>
                                     <?php
-                                        $obje1=new clsLab_Examenes;
-                                        $consulta= $obje1->catalogo_sexo();
+                                       // $obje1=new clsLab_Examenes;
+                                        $consulta= $obj->catalogo_sexo();
                                         while($row = pg_fetch_array($consulta)){
                                             echo "<option value='" . $row['0']. "'>" .$row['1'] . "</option>";
                                         }
@@ -257,10 +326,38 @@ if ($nivel == 7) {
                          <tr>
                             <td class="StormyWeatherFieldCaptionTD">Habilitar Prueba</td>
                             <td class="StormyWeatherDataTD">
-                                <select id="cmbHabilitar" name="cmbHabilitar" size="1" style="width:75%"  class="form-control height">
-                                    <option value="0">-- Seleccione Condici&oacute;n --</option>
-                                    <option value="H">Habilitado</option>
+                                <select id="cmbHabilitar" name="cmbHabilitar" size="1" style="width:75%"  class="height js-example-basic-single">
+<!--                                    <option value="0">-- Seleccione Condici&oacute;n --</option>-->
+                                    <option value="H" selected>Habilitado</option>
                                     <option value="I">Inhabilitado</option>
+                                </select>    
+                            </td>
+                         </tr>
+                         <tr>
+                            <td class="StormyWeatherFieldCaptionTD">Tipo de Muestra</td>
+                            <td class="StormyWeatherDataTD">
+                                <select id="cmbTipoMuestra" name="cmbTipoMuestra[]" size="1" style="width:75%"  class="height js-example-placeholder-multiple" multiple="multiple">
+<!--                                    <option value="0">-- Seleccione Condici&oacute;n --</option>-->
+                                    <?php
+                                        $tipomuestra= $obj->tipo_muestra();
+                                        while($row = pg_fetch_array($tipomuestra)){
+                                            echo "<option value='" . $row['id']. "'>" .$row['tipomuestra'] . "</option>";
+                                        }
+				    ?>
+                                </select>    
+                            </td>
+                         </tr>
+                         <tr> 
+                         <tr>
+                            <td class="StormyWeatherFieldCaptionTD" title="Seleccione los perfiles a los que la prueba pertenece">Perfiles</td>
+                            <td class="StormyWeatherDataTD">
+                                <select id="cmbPerfil" name="cmbPerfil[]" size="1" style="width:75%"  class="height js-example-placeholder-multiple" multiple="multiple">
+                                     <?php
+                                        $perfil= $obj->perfil();
+                                        while($row = pg_fetch_array($perfil)){
+                                            echo "<option value='" . $row['id']. "'>" .$row['nombre'] . "</option>";
+                                        }
+				    ?>
                                 </select>    
                             </td>
                          </tr>
