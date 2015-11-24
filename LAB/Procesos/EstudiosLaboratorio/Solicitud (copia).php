@@ -85,7 +85,7 @@ $_SESSION["lugar"] = $lugar;
                         //Primera Columna
                         echo "<tr>
                                 <td class='TdCheck'>
-                                    <input type='checkbox' name='Examenes'  Id='Examenes" . $i . "' value='" . $ResultadoExamenes['idconf'] . "' onclick=\"MostrarLista(".$ResultadoExamenes['idconf'].",$i)\" />
+                                    <input type='checkbox' name='Examenes'  Id='Examenes" . $i . "' value='" . $ResultadoExamenes['idconf'] . "' onclick=\"MostrarLista2(".$ResultadoExamenes['idconf'].",$i)\" />
                                 </td>";
                         echo "<td  class='TdExamenNombre'><b>" . $ResultadoExamenes['nombre_examen'] . "</b>
                                     <input type='hidden' id='Nombre" . $ResultadoExamenes['idconf'] . "' value='" . $ResultadoExamenes['nombre_examen'] . "'>
@@ -95,7 +95,7 @@ $_SESSION["lugar"] = $lugar;
                         $i++;
                         // SEGUNDA COLUMNA
 			if($ResultadoExamenes=pg_fetch_array($examen)){
-                            echo "<td class='TdCheck'><input type='checkbox' name='Examenes'  Id='Examenes" . $i . "' value='".$ResultadoExamenes['idconf']."' onclick=\"MostrarLista(".$ResultadoExamenes['idconf'].",$i)\" /></td>";
+                            echo "<td class='TdCheck'><input type='checkbox' name='Examenes'  Id='Examenes" . $i . "' value='".$ResultadoExamenes['idconf']."' onclick=\"MostrarLista2(".$ResultadoExamenes['idconf'].",$i)\" /></td>";
                             echo "<td  class='TdExamenNombre'><b>".$ResultadoExamenes['nombre_examen']."</b>
                             <input type='hidden' id='Nombre".$ResultadoExamenes['idconf']."' value='".$ResultadoExamenes['nombre_examen']."'></td>";
                             echo "<td  class='TdExamenList'><div  id='".$ResultadoExamenes['idconf']."'></div>";
@@ -165,7 +165,7 @@ $_SESSION["lugar"] = $lugar;
               if($ResultadoExamenes=mysql_fetch_array($EjecutarExamenes)){
               echo "<td class='TdCheck'><input type='checkbox' name='Examenes'  Id='Examenes".$i."'
               value='".$ResultadoExamenes['IdExamen']."'
-              onclick=\"MostrarLista('$ResultadoExamenes[IdExamen]',$i)\" /></td>";
+              onclick=\"MostrarLista2('$ResultadoExamenes[IdExamen]',$i)\" /></td>";
               echo "<td  class='TdExamenNombre'><b>".htmlentities($ResultadoExamenes['NombreExamen'])."</b>
               <input type='hidden' id='Nombre".$ResultadoExamenes['IdExamen']."' value='".$ResultadoExamenes['NombreExamen']."'></td>";
               echo "<td  class='TdExamenList'><div  id='".$ResultadoExamenes['IdExamen']."'></div>";

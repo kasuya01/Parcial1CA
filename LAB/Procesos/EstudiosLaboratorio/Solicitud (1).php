@@ -101,7 +101,7 @@ Where Idarea='".$Resultado['IdArea']."' and Condicion='H' and IdEstablecimiento=
 					// PRIMERA  COLUMNA
                 	echo "<tr><td class='TdCheck'><input type='checkbox' name='Examenes'  Id='Examenes".$i."'
 			value='".$ResultadoExamenes['IdExamen']."'
-			onclick=\"MostrarLista('$ResultadoExamenes[IdExamen]',$i)\" /></td>";
+			onclick=\"MostrarLista2('$ResultadoExamenes[IdExamen]',$i)\" /></td>";
 			echo "<td  class='TdExamenNombre'><b>".htmlentities($ResultadoExamenes['NombreExamen'])."</b>
 			<input type='hidden' id='Nombre".$ResultadoExamenes['IdExamen']."' value='".$ResultadoExamenes['NombreExamen']."'></td>";
 			echo "<td class='TdExamenList'><div id='".$ResultadoExamenes['IdExamen']."'></div>";
@@ -112,7 +112,7 @@ Where Idarea='".$Resultado['IdArea']."' and Condicion='H' and IdEstablecimiento=
 			if($ResultadoExamenes=mysql_fetch_array($EjecutarExamenes)){
 				echo "<td class='TdCheck'><input type='checkbox' name='Examenes'  Id='Examenes".$i."'
 				value='".$ResultadoExamenes['IdExamen']."'
-				onclick=\"MostrarLista('$ResultadoExamenes[IdExamen]',$i)\" /></td>";
+				onclick=\"MostrarLista2('$ResultadoExamenes[IdExamen]',$i)\" /></td>";
 				echo "<td  class='TdExamenNombre'><b>".htmlentities($ResultadoExamenes['NombreExamen'])."</b>
 				<input type='hidden' id='Nombre".$ResultadoExamenes['IdExamen']."' value='".$ResultadoExamenes['NombreExamen']."'></td>";
 				echo "<td  class='TdExamenList'><div  id='".$ResultadoExamenes['IdExamen']."'></div>";

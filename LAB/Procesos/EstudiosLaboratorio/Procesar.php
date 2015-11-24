@@ -2,6 +2,7 @@
    include_once("./ClaseSolicitud.php"); //Agregamos el Archivo con las clases y funciones a utilizar
    $Proceso=$_REQUEST["Proceso"]; 
    $SolicitudLab= new SolicitudLaboratorio();
+   $hist= new CrearHistorialClinico();
    $IdEstablecimiento=$_SESSION["IdEstablecimiento"];// establecimiento que solicita los examenes
    $lugar=$_SESSION["lugar"]; // establecimiento que atiende la muestra
       //echo $lugar;  
@@ -162,30 +163,20 @@
             $bs=$SolicitudLab->BorrarSolicitud($idsolicitud);
         }*/
            break;
+   case 'seleccionarPruebas':
+      $idperfil = $_POST["idperfil"];
+      $sql=$hist->buscarperfilprueba($idperfil);
+      if ($sql != false){
+         $jsonresponse['status']=true;
+         $jsonresponse['num_rows']= pg_num_rows($sql);
+         $jsonresponse['data']=  pg_fetch_all($sql);
+      }
+      else{
+         $jsonresponse['status'] = false;
+      }
+      echo json_encode($jsonresponse);
+      break;
 
-
-// echo $IdHistorialClinico.'--'.$IdDetalleUrgentes;
-        //No se actualizara nada de urgente en la solicitud que ingresan de externos.
-        /*
-        $recuperarData = $SolicitudLab->RecuperarData($IdHistorialClinico,$IdEstablecimiento,$TipoSolicitud);
-       
-        //No hay solicitud previa de urgentes
-	if(($IdDetalleUrgentes !='' OR $IdDetalleUrgentes != null) AND ($recuperarData=='' OR $recuperarData == null)){
-            $SolicitudLab->CrearNuevaSolicitudUrgente($IdHistorialClinico,$IdEstablecimiento,$IdDetalleUrgentes);  
-	}                   
-        
-        //Se agregaron o borraron nuevos IdDetallesUrgentes
-        if(($IdDetalleUrgentes !='' OR $IdDetalleUrgentes != null) AND ($recuperarData !='' OR $recuperarData != null)){
-	    $SolicitudLab->SearchNuevaSolicitudUrgente($IdHistorialClinico,$IdEstablecimiento,$IdDetalleUrgentes);  
-	}
-        
-        //Todos los urgentes fueron unchecked
-        if(($IdDetalleUrgentes =='' OR $IdDetalleUrgentes == null) AND ($recuperarData !='' OR $recuperarData != null)){
-	    $SolicitudLab->BorrarSolicitudUrgente($IdHistorialClinico,$IdEstablecimiento);  
-	}*/
-            
-
-break;  
 }  
   
 ?>
