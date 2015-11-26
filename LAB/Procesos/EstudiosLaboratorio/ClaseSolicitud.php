@@ -243,6 +243,7 @@ class SolicitudLaboratorio {
                     from lab_tipomuestraporexamen  lte
                     join lab_tipomuestra ltm on (lte.idtipomuestra=ltm.id)
                     where lte.idexamen=$IdExamen
+                       and lte.habilitado=true
                         order by tipomuestra ASC;";
          $result = pg_query($SQL2);
          if (!$result) {

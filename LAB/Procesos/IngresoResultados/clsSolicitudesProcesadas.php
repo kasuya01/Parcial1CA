@@ -1183,7 +1183,8 @@ order by nombre_examen;";
                   join lab_posible_resultado t03 on (t03.id=t01.id_posible_resultado)
                   where id_conf_exa_estab =$idexamen
                   and t01.habilitado=true
-                  and t02.activo=true;";
+                  and t02.activo=true
+                  order by posible_resultado::bytea;";
          //echo $query;
          $result = pg_query($query);
          if (!$result) {
