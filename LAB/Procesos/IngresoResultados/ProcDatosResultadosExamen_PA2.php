@@ -31,7 +31,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
 
 
 <script language="JavaScript" >
-   
+ window.onunload = refreshParent;     
 function Guardar(){
    	GuardarResultados();
 	//window.close();

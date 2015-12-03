@@ -22,6 +22,8 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
     <link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
     
     <script language="JavaScript" >
+      //Recarga funcion buscar de la página padre
+      window.onunload = refreshParent;   
         function Guardar() {
             GuardarResultadosPlantillaB();
 	       //window.close();

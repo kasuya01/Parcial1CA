@@ -39,6 +39,8 @@ switch ($opcion) {
       $metodologias_sel = $_POST['metodologias_sel'];
       $text_metodologias_sel = $_POST['text_metodologias_sel'];
       $id_metodologias_sel = $_POST['id_metodologias_sel'];
+      $cmbTipoMuestra = $_POST['cmbTipoMuestra'];
+      $cmbPerfil = $_POST['cmbPerfil'];
       //echo $sexo;
       if ($sexo <> 4)
          $idsexo = $sexo;
@@ -77,7 +79,7 @@ switch ($opcion) {
                          $letra, $Urgente, $ubicacion, $TiempoPrevio, $idsexo,
                          $idestandar, $lugar, $metodologias_sel,
                          $text_metodologias_sel, $id_metodologias_sel,
-                         $resultado, $id_resultado) == true) {
+                         $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil) == true) {
             // asignar_resultados($resultado);
             echo "Registro Agregado";
          } else {
@@ -92,7 +94,7 @@ switch ($opcion) {
                          $letra, $Urgente, $ubicacion, $TiempoPrevio, $idsexo,
                          $idestandar, $lugar, $metodologias_sel,
                          $text_metodologias_sel, $id_metodologias_sel,
-                         $resultado, $id_resultado) == true) {
+                         $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil) == true) {
             // asignar_resultados($resultado);
             echo "Registro Agregado";
          } else {
@@ -134,6 +136,8 @@ switch ($opcion) {
       $resultado = $_POST['resultado'];
       $resultado_nombre = $_POST['resultado_nombre'];
       $id_resultado = $_POST['id_resultado'];
+      $cmbTipoMuestra = $_POST['cmbTipoMuestra'];
+      $cmbPerfil = $_POST['cmbPerfil'];
       //  echo $IdEstandarResp." sexo=".$sexo;
       if ($sexo <> 4)
          $idsexo = $sexo;
@@ -177,7 +181,7 @@ switch ($opcion) {
                       $usuario, $IdFormulario, $IdEstandarResp, $plantilla,
                       $letra, $Urgente, $ubicacion, $Hab, $TiempoPrevio,
                       $idsexo, $idestandar, $ctlidestandar, $metodologias_sel,
-                      $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado) == true) {
+$text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil) == true) {
          /*
           * creando arreglo de elementos seleccionados
           */
@@ -340,8 +344,8 @@ switch ($opcion) {
       $consultaex = $objdatos->ExamenesPorArea($idarea, $lugar);
       //$dtMed=$obj->LlenarSubServ($proce);	
 
-      $rslts = '<select name="cmbEstandar" id="cmbEstandar" size="1" style="width:75%" class="form-control height" >';
-      $rslts .='<option value="0">--Seleccione un Examen--</option>';
+      $rslts = '<select name="cmbEstandar" id="cmbEstandar" size="1" style="width:75%" class="js-example-basic-single" >';
+      $rslts .='<option value="0">Seleccione un Examen...</option>';
 
       while ($rows = pg_fetch_array($consultaex)) {
          $rslts.= '<option value="' . $rows[0] . '" >' . $rows['idestandar'] . '-' . htmlentities($rows[1]) . '</option>';
@@ -442,34 +446,34 @@ switch ($opcion) {
          $query .= " lab_conf_examen_estab.ubicacion='" . $_POST['ubicacion'] . "' AND";
       }
 
-      if (!empty($_POST['etiqueta'])) {
-         if ($_POST['etiqueta'] == 'G') {
-            $query .= "  lab_conf_examen_estab.impresion='G' AND";
-         } else {
-            $query .= "  lab_conf_examen_estab.impresion<>'G' AND";
-         }
-      }
+//      if (!empty($_POST['etiqueta'])) {
+//         if ($_POST['etiqueta'] == 'G') {
+//            $query .= "  lab_conf_examen_estab.impresion='G' AND";
+//         } else {
+//            $query .= "  lab_conf_examen_estab.impresion<>'G' AND";
+//         }
+//      }
       if (!empty($_POST['urgente'])) {
          $query .= " lab_conf_examen_estab.urgente='" . $_POST['urgente'] . "' AND";
       }
+//
+//      if ($_POST['sexo'] <> 0) {
+//         if ($_POST['sexo'] <> 4)
+//            $query .= "  lab_conf_examen_estab.idsexo =" . $_POST['sexo'] . " AND";
+//         else
+//            $query .= "  lab_conf_examen_estab.idsexo IS NULL AND";
+//      }
 
-      if ($_POST['sexo'] <> 0) {
-         if ($_POST['sexo'] <> 4)
-            $query .= "  lab_conf_examen_estab.idsexo =" . $_POST['sexo'] . " AND";
-         else
-            $query .= "  lab_conf_examen_estab.idsexo IS NULL AND";
-      }
 
-
-      if (!empty($_POST['Hab'])) {
-         if ($_POST['Hab'] == 'H') {
-            $query .= "  lab_conf_examen_estab.condicion='H' AND";
-         } else {
-            $query .= "  lab_conf_examen_estab.condicion='I' AND";
-         }
-      } else {
-         $ban = 1;
-      }
+//      if (!empty($_POST['Hab'])) {
+//         if ($_POST['Hab'] == 'H') {
+//            $query .= "  lab_conf_examen_estab.condicion='H' AND";
+//         } else {
+//            $query .= "  lab_conf_examen_estab.condicion='I' AND";
+//         }
+//      } else {
+//         $ban = 1;
+//      }
 
 
       if ($ban == 0) {
@@ -481,6 +485,7 @@ switch ($opcion) {
       }
 
        $query_search;
+      // echo $query_search;
       //para manejo de la paginacion
       $RegistrosAMostrar = 4;
       $RegistrosAEmpezar = ($_POST['Pag'] - 1) * $RegistrosAMostrar;
@@ -495,6 +500,7 @@ switch ($opcion) {
       echo "<center >
                <table border = 1 style='width: 80%;'   class='table table-hover table-bordered table-condensed table-white' >
 	           <thead>
+                   <tr><td colspan='14'><h4><center><b>Resultado de Coincidencias...<b></center></h4></td></tr>
                         <tr>
 		      	    <th aling='center' > Modificar</td>
 			    <td aling='center' > Habilitado</td>

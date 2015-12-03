@@ -28,6 +28,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
 <link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />-->
 
 <script language="JavaScript" >
+   window.onunload = refreshParent;    
    
 jQuery(document).ready(function($){
 

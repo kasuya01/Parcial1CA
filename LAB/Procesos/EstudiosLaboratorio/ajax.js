@@ -180,7 +180,8 @@ function SolicitudUrgente(IdHistorialClinico, idsolicitudestudio){
 /************************************************************************************************/
 var Nombre;
 var Origen;
- function MostrarLista(Examen,value){	
+ function MostrarLista(Examen,value){
+   // alert (Examen+' - -'+value)
  	var NombreDiv=Examen+value;
 	
 	if (document.Solicitud.Examenes[value].checked == true) {
@@ -192,18 +193,32 @@ var Origen;
 		ObjetoAjax=NuevoAjax();			
 		
 		// Hacer el Request y llamar o Dibujar el Resultado
-		ObjetoAjax.onreadystatechange = CargarContenido;
-		ObjetoAjax.open("POST", 'Procesar.php', true);
-		ObjetoAjax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-		
-		// Declaración de parámetros
+		//ObjetoAjax.onreadystatechange = CargarContenido;
+                ObjetoAjax.open("POST", 'Procesar.php', true);
+                // Declaración de parámetros
 		var IdExamen=Examen;
 		var Proceso='Combos';
 		var param = 'Proceso='+Proceso;
-			//alert (IdExamen)
 		// Concatenación y Envío de Parámetros
 		param += '&IdExamen='+IdExamen;
-		ObjetoAjax.send(param);  
+		
+                 ObjetoAjax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+                
+		ObjetoAjax.send(param);
+               // console.log('ObjetoAjax.readyState: '+ObjetoAjax.readyState)
+                //console.log
+                ObjetoAjax.onreadystatechange = function(){
+                    
+                     if(ObjetoAjax.readyState==4){
+                     //   console.log('resp:'+ObjetoAjax.responseText);
+                        document.getElementById(Examen).innerHTML=ObjetoAjax.responseText;
+                        //return false;
+                     }
+                 }
+		
+		
+		 
+                console.log(param);
 
 	} // fin If Checkeado
  	else {		
@@ -212,7 +227,62 @@ var Origen;
 		}
 
 
- }
+ }//fn MostrarLista
+ 
+ 
+  function MostrarLista2(Examen,value){
+   
+ 	var NombreDiv=Examen+value;
+	
+	if (document.Solicitud.Examenes[value].checked == true) {
+             //  alert (Examen+' - -'+value)
+		Nombre=Examen;
+		Origen='O'+ Examen;
+		accion=1;
+                var IdExamen=Examen;
+                //alert ('Nombreluego:'+Nombre)
+                jQuery.ajax({
+                   url:'Procesar.php',
+                  type:'post',
+                  dataType:'html',
+                  async: true,
+                  data: {Proceso: 'Combos', IdExamen: IdExamen },
+                  success: function(data){
+                 //    alert (data+' NOMBREEEE:  '+Examen)
+                     document.getElementById(Examen).innerHTML=data;
+                  },
+                  error: function(jqXHR, exception) {
+                        if (jqXHR.status === 0) {
+                            alert('Not connect.\n Verify Network.');
+                        } else if (jqXHR.status == 404) {
+                            alert('Requested page not found. [404]');
+                        } else if (jqXHR.status == 500) {
+                            alert('Internal Server Error [500].');
+                        } else if (exception === 'parsererror') {
+                            alert('Requested JSON parse failed.');
+                        } else if (exception === 'timeout') {
+                            alert('Time out error.');
+                        } else if (exception === 'abort') {
+                            alert('Ajax request aborted.');
+                        } else if (textStatus==="timeout"){
+                            alert('Error timeout');
+                        } else {
+                            alert('Uncaught Error.\n' + jqXHR.responseText);
+                        }
+                    }   
+      })
+			
+
+	} // fin If Checkeado
+ 	else {		
+             //  console.log('no else')
+               document.getElementById(Examen).innerHTML="";
+               document.getElementById("O"+Examen).innerHTML="";
+		}
+               // console.log('regreso')
+
+
+ }//fn MostrarLista2
 
 
 /************************************************************************************************/
@@ -220,7 +290,7 @@ var Origen;
 /************************************************************************************************/
 //fn pg
 function MostrarOrigen(Muestra,Examen){	
-    //alert (Muestra+'-'+ Examen)
+   
     //return false;
 	Nombre=Examen;
 	Origen="O"+Examen;
@@ -231,12 +301,13 @@ function MostrarOrigen(Muestra,Examen){
 	ObjetoAjax=NuevoAjax();			
 	
 	// Hacer el Request y llamar o Dibujar el Resultado
+         //alert (Muestra+'-'+ Examen)
 	ObjetoAjax.onreadystatechange = CargarContenido;
 	ObjetoAjax.open("POST", 'Procesar.php', true);
 	ObjetoAjax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	
 	// Declaración de parámetros
-	
+	 //console.log (Muestra+'-'+ Examen)
 	var Proceso='OrigenMuestra';
 	var IdExamen=Examen;
 	var param = 'Proceso='+Proceso;
@@ -277,6 +348,7 @@ function MostrarDetalle(IdHistorialClinico){
 		var Origen;
 		var Examen;
 		var Indicacion='';
+              // console.log('Muestra: '+Muestra+' Origen: '+Origen+' Examen: '+Examen)
 		 //accion=3;
 
 		//alert('Estas en Guardar Informacion');
@@ -319,10 +391,15 @@ function MostrarDetalle(IdHistorialClinico){
 						
 				// Parametros del Detalle de los examenes 
                                     NombreExamen=document.getElementById(ID).value;
-                                    Muestra="M"+ NombreExamen;
-                                    Origen="Origen"+ NombreExamen;
-                                    NombreMuestra=document.getElementById(Muestra).value;
+                                   // console.log('NombreExamen: '+NombreExamen);
+                                    Muestra='M'+ NombreExamen;
+                                    Origen='Origen'+ NombreExamen;
+                                   // NombreMuestra=document.getElementById(Muestra).value;
+                                    NombreMuestra=$('#'+Muestra).val();
+                                   // console.log('Muestra: '+Muestra+' Origen: '+Origen+' NombreMuestra: '+NombreMuestra)
+                                   // alert (Muestra)
                                     cantselectmuest=$('#'+Muestra+' option').size(); 
+                                    //alert ('cantselectmuest:'+cantselectmuest+'  NombreMuestra:'+NombreMuestra)
                                     if (cantselectmuest>0 && NombreMuestra==0){
                                         alert ('Debe seleccionar los tipos de muestra de las pruebas seleccionadas, que lo requieran');
                                         $('#Enviar').removeAttr('disabled')
@@ -330,12 +407,14 @@ function MostrarDetalle(IdHistorialClinico){
                                     }
                                             
                                     else {   
+                                       
 					if(NombreMuestra==0){
 						NombreOrigen=0;
 					}else{
-						NombreOrigen=document.getElementById(Origen).value;
+						//NombreOrigen=document.getElementById(Origen).value;
+						NombreOrigen=$('#'+Origen).val();;
 					}
-					
+					//console.log ('NombreMuestra: '+NombreMuestra+'   NombreOrigen:'+NombreOrigen)
 					if(NombreOrigen==''){	
 						NombreOrigen=0;
 					}
@@ -575,15 +654,18 @@ function Retraso(ID){
 
 function CargarContenido(){
   // Si se Tarda en Cargar los datos que lanze los siguientes mensajes dependiendo del caso que sea	 
+  
   if (ObjetoAjax.readyState==1) { 
-	//	alert(accion)
+    
 	if(accion==0)    
-	document.getElementById('RespuestaAjax').innerHTML = "<center><img src='loading.gif' alt='Cargando...' /><br>Cargando Resultados...! </center>";
+	document.getElementById('RespuestaAjax').innerHTML = "<center><img src='loading.gif' alt='Cargando1...' /><br>Cargando Resultados...! </center>";
 	else if(accion==1)
 	document.getElementById(Nombre).innerHTML = "<center><img src='loading.gif' alt='Cargando...' /><br>Cargando Resultados...! </center>";
 	
-	else if(accion==2)
-	document.getElementById(Muestra).innerHTML = "<center><img src='loading.gif' alt='Cargando...' /><br>Cargando Resultados...! </center>";
+	else if(accion==2){
+//            alert (Muestra)
+//	document.getElementById(Muestra).innerHTML = "<center><img src='loading.gif' alt='Cargando...' /><br>Cargando Resultados...! </center>";
+     }
 
 	else if(accion==3)
 	document.getElementById('Resultados').innerHTML = "<center><img src='loading.gif' alt='Cargando...' /><br>Cargando Resultados...! </center>";
@@ -603,8 +685,8 @@ function CargarContenido(){
 			else if(accion==1)
 				 document.getElementById(Nombre).innerHTML = respuesta;
 
-			else if(accion==2)
-				 document.getElementById("O"+Nombre).innerHTML = respuesta;	 
+			else if(accion==2){
+				 document.getElementById("O"+Nombre).innerHTML = respuesta;	 }
 		
 			else if(accion==3)
 				 document.getElementById("Resultados").innerHTML = respuesta;	 
@@ -695,3 +777,101 @@ function CargarContenido(){
  function updatealldates(){
     $( "input[name^='ftomamx']" ).val( $('#fgentomamxgen').val() );
  }
+ 
+function seleccionarpruebas(idperfil) {
+   jQuery.ajax({
+      url:'Procesar.php',
+      type:'post',
+      dataType:'json',
+      async: false,
+      timeout:8000,
+      
+      data: {Proceso: 'seleccionarPruebas', idperfil: idperfil },
+      success: function(object){
+         if (object.status){
+            if (object.num_rows>0){
+         jQuery.each(object.data, function(idx, val) {
+            
+            $('input[type="checkbox"][value='+val.id_conf_examen_estab+']').each(function() {              
+               $(this).prop("checked", true);
+               
+               data=($(this).attr('id')).split('Examenes');
+              // console.log(data[1]+' --- '+val.id_conf_examen_estab);
+              MostrarLista2(val.id_conf_examen_estab, data[1]);
+
+              //console.log('data:'+data)
+             
+            });
+            
+            
+            
+            
+         });
+      }
+      $('#btnperfil'+idperfil).addClass( "disabled" )
+         }
+         else
+            alert('Error al seleccionar las pruebas del perfil...')
+      },
+      error: function(jqXHR, exception) {
+            if (jqXHR.status === 0) {
+                alert('Not connect.\n Verify Network.');
+            } else if (jqXHR.status == 404) {
+                alert('Requested page not found. [404]');
+            } else if (jqXHR.status == 500) {
+                alert('Internal Server Error [500].');
+            } else if (exception === 'parsererror') {
+                alert('Requested JSON parse failed.');
+            } else if (exception === 'timeout') {
+                alert('Time out error.');
+            } else if (exception === 'abort') {
+                alert('Ajax request aborted.');
+            } else if (textStatus==="timeout"){
+                alert('Error timeout');
+            } else {
+                alert('Uncaught Error.\n' + jqXHR.responseText);
+            }
+        }
+      
+   })
+   
+}//fin seleccionarpruebas
+
+function seleccionaridpruebas(){
+   setTimeout(function(object) {
+      if (object.num_rows>0){
+         jQuery.each(object.data, function(idx, val) {
+            $("#Examenes"+val.id_conf_examen_estab).attr ( "checked" ,"checked" );
+         });
+      }
+                    }, 500);
+}
+
+function realizaProceso(valorCaja1, valorCaja2){
+   
+        var parametros = {
+                "valorCaja1" : valorCaja1,
+                "valorCaja2" : valorCaja2
+        };
+        $.ajax({
+                data:  parametros,
+                url:   'ejemplo.php',
+                type:  'get',
+                dataType:'json',
+                async: true,
+                 /*data: {Proceso: 'seleccionarPruebas', idperfil: idperfil },*/
+                beforeSend: function () {
+                        $("#resultado").html("Procesando, espere por favor...");
+                },
+//                success:  function (response) {
+//                        $("#resultado").html(response);
+//                }
+success: function(object){
+         if (object.status)
+            $("#resultado").html(response);
+         else
+            alert('Error al seleccionar las pruebas del perfil...')
+      }
+        });
+}
+
