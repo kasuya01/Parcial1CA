@@ -72,46 +72,58 @@ class clsMuestrasRechazadas {
     
     
     function inseresul_metodologia($idexmen_metodologia,$idsolicitud,$estado,$observacion,$usuario,$id_empleado )
-           {
-   $con = new ConexionBD;
-   if($con->conectar()==true) 
-   {
-    $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia,
-					id_detallesolicitudestudio,
-					resultado,
-					observacion,
-					idusuarioreg,
-					fechahorareg,
-					idusuariomod,
-					fechahoramod,
-                                        fecha_realizacion,fecha_resultado,id_empleado) 
-VALUES($idexmen_metodologia,
-	$idsolicitud,
-	'$estado',
-	'$observacion',
-	$usuario,
-	NOW(),
-	'$usuario',
-	NOW(),
-        current_date,
-        current_date,
-        $id_empleado)";
-     $result = pg_query($query);
-	 
-     if (!$result)
-       return false;
-     else
-       return true;	   
-   }
+    {
+        $con = new ConexionBD;
+        if($con->conectar()==true) 
+        {
+            $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia,
+                      id_detallesolicitudestudio,
+                      resultado,
+                      observacion,
+                      idusuarioreg,
+                      fechahorareg,
+                      idusuariomod,
+                      fechahoramod,
+                      fecha_realizacion,fecha_resultado,id_empleado) 
+                 VALUES($idexmen_metodologia,
+                         $idsolicitud,
+                         '$estado',
+                         '$observacion',
+                         $usuario,
+                         NOW(),
+                         '$usuario',
+                         NOW(),
+                         current_date,
+                         current_date,
+                         $id_empleado)";
+                      $result = pg_query($query);
+
+          if (!$result)
+            return false;
+          else
+            return true;	   
+        }
  }
                 
+    function Borrarresul_metodologia ($idsolicitud){
+        $con = new ConexionBD;
+        if($con->conectar()==true) {
+            
+          $query="DELETE FROM lab_resultado_metodologia WHERE id_detallesolicitudestudio=$idsolicitud";
+           !$result = pg_query($query);
+           //  $result = @pg_query($query);
+            if (!$result)
+               return false;
+          else
+            return true;
+             
+             
+            return $resutl;
+            echo $query." --- ".$resutl;
+        } 
+    }         
                 
-                
-                
-                
-                
-  
-    
+   
     function DatosEstablecimiento($lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
@@ -423,7 +435,7 @@ VALUES($idexmen_metodologia,
     function DatosDetalleSolicitud($idarea, $idsolicitud) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-          echo  $query = "SELECT lab_examenes.IdExamen,NombreExamen,TipoMuestra,Indicacion 
+            $query = "SELECT lab_examenes.IdExamen,NombreExamen,TipoMuestra,Indicacion 
 		     FROM sec_detallesolicitudestudios 
 		     INNER JOIN lab_examenes     ON sec_detallesolicitudestudios.IdExamen=lab_examenes.IdExamen
 		     INNER JOIN lab_tipomuestra  ON lab_tipomuestra.IdTipoMuestra=sec_detallesolicitudestudios.IdTipoMuestra
@@ -439,7 +451,7 @@ VALUES($idexmen_metodologia,
     function DatosExamen($idarea, $idsolicitud, $idexamen) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-         echo    $query = "select lcee.codigo_examen,
+            $query = "select lcee.codigo_examen,
                         lcee.nombre_examen,
                         ltm.tipomuestra,
                         sdses.indicacion,
@@ -475,26 +487,34 @@ VALUES($idexmen_metodologia,
     function CambiarEstadoSolicitudProceso3($idexpediente, $fechasolicitud, $estadosolicitud, $idsolicitudPadre) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-           echo $query = "select  COUNT(id) from  sec_detallesolicitudestudios
+           $query = "select  COUNT(id) from  sec_detallesolicitudestudios
 		  WHERE idsolicitudestudio=$idsolicitudPadre AND (estadodetalle<>(SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado ='PM'))";
             $detalle = pg_fetch_array(pg_query($query));
             if ($detalle[0] == 0) {
-              echo $query1 = /* "UPDATE sec_solicitudestudios SET estado='C' WHERE IdSolicitudEstudio=$idsolicitud"; */
+             $query1 = /* "UPDATE sec_solicitudestudios SET estado='C' WHERE IdSolicitudEstudio=$idsolicitud"; */
                         "UPDATE sec_solicitudestudios SET estado=(SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado ='C')
                          --fecha_solicitud= now(),
                          --fechahorareg=current_timestamp
                     WHERE id=$idsolicitudPadre";
                 $result = pg_query($query1);
+               // return true;
+            if (!$result)
+                return false;
+            else
                 return true;
             }
             if ($detalle[0] >= 1) {
-                echo $query1 = /* "UPDATE sec_solicitudestudios SET estado='P' WHERE IdSolicitudEstudio=$idsolicitud"; */
+              $query1 = /* "UPDATE sec_solicitudestudios SET estado='P' WHERE IdSolicitudEstudio=$idsolicitud"; */
                         "UPDATE sec_solicitudestudios SET estado=(SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado ='P')
                             --fecha_solicitud= now(),
                             --fechahorareg=current_timestamp
                          WHERE id=$idsolicitudPadre";
                 $result = pg_query($query1);
-                return true;
+               // return true;
+                if (!$result)
+                    return false;
+                else
+                    return true;
             }
         }
     }
@@ -503,12 +523,11 @@ VALUES($idexmen_metodologia,
     function CambiarEstadoDetalle($idsolicitud, $estado, $observacion) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-           echo  $query = "UPDATE sec_detallesolicitudestudios 
+            $query = "UPDATE sec_detallesolicitudestudios 
                            SET estadodetalle=(SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado ='$estado'),
                            observacion='$observacion',id_estado_rechazo=1,f_estado=NULL,id_posible_observacion=NULL
                            WHERE sec_detallesolicitudestudios.id=$idsolicitud";
            
-
             $result = @pg_query($query);
             if (!$result)
                 return false;
@@ -522,7 +541,7 @@ VALUES($idexmen_metodologia,
         $con = new ConexionBD;
         if ($con->conectar() == true) {
 
-            $query = /* "UPDATE sec_detallesolicitudestudios,sec_solicitudestudios
+           $query = /* "UPDATE sec_detallesolicitudestudios,sec_solicitudestudios
                       SET sec_detallesolicitudestudios.estadodetalle='$estado',  sec_detallesolicitudestudios.observacion=''
                       WHERE sec_detallesolicitudestudios.idsolicitudestudio=$idsolicitud
                       AND  sec_solicitudestudios.id_atencion=98 AND  sec_detallesolicitudestudios.idexamen ='$idexamen'"; */
