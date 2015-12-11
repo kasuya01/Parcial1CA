@@ -228,7 +228,7 @@ if (isset($_SESSION['Correlativo'])) {
                             </td>
                         </tr>
                         <tr>
-                            <td class="StormyWeatherFieldCaptionTD">&Aacute;rea de Laboratorio*</td>
+                            <td class="StormyWeatherFieldCaptionTD">&Aacute;rea de Laboratorio</td>
                             <td class="StormyWeatherDataTD">
                                 <select id="cmbArea" name="cmbArea"  size="1" onChange="BuscarExamen(this.value)" style="width:443px" class="form-control height">
                                      <option value="0" >Seleccione un Área</option>

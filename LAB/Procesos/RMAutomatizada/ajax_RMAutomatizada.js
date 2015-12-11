@@ -312,14 +312,14 @@ function RechazarMuestra1(idexamen)
     idexpediente = document.frmDatos.idexpediente.value;
     fechasolicitud = document.frmDatos.fechasolicitud.value;
     idarea = document.frmDatos.idarea.value;
-    observacion = document.frmDatos.txtobservacion.value;
+    idobservacion = document.frmDatos.CmbObserv.value;
+    idrechazo = document.frmDatos.CmbRechazo.value;
     opcion = 4;
-
     idsolicitud = trim(idsolicitud);
     //idsolicitudP = trim(idsolicitudP);
     idexpediente = trim(idexpediente);
     fechasolicitud = trim(fechasolicitud);
-
+    //alert(idobservacion+""+idrechazo);
     //alert (idsolicitud+"*"+idexpediente +"*"+fechasolicitud+"*"+observacion);
     //instanciamos el objetoAjax
     ajax = objetoAjax();
@@ -328,7 +328,9 @@ function RechazarMuestra1(idexamen)
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
-    ajax.send("idexpediente=" + idexpediente + "&idarea=" + idarea + "&fechasolicitud=" + fechasolicitud + "&idsolicitud=" + idsolicitud + "&opcion=" + opcion + "&estado=" + estado + "&idexamen=" + idexamen + "&observacion=" + observacion + "&idsolicitudPadre=" + idsolicitudPadre);
+    ajax.send("idexpediente=" + idexpediente + "&idarea=" + idarea + "&fechasolicitud=" + fechasolicitud + "&idsolicitud=" + idsolicitud + "&opcion=" + opcion +
+              "&estado=" + estado + "&idexamen=" + idexamen + "&idobservacion=" + idobservacion + 
+              "&idsolicitudPadre=" + idsolicitudPadre +"&idrechazo=" + idrechazo);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -382,7 +384,7 @@ function CargarDatosFormulario( idexpediente,idarea ,idexamen, idsolicitud )
     }
 }
 
-function CargarDatosFormulario1(idexpediente,idexamen, idarea , idsolicitud  )
+function CargarDatosFormulario1(idexpediente,idexamen,idarea,idsolicitud)
 {
     ajax = objetoAjax();
     opcion = 2;

@@ -147,16 +147,15 @@ function MostrarDatos(posicion)
                          
 			ventana_secundaria = window.open("DatosSolicitudesPorArea1.php?var1="+idexpediente+
 							  "&var2="+idarea+"&var3="+idsolicitud+"&var4="+idexamen+"&var5="+subservicio,"Datos1",											"width=850,height=475,menubar=no,scrollbars=yes") ;
-			break;
-			case "BAT": 
+		    break;
+		    case "BAT": 
 			ventana_secundaria = window.open("DatosSolicitudesPorArea1.php?var1="+idexpediente+
 							  "&var2="+idarea+"&var3="+idsolicitud+"&var4="+idexamen+"&var5="+subservicio,"Datos1",											"width=850,height=475,menubar=no,scrollbars=yes") ;
-			break;
-			
-			default:
+		    break;
+		    default:
 			ventana_secundaria = window.open("DatosSolicitudesPorArea.php?var1="+idexpediente+
 							  "&var2="+idarea+"&var3="+idsolicitud+"&var4="+idexamen+"&var5="+idestablecimiento+"&var6="+subservicio,"Datos",											"width=850,height=475,menubar=no,scrollbars=yes") ;
-			break;
+		    break;
 		}
  }
 

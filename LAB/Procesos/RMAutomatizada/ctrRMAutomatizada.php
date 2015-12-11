@@ -46,10 +46,10 @@ switch ($opcion) {
           
         }
 
-        if (!empty($_POST['IdServ'])) {
-            $cond1 .= " t13.id  = " . $_POST['IdServ'] . " AND";
-            $cond2 .= " t13.id  = " . $_POST['IdServ'] . " AND";
-            $where_with = "id_area_atencion = $IdServ AND ";
+       if ($_POST['IdServ'] <> 0) {
+            $cond1 .= " t12.id  = " . $_POST['IdServ'] . " AND";
+            $cond2 .= " t12.id  = " . $_POST['IdServ'] . " AND";
+            $where_with = "t03.id = $IdServ AND ";
         }
 
         if (!empty($_POST['IdSubServ'])) {
@@ -125,13 +125,12 @@ switch ($opcion) {
         $query="WITH tbl_servicio AS ( SELECT t02.id, 
                 CASE WHEN t02.nombre_ambiente IS NOT NULL THEN 
                     CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' || t02.nombre_ambiente 
-                            --ELSE t02.nombre_ambiente 
+                            
                     END 
                     ELSE 
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre 
-                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)  
-                                    --THEN t07.nombre||'-'||t01.nombre
-                                    THEN t01.nombre
+                        CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre 
+                             WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)  
+                             THEN t01.nombre
                     END 
 
                 END AS servicio,
@@ -161,7 +160,7 @@ switch ($opcion) {
                        CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,
                        t07.segundo_apellido,t07.apellido_casada) AS paciente,
                        t20.servicio AS nombresubservicio,
-                       t13.nombre AS nombreservicio, 
+                       t20.procedencia AS nombreservicio, 
                        t02.impresiones, 
                        t14.nombre, 
                        t09.id AS idhistorialclinico,
@@ -258,21 +257,21 @@ switch ($opcion) {
         if ($NroRegistros==""){
             $NroRegistros=0;
             
-            echo "<table width='35%' border='0'  align='center'>
-        	<center>
+            echo "<table width='15%' border='0'  align='center'>
+        	
            
             
-<tr><td colspan='11'><span style='color: #0101DF;'> <h3> TOTAL DE EXAMENES RECHAZADOS:".$NroRegistros."</h3></span></td></tr>
-            </center>
+<tr><td colspan='11' align='center><span style='color: #0101DF;'> <h3> TOTAL DE EXAMENES : ".$NroRegistros."</h3></span></td></tr>
+            
 	</table> "; 
             
         }else{
-            echo "<table width='35%' border='0'  align='center'>
-        	<center>
+            echo "<table width='15%' border='0'  align='center'>
+        	
            
             
-<tr><td colspan='11'><span style='color: #0101DF;'> <h3> TOTAL DE EXAMENES RECHAZADOS:".$NroRegistros."</h3></span></td></tr>
-            </center>
+<tr><td colspan='11' align='center><span style='color: #0101DF;'> <h3> TOTAL DE EXAMENES : ".$NroRegistros."</h3></span></td></tr>
+            
 	</table> "; 
             
         }
@@ -296,7 +295,7 @@ switch ($opcion) {
 			<th>Procedencia</th>
 			<th>Establecimiento</th>
 			<th>Fecha Recepci&oacute;n</th>
-			<th>Prioridad</th>
+			<th>Tipo Solicitud</th>
                     </tr></thead><tbody>";
         if(pg_num_rows($consulta))
         {
@@ -341,17 +340,21 @@ switch ($opcion) {
 
     case 2:
              $idexpediente   = $_POST['idexpediente']; 
-          //  $idsolicitudP       = $_POST['idsolicitudP'];
+             $idarea    = $_POST['idarea']; 
              $idsolicitud      = $_POST['idsolicitud']; 
-            $idarea    = $_POST['idarea']; 
-            $idexamen  = (empty($_POST['idexamen'])) ? 'NULL' : "'" . pg_escape_string($_POST['idexamen'])."'";
+             $idexamen  = (empty($_POST['idexamen'])) ? 'NULL' : "'" . pg_escape_string($_POST['idexamen'])."'";
+            
+          //  $idsolicitudP       = $_POST['idsolicitudP'];
+             
+          
            
-        //	echo $idarea."**".$idsolicitud."**".$idexamen."**".$idexpediente;
+           
+        //echo $idarea."**".$idsolicitud."**".$idexamen."**".$idexpediente;
         //echo $idexamen;
-        include_once("clsRMAutomatizada.php");
+       // include_once("clsRMAutomatizada.php");
         //recuperando los valores generales de la solicitud
 
-         $nombe=$objdatos->nombrepaciente($idsolicitud,$idexpediente);
+      $nombe=$objdatos->nombrepaciente($idsolicitud,$idexpediente);
       $row1 = pg_fetch_array($nombe);
       $nombrepaciente       = $row1['paciente'];
       $nombreexamen= $row1['nombreexamen'];
@@ -386,7 +389,7 @@ switch ($opcion) {
         $Peso           = $row['peso'];
         $Diagnostico    = $row['diagnostico'];
      //$fecharecepcion = (empty($_POST['fecharecepcion'])) ? 'NULL' : "'" . pg_escape_string($_POST['fecharecepcion'])."'";
-        $ConocidoPor    = (empty($row['conocidox'])) ? 'NULL' : "'" . pg_escape_string($row['conocidox'])."'";
+        $ConocidoPor    = $row['conocidox'];
       //  echo $ConocidoPor;
         //recuperando los valores del detalle de la solicitud
         $datosexamen = $objdatos->DatosExamen( $idsolicitud); //cambie esta funcion
@@ -500,18 +503,47 @@ switch ($opcion) {
         $imprimir .= "<input type='hidden' name='oculto' id='oculto' value='" . $pos . "' />
 				</table><br>
 			
-				<table align='center' width='55%'>
-                                    <tr>
+				<table align='center' width='56%' class='StormyWeatherFormTABLE'>
+                                    <tr class='CobaltFieldCaptionTD'>
                                             <td colspan='4' align='center'>VALIDACI&Oacute;N DE RECEPCI&Oacute;N DE ESTUDIO</td>
                                     </tr>
                                     <tr>
-                                            <td>Observacion</td>
-                                            <td colspan='3'>
-                                                    <textarea cols='60' rows='2' name='txtobservacion' <span style='color: #0000FF;background-color:#87CEEB;'> " . htmlentities($fila['Observacion']) . "</textarea>
-                                            </td>
+                                        <td class='StormyWeatherFieldCaptionTD'>Tipo Rechazo</td>
+                                        <td class='StormyWeatherDataTD'><select name='CmbRechazo' id='CmbRechazo' style='width:290px'  class='form-control height'>
+                                                <option value='0' selected='selected' align='center'> Seleccione un Tipo de Rechazo </option>";
+                                                $db = new ConexionBD;
+                                                        if ($db->conectar() == true) {
+                                                            $consulta = "SELECT id,estado FROM lab_estado_rechazo WHERE id <> 1 AND habilitado=TRUE ";
+                                                             $resultado = pg_query($consulta);
+                                                            //por cada registro encontrado en la tabla me genera un <option>
+                                                            while ($rows = pg_fetch_array($resultado)) {
+                                                                $imprimir .= '<option value="' . $rows[0] . '">' . $rows[1] . '</option>';
+                                                            }
+                                                            //echo '<option value="' . $tipo . '" selected="selected">' . htmlentities($nomtipo) . '</option>';
+                                                        }    
+                                        
+                          $imprimir .= "</td>
+                                    </tr>
+                                        <td class='StormyWeatherFieldCaptionTD'>Observacion</td>
+                                        <td class='StormyWeatherDataTD'>
+                                            <select name='CmbObserv' id='CmbObserv' style='width:290px'  class='form-control height'>
+                                                <option value='0' selected='selected' align='center'> Seleccione Observación </option>";
+                                                        $db = new ConexionBD;
+                                                        if ($db->conectar() == true) {
+                                                            $consulta = "SELECT id,posible_observacion FROM lab_posible_observacion WHERE habilitado=TRUE";
+                                                             $resultado = pg_query($consulta);
+                                                            //por cada registro encontrado en la tabla me genera un <option>
+                                                            while ($rows = pg_fetch_array($resultado)) {
+                                                                $imprimir .= '<option value="' . $rows[0] . '">' . $rows[1] . '</option>';
+                                                            }
+                                                            //echo '<option value="' . $tipo . '" selected="selected">' . htmlentities($nomtipo) . '</option>';
+                                                        }    
+                                                  
+                             $imprimir .= " </select>
+                                        </td>
                                     </tr>
                                     <tr>
-                                            <td colspan='4' align='center'><input type='button' name='btnRechazar'  id='btnRechazar' value='Rechazar Muestra' onClick=\"RechazarMuestra1('" . $idexamen . "')\">
+                                            <td class='StormyWeatherDataTD' colspan='4' align='right'><input type='button' name='btnRechazar'  id='btnRechazar' value='Rechazar Muestra' onClick=\"RechazarMuestra1('" . $idexamen . "')\">
                                                     <input type='button' name='btnCerrar'  value='Cerrar' onClick='Cerrar()'>
                                             </td>
                                     </tr>
@@ -530,7 +562,7 @@ switch ($opcion) {
   
      }
         
-        
+        //<textarea cols='60' rows='2' name='txtobservacion' <span style='color: #0000FF;background-color:#87CEEB;'> " . htmlentities($fila['Observacion']) . "</textarea>
         
         break;
 
@@ -549,117 +581,73 @@ switch ($opcion) {
         $idsolicitud      = $_POST['idsolicitud'];
         $estado           = $_POST['estado'];
         $idexamen         = $_POST['idexamen'];
-        $observacion      = $_POST['observacion'];
+        $idobservacion    = $_POST['idobservacion'];
+        $idrechazo        = $_POST['idrechazo'];
         $idsolicitudPadre = $_POST['idsolicitudPadre'];
         $idsolicitudP     = $_POST['idsolicitud'];
         $idarea           = $_POST['idarea'];
 
         //echo "Sol=".$idsolicitud." examen=".$idexamen." obser=".$observacion;
         
-        
+            $TotalExamenes=$objdatos->TotalDetallesSolicitud($idsolicitudPadre);
+            $row1 = pg_fetch_array($TotalExamenes);  
+            $TotalGral= $row1[0];
+            
+            $TotalEstadoD=$objdatos->TotalEstadosDigitados($idsolicitudPadre);  
+            $row2 = pg_fetch_array($TotalEstadoD);  
+            $TotalD= $row2[0];
+   
+            // echo " TotalGral=".$TotalGral." TotalD=".$TotalD;
             $consulta=$objdatos->contaridresultado($idsolicitud,$idsolicitudPadre);
             $row = pg_fetch_array($consulta);
             $contaridresultado=$row[0];
             //echo $contaridresultado;
             
-        if ($contaridresultado>0) 
-        {
-           // echo "si hay resultado"; 
-            
-            $consulta=$objdatos->idresultado($idsolicitud,$idsolicitudPadre);
-            $row = pg_fetch_array($consulta);
-            $idresulta=$row[0];
-                            
-            $consulta=$objdatos->id_detalleresultado($idresulta);
-            $row = pg_fetch_array($consulta);
-            $id_detalleresultado=$row[0];
-               // echo  $id_detalleresultado;
-                
+           // $proceso=$objdatos->ObtenerProcesoActivo($lugar);
+          //  $rowPro=pg_fetch_array($proceso);
+           // $ban=$rowPro[0];
+           // echo $proceso; 
+   
             $consulta1=$objdatos->idexmen_metodologia($idsolicitud,$idsolicitudPadre);
             $row = pg_fetch_array($consulta1);
             $idexmen_metodologia=$row[0];  
-                
-                //ECHO $idexmen_metodologia;
-                
-            $consulta1=$objdatos->idempleado($idsolicitud,$idsolicitudPadre);
+            
+            $consulta1=$objdatos->idempleado($usuario);
             $row = pg_fetch_array($consulta1);
             $id_empleado=$row[0];
-                //echo $id_empleado;
-               /* echo "--";
-                echo  $id_detalleresultado;
-                echo "--";
-                ECHO $idexmen_metodologia;
-                echo "--";
-                echo $id_empleado;*/
-                
-                 $consulta1=$objdatos->contaridresultadometodologia($idexmen_metodologia,$idsolicitud,$id_empleado);
-                 $row = pg_fetch_array($consulta1);
-                 $contarmetodologia=$row[0];
-                // echo $contarmetodologia;
-                 
-                 if ($contarmetodologia>0){
-                     
-                    // echo "dentro del if interno";
-                     
-                $consulta1=$objdatos->idresultadometodologia($idexmen_metodologia,$idsolicitud,$id_empleado);
-                $row = pg_fetch_array($consulta1);
-                $idresultadometodologia=$row[0]; 
-               // echo $idresultadometodologia;
-
-              if ($objdatos->CambiarEstadoDetalle1($idsolicitud, $estado, $idexamen, $observacion) == true)
-                {
-                        //echo "Muestra Rechazada, ";
-                    if ($objdatos->CambiarEstadoSolicitud($idsolicitud, $idsolicitudPadre) == true) 
-                    {   //  echo "El Estado Solicitud fue Modificado";
-                        if($objdatos->MarcarObservacionRechazado1($idsolicitud,$idexamen,$observacion)==true)
-                            // echo "Muestra Rechazada";
-                            if($objdatos->eliminarsultadometodologia($idresultadometodologia)==true) 
-                            {
-                                echo "Muestra Rechazada ";
-                            }
-
-                    }
-                }
-                     
-                 }else{
-                          //   echo "dentro del else interno";
-                     
-                            if ($objdatos->CambiarEstadoDetalle1($idsolicitud, $estado, $idexamen, $observacion) == true)
-                            {
-                        //echo "Muestra Rechazada, ";
-                                 if ($objdatos->CambiarEstadoSolicitud($idsolicitud, $idsolicitudPadre) == true) 
-                                 {   //  echo "El Estado Solicitud fue Modificado";
-                                         if($objdatos->MarcarObservacionRechazado1($idsolicitud,$idexamen,$observacion)==true)
-                            // echo "Muestra Rechazada";
-                                    
-                                         echo "Muestra Rechazada ";
-                                     
-
-                                }
-                            }
-                     
-                     
-                        }
-                
-           
-
-
-
-
-        }// termina el if primero
-        else 
-        {
-               echo "no hay resultado";
-
+         // echo $id_empleado;
+            $id_codigoresultado=5; //código de muestra inadecuada
+            
             if ($objdatos->CambiarEstadoDetalle1($idsolicitud, $estado, $idexamen, $observacion) == true) 
             {  // echo "Muestra Rechazada, ";
-                if ($objdatos->CambiarEstadoSolicitud($idsolicitud, $idsolicitudPadre) == true) 
-                { // echo "El Estado Solicitud fue Modificado";
-                    if($objdatos->MarcarObservacionRechazado1($idsolicitud,$idexamen,$observacion)==true)
-                        echo "Muestra Rechazada";
+                if($TotalEstadoD <>$TotalGral){  
+                    if ($objdatos->CambiarEstadoSolicitud($idsolicitud, $idsolicitudPadre) == true) 
+                    { // echo "El Estado Solicitud fue Modificado";
+                        if($objdatos->MarcarObservacionRechazado1($idsolicitud, $idobservacion, $idrechazo,$usuario)==true)
+                        { 
+                            if ($objdatos->AgregarResultadoMetodologia($idsolicitudP,$idsolicitud,$id_codigoresultado,$idexmen_metodologia,$id_empleado,$usuario)==true) 
+                            {              
+                                echo "Muestra Rechazada";
+
+                            }
+                        }
+                    }
                 }
+                else{
+                   if($objdatos->CambiarEstadoSolicitud1($idsolicitudPadre) == true);
+                     if($objdatos->MarcarObservacionRechazado1($idsolicitud, $idobservacion,$idrechazo,$usuario)==true)
+                        { 
+                            if ($objdatos->AgregarResultadoMetodologia($idsolicitudP,$idsolicitud,$id_codigoresultado,$idexmen_metodologia,$id_empleado,$usuario)==true) 
+                            {              
+                                echo "Muestra Rechazada";
+
+                            }
+                        }
+                    
+                }
+                    
             }
-        }
+       // }
 
 
 

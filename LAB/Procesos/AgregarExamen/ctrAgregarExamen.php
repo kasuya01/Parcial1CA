@@ -27,7 +27,7 @@ switch ($opcion)
        // $idexamen       = $_POST['idexamen'];
         $idexpediente   = $_POST['idexpediente'];
        // $fechasolicitud = $_POST['fechasolicitud'];
-        $fecharecepcion = $_POST['fechaconsulta'];
+        $fecharecepcion = $_POST['fecharecep'];
         $PNombre        = $_POST['primernombre'];
         $SNomre         = $_POST['segundonombre'];
         $PApellido      = $_POST['primerapellido'];
@@ -53,32 +53,27 @@ switch ($opcion)
            }
           
         }*/
-          if ($_POST['IdEstab']<>0) {
-                    if ($_POST['IdEstab']<>$lugar){
-                        $cond1 .= "t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " AND";
-                        $cond2 .= "t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " AND";
-                    }
-                    else{
-                         $cond1 .= "t02.id_establecimiento_externo = " . $lugar . " AND";
-                         $cond2 .= "t02.id_establecimiento_externo = " . $lugar . " AND";
-                    }
-                   
-                 }
+        if ($_POST['IdEstab']<>0) {
+            if ($_POST['IdEstab']<>$lugar){
+                $cond1 .= "t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " AND";
+                $cond2 .= "t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " AND";
+            }
+            else{
+                $cond1 .= "t02.id_establecimiento_externo = " . $lugar . " AND";
+                $cond2 .= "t02.id_establecimiento_externo = " . $lugar . " AND";
+            }
+        }
         
-      
-        
-         if (!empty($_POST['IdServ'])) {
-                     $cond1 .= " t13.id  = " . $_POST['IdServ'] . " AND";
-                     $cond2 .= " t13.id  = " . $_POST['IdServ'] . " AND";
-                     $where_with = "id_area_atencion = $IdServ AND ";
-                 }
+        if ($_POST['IdServ'] <> 0) {
+            $cond1 .= " t12.id  = " . $_POST['IdServ'] . " AND";
+            $cond2 .= " t12.id  = " . $_POST['IdServ'] . " AND";
+            $where_with = "t03.id = $IdServ AND ";
+        }
 
-                 if (!empty($_POST['IdSubServ'])) {
-                     $cond1 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
-                     $cond2 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
-                 }
-        
-        
+        if (!empty($_POST['IdSubServ'])) {
+            $cond1 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
+            $cond2 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
+        }
         
         
         if (!empty($_POST['idarea'])) {
@@ -86,11 +81,9 @@ switch ($opcion)
             $cond2 .= "t08.id = " . $_POST['idarea'] . "AND";
         }
 
-        if (!empty($_POST['idexpediente'])) {
-          $idexpediente="'".$idexpediente."'";
-            
-            $cond1 .= "t06.numero = '".$_POST['idexpediente'] ."' AND";
-            $cond2 .= "t06.numero = '".$_POST['idexpediente'] ."' AND";
+        if ($_POST['idexpediente'] <> 0) {
+            $cond1 .= " t06.numero = '" . $_POST['idexpediente'] . "' AND";
+            $cond2 .= " t06.numero = '" . $_POST['idexpediente'] . "' AND";
         }
 
         if (!empty($_POST['idexamen'])) {
@@ -99,13 +92,14 @@ switch ($opcion)
         }
 
         if (!empty($_POST['fechasolicitud'])) {
-             $cond1 .= "t02.fecha_solicitud = '".$_POST['fechasolicitud']."' AND ";
-             $cond2 .= "t02.fecha_solicitud = '".$_POST['fechasolicitud']."' AND ";
+            $cond1 .= " t02.fecha_solicitud = '" . $_POST['fechasolicitud'] . "' AND";
+            $cond2 .= " t02.fecha_solicitud = '" . $_POST['fechasolicitud'] . "' AND";
         }
 
-        if (!empty($_POST['fechaconsulta'])) {
-             $cond1 .= "t03.fecharecepcion = '".$_POST['fechaconsulta']."' AND";
-             $cond2 .= "t03.fecharecepcion = '".$_POST['fechaconsulta']."' AND";
+            
+        if (!empty($_POST['fecharecep'])) {
+             $cond1 .= " t03.fecharecepcion = '" . $_POST['fecharecep'] . "' AND";
+             $cond2 .= " t03.fecharecepcion = '" . $_POST['fecharecep'] . "' AND";
         }
 
         if (!empty($_POST['primernombre'])) {
@@ -160,12 +154,12 @@ switch ($opcion)
           $query= "WITH tbl_servicio AS ( SELECT t02.id, 
                 CASE WHEN t02.nombre_ambiente IS NOT NULL THEN 
                     CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' || t02.nombre_ambiente 
-                            --ELSE t02.nombre_ambiente 
+                            
                     END 
                     ELSE 
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre 
                                  WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)  
-                                   -- THEN t07.nombre||'-'||t01.nombre
+                                    
                                     THEN t01.nombre
                     END 
 
@@ -180,8 +174,8 @@ switch ($opcion)
                 LEFT JOIN mnt_servicio_externo t05 ON (t05.id = t04.id_servicio_externo) 
                 INNER JOIN  ctl_area_atencion t06  on  t06.id = t03.id_area_atencion
                 INNER JOIN ctl_modalidad  t07 ON t07.id = t03.id_modalidad_estab
-                    WHERE $where_with t02.id_establecimiento = $lugar
-                    ORDER BY 2)
+                WHERE t02.id_establecimiento =  $lugar ORDER BY 2)
+                
                 SELECT ordenar.* FROM (    
                 SELECT t02.id, 
                 TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
@@ -203,7 +197,7 @@ switch ($opcion)
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
             TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta
             FROM sec_solicitudestudios t02                
-            INNER JOIN lab_recepcionmuestra t03                 ON (t03.idsolicitudestudio=t02.id) 
+            INNER JOIN lab_recepcionmuestra t03                 ON (t02.id = t03.idsolicitudestudio) 
 	    INNER JOIN mnt_expediente t06                       ON (t06.id = t02.id_expediente) 
             INNER JOIN mnt_paciente t07                         ON (t07.id = t06.id_paciente) 
 	    INNER JOIN sec_historial_clinico t09                ON (t09.id = t02.id_historial_clinico) 
@@ -218,8 +212,7 @@ switch ($opcion)
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
             AND t02.id_establecimiento = $var1
             
-        
-           UNION
+            UNION
 
             SELECT 
             t02.id, 
@@ -254,10 +247,10 @@ switch ($opcion)
             INNER JOIN cit_citas_serviciodeapoyo t15                ON (t15.id_solicitudestudios=t02.id) 
             INNER JOIN lab_tiposolicitud t17 			    ON (t17.id = t02.idtiposolicitud) 
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-            AND t02.id_establecimiento =$var2 ) ordenar
+            AND t02.id_establecimiento = $var2 ) ordenar
                 ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC"; 
           
-    
+  //  echo $query;
         $consulta=$objdatos->BuscarSolicitudesPaciente($query); 
          
         $RegistrosAMostrar=10;

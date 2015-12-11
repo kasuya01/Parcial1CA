@@ -166,7 +166,7 @@ switch ($opcion)
                        CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,
                        t07.segundo_apellido,t07.apellido_casada) AS paciente,
                        t20.servicio AS nombresubservicio,
-                       t13.nombre AS nombreservicio, 
+                       t20.procedencia AS nombreservicio, 
                        t02.impresiones, 
                        t14.nombre, 
                        t09.id AS idhistorialclinico,
@@ -267,7 +267,7 @@ switch ($opcion)
         	<center>
            
             
-<tr><td colspan='11'><span style='color: #0101DF;'> <h3> TOTAL DE EXAMENES RECHAZADOS:".$NroRegistros."</h3></span></td></tr>
+<tr><td colspan='11' align='center><span style='color: #0101DF;'> <h3> TOTAL DE EXAMENES RECHAZADOS:".$NroRegistros."</h3></span></td></tr>
             </center>
 	</table> "; 
             
@@ -361,9 +361,9 @@ switch ($opcion)
 		/*if ($idarea=="URI" or $idarea=="BAT" OR $idarea=="TMU" ){  */
         $idexamen=$_POST['idexamen'];		
          
-	include_once("clsMuestrasRechazadas.php");
+	//include_once("clsMuestrasRechazadas.php");
         
-         $nombe=$objdatos->nombrepaciente($idsolicitud,$idexpediente);
+      $nombe=$objdatos->nombrepaciente($idsolicitud,$idexpediente);
       $row1 = pg_fetch_array($nombe);
       $nombrepaciente       = $row1['paciente'];
       $nombreexamen= $row1['nombreexamen'];
@@ -543,7 +543,7 @@ pg_free_result($datosexamen);
             
      echo '<br><br><br><br><img src="../../../Imagenes/indice.jpeg" valign="middle"  border="0" height="60" width="80" />';
      
-     echo "<center> <h1> El Resultado Del Examen:<span style='color: #0101DF;'> $nombreexamen</span>, De: <span style='color: #0101DF;'> $nombrepaciente</span>, Ya a Sido Procesado.</h1> ";
+     echo "<center> <h1> El Resultado Del Examen:<span style='color: #0101DF;'> $nombreexamen</span>, De: <span style='color: #0101DF;'> $nombrepaciente</span>, Ya a Sido Reactivado, Ir a Ingresar el Resultado.</h1> ";
             
      
      echo " <button type='submit' class='fg-button ui-state-default ui-corner-all' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' />Cerrar</button></center>";
@@ -561,14 +561,14 @@ pg_free_result($datosexamen);
 	$fecharecep     =$_POST['fecharecep'];
         $observacion     =$_POST['observacioon'];
        $idsolicitudPadre=$_POST['idsolicitudPadre'];
-      include_once("clsMuestrasRechazadas.php");
+     // include_once("clsMuestrasRechazadas.php");
 			//recuperando los valores generales de la solicitud
 		
       
-      $consulta=$objdatos->contaridresultado($idsolicitud,$idsolicitudPadre);
+   /*   $consulta=$objdatos->contaridresultado($idsolicitud,$idsolicitudPadre);
             $row = pg_fetch_array($consulta);
             $contaridresultado=$row[0];
-            
+            echo $contaridresultado;
     if ($contaridresultado>0) 
               //if ($idresulta>0) 
     {
@@ -600,38 +600,47 @@ pg_free_result($datosexamen);
          //  $usuario;
         //   $id_empleado
               
-            
-            if ($objdatos->CambiarEstadoDetalle($idsolicitud,$estado,$observacion)==true)   
-            {   // echo "Muestra Procesada ";
-		//CambiarEstadoSolicitudProceso3
-		if($objdatos->CambiarEstadoSolicitudProceso3($idexpediente,$fechasolicitud,$estadosolicitud,$idsolicitudPadre)==true)
-		{      // echo ", Solicitud  Fue cambiada De Estado..";
-                    if($objdatos->inseresul_metodologia($idexmen_metodologia,$idsolicitud,$estado,$observacion,$usuario,$id_empleado)==true)
-                    {
-                        echo "Prueba lista para ingreso de resultado ";
-                    } 
+            echo "No se Pudo Actualizar el estado ";
+           
+        }
+        else{*/
+           /* $consulta1=$objdatos->idexmen_metodologia($idsolicitud,$idsolicitudPadre);
+            $row = pg_fetch_array($consulta1);
+            $idexmen_metodologia=$row[0];*/
+        if($objdatos->CambiarEstadoSolicitudProceso3($idexpediente,$fechasolicitud,$estadosolicitud,$idsolicitudPadre)==true)
+        { 
+            if ($objdatos->CambiarEstadoDetalle($idsolicitud,$estado,$observacion)==true) 
+            {  
+                
+                if($objdatos->Borrarresul_metodologia($idsolicitud) == true)
+                {      // echo ", Solicitud  Fue cambiada De Estado..";
+                    
+                    echo "Prueba lista para ingreso de resultado";
                 }
                 else
                 {
-                   echo "No Se Pudo Actualizar La Solicitud";
-		}
-	    }
-    }
-    else{
-            //echo "no hay resultados    ";
-        if ($objdatos->CambiarEstadoDetalle($idsolicitud,$estado,$observacion)==true)   
-	{   //echo "Muestra Procesada";
-				//CambiarEstadoSolicitudProceso3
-            if($objdatos->CambiarEstadoSolicitudProceso3($idexpediente,$fechasolicitud,$estadosolicitud,$idsolicitudPadre)==true)
-            {
-                 echo "Prueba lista para ingreso de resultado ";
+                    echo "No Se Pudo Borrar el resultado de la metodología";
+                }
+            }else {
+                echo "No se pudo Actualizar el estado de Examen";
             }
-            else
-            {
-                echo "No Se Pudo Actualizar La Solicitud";
-            }
+        }else{ 
+            echo "no se puso Actualizar el estado de la Solicitud";
         }
-    }
+            //echo "no hay resultados    ";
+          /*  if ($objdatos->CambiarEstadoDetalle($idsolicitud,$estado,$observacion)==true)   
+            {   //echo "Muestra Procesada";
+				//CambiarEstadoSolicitudProceso3
+                if($objdatos->CambiarEstadoSolicitudProceso3($idexpediente,$fechasolicitud,$estadosolicitud,$idsolicitudPadre)==true)
+                {
+                     echo "Prueba lista para ingreso de resultado ";
+                }
+                else
+                {
+                    echo "No Se Pudo Actualizar La Solicitud";
+                }
+            }*/
+        //}
 		
 break;
               

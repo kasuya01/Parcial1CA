@@ -181,7 +181,8 @@ function BuscarDatos(pag)
 		segundonombre=document.getElementById('SegundoNombre').value;
 		primerapellido=document.getElementById('PrimerApellido').value;
 		segundoapellido=document.getElementById('SegundoApellido').value;
-		fechaconsulta=document.getElementById('txtfecharecep').value;
+               // fechacon=document.getElementById('txtfecharecep').value;
+		fecharecep=document.getElementById('txtfecharecep').value;
 		//alert (fechaconsulta);
 		ajax=objetoAjax();
 		//archivo que realizar� la operacion ->actualizacion.php
@@ -189,7 +190,7 @@ function BuscarDatos(pag)
 		//muy importante este encabezado ya que hacemos uso de un formulario
 		ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores
-		ajax.send("idexpediente="+idexpediente+"&opcion="+opcion+"&primernombre="+escape(primernombre)+"&segundonombre="+escape(segundonombre)+"&primerapellido="+escape(primerapellido)+"&segundoapellido="+escape(segundoapellido)+"&fechaconsulta="+fechaconsulta+"&IdEstab="+IdEstab+"&IdServ="+IdServ+"&IdSubServ="+IdSubServ+"&pag="+pag);
+		ajax.send("idexpediente="+idexpediente+"&opcion="+opcion+"&primernombre="+escape(primernombre)+"&segundonombre="+escape(segundonombre)+"&primerapellido="+escape(primerapellido)+"&segundoapellido="+escape(segundoapellido)+"&fecharecep="+fecharecep+"&IdEstab="+IdEstab+"&IdServ="+IdServ+"&IdSubServ="+IdSubServ+"&pag="+pag);
 		ajax.onreadystatechange=function() {
 			if (ajax.readyState==4) {
 				//mostrar los nuevos registros en esta capa
