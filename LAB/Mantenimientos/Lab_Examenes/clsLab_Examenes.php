@@ -721,7 +721,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
    function consultar_formularios($lugar) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "SELECT mnt_formulariosxestablecimiento.id,nombreformulario 
+         $query = "SELECT mnt_formularios.id,nombreformulario 
 				  FROM mnt_formularios 
 				  INNER JOIN mnt_formulariosxestablecimiento    
 				  ON mnt_formularios.id=mnt_formulariosxestablecimiento.idformulario

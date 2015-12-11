@@ -396,13 +396,12 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
                                             lab_conf_examen_estab.impresion,urgente, ctl_sexo.nombre AS nombresexo,lab_conf_examen_estab.condicion, 
                                             (CASE WHEN lab_conf_examen_estab.condicion='H' THEN 'Habilitado' 
                                             WHEN lab_conf_examen_estab.condicion='I' THEN 'Inhabilitado' END) AS cond,cit_programacion_exams.rangotiempoprev,
-                                             (SELECT nombreformulario FROM mnt_formularios WHERE mnt_formularios.id=mnt_formulariosxestablecimiento.idformulario) AS nombreformulario 
+                                             (SELECT nombreformulario FROM mnt_formularios WHERE mnt_formularios.id=lab_conf_examen_estab.idformulario) AS nombreformulario 
                                             FROM lab_conf_examen_estab 
                                             INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
                                             INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
                                             INNER JOIN ctl_examen_servicio_diagnostico ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico=ctl_examen_servicio_diagnostico.id 
-                                            LEFT JOIN mnt_formulariosxestablecimiento ON lab_conf_examen_estab.idformulario= mnt_formulariosxestablecimiento.id 
-                                            LEFT JOIN mnt_formularios  ON mnt_formularios.id=mnt_formulariosxestablecimiento.idformulario
+                                            LEFT JOIN mnt_formularios ON mnt_formularios.id=lab_conf_examen_estab.idformulario
                                             INNER JOIN lab_plantilla ON lab_conf_examen_estab.idplantilla=lab_plantilla.id 
                                             LEFT JOIN ctl_sexo ON lab_conf_examen_estab.idsexo= ctl_sexo.id 
                                             INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
