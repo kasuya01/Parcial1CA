@@ -14,7 +14,7 @@
                     <item labelText="Recepción de Solicitudes" url="../../../LAB/Procesos/RecepcionSolicitud/Proc_RecepcionSolicitud.php"/>
                     <item labelText="Recepción de Solicitudes en Área" url="../../../LAB/Procesos/SolicitudesPorArea/Proc_SolicitudesPorArea.php"/>
                     <item labelText="Ingreso de Resultados" url="../../../LAB/Procesos/IngresoResultados/Proc_SolicitudesProcesadas.php"/>
-                     <!--<item labelText="Ingreso de Resultados Pendientes" url="../../../LAB/Procesos/SolicitudesPendientes/Proc_SolicitudesProcesadasPendientes.php"/-->
+                    <!--<item labelText="Ingreso de Resultados Pendientes" url="../../../LAB/Procesos/SolicitudesPendientes/Proc_SolicitudesProcesadasPendientes.php"/-->
                     <!--<item labelText="Muestras Pendientes de Procesar" url="../../../LAB/Procesos/MuestrasPendientes/Proc_MuestrasPendientes.php"/>-->	 
                     <item labelText="Rechazar Muestras" url="../../../LAB/Procesos/RMAutomatizada/Proc_RMAutomatizada.php"/>
                     <item labelText="Reactivar Muestras Rechazadas" url="../../../LAB/Procesos/MuestrasRechazadas/Proc_MuestrasRechazadas.php"/>
@@ -81,7 +81,7 @@
                 <item labelText="Tabulador Mensual" url= "../../../LAB/Reportes/ReporteTabulador/ReporteTabuladores.php"/>
                 <item labelText="Reporte Resultados" url= "../../../LAB/Reportes/Reporte_Resultados/ReporteResultados.php"/>
                 <item labelText="Demanda Insatisfecha" url= "../../../LAB/Reportes/ReporteDemanda/ReporteDemanda.php"/>
-                
+                <item labelText="Registro diario" url= "../../../LAB/Reportes/ReporteRegistroDiario/ReporteRegistroDiario.php"/>
       </menu>
       <sep/>
       <menu labelText="CITAS">

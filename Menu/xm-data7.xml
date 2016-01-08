@@ -83,7 +83,7 @@
                 <item labelText="Reporte por tipo de Resultado" url= "../LAB/Reportes/ReptTipoResultado/ReporteTiporesultado.php"/>
                 <item labelText="Tabulador Mensual" url= "../LAB/Reportes/ReporteTabulador/ReporteTabuladores.php"/>
                 <item labelText="Reporte Resultados" url= "../LAB/Reportes/Reporte_Resultados/ReporteResultados.php"/>
-                
+                <item labelText="Registro diario" url= "../LAB/Reportes/ReporteRegistroDiario/ReporteRegistroDiario.php"/>
       </menu>
       <sep/>
       <menu labelText="CITAS">
