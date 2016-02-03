@@ -1098,8 +1098,15 @@ switch ($opcion) {
                         <button name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $v_resultfin. "\",\"" . $d_resultfin . "\", \"" . $v_lectura . "\",\"" . $v_interpretacion . "\",\"" . $v_obserrecep. "\",\"" . $cmbEmpleadosfin . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec. "\",\"" . $proce. "\",\"" . $origen . "\",\"" . $iddetalle  . "\") ;' class='btn btn-primary'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
                             
                             <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true'>
-                            <button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>
-                            <button name='btnSalir' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' class='btn btn-primary' ><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br><br/>
+                            <button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>";
+         /*
+             if (strstr($v_examen, 'Vih')){
+                $Imprimir.="<a  href='#myModal' id='reportvih_modal' role='button' data-toggle='modal' data-modal-enabled='true'>
+                            <button type='button' id='modalreportvih' align='center' class='btn btn-primary' title='Imprimir reporte FVIH-01' ><span class='glyphicon glyphicon-plus'></span>&nbsp;FVIH-01</button></a>";
+                
+             }*/
+         
+         $Imprimir.="<button name='btnSalir' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' class='btn btn-primary' ><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br><br/>
                         </td>
                     </tr></table>";
         echo $Imprimir;

@@ -994,36 +994,18 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
       $con = new ConexionBD;
       //usamos el metodo conectar para realizar la conexion
       if ($con->conectar() == true) {
-        $query = "SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.codigo_examen as idexamen,
-                             lab_conf_examen_estab.nombre_examen as nombreexamen, ctl_area_servicio_diagnostico.nombrearea,lab_plantilla.idplantilla,
-                             ctl_examen_servicio_diagnostico.idestandar, 
-                             (CASE WHEN lab_conf_examen_estab.ubicacion=0 THEN 'Todas las Procedencias' 
-                             WHEN lab_conf_examen_estab.ubicacion=1 THEN 'Hospitalización y Emergencia'
-                             WHEN lab_conf_examen_estab.ubicacion=3 THEN 'Ninguna'
-                             WHEN lab_conf_examen_estab.ubicacion=4 THEN 'Laboratorio' END ) AS Ubicacion, 
-                             (SELECT idestandar FROM ctl_examen_servicio_diagnostico 
-                             WHERE lab_conf_examen_estab.idestandarrep=ctl_examen_servicio_diagnostico.id) AS estandarrep, 
-                             (SELECT descripcion FROM ctl_examen_servicio_diagnostico 
-                             WHERE lab_conf_examen_estab.idestandarrep=ctl_examen_servicio_diagnostico.id) AS descestandarrep,
-                             lab_conf_examen_estab.impresion,urgente, ctl_sexo.nombre AS nombresexo,lab_conf_examen_estab.condicion,
-                             (CASE WHEN lab_conf_examen_estab.condicion='H' THEN 'Habilitado'
-                             WHEN lab_conf_examen_estab.condicion='I' THEN 'Inhabilitado' END) AS cond,cit_programacion_exams.rangotiempoprev,
-                             ctl_examen_servicio_diagnostico.descripcion,mnt_formulariosxestablecimiento.id as idformulario,
-                             (SELECT nombreformulario FROM mnt_formularios WHERE mnt_formularios.id=mnt_formulariosxestablecimiento.idformulario) AS nombreformulario   
-                             FROM lab_conf_examen_estab 
-                             INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
-                             INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
-                             INNER JOIN ctl_examen_servicio_diagnostico ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico=ctl_examen_servicio_diagnostico.id 
-                             LEFT JOIN mnt_formulariosxestablecimiento ON lab_conf_examen_estab.idformulario= mnt_formulariosxestablecimiento.id 
-                             LEFT JOIN mnt_formularios  ON mnt_formularios.id=mnt_formulariosxestablecimiento.idformulario
-                             INNER JOIN lab_plantilla ON lab_conf_examen_estab.idplantilla=lab_plantilla.id 
-                             LEFT JOIN ctl_sexo ON lab_conf_examen_estab.idsexo= ctl_sexo.id 
-                             INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
-                             LEFT JOIN cit_programacion_exams ON lab_conf_examen_estab.id=cit_programacion_exams.id_examen_establecimiento
-                             WHERE lab_areasxestablecimiento.condicion='H' AND ctl_examen_servicio_diagnostico.activo= TRUE 
-                             AND mnt_area_examen_establecimiento.activo=TRUE AND mnt_area_examen_establecimiento.id_establecimiento=$lugar 
-                             ORDER BY ctl_area_servicio_diagnostico.idarea,lab_conf_examen_estab.nombre_examen  
-                             LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+        $query = "SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.codigo_examen as idexamen, lab_conf_examen_estab.nombre_examen as nombreexamen, ctl_area_servicio_diagnostico.nombrearea,lab_plantilla.idplantilla, ctl_examen_servicio_diagnostico.idestandar, (CASE WHEN lab_conf_examen_estab.ubicacion=0 THEN 'Todas las Procedencias' WHEN lab_conf_examen_estab.ubicacion=1 THEN 'Hospitalización y Emergencia' WHEN lab_conf_examen_estab.ubicacion=3 THEN 'Ninguna' WHEN lab_conf_examen_estab.ubicacion=4 THEN 'Laboratorio' END ) AS Ubicacion, (SELECT idestandar FROM ctl_examen_servicio_diagnostico WHERE lab_conf_examen_estab.idestandarrep=ctl_examen_servicio_diagnostico.id) AS estandarrep, (SELECT descripcion FROM ctl_examen_servicio_diagnostico WHERE lab_conf_examen_estab.idestandarrep=ctl_examen_servicio_diagnostico.id) AS descestandarrep, lab_conf_examen_estab.impresion,urgente, ctl_sexo.nombre AS nombresexo,lab_conf_examen_estab.condicion, (CASE WHEN lab_conf_examen_estab.condicion='H' THEN 'Habilitado' WHEN lab_conf_examen_estab.condicion='I' THEN 'Inhabilitado' END) AS cond,cit_programacion_exams.rangotiempoprev, ctl_examen_servicio_diagnostico.descripcion,mnt_formularios.id as idformulario, (SELECT nombreformulario FROM mnt_formularios WHERE mnt_formularios.id=lab_conf_examen_estab.idformulario) AS nombreformulario 
+                        FROM lab_conf_examen_estab INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
+                        INNER JOIN ctl_examen_servicio_diagnostico ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico=ctl_examen_servicio_diagnostico.id 
+                        LEFT JOIN mnt_formularios ON mnt_formularios.id=lab_conf_examen_estab.idformulario 
+                        INNER JOIN lab_plantilla ON lab_conf_examen_estab.idplantilla=lab_plantilla.id 
+                        LEFT JOIN ctl_sexo ON lab_conf_examen_estab.idsexo= ctl_sexo.id 
+                        INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
+                        LEFT JOIN cit_programacion_exams ON lab_conf_examen_estab.id=cit_programacion_exams.id_examen_establecimiento 
+                        WHERE lab_areasxestablecimiento.condicion='H' AND ctl_examen_servicio_diagnostico.activo= TRUE 
+                        AND mnt_area_examen_establecimiento.activo=TRUE AND mnt_area_examen_establecimiento.id_establecimiento=$lugar 
+                        ORDER BY ctl_area_servicio_diagnostico.idarea,lab_conf_examen_estab.nombre_examen  
+                        LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
 
          // echo $query; 
          $result = pg_query($query);
