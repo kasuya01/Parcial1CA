@@ -15,6 +15,39 @@ body {
     height: 100%;
     min-height: 100%;
 }
+body .header {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
+  padding: 20px 10px;
+  box-shadow: inset 0px -3px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 4px 4px 0px 0px; 
+}
+
+body .form-box {
+    width: 425px !important;
+    height: 100% !important;
+    margin: 90px auto 0 auto;
+    padding: 10px 20px;
+}
+
+.form-box .body, .form-box .footer {
+    padding: 10px 20px;
+    background: #fff;
+    color: #444;
+}
+
+.footer {
+    background-color: #fafafa !important;
+    border: 1px solid #dfdfdf;
+    box-shadow: inset 0px 3px 0px rgba(0, 0, 0, 0.2);
+}
+
+div.header {
+    background-color: #0892D0 !important;
+}
 
 .table-white {
     background: white !important;
@@ -205,6 +238,7 @@ table thead {
    background-color: transparent; 
 }
 /* fin css que da estilo al Full Calendario*/
+
 
 
 .ui-datepicker{ z-index:1151 !important; }

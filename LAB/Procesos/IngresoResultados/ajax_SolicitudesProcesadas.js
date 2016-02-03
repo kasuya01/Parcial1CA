@@ -2,6 +2,10 @@ var ventana_secundaria;
 
 modal_elements.push({
    id: 'addexam_modal', func:'crearmodal', header:'Agregar Examen', footer:'', widthModal: '900'
+ /*  
+},
+{
+  id: 'reportvih_modal', func:'reportfvihmodal', header:'FVIH-01', footer:'', widthModal: '900' */
 });
 
 function objetoAjax() {
@@ -2809,8 +2813,42 @@ function reloaddetallemodal(idsolicitud){
   content=detallemodaladdexam(idsolicitud);
   jQuery('#agregarexamen').append(content);
 }
+/*
+//Fn para modal del reporte vih
+
+function reportfvihmodal() {
+  var idsolicitud=jQuery("#solicitud_").val();
+  var content='';
+  content+= crearmodalapdfvih(idsolicitud);
+  content+='<div id="agregarexamen">';
+  content+= detallemodaladdexam(idsolicitud)
+  content+='</div>';
+
+   return content;
+}
 
 
+function crearmodalapdfvih(idsolicitud){
+   var content='';
+   var idexpediente=$("#idexpediente_").val();
+   var fecharecepcion=$("#fecharecepcion").val();
+   var idestablecimiento=$("#idestabext_").val();
+   var banderacerrar=1;
+  jQuery.ajax({
+    url: "pdfOrd_x_id.php",
+    type: "GET",
+    async: false,
+    data: {var1:idexpediente, var2:idsolicitud, var3:idestablecimiento, var4:fecharecepcion, var5:banderacerrar},
+    dataType: "html",
+    success: function(html) {
+     content+=html;
+    }
+      
+  
+  });
+  return content;
+}
+*/
 function inicia_elementos(){
       classdatepick();
 }
