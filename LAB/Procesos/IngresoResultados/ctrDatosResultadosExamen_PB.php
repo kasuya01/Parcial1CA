@@ -4,7 +4,6 @@ include ("clsConsultarElementos.php");
 $usuario = $_SESSION['Correlativo'];
 $lugar 	 = $_SESSION['Lugar'];
 $area 	 = $_SESSION['Idarea'];
-
 //variables POST
 $opcion=$_POST['opcion'];
 
@@ -62,20 +61,20 @@ switch ($opcion) {
                                                    $total=pg_fetch_array($con_total);
                                                    //echo $total[0];
                                                 if($total[0]>=1){      
-                                                       $imprimir.= "<select id='txtresultadosub[".$pos."]' name='txtresultadosub[".$pos."]'  size='1' style='width:260px'>
+                                                       $imprimir.= "<div id='subele[".$pos."]'><select id='txtresultadosub[".$pos."]' name='txtresultadosub[".$pos."]'  size='1' style='width:260px' class='height js-example-basic-single' onclick='focusselect2(\"txtresultadosub\")'>
                                                                     <option value='0' >--Seleccione Resultado--</option>";
                                                     $con_result=$objdatos->leer_posibles_resultados($rowsub['idsubelemento']);
                                                     while ($row_result=pg_fetch_array($con_result)) {
                                                         $imprimir.="<option value='" . $row_result['id_posible_resultado'] . "'>" . htmlentities($row_result['posible_resultado']) . "</option>";
-                                                       }   
+                                                       }    
                                                      
-                                                     $imprimir.= "   <input name='totcombo[".$pos."]' type='text' id='totcombo[".$pos."]' value='".$pos."'>  "; 
+                                                     $imprimir.= "</select></div>   <input name='totcombo[".$pos."]' type='text' id='totcombo[".$pos."]' value='".$pos."' />  </td>"; 
                                                   
                                                 }
                                                 else{
                                 
                                                     
-                                   $imprimir.= "<input size='20' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]'>
+                                   $imprimir.= "<input size='20' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]'><span class='glyphicon glyphicon-eye-close' onClick='noseobserva(".$pos.")' style='padding: 0 0 3 8; cursor: pointer' title='No se observa'></span> 
                                                 <input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>
                                                 <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''  >    
 						</td>";
@@ -184,18 +183,24 @@ switch ($opcion) {
                                                    $con_total=$objdatos->contar_posibles_resultados($rowsub['idsubelemento']);
                                                    $total=pg_fetch_array($con_total);
                                                    //echo $total[0];
-                                                if($total[0]>=1){      
-                                                   $imprimir.= "<select id='txtresultadosub[".$pos."]' name='txtresultadosub[".$pos."]'  size='1' style='width:270px' class='form-control  height'>
+                                                if($total[0]>=1){
+                                                   if ($rowsub['resultadounico']=='true' || $rowsub['resultadounico']=='t'){
+                                                   $imprimir.= "<div id='subele'><select id='txtresultadosub[".$pos."]' name='txtresultadosub[".$pos."]'  size='1' style='width:270px' class='js-example-basic-single' onclick='focusselect2(\"txtresultadosub\")'>
                                                                     <option value='0' >--Seleccione Resultado--</option>";
+                                                   }
+                                                   else{
+                                                     $imprimir.= "<div id='subele'><select id='txtresultadosub[".$pos."]' name='txtresultadosub[".$pos."]'  size='1' style='width:270px' class='js-example-basic-multiple' multiple='multiple'>
+                                                                    <option value='0' >--Seleccione Resultados--</option>"; 
+                                                   }
                                                     $con_result=$objdatos->leer_posibles_resultados($rowsub['idsubelemento']);
                                                     $orden= pg_fetch_all($con_result);//print_r($orden);
                                                      /*asort($valores[58],SORT_NUMERIC);*/
-                                                    $orden1=asort($orden,SORT_NUMERIC);
+                                                    //$orden1=asort($orden,SORT_NUMERIC);
                                                     foreach ($orden as $row_result) {
                                                         $imprimir.="<option value='" . $row_result['id_posible_resultado'] . "'>" . htmlentities($row_result['posible_resultado']) . "</option>";
                                                     }   
                                                      
-                                                    $imprimir.= "<input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]' value='".$pos."'></td> "; 
+                                                    $imprimir.= "</select></div><input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]' value='".$pos."'></td> "; 
                                                    // print_r($row_result);
                                                     //$tot=  count($row_result);
                                                     //echo $tot;
@@ -207,13 +212,14 @@ switch ($opcion) {
                                                 else{
                                                                            //  print_r($row_result);
                                                     // <input size='30' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]' onKeyPress='return acceptNum(event)'>
-                                                    $imprimir.= "<textarea name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]' cols='30' onKeyPress='return acceptNum(event)'></textarea>
+                                                    $imprimir.= "<textarea name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]' cols='30' onKeyPress='return acceptNum(event)'></textarea>"
+                                                            . "<span class='glyphicon glyphicon-eye-close' onClick='noseobserva(".$pos.")' style='padding: 0 0 3 8; cursor: pointer' title='No se observa'></span> 
 								 <input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>
                                                                  <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''  >
 					    </td>";
                                                       
                                                 }
-				$imprimir.="<td  align='center' class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."
+				$imprimir.="<td  align='center' class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."</td>
                                     	    <td  align='center' class='StormyWeatherDataTD'>".$rowsub['rangoinicio']." - ".$rowsub['rangofin']."
 						<input name='txtcontrol[".$pos."]' type='hidden' id='txtcontrol[".$pos."]'>
                                             </td>
@@ -296,8 +302,8 @@ switch ($opcion) {
 	   	$iddetalle 	      = $_POST['iddetalle'];
 	   	$observacion 	      = $_POST['observacion'];
 	   	$idempleado	      = $_POST['idempleado'];
-	   	$valores_subelementos = $_POST['valores_subelementos'];
-               // echo $valores_subelementos;
+	   	$valores_subelementos = utf8_encode($_POST['valores_subelementos']);
+               // echo utf8_encode($valores_subelementos);
 	   	$codigos_subelementos = $_POST['codigos_subelementos'];
 	   	$valores_elementos    = $_POST['valores_elementos'];
 	   	$codigos_elementos    = $_POST['codigos_elementos'];
@@ -510,7 +516,10 @@ switch ($opcion) {
 		        $vector 	   = EXPLODE("/",$cadena);
 		        $vector_elementos  = EXPLODE("/",$valores_elementos);
                         $vector_combos     = EXPLODE("/", $datos_combos);
-                     //   print_r($vector);
+                     /*   print_r($vector);
+                        print_r('*****'.$vector_combos[15]);
+                        print_r('*****'.$vector_combos[20]);
+                        print_r('<br>'.$vector[15]);*/
 				//$obj 			  = new clsConsultarElementos;
 		        $consulta 	  = $objdatos->LeerElementosExamen($idexamen,$lugar);
 		        $consulta_datos   = $objdatos->LeerDatos($idexamen);
@@ -522,7 +531,7 @@ switch ($opcion) {
 		        $nombreEmpleado   = $row_empleado['nombreempleado'];
                         
 		        $imprimir="<br>
-                            <table width='100%' border='0' align='center' Cellpadding='0'  cellspacing='0' >
+                            <table width='100%' border='0'  align='center' Cellpadding='2'  cellspacing='5' >
 		        	<tr>
                                     <td colspan='1' align='left' width='20%'><img id='Image1' style='width: auto; height: 55px;' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
                                     <td align='center' colspan='4' width='60%' class='Estilo5'>
@@ -599,14 +608,14 @@ switch ($opcion) {
         while($row = pg_fetch_array($consulta)) { //ELEMENTOS
             if($row['subelemento']=="S") {
 		   $imprimir.= "<tr>
-                                    <td colspan='4' style='font:bold'><strong>".utf8_decode($row['elemento'])."</strong></td>
+                                    <td colspan='4' style='font:bold' style='padding-bottom: 0.5em;'><strong>".utf8_decode($row['elemento'])."</strong></td>
                                 </tr>";
 		    $consulta2 = $objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
 	        while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
   		    $imprimir.="<tr>
-		  		    <td width='35%'>&emsp;". htmlentities($rowsub['subelemento'])."</td>";
+		  		    <td width='35%' valign='top' style='padding-bottom: 0.5em;'>&emsp;". htmlentities($rowsub['subelemento'])."</td>";
                     if  ($vector_combos[$pos]== NULL){  
-                        $imprimir.="<td width='25%'>".utf8_encode($vector[$pos])."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."' ></td>";
+                        $imprimir.="<td width='25%'>".$vector[$pos]."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."' ></td>";
                         }
                     else{
                         $conresult=$objdatos->BuscarResultado($vector[$pos]);
@@ -628,7 +637,7 @@ switch ($opcion) {
 				</tr>";
 	    }else {
 		    $imprimir.= "<tr>
-			        	 <td style='font:bold'  >".htmlentities($row['elemento'])."</td>
+			        	 <td style='font:bold;padding-bottom: 0.5em;'>".htmlentities($row['elemento'])."</td>
 					 <td>".htmlentities($vector_elementos[$posele])."<input name='oidelemento[".$posele."]' type='hidden' id='oidelemento[".$posele."]' value='".$row['idelemento']."'>			  </td>
 					 <td width='25%'>".htmlentities($row['unidadelem'])."</td>
 		                </tr>";

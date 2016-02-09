@@ -1493,8 +1493,16 @@ function MostrarVistaPreviaPlantillaB(){
         valores_combos="";
         if (document.getElementById('oculto').value > 0) {
             for (i = 0; i < document.getElementById('oculto').value; i++) {
+                if ($("select[id='txtresultadosub["+i+"]'] option:selected").length>1){
+                   var selectBox = document.getElementById('txtresultadosub['+i+']');
+                   valores_subelementos +=GetSelectValues(selectBox )+ '/';
+                   valores_combos +=  "/";
+            }
+                else{
                 valores_subelementos += document.getElementById('txtresultadosub[' + i + ']').value + "/";
                 valores_combos += document.getElementById('totcombo[' + i + ']').value + "/";
+               }
+                
                 codigos_subelementos += document.getElementById('oidsubelemento[' + i + ']').value + "/";
                 controles += document.getElementById('txtcontrol[' + i + ']').value + "/";
                 //alert(valores_combos);
@@ -1774,8 +1782,9 @@ function CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial
         {
             if (ajax.status == 200)
             {  //mostrar los nuevos registros en esta capa
-                document.getElementById('divexamen').style.display = "block";
-                document.getElementById('divexamen').innerHTML = ajax.responseText;
+               document.getElementById('divexamen').style.display = "block";
+               document.getElementById('divexamen').innerHTML = ajax.responseText;
+              iniciarselects2();
 
             }
         }
@@ -2857,3 +2866,29 @@ function refreshParent() {
         //window.opener.location.reload();
         opener.MostrarSolicitudes();
     }
+function focusselect2(nombre){
+  $("select[id^=txtresultadosub]").select2({
+    shouldFocusInput: function() {
+        return false
+      }
+  });
+}
+
+function noseobserva(thisid){
+  document.getElementById('txtresultadosub['+thisid+']').value = 'No Se Observa';
+}
+//funcion para obtener el texto del select multiple
+function GetSelectValues(select) {
+  var result = [];
+  var options = select && select.options;
+  var opt;
+
+  for (var i=0, iLen=options.length; i<iLen; i++) {
+    opt = options[i];
+
+    if (opt.selected) {
+      result.push(opt.text);
+    }
+  }
+  return result.toString();
+}

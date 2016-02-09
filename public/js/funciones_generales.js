@@ -592,3 +592,65 @@ function setFullCalendarOptions(element) {
 
    return newOptions;
 }
+
+/* Funcion que permite inicializar un Select2 especificando:
+ *   element:        Selector del objeto
+ *   blankOption:    Si es true, agrega una opcion en blanco al select2
+ *   removeChildren: Si es true, remueve las opciones iniciales del select2
+ *   options:        Opciones propias utilizadas por el select2
+ */
+function initializeSelect2(element, blankOption, removeChildren, options) {
+    var attr = element.attr();
+    var hasDataStyle = false;
+
+    jQuery.each(attr, function(key, value) {
+        if(key.match('^data-style')) {
+            hasDataStyle = true;
+        }
+    });
+
+    if( removeChildren ) {
+        element.children().remove();
+    }
+
+    if( blankOption ) {
+        appendEmptyOption(jQuery(element).attr('id'));
+    }
+
+    if (typeof options === 'undefined' || options == '' || options === null) {
+        options = {
+            placeholder: 'Seleccione...',
+            allowClear: true,
+            containerCss: {
+                'width': '100%'
+            }
+        }
+    }
+
+    if(hasDataStyle) {
+        element.removeAttr('style');
+        element.attr('style',element.attr('data-style'));
+    } else {
+        element.attr('data-style',element.attr('style'));
+    }
+
+    element.parent().css('position','relative');
+    element.select2(options).attr('style','display:block; position:absolute; bottom: 0; left: 0; clip:rect(0,0,0,0);width:100%;');
+};
+
+
+/*
+ *  appendEmptyOption:
+ *      Funcion que permite agregar un option vacio, normalmente utilizado en la
+ *      inicializaicón del select2
+ *
+ *  Parámetros:
+ *      id: id del elemento al cual se le quiere agregar un option vacio.
+ */
+function appendEmptyOption(id) {
+    if($('#'+id).find('option[value=""]').length === 0 && $('#'+id).find('option[value=null]').length === 0 && $('#'+id).find('option:not([value])').length === 0) {
+        $('#'+id).prepend('<option/>').val(function(){
+            return $('[selected]',this).val();
+        });
+    }
+}

@@ -397,7 +397,8 @@ else
                              t01.unidad,
                              t01.observsubelem,
                              t01.rangoinicio,
-                             t01.rangofin  
+                             t01.rangofin,
+                             t01.resultadounico  
                       FROM lab_subelementos t01
                       WHERE t01.idelemento = $idelemento AND t01.idestablecimiento = $lugar
                         AND CURRENT_DATE BETWEEN t01.fechaini AND CASE WHEN fechafin IS NULL THEN CURRENT_DATE ELSE t01.fechafin END
@@ -420,9 +421,10 @@ else
                     INNER JOIN lab_posible_resultado t02 ON t02.id = t01.id_posible_resultado
                     WHERE id_subelemento=$idsubelemento
                     and t01.habilitado=true
-                    order by char_length(posible_resultado),posible_resultado desc;";
+                    order by SUBSTRING(posible_resultado FROM '([0-9]+)')::BIGINT ASC, posible_resultado;";
 
             $result = @pg_query($query);
+            
             
             if (!$result)
                 return false;

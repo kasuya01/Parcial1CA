@@ -215,7 +215,7 @@ if ($nivel == 7) {
                             <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo del Est&aacute;ndar</td>
                             <td class="StormyWeatherDataTD">
                                <div id="divExamen">
-                                    <select name="cmbEstandar" id="cmbEstandar"  style="width:75%"  class=""height js-example-basic-single"> 
+                                    <select name="cmbEstandar" id="cmbEstandar"  style="width:75%"  class="height js-example-basic-single"> 
                                          
                                              <option value="0">Seleccione un Examen...</option>
                                               

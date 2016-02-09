@@ -141,6 +141,34 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
        return ((key!=47) && (key!=92));//47 es '/', 46 es '.' 32 'space'
         }//Filtracion de teclas
 
+         function iniciarselects2(){
+           jQuery('select[id^="txtresultadosub"]').each(function(){              
+               //var multiple=jQuery(this).hasClass("js-example-basic-multiple") ? true:false;      
+               jQuery(this).select2({
+               placeholder: "Seleccione resultado",
+               allowClear: true
+               });
+           });
+         }
+         
+//           function iniciarselects2(){
+//                var select2Options = {
+//                placeholder: 'Seleccionar...',
+//                allowClear: true,
+//                containerCss: {
+//                    'width': '100%'
+//                }
+//               };
+//           jQuery('select[id^="txtresultadosub"]').each(function(){
+////               jQuery(this).select2({
+////               placeholder: "Seleccione resultado",
+////               allowClear: true
+////               });
+//            initializeSelect2(jQuery(this), true, false, select2Options)
+//           });
+//         }
+
+
        jQuery(document).ready(function($){
 
             $(".date").datepicker({
