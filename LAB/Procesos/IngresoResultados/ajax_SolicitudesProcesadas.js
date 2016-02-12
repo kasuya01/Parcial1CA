@@ -1589,8 +1589,17 @@ function GuardarResultadosPlantillaB()
     {
         for (i = 0; i < document.getElementById('oculto').value; i++)
         {
-            valores_subelementos += document.getElementById('txtresultadosub[' + i + ']').value + "/";
-            valores_combos += document.getElementById('totcombo[' + i + ']').value + "/";
+            if ($("select[id='txtresultadosub["+i+"]'] option:selected").length>1){
+                   var selectBox = document.getElementById('txtresultadosub['+i+']');
+                   valores_subelementos +=GetSelectValues(selectBox )+ '/';
+                   valores_combos +=  "/";
+            }
+                else{
+                valores_subelementos += document.getElementById('txtresultadosub[' + i + ']').value + "/";
+                valores_combos += document.getElementById('totcombo[' + i + ']').value + "/";
+               }
+            /*valores_subelementos += document.getElementById('txtresultadosub[' + i + ']').value + "/";
+            valores_combos += document.getElementById('totcombo[' + i + ']').value + "/";*/
             codigos_subelementos += document.getElementById('oidsubelemento[' + i + ']').value + "/";
             controles += document.getElementById('txtcontrol[' + i + ']').value + "/";
            // posresult+= document.getElementById('oposible_res[' + i + ']').value + "/"; 

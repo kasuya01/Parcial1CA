@@ -641,7 +641,13 @@ function plantillaB($examen) {
 
             
             if($subelemento['id_posible_resultado'] !== null || $subelemento['id_posible_resultado'] !== '') {
-               $subelemres_b=$subelemento['resultado'].' '. $subelemento['nombre_posible_resultado'];
+               if ($subelemento['id_posible_resultado']==null){
+                 $subelemres_b= $subelemento['resultado'];
+              }
+              else{
+                 $subelemres_b= $subelemento['nombre_posible_resultado'];
+              }
+              // $subelemres_b=$subelemento['resultado'].' '. $subelemento['nombre_posible_resultado'];
             } else {
                $subelemres_b=$subelemento['resultado'];             
             }

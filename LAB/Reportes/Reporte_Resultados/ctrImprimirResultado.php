@@ -1237,8 +1237,13 @@ function plantillaB($examen) {
             
             if($subelemento['id_posible_resultado'] !== null || $subelemento['id_posible_resultado'] !== '') {
               // $html.= $subelemento['nombre_posible_resultado'];
+              if ($subelemento['id_posible_resultado']==null){
                  $html.= "".$subelemento['resultado']."";
+              }
+              else{
                  $html.= $subelemento['nombre_posible_resultado'];
+              }
+                
             } else {
                 $html.= "".$subelemento['resultado']."";
                  //$html.= $subelemento['nombre_posible_resultado'];
