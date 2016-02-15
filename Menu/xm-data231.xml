@@ -20,12 +20,12 @@
          <item labelText="Consulta Citas Programadas" url= "../LAB/Consultas_Reportes/ConsultaCitas/CitasPorPaciente.php"/>
       </menu>
       <sep/>
-      <menu labelText="REPORTES">
-         <menu labelText="REPORTES">
+          <menu labelText="REPORTES">
+        
             <item labelText="Reporte Resultados" url= "../LAB/Reportes/Reporte_Resultados/ReporteResultados.php"/>
          </menu>
-         <sep/> 
-      </menu>
+       
+      
       <sep/>
       <menu labelText="CITAS">
          <item labelText="Citas de Laboratorio" url="../LAB/Procesos/CitasServicio/busquedaexp.php"/>

@@ -14,7 +14,7 @@ class clsUsuarios {
     function validarexistencia($login, $password) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-             $query = "SELECT count(*)
+        echo     $query = "SELECT count(*)
               FROM fos_user_user t01 
               WHERE t01.username ='$login' AND t01.password = md5('$password') AND t01.modulo = 'LAB'";
 
@@ -92,7 +92,7 @@ class clsUsuarios {
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
-            $query = "SELECT 
+           echo $query = "SELECT 
                       t01.id AS correlativo,
                       t02.id_establecimiento,
                       t02.idarea,

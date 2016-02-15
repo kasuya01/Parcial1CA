@@ -685,7 +685,7 @@ function GuardarResultadosPlantillaC()
                  document.getElementById('btnGuardar').style.visibility = 'hidden';
                 document.getElementById('Imprimir').style.display = 'initial';
                 document.getElementById('addexam_modal').style.display = 'initial';
-                document.getElementById('divexamen').style.display = "none";
+                document.getElementById('divexamen').style.display = "block";
                 if  ($("#agregarresults" ).length){
                   document.getElementById('agregarresults').style.visibility = 'hidden';
                 

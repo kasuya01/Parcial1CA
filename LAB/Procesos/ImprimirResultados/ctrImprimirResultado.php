@@ -153,7 +153,7 @@ switch ($opcion) {
                     LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
                     WHERE $where_with t02.id_establecimiento = $lugar
                     ORDER BY 2)
-                 SELECT 
+              SELECT ordenar.* FROM (SELECT 
                 t02.id, 
                 TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                 t06.numero AS idnumeroexp, 
@@ -225,7 +225,8 @@ switch ($opcion) {
             INNER JOIN cit_citas_serviciodeapoyo t15                ON (t15.id_solicitudestudios=t02.id) 
             INNER JOIN lab_tiposolicitud t17 			    ON (t17.id = t02.idtiposolicitud) 
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-            AND t02.id_establecimiento =$lugar $cond2   order by fecharecepcion desc  ";
+            AND t02.id_establecimiento =$lugar $cond2 ) ordenar
+                ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
 
         /* if ($ban==0)
           {   $query = substr($query ,0,strlen($query)-3);
@@ -276,6 +277,7 @@ if ( $NroRegistros==""){
 		    <th>Establecimiento</th>
 		    <th>Estado Solicitud</th>
 		    <th>Fecha Consulta</th>
+                     <th>Fecha Recepcion</th>
 		</tr></thead><tbody>";
         $pos = 0;
         if(@pg_num_rows($consulta))
@@ -300,6 +302,7 @@ if ( $NroRegistros==""){
                         <td>" . htmlentities($row['estabext']) . "</td>
                         <td>" . $row['estado'] . "</td>
                         <td>" . $row['fecchaconsulta'] . "</td>
+                        <td>" . $row['fecharecepcion'] . "</td>
                     </tr>";
 
                 $pos = $pos + 1;
@@ -670,12 +673,12 @@ if ( $NroRegistros==""){
         break;
                 
     case 7:// Llenar combo Subservicio
-        $rslts = '';
+       $rslts = '';
         $IdServ = $_POST['IdServicio'];
         //  echo $IdServ;
         $dtserv = $objdatos->LlenarCmbServ($IdServ, $lugar);
-        $rslts = '<select name="cmbSubServ" id="cmbSubServ" class="form-control height"  style="width:375px">';
-        $rslts .='<option value="0"> Seleccione Subespecialidad </option>';
+        $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:500px" class="form-control height">';
+        $rslts .='<option value="0"> Seleccione un Servicio </option>';
         while ($rows = pg_fetch_array($dtserv)) {
             $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
         }

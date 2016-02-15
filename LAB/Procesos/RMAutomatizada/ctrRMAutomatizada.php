@@ -146,7 +146,7 @@ switch ($opcion) {
                 INNER JOIN ctl_modalidad  t07 ON t07.id = t03.id_modalidad_estab
                 WHERE t02.id_establecimiento =  $lugar ORDER BY 2)
             
-                    SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
+                 SELECT ordenar.* FROM (SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                        t01.id ,
                        t02.id AS idsolicitudestudio,
                        t04.idplantilla, 
@@ -247,30 +247,31 @@ switch ($opcion) {
             INNER JOIN ctl_sexo                         t19     ON (t19.id = t07.id_sexo)
             WHERE ((t16.idestado = 'PM') OR (t16.idestado = 'D')) 
             AND t02.id_establecimiento = $lugar 
-            AND $cond2"; 
+            AND $cond2 ) ordenar
+                ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC"; 
                   
     
-      //echo $query;
+   // echo $query;
        $consulta=$objdatos->ListadoSolicitudesPorArea($query);  
 	$NroRegistros= $objdatos->NumeroDeRegistros($query);
   
         if ($NroRegistros==""){
             $NroRegistros=0;
             
-            echo "<table width='15%' border='0'  align='center'>
+            echo "<table width='81%' border='0' align='center'><center>
         	
            
             
-<tr><td colspan='11' align='center><span style='color: #0101DF;'> <h3> TOTAL DE EXAMENES : ".$NroRegistros."</h3></span></td></tr>
+<tr><td colspan='12' align='center'><span style='color: #0101DF;'> <h3> TOTAL DE EXAMENES : ".$NroRegistros."</h3></span></td></tr>
             
 	</table> "; 
             
         }else{
-            echo "<table width='15%' border='0'  align='center'>
+            echo "<table width='81%' border='0'  align='center'><center>
         	
            
             
-<tr><td colspan='11' align='center><span style='color: #0101DF;'> <h3> TOTAL DE EXAMENES : ".$NroRegistros."</h3></span></td></tr>
+<tr><td colspan='12' align='center'><span style='color: #0101DF;'> <h3> TOTAL DE EXAMENES : ".$NroRegistros."</h3></span></td></tr>
             
 	</table> "; 
             
@@ -294,6 +295,7 @@ switch ($opcion) {
 			<th>Servicio</th>
 			<th>Procedencia</th>
 			<th>Establecimiento</th>
+                        <th>Fecha Consulta</th>
 			<th>Fecha Recepci&oacute;n</th>
 			<th>Tipo Solicitud</th>
                     </tr></thead><tbody>";
@@ -322,6 +324,7 @@ switch ($opcion) {
                       echo"<td width='8%'>" . htmlentities($row['nombresubservicio']) . "</td>
                            <td width='8%'>" . htmlentities($row['nombreservicio']) . "</td>
                            <td width='38%'>" . htmlentities($row['estabext']) . "</td>
+                           <td width='5%'>" . ($row['fechasolicitud']) . "</td>    
                            <td width='10%'>" . $row['fecharecepcion'] . "</td>
                            <td width='10%'>" . ($row['prioridad']) . "</td>
 		      </tr>";

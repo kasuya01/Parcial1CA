@@ -144,7 +144,7 @@ if ($IdEstandar=="H15"){
                               pg_free_result($datos_generales);
 			      $consulta=$obj->LeerProcesoExamen($idexamen,$lugar,$sexo,$idedad);
 			?>
-		echo 
+		 
                  <tr>
                     <td colspan="6" class="Estilo6">&nbsp;</td>
                 </tr>

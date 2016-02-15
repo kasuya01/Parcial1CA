@@ -186,7 +186,7 @@ switch ($opcion) {
                        t18.idestandar,
                        t02.id_establecimiento_externo as IdEstab,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-                       false AS referido, TO_CHAR(f_tomamuestra,'dd/mm/YYYY HH12:MI') AS f_tomamuestra,
+                       false AS referido, TO_CHAR(f_tomamuestra,'YYYY/mm/dd HH12:MI') AS f_tomamuestra,
                        (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
                        t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar
                 FROM sec_detallesolicitudestudios t01 
@@ -240,7 +240,7 @@ switch ($opcion) {
                        t18.idestandar,
                        t02.id_establecimiento_externo,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-                       true AS referido,TO_CHAR(f_tomamuestra,'dd/mm/YYYY HH12:MI') AS f_tomamuestra, 
+                       true AS referido,TO_CHAR(f_tomamuestra,'YYYY/mm/dd HH12:MI') AS f_tomamuestra, 
                        (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
                        t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar
                 FROM sec_detallesolicitudestudios t01 
