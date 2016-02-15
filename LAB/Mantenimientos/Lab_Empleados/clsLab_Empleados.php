@@ -391,10 +391,14 @@ class Estado {
             if ($Estado == 'H') {
                 $query = "UPDATE fos_user_user SET enabled = false WHERE id_empleado = (SELECT id FROM mnt_empleado WHERE idempleado = '$IdEmpleado') AND id_establecimiento = $lugar";
                 $result = pg_query($query);
+                $query1 = "UPDATE mnt_empleado SET habilitado = false WHERE idempleado = '$IdEmpleado' AND id_establecimiento = $lugar";
+                $result1 = pg_query($query1);
             }
             if ($Estado == 'I') {
                 $query = "UPDATE fos_user_user SET enabled = true WHERE id_empleado = (SELECT id FROM mnt_empleado WHERE idempleado = '$IdEmpleado') AND id_establecimiento = $lugar";
                 $result = pg_query($query);
+                $query1 = "UPDATE mnt_empleado SET habilitado = true WHERE idempleado = '$IdEmpleado' AND id_establecimiento = $lugar";
+                $result1 = pg_query($query1);
             }
         }
         $con->desconectar();

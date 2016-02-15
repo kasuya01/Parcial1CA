@@ -163,12 +163,23 @@ if ($nivel == 7) {
 				<?php
                                     $db = new ConexionBD;
                                     if($db->conectar()==true){
-				        $consulta  = "SELECT t01.id,
+				     echo   $consulta  = "SELECT mnt_area_mod_estab.id as codigo ,CASE WHEN id_servicio_externo_estab IS NOT NULL THEN mnt_servicio_externo.abreviatura ||'-->'  || ctl_area_atencion.nombre
+                                                       ELSE   ctl_modalidad.nombre ||'-->' || ctl_area_atencion.nombre
+                                                       END
+                                                       FROM mnt_area_mod_estab
+                                                       INNER JOIN  ctl_area_atencion  on (ctl_area_atencion.id = mnt_area_mod_estab.id_area_atencion AND ctl_area_atencion.id_tipo_atencion=1)
+                                                       --LEFT JOIN mnt_aten_area_mod_estab ON (ctl_area_atencion.id = mnt_aten_area_mod_estab.id_atencion)
+                                                       INNER JOIN  mnt_modalidad_establecimiento ON mnt_modalidad_establecimiento.id=mnt_area_mod_estab.id_modalidad_estab
+                                                       INNER JOIN ctl_modalidad ON ctl_modalidad.id = mnt_modalidad_establecimiento.id_modalidad
+                                                       LEFT JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab.id_servicio_externo_estab)
+                                                       LEFT JOIN mnt_servicio_externo ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo)
+                                                       ORDER by ctl_modalidad.nombre,ctl_area_atencion.nombre";
+                                             /*"SELECT t01.id,
                                                       t01.nombre
                                                       FROM ctl_area_atencion t01
                                                       WHERE t01.id IN (
                                                       SELECT DISTINCT id_area_atencion 
-                                                      FROM mnt_area_mod_estab WHERE id_establecimiento = $lugar)";
+                                                      FROM mnt_area_mod_estab WHERE id_establecimiento = $lugar)";*/
                                                                                     
 						$resultado = pg_query($consulta);
 						//por cada registro encontrado en la tabla me genera un <option>
@@ -181,12 +192,14 @@ if ($nivel == 7) {
                     </td>
                     <td class="StormyWeatherFieldCaptionTD">Servicio</td>
                     <td class="StormyWeatherDataTD">
-
+                            <div id="divsubserv" >
 			
                             <select name="cmbSubServ" id="cmbSubServ" style="width:500px" class="form-control height" >
 
 				<option value="0" selected="selected"> Seleccione un Servicio </option>
-                            </select>
+                            </select> 
+                                                            
+                        </div>
 			
                     </td>
                 </tr>

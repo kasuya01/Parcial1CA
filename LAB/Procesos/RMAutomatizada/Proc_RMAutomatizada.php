@@ -190,7 +190,8 @@ if (isset($_SESSION['Correlativo'])) {
                                                        ELSE   ctl_modalidad.nombre ||'-->' || ctl_area_atencion.nombre
                                                        END
                                                        FROM mnt_area_mod_estab
-                                                       INNER JOIN  ctl_area_atencion  on  ctl_area_atencion.id = mnt_area_mod_estab.id_area_atencion
+                                                      
+                                                       INNER JOIN  ctl_area_atencion  on (ctl_area_atencion.id = mnt_area_mod_estab.id_area_atencion AND ctl_area_atencion.id_tipo_atencion=1)
                                                        --LEFT JOIN mnt_aten_area_mod_estab ON (ctl_area_atencion.id = mnt_aten_area_mod_estab.id_atencion)
                                                        INNER JOIN ctl_modalidad ON ctl_modalidad.id = mnt_area_mod_estab.id_modalidad_estab
                                                        LEFT JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab.id_servicio_externo_estab)
@@ -243,6 +244,21 @@ if (isset($_SESSION['Correlativo'])) {
                                         <option value="0"> Seleccione Examen </option>
                                     </select>
                                 </div>
+                            </td>
+                        </tr>
+                         <tr>
+                            <td class="StormyWeatherFieldCaptionTD" align="left" colspan="1" align="right">Tipo Solicitud</td>
+                            <td class="StormyWeatherDataTD">
+                                <select id="cmbTipoSolic" name="cmbTipoSolic" style="width:443px" size="1" class="form-control height" >
+                                    <option value="0">Seleccione un Tipo de Solicitud</option>
+                                    <option value="1">URGENTE</option>
+                                    <option value="2">NORMAL</option>
+                                </select>
+                            </td>
+                            <td class="StormyWeatherFieldCaptionTD" width="15%" ><!--Fecha Consulta--></td>
+                            <td  class="StormyWeatherDataTD" width="20%" >
+                              <!--  <input type="text" size="28" name="txtfechasolicitud" id="txtfechasolicitud" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" style="width:500px"/>-->
+
                             </td>
                         </tr>
                         <tr>

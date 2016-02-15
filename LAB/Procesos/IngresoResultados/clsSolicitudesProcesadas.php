@@ -133,6 +133,7 @@ class clsSolicitudesProcesadas {
                         from ctl_atencion cat 
                         join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
                         join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
+                        JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion=1)
                         LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id
                         LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id
                         join mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab)
@@ -350,8 +351,7 @@ to_char(t05.fecha_resultado, 'dd/mm/yyyy') as fecharesultado, t06.nombre_reporta
                       INNER JOIN mnt_cargoempleados            t02 ON (t02.id = t01.id_cargo_empleado)
                       INNER JOIN ctl_area_servicio_diagnostico t03 ON (t03.id = t01.idarea)
                       WHERE t02.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')
-                            AND t03.idarea NOT IN ('INF','REC') AND t01.id_establecimiento = $lugar
-                            ";
+                      AND t03.idarea NOT IN ('INF','REC') AND habilitado=TRUE AND t01.id_establecimiento = $lugar";
 
          if ($tipo === "H") {
             $where = " AND t01.idarea = $idarea";

@@ -54,7 +54,7 @@ if ($nivel == 7) {
 <td>
 <div  id="divFrmNuevo" >
 <form name="frmnuevo" action="" onSubmit="IngresarRegistro(); return false">
-<table width="25%" border="1" align="center" class="StormyWeatherFormTABLE">
+<table width="30%" border="1" align="center" class="StormyWeatherFormTABLE">
   <tr>
 	  <td colspan="2" align="center" class="CobaltFieldCaptionTD"><h3><strong>Mantenimiento de Origen de Muestra</h3></strong></td>
   </tr>

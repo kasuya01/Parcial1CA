@@ -26,7 +26,7 @@ function Nombre_Establecimiento($lugar){
  {
 	 $con = new ConexionBD;
 	   if($con->conectar()==true) 
-	  {	$query="SELECT t01.idresultado,
+	  {	 $query="SELECT t01.idresultado,
                         t02.resultado
                         FROM lab_codigosxexamen  t01
                         INNER JOIN lab_codigosresultados t02 ON (t02.id = t01.idresultado)
@@ -383,7 +383,7 @@ function LeerProcesoExamen($idexamen,$lugar,$sexo,$idedad)
 	$con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query="SELECT lab_procedimientosporexamen.id as idprocedimiento,nombreprocedimiento,unidades,rangoinicio,rangofin 
+  $query="SELECT lab_procedimientosporexamen.id as idprocedimiento,nombreprocedimiento,unidades,rangoinicio,rangofin 
             FROM lab_procedimientosporexamen 
             INNER JOIN lab_conf_examen_estab ON lab_conf_examen_estab.id=lab_procedimientosporexamen.id_conf_examen_estab 
             INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
@@ -406,7 +406,7 @@ function LeerProcesoExamen($idexamen,$lugar,$sexo,$idedad)
 function leer_posibles_resultados_procedimientos($idprocedimiento){
          $con = new ConexionBD;
         if($con->conectar()==true) {
-            $query="SELECT id_posible_resultado,posible_resultado 
+         $query="SELECT id_posible_resultado,posible_resultado 
                     FROM lab_procedimiento_posible_resultado 
                     INNER JOIN lab_posible_resultado ON lab_posible_resultado.id = lab_procedimiento_posible_resultado.id_posible_resultado
                     WHERE lab_posible_resultado.habilitado=TRUE AND lab_procedimiento_posible_resultado.habilitado=TRUE 
@@ -425,7 +425,7 @@ function leer_posibles_resultados_procedimientos($idprocedimiento){
     function contar_posibles_resultados_procedimientos($idprocedimiento){
          $con = new ConexionBD;
         if($con->conectar()==true) {
-           $query="SELECT count(*)
+          $query="SELECT count(*)
                     FROM lab_procedimiento_posible_resultado 
                     INNER JOIN lab_posible_resultado ON lab_posible_resultado.id = lab_procedimiento_posible_resultado.id_posible_resultado
                     WHERE id_procedimientoporexamen=$idprocedimiento AND lab_procedimiento_posible_resultado.habilitado=TRUE";

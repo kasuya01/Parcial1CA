@@ -2,7 +2,7 @@
 $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
-include ("clsEliminarResultado.php");
+include ("clsEliminarSolicitud.php");
 
 //variables POST
 
@@ -10,7 +10,7 @@ $opcion=$_POST['opcion'];
 
 //$pag =$_POST['pag'];
 //creando los objetos de las clases
-$objdatos = new clsEliminarResultado;
+$objdatos = new clsEliminarSolicitud;
 
 //echo $idexpediente;
 switch ($opcion) 
@@ -43,33 +43,24 @@ switch ($opcion)
                     }
                    
                  }
-                  if ($_POST['IdServ'] <> 0) {
-            $cond1 .= " t12.id  = " . $_POST['IdServ'] . " AND";
-            $cond2 .= " t12.id  = " . $_POST['IdServ'] . " AND";
-            $where_with = "t03.id = $IdServ AND ";
-        }
+                if ($_POST['IdServ'] <> 0) {
+                        $cond1 .= " t12.id  = " . $_POST['IdServ'] . " AND";
+                        $cond2 .= " t12.id  = " . $_POST['IdServ'] . " AND";
+                        $where_with = "t03.id = $IdServ AND ";
+                }
 
-        if (!empty($_POST['IdSubServ'])) {
-            $cond1 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
-            $cond2 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
-        }
-                /* if (!empty($_POST['IdServ'])) {
-                     $cond1 .= " t12.id  = " . $_POST['IdServ'] . " AND";
-                     $cond2 .= " t12.id  = " . $_POST['IdServ'] . " AND";
-                     $where_with = "t03.id = $IdServ AND ";
-                 }
-
-                 if (!empty($_POST['IdSubServ'])) {
-                     $cond1 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
-                     $cond2 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
-                 }*/
+                if (!empty($_POST['IdSubServ'])) {
+                        $cond1 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
+                        $cond2 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
+                }
+               
                  
-                 if (!empty($_POST['idexpediente'])) {
+                if (!empty($_POST['idexpediente'])) {
                     $cond1 .= " t06.numero = '" . $_POST['idexpediente'] . "' AND";
                     $cond2 .= " t06.numero = '" . $_POST['idexpediente'] . "' AND";
-                 }
+                }
                  
-                 if (!empty($_POST['primernombre'])) {
+                if (!empty($_POST['primernombre'])) {
                     $cond1 .= " t07.primer_nombre ILIKE '" . $_POST['primernombre'] . "%' AND";
                     $cond2 .= " t07.primer_nombre ILIKE '" . $_POST['primernombre'] . "%' AND";
                 }
@@ -88,7 +79,8 @@ switch ($opcion)
                     $cond1 .= " t07.segundo_apellido ILIKE '" . $_POST['segundoapellido'] . "%' AND";
                     $cond2 .= " t07.segundo_apellido ILIKE '" . $_POST['segundoapellido'] . "%' AND";
                 }
-                 if((empty($_POST['idexpediente'])) AND (empty($_POST['primerapellido'])) AND (empty($_POST['segundoapellido'])) 
+                
+                if((empty($_POST['idexpediente'])) AND (empty($_POST['primerapellido'])) AND (empty($_POST['segundoapellido'])) 
                          AND (empty($_POST['primernombre'])) AND (empty($_POST['segundonombre']))AND (empty($_POST['IdEstab'])) 
                          AND (empty($_POST['IdServ'])) AND (empty($_POST['IdSubServ'])) AND (empty($_POST['fecharecep'])))
 		{
@@ -101,12 +93,7 @@ switch ($opcion)
                     $cond2 = substr($cond2, 0, strlen($query) - 3);
                     $var1 = $lugar." AND ".$cond1;
                     $var2 = $lugar." AND ".$cond2;
-                    /* $condf1 = substr($cond1, 0, strlen($cond1) - 3);
-                    $condf2 = substr($cond2, 0, strlen($cond2) - 3);
-                    $var1 = $lugar ." AND ". $cond1;
-                    $var2 = $lugar ." AND ". $cond2;*/
-		}
-                    
+                }
                 else{
 
                     $var1 = $lugar;
@@ -117,12 +104,10 @@ switch ($opcion)
             $query = "WITH tbl_servicio AS ( SELECT t02.id, 
                 CASE WHEN t02.nombre_ambiente IS NOT NULL THEN 
                     CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' || t02.nombre_ambiente 
-                            --ELSE t02.nombre_ambiente 
-                    END 
+                        END 
                     ELSE 
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre 
                                  WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)  
-                                   -- THEN t07.nombre||'-'||t01.nombre
                                     THEN t01.nombre
                     END 
 
@@ -179,8 +164,9 @@ switch ($opcion)
                 INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud) 
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo) 
                 INNER JOIN tbl_servicio t20 ON (t20.id = t10.id AND t20.servicio IS NOT NULL) 
-                
-                WHERE (t16.idestado = 'P' OR t16.idestado = 'C') AND t02.id_establecimiento = $var1
+                INNER JOIN sec_detallesolicitudestudios t21 ON (t21.idsolicitudestudio=t02.id)
+                WHERE (t16.idestado = 'P' OR t16.idestado = 'C' OR t16.idestado = 'R') 
+                AND t02.id_establecimiento = $var1
         
                 UNION
 
@@ -191,7 +177,8 @@ switch ($opcion)
                 TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud, t17.tiposolicitud AS prioridad,
                 t07.fecha_nacimiento AS fechanacimiento, t19.id AS sexo, t02.id_establecimiento_externo, 
                 (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext, true AS referido,
-                (SELECT descripcion FROM ctl_estado_servicio_diagnostico WHERE id=t02.estado) AS estado,t02.id_dato_referencia 
+                (SELECT descripcion FROM ctl_estado_servicio_diagnostico WHERE id=t02.estado) AS estado,t02.id_dato_referencia, 
+                (SELECT count(estadodetalla) FROM sec_detallesolicitudestudios where estdodetalle=7) AS completos  
                 FROM  sec_solicitudestudios t02
                 INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio) 
                 INNER JOIN mnt_dato_referencia t09 ON t09.id=t02.id_dato_referencia 
@@ -206,12 +193,15 @@ switch ($opcion)
                 INNER JOIN ctl_estado_servicio_diagnostico t16 ON (t16.id = t02.estado) 
                 INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud) 
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo) 
-                WHERE (t16.idestado = 'P' OR t16.idestado = 'C') AND t02.id_establecimiento = $var2 ) ordenar
-         ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
+                INNER JOIN sec_detallesolicitudestudios t21 ON (t21.idsolicitudestudio=t02.id) 
+                WHERE (t16.idestado = 'P' OR t16.idestado = 'D' OR t16.idestado = 'R') 
+                AND t02.id_establecimiento = $var2 ) ordenar
+                ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
             
-        //  echo $query;
+         echo $query;
 		
 		$consulta=$objdatos->BuscarSolicitudesPaciente($query); 
+              //  print_r($consulta);
 		$NroRegistros= $objdatos->NumeroDeRegistros($query);				
 
      $imprimir="<table width='100%' border='0' align='center'>
@@ -235,31 +225,33 @@ switch ($opcion)
 		$pos=0;
 		while ($row = pg_fetch_array($consulta))
 		{ 
-			$Idsolic=$row['idsolicitudestudio'];
+			//print_r($row);
+                        $Idsolic=$row['idsolicitudestudio'];
 			$fecha=$objdatos->BuscarRecepcion($Idsolic);
 			$recepcion= pg_fetch_array($fecha);
 			$fechacita=$objdatos->BuscarCita($Idsolic);
 			$cita= pg_fetch_array($fechacita);
+                        
 			if (!empty($recepcion)){
-            $imprimir .="<tr>
-				<td>".$recepcion['0']."</td>";
+           $imprimir .="<tr>
+			    <td>".$recepcion['0']."</td>";
 			}else{ 		
 	   $imprimir .="<tr>
-				<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+			    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 			}
 			
-	           $imprimir .="<td><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(".$pos.");'>".$row['idnumeroexp']."</a>". 
+	       $imprimir .="<td><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(".$pos.");'>".$row['idnumeroexp']."</a>". 
 					"<input name='idsolicitud[".$pos."]' id='idsolicitud[".$pos."]' type='hidden' size='60' value='".$row["idsolicitudestudio"]."' />".
 					"<input name='idexpediente[".$pos."]' id='idexpediente[".$pos."]' type='hidden' size='60' value='".$row["id_expediente"]."' /></td>".
-				"<td>".htmlentities($row['paciente'])."</td>
-                                 <td>".htmlentities($row['nombreservicio'])."</td>    
-				 <td>".htmlentities($row['nombresubservicio'])."</td>
-				 <td>".htmlentities($row['estabext'])."</td>
-				 <td>".$row['estado']."</td>
-				 <td width='5%'>".$row['fechasolicitud']."</td>
+		           "<td>".htmlentities($row['paciente'])."</td>
+                            <td>".htmlentities($row['nombreservicio'])."</td>    
+			    <td>".htmlentities($row['nombresubservicio'])."</td>
+			    <td>".htmlentities($row['estabext'])."</td>
+			    <td>".$row['estado']."</td>
+			    <td width='5%'>".$row['fechasolicitud']."</td>
 			</tr>";
 
-				$pos=$pos + 1;
+		$pos=$pos + 1;
 			}
 			
 			PG_free_result($consulta);
@@ -405,7 +397,7 @@ switch ($opcion)
   break;
   case 4:
 
-	include_once("clsEliminarResultado.php");
+	include_once("clsEliminarSolicitud.php");
 		$iddetalle=$_POST['iddetalle'];
 		$idexpediente=$_POST['idexpediente'];
 		$idsolicitud=$_POST['idsolicitud'];
@@ -419,7 +411,7 @@ switch ($opcion)
                                             $r=$objdatos->ObtenerIdResultado($idsolicitud,$iddetalle);
 					    $result=pg_fetch_array($r);
 					    $idresultado=$result[0];
-						if ($objdatos->EliminarResultado($idresultado) == 1){
+						if ($objdatos->EliminarSolicitud($idresultado) == 1){
                                                     if ($objdatos->Eliminar_metodologia($iddetalle) == 1){
 							//if (($objdatos->CambiarEstadoDetalle($iddetalle)==true)&&($objdatos->CambiarEstadoSolicitud($idsolicitud)==true))
 							if (($objdatos->ActualizarEstadoDetalle($iddetalle)==true)&&($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true)){
@@ -444,7 +436,7 @@ switch ($opcion)
                                                      
                                                      if($dr=$objdatos->EliminarDetalleResultado($idresultado)==1){
                                                         
-                                                         if ($objdatos->EliminarResultado($idresultado) == 1){
+                                                         if ($objdatos->EliminarSolicitud($idresultado) == 1){
                                                                        
                                                              
                                                                if (($objdatos->ActualizarEstadoDetalle($iddetalle)==true)||($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true))
@@ -484,9 +476,9 @@ switch ($opcion)
 									$iddetalleres=$detalle[0];
 						 //		echo $idsolicitud."-".$iddetalle."-".$idresultado."-". $iddetalleres;
                                                                       if($dr=$objdatos->Eliminar_metodologia($iddetalle)==1){  
-                                                                                                                                                                   if($dr=$objdatos->EliminarResultadoTarjeta($iddetalleres)==1){
+                                                                                                                                                                   if($dr=$objdatos->EliminarSolicitudTarjeta($iddetalleres)==1){
                                                                                 if($dr=$objdatos->EliminarDetalleResultado($idresultado)==1){
-                                                                                    if ($objdatos->EliminarResultado($idresultado) == 1){
+                                                                                    if ($objdatos->EliminarSolicitud($idresultado) == 1){
                                                                                         if (($objdatos->ActualizarEstadoDetalle($iddetalle)==true)||($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true))
                                                                                             echo "Resultado Eliminado";
                                                                                         }
@@ -508,7 +500,7 @@ switch ($opcion)
 									echo "idresultado=".$idresultado." iddetalle=".$iddetalle;
                                                                         
                                                                                if($dr=$objdatos->Eliminar_Metodologia($iddetalle)==1){  
-                                                                                    if ($objdatos->EliminarResultado($idresultado) == 1){	 
+                                                                                    if ($objdatos->EliminarSolicitud($idresultado) == 1){	 
 											if (($objdatos->ActualizarEstadoDetalle($iddetalle)==true)||($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true)){
 												echo "Resultado Eliminado";}
                                                                                     }            
