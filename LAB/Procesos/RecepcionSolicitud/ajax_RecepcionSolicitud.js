@@ -486,7 +486,9 @@ function cancelrechazo(cmbrechazo, k) {
       document.getElementById('divopcionrechazo_'+k).style.display = "none";
       document.getElementById('divopcionvalidar_'+k).style.display = "block";
 //      document.getElementById('divopcionvalidar_'+k).innerHTML = ajax.responseTex
-       $("#validarmuestra_"+k+" option[value='1']").attr('selected', 'selected'); 
+       //$("#validarmuestra_"+k+" option[value='1']").attr('selected', 'selected'); 
+  //     $("#validarmuestra_"+k+" option[value='1']").attr('selected', 'selected'); 
+       $('#validarmuestra_'+k).val("1");
        $("#rowdetalle_"+k).css("background-color", "#FFFFFF");       
       document.getElementById('divnewdate_'+k).style.display = "none";
      
