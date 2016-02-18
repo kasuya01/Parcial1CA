@@ -4,7 +4,7 @@
    } else {
        $REQUEST_SCHEME = 'http';
    }
-   
+
    $base_url = $REQUEST_SCHEME.'://'.$_SERVER['HTTP_HOST'];
 ?>
 
@@ -18,4 +18,5 @@
 <link type="text/css" href="<?php echo $base_url; ?>/Laboratorio/public/package/lou-multi-select/css/multi-select.css" rel="stylesheet" />
 <link type="text/css" href="<?php echo $base_url; ?>/Laboratorio/public/package/AdminLTE/dist/css/AdminLTE.min.css" rel="stylesheet" />
 <link type="text/css" href="<?php echo $base_url; ?>/Laboratorio/public/package/AdminLTE/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" />
+<link type="text/css" href="<?php echo $base_url; ?>/Laboratorio/public/package/AdminLTE/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" />
 <link rel="shortcut icon" href="/Laboratorio/Imagenes/favicon.ico" />

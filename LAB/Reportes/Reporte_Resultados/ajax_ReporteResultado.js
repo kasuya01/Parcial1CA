@@ -16,7 +16,7 @@ function objetoAjax(){
 }
 
 //////////////////////////*************FUNCIONES PARA EL MANEJO DE CADENAS ELININACION DE ESPACIOS EN BLANCO **********//////////////////////
-function trim( str ) 
+function trim( str )
 {
 	var resultstr = "";
 
@@ -30,13 +30,13 @@ function trimright( str ) {
 	var i = 0;
 
 	// Return immediately if an invalid value was passed in
-	if (str+"" == "undefined" || str == null)	
+	if (str+"" == "undefined" || str == null)
 		return null;
 
 	// Make sure the argument is a string
 	str += "";
-	
-	if (str.length == 0) 
+
+	if (str.length == 0)
 		resultStr = "";
 	else {
   		// Loop through string starting at the end as long as there
@@ -44,16 +44,16 @@ function trimright( str ) {
   		i = str.length - 1;
   		while ((i >= 0) && (str.charAt(i) == " "))
  			i--;
- 			
+
  		// When the loop is done, we're sitting at the last non-space char,
  		// so return that char plus all previous chars of the string.
   		resultStr = str.substring(0, i + 1);
   	}
-  	
-  	return resultStr;  	
+
+  	return resultStr;
 }
 
-function trimleft(str) { 
+function trimleft(str) {
 	for(var k = 0; k < str.length && isWhitespace(str.charAt(k)); k++);
 	return str.substring(k, str.length);
 }
@@ -93,7 +93,7 @@ function calcular_edad(fecha){
     }
 
     var mes;
-    mes = fecha.substring(3,5);   
+    mes = fecha.substring(3,5);
     if (isNaN(mes)){
        return false;
     }
@@ -105,7 +105,7 @@ function calcular_edad(fecha){
     }
     //si el aï¿½o de la fecha que recibo solo tiene 2 cifras hay que cambiarlo a 4
     if (ano<=99){
-       ano +=1900;       
+       ano +=1900;
     }
 
 // alert("dia: "+dia+" mes:"+mes+" anio:"+ano);
@@ -114,9 +114,9 @@ function calcular_edad(fecha){
     annios=hoy.getFullYear()- ano;
         edad=hoy.getFullYear()- ano - 1; //-1 porque no se si ha cumplido aï¿½os ya este aï¿½o
     //si resto los meses y me da menor que 0 entonces no ha cumplido aï¿½os. Si da mayor si ha cumplido
-   
-   
-    var meses=hoy.getMonth() + 1 - mes;   
+
+
+    var meses=hoy.getMonth() + 1 - mes;
 
     var dias=hoy.getUTCDate() - dia    ;
 
@@ -135,12 +135,12 @@ function calcular_edad(fecha){
     }
 
     //alert(diasx+" dias:"+dias);
-   
+
     if(Minimo=="0 dias" && dias >=0){Minimo=dias+" dias";}
-   
+
     if(diasx<0){
         meses=meses-1;
-       
+
     }
 
     if(meses==0 && annios==0){return dias+" DIAS";}
@@ -150,8 +150,8 @@ function calcular_edad(fecha){
 
 
     if (hoy.getMonth() + 1 - mes < 0){
-       return edad+" a\u00f1os y "+meses+" meses y "+Minimo;       
-//       return edad;       
+       return edad+" a\u00f1os y "+meses+" meses y "+Minimo;
+//       return edad;
     } //+ 1 porque los meses empiezan en 0
     if (hoy.getMonth() + 1 - mes > 0){
        return (edad+1)+" a\u00f1os y "+meses+" meses y "+Minimo;
@@ -160,7 +160,7 @@ function calcular_edad(fecha){
     //entonces es que eran iguales. miro los dias
     //si resto los dias y me da menor que 0 entonces no ha cumplido aï¿½os. Si da mayor o igual si ha cumplido
     if (hoy.getUTCDate() - dia >= 0){
-       return (edad+1)+" a\u00f1os y "+meses+" meses y "+Minimo;       
+       return (edad+1)+" a\u00f1os y "+meses+" meses y "+Minimo;
 //       return edad + 1;
     }
     return edad+" a\u00f1os y "+meses+" meses y "+Minimo;
@@ -176,16 +176,16 @@ function LlenarComboEstablecimiento(idtipoesta)
   	//muy importante este encabezado ya que hacemos uso de un formulario
   	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
   	//enviando los valores
-	ajax.send("opcion="+opcion+"&idtipoesta="+idtipoesta);	
-	ajax.onreadystatechange=function() 
+	ajax.send("opcion="+opcion+"&idtipoesta="+idtipoesta);
+	ajax.onreadystatechange=function()
 	{
-		
+
 		if (ajax.readyState == 4){//4 The request is complete
 			if (ajax.status == 200){//200 means no error.
-				respuesta = ajax.responseText;	
+				respuesta = ajax.responseText;
 				// alert (respuesta)
 				document.getElementById('divEstablecimiento').innerHTML = respuesta;
-			}	  	
+			}
 		}
    	}
 }
@@ -200,16 +200,16 @@ function LlenarComboServicio(IdServicio)
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
         //alert(IdServicio);
-	ajax.send("opcion="+opcion+"&IdServicio="+IdServicio);	 
-	ajax.onreadystatechange=function() 
-                
+	ajax.send("opcion="+opcion+"&IdServicio="+IdServicio);
+	ajax.onreadystatechange=function()
+
 	{
-		
+
 		if (ajax.readyState == 4){//4 The request is complete
 			if (ajax.status == 200){//200 means no error.
-	  			respuesta = ajax.responseText;	
+	  			respuesta = ajax.responseText;
 				document.getElementById('divsubserv').innerHTML = respuesta;
-	 		}	  	
+	 		}
    	 	}
    	}
 }
@@ -222,24 +222,24 @@ function LlenarComboExamen(idarea)
 		  //muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		  //enviando los valores
-	ajax.send("opcion="+opcion+"&idarea="+idarea);	 
-	ajax.onreadystatechange=function() 
+	ajax.send("opcion="+opcion+"&idarea="+idarea);
+	ajax.onreadystatechange=function()
 	{
-		
+
 		if (ajax.readyState == 4){//4 The request is complete
 			if (ajax.status == 200){//200 means no error.
-	  			//respuesta = ajax.responseText;	
+	  			//respuesta = ajax.responseText;
 	 			// alert (respuesta)
 		 document.getElementById('divExamen').innerHTML = ajax.responseText;
-			}	  	
-			
+			}
+
    		}
    	}
 }
 
 //FUNCION PARA BUSCAR DATOS DE LA SOLICITUD
 function BuscarDatos(pag)
-{	
+{
 	opcion=1;
 	IdEstab=document.getElementById('cmbEstablecimiento').value;
 	IdServ=document.getElementById('CmbServicio').value;
@@ -265,9 +265,10 @@ function BuscarDatos(pag)
 		if (ajax.readyState==4) {
 			//mostrar los nuevos registros en esta capa
 			document.getElementById('divBusqueda').innerHTML = ajax.responseText;
+			setDataTables();
 			//alert(ajax.responseText);
 		}
-	}	
+	}
 }
 
 function MostrarDatos(posicion)
@@ -282,13 +283,13 @@ function MostrarDatos(posicion)
 		//alert(IdEstablecimiento);
 		idsolicitud=trim(idsolicitud);
 		CargarDatosFormulario(idexpediente,idhistorialclinico,iddatoreferencia,idsolicitud,IdEstablecimiento,subservicio);
-	 
+
  }
 
  function CargarDatosFormulario(idexpediente,idhistorialclinico,iddatoreferencia,idsolicitud,IdEstablecimiento,subservicio)
- 
-{         
-        
+
+{
+
 	ajax=objetoAjax();
 	opcion=3;
 	//alert(IdEstablecimiento);
@@ -296,12 +297,12 @@ function MostrarDatos(posicion)
 		  //muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		  //enviando los valores
-	
-	
+
+
         ajax.send("opcion="+opcion+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud+"&IdEstablecimiento="+IdEstablecimiento+"&subservicio="+subservicio+"&idHistorialClinico="+idhistorialclinico+"&idDatoReferencia="+iddatoreferencia);
-	ajax.onreadystatechange=function() 
+	ajax.onreadystatechange=function()
 	{
-		if (ajax.readyState==4) 
+		if (ajax.readyState==4)
 		{	 if (ajax.status == 200)
 			{  //mostrar los nuevos registros en esta capa
 			  document.getElementById('divSolicitud').innerHTML = ajax.responseText;
@@ -313,7 +314,7 @@ function MostrarDatos(posicion)
 
 function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,idexamen,sexo,fechanac,idexamen,$subservicio, idsexo, idedad)
 {
-    
+
   //alert(iddetalle);
   //alert(idsolicitud);
     //alert(idplantilla);
@@ -321,10 +322,10 @@ function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,ide
    // alert(idarea);
    // alert(idexamen);
     //alert(sexo);
-    
-    
+
+
    switch (idplantilla)
-	{ 	case "1":   //"A": 
+	{ 	case "1":   //"A":
                //alert(idarea);
                //  alert("la plantilla es 1");
 			if (idarea=="QUI" || idarea=="HEM" || idarea=="INM"){
@@ -333,7 +334,7 @@ function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,ide
                                 "&var2="+idsolicitud+"&var3="+idplantilla+"&var4="+idexpediente+
                                 "&var5="+idarea+"&var6="+idexamen+"&var7="+subservicio+"&idsexo="+idsexo+"&idedad="+idedad, "Impresion","width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
 				//alert($subservicio);
-                                         
+
 			}
 			else{
                            // alert($subservicio);
@@ -344,23 +345,23 @@ function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,ide
                                    // alert($subservicio);
 			}
 	      	break;
-	  	case   "2":  //"B":  
+	  	case   "2":  //"B":
 		  	//alert("la plantilla es 2");
                       //alert($subservicio);
                                 ventana_secundaria = window.open("ImprimirPlantillaB.php?var1="+iddetalle+"&var2="+idsolicitud+
                                    "&var3="+idplantilla+"&var4="+idexpediente+"&var5="+idarea+"&var6="+idexamen+
                                    "&var7="+sexo+"&var8="+fechanac+"&var9="+subservicio,"Impresion","width=1150,height=1150,menubar=no,scrollbars=yes,location=no");
-                                 
+
             break;
-	  	case   "3":   //"C":  
+	  	case   "3":   //"C":
                      //alert("la plantilla es 3");
 	  			ventana_secundaria = window.open("ImprimirPlantillaC.php?var1="+iddetalle+"&var2="+idsolicitud+
                                    "&var3="+idplantilla+"&var4="+idexpediente+"&var5="+idarea+"&var6="+idexamen+"&var7="+subservicio,
                                    "Impresion","width=1150,ccc=800,menubar=no,scrollbars=yes,location=no");
                                  //  alert($subservicio);
-                                   
-                                  
-                                   
+
+
+
 	  	break;
 	  	case "4":
                     //alert("la plantilla es 4");
@@ -375,7 +376,7 @@ function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,ide
 		 		ventana_secundaria = window.open("ImprimirPlantillaE.php?var1="+iddetalle+"&var2="+idsolicitud+
                                    "&var3="+idplantilla+"&var4="+idexpediente+"&var5="+idarea+"&var6="+idexamen+
                                    "&var7="+sexo+"&var8="+subservicio,"Impresion","width=1150,height=550,menubar=no,scrollbars=yes,location=no");
-                          
+
 		break;
 	}
 }
@@ -398,9 +399,9 @@ function ImprimirDatos(iddetalle,idsolicitud,idplantilla,idexpediente,idarea,ide
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		  //enviando los valores
 	ajax.send("opcion="+opcion+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud+"&pag="+pag+"&fechaconsulta="+fechaconsulta);
-	ajax.onreadystatechange=function() 
+	ajax.onreadystatechange=function()
 	{
-		if (ajax.readyState==4) 
+		if (ajax.readyState==4)
 		{	 if (ajax.status == 200)
 			{  //mostrar los nuevos registros en esta capa
 			  //document.getElementById('divFormulario'.innerHTML = ajax.responseText;
@@ -414,12 +415,12 @@ function imprimiretiquetas()
 {//cambiar imprimir  etiquetas1.php  por imprimir.php
 	idexpediente=document.frmDatos.idexpediente.value;
 	idsolicitud=document.frmDatos.idsolicitud.value;
-		
-	
+
+
 	//alert idexpediente;
 	ventana_secundaria = window.open("etiquetas.php?var1="+idexpediente+
 									  "&var2="+idsolicitud,"etiquetas",										"width=500,height=600,menubar=no,location=no,scrollbars=yes") ;
-		
+
 }
 
 
@@ -432,9 +433,9 @@ function Cerrar(){
 function ImprimirSolicitud(){
 idexpediente=document.frmDatos.idexpediente.value;
 idsolicitud=document.frmDatos.idsolicitud.value;
-		
+
 ventana_secundaria = window.open("SolicitudEstudiosPaciente.php?var1="+idexpediente+
-									  "&var2="+idsolicitud,"solicitud",										"width=800,height=700,menubar=no,location=no,scrollbars=yes") 
+									  "&var2="+idsolicitud,"solicitud",										"width=800,height=700,menubar=no,location=no,scrollbars=yes")
 }
 
 function Imprimir1(){
