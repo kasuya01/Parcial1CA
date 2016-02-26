@@ -14,7 +14,7 @@ echo '<!-- Start Required XML Menu markup for head tag -->
         <link href="../../../Menu/xm-style.css" rel="stylesheet" type="text/css">
         <script src="../../../Menu/xm-menu.js" type="text/javascript"></script>
       <!-- End Required XML Menu markup for head tag -->
-	<table width="100%" border="0" bgcolor="#FFFFFF">           
+	<table width="100%" border="0" bgcolor="#FFFFFF">
             <tr>
                 <td bgcolor="#002157" colspan="2">
                     <!-- Start Required XML Menu markup for body tag -->

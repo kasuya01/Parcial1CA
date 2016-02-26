@@ -6,7 +6,25 @@ $area  = $_SESSION['Idarea'];
 $corr  = $_SESSION['Correlativo'];
 $cod   = $_SESSION['IdEmpleado'];
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
+$base_url  = $_SESSION['base_url'];
 include_once $ROOT_PATH.'/public/css.php';
+
+if ($nivel==1){
+	$nivelurl=$base_url.'/Laboratorio/PaginaPrincipal/index_laboratorio.php';}
+if ($nivel==2){
+	$nivelurl=$base_url.'/Laboratorio/PaginaPrincipal/index_laboratorio21.php';}
+if ($nivel==31){
+	$nivelurl=$base_url.'/Laboratorio/PaginaPrincipal/index_laboratorio231.php';}
+if ($nivel==33){
+	$nivelurl=$base_url.'/Laboratorio/PaginaPrincipal/index_laboratorio233.php';}
+if ($nivel==4){
+	$nivelurl=$base_url.'/Laboratorio/PaginaPrincipal/index_laboratorio4.php';}
+if ($nivel == 5) {
+        $nivelurl=$base_url.'/Laboratorio/PaginaPrincipal/index_laboratorio5.php';}
+if ($nivel == 6) {
+        $nivelurl=$base_url.'/Laboratorio/PaginaPrincipal/index_laboratorio6.php';}
+if ($nivel == 7) {
+        $nivelurl=$base_url.'/Laboratorio/PaginaPrincipal/index_laboratorio7.php'; }
 ?>
 
 <link rel="shortcut icon" href="/Laboratorio/Imagenes/favicon.ico" />
@@ -39,7 +57,19 @@ echo '<table width="100%" border="0" bgcolor="#FFFFFF">
                      <tr>
                         <td style="vertical-align:top">
  		<h2 align="center" > ' . htmlentities($Establecimiento) . '</br>
-                <font face="Verdana" size="2" align="center"><br>Usuario:</b> <font color="blue" size="2"><strong>' . htmlentities($NombreEmpleado) . '</strong></font></font></h2>
+                <font face="Verdana" size="2" align="center"><br>
+                <div class="box-header with-border">
+
+
+              <h3 class="box-title">
+              <a href="'.$nivelurl.'">
+              <span class="fa fa-home navy" style="color:#367fa9;" title="Inicio"> </span>
+              </a>
+              &nbsp;Usuario:</b> <font color="blue" size="2"><strong>' . htmlentities($NombreEmpleado) . '</strong></h3>
+            </div>
+
+
+                </font></font></h2>
             </td>
                      </tr>
      </table>';

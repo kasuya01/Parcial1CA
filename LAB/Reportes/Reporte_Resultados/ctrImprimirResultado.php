@@ -289,7 +289,7 @@ if ( $NroRegistros==""){
         //<td>Fecha Recepci&oacute;n</td>
 
         echo "<div class='table-responsive' style='width: 100%;'>
-           <table width='97%' border='1' align='center' data-table-enabled='true' class='table table-hover table-bordered table-condensed'><thead>
+           <table width='97%' border='1' align='center' data-table-enabled='true' class='table table-hover table-bordered table-condensed table-white'><thead>
                     <tr>
 				<th>Fecha Recepci&oacute;n</th>
 				<th style='width: 8%;'>NEC </th>

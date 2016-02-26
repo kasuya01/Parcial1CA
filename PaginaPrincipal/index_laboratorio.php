@@ -24,4 +24,5 @@ echo '<!-- Start Required XML Menu markup for head tag -->
             </td>
         </tr>
       </table>';
+include_once ('index.php');
 ?>

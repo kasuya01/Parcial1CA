@@ -19,4 +19,5 @@
 <link type="text/css" href="<?php echo $base_url; ?>/Laboratorio/public/package/AdminLTE/dist/css/AdminLTE.min.css" rel="stylesheet" />
 <link type="text/css" href="<?php echo $base_url; ?>/Laboratorio/public/package/AdminLTE/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" />
 <link type="text/css" href="<?php echo $base_url; ?>/Laboratorio/public/package/AdminLTE/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" />
+<link type="text/css" href="<?php echo $base_url; ?>/Laboratorio/public/package/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
 <link rel="shortcut icon" href="/Laboratorio/Imagenes/favicon.ico" />

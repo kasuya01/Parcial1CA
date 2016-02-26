@@ -28,8 +28,9 @@ $password = htmlentities($_POST['txtpassword']);
         }
 
         $base_url = $REQUEST_SCHEME.'://'.$_SERVER['HTTP_HOST'];
-        $_SESSION['base_url'] = $base_url; 
+        $_SESSION['base_url'] = $base_url;
         $_SESSION['nombre_estab']=$estab;
+        
 
 	switch ($nivel) {
 	    case 1://jefe del laboratorio
@@ -100,8 +101,8 @@ $password = htmlentities($_POST['txtpassword']);
                         $_SESSION['IdEmpleado']=$cod;
 			header("Location: ../Laboratorio/PaginaPrincipal/index_laboratorio7.php");
 	    break;
-        
-        
+
+
 	}  //switch de nivel
    }
    else

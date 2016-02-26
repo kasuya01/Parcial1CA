@@ -8,7 +8,7 @@ $area  = $_SESSION['Idarea'];
 $corr  = $_SESSION['Correlativo'];
 $cod   = $_SESSION['IdEmpleado'];
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
-
+echo $nivel;
 include_once $ROOT_PATH.'/public/css.php';
 // Creamos un objeto Conexion, Pacie
 $Conexion = new ConexionBD;
@@ -18,7 +18,7 @@ echo '<!-- Start Required XML Menu markup for head tag -->
 	<link href="../../../Menu/xm-style.css" rel="stylesheet" type="text/css">
 	<script src="../../../Menu/xm-menu.js" type="text/javascript"></script>
       <!-- End Required XML Menu markup for head tag -->
-	<table width="100%" border="0" bgcolor="#FFFFFF">          
+	<table width="100%" border="0" bgcolor="#FFFFFF">
             <tr>
                 <td bgcolor="#002157" colspan="2">
                     <!-- Start Required XML Menu markup for body tag -->
@@ -28,4 +28,5 @@ echo '<!-- Start Required XML Menu markup for head tag -->
 		</td>
             </tr>
         </table>';
+include_once ('index.php');
 ?>
