@@ -14,16 +14,16 @@ $opcion = $_POST['opcion'];
 $objdatos = new clsReporteResultados;
 
 switch ($opcion) {
-    
-    
+
+
     case 11:
-          
+
         $idEstablecimiento = $_POST['IdEstab'];    // $idEstablecimiento  id_establecimiento_externo
         $expediente = $_POST['idexpediente'];
          getExamnResult(/*$idHistorialClinico, $idDatoReferencia,*/ $expediente, $idEstablecimiento);
-        
-        
-    
+
+
+
      break;
     case 1:
         /* $idexpediente=$_POST['idexpediente'];
@@ -45,7 +45,7 @@ switch ($opcion) {
 
         $ban = 0;
         $IdEstab = $_POST['IdEstab'];    // $idEstablecimiento  id_establecimiento_externo
-        $IdServ = $_POST['IdServ']; 
+        $IdServ = $_POST['IdServ'];
         $IdSubServ = $_POST['IdSubServ'];
         $idexpediente = $_POST['idexpediente'];
         //$fechasolicitud = $_POST['fechasolicitud'];
@@ -158,7 +158,7 @@ switch ($opcion) {
 
       $query = "WITH tbl_servicio AS (
                     SELECT t02.id,
-                        CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
+                        CASE WHEN t02.nombre_ambiente IS NOT NULL THEN
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
                                  ELSE t02.nombre_ambiente
                             END
@@ -166,26 +166,26 @@ switch ($opcion) {
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'--> ' || t01.nombre
                                  WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
                             END
-                        END AS servicio 
-                    FROM  ctl_atencion                  t01 
+                        END AS servicio
+                    FROM  ctl_atencion                  t01
                     INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
                     INNER JOIN mnt_area_mod_estab           t03 ON (t03.id = t02.id_area_mod_estab)
                     LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
                     LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
                     WHERE $where_with t02.id_establecimiento = $lugar
                     ORDER BY 2)
-                 SELECT 
+                 SELECT
                 distinct on (t02.id_historial_clinico)t02.id_historial_clinico,
                 t02.id,
                 t02.id_dato_referencia,
                 TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
-                t06.numero AS idnumeroexp, 
+                t06.numero AS idnumeroexp,
                 CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,
                 t07.segundo_apellido,t07.apellido_casada) AS paciente,
                 t20.servicio AS nombresubservicio,
-                t13.nombre AS nombreservicio, 
-                t14.nombre, 
-                TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud, 
+                t13.nombre AS nombreservicio,
+                t14.nombre,
+                TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud,
                 (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
                (select descripcion as estado
                from sec_solicitudestudios t1
@@ -195,37 +195,37 @@ switch ($opcion) {
                order by t2.id asc
                limit 1) AS estado,
             TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta, t02.id_establecimiento_externo
-            FROM sec_solicitudestudios t02                
-            INNER JOIN lab_recepcionmuestra t03                 ON (t03.idsolicitudestudio=t02.id) 
-	    INNER JOIN mnt_expediente t06                       ON (t06.id = t02.id_expediente) 
-            INNER JOIN mnt_paciente t07                         ON (t07.id = t06.id_paciente) 
-	    INNER JOIN sec_historial_clinico t09                ON (t09.id = t02.id_historial_clinico) 
-            INNER JOIN mnt_aten_area_mod_estab t10              ON (t10.id = t09.idsubservicio) 
-            INNER JOIN ctl_atencion t11                         ON (t11.id = t10.id_atencion) 
-            INNER JOIN mnt_area_mod_estab t12                   ON (t12.id = t10.id_area_mod_estab) 
-            INNER JOIN ctl_area_atencion t13                    ON (t13.id = t12.id_area_atencion) 
-            INNER JOIN ctl_establecimiento t14                  ON (t14.id = t09.idestablecimiento) 
-            INNER JOIN cit_citas_serviciodeapoyo t15            ON (t15.id_solicitudestudios=t02.id) 
-            INNER JOIN lab_tiposolicitud t17                    ON (t17.id = t02.idtiposolicitud) 
+            FROM sec_solicitudestudios t02
+            INNER JOIN lab_recepcionmuestra t03                 ON (t03.idsolicitudestudio=t02.id)
+	    INNER JOIN mnt_expediente t06                       ON (t06.id = t02.id_expediente)
+            INNER JOIN mnt_paciente t07                         ON (t07.id = t06.id_paciente)
+	    INNER JOIN sec_historial_clinico t09                ON (t09.id = t02.id_historial_clinico)
+            INNER JOIN mnt_aten_area_mod_estab t10              ON (t10.id = t09.idsubservicio)
+            INNER JOIN ctl_atencion t11                         ON (t11.id = t10.id_atencion)
+            INNER JOIN mnt_area_mod_estab t12                   ON (t12.id = t10.id_area_mod_estab)
+            INNER JOIN ctl_area_atencion t13                    ON (t13.id = t12.id_area_atencion)
+            INNER JOIN ctl_establecimiento t14                  ON (t14.id = t09.idestablecimiento)
+            INNER JOIN cit_citas_serviciodeapoyo t15            ON (t15.id_solicitudestudios=t02.id)
+            INNER JOIN lab_tiposolicitud t17                    ON (t17.id = t02.idtiposolicitud)
             INNER JOIN tbl_servicio t20                         ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
             AND t02.id_establecimiento = $lugar $cond1
-            
-        
+
+
            UNION
 
-            SELECT 
+            SELECT
             distinct on (t02.id_historial_clinico)t02.id_historial_clinico,
             t02.id,
             t02.id_dato_referencia,
             TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
             t06.numero AS idnumeroexp,
             CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido,
-            t07.apellido_casada) AS paciente, 
-            t11.nombre AS nombresubservicio, 
-            t13.nombre AS nombreservicio, 
+            t07.apellido_casada) AS paciente,
+            t11.nombre AS nombresubservicio,
+            t13.nombre AS nombreservicio,
             t14.nombre,
-            TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud, 
+            TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud,
             (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
             (select descripcion as estado
             from sec_solicitudestudios t1
@@ -235,18 +235,18 @@ switch ($opcion) {
             order by t2.id asc
             limit 1) AS estado,
             TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta, t02.id_establecimiento_externo
-            FROM sec_solicitudestudios t02                    	   
-            INNER JOIN lab_recepcionmuestra t03                     ON (t03.idsolicitudestudio=t02.id) 
-            INNER JOIN mnt_dato_referencia t09                      ON t09.id=t02.id_dato_referencia 
-            INNER JOIN mnt_expediente_referido t06                  ON (t06.id = t09.id_expediente_referido) 
-            INNER JOIN mnt_paciente_referido t07                    ON (t07.id = t06.id_referido) 
-            INNER JOIN mnt_aten_area_mod_estab t10                  ON (t10.id = t09.id_aten_area_mod_estab) 
-            INNER JOIN ctl_atencion t11                             ON (t11.id = t10.id_atencion) 
-            INNER JOIN mnt_area_mod_estab t12                       ON (t12.id = t10.id_area_mod_estab) 
-            INNER JOIN ctl_area_atencion t13                        ON (t13.id = t12.id_area_atencion) 
+            FROM sec_solicitudestudios t02
+            INNER JOIN lab_recepcionmuestra t03                     ON (t03.idsolicitudestudio=t02.id)
+            INNER JOIN mnt_dato_referencia t09                      ON t09.id=t02.id_dato_referencia
+            INNER JOIN mnt_expediente_referido t06                  ON (t06.id = t09.id_expediente_referido)
+            INNER JOIN mnt_paciente_referido t07                    ON (t07.id = t06.id_referido)
+            INNER JOIN mnt_aten_area_mod_estab t10                  ON (t10.id = t09.id_aten_area_mod_estab)
+            INNER JOIN ctl_atencion t11                             ON (t11.id = t10.id_atencion)
+            INNER JOIN mnt_area_mod_estab t12                       ON (t12.id = t10.id_area_mod_estab)
+            INNER JOIN ctl_area_atencion t13                        ON (t13.id = t12.id_area_atencion)
             INNER JOIN ctl_establecimiento t14                      ON (t14.id = t09.id_establecimiento)
-            INNER JOIN cit_citas_serviciodeapoyo t15                ON (t15.id_solicitudestudios=t02.id) 
-            INNER JOIN lab_tiposolicitud t17 			    ON (t17.id = t02.idtiposolicitud) 
+            INNER JOIN cit_citas_serviciodeapoyo t15                ON (t15.id_solicitudestudios=t02.id)
+            INNER JOIN lab_tiposolicitud t17 			    ON (t17.id = t02.idtiposolicitud)
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
             AND t02.id_establecimiento =$lugar $cond2   order by fecharecepcion desc  ";
 
@@ -255,10 +255,10 @@ switch ($opcion) {
           $query_search = $query. " ORDER BY IdSolicitudEstudio DESC";
           } */
         //echo $query_search;
-        //$consulta=$objdatos->BuscarSolicitudesPaciente($query); 
-        //$NroRegistros= $objdatos->NumeroDeRegistros($query);	
-       
-        
+        //$consulta=$objdatos->BuscarSolicitudesPaciente($query);
+        //$NroRegistros= $objdatos->NumeroDeRegistros($query);
+
+
         //echo $cond1;
        // echo $cond2;
 
@@ -277,22 +277,22 @@ if ( $NroRegistros==""){
 				<td colspan='7' align='center' ><span style='color: #0101DF;'><h3><strong>TOTAL DE SOLICITUDES: " . $NroRegistros . "</strong></h3></span></td>
 			</tr>
 		</table> ";
-    
+
 }else {
        echo  "<table width='85%' border='0' align='center'>
 			<tr>
 				<td colspan='7' align='center' ><span style='color: #0101DF;'><h3><strong>TOTAL DE SOLICITUDES: " . $NroRegistros . "</strong></h3></span></td>
 			</tr>
 		</table> ";
-} 
+}
 
         //<td>Fecha Recepci&oacute;n</td>
-        
+
         echo "<div class='table-responsive' style='width: 100%;'>
-           <table width='97%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'><thead>
+           <table width='97%' border='1' align='center' data-table-enabled='true' class='table table-hover table-bordered table-condensed table-white'><thead>
                     <tr>
 				<th>Fecha Recepci&oacute;n</th>
-				<th>NEC </th>
+				<th style='width: 8%;'>NEC </th>
 				<th>Nombre Paciente</th>
 				<th>Origen</th>
 				<th>Procedencia</th>
@@ -312,7 +312,7 @@ if ( $NroRegistros==""){
             //if (!empty($recepcion)){
             echo "<tr>
 				<td>" .htmlentities($row['fecharecepcion']). "</td>";
-            echo "<td><span style='color: #0101DF;'><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a>" .
+            echo "<td align='right'><span style='color: #0101DF; '><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a>" .
                     "<input name='idhistorialclinico[" . $pos . "]' id='idhistorialclinico[" . $pos . "]' type='hidden' size='60' value='" . $row['id_historial_clinico'] . "' />" .
                     "<input name='iddatoreferencia[" . $pos . "]' id='iddatoreferencia[" . $pos . "]' type='hidden' size='60' value='" . $row['id_dato_referencia'] . "' />" .
                     "<input name='idsolicitud[" . $pos . "]' id='idsolicitud[" . $pos . "]' type='hidden' size='60' value='" . $row[1] . "' />" .
@@ -329,61 +329,61 @@ if ( $NroRegistros==""){
 
             $pos = $pos + 1;
         }
-         } else 
+         } else
             {
                  echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></tbody></table></div>";
             }
 
         @pg_free_result($consulta);
 
-        echo  "<input type='hidden' name='oculto' id='text' value='" . $pos . "' /> 
-  
+        echo  "<input type='hidden' name='oculto' id='text' value='" . $pos . "' />
+
 		</tbody></table></div>";
-        
-        
+
+
         //echo $imprimir;
 
-        
-        //determinando el numero de paginas
-        $PagAnt = $PagAct - 1;
-        $PagSig = $PagAct + 1;
 
-        $PagUlt = $NroRegistros / $RegistrosAMostrar;
-
-        //verificamos residuo para ver si llevar� decimales
-        $Res = $NroRegistros % $RegistrosAMostrar;
-        //si hay residuo usamos funcion floor para que me
-        //devuelva la parte entera, SIN REDONDEAR, y le sumamos
-        //una unidad para obtener la ultima pagina
-        if ($Res > 0)
-            $PagUlt = floor($PagUlt) + 1;
-        echo "<table align='center'>
-		       <tr>
-				<td colspan=3 align='center'> <strong>Pagina " . $PagAct . "/" . $PagUlt . "</strong> </td>
-	               </tr>
-		       <tr>
-				<td><a onclick=\"BuscarDatos('1')\">Primero</a> </td>";
-        //// desplazamiento
-
-        if ($PagAct > 1)
-            echo "<td> <a onclick=\"BuscarDatos('$PagAnt')\">Anterior</a> </td>";
-        if ($PagAct < $PagUlt)
-            echo "<td> <a onclick=\"BuscarDatos('$PagSig')\">Siguiente</a> </td>";
-        echo "<td> <a onclick=\"BuscarDatos('$PagUlt')\">Ultimo</a></td></tr>
-                 </table>";
-        echo "<table align='center'>
-			<tr align='center'><td  colspan='2' width='25%'>";
-        
-        
-        echo " <center> <ul class='pagination'>";
-		 $numPags ='';
-			 for ($i=1 ; $i<=$PagUlt; $i++){
-                              
-					 echo " <li ><a  href='javascript: BuscarDatos(".$i.")'>$i</a></li>";
-                                
-			 }
-				
-                 echo " </ul></center>";
+        // //determinando el numero de paginas
+        // $PagAnt = $PagAct - 1;
+        // $PagSig = $PagAct + 1;
+        //
+        // $PagUlt = $NroRegistros / $RegistrosAMostrar;
+        //
+        // //verificamos residuo para ver si llevar� decimales
+        // $Res = $NroRegistros % $RegistrosAMostrar;
+        // //si hay residuo usamos funcion floor para que me
+        // //devuelva la parte entera, SIN REDONDEAR, y le sumamos
+        // //una unidad para obtener la ultima pagina
+        // if ($Res > 0)
+        //     $PagUlt = floor($PagUlt) + 1;
+        // echo "<table align='center'>
+		//        <tr>
+		// 		<td colspan=3 align='center'> <strong>Pagina " . $PagAct . "/" . $PagUlt . "</strong> </td>
+	    //            </tr>
+		//        <tr>
+		// 		<td><a onclick=\"BuscarDatos('1')\">Primero</a> </td>";
+        // //// desplazamiento
+        //
+        // if ($PagAct > 1)
+        //     echo "<td> <a onclick=\"BuscarDatos('$PagAnt')\">Anterior</a> </td>";
+        // if ($PagAct < $PagUlt)
+        //     echo "<td> <a onclick=\"BuscarDatos('$PagSig')\">Siguiente</a> </td>";
+        // echo "<td> <a onclick=\"BuscarDatos('$PagUlt')\">Ultimo</a></td></tr>
+        //          </table>";
+        // echo "<table align='center'>
+		// 	<tr align='center'><td  colspan='2' width='25%'>";
+        //
+        //
+        // echo " <center> <ul class='pagination'>";
+		//  $numPags ='';
+		// 	 for ($i=1 ; $i<=$PagUlt; $i++){
+        //
+		// 			 echo " <li ><a  href='javascript: BuscarDatos(".$i.")'>$i</a></li>";
+        //
+		// 	 }
+        //
+        //          echo " </ul></center>";
 
 
 
@@ -401,33 +401,33 @@ if ( $NroRegistros==""){
         $idDatoReferencia   = $_POST['idDatoReferencia'];
         $idEstablecimiento  = $_POST['IdEstablecimiento'];
         $subservicio        =$_POST['subservicio'];
-        
+
         //echo $subservicio;
             if($idDatoReferencia==""){
-                
+
                 $idDatoReferencia=0;
-                
+
             }else {
                 $idDatoReferencia=$idDatoReferencia;
             }
-            
+
             if($idHistorialClinico==""){
                 $idHistorialClinico=0;
             }else{
                 $idHistorialClinico=$idHistorialClinico;
             }
-            
 
 
-        
+
+
        $resultgetExamnResult    =   getExamnResult($idHistorialClinico, $idDatoReferencia, $idEstablecimiento);
-//       $resultgetDatosGenerales =   getDatosGenerales($idHistorialClinico, $idDatoReferencia, $idEstablecimiento); 
-        
-       
+//       $resultgetDatosGenerales =   getDatosGenerales($idHistorialClinico, $idDatoReferencia, $idEstablecimiento);
+
+
        $consulta= $objdatos->obtenerDatosGenerales($idHistorialClinico, $idDatoReferencia, $idEstablecimiento);
        $row = @pg_fetch_array($consulta);
-       
-       
+
+
         $nombre_establecimiento = $row['nombre_establecimiento'];
         $procedencia            = $row['procedencia'];
         $servicio               = $row['servicio'];
@@ -435,17 +435,17 @@ if ( $NroRegistros==""){
         $numero_expediente      = $row['numero_expediente'];
         $nombre_paciente        = $row['nombre_paciente'];
         $fecha_solicitud        = $row['fecha_solicitud'];
-        
-        
+
+
         //  DATOS GENERALES
-        
+
         $imprimir = "<br> <form name='frmDatos'>
             <div class='table-responsive' style='width: 80%;'>
                 <table width='70%' border='0' class='table table-hover table-bordered table-condensed table-white'>
 			<thead>
                         <tr><td colspan='4' background-color='white'>";
         $imprimir.='<a href="pdfOrd_x_id.php?idexpediente='.$idexpediente.'&idsolicitud='.$idsolicitud.'&idHistorialClinico='.$idHistorialClinico.'&idDatoReferencia='.$idDatoReferencia.'&IdEstablecimiento='.$idEstablecimiento.'&subservicio='.$subservicio.'&title=\'PDF\'" target="_blank"><img align="right" src="../../../Imagenes/pdf2.png" title="Exportar a PDF" alt="Exportar a PDF" style="padding-right:5px"></a></td></tr>';
-        
+
         $imprimir.="<tr>
                                             <th colspan='4' align='center' style='background-color: #428bca; color: #ffffff'>
                                                     <h3>  <center>  <strong>DATOS SOLICITUD</strong>   </center>  </h3></th>
@@ -466,7 +466,7 @@ if ( $NroRegistros==""){
 			</tr>
 		        <tr>
 				<td>Procedencia</td>
-				<td colspan='1'>" . $procedencia . " 
+				<td colspan='1'>" . $procedencia . "
                         </tr>
                         <tr>
                                 <td>Origen</td>
@@ -476,7 +476,7 @@ if ( $NroRegistros==""){
 				<td>M&eacute;dico</td>
 				<td colspan='3'>" . $nombre_empleado . "
 			</tr>
-                      
+
                         <tr>
                                 <td>Fecha Recepción</td>
                                 <td colspan='3'>" . $fecha_solicitud . "</td>
@@ -484,16 +484,16 @@ if ( $NroRegistros==""){
                 </tbody>
             </table>
         </div>";
-        
+
         echo $imprimir;
-        
-        
-       
-       /* 
+
+
+
+       /*
         * Impresion de Resutlados
         */
         $print = '';
-        
+
         $print .= MuestrasRechazadas($resultgetExamnResult['RM']);
 
         if (count($resultgetExamnResult['RC']) > 0) {
@@ -519,10 +519,10 @@ if ( $NroRegistros==""){
                                         </div>
                                     </div>*/
                // <div class="panel panel-success">...</div>
-                
-               
-                
-                
+
+
+
+
                 /*$print.= "<div class='panel-heading mouse-pointer' role='tab' id='heading".$area['codigo']."' data-toggle='collapse' data-target='#".$area['codigo']."' ".$aria."-expanded='false' aria-controls='".$area.['codigo']."'>
                                             <h4 class='panel-title'>
                                                 ".$area['nombre']."
@@ -531,7 +531,7 @@ if ( $NroRegistros==""){
                                         <div id='".$area['codigo']."' class='panel-collapse collapse in' role='tabpanel' aria-labelledby='heading-".$area['codigo']."'>
                                             <div class='panel-body'> </div>
                                         </div>";*/
-                
+
                $print.= "<div class='panel panel-info'>
                                         <div class='panel-heading mouse-pointer' role='tab' id='heading-URI' data-toggle='collapse' >
                                             <h4 class='panel-title' style='text-align:left'>
@@ -539,27 +539,27 @@ if ( $NroRegistros==""){
                                             </h4>
                                         </div>
                         </div>";
-                 
+
                 $arrayPlantillas= ['A','B','C','D','E'] ;
                 foreach ($arrayPlantillas as $pType) {
                     if(array_key_exists($pType, $area['plantillas'])) {
                         $print .= bodyLayout($area, $pType);
                     }
                 }
-            }    
+            }
         } else {
           //  $print = 'Los examenes no han sido procesados aun...';
              {
                  $print = " <table > <tr><td colspan='11'><span style='color: #575757;'>Los examenes no han sido procesados aun...</span></td></tr></tbody></table></div>";
             }
         }
-        
-        
+
+
         echo $print;
         break;
     case 4:
 
-       
+
         break;
     case 5://LLENANDO COMBO DE Examenes
         $rslts = '';
@@ -594,7 +594,7 @@ if ( $NroRegistros==""){
         $rslts .= '</select>';
         echo $rslts;
         break;
-        
+
     case 7:// Llenar combo Subservicio
         $rslts = '';
         $IdServ = $_POST['IdServicio'];
@@ -613,10 +613,10 @@ if ( $NroRegistros==""){
 
 
 /**********************************
- 
- 
+
+
 /*
- * funciones array 
+ * funciones array
  */
 
  function getExamnResult($idHistorialClinico, $idDatoReferencia, $idEstablecimiento) {
@@ -626,11 +626,11 @@ if ( $NroRegistros==""){
         if($idHistorialClinico === null || $idHistorialClinico === '') {
             $idHistorialClinico = 0;
         }
-        
+
         if($idDatoReferencia === null || $idDatoReferencia === '') {
             $idDatoReferencia = 0;
         }
-        
+
         $result = $objdatos->obtenerResultadoSolicitudExamen($idHistorialClinico, $idDatoReferencia, $idEstablecimiento);
         if($resultados = pg_fetch_all($result)) {
             $result = array();
@@ -673,30 +673,30 @@ if ( $NroRegistros==""){
 
             return $result;
         }
-        
+
     }
 
- 
-    
-    function getDatosGenerales($idHistorialClinico, $idDatoReferencia, $idEstablecimiento) 
+
+
+    function getDatosGenerales($idHistorialClinico, $idDatoReferencia, $idEstablecimiento)
     {
        // $em = $this->container->get('doctrine')->getManager();
        //$datosGenerales = $em->getRepository('MinsalSeguimientoBundle:SecSolicitudestudios')->obtenerDatosGenerales($idHistorialClinico, $idDatoReferencia, $idEstablecimiento);
-       
-        
+
+
         // ¿ obtenerDatosGenerales ??
         $objdatos = new clsReporteResultados;
         $datosGenerales= $objdatos->obtenerDatosGenerales($idHistorialClinico, $idDatoReferencia, $idEstablecimiento);
 
-        
-        
+
+
         return count($datosGenerales) > 0 ? $datosGenerales[0] : null;
     }
 
-    
-    
-    
-    
+
+
+
+
      function addLayoutToArea($plantillas, $newPlantilla, $row) {
 if( ! isset($plantillas[ $newPlantilla[1] ]) )
     {
@@ -904,10 +904,10 @@ return $plantillas;
 
         return $elements;
     }
-    
-    
-    
-    
+
+
+
+
 
      function addSubElementToElement($subelements, $newSubelement) {
         if( ! isset($subelements[ $newSubelement[1] ]) )
@@ -961,10 +961,10 @@ return $plantillas;
         return $procedures;
     }
 
-    
-    
-    
-    
+
+
+
+
     function addBacterToExamn($bacters, $newBacter, $row) {
         if( ! isset($bacters[ $newBacter[1] ]) )
             {
@@ -994,9 +994,9 @@ return $plantillas;
         return $bacters;
     }
 
-    
-    
-    
+
+
+
     function addCardToBacter($cards, $newCards, $row) {
         if( ! isset($cards[ $newCards[1] ]) )
             {
@@ -1023,10 +1023,10 @@ return $plantillas;
         return $cards;
     }
 
-    
-    
-    
-    
+
+
+
+
     function addAntibioticToCard($antibiotics, $newAntibiotic) {
         if( ! isset($antibiotics[ $newAntibiotic[1] ]) ){
 $antibiotics[ $newAntibiotic[1] ] = array(
@@ -1041,9 +1041,9 @@ $antibiotics[ $newAntibiotic[1] ] = array(
 
         return $antibiotics;
     }
-    
-    
-    
+
+
+
     // funciones otras
 function bodyLayout($area, $pType) {
     $html = '';
@@ -1067,11 +1067,11 @@ function bodyLayout($area, $pType) {
 
     return $html;
 }
-    
+
 function headerLayout($examen, $examStatus) {
     $header="";
     //$header.=  "headerLayout";
-    
+
     $header.=  "
             <div class='panel panel-primary'>
                 <div class='panel-heading'>
@@ -1083,7 +1083,7 @@ function headerLayout($examen, $examStatus) {
                             <div class='col-md-2 col-sm-2'>
                                 Estado: <strong>".$examen['nombre_estado_detalle']."</strong>
                             </div>";
-    
+
     if($examStatus === 'RC') {
         $header.= "
                             <div class='col-md-3 col-sm-3'>
@@ -1096,7 +1096,7 @@ function headerLayout($examen, $examStatus) {
                                 Urgente: <strong>".$examen['resultadoFinal']['urgente']."</strong>
                             </div>";
     }
-    
+
     $header.= "        </div>
                     </h5>
                 </div>";
@@ -1114,8 +1114,8 @@ function  MuestrasRechazadas($rm) {
                         </div>";
     $html.= "<div class='panel panel-primary'>
                                         <div class='panel-heading mouse-pointer' role='tab' id='heading- data-toggle='collapse' >
-                                            
-                                        
+
+
                         </div>";
     $html.="<table class='table table-hover  table-condensed table-white' >
                 <thead>
@@ -1126,7 +1126,7 @@ function  MuestrasRechazadas($rm) {
                     </tr>
                 </thead>
                 <tbody>";
-    
+
     if(count($rm) > 0) {
         foreach($rm as $examen) {
             $html.= "<tr>
@@ -1140,17 +1140,17 @@ function  MuestrasRechazadas($rm) {
                     <td>No existen examenes rechazados...</td>
                 </tr>";
     }
-    
+
     $html.= "</tbody>
         </table></div>";
-          
-    return $html;                            
+
+    return $html;
 }
 
 function plantillas($examen, $pType){
  //  if ($pType!='C'){
     $plantilla = 'plantilla'.$pType;
-    
+
     return $plantilla($examen);
  //  }
 }
@@ -1178,7 +1178,7 @@ function plantillaA($examen) {
        $html.= "<td>".$examen['resultadoFinal']['resultado']."</td>";
         // $html.= "<td>".$examen['resultadoFinal']['nombre_posible_resultado']."</td>";
     }
-    
+
     $html.= "
                     <td>".$examen['resultadoFinal']['unidad']."</td>
                     <td>".$examen['resultadoFinal']['rango_inicio']."-".$examen['resultadoFinal']['rango_fin']."</td>
@@ -1205,14 +1205,14 @@ function plantillaB($examen) {
                 </thead>
                 <tbody>";
 
-    foreach ($examen['elementos'] as $elemento){               
+    foreach ($examen['elementos'] as $elemento){
         $html.= "<tr>";
-        
+
         if ($examen['codigo'] === 'H50' ){
             $html.= "
                  <td  colspan='2' class='pb-element'>".$elemento['nombre']."</td>
                     <td>";
-            
+
             if($elemento['id_posible_resultado'] !== null || $elemento['id_posible_resultado'] !== '') {
                 $html.= " ".$elemento['nombre_posible_resultado']."";
                 $html.="    ".$elemento['resultado']."  ";
@@ -1226,15 +1226,15 @@ function plantillaB($examen) {
         } else {
             $html.= '<td colspan="6" class="pb-element">'.$elemento['nombre'].'</td>';
         }
-        
+
         $html.= '</tr>';
-        
+
         foreach($elemento['subelementos'] as $subelemento) {
             $html.= '<tr>
                     <td></td>
                     <td class="pb-subelement">'.$subelemento['nombre'].'</td>
                     <td>';
-            
+
             if($subelemento['id_posible_resultado'] !== null || $subelemento['id_posible_resultado'] !== '') {
               // $html.= $subelemento['nombre_posible_resultado'];
               if ($subelemento['id_posible_resultado']==null){
@@ -1243,7 +1243,7 @@ function plantillaB($examen) {
               else{
                  $html.= $subelemento['nombre_posible_resultado'];
               }
-                
+
             } else {
                 $html.= "".$subelemento['resultado']."";
                  //$html.= $subelemento['nombre_posible_resultado'];
@@ -1259,14 +1259,14 @@ function plantillaB($examen) {
                 $html.= '<td>'.$subelemento['rango_inicio'].' - '.$subelemento['rango_fin'].'</td>
                 <td></td>';
             }
-            
+
             $html.= '</tr>';
         }
     }
-    
+
     $html.= '</body>
             </table>';
-    
+
     return $html;
 }
 // PLANTILLA C
@@ -1280,11 +1280,11 @@ function plantillaC($examen) {
                                  $html.="   ". $examen['resultadoFinal']['nombre_posible_resultado']."   ";
                                 } else {
                                           $html.=  "    ".$examen['resultadoFinal']['resultado']."   ";
-                                                    
+
                                 }
                $html.= "</strong>
                 </div>";
-               
+
      if( $examen['resultadoFinal']['id_observacion'] !==(null) ){
              $html.="<div class='col-md-12 col-sm-12'>
                     Observacion: <strong>".$examen['resultadoFinal']['nombre_observacion']."</strong>
@@ -1367,7 +1367,7 @@ function plantillaD($examen) {
                 }
             $html.=" </tbody>
                     </table>";
-   
+
    return $html;
 }
 //PLANTILLA E
@@ -1409,9 +1409,9 @@ $html="";
                     Observaci&oacute;n: <strong>". $examen['resultadoFinal']['observacion']."</strong>
                 </div>
             </div>";
-        
 
-            
+
+
      return $html;
 }
 ?>

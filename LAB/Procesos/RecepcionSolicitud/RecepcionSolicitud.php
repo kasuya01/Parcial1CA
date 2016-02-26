@@ -25,10 +25,10 @@ $ban = 0;
 $pos = 0;
 //actualiza los datos del empleados
 $objdatos = new clsRecepcionSolicitud;
-$consulta = $objdatos->BuscarSolicitudes($idexpediente, $Nfechacita, $lugar, $idEstablecimiento);
+$consulta = $objdatos->BuscarSolicitudes($idexpediente, $Nfechacita, $lugar, $idEstablecimiento, $idsolicitud);
 
-$NroRegistros = $objdatos->NumeroDeRegistros($idexpediente, $Nfechacita, $lugar, $idEstablecimiento);
-$pil = $objdatos->Piloto($idexpediente, $Nfechacita, $lugar, $idEstablecimiento);
+$NroRegistros = $objdatos->NumeroDeRegistros($idexpediente, $Nfechacita, $lugar, $idEstablecimiento, $idsolicitud);
+$pil = $objdatos->Piloto($idexpediente, $Nfechacita, $lugar, $idEstablecimiento, $idsolicitud);
 
 while ($piloto = pg_fetch_array($pil)) {
     $arraypiloto[$j] = $piloto[0];

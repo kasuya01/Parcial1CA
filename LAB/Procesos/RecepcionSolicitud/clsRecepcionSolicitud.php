@@ -63,7 +63,7 @@ order by posible_observacion;";
         return $dt;
     }
 
-    function BuscarSolicitudes($idexpediente, $fechacita, $lugar, $idEstablecimiento) {
+    function BuscarSolicitudes($idexpediente, $fechacita, $lugar, $idEstablecimiento, $idsolicitud) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
                 $query = "SELECT t01.id AS idsolicitudestudio
@@ -75,7 +75,7 @@ order by posible_observacion;";
                       INNER JOIN ctl_atencion                    t06 ON (t06.id = t05.id_atencion)
                       LEFT JOIN mnt_dato_referencia              t10 ON (t10.id = t01.id_dato_referencia)
                       LEFT JOIN mnt_expediente_referido          t11 ON (t11.id = t10.id_expediente_referido)
-                      WHERE (t04.numero = '$idexpediente' OR t11.numero='$idexpediente') AND t05.idestado = 'D' AND t02.fecha = '$fechacita' AND t01.id_establecimiento = $lugar
+                      WHERE (t04.numero = '$idexpediente' OR t11.numero='$idexpediente') and t01.id=$idsolicitud AND t05.idestado = 'D' AND t02.fecha = '$fechacita' AND t01.id_establecimiento = $lugar
                             AND (t03.idestablecimiento = $idEstablecimiento OR t11.id_establecimiento = $idEstablecimiento) AND t06.codigo_busqueda = 'DCOLAB'";
             //echo $query;
             
@@ -177,7 +177,7 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
         }
     }
 
-    function NumeroDeRegistros($idexpediente, $fechacita, $lugar, $idEstablecimiento) {
+    function NumeroDeRegistros($idexpediente, $fechacita, $lugar, $idEstablecimiento, $idsolicitud) {
         //creamos el objeto $con a partir de la clase ConexionBD
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
@@ -192,7 +192,7 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
                       LEFT JOIN mnt_dato_referencia              t10 ON (t10.id = t01.id_dato_referencia)
                       LEFT JOIN mnt_expediente_referido          t11 ON (t11.id = t10.id_expediente_referido)
 
-                      WHERE (t04.numero = '$idexpediente' OR t11.numero='$idexpediente') AND t05.idestado = 'D' AND t02.fecha = '$fechacita' AND t01.id_establecimiento = $lugar
+                      WHERE (t04.numero = '$idexpediente' OR t11.numero='$idexpediente') AND t01.id=$idsolicitud AND t05.idestado = 'D' AND t02.fecha = '$fechacita' AND t01.id_establecimiento = $lugar
                             AND (t03.idestablecimiento = $idEstablecimiento OR t11.id_establecimiento = $idEstablecimiento) AND t06.codigo_busqueda = 'DCOLAB'";
             $numreg = pg_num_rows(pg_query($query));
             // echo $numreg;
@@ -663,7 +663,7 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
         }
     }
 
-    function Piloto($idexpediente, $fechacita, $lugar, $idEstablecimiento) {
+    function Piloto($idexpediente, $fechacita, $lugar, $idEstablecimiento, $idsolicitud) {
         //creamos el objeto $con a partir de la clase ConexionBD
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
@@ -674,7 +674,7 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
                       INNER JOIN sec_historial_clinico           t03 ON (t03.id = t01.id_historial_clinico)
                       INNER JOIN mnt_expediente                  t04 ON (t04.id = t01.id_expediente)
                       INNER JOIN ctl_estado_servicio_diagnostico t05 ON (t05.id = t01.estado AND t05.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-                      WHERE t04.numero = '$idexpediente' AND t05.idestado = 'D' AND t02.fecha='$fechacita' AND t01.id_establecimiento = $lugar
+                      WHERE t04.numero = '$idexpediente' AND t01.id=$idsolicitud AND t05.idestado = 'D' AND t02.fecha='$fechacita' AND t01.id_establecimiento = $lugar
                             AND t03.idestablecimiento = $idEstablecimiento";
             $result = @pg_query($query);
             if (!$result)

@@ -49,7 +49,7 @@ function slugToCamelCase(string) {
    });
 }
 
-//Declaracion de variables 
+//Declaracion de variables
 var modal_elements = [];
 
 //Función para pedir el formato de fecha deseado
@@ -587,7 +587,7 @@ function setFullCalendarOptions(element) {
                //alert('There was an error while fetching Google Calendar!');
             }
          }
-      ] 
+      ]
    };
 
    return newOptions;
@@ -654,3 +654,69 @@ function appendEmptyOption(id) {
         });
     }
 }
+
+/*
+ *  setDataTables
+ *      Función que inicializa las tablas que tengan la classe data-tables
+ *      con el plugin data-tables
+ *
+ *  Documentación:
+ *      http://eternicode.github.io/bootstrap-datepicker/
+ */
+function setDataTables() {
+    jQuery('body table[data-table-enabled="true"]').each(function() {
+        initializeDataTable(jQuery(this));
+    });
+}
+
+function initializeDataTable(element) {
+    var options = setDataTableOptions(element);
+
+    element.DataTable(options);
+}
+
+function setDataTableOptions(element) {
+    var newOptions = {
+            "language": {
+                decimal:        "",
+                emptyTable:     "Sin resultados para mostrar...",
+                info:           "Mostrando _START_ a _END_ de _TOTAL_ resultados",
+                infoEmpty:      "Mostrando 0 a 0 de 0 resultados",
+                infoFiltered:   "(filtrado de _MAX_ resultados en total)",
+                infoPostFix:    "",
+                thousands:      ",",
+                lengthMenu:     "Mostrar _MENU_ resultados",
+                loadingRecords: "Cargando...",
+                processing:     "Procesando...",
+                search:         "Buscar en la Tabla:",
+                zeroRecords:    "No se encontraron coincidencias",
+                paginate: {
+                    first:      "Primero",
+                    last:       "Último",
+                    next:       "Siguiente",
+                    previous:   "Anterior"
+                },
+                aria: {
+                    sortAscending:  ": activar para ordenar la columna ascendentemente",
+                    sortDescending: ": activar para ordenar la columna descendentemente"
+                }
+            },
+            "autoWidth": true
+        };
+
+    var attr = element.attr();
+
+    jQuery.each(attr, function(key, value) {
+        if(key.match('^data-table-')) {
+            var option = slugToCamelCase(key.replace('data-date-',''));
+
+            newOptions[option] = isNaN(value) ? value : parseInt(value);
+        }
+    });
+
+    return newOptions;
+}
+
+jQuery(document).ready(function($) {
+    setDataTables();
+});

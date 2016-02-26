@@ -22,6 +22,6 @@ echo '<table width="100%" border="0" bgcolor="#FFFFFF">
 			<script type="text/javascript">new XmlMenu("id_xm", "../Menu/xm-data231.xml")</script>
 			<!-- End Required XML Menu markup for body tag -->
 		</td></tr></table>';
-
+include_once ('index.php');
 
 ?>
