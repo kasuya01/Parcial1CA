@@ -34,7 +34,7 @@ if (isset($_SESSION['Correlativo'])) {
     $fechaCita        = $_POST['fechaCita'] ? $_POST['fechaCita'] : '';
     $numeroExpediente = $_POST['numeroExpediente'] ? $_POST['numeroExpediente'] : '';
     $idExpediente     = $_POST['idExpediente'] ? $_POST['idExpediente'] : '';
-     
+
 
     ?>
     <html>
@@ -49,6 +49,7 @@ if (isset($_SESSION['Correlativo'])) {
             <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
             <script language="JavaScript" >
                 jQuery(document).ready(function($) {
+                    BuscarDatos();
                     var idSolicitud = '<?php echo $idSolicitud; ?>';
                     var fechaCita = '<?php echo $fechaCita; ?>';
                     var numeroExpediente = '<?php echo $numeroExpediente; ?>';
@@ -125,16 +126,16 @@ if (isset($_SESSION['Correlativo'])) {
                                                 <td>'+val.tiposolicitud+'</td>\
                                             </tr>';
                                 }
-                                
+
                             });
                         } else {
                             html = html + '<tr><td colspan="6" style="color:#888888; font-weit">No se encontraron solicitudes para mostrar...</td></tr>';
                             k=1;
                         }
-                        
+
                         if(k==0)
                                 {
-                                   html = html + '<tr><td colspan="6" style="color:#888888; font-weit">No se encontraron solicitudes para mostrar...</td></tr>'; 
+                                   html = html + '<tr><td colspan="6" style="color:#888888; font-weit">No se encontraron solicitudes para mostrar...</td></tr>';
                                 }
                         html = html + '     </tbody>\
                                         </table>\
@@ -168,7 +169,7 @@ if (isset($_SESSION['Correlativo'])) {
             if ($nivel == 6) {
                 include_once ('../../../PaginaPrincipal/index_laboratorio62.php');}
             if ($nivel == 7) {
-                include_once ('../../../PaginaPrincipal/index_laboratorio72.php'); } 
+                include_once ('../../../PaginaPrincipal/index_laboratorio72.php'); }
             ?><br>
             <table align="center" width="90%" >
                 <tr>
@@ -239,17 +240,17 @@ if (isset($_SESSION['Correlativo'])) {
                                             <input type="button" name="btnBuscar" value="Buscar Solicitud" onClick="BuscarDatos();" />
                                         </td>
                                     </tr> -->
-                                    
+
                                     <tr>
                                              <td class="StormyWeatherDataTD" colspan="4" align="right">
-                        
+
                                                 <button type='button' align="center" class='btn btn-primary' id='buscarsolicitud' onclick='BuscarDatos(); '><span class='glyphicon glyphicon-search'></span> Buscar Solicitudes</button>
                                                 <button type='button' align="center" class='btn btn-primary' id='nuevabusqueda' onclick="window.location.replace('Proc_RecepcionSolicitud.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
-                                                                                                                                                                                    
+
                                             </td>
                                     </tr>
-                                    
-                                    
+
+
                                 </table>
                             </form>
                         </div>
@@ -263,7 +264,7 @@ if (isset($_SESSION['Correlativo'])) {
                         </div>
                     </TD>
                 </TR>
-        </body> 
+        </body>
     </html>
     <?php
 } else {

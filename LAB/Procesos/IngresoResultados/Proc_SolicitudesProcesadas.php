@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 if (isset($_SESSION['Correlativo'])) {
     $nivel = $_SESSION['NIVEL'];
@@ -37,7 +37,7 @@ if (isset($_SESSION['Correlativo'])) {
             <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
             <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
             <title>Ingreso de Resultados</title>
-            
+
             <?php include_once $ROOT_PATH."/public/js.php";?>
              <?php include_once $ROOT_PATH."/public/css.php";?>
             <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script>
@@ -70,7 +70,7 @@ if (isset($_SESSION['Correlativo'])) {
                    // } else {
                         jQuery('#divBusqueda').empty();
                         jQuery('#divBusqueda').append('<center><img id="wait" src="<?php //echo $base_url; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" style="color:#888888;font-weight: bold;">Buscando...</div></center>');
-                        
+
                        setTimeout(function() {
                        jQuery('#divBusqueda').empty();
                             SolicitudesPorArea();
@@ -101,6 +101,7 @@ if (isset($_SESSION['Correlativo'])) {
             <?php include_once $ROOT_PATH."/public/js.php";?>
             <script  type="text/javascript">
                 $(document).ready(function() {
+                    MostrarSolicitudes();
                 $("#cmbEstablecimiento").select2({
                  allowClear: true,
                  dropdownAutoWidth: true
@@ -207,7 +208,7 @@ if (isset($_SESSION['Correlativo'])) {
                                                        LEFT JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab.id_servicio_externo_estab)
                                                        LEFT JOIN mnt_servicio_externo ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo)
                                                        ORDER by ctl_modalidad.nombre,ctl_area_atencion.nombre ";
-                                      
+
                                         $resultado = pg_query($consulta);
 
                                         //por cada registro encontrado en la tabla me genera un <option>

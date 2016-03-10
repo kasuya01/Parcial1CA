@@ -8,7 +8,6 @@ $area  = $_SESSION['Idarea'];
 $corr  = $_SESSION['Correlativo'];
 $cod   = $_SESSION['IdEmpleado'];
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
-echo $nivel;
 include_once $ROOT_PATH.'/public/css.php';
 // Creamos un objeto Conexion, Pacie
 $Conexion = new ConexionBD;
@@ -28,5 +27,5 @@ echo '<!-- Start Required XML Menu markup for head tag -->
 		</td>
             </tr>
         </table>';
-include_once ('index.php');
+//include_once ('index.php');
 ?>
