@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menuinfo type="horz" 
-         
-          baseOffsetY="-1" 
-          subOffsetX="-1" 
-         
-          delaySubClose="500" 
-         
+<menuinfo type="horz"
+
+          baseOffsetY="-1"
+          subOffsetX="-1"
+
+          delaySubClose="500"
+
           shadowOffset="1"
           overlapHack="true">
    <menu>
@@ -15,8 +15,8 @@
          <!--<item labelText="Recepción de Solicitudes en Área" url="../LAB/Procesos/SolicitudesPorArea/Proc_SolicitudesPorArea.php"/>-->
          <item labelText="Ingreso de Resultados" url="../LAB/Procesos/IngresoResultados/Proc_SolicitudesProcesadas.php"/>
          <!--item labelText="Ingreso de Resultados Pendientes" url="../LAB/Procesos/SolicitudesPendientes/Proc_SolicitudesProcesadasPendientes.php"/-->
-         <!--<item labelText="Rechazar Muestras" url="../LAB/Procesos/RMAutomatizada/Proc_RMAutomatizada.php"/>
-         <item labelText="Reactivar Muestras Rechazadas" url="../LAB/Procesos/MuestrasRechazadas/Proc_MuestrasRechazadas.php"/>-->
+         <item labelText="Rechazar Muestras" url="../LAB/Procesos/RMAutomatizada/Proc_RMAutomatizada.php"/>
+         <item labelText="Reactivar Muestras Rechazadas" url="../LAB/Procesos/MuestrasRechazadas/Proc_MuestrasRechazadas.php"/>
          <!--<item labelText="Muestras Pendientes de Procesar" url="../LAB/Procesos/MuestrasPendientes/Proc_MuestrasPendientes.php"/>-->
          <item labelText="Eliminar Resultado" url="../LAB/Procesos/EliminarResultados/EliminarResultado.php"/>
          <item labelText="Agregar Examen a Solicitud" url="../LAB/Procesos/AgregarExamen/AgregarExamen.php"/>
@@ -31,7 +31,7 @@
 	    <item labelText="Procedimientos de Exámenes (Plantilla E)" url="../LAB/Mantenimientos/Lab_Procedimientos/MntProcedimientosExamen.php"/>
 	    <item labelText="Datos Fijos de resultados de Exámenes (Plantilla A)" url="../LAB/Mantenimientos/MntDatosFijosResultadosExamen/MntDatosFijosResultadosExamen.php"/>
 	    <item labelText="Elementos de Exámenes (Plantilla B)" url="../LAB/Mantenimientos/MntElementosExamen/MntElementosExamen.php"/>
-	</menu>	
+	</menu>
 	<menu labelText="MUESTRAS">
 	    <!--<item labelText="Tipos de Muestra" url="../LAB/Mantenimientos/Lab_TipoMuestra/MntTipoMuestra.php"/>
 	    <item labelText="Origenes de Muestra" url="../LAB/Mantenimientos/Mnt_OrigenMuestra/MntOrigenMuestra.php"/>-->
@@ -48,9 +48,9 @@
 	</menu>
         <menu labelText="CATÁLOGOS">
 	    <item labelText="Métodologias" url="../LAB/Mantenimientos/ctl_metodologias/MntMetodologia.php"/>
-	    <item labelText="Posibles Resultados" url="../LAB/Mantenimientos/ctl_PosResultado/MntPosresultado.php"/>				
+	    <item labelText="Posibles Resultados" url="../LAB/Mantenimientos/ctl_PosResultado/MntPosresultado.php"/>
 	</menu>-->
-    </menu>  
+    </menu>
     <sep/>
     <menu labelText="CONSULTAS">
 	<item labelText="Solicitudes por Servicio" url= "../LAB/Consultas_Reportes/Rpt_SolicitudPorServicioPeriodo/SolicitudPorServicioPeriodo.php"/>
@@ -67,7 +67,7 @@
 	<item labelText="Tabulador Mensual" url= "../LAB/Reportes/ReporteTabulador/ReporteTabuladores.php"/>
         <item labelText="Reporte Resultados" url= "../LAB/Reportes/Reporte_Resultados/ReporteResultados.php"/>
     </menu>
-    <sep/> 
+    <sep/>
     <menu labelText="CITAS">
 	<item labelText="Citas de Laboratorio" url="../LAB/Procesos/CitasServicio/busquedaexp.php"/>
     </menu>
