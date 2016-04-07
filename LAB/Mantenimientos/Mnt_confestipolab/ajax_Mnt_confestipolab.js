@@ -46,9 +46,7 @@ function getconfestipolab(funct) {
     });
 }
 
-function updateRegisters() {
-    var idarea = document.getElementById('cmb-area').value;
-
+function insertRegisters() {
     var form=[];
     if (jQuery('form#lab-form').serializeArray().length!=0){
        form=jQuery('form#lab-form').serializeArray();
@@ -61,7 +59,7 @@ function updateRegisters() {
         type: 'post',
         dataType: 'json',
         async: false,
-        data: {accion: 'updateRegisters', parameters: { idarea: idarea, form: form } },
+        data: {accion: 'updateRegisters', parameters: { form: form } },
         success: function(data) {
             if(data.status)
                 alert('Registros Ingresados Exitosamente...');
@@ -69,4 +67,8 @@ function updateRegisters() {
                 alert('Error al procesar los registros...');
         }
     });
+}
+
+function LimpiarCampos(){
+    $("[id^=cmbEstablecimiento]").select2("val", "");
 }

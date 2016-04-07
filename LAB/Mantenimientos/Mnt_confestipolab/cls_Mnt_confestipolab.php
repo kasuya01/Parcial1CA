@@ -7,13 +7,14 @@ class cls_Mnt_confestipolab {
     function cls_Mnt_confestipolab() {
     }
 
-    function getconfestipolab($idarea, $lugar) {
+    function getconfestipolab() {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
         	$query = "select distinct t2.id, t2.nombre
                     from ctl_establecimiento	t1
                     join ctl_tipo_establecimiento	t2 on (t2.id=t1.id_tipo_establecimiento)
                     join lab_establecimiento_tipo_laboratorio	t3 on (t1.id=t3.id_establecimiento)
+                    where t1.activo=true
                     order by  nombre;";
 
 			$result = @pg_query($query);
@@ -23,48 +24,98 @@ class cls_Mnt_confestipolab {
                 return $result;
         }
     }
+    function getconfestipolabconf($id) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+        	$query = "select t1.*, t2.id as idestab, t2.id_tipo_establecimiento
+                    from lab_conf_establecimiento_tipo_laboratorio 	t1
+                    join ctl_establecimiento			t2 on (t2.id=t1.id_establecimiento)
+                    where t1.activo=true
+                    and (fecha_fin > current_date or fecha_fin is null)
+                    and id_tipo_establecimiento=$id;";
+                    echo $query;
+			$result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
+    function getconfestab($idt) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+        	$query = "SELECT t1.id as idestab, t1.nombre as nombrestab, t3.id as idestipolab
+                    from ctl_establecimiento	t1
+                    join ctl_tipo_establecimiento	t2 on (t2.id=t1.id_tipo_establecimiento)
+                    join lab_establecimiento_tipo_laboratorio	t3 on (t1.id=t3.id_establecimiento)
+                    where t1.activo=true
+                    and id_tipo_establecimiento=$idt
+                    and configurado is null
+                    order by  t1.nombre;";
 
-    function setconfestipolab($idarea, $lugar, $elementos, $usuario) {
+			$result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
+
+function setfechafin(){
+    $con = new ConexionBD;
+    if ($con->conectar() == true) {
+        $query0="UPDATE lab_conf_establecimiento_tipo_laboratorio
+            SET fecha_fin=current_date,
+            activo=false
+            WHERE fecha_fin is null;";
+        $result0=@pg_query($query0);
+        if (!$result0)
+            return false;
+        else
+            return $result0;
+    }
+}
+
+
+
+function setconfestipolab($lugar, $elementos, $usuario) {
     	$con = new ConexionBD;
 
         if ($con->conectar() == true) {
 
-        if(isset($elementos['update'])) {
-            $update_exam = implode(",",$elementos['update']);
-        } else {
-           $update_exam = "";
-        }
-
-            if($update_exam !== "") {
-                $query1 = "UPDATE mnt_area_examen_establecimiento SET activo = true WHERE id_examen_servicio_diagnostico IN ($update_exam) AND id_area_servicio_diagnostico = $idarea AND id_establecimiento = $lugar;
-                           UPDATE mnt_area_examen_establecimiento SET activo = false WHERE id_examen_servicio_diagnostico NOT IN ($update_exam) AND id_area_servicio_diagnostico = $idarea AND id_establecimiento = $lugar;";
-            } else {
-                $query1 = "UPDATE mnt_area_examen_establecimiento SET activo = false WHERE id_area_servicio_diagnostico = $idarea AND id_establecimiento = $lugar";
-            }
-
-            $result1 = @pg_query($query1);
-
-            if(isset($elementos['insert'])) {
-                if(count($elementos['insert']) > 0) {
-                    $query2 = "";
-                    foreach ($elementos['insert'] as $key => $idexam) {
-                            $query2 = $query2."INSERT INTO mnt_area_examen_establecimiento(id_area_servicio_diagnostico, id_examen_servicio_diagnostico, id_establecimiento, id_usuario_reg, fecha_hora_reg, activo) VALUES($idarea, $idexam, $lugar, $usuario, NOW(), true);";
-                    }
-
-                    $result2 = @pg_query($query2);
-
-                    if (!$result1 || !$result2)
-                            return false;
-                        else
-                            return $result1;
-
-                } else {
-                    if (!$result1)
-                            return false;
-                        else
-                            return $result1;
+            $query1="SELECT * from lab_conf_establecimiento_tipo_laboratorio;";
+            $result1=@pg_query($query1);
+            $b=0;
+            while ($row1= pg_fetch_array($result1)) {
+                // var_dump('Viene de pantalla: '.$elementos[0].' - '.$elementos[1]);
+                // var_dump('Viene de BD: '.$row1['id_establecimiento'].' - '.$row1['id_establecimiento_tipo_laboratorio']);
+                // var_dump($row1['id_establecimiento'].' - '.$elementos[0]);
+                // var_dump($row1['id_establecimiento_tipo_laboratorio'].' - '.$elementos[1].'----------');
+                if (($row1['id_establecimiento']==$elementos[0]) && ($row1['id_establecimiento_tipo_laboratorio']==$elementos[1])){
+                    $query2="UPDATE lab_conf_establecimiento_tipo_laboratorio
+                            SET fecha_fin=null,
+                            activo=true
+                            WHERE fecha_fin is not null
+                            AND id_establecimiento=$elementos[0]
+                            AND id_establecimiento_tipo_laboratorio=$elementos[1];";
+                    $b=1;
                 }
+
             }
+            if ($b==0){
+                $query2 = "INSERT INTO lab_conf_establecimiento_tipo_laboratorio (id_establecimiento, id_establecimiento_tipo_laboratorio, fecha_inicio, fecha_fin, activo)
+                VALUES ($elementos[0], $elementos[1],current_date, null, true);";
+            }
+            //for ($i=0;$i<count($elementos);$i++){
+
+
+             $result2 = @pg_query($query2);
+
+        // }
+        if (!$result2)
+            return false;
+        else
+            return $result2;
         }
     }
 }
