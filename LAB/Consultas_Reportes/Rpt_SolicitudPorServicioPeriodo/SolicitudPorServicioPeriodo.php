@@ -44,7 +44,14 @@ $nomtipo=$row[2];
 <script type="text/javascript" src="../../../calendarstructure/calendar-setup.js"></script>
 <?php include_once $ROOT_PATH.'/public/css.php';?>
 <?php include_once $ROOT_PATH.'/public/js.php';?>
-
+<script  type="text/javascript">
+                $(document).ready(function() {
+                $("#cmbEstablecimiento").select2({
+                 allowClear: true,
+                 dropdownAutoWidth: true
+             });
+        });
+</script>
  
 <script language="JavaScript" type="text/javascript">
     
@@ -122,9 +129,7 @@ function MostrarBusqueda()
 }
 
 function BuscarMedicos(idsubservicio){
-    
-        
- 	LlenarComboMedico(idsubservicio);
+    LlenarComboMedico(idsubservicio);
        
 }
 
@@ -169,135 +174,119 @@ if ($nivel == 7) {
 <div  id="divInicial" >
 <form>
 <p>&nbsp;</p>
-	<table align="center"  class="StormyWeatherFormTABLE" width="85%">
-          
-		<tr>
-			<td colspan="5" align="center" class="CobaltFieldCaptionTD">
-				<h3><strong>Consulta de Solicitudes por Sub-Servicio</strong></h3>
-			</td>
-		</tr>
-		<tr>		
-			<td class="StormyWeatherFieldCaptionTD" width="15%">Tipo Establecimiento</td>
-			<td class="StormyWeatherDataTD" width="18%">
-				<select name="cmbTipoEstab" id="cmbTipoEstab" style="width:375px" onChange="BuscarEstablecimiento(this.value)" class="form-control height"  >
-        				<option value="0" >Seleccione un Tipo de Establecimiento</option>
-					<?php
-				$db = new ConexionBD;
-				if($db->conectar()==true){
-					$consulta  = "SELECT id,nombre FROM ctl_tipo_establecimiento ORDER BY nombre";
-					$resultado = pg_query($consulta);
-					//por cada registro encontrado en la tabla me genera un <option>
-					while ($rows = pg_fetch_array($resultado)){
+	<table align="center"  class="StormyWeatherFormTABLE" width="67%">
+            <tr>
+        	<td colspan="5" align="center" class="CobaltFieldCaptionTD">
+                    <h3><strong>Consulta de Solicitudes por Sub-Servicio</strong></h3>
+		</td>
+            </tr>
+            <tr>		
+		<td class="StormyWeatherFieldCaptionTD" width="25%">Tipo Establecimiento</td>
+		<td class="StormyWeatherDataTD" width="30%">
+                    <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:443px" onChange="BuscarEstablecimiento(this.value)" class="form-control height">
+                        <option value="0" >Seleccione un Tipo de Establecimiento</option>
+                                    <?php
+                                        $db = new ConexionBD;
+                                        if($db->conectar()==true){
+                                            $consulta  = "SELECT id,nombre FROM ctl_tipo_establecimiento ORDER BY nombre";
+                                            $resultado = pg_query($consulta);
+                                            //por cada registro encontrado en la tabla me genera un <option>
+                                            while ($rows = pg_fetch_array($resultado)){
 						echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
-					}
+                                            }
 						//echo '<option value="'. $tipo .'" selected="selected">' .htmlentities($nomtipo). '</option>';
-                                                
-                                                
-				}
-			?>
-        			</select>
-			</td>
-        	<td class="StormyWeatherFieldCaptionTD" width="15%">Establecimiento</td>
-        	<td class="StormyWeatherDataTD" width="18%" >
-				<div id="divEstablecimiento">
-					<select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px" class="form-control height">
-						<option value="0" >Seleccione un Establecimiento</option>
-                                            <?php 
-                                                echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
-                                                include_once("../../../Conexion/ConexionBD.php");
-                                                $con = new ConexionBD;
-                                                if($con->conectar()==true){			  
-                                                        //$consulta  = "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$tipo' ORDER BY Nombre";
-                                                        $consulta  = "SELECT id,nombre FROM ctl_establecimiento ORDER BY nombre";
-                                                        $resultado = @pg_query($consulta);
-                                                        //por cada registro encontrado en la tabla me genera un <option>
-                                                        while ($rows = @pg_fetch_array($resultado)){
-                                                                echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]). '</option>';
-                                                        }
-                                                }
-				?>		
-						</select>
-			    </div>
-	        </td>
-        </tr>
-		<tr>	
-			<td class="StormyWeatherFieldCaptionTD" width="15%">Procedencia</td>
-			<td class="StormyWeatherDataTD" width="18%">
-				<select name="CmbServicio" id="CmbServicio" style="width:375px" onChange="BuscarServicio(this.value)" class="form-control height" >
-					<option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
-					<?php
-							$db = new ConexionBD;
-							if($db->conectar()==true){
-								$consulta  = "SELECT mnt_area_mod_estab.id as codigo ,CASE WHEN id_servicio_externo_estab IS NOT NULL THEN mnt_servicio_externo.abreviatura ||'-->'  || ctl_area_atencion.nombre
-                                                       ELSE 
-                                                              ctl_modalidad.nombre ||'-->' || ctl_area_atencion.nombre 
-                                                       END
-                                                       FROM mnt_area_mod_estab
-                                                       INNER JOIN  ctl_area_atencion  on  ctl_area_atencion.id = mnt_area_mod_estab.id_area_atencion
-                                                       --LEFT JOIN mnt_aten_area_mod_estab ON (ctl_area_atencion.id = mnt_aten_area_mod_estab.id_atencion) 
-                                                       INNER JOIN ctl_modalidad ON ctl_modalidad.id = mnt_area_mod_estab.id_modalidad_estab
-                                                       LEFT JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab.id_servicio_externo_estab) 
-                                                       LEFT JOIN mnt_servicio_externo ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo) 
-                                                       ORDER by ctl_modalidad.nombre,ctl_area_atencion.nombre";
-                                                                        
-								$resultado = pg_query($consulta);
-													
-										//por cada registro encontrado en la tabla me genera un <option>
-										while ($rows = pg_fetch_array($resultado)){
-											echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
-										}
-							}
-						?>
-                                                
-                                                
-                                              
-                </select>
-			</td>
-			<td class="StormyWeatherFieldCaptionTD" width="15%">Sub-Servicio</td>
-			<td class="StormyWeatherDataTD" width="18%">
-				<div id="divsubserv">
-					<select name="cmbSubServ" id="cmbSubServ" onChange="BuscarMedicos(this.value)" style="width:250px" class="form-control height">
-						<option value="0" selected="selected"> Seleccione un Servicio </option>
-					</select>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class="StormyWeatherFieldCaptionTD" width="15%" >Medicos</td>
-			<td  class="StormyWeatherDataTD"  width="18%" colspan="3">
-				<div id="divMedico">
-					<select name="cboMedicos" id="cboMedicos" 
-                                                style="width:250px" class="form-control height"> 
-						<option value="0">--Seleccione Un  Medico--</option>
-					</select>
-				</div>
-			</td> 
-		</tr>
-		<tr>
-			
-                        
-                        <td class="StormyWeatherFieldCaptionTD" width="19%">Fecha  Inicio</td>
-		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="28" name="txtfechainicio" id="txtfechainicio" style="width:250px" class="date form-control  height placeholder"  placeholder="aaaa-mm-dd" />
+                                        }
+		                	?>
+        	    </select>
 		</td>
-                        
-                
-                            <td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Final</td>
-		<td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="28"  name="txtfechafin" id="txtfechafin" style="width:250px" class="date form-control  height placeholder"  placeholder="aaaa-mm-dd" />
+                <td class="StormyWeatherFieldCaptionTD" width="20%">Establecimiento</td>
+                <td class="StormyWeatherDataTD" width="30%" >
+                    <div id="divEstablecimiento">
+			<select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:500px" cclass="js-example-basic-single">
+                            <option value="0" >Seleccione un Establecimiento</option>
+                    <?php 
+                      echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
+                            include_once("../../../Conexion/ConexionBD.php");
+                            $con = new ConexionBD;
+                            if($con->conectar()==true){			  
+                                      //$consulta  = "SELECT IdEstablecimiento,Nombre FROM mnt_establecimiento WHERE IdTipoEstablecimiento='$tipo' ORDER BY Nombre";
+                                   $consulta  = "SELECT id,nombre FROM ctl_establecimiento ORDER BY nombre";
+                                   $resultado = @pg_query($consulta);
+                                        //por cada registro encontrado en la tabla me genera un <option>
+                                    while ($rows = @pg_fetch_array($resultado)){
+                                        echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]). '</option>';
+                                    }
+                            }
+		    ?>		
+			</select>
+                    </div>
+                </td>
+            </tr>
+            <tr>	
+		<td class="StormyWeatherFieldCaptionTD">Procedencia</td>
+		<td class="StormyWeatherDataTD">
+                    <select name="CmbServicio" id="CmbServicio" style="width:443px" onChange="BuscarServicio(this.value)" class="form-control height" >
+                        <option value="0" selected="selected" align="center"> Seleccione Procedencia </option>
+                            <?php
+                                $db = new ConexionBD;
+                                if($db->conectar()==true){
+                                    $consulta  = "SELECT mnt_area_mod_estab.id as codigo ,CASE WHEN id_servicio_externo_estab IS NOT NULL THEN mnt_servicio_externo.abreviatura ||'-->'  || ctl_area_atencion.nombre
+                                                  ELSE 
+                                                     ctl_modalidad.nombre ||'-->' || ctl_area_atencion.nombre 
+                                                  END
+                                                  FROM mnt_area_mod_estab
+                                                  INNER JOIN  ctl_area_atencion  on  ctl_area_atencion.id = mnt_area_mod_estab.id_area_atencion
+                                                   --LEFT JOIN mnt_aten_area_mod_estab ON (ctl_area_atencion.id = mnt_aten_area_mod_estab.id_atencion) 
+                                                  INNER JOIN ctl_modalidad ON ctl_modalidad.id = mnt_area_mod_estab.id_modalidad_estab
+                                                  LEFT JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab.id_servicio_externo_estab) 
+                                                  LEFT JOIN mnt_servicio_externo ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo) 
+                                                  ORDER by ctl_modalidad.nombre,ctl_area_atencion.nombre";
+                                                                       
+                   		    $resultado = pg_query($consulta);
+						//por cada registro encontrado en la tabla me genera un <option>
+                                    while ($rows = pg_fetch_array($resultado)){
+                                             echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>'; 
+                                    }
+                                }
+                            ?>
+                    </select>
 		</td>
-                      
-                        
-                        
-		</tr>
-		<tr>
+		<td class="StormyWeatherFieldCaptionTD" width="20%">Servicio</td>
+		<td class="StormyWeatherDataTD" width="30%">
+                    <div id="divsubserv">
+			<select name="cmbSubServ" id="cmbSubServ" onChange="BuscarMedicos(this.value)" style="width:500px" class="form-control height">
+                            <option value="0" selected="selected"> Seleccione un Servicio </option>
+			</select>
+		    </div>
+		</td>
+            </tr>
+            <tr>
+		<td class="StormyWeatherFieldCaptionTD" width="25%" >Medicos</td>
+		<td  class="StormyWeatherDataTD"  width="30%" colspan="3">
+                    <div id="divMedico">
+			<select name="cboMedicos" id="cboMedicos" style="width:443px" class="form-control height"> 
+                            <option value="0">--Seleccione Un  Medico--</option>
+			</select>
+                    </div>
+		</td> 
+            </tr>
+            <tr>
+	        <td class="StormyWeatherFieldCaptionTD" width="19%">Fecha  Inicio</td>
+                <td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="28" name="txtfechainicio" id="txtfechainicio" style="width:500x" class="date form-control  height placeholder"  placeholder="aaaa-mm-dd" />
+                </td>
+                <td class="StormyWeatherFieldCaptionTD" width="25%">Fecha Final</td>
+                <td  class="StormyWeatherDataTD" width="20%" ><input type="text" size="28"  name="txtfechafin" id="txtfechafin" style="width:500px" class="date form-control  height placeholder"  placeholder="aaaa-mm-dd" />
+                </td>
+            </tr>
+            <tr>
 			 <!--<td class="StormyWeatherDataTD" colspan="5" align="right"><input type="button" id="btnbuscar" value="Buscar" onClick="MostrarBusqueda();">
 				<input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('SolicitudPorServicioPeriodo.php')">
 			</td>-->
-                    <td class="StormyWeatherDataTD" colspan="6" align="right">
-                        <button type='button' align="center" class='btn btn-primary' id="abrir" onclick='MostrarBusqueda(); '><span class='glyphicon glyphicon-search'></span> Buscar </button>
-                        <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('SolicitudPorServicioPeriodo.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
-                    </td>
-                        
-		</tr>
+                <td class="StormyWeatherDataTD" colspan="6" align="right">
+                    <button type='button' align="center" class='btn btn-primary' id="abrir" onclick='MostrarBusqueda(); '><span class='glyphicon glyphicon-search'></span> Buscar </button>
+                    <button type='button' align="center" class='btn btn-primary'  onclick="window.location.replace('SolicitudPorServicioPeriodo.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+                </td>
+            </tr>
             
 	</table>
 </form>

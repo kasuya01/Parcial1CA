@@ -66,9 +66,7 @@ switch ($opcion)
             $cond2 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . "     ";
             $where_with = "id_area_atencion = $IdServ AND ";
         }
-
-        
-
+  
         if (!empty($_POST['idarea'])) {
             $cond1 .= " and t08.id = " . $_POST['idarea'] . " ";
             $cond2 .= " and t08.id = " . $_POST['idarea'] . " ";
@@ -233,8 +231,6 @@ switch ($opcion)
             AND t02.id_establecimiento =$lugar $cond2   order by fecharecepcion desc  ";
                  
                  
-                 
-                 
      $consulta=$objdatos->BuscarSolicitudesPaciente($query); 
          
          $RegistrosAMostrar=10;
@@ -251,37 +247,38 @@ switch ($opcion)
 		
 		$NroRegistros= $objdatos->NumeroDeRegistros($query);				
      
-     if ($NroRegistros==""){
+    if (empty($NroRegistros)){
          $NroRegistros=0;
-         echo"<table width='35%' border='0'  align='center'>
-        	<center>
-           
-            
-<tr><td colspan='11'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES:".$NroRegistros."</h3></span></td></tr>
-            </center>
-	</table> ";
-     }else {
-         echo"<table width='35%' border='0'  align='center'>
-        	<center>
-           
-            
-<tr><td colspan='11'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES:".$NroRegistros."</h3></span></td></tr>
-            </center>
-	</table> ";
-     }               
+       echo"<table width='90%' border='0'  align='center'>
+                <center>
+                    <tr>
+                        <td colspan='8' align='center'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES:".$NroRegistros."</h3></span></td>
+                    </tr>
+                </center>
+            </table> ";
+    }else {
+       echo"<table width='90%' border='0'  align='center'>
+                <center>
+                    <tr>
+                        <td colspan='8' align='center'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES:".$NroRegistros."</h3></span></td>
+                    </tr>
+                </center>
+	    </table> ";
+    }               
                                                     
-     echo "<center><div class='table-responsive' style='width: 70%;'>
-                <table width='85%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+     echo "<center>
+            <div class='table-responsive' style='width: 80%;'>
+                <table width='90%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
                     <thead>
                         <tr>
-                                <td>Fecha Recepci&oacute;n      </th>
-                                        <th>NEC                 </th>
-                                        <th>Nombre Paciente     </th>
-                                        <th>Origen              </th>
-                                        <th>Procedencia         </th>
-                                        <th>Establecimiento     </th>
-                                        <th>Estado Solicitud    </th>
-                                        <th>Fecha Consulta      </th>
+                            <td>NEC                 </th>
+                                <th>Nombre Paciente     </th>
+                                <th>Origen              </th>
+                                <th>Procedencia         </th>
+                                <th>Establecimiento     </th>
+                                <th>Estado Solicitud    </th>
+                                <th>Fecha Consulta      </th>
+                                <th>Fecha Recepci&oacute;n      </th>
                         </tr>
                     </thead><tbody>"; 
         if(@pg_num_rows($consulta)){
@@ -289,42 +286,34 @@ switch ($opcion)
 
             while ($row = pg_fetch_array($consulta)) {
                 $esta =$row['estado'];
-                echo "<tr>
-				   <td width='8%'>".$row['fecharecepcion']."</td>
-				   <td width='8%'><span style='color: #0101DF;'>
-					   <a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(".$pos.");'>".
+                  echo "<tr>
+                            <td width='5%'><span style='color: #0101DF;'>
+			        <a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(".$pos.");'>".
 					   $row['idnumeroexp']."</a>". 
 					   "</td>". 
                                            "<input name='idsolicitud[".$pos."]' id='idsolicitud[".$pos."]' type='hidden' size='60' value='".$row[0]."' />".
 					   "<input name='idexpediente[".$pos."]' id='idexpediente[".$pos."]' type='hidden' size='60' value='".$row['idnumeroexp']."' />".
 					   "<input name='idestablecimiento[".$pos."]' id='idestablecimiento[".$pos."]' type='hidden' size='60' value='".$IdEstab."' />".
-				  "<td width='25%'>".$row['paciente']."</td>
-				  <td width='15%'>".htmlentities($row['nombresubservicio'])."</td>
-				   <td width='15%'>".htmlentities($row['nombreservicio'])."</td>
-                                   <td width='20%'>".htmlentities($row['estabext'])."</td>
-				   <td width='15%'>".$row['estado']."</td>
-                                   <td width='15%'>".$row['fecchaconsulta']."</td>
-				  
-                                      
-				 </tr>";
+		           "<td width='22%'>".$row['paciente']."</td>
+			    <td width='12%'>".htmlentities($row['nombresubservicio'])."</td>
+			    <td width='8%'>".htmlentities($row['nombreservicio'])."</td>
+                            <td width='22%'>".htmlentities($row['estabext'])."</td>
+			    <td width='9%'>".$row['estado']."</td>
+                            <td width='8%'>".$row['fecchaconsulta']."</td>
+                            <td width='8%'>".$row['fecharecepcion']."</td>    
+			</tr>";
             
                 $pos = $pos + 1;
-                
-                
-                
-                
-              
-            }
+        }
+        
             pg_free_result($consulta);
             echo "<input type='hidden' name='oculto' id='text' value='" . $pos . "' />
                 </table>";
         } else {
-            echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></table>";
+            echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr>"
+            . "</table>";
         }
-	
-        
-        
-                    //determinando el numero de paginas
+              //determinando el numero de paginas
 	$PagAnt=$PagAct-1;
 	$PagSig=$PagAct+1;
 				 
@@ -350,30 +339,13 @@ switch ($opcion)
 			 echo "<td> <a onclick=\"BuscarDatospaciente('$PagSig')\">Siguiente</a> </td>";
 		 	 echo "<td> <a onclick=\"BuscarDatospaciente('$PagUlt')\">Ultimo</a></td></tr>
                  </table>";
-	   /*echo "<table align='center'>
-			<tr align='center'><td  colspan='2' width='25%'>";
-		 $numPags ='';
-			 for ($i=1 ; $i<=$PagUlt; $i++){
-				 if ($pag == $i)
-					 $numPags .= "<a >$pag</a>";
-							
-				 else
-					 $numPags .= "<a  href='javascript: BuscarDatospaciente(".$i.")'>$i</a>&nbsp;";
-			 }
-				 echo $numPags."</td></tr>
-		</table> ";*/
-                                 
-                                  echo " <center> <ul class='pagination'>";
+	                                    
+                        echo " <center> <ul class='pagination'>";
                           for ($i=1 ; $i<=$PagUlt; $i++)
-                                    {
-                             
-					 echo " <li ><a  href='javascript: BuscarDatospaciente(".$i.")'>$i</a></li>";
-                                     }
+                           {
+                              echo " <li ><a  href='javascript: BuscarDatospaciente(".$i.")'>$i</a></li>";
+                           }
                     echo " </ul></center>";
-                                 
-                                 
-        
-        
 	break;
     	
 	case 2:  // solicitud estudios
@@ -410,111 +382,103 @@ switch ($opcion)
 		
 		
 		$imprimir="<form name='frmDatos'>
-		<table width='70%' border='0' align='center'>
+                    <table width='45%' border='0' align='center'>
 			<tr>
-				<td  colspan='4'>&nbsp;&nbsp;&nbsp;&nbsp</td>
+                            <td  colspan='4'>&nbsp;&nbsp;&nbsp;&nbsp</td>
 			</tr>
 			<tr>
-				<td colspan='4' align='center' class='CobaltFieldCaptionTD'>
-					<h3><strong>DATOS SOLICITUD</strong></h3>
+                            <td colspan='4' align='center' class='CobaltFieldCaptionTD'>
+				<h3><strong>DATOS SOLICITUD</strong></h3>
 			</tr>
 			<tr>
-				<td class='StormyWeatherFieldCaptionTD'>Establecimiento</td>
-                                <td class='StormyWeatherDataTD' colspan='3'>".$row['estabext']."</td>
+                            <td class='StormyWeatherFieldCaptionTD'>Establecimiento Solicitante</td>
+                            <td class='StormyWeatherDataTD' colspan='3'>".$row['estabext']."</td>
 			</tr>
 		        <tr>
-				<td class='StormyWeatherFieldCaptionTD'>Paciente</td>
-				<td colspan='3' class='StormyWeatherDataTD'>".htmlentities($paciente)." 
-                        	     <input name='txtpaciente' id='txtpaciente' type='hidden' size='' value=$paciente disabled='disabled' /></td>
+                            <td class='StormyWeatherFieldCaptionTD'width='25%'>Paciente</td>
+                            <td class='StormyWeatherDataTD'>".htmlentities($paciente)." 
+                                <input name='txtpaciente' id='txtpaciente' type='hidden' size='' value=$paciente disabled='disabled' /></td>
+                            <td class='StormyWeatherFieldCaptionTD'>Expediente</td>
+                            <td class='StormyWeatherDataTD'>".$idexpediente."</td>         
                         </tr>
                         <tr>
-				<td class='StormyWeatherFieldCaptionTD'>Conocido por</td>
-				<td colspan='3' class='StormyWeatherDataTD'>".htmlentities($ConocidoPor)." 
-			     		<input name='txtpaciente' id='txtpaciente' type='hidden' size='70' value='".$paciente."' disabled='disabled' /></td>
+                            <td class='StormyWeatherFieldCaptionTD'>Conocido por</td>
+                            <td colspan='3' class='StormyWeatherDataTD'>".htmlentities($ConocidoPor)." 
+			    	<input name='txtpaciente' id='txtpaciente' type='hidden' size='70' value='".$paciente."' disabled='disabled' /></td>
 		   	</tr>
 			<tr>
-				<td class='StormyWeatherFieldCaptionTD'>Edad</td>
-				<td class='StormyWeatherDataTD'>".htmlentities($edad)." 
-			     		<input name='txtpaciente' id='txtpaciente1' type='hidden' size='35' value='".$edad."' disabled='disabled' /></td>
-				
-                                    </div>
-                                </td>
-				<td class='StormyWeatherFieldCaptionTD'>Sexo</td>
-				<td class='StormyWeatherDataTD'>$sexo<input type='hidden' name='txtsexo' value='".$sexo."' disabled='disabled' /></td>
-                        </tr>
-                        <tr>
-				<td class='StormyWeatherFieldCaptionTD'>Procedencia</td>
-				<td class='StormyWeatherDataTD'>$precedencia <input name='txtprecedencia' id='txtprecedencia' 
-				type='hidden' size='35' value='".$precedencia."' disabled='disabled' /></td>
-				<td class='StormyWeatherFieldCaptionTD'>Origen</td>
-				<td class='StormyWeatherDataTD'>".htmlentities($origen)."
-					<input name='txtorigen' id='txtorigen'  type='hidden' size='35' value='".$origen."' disabled='disabled' />
-                                        <input name='idsolicitudPadre' id='idsolicitudPadre'  type='hidden' size='40' value='".$idsolicitudPadre."' disabled='disabled' />
-					<input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled' />
-					<input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled' />
-					
-					
-                        </tr>
-                        <tr>
-				<td class='StormyWeatherFieldCaptionTD'>M&eacute;dico</td>
-				<td colspan='3' class='StormyWeatherDataTD'>".htmlentities($medico)."
-					<input name='txtmedico' id='txtmedico'  type='hidden' size='70' value='".$medico."' disabled='disabled' /></td>
-                        </tr>
-                        <tr>
-                                <td class='StormyWeatherFieldCaptionTD'>Diagnostico</td>
-                                <td colspan='3' class='StormyWeatherDataTD'>". $Diagnostico."</td>
-                        </tr>
-                        <tr>
-                        
-                        </table>
-                        <br><br><br>
-		
-
-		<center><div class='table-responsive' style='width: 70%;'>
-                <table width='50%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
-                    <thead>
-                            <tr>
-				<th colspan='5'  class='CobaltFieldCaptionTD' ><center>ESTUDIOS SOLICITADO</center></th>
-                            </tr>
-                                <tr>
-				
-					<!--<table border = '1'  align='center' class='estilotabla'>-->
-			   		
-						<th > IdExamen</th>
-						<th > Examen </th>
-						<th > IdArea </th>
-						<th > Indicacion Medica </th>
-						<th  > Estado </th>
-			   		</tr>
-                    </thead><tbody>"; 
-			$pos=0;
-			while($fila = pg_fetch_array($consultadetalle)){
-                
-	      		  $imprimir .= "<tr>
-						<td width='10%'>".$fila['codigo_examen']."</td>
-						<td width='39%'>".htmlentities($fila['nombre_examen'])."</td>	
-                				<td width='7%'>".$fila['codigo_area']."</td>";	
-                 		if (!empty($fila['indicacion'])){     				
-			   	   $imprimir .="<td width='20%'>".htmlentities($fila['indicacion'])."</td>";
-		 	           $imprimir .="<td width='21%'>".$fila['estado']."</td>	
-		     	                 </tr>";
-                		}else{
-	                   	   $imprimir .="<td>&nbsp;&nbsp;&nbsp;&nbsp</td>
-			                        <td>".$fila['estado']."</td>
-                                        </tr>";	
-				}
-             		}
-
-			pg_free_result($consultadetalle);
+                            <td class='StormyWeatherFieldCaptionTD'>Edad</td>
+                            <td class='StormyWeatherDataTD'>".htmlentities($edad)." 
+                                <input name='txtpaciente' id='txtpaciente1' type='hidden' size='35' value='".$edad."' disabled='disabled' /></td>
 			
- 	//$imprimir .= "<i/nput type='hidden' name='oculto' id='oculto' value='".$pos."' />
-                        
-                        
-                        $consulta=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar);
-		$row = pg_fetch_array($consulta);
-                 $Estado1=$row['estado1'];
-                        
-	 $imprimir .="</table></center>
+                            </td>
+                            <td class='StormyWeatherFieldCaptionTD'>Sexo</td>
+                            <td class='StormyWeatherDataTD'>$sexo<input type='hidden' name='txtsexo' value='".$sexo."' disabled='disabled' /></td>
+                        </tr>
+                        <tr>
+                            <td class='StormyWeatherFieldCaptionTD'>Procedencia</td>
+                            <td class='StormyWeatherDataTD'>$precedencia <input name='txtprecedencia' id='txtprecedencia' 
+				type='hidden' size='35' value='".$precedencia."' disabled='disabled' />
+                            </td>
+                            <td class='StormyWeatherFieldCaptionTD'>Origen</td>
+                            <td class='StormyWeatherDataTD'>".htmlentities($origen)."
+                            	<input name='txtorigen' id='txtorigen'  type='hidden' size='35' value='".$origen."' disabled='disabled' />
+                                <input name='idsolicitudPadre' id='idsolicitudPadre'  type='hidden' size='40' value='".$idsolicitudPadre."' disabled='disabled' />
+				<input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled' />
+				<input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled' />
+                            </td>
+			</tr>
+                        <tr>
+                            <td class='StormyWeatherFieldCaptionTD'>M&eacute;dico</td>
+                            <td colspan='3' class='StormyWeatherDataTD'>".htmlentities($medico)."
+				<input name='txtmedico' id='txtmedico'  type='hidden' size='70' value='".$medico."' disabled='disabled' /></td>
+                        </tr>
+                        <tr>
+                            <td class='StormyWeatherFieldCaptionTD'>Diagnostico</td>
+                            <td colspan='3' class='StormyWeatherDataTD'>". $Diagnostico."</td>
+                        </tr>
+                        <tr><td colspan='4'>
+                            <table width='50%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+                                <thead>
+                                    <tr>
+                                        <th colspan='5'  class='CobaltFieldCaptionTD' ><center>ESTUDIOS SOLICITADO</center></th>
+                                    </tr>
+                                    <tr>
+                                        <th > IdExamen</th>
+                                        <th > Examen </th>
+                                        <th > IdArea </th>
+                                        <th > Indicacion Medica </th>
+                                        <th  > Estado </th>
+                                   </tr>
+                                   </thead><tbody>"; 
+                                $pos=0;
+                                while($fila = pg_fetch_array($consultadetalle)){
+
+                      $imprimir .= "<tr>
+                                        <td width='10%'>".$fila['codigo_examen']."</td>
+                                        <td width='39%'>".htmlentities($fila['nombre_examen'])."</td>	
+                                        <td width='7%'>".$fila['codigo_area']."</td>";	
+                                    if (!empty($fila['indicacion'])){     				
+                           $imprimir .="<td width='20%'>".htmlentities($fila['indicacion'])."</td>";
+                           $imprimir .="<td width='21%'>".$fila['estado']."</td>	
+                                   </tr>";
+                                    }else{
+                           $imprimir .="<td>&nbsp;&nbsp;&nbsp;&nbsp</td>
+                                        <td>".$fila['estado']."</td>
+                                    </tr>";	
+                                    }
+                                }
+
+                                pg_free_result($consultadetalle);
+
+                //$imprimir .= "<i/nput type='hidden' name='oculto' id='oculto' value='".$pos."' />
+
+
+                                $consulta=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar);
+                        $row = pg_fetch_array($consulta);
+                         $Estado1=$row['estado1'];
+
+                 $imprimir .="</table></center></td></tr>
 	<center><div id='divImpresion' style='display:block' >
 		<table>
 			<tr >
@@ -556,7 +520,7 @@ switch ($opcion)
 	 
    	break;
    	case 3:
-   		$idexpediente   =$_POST['idexpediente'];
+   		/*$idexpediente   =$_POST['idexpediente'];
 		$idsolicitud    =$_POST['idsolicitud'];
 		
   	 include_once("clsSolicitudesPorPaciente.php");
@@ -585,91 +549,92 @@ switch ($opcion)
 		//recuperando los valores del detalle de la solicitud
 		//$consultadetalle=$objdatos->DatosDetalleSolicitud($idexpediente,$idsolicitud);
 		$imprimir="<form name='frmDatos'>
-		<table width='80%' border='0' align='center'>
+                    <table width='100%' border='0' align='center'>
 			<tr>
-				<td  colspan='4'>&nbsp;&nbsp;&nbsp;&nbsp</td>
+                            <td  colspan='4'>&nbsp;&nbsp;&nbsp;&nbsp</td>
 			</tr>
 			<tr>
-				<td colspan='4' align='center' class='CobaltFieldCaptionTD'>
+                            <td colspan='4' align='center' >
 					<h3><strong>DATOS SOLICITUD</strong></h3>
 			</tr>
 			<tr>
-				<td class='StormyWeatherFieldCaptionTD'>Establecimiento</td>
-                                <td class='StormyWeatherDataTD' colspan='3'>".$row['estabext']."</td>
+                            <td >Establecimiento</td>
+                            <td  colspan='3'>".$row['estabext']."</td>
 			</tr>
 		        <tr>
-				<td class='StormyWeatherFieldCaptionTD'>Paciente</td>
-				<td colspan='3' class='StormyWeatherDataTD'>".htmlentities($paciente)." 
-                        	     <input name='txtpaciente' id='txtpaciente' type='hidden' size='' value=$paciente disabled='disabled' /></td>
+                            <td >Paciente</td>
+                            <td >".htmlentities($paciente)." 
+                                 <input name='txtpaciente' id='txtpaciente' type='hidden' size='' value=$paciente disabled='disabled' /></td>
+                            <td >Expedinte</td> 
+                            <td '>".$idexpediente."</td>         
                         </tr>
                         <tr>
-				<td class='StormyWeatherFieldCaptionTD'>Conocido por</td>
-				<td colspan='3' class='StormyWeatherDataTD'>".htmlentities($ConocidoPor)." 
-			     		<input name='txtpaciente' id='txtpaciente' type='hidden' size='70' value='".$paciente."' disabled='disabled' /></td>
+                            <td >Conocido por</td>
+                            <td colspan='3' >".htmlentities($ConocidoPor)." 
+                                <input name='txtpaciente' id='txtpaciente' type='hidden' size='70' value='".$paciente."' disabled='disabled' /></td>
 		   	</tr>
 			<tr>
-				<td class='StormyWeatherFieldCaptionTD'>Edad</td>
-				<td class='StormyWeatherDataTD'>".htmlentities($edad)." 
-			     		<input name='txtpaciente' id='txtpaciente1' type='hidden' size='35' value='".$edad."' disabled='disabled' /></td>
+                            <td >Edad</td>
+                            <td>".htmlentities($edad)." 
+			    	<input name='txtpaciente' id='txtpaciente1' type='hidden' size='35' value='".$edad."' disabled='disabled' /></td>
 				
                                     </div>
                                 </td>
-				<td class='StormyWeatherFieldCaptionTD'>Sexo</td>
-				<td class='StormyWeatherDataTD'>$sexo<input type='hidden' name='txtsexo' value='".$sexo."' disabled='disabled' /></td>
+				<td >Sexo</td>
+				<td >$sexo<input type='hidden' name='txtsexo' value='".$sexo."' disabled='disabled' /></td>
                         </tr>
                         <tr>
-				<td class='StormyWeatherFieldCaptionTD'>Procedencia</td>
-				<td class='StormyWeatherDataTD'>$precedencia <input name='txtprecedencia' id='txtprecedencia' 
-				type='hidden' size='35' value='".$precedencia."' disabled='disabled' /></td>
-				<td class='StormyWeatherFieldCaptionTD'>Origen</td>
-				<td class='StormyWeatherDataTD'>".htmlentities($origen)."
-					<input name='txtorigen' id='txtorigen'  type='hidden' size='35' value='".$origen."' disabled='disabled' />
-                                        <input name='idsolicitudPadre' id='idsolicitudPadre'  type='hidden' size='40' value='".$idsolicitudPadre."' disabled='disabled' />
-					<input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled' />
-					<input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled' />
-					
+			    <td >Procedencia</td>
+			    <td >$precedencia <input name='txtprecedencia' id='txtprecedencia' type='hidden' size='35' value='".$precedencia."' disabled='disabled' /></td>
+			    <td >Origen</td>
+			    <td >".htmlentities($origen)."
+				<input name='txtorigen' id='txtorigen'  type='hidden' size='35' value='".$origen."' disabled='disabled' />
+                                <input name='idsolicitudPadre' id='idsolicitudPadre'  type='hidden' size='40' value='".$idsolicitudPadre."' disabled='disabled' />
+			        <input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled' />
+				<input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled' />
+			</tr>
+                        <tr>
+                            <td >M&eacute;dico</td>
+                            <td colspan='3'>".htmlentities($medico)."
+				<input name='txtmedico' id='txtmedico'  type='hidden' size='70' value='".$medico."' disabled='disabled' /></td>
                         </tr>
                         <tr>
-				<td class='StormyWeatherFieldCaptionTD'>M&eacute;dico</td>
-				<td colspan='3' class='StormyWeatherDataTD'>".htmlentities($medico)."
-					<input name='txtmedico' id='txtmedico'  type='hidden' size='70' value='".$medico."' disabled='disabled' /></td>
+                            <td >Diagnostico</td>
+                            <td colspan='3'>". $Diagnostico."</td>
                         </tr>
-                        <tr>
-                                <td class='StormyWeatherFieldCaptionTD'>Diagnostico</td>
-                                <td colspan='3' class='StormyWeatherDataTD'>". $Diagnostico."</td>
+                        <tr> 
+                            <td colspan='4'>&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp</td>
                         </tr>
+                           
                         <tr>
-		  
-	    	</table>
-                 <br>
-		<center>
-                    <div class='table-responsive' style='width: 70%;'>
-                <table width='50%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
-                    <thead>
-                            <tr>
-				<th colspan='5'  class='CobaltFieldCaptionTD' ><center>ESTUDIOS SOLICITADO</center></th>
-                            </tr>
-                                <tr>
-                                        <th> IdExamen</th>
-			  		<th> Examen </th>
-			   		<th> IdArea </th>
-			   		<th> Indicacion Medica </th>
-			   		<th> Estado </th>
-			   	</thead><tbody></tr>"; 
+                        <center>
+                            <div' style='width: 100%;'>
+                                <table width='100%' border='1' align='center'   >
+                               
+                                    <tr>
+                                        <td colspan='5'  ><center>ESTUDIOS SOLICITADO</center></td>
+                                    </tr>
+                                    <tr>
+                                        <td class='Estilo6'> Código</td>
+                                        <td class='Estilo6'> Examen </td>
+                                        <td class='Estilo6'> Código Área </td>
+                                        <td class='Estilo6'> Indicacion Medica </td>
+                                        <td class='Estilo6'> Estado </td>
+                                    </tr>"; 
 		$pos=0;
 		while($fila = pg_fetch_array($consultadetalle)){
-		  $imprimir .= "<tr>
-			    		<td>".$fila['codigo_examen']."</td>
-			    		<td>".htmlentities($fila['nombre_examen'])."</td>	
-					<td>".$fila['codigo_area']."</td>";	
+		      $imprimir .= "<tr>
+			    		<td class='Estilo6'>".$fila['codigo_examen']."</td>
+			    		<td class='Estilo6'>".htmlentities($fila['nombre_examen'])."</td>	
+					<td class='Estilo6'>".$fila['codigo_area']."</td>";	
                 	if (!empty($fila['indicacion'])){     				
-		   	   $imprimir .="<td>".htmlentities($fila['indicacion'])."</td>";
-		           $imprimir .="<td>".$fila['estado']."</td>	
-	      			</tr>";
+		   	   $imprimir .="<td class='Estilo6'>".htmlentities($fila['indicacion'])."</td>";
+		           $imprimir .="<td class='Estilo6'>".$fila['estado']."</td>	
+	      			    </tr>";
                 	}else{
-			   $imprimir .="<td>&nbsp;&nbsp;&nbsp;&nbsp</td>
-					<td>".$fila['estado']."</td>
-                     		</tr>";	
+			   $imprimir .="<td class='Estilo6'>&nbsp;&nbsp;&nbsp;&nbsp</td>
+					<td class='Estilo6'>".$fila['estado']."</td>
+                     		    </tr>";	
 				}
                      $pos=$pos + 1;
 }
@@ -678,25 +643,18 @@ pg_free_result($consultadetalle);
 
  $imprimir .= "<input type='hidden' name='oculto' id='oculto' value='".$pos."' />
 			</table>
-			<div id='divImpresion' style='display:block' ></div></form>";
-				
-                                     $imprimir.="   <table aling='center'>
-				<tr >
-				<p></p>
-				
-                                      
-                                        <td class='StormyWeatherDataTD'>
-                                        <button type='button' align='center' class='btn btn-primary'  onclick='Cerrar(); '><span class='glyphicon glyphicon-remove-sign'></span> Cerrar </button>
-                                        <button type='button' align='center' class='btn btn-primary'  onClick=' window.print();' ><span class='glyphicon glyphicon-print'></span> Imprimir </button>
-                                         </td>
-                                </tr>
-				</table> <center>";
-                                ?> <?php include_once $ROOT_PATH.'/public/css.php';?>
-                                    <?php include_once $ROOT_PATH.'/public/js.php';?>
-                                  <?php     
-                                     
-                    
-     echo $imprimir;
+	<div id='boton'>
+        <table align='center'>
+                    <tr>
+	                <td  aling='center'>
+                                <button type='button' align='center' class='btn btn-primary'  onclick='window.print(); '><span class='glyphicon glyphicon-print'></span> Imprimir </button>
+                                         <button type='button' align='center' class='btn btn-primary'  onClick='window.close();'><span class='glyphicon glyphicon-arrow-left'></span> Regresar </button>
+                        </td>
+                    </tr>
+		</table>
+        </div>";
+                                         
+     echo $imprimir;*/
    
    break;
 	case 5://LLENANDO COMBO DE Examenes
@@ -713,32 +671,41 @@ pg_free_result($consultadetalle);
 		}
 				
 		$rslts .= '</select>';
-		echo $rslts;
-		
-	
+		echo $rslts;	
    	break;
-	
 	case 6:// Llenar Combo Establecimiento
-		$rslts='';
-		$Idtipoesta=$_POST['idtipoesta'];
-              // echo $Idtipoesta;
-            	$dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
-              	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" class="form-control height"  style="width:375px">';
-		$rslts .='<option value="0"> Seleccione Establecimiento </option>';
-               while ($rows =pg_fetch_array( $dtIdEstab)){
-		  $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
-	       }
-				
-		$rslts .= '</select>';
-		echo $rslts;
+            $rslts = '';
+                $Idtipoesta = $_POST['idtipoesta'];
+        
+      //   echo $Idtipoesta;
+        if ($Idtipoesta<>0){
+          //   echo "tipo=".$Idtipoesta;
+            $dtIdEstab = $objdatos->LlenarCmbEstablecimiento($Idtipoesta);
+            $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:500px" class="form-control height">';
+           // $rslts .='<option value="0"> Seleccione Establecimiento </option>';
+            while ($rows = pg_fetch_array($dtIdEstab)) {
+                $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
+            }
+        }else{
+             $dtIdEstab = $objdatos->LlenarTodosEstablecimientos();
+              $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:500px" class="form-control height">';
+            $rslts .='<option value="0"> Seleccione Establecimiento </option>';
+            while ($rows = pg_fetch_array($dtIdEstab)) {
+                $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
+            }
+        }    
+        $rslts .= '</select>';
+        echo $rslts;
+            
+		
    	break;
 	case 7:// Llenar combo Subservicio
    	     $rslts='';
              $IdServ=$_POST['IdServicio'];
 	   //  echo $IdServ;
 	     $dtserv=$objdatos->LlenarCmbServ($IdServ,$lugar);
-	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" class="form-control height"  style="width:375px">';
-			$rslts .='<option value="0"> Seleccione Subespecialidad </option>';
+	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:500px" onChange="BuscarMedicos(this.value)" class="form-control height">';
+            			$rslts .='<option value="0"> Seleccione Subespecialidad </option>';
 			while ($rows =pg_fetch_array($dtserv)){
 		  	$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 	       		}
@@ -746,7 +713,7 @@ pg_free_result($consultadetalle);
 	      $rslts .='</select>';
 	      echo $rslts;
         break;	
-		
+		 
 }//switch
 
 ?>

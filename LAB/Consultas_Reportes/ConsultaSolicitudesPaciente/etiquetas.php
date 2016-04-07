@@ -9,7 +9,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
  ?>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <link href="/PrimerSitio/paginalab.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
@@ -127,46 +127,7 @@ while($fila = pg_fetch_array($consultadetalle)){
 		<?php
 		 
                 
-                   // }
-                
-		/*else{     
-                                   // echo "esto es dentro del else";
-
-                                            //idestablecimiento     estanadar 
-			$codigo= $idsolicitud."-".$fila[12]."-".$fila[10];
-			$codigo1= $idsolicitud."&nbsp;&nbsp;&nbsp;".$fila[12];
-			 // echo $codigo;
-			?>
-			<table width="30" border = "0"  class="estilotabla">
-		 		<tr align="center">
-                                    
-		   			<td colspan="1" align="left" CELLPADDING="0" CELLSPACING="0">
-                                        <span class="Estilo5"><?php echo $fila[4];?></span>
-                                        <span class="Estilo5"><?php echo $fila[3];?></span>
-					</td> 
-					<td colspan="1" align="left" CELLPADDING="0" CELLSPACING="0">&nbsp;&nbsp;&nbsp;</td>
-					<td colspan="1" align="left" CELLPADDING="0" CELLSPACING="0">
-						<span class="Estilo5"><?php echo "M=".$fila[5];?></span>
-					</td>
-					
-		 		</tr>
-				<tr>
-					<td colspan="3" align="left" CELLPADDING="0" CELLSPACING="0">
-						<img align="center" style="width: 100px; height: 25px;" src="../../../Barcode2/barcode_img.php?num=<?php echo($codigo1) ?>&type=code128&imgtype=png"
-                                                     accesskey="" alt="PNG: <?php echo($codigo) ?>" title="PNG:<?php echo($codigo) ?>">
-					</td>
-				</tr>
-				<tr>
-					<td colspan="1" align="left" CELLPADDING="0" CELLSPACING="0"><span class="Estilo5"><?php echo $fila[8];?></span></td>
-					<td colspan="1" align="left" CELLPADDING="0" CELLSPACING="0">&nbsp;&nbsp;&nbsp;</td>
-					<td colspan="1" CELLPADDING="0" CELLSPACING="0"><span class="Estilo5"><?php echo $fila[10];?></span></td>
-				</tr>
-			</table>
-		<br>
-		<br>
-			
-	<?php
-	}*/
+                 
 }	
    ?>
 </form>

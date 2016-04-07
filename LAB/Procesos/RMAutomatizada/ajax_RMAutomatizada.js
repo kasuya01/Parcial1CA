@@ -544,17 +544,19 @@ function MuestrasRechazadas()
     PApellido = document.getElementById('PrimerApellido').value;
     SApellido = document.getElementById('SegundoApellido').value;
     TipoSolic = document.getElementById('cmbTipoSolic').value;
+    fechasolicitud = document.getElementById('txtfechasolicitud').value;
     //idexpediente="";
     idsolicitud = "";
     idsolicitudP="";
     estado = "";
-    fechasolicitud = "";
+    //fechasolicitud = "";
 
     //idexamen="";
     ajax.open("POST", "ctrRMAutomatizada.php", true);
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
+   // alert(fechasolicitud);
     ajax.send("opcion=" + opcion + "&estado=" + estado + "&fechasolicitud=" + fechasolicitud + "&idarea=" + idarea +
             "&idexpediente=" + idexpediente + "&idsolicitud=" + idsolicitud  + "&idsolicitudP=" + idsolicitudP + "&idexamen=" + idexamen + "&fecharecep=" + fecharecep +
             "&IdEstab=" + IdEstab + "&IdServ=" + IdServ + "&IdSubServ=" + IdSubServ + "&PNombre=" + PNombre + "&SNombre=" + SNombre +

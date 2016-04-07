@@ -9,7 +9,8 @@ $base_url  = $_SESSION['base_url'];
  
  include_once("clsMuestrasRechazadas.php"); 
 //consulta los datos por su id
-$obj = new clsMuestrasRechazadas;
+
+ $obj = new clsMuestrasRechazadas;
 $consulta=$obj->DatosEstablecimiento($lugar);
 $row = pg_fetch_array($consulta);
 
@@ -77,8 +78,8 @@ function MostrarMuestrasRechazadas()
                         
                         
                         
-	 }
-    /*else if (document.getElementById('cmbArea').value == 0){
+	 }         
+         else if (document.getElementById('cmbArea').value == 0){
 				//alert ("Debe de ingresar un Área");
                                   $(function ()   {
                                   $("#dialog").dialog({
@@ -98,7 +99,7 @@ function MostrarMuestrasRechazadas()
                            // });
                                 });
                                 
-	}*/
+	}
 	   else {
                         jQuery('#divBusqueda').empty();
                         jQuery('#divBusqueda').append('<center><img id="wait" src="<?php echo $base_url; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" style="color:#888888;font-weight: bold;">Buscando...</div></center>');
@@ -175,9 +176,9 @@ if ($nivel == 7) {
 ?><br>
     <div  id="divInicial">
         <form>
-            <table  align="center" class="StormyWeatherFormTABLE"  width="78%">
+            <table  align="center" class="StormyWeatherFormTABLE"  width="67%">
                 <tr>
-                    <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3><strong>Reactivar Muestras rechazadas</strong></h3></td>
+                    <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3><strong>Reactivar Muestras Rechazadas</strong></h3></td>
                 </tr>
                 <tr>
                     <td class="StormyWeatherFieldCaptionTD" width="20%">Tipo Establecimiento</td>
@@ -292,6 +293,23 @@ if ($nivel == 7) {
                             </select>
                         </div>
                     </td> 
+                
+                </tr>
+                <tr>
+                    <td class="StormyWeatherFieldCaptionTD" align="left" colspan="1" align="right">Tipo Solicitud</td>
+                    <td class="StormyWeatherDataTD" colspan="1">
+                        <select id="cmbTipoSolic" name="cmbTipoSolic" size="1" style="width:443px" class="form-control height placeholder">
+                           
+                            <option value="0">Seleccione un Tipo de Solicitud</option>
+                            <option value="1">URGENTE</option>
+                            <option value="2">NORMAL</option>
+                        </select>
+                    </td>
+                    <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Consulta</td>
+                    <td  class="StormyWeatherDataTD" width="20%" >
+                                <input type="text" size="28" name="txtfechasolicitud" id="txtfechasolicitud" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" style="width:500px"/>
+
+                    </td>
                 </tr>
                 <tr>
                     <td class="StormyWeatherFieldCaptionTD" >Expediente</td>
@@ -316,16 +334,7 @@ if ($nivel == 7) {
                     <td class="StormyWeatherDataTD" >
                         <input maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" class="form-control height" style="width:500px" placeholder="Ingrese Segundo Apellido"/></td>
                 </tr>
-                <tr>
-                    <td class="StormyWeatherFieldCaptionTD" align="left" colspan="1" align="right">Tipo Solicitud</td>
-                    <td class="StormyWeatherDataTD" colspan="3">
-                        <select id="cmbTipoSolic" name="cmbTipoSolic" size="1" style="width:32%" class="form-control height placeholder">
-                            <option value="0">Seleccione un Tipo de Solicitud</option>
-                            <option value="1">URGENTE</option>
-                            <option value="2">NORMAL</option>
-                        </select>
-                    </td>	
-                </tr>
+                
 	<!--<tr>
 		<td  class="StormyWeatherDataTD" colspan="4" align="right">
 			<input type="button" name="Submit" value="Buscar Solicitudes" onClick="MostrarMuestrasRechazadas()">

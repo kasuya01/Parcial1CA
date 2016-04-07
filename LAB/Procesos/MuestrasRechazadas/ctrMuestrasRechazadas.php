@@ -130,13 +130,11 @@ switch ($opcion)
      $query="WITH tbl_servicio AS ( SELECT t02.id, 
                 CASE WHEN t02.nombre_ambiente IS NOT NULL THEN 
                     CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' || t02.nombre_ambiente 
-                            --ELSE t02.nombre_ambiente 
-                    END 
+                        END 
                     ELSE 
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre 
-                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)  
-                                    --THEN t07.nombre||'-'||t01.nombre
-                                    THEN t01.nombre
+                        CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre 
+                             WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)  
+                             THEN t01.nombre
                     END 
 
                 END AS servicio,
@@ -152,7 +150,7 @@ switch ($opcion)
                 INNER JOIN ctl_modalidad  t07 ON t07.id = t03.id_modalidad_estab
                 WHERE t02.id_establecimiento =  $lugar ORDER BY 2)
             
-                    SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
+                 SELECT ordenar.* FROM ( SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                        t01.id ,
                        t02.id AS idsolicitudestudio,
                        t04.idplantilla, 
@@ -253,10 +251,11 @@ switch ($opcion)
             INNER JOIN ctl_sexo t19                                 ON (t19.id = t07.id_sexo)
             WHERE (t16.idestado = 'RM') 
             AND t02.id_establecimiento = $lugar 
-                AND $cond2"; 
+                AND $cond2) ordenar
+                ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
                   
     
-      //echo $query;
+    // echo $query;
          $consulta=$objdatos->ListadoSolicitudesPorArea($query);  
 		   $NroRegistros= $objdatos->NumeroDeRegistros($query);
 		
@@ -299,6 +298,7 @@ switch ($opcion)
 			<th>Servicio</td>
 			<th>Procedencia</th>
 			<th>Establecimiento</th>
+                         <th>Fecha Consulta</th>
 			<th>Fecha Recepci&oacute;n</th>
 			<th>Prioridad</th>
                     </tr></thead><tbody>";
@@ -331,6 +331,7 @@ switch ($opcion)
 			    echo " <td width='10%'>".htmlentities($row['nombresubservicio'])."</td>
 				   <td width='10%'>".htmlentities($row['nombreservicio'])."</td>
                                    <td width='38%'>".htmlentities($row['estabext'])."</td>
+                                   <td width='5%'>" . ($row['fechasolicitud']) . "</td>    
 				   <td width='15%'>".$row['fecharecepcion']."</td>
 				   <td width='10%'>".($row['prioridad'])."</td>
                                       

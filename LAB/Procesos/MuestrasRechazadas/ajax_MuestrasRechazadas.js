@@ -567,6 +567,7 @@ function MuestrasRechazadas()
 	PApellido=document.getElementById('PrimerApellido').value;
     SApellido=document.getElementById('SegundoApellido').value;	
 	TipoSolic=document.getElementById('cmbTipoSolic').value;
+         fechasolicitud = document.getElementById('txtfechasolicitud').value;
 	//idsolicitud="";
 	//estado="";
 	//fechasolicitud="";
@@ -579,7 +580,7 @@ function MuestrasRechazadas()
 		  //enviando los valores
 	ajax.send("opcion="+opcion+"&idarea="+idarea+"&idexpediente="+idexpediente+"&fecharecep="+fecharecep+
 	"&IdEstab="+IdEstab+"&IdServ="+IdServ+"&IdSubServ="+IdSubServ+"&idexamen="+idexamen+"&PNombre="+PNombre+
-	"&SNombre="+SNombre+"&PApellido="+PApellido+"&SApellido="+SApellido+"&TipoSolic="+TipoSolic);
+	"&SNombre="+SNombre+"&PApellido="+PApellido+"&SApellido="+SApellido+"&TipoSolic="+TipoSolic+ "&fechasolicitud=" + fechasolicitud);
 	ajax.onreadystatechange=function() 
 	{
 		if (ajax.readyState==4) 

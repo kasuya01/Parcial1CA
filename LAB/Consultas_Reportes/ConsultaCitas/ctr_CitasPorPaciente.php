@@ -51,20 +51,36 @@ switch ($opcion)
                $cond1 .=$cond0. "  t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " ";
                $cond2 .=$cond0. "  t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " ";
            }
+           /* else {
+               $cond1 .= $cond0. "  t02.id_establecimiento = " . $lugar . " ";
+               $cond2 .= $cond0. "  t02.id_establecimiento_externo = " . $lugar . " ";
+            }*/
           
         }
+        /*
+       
         
+         if (!empty($_POST['IdSubServ'])) {
+            $cond1 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
+            $cond2 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
+        }
+         */
+        
+      /*   if ($_POST['IdServ'] <> 0) {
+            $cond1 .= " t12.id  = " . $_POST['IdServ'] . " AND";
+            $cond2 .= " t12.id  = " . $_POST['IdServ'] . " AND";
+            $where_with = "t03.id = $IdServ AND ";
+        }*/
+
+        if ($_POST['IdServ'] <> 0) {
+            $cond1 .=$cond0 ."  t12.id  = " . $_POST['IdServ'] . "     ";
+            $cond2 .=$cond0 ."  t12.id  = " . $_POST['IdServ'] . "     ";
+            $where_with = "t03.id = $IdServ AND ";
+        }
         if (!empty($_POST['IdSubServ'])) {
             $cond1 .= $cond0." t10.id = " . $_POST['IdSubServ'] . "     ";
             $cond2 .= $cond0." t10.id = " . $_POST['IdSubServ'] . "     ";
         }
-
-        if (!empty($_POST['IdServ'])) {
-            $cond1 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . "     ";
-            $cond2 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . "     ";
-            $where_with = "id_area_atencion = $IdServ AND ";
-        }
-
         
 
         if (!empty($_POST['idarea'])) {
@@ -127,7 +143,8 @@ switch ($opcion)
             $ban = 1;
         }
         
-        if ($ban == 0) {
+        
+      /*  if ($ban == 0) {
 
             $cond1 = substr($cond1, 0, strlen($query) - 3);
             $cond2 = substr($cond2, 0, strlen($query) - 3);
@@ -136,26 +153,32 @@ switch ($opcion)
            // $query_search = 
             //echo $cond1;
             //echo $cond2;
-        }     
+        }    */ 
        // echo $cond2;
-         $query="WITH tbl_servicio AS (
-                    SELECT t02.id,
-                        CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
-                                 ELSE t02.nombre_ambiente
-                            END
-                        ELSE
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'--> ' || t01.nombre
-                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
-                            END
-                        END AS servicio 
-                    FROM  ctl_atencion                              t01 
-                    INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
-                    INNER JOIN mnt_area_mod_estab                   t03 ON (t03.id = t02.id_area_mod_estab)
-                    LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
-                    LEFT  JOIN mnt_servicio_externo                 t05 ON (t05.id = t04.id_servicio_externo)
-                    WHERE $where_with t02.id_establecimiento = $lugar
-                    ORDER BY 2)
+         $query="WITH tbl_servicio AS ( SELECT t02.id, 
+                CASE WHEN t02.nombre_ambiente IS NOT NULL THEN 
+                    CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' || t02.nombre_ambiente 
+                            --ELSE t02.nombre_ambiente 
+                    END 
+                    ELSE 
+                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre 
+                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)  
+                                    --THEN t07.nombre||'-'||t01.nombre
+                                    THEN t01.nombre
+                    END 
+
+                END AS servicio,
+               (CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->'  || t06.nombre
+                    ELSE   t07.nombre ||'-->' || t06.nombre
+                END) as procedencia
+                FROM ctl_atencion t01 
+                INNER JOIN mnt_aten_area_mod_estab t02 ON (t01.id = t02.id_atencion) 
+                INNER JOIN mnt_area_mod_estab t03 ON (t03.id = t02.id_area_mod_estab) 
+                LEFT JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab) 
+                LEFT JOIN mnt_servicio_externo t05 ON (t05.id = t04.id_servicio_externo) 
+                INNER JOIN  ctl_area_atencion t06  on  t06.id = t03.id_area_atencion
+                INNER JOIN ctl_modalidad  t07 ON t07.id = t03.id_modalidad_estab
+                WHERE t02.id_establecimiento =  $lugar ORDER BY 2)
             
                     SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                        t01.id ,
@@ -171,7 +194,7 @@ switch ($opcion)
                        CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,
                        t07.segundo_apellido,t07.apellido_casada) AS paciente,
                        t20.servicio AS nombresubservicio,
-                       t13.nombre AS nombreservicio, 
+                       t20.procedencia AS nombreservicio, 
                        t02.impresiones, 
                        t14.nombre, 
                        t09.id AS idhistorialclinico,
@@ -259,7 +282,7 @@ switch ($opcion)
             WHERE (t16.idestado = 'D') 
             AND t02.id_establecimiento = $lugar 
              $cond2"; 
-
+//echo $query;
 			$consulta=$objdatos->BuscarCitasPaciente($query);  
 					/*  ----------Datos para  Pacgianción----------------*/
 					$RegistrosAMostrar=20;
@@ -268,14 +291,14 @@ switch ($opcion)
                       
          if ($NroRegistros==""){
                             $NroRegistros=0;
-                            $imprimir= "<table width='80%' border='0'  align='center'>
+                            $imprimir= "<table width='65%' border='0'  align='center'>
           <center>
                 <tr>
                         <td width='500'  align='center'  ><span style='color: #0101DF;'> <h4> TOTAL DE PACIENTES CITADOS:".$NroRegistros."</h4></span></td>
                 </tr>
                 </table>
                 
-                <table width='80%' border='0'  align='center'>
+                <table width='65%' border='0'  align='center'>
                    <td width='1550'></td>   <td > <button type='button'  class='btn btn-primary'  onclick='VistaPrevia(); '><span class='glyphicon glyphicon-print'></span> IMPRIMIR REPORTE </button> </td>
 			<!--<td <td width='500'>  </td>  <td colspan='7'      style='color:#990000; font:bold'><a style ='text-decoration:underline;cursor:pointer; font:bold; size:36' onclick='VistaPrevia();'>IMPRIMIR REPORTE</a></td>	-->
 		</tr>
@@ -283,16 +306,17 @@ switch ($opcion)
 	</table> ";
                         }ELSE {
                             
-                            $imprimir= "<table width='80%' border='0'  align='center'>
+                            $imprimir= "<table width='65%' border='0'  align='center'>
           <center>
                 <tr>
                         <td width='500'  align='center'  ><span style='color: #0101DF;'> <h4> TOTAL DE PACIENTES CITADOS:".$NroRegistros."</h4></span></td>
                 </tr>
                 </table>
                 
-                <table width='80%' border='0'  align='center'>
-                   <td width='1600'></td>   <td   > <button type='button'  class='btn btn-primary'  onclick='VistaPrevia(); '><span class='glyphicon glyphicon-print'></span> IMPRIMIR REPORTE </button> </td>
-			<!--<td <td width='500'>  </td>  <td colspan='7'      style='color:#990000; font:bold'><a style ='text-decoration:underline;cursor:pointer; font:bold; size:36' onclick='VistaPrevia();'>IMPRIMIR REPORTE</a></td>	-->
+                <table width='65%' border='0'  align='center'>
+                   <td width='1600'></td>   
+                   <td><button type='button'  class='btn btn-primary'  onclick='VistaPrevia(); '><span class='glyphicon glyphicon-print'></span> IMPRIMIR REPORTE </button> </td>
+			<!--<td <td width='500'>  </td>  <td colspan='7'   style='color:#990000; font:bold'><a style ='text-decoration:underline;cursor:pointer; font:bold; size:36' onclick='VistaPrevia();'>IMPRIMIR REPORTE</a></td>	-->
 		</tr>
           </center>
 	</table> ";
@@ -301,8 +325,8 @@ switch ($opcion)
                         
     
 	
-			$imprimir.="<center><div class='table-responsive' style='width: 80%;'>
-                <table width='80%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+			$imprimir.="<center><div class='table-responsive' style='width: 65%;'>
+                <table width='65%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
                     <thead>
                                 <tr> 
 						<th>Fecha cita</th>
@@ -320,14 +344,14 @@ switch ($opcion)
 			{ 
 			$imprimir .="<tr>
 						<td  width='8%'>".$row['fecharecepcion']."</td>
-						<td  width='8%'>".$row['idnumeroexp']."
+						<td  width='5%'>".$row['idnumeroexp']."
 							<input name='idsolicitud[".$pos."]' id='idsolicitud[".$pos."]' type='hidden' size='60' value='".$row[1]."' />".
 							"<input name='idexpediente[".$pos."]' id='idexpediente[".$pos."]' type='hidden' size='60' value='".$row['idnumeroexp']."' />
 						</td>
-						<td  width='30%'>".htmlentities($row['paciente'])."</td>
-						<td  width='15%'>".htmlentities($row['nombresubservicio'])."</td>
-						<td  width='15%'>".htmlentities($row['nombreservicio'])."</td>
-						<td  width='25%'>".htmlentities($row['estabext'])."</td>
+						<td  width='25%'>".htmlentities($row['paciente'])."</td>
+						<td  width='12%'>".htmlentities($row['nombresubservicio'])."</td>
+						<td  width='19%'>".htmlentities($row['nombreservicio'])."</td>
+						<td  width='30%'>".htmlentities($row['estabext'])."</td>
 					</tr>";
 				$pos=$pos + 1;
 			} 
@@ -351,7 +375,7 @@ switch ($opcion)
 		
 		$idarea=$_POST['idarea'];
 		$dtExam=$objdatos->ExamenesPorArea($idarea,$lugar);	
-		$rslts = '<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:250px">';
+		$rslts = '<select name="cmbExamen" id="cmbExamen" class="MailboxSelect" style="width:500px">';
 		$rslts .='<option value="0"> Seleccione Examen </option>';
 			
 		while ($rows =pg_fetch_array($dtExam)){
@@ -367,12 +391,27 @@ switch ($opcion)
 	case 6:// Llenar Combo Establecimiento
 		$rslts='';
 		$Idtipoesta=$_POST['idtipoesta'];
-               	$dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
+               	/*$dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
               	$rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:375px" class="form-control height">';
 		$rslts .='<option value="0"> Seleccione Establecimiento </option>';
                while ($rows =pg_fetch_array( $dtIdEstab)){
 		  $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
-	       }
+	       }*/
+             if ($Idtipoesta<>0){
+                    $dtIdEstab=$objdatos->LlenarCmbEstablecimiento($Idtipoesta);
+                    $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:500px" class="form-control height">';
+                    //$rslts .='<option value="0"> Seleccione Establecimiento </option>';
+                    while ($rows =pg_fetch_array( $dtIdEstab)){
+                        $rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
+                    }
+		}else{
+                    $dtIdEstab = $objdatos->LlenarTodosEstablecimientos();
+                    $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:500px" class="form-control height">';
+                    $rslts .='<option value="0"> -- No Hay Establecimiento -- </option>';
+                    while ($rows = pg_fetch_array($dtIdEstab)) {
+                        $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
+                    }
+                }   
 				
 		$rslts .= '</select>';
 		echo $rslts;
@@ -381,14 +420,19 @@ switch ($opcion)
    	     $rslts='';
              $IdServ=$_POST['IdServicio'];
 	     $dtserv=$objdatos->LlenarCmbServ($IdServ,$lugar);
-	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:375px" class="form-control height">';
-			$rslts .='<option value="0"> Seleccione Subespecialidad </option>';
+	     $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:500x" class="form-control height">';
+             $rslts .='<option value="0"> Seleccione SubServicio </option>';
 			while ($rows =pg_fetch_array($dtserv)){
 		  	$rslts.= '<option value="' . $rows[0] .'" >'. htmlentities($rows[1]).'</option>';
 	       		}
 				
 	      $rslts .='</select>';
 	      echo $rslts;
+              
+              
+                
+
+             
         break;	
     	
 		

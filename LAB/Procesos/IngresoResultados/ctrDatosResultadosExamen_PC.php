@@ -44,19 +44,16 @@ switch ($opcion)
 					<input name='oidantibiotico[".$pos."]' type='hidden' id='oidantibiotico[".$pos."]' value='".$row['idantibiotico']."'></td>
                                           
                             <td width='20%' class='StormyWeatherDataTD'> 
-                                    <select id='cmbresultado[".$pos."]' name='cmbresultado[".$pos."]'  size='1' class='form-control height'>
-                                        <option value='0' >--Seleccione Resultado--</option>";
+                                <select id='cmbresultado[".$pos."]' name='cmbresultado[".$pos."]' size='1' class='form-control height'>
+                                    <option value='0' >--Seleccione Resultado--</option>";
                                     $con_result = $objdatos->consultar_resultados($row['idantibiotico']);
                                     while ($row_result = pg_fetch_array($con_result)) {
                                         $imprimir.="<option value='" . $row_result['id'] . "'>" . htmlentities($row_result['posible_resultado']) . "</option>";
                                     }
                                     
-		        $imprimir.="</select>
+		    $imprimir.="</select>
                             </td>
-	        	   	
-                                
-			</tr>
-                       ";
+	        	</tr>";
 		$pos=$pos+1;
 	}
 	pg_free_result($consulta);
@@ -66,7 +63,9 @@ switch ($opcion)
                      <input type='hidden' name='txtf_tomamuestra' id='txtf_tomamuestra' disabled='disabled' value='".$f_tomamuestra."' /> ";
 	$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>";
 
-	    $imprimir.="<tr><td class='StormyWeatherDataTD' colspan='3'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr> 
+	    $imprimir.="<tr>
+                            <td class='StormyWeatherDataTD' colspan='3'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr> 
                         <tr>
                             <td class='StormyWeatherFieldCaptionTD'>Observación:</td>
                             <td colspan='2'class='StormyWeatherDataTD'><textarea name='txtobservacion' type='text' id='txtobservacion' size='50' cols='50'></textarea></td>
@@ -90,10 +89,9 @@ switch ($opcion)
 
                 $fecharealiz=$_POST['fecharealiz'];
                 $fecharesultado=$_POST['fecharesultado'];
-                 $f_tomamuestra=$_POST['f_tomamuestra'];
-                 $tipomuestra=$_POST['tipomuestra'];
-                
-                
+                $f_tomamuestra=$_POST['f_tomamuestra'];
+                $tipomuestra=$_POST['tipomuestra'];
+                                
 		$idrecepcion= $_POST['idrecepcion'];
 		$iddetalle= $_POST['iddetalle'];
 
@@ -103,8 +101,10 @@ switch ($opcion)
 		$codigos_antibioticos=$_POST['codigos_antibioticos'];
 		$valores_antibioticos=$_POST['valores_antibioticos'];
                 $valores_interpretacion=$_POST['valores_interpretacion'];
-
-		$idtarjeta=$_POST['idtarjeta'];
+                
+              //  print_r($valores_interpretacion);
+		
+                $idtarjeta=$_POST['idtarjeta'];
 		$idbacteria=$_POST['idbacteria'];
 		$cantidad=$_POST['cantidad'];
 		$resultado="Positivo";
@@ -135,57 +135,56 @@ switch ($opcion)
 		$row_nombrebacteria= pg_fetch_array($bateria);
                 $estabext=$row_generales['estabext'];
 	     $imprimir="<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
-                           <tr>
+                            <tr>
                                 <td colspan='1' align='left' width='15%'><img id='Image1' style='width: auto; height: 55px;'  src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
                                 <td align='center' colspan='4' width='70%' class='Estilo5'>
                                     <p width='25'><strong>RESULTADOS LABORATORIO CL&Iacute;NICO</strong></p>
                                     <p width='50'><strong>".$row_generales['estabext']    ."</strong></p>
                                     <p width='25'><strong>&Aacute;rea de ".htmlentities($row_area['nombrearea'])." </strong></p></td>
                                 <td colspan='1' align='right' width='15%'><img id='Image3' style='width: auto; height: 55px;' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
-                           </tr>
-                           <tr>
+                            </tr>
+                            <tr>
                                 <td colspan='6'>&nbsp;</td>
-                           </tr>
-                           <tr>
+                            </tr>
+                            <tr>
                                 <td colspan='1'><strong>Establecimiento solicitante:</strong></td>
                                 <td colspan='3' align='left'>".$row_generales['estabext']."</td>
                                 <td colspan='1' ><strong>Fecha Recepción:</strong></td>
                                 <td colspan='1' align='left'>".$row_generales['fecharecep']."</td>
 
-                           </tr>
-
-                           <tr>
-                                  <td colspan='1'><strong>Expediente:</strong></td>
-                                  <td colspan='3' align='left'>".$row_generales['numero']."</td>
-                                  <td colspan='1'><strong>Fecha Toma Muestra:</strong></td>
-				  <td colspan='1' align='left'>".$f_tomamuestra."</td>       
-                           </tr>
-                           <tr>
-                                  <td colspan='1'><strong>Paciente:</strong></td>
-                                  <td colspan='5' align='left'>".htmlentities($row_generales['paciente'])."</td>
+                            </tr>
+                            <tr>
+                                <td colspan='1'><strong>Expediente:</strong></td>
+                                <td colspan='3' align='left'>".$row_generales['numero']."</td>
+                                <td colspan='1'><strong>Fecha Toma Muestra:</strong></td>
+                                <td colspan='1' align='left'>".$f_tomamuestra."</td>       
                            </tr>
                            <tr>
-                                  <td colspan='1'><strong>Edad:</strong></td>
-                                  <td colspan='3' align='left'>".htmlentities($row_generales['edad'])."</td>
-                                  <td colspan='1'><strong>Sexo:</strong></td>
-                                  <td colspan='1' align='left'>".$row_generales['sexo']."</td>
+                                <td colspan='1'><strong>Paciente:</strong></td>
+                                <td colspan='5' align='left'>".htmlentities($row_generales['paciente'])."</td>
                            </tr>
                            <tr>
-                                  <td colspan='1' ><strong>Procedencia:</strong></td>
-                                  <td colspan='3'align='left'>".htmlentities($row_generales['procedencia'])."</td>
-                                  <td colspan='1' ><strong>Servicio:</strong></td>
-                                  <td colspan='1' align='left'>".htmlentities($row_generales['subservicio'])."</td>
+                                <td colspan='1'><strong>Edad:</strong></td>
+                                <td colspan='3' align='left'>".htmlentities($row_generales['edad'])."</td>
+                                <td colspan='1'><strong>Sexo:</strong></td>
+                                <td colspan='1' align='left'>".$row_generales['sexo']."</td>
                            </tr>
                            <tr>
-                                  <td colspan='1'><strong>Examen Realizado:</strong></td>
-                                  <td colspan='5' align='left'>".htmlentities($row_area['nombre_examen'])."</td>
+                                <td colspan='1' ><strong>Procedencia:</strong></td>
+                                <td colspan='3'align='left'>".htmlentities($row_generales['procedencia'])."</td>
+                                <td colspan='1' ><strong>Servicio:</strong></td>
+                                <td colspan='1' align='left'>".htmlentities($row_generales['subservicio'])."</td>
                            </tr>
                            <tr>
-                                  <td colspan='1'><strong>Validado Por:</strong></td>
-                                  <td colspan='5' align='left'>".htmlentities($row_empleado['empleado'])."</td>
+                                <td colspan='1'><strong>Examen Realizado:</strong></td>
+                                <td colspan='5' align='left'>".htmlentities($row_area['nombre_examen'])."</td>
                            </tr>
                            <tr>
-                                  <td colspan='6'>&nbsp;</td>
+                                <td colspan='1'><strong>Validado Por:</strong></td>
+                                <td colspan='5' align='left'>".htmlentities($row_empleado['empleado'])."</td>
+                           </tr>
+                           <tr>
+                                <td colspan='6'>&nbsp;</td>
                            </tr>
                            <tr>  <td colspan='6'><hr></td></tr>
                            <tr>
