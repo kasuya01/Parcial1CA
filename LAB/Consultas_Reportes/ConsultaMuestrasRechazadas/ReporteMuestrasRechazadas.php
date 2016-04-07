@@ -8,9 +8,9 @@ $base_url  = $_SESSION['base_url'];
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-<!--<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />-->
+<!--<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
-<link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+<link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">-->
 <link rel="stylesheet" type="text/css" href="../../Webstyle/Themes/Cobalt/Style.css">
 <?php include_once $ROOT_PATH.'/public/css.php';?>
 <?php include_once $ROOT_PATH.'/public/js.php';?>
@@ -19,50 +19,49 @@ $base_url  = $_SESSION['base_url'];
 @media print{
 #boton{display:none;}
 }
+.Estilo8 {font-family: Helvetica; font-size: 10.5pt}
+.Estilo6 {font-family: Helvetica; font-size: 9.5pt}
+.Estilo7 {font-family: Helvetica; font-size: 10pt}
+.Estilo9 {font-family: Helvetica; font-size: 11pt}
 
-
-.Estilo5 {font-size: 10pt}
-.Estilo12 {font-size: 6pt}
+.Estilo12 {font-size: 12pt}
 -->
 </style>
+
 <title>Reporte de Muestras Rechazadas</title>
 <script language="JavaScript" type="text/javascript" src="ajax_ConsultaMuestrasPendientes.js"></script>
 <script language="JavaScript" >
 function RecogeValor()
 {
-var vtmp=location.search;
-var vtmp2 = vtmp.substring(1,vtmp.length);
-var query = unescape(top.location.search.substring(1));
-var getVars = query.split(/&/);
-for ( i = 0; i < getVars.length; i++)
-		{
-			if ( getVars[i].substr(0,5) == 'var1=' )//loops through this array and extract each name and value
+    var vtmp=location.search;
+    var vtmp2 = vtmp.substring(1,vtmp.length);
+    var query = unescape(top.location.search.substring(1));
+    var getVars = query.split(/&/);
+    for ( i = 0; i < getVars.length; i++)
+	{
+                    if ( getVars[i].substr(0,5) == 'var1=' )//loops through this array and extract each name and value
                         idarea = getVars[i].substr(5);
-			if ( getVars[i].substr(0,5) == 'var2=' )
-						idexpediente = getVars[i].substr(5);
-			if ( getVars[i].substr(0,5) == 'var3=' )
-						fecharecep = getVars[i].substr(5);
-			if ( getVars[i].substr(0,5) == 'var4=' )
-				IdEstab = getVars[i].substr(5);
-			if ( getVars[i].substr(0,5) == 'var5=' )
-				IdServ = getVars[i].substr(5);
-			if ( getVars[i].substr(0,5) == 'var6=' )
-				IdSubServ = getVars[i].substr(5);
-			if ( getVars[i].substr(0,5) == 'var7=' )
-				idexamen = getVars[i].substr(5);
-                            
-			if ( getVars[i].substr(0,5) == 'var8=' )
-				PNombre = getVars[i].substr(5);
-			
-                        if ( getVars[i].substr(0,5) == 'var9=' )
-				SNombre = getVars[i].substr(5);
-			
-                        if ( getVars[i].substr(0,5) == 'var10=' )
-				PApellido = getVars[i].substr(5);
-			
-                        if ( getVars[i].substr(0,5) == 'var11=' )
-				SApellido = getVars[i].substr(5);
-		}
+                    if ( getVars[i].substr(0,5) == 'var2=' )
+			idexpediente = getVars[i].substr(5);
+                    if ( getVars[i].substr(0,5) == 'var3=' )
+                    	fecharecep = getVars[i].substr(5);
+                    if ( getVars[i].substr(0,5) == 'var4=' )
+                    	IdEstab = getVars[i].substr(5);
+                    if ( getVars[i].substr(0,5) == 'var5=' )
+                    	IdServ = getVars[i].substr(5);
+                    if ( getVars[i].substr(0,5) == 'var6=' )
+			IdSubServ = getVars[i].substr(5);
+                    if ( getVars[i].substr(0,5) == 'var7=' )
+                    	idexamen = getVars[i].substr(5);
+                    if ( getVars[i].substr(0,5) == 'var8=' )
+			PNombre = getVars[i].substr(5);
+		    if ( getVars[i].substr(0,5) == 'var9=' )
+			SNombre = getVars[i].substr(5);
+		    if ( getVars[i].substr(0,5) == 'var10=' )
+			PApellido = getVars[i].substr(5);
+		    if ( getVars[i].substr(0,5) == 'var11=' )
+			SApellido = getVars[i].substr(5);
+	}
 
 // CargarDatosFormulario(especialidad,fechainicio,fechafin,medico);
 }
@@ -73,11 +72,11 @@ function otroreport(){
 
 
 
-imprimir(){
-document.getElementById('btnImprimir').style.visibility="hidden";
-window.print();
-document.getElementById('btnImprimir').style.visibility="visible";
-}
+///imprimir(){
+//document.getElementById('btnImprimir').style.visibility="hidden";
+//window.print();
+//document.getElementById('btnImprimir').style.visibility="visible";
+//}
 </script>
 </head>
 
@@ -172,24 +171,31 @@ $objdatos = new clsConsultaMuestrasRechazadas;
            // $query_search = 
         }     
        // echo $cond2;
-         $query="WITH tbl_servicio AS (
-                    SELECT t02.id,
-                        CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
-                                 ELSE t02.nombre_ambiente
-                            END
-                        ELSE
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'--> ' || t01.nombre
-                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
-                            END
-                        END AS servicio 
-                    FROM  ctl_atencion                  t01 
-                    INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
-                    INNER JOIN mnt_area_mod_estab           t03 ON (t03.id = t02.id_area_mod_estab)
-                    LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
-                    LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
-                    WHERE $where_with t02.id_establecimiento = $lugar
-                    ORDER BY 2)
+         $query="WITH tbl_servicio AS ( SELECT t02.id, 
+                CASE WHEN t02.nombre_ambiente IS NOT NULL THEN 
+                    CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||' - ' || t02.nombre_ambiente 
+                            --ELSE t02.nombre_ambiente 
+                    END 
+                    ELSE 
+                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||' - ' ||  t01.nombre 
+                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)  
+                                    --THEN t07.nombre||'-'||t01.nombre
+                                    THEN t01.nombre
+                    END 
+
+                END AS servicio,
+               (CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||' - '  || t06.nombre
+                    ELSE   t07.nombre ||' - ' || t06.nombre
+                END) as procedencia
+                FROM ctl_atencion t01 
+                INNER JOIN mnt_aten_area_mod_estab t02 ON (t01.id = t02.id_atencion) 
+                INNER JOIN mnt_area_mod_estab t03 ON (t03.id = t02.id_area_mod_estab) 
+                LEFT JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab) 
+                LEFT JOIN mnt_servicio_externo t05 ON (t05.id = t04.id_servicio_externo) 
+                INNER JOIN  ctl_area_atencion t06  on  t06.id = t03.id_area_atencion
+                INNER JOIN ctl_modalidad  t07 ON t07.id = t03.id_modalidad_estab
+                WHERE t02.id_establecimiento =  $lugar ORDER BY 2)
+                    SELECT ordenar.* FROM (
             
                     SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                        t01.id ,
@@ -205,7 +211,7 @@ $objdatos = new clsConsultaMuestrasRechazadas;
                        CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,
                        t07.segundo_apellido,t07.apellido_casada) AS paciente,
                        t20.servicio AS nombresubservicio,
-                       t13.nombre AS nombreservicio, 
+                       t20.procedencia AS nombreservicio,  
                        t02.impresiones, 
                        t14.nombre, 
                        t09.id AS idhistorialclinico,
@@ -292,77 +298,72 @@ $objdatos = new clsConsultaMuestrasRechazadas;
             INNER JOIN ctl_sexo t19                                 ON (t19.id = t07.id_sexo)
             WHERE (t16.idestado = 'RM') 
             AND t02.id_establecimiento = $lugar 
-                AND $cond2";  
+                AND $cond2) ordenar
+                ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";  
 
 	?>
  <table width="100%" border="0" align='center'>
 			<tr>
-				<td colspan="7" align="center"><h3><strong>REPORTE DE MUESTRAS RECHAZADAS
-				</h3></strong></td>
+				<td colspan="7" align="center" class="Estilo9"><strong>REPORTE DE MUESTRAS RECHAZADAS
+				</strong></td>
 			</tr>
-			</table>
+ </table>
+    <br>
   <?php 
    $consulta=$objdatos->ListadoSolicitudesPorArea($query);
  ?>
- <table width="100%" border="1" cellspacing="0" align="center">
-			
-    <tr >
-		<td width="5%"  class="StormyWeatherDataTD" style="color:#000000; font:bold" align="center"><h4><strong>Muestra</h4></strong></td>
-		<td width="6%" class="StormyWeatherDataTD" style="color:#000000; font:bold" ><h4><strong>NEC </strong><h4></td>
-		<td width="20%" class="StormyWeatherDataTD" style="color:#000000; font:bold" ><h4><strong>
-Nombre Paciente</strong><h4>
-                </td>
-		<td width="6%" class="StormyWeatherDataTD" style="color:#000000; font:bold"><h4><strong>Id Examen</strong><h4></td>
-		<td width="10%" class="StormyWeatherDataTD" style="color:#000000; font:bold"><h4><strong>Nombre Examen</strong><h4></td>
-		<td width="10%" class="StormyWeatherDataTD" style="color:#000000; font:bold"><h4><strong>Observaci&oacute;n</strong><h4></td>
-		<td width="10%" class="StormyWeatherDataTD" style="color:#000000; font:bold" align="center"><h4><strong>Servicio</strong><h4></td>
-		<td width="10%" class="StormyWeatherDataTD" style="color:#000000; font:bold" align="center"><h4><strong>Procedencia</strong><h4></td>
-		<td width="12%" class="StormyWeatherDataTD" style="color:#000000; font:bold" align="center"><h4><strong>Establecimiento</strong><h4></td>
-		<td width="7%" class="StormyWeatherDataTD" style="color:#000000; font:bold" ><h4><strong>Fecha Recepci&oacute;n</strong><h4></td>
-	</tr>    
-   <?php $pos=0;
-    while ($row = pg_fetch_array($consulta))
-	{ ?>
-			<tr >
-				<td width="5%" align="center"><?php echo $row['numeromuestra']; ?></td>
-				<td width="6%"><?php echo $row['idnumeroexp'];?></td>
-				<td width="20%" ><?php echo $row['paciente'];?></td>
-				<td width="6%"><?php echo $row['idexamen'];?></td>
-				<td width="10%"><?php echo htmlentities($row['nombreexamen']);?></td>
-				 <?if(!empty($row['observacion']))
-					echo "<td width='10%'>".htmlentities($row['observacion'])."</td>";
-				
-			 	   else	
-					echo "<td width='10%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";?>
-				
-				<td width='10%' align="center"><?php echo htmlentities($row['nombresubservicio']); ?></td>
-				<td width='10%' align="center"><?php echo htmlentities($row['nombreservicio']); ?></td>
-				<td width='12%' align="center"><?php echo htmlentities($row['estabext']); ?></td>
-				<td width="7%"><?php echo $row['fecharecepcion'];?></td>
-		   </tr>
- <?php
-	$pos=$pos + 1;
-	}
-	
-	pg_free_result($consulta);?>
-	
-   <input type="hidden" name="oculto" id="text" value='".$pos."' /> 
-   
-		</table>
-    <br>
+            <table width="100%" border="1" cellspacing="0" align="center" celpading="0" >
+                <tr>
+                    <td width="4%"  class="Estilo6" align="center"><strong>Muestra</strong></td>
+                    <td width="4%"  class="Estilo6" align="center"><strong>NEC </strong></td>
+                    <td width="21%" class="Estilo6" align="center"><strong>Nombre Paciente</strong></td>
+                    <td width="4%"  class="Estilo6" align="center"><strong>Cod. Examen</strong></td>
+                    <td width="15%" class="Estilo6" align="center"><strong>Nombre Examen</strong></td>
+                    <td width="7%"  class="Estilo6" align="center"><strong>Observaci&oacute;n</strong></td>
+                    <td width="8%"  class="Estilo6" align="center"><strong>Servicio</strong></td>
+                    <td width="8%"  class="Estilo6" align="center"><strong>Procedencia</strong></td>
+                    <td width="20%" class="Estilo6" align="center"><strong>Establecimiento</strong></td>
+                    <td width="5%"  class="Estilo6" align="center"><strong>Fecha Recepci&oacute;n</strong></td>
+                </tr>    
+               <?php $pos=0;
+              while ($row = pg_fetch_array($consulta))
+              { ?>
+                <tr>
+                    <td width="4%"  class="Estilo6"  align="center" ><?php echo $row['numeromuestra']; ?></td>
+                    <td width="4%"  class="Estilo6"  align="justify"><?php echo $row['idnumeroexp'];?></td>
+                    <td width="21%" class="Estilo6" align="left"><?php echo $row['paciente'];?></td>
+                    <td width="4%"  class="Estilo6"  align="center"><?php echo $row['idestandar'];?></td>
+                    <td width="12%" class="Estilo6" align="left"><?php echo htmlentities($row['nombreexamen']);?></td>
+                <?php 
+                if(!empty($row['observacion'])){
+                    ?>
+                    <td width="5%" class="Estilo6" align="justify"> <?php echo htmlentities($row['observacion']);?></td>
+              <?php }else { ?>	
+                    <td width="5%" class="Estilo6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <?php } ?>       
+                    </td>
+                    <td width="8%" class="Estilo6" align="justify"><?php echo htmlentities($row['nombresubservicio']); ?></td>
+                    <td width="8%" class="Estilo6" align="left"><?php echo htmlentities($row['nombreservicio']); ?></td>
+                    <td width="15%"class="Estilo6" align="left"><?php echo htmlentities($row['estabext']); ?></td>
+                    <td width="5%" class="Estilo6" align="justify"><?php echo $row['fecharecepcion'];?></td>
+                </tr>
+		   
+                <?php
+                    $pos=$pos + 1;
+                    }
+                     pg_free_result($consulta);?>
+                   <input type="hidden" name="oculto" id="text" value='".$pos."' /> 
+	    </table>
+        <br>
 	<div id="boton">
-	<table width="90%" border="0" align="center">
-			<tr>
-			<td colspan="7" align="center">	
-			<div id="boton">	
-			<!--<input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
-			<input type="button" name="btncl" id="btnct" value="Regresar" onClick="window.close();"> </div>
-			--><button type='button' align="center" class='btn btn-primary'  onclick='window.print(); '><span class='glyphicon glyphicon-print'></span> Imprimir </button>
-                            <button type='button' align="center" class='btn btn-primary'  onClick="window.close();"><span class='glyphicon glyphicon-arrow-left'></span> Regresar </button>
-                    
-                        
-                        </div>	</td>
-				
-			</tr></table>
+            <table width="100%" border="0" align="center">
+                <tr>
+                    <td colspan="7" align="center">	
+                       	<button type='button' align="center" class='btn btn-primary'  onclick='window.print(); '><span class='glyphicon glyphicon-print'></span> Imprimir </button>
+                        <button type='button' align="center" class='btn btn-primary'  onClick="window.close();"><span class='glyphicon glyphicon-arrow-left'></span> Regresar </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
 </body>
 </html>

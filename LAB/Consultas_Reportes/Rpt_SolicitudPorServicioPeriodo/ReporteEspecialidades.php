@@ -10,9 +10,9 @@ $base_url  = $_SESSION['base_url'];
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-<!--<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />-->
+<!--<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
-<link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+<link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">-->
 <link rel="stylesheet" type="text/css" href="../../Webstyle/Themes/Cobalt/Style.css">
 <style type="text/css">
 <!--
@@ -20,11 +20,14 @@ $base_url  = $_SESSION['base_url'];
 #boton{display:none;}
 }
 
-
-.Estilo5 {font-size: 10pt}
-.Estilo12 {font-size: 6pt}
+.Estilo5 {font-family: Helvetica; font-size: 7pt}
+.Estilo6 {font-family: Helvetica; font-size: 8pt}
+.Estilo7 {font-family: Helvetica; font-size: 9pt}
 -->
+
 </style>
+
+ 
 <title>Reporte de Solicitudes por Sub-Servicio</title>
 <script language="JavaScript" type="text/javascript" src="ajax_SolicitudPorServicioPeriodo.js"></script>
 <?php include_once $ROOT_PATH.'/public/css.php';?>
@@ -130,7 +133,97 @@ include_once("clsSolicitudesPorServicioPeriodo.php");
             $cond1;
            //echo $cond2;
         }     */
-       $query="SELECT 
+         $query= " WITH tbl_servicio AS ( SELECT t02.id, CASE WHEN t02.nombre_ambiente IS NOT NULL THEN 
+            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||' - ' || t02.nombre_ambiente END ELSE 
+            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||' - ' || t01.nombre WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre END END AS servicio, 
+            (CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-' || t06.nombre ELSE t07.nombre ||'-' || t06.nombre END) as procedencia 
+            FROM ctl_atencion t01 
+            INNER JOIN mnt_aten_area_mod_estab t02 ON (t01.id = t02.id_atencion) 
+            INNER JOIN mnt_area_mod_estab t03 ON (t03.id = t02.id_area_mod_estab) 
+            LEFT JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab) 
+            LEFT JOIN mnt_servicio_externo t05 ON (t05.id = t04.id_servicio_externo) 
+            INNER JOIN ctl_area_atencion t06 on t06.id = t03.id_area_atencion 
+            INNER JOIN ctl_modalidad t07 ON t07.id = t03.id_modalidad_estab WHERE t02.id_establecimiento = 372 ORDER BY 2) 
+
+            SELECT t01.id , 
+            t20.procedencia AS nombreservicio, 
+            t19.nombre AS sexo, 
+            t24.nombreempleado as medico, 
+            CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido, t07.segundo_apellido,t07.apellido_casada) AS paciente,
+            (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
+            t20.servicio AS nombresubservicio,
+            CASE t01.estadodetalle WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada' 
+               WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='R') THEN 'Recibida' 
+               WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='P') THEN 'En Proceso' 
+               WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' 
+               WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
+               WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
+               WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado, 
+            t06.numero as expediente,
+            TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud 
+            FROM sec_detallesolicitudestudios t01 
+            INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio) 
+            INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio) 
+            INNER JOIN lab_conf_examen_estab t04 ON (t04.id = t01.id_conf_examen_estab) 
+            INNER JOIN mnt_area_examen_establecimiento t05 ON (t05.id = t04.idexamen) 
+            INNER JOIN mnt_expediente t06 ON (t06.id = t02.id_expediente) 
+            INNER JOIN mnt_paciente t07 ON (t07.id = t06.id_paciente) 
+            INNER JOIN ctl_area_servicio_diagnostico t08 ON (t08.id = t05.id_area_servicio_diagnostico AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) 
+            INNER JOIN sec_historial_clinico t09 ON (t09.id = t02.id_historial_clinico) 
+            INNER JOIN mnt_aten_area_mod_estab t10 ON (t10.id = t09.idsubservicio) 
+            INNER JOIN ctl_atencion t11 ON (t11.id = t10.id_atencion) 
+            INNER JOIN mnt_area_mod_estab t12 ON (t12.id = t10.id_area_mod_estab) 
+            INNER JOIN ctl_area_atencion t13 ON (t13.id = t12.id_area_atencion) 
+            INNER JOIN ctl_establecimiento t14 ON (t14.id = t09.idestablecimiento) 
+            INNER JOIN cit_citas_serviciodeapoyo t15 ON (t02.id = t15.id_solicitudestudios) 
+            INNER JOIN ctl_estado_servicio_diagnostico t16 ON (t16.id = t01.estadodetalle) 
+            INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud) 
+            INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico) 
+            INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo) 
+            INNER JOIN tbl_servicio t20 ON (t20.id = t10.id AND t20.servicio IS NOT NULL) 
+            LEFT JOIN mnt_empleado t24 ON (t09.id_empleado=t24.id) 
+            WHERE t02.id_establecimiento = $lugar  $cond1 
+            
+            UNION
+
+           SELECT t01.id, 
+           t13.nombre AS nombreservicio, 
+           t19.nombre AS sexo, 
+           t24.nombreempleado as medico, CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido, t07.apellido_casada) AS paciente, 
+           (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
+           t11.nombre AS nombresubservicio, 
+           CASE t01.estadodetalle WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada' 
+                WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='R') THEN 'Recibida' 
+                WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='P') THEN 'En Proceso' 
+                WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' 
+                WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
+                WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
+                WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
+            t06.numero as expediente,
+            TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud 
+            FROM sec_detallesolicitudestudios t01 
+            INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio) 
+            INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio) 
+            INNER JOIN lab_conf_examen_estab t04 ON (t04.id = t01.id_conf_examen_estab) 
+            INNER JOIN mnt_area_examen_establecimiento t05 ON (t05.id = t04.idexamen) 
+            INNER JOIN mnt_dato_referencia t09 ON t09.id=t02.id_dato_referencia 
+            INNER JOIN mnt_expediente_referido t06 ON (t06.id = t09.id_expediente_referido) 
+            INNER JOIN mnt_paciente_referido t07 ON (t07.id = t06.id_referido) 
+            INNER JOIN ctl_area_servicio_diagnostico t08 ON (t08.id = t05.id_area_servicio_diagnostico AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) 
+            INNER JOIN mnt_aten_area_mod_estab t10 ON (t10.id = t09.id_aten_area_mod_estab) 
+            INNER JOIN ctl_atencion t11 ON (t11.id = t10.id_atencion) 
+            INNER JOIN mnt_area_mod_estab t12 ON (t12.id = t10.id_area_mod_estab) 
+            INNER JOIN ctl_area_atencion t13 ON (t13.id = t12.id_area_atencion) 
+            INNER JOIN ctl_establecimiento t14 ON (t14.id = t09.id_establecimiento) 
+            INNER JOIN cit_citas_serviciodeapoyo t15 ON (t02.id = t15.id_solicitudestudios) 
+            INNER JOIN ctl_estado_servicio_diagnostico t16 ON (t16.id = t01.estadodetalle) 
+            INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud)
+            INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico) 
+            INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo) 
+            LEFT JOIN mnt_empleado t24 ON (t09.id_empleado=t24.id) 
+            WHERE  t02.id_establecimiento = $lugar $cond2"; 
+               /*
+               "SELECT 
                     t01.id,
 		   t13.nombre AS nombreservicio, 
 		   t19.nombre AS sexo,
@@ -197,7 +290,7 @@ UNION
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
 			t06.numero as expediente,
 			TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud
-FROM sec_detallesolicitudestudios t01 
+            FROM sec_detallesolicitudestudios t01 
             INNER JOIN sec_solicitudestudios t02 		ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra t03 		ON (t02.id = t03.idsolicitudestudio) 
             INNER JOIN lab_conf_examen_estab t04	 	ON (t04.id = t01.id_conf_examen_estab) 
@@ -219,49 +312,48 @@ FROM sec_detallesolicitudestudios t01
             left join sec_signos_vitales 			t23 on (t23.id_historial_clinico=t09.id) 
             left join mnt_empleado 				t24 on (t09.id_empleado=t24.id)
             inner join ctl_area_servicio_diagnostico 	t25 on (t25.id=t05.id_area_servicio_diagnostico) 
-            where t01.idestablecimiento= $lugar  $cond2 order by fechasolicitud desc ";
+            where t01.idestablecimiento= $lugar  $cond2 order by fechasolicitud desc ";*/
 		
 	//ECHO $query_search;
 		
         $consulta1=$objdatos->BuscarSolicitudesEspecialidad($query); 
 			 
 	$row1 = @pg_fetch_array($consulta1);?>
- 	<table width="60%" border="0"  align='center'>
-		<tr>
-			<td colspan="7" align="center"><h3><strong>REPORTE DE SOLICITUDES POR SUB-SERVICIO
-			</h3></strong></td>
-		</tr>
-		<tr>
-			<td colspan="7" align="center"><h3><strong><?php echo $row1['nombreservicio']; ?></strong></h3></td>
-			</td>
-		</tr>
+ 	<table width="100%" border="0"  align='center'>
+            <tr>
+		<td colspan="7" align="center" class="Estilo7"><strong>REPORTE DE SOLICITUDES POR SUB-SERVICIO</strong></td>
+            </tr>
+            <tr>
+		<td colspan="7" align="center" class="Estilo7"><strong><?php echo $row1['nombreservicio']; ?></strong></td>
 		
-	</table>
+            </tr>
+		
+        </table><br>
  	 <?php 
          $consulta=$objdatos->BuscarSolicitudesEspecialidad($query); ?>
- 	<table width="80%" border="1" align="center" cellspacing="0">
+ 	<table width="100%" border="1" align="center" cellspacing="0">
 		<tr>
-			<td width="10%" class="StormyWeatherDataTD" style="color:#000000; font:bold" ><h4><strong>Fecha Solicitud</h4></strong></td>
-			<td width="6%" class="StormyWeatherDataTD" style="color:#000000; font:bold" ><h4><strong>NEC </strong><h4></td>
-			<td width="20%" class="StormyWeatherDataTD" style="color:#000000; font:bold"><h4><strong>Nombre Paciente</strong><h4></td>
-			<td width="18%" class="StormyWeatherDataTD" style="color:#000000; font:bold"><h4><strong>M&eacute;dico</strong><h4></td>
-			<td width="12%" class="StormyWeatherDataTD" style="color:#000000; font:bold"><h4><strong>Origen</strong><h4></td>
-			<td width="12%" class="StormyWeatherDataTD" style="color:#000000; font:bold"><h4><strong>Procedencia</strong><h4></td>
-			<td width="15%" class="StormyWeatherDataTD" style="color:#000000; font:bold"><h4><strong>Establecimiento</strong><h4></td>
-			<td width="15%" class="StormyWeatherDataTD" style="color:#000000; font:bold"><h4><strong>Estado Solicitud</strong><h4></td>
+			<td width="8%" class="Estilo6" align="justify"><strong>Fecha Solicitud</strong></td>			
+                        <td width="4%"  class="Estilo6" align="justify"><strong>NEC </strong></td>
+			<td width="20%" class="Estilo6" align="justify"><strong>Nombre Paciente</strong></td>
+			<td width="18%" class="Estilo6" align="justify"><strong>M&eacute;dico</strong></td>
+			<td width="10%" class="Estilo6" align="justify"><strong>Origen</strong></td>
+			<td width="10%" class="Estilo6" align="justify"><strong>Procedencia</strong></td>
+			<td width="22%" class="Estilo6" align="justify"><strong>Establecimiento</strong></td>
+			<td width="8%" class="Estilo6" align="justify"><strong>Estado Solicitud</strong><h3></td>
 		</tr>    
 	<?php $pos=0;
     	while ($row = @pg_fetch_array($consulta))
 	{ ?>
 		<tr>
-			<td width="10%"><?php echo $row['fechasolicitud']; ?></td>
-			<td width="6%"><?php echo $row['expediente'];?></td>
-			<td width="20%"><?php echo $row['paciente'];?></td>
-			<td width="18%"><?php echo $row['medico'];?></td>
-			<td width="12%"><?php echo $row['nombresubservicio'];?></td>
-			<td width="12%"><?php echo $row['nombreservicio'];?></td>
-			<td width="15%"><?php echo $row['estabext'];?></td>
-			<td width="15%"><?php echo $row['estado'];?></td>
+			<td  class="Estilo6"><?php echo $row['fechasolicitud']; ?></td>
+			<td  class="Estilo6"><?php echo $row['expediente'];?></td>
+			<td  class="Estilo6"><?php echo $row['paciente'];?></td>
+			<td  class="Estilo6"><?php echo $row['medico'];?></td>
+			<td  class="Estilo6"><?php echo $row['nombresubservicio'];?></td>
+			<td  class="Estilo6"><?php echo $row['nombreservicio'];?></td>
+			<td  class="Estilo6"><?php echo $row['estabext'];?></td>
+			<td  class="Estilo6"><?php echo $row['estado'];?></td>
 		</tr>
 	<?php
 		$pos=$pos + 1;
@@ -273,7 +365,7 @@ FROM sec_detallesolicitudestudios t01
    
 	</table>
     <br>
-    	<table width="90%" border="0" align="center">
+    	<table width="0%" border="0" align="center">
 	<tr>
 		<td colspan="7" align="center">	
 			<div id="boton">	
@@ -283,7 +375,8 @@ FROM sec_detallesolicitudestudios t01
                                 <button type='button' align="center" class='btn btn-primary'  onclick='window.print(); '><span class='glyphicon glyphicon-print'></span> Imprimir </button>
                                 <button type='button' align="center" class='btn btn-primary'  onClick="window.close();"><span class='glyphicon glyphicon-arrow-left'></span> Regresar </button>
                     
-                               
+                                
+                                                              
                     
                     </div>
 		</td>

@@ -85,7 +85,7 @@ function fillEstablecimiento(idtipoEstab){
   
 	if(idtipoEstab==0){ 
 	  alert("Seleccione un tipo de establecimiento!");
-	}
+	} 
         else{
 		  
             if (window.XMLHttpRequest) {
@@ -796,21 +796,21 @@ function cambioestexterno(){
     </form>
 <div id="DatosPaciente" style="display:none;"></div>
 <div id="lyLaboratorio" class="panel panel-body" style="display:none;">
-     <form name="frmdatosgenerales" id="frmdatosgenerales" action="" method="post">  
+    <form name="frmdatosgenerales" id="frmdatosgenerales" action="" method="post">  
         <table cellspacing="0" cellpadding="0" align="center" border=1 class="StormyWeatherFormTABLE" style="height:275px">
             <tr>&nbsp;</tr>
             <tr>
-                    <td colspan="3" align="center" class="CobaltFieldCaptionTD">
-                            <div>
-                               <h2><strong>Datos Generales de Boleta de Ex&aacute;menes </strong></h2>
-                            </div>
-                    </td>
+                <td colspan="3" align="center" class="CobaltFieldCaptionTD">
+                    <div>
+                        <h2><strong>Datos Generales de Boleta de Ex&aacute;menes </strong></h2>
+                    </div>
+                </td>
             </tr>
             <tr>	
-                    <td class="StormyWeatherFieldCaptionTD" >Tipo Establecimiento</td>
-                    <td class="StormyWeatherDataTD">
-                         <div id="lyTipoEstab">
-                            <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:350px" class="form-control height"  onFocus="fillEstablecimiento(this.value)">
+                <td class="StormyWeatherFieldCaptionTD" >Tipo Establecimiento</td>
+                <td class="StormyWeatherDataTD">
+                    <div id="lyTipoEstab">
+                        <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:350px" class="form-control height"  onFocus="fillEstablecimiento(this.value)">
                                     <?php //  <option value="0" selected="selected">--Seleccione un tipo de Establecimiento--</option>
                                     $tipoest=$recepcion->tipoestactual($lugar);
                                     $rows=  pg_fetch_array($tipoest);
@@ -830,29 +830,29 @@ function cambioestexterno(){
                                                     }
                                             }*/
                                     ?>
-                            </select>
-                        </div>
-                    </td>
+                        </select>
+                    </div>
+                </td>
             </tr>
             <tr>
-                    <td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
-                    <td class="StormyWeatherDataTD">
-                            <div id="lyEstab">
-                                    <select name="cmbEstablecimiento"  id="cmbEstablecimiento" style="width:350px" class="form-control height js-example-basic-single">
-                                            <option value="0">--Seleccione Establecimiento--</option>
-                                    </select>
-                            </div>
+                <td class="StormyWeatherFieldCaptionTD">Establecimiento</td>
+                <td class="StormyWeatherDataTD">
+                    <div id="lyEstab">
+                        <select name="cmbEstablecimiento"  id="cmbEstablecimiento" style="width:350px" class="form-control height js-example-basic-single">
+                            <option value="0">--Seleccione Establecimiento--</option>
+                        </select>
+                    </div>
                         <input id="lugar" type="hidden" value="<?php echo $lugar?>" />
-                    </td>
+                </td>
             </tr>
             <tr>
-                    <td class="StormyWeatherFieldCaptionTD">Procedencia:&nbsp;</td>
-                    <td class="StormyWeatherDataTD" >
-                            <select name="CmbServicio" id="CmbServicio" class="js-example-basic-single" style="width:350px" onChange="fillservicio(this.value)" >
-                                    <option value="0" selected="selected">--Seleccione Procedencia--</option>
-                                    <?php
-                                    $tiposerv=$recepcion->tipoestservicio($lugar);
-                                    /*$rows=  pg_fetch_array($tiposerv);
+                <td class="StormyWeatherFieldCaptionTD">Procedencia:&nbsp;</td>
+                <td class="StormyWeatherDataTD" >
+                    <select name="CmbServicio" id="CmbServicio" class="js-example-basic-single" style="width:350px" onChange="fillservicio(this.value)" >
+                        <option value="0" selected="selected">--Seleccione Procedencia--</option>
+                        <?php
+                            $tiposerv=$recepcion->tipoestservicio($lugar);
+                            /*$rows=  pg_fetch_array($tiposerv);
                                             $db = new ConexionBD;
                                                     if($db->conectar()==true){
                                                     $consulta  = "SELECT mnt_servicio.IdServicio,mnt_servicio.NombreServicio FROM mnt_servicio 
@@ -862,13 +862,13 @@ function cambioestexterno(){
                                                     $resultado = mysql_query($consulta) or die('La consulta fall&oacute;: ' . mysql_error());
 
                                             //por cada registro encontrado en la tabla me genera un <option>*/
-                                                    while ($rows = pg_fetch_array($tiposerv)){
-                                                            echo '<option value="' . $rows['0'] . '">' . $rows['nombre'] . '</option>'; 
-                                                    }
+                            while ($rows = pg_fetch_array($tiposerv)){
+                                echo '<option value="' . $rows['0'] . '">' . $rows['nombre'] . '</option>'; 
+                            }
                                         //    }
-                                    ?>
-                            </select>
-                    </td>
+                        ?>
+                    </select>
+                </td>
             </tr>
             <tr>
                     <td class="StormyWeatherFieldCaptionTD">SubServicio:&nbsp;</td>

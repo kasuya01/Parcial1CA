@@ -229,7 +229,7 @@ class clsLab_Empleados {
                     INNER JOIN ctl_atencion                       t06 ON (t06.id = t03.id_atencion AND t06.codigo_busqueda = 'DCOLAB')
                     LEFT OUTER JOIN mnt_modalidad_establecimiento t07 ON (t07.id = t04.id_modalidad_estab)
                     LEFT OUTER JOIN ctl_modalidad                 t08 ON (t08.id = t07.id_modalidad)
-                      WHERE t05.codigo = 'LAB' AND correlativo != 1 AND t01.id_establecimiento = $lugar";
+                    WHERE t05.codigo = 'LAB' AND correlativo != 1 AND t01.id_establecimiento = $lugar";
             $numreg = pg_num_rows(pg_query($query));
             if (!$numreg)
                 return false;

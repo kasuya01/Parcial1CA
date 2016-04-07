@@ -42,8 +42,6 @@ function calc_edad()
 @media print{
 #boton{display:none;}
 }
-
-
 .Estilo5 {font-family: Helvetica; font-size: 10pt}
 .Estilo6 {font-family: Helvetica; font-size: 9pt}
 .Estilo7 {font-family: Helvetica; font-size: 11pt}

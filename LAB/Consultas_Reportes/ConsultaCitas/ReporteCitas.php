@@ -10,9 +10,9 @@ $base_url  = $_SESSION['base_url'];
 <html>
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-<!--<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />-->
+<!--<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
-<link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+<link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">-->
 <link rel="stylesheet" type="text/css" href="../../Webstyle/Themes/Cobalt/Style.css">
 <style type="text/css">
 <!--
@@ -20,9 +20,9 @@ $base_url  = $_SESSION['base_url'];
 #boton{display:none;}
 }
 
-
-.Estilo5 {font-size: 10pt}
-.Estilo12 {font-size: 6pt}
+.Estilo5 {font-family: Helvetica; font-size: 7pt}
+.Estilo6 {font-family: Helvetica; font-size: 8pt}
+.Estilo7 {font-family: Helvetica; font-size: 9pt}
 -->
 </style>
 <title>Reporte Citas Programadas</title>
@@ -94,15 +94,15 @@ $cond1="";
         $where_with="";
         $cond0="and";
  
-         
-         if (!empty($_GET['var7'])) {
+        if (!empty($_GET['var7'])) {
            if ($_GET['var7']<>$lugar){
                $cond1 .=$cond0. "  t02.id_establecimiento_externo = " . $_GET['var7'] . " ";
                $cond2 .=$cond0. "  t02.id_establecimiento_externo = " . $_GET['var7'] . " ";
            }
-          
-        }
-              if (!empty($_GET['var9'])) {
+         }
+        
+        
+        if (!empty($_GET['var9'])) {
             $cond1 .= $cond0." t10.id = " . $_GET['var9'] . " ";
             $cond2 .= $cond0." t10.id = " . $_GET['var9'] . " ";
         }   
@@ -112,11 +112,7 @@ $cond1="";
             $cond2 .=$cond0 ."  t13.id  = " . $_GET['var8'] . "     ";
             $where_with = "id_area_atencion = ".$_GET['var8']."  AND ";
         }
-            
        
-
-       
-
         if (!empty($_GET['var1'])) {
           $idexpediente="'".$idexpediente."'";
             
@@ -124,13 +120,9 @@ $cond1="";
             $cond2 .= "and t06.numero = '".$_GET['var1'] ."'   ";
         }
 
-       
-
-        
-
         if (!empty($_GET['var2'])) {
-             $cond1 .= " and t03.fecharecepcion = '".$_GET['var2']."'       ";
-             $cond2 .= " and t03.fecharecepcion = '".$_GET['var2']."'       ";
+             $cond1 .= " and t10.fecharecepcion = '".$_GET['var2']."'       ";
+             $cond2 .= " and t10.fecharecepcion = '".$_GET['var2']."'       ";
         }
 
         if (!empty($_GET['var3'])) {
@@ -174,24 +166,30 @@ $cond1="";
             //echo $cond2;
         }     
        // echo $cond2;
-         $query="WITH tbl_servicio AS (
-                    SELECT t02.id,
-                        CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
-                                 ELSE t02.nombre_ambiente
-                            END
-                        ELSE
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'--> ' || t01.nombre
-                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
-                            END
-                        END AS servicio 
-                    FROM  ctl_atencion                              t01 
-                    INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
-                    INNER JOIN mnt_area_mod_estab                   t03 ON (t03.id = t02.id_area_mod_estab)
-                    LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
-                    LEFT  JOIN mnt_servicio_externo                 t05 ON (t05.id = t04.id_servicio_externo)
-                    WHERE $where_with t02.id_establecimiento = $lugar
-                    ORDER BY 2)
+         $query="WITH tbl_servicio AS ( SELECT t02.id, 
+                CASE WHEN t02.nombre_ambiente IS NOT NULL THEN 
+                    CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' || t02.nombre_ambiente 
+                            --ELSE t02.nombre_ambiente 
+                    END 
+                    ELSE 
+                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre 
+                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)  
+                                    --THEN t07.nombre||'-'||t01.nombre
+                                    THEN t01.nombre
+                    END 
+
+                END AS servicio,
+               (CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->'  || t06.nombre
+                    ELSE   t07.nombre ||'-->' || t06.nombre
+                END) as procedencia
+                FROM ctl_atencion t01 
+                INNER JOIN mnt_aten_area_mod_estab t02 ON (t01.id = t02.id_atencion) 
+                INNER JOIN mnt_area_mod_estab t03 ON (t03.id = t02.id_area_mod_estab) 
+                LEFT JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab) 
+                LEFT JOIN mnt_servicio_externo t05 ON (t05.id = t04.id_servicio_externo) 
+                INNER JOIN  ctl_area_atencion t06  on  t06.id = t03.id_area_atencion
+                INNER JOIN ctl_modalidad  t07 ON t07.id = t03.id_modalidad_estab
+                WHERE t02.id_establecimiento =  $lugar ORDER BY 2)
             
                     SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                        t01.id ,
@@ -206,8 +204,8 @@ $cond1="";
                        t01.indicacion, t08.nombrearea, 
                        CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,
                        t07.segundo_apellido,t07.apellido_casada) AS paciente,
-                       t20.servicio AS nombresubservicio,
-                       t13.nombre AS nombreservicio, 
+                        t20.servicio AS nombresubservicio,
+                       t20.procedencia AS nombreservicio, 
                        t02.impresiones, 
                        t14.nombre, 
                        t09.id AS idhistorialclinico,
@@ -246,7 +244,7 @@ $cond1="";
         
             UNION
 
-            SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
+             SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                    t01.id ,
                    t02.id AS idsolicitudestudio,
                    t04.idplantilla, 
@@ -292,7 +290,7 @@ $cond1="";
             INNER JOIN lab_tiposolicitud                t17     ON (t17.id = t02.idtiposolicitud) 
             INNER JOIN ctl_examen_servicio_diagnostico  t18     ON (t18.id = t05.id_examen_servicio_diagnostico) 
             INNER JOIN ctl_sexo                         t19     ON (t19.id = t07.id_sexo)
-            WHERE (t16.idestado = 'D')
+            WHERE (t16.idestado = 'D') 
             AND t02.id_establecimiento = $lugar 
             $cond2"; 
 	
@@ -303,39 +301,41 @@ $cond1="";
 			$row1 = pg_fetch_array($consulta1);?>
  <table width="100%" border="0" align='center'>
 			<tr>
-				<td colspan="7" align="center"><h3><strong>REPORTE DE CITAS PROGRAMADAS
-				</h3></strong></td>
+				<td colspan="7" align="center" class="Estilo7"><strong>REPORTE DE CITAS PROGRAMADAS</strong></td>
 			</tr>
 			<tr>
-			<td colspan="7" align="center"><h3><strong><?php echo $row1['nombreservicio']; ?></strong></h3></td>
+			<td colspan="7" align="center" class="Estilo7"><strong><?php echo $row1['nombreservicio']; ?></strong></td>
 			</td>
 			</tr>
 			
-			</table>
+ </table> <BR>
   <?php 
   $consulta=$objdatos->BuscarCitasPaciente($query); ?>
- <table width="80%" border="1" align="center">
+ <table width="100%" border="1" align="center">
         <tr>
-		<td width="8%"  class="StormyWeatherDataTD" style="color:#000000; font:bold" ><h4><strong>Fecha cita</h4></strong></td>
-		<td width="8%" class="StormyWeatherDataTD" style="color:#000000; font:bold" ><h4><strong>NEC </strong><h4></td>
-		<td width="25%" class="StormyWeatherDataTD" style="color:#000000; font:bold"><h4><strong>Nombre Paciente</strong><h4></td>
-		<td width="15%" class="StormyWeatherDataTD" style="color:#000000; font:bold"><h4><strong>Origen</strong><h4></td>
-		<td width="15%" class="StormyWeatherDataTD" style="color:#000000; font:bold"><h4><strong>Procedencia</strong><h4></td>
-		<td width="30%" class="StormyWeatherDataTD" style="color:#000000; font:bold"><h4><strong>Establecimiento</strong><h4></td>
+		<td width="6%" class="Estilo6" align="justify"><strong>Fecha cita</strong></td>
+		<td width="5%" class="Estilo6" align="center"><strong>NEC </strong></td>
+		<td width="28%" class="Estilo6"><strong>Nombre Paciente</strong></td>
+		<td width="12%" class="Estilo6"><strong>Origen</strong></td>
+		<td width="19%" class="Estilo6"><strong>Procedencia</strong></td>
+		<td width="30%" class="Estilo6"><strong>Establecimiento</strong></td>
 	</tr>    
    <?php $pos=0;
     while ($row = pg_fetch_array($consulta))
 	{ ?>
 	<tr>
-		<td width="8%"><?php echo $row['fecharecepcion']; ?></td>
-		<td width="7%"><?php echo $row['idnumeroexp'];?></td>
-		<td width="25%"><?php echo $row['paciente'];?></td>
-		<td width="15%"><?php echo $row['nombresubservicio'];?></td>
-		<td width="15%"><?php echo $row['nombreservicio'];?></td>
-		<td width="30%"><?php echo $row['estabext'];?></td>	
+		<td class="Estilo6"><?php echo $row['fecharecepcion']; ?></td>
+		<td class="Estilo6"><?php echo $row['idnumeroexp'];?></td>
+		<td class="Estilo6"><?php echo $row['paciente'];?></td>
+		<td class="Estilo6"><?php echo $row['nombresubservicio'];?></td>
+		<td class="Estilo6"><?php echo $row['nombreservicio'];?></td>
+		<td class="Estilo6"><?php echo $row['estabext'];?></td>	
 	</tr>
  <?php
-	$pos=$pos + 1;
+            $pos=$pos + 1;
+
+           
+        
 	}
 	
 	pg_free_result($consulta);?>
@@ -344,7 +344,7 @@ $cond1="";
 </table>
     <br>
 <div id="boton">
-	<table width="90%" border="0" align="center">
+	<table width="100%" border="0" align="center">
 		<tr>
 			<td colspan="7" align="center">	
 					

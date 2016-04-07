@@ -185,8 +185,6 @@ function calcular_edad(fecha) {
 //    return edad;
 }
 
-
-
 function LlenarComboEstablecimiento(idtipoesta)
 {
     ajax = objetoAjax();
@@ -259,9 +257,9 @@ function GuardarResultados()
     ajax.open("POST", "ctrSolicitudesProcesadas.php", true);
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     ajax.send("opcion=" + opcion + "&idsolicitud=" + idsolicitud + "&iddetalle=" + iddetalle + "&idexamen=" + idexamen +
-            "&idrecepcion=" + idrecepcion + "&resultado=" + resultado + "&lectura=" + lectura +
-            "&interpretacion=" + interpretacion + "&observacion=" +observacion+
-            "&responsable=" + responsable + "&procedencia=" + procedencia + "&origen=" + origen + "&codigo=" + codigo+ "&fecha_realizacion=" + fecha_realizacion+ "&fecha_reporte=" + fecha_reporte+"&idresultado="+idresultado+"&marca="+marca);
+            "&idrecepcion=" + idrecepcion + "&resultado=" + resultado + "&lectura=" + lectura + "&interpretacion=" + interpretacion + "&observacion=" +observacion+
+            "&responsable=" + responsable + "&procedencia=" + procedencia + "&origen=" + origen + "&codigo=" + codigo+ "&fecha_realizacion=" + fecha_realizacion+ 
+            "fecha_reporte=" + fecha_reporte+"&idresultado="+idresultado+"&marca="+marca);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -520,10 +518,12 @@ function ValidarCamposPlantillaC()
     {
         resp = false;
     }
-    return resp;
+   // return resp;
     for (i = 0; i < document.getElementById('oculto').value; i++)
-    {
-        if (document.getElementById('cmbResultado[' + i + ']').value == "0")
+       
+    {  // dato [i]= document.getElementById('cmbresultado[' + i + ']'.value;
+        //alert(dato[i]);
+        if (document.getElementById('cmbresultado[' + i + ']').value == 0)
         {
             resp = false;
         }
@@ -708,10 +708,12 @@ function GuardarResultadosPlantillaC()
 }
 
 function IngresarOtro() {
-
+                   
     document.getElementById('divresultado').style.display = "none";
     document.getElementById('divexamen').style.display = "none";
-
+    document.getElementById('divResPositivo').style.display = "block";
+    document.getElementById('cmbOrganismo').value = "0";
+    document.getElementById('cmbTarjeta').value = "0";
 }
 
 function validartarjeta()

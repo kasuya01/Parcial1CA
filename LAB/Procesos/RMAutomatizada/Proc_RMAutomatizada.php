@@ -1,12 +1,14 @@
 <?php session_start();
-if (isset($_SESSION['Correlativo'])) {
+if(isset($_SESSION['Correlativo'])) {
     $usuario = $_SESSION['Correlativo'];
     $lugar = $_SESSION['Lugar'];
     $area = $_SESSION['Idarea'];
     $nivel = $_SESSION['NIVEL'];
     $ROOT_PATH = $_SESSION['ROOT_PATH'];
     $base_url  = $_SESSION['base_url'];
+   
     include_once("clsRMAutomatizada.php");
+    
     $obj = new clsRMAutomatizada;
     $consulta = $obj->DatosEstablecimiento($lugar);
     $row = pg_fetch_array($consulta);
@@ -18,22 +20,22 @@ if (isset($_SESSION['Correlativo'])) {
     $nombrEstab = $row[1];
     $nomtipo = $row[2];
     $tipoarea = $rowArea[1];
-    if ($tipoarea == 'S') {
+   /* if ($tipoarea == 'S') {
         $area1 = "0";
         $nomarea = "Seleccione un Área";
     } else {
         $area1 = $area;
         $nomarea = $rowArea[0];
-    }
+    }*/
     ?>
     <html>
         <head>
             <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-            <!--<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />-->
+                      
+            <title>Rechazar Muestras en &Aacute;rea</title>
+            <script language="JavaScript" type="text/javascript" src="ajax_RMAutomatizada.js"></script> 
             <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
             <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
-            <title>Rechazar Muestras en &Aacute;rea</title>
-            <script language="JavaScript" type="text/javascript" src="ajax_RMAutomatizada.js"></script>            
             <?php include_once $ROOT_PATH.'/public/css.php';?>
             <?php include_once $ROOT_PATH.'/public/js.php';?>
             <script language="JavaScript" type="text/javascript">
@@ -47,14 +49,12 @@ if (isset($_SESSION['Correlativo'])) {
                             && (document.getElementById('PrimerNombre').value == "") && (document.getElementById('SegundoNombre').value == "")
                             && (document.geElementById('PrimerApellido').value == "") && (document.getElementById('SegundoApellido').value == "")
                             && (document.getElementById('cmbTipoSolic') == 0)) {
-                        alert("Ingrese un parámetro de búsqueda");
+                             alert("Ingrese un parámetro de búsqueda");
                     }
-                    else if (document.getElementById('cmbArea').value == 0) {
+                  else if (document.getElementById('cmbArea').value == 0) {
                         alert("Debe de ingresar un Área");
                     }
-                   /* else {
-                        MuestrasRechazadas();
-                    }*/  
+                
                         else {
                         jQuery('#divBusqueda').empty();
                         jQuery('#divBusqueda').append('<center><img id="wait" src="<?php echo $base_url; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" style="color:#888888;font-weight: bold;">Buscando...</div></center>');
@@ -255,9 +255,9 @@ if (isset($_SESSION['Correlativo'])) {
                                     <option value="2">NORMAL</option>
                                 </select>
                             </td>
-                            <td class="StormyWeatherFieldCaptionTD" width="15%" ><!--Fecha Consulta--></td>
+                             <td class="StormyWeatherFieldCaptionTD" width="15%" >Fecha Consulta</td>
                             <td  class="StormyWeatherDataTD" width="20%" >
-                              <!--  <input type="text" size="28" name="txtfechasolicitud" id="txtfechasolicitud" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" style="width:500px"/>-->
+                                <input type="text" size="28" name="txtfechasolicitud" id="txtfechasolicitud" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" style="width:500px"/>
 
                             </td>
                         </tr>
@@ -285,16 +285,7 @@ if (isset($_SESSION['Correlativo'])) {
                                 <td class="StormyWeatherDataTD" >
                                     <input maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" class="form-control height" style="width:500px" placeholder="Ingrese Segundo Apellido"/></td>
                         </tr>
-                        <tr>
-                            <td class="StormyWeatherFieldCaptionTD" align="left" colspan="1" align="right">Tipo Solicitud</td>
-                            <td class="StormyWeatherDataTD" colspan="3">
-                                <select id="cmbTipoSolic" name="cmbTipoSolic" style="width:250px" size="1" class="form-control height" >
-                                    <option value="0">Seleccione un Tipo de Solicitud</option>
-                                    <option value="1">URGENTE</option>
-                                    <option value="2">NORMAL</option>
-                                </select>
-                            </td>	
-                        </tr>
+                       
                        <!-- <tr>
                             <td class="StormyWeatherDataTD" colspan="4" align="right">
                                 <input type="button" name="Submit" value="Buscar Solicitudes" onClick="MostrarMuestrasRechazadas()">

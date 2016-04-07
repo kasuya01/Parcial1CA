@@ -8,8 +8,8 @@ $base_url  = $_SESSION['base_url'];
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
-<link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+<!--<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
+<link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">-->
 <link rel="stylesheet" type="text/css" href="../../Webstyle/Themes/Cobalt/Style.css">
 <?php include_once $ROOT_PATH.'/public/css.php';?>
 <?php include_once $ROOT_PATH.'/public/js.php';?>
@@ -18,21 +18,25 @@ $base_url  = $_SESSION['base_url'];
 @media print{
 #boton{display:none;}
 }
+Estilo8 {font-family: Helvetica; font-size: 8pt}
+.Estilo6 {font-family: Helvetica; font-size: 7.5pt}
+.Estilo7 {font-family: Helvetica; font-size: 8.5pt}
+.Estilo9 {font-family: Helvetica; font-size: 9pt}
 
-
-
+.Estilo12 {font-size: 12pt
 -->
 </style>
+
 <title>Reporte de Muestras Pendientes</title>
 <script language="JavaScript" type="text/javascript" src="ajax_ConsultaMuestrasPendientes.js"></script>
 <script language="JavaScript" >
 function RecogeValor()
 {
-var vtmp=location.search;
-var vtmp2 = vtmp.substring(1,vtmp.length);
-var query = unescape(top.location.search.substring(1));
-var getVars = query.split(/&/);
-for ( i = 0; i < getVars.length; i++)
+    var vtmp=location.search;
+    var vtmp2 = vtmp.substring(1,vtmp.length);
+    var query = unescape(top.location.search.substring(1));
+    var getVars = query.split(/&/);
+    for ( i = 0; i < getVars.length; i++)
 	{
 		if ( getVars[i].substr(0,5) == 'var1=' )//loops through this array and extract each name and value
                        	idarea = getVars[i].substr(5);
@@ -170,25 +174,32 @@ $objdatos = new clsConsultaMuestrasPendientes;
            // $query_search = 
         }     
        // echo $cond2;
-         $query="WITH tbl_servicio AS (
-                    SELECT t02.id,
-                        CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
-                                 ELSE t02.nombre_ambiente
-                            END
-                        ELSE
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'--> ' || t01.nombre
-                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
-                            END
-                        END AS servicio 
-                    FROM  ctl_atencion                  t01 
-                    INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
-                    INNER JOIN mnt_area_mod_estab           t03 ON (t03.id = t02.id_area_mod_estab)
-                    LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
-                    LEFT  JOIN mnt_servicio_externo             t05 ON (t05.id = t04.id_servicio_externo)
-                    WHERE $where_with t02.id_establecimiento = $lugar
-                    ORDER BY 2)
+         $query="WITH tbl_servicio AS ( SELECT t02.id, 
+                CASE WHEN t02.nombre_ambiente IS NOT NULL THEN 
+                    CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||' - ' || t02.nombre_ambiente 
+                            --ELSE t02.nombre_ambiente 
+                    END 
+                    ELSE 
+                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre 
+                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)  
+                                    --THEN t07.nombre||' - '||t01.nombre
+                                    THEN t01.nombre
+                    END 
+
+                END AS servicio,
+               (CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||' - '  || t06.nombre
+                    ELSE   t07.nombre ||' - ' || t06.nombre
+                END) as procedencia
+                FROM ctl_atencion t01 
+                INNER JOIN mnt_aten_area_mod_estab t02 ON (t01.id = t02.id_atencion) 
+                INNER JOIN mnt_area_mod_estab t03 ON (t03.id = t02.id_area_mod_estab) 
+                LEFT JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab) 
+                LEFT JOIN mnt_servicio_externo t05 ON (t05.id = t04.id_servicio_externo) 
+                INNER JOIN  ctl_area_atencion t06  on  t06.id = t03.id_area_atencion
+                INNER JOIN ctl_modalidad  t07 ON t07.id = t03.id_modalidad_estab
+                WHERE t02.id_establecimiento =  $lugar ORDER BY 2)
             
+                SELECT ordenar.* FROM (
                     SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                        t01.id ,
                        t02.id AS idsolicitudestudio,
@@ -203,7 +214,7 @@ $objdatos = new clsConsultaMuestrasPendientes;
                        CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,
                        t07.segundo_apellido,t07.apellido_casada) AS paciente,
                        t20.servicio AS nombresubservicio,
-                       t13.nombre AS nombreservicio, 
+                       t20.procedencia AS nombreservicio, 
                        t02.impresiones, 
                        t14.nombre, 
                        t09.id AS idhistorialclinico,
@@ -290,46 +301,48 @@ $objdatos = new clsConsultaMuestrasPendientes;
             INNER JOIN ctl_sexo t19                                 ON (t19.id = t07.id_sexo)
             WHERE (t16.idestado = 'D') 
             AND t02.id_establecimiento = $lugar 
-                AND $cond2";  
+                AND $cond2 ) ordenar
+                ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";   
                   
 	
 	 // $consulta=$objdatos->ListadoSolicitudesPorArea($query_search);  
 	//$row = pg_fetch_array($consulta1);?>
  <table width="95%" border="0" cellspacing="0" align='center' >
 			<tr>
-				<td colspan="7" align="center"><h3><strong>REPORTE DE MUESTRAS PENDIENTES
-				</h3></strong></td>
+				<td colspan="7" align="center" class="Estilo9"><strong>REPORTE DE MUESTRAS PENDIENTES
+				</strong></td>
 			</tr>
-			</table>
+ </table><br>
   <?php 
   $consulta=$objdatos->ListadoSolicitudesPorArea($query);  ?>
- <table border='1' cellspacing='0' width='95%' >
+    <table border='1' cellspacing='0' width='100%' >
 			
-    <tr bgcolor="gray" align="center">
-		<td width="6%" bgcolor="gray" align="center" ><h4><strong>MUESTRA</strong></h4></td>
-		<td width="8%" bgcolor="gray" align="center"><h4><strong>NEC </strong></h4></td>
-		<td width="25%" bgcolor="gray" align="center" ><h4><strong>
-NOMBRE PACIENTE</strong><h4></td>
-		<td width="6%" bgcolor="gray" align="center"><h4><strong>COD EXAMEN</strong><h4></td>
-		<td width="18%"   bgcolor="gray" align="center"><h4><strong>NOMBRE EXAMEN</strong><h4></td>
-		<td width="12%" bgcolor="gray" align="center"><h4><strong>SERVICIO</strong><h4></td>
-		<td width="10%"  bgcolor="gray" align="center"><h4><strong>PROCEDENCIA</strong><h4></td>
-		<td width="12%" bgcolor="gray" align="center"><h4><strong>ESTABLECIMIENTO</strong><h4></td>
-		<td width="8%" bgcolor="gray" ><h4><strong>FECHA RECEPCI&Oacute;N</strong><h4></td>
-	</tr>    
+        <tr  align="center">
+            <td width="3%"  class="Estilo6" align="center" ><strong>MUESTRA</strong></td>
+            <td width="3%"  class="Estilo6" align="center"><strong>NEC </strong></td>
+            <td width="20%" class="Estilo6" align="justify"><strong>NOMBRE PACIENTE</strong></td>
+            <td width="5%"  class="Estilo6" align="center"><strong>COD EXAMEN</strong></td>
+            <td width="18%" class="Estilo6" align="center"><strong>NOMBRE EXAMEN</strong></td>
+            <td width="8%" class="Estilo6" align="center"><strong>SERVICIO</strong></td>
+            <td width="8%"  class="Estilo6" align="center"><strong>PROCEDENCIA</strong></td>
+            <td width="20%"  class="Estilo6" align="center"><strong>ESTABLECIMIENTO</strong></td>
+            <td width="5%" class="Estilo6" ><strong>FECHA RECEPCI&Oacute;N</strong></td>
+            <td width="5%" class="Estilo6"><strong>Prioridad</strong></td>
+        </tr>    
 <?php $pos=0;
     while ($row = pg_fetch_array($consulta))
 	{ ?>
-	<tr >
-		<td width="6%" align="center"><?php echo $row['numeromuestra']; ?></td>
-		<td width="8%" align="center"><?php echo $row['idnumeroexp'];?></td>
-		<td width="25%" ><?php echo $row['paciente'];?></td>
-		<td width="6%" align="center"><?php echo $row['idexamen'];?></td>
-		<td width="18%"><?php echo htmlentities($row['nombreexamen']);?></td>
-		<td width='12%' align="center"><?php echo htmlentities($row['nombresubservicio']); ?></td>
-		<td width='10%' align="center"><?php echo htmlentities($row['nombreservicio']); ?></td>
-		<td width='12%' align="center"><?php echo htmlentities($row['estabext']); ?></td>
-		<td width="8%"><?php echo $row['fecharecepcion'];?></td>
+	<tr>
+            <td width="3%"  class="Estilo6" align="center"><?php echo $row['numeromuestra']; ?></td>
+            <td width="3%"  class="Estilo6" align="justify"><?php echo $row['idnumeroexp'];?></td>
+            <td width="15%" class="Estilo6" align="justify"><?php echo $row['paciente'];?></td>
+            <td width="3%"  class="Estilo6" align="center"><?php echo $row['idestandar'];?></td>
+            <td width="20%" class="Estilo6" align="left"><?php echo htmlentities($row['nombreexamen']);?></td>
+            <td width='8%' class="Estilo6" align="center"><?php echo htmlentities($row['nombresubservicio']); ?></td>
+            <td width='15%' class="Estilo6" align="left"><?php echo htmlentities($row['nombreservicio']); ?></td>
+            <td width='20%' class="Estilo6" align="left"><?php echo htmlentities($row['estabext']); ?></td>
+            <td width="5%" class="Estilo6" align="center"><?php echo $row['fecharecepcion'];?></td>
+            <td width="5%" class="Estilo6" align="center"><?php echo $row['prioridad'];?></td>
 	</tr>
  <?php
 	$pos=$pos + 1;
@@ -337,25 +350,21 @@ NOMBRE PACIENTE</strong><h4></td>
 	
 	pg_free_result($consulta);?>
 	
-   <input type="hidden" name="oculto" id="text" value='".$pos."' /> 
+        <input type="hidden" name="oculto" id="text" value='".$pos."' /> 
    
-		</table>
+    </table>
     
-	<div id="boton">
-            <br>
-	<table width="90%" border="0" align="center">
-			<tr>
-			<td colspan="7" align="center">	
-			<div id="boton">	
-			<!--<input type="button" name="btnImprimir" id="btnImprimir" value="Imprimir" onClick="window.print();" />
-			<input type="button" name="btncl" id="btnct" value="Regresar" onClick="window.close();"> </div>
-			-->
-                        <button type='button' align="center" class='btn btn-primary'  onclick='window.print(); '><span class='glyphicon glyphicon-print'></span> Imprimir </button>
-                        <button type='button' align="center" class='btn btn-primary'  onClick="window.close();"><span class='glyphicon glyphicon-arrow-left'></span> Regresar </button>
-                    
-                        
-                        </div>	</td>
-				
-			</tr></table>
+<div id="boton">
+<br>
+    <table width="90%" border="0" align="center">
+	<tr>
+            <td colspan="7" align="center">	
+                <div id="boton">	
+		    <button type='button' align="center" class='btn btn-primary'  onclick='window.print(); '><span class='glyphicon glyphicon-print'></span> Imprimir </button>
+                    <button type='button' align="center" class='btn btn-primary'  onClick="window.close();"><span class='glyphicon glyphicon-arrow-left'></span> Regresar </button>
+                </div>
+            </td>
+	</tr>
+    </table>
 </body>
 </html>

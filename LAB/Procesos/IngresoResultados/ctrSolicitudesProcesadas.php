@@ -296,37 +296,37 @@ switch ($opcion) {
                 echo "<tr>
                         <td width='3%'>" . $row['numeromuestra'] . "</td>
                         <td width='3%'><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a></td>" .
-                        "<input name='idsolicitud[" . $pos . "]' id='idsolicitud[" . $pos . "]' type='hidden' size='60' value='" . $row["idsolicitudestudio"] . "' />" .
-                        "<input name='idexpediente[" . $pos . "]' id='idexpediente[" . $pos . "]' type='hidden' size='60' value='" . $row["idnumeroexp"] . "' />" .
-                        "<input name='paciente[" . $pos . "]' id='paciente[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["paciente"]) . "' />" .
-                        "<input name='examen[" . $pos . "]' id='examen[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["nombreexamen"]) . "' />" .
-                        "<input name='cant_metodologia[" . $pos . "]' id='cant_metodologia[" . $pos . "]' type='hidden' size='60' value='" . $consmet . "' />" .
-                        "<input name='idexamen[" . $pos . "]' id='idexamen[" . $pos . "]' type='hidden' size='60' value='" . $row["idexamen"] . "' />" .
-                        "<input name='iddetalle[" . $pos . "]' id='iddetalle[" . $pos . "]' type='hidden' size='60' value='" . $row["iddetallesolicitud"] . "' />" .
-                        "<input name='idrecepcion[" . $pos . "]' id='idrecepcion[" . $pos . "]' type='hidden' size='60' value='" . $row["idrecepcionmuestra"] . "' />" .
-                        "<input name='plantilla[" . $pos . "]' id='plantilla[" . $pos . "]' type='hidden' size='60' value='" . $row["idplantilla"] . "' />" .
-                        "<input name='nombrearea[" . $pos . "]' id='nombrearea[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["nombrearea"]) . "' />" .
-                        "<input name='procedencia[" . $pos . "]' id='procedencia[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["nombreservicio"]) . "' />" .
-                        "<input name='origen[" . $pos . "]' id='origen[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["nombresubservicio"]) . "' />" .
-                        "<input name='impresion[" . $pos . "]' id='impresion[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["impresiones"]) . "' />" .
-                        "<input name='establecimiento[" . $pos . "]' id='establecimiento[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["nombre"]) . "'/>" .
-                        "<input name='FechaNac[" . $pos . "]' id='FechaNac[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["fechanacimiento"]) . "'/>" .
-                        "<input name='Sexo[" . $pos . "]' id='Sexo[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["sexo"]) . "'/>" .
-                        "<input name='IdEstandar[" . $pos . "]' id='IdEstandar[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idestandar"]) . "'/>" .
-                        "<input name='IdHistorial[" . $pos . "]' id='IdHistorial[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idhistorialclinico"]) . "'/>" .
-                        "<input name='referido[" . $pos . "]' id='referido[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["referido"]) . "'/>" .
-                        "<input name='estabext[" . $pos . "]' id='estabext[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["estabext"]) . "'/>" .
-                        "<input name='idestabext[" . $pos . "]' id='idestabext[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idestab"]) . "'/>" .
-                        "<input name='f_tomamuestra[" . $pos . "]' id='f_tomamuestra[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["f_tomamuestra"]) . "'/>" .
-                        "<input name='tipomuestra[" . $pos . "]' id='tipomuestra[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["tipomuestra"]) . "'/>" .
-                        "<input name='idareaPA[" . $pos . "]' id='idareaPA[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idarea"]) . "'/>" .
-                        "<input name='fecha_recepcion[" . $pos . "]' id='fecha_recepcion[" . $pos . "]' type='hidden' size='60' value='" . $datefrecep . "'/>" .
+                            "<input name='idsolicitud[" . $pos . "]' id='idsolicitud[" . $pos . "]' type='hidden' size='60' value='" . $row["idsolicitudestudio"] . "' />" .
+                            "<input name='idexpediente[" . $pos . "]' id='idexpediente[" . $pos . "]' type='hidden' size='60' value='" . $row["idnumeroexp"] . "' />" .
+                            "<input name='paciente[" . $pos . "]' id='paciente[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["paciente"]) . "' />" .
+                            "<input name='examen[" . $pos . "]' id='examen[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["nombreexamen"]) . "' />" .
+                            "<input name='cant_metodologia[" . $pos . "]' id='cant_metodologia[" . $pos . "]' type='hidden' size='60' value='" . $consmet . "' />" .
+                            "<input name='idexamen[" . $pos . "]' id='idexamen[" . $pos . "]' type='hidden' size='60' value='" . $row["idexamen"] . "' />" .
+                            "<input name='iddetalle[" . $pos . "]' id='iddetalle[" . $pos . "]' type='hidden' size='60' value='" . $row["iddetallesolicitud"] . "' />" .
+                            "<input name='idrecepcion[" . $pos . "]' id='idrecepcion[" . $pos . "]' type='hidden' size='60' value='" . $row["idrecepcionmuestra"] . "' />" .
+                            "<input name='plantilla[" . $pos . "]' id='plantilla[" . $pos . "]' type='hidden' size='60' value='" . $row["idplantilla"] . "' />" .
+                            "<input name='nombrearea[" . $pos . "]' id='nombrearea[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["nombrearea"]) . "' />" .
+                            "<input name='procedencia[" . $pos . "]' id='procedencia[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["nombreservicio"]) . "' />" .
+                            "<input name='origen[" . $pos . "]' id='origen[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["nombresubservicio"]) . "' />" .
+                            "<input name='impresion[" . $pos . "]' id='impresion[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["impresiones"]) . "' />" .
+                            "<input name='establecimiento[" . $pos . "]' id='establecimiento[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["nombre"]) . "'/>" .
+                            "<input name='FechaNac[" . $pos . "]' id='FechaNac[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["fechanacimiento"]) . "'/>" .
+                            "<input name='Sexo[" . $pos . "]' id='Sexo[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["sexo"]) . "'/>" .
+                            "<input name='IdEstandar[" . $pos . "]' id='IdEstandar[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idestandar"]) . "'/>" .
+                            "<input name='IdHistorial[" . $pos . "]' id='IdHistorial[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idhistorialclinico"]) . "'/>" .
+                            "<input name='referido[" . $pos . "]' id='referido[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["referido"]) . "'/>" .
+                            "<input name='estabext[" . $pos . "]' id='estabext[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["estabext"]) . "'/>" .
+                            "<input name='idestabext[" . $pos . "]' id='idestabext[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idestab"]) . "'/>" .
+                            "<input name='f_tomamuestra[" . $pos . "]' id='f_tomamuestra[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["f_tomamuestra"]) . "'/>" .
+                            "<input name='tipomuestra[" . $pos . "]' id='tipomuestra[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["tipomuestra"]) . "'/>" .
+                            "<input name='idareaPA[" . $pos . "]' id='idareaPA[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idarea"]) . "'/>" .
+                            "<input name='fecha_recepcion[" . $pos . "]' id='fecha_recepcion[" . $pos . "]' type='hidden' size='60' value='" . $datefrecep . "'/>" .
                         "<td width='18%'>" . htmlentities($row['paciente']) . "</td>
                         <td width='3%'>" . $row['estandar'] . "</td>
-                        <td width='22%'>" . htmlentities($row['nombreexamen']) . "</td>
-                        <td width='13%'>" . htmlentities($row['nombresubservicio']) . "</td>
+                        <td width='18%'>" . htmlentities($row['nombreexamen']) . "</td>
+                        <td width='10%'>" . htmlentities($row['nombresubservicio']) . "</td>
                         <td width='12%'>" . htmlentities($row['nombreservicio']) . "</td>
-                        <td width='15%'>" . htmlentities($row['estabext']) . "</td>
+                        <td width='20%'>" . htmlentities($row['estabext']) . "</td>
                         <td width='5%'>" . ($row['fechasolicitud']) . "</td>
                         <td width='5%'>" . ($row['fecharecepcion']) . "</td>
                         <td width='3%'>" . ($row['prioridad']) . "</td>
@@ -721,7 +721,7 @@ switch ($opcion) {
         $IdServ = $_POST['IdServicio'];
         //  echo $IdServ;
         $dtserv = $objdatos->LlenarCmbServ($IdServ, $lugar);
-        $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:500px" class="form-control height">';
+        $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:443px" onChange="BuscarMedicos(this.value)" class="form-control height">';
         $rslts .='<option value="0"> Seleccione un Servicio </option>';
         while ($rows = pg_fetch_array($dtserv)) {
             $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';

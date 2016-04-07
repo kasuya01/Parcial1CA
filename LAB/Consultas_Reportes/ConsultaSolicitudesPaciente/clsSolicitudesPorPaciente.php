@@ -43,6 +43,16 @@ $con = new ConexionBD;
 	return $dt;
 }
 
+ function LlenarTodosEstablecimientos() {
+
+      $con = new ConexionBD;
+      if ($con->conectar() == true) {
+         $sqlText = "SELECT id, nombre FROM ctl_establecimiento ORDER BY nombre";
+         $dt = pg_query($sqlText);
+      }
+      return $dt;
+   }
+
 function LlenarCmbServ($IdServ,$lugar){
 $con = new ConexionBD;
 	if($con->conectar()==true){
@@ -161,7 +171,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-	      $query = "WITH tbl_servicio AS (
+	   $query = "WITH tbl_servicio AS (
                     SELECT t02.id,
                         CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
@@ -207,7 +217,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
                  t23.peso as peso,
                  t23.talla as talla,
                  t04.nombre_examen as nombre_examen,
-                 t04.codigo_examen as codigo_examen,
+                 t18.idestandar as codigo_examen,
                  t25.idarea as codigo_area,
                  t25.nombrearea as nombre_area,
                     CASE t01.estadodetalle 
@@ -293,7 +303,7 @@ UNION
                    t23.peso as peso,
                    t23.talla as talla,
                    t04.nombre_examen as nombre_examen,
-                   t04.codigo_examen as codigo_examen,
+                   t18.idestandar as codigo_examen,
                    t25.idarea as codigo_area,
                    t25.nombrearea as nombre_area,
                     CASE t01.estadodetalle
@@ -359,19 +369,19 @@ UNION
    if($con->conectar()==true) 
    {
 	   $query = "SELECT sec_solicitudestudios.IdNumeroExp, lab_examenes.IdArea AS IdArea,lab_examenes.IdExamen AS IdExamen,NombreExamen,Indicacion,FechaSolicitud,
-	   CASE sec_detallesolicitudestudios.EstadoDetalle 
-	WHEN 'D'  THEN 'Digitado'
-	WHEN 'PM' THEN 'Muestra Procesada'
-	WHEN 'RM' THEN 'Muestra Rechazada'    
-	WHEN 'RC' THEN 'Resultado Completo' END AS Estado
-FROM sec_detallesolicitudestudios 
-INNER JOIN sec_solicitudestudios ON sec_detallesolicitudestudios.IdSolicitudEstudio=sec_solicitudestudios.IdSolicitudEstudio
-INNER JOIN lab_examenes ON sec_detallesolicitudestudios.idExamen=lab_examenes.IdExamen
-INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
-INNER JOIN lab_areasxestablecimiento ON lab_examenes.IdArea=lab_areasxestablecimiento.IdArea
-WHERE sec_solicitudestudios.IdServicio ='DCOLAB' AND lab_examenesxestablecimiento.Condicion='H' 
-AND lab_areasxestablecimiento.Condicion='H' AND sec_solicitudestudios.IdNumeroExp='$idexpediente' AND sec_solicitudestudios.IdSolicitudEstudio=$idsolicitud
-ORDER BY lab_examenes.IdArea";
+                     CASE sec_detallesolicitudestudios.EstadoDetalle 
+                        WHEN 'D'  THEN 'Digitado'
+                        WHEN 'PM' THEN 'Muestra Procesada'
+                        WHEN 'RM' THEN 'Muestra Rechazada'    
+                        WHEN 'RC' THEN 'Resultado Completo' END AS Estado
+                    FROM sec_detallesolicitudestudios 
+                    INNER JOIN sec_solicitudestudios ON sec_detallesolicitudestudios.IdSolicitudEstudio=sec_solicitudestudios.IdSolicitudEstudio
+                    INNER JOIN lab_examenes ON sec_detallesolicitudestudios.idExamen=lab_examenes.IdExamen
+                    INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
+                    INNER JOIN lab_areasxestablecimiento ON lab_examenes.IdArea=lab_areasxestablecimiento.IdArea
+                    WHERE sec_solicitudestudios.IdServicio ='DCOLAB' AND lab_examenesxestablecimiento.Condicion='H' 
+                    AND lab_areasxestablecimiento.Condicion='H' AND sec_solicitudestudios.IdNumeroExp='$idexpediente' AND sec_solicitudestudios.IdSolicitudEstudio=$idsolicitud
+                    ORDER BY lab_examenes.IdArea";
 	  	$result = @pg_query($query);
 	     if (!$result)
 	       return false;
