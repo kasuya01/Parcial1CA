@@ -19,10 +19,13 @@ $base_url  = $_SESSION['base_url'];
 @media print{
 #boton{display:none;}
 }
-.Estilo8 {font-family: Helvetica; font-size: 10.5pt}
-.Estilo6 {font-family: Helvetica; font-size: 9.5pt}
-.Estilo7 {font-family: Helvetica; font-size: 10pt}
-.Estilo9 {font-family: Helvetica; font-size: 11pt}
+.Estilo8 {font-family: Helvetica; font-size: 8pt}
+.Estilo6 {font-family: Helvetica; font-size: 7.5pt}
+.Estilo7 {font-family: Helvetica; font-size: 8.5pt}
+.Estilo9 {font-family: Helvetica; font-size: 9pt}
+
+.Estilo12 {font-size: 12pt
+
 
 .Estilo12 {font-size: 12pt}
 -->
@@ -329,10 +332,10 @@ $objdatos = new clsConsultaMuestrasRechazadas;
               while ($row = pg_fetch_array($consulta))
               { ?>
                 <tr>
-                    <td width="4%"  class="Estilo6"  align="center" ><?php echo $row['numeromuestra']; ?></td>
-                    <td width="4%"  class="Estilo6"  align="justify"><?php echo $row['idnumeroexp'];?></td>
+                    <td width="4%"  class="Estilo6" align="center" ><?php echo $row['numeromuestra']; ?></td>
+                    <td width="4%"  class="Estilo6" align="justify"><?php echo $row['idnumeroexp'];?></td>
                     <td width="21%" class="Estilo6" align="left"><?php echo $row['paciente'];?></td>
-                    <td width="4%"  class="Estilo6"  align="center"><?php echo $row['idestandar'];?></td>
+                    <td width="4%"  class="Estilo6" align="center"><?php echo $row['idestandar'];?></td>
                     <td width="12%" class="Estilo6" align="left"><?php echo htmlentities($row['nombreexamen']);?></td>
                 <?php 
                 if(!empty($row['observacion'])){

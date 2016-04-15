@@ -18,7 +18,7 @@ $base_url  = $_SESSION['base_url'];
 @media print{
 #boton{display:none;}
 }
-Estilo8 {font-family: Helvetica; font-size: 8pt}
+.Estilo8 {font-family: Helvetica; font-size: 8pt}
 .Estilo6 {font-family: Helvetica; font-size: 7.5pt}
 .Estilo7 {font-family: Helvetica; font-size: 8.5pt}
 .Estilo9 {font-family: Helvetica; font-size: 9pt}
@@ -176,19 +176,19 @@ $objdatos = new clsConsultaMuestrasPendientes;
        // echo $cond2;
          $query="WITH tbl_servicio AS ( SELECT t02.id, 
                 CASE WHEN t02.nombre_ambiente IS NOT NULL THEN 
-                    CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||' - ' || t02.nombre_ambiente 
-                            --ELSE t02.nombre_ambiente 
+                    CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' || t02.nombre_ambiente 
+                          
                     END 
                     ELSE 
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre 
                                  WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)  
-                                    --THEN t07.nombre||' - '||t01.nombre
+                                 
                                     THEN t01.nombre
                     END 
 
                 END AS servicio,
-               (CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||' - '  || t06.nombre
-                    ELSE   t07.nombre ||' - ' || t06.nombre
+               (CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->'  || t06.nombre
+                    ELSE   t07.nombre ||'-->' || t06.nombre
                 END) as procedencia
                 FROM ctl_atencion t01 
                 INNER JOIN mnt_aten_area_mod_estab t02 ON (t01.id = t02.id_atencion) 
@@ -198,16 +198,13 @@ $objdatos = new clsConsultaMuestrasPendientes;
                 INNER JOIN  ctl_area_atencion t06  on  t06.id = t03.id_area_atencion
                 INNER JOIN ctl_modalidad  t07 ON t07.id = t03.id_modalidad_estab
                 WHERE t02.id_establecimiento =  $lugar ORDER BY 2)
-            
-                SELECT ordenar.* FROM (
-                    SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
-                       t01.id ,
+               
+             SELECT ordenar.* FROM (
+                    SELECT t01.id ,
                        t02.id AS idsolicitudestudio,
                        t04.idplantilla, 
                        t01.id AS iddetallesolicitud,
-                       t03.numeromuestra, 
                        t06.numero AS idnumeroexp, 
-                       t03.id AS idrecepcionmuestra, 
                        t04.codigo_examen AS idexamen, 
                        t04.nombre_examen AS nombreexamen, 
                        t01.indicacion, t08.nombrearea, 
@@ -228,7 +225,6 @@ $objdatos = new clsConsultaMuestrasPendientes;
                         t01.observacion
             FROM sec_detallesolicitudestudios t01 
             INNER JOIN sec_solicitudestudios t02                ON (t02.id = t01.idsolicitudestudio) 
-            INNER JOIN lab_recepcionmuestra t03                 ON (t02.id = t03.idsolicitudestudio) 
             INNER JOIN lab_conf_examen_estab t04                ON (t04.id = t01.id_conf_examen_estab) 
             INNER JOIN mnt_area_examen_establecimiento t05      ON (t05.id = t04.idexamen) 
             INNER JOIN mnt_expediente t06                       ON (t06.id = t02.id_expediente) 
@@ -253,14 +249,11 @@ $objdatos = new clsConsultaMuestrasPendientes;
         
             UNION
 
-            SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
-                   t01.id ,
+            SELECT t01.id ,
                    t02.id AS idsolicitudestudio,
                    t04.idplantilla, 
                    t01.id AS iddetallesolicitud,
-                   t03.numeromuestra,
                    t06.numero AS idnumeroexp,
-                   t03.id AS idrecepcionmuestra,
                    t04.codigo_examen AS idexamen,
                    t04.nombre_examen AS nombreexamen,
                    t01.indicacion, t08.nombrearea,
@@ -281,7 +274,7 @@ $objdatos = new clsConsultaMuestrasPendientes;
             t01.observacion
                 FROM sec_detallesolicitudestudios t01 
             INNER JOIN sec_solicitudestudios t02                    ON (t02.id = t01.idsolicitudestudio) 
-            INNER JOIN lab_recepcionmuestra t03                     ON (t02.id = t03.idsolicitudestudio) 
+      
             INNER JOIN lab_conf_examen_estab t04                    ON (t04.id = t01.id_conf_examen_estab) 
             INNER JOIN mnt_area_examen_establecimiento t05          ON (t05.id = t04.idexamen)
             INNER JOIN mnt_dato_referencia t09                      ON t09.id=t02.id_dato_referencia 
@@ -301,8 +294,8 @@ $objdatos = new clsConsultaMuestrasPendientes;
             INNER JOIN ctl_sexo t19                                 ON (t19.id = t07.id_sexo)
             WHERE (t16.idestado = 'D') 
             AND t02.id_establecimiento = $lugar 
-                AND $cond2 ) ordenar
-                ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";   
+            AND $cond2) ordenar
+                ORDER BY to_date(ordenar.fechasolicitud, 'DD/MM/YYYY') DESC";    
                   
 	
 	 // $consulta=$objdatos->ListadoSolicitudesPorArea($query_search);  
@@ -318,7 +311,7 @@ $objdatos = new clsConsultaMuestrasPendientes;
     <table border='1' cellspacing='0' width='100%' >
 			
         <tr  align="center">
-            <td width="3%"  class="Estilo6" align="center" ><strong>MUESTRA</strong></td>
+           
             <td width="3%"  class="Estilo6" align="center"><strong>NEC </strong></td>
             <td width="20%" class="Estilo6" align="justify"><strong>NOMBRE PACIENTE</strong></td>
             <td width="5%"  class="Estilo6" align="center"><strong>COD EXAMEN</strong></td>
@@ -326,14 +319,14 @@ $objdatos = new clsConsultaMuestrasPendientes;
             <td width="8%" class="Estilo6" align="center"><strong>SERVICIO</strong></td>
             <td width="8%"  class="Estilo6" align="center"><strong>PROCEDENCIA</strong></td>
             <td width="20%"  class="Estilo6" align="center"><strong>ESTABLECIMIENTO</strong></td>
-            <td width="5%" class="Estilo6" ><strong>FECHA RECEPCI&Oacute;N</strong></td>
+            <td width="5%" class="Estilo6" ><strong>FECHA CONSULTA</strong></td>
             <td width="5%" class="Estilo6"><strong>Prioridad</strong></td>
         </tr>    
 <?php $pos=0;
     while ($row = pg_fetch_array($consulta))
 	{ ?>
 	<tr>
-            <td width="3%"  class="Estilo6" align="center"><?php echo $row['numeromuestra']; ?></td>
+            
             <td width="3%"  class="Estilo6" align="justify"><?php echo $row['idnumeroexp'];?></td>
             <td width="15%" class="Estilo6" align="justify"><?php echo $row['paciente'];?></td>
             <td width="3%"  class="Estilo6" align="center"><?php echo $row['idestandar'];?></td>
@@ -341,7 +334,7 @@ $objdatos = new clsConsultaMuestrasPendientes;
             <td width='8%' class="Estilo6" align="center"><?php echo htmlentities($row['nombresubservicio']); ?></td>
             <td width='15%' class="Estilo6" align="left"><?php echo htmlentities($row['nombreservicio']); ?></td>
             <td width='20%' class="Estilo6" align="left"><?php echo htmlentities($row['estabext']); ?></td>
-            <td width="5%" class="Estilo6" align="center"><?php echo $row['fecharecepcion'];?></td>
+            <td width="5%" class="Estilo6" align="center"><?php echo $row['fechasolicitud'];?></td>
             <td width="5%" class="Estilo6" align="center"><?php echo $row['prioridad'];?></td>
 	</tr>
  <?php
