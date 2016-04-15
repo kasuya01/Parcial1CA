@@ -169,7 +169,7 @@ if ($nivel == 7) {
 			<?php
 				$db = new ConexionBD;
 				if($db->conectar()==true){
-					$consulta  =  "SELECT id,nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento='$tipo' ORDER BY nombre";
+					$consulta  =  "SELECT id,nombre FROM ctl_tipo_establecimiento ORDER BY nombre";
 					$resultado = pg_query($consulta);
 					//por cada registro encontrado en la tabla me genera un <option>
 					while ($rows = pg_fetch_array($resultado)){

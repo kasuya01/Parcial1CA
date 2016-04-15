@@ -147,8 +147,8 @@ switch ($opcion)
                 INNER JOIN  ctl_area_atencion t06  on  t06.id = t03.id_area_atencion
                 INNER JOIN ctl_modalidad  t07 ON t07.id = t03.id_modalidad_estab
                 WHERE t02.id_establecimiento =  $lugar ORDER BY 2)
-            
-                    SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
+               SELECT ordenar.* FROM (
+                SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                        t01.id ,
                        t02.id AS idsolicitudestudio,
                        t04.idplantilla, 
@@ -249,7 +249,8 @@ switch ($opcion)
             INNER JOIN ctl_sexo t19                                 ON (t19.id = t07.id_sexo)
             WHERE (t16.idestado = 'RM') 
             AND t02.id_establecimiento = $lugar 
-                AND $cond2";  
+                AND $cond2) ordenar
+                ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";  
                   
   //  $query . " ORDER BY t03.fecharecepcion DESC";
       //echo $query;
