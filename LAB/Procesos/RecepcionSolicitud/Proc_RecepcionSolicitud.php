@@ -59,6 +59,14 @@ if (isset($_SESSION['Correlativo'])) {
                         $('#txtfechasolicitud').val(fechaCita);
                         BuscarDatos();
                     }
+                    //Select2 inicializacion
+                        $("[id^=cmbTipoEstablec]").select2({
+                           allowClear: true
+                        });
+
+                            $("[id^=cmbEstablecimiento]").select2({
+                               allowClear: true
+                            });
                 });
 
                 function BuscarEstablecimiento(IdTipoEstab) {
@@ -116,8 +124,15 @@ if (isset($_SESSION['Correlativo'])) {
                                     date_cita=val.fecha_cita
                                 if (date_cita!=''){
                                     k++;
-                                html = html + '<tr>\
-                                                <td><a href="#" onclick="VerificarExistencia('+' \''+val.numero_expediente+'\', \''+val.fecha_cita+'\', '+val.id_establecimiento+', true,'+val.id+');return false;" style="padding-left:7px;">'+val.numero_expediente+'</a><input id="idsolicitud" value="'+val.id+'" name="idsolicitud" type="hidden" /></td>\
+                                if (val.diaswithoutweekend >5){
+                                    html = html + '<tr class="danger"  title="Han pasado '+val.diaswithoutweekend+' dias desde la fecha de cita para el expediente '+val.numero_expediente+'.">\
+                                            ';
+                                }
+                                else{
+                                    html = html + '<tr>\
+                                            ';
+                                }
+                                html = html + '<td><a href="#" onclick="VerificarExistencia('+' \''+val.numero_expediente+'\', \''+val.fecha_cita+'\', '+val.id_establecimiento+', true,'+val.id+');return false;" style="padding-left:7px;">'+val.numero_expediente+'</a><input id="idsolicitud" value="'+val.id+'" name="idsolicitud" type="hidden" /></td>\
                                                 <td>'+val.fecha_consulta+'</td>\
                                                 <td>'+date_cita+'</td>\
                                                 <td>'+val.nombre_paciente+'</td>\
@@ -184,7 +199,7 @@ if (isset($_SESSION['Correlativo'])) {
                                     </tr>
                                     <tr>	<td class="StormyWeatherFieldCaptionTD">Tipo Establecimiento</TD>
                                         <td class="StormyWeatherDataTD">
-                                            <select name="cmbTipoEstablec" class="form-control height" id="cmbTipoEstablec"  onChange="BuscarEstablecimiento(this.value);" style="width:400px" >
+                                            <select name="cmbTipoEstablec" class="height js-example-basic-single" id="cmbTipoEstablec"  onChange="BuscarEstablecimiento(this.value);" style="width:400px" >
                                                 <option value="0">--Seleccione Tipo Establecimiento--</option>
                                                 <?php
                                                 include_once("../../../Conexion/ConexionBD.php");
@@ -207,7 +222,7 @@ if (isset($_SESSION['Correlativo'])) {
                                         <TD class="StormyWeatherFieldCaptionTD">Establecimiento Solicitante</TD>
                                         <td class="StormyWeatherDataTD">
                                            <div id="divEstablecimiento" style="display: block">
-                                                <select name="cmbEstablecimiento" id="cmbEstablecimiento" class="form-control height" style="width:400px" ><?php
+                                                <select name="cmbEstablecimiento" id="cmbEstablecimiento" class="height js-example-basic-single" style="width:400px" ><?php
                                                     echo '<option value="' . $lugar . '" selected="selected">' . htmlentities($nombrEstab) . '</option>';
                                                     include_once("../../../Conexion/ConexionBD.php");
                                                     $con = new ConexionBD;
@@ -216,6 +231,7 @@ if (isset($_SESSION['Correlativo'])) {
                                                         $resultado = @pg_query($consulta);
                                                         //por cada registro encontrado en la tabla me genera un <option>
                                                         while ($rows = @pg_fetch_array($resultado)) {
+                                                            if ($rows[0]!=$lugar)
                                                             echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
                                                         }
                                                         //@pg_free_result($consulta); // Liberar memoria usada por consulta.

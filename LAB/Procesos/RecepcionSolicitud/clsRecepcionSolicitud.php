@@ -45,7 +45,7 @@ class clsRecepcionSolicitud {
     function obteneropcionesrechazo() {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $NomAre = "select * from lab_posible_observacion 
+            $NomAre = "select * from lab_posible_observacion
 where habilitado=true
 order by posible_observacion;";
             $resul = pg_query($NomAre);
@@ -66,6 +66,12 @@ order by posible_observacion;";
     function BuscarSolicitudes($idexpediente, $fechacita, $lugar, $idEstablecimiento, $idsolicitud) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
+            if ($idsolicitud==0){
+                $addquery=' ';
+            }
+            else{
+                $addquery=" and t01.id=$idsolicitud ";
+            }
                 $query = "SELECT t01.id AS idsolicitudestudio
                       FROM  sec_solicitudestudios                t01
                       INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
@@ -75,10 +81,10 @@ order by posible_observacion;";
                       INNER JOIN ctl_atencion                    t06 ON (t06.id = t05.id_atencion)
                       LEFT JOIN mnt_dato_referencia              t10 ON (t10.id = t01.id_dato_referencia)
                       LEFT JOIN mnt_expediente_referido          t11 ON (t11.id = t10.id_expediente_referido)
-                      WHERE (t04.numero = '$idexpediente' OR t11.numero='$idexpediente') and t01.id=$idsolicitud AND t05.idestado = 'D' AND t02.fecha = '$fechacita' AND t01.id_establecimiento = $lugar
+                      WHERE (t04.numero = '$idexpediente' OR t11.numero='$idexpediente') $addquery AND t05.idestado = 'D' AND t02.fecha = '$fechacita' AND t01.id_establecimiento = $lugar
                             AND (t03.idestablecimiento = $idEstablecimiento OR t11.id_establecimiento = $idEstablecimiento) AND t06.codigo_busqueda = 'DCOLAB'";
             //echo $query;
-            
+
             $result = @pg_query($query);
             if (!$result)
                 return false;
@@ -91,27 +97,27 @@ order by posible_observacion;";
         $con = new ConexionBD;
         if ($con->conectar() == true) {
            $idexp=0;
-//Consulta modificada temporal hasta realizar modulo de citas y  modifico que desde seguimiento ingrese 
+//Consulta modificada temporal hasta realizar modulo de citas y  modifico que desde seguimiento ingrese
            //fecha de cita de laboratorio asi que en recepcion no mostrara las fechas de cita que no son urgentes
            //linea original: TO_CHAR(t02.fecha, 'DD/MM/YYYY') AS fecha_cita,
 
             $query = "with tbl_servicio as (select mnt_3.id,
                CASE
                WHEN mnt_3.nombre_ambiente IS NOT NULL
-               THEN  	
+               THEN
                        CASE WHEN id_servicio_externo_estab IS NOT NULL
                                THEN mnt_ser.abreviatura ||'-->' ||mnt_3.nombre_ambiente
                                ELSE mnt_3.nombre_ambiente
                        END
 
                ELSE
-               CASE WHEN id_servicio_externo_estab IS NOT NULL 
+               CASE WHEN id_servicio_externo_estab IS NOT NULL
                        THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
                     WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=cat.nombre)
                        THEN cat.nombre||'-'||cmo.nombre
                END
-               END AS servicio 
-               from ctl_atencion cat 
+               END AS servicio
+               from ctl_atencion cat
                join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
                join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
                LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id
@@ -119,15 +125,15 @@ order by posible_observacion;";
                join mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab)
                join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
                where   mnt_3.id_establecimiento=$lugar
-               order by 2) 
-SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente, 
+               order by 2)
+SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
                              COALESCE(t05.numero,t10.numero) AS numero_expediente,
                              TO_CHAR(t02.fecha, 'DD/MM/YYYY') AS fecha_cita,
                              COALESCE(TO_CHAR(t03.fechaconsulta, 'DD/MM/YYYY'),'referido') AS fecha_consulta,
-                             (CASE when (t07.primer_nombre is not null ) then  
+                             (CASE when (t07.primer_nombre is not null ) then
                              CONCAT_WS(' ', t07.primer_apellido, t07.segundo_apellido, t07.apellido_casada) || ', ' || CONCAT_WS(' ', t07.primer_nombre, t07.segundo_nombre, t07.tercer_nombre)
-                             else 
-                             CONCAT_WS(' ', t11.primer_apellido, t11.segundo_apellido, t11.apellido_casada) || ', ' || CONCAT_WS(' ', t11.primer_nombre, t11.segundo_nombre, t11.tercer_nombre) 
+                             else
+                             CONCAT_WS(' ', t11.primer_apellido, t11.segundo_apellido, t11.apellido_casada) || ', ' || CONCAT_WS(' ', t11.primer_nombre, t11.segundo_nombre, t11.tercer_nombre)
                              end ) AS nombre_paciente,
                              CASE t04.idestado
                                 WHEN 'D' THEN 'Digitada'
@@ -136,7 +142,10 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
                                 WHEN 'C' then 'Completa'
                              END AS estado,
                              COALESCE(t03.idestablecimiento,t10.id_establecimiento) AS id_establecimiento,
-                              tiposolicitud,t14.id as idmnatenareamodestab, t14.servicio as servicio
+                              tiposolicitud,t14.id as idmnatenareamodestab, t14.servicio as servicio, current_date-t02.fecha as dias,
+(select count(dia) from
+    (select generate_series(t02.fecha::date, current_date::date, '1 day') as dia) dias
+where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
                       FROM sec_solicitudestudios                 t01
                       left JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
                       LEFT JOIN sec_historial_clinico            t03 ON (t03.id = t01.id_historial_clinico)
@@ -150,7 +159,7 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
                       LEFT JOIN lab_tiposolicitud		 t13 ON (t13.id = t01.idtiposolicitud)
                       LEFT JOIN tbl_servicio		         t14 ON	(t14.id=t03.idsubservicio)	";
 
-            $where = " WHERE t01.id_establecimiento = $lugar 
+            $where = " WHERE t01.id_establecimiento = $lugar
                          AND t04.idestado = 'D'              AND t06.codigo_busqueda = 'DCOLAB'";
 
             $orderBy = " ORDER BY t13.id, t05.numero";
@@ -165,9 +174,9 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
             }
             else {
                if ($idexp==0)
-               $where = $where." AND date(t02.fecha) between date(current_date - interval '2 month') and current_date";
+               $where = $where." AND date(t02.fecha) between date('2016-01-01') and current_date ";
             }
-
+            //var_dump( $query.$where.$orderBy);
             $result = @pg_query($query.$where.$orderBy);
 
             if (!$result)
@@ -182,6 +191,12 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
+            if ($idsolicitud==0){
+                $addquery=' ';
+            }
+            else{
+                $addquery=" and t01.id=$idsolicitud ";
+            }
            $query = "SELECT t01.id AS idsolicitudestudio
                       FROM sec_solicitudestudios                 t01
                       LEFT JOIN cit_citas_serviciodeapoyo        t02 ON (t01.id = t02.id_solicitudestudios)
@@ -192,10 +207,10 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
                       LEFT JOIN mnt_dato_referencia              t10 ON (t10.id = t01.id_dato_referencia)
                       LEFT JOIN mnt_expediente_referido          t11 ON (t11.id = t10.id_expediente_referido)
 
-                      WHERE (t04.numero = '$idexpediente' OR t11.numero='$idexpediente') AND t01.id=$idsolicitud AND t05.idestado = 'D' AND t02.fecha = '$fechacita' AND t01.id_establecimiento = $lugar
+                      WHERE (t04.numero = '$idexpediente' OR t11.numero='$idexpediente') AND t05.idestado = 'D' AND t02.fecha = '$fechacita' AND t01.id_establecimiento = $lugar
                             AND (t03.idestablecimiento = $idEstablecimiento OR t11.id_establecimiento = $idEstablecimiento) AND t06.codigo_busqueda = 'DCOLAB'";
             $numreg = pg_num_rows(pg_query($query));
-            // echo $numreg;
+             //echo $numreg;
             if (!$numreg)
                 return false;
             else
@@ -291,7 +306,7 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
                              TO_CHAR(t05.fecha_nacimiento, 'DD/MM/YYYY') AS fechanacimiento,
                              t01.idestablecimiento,
                              t14.tiposolicitud,
-                             t12.id AS iddiagnostico1, 
+                             t12.id AS iddiagnostico1,
                              t12.sct_name_es,
                              t05.conocido_por AS conocidopor,
                              t01.id as idhistorial,
@@ -305,9 +320,9 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
                       INNER JOIN mnt_aten_area_mod_estab         t07 ON (t07.id = t01.idsubservicio)
                       INNER JOIN ctl_atencion                    t08 ON (t08.id = t07.id_atencion)
                       INNER JOIN cit_citas_serviciodeapoyo       t09 ON (t02.id = t09.id_solicitudestudios)
-                      LEFT JOIN sec_signos_vitales t10 ON (t01.id = t10.id_historial_clinico) 
-                      LEFT JOIN sec_diagnostico_paciente t11 ON (t01.id = t11.id_historial_clinico) 
-                      LEFT JOIN mnt_snomed_cie10 t12 ON (t12.id = t11.id_snomed) 
+                      LEFT JOIN sec_signos_vitales t10 ON (t01.id = t10.id_historial_clinico)
+                      LEFT JOIN sec_diagnostico_paciente t11 ON (t01.id = t11.id_historial_clinico)
+                      LEFT JOIN mnt_snomed_cie10 t12 ON (t12.id = t11.id_snomed)
                       INNER JOIN ctl_establecimiento             t13 ON (t13.id = t01.idestablecimiento)
                       INNER JOIN lab_tiposolicitud               t14 ON (t14.id = t02.idtiposolicitud)
                       INNER JOIN ctl_estado_servicio_diagnostico t15 ON (t15.id = t02.estado AND t15.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
@@ -356,7 +371,7 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
                       INNER JOIN mnt_aten_area_mod_estab         t07 ON (t07.id = t02.id_aten_area_mod_estab)
                       INNER JOIN ctl_atencion                    t08 ON (t08.id = t07.id_atencion)
                       LEFT JOIN cit_citas_serviciodeapoyo       t09 ON (t01.id = t09.id_solicitudestudios)
-                     
+
                       INNER JOIN ctl_establecimiento             t13 ON (t13.id = t01.id_establecimiento)
                       INNER JOIN lab_tiposolicitud               t14 ON (t14.id = t01.idtiposolicitud)
                       INNER JOIN ctl_estado_servicio_diagnostico t15 ON (t15.id = t01.estado AND t15.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
@@ -364,10 +379,10 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
                       INNER JOIN ctl_area_atencion		 t17 ON (t17.id = t16.id_area_atencion)
                       WHERE t04.numero = '$idexpediente' AND t15.idestado = 'D' AND t01.id = $IdSolicitud AND t09.fecha = '$fechacita' AND t02.id_establecimiento = $lugar  and id_tipo_diagnostico=1";
             $result = @pg_query($query);
-            
+
             if (!$result)
                 return false;
-            else 
+            else
                 return $result;
             }
             else
@@ -428,7 +443,9 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
                       WHERE (t07.numero = '$idexpediente' OR t21.numero = '$idexpediente') AND t10.fecha = '$fechacita'
                             AND t06.id = $idsolicitud    AND t04.idestablecimientoexterno = $IdEstablecimiento
                             AND t13.codigo_busqueda = 'DCOLAB'
-                      --GROUP BY SUBSTRING(t03.codigo_examen,1,3), t05.tipomuestra, t03.impresion";
+                      --GROUP BY SUBSTRING(t03.codigo_examen,1,3), t05.tipomuestra, t03.impresion
+                    . "
+                   ;
             $result = @pg_query($query);
             if (!$result)
                 return false;
@@ -582,7 +599,7 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
                              t06.idsubservicio,
                              t02.id AS idsolicitudestudio,
                              t10.idestandar,
-                             t01.id as iddetalle, 
+                             t01.id as iddetalle,
                              t03.id as i_idexamen
                       FROM sec_detallesolicitudestudios 		 t01
                       INNER JOIN sec_solicitudestudios                   t02 ON (t02.id = t01.idsolicitudestudio)
@@ -593,12 +610,12 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
                       INNER JOIN cit_citas_serviciodeapoyo 		 t07 ON (t02.id = t07.id_solicitudestudios)
                       INNER JOIN ctl_estado_servicio_diagnostico         t08 ON (t08.id = t02.estado AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
                       LEFT JOIN mnt_expediente 			         t09 ON (t09.id = t02.id_expediente)
-                      
+
                       INNER JOIN ctl_examen_servicio_diagnostico t10 ON (t10.id = t04.id_examen_servicio_diagnostico)
                       INNER JOIN ctl_atencion 			         t11 ON (t11.id = t02.id_atencion)
                       LEFT JOIN mnt_dato_referencia                      t20 ON (t20.id = t02.id_dato_referencia)
                       LEFT JOIN mnt_expediente_referido                  t21 ON (t21.id = t20.id_expediente_referido)
-                      
+
 
                       WHERE t11.codigo_busqueda = 'DCOLAB' AND (t09.numero = '$idexpediente' OR t21.numero = '$idexpediente') AND t07.fecha = '$fechacita'
                             AND t02.id = $IdSolicitud AND t01.estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = 'D' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
@@ -701,8 +718,9 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
         $con = new ConexionBD;
         if ($con->conectar() == true) {
         $query="select lab_cancelarsolicitud($cmbrechazoest, $cmbrechazosol, $fechanewcitasol, $observacion, $idsolicitud, $usuario, $fechacita, $lugar)";
+        //var_dump($query);
               $result= @pg_query($query);
-            
+
             if (!$result)
                 return false;
             else
@@ -715,7 +733,7 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
            $query = "SELECT coalesce(MAX(t01.numeromuestra),0) + 1 AS numeromuestra
                       FROM lab_recepcionmuestra        t01
 		      INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
-		      WHERE  date(t01.fecharecepcion) = current_date  
+		      WHERE  date(t01.fecharecepcion) = current_date
                       AND t02.id_establecimiento = $lugar";
          $result = @pg_query($query);
           if (!$result)
@@ -735,8 +753,8 @@ SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
             else
                 return $result_insert;
     }
-    }//fn insertrecepcionmuestra 
-    
+    }//fn insertrecepcionmuestra
+
 }
 //CLASE
 ?>
