@@ -203,19 +203,19 @@ function VerificarExistencia(idexpediente, fechacita, idEstablecimiento, omitir_
         ajax = objetoAjax();
         opcion = 2;
         //usando del medoto POST
-        
+
         ajax.open("POST", "ctrRecepcionSolicitud.php", true);
         //muy importante este encabezado ya que hacemos uso de un formulario
         ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         //enviando los valores
-        
+
         ajax.send("idexpediente=" + idexpediente + "&fechacita=" + fechacita + "&opcion=" + opcion + "&idEstablecimiento=" + idEstablecimiento+ "&idsolicitud=" + idsolicitud);
         ajax.onreadystatechange = function() {
             if (ajax.readyState == 4) {	//mostrar los nuevos registros en esta capa
                 if (ajax.status == 200) { //alert (ajax.responseText);
                     if (ajax.responseText.replace(/(\r\n|\n|\r| )/gm,'') == 'D') { //si existen datos para la solicitud
                         MostrarDatosGenerales(idexpediente, fechacita, idEstablecimiento, idsolicitud);
-                        
+
                     } else { //mueestra el mensaje de estado de la solicitud
                         alert(ajax.responseText);
                     }
@@ -254,7 +254,7 @@ function MostrarDatosGenerales(idexpediente, fechacita, idEstablecimiento, idsol
     //valores de los text
     document.getElementById('txtidexpediente').value = idexpediente;
     document.getElementById('txtfechasolicitud').value = fechacita;
-
+    //console.log(idexpediente+' -- '+fechacita+' - - idsol '+idsolicitud)
     //instanciamos el objetoAjax
     ajax = objetoAjax();
     //usando del medoto POST
@@ -294,8 +294,9 @@ function MostrarTodos() {
         async: true,
         data: parameters,
         success: function(data) {
-            if(data.status)
+            if(data.status){
                 searchAllBuild(data);
+            }
             else
                 alert('Error al procesar los registros...');
         },
@@ -324,7 +325,8 @@ function MostrarTodos() {
 
 function calc_edad()
 {
-    var total = document.getElementById('topei').value;
+    //var total = document.getElementById('topei').value;
+    var total=1;
     //alert(posicion);
 
     //for (i = 0; i < document.getElementById('topei').value; i++) {
@@ -361,7 +363,7 @@ function CambiarEstadoDetalleSolicitud(estado)
         {
             if (ajax.status == 200)
             {
-                //mostrar los nuevos registros en esta capa 
+                //mostrar los nuevos registros en esta capa
                 alert(ajax.responseText);
             }
         }
@@ -373,11 +375,11 @@ function imprimiretiquetas(posicion)
 {//cambiar imprimir  etiquetas1.php  por imprimir.php
 	idexpediente=document.getElementById('txtidexpediente').value;
 	idsolicitud=document.getElementById('txtidsolicitud[' + posicion + ']').value;
-		
-	
+
+
 	//alert idexpediente;
 	ventana_secundaria = window.open("../../Consultas_Reportes/ConsultaSolicitudesPaciente/etiquetas.php?var1="+idexpediente+"&var2="+idsolicitud,"etiquetas",										"width=500,height=600,menubar=no,location=no,scrollbars=yes") ;
-		
+
 }
 
 
@@ -404,7 +406,7 @@ function RegistrarNumeroMuestra(posicion)//Registrando Numero de Muestra asociad
     ajax = xmlhttp();
     //usando del medoto POST
     opcion = 4;
-   
+
     ajax.open("POST", "ctrRecepcionSolicitud.php", true);
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -447,7 +449,7 @@ function RegistrarNumeroMuestra(posicion)//Registrando Numero de Muestra asociad
 //Fn_PG
 //FUNCION PARA CREAR ARCHIVO DE LA SOLICITUD
 function OpcionRechazo(idrechazo, k) {
-    
+
    //alert(posicion)
    opcion = 11;
    //instanciamos el objetoAjax
@@ -475,7 +477,7 @@ function OpcionRechazo(idrechazo, k) {
 //Fn_PG
 //FUNCION PARA CREAR ARCHIVO DE LA SOLICITUD
 function cancelrechazo(cmbrechazo, k) {
-    
+
    //alert(cmbrechazo+' - '+k)
 
     //instanciamos el objetoAjax
@@ -486,12 +488,12 @@ function cancelrechazo(cmbrechazo, k) {
       document.getElementById('divopcionrechazo_'+k).style.display = "none";
       document.getElementById('divopcionvalidar_'+k).style.display = "block";
 //      document.getElementById('divopcionvalidar_'+k).innerHTML = ajax.responseTex
-       //$("#validarmuestra_"+k+" option[value='1']").attr('selected', 'selected'); 
-  //     $("#validarmuestra_"+k+" option[value='1']").attr('selected', 'selected'); 
+       //$("#validarmuestra_"+k+" option[value='1']").attr('selected', 'selected');
+  //     $("#validarmuestra_"+k+" option[value='1']").attr('selected', 'selected');
        $('#validarmuestra_'+k).val("1");
-       $("#rowdetalle_"+k).css("background-color", "#FFFFFF");       
+       $("#rowdetalle_"+k).css("background-color", "#FFFFFF");
       document.getElementById('divnewdate_'+k).style.display = "none";
-     
+
       $( "#divnewdate_"+k ).empty();
      // alert ($('input[name="f_newdate_"]').length)
       if ($('input[name="f_newdate_"]').length == 0){
@@ -617,9 +619,9 @@ function CambiarEstadoSolicitud(estado, idsolicitud, posicion)
              parametros=parametros+"&cmbrechazo_"+j+"=0";
           }
          }
-         ); 
+         );
    }
-   cantidadnum=j;  
+   cantidadnum=j;
    parametros=parametros+"&cantidadnum="+j;
   // alert (parametros)
     opcion = 1;
@@ -640,7 +642,7 @@ function CambiarEstadoSolicitud(estado, idsolicitud, posicion)
                 //mostrar los nuevos registros en esta capa
                 document.getElementById('divCambioEstado').style.display = "none";
                 document.getElementById('divCambioEstado').innerHTML = ajax.responseText;
-                
+
                 //verificando el cambio de estado
                 if (ajax.responseText.replace(/(\r\n|\n|\r| )/gm,'') == "Y")
                 {
@@ -708,7 +710,7 @@ function HabilitarBoton(idsolicitud, posicion) {
         success: function(object) {
             if(object.status) {
                 var estado;
-                
+
                 if(object.data[0].numero === "0") {
                     estado = 'P';
                 } else {
@@ -744,10 +746,10 @@ function rechazosolicitud(idcmbrechazoest){
    else{
       $( "#newdatesol" ).hide();
       $( "#newdatesol" ).val();
-      
+
    }
    $('select[id^=validarmuestra_]').each(function() { $(this).val(idcmbrechazoest);});
-   
+
 }
 //
 //function oprechazosolfull(idop){
@@ -758,13 +760,13 @@ function rechazosolicitud(idcmbrechazoest){
 //      $('select[id^=cmbrechazo_]').each(function() { $(this).val(idop);});
 ////      document.getElementById('divopcionvalidar_'+k).style.display = "none";
 ////      document.getElementById('divopcionrechazo_'+k).style.display = "block";
-//   
+//
 //   }
 ////   else{
 ////      $( "#newdatesol" ).hide();
 ////   }
 ////   $('select[id^=validarmuestra_]').each(function() { $(this).val(idcmbrechazoest);});
-////   
+////
 //}
 
 
@@ -775,8 +777,8 @@ function cancelarechazo(){
    $('#fechanewcitasol').val(null);
    $('#observacionrechazo').val(null);
    $('#newdatesol').hide();
-   
-   
+
+
 }
 
 function cancelarsolicitud(){
@@ -796,13 +798,13 @@ function cancelarsolicitud(){
       alert ("Favor ingresar la fecha de la nueva cita")
       return false;
    }
-
+ console.log('aca va al otro'+'cmbrechazoest'+ cmbrechazoest+ 'cmbrechazosol'+ cmbrechazosol+'fechanewcitasol'+ fechanewcitasol+ 'observacionrechazo'+ observacionrechazo+'idsolicitud'+idsolicitud+ 'fechacita'+fechacita)
       jQuery.ajax({
-        url: 'ctrRecepcionSolicitud.php',
-        async: true,
-        dataType: 'json',
-        type: 'POST',
-        data: { opcion: 13 , cmbrechazoest: cmbrechazoest,cmbrechazosol: cmbrechazosol,fechanewcitasol: fechanewcitasol, observacionrechazo: observacionrechazo,idsolicitud:idsolicitud, fechacita:fechacita },
+          url: 'ctrRecepcionSolicitud.php',
+          async: true,
+          dataType: 'json',
+          type: 'POST',
+          data: { opcion: 13 , cmbrechazoest: cmbrechazoest, cmbrechazosol: cmbrechazosol,fechanewcitasol: fechanewcitasol, observacionrechazo: observacionrechazo,idsolicitud:idsolicitud, fechacita:fechacita },
         success: function(object) {
             if(object.status) {
                 alert ('Solicitud cancelada');

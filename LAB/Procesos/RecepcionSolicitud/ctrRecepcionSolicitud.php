@@ -29,8 +29,8 @@ switch ($opcion) {
       if ($con->conectar() == true) {
          $query = "UPDATE sec_solicitudestudios "
                  . "SET estado = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = '$estado' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-                        WHERE id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB') AND 
-                        id_establecimiento = $lugar AND 
+                        WHERE id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB') AND
+                        id_establecimiento = $lugar AND
                          id = $idsolicitud";
 
          $result = @pg_query($query);
@@ -64,19 +64,19 @@ switch ($opcion) {
                         $result0 = pg_query($query0);
                      }
                   } else {
-                     $sql3="select t3.id_area_servicio_diagnostico 
-                     from  lab_conf_examen_estab t2 
+                     $sql3="select t3.id_area_servicio_diagnostico
+                     from  lab_conf_examen_estab t2
                      join mnt_area_examen_establecimiento t3 on (t3.id=t2.idexamen)
                      where t2.id=$hdni_idexamen_;";
 //                     $sql3="select t4.id
-//                     from  lab_conf_examen_estab t2 
+//                     from  lab_conf_examen_estab t2
 //                     join ctl_examen_servicio_diagnostico t3 on (t3.id=t2.idestandarrep)
 //                     join lab_estandarxgrupo t4 on (t4.id=t3.idgrupo)
 //                     where t2.id=$hdni_idexamen_";
                      $result3=pg_query($sql3);
                      $rowtmu=  pg_fetch_array($result3);
                      //14 es examen referido
-                     if ($rowtmu[0]==14) 
+                     if ($rowtmu[0]==14)
                           $idestado='RC';
                      else
                         $idestado = 'PM';
@@ -84,8 +84,8 @@ switch ($opcion) {
                   //  (a_idhistorial integer, a_newfechacita date, a_iddetallesolicitud integer, a_idsolicitudestudio integer, a_idexamen integer,  a_idusuarioreg integer, referido integer)
                   // echo 'idestado:'.$idestado.'    hdni_idexamen:'.$hdni_idexamen_.'<br\>';
 
-                  $query1 = "UPDATE sec_detallesolicitudestudios 
-                      SET estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = '$idestado' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')), 
+                  $query1 = "UPDATE sec_detallesolicitudestudios
+                      SET estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = '$idestado' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')),
                       f_tomamuestra= '$hdnfechatmx_',
                       id_estado_rechazo=$hdnvalidarmuestra_,
                       id_posible_observacion=$hdncmbrechazo_,
@@ -116,25 +116,25 @@ switch ($opcion) {
                         $result0 = pg_query($query0);
                      }
                   } else {
-                     $sql3="select t3.id_area_servicio_diagnostico 
-                     from  lab_conf_examen_estab t2 
+                     $sql3="select t3.id_area_servicio_diagnostico
+                     from  lab_conf_examen_estab t2
                      join mnt_area_examen_establecimiento t3 on (t3.id=t2.idexamen)
                      where t2.id=$hdni_idexamen_;";
 //                     $sql3="select t4.id
-//                     from  lab_conf_examen_estab t2 
+//                     from  lab_conf_examen_estab t2
 //                     join ctl_examen_servicio_diagnostico t3 on (t3.id=t2.idestandarrep)
 //                     join lab_estandarxgrupo t4 on (t4.id=t3.idgrupo)
 //                     where t2.id=$hdni_idexamen_";
                      $result3=pg_query($sql3);
                      $rowtmu=  pg_fetch_array($result3);
                      //14 es examen referido
-                     if ($rowtmu[0]==14) 
+                     if ($rowtmu[0]==14)
                           $idestado='RC';
                      else
                           $idestado = 'D';
                   }
 
-                      $query1 = "UPDATE sec_detallesolicitudestudios 
+                      $query1 = "UPDATE sec_detallesolicitudestudios
                       SET estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = '$idestado' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')), "
                           . "f_tomamuestra= '$hdnfechatmx_',"
                           . "id_estado_rechazo=$hdnvalidarmuestra_,
@@ -162,7 +162,7 @@ switch ($opcion) {
       $fechacita = $_POST['fechacita'];
       $idEstablecimiento = $_POST['idEstablecimiento'];
       $idsolicitud = $_POST['idsolicitud'];
-      //// echo 'fechaCita:'.$fechacita;
+      // echo 'fechaCita:'.$fechacita;
       //$Nfecha     = explode("/", $fechacita);
       //$Nfechacita = $Nfecha[2] . "-" . $Nfecha[1] . "-" . $Nfecha[0];
       $Nfechacita = $fechacita;
@@ -175,7 +175,7 @@ switch ($opcion) {
                       LEFT JOIN mnt_expediente              t04 ON (t04.id = t02.id_expediente)
                       LEFT JOIN mnt_dato_referencia	    t10 ON (t10.id = t02.id_dato_referencia)
                       LEFT JOIN mnt_expediente_referido     t11 ON (t11.id = t10.id_expediente_referido)
-                      
+
                       WHERE t01.fecha = '$Nfechacita' AND (t04.numero = '$idexpediente' OR t11.numero = '$idexpediente') AND t02.id_establecimiento = $lugar";
          $query .=' GROUP BY (CASE WHEN t10.id is null THEN false ELSE true END)';
          $numreg = pg_fetch_array(pg_query($query));
@@ -210,10 +210,10 @@ switch ($opcion) {
 				 FROM sec_solicitudestudios                 t01
 				 INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
                                  INNER JOIN ctl_estado_servicio_diagnostico t04 ON (t04.id = t01.estado AND t04.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-                                 LEFT JOIN mnt_expediente                  t05 ON (t05.id = t01.id_expediente)                                 
+                                 LEFT JOIN mnt_expediente                  t05 ON (t05.id = t01.id_expediente)
                                  INNER JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)
                                  LEFT JOIN mnt_dato_referencia	    t10 ON (t10.id = t01.id_dato_referencia)
-                                 LEFT JOIN mnt_expediente_referido     t11 ON (t11.id = t10.id_expediente_referido)                                
+                                 LEFT JOIN mnt_expediente_referido     t11 ON (t11.id = t10.id_expediente_referido)
 				 WHERE (t05.numero = '$idexpediente' OR t11.numero = '$idexpediente') AND t02.fecha = '$Nfechacita' AND  t01.id_establecimiento = $lugar
                                        AND t10.id_establecimiento = $idEstablecimiento AND t06.codigo_busqueda = 'DCOLAB'";
             }
@@ -281,7 +281,7 @@ switch ($opcion) {
        /*  $query = "SELECT coalesce(MAX(t01.numeromuestra),0) + 1 AS numeromuestra
                       FROM lab_recepcionmuestra        t01
 		      INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
-		      WHERE  date(t01.fecharecepcion) = current_date  
+		      WHERE  date(t01.fecharecepcion) = current_date
                       AND t02.id_establecimiento = $lugar";*/
          $result=$object->maxrecepcionmuestra($lugar);
          //$result = @pg_query($query);
@@ -463,30 +463,17 @@ switch ($opcion) {
 
    case 13:
       //Ingresando a lab_recepcionmuestra
-      //$fechacita = $_POST['fechacita'];
-      
-
-//         $result=$object->maxrecepcionmuestra($lugar);
-//         if ($result!=false){
-//            $row = pg_fetch_array($result);
-//            $numero = $row['numeromuestra'];
-//            if ($numero == "") {
-//               $numero = 1;
-//            }
-//            //Registro de la recepcion
-//            $result_insert=$object->insertarrecepcionmuestra($idsolicitud, $numero, $fechacita, $lugar, $usuario);          
-//         //}
-//      }
-      //fin recepcionmuestra
-      
-      
       $jsonresponse['status'] = true;
 
       $cmbrechazoest = $_POST['cmbrechazoest'];
       $cmbrechazosol = $_POST['cmbrechazosol'];
       $idsolicitud = $_POST['idsolicitud'];
-      $fecpure=  new DateTime($_POST['fechacita']);
-      $fechacita=$fecpure->format('Y-m-d');
+      $var = $_POST['fechacita'];
+      $date = str_replace('/', '-', $var);
+      $fechacita=date('Y-m-d', strtotime($date));
+
+    //  $fecpure=  new DateTime($_POST['fechacita']);
+    //   $fechacita=$fecpure->format('Y-m-d');
      // $idsolicitud = $_POST['idsolicitud'];
 
       //$fechanewcitasol = isset($_POST['fechanewcitasol']) ? $_POST['fechanewcitasol']
@@ -498,8 +485,8 @@ switch ($opcion) {
       $rslts = "";
       $cancelarsol = $object->cancelarsolicitud($cmbrechazoest, $cmbrechazosol,
               $fechanewcitasol, $observacionrechazo, $idsolicitud, $usuario, $fechacita, $lugar);
-      
-     /// var_dump($cancelarsol);
+
+     // var_dump($cancelarsol);
       if ($cancelarsol == true) {
          $jsonresponse['status'] = true;
       } else

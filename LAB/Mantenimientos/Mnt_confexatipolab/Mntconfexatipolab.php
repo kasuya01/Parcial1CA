@@ -1,7 +1,7 @@
 <?php
     session_start();
-    include_once("cls_Mnt_confestipolab.php");
-    $mntconfestipolab = new cls_Mnt_confestipolab;
+    include_once("cls_Mnt_confexatipolab.php");
+    $mntconfexatipolab = new cls_Mnt_confexatipolab;
     $nivel = $_SESSION['NIVEL'];
     $corr  = $_SESSION['Correlativo'];
     $lugar = $_SESSION['Lugar'];
@@ -11,14 +11,14 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>Mantenimiento de establecimientos a referir</title>
+        <title>Configuración de pruebas a referir a otros establecimientos</title>
         <?php include_once $ROOT_PATH."/public/css.php";?>
         <?php include_once $ROOT_PATH."/public/js.php";?>
-        <script language="JavaScript" type="text/javascript" src="ajax_Mnt_confestipolab.js"></script>
+        <script language="JavaScript" type="text/javascript" src="ajax_Mnt_confexatipolab.js"></script>
         <script type="text/javascript">
         function iniciarselects2(){
-            $("[id^=cmbEstablecimiento]").select2({
-               placeholder: "Seleccione un Establecimiento si aplica...",
+            $("[id^=cmbtipoEstablecimiento]").select2({
+               placeholder: "Seleccione un Tipo de establecimiento",
                allowClear: true
             });
         }
@@ -73,29 +73,15 @@
                                     <!-- <div class="col-xs-10 col-md-10 text-right"> -->
                                         <table class="table table-striped" style="border-bottom: 1px solid #31708f;">
                                             <?php
-                                            $tiposest=$mntconfestipolab->getconfestipolab();
+                                            echo "<tr><td class='ridge' style='width:25%'>
+                                            <span class='glyphicon glyphicon-home' style='color:#31708f'></span> Tipo Establecimiento</td>";
+                                            echo '<td><select id="cmbtipoEstablecimiento" name="cmbtipoEstablecimiento[]" size="1" style="width:100%"  class="height js-example-placeholder-multiple  select2-lightblue" multiple="multiple">';
+
+                                            $tiposest=$mntconfexatipolab->getconfexatipolab();
                                             while ($row = pg_fetch_array($tiposest)) {
-                                                echo "<tr><td class='ridge' style='width:25%'>
-                                                <span class='glyphicon glyphicon-home' style='color:#31708f'></span> &nbsp;" .$row['nombre']."</td>";
-
-                                                echo '<td><select id="cmbEstablecimiento'.$row["id"].'" name="cmbEstablecimiento'.$row["id"].'[]" size="1" style="width:100%"  class="height js-example-placeholder-multiple  select2-lightblue" multiple="multiple">';
-
-                                                        $tipomuestra=$mntconfestipolab->getconfestab($row['id']);
-                                                        while($row2 = pg_fetch_array($tipomuestra)){
-                                                            $b=0;
-                                                            $estconf=$mntconfestipolab->getconfestipolabconf($row['id']);
-                                                            while($row3 = pg_fetch_array($estconf)){
-                                                                if ($row2['idestab']==$row3['idestab']){
-                                                                    echo "<option value='" . $row2['idestab']. "_".$row2['idestipolab']."' selected>" .$row2['nombrestab'] . "</option>";
-                                                                    $b=1;
-                                                                }
-                                                            }
-                                                            if ($b==0){
-                                                                echo "<option value='" . $row2['idestab']. "_".$row2['idestipolab']."'>" .$row2['nombrestab'] . "</option>";
-                                                            }
-                                                        }
-                				                echo '</select><br /></td>';
+                                                echo "<option value='" . $row['id']."'>" .$row2['nombre'] . "</option>";
                                             }
+                                            echo '</select><br /></td>';
                                              ?>
                                         </table>
                                         <br />

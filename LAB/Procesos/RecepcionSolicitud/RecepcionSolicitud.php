@@ -6,7 +6,7 @@ $lugar   = $_SESSION['Lugar'];
 $area    = $_SESSION['Idarea'];
 ?>
 <script language="JavaScript" type="text/javascript" src="ajax_RecepcinSolicitud.js"></script>
-<?php 
+<?php
 
 //variables POST
 $idexpediente = $_POST['idexpediente'];
@@ -16,7 +16,6 @@ $Nfechacita = $Nfecha[2] . "/" . $Nfecha[1] . "/" . $Nfecha[0];
 $estado     = 'D';
 $idEstablecimiento = $_POST['idEstablecimiento'];
 $idsolicitud = $_POST['idsolicitud'];
-
 $arraysolic  = array();
 $arraypiloto = array();
 $i   = 0;
@@ -100,7 +99,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                     <td class='StormyWeatherDataTD'>" . $row['talla'] . "&nbsp;&nbsp;cm.</td>
 		</tr>
             </table><br>";
-        echo "<div class='table-responsive' style='width: 100%;' style='align:center;'>          
+        echo "<div class='table-responsive' style='width: 100%;' style='align:center;'>
            <table border = 0 align='center' class='table table-hover table-bordered table-condensed table-white' cellspacing='0' style='width:70%'><thead>
 		<tr>
                     <td colspan='7' align='center' class='CobaltFieldCaptionTD'>ESTUDIOS SOLICITADOS</td>
@@ -144,7 +143,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
             $rechazo=$objdatos->opcionrechazo();
             while ($rec=@pg_fetch_array($rechazo)){
                echo '<option value="'.$rec["id"].'">'.$rec["estado"].'</option>';
-               
+
             }
             echo '</select>';
             echo '</div>'
@@ -156,7 +155,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
         }// while detalle
 // <input type='text' class='datepicker' name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" onchange="valfechasolicita(this, 'fecha_realizacion')"/>
 //          <input type='text' class='datepicker' name='fecha_reporte' id='fecha_reporte' size='15'  value='".date('Y-m-d H:i')."' onchange=\'valfechasolicita(this, 'fecha_reporte')\'/><br>           <input type='button' name='btnImprimir[" . $i . "]' id='btnImprimir[" . $i . "]' value='Imprimir Vi&ntilde;etas' onClick='ImprimirExamenes(" . $i . ");'/>   <input type='button' name='btnImpSolicitud[" . $i . "]' id='btnImpSolicitud[" . $i . "]' value='Imprimir Solicitud' onClick='ImprimirSolicitud(" . $i . ");'/>
-         
+
         echo "</tbody></table></div>
               <table align='center' class='table table-condensed table-white' style='width:45%;border:0'><br>
                 <tr>
@@ -164,16 +163,16 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                         <button type='button'  name='btnActualizar[" . $i . "]' id='btnActualizar[" . $i . "]' align='right' style='text-align: right' class='btn btn-primary' onclick='AsignarNumeroMuestra(" . $i . ");'><span class='glyphicon glyphicon-check'></span>&nbsp;Procesar Solicitud </button>&nbsp;
                         <button type='button'  name='btnRechazar[" . $i . "]' id='btnRechazar[" . $i . "]' align='right' style='text-align: right' class='btn btn-primary' data-toggle='modal' data-target='#myModal' ><span class='glyphicon glyphicon-remove'></span>&nbsp;Rechazar Solicitud </button>&nbsp;";
         echo '<button type="button"  name="btnOtra" id="btnOtra" align="right" style="text-align: right" class="btn btn-primary" onclick="window.location.replace(\'Proc_RecepcionSolicitud.php\');"><span class="glyphicon glyphicon-refresh"></span>&nbsp;Ingresar otra solicitud </button>';
-//        echo 
+//        echo
 //                        <input type='hidden' name='oculto' id='text' value='" . $i . "' />
-//                        <button type='button'  name='btnOtra' id='btnOtra' align='right' style='text-align: right' class='btn btn-primary' onclick='window.location.replace(\'Proc_RecepcionSolicitud.php\);'><span class='glyphicon glyphicon-refresh'></span>&nbsp;Ingresar otra solicitud </button>   
+//                        <button type='button'  name='btnOtra' id='btnOtra' align='right' style='text-align: right' class='btn btn-primary' onclick='window.location.replace(\'Proc_RecepcionSolicitud.php\);'><span class='glyphicon glyphicon-refresh'></span>&nbsp;Ingresar otra solicitud </button>
            echo "</td>
                     </tr>
                     <tr>
                     <td id='divoculto[" . $i . "]' style='display:none'><center>
-                       
+
                          <button type='button'  name='btnImprimir[" . $i . "]' id='btnImprimir[" . $i . "]' align='right' style='text-align: right' class='btn btn-primary' onclick='ImprimirExamenes(" . $i . ");'><span class='glyphicon glyphicon-barcode'></span>&nbsp;Imprimir Viñetas </button>
-                          <button type='button'  name='btnImpSolicitud[" . $i . "]' id='btnImpSolicitud[" . $i . "]' align='right' style='text-align: right' class='btn btn-primary' onclick='ImprimirSolicitud(" . $i . ");'><span class='glyphicon glyphicon-list-alt'></span>&nbsp;Imprimir Solicitud </button>  
+                          <button type='button'  name='btnImpSolicitud[" . $i . "]' id='btnImpSolicitud[" . $i . "]' align='right' style='text-align: right' class='btn btn-primary' onclick='ImprimirSolicitud(" . $i . ");'><span class='glyphicon glyphicon-list-alt'></span>&nbsp;Imprimir Solicitud </button>
                          </center>
                     </td></tr></table>";
     }//del while
@@ -186,7 +185,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
 <!--            <td>
                <button type='button'  name='btnOtra' id='btnOtra' align='right' style='text-align: right' class='btn btn-primary' onclick='window.location.replace("Proc_RecepcionSolicitud.php");'><span class='glyphicon glyphicon-refresh'></span>&nbsp;Ingresar otra solicitud </button></td>
  <button type="button"  name="btnOtra" id="btnOtra" align="right" style="text-align: right" class="btn btn-primary" onclick="window.location.replace('Proc_RecepcionSolicitud.php');"><span class="glyphicon glyphicon-refresh"></span>&nbsp;Ingresar otra solicitud </button></td>
-            
+
             </td>-->
 <!--               <input type="button" name="btnOtra" id="btnOtra" value="Ingresar otra solicitud" onClick="window.location.replace('Proc_RecepcionSolicitud.php')"></td>-->
 <!-- Modal -->
@@ -216,7 +215,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
             <?php
             $cmbrechazo=$objdatos->obteneropcionesrechazo();
             while ($cmb=@pg_fetch_array($cmbrechazo)){
-               
+
                echo '<option value='.$cmb["id"].'>'.$cmb["posible_observacion"].'</option>';
             }
             ?>
@@ -236,6 +235,6 @@ for ($i = 0; $i < $NroRegistros; $i++) {
       </div>
     </div>
   </div>
-</div>        
-    
+</div>
+
 </form>

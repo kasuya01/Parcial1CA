@@ -76,13 +76,13 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                 </tr>
                 <tr>
                     <td class='StormyWeatherFieldCaptionTD'>Edad</td>
-                    <td class='StormyWeatherDataTD'><div id='divsuedad[" . $i . "]'></div></td> 
+                    <td class='StormyWeatherDataTD'><div id='divsuedad[" . $i . "]'></div></td>
                     <td class='StormyWeatherFieldCaptionTD'>Sexo:</td>
                     <td class='StormyWeatherDataTD'>" . $row['sexo'] . "</td>
                 </tr>
                 <tr>
                     <td class='StormyWeatherFieldCaptionTD'>Procedencia</td>
-                    <td colspan='1' class='StormyWeatherDataTD'>" . htmlentities($row['precedencia']) . " 
+                    <td colspan='1' class='StormyWeatherDataTD'>" . htmlentities($row['precedencia']) . "
                         <input name='txtprecedencia[" . $i . "]' id='txtprecedencia[" . $i . "]' type='hidden'  value='" . $row['precedencia'] . "'/>
 			<input name='txtidsolicitud[" . $i . "]' id='txtidsolicitud[" . $i . "]' type='hidden' value='" . $arraysolic[$i] . "'/>
 			<input name='txtfecha[" . $i . "]' id='txtfecha[" . $i . "]' type='hidden' value='" . $row['fecha'] . "'/>
@@ -94,7 +94,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                 <tr>
                     <td class='StormyWeatherFieldCaptionTD'>M&eacute;dico</td>
                     <td colspan='3' class='StormyWeatherDataTD'>" . htmlentities($row['nombremedico']) . "</td>
-		</tr>	
+		</tr>
                 <tr>
                     <td class='StormyWeatherFieldCaptionTD'>Diagnostico </td>
                     <td colspan='3' class='StormyWeatherDataTD'>" . htmlentities($row['diagnostico']) . "</td>
@@ -126,12 +126,12 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                 echo "<td>" . htmlentities($rows['indicacion']) . "</td>";
             } else
                 echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-            //***************** bandera ************************			
+            //***************** bandera ************************
             if (($rows['idexamen'] == 'COA001')or ( $rows['idexamen'] == 'COA002') or ( $rows['idexamen'] == 'COA016')) {
                 $ban = 1;
             }
             echo "</tr>";
-        }// while detalle		
+        }// while detalle
 
 
         echo "</table>
@@ -139,13 +139,13 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                 <tr>
                     <td>
                         <input type='button' name='btnActualizar[" . $i . "]' id='btnActualizar[" . $i . "]' value='Procesar Solicitud' onClick='AsignarNumeroMuestra(" . $i . ");'/>
-                        <input type='hidden' name='oculto' id='text' value='" . $i . "' /> 
+                        <input type='hidden' name='oculto' id='text' value='" . $i . "' />
                     </td>
-                    <td>	
+                    <td>
                         <div id='divoculto[" . $i . "]' style='display:none' >
                             <input type='button' name='btnImprimir[" . $i . "]' id='btnImprimir[" . $i . "]' value='Imprimir Vi&ntilde;etas' onClick='ImprimirExamenes(" . $i . ");'/>
                             <input type='button' name='btnImpSolicitud[" . $i . "]' id='btnImpSolicitud[" . $i . "]' value='Imprimir Solicitud' onClick='ImprimirSolicitud(" . $i . ");'/>
-			</div> 
+			</div>
                     </td>
 		</tr>
               </table><br>";
