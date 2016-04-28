@@ -679,7 +679,7 @@ function setDataTableOptions(element) {
     var newOptions = {
             "language": {
                 decimal:        "",
-                emptyTable:     "Sin resultados para mostrar...",
+                emptyTable:     "No se han encontrado resultados...",
                 info:           "Mostrando _START_ a _END_ de _TOTAL_ resultados",
                 infoEmpty:      "Mostrando 0 a 0 de 0 resultados",
                 infoFiltered:   "(filtrado de _MAX_ resultados en total)",
