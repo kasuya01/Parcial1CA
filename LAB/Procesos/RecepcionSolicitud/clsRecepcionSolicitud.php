@@ -162,7 +162,7 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
             $where = " WHERE t01.id_establecimiento = $lugar
                          AND t04.idestado = 'D'              AND t06.codigo_busqueda = 'DCOLAB'";
 
-            $orderBy = " ORDER BY t13.id, t05.numero";
+            $orderBy = " ORDER BY t13.id, t02.fecha desc, t05.numero";
 
             if($idexpediente !== '') {
                 $where = $where." AND (t05.numero = '$idexpediente' OR t10.numero = '$idexpediente')";
