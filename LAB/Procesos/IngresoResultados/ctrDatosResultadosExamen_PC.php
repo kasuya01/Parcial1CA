@@ -42,7 +42,6 @@ switch ($opcion)
                             <td width='20%' class='StormyWeatherDataTD'>
 					<input name='txtresultado[".$pos."]' type='text' id='txtresultado[".$pos."]' >
 					<input name='oidantibiotico[".$pos."]' type='hidden' id='oidantibiotico[".$pos."]' value='".$row['idantibiotico']."'></td>
-                                          
                             <td width='20%' class='StormyWeatherDataTD'> 
                                 <select id='cmbresultado[".$pos."]' name='cmbresultado[".$pos."]' size='1' class='form-control height'>
                                     <option value='0' >--Seleccione Resultado--</option>";
@@ -217,15 +216,14 @@ switch ($opcion)
                            while($row = pg_fetch_array($consulta))//ELEMENTOS)
                            {
                             $imprimir.="<tr>
-                                            <td width='40%'>&emsp;".$row['antibiotico']."</td>
-                                            <td width='20%'>".$vector_valores[$pos].
-                                               "<input name='oidantibiotico[".$pos."]' type='hidden' id='oidantibiotico[".$pos."]' value='".$row['idantibiotico']."'>
-                                            </td>";
-                          // echo $vector_interpretacion[$pos];
-                                            $consulta_nombre=$objdatos->nombre_resultado($vector_interpretacion[$pos]);
-                                            $row_nombre = pg_fetch_array($consulta_nombre);
-                                            
-                             $imprimir.="   <td width='40%'>".htmlentities( $row_nombre[0])."</td>
+                                           <td width='40%'>&emsp;".$row['antibiotico']."</td>
+                                           <td width='20%'>".$vector_valores[$pos].
+                                           "<input name='oidantibiotico[".$pos."]' type='hidden' id='oidantibiotico[".$pos."]' value='".$row['idantibiotico']."'></td>";
+                              // echo $vector_interpretacion[$pos];
+                                                $consulta_nombre=$objdatos->nombre_resultado($vector_interpretacion[$pos]);
+                                                $row_nombre = pg_fetch_array($consulta_nombre);
+
+                                $imprimir.="<td width='40%'>".htmlentities( $row_nombre[0])."</td>
                                         </tr>";
                                            $pos=$pos+1;
                            }
@@ -234,37 +232,33 @@ switch ($opcion)
                                     $imprimir.= "<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
                                                  <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
 
-                           $imprimir.=" <tr>
+                            $imprimir.="<tr>
                                             <td colspan='6'>&nbsp;</td>
                                         </tr>
-                                      
-                                    </table>
-                                  </td>
-                              </tr>
-                               
-                                <tr>
-                                    <td colspan='1'>Observación:</td>
-                                    <td colspan='5' align='left'>".$observacion."</td>
-                                </tr>
-                                <tr>
-                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    </td>
-                                </tr>
-                                 <tr>
-                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    </td>
-                                </tr>
-                                        <tr>
-                                            <td colspan='6'>
-                                                <button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarResultadosPlantillaC();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>
-                                                <button type='button' id='Ingresar' align='center' class='btn btn-primary' title='Ingresar otro Resultado'  onclick='IngresarOtro();'>&nbsp;Ingresar otro Resultado</button>     
-                                                
-                                                <button style='display:none' type='button' class='btn btn-primary'  name='Imprimir'  id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaC(".$idsolicitud.",\"".$idexamen."\",\"".$resultado."\",\"".$row_empleado['empleado']."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_antibioticos)."\",\"".$codigos_antibioticos."\",".$idbacteria.",\"".$cantidad."\",".$idtarjeta.",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".$idobservacion."\",\"".$valores_interpretacion."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\");'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>     
-                                                <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true' style='display:none; height:20px'><button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>                                                  
-                                               <button type='button' id='btnSalir' align='center' class='btn btn-primary' title='Cerrar'  onclick='Cerrar();'><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br/><br><br/>     
-                                            </td>
-                                        </tr>
-                           </table>";
+                                        </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan='1'>Observación:</td>
+                                <td colspan='5' align='left'>".$observacion."</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan='6'>
+                                     <button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarResultadosPlantillaC();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>
+                                     <button type='button' id='Ingresar' align='center' class='btn btn-primary' title='Ingresar otro Resultado'  onclick='IngresarOtro();'>&nbsp;Ingresar otro Resultado</button>     
+                                     <button style='display:none' type='button' class='btn btn-primary'  name='Imprimir'  id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaC(".$idsolicitud.",\"".$idexamen."\",\"".$resultado."\",\"".$row_empleado['empleado']."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_antibioticos)."\",\"".$codigos_antibioticos."\",".$idbacteria.",\"".$cantidad."\",".$idtarjeta.",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".$idobservacion."\",\"".$valores_interpretacion."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\");'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>     
+                                      <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true' style='display:none; height:20px'><button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>                                                  
+                                      <button type='button' id='btnSalir' align='center' class='btn btn-primary' title='Cerrar'  onclick='Cerrar();'><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br/><br><br/>     
+                                </td>
+                            </tr>
+                        </table>";
 			   //<td><input type='button' name='Ingresar' id='Ingresar' value='Ingresar otro Resultado' onclick='IngresarOtro()'\><input type='button'  name='Submit' value='Cerrar' Onclick='salir();'></td>
                            // <input type='button' name='btnGuardar'  id='btnGuardar' value='Guardar Resultados' onclick='GuardarResultadosPlantillaC()'>
                            // <input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaC(".$idsolicitud.",\"".$idexamen."\",\"".$resultado."\",\"".$row_empleado['empleado']."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_antibioticos)."\",\"".$codigos_antibioticos."\",".$idbacteria.",\"".$cantidad."\",".$idtarjeta.",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".$idobservacion."\",\"".$valores_interpretacion."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\");' />
@@ -290,14 +284,14 @@ switch ($opcion)
 		$valores_antibioticos=$_POST['valores_antibioticos'];
                 $valores_interpretacion=$_POST['valores_interpretacion'];
                 $idarea=$_POST['idarea'];
-		$idtarjeta=$_POST['idtarjeta'];
+		$tarjeta=$_POST['idtarjeta'];
 		$tiporespuesta=$_POST['tiporespuesta'];
 		$resultado=$_POST['resultado'];
                 //echo $resultado;
-		$idbacteria=$_POST['idbacteria'];
+	        $idbacteria=$_POST['idbacteria'];
 		$cantidad=$_POST['cantidad'];
 		$nombrearea=$_POST['nombrearea'];
-		$vector_valores=EXPLODE("/",$valores_antibioticos);
+	        $vector_valores=EXPLODE("/",$valores_antibioticos);
 		$vector_antibioticos=EXPLODE("/",$codigos_antibioticos);
                 $vector_interpretacion=EXPLODE("/",$valores_interpretacion);
                 
@@ -305,7 +299,7 @@ switch ($opcion)
 		$tamano_vector=count($vector_valores);
 		$tamano_vectoantibiotico=count($vector_antibioticos);
                 $tamano_vectointerpretacion=count($vector_interpretacion);
-               // echo "tamaño vactor=".$tamano_vectointerpretacion;
+              // echo "tamaño vactor=".$tamano_vectointerpretacion;
                 
               //  echo "tamano_vectoantibiotico=".$tamano_vectointerpretacion;
                 //echo "Examen=".$idexamen." - soli=".$idsolicitud." - empleado=".$idempleado." - idrecepcion=".$idrecepcion." - iddetalle=".$iddetalle." - observacion=".$observacion." - resultado=".$resultado;
@@ -317,27 +311,34 @@ switch ($opcion)
                 if ($resultado=="P")
                 {
                       $codigoResultado=4;
-                      $CodAntibiograma=6;
+                      $CodAntibiograma=6; 
+               // echo "TAR=". $tarjeta;
                       $ultimo= $objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado);
                       $antibiograma= $objdatos->insertarAntibiograma($iddetalle,$idexamen,$CodAntibiograma,$usuario,$fecharealiz,$fecharesultado,$idempleado);
                       if (($ultimo != "") && ($antibiograma==TRUE))
                       {
                               $idresultado=$ultimo;
                               //insertando el detalle
-                              $iddetalleresultado=$objdatos->insertar_detalle($idresultado,$idbacteria,$idtarjeta,$cantidad,$lugar);
+                              $iddetalleresultado=$objdatos->insertar_detalle($idresultado,$idbacteria,$tarjeta,$cantidad,$lugar);
 
                               //insertando el detalle de resultados de la tarjeta asociada
                               if (($tamano_vector-1)>0)
                               {
-                                      for ($i=0; $i < $tamano_vectointerpretacion-1 ; $i++) //INSERTANDO ANTIBIOTICOS
-                                      {
-                                              if ($objdatos->insertar_resultadoantibioticos($iddetalleresultado,$vector_antibioticos[$i],$vector_valores[$i],$vector_interpretacion[$i],$lugar)==false)
-                                               {
+                                for ($i=0; $i < $tamano_vectoantibiotico-1 ; $i++) //INSERTANDO ANTIBIOTICOS
+                                {   if ($vector_valores[$i]<>0){
+                                        if ($objdatos->insertar_resultadoantibioticos($iddetalleresultado,$vector_antibioticos[$i],$vector_valores[$i],$vector_interpretacion[$i],$lugar)==false)
+                                               
                                                        $ban=1;
-                                               }
-                                              $posele=$posele+1;
-                                      }
-
+                                   
+                                        }else{
+                                                if ($objdatos->insertar_resultadoantibioticos1($iddetalleresultado,$vector_antibioticos[$i],$vector_interpretacion[$i],$lugar)==false)
+                                               
+                                                       $ban=1;
+                                               
+                                        } 
+                                         $posele=$posele+1;
+                                 }
+                                    
                               }
                               if($ban==0){
                                       //actualiza el estado del detalle de la solicitud para indicar que el resultado esta completo para el examen
@@ -345,22 +346,24 @@ switch ($opcion)
                                       echo "Datos Guardados";
 
 
-                                      if (($objdatos->CambiarEstadoDetalle($iddetalle)==true)&&($objdatos->CambiarEstadoSolicitud($idsolicitud)==true))
-                                      {
-                                              echo " Correctamente";
-                                      }
+                                    if (($objdatos->CambiarEstadoDetalle($iddetalle)==true)&&($objdatos->CambiarEstadoSolicitud($idsolicitud)==true))
+                                    {
+                                        echo " Correctamente";
+                                    }
 
                               }
                               else
                               {
 
-                                      echo "Los resultados no pueden ser guardados consulte al Administrador...";
+                                    echo "Los resultados no pueden ser guardados consulte al Administrador...";
                               }
-                  }
+                      }
                   
                   
                 }
-                else{ echo "Los resultados no pueden ser guardados consulte al Administrador...";}
+                else{ 
+                    echo "Los resultados no pueden ser guardados consulte al Administrador...";
+                }
    break;
 
 

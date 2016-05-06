@@ -96,6 +96,9 @@ $objdatos = new clsConsultaMuestrasPendientes;
         $query="";
         $query2="";
         $where_with="";
+         $est_local = $objdatos-> DatosEstablecimiento($lugar);
+        $row_local = pg_fetch_array( $est_local);
+        $nombre_lugar = $row_local[nombre];
       //  echo $IdEstab." - ".$lugar;
          $IdEstab=$_GET['var4'];
     
@@ -295,59 +298,59 @@ $objdatos = new clsConsultaMuestrasPendientes;
             WHERE (t16.idestado = 'D') 
             AND t02.id_establecimiento = $lugar 
             AND $cond2) ordenar
-                ORDER BY to_date(ordenar.fechasolicitud, 'DD/MM/YYYY') DESC";    
+            ORDER BY to_date(ordenar.fechasolicitud, 'DD/MM/YYYY') DESC";    
                   
 	
 	 // $consulta=$objdatos->ListadoSolicitudesPorArea($query_search);  
 	//$row = pg_fetch_array($consulta1);?>
- <table width="95%" border="0" cellspacing="0" align='center' >
-			<tr>
-				<td colspan="7" align="center" class="Estilo9"><strong>REPORTE DE MUESTRAS PENDIENTES
-				</strong></td>
-			</tr>
- </table><br>
+    <table width="95%" border="0" cellspacing="0" align='center' >
+        <tr>
+            <td colspan="1" align="left" width="15%"><img id="Image1" style='width: auto; height: 55px;' src="../../../Imagenes/escudo.png" name="Image1"></td>
+            <td align="center" colspan="5" width="70%" class="Estilo6">
+                <p><strong><h6><?php echo $nombre_lugar; ?></h6> </strong></p>
+                <p><strong><h6>REPORTE DE MUESTRAS PENDIENTES</h6></strong></p>
+            </td>
+            <td colspan="1" align="right" width="15%"><img id="Image3" style='width: auto; height: 55px;' src="../../../Imagenes/paisanito.png" name="Image3"></td>
+        </tr>
+    </table><br>
   <?php 
   $consulta=$objdatos->ListadoSolicitudesPorArea($query);  ?>
     <table border='1' cellspacing='0' width='100%' >
-			
-        <tr  align="center">
-           
+        <tr align="center">
             <td width="3%"  class="Estilo6" align="center"><strong>NEC </strong></td>
             <td width="20%" class="Estilo6" align="justify"><strong>NOMBRE PACIENTE</strong></td>
             <td width="5%"  class="Estilo6" align="center"><strong>COD EXAMEN</strong></td>
             <td width="18%" class="Estilo6" align="center"><strong>NOMBRE EXAMEN</strong></td>
-            <td width="8%" class="Estilo6" align="center"><strong>SERVICIO</strong></td>
+            <td width="8%"  class="Estilo6" align="center"><strong>SERVICIO</strong></td>
             <td width="8%"  class="Estilo6" align="center"><strong>PROCEDENCIA</strong></td>
-            <td width="20%"  class="Estilo6" align="center"><strong>ESTABLECIMIENTO</strong></td>
-            <td width="5%" class="Estilo6" ><strong>FECHA CONSULTA</strong></td>
-            <td width="5%" class="Estilo6"><strong>Prioridad</strong></td>
+            <td width="20%" class="Estilo6" align="center"><strong>ESTABLECIMIENTO</strong></td>
+            <td width="5%"  class="Estilo6" ><strong>FECHA CONSULTA</strong></td>
+            <td width="5%"  class="Estilo6"><strong>Prioridad</strong></td>
         </tr>    
 <?php $pos=0;
     while ($row = pg_fetch_array($consulta))
 	{ ?>
 	<tr>
-            
             <td width="3%"  class="Estilo6" align="justify"><?php echo $row['idnumeroexp'];?></td>
-            <td width="15%" class="Estilo6" align="justify"><?php echo $row['paciente'];?></td>
+            <td width="15%" class="Estilo6" align="left"><?php echo $row['paciente'];?></td>
             <td width="3%"  class="Estilo6" align="center"><?php echo $row['idestandar'];?></td>
             <td width="20%" class="Estilo6" align="left"><?php echo htmlentities($row['nombreexamen']);?></td>
-            <td width='8%' class="Estilo6" align="center"><?php echo htmlentities($row['nombresubservicio']); ?></td>
+            <td width='8%'  class="Estilo6" align="left"><?php echo htmlentities($row['nombresubservicio']); ?></td>
             <td width='15%' class="Estilo6" align="left"><?php echo htmlentities($row['nombreservicio']); ?></td>
             <td width='20%' class="Estilo6" align="left"><?php echo htmlentities($row['estabext']); ?></td>
-            <td width="5%" class="Estilo6" align="center"><?php echo $row['fechasolicitud'];?></td>
-            <td width="5%" class="Estilo6" align="center"><?php echo $row['prioridad'];?></td>
+            <td width="5%"  class="Estilo6" align="center"><?php echo $row['fechasolicitud'];?></td>
+            <td width="5%"  class="Estilo6" align="center"><?php echo $row['prioridad'];?></td>
 	</tr>
  <?php
 	$pos=$pos + 1;
 	}
-	
 	pg_free_result($consulta);?>
 	
         <input type="hidden" name="oculto" id="text" value='".$pos."' /> 
    
     </table>
     
-<div id="boton">
+
 <br>
     <table width="90%" border="0" align="center">
 	<tr>

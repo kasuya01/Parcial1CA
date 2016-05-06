@@ -71,9 +71,11 @@ switch ($opcion) {
         //echo $cargo."y nivel".$niv;
         $Elogin=$objdatos->VerificaLogin($login,$lugar);
         if($Elogin==0){  
-            if (($objdatos->insertar($idempleado, $lugar, $idarea, $nombrecompleto,$nombre, $cargo, $usuario, $corr, $IdEstabExt, $apellido) == true) && ($objdatos->Insertar_Usuario($login, $idempleado, $pass, $niv, $lugar, $modalidad, $pagador) == 1)) {
+            if(($objdatos->insertar($idempleado, $lugar, $idarea, $nombrecompleto,$nombre, $cargo, $usuario, $corr, $IdEstabExt, $apellido) == true) && 
+               ($objdatos->Insertar_Usuario($login, $idempleado, $pass, $niv, $lugar, $modalidad, $pagador) == 1) && 
+               ($objdatos->Insertar_empleado_especialidad($idempleado,$pagador) == 1)) {
                 echo "Registro Agregado";
-            } else {
+            }else {
                 echo "No se pudo Agregar el Registro";
             }
         }
@@ -91,8 +93,9 @@ switch ($opcion) {
                 $login      = $_POST['login'];
                 $modalidad  = $_POST['modalidad'];
                 $apellido   = $_POST['txtapellido'];
-                $pagador    = $_POST['pagador'];
-          $nombrecompleto= $apellido." ".$nombre;
+               $pagador    = $_POST['pagador'];
+             $nombrecompleto= $apellido." ".$nombre;
+          //echo $nombrecompleto;
         if (($cargo == 6) or ( $cargo == 10)) {
             $niv = 1;
         } else if ($cargo == 1) {
@@ -108,14 +111,15 @@ switch ($opcion) {
             $niv = 7;
         
         } else if ($cargo == 12) {
-            $niv = 5;
+            
        
         } else if ($cargo == 13) {
             $niv = 6;
         }
         //echo $cargo."y nivel".$niv;
         If (($objdatos->actualizar($idempleado, $lugar, $idarea, $nombre,$apellido,$nombrecompleto, $cargo, $usuario) == true) &&
-           ($objdatos->actualizar_Usuario($idempleado, $login, $niv, $lugar, $modalidad,$pagador)) == true) {
+           ($objdatos->actualizar_Usuario($idempleado, $login, $niv, $lugar, $modalidad,$pagador) == true) && 
+           ($objdatos->actualizar_empleado_especialidad($idempleado,$pagador) == true)){
             echo "Registro Actualizado";
         }else{
             echo "No se pudo actualizar";
@@ -143,6 +147,7 @@ switch ($opcion) {
                             <th aling='center' > C&oacute;digo Empleado </th>
                             <th aling='center' > Nombre Empleado </th>
                             <th aling='center' > Modalidad de Contrato</th>
+                            <th aling='center'> Fondo de Contratación</th>
                             <th aling='center' > &Aacute;rea</th>
                             <th aling='center' > Cargo </th>
                             <th aling='center' > Usuario </th>
@@ -161,6 +166,7 @@ switch ($opcion) {
                     <td>" . $row['idempleado'] . "</td>
                     <td>" . htmlentities($row['nombreempleado']) . "</td>
                     <td>" . htmlentities($row['nombre_modalidad']) . "</td>
+                    <td>" . htmlentities($row['pagador']) . "</td>    
                     <td>" . htmlentities($row['nombrearea']) . "</td>
                     <td>" . htmlentities($row['cargo']) . "</td>
                     <td>" . htmlentities($row['login']) . "</td>
@@ -243,7 +249,8 @@ switch ($opcion) {
                          t01.id_establecimiento AS idestablecimiento,
                          t04.username AS login,
                          COALESCE(t04.id_modalidad_estab, 0) AS id_modalidad_estab,
-                         COALESCE(t07.nombre, '') AS nombre_modalidad
+                         COALESCE(t07.nombre, '') AS nombre_modalidad,
+                          COALESCE((select nombre from ctl_modalidad where id=t04.id_area_mod_estab), '') AS pagador 
                     FROM mnt_empleado                             t01
                     INNER JOIN mnt_cargoempleados                 t02 ON (t02.id = t01.id_cargo_empleado)
                     INNER JOIN ctl_area_servicio_diagnostico      t03 ON (t03.id = t01.idarea)
@@ -317,6 +324,7 @@ switch ($opcion) {
                             <th aling='center' > C&oacute;digo Empleado </th>
                             <th aling='center' > Nombre Empleado </th>
                             <th aling='center' > Modalidad de Contrato</th>
+                            <th aling='center'> Fondo de Contratación</th>
                             <th aling='center' > &Aacute;rea</th>
                             <th aling='center' > Cargo </th>
 			    <th aling='center' > Usuario </th>	    
@@ -335,6 +343,7 @@ switch ($opcion) {
                 "<td>" . $row['idempleado'] . "</td>
                             <td>" . htmlentities($row['nombreempleado']) . "</td>
                             <td>" . htmlentities($row['nombre_modalidad']) . "</td>
+                                <td>" . htmlentities($row['pagador']) . "</td>   
                             <td>" . htmlentities($row['nombrearea']) . "</td>
                             <td>" . htmlentities($row['cargo']) . "</td>
                             <td>" . htmlentities($row['login']) . "</td>

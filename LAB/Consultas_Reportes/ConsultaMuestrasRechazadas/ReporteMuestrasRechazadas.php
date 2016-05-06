@@ -19,16 +19,14 @@ $base_url  = $_SESSION['base_url'];
 @media print{
 #boton{display:none;}
 }
-.Estilo8 {font-family: Helvetica; font-size: 8pt}
-.Estilo6 {font-family: Helvetica; font-size: 7.5pt}
-.Estilo7 {font-family: Helvetica; font-size: 8.5pt}
-.Estilo9 {font-family: Helvetica; font-size: 9pt}
 
-.Estilo12 {font-size: 12pt
-
-
+.Estilo5 {font-family: Helvetica; font-size: 7pt}
+.Estilo6 {font-family: Helvetica; font-size: 8pt}
+.Estilo7 {font-family: Helvetica; font-size: 9pt}
 .Estilo12 {font-size: 12pt}
 -->
+
+
 </style>
 
 <title>Reporte de Muestras Rechazadas</title>
@@ -97,8 +95,10 @@ $objdatos = new clsConsultaMuestrasRechazadas;
         $where_with="";
         $ban ="";
       //  echo $IdEstab." - ".$lugar;
-         $IdEstab=$_GET['var4'];
-    
+        $IdEstab=$_GET['var4'];
+        $est_local = $objdatos-> DatosEstablecimiento($lugar);
+        $row_local = pg_fetch_array( $est_local);
+        $nombre_lugar = $row_local[nombre];
      /*  if (!empty($_GET['var4'])) {
           // if ($_GET['var4']<>$lugar){
                $cond1 .= " t02.id_establecimiento_externo = " . $_GET['var4']. " AND";
@@ -305,9 +305,21 @@ $objdatos = new clsConsultaMuestrasRechazadas;
                 ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";  
 
 	?>
+    <table width="100%" border="0" align='center'>
+    <tr>
+        <td colspan="1" align="left" width="15%"><img id="Image1" style='width: auto; height: 55px;' src="../../../Imagenes/escudo.png" name="Image1"></td>
+        <td align="center" colspan="5" width="70%" class="Estilo6">
+            <p><strong><h6><?php echo $nombre_lugar; ?></h6> </strong></p>
+            <p><strong><strong>REPORTE DE MUESTRAS RECHAZADAS</strong></strong></p>
+        </td>
+        <td colspan="1" align="right" width="15%"><img id="Image3" style='width: auto; height: 55px;' src="../../../Imagenes/paisanito.png" name="Image3"></td>
+    </tr>
+    
+			
+ </table> <BR>
  <table width="100%" border="0" align='center'>
 			<tr>
-				<td colspan="7" align="center" class="Estilo9"><strong>REPORTE DE MUESTRAS RECHAZADAS
+				<td colspan="7" align="center" class="Estilo9"><strong>
 				</strong></td>
 			</tr>
  </table>
@@ -317,38 +329,40 @@ $objdatos = new clsConsultaMuestrasRechazadas;
  ?>
             <table width="100%" border="1" cellspacing="0" align="center" celpading="0" >
                 <tr>
-                    <td width="4%"  class="Estilo6" align="center"><strong>Muestra</strong></td>
-                    <td width="4%"  class="Estilo6" align="center"><strong>NEC </strong></td>
-                    <td width="21%" class="Estilo6" align="center"><strong>Nombre Paciente</strong></td>
-                    <td width="4%"  class="Estilo6" align="center"><strong>Cod. Examen</strong></td>
-                    <td width="15%" class="Estilo6" align="center"><strong>Nombre Examen</strong></td>
-                    <td width="7%"  class="Estilo6" align="center"><strong>Observaci&oacute;n</strong></td>
-                    <td width="8%"  class="Estilo6" align="center"><strong>Servicio</strong></td>
-                    <td width="8%"  class="Estilo6" align="center"><strong>Procedencia</strong></td>
-                    <td width="20%" class="Estilo6" align="center"><strong>Establecimiento</strong></td>
-                    <td width="5%"  class="Estilo6" align="center"><strong>Fecha Recepci&oacute;n</strong></td>
+                    <td class="Estilo6" align="center"><strong>Muestra</strong></td>
+                    <td class="Estilo6" align="center"><strong>NEC </strong></td>
+                    <td class="Estilo6" align="center"><strong>Nombre Paciente</strong></td>
+                    <td class="Estilo6" align="center"><strong>Cod. Examen</strong></td>
+                    <td class="Estilo6" align="center"><strong>Nombre Examen</strong></td>
+                    <td class="Estilo6" align="center"><strong>Observaci&oacute;n</strong></td>
+                    <td class="Estilo6" align="center"><strong>Servicio</strong></td>
+                    <td class="Estilo6" align="center"><strong>Procedencia</strong></td>
+                    <td class="Estilo6" align="center"><strong>Establecimiento</strong></td>
+                    <td class="Estilo6" align="center"><strong>Fecha Recepci&oacute;n</strong></td>
+                    <td class="Estilo6" align="center"><strong>Prioridad</strong></td>
                 </tr>    
                <?php $pos=0;
               while ($row = pg_fetch_array($consulta))
               { ?>
                 <tr>
-                    <td width="4%"  class="Estilo6" align="center" ><?php echo $row['numeromuestra']; ?></td>
+                    <td width="3%"  class="Estilo6" align="center" ><?php echo $row['numeromuestra']; ?></td>
                     <td width="4%"  class="Estilo6" align="justify"><?php echo $row['idnumeroexp'];?></td>
-                    <td width="21%" class="Estilo6" align="left"><?php echo $row['paciente'];?></td>
+                    <td width="17%" class="Estilo6" align="left"><?php echo $row['paciente'];?></td>
                     <td width="4%"  class="Estilo6" align="center"><?php echo $row['idestandar'];?></td>
-                    <td width="12%" class="Estilo6" align="left"><?php echo htmlentities($row['nombreexamen']);?></td>
+                    <td width="18%" class="Estilo6" align="left"><?php echo htmlentities($row['nombreexamen']);?></td>
                 <?php 
                 if(!empty($row['observacion'])){
                     ?>
-                    <td width="5%" class="Estilo6" align="justify"> <?php echo htmlentities($row['observacion']);?></td>
+                    <td width="8%" class="Estilo6" align="justify"> <?php echo htmlentities($row['observacion']);?></td>
               <?php }else { ?>	
-                    <td width="5%" class="Estilo6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <td width="8%" class="Estilo6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <?php } ?>       
                     </td>
-                    <td width="8%" class="Estilo6" align="justify"><?php echo htmlentities($row['nombresubservicio']); ?></td>
-                    <td width="8%" class="Estilo6" align="left"><?php echo htmlentities($row['nombreservicio']); ?></td>
-                    <td width="15%"class="Estilo6" align="left"><?php echo htmlentities($row['estabext']); ?></td>
-                    <td width="5%" class="Estilo6" align="justify"><?php echo $row['fecharecepcion'];?></td>
+                    <td width="10%" class="Estilo6" align="justify"><?php echo htmlentities($row['nombresubservicio']); ?></td>
+                    <td width="12%" class="Estilo6" align="left"><?php echo htmlentities($row['nombreservicio']); ?></td>
+                    <td width="21%"class="Estilo6" align="left"><?php echo htmlentities($row['estabext']); ?></td>
+                    <td width="8%" class="Estilo6" align="justify"><?php echo $row['fecharecepcion'];?></td>
+                    <td width="8%" class="Estilo6" align="justify"><?php echo $row['prioridad'];?></td>
                 </tr>
 		   
                 <?php

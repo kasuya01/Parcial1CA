@@ -43,7 +43,8 @@ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$obs
                 $result = pg_query($query);
                 
                 if($row = pg_fetch_array($result)) {
-               $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen  AND activo = true";
+                    
+                    $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen  AND activo = true";
                     //AND id_metodologia IS NULL
                     $result = pg_query($query);
                     if($result && pg_num_rows($result) == 1) {
@@ -89,14 +90,14 @@ function insertarAntibiograma($iddetalle,$idexamen,$codigoResultado,$usuario,$fe
      $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-         $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen  AND activo = true";
+         $query = "SELECT lab_examen_metodologia.id FROM lab_examen_metodologia where nombre_reporta ilike '%ANTIBIOGRAMA%' AND activo = true";
                     //AND id_metodologia IS NULL
                     $result = pg_query($query);
                     if($result && pg_num_rows($result) == 1) {
                         $row_exam_metod = pg_fetch_array($result);
                         $id_exam_metod = $row_exam_metod[0];
                         $id_exam_metod;
-                    $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
+                  echo  $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
                                  VALUES($id_exam_metod, $iddetalle, $codigoResultado, $usuario, date_trunc('seconds',NOW()),'$fecharealiz','$fecharesultado',$idempleado)";
                         
                         $result = pg_query($query);
@@ -119,11 +120,12 @@ function insertar_detalle($idresultado,$ibacteria,$idtarjeta,$cantidad,$lugar)
    {
         $query = "INSERT INTO lab_detalleresultado(idresultado,idbacteria,idtarjeta,cantidad,idestablecimiento) 
 			  VALUES($idresultado,$ibacteria,$idtarjeta,'$cantidad',$lugar)";
-	$query2="SELECT MAX(id) FROM lab_detalleresultado;";
+	$query2="SELECT MAX(id) FROM lab_detalleresultado where idresultado=$idresultado;";
 
-        $result = pg_query($query);
-	$result2=pg_query($query2);
-		
+      if($result = pg_query($query)){
+	    $result2=pg_query($query2);
+		     }
+
 		//$idultimo= pg_insert_id();
 
 	 
@@ -138,13 +140,61 @@ function insertar_detalle($idresultado,$ibacteria,$idtarjeta,$cantidad,$lugar)
  
 //INSERTAR LOS RESULTADOS DE LAS TARJETAS
 function insertar_resultadoantibioticos($iddetalleresultado,$idantibiotico,$resultado,$valor,$lugar)
- {
-   $con = new ConexionBD;
+ {  
+     $con = new ConexionBD;
    if($con->conectar()==true) 
-   {
-     $query = "INSERT INTO lab_resultadosportarjeta(iddetalleresultado,idantibiotico,id_posible_resultado,valor,idestablecimiento) 
+   {    if(!empty($resultado)){
+            if(!empty($valor)){
+             $query = "INSERT INTO lab_resultadosportarjeta(iddetalleresultado,idantibiotico,id_posible_resultado,valor,idestablecimiento) 
 	       VALUES($iddetalleresultado,$idantibiotico,$valor,'$resultado',$lugar)";
-     $result = pg_query($query);
+            }
+        
+            else{
+                $query = "INSERT INTO lab_resultadosportarjeta(iddetalleresultado,idantibiotico,valor,idestablecimiento) 
+	       VALUES($iddetalleresultado,$idantibiotico,'$resultado',$lugar)";
+            }
+         } else {
+             if(!empty($valor)){
+                $query = "INSERT INTO lab_resultadosportarjeta(iddetalleresultado,idantibiotico,id_posible_resultado,valor,idestablecimiento) 
+                 VALUES($iddetalleresultado,$idantibiotico,$valor,NULL,$lugar)";
+             
+             } else {
+             
+                 $query = "INSERT INTO lab_resultadosportarjeta(iddetalleresultado,idantibiotico,idestablecimiento) 
+                 VALUES($iddetalleresultado,$idantibiotico,$lugar)";
+             
+            }   
+         } 
+          
+           
+    $result = pg_query($query);
+	//echo $query; 
+     if (!$result)
+       return false;
+     else
+       return true;	   
+	   //return $query;
+   }
+ }
+ 
+ 
+ function insertar_resultadoantibioticos1($iddetalleresultado,$idantibiotico,$resultado,$lugar)
+ {  
+     $con = new ConexionBD;
+   if($con->conectar()==true) 
+   {   
+            if(!empty($resultado)){
+              $query = "INSERT INTO lab_resultadosportarjeta(iddetalleresultado,idantibiotico,id_posible_resultado,idestablecimiento) 
+                   VALUES($iddetalleresultado,$idantibiotico,$resultado,$lugar)";
+             
+            }
+        
+            else{
+               $query = "INSERT INTO lab_resultadosportarjeta(iddetalleresultado,idantibiotico,idestablecimiento) 
+                   VALUES($iddetalleresultado,$idantibiotico,$lugar)";
+            }
+                
+    $result = pg_query($query);
 	//echo $query; 
      if (!$result)
        return false;
@@ -401,10 +451,10 @@ function obtener_resultadoxtarjeta($iddetalleresultado){
     $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT lab_resultadosportarjeta.idantibiotico,antibiotico,resultado,valor,id_posible_resultado,posible_resultado 
+  $query = "SELECT lab_resultadosportarjeta.idantibiotico,antibiotico,resultado,valor,id_posible_resultado,posible_resultado 
 FROM lab_resultadosportarjeta 
 INNER JOIN lab_antibioticos ON lab_antibioticos.id=lab_resultadosportarjeta.idantibiotico
-INNER JOIN lab_posible_resultado ON lab_posible_resultado.id=lab_resultadosportarjeta.id_posible_resultado 
+LEFT JOIN lab_posible_resultado ON lab_posible_resultado.id=lab_resultadosportarjeta.id_posible_resultado 
 WHERE iddetalleresultado=$iddetalleresultado order by lab_resultadosportarjeta.id asc";
      $result = pg_query($query);
      if (!$result)
