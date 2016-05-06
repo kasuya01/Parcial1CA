@@ -226,8 +226,8 @@ switch ($opcion)
                    t18.idestandar,
                    t02.id_establecimiento_externo,
                    (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-            t01.observacion
-                FROM sec_detallesolicitudestudios t01 
+                    t01.observacion
+            FROM sec_detallesolicitudestudios t01 
             INNER JOIN sec_solicitudestudios t02                    ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_recepcionmuestra t03                     ON (t02.id = t03.idsolicitudestudio) 
             INNER JOIN lab_conf_examen_estab t04                    ON (t04.id = t01.id_conf_examen_estab) 
@@ -332,13 +332,13 @@ switch ($opcion)
 			            "<input name='idarea[".$pos."]' id='idarea[".$pos."]' type='hidden' size='60' value='".$idarea."' />".
 			            "<input name='idexamen[".$pos."]' id='idexamen[".$pos."]' type='hidden' size='60' value='".$row['id']."' />".
 			            "<input name='idestablecimiento[".$pos."]' id='idestablecimiento[".$pos."]' type='hidden' size='60' value='".$IdEstab."' />".
-				  "<td width='20%'>".$row['paciente']."</td>
+				  "<td width='17%'>".$row['paciente']."</td>
 				   <td width='4%'>".$row['idestandar']."</td>
 				   <td width='18%'>".htmlentities($row['nombreexamen'])."</td>
 				   <td width='10%'>".htmlentities($row['observacion'])."</td>
 				   <td width='8%'>".htmlentities($row['nombresubservicio'])."</td>
-				   <td width='12%'>".htmlentities($row['nombreservicio'])."</td>
-                                   <td width='20%'>".htmlentities($row['estabext'])."</td>
+				   <td width='10%'>".htmlentities($row['nombreservicio'])."</td>
+                                   <td width='21%'>".htmlentities($row['estabext'])."</td>
 				   <td width='8%'>".$row['fecharecepcion']."</td>
 				   <td width='8%'>".($row['prioridad'])."</td>
                                       

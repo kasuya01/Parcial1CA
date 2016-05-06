@@ -263,7 +263,6 @@ switch ($opcion) {
                 INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud) 
                 INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico) 
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo)
-               
                 WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var2) ordenar
                 ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC"; 
 //ECHO $query;

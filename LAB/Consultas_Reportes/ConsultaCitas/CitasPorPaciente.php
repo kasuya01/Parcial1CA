@@ -212,7 +212,7 @@ Consulta de Citas Programadas</strong></h3></td>
 						}
 					}
 				?>
-			</select>
+		    </select>
 		</td>
 		<td class="StormyWeatherFieldCaptionTD">Servicio</td>
 		<td class="StormyWeatherDataTD">
@@ -225,18 +225,18 @@ Consulta de Citas Programadas</strong></h3></td>
             </tr>
             <tr>
 		
-		<td class="StormyWeatherFieldCaptionTD"  >Expediente</td>
+		<td class="StormyWeatherFieldCaptionTD" >Expediente</td>
 		<td  class="StormyWeatherDataTD"  >
-                    <input type="text" size="24" name="txtexpediente" id="txtexpediente" style="width:443px" class="form-control height" placeholder="Ingrese Expediente" />
+                    <input type="text" size="24" name="txtexpediente" id="txtexpediente" style="width:443px" class="form-control height" placeholder="Ingrese Expediente" >
                 </td>
-		<td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Recepi&oacute;n</td>
+		<td class="StormyWeatherFieldCaptionTD" width="19%">Fecha Recepión</td>
 		<td  class="StormyWeatherDataTD" width="20%" >
-                    <input type="text" size="25" name="txtfecharecep" id="txtfecharecep" style="width:500px" class="date form-control  height placeholder"  placeholder="aaaa-mm-dd" />
+                    <input type="text" size="25" name="txtfecharecep" id="txtfecharecep" style="width:500px" class="date form-control  height" placeholder="aaaa-mm-dd" >
                 </td>
             </tr>
             <tr>
 		<td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong>   </td> 
-		<td class="StormyWeatherDataTD" >
+		<td class="StormyWeatherDataTD">
                     <input maxlength="35" size="28" name="PrimerNombre" id="PrimerNombre" style="width:443px" class="form-control height" placeholder="Ingrese Primer Nombre">
                     
                 </td> 

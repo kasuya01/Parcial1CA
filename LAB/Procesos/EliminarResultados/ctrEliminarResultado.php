@@ -410,10 +410,10 @@ switch ($opcion)
 		$idexpediente=$_POST['idexpediente'];
 		$idsolicitud=$_POST['idsolicitud'];
                 $idplantilla=$_POST['idplantilla'];
-               // echo "iddetalle=".$iddetalle ;
+                //echo "iddetalle=".$iddetalle ;
 		$dato=$objdatos->VerificaDetalle($idsolicitud,$iddetalle);
 			 if ($dato == 1){
-                          //  echo "entro".$idplantilla;
+                //            echo "entro".$idplantilla;
 				switch($idplantilla){
 					case 1:/* ELIMINAR PLANTILLA A */
                                             $r=$objdatos->ObtenerIdResultado($idsolicitud,$iddetalle);
@@ -466,13 +466,14 @@ switch ($opcion)
 								
 						$r=$objdatos->ObtenerIdResultado($idsolicitud,$iddetalle);
 								//$idresultado=$result['IdResultado'];
-								
+							
 						while($result = pg_fetch_array($r)){
-						    $idresultado=$result['id'];
-								
+						   // echo "entro".$idplantilla;
+                                                     $idresultado=$result['id'];
+								// echo $iddetalle;
 								//$tr=$objetos->ObtenerTipoResultado($idresultado);
 								//$tipo=mysql_fetch_array($tr);
-					            $TipoResultado=$result['resultado'];
+					         $TipoResultado=$result['resultado'];
 								//echo " tipo=".$TipoResultado;
 								switch($TipoResultado){
 								case 'Positivo':
@@ -482,9 +483,9 @@ switch ($opcion)
 									$det=$objdatos->ObtenerIdDetalleRes($idresultado);
 									$detalle=pg_fetch_array($det);
 									$iddetalleres=$detalle[0];
-						 //		echo $idsolicitud."-".$iddetalle."-".$idresultado."-". $iddetalleres;
+						 	//	echo "SOL=".$idsolicitud." iddet".$iddetalle." idresultado".$idresultado." lo demas". $iddetalleres;
                                                                       if($dr=$objdatos->Eliminar_metodologia($iddetalle)==1){  
-                                                                                                                                                                   if($dr=$objdatos->EliminarResultadoTarjeta($iddetalleres)==1){
+                                                                            if($dr=$objdatos->EliminarResultadoTarjeta($iddetalleres)==1){
                                                                                 if($dr=$objdatos->EliminarDetalleResultado($idresultado)==1){
                                                                                     if ($objdatos->EliminarResultado($idresultado) == 1){
                                                                                         if (($objdatos->ActualizarEstadoDetalle($iddetalle)==true)||($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true))
@@ -505,7 +506,7 @@ switch ($opcion)
 								break;
 								case 'Negativo':
 								case '---':
-									echo "idresultado=".$idresultado." iddetalle=".$iddetalle;
+									//echo "idresultado=".$idresultado." iddetalle=".$iddetalle;
                                                                         
                                                                                if($dr=$objdatos->Eliminar_Metodologia($iddetalle)==1){  
                                                                                     if ($objdatos->EliminarResultado($idresultado) == 1){	 

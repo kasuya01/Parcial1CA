@@ -216,7 +216,7 @@ switch ($opcion)
                 WHERE t02.id_establecimiento =  $lugar ORDER BY 2)
                
              SELECT ordenar.* FROM (
-                    SELECT t01.id ,
+                    SELECT distinct(t02.id),
                        t02.id AS idsolicitudestudio,
                        t04.idplantilla, 
                        t01.id AS iddetallesolicitud,
@@ -239,8 +239,8 @@ switch ($opcion)
                        t02.id_establecimiento_externo,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
                         t01.observacion
-            FROM sec_detallesolicitudestudios t01 
-            INNER JOIN sec_solicitudestudios t02                ON (t02.id = t01.idsolicitudestudio) 
+            FROM  sec_solicitudestudios t02
+            INNER JOIN sec_detallesolicitudestudios t01         ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_conf_examen_estab t04                ON (t04.id = t01.id_conf_examen_estab) 
             INNER JOIN mnt_area_examen_establecimiento t05      ON (t05.id = t04.idexamen) 
             INNER JOIN mnt_expediente t06                       ON (t06.id = t02.id_expediente) 
@@ -254,7 +254,7 @@ switch ($opcion)
             INNER JOIN ctl_area_atencion t13                    ON (t13.id = t12.id_area_atencion) 
             INNER JOIN ctl_establecimiento t14                  ON (t14.id = t09.idestablecimiento) 
             INNER JOIN cit_citas_serviciodeapoyo t15            ON (t02.id = t15.id_solicitudestudios) 
-            INNER JOIN ctl_estado_servicio_diagnostico t16      ON (t16.id = t01.estadodetalle) 
+            INNER JOIN ctl_estado_servicio_diagnostico t16      ON (t16.id = t02.estado) 
             INNER JOIN lab_tiposolicitud t17                    ON (t17.id = t02.idtiposolicitud) 
             INNER JOIN ctl_examen_servicio_diagnostico t18      ON (t18.id = t05.id_examen_servicio_diagnostico) 
             INNER JOIN ctl_sexo t19                             ON (t19.id = t07.id_sexo)
@@ -265,7 +265,7 @@ switch ($opcion)
         
             UNION
 
-            SELECT t01.id ,
+            SELECT distinct(t02.id) ,
                    t02.id AS idsolicitudestudio,
                    t04.idplantilla, 
                    t01.id AS iddetallesolicitud,
@@ -288,9 +288,8 @@ switch ($opcion)
                    t02.id_establecimiento_externo,
                    (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
             t01.observacion
-                FROM sec_detallesolicitudestudios t01 
-            INNER JOIN sec_solicitudestudios t02                    ON (t02.id = t01.idsolicitudestudio) 
-      
+                FROM sec_solicitudestudios t02
+            INNER JOIN  sec_detallesolicitudestudios t01                   ON (t02.id = t01.idsolicitudestudio) 
             INNER JOIN lab_conf_examen_estab t04                    ON (t04.id = t01.id_conf_examen_estab) 
             INNER JOIN mnt_area_examen_establecimiento t05          ON (t05.id = t04.idexamen)
             INNER JOIN mnt_dato_referencia t09                      ON t09.id=t02.id_dato_referencia 
@@ -304,7 +303,7 @@ switch ($opcion)
             INNER JOIN ctl_area_atencion t13                        ON (t13.id = t12.id_area_atencion) 
             INNER JOIN ctl_establecimiento t14                      ON (t14.id = t09.id_establecimiento)
             INNER JOIN cit_citas_serviciodeapoyo t15                ON (t02.id = t15.id_solicitudestudios) 
-            INNER JOIN ctl_estado_servicio_diagnostico t16          ON (t16.id = t01.estadodetalle) 
+            INNER JOIN ctl_estado_servicio_diagnostico t16          ON (t16.id = t02.estado) 
             INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud) 
             INNER JOIN ctl_examen_servicio_diagnostico t18          ON (t18.id = t05.id_examen_servicio_diagnostico) 
             INNER JOIN ctl_sexo t19                                 ON (t19.id = t07.id_sexo)
@@ -314,7 +313,7 @@ switch ($opcion)
                 ORDER BY to_date(ordenar.fechasolicitud, 'DD/MM/YYYY') DESC";   
                   
   //  $query . " ORDER BY t03.fecharecepcion DESC";
-     //echo $query;
+    echo $query;
          $consulta=$objdatos->ListadoSolicitudesPorArea($query);  
       
 	$NroRegistros= $objdatos->NumeroDeRegistros($query);

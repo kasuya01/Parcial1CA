@@ -172,7 +172,7 @@ $base_url  = $_SESSION['base_url'];
         }
         ?><br>
 
-        <table align="center" width="100%">
+        <table align="center" width="80%">
             <tr>
                 <td>
                     <div id="divOculto">
