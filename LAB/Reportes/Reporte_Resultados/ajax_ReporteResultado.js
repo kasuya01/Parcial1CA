@@ -185,6 +185,10 @@ function LlenarComboEstablecimiento(idtipoesta)
 				respuesta = ajax.responseText;
 				// alert (respuesta)
 				document.getElementById('divEstablecimiento').innerHTML = respuesta;
+				$("#cmbEstablecimiento").select2({
+				  placeholder: "Establecimiento",
+				  allowClear: true,
+			   });
 			}
 		}
    	}
@@ -209,6 +213,11 @@ function LlenarComboServicio(IdServicio)
 			if (ajax.status == 200){//200 means no error.
 	  			respuesta = ajax.responseText;
 				document.getElementById('divsubserv').innerHTML = respuesta;
+				$("#cmbSubServ").select2({
+		          placeholder: "Servicio",
+		          allowClear: true,
+		          dropdownAutoWidth: true
+		       });
 	 		}
    	 	}
    	}

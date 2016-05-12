@@ -244,6 +244,9 @@ function LlenarEstablecimiento(IdTipoEstab)
             if (ajax.status === 200) {//200 means no error.
                 resp = ajax.responseText;
                 document.getElementById('divEstablecimiento').innerHTML = resp;
+                $("[id^=cmbEstablecimiento]").select2({
+                   allowClear: true
+                });
             }
         }
     };
