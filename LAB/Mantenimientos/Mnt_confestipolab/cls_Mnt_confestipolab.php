@@ -10,7 +10,7 @@ class cls_Mnt_confestipolab {
     function getconfestipolab() {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-        echo	$query = "select distinct t2.id, t2.nombre
+        	$query = "select distinct t2.id, t2.nombre
                     from ctl_establecimiento	t1
                     join ctl_tipo_establecimiento	t2 on (t2.id=t1.id_tipo_establecimiento)
                     join lab_establecimiento_tipo_laboratorio	t3 on (t1.id=t3.id_establecimiento)

@@ -13,10 +13,10 @@ $Clases = new clsLabor_Examenes;
 $opcion = $_POST['opcion'];
 
 //actualiza los datos del empleados
-//echo $cond; 
+//echo $cond;
 //echo $ubicacion;
 switch ($opcion) {
-   case 1:  //INSERTAR	
+   case 1:  //INSERTAR
       $resultado = $_POST['resultado'];
       $resultado_nombre = $_POST['resultado_nombre'];
       $id_resultado = $_POST['id_resultado'];
@@ -24,7 +24,7 @@ switch ($opcion) {
       $idexamen = $_POST['idexamen'];
       $idarea = $_POST['idarea'];
       $nomexamen = $_POST['nomexamen'];
-      //  $nota=(empty($_POST['nota'])) ? 'NULL' : "'" . pg_escape_string($_POST['nota']) . "'";  
+      //  $nota=(empty($_POST['nota'])) ? 'NULL' : "'" . pg_escape_string($_POST['nota']) . "'";
       $idestandar = $_POST['idestandar'];
       //echo $idestandar;
       $plantilla = $_POST['plantilla'];
@@ -41,6 +41,7 @@ switch ($opcion) {
       $id_metodologias_sel = $_POST['id_metodologias_sel'];
       $cmbTipoMuestra = $_POST['cmbTipoMuestra'];
       $cmbPerfil = $_POST['cmbPerfil'];
+      $cmbEstabReferido = $_POST['cmbEstabReferido'];
       //echo $sexo;
       if ($sexo <> 4)
          $idsexo = $sexo;
@@ -50,7 +51,7 @@ switch ($opcion) {
       $Hab = $_POST['Hab'];
 
       $TiempoPrevio = $_POST['tiempoprevio'];
-      //Echo $sexo."-".$idestandar."-". $Hab;  
+      //Echo $sexo."-".$idestandar."-". $Hab;
       // $cond='H';
       if ($etiqueta == "O") {
          $dato = $objdatos->obtener_letra($idarea);
@@ -66,7 +67,7 @@ switch ($opcion) {
                $letra = chr($num);
             }
          } else {
-            $num = 65; //"Letra A"; 
+            $num = 65; //"Letra A";
             $letra = chr($num);
          }
       } else {
@@ -79,7 +80,7 @@ switch ($opcion) {
                          $letra, $Urgente, $ubicacion, $TiempoPrevio, $idsexo,
                          $idestandar, $lugar, $metodologias_sel,
                          $text_metodologias_sel, $id_metodologias_sel,
-                         $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil) == true) {
+                         $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido) == true) {
             // asignar_resultados($resultado);
             echo "Registro Agregado";
          } else {
@@ -94,7 +95,7 @@ switch ($opcion) {
                          $letra, $Urgente, $ubicacion, $TiempoPrevio, $idsexo,
                          $idestandar, $lugar, $metodologias_sel,
                          $text_metodologias_sel, $id_metodologias_sel,
-                         $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil) == true) {
+                         $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido) == true) {
             // asignar_resultados($resultado);
             echo "Registro Agregado";
          } else {
@@ -117,7 +118,7 @@ switch ($opcion) {
 
 
 
-   case 2:  //MODIFICAR 
+   case 2:  //MODIFICAR
       $idexamen = $_POST['idexamen'];
       $idarea = $_POST['idarea'];
       $nomexamen = $_POST['nomexamen'];
@@ -138,6 +139,7 @@ switch ($opcion) {
       $id_resultado = $_POST['id_resultado'];
       $cmbTipoMuestra = $_POST['cmbTipoMuestra'];
       $cmbPerfil = $_POST['cmbPerfil'];
+      $cmbEstabReferido = $_POST['cmbEstabReferido'];
       //  echo $IdEstandarResp." sexo=".$sexo;
       if ($sexo <> 4)
          $idsexo = $sexo;
@@ -181,7 +183,7 @@ switch ($opcion) {
                       $usuario, $IdFormulario, $IdEstandarResp, $plantilla,
                       $letra, $Urgente, $ubicacion, $Hab, $TiempoPrevio,
                       $idsexo, $idestandar, $ctlidestandar, $metodologias_sel,
-$text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil) == true) {
+$text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido) == true) {
          /*
           * creando arreglo de elementos seleccionados
           */
@@ -207,7 +209,7 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
       $RegistrosAEmpezar = ($_POST['Pag'] - 1) * $RegistrosAMostrar;
       $PagAct = $_POST['Pag'];
 
-      /////LAMANDO LA FUNCION DE LA CLASE 
+      /////LAMANDO LA FUNCION DE LA CLASE
       $consulta = $objdatos->consultarpag($lugar, $RegistrosAEmpezar,
               $RegistrosAMostrar);
 
@@ -235,8 +237,8 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
                     </center>";
       while ($row = pg_fetch_array($consulta)) {
          echo "<tr>
-                            <td aling='center'> 
-				<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+                            <td aling='center'>
+				<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\"
 				onclick=\"pedirDatos('" . $row['id'] . "')\"> </td>
                             <td style='text-decoration:underline;cursor:pointer;' " .
          "onclick='Estado(\"" . $row['id'] . "\",\"" . $row['condicion'] . "\")'>" . $row['cond'] . "</td>
@@ -339,12 +341,12 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
    case 6:
       $idarea = $_POST['idarea'];
 
-      //echo "combo".$idarea; 
+      //echo "combo".$idarea;
       $rslts = '';
       $consultaex = $objdatos->ExamenesPorArea($idarea, $lugar);
-      //$dtMed=$obj->LlenarSubServ($proce);	
+      //$dtMed=$obj->LlenarSubServ($proce);
 
-      $rslts = '<select name="cmbEstandar" id="cmbEstandar" size="1" style="width:75%" class="js-example-basic-single" >';
+      $rslts = '<select name="cmbEstandar" id="cmbEstandar" size="1" style="width:75%" class="js-example-basic-single" onchange="cargaestablecimientoaref();">';
       $rslts .='<option value="0">Seleccione un Examen...</option>';
 
       while ($rows = pg_fetch_array($consultaex)) {
@@ -384,35 +386,35 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
       $ExisExa = pg_fetch_array($conExam);
       //print_r ($ExisExa[0]);
       //echo $ExisExa[0];
-      $query = "SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.codigo_examen as idexamen, 
-                                            lab_conf_examen_estab.nombre_examen as nombreexamen, ctl_area_servicio_diagnostico.nombrearea,lab_plantilla.idplantilla, 
-                                            ctl_examen_servicio_diagnostico.idestandar, 
-                                            (CASE WHEN lab_conf_examen_estab.ubicacion=0 THEN 'Todas las Procedencias' 
+      $query = "SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.codigo_examen as idexamen,
+                                            lab_conf_examen_estab.nombre_examen as nombreexamen, ctl_area_servicio_diagnostico.nombrearea,lab_plantilla.idplantilla,
+                                            ctl_examen_servicio_diagnostico.idestandar,
+                                            (CASE WHEN lab_conf_examen_estab.ubicacion=0 THEN 'Todas las Procedencias'
                                             WHEN lab_conf_examen_estab.ubicacion=1 THEN 'Hospitalización y Emergencia'
-                                            WHEN lab_conf_examen_estab.ubicacion=3 THEN 'Ninguna' 
-                                            WHEN lab_conf_examen_estab.ubicacion=4 THEN 'Laboratorio' END ) AS Ubicacion, 
-                                            (SELECT idestandar FROM ctl_examen_servicio_diagnostico 
-                                            WHERE lab_conf_examen_estab.idestandarrep=ctl_examen_servicio_diagnostico.id) AS estandarrep, 
-                                            lab_conf_examen_estab.impresion,urgente, ctl_sexo.nombre AS nombresexo,lab_conf_examen_estab.condicion, 
-                                            (CASE WHEN lab_conf_examen_estab.condicion='H' THEN 'Habilitado' 
+                                            WHEN lab_conf_examen_estab.ubicacion=3 THEN 'Ninguna'
+                                            WHEN lab_conf_examen_estab.ubicacion=4 THEN 'Laboratorio' END ) AS Ubicacion,
+                                            (SELECT idestandar FROM ctl_examen_servicio_diagnostico
+                                            WHERE lab_conf_examen_estab.idestandarrep=ctl_examen_servicio_diagnostico.id) AS estandarrep,
+                                            lab_conf_examen_estab.impresion,urgente, ctl_sexo.nombre AS nombresexo,lab_conf_examen_estab.condicion,
+                                            (CASE WHEN lab_conf_examen_estab.condicion='H' THEN 'Habilitado'
                                             WHEN lab_conf_examen_estab.condicion='I' THEN 'Inhabilitado' END) AS cond,cit_programacion_exams.rangotiempoprev,
-                                             (SELECT nombreformulario FROM mnt_formularios WHERE mnt_formularios.id=lab_conf_examen_estab.idformulario) AS nombreformulario 
-                                            FROM lab_conf_examen_estab 
-                                            INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
-                                            INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
-                                            INNER JOIN ctl_examen_servicio_diagnostico ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico=ctl_examen_servicio_diagnostico.id 
+                                             (SELECT nombreformulario FROM mnt_formularios WHERE mnt_formularios.id=lab_conf_examen_estab.idformulario) AS nombreformulario
+                                            FROM lab_conf_examen_estab
+                                            INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
+                                            INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
+                                            INNER JOIN ctl_examen_servicio_diagnostico ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico=ctl_examen_servicio_diagnostico.id
                                             LEFT JOIN mnt_formularios ON mnt_formularios.id=lab_conf_examen_estab.idformulario
-                                            INNER JOIN lab_plantilla ON lab_conf_examen_estab.idplantilla=lab_plantilla.id 
-                                            LEFT JOIN ctl_sexo ON lab_conf_examen_estab.idsexo= ctl_sexo.id 
-                                            INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
-                                            LEFT JOIN cit_programacion_exams ON lab_conf_examen_estab.id=cit_programacion_exams.id_examen_establecimiento 
-                                            WHERE lab_areasxestablecimiento.condicion='H' AND ctl_examen_servicio_diagnostico.activo= TRUE 
+                                            INNER JOIN lab_plantilla ON lab_conf_examen_estab.idplantilla=lab_plantilla.id
+                                            LEFT JOIN ctl_sexo ON lab_conf_examen_estab.idsexo= ctl_sexo.id
+                                            INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
+                                            LEFT JOIN cit_programacion_exams ON lab_conf_examen_estab.id=cit_programacion_exams.id_examen_establecimiento
+                                            WHERE lab_areasxestablecimiento.condicion='H' AND ctl_examen_servicio_diagnostico.activo= TRUE
                                             AND mnt_area_examen_establecimiento.activo=TRUE AND lab_areasxestablecimiento.idestablecimiento=$lugar AND ";
       $ban = 0;
 
       //VERIFICANDO LOS POST ENVIADOS
-      // echo $ExisExa[0]; 
-      if ($ExisExa[0] > 0) {//si existe el examen 
+      // echo $ExisExa[0];
+      if ($ExisExa[0] > 0) {//si existe el examen
          if (!empty($_POST['idexamen'])) {
             $query .= " lab_conf_examen_estab.codigo_examen='" . $_POST['idexamen'] . "' AND";
          }
@@ -491,7 +493,7 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
       $PagAct = $_POST['Pag'];
 
       //ENVIANDO A EJECUTAR LA BUSQUEDA!!
-      /////LAMANDO LA FUNCION DE LA CLASE 
+      /////LAMANDO LA FUNCION DE LA CLASE
       $consulta = $objdatos->consultarpagbus($query_search, $RegistrosAEmpezar,
               $RegistrosAMostrar);
       //echo $query_search;
@@ -508,7 +510,7 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
 			    <td > &Aacute;rea</td>
                             <td >Plantilla</td>
                             <td >C&oacute;digo del Est&aacute;ndar</td>
-			    <td >Solicitado en</td>	
+			    <td >Solicitado en</td>
                             <td >Formulario</td>
                             <td >Tabulador</td>
                             <td >Tipo Viñeta</td>
@@ -520,8 +522,8 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
                     </center>";
       while ($row = pg_fetch_array($consulta)) {
          echo "<tr>
-                            <td aling='center'> 
-				<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+                            <td aling='center'>
+				<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\"
 				onclick=\"pedirDatos('" . $row[0] . "')\"></td>
                             <td  style='text-decoration:underline;cursor:pointer;' " .
          "onclick='Estado(\"" . $row['id'] . "\",\"" . $row['condicion'] . "\")'>" . $row['cond'] . "</td>
@@ -630,35 +632,35 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
       //print_r ($ExisExa[0]);
 
 
-      $query = "SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.codigo_examen as idexamen, lab_conf_examen_estab.nombre_examen as nombreexamen, ctl_area_servicio_diagnostico.nombrearea,lab_plantilla.idplantilla, 
-                                            ctl_examen_servicio_diagnostico.idestandar, 
-                                            (CASE WHEN lab_conf_examen_estab.ubicacion=0 THEN 'Todas las Procedencias' 
-                                            WHEN lab_conf_examen_estab.ubicacion=1 THEN 'Hospitalización y Emergencia' 
-                                            WHEN lab_conf_examen_estab.ubicacion=3 THEN 'Ninguna' 
-                                            WHEN lab_conf_examen_estab.ubicacion=4 THEN 'Laboratorio' END ) AS Ubicacion, 
-                                            (SELECT idestandar FROM ctl_examen_servicio_diagnostico 
-                                            WHERE lab_conf_examen_estab.idestandarrep=ctl_examen_servicio_diagnostico.id) AS estandarrep, 
-                                            lab_conf_examen_estab.impresion,urgente, ctl_sexo.nombre AS nombresexo,lab_conf_examen_estab.condicion, 
-                                            (CASE WHEN lab_conf_examen_estab.condicion='H' THEN 'Habilitado' 
+      $query = "SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.codigo_examen as idexamen, lab_conf_examen_estab.nombre_examen as nombreexamen, ctl_area_servicio_diagnostico.nombrearea,lab_plantilla.idplantilla,
+                                            ctl_examen_servicio_diagnostico.idestandar,
+                                            (CASE WHEN lab_conf_examen_estab.ubicacion=0 THEN 'Todas las Procedencias'
+                                            WHEN lab_conf_examen_estab.ubicacion=1 THEN 'Hospitalización y Emergencia'
+                                            WHEN lab_conf_examen_estab.ubicacion=3 THEN 'Ninguna'
+                                            WHEN lab_conf_examen_estab.ubicacion=4 THEN 'Laboratorio' END ) AS Ubicacion,
+                                            (SELECT idestandar FROM ctl_examen_servicio_diagnostico
+                                            WHERE lab_conf_examen_estab.idestandarrep=ctl_examen_servicio_diagnostico.id) AS estandarrep,
+                                            lab_conf_examen_estab.impresion,urgente, ctl_sexo.nombre AS nombresexo,lab_conf_examen_estab.condicion,
+                                            (CASE WHEN lab_conf_examen_estab.condicion='H' THEN 'Habilitado'
                                             WHEN lab_conf_examen_estab.condicion='I' THEN 'Inhabilitado' END) AS cond,cit_programacion_exams.rangotiempoprev,
-                                            (SELECT nombreformulario FROM mnt_formularios WHERE mnt_formularios.id=mnt_formulariosxestablecimiento.idformulario) AS nombreformulario 
-                                            FROM lab_conf_examen_estab 
-                                            INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
-                                            INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
-                                            INNER JOIN ctl_examen_servicio_diagnostico ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico=ctl_examen_servicio_diagnostico.id 
-                                            LEFT JOIN mnt_formulariosxestablecimiento ON lab_conf_examen_estab.idformulario= mnt_formulariosxestablecimiento.id 
+                                            (SELECT nombreformulario FROM mnt_formularios WHERE mnt_formularios.id=mnt_formulariosxestablecimiento.idformulario) AS nombreformulario
+                                            FROM lab_conf_examen_estab
+                                            INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
+                                            INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
+                                            INNER JOIN ctl_examen_servicio_diagnostico ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico=ctl_examen_servicio_diagnostico.id
+                                            LEFT JOIN mnt_formulariosxestablecimiento ON lab_conf_examen_estab.idformulario= mnt_formulariosxestablecimiento.id
                                             LEFT JOIN mnt_formularios  ON mnt_formularios.id=mnt_formulariosxestablecimiento.idformulario
-                                            INNER JOIN lab_plantilla ON lab_conf_examen_estab.idplantilla=lab_plantilla.id 
-                                            LEFT JOIN ctl_sexo ON lab_conf_examen_estab.idsexo= ctl_sexo.id 
-                                            INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
-                                            LEFT JOIN cit_programacion_exams ON lab_conf_examen_estab.id=cit_programacion_exams.id_examen_establecimiento 
-                                            WHERE lab_areasxestablecimiento.condicion='H' AND ctl_examen_servicio_diagnostico.activo= TRUE 
+                                            INNER JOIN lab_plantilla ON lab_conf_examen_estab.idplantilla=lab_plantilla.id
+                                            LEFT JOIN ctl_sexo ON lab_conf_examen_estab.idsexo= ctl_sexo.id
+                                            INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
+                                            LEFT JOIN cit_programacion_exams ON lab_conf_examen_estab.id=cit_programacion_exams.id_examen_establecimiento
+                                            WHERE lab_areasxestablecimiento.condicion='H' AND ctl_examen_servicio_diagnostico.activo= TRUE
                            AND mnt_area_examen_establecimiento.activo=TRUE AND lab_areasxestablecimiento.idestablecimiento=$lugar AND";
       $ban = 0;
 
       //VERIFICANDO LOS POST ENVIADOS
-      // echo $ExisExa[0]; 
-      if ($ExisExa[0] > 0) {//si existe el examen 
+      // echo $ExisExa[0];
+      if ($ExisExa[0] > 0) {//si existe el examen
          if (!empty($_POST['idexamen'])) {
             $query .= " lab_conf_examen_estab.codigo_examen='" . $_POST['idexamen'] . "' AND";
          }
@@ -741,7 +743,7 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
       $RegistrosAEmpezar = ($_POST['Pag'] - 1) * $RegistrosAMostrar;
       $PagAct = $_POST['Pag'];
 
-      /////LAMANDO LA FUNCION DE LA CLASE 
+      /////LAMANDO LA FUNCION DE LA CLASE
       $consulta = $objdatos->consultarpagbus($query_search, $RegistrosAEmpezar,
               $RegistrosAMostrar);
 
@@ -769,8 +771,8 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
                     </center>";
       while ($row = pg_fetch_array($consulta)) {
          echo "<tr>
-                            <td aling='center'> 
-				<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+                            <td aling='center'>
+				<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\"
 				onclick=\"pedirDatos('" . $row[0] . "')\"></td>
                             <td  style='text-decoration:underline;cursor:pointer;' " .
          "onclick='Estado(\"" . $row['id'] . "\",\"" . $row['condicion'] . "\")'>" . $row['cond'] . "</td>
@@ -853,7 +855,7 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
       break;
    case 9://Muestra los formularios para cada programa
       $IdPrograma = $_POST['idprograma'];
-      //echo $IdPrograma;  
+      //echo $IdPrograma;
       $rslts = '';
       $consulta = $objdatos->consultar_formularios($lugar);
 
@@ -868,6 +870,29 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
       echo $rslts;
 
       break;
+
+    case 10://Muestra los formularios para cada programa
+         $idexa = $_POST['idexa'];
+         //echo $IdPrograma;
+         $rslts = '';
+         $consulta = $objdatos->establecimiento_referido($idexa);
+         if (@pg_num_rows($consulta)==0){
+             $rslts.= '<select id="cmbEstabReferido" disabled name="cmbEstabReferido[]" size="1" style="width:75%"  class="height js-example-placeholder-multiple" multiple="multiple">
+             <option value="0" selected> No hay establecimientos a refererir asociados al nivel de donde se realiza el examen.</option>
+             </select>';
+         }
+         else{
+             $rslts = '<select id="cmbEstabReferido" name="cmbEstabReferido[]" size="1" style="width:75%"  class="height js-example-placeholder-multiple" multiple="multiple">';
+
+             while ($rows = pg_fetch_array($consulta)) {
+                $rslts.= '<option value="' . $rows[0] . '|'.$rows[1].'" >' . htmlentities($rows[2]) . '</option>';
+             }
+
+             $rslts .= '</select>';
+        }
+         echo $rslts;
+
+         break;
 }
 
 function asignar_resultados($resultado) {

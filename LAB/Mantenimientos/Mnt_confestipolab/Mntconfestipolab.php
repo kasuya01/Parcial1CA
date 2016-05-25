@@ -54,7 +54,7 @@
         <br />
         <div class="container">
             <div class="row">
-                <div class="col-xs-12 col-md-12" style="background-color:#FAFAFA;padding-top: 30px;margin-bottom: 30px;">
+                <div class="col-xs-12 col-md-12" style="padding-top: 30px;margin-bottom: 30px;">
                     <form role="form" action="" onSubmit="insertRegisters(); return false;" id="lab-form">
                         <div class="row">
                             <div class="col-xs-12 col-md-12"  style="padding-top:10px;padding-bottom:10px;">

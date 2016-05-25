@@ -25,21 +25,21 @@ function LimpiarCampos(){
         document.frmnuevo.cmbUbicacion.value="0";
 	document.frmnuevo.cmbFormularios.value="0";
 	document.getElementById('cmbEstandarRep').value="0";
-        
+
         document.frmnuevo.cmbEtiqueta.value="0";
         document.frmnuevo.cmbUrgente.value="0";
         document.frmnuevo.cmbsexo.value="0";
-        
+
         document.frmnuevo.metodologias_sel.value="";
         document.frmnuevo.text_metodologias_sel.value="";
         document.frmnuevo.id_metodologias_sel.value="";
-        
+
         document.frmnuevo.resultado.value="";
         document.frmnuevo.resultado_nombre.value="";
         document.frmnuevo.id_resultado.value="";
-        
+
         document.frmnuevo.inidate.value="";
-	
+
         obj1 = document.frmnuevo.add_metodologia;
         obj1.disabled = true;
         iniciarselects2();
@@ -53,43 +53,47 @@ function LimpiarCampos(){
         $('#cmbUbicacion').select2('val', '0');
         $('#cmbTipoMuestra').select2('val',null);
         $('#cmbPerfil').select2('val',null);
+        $('#cmbEstabReferido').select2('val',null);
 }
 
 function ValidarCampos()
 {
 
   var resp = true;
-           
-	 
-                 
+
+
+
           if (document.getElementById('cmbArea').value == "0")
 		 {
 			resp= false;
                        // alert(" 2 "+(document.getElementById('cmbArea').value));
-		 }	        
+		 }
 	 if (document.getElementById('txtnombreexamen').value == "")
 		 {
 			resp= false;
                         //alert((" 3 "+document.getElementById('txtnombreexamen').value));
 		 }
-     	
+
    	if (document.getElementById('cmbPlantilla').value == "0")
 		 {
-			resp= false;	
+			resp= false;
                       //alert(" 4 "+(document.getElementById('cmbPlantilla').value));
-		 }	
+		 }
+    if ($('#cmbArea').val()==14  && $('#cmbEstabReferido').val()==null){
+            resp= false;
+    }
   	/*if (document.getElementById('cmbEstandar').value == "0")
 		 {
 			resp= false;
                         //alert(" 5 "+(document.getElementById('cmbEstandar').value));
            	 }	*/
-        
+
          if (document.getElementById('cmbUbicacion').value == "")
 		 {
-			resp= false;	
+			resp= false;
                          //alert(" 6 "+(document.getElementById('cmbUbicacion').value));
-		 }        
-       
+		 }
+
 	if ($("#cmbEstandarRep").select2("val") == "" || $("#cmbEstandarRep").select2("val")==null)
 		 {
 			resp= false;
@@ -97,25 +101,25 @@ function ValidarCampos()
 		 }
         if (document.getElementById('cmbEtiqueta').value == "0")
 		 {
-			resp= false;	
+			resp= false;
                          //alert(" 8 "+(document.getElementById('cmbEtiqueta').value));
 		 }
-                         
+
                 // alert((document.getElementById('cmbsexo').value)+"  "+(document.getElementById('cmbHabilitar').value)+"  "+ (document.getElementById('txtidexamen').value)+"  "+document.getElementById('cmbArea').value));
          if (document.getElementById('cmbsexo').value == "0")
 		 {
 			resp= false;
                          //alert(" 10 "+(document.getElementById('cmbsexo').value));
-		 }	 
+		 }
       if (document.getElementById('cmbHabilitar').value == "0")
 		 {
-			resp= false;	
+			resp= false;
                        //  alert(" 11 "+(document.getElementById('cmbHabilitar').value));
 		 }
                  if ($("#cmbTipoMuestra :selected").length==0){
-                    resp= false;	
-                 } 
-                 
+                    resp= false;
+                 }
+
                    /* alert((document.getElementById('txtidexamen').value)
                          +" 2 "+(document.getElementById('cmbArea').value)
                          +" 3 "+(document.getElementById('txtnombreexamen').value)
@@ -148,6 +152,7 @@ if (ValidarCampos())
         Hab=document.frmnuevo.cmbHabilitar.value;
         cmbTipoMuestra=$('#cmbTipoMuestra').val();
         cmbPerfil=$('#cmbPerfil').val();
+        cmbEstabReferido=$('#cmbEstabReferido').val();
         tiempoprevio=document.getElementById('inidate').value;
         metodologias_sel=frmnuevo.metodologias_sel.value;
         text_metodologias_sel=frmnuevo.text_metodologias_sel.value;
@@ -161,7 +166,7 @@ if (ValidarCampos())
 	//codempresa=document.frmnuevo.txttxtcodempresa.value;
 	//alert(idestandar);
 	//alert (idPrograma+"*****"+idestandarRep);
-	
+
 	var opcion=1;
 	Pag=1;
 	//instanciamos el objetoAjax
@@ -184,7 +189,7 @@ if (ValidarCampos())
 	"&idestandar="+idestandar+"&Pag="+Pag+"&opcion="+opcion+"&plantilla="+plantilla+"&ubicacion="+ubicacion+
 	"&idformulario="+idformulario+"&idestandarRep="+idestandarRep+"&etiqueta="+etiqueta+"&urgente="+urgente+
         "&sexo="+sexo+"&Hab="+Hab+"&tiempoprevio="+tiempoprevio+"&metodologias_sel="+metodologias_sel+"&text_metodologias_sel="+text_metodologias_sel+"&id_metodologias_sel="+id_metodologias_sel
-        +"&resultado="+resultado+"&resultado_nombre="+resultado_nombre+"&id_resultado="+id_resultado+"&mismo="+mismo+"&cmbTipoMuestra="+cmbTipoMuestra+"&cmbPerfil="+cmbPerfil);
+        +"&resultado="+resultado+"&resultado_nombre="+resultado_nombre+"&id_resultado="+id_resultado+"&mismo="+mismo+"&cmbTipoMuestra="+cmbTipoMuestra+"&cmbPerfil="+cmbPerfil+"&cmbEstabReferido="+cmbEstabReferido);
    }
 
 else{
@@ -212,7 +217,7 @@ function IngresarRegistro1(){ //INGRESAR REGISTROS
 	//codempresa=document.frmnuevo.txttxtcodempresa.value;
 	//alert(idestandar);
 	//alert (idPrograma+"*****"+idestandarRep);
-	
+
 	var opcion=11;
 	Pag=1;
 	//instanciamos el objetoAjax
@@ -232,7 +237,7 @@ function IngresarRegistro1(){ //INGRESAR REGISTROS
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
 	ajax.send("resultado="+resultado);
-  
+
 }
 
 
@@ -254,7 +259,7 @@ function LlenarComboFormulario(idprograma)
 			//mostrar los nuevos registros en esta capa
 			document.getElementById('divFormularios').innerHTML = ajax.responseText;
 		}
-	}	
+	}
 }
 
 
@@ -276,7 +281,7 @@ function LlenarComboFormulario(idprograma)
 //			//mostrar los nuevos registros en esta capa
 //			document.getElementById('divFormulariosC').innerHTML = ajax.responseText;
 //		}
-//	}	
+//	}
 //}
 
 function pedirDatos(idexamen){ //CARGAR DATOS A MODIFICAR
@@ -285,7 +290,7 @@ function pedirDatos(idexamen){ //CARGAR DATOS A MODIFICAR
 	divFormularioNuevo=document.getElementById('divFrmNuevo');
 	//instanciamos el objetoAjax
 	ajax=objetoAjax();
-	
+
 	//uso del medotod POST
 	ajax.open("POST", "consulta_Examenes.php");
 	ajax.onreadystatechange=function() {
@@ -295,14 +300,18 @@ function pedirDatos(idexamen){ //CARGAR DATOS A MODIFICAR
 			divFormulario.style.display="block";
 			divFormularioNuevo.style.display="none";
                         divFormularioNuevo.innerHTML="";
+                        if (idarea==14)
+                            $('#estabreferido').show();
                         iniciarselects2();
+
+                    //    cargaestablecimientoaref('act');
 		}
 	}
 	//como hacemos uso del metodo POST
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	//enviando el codigo 
+	//enviando el codigo
 	ajax.send("idexamen="+idexamen);
-	
+
 }
 
 function enviarDatos(){//FUNCION PARA MODIFICAR
@@ -310,13 +319,13 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
 	divResultado = document.getElementById('divinicial');
 	divFormulario = document.getElementById('divFrmModificar');
 	divNuevo = document.getElementById('divFrmNuevo');
- 
+
         	//valores de los cajas de texto
 	idexamen=document.frmModificar.txtidexamen.value;
 	nomexamen=document.frmModificar.txtnombreexamen.value;
 	idarea=document.frmModificar.cmbArea.value;
-	idestandar=document.frmModificar.cmbEstandar.value;	
-	plantilla=document.frmModificar.cmbPlantilla.value;	
+	idestandar=document.frmModificar.cmbEstandar.value;
+	plantilla=document.frmModificar.cmbPlantilla.value;
 	//observacion=document.frmModificar.txtobservacion.value;
 	idestandarRep=document.frmModificar.cmbEstandarRep.value;
 	//idformulario=document.frmModificar.cmbConForm.value;
@@ -337,13 +346,15 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
         id_resultado=frmModificar.id_resultado.value;
         cmbTipoMuestra=$('#cmbTipoMuestra').val();
         cmbPerfil=$('#cmbPerfil').val();
+        cmbEstabReferido=$('#cmbEstabReferido').val();
 	//alert (text_metodologias_sel);
-        
+	//alert (cmbEstabReferido);
+
         if (nomexamen=='' || ($('#cmbTipoMuestra option:selected').length==0) || (Tiempo=='') || (Tiempo==0)){
            alert ('Ingrese los datos obligatorios por favor; se encuentran marcados con *');
            return false;
         }
-	var opcion=2;	
+	var opcion=2;
 	Pag=1;
 	//instanciamos el objetoAjax
 	ajax=objetoAjax();
@@ -356,11 +367,12 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
 	ajax.send("idexamen="+idexamen+"&idarea="+idarea+"&nomexamen="+nomexamen+
 	"&idestandar="+idestandar+"&Pag="+Pag+"&opcion="+opcion+"&plantilla="+plantilla+"&ubicacion="+ubicacion+
 	"&idformulario="+idformulario+"&idestandarRep="+idestandarRep+"&Etiqueta="+Etiqueta+"&urgente="+urgente+
-        "&idsexo="+idsexo+"&Hab="+Hab+"&Tiempo="+Tiempo+"&idconf="+idconf+"&ctlidestandar="+ctlidestandar+"&metodologias_sel="+metodologias_sel+"&text_metodologias_sel="+text_metodologias_sel+"&id_metodologias_sel="+id_metodologias_sel+"&resultado="+resultado+"&resultado_nombre="+resultado_nombre+"&id_resultado="+id_resultado+"&cmbTipoMuestra="+cmbTipoMuestra+"&cmbPerfil="+cmbPerfil);
+        "&idsexo="+idsexo+"&Hab="+Hab+"&Tiempo="+Tiempo+"&idconf="+idconf+"&ctlidestandar="+ctlidestandar+"&metodologias_sel="+metodologias_sel+"&text_metodologias_sel="+text_metodologias_sel+"&id_metodologias_sel="+id_metodologias_sel+"&resultado="+resultado+"&resultado_nombre="+resultado_nombre+"&id_resultado="+id_resultado+"&cmbTipoMuestra="+cmbTipoMuestra+"&cmbPerfil="+cmbPerfil+"&cmbEstabReferido="+cmbEstabReferido);
 //+"&observacion="+observacion
 	ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
 			divResultado.style.display="block";
+
 			//mostrar los nuevos registros en esta capa
 			//divResultado.innerHTML = ajax.responseText
                           alert(ajax.responseText);
@@ -372,7 +384,7 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
 			show_event(1);
 			//divInicio.style.display="none";
 		}
-	}	
+	}
 }
 
 
@@ -410,37 +422,37 @@ function BuscarDatos()
 	ajax.send("idexamen="+idexamen+"&idestandar="+idestandar+"&idarea="+idarea+"&nomexamen="+nomexamen+
 	"&Pag="+Pag+"&opcion="+opcion+"&plantilla="+plantilla+"&ubicacion="+ubicacion+
 	"&condicion="+condicion+"&idformulario="+idformulario+"&idestandarRep="+idestandarRep+"&etiqueta="+etiqueta+
-        "&sexo="+sexo+"&Hab="+Hab+"&urgente="+urgente);	
+        "&sexo="+sexo+"&Hab="+Hab+"&urgente="+urgente);
 	ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
 			//mostrar los nuevos registros en esta capa
 			document.getElementById('divinicial').innerHTML = ajax.responseText;
 		}
-	}	
-}	
+	}
+}
 
 
 //Funcion para generar código de Examen
 function SolicitarUltimoCodigo(idarea){
-	
+
 	ajax=objetoAjax();
 	var opcion=5;
-	
-    
+
+
 	ajax.open("POST", "ctrLab_Examenes.php",true);
 	ajax.onreadystatechange=function() {
-            if (ajax.readyState==4) 
+            if (ajax.readyState==4)
             {
 		document.getElementById('divCodigo').innerHTML = ajax.responseText;
             }
 	}
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
-	
+
 	ajax.send("&idarea="+idarea+"&opcion="+opcion);
-	
+
 	}
-        
+
         function LlenarExamenes(idarea)
 {         // alert (idarea);
 	var opcion=6;
@@ -463,27 +475,74 @@ function SolicitarUltimoCodigo(idarea){
                         });
                         SolicitarUltimoCodigo(idarea);
 		}
-	}	
+	}
 }
-	
+
+
+function cargaestablecimientoaref(valor)
+{
+  if ($('#cmbArea').val()!=14){
+      $( "#estabreferido" ).hide();
+      return false;
+  }
+  idexa=$('#cmbEstandar').val();
+  //alert ($('#cmbArea').val())
+      var opcion=10;
+           //instanciamos el objetoAjax
+      ajax=objetoAjax();
+      //archivo que realizar� la operacion ->actualizacion.php
+      ajax.open("POST", "ctrLab_Examenes.php",true);
+      //muy importante este encabezado ya que hacemos uso de un formulario
+      ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+      //enviando los valores
+      ajax.send("idexa="+idexa+"&opcion="+opcion);
+      ajax.onreadystatechange=function() {
+      if (ajax.readyState==4) {
+      	//mostrar los nuevos registros en esta capa
+        if (ajax.responseText==''){
+            alert ('No hay establecimientos configurados asociados al nivel de donde se realiza la prueba.')
+        }
+        else{
+      	document.getElementById('estabref').innerHTML = ajax.responseText;
+        $( "#estabreferido" ).show();
+        if ($('#cmbEstabReferido').val()==0){
+            alert ('Favor de configurar primero establecimientos asociados al nivel de donde se realiza la prueba.')
+            $( "#btnGuardar" ).prop( "disabled", true );
+
+        }
+        else{
+            $( "#btnGuardar" ).prop( "disabled", false );
+
+        }
+                             $("#cmbEstabReferido").select2({
+                               placeholder: "Seleccione los establecimientos a donde refiere la prueba...",
+                               allowClear: true,
+                               dropdownAutoWidth: true
+                            });
+                        }
+                    }
+                }
+
+}
+
 function show_event(Pag)
 {
 	opcion=4;
-	
+
 	ajax=objetoAjax();
 	ajax.open("POST", 'ctrLab_Examenes.php', true);
-	ajax.onreadystatechange = function(){ 
+	ajax.onreadystatechange = function(){
 	if (ajax.readyState==4) {
 		   //mostrar resultados en esta capa
 		   document.getElementById('divinicial').innerHTML = ajax.responseText;
 		  }
 	}
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-	ajax.send("&Pag="+Pag+"&opcion="+opcion);	
+	ajax.send("&Pag="+Pag+"&opcion="+opcion);
 }
 
 function show_event_search(Pag)
-{	
+{
 	opcion=8;
 	 //valores de los cajas de texto
 	idarea=document.getElementById('cmbArea').value;
@@ -504,20 +563,20 @@ function show_event_search(Pag)
 	ubicacion= document.getElementById('cmbUbicacion').value;
 	ajax=objetoAjax();
 	ajax.open("POST", 'ctrLab_Examenes.php', true);
-	ajax.onreadystatechange = function(){ 
+	ajax.onreadystatechange = function(){
 	if (ajax.readyState==4) {
 		   //mostrar resultados en esta capa
 		   document.getElementById('divinicial').innerHTML = ajax.responseText;
-		   
+
 		 }
 	}
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	ajax.send("idexamen="+idexamen+"&idarea="+idarea+"&nomexamen="+nomexamen+
 	"&idestandar="+idestandar+"&Pag="+Pag+"&opcion="+opcion+"&plantilla="+plantilla+"&ubicacion="+ubicacion+
 	"&condicion="+condicion+"&idformulario="+idformulario+"&idestandarRep="+idestandarRep+"&etiqueta="+etiqueta+
-        "&sexo="+sexo+"&Hab="+Hab+"&urgente="+urgente);	
+        "&sexo="+sexo+"&Hab="+Hab+"&urgente="+urgente);
 //+"&observacion="+observacion
-}	
+}
 
 function Estado(idexamen,condicion){
 
@@ -534,24 +593,22 @@ var opcion=3;
 
 	ajax.onreadystatechange=function() {
 		 if(ajax.readyState==1){
-                     
-                                       
+
+
                  }
 		 if (ajax.readyState==4) {
 		//alert(ajax.responseText);
-               
-			show_event(1); 
-                       
+
+			show_event(1);
+
 		 }
-	}	
+	}
 }
 
 function isNumberKey(evt){
     var charCode = (evt.which) ? evt.which : event.keyCode
         if (charCode > 31 && (charCode < 48 || charCode > 57))
             return false;
- 
+
             return true;
-}   
-
-
+}
