@@ -171,7 +171,8 @@ switch ($opcion) {
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo'
+                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelada' END AS estado,
             TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta
             FROM sec_solicitudestudios t02                
             INNER JOIN lab_recepcionmuestra t03                 ON (t03.idsolicitudestudio=t02.id) 
@@ -186,7 +187,7 @@ switch ($opcion) {
             INNER JOIN cit_citas_serviciodeapoyo t15            ON (t15.id_solicitudestudios=t02.id) 
             INNER JOIN lab_tiposolicitud t17                    ON (t17.id = t02.idtiposolicitud) 
             INNER JOIN tbl_servicio t20                         ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
-            WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+            WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) AND t02.estado<>8
             AND t02.id_establecimiento = $lugar $cond1
             
         
@@ -210,7 +211,9 @@ switch ($opcion) {
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo'
+                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelada'
+                         END AS estado,
             TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta
             FROM sec_solicitudestudios t02                    	   
             INNER JOIN lab_recepcionmuestra t03                     ON (t03.idsolicitudestudio=t02.id) 
@@ -224,7 +227,7 @@ switch ($opcion) {
             INNER JOIN ctl_establecimiento t14                      ON (t14.id = t09.id_establecimiento)
             INNER JOIN cit_citas_serviciodeapoyo t15                ON (t15.id_solicitudestudios=t02.id) 
             INNER JOIN lab_tiposolicitud t17 			    ON (t17.id = t02.idtiposolicitud) 
-            WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+            WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) AND t02.estado<>8
             AND t02.id_establecimiento =$lugar $cond2 ) ordenar
                 ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
 
@@ -232,7 +235,7 @@ switch ($opcion) {
           {   $query = substr($query ,0,strlen($query)-3);
           $query_search = $query. " ORDER BY IdSolicitudEstudio DESC";
           } */
-        //echo $query_search;
+      echo $query_search;
         //$consulta=$objdatos->BuscarSolicitudesPaciente($query); 
         //$NroRegistros= $objdatos->NumeroDeRegistros($query);	
        

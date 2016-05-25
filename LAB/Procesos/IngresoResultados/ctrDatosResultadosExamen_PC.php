@@ -125,8 +125,9 @@ switch ($opcion)
 		$datos_observacion=$objdatos->LeerObservacion($idobservacion);
 		$bateria=$objdatos->NombreBacteria($idbacteria);
              
-                //print_r($datos_generales);
+                print_r($vector_valores);
 		
+                
                 $row_generales= pg_fetch_array($datos_generales);
 		$row_area = pg_fetch_array($consulta_datos);
 		$row_empleado = pg_fetch_array($datos_empleado);
@@ -295,7 +296,8 @@ switch ($opcion)
 		$vector_antibioticos=EXPLODE("/",$codigos_antibioticos);
                 $vector_interpretacion=EXPLODE("/",$valores_interpretacion);
                 
-               // print_r($vector_interpretacion);
+                print_r($vector_interpretacion);
+                
 		$tamano_vector=count($vector_valores);
 		$tamano_vectoantibiotico=count($vector_antibioticos);
                 $tamano_vectointerpretacion=count($vector_interpretacion);
@@ -314,24 +316,29 @@ switch ($opcion)
                       $CodAntibiograma=6; 
                // echo "TAR=". $tarjeta;
                       $ultimo= $objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado);
-                      $antibiograma= $objdatos->insertarAntibiograma($iddetalle,$idexamen,$CodAntibiograma,$usuario,$fecharealiz,$fecharesultado,$idempleado);
+                 //     $insertardetalle=$objdatos->IngresarDetalle($idsolicitud,$idantibiograma,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$fecharealiz,$fecharesultado);
+                       $antibiograma= $objdatos->insertarAntibiograma($iddetalle,$idexamen,$CodAntibiograma,$usuario,$fecharealiz,$fecharesultado,$idempleado);
                       if (($ultimo != "") && ($antibiograma==TRUE))
                       {
                               $idresultado=$ultimo;
                               //insertando el detalle
                               $iddetalleresultado=$objdatos->insertar_detalle($idresultado,$idbacteria,$tarjeta,$cantidad,$lugar);
-
+                                                                        
                               //insertando el detalle de resultados de la tarjeta asociada
                               if (($tamano_vector-1)>0)
                               {
                                 for ($i=0; $i < $tamano_vectoantibiotico-1 ; $i++) //INSERTANDO ANTIBIOTICOS
-                                {   if ($vector_valores[$i]<>0){
-                                        if ($objdatos->insertar_resultadoantibioticos($iddetalleresultado,$vector_antibioticos[$i],$vector_valores[$i],$vector_interpretacion[$i],$lugar)==false)
+                                {  
+                                    $consulta_nombre=$objdatos->nombre_resultado($vector_interpretacion[$i]);
+                                    $row_nombre = pg_fetch_array($consulta_nombre);
+                                    $Vector_nombres[$i]=$row_nombre[0];
+                                    if ($vector_valores[$i]<>''){
+                                        if ($objdatos->insertar_resultadoantibioticos($iddetalleresultado,$vector_antibioticos[$i],$vector_valores[$i],$vector_interpretacion[$i], $Vector_nombres[$i],$lugar)==false)
                                                
                                                        $ban=1;
                                    
                                         }else{
-                                                if ($objdatos->insertar_resultadoantibioticos1($iddetalleresultado,$vector_antibioticos[$i],$vector_interpretacion[$i],$lugar)==false)
+                                                if ($objdatos->insertar_resultadoantibioticos1($iddetalleresultado,$vector_antibioticos[$i],$vector_interpretacion[$i], $Vector_nombres[$i],$lugar)==false)
                                                
                                                        $ban=1;
                                                

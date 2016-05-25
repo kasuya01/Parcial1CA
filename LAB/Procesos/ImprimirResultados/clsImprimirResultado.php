@@ -1313,10 +1313,10 @@ function obtener_resultadoxtarjeta($iddetalleresultado){
     $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT lab_resultadosportarjeta.idantibiotico,antibiotico,resultado,valor,id_posible_resultado,posible_resultado 
+     $query = "SELECT lab_resultadosportarjeta.idantibiotico,antibiotico,resultado,valor,resultado,id_posible_resultado,posible_resultado 
 FROM lab_resultadosportarjeta 
 INNER JOIN lab_antibioticos ON lab_antibioticos.id=lab_resultadosportarjeta.idantibiotico
-INNER JOIN lab_posible_resultado ON lab_posible_resultado.id=lab_resultadosportarjeta.id_posible_resultado 
+LEFT JOIN lab_posible_resultado ON lab_posible_resultado.id=lab_resultadosportarjeta.id_posible_resultado 
 WHERE iddetalleresultado=$iddetalleresultado order by lab_resultadosportarjeta.id asc";
      $result = pg_query($query);
      if (!$result)

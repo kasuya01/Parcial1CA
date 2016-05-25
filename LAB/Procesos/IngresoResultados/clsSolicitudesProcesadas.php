@@ -957,7 +957,7 @@ and idhistoref=$idhistoref;";
                     where idsolicitudestudio=$idsolicitud
                     and estadodetalle in (select id 
                                             from ctl_estado_servicio_diagnostico 
-                                            where idestado not in ('RC', 'RM'));";
+                                            where idestado not in ('RC', 'RM', 'CA'));";
          //    echo '<br>cantidad'.$query.'<br>';                            
          $detalle = pg_num_rows(pg_query($query));
          //  echo '<br>empty(detalle) '.$detalle.'<br>';

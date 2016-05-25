@@ -188,7 +188,7 @@ $row_cantidad=pg_fetch_array($Catidad);
                                 while($row_tarjeta = pg_fetch_array($res_tarjeta)){?>
                                     <tr>
                                         <td colspan='1' class="Estilo5"><?php echo $row_tarjeta['antibiotico']?></td>
-                                        <td colspan='1' class="Estilo5"><?php echo htmlentities($row_tarjeta['valor'])?></td>
+                                        <td colspan='1' class="Estilo5"><?php echo htmlentities($row_tarjeta['resultado'])?></td>
                                         <td colspan='2' class="Estilo5"> <?php echo htmlentities( $row_tarjeta['posible_resultado']) ?></td>
                                     </tr>
                                     

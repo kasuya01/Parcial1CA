@@ -227,7 +227,9 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' 
+                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelada'
+                        END AS estado,
 			
                     CASE t02.estado 
                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada' 

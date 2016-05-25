@@ -254,7 +254,7 @@ switch ($opcion) {
           {   $query = substr($query ,0,strlen($query)-3);
           $query_search = $query. " ORDER BY IdSolicitudEstudio DESC";
           } */
-        //echo $query_search;
+       //echo $query_search;
         //$consulta=$objdatos->BuscarSolicitudesPaciente($query);
         //$NroRegistros= $objdatos->NumeroDeRegistros($query);
 

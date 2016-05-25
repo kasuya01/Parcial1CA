@@ -52,7 +52,7 @@ function ObtenerNombreCodigo($tab){
    if($con->conectar()==true){ 
 	$query="SELECT id,idexamen 
                 FROM sec_detallesolicitudestudios WHERE idsolicitudestudio=$idsolicitud 
-		AND EstadoDetalle <> 7 AND EstadoDetalle <> 6";
+		AND EstadoDetalle <> 7 AND EstadoDetalle <> 6 AND EstadoDetalle <> 8";
 	$detalle=pg_num_rows(pg_query($query));
 	if(empty($detalle)){
 		$query="UPDATE sec_solicitudestudios SET estado= 4 WHERE id=$idsolicitud"	;

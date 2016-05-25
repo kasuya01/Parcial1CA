@@ -14,9 +14,9 @@ $objdatos = new clsSolicitudesPorPaciente;
 //echo $idexpediente;
 switch ($opcion) 
 {
-  	case 1:  
+    case 1:  
             
-            $pag=$_POST['pag'];
+        $pag=$_POST['pag'];
 	$registros = 20;
 	$pag =$_POST['pag'];
 	$inicio = ($pag-1) * $registros;
@@ -175,7 +175,8 @@ switch ($opcion)
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
+			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo'
+                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelada' END AS estado,
             TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta
             FROM sec_solicitudestudios              t02                
             INNER JOIN lab_recepcionmuestra         t03      ON (t03.idsolicitudestudio=t02.id) 
