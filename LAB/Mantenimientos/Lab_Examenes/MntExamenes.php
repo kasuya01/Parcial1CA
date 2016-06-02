@@ -15,7 +15,7 @@ $idproce=0;
  //echo $lugar;
 ?>
 <html>
-<head> 
+<head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <title>Mantenimiento de Examenes de Laboratorio</title>
 <script language="JavaScript" type="text/javascript" src="ajax_Lab_Examenes.js"></script>
@@ -26,15 +26,15 @@ $idproce=0;
 <script language="JavaScript" >
 function Guardar(){
        	IngresarRegistro();
-        
-       
+
+
 }
 function AsignarIdExamen(idArea)
 {
    SolicitarUltimoCodigo(idArea);
 }
 function Modificar()
-{ 
+{
 	enviarDatos();
         //LimpiarCampos();
 }
@@ -44,8 +44,8 @@ function LlenarComboExamen(idarea)
      LlenarExamenes(idarea);
 }
 function Buscar()
-{ 
-    BuscarDatos(); 
+{
+    BuscarDatos();
 }
 function Cancelar()
 { 	LimpiarCampos();
@@ -58,7 +58,7 @@ function mypopup(){
       resultado=frmModificar.resultado.value;
       resultado_nombre=frmModificar.resultado_nombre.value;
       nombre=$('input[name=txtnombreexamen]').val();
-      id_resultado=frmModificar.id_resultado.value; 
+      id_resultado=frmModificar.id_resultado.value;
       window.open('consulta_metodologias1.php?form=frmModificar&resultado='+resultado+
                                         '&resultado_nombre='+encodeURIComponent(resultado_nombre)+'&nombre='+nombre+ '&id_resultado='+id_resultado, '" + "', 'scrollbars=yes, width=700, height=700, left=100, top = 100');
    }
@@ -86,71 +86,77 @@ function mypopup(){
            allowClear: true,
            dropdownAutoWidth: true
         });
-        
+
         $("#cmbPlantilla").select2({
            placeholder: "Seleccione una Plantilla...",
            allowClear: true,
            dropdownAutoWidth: true
         });
-        
+
         $("#cmbUbicacion").select2({
            placeholder: "Seleccione una Opción...",
            allowClear: true,
            dropdownAutoWidth: true
         });
-        
+
         $("#cmbFormularios").select2({
          //  placeholder: "Seleccione un Formulario...",
            allowClear: true,
            dropdownAutoWidth: true
         });
-        
+
         $("#cmbEtiqueta").select2({
           // placeholder: "Seleccione un Tipo de etiqueta...",
            allowClear: true,
            dropdownAutoWidth: true
         });
-        
+
         $("#cmbsexo").select2({
           // placeholder: "Seleccione un Tipo de etiqueta...",
            allowClear: true,
            dropdownAutoWidth: true
         });
-        
+
         $("#cmbUrgente").select2({
           // placeholder: "Seleccione un Tipo de etiqueta...",
            allowClear: true,
            dropdownAutoWidth: true
         });
-                
+
         $("#cmbHabilitar").select2({
           // placeholder: "Seleccione un Tipo de etiqueta...",
            allowClear: true,
            dropdownAutoWidth: true
         });
-                
+
         $("#cmbTipoMuestra").select2({
            placeholder: "Seleccione al menos un tipo de muestra...",
            allowClear: true,
            dropdownAutoWidth: true
         });
-                
+
         $("#cmbPerfil").select2({
            placeholder: "Seleccione los perfiles a los que pertenece la prueba...",
+           allowClear: true,
+           dropdownAutoWidth: true
+        });
+
+        $("#cmbEstabReferido").select2({
+           placeholder: "Seleccione los establecimiento a donde referira la prueba...",
            allowClear: true,
            dropdownAutoWidth: true
         });
     }
     $(document).ready(function() {
       iniciarselects2();
-        
+
         //$('#cmbExamen').multiselect();
 //         $('#cmbEstandarRep').multiselect({
 //            buttonWidth: '86.5%',
 //            enableFiltering: true,
 //            enableCaseInsensitiveFiltering: true,
 //            inheritClass: true
-//           
+//
 //        });
 //         $('button.tabulador').removeClass('btn');
     });
@@ -162,10 +168,10 @@ function mypopup(){
 </head>
 <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" onLoad="show_event(1);">
 
-<?php 
+<?php
 
 //$nivel=$_SESSION['NIVEL'];
-//$_SESSION['correlativo']=$_SESSION['correlativo'];  
+//$_SESSION['correlativo']=$_SESSION['correlativo'];
 if ($nivel==1){
 	include_once ('../../../PaginaPrincipal/index_laboratorio2.php');}
 if ($nivel==2){
@@ -179,7 +185,7 @@ if ($nivel == 5) {
 if ($nivel == 6) {
         include_once ('../../../PaginaPrincipal/index_laboratorio62.php');}
 if ($nivel == 7) {
-        include_once ('../../../PaginaPrincipal/index_laboratorio72.php'); }         
+        include_once ('../../../PaginaPrincipal/index_laboratorio72.php'); }
 ?><br>
 <table align="center" width="100%">
     <tr>
@@ -198,7 +204,7 @@ if ($nivel == 7) {
                             <td class="StormyWeatherDataTD"> <div id="divCodigo"><input type="text" id="txtidexamen"  name="txtidexamen" disabled="disabled" style="width:250px" class="form-control height placeholder" /></div></td>
 			</tr>
 			<tr>
-                            <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo del &Aacute;rea</td>
+                            <td class="StormyWeatherFieldCaptionTD" >&Aacute;rea</td>
                             <td class="StormyWeatherDataTD">
                                 <select id="cmbArea" name="cmbArea" size="1"  onChange="LlenarComboExamen(this.value);" style="width:75%" class=""height js-example-basic-single">
                                     <option value="0" >Seleccione un &Aacute;rea...</option>
@@ -207,7 +213,7 @@ if ($nivel == 7) {
 					while($row = pg_fetch_array($consulta)){
                                             echo "<option class='placeholder' value='" . $row['idarea']. "'>" . $row['nombrearea'] . "</option>";
 					}
-                                    ?>		  
+                                    ?>
 				</select>
                             </td>
 			</tr>
@@ -215,10 +221,10 @@ if ($nivel == 7) {
                             <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo del Est&aacute;ndar</td>
                             <td class="StormyWeatherDataTD">
                                <div id="divExamen">
-                                    <select name="cmbEstandar" id="cmbEstandar"  style="width:75%"  class="height js-example-basic-single"> 
-                                         
+                                    <select name="cmbEstandar" id="cmbEstandar"  style="width:75%"  class="height js-example-basic-single" onchange="cargaestablecimientoaref('ins');">
+
                                              <option value="0">Seleccione un Examen...</option>
-                                              
+
                                     </select>
                                </div>
                             </td>
@@ -238,9 +244,9 @@ if ($nivel == 7) {
                                             while($row = pg_fetch_array($consulta)){
                                                 echo "<option value='" . $row['0']. "'>" . $row['1'].'- '.$row['2'] . "</option>";
                                             }
-								//mysql_free_result($row);		
-					?>		 		
-				</select>   
+								//mysql_free_result($row);
+					?>
+				</select>
                             </td>
 			</tr>
 			<tr>
@@ -258,7 +264,7 @@ if ($nivel == 7) {
 				</select>
                             </td>
 			</tr>
-                     
+
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD"><strong>Solicitado en </strong> </td>
                             <td class="StormyWeatherDataTD">
@@ -271,23 +277,23 @@ if ($nivel == 7) {
 				</select>
                             </td>
 			</tr>
-			
+
 			<tr>
                             <td width="17%" class="StormyWeatherFieldCaptionTD">Formulario para Examen</td>
                             <td width="83%"  class="StormyWeatherDataTD">
-                             
-                                    <select name="cmbFormularios" id="cmbFormularios" size="1" style="width:75%" class="height js-example-basic-single"> 
+
+                                    <select name="cmbFormularios" id="cmbFormularios" size="1" style="width:75%" class="height js-example-basic-single">
                                         <option value="0">Ninguno</option>
                                         <?php
                                             $consulta= $obj->consultar_formularios($lugar);
                                             while($row = pg_fetch_array($consulta)){
                                                 echo "<option value='" . $row['0']. "'>" .$row['1'] . "</option>";
                                             }
-                                        ?>	
+                                        ?>
                                     </select>
                             </td>
                        </tr>
-                        
+
 			<tr>
                             <td class="StormyWeatherFieldCaptionTD" >Tipo Etiqueta</td>
                             <td class="StormyWeatherDataTD">
@@ -304,7 +310,7 @@ if ($nivel == 7) {
                                 <select id="cmbUrgente" name="cmbUrgente" size="1" style="width:75%" class="height js-example-basic-single">
                                     <option value="0">No</option>
                                     <option value="1">Si</option>
-                                </select>    
+                                </select>
                             </td>
                         </tr>
                         <tr>
@@ -320,7 +326,7 @@ if ($nivel == 7) {
                                             echo "<option value='" . $row['0']. "'>" .$row['1'] . "</option>";
                                         }
 				    ?>
-                                </select>    
+                                </select>
                             </td>
                          </tr>
                          <tr>
@@ -330,7 +336,7 @@ if ($nivel == 7) {
 <!--                                    <option value="0">-- Seleccione Condici&oacute;n --</option>-->
                                     <option value="H" selected>Habilitado</option>
                                     <option value="I">Inhabilitado</option>
-                                </select>    
+                                </select>
                             </td>
                          </tr>
                          <tr>
@@ -344,10 +350,10 @@ if ($nivel == 7) {
                                             echo "<option value='" . $row['id']. "'>" .$row['tipomuestra'] . "</option>";
                                         }
 				    ?>
-                                </select>    
+                                </select>
                             </td>
                          </tr>
-                         <tr> 
+                         <tr>
                          <tr>
                             <td class="StormyWeatherFieldCaptionTD" title="Seleccione los perfiles a los que la prueba pertenece">Perfiles</td>
                             <td class="StormyWeatherDataTD">
@@ -358,10 +364,25 @@ if ($nivel == 7) {
                                             echo "<option value='" . $row['id']. "'>" .$row['nombre'] . "</option>";
                                         }
 				    ?>
-                                </select>    
+                                </select>
                             </td>
                          </tr>
-                         <tr> 
+                         <tr id="estabreferido" style="display:none">
+                            <td class="StormyWeatherFieldCaptionTD" title="Seleccione los establecimientos a donde refiere esta prueba">Establecimientos a donde referira la prueba</td>
+                            <td class="StormyWeatherDataTD">
+                            <div id="estabref">
+                                <select id="cmbEstabReferido" name="cmbEstabReferido[]" size="1" style="width:75%"  class="height js-example-placeholder-multiple" multiple="multiple">
+                                     <?php
+                                        $estref= $obj->establecimiento_referido();
+                                        while($row2 = pg_fetch_array($estref)){
+                                            echo '<option value="' . $rows[0] . '|'.$rows[1].'" >' . htmlentities($rows[2]) . '</option>';
+                                        }
+				    ?>
+                                </select>
+                            </div>
+                            </td>
+                         </tr>
+                         <tr>
                             <td nowrap class="StormyWeatherFieldCaptionTD">Tiempo Previo para <br>entrega de resultado(en dias)&nbsp;</td>
                             <td class="StormyWeatherDataTD">
                                 <input id="inidate" name="inidate" class="form-control" style="width:250px; height:28px;" maxlength=3 onkeypress='return isNumberKey(event);' ></td>
@@ -376,12 +397,12 @@ if ($nivel == 7) {
                                 popup('consulta_metodologias.php?form=frmnuevo&metodologias_sel='+document.getElementById('metodologias_sel').value+
                                         '&text_metodologias_sel='+document.getElementById('text_metodologias_sel').value+
                                         '&nombre='+document.getElementById('txtnombreexamen').value+ '&id_metodologias_sel='+document.getElementById('id_metodologias_sel').value);"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Metodologías:..</button>
-                           
+
                         </td>
-                        
-                        </tr> 
-                        
-                        
+
+                        </tr>
+
+
                         <tr>
                         <td nowrap class="StormyWeatherFieldCaptionTD">Posible  Resultado</td>
                         <td class="StormyWeatherDataTD">
@@ -392,11 +413,11 @@ if ($nivel == 7) {
                                 popup('consulta_metodologias1.php?form=frmnuevo&resultado='+document.getElementById('resultado').value+
                                         '&resultado_nombre='+document.getElementById('resultado_nombre').value+
                                         '&nombre='+document.getElementById('txtnombreexamen').value+ '&id_resultado='+document.getElementById('id_resultado').value);"><span class='glyphicon glyphicon-th-list'></span> ..:Seleccionar Resultado:..</button>
-                           
+
                         </td>
-                        
-                       
-                    
+
+
+
                          <!--<tr>
                              <td colspan="2" align="right" class="StormyWeatherDataTD">
                                 <input type="button" name="btnGuardar" value="Guardar" onClick="Guardar();">
@@ -404,14 +425,14 @@ if ($nivel == 7) {
 				<input type="button" name="btnCancelar" value="Cancelar" onClick="Cancelar();">
                             </td>
 			</tr>-->
-                        <tr>  
+                        <tr>
                             <td class="StormyWeatherDataTD" colspan="6" align="right">
-                                <button type='button' align="center" class='btn btn-primary'  onclick='Guardar(); '><span class='glyphicon glyphicon-floppy-disk'></span> Guardar </button>
-                                <button type='button' align="center" class='btn btn-primary'  onclick='Buscar(); '><span class='glyphicon glyphicon-search'></span>  Buscar </button>
-                                <button type='button' align="center" class='btn btn-primary'  onClick="Cancelar();"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
+                                <button type='button' align="center" id="btnGuardar" class='btn btn-primary'  onclick='Guardar(); '><span class='glyphicon glyphicon-floppy-disk'></span> Guardar </button>
+                                <button type='button' align="center" id="btnBuscar" class='btn btn-primary'  onclick='Buscar(); '><span class='glyphicon glyphicon-search'></span>  Buscar </button>
+                                <button type='button' align="center" id="btnCancelar" class='btn btn-primary'  onClick="Cancelar();"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
                             </td>
                          </tr>
-                        
+
                     </table>
 		</form>
             </div>

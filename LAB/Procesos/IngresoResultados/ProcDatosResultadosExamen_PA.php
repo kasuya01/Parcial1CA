@@ -1,5 +1,5 @@
 <?php session_start();
-include_once("../../../Conexion/ConexionBD.php"); 
+include_once("../../../Conexion/ConexionBD.php");
 include ("clsSolicitudesProcesadas.php");
 $objdatos = new clsSolicitudesProcesadas;
 $usuario=$_SESSION['Correlativo'];
@@ -20,18 +20,18 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
 		</style>
 <?php include_once $ROOT_PATH."/public/css.php";?>
 <?php include_once $ROOT_PATH."/public/js.php";?>
-<script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script> 
+<script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script>
 <script>
-    window.onunload = refreshParent;    
+    window.onunload = refreshParent;
 </script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 <!--<link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
 <link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />-->
 
-   
 
-  
+
+
 <!--
 <script type="text/javascript" src="../../../public/datepicker/dp/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="../../../public/datepicker/dp/jquery-ui.min.js"></script>
@@ -65,7 +65,7 @@ function ValidarCampos()
   var resp = true;
 	 if (document.frmnuevo.cmbEmpleados.value == "0")
 		 {
-			resp= false;		
+			resp= false;
 		 }
          if (document.getElementById('idresultado').value=='x'){
             if (document.frmnuevo.txtresultado.value==""){
@@ -79,7 +79,7 @@ function ValidarCampos()
          }
 //	 if (document.frmnuevo.txtresultado.value == "" || document.frmnuevo.txtresultado.value=="xyz")
 //		 {
-//			resp= false;		
+//			resp= false;
 //		 }
          if (document.frmnuevo.cant_metodologia!="0"){
              if (document.frmnuevo.cmbmetodologia==0){
@@ -95,8 +95,8 @@ function ValidarCampos()
                 resp=false
              }
          }
-         
-     
+
+
   return resp;
 }
 
@@ -136,7 +136,7 @@ function VerResultados()
         fecha_reporta=document.frmnuevo.fecha_reporte.value;
 
 	MostrarResultadoExamen(idsolicitud,iddetalle,idarea,idexamen,resultado,lectura,interpretacion,observacion,responsable,nombrearea,procedencia,origen,impresion,establecimiento,codresult,fechanac,sexo, cmbmetodologia, txtnec, fecha_realizacion, fecha_reporta, idresultado, marca);
-	
+
     }else
     {    alert("Complete la Informacion Requerida");   }
 }
@@ -159,7 +159,7 @@ for ( i = 0; i < getVars.length; i++)
 		if ( getVars[i].substr(0,5) == 'var4=' )
 			area = getVars[i].substr(5);
 		if ( getVars[i].substr(0,5) == 'var5=' )
-			iddetalle = getVars[i].substr(5);			
+			iddetalle = getVars[i].substr(5);
 		if ( getVars[i].substr(0,5) == 'var6=' )
 			idsolicitud= getVars[i].substr(5);
 		if ( getVars[i].substr(0,5) == 'var7=' )
@@ -177,16 +177,16 @@ for ( i = 0; i < getVars.length; i++)
 		if ( getVars[i].substr(0,5) == 'var13=' )
 		        establecimiento=escape(getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'var14=' )
-		        FechaNac=escape(getVars[i].substr(5)); 
+		        FechaNac=escape(getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'var15=' )
-		        Sexo=escape(getVars[i].substr(5));  
+		        Sexo=escape(getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'var16=' )
-                        IdEstandar=escape(getVars[i].substr(5));   
+                        IdEstandar=escape(getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'var17=' )
-                        IdHistorial=escape(getVars[i].substr(5));  
+                        IdHistorial=escape(getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'referido=' )
-                        referido=escape(getVars[i].substr(5)); 
-                    
+                        referido=escape(getVars[i].substr(5));
+
 		}
 document.frmnuevo.txtnec.value=nec;
 document.frmnuevo.txtarea.value=area;
@@ -209,17 +209,24 @@ jQuery(document).ready(function($){
 
    $(".date").datepicker({
      onClose:  function() {
-                 validafecha($(this).val(), $(this).attr('name'),$('#dateftomamx').val() ); 
+                 validafecha($(this).val(), $(this).attr('name'),$('#dateftomamx').val() );
                  valdatesolicita($(this).val(), $(this).attr('name'));
                 }
    });
-   
+   if ($('#idresultado').prop('tagName')=='SELECT')
+   {
+	  $("#idresultado").select2({
+		allowClear: true,
+		dropdownAutoWidth: true
+	 });
+   }
+
 });
 </script>
 </head>
 
 <body onLoad="RecogeValor();">
-<?php  
+<?php
 //FUNCION PARA VERIFICAR DATOS REQUERIDOS EN RESULTADOS
 $bandera=$_GET['var12'];
 /*$fechanac=$_GET['var14'];*/
@@ -234,9 +241,9 @@ $idexpediente_=$_GET['var1'];
 $fecha_recepcion_=$_GET['fecha_recepcion'];
 $idestabext_=$_GET['var19'];
 $cant=$objdatos->buscarAnterioresPUnica($solicitud,$iddetallesolicitud, $idarea);
- 
+
 if (pg_num_rows($cant)>0){
-   
+
    //  echo $referido.'<br>';
 $buscarinfo=$objdatos->consfecha($solicitud, $iddetallesolicitud,  $lugar);
 //echo 'bucarinfo: '.$buscarinfo;
@@ -248,13 +255,13 @@ $dateftomamx = date("Y-m-d", $timeftomamx);
 //para calcular la fecha de cuando fue la toma de muestra y no la actual
 $fechadatosfijos=$rowdeta['fechadatosfijos'];
 if ($referido!="t"){
-  
-   // echo $IdHistorial.' -- lugar: '.$lugar; 
+
+   // echo $IdHistorial.' -- lugar: '.$lugar;
 $condatos=$objdatos->condatos($IdHistorial, $lugar, $fechadatosfijos);
 $edad=$objdatos->calc_edad($IdHistorial);
 
 	$rows = pg_fetch_array($condatos);
-        
+
         $Peso=$rows['peso'];
         $Talla=$rows['talla'];
         $dias=$rows['dias'];
@@ -285,16 +292,16 @@ $edad=$objdatos->calc_edad($IdHistorial);
 ?>
 
 
-    
-  
-			
+
+
+
 <table align="center" width="100%">
     <tr>
         <td>
             <div  id="divFrmNuevo" style="display:block" >
                 <form name="frmnuevo" method="get" action="ProcDatosResultadosExamen_PA.php" enctype="multipart/form-data">
                    <table width="70%" border="0" align="center" class="StormyWeatherFormTABLE"  style="height: 525px; ">
-                        
+
                         <tr>
                             <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3>INGRESO DE RESULTADOS</h3></td>
                         </tr>
@@ -340,7 +347,7 @@ $edad=$objdatos->calc_edad($IdHistorial);
                             </td>
                             <td class="StormyWeatherFieldCaptionTD">Edad</td>
                             <td colspan="1" class="StormyWeatherDataTD"><?php echo $edad;?>
-                               
+
                             </td>
 			</tr>
                         <tr>
@@ -351,7 +358,7 @@ $edad=$objdatos->calc_edad($IdHistorial);
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
-                            <td class="StormyWeatherDataTD" colspan="1"> <?php echo $_GET['var9'] ;?> 
+                            <td class="StormyWeatherDataTD" colspan="1"> <?php echo $_GET['var9'] ;?>
                                 <input type="hidden" name="txtnombrearea" id="txtnombrearea" disabled="disabled" size="60" />
                             </td>
                             <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">F. Toma Muestra</td>
@@ -368,24 +375,24 @@ $edad=$objdatos->calc_edad($IdHistorial);
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Peso</td>
                             <td class="StormyWeatherDataTD">
-                                <?php  
-                                   if (!empty($Peso)) 
+                                <?php
+                                   if (!empty($Peso))
                                         echo $Peso;?>
                             </td>
                             <td class="StormyWeatherFieldCaptionTD">Talla</td>
                             <td class="StormyWeatherDataTD">
-                                <?php  
+                                <?php
                                     if(!empty($Talla))
                                         echo $Talla;?>
                             </td>
                         </tr>
-                       
+
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Examen </td>
                             <td  colspan="3" class="StormyWeatherDataTD"> <?php echo $_GET['var2'];?>
                                 <input type="hidden" name="txtexamen" id="txtexamen" disabled="disabled" size="60"  />
                                  <input type="hidden" id="num_campos" name="num_campos" value="0" />
-                                    <input type="hidden" id="cant_campos" name="cant_campos" value="0" />                
+                                    <input type="hidden" id="cant_campos" name="cant_campos" value="0" />
                             </td>
                         </tr>
                         <tr id="metodo" >
@@ -395,21 +402,21 @@ $edad=$objdatos->calc_edad($IdHistorial);
                                     <select id="cmbmetodologia" name="cmbmetodologia" size="1" class="form-control  height">
                                         <option value="0" >--Seleccione Metodologia--</option>
                                     </select>
-                                                        
-                                      <input type='hidden' id='cant_metodologia' name='cant_metodologia' value='0'>  
-                                         
+
+                                      <input type='hidden' id='cant_metodologia' name='cant_metodologia' value='0'>
+
                                 </div>
-                               
+
                             </td>
                         </tr>
                          <tr>
                             <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">Fecha Realización </td>
-                            <td  colspan="1" class="StormyWeatherDataTD"> 
+                            <td  colspan="1" class="StormyWeatherDataTD">
                                <input type="text" class="date form-control height placeholder" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" style="width:100%"/>
                             </td>
                              <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">Fecha Reporte </td>
-                            <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="date form-control height" name="fecha_reporte" id="fecha_reporte" size="60" style="width:90%"  value="<?php echo date("Y-m-d"); ?>"  /><input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d"); ?>"  /> 
+                            <td  colspan="1" class="StormyWeatherDataTD">
+                                <input type="text" class="date form-control height" name="fecha_reporte" id="fecha_reporte" size="60" style="width:90%"  value="<?php echo date("Y-m-d"); ?>"  /><input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d"); ?>"  />
                             </td>
                         </tr>
                         <tr>
@@ -423,21 +430,21 @@ $edad=$objdatos->calc_edad($IdHistorial);
                             </td>
                         </tr>
                         <tr>
-                             <td class="StormyWeatherFieldCaptionTD">*Resultado</td>                             
+                             <td class="StormyWeatherFieldCaptionTD">*Resultado</td>
                              <td class="StormyWeatherDataTD" colspan="3">
                                 <?php
                                  $posible=$objdatos->consultarPosibleRes($idexamen_);
                                  $cant=pg_num_rows($posible);
-                                 
-                                 
+
+
                                  if ($cant>0){
-                                     echo '<select id="idresultado" name="idresultado" onchange="setCodResultado(this.value)" style="width:96%" class="form-control  height">';
-                                  
+                                     echo '<select id="idresultado" name="idresultado" onchange="setCodResultado(this.value)" style="width:96%" class="height js-example-basic-single">';
+
                                    if ($cant>1){
 echo '<option value="xyz">Seleccione una opción</option>';
                                       while ($pr= pg_fetch_array($posible)){
                                                                                echo '<option value='.$pr["id"].'>'.$pr["posible_resultado"].'</option>';
-                                         
+
                                       }//fin while posible resultado
                                    }//fin if cant>1
                                    else{
@@ -447,11 +454,11 @@ echo '<option value="xyz">Seleccione una opción</option>';
                                  }
                                  else {                                                                        echo '<textarea  name="txtresultado" cols="50" size="43"  id="txtresultado" class="form-control  height" style="width:96%"/></textarea><input type="hidden" id="idresultado" name="idresultado" value="x"/>';
                                  }
-                               
+
                                 ?>
-                                
+
                              </td>
-                             
+
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Marca</td>
@@ -462,7 +469,7 @@ echo '<option value="xyz">Seleccione una opción</option>';
                             <td class="StormyWeatherFieldCaptionTD">Lectura</td>
                             <td class="StormyWeatherDataTD" colspan="3" ><textarea name="txtlectura" cols="50" id="txtlectura" class="form-control  height" style="width:96%"></textarea></td>
                         </tr>
-                        
+
                         <tr>
                             <td  class="StormyWeatherFieldCaptionTD">Interpretaci&oacute;n</td>
                             <td  class="StormyWeatherDataTD" colspan="3"><textarea name="txtinterpretacion" cols="50" id="txtinterpretacion" class="form-control  height" style="width:96%"></textarea></td>
@@ -478,38 +485,38 @@ echo '<option value="xyz">Seleccione una opción</option>';
                                      <select id="cmbResultado2" name="cmbResultado2" size="1" style="width:100%" class="form-control  height">
                                         <option value="0" >--Seleccione Resultado--</option>
 
-                                        <?php 
+                                        <?php
                                         $resscod=$objdatos->BuscarResultados($IdEstandar);
 
                                         while ($rows = pg_fetch_array($resscod)){
-                                            echo '<option value="' . $rows['idresultado'] . '">' . $rows['idresultado'] . '  -  ' . $rows['resultado'] . '</option>'; 
+                                            echo '<option value="' . $rows['idresultado'] . '">' . $rows['idresultado'] . '  -  ' . $rows['resultado'] . '</option>';
                                         }
                                         ?>
                                     </select>
                                 </div>
-				
+
                             </td>
                             <td  class="StormyWeatherDataTD" colspan="2"></td>
                         </tr>
                         <tr>
-			<?php 
+			<?php
 			if ($bandera==1){
 		 	 ?>
-		
+
                             <td colspan="4" align="center" class="StormyWeatherDataTD" style="color:#DD0000; font:bold"><h3>El m&eacute;dico ha solicitado la impresi&oacute;n de este Resultado </h3></td>
                         </tr>
                         <tr>
-                            <?php 
+                            <?php
                           }?>
                             <td colspan="4" style="text-align:right">
                                <button type="button" align="right" style="text-align: right" class="btn btn-primary" onclick="VerResultados();"><span class='glyphicon glyphicon-file'></span>&nbsp;Ver Resultado </button>
 <!--                                <input type="button" name="add" value="Agregar Resultado" Onclick="AddResultado() ;"> -->
-                        
+
                             </td>
                         </tr>
-                        
+
                         </table>
-                    
+
                 </form>
             </div>
         </td>
@@ -536,7 +543,7 @@ else{
    . '&nbsp;'
             . 'El resultado del exámen seleccionado del expediente "'.$_GET['var1'].'",<br/> ya fue ingresado.</h1> ';
             echo " <button type='submit' class='btn btn-primary' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' /><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button></center>";
-               
+
 }
 ?>
 <!-- <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
@@ -546,6 +553,6 @@ else{
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-es.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui-sliderAccess.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/script.js"></script>    -->
-    
+
 </body>
 </html>

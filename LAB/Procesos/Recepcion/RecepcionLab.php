@@ -1,12 +1,12 @@
 <?php session_start();
-include_once("../../../Conexion/ConexionBD.php"); 
+include_once("../../../Conexion/ConexionBD.php");
 include_once("cls_recepcion.php");
 //include_once("cls_recepcion.php");
 if(isset($_SESSION['Correlativo'])){
 $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
-$area=$_SESSION['Idarea']; 
+$area=$_SESSION['Idarea'];
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
 $recepcion = new clsRecepcion;
 // echo $lugar;
@@ -14,19 +14,19 @@ $recepcion = new clsRecepcion;
 if ($nivel==1){
 	include_once ('../../../PaginaPrincipal/index_laboratorio2.php');}
 if ($nivel==2){
-	include_once ('../../../PaginaPrincipal/index_laboratorio22.php');}        
+	include_once ('../../../PaginaPrincipal/index_laboratorio22.php');}
 if ($nivel==31){
 	include_once ('../../../PaginaPrincipal/index_laboratorio31.php');}
 if ($nivel==33){
 	include_once ('../../../PaginaPrincipal/index_laboratorio33.php');}
 if ($nivel==4){
-	include_once ('../../../PaginaPrincipal/index_laboratorio42.php');}  
+	include_once ('../../../PaginaPrincipal/index_laboratorio42.php');}
 if ($nivel == 5) {
         include_once ('../../../PaginaPrincipal/index_laboratorio52.php');}
 if ($nivel == 6) {
         include_once ('../../../PaginaPrincipal/index_laboratorio62.php');}
 if ($nivel == 7) {
-        include_once ('../../../PaginaPrincipal/index_laboratorio72.php'); }         
+        include_once ('../../../PaginaPrincipal/index_laboratorio72.php'); }
 ?><br>
 <html>
 <head>
@@ -72,7 +72,7 @@ if ($nivel == 7) {
             dropdownAutoWidth: true
         });
     });
-    
+
 </script>
 <script  type="text/javascript">
 var miPopup
@@ -82,12 +82,12 @@ function fillEstablecimiento(idtipoEstab){
         if (idext == '' || idext==null || idext=='""'){
             idext=0;
         }
-  
-	if(idtipoEstab==0){ 
+
+	if(idtipoEstab==0){
 	  alert("Seleccione un tipo de establecimiento!");
-	} 
+	}
         else{
-		  
+
             if (window.XMLHttpRequest) {
                     sendReq = new XMLHttpRequest();
             } else if(window.ActiveXObject) {
@@ -104,17 +104,17 @@ function fillEstablecimiento(idtipoEstab){
               param += '&idtipoEstab='+idtipoEstab;
               param += '&idext='+idext;
 
-              sendReq.send(param);  	
+              sendReq.send(param);
 	}
 }
 
 function fillTipoEstablecimiento(idest){
   accion=12;
-  
-	if(idest==0){ 
+
+	if(idest==0){
 	  return false;
 	} else{
-		  
+
 	  if (window.XMLHttpRequest) {
 		sendReq = new XMLHttpRequest();
 	  } else if(window.ActiveXObject) {
@@ -127,11 +127,11 @@ function fillTipoEstablecimiento(idest){
 	  sendReq.onreadystatechange = procesaEsp;
 	  sendReq.open("POST", 'ajax_recepcion.php', true);
 	  sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-	
+
 	  var param = 'Proceso=fillTipoEstab';
 	  param += '&idestab='+idest;
        //   alert (param)
-	  sendReq.send(param);  	
+	  sendReq.send(param);
 	}
 }
 
@@ -152,11 +152,11 @@ function fillservicio(idserv){
 	  sendReq.onreadystatechange = procesaEsp;
 	  sendReq.open("POST", 'ajax_recepcion.php', true);
 	  sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-	
+
 	  var param = 'Proceso=fillServicio';
 	  param += '&idserv='+idserv;
-	  sendReq.send(param);  	
-	
+	  sendReq.send(param);
+
    }
 
 }
@@ -165,10 +165,10 @@ function fillservicio(idserv){
 function fillMed(idSubEsp){
   accion=1;
   //alert(idSubEsp);
-	if(idSubEsp==0){ 
+	if(idSubEsp==0){
 	 	alert("Seleccione una especialidad!");
 	} else{
-		  
+
 	  if (window.XMLHttpRequest) {
 		sendReq = new XMLHttpRequest();
 	  } else if(window.ActiveXObject) {
@@ -180,20 +180,20 @@ function fillMed(idSubEsp){
 	  sendReq.onreadystatechange = procesaEsp;
 	  sendReq.open("POST", 'ajax_recepcion.php', true);
 	  sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-	
+
 	  var param = 'Proceso=fillMed';
 	  param += '&idSubEsp='+idSubEsp;
-	  sendReq.send(param);  	
+	  sendReq.send(param);
 	}
 }//fillMed
 
 function fillestudios(idarea){
 accion=2;
-  
-	if(idarea==0){ 
+
+	if(idarea==0){
 	  alert("Seleccione una area!");
 	} else{
-		  
+
 	  if (window.XMLHttpRequest) {
 		sendReq = new XMLHttpRequest();
 	  } else if(window.ActiveXObject) {
@@ -205,20 +205,20 @@ accion=2;
 	  sendReq.onreadystatechange = procesaEsp;
 	  sendReq.open("POST", 'ajax_recepcion.php', true);
 	  sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-	
+
 	  var param = 'Proceso=fillestudios';
 	  param += '&id_area='+idarea;
-	  sendReq.send(param);  	
+	  sendReq.send(param);
 	}
 }//fillestudios
 
 function fillmuestra(idestudio){
 accion=3;
-  
-	if(idestudio==0){ 
+
+	if(idestudio==0){
 	  alert("Seleccione un estudio!");
 	} else{
-		  
+
 	  if (window.XMLHttpRequest) {
 		sendReq = new XMLHttpRequest();
 	  } else if(window.ActiveXObject) {
@@ -230,20 +230,20 @@ accion=3;
 	  sendReq.onreadystatechange = procesaEsp;
 	  sendReq.open("POST", 'ajax_recepcion.php', true);
 	  sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-	
+
 	  var param = 'Proceso=fillmuestra';
 	  param += '&id_estudio='+idestudio;
-	  sendReq.send(param);  
+	  sendReq.send(param);
 	}
 }
 
 function fillorigen(idmuestra){
 accion=4;
-  
-	if(idmuestra==0){ 
+
+	if(idmuestra==0){
 	  alert("Seleccione un estudio!");
 	} else{
-		  
+
 	  if (window.XMLHttpRequest) {
 		sendReq = new XMLHttpRequest();
 	  } else if(window.ActiveXObject) {
@@ -255,10 +255,10 @@ accion=4;
 	  sendReq.onreadystatechange = procesaEsp;
 	  sendReq.open("POST", 'ajax_recepcion.php', true);
 	  sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-	
+
 	  var param = 'Proceso=fillorigen';
 	  param += '&id_muestra='+idmuestra;
-	  sendReq.send(param);  
+	  sendReq.send(param);
 	}
 }
 
@@ -270,12 +270,12 @@ accion=5;
 	id_tipomuestra=document.getElementById('cboMuestra').value;
 	id_origenmuestra=document.getElementById('cboOrigen').value;
 	indicaciones=document.getElementById('Indicacion').value;
-	
+
 	if ((document.getElementById('cmbarea').value==0) && (document.getElementById('cboEstudio').value==0) && (document.getElementById('cboMuestra').value==0) && (document.getElementById('cboOrigen').value==0)){
 		alert("Debe Ingresar al menos un EXAMEN!!");
 		return false;
 	}
-	
+
 	if (window.XMLHttpRequest) {
 		sendReq = new XMLHttpRequest();
 	  } else if(window.ActiveXObject) {
@@ -287,35 +287,35 @@ accion=5;
 	  sendReq.onreadystatechange = procesaEsp;
 	  sendReq.open("POST", 'ajax_recepcion.php', true);
 	  sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-	
+
 	  var param = 'Proceso=agregarexamenes';
 	  param += '&id_origenmuestra='+id_origenmuestra+'&id_tipomuestra='+id_tipomuestra+'&id_examen='+id_examen+'&id_area='+id_area+'&indicaciones='+indicaciones;
-	  sendReq.send(param);  
-	
+	  sendReq.send(param);
+
 }
 
 function searchpac(){
 accion=6;
-    
+
 	nec=document.getElementById('txtexp').value;
 	idext=document.getElementById('IdEstablecimientoExterno').value;
-        
-	
+
+
         if (idext == '' || idext==null || idext=='""'){
             idext=0;
         }
        // alert(nec+' - '+idext)
 //	if(!IsNumeric(document.getElementById('txtexp').value)){
-//		alert('Por favor solo introduzca numeros en este campo') 
+//		alert('Por favor solo introduzca numeros en este campo')
 //		document.getElementById('txtexp').focus();
 //		return false;
-//	}	
-	
+//	}
+
 	if(document.getElementById('txtexp').value==""){
 		alert(".: Error: Debe Ingresar un Numero de Expediente");
 		return false;
 	}
-	
+
 	if (window.XMLHttpRequest) {
 		sendReq = new XMLHttpRequest();
 	  } else if(window.ActiveXObject) {
@@ -327,18 +327,18 @@ accion=6;
 	  sendReq.onreadystatechange = procesaEsp;
 	  sendReq.open("POST", 'ajax_recepcion.php', true);
 	  sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-	
+
 	  var param = 'Proceso=searchpac';
 	  param += '&nec='+nec+'&idext='+idext;
         //  param += '&idext='+idext;
          // alert (param)
 	  sendReq.send(param);
 }
- 
- 
+
+
  function BuscarExistenciaSolicitud(){
     accion=13;
-    
+
     var IdNumeroExp = document.getElementById("IdNumeroExp").value;
     var IdEstablecimiento = document.getElementById("cmbEstablecimiento").value;// establecimiento que solicita el estudio
     var lugar = document.getElementById("lugar").value;
@@ -349,11 +349,11 @@ accion=6;
   //  var Sexo = document.getElementById("tiposexo").value;
     var idexpediente = document.getElementById("idexpediente").value;
         // alert ("algo :"+idexpediente);
-        
+
      var mensaje="";
     if (FechaConsulta==''){
         mensaje +="Ingrese el dato de la Fecha de la consulta ";
-    }   
+    }
     if (IdSubServicio==0){
         mensaje +="\nIngrese el dato del subservicio"
     }
@@ -361,7 +361,7 @@ accion=6;
        alert (mensaje)
         return false;
     }
-        
+
     if (window.XMLHttpRequest) {
 		sendReq = new XMLHttpRequest();
 	  } else if(window.ActiveXObject) {
@@ -373,7 +373,7 @@ accion=6;
 	  sendReq.onreadystatechange = procesaEsp;
 	  sendReq.open("POST", 'ajax_recepcion.php', true);
 	  sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-	
+
 	  var param = 'Proceso=VerificarSolicitud';
 	  param += '&IdNumeroExp='+IdNumeroExp+'&IdEstablecimiento='+IdEstablecimiento+
                    '&lugar='+lugar+'&IdSubServicio='+IdSubServicio+
@@ -381,9 +381,9 @@ accion=6;
         //  param += '&idext='+idext;
          // alert (param)
 	  sendReq.send(param);
-    
+
 }
- 
+
 function guardar(){
 accion=7;
 	nec=document.getElementById('txtexp').value;
@@ -394,22 +394,22 @@ accion=7;
 	fcon=document.getElementById('txtconsulta').value;
 
         //alert (nec+"-"+establecimiento+"-"+Serv+"-"+SubServ+"-"+med+"-"+fcon);
-	
+
 	if(document.getElementById('txtexp').value==""){
 		alert(".: Error: Debe Ingresar un Numero de Expediente");
 		return false;
 	}
-	
+
 	if(!IsFecha(document.getElementById('txtconsulta').value)){
-		alert('Por favor solo introduzca numeros en el campo Fecha de Consulta') 
+		alert('Por favor solo introduzca numeros en el campo Fecha de Consulta')
 		document.getElementById('txtconsulta').focus();
 		return false;
-	}	
-	
-	if (window.XMLHttpRequest) 
+	}
+
+	if (window.XMLHttpRequest)
         {
 		sendReq = new XMLHttpRequest();
-	} 
+	}
         else if(window.ActiveXObject) {
 		sendReq = new ActiveXObject("Microsoft.XMLHTTP");
                 } else{
@@ -419,13 +419,13 @@ accion=7;
 	  sendReq.onreadystatechange = procesaEsp;
 	  sendReq.open("POST", 'ajax_recepcion.php', true);
 	  sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-	
+
 	  var param = 'Proceso=guardar';
 	  param +='&nec='+nec+'&establecimiento='+establecimiento+'&Serv='+Serv+'&SubServ='+SubServ+'&med='+med+'&fcon='+fcon;
 	  sendReq.send(param);
 }
 
- 
+
 function abreVentana(nec, idest){ //datospacfisttime
     window.close("../RegistroExternos/Busqueda.php");
     estabnombre=$('#cmb_establecimiento option:selected').text();
@@ -433,16 +433,16 @@ function abreVentana(nec, idest){ //datospacfisttime
      if (idexpedienteex=='' || idexpedienteex==null){
        idexpedienteex=0;
     }
-    miPopup = window.open("../RegistroExternos/Busqueda.php?nec="+nec+"&idest="+idest+"&estabnombre="+estabnombre+"&idexpedienteex="+idexpedienteex,"miwin","width=1000,height=550,scrollbars=yes"); 
-    miPopup.focus(); 
-} 
+    miPopup = window.open("../RegistroExternos/Busqueda.php?nec="+nec+"&idest="+idest+"&estabnombre="+estabnombre+"&idexpedienteex="+idexpedienteex,"miwin","width=1000,height=550,scrollbars=yes");
+    miPopup.focus();
+}
 
 function MostrarDatos(nec, idext){
 accion=10;
 	  sendReq.onreadystatechange = procesaEsp;
 	  sendReq.open("POST", 'ajax_recepcion.php', true);
 	  sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-	
+
 	  var param = 'Proceso=DatosPaciente';
 	  param +='&nec='+nec;
 	  param +='&idext='+idext;
@@ -461,14 +461,14 @@ function NoEncontrado(nec)
 	  var param = 'Proceso=DatosPaciente';
 	  param +='&nec='+nec;
 	  param +='&idext='+idext;
-	  sendReq.send(param);    
+	  sendReq.send(param);
 }
 
 function limpiar(){
    document.getElementById("frmdatosexpediente").reset();
    document.getElementById("frmverificardatospac").reset();
   // document.getElementById("frmdatosgenerales").reset();
-    
+
     $('#CmbServicio').select2('val', 0);
     $('#cmbSubServ').select2('val', 0);
     $('#cmbMedico').select2('val', 0);
@@ -484,14 +484,14 @@ function limpiar(){
 }
 
 function IsNumeric(sText){//funcion para verificar si el dato que entra es numerico
-   var ValidChars = "0123456789-"; 
+   var ValidChars = "0123456789-";
 
    var IsNumber=true;
    var Char;
 
-   for (i = 0; i < sText.length && IsNumber == true; i++) 
-      { 
-      Char = sText.charAt(i); //descubrir que caracter esta llenando una posicion con un string 
+   for (i = 0; i < sText.length && IsNumber == true; i++)
+      {
+      Char = sText.charAt(i); //descubrir que caracter esta llenando una posicion con un string
       if (ValidChars.indexOf(Char) == -1) //Despues utilizamos el metodo indexOf para buscar nuestra lista de caracteres validos(ValidChars), si no existe entonces
          {
 			IsNumber = false;//esto significa que el usuario a ingresado un caracter invalido
@@ -501,14 +501,14 @@ function IsNumeric(sText){//funcion para verificar si el dato que entra es numer
 }
 
 function IsFecha(sText){//funcion para verificar si el dato que entra es numerico
-   var ValidChars = "0123456789-/"; 
+   var ValidChars = "0123456789-/";
 
    var IsNumber=true;
    var Char;
 
-   for (i = 0; i < sText.length && IsNumber == true; i++) 
-      { 
-      Char = sText.charAt(i); //descubrir que caracter esta llenando una posicion con un string 
+   for (i = 0; i < sText.length && IsNumber == true; i++)
+      {
+      Char = sText.charAt(i); //descubrir que caracter esta llenando una posicion con un string
       if (ValidChars.indexOf(Char) == -1) //Despues utilizamos el metodo indexOf para buscar nuestra lista de caracteres validos(ValidChars), si no existe entonces
          {
 			IsNumber = false;//esto significa que el usuario a ingresado un caracter invalido
@@ -562,7 +562,7 @@ function procesaEsp(){
                         {
                             //alert("No hay registros de este paciente debe ingresar los datos");
                             //location.href='RecepcionLab.php';
-                            //abreVentana(nec);  
+                            //abreVentana(nec);
                             NoEncontrado(nec);
                         }else{
                             nec=document.getElementById('txtexp').value;
@@ -593,10 +593,10 @@ function procesaEsp(){
 		  	document.getElementById('DatosPaciente').style.display="block"
                         document.getElementById('lyLaboratorio').style.display="block"; //
                        // document.getElementById('cmbTipoEstab').focus();
-                        
+
                         idext=document.getElementById('IdEstablecimientoExterno').value;
-        
-	
+
+
                         if (idext == '' || idext==null || idext=='""'){
                             document.getElementById('cmbTipoEstab').focus();
                         }
@@ -617,7 +617,7 @@ function procesaEsp(){
 		  	document.getElementById('lyTipoEstab').innerHTML = respuesta;
                         document.getElementById('cmbTipoEstab').focus();
 			break;
-                        
+
                 case 13:
                         respuesta= JSON.parse(sendReq.responseText);
 
@@ -629,28 +629,28 @@ function procesaEsp(){
                                     $('#fechaCita').val(respuesta.data[0].fecha_cita);
                                     $('#numeroExpediente').val($('#IdNumeroExp').val());
                                     $('#idExpediente').val($('#idexpediente').val());
-                                 
+
                                     $('form#frm_send_recepcion').submit();
                                 }
                                 else
                                     limpiar();
-                                    
+
                             } else {
-                                alert ("Ya existe una solicitud con estos datos y su estado es "+respuesta.data[0].descripcion); 
+                                alert ("Ya existe una solicitud con estos datos y su estado es "+respuesta.data[0].descripcion);
                                 limpiar();
                             }
                         }else {
                             Examenes();
                             limpiar();
                         }
-                break;        
-                        
-		}		
+                break;
+
+		}
     }else {
 	  alert('Se han presentado problemas en la petición');
     }
-  }  
-} 
+  }
+}
 
 //pegar el correlativo del paciente externo para la busqueda y prescribir los examenes
 function pegarExp(IdExpediente,IdCitaServApoyo,IdEstablecimientoExterno,IdNumeroExpRef){
@@ -679,7 +679,7 @@ function Examenes()
     var mensaje="";
     if (FechaConsulta==''){
         mensaje +="Ingrese el dato de la Fecha de la consulta ";
-    }   
+    }
     if (IdSubServicio==0){
         mensaje +="\nIngrese el dato del subservicio"
     }
@@ -687,8 +687,8 @@ function Examenes()
        alert (mensaje)
         return false;
     }
-   
-    
+
+
     /*
     var IdHistorialClinico = document.getElementById("IdHistorialClinico").value;
     var IdSubEspecialidad = document.getElementById("IdSubEspecialidad").value;
@@ -708,15 +708,15 @@ var url = "../EstudiosLaboratorio/Solicitud.php"+Parametros;
 // alert (IdEstablecimiento+ ' -- ' +lugar+ ' -- ' + IdSubServicio+ ' -- ' +IdEmpleado+ ' -- ' +FechaConsulta);
 //alert (Parametros)
 //return false;
-    
-    
+
+
         var url = "../EstudiosLaboratorio/Solicitud.php?"+Parametros;
         window.open(url,"Solicitudes","fullscreen=yes, toolbar=no, scrollbars=yes");
         limpiar();
 }
 //Funcion de cambio de est externo
 function cambioestexterno(){
-    est=$('#cmb_establecimiento').val();   
+    est=$('#cmb_establecimiento').val();
    // document.getElementById("IdEstablecimientoExterno").value = est;
     $('#IdEstablecimientoExterno').val($('#cmb_establecimiento').val())
 }
@@ -728,8 +728,8 @@ function cambioestexterno(){
 //           dropdownAutoWidth: true
 //        });
 //    });
-    
-    
+
+
 
 
 </script>
@@ -739,12 +739,12 @@ function cambioestexterno(){
 
 <!--<link href="../../../css/paginalab.css" rel="stylesheet" type="text/css" />-->
 <div  style="width: 100%" >
-   <div class="panel panel-primary"  style="border:0px; height: 100%"> 
-      <div class="panel-heading" style="padding: 2px !important; width: 45%; min-width: 507px;"><h3>Verificar Expediente</h3> </div>   
-      <form name="frmdatosexpediente" id="frmdatosexpediente" action="" method="post">	
+   <div class="panel panel-primary"  style="border:0px; height: 100%">
+      <div class="panel-heading" style="padding: 2px !important; width: 45%; min-width: 507px;"><h3>Verificar Expediente</h3> </div>
+      <form name="frmdatosexpediente" id="frmdatosexpediente" action="" method="post">
 
-                                 
-      <div class="panel-body" id="pb-primervez" style="width:45%; border: 1px solid; border-color: #428BCA;min-width: 507px;">  
+
+      <div class="panel-body" id="pb-primervez" style="width:45%; border: 1px solid; border-color: #428BCA;min-width: 507px;">
                <table border = 0 class="table table-white no-v-border table-condensed" border="0" style="border:0px; width: 100%; margin-bottom: 2px !important;" cellspacing="0" cellpadding="3" align="center">
    <!--
                         <tr>
@@ -765,9 +765,9 @@ function cambioestexterno(){
                                                               }
                                                                echo "<option value='" . $row['id']. "'>" . $row['nombre'] . "</option>";
                                                            }
-                                                                               //mysql_free_result($row);		
-                                                       ?>		 		
-                                               </select>  
+                                                                               //mysql_free_result($row);
+                                                       ?>
+                                               </select>
                                  </td>
                         </tr>
                         <tr>
@@ -778,15 +778,15 @@ function cambioestexterno(){
                                        <input type="hidden" id="IdEstablecimientoExterno" value="<?php echo $lugar; ?>">
 
                <!--                        <input type="button" value="Verificar" id="btnverificar" onClick="searchpac();">-->
-                               </td> 
-                       </tr>     
+                               </td>
+                       </tr>
                        <tr><td colspan="2" align="right">
                             <button type="button" id="btnverificar" name="btnverificar" class='btn btn-primary' onclick="searchpac()"><span class='glyphicon glyphicon glyphicon-search'>&nbsp;Verificar</button>
-                            <button type="button" id="Nuevo" name="Nuevo" class='btn btn-primary' onclick="window.location.replace('RecepcionLab.php')"><span class='glyphicon '>&nbsp;Nueva Búsqueda</button>                                
+                            <button type="button" id="Nuevo" name="Nuevo" class='btn btn-primary' onclick="window.location.replace('RecepcionLab.php')"><span class='glyphicon glyphicon-refresh'>&nbsp;Nueva Búsqueda</button>                                
                         </td></tr>
-               </table>	
+               </table>
                 </div>
-         
+
    </form>
     <form id="frm_send_recepcion" action="../RecepcionSolicitud/Proc_RecepcionSolicitud.php" method="POST" style="display:none;">
         <input type="hidden" id="idSolicitud" name="idSolicitud" value="" />
@@ -796,7 +796,7 @@ function cambioestexterno(){
     </form>
 <div id="DatosPaciente" style="display:none;"></div>
 <div id="lyLaboratorio" class="panel panel-body" style="display:none;">
-    <form name="frmdatosgenerales" id="frmdatosgenerales" action="" method="post">  
+    <form name="frmdatosgenerales" id="frmdatosgenerales" action="" method="post">
         <table cellspacing="0" cellpadding="0" align="center" border=1 class="StormyWeatherFormTABLE" style="height:275px">
             <tr>&nbsp;</tr>
             <tr>
@@ -806,7 +806,7 @@ function cambioestexterno(){
                     </div>
                 </td>
             </tr>
-            <tr>	
+            <tr>
                 <td class="StormyWeatherFieldCaptionTD" >Tipo Establecimiento</td>
                 <td class="StormyWeatherDataTD">
                     <div id="lyTipoEstab">
@@ -814,7 +814,7 @@ function cambioestexterno(){
                                     <?php //  <option value="0" selected="selected">--Seleccione un tipo de Establecimiento--</option>
                                     $tipoest=$recepcion->tipoestactual($lugar);
                                     $rows=  pg_fetch_array($tipoest);
-                                       echo '<option value="' . $rows['idtipoestablecimiento'] . '" selected="selected" >' . $rows['nombretipoestablecimiento'] . '</option>'; 
+                                       echo '<option value="' . $rows['idtipoestablecimiento'] . '" selected="selected" >' . $rows['nombretipoestablecimiento'] . '</option>';
                                    /*         $db = new ConexionBD;
                                             if($db->conectar()==true){// SELECT IdTipoEstablecimiento,NombreTipoEstablecimiento FROM mnt_tipoestablecimiento ORDER BY NombreTipoEstablecimiento
                                                     $consulta  = "
@@ -826,7 +826,7 @@ function cambioestexterno(){
 
                                             //por cada registro encontrado en la tabla me genera un <option>
                                                     while ($rows = mysql_fetch_array($resultado)){
-                                                            echo '<option value="' . $rows[0] . '" selected="selected" >' . $rows[1] . '</option>'; 
+                                                            echo '<option value="' . $rows[0] . '" selected="selected" >' . $rows[1] . '</option>';
                                                     }
                                             }*/
                                     ?>
@@ -855,15 +855,15 @@ function cambioestexterno(){
                             /*$rows=  pg_fetch_array($tiposerv);
                                             $db = new ConexionBD;
                                                     if($db->conectar()==true){
-                                                    $consulta  = "SELECT mnt_servicio.IdServicio,mnt_servicio.NombreServicio FROM mnt_servicio 
-                                                    INNER JOIN mnt_servicioxestablecimiento 
+                                                    $consulta  = "SELECT mnt_servicio.IdServicio,mnt_servicio.NombreServicio FROM mnt_servicio
+                                                    INNER JOIN mnt_servicioxestablecimiento
                                                     ON mnt_servicio.IdServicio=mnt_servicioxestablecimiento.IdServicio
                                                     WHERE IdTipoServicio<>'DCO' AND IdTipoServicio<>'FAR' AND IdEstablecimiento=$lugar";
                                                     $resultado = mysql_query($consulta) or die('La consulta fall&oacute;: ' . mysql_error());
 
                                             //por cada registro encontrado en la tabla me genera un <option>*/
                             while ($rows = pg_fetch_array($tiposerv)){
-                                echo '<option value="' . $rows['0'] . '">' . $rows['nombre'] . '</option>'; 
+                                echo '<option value="' . $rows['0'] . '">' . $rows['nombre'] . '</option>';
                             }
                                         //    }
                         ?>
@@ -900,8 +900,8 @@ function cambioestexterno(){
             </tr>
             <tr>
 
-                <td class="StormyWeatherDataTD" colspan="2">                   
-            <center> 
+                <td class="StormyWeatherDataTD" colspan="2">
+            <center>
                <button type="button" id="Examen" name="Examen" class='btn btn-primary' onclick="BuscarExistenciaSolicitud()"><span class='glyphicon glyphicon-plus'>&nbsp;Agregar Examenes</button>
                <button type="button" id="Nuevo" name="Nuevo" class='btn btn-primary' onclick="window.location.replace('RecepcionLab.php')"><span class='glyphicon '>&nbsp;Nueva Búsqueda</button>
             </center>
@@ -911,13 +911,13 @@ function cambioestexterno(){
                     <td class="StormyWeatherDataTD">
                             <input type="button" value=" Seleccionar " id="Examen" onclick="Examenes();">
                     </td> -->
-            </tr>            
+            </tr>
         </table>
     </form>
 
  </div>
 </div>
-      
+
 </div>
 
 <p align="center"><!-- END Record NewRecord1 --></p>

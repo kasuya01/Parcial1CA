@@ -72,8 +72,11 @@ switch ($opcion) {
                 $cond2 .=$cond0 . "  t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " ";
             }
             else{
-                $cond1 .=$cond0 . "  t02.id_establecimiento_externo = " . $lugar . " ";
-                $cond2 .=$cond0 . "  t02.id_establecimiento_externo = " . $lugar . " ";
+                $cond1 .=$cond0 . "  t02.id_establecimiento_externo >0 ";
+                $cond2 .=$cond0 . "  t02.id_establecimiento_externo >0 ";
+
+                // $cond1 .=$cond0 . "  t02.id_establecimiento_externo = " . $lugar . " ";
+                // $cond2 .=$cond0 . "  t02.id_establecimiento_externo = " . $lugar . " ";
             }
         }
 
@@ -113,9 +116,13 @@ switch ($opcion) {
         }*/
 
         if (!empty($_POST['fecharecep'])) {
-            $cond1 .= " and t03.fecharecepcion = '" . $_POST['fecharecep'] . "'       ";
-            $cond2 .= " and t03.fecharecepcion = '" . $_POST['fecharecep'] . "'       ";
+            $cond1 .= " and t03.fecharecepcion = '" . $_POST['fecharecep'] . "'    ";
+            $cond2 .= " and t03.fecharecepcion = '" . $_POST['fecharecep'] . "'    ";
         }
+        // else {
+        //     $cond1 .= " and t03.fecharecepcion  >=date(current_date -   INTERVAL'6 month')    ";
+        //     $cond2 .= " and t03.fecharecepcion  >=date(current_date -   INTERVAL'6 month')     ";
+        // }
 
         if (!empty($_POST['primernombre'])) {
 
@@ -248,7 +255,7 @@ switch ($opcion) {
             INNER JOIN cit_citas_serviciodeapoyo t15                ON (t15.id_solicitudestudios=t02.id)
             INNER JOIN lab_tiposolicitud t17 			    ON (t17.id = t02.idtiposolicitud)
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-            AND t02.id_establecimiento =$lugar $cond2   order by fecharecepcion desc  ";
+            AND t02.id_establecimiento =$lugar $cond2   order by id_historial_clinico,fecharecepcion desc  ";
 
         /* if ($ban==0)
           {   $query = substr($query ,0,strlen($query)-3);
@@ -579,7 +586,7 @@ if ( $NroRegistros==""){
         $Idtipoesta = $_POST['idtipoesta'];
         // echo $Idtipoesta;
         $dtIdEstab = $objdatos->LlenarCmbEstablecimiento($Idtipoesta);
-        $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" class="form-control height"  style="width:375px">';
+        $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" class="height placeholder js-example-basic-single"  style="width:375px">';
         $rslts .='<option value="0"> Seleccione Establecimiento </option>';
         while ($rows = pg_fetch_array($dtIdEstab)) {
             $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
@@ -594,7 +601,7 @@ if ( $NroRegistros==""){
         $IdServ = $_POST['IdServicio'];
         //  echo $IdServ;
         $dtserv = $objdatos->LlenarCmbServ($IdServ, $lugar);
-        $rslts = '<select name="cmbSubServ" id="cmbSubServ" class="form-control height"  style="width:375px">';
+        $rslts = '<select name="cmbSubServ" id="cmbSubServ" class="height placeholder js-example-basic-single"  style="width:375px">';
         $rslts .='<option value="0"> Seleccione Subespecialidad </option>';
         while ($rows = pg_fetch_array($dtserv)) {
             $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';

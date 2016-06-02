@@ -32,8 +32,8 @@ switch ($opcion) {
         $query="";
         $query2="";
         $where_with="";
-        //echo $IdEstab; 
-                
+        //echo $IdEstab;
+
         if ($_POST['IdEstab']<>0) {
            if ($_POST['IdEstab']<>$lugar){
                $cond1 .= " t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " AND";
@@ -43,9 +43,9 @@ switch ($opcion) {
                $cond1 .= " t02.id_establecimiento_externo = " . $lugar . " AND";
                $cond2 .= " t02.id_establecimiento_externo = " . $lugar . " AND";
             }
-          
+
         }
-        
+
         if ($_POST['IdServ'] <> 0) {
             $cond1 .= " t12.id  = " . $_POST['IdServ'] . " AND";
             $cond2 .= " t12.id  = " . $_POST['IdServ'] . " AND";
@@ -101,12 +101,12 @@ switch ($opcion) {
             $cond1 .= " t07.segundo_apellido ILIKE '" . $_POST['SApellido'] . "%' AND";
             $cond2 .= " t07.segundo_apellido ILIKE '" . $_POST['SApellido'] . "%' AND";
         }
-//echo $TipoSolic;        
+//echo $TipoSolic;
         if ($TipoSolic != '0') {
-            //echo "Entro". $TipoSolic;  
+            //echo "Entro". $TipoSolic;
             $cond1 .= " t17.idtiposolicitud = '" . $TipoSolic . "' AND";
             $cond2 .= " t17.idtiposolicitud = '" . $TipoSolic . "' AND";
-           
+
            //echo " EntroCon1=".$cond1;
         }
 
@@ -129,95 +129,95 @@ switch ($opcion) {
             $var2 = $lugar." AND ".$cond2;
             //  echo $query1;
             //$query_search = $query . " ORDER BY t03.fecharecepcion DESC";
-        }   
+        }
         else{
-            
+
             $var1 = $lugar;
             $var2 = $lugar;
         }
         //echo $cond2;
-       $query=" WITH tbl_servicio AS ( SELECT t02.id, 
-                CASE WHEN t02.nombre_ambiente IS NOT NULL THEN 
-                    CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' || t02.nombre_ambiente 
-                            --ELSE t02.nombre_ambiente 
-                    END 
-                    ELSE 
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre 
-                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)  
+       $query=" WITH tbl_servicio AS ( SELECT t02.id,
+                CASE WHEN t02.nombre_ambiente IS NOT NULL THEN
+                    CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' || t02.nombre_ambiente
+                            --ELSE t02.nombre_ambiente
+                    END
+                    ELSE
+                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre
+                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)
                                     --THEN t07.nombre||'-'||t01.nombre
                                     THEN t01.nombre
-                    END 
+                    END
 
                 END AS servicio,
                (CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->'  || t06.nombre
                     ELSE   t07.nombre ||'-->' || t06.nombre
                 END) as procedencia
-                FROM ctl_atencion t01 
-                INNER JOIN mnt_aten_area_mod_estab t02 ON (t01.id = t02.id_atencion) 
-                INNER JOIN mnt_area_mod_estab t03 ON (t03.id = t02.id_area_mod_estab) 
-                LEFT JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab) 
-                LEFT JOIN mnt_servicio_externo t05 ON (t05.id = t04.id_servicio_externo) 
+                FROM ctl_atencion t01
+                INNER JOIN mnt_aten_area_mod_estab t02 ON (t01.id = t02.id_atencion)
+                INNER JOIN mnt_area_mod_estab t03 ON (t03.id = t02.id_area_mod_estab)
+                LEFT JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
+                LEFT JOIN mnt_servicio_externo t05 ON (t05.id = t04.id_servicio_externo)
                 INNER JOIN  ctl_area_atencion t06  on  t06.id = t03.id_area_atencion
                 INNER JOIN ctl_modalidad  t07 ON t07.id = t03.id_modalidad_estab
                 WHERE t02.id_establecimiento =  $lugar ORDER BY 2)
                     SELECT ordenar.* FROM (
                        SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                        t02.id AS idsolicitudestudio,
-                       t04.idplantilla, 
+                       t04.idplantilla,
                        t01.id AS iddetallesolicitud,
-                       t03.numeromuestra, 
-                       t06.numero AS idnumeroexp, 
-                       t03.id AS idrecepcionmuestra, 
+                       t03.numeromuestra,
+                       t06.numero AS idnumeroexp,
+                       t03.id AS idrecepcionmuestra,
                        t04.id AS idexamen,
                        t04.nombre_examen AS nombreexamen,
                        t04.codigo_examen AS codigoexamen,
-                       t01.indicacion, t08.nombrearea, 
+                       t01.indicacion, t08.nombrearea,
                        CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,
                        t07.segundo_apellido,t07.apellido_casada) AS paciente,
                        t20.servicio AS nombresubservicio,
-                       t20.procedencia AS nombreservicio, 
-                       t02.impresiones, 
-                       t14.nombre, 
+                       t20.procedencia AS nombreservicio,
+                       t02.impresiones,
+                       t14.nombre,
                        t09.id AS idhistorialclinico,
-                       TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud, 
-                       t17.tiposolicitud AS prioridad, 
-                       t07.fecha_nacimiento AS fechanacimiento, 
-                       t19.id AS sexo, 
+                       TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud,
+                       t17.tiposolicitud AS prioridad,
+                       t07.fecha_nacimiento AS fechanacimiento,
+                       t19.id AS sexo,
                        t18.idestandar,
                        t02.id_establecimiento_externo as IdEstab,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
                        false AS referido, TO_CHAR(f_tomamuestra,'YYYY/mm/dd HH12:MI') AS f_tomamuestra,
                        (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
                        t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar
-                FROM sec_detallesolicitudestudios t01 
-                INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio) 
-                INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio) 
-                INNER JOIN lab_conf_examen_estab t04 ON (t04.id = t01.id_conf_examen_estab) 
-                INNER JOIN mnt_area_examen_establecimiento t05 ON (t05.id = t04.idexamen) 
-                INNER JOIN mnt_expediente t06 ON (t06.id = t02.id_expediente) 
-                INNER JOIN mnt_paciente t07 ON (t07.id = t06.id_paciente) 
-                INNER JOIN ctl_area_servicio_diagnostico t08 ON (t08.id = t05.id_area_servicio_diagnostico 
-                AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) 
-                INNER JOIN sec_historial_clinico t09 ON (t09.id = t02.id_historial_clinico) 
-                INNER JOIN mnt_aten_area_mod_estab t10 ON (t10.id = t09.idsubservicio) 
-                INNER JOIN ctl_atencion t11 ON (t11.id = t10.id_atencion) 
-                INNER JOIN mnt_area_mod_estab t12 ON (t12.id = t10.id_area_mod_estab) 
-                INNER JOIN ctl_area_atencion t13 ON (t13.id = t12.id_area_atencion) 
-                INNER JOIN ctl_establecimiento t14 ON (t14.id = t09.idestablecimiento) 
-                INNER JOIN cit_citas_serviciodeapoyo t15 ON (t02.id = t15.id_solicitudestudios) 
-                INNER JOIN ctl_estado_servicio_diagnostico t16 ON (t16.id = t01.estadodetalle) 
-                INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud) 
-                INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico) 
+                FROM sec_detallesolicitudestudios t01
+                INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
+                INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio)
+                INNER JOIN lab_conf_examen_estab t04 ON (t04.id = t01.id_conf_examen_estab)
+                INNER JOIN mnt_area_examen_establecimiento t05 ON (t05.id = t04.idexamen)
+                INNER JOIN mnt_expediente t06 ON (t06.id = t02.id_expediente)
+                INNER JOIN mnt_paciente t07 ON (t07.id = t06.id_paciente)
+                INNER JOIN ctl_area_servicio_diagnostico t08 ON (t08.id = t05.id_area_servicio_diagnostico
+                AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+                INNER JOIN sec_historial_clinico t09 ON (t09.id = t02.id_historial_clinico)
+                INNER JOIN mnt_aten_area_mod_estab t10 ON (t10.id = t09.idsubservicio)
+                INNER JOIN ctl_atencion t11 ON (t11.id = t10.id_atencion)
+                INNER JOIN mnt_area_mod_estab t12 ON (t12.id = t10.id_area_mod_estab)
+                INNER JOIN ctl_area_atencion t13 ON (t13.id = t12.id_area_atencion)
+                INNER JOIN ctl_establecimiento t14 ON (t14.id = t09.idestablecimiento)
+                INNER JOIN cit_citas_serviciodeapoyo t15 ON (t02.id = t15.id_solicitudestudios)
+                INNER JOIN ctl_estado_servicio_diagnostico t16 ON (t16.id = t01.estadodetalle)
+                INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud)
+                INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico)
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo)
                 INNER JOIN tbl_servicio t20 ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
-               
+
                 WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var1
-        
+
                 UNION
 
                 SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                        t02.id AS idsolicitudestudio,
-                       t04.idplantilla, 
+                       t04.idplantilla,
                        t01.id AS iddetallesolicitud,
                        t03.numeromuestra,
                        t06.numero AS idnumeroexp,
@@ -227,47 +227,47 @@ switch ($opcion) {
                        t04.codigo_examen AS codigoexamen,
                        t01.indicacion, t08.nombrearea,
                        CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido,
-                       t07.apellido_casada) AS paciente, 
-                       t11.nombre AS nombresubservicio, 
-                       t13.nombre AS nombreservicio, 
-                       t02.impresiones, 
+                       t07.apellido_casada) AS paciente,
+                       t11.nombre AS nombresubservicio,
+                       t13.nombre AS nombreservicio,
+                       t02.impresiones,
                        t14.nombre,
-                       t09.id AS idhistorialclinico, 
-                       TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud, 
-                       t17.tiposolicitud AS prioridad, 
-                       t07.fecha_nacimiento AS fechanacimiento, 
-                       t19.id AS sexo, 
+                       t09.id AS idhistorialclinico,
+                       TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud,
+                       t17.tiposolicitud AS prioridad,
+                       t07.fecha_nacimiento AS fechanacimiento,
+                       t19.id AS sexo,
                        t18.idestandar,
                        t02.id_establecimiento_externo,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-                       true AS referido,TO_CHAR(f_tomamuestra,'YYYY/mm/dd HH12:MI') AS f_tomamuestra, 
+                       true AS referido,TO_CHAR(f_tomamuestra,'YYYY/mm/dd HH12:MI') AS f_tomamuestra,
                        (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
                        t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar
-                FROM sec_detallesolicitudestudios t01 
-                INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio) 
-                INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio) 
-                INNER JOIN lab_conf_examen_estab t04 ON (t04.id = t01.id_conf_examen_estab) 
+                FROM sec_detallesolicitudestudios t01
+                INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
+                INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio)
+                INNER JOIN lab_conf_examen_estab t04 ON (t04.id = t01.id_conf_examen_estab)
                 INNER JOIN mnt_area_examen_establecimiento t05 ON (t05.id = t04.idexamen)
-                INNER JOIN mnt_dato_referencia t09 ON t09.id=t02.id_dato_referencia 
-                INNER JOIN mnt_expediente_referido t06 ON (t06.id = t09.id_expediente_referido) 
-                INNER JOIN mnt_paciente_referido t07 ON (t07.id = t06.id_referido) 
-                INNER JOIN ctl_area_servicio_diagnostico t08 ON (t08.id = t05.id_area_servicio_diagnostico 
-                AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) 
-                INNER JOIN mnt_aten_area_mod_estab t10 ON (t10.id = t09.id_aten_area_mod_estab) 
-                INNER JOIN ctl_atencion t11 ON (t11.id = t10.id_atencion) 
-                INNER JOIN mnt_area_mod_estab t12 ON (t12.id = t10.id_area_mod_estab) 
-                INNER JOIN ctl_area_atencion t13 ON (t13.id = t12.id_area_atencion) 
+                INNER JOIN mnt_dato_referencia t09 ON t09.id=t02.id_dato_referencia
+                INNER JOIN mnt_expediente_referido t06 ON (t06.id = t09.id_expediente_referido)
+                INNER JOIN mnt_paciente_referido t07 ON (t07.id = t06.id_referido)
+                INNER JOIN ctl_area_servicio_diagnostico t08 ON (t08.id = t05.id_area_servicio_diagnostico
+                AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+                INNER JOIN mnt_aten_area_mod_estab t10 ON (t10.id = t09.id_aten_area_mod_estab)
+                INNER JOIN ctl_atencion t11 ON (t11.id = t10.id_atencion)
+                INNER JOIN mnt_area_mod_estab t12 ON (t12.id = t10.id_area_mod_estab)
+                INNER JOIN ctl_area_atencion t13 ON (t13.id = t12.id_area_atencion)
                 INNER JOIN ctl_establecimiento t14 ON (t14.id = t09.id_establecimiento)
-                INNER JOIN cit_citas_serviciodeapoyo t15 ON (t02.id = t15.id_solicitudestudios) 
-                INNER JOIN ctl_estado_servicio_diagnostico t16 ON (t16.id = t01.estadodetalle) 
-                INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud) 
-                INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico) 
+                INNER JOIN cit_citas_serviciodeapoyo t15 ON (t02.id = t15.id_solicitudestudios)
+                INNER JOIN ctl_estado_servicio_diagnostico t16 ON (t16.id = t01.estadodetalle)
+                INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud)
+                INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico)
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo)
                 WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var2) ordenar
-                ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC"; 
+                ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
 //ECHO $query;
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);
-        
+
         echo "<div class='table-responsive' style='width:93%;'>
             <table width='100%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
                 <thead><tr>
@@ -345,7 +345,7 @@ switch ($opcion) {
     case 2://LLENANDO COMBO DE EMPLEADOS
         $idarea = $_POST['idarea'];
        // echo $idarea;
-        $resultado = "<select id='cmbEmpleados' name='cmbEmpleados' size='1' style='width:100%' class='form-control height'>
+        $resultado = "<select id='cmbEmpleados' name='cmbEmpleados' size='1' style='width:96%' class='height js-example-basic-single'>
                         <option value='0' >Seleccione...</option>";
         require_once('clsSolicitudesProcesadas.php');
         $obje = new clsSolicitudesProcesadas;
@@ -356,7 +356,7 @@ switch ($opcion) {
         pg_free_result($consulta);
         $resultado.= "</select>";
         echo $resultado;
-    
+
     break;
     case 3://GUARDANDO DATOS DE RESULTADOS Y MOSTANDO LISTA ACTUALIZADA PLANTILLA "A"
         //Guardando Resultados
@@ -367,7 +367,7 @@ switch ($opcion) {
         if ($idresultado=='x'){
            $idresultado='NULL';
         }
-           
+
         //$resultado = $_POST['resultado'];
         $resultado = (empty($_POST['resultado'])) ? 'NULL' : "'" . pg_escape_string($_POST['resultado']) . "'";
         //$lectura = $_POST['lectura'];
@@ -393,7 +393,7 @@ switch ($opcion) {
         // echo $verifica[0];
         if ($verifica == 0) {
             $verdadero = $objdatos->InsertarResultadoPlantillaAM($idexamen, $idmetodologia['idexamet'], $responsable, $fecha_realizacion, $fecha_reporte, $resultado, $observacion, $codigo, $idsolicitud, $usuario, $iddetalle, $idrecepcion, $lugar, $idresultado, $marca, $lectura) ;
-            
+
             if ($verdadero != 0) {
                 $cantingresados++;
                 if ($objdatos->InsertarResultadoPlantillaAF($idsolicitud, $iddetalle,$idrecepcion, $resultado, $lectura, $interpretacion, $observacion, $lugar, $usuario, $idexamen, $responsable, $fecha_reporte, $idresultado, $marca)==false){
@@ -411,8 +411,8 @@ switch ($opcion) {
                 echo "Error al momento de guardar resultados. Por favor revisar información.";
                 $flag=1;
             }
-            
-            if ($flag==0){	
+
+            if ($flag==0){
                     if ($cantingresados>0){
 	echo "Registro grabado correctamente";
                     }
@@ -424,9 +424,9 @@ switch ($opcion) {
 	else{
 		echo "Error de grabacion";
 	}
-            
-            
-         /*   
+
+
+         /*
             $verdadero = $objdatos->InsertarResultadoPlantillaA($idexamen, $idsolicitud, $iddetalle, $resultado, $lectura, $observacion, $responsable, $lectura, $idrecepcion, $interpretacion, $observacion, $usuario, $codigo, $lugar, $fecha_realizacion, $fecha_reporte);
 
             if ($verdadero != 0) {
@@ -470,9 +470,9 @@ switch ($opcion) {
 
         $Consulta_Estab = $objdatos->Nombre_Establecimiento($lugar);
         $row_estab = pg_fetch_array($Consulta_Estab);
-        
+
         //Buscar Datos Paciente
-        
+
        //  echo $idsolicitud." - ".$idexamen." - ".$lugar." - ".$sexo." - ".$idedad;
         $consulta = $objdatos->MostrarResultadoGenerales($idsolicitud, $idexamen, $lugar);
         $row = pg_fetch_array($consulta);
@@ -484,7 +484,7 @@ switch ($opcion) {
         $fecha_tmx=$objdatos->ftomamuestra($iddetalle, $lugar);
         $ftmx = pg_fetch_array($fecha_tmx);
         $f_tomamuestra=$ftmx['f_tomamuestra'];
-        
+
     //    $proce = $row['procedencia'];
 
        // $Cuentadias = $objdatos->CalculoDias($fechanac);
@@ -514,14 +514,14 @@ switch ($opcion) {
                     	<td colspan='1' style='font:bold'><strong>Establecimiento:</strong></td>
                     	<td colspan='2' style='font:bold'>" . $establecimiento . "</td>
                         <td colspan='1' style='font:bold'><strong>Fecha Toma Muestra:</strong></td>
-			<td colspan='2' style='font:bold'>" . $f_tomamuestra . "</td>    
+			<td colspan='2' style='font:bold'>" . $f_tomamuestra . "</td>
                     </tr>
 
                     <tr>
                     	<td colspan='1' style='font:bold'><strong>NEC:</strong></td>
 			<td colspan='2' style='font:bold'>" . $txtnec . "</td>
                         <td colspan='1'style='font:bold'><strong>Fecha Recepción:</strong></td>
-                    	<td colspan='2' style='font:bold'>" . $row['fecharecepcion'] . "<input name='suEdad' id='suEdad'  type='hidden'  value='" . $rowpa['fecha_nacimiento'] . "'/></td>    
+                    	<td colspan='2' style='font:bold'>" . $row['fecharecepcion'] . "<input name='suEdad' id='suEdad'  type='hidden'  value='" . $rowpa['fecha_nacimiento'] . "'/></td>
                     </tr>
 		    <tr>
                         <td colspan='1' style='font:bold'><strong>Paciente:</strong></td>
@@ -534,7 +534,7 @@ switch ($opcion) {
                     <tr>
 			<td colspan='1' style='font:bold'><strong>Edad:</strong></td>
 			<td colspan='2' style='font:bold'>".$rowpa['edad']."
-                            
+
                            <!-- <div id='divsuedad'>
                             </div>--></td>
 			<td colspan='1' style='font:bold'><strong>Sexo:</strong></td>
@@ -577,16 +577,16 @@ switch ($opcion) {
         else{
            $Imprimir.="<td colspan='5' align='center' >&nbsp;DETALLE DE RESULTADOS<br/><br></td>";
         }
-        
-                            
-                            
+
+
+
          $Imprimir.="</tr>
                         <tr >
                             <td align='center'><b>Prueba Realizada </b></td>";
         if ($cantmet!=0){
             $Imprimir.="<td align='center'><b>Metodología </b></td>";
         }
-        $Imprimir.="                    
+        $Imprimir.="
                             <td align='center'><b>Resultado</b></td>
                             <td align='center'><b>Unidades</b></td>
                             <td align='center'><b>Rangos Normales </b></td>";
@@ -598,15 +598,15 @@ switch ($opcion) {
          $Imprimir.=    "<td align='justify'><b>Observaci&oacute;n</b></td>
                              </tr>";
       }
-	 
+
          if ($cantmet!=0){
             $Imprimir.="<tr><td colspan='8'><hr style='width:90%'></td></tr>";
         }
         else{
            $Imprimir.="<tr><td colspan='5'><hr style='width:90%'></td></tr>";
-        }       
-                
-                        
+        }
+
+
 
         //MOSTRAR DATOS FIJOS Y RESULTADOS DIGITADOS
         $consulta2 = $objdatos->MostrarDatosFijosPlantillaA($idexamen, $lugar, $sexo, $idedad, $idmetodologia);
@@ -617,18 +617,18 @@ switch ($opcion) {
         if ($cantmet!=0){
             $Imprimir.="<td align='center' style='font:bold'><strong>" . $fila['nombre_metodologia'] . "</strong></td>";
         }
-        $Imprimir.="   
-                            
+        $Imprimir.="
+
 			    <td align='center'>" . $resultado . "<input type='hidden' id='resultado_' name='resultado_' value='" . $resultado . "'/><input type='hidden' id='idresultado_' name='idresultado_' value=".$idresultado." /></td>
 			    <td align='center'>" . $fila['unidades'] . "</td>
 			    <td align='center'>" . $fila['rangoinicio'] . " - " . $fila['rangofin'] . "</td>";
         if ($cantmet!=0){
-        $Imprimir.=" 
+        $Imprimir.="
 			    <td align='center'>" . $marca . "</td>"
                 . "<td align='center'>" . $lectura . "</td>
 			    ";
         }
-        $Imprimir.=" 
+        $Imprimir.="
 			    <td align='justify'>" . $observacion . "<input type='hidden' id='observacion_' name='observacion_' value='" . $observacion . "'/><input type='hidden' id='marca_' name='marca_' value='" . $marca . "'/><input type='hidden' id='lectura_' name='lectura_' value='" . $lectura . "'/><input type='hidden' id='interpretacion_' name='interpretacion_' value='" . $interpretacion . "'/></td>
 			</tr>";
         $Imprimir.="<tr>
@@ -636,7 +636,7 @@ switch ($opcion) {
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
-                            
+
                             <td>&nbsp;</td>";
        if ($cantmet!=0){
           $Imprimir.= " <td>&nbsp;</td>
@@ -648,8 +648,8 @@ switch ($opcion) {
            $Imprimir.="</tr>
                         </table>";
        }
-                
-			
+
+
         $Imprimir.="<table align='center' border='0'>
                         <tr>
                             <td>&nbsp;</td>
@@ -664,7 +664,7 @@ switch ($opcion) {
                             <button style='display:none' type='button' id='Imprimir' name='Imprimir' align='center' class='btn btn-primary' title='Imprimir'  onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $resultado . "\",\"" . $fecha_reporta . "\", \"" . $lectura . "\",\"" . $interpretacion . "\",\"" . $observacion . "\",\"" . $responsable . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec . "\",\"" . $proce . "\",\"" . $origen . "\",\"" . $iddetalle . "\",\"" . $marca . "\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
                             <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true' style='display:none; height:20px'>
                             <button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>
-                            
+
                             <button type='button' id='btnSalir' align='center' class='btn btn-primary' title='Cerrar'  onclick='Cerrar();'><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br/><br><br/>
                             </td>
 			</tr>
@@ -694,7 +694,7 @@ switch ($opcion) {
     case 6:// Llenar Combo Establecimiento
         $rslts = '';
         $Idtipoesta = $_POST['idtipoesta'];
-        
+
         // echo $Idtipoesta;
         if ($Idtipoesta<>0){
             $dtIdEstab = $objdatos->LlenarCmbEstablecimiento($Idtipoesta);
@@ -710,11 +710,11 @@ switch ($opcion) {
             while ($rows = pg_fetch_array($dtIdEstab)) {
                 $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
             }
-        }    
+        }
         $rslts .= '</select>';
         echo $rslts;
         break;
-        
+
     case 7:// Llenar combo Subservicio
         $rslts = '';
         $IdServ = $_POST['IdServicio'];
@@ -755,14 +755,14 @@ switch ($opcion) {
 
         echo json_encode($jsonresponse);
         break;
-        
+
     case 10://LLENANDO COMBO DE Metodologia
         $idexamen = $_POST['idexamen'];
       //  echo 'idexamen: '.$idexamen.'--<br\>';
         $consulta = $objdatos->BuscarMetodologia($idexamen);
         $cant=  pg_num_rows($consulta);
         if ($cant>0){
-           
+
         $resultado2 = "<select id='cmbmetodologia' name='cmbmetodologia' size='1' onchange='buscarPosResMet(this.value)' style='width:96%; height:100%' class='form-control height'>";
            // if ($cant>1){
                 $resultado2 .="<option value='0' selected>Seleccione...</option>";
@@ -773,18 +773,18 @@ switch ($opcion) {
         pg_free_result($consulta);
         $resultado2.= "</select>";
         $resultado2.= "<input type='hidden' id='cant_metodologia' name='cant_metodologia' value='".$cant."'>   ";
-        
+
         }
         else{
             $resultado2=$cant;
         }
         echo $resultado2;
         break;
-              
+
     case 11://LLENANDO COMBO DE Empleado que emite resultado final
         $idarea = $_POST['idarea'];
         //echo $idarea;
-        $resultado = "<select id='cmbEmpleadosfin' name='cmbEmpleadosfin' size='1' style='width:100%' class='form-control height'>
+        $resultado = "<select id='cmbEmpleadosfin' name='cmbEmpleadosfin' size='1' style='width:100%' class='height js-example-basic-single'>
                         <option value='0' >Seleccione...</option>";
         require_once('clsSolicitudesProcesadas.php');
         $obje = new clsSolicitudesProcesadas;
@@ -796,7 +796,7 @@ switch ($opcion) {
         $resultado.= "</select>";
         echo $resultado;
         break;
-    //Fn PG    
+    //Fn PG
     case 12://Ingresando los resultados de la boleta.
          // $idexamen = $_POST['idexamen'];
         $idsolicitud = $_POST['idsolicitud'];
@@ -812,7 +812,7 @@ switch ($opcion) {
         $cantingresados=0;
         $cantidadnum=$_POST['cantidadnum'];
         $flag=0;
-        
+
         if ($cantidadnum>0) {
 	    for ($i=1; $i<=$cantidadnum; $i++){
 		$hdnidexamen_ = $_POST['hdnidexamen_'.$i];
@@ -828,20 +828,20 @@ switch ($opcion) {
 		$hdnLectura_=  (empty($_POST['hdnLectura_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnLectura_'.$i]) . "'";
 		$hdnObserva_=  (empty($_POST['hdnObserva_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnObserva_'.$i]) . "'";
 		$hdnCodResult_ = $_POST['hdnCodResult_'.$i];
-                                
+
                 $verifica = @pg_num_rows($objdatos->BuscarResultado($idexamen, $idsolicitud, $iddetalle, $lugar));
-                
+
              //   echo '<br>idmeto: '.$hdnIdMetodologia_.'<br> resul:'.$hdnResult_.'<br> i: '.$i.' - cant: '.$cantidadnum;
               //   echo '<br>Verificadoooo: '.$verifica;
                 if ($verifica == 0) {
             //        echo '    entro a verifica';
                     $verdadero = $objdatos->InsertarResultadoPlantillaAM($hdnidexamen_, $hdnIdMetodologia_, $hdnResp_, $hdnFecProc_, $hdnFecResu_, $hdnResult_, $hdnObserva_, $hdnCodResult_, $idsolicitud, $usuario, $iddetalle, $idrecepcion, $lugar, $hdnIdResult_, $hdnMarca_, $hdnLectura_);
-                    
+
 
                     if ($verdadero != 0) {
                         $cantingresados++;
                         echo "<center>Datos Guardados</center>";
-                        
+
                     } else {
                         echo "<center>Error al momento de guardar resultados. Por favor revisar informaci&oacute;n.</center>";
                         $flag=1;
@@ -855,7 +855,7 @@ switch ($opcion) {
 		//$hdnLecExa_ = $_POST['hdnLecExa_'.$i];
 		//$hdnLecExa_ = (empty($_POST['hdnLectExa_'.$i])) ? 'NULL' : "'" . pg_escape_string($_POST['hdnLectExa_'.$i]) . "'";
 		//$examenid= $objeto->crearDetalleResultado($hdnIdpruebaest_,$hdnFecProc_, $hdnFecResu_, $hdnIdPosResult_, $hdnPosResult_,$hdnIdPosObser_,		$hdnPosObser_, $hdnIdTipoRes_,$hdnIdProce_, $hdnMarReac_,$hdnLecExa_, $i_idemppl, $idestabres, $i_iddetorden);
-		
+
 	    }
 	}
 	$estorden=0;
@@ -867,11 +867,11 @@ switch ($opcion) {
                 if ($idresultadofin=='x'){
                    $idresultadofin='NULL';
                 }
-		
+
 		$cmbEmpleadosfin=$_POST['cmbEmpleadosfin'];
-               
+
 		$d_resultfin=(empty($_POST['d_resultfin'])) ? 'NULL' : "'" . pg_escape_string($_POST['d_resultfin']) . "'";
-               
+
 		$v_obserrecep=(empty($_POST['v_obseresultfin'])) ? 'NULL' : "'" . pg_escape_string($_POST['v_obseresultfin']) . "'";
 		$v_interpretacion=(empty($_POST['v_interpretacion'])) ? 'NULL' : "'" . pg_escape_string($_POST['v_interpretacion']) . "'";
 		$v_lectura=(empty($_POST['v_lectura'])) ? 'NULL' : "'" . pg_escape_string($_POST['v_lectura']) . "'";
@@ -886,8 +886,8 @@ switch ($opcion) {
                         }
                 }
 	}
-	
-        	if ($flag==0){	
+
+        	if ($flag==0){
                     if ($cantingresados>0){
 	echo "<font color=blue><center><img src='../../../Imagenes/ok.png' align='absmiddle'/>Registro grabado correctamente</center></font>";
                     }
@@ -899,7 +899,7 @@ switch ($opcion) {
 	else{
 		echo "<font color=red><center><img src='../../../Imagenes/error.png' align='absmiddle'/>Error de grabacion</center></font>";
 	}
-        
+
        // $verifica = $objdatos->BuscarResultado($idexamen, $idsolicitud, $iddetalle, $lugar);
         // echo $verifica[0];
       /*  if ($verifica == 0) {
@@ -932,15 +932,15 @@ switch ($opcion) {
         $establecimiento = $_POST['establecimiento'];
         $cmbEmpleadosfin=$_POST['cmbEmpleadosfin'];
         $d_resultfin=$_POST['d_resultfin'];
-      
+
         $cantingresados=0;
         $cantidadnum=$_POST['cantidadnum'];
         $flag=0;
-        
+
         $Consulta_Estab = $objdatos->Nombre_Establecimiento($lugar);
         $row_estab = pg_fetch_array($Consulta_Estab);
         $consulta = $objdatos->MostrarResultadoGenerales($idsolicitud, $idexamen, $lugar);
-        
+
         $row = pg_fetch_array($consulta);
         $nombre = $row['nombrearea'];
         $id_establecimiento_externo = $row['id_establecimiento_externo'];
@@ -959,8 +959,8 @@ switch ($opcion) {
         $d_resultfin=$filares['fecha_resultado'];
         $responsable=$filares['idempleado'];
         $f_tomamuestra=$filares['f_tomamuestra'];
-        
-        
+
+
         $timefresult = strtotime($d_resultfin);
          $d_resultfin = date("Y-m-d", $timefresult);
     //    $proce = $row['procedencia'];
@@ -969,7 +969,7 @@ switch ($opcion) {
         //$Cdias = pg_fetch_array($Cuentadias);
          $consulta_empleado = $objdatos->BuscarEmpleadoValidador($responsable, $lugar);
                 $fila_empleado = pg_fetch_array($consulta_empleado); //$fila_empleado['NombreEmpleado'].
-       
+
         $Imprimir = "<hr><table width='100%' align='center' border='0' class='StormyWeatherFormTABLE' style='height: 350px;'>
 	            <tr>
 			<td colspan='1' align='left' width='20%'><img id='Image1' style='WIDTH: 80px; HEIGHT: 55px' height='86' src='../../../Imagenes/escudo.png' width='210' name='Image1'></td>
@@ -980,15 +980,15 @@ switch ($opcion) {
 			</td>
                         <td colspan='1' align='right' width='20%'><img id='Image3' style='WIDTH: 110px; HEIGHT: 55px' height='86' src='../../../Imagenes/paisanito.png' width='210' name='Image3'></td>
                     </tr>
-                    
+
                       <td colspan='6' align='center'><hr><br></td>
                     </tr>
                     <tr>
-                         
+
                     	<td colspan='1' style='font:bold'><strong>Establecimiento:</strong></td>
                     	<td colspan='2' style='font:bold'>" . $establecimiento . "</td>
                         <td colspan='1' style='font:bold'><strong>Fecha Toma Muestra:</strong></td>
-			<td colspan='2'>" . $f_tomamuestra . "</td>                    	
+			<td colspan='2'>" . $f_tomamuestra . "</td>
                     </tr>
 
                     <tr>
@@ -1007,7 +1007,7 @@ switch ($opcion) {
                     <tr>
 			<td colspan='1' style='font:bold'><strong>Edad:</strong></td>
 			<td colspan='2'>".$rowpa['edad']."
-                            
+
                            <!-- <div id='divsuedad'>
                             </div>--></td>
 			<td colspan='1' style='font:bold'><strong>Sexo:</strong></td>
@@ -1022,7 +1022,7 @@ switch ($opcion) {
                     <tr>
                       <th style='font:bold;'><strong>Validado por:</strong></th>
                       <td colspan='5'>".$fila_empleado['empleado']."</td>
-                    </tr>                      
+                    </tr>
                      <tr>
 			<td colspan='6' align='center' >&nbsp;&nbsp;&nbsp;</td>
 		    </tr>
@@ -1033,24 +1033,24 @@ switch ($opcion) {
                         <td colspan='7 align='center'><bold>&nbsp;DETALLE DE RESULTADOS</bold><br/><br></td>
                         </tr>
                         ";
-        
-        
-        
+
+
+
                 $v_resultfin=$filares['resultado'];
                 $v_examen=$filares['nombre_examen'];
 		$v_obserrecep=$filares['observacion'];
 		$v_interpretacion=$filares['interpretacion'];
 		$v_lectura=$filares['lectura'];
 		$v_marca=$filares['marca'];
-                
-              
-      
+
+
+
          $Imprimir.=" <tr>
                         <td align='center'>Prueba Realizada </td>
                         <td align='justify'>Resultado</td>
                         <td align='justify'>Unidades</td>
                         <td align='justify'>Rangos Normales </td>";
-         
+
          $Imprimir.=" <td align='left' colspan='3'>Observaci&oacute;n</td>
                     </tr>
                     <tr><td colspan='7'><hr style='width:90%'></td></tr>
@@ -1062,7 +1062,7 @@ switch ($opcion) {
                         <td align='justify' colspan='3'>".$v_obserrecep."</td>
                     </tr>
                     <tr><td colspan='7'>&nbsp;</td></tr>";
-          
+
          $met=$objdatos->buscarexamresult($iddetalle, $idsolicitud, $lugar, $idexamen, $sexo, $idedad);
          $cantmet=pg_num_rows($met);
          if ($cantmet>0){
@@ -1080,38 +1080,38 @@ switch ($opcion) {
                         <td align='justify' >".$rowme['marca']."</td>
                         <td align='justify' colspan='2'>".$rowme['lectura']."</td>
                         <td align='justify' colspan='3'>".$rowme['observacion']."</td>
-                    </tr>"; 
-                
+                    </tr>";
+
             }
          }
-          
+
          $Imprimir.="     <tr><td colspan='7'>&nbsp;</td></tr>
-            </table>  
+            </table>
                     <table align='center' border='0'>
-                    
+
                     <tr><td colspan=8><hr></td>
                     </tr>
                     <tr>
                         <td colspan='8' align='center' >
-                        
+
                         <button name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $v_resultfin. "\",\"" . $d_resultfin . "\", \"" . $v_lectura . "\",\"" . $v_interpretacion . "\",\"" . $v_obserrecep. "\",\"" . $cmbEmpleadosfin . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec. "\",\"" . $proce. "\",\"" . $origen . "\",\"" . $iddetalle  . "\") ;' class='btn btn-primary'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
-                            
+
                             <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true'>
-                            <button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>";
+                            <button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>&nbsp;";
          /*
              if (strstr($v_examen, 'Vih')){
                 $Imprimir.="<a  href='#myModal' id='reportvih_modal' role='button' data-toggle='modal' data-modal-enabled='true'>
                             <button type='button' id='modalreportvih' align='center' class='btn btn-primary' title='Imprimir reporte FVIH-01' ><span class='glyphicon glyphicon-plus'></span>&nbsp;FVIH-01</button></a>";
-                
+
              }*/
-         
+
          $Imprimir.="<button name='btnSalir' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' class='btn btn-primary' ><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br><br/>
                         </td>
                     </tr></table>";
         echo $Imprimir;
-	     
+
         break;
-     
+
       case 14://LLENANDO COMBO DE CodigoPosibleResultados divCodResultado
         $idresultado = $_POST['idresultado'];
         $idexamen = $_POST['idexamen'];
@@ -1119,13 +1119,13 @@ switch ($opcion) {
         if ($idresultado!='xyz' && $idresultado!='x'){
          $consulta = $objdatos->BuscarCodResult($idresultado, $idexamen);
         $resultado = "<select id='cmbResultado2' name='cmbResultado2' size='1' style='width:100%' class='form-control height'>";
-                      
-        
+
+
         while ($row = pg_fetch_array($consulta)) {
             $resultado .="<option value='" . $row[0] . "'>" . $row[0].' - '.$row[1] . "</option>";
         }
         pg_free_result($consulta);
-        $resultado.= "</select>"; 
+        $resultado.= "</select>";
        }
        else{
          // if ($idresultado=='x'){
@@ -1135,9 +1135,9 @@ switch ($opcion) {
              $resscod=$objdatos->BuscarResultados($IdEstandar);
 
                while ($rows = pg_fetch_array($resscod)){
-                       $resultado .= '<option value="' . $rows['idresultado'] . '">' . $rows['idresultado'] . '  -  ' . $rows['resultado'] . '</option>'; 
+                       $resultado .= '<option value="' . $rows['idresultado'] . '">' . $rows['idresultado'] . '  -  ' . $rows['resultado'] . '</option>';
                }
-               $resultado.= "</select>"; 
+               $resultado.= "</select>";
       //    }
 //          else{
          /*   $resultado = "<select id='cmbResultado2' name='cmbResultado2' size='1' style='width:29%'>";
@@ -1149,41 +1149,41 @@ switch ($opcion) {
 //          $resultado .= "<option value='0'>Seleccione un Resultado </option>";
 //          $resscod=$objdatos->BuscarResultados($IdEstandar);
 //          while ($rows = pg_fetch_array($resscod)){
-//            $resultado .= '<option value="' . $rows['idresultado'] . '">' . $rows['idresultado'] . '  -  ' . $rows['resultado'] . '</option>'; 
+//            $resultado .= '<option value="' . $rows['idresultado'] . '">' . $rows['idresultado'] . '  -  ' . $rows['resultado'] . '</option>';
 //          }
-//          $resultado .= "</select>"; 
-//          
-          
+//          $resultado .= "</select>";
+//
+
        }
         //echo $idresultado.' - '.$idexamen;
-        
+
         echo $resultado;
       break;
       //fn Pg
-      
-      case 15://LLENANDO COMBO DE CodigoPosibleResultados 
+
+      case 15://LLENANDO COMBO DE CodigoPosibleResultados
         $idexametodologia = $_POST['idexametodologia'];
      //   $idexamen = $_POST['idexamen'];
        if ($idexametodologia!='0'){
          $consulta = $objdatos->PosibleResMetodo($idexametodologia);
          if (pg_num_rows($consulta)>0){
-             $resultado = "<select id='idresultado' name='idresultado' size='1' style='width:96%' onchange='setCodResultado(this.value)' class='form-control height'>"
+             $resultado = "<select id='idresultado' name='idresultado' size='1' style='width:96%' onchange='setCodResultado(this.value)' class='height js-example-basic-single'>"
                      . "<option value='xyz'>Seleccione un resultado</option>";
-             
+
           while ($row = pg_fetch_array($consulta)) {
             $resultado .="<option value='" . $row[0] . "'>" .$row[1] . "</option>";
         }
                $resultado.= "</select>";
          }
          else {
- $resultado = '<textarea  name="txtresultado" cols="50" size="43"  id="txtresultado" style="width:96%"  class="form-control  height placeholder"/></textarea><input type="hidden" id="idresultado" name="idresultado" value="x" style="width:96%"/>'; 
+ $resultado = '<textarea  name="txtresultado" cols="50" size="43"  id="txtresultado" style="width:96%"  class="form-control  height placeholder"/></textarea><input type="hidden" id="idresultado" name="idresultado" value="x" style="width:96%" class="height js-example-basic-single"/>';
          }
        }
        else{
-           $resultado = '<textarea  name="txtresultado" cols="50" size="43"  id="txtresultado" placeholder="Debe seleccionar una metodología" disabled style="width:96%"  class="form-control  height placeholder placeholder"/></textarea><input type="hidden" id="idresultado" name="idresultado" value="x" style="width:96%"/>'; 
+           $resultado = '<textarea  name="txtresultado" cols="50" size="43"  id="txtresultado" placeholder="Debe seleccionar una metodología" disabled style="width:96%"  class="form-control  height placeholder placeholder"/></textarea><input type="hidden" id="idresultado2" name="idresultado2" value="x" style="width:96%" class="height js-example-basic-single"/>';
        }
         //echo $idresultado.' - '.$idexamen;
-        
+
         echo $resultado;
       break;
     case 16:
@@ -1198,6 +1198,6 @@ switch ($opcion) {
 
           echo json_encode($jsonresponse);
       break;
-            
+
 }
 ?>

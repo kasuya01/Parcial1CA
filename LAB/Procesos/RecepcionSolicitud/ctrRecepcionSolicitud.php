@@ -381,7 +381,7 @@ switch ($opcion) {
          $query = "SELECT id AS idestablecimiento, nombre FROM ctl_establecimiento WHERE id_tipo_establecimiento = $Idtipo ORDER BY Nombre";
          $result = pg_query($query);
 
-         $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" class="form-control height+" style="width:400px">';
+         $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" class="height js-example-basic-single" style="width:400px">';
          $rslts .='<option value="0">--Seleccione un Establecimiento--</option>';
 
          while ($rows = pg_fetch_array($result)) {

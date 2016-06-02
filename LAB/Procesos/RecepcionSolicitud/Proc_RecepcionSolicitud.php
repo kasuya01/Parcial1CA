@@ -125,7 +125,7 @@ if (isset($_SESSION['Correlativo'])) {
                                 if (date_cita!=''){
                                     k++;
                                 if (val.diaswithoutweekend >5){
-                                    html = html + '<tr class="danger"  title="Han pasado '+val.diaswithoutweekend+' dias desde la fecha de cita para el expediente '+val.numero_expediente+'.">\
+                                    html = html + '<tr class="danger">\
                                             ';
                                 }
                                 else{
@@ -133,12 +133,12 @@ if (isset($_SESSION['Correlativo'])) {
                                             ';
                                 }
                                 html = html + '<td><a href="#" onclick="VerificarExistencia('+' \''+val.numero_expediente+'\', \''+val.fecha_cita+'\', '+val.id_establecimiento+', true,'+val.id+');return false;" style="padding-left:7px;">'+val.numero_expediente+'</a><input id="idsolicitud" value="'+val.id+'" name="idsolicitud" type="hidden" /></td>\
-                                                <td>'+val.fecha_consulta+'</td>\
-                                                <td>'+date_cita+'</td>\
-                                                <td>'+val.nombre_paciente+'</td>\
-                                                <td>'+val.servicio+'</td>\
-                                                <td>'+val.estado+'</td>\
-                                                <td>'+val.tiposolicitud+'</td>\
+                                                <td title="Han pasado '+val.diaswithoutweekend+' dias desde la fecha de cita para el expediente '+val.numero_expediente+'.">'+val.fecha_consulta+'</td>\
+                                                <td title="Han pasado '+val.diaswithoutweekend+' dias desde la fecha de cita para el expediente '+val.numero_expediente+'.">'+date_cita+'</td>\
+                                                <td title="Han pasado '+val.diaswithoutweekend+' dias desde la fecha de cita para el expediente '+val.numero_expediente+'.">'+val.nombre_paciente+'</td>\
+                                                <td title="Han pasado '+val.diaswithoutweekend+' dias desde la fecha de cita para el expediente '+val.numero_expediente+'.">'+val.servicio+'</td>\
+                                                <td title="Han pasado '+val.diaswithoutweekend+' dias desde la fecha de cita para el expediente '+val.numero_expediente+'.">'+val.estado+'</td>\
+                                                <td title="Han pasado '+val.diaswithoutweekend+' dias desde la fecha de cita para el expediente '+val.numero_expediente+'.">'+val.tiposolicitud+'</td>\
                                             </tr>';
                                 }
 

@@ -1,5 +1,5 @@
 <?php session_start();
-include_once("../../../Conexion/ConexionBD.php"); 
+include_once("../../../Conexion/ConexionBD.php");
 include ("clsSolicitudesProcesadas.php");
 $objdatos = new clsSolicitudesProcesadas;
 $usuario=$_SESSION['Correlativo'];
@@ -21,17 +21,17 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
 
 <?php include_once $ROOT_PATH."/public/css.php";?>
 <?php include_once $ROOT_PATH."/public/js.php";?>
-<script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script> 
+<script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
 <link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
 <link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
 
-   
+
 
 
 <script language="JavaScript" >
- window.onunload = refreshParent;     
+ window.onunload = refreshParent;
 function Guardar(){
    	GuardarResultados();
 	//window.close();
@@ -42,7 +42,7 @@ function ValidarCampos()
   var resp = true;
 	 if (document.frmnuevo.cmbEmpleados.value == "0")
 		 {
-			resp= false;		
+			resp= false;
 		 }
          if (document.getElementById('idresultado').value=='x'){
             if (document.frmnuevo.txtresultado.value==""){
@@ -68,8 +68,8 @@ function ValidarCampos()
                 resp=false
              }
          }
-         
-     
+
+
   return resp;
 }
 
@@ -98,15 +98,15 @@ function VerResultados()
 	procedencia=document.frmnuevo.txtprocedencia.value;
 	origen=document.frmnuevo.txtorigen.value;
 	impresion=document.frmnuevo.txtimpresion.value;
-        establecimiento=document.frmnuevo.txtEstablecimiento.value;
+    establecimiento=document.frmnuevo.txtEstablecimiento.value;
 	codresult=document.frmnuevo.cmbResultado2.value;
-        fechanac=document.frmnuevo.txtFechaNac.value;
-        sexo=document.frmnuevo.txtSexo.value;
-        cmbmetodologia=document.frmnuevo.cmbmetodologia.value;
-        txtnec=document.frmnuevo.txtnec.value;
-        
+    fechanac=document.frmnuevo.txtFechaNac.value;
+    sexo=document.frmnuevo.txtSexo.value;
+    cmbmetodologia=document.frmnuevo.cmbmetodologia.value;
+    txtnec=document.frmnuevo.txtnec.value;
+
 	MostrarResultadoExamen(idsolicitud,iddetalle,idarea,idexamen,resultado,lectura,interpretacion,observacion,responsable,nombrearea,procedencia,origen,impresion,establecimiento,codresult,fechanac,sexo, cmbmetodologia, txtnec, idresultado);
-	
+
     }else
     {    alert("Complete la Informacion Requerida");   }
 }
@@ -129,7 +129,7 @@ for ( i = 0; i < getVars.length; i++)
 		if ( getVars[i].substr(0,5) == 'var4=' )
 			area = getVars[i].substr(5);
 		if ( getVars[i].substr(0,5) == 'var5=' )
-			iddetalle = getVars[i].substr(5);			
+			iddetalle = getVars[i].substr(5);
 		if ( getVars[i].substr(0,5) == 'var6=' )
 			idsolicitud= getVars[i].substr(5);
 		if ( getVars[i].substr(0,5) == 'var7=' )
@@ -146,17 +146,17 @@ for ( i = 0; i < getVars.length; i++)
 		        impresion=escape(getVars[i].substr(5));
 		if ( getVars[i].substr(0,5) == 'var13=' )
 		        establecimiento=escape(getVars[i].substr(5));
-                if ( getVars[i].substr(0,5) == 'var14=' )
-		        FechaNac=escape(getVars[i].substr(5)); 
-                if ( getVars[i].substr(0,5) == 'var15=' )
-		        Sexo=escape(getVars[i].substr(5));  
-                if ( getVars[i].substr(0,5) == 'var16=' )
-                        IdEstandar=escape(getVars[i].substr(5));   
-                if ( getVars[i].substr(0,5) == 'var17=' )
-                        IdHistorial=escape(getVars[i].substr(5));  
-                if ( getVars[i].substr(0,5) == 'referido=' )
-                        referido=escape(getVars[i].substr(5)); 
-                    
+        if ( getVars[i].substr(0,5) == 'var14=' )
+        FechaNac=escape(getVars[i].substr(5));
+        if ( getVars[i].substr(0,5) == 'var15=' )
+        Sexo=escape(getVars[i].substr(5));
+        if ( getVars[i].substr(0,5) == 'var16=' )
+                IdEstandar=escape(getVars[i].substr(5));
+        if ( getVars[i].substr(0,5) == 'var17=' )
+                IdHistorial=escape(getVars[i].substr(5));
+        if ( getVars[i].substr(0,5) == 'referido=' )
+                referido=escape(getVars[i].substr(5));
+
 		}
 document.frmnuevo.txtnec.value=nec;
 document.frmnuevo.txtarea.value=area;
@@ -177,22 +177,39 @@ LlenarComboMetodologia(idexamen, area);
 
 jQuery(document).ready(function($){
 
+
     $(".date").datepicker({
      onClose:  function() {
-                 validafecha($(this).val(), $(this).attr('name'),$('#dateftomamx').val() ); 
+                 validafecha($(this).val(), $(this).attr('name'),$('#dateftomamx').val() );
                  valdatesolicita($(this).val(), $(this).attr('name'));
                 }
    });
-   
+   $("#cmbEmpleados").select2({
+	 allowClear: true,
+	 dropdownAutoWidth: true
+  });
+  if ($('#idresultadofin').prop('tagName')=='SELECT')
+	{
+	   $("#idresultadofin").select2({
+		 allowClear: true,
+		 dropdownAutoWidth: true
+	  });
+ 	}
+   $("#cmbEmpleadosfin").select2({
+	allowClear: true,
+	 dropdownAutoWidth: true
+  });
+
+
 });
 </script>
 
 </head>
 
 <body onLoad="RecogeValor();">
-    
 
-<?php  
+
+<?php
 
 //FUNCION PARA VERIFICAR DATOS REQUERIDOS EN RESULTADOS
 $bandera=$_GET['var12'];
@@ -221,12 +238,12 @@ $dateftomamx = date("Y-m-d", $timeftomamx);
 
 $fechadatosfijos=$rowdeta['fechadatosfijos'];
 if ($referido!="t"){
-    
+
 $condatos=$objdatos->condatos($IdHistorial, $lugar, $fechadatosfijos);
 $edad=$objdatos->calc_edad($IdHistorial);
 
 	$rows = pg_fetch_array($condatos);
-        
+
         $Peso=isset($rows['Peso']) ? $rows['Peso'] : null;
         $Talla=isset($rows['Talla']) ? $rows['Talla'] : null;
         $Diagnostico=isset($rows['diagnostico']) ? $rows['diagnostico'] : null;
@@ -241,15 +258,15 @@ $edad=$objdatos->calc_edad($IdHistorial);
   }
 ?>
 
-  
-			
+
+
 <table align="center" width="100%">
     <tr>
         <td>
             <div  id="divFrmNuevo" style="display:block" >
                 <form name="frmnuevo" method="get" action="ProcDatosResultadosExamen_PA.php" enctype="multipart/form-data">
                     <table width="70%" border="0" align="center" class="StormyWeatherFormTABLE"  style="height: 525px; ">
-                        
+
                         <tr>
                             <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3>INGRESO DE RESULTADOS</h3></td>
                         </tr>
@@ -261,7 +278,7 @@ $edad=$objdatos->calc_edad($IdHistorial);
                             <td class="StormyWeatherFieldCaptionTD">NEC</td>
                             <td class="StormyWeatherDataTD"><?php echo $idexpediente_;?>
                                <input type="hidden" id="idexpediente_" name="idexpediente_" value="<?php echo $idexpediente_;?>"/>
-                               
+
                             <td class="StormyWeatherFieldCaptionTD">No. Order</td>
                             <td class="StormyWeatherDataTD"><?php echo $_GET['var6'];?></td>
                                 <input type="hidden" name="txtnec" id="txtnec" disabled="disabled" />
@@ -291,13 +308,13 @@ $edad=$objdatos->calc_edad($IdHistorial);
                             </td>
                         </tr>
                         <tr>
-                            <td class="StormyWeatherFieldCaptionTD">Conocido Por</td>          
+                            <td class="StormyWeatherFieldCaptionTD">Conocido Por</td>
                             <td colspan="1" class="StormyWeatherDataTD"><?php echo $ConocidoPor;?>
                                <input type="hidden" id="conocido_por" name="conocido_por" value="<?php echo $ConocidoPor;?>">
                             </td>
                             <td class="StormyWeatherFieldCaptionTD">Edad</td>
                             <td colspan="1" class="StormyWeatherDataTD"><?php echo $edad;?>
-                               
+
                             </td>
 			</tr>
                         <tr>
@@ -325,13 +342,13 @@ $edad=$objdatos->calc_edad($IdHistorial);
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Peso</td>
                             <td class="StormyWeatherDataTD">
-                                <?php  
-                                   if (!empty($Peso)) 
+                                <?php
+                                   if (!empty($Peso))
                                         echo $Peso;?>
                             </td>
                             <td class="StormyWeatherFieldCaptionTD">Talla</td>
                             <td class="StormyWeatherDataTD">
-                                <?php  
+                                <?php
                                     if(!empty($Talla))
                                         echo $Talla;?>
                             </td>
@@ -346,16 +363,16 @@ $edad=$objdatos->calc_edad($IdHistorial);
                                    . '<td  colspan="3" class="StormyWeatherDataTD">'.$motivo.'</td>'
                            . '</tr>';
                            }
-                        
-                        
+
+
                         ?>
-                       
+
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Examen </td>
                             <td  colspan="3" class="StormyWeatherDataTD"> <?php echo $_GET['var2'];?>
                                <input type="hidden" name="txtexamen" id="txtexamen" disabled="disabled" size="60"  value="<?php echo $_GET['var2'];?>"/>
                                  <input type="hidden" id="num_campos" name="num_campos" value="0" />
-                                    <input type="hidden" id="cant_campos" name="cant_campos" value="0" />                
+                                    <input type="hidden" id="cant_campos" name="cant_campos" value="0" />
                             </td>
                         </tr>
                         <tr id="metodo" >
@@ -365,30 +382,30 @@ $edad=$objdatos->calc_edad($IdHistorial);
                                      <select id="cmbmetodologia" name="cmbmetodologia" size="1" onchange="buscarPosResMet(this.value)" style='width:96%; height:100%' class="form-control  height">
                                         <option value="0" >--Seleccione Metodologia--</option>
                                     </select>
-                                                        
-                                      <input type='hidden' id='cant_metodologia' name='cant_metodologia' value='0'>  
-                                      <input type='hidden' id='id_exa_met' name='id_exa_met' value=''>  
-                                         
+
+                                      <input type='hidden' id='cant_metodologia' name='cant_metodologia' value='0'>
+                                      <input type='hidden' id='id_exa_met' name='id_exa_met' value=''>
+
                                 </div>
-                               
+
                             </td>
                         </tr>
                          <tr>
                             <td class="StormyWeatherFieldCaptionTD" style="white-space: nowrap;">*Fecha Realización </td>
-                            <td  colspan="1" class="StormyWeatherDataTD"> 
+                            <td  colspan="1" class="StormyWeatherDataTD">
 <!--                               <input type="text" class="date form-control height" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd"  onchange="validafecha(this.value,'fecha_realizacion' ,<?php echo "'". $dateftomamx."'" ;?>); valdatesolicita(this.value, 'fecha_realizacion');"/>-->
                                <input type="text" class="date form-control height" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" />
                             </td>
                              <td class="StormyWeatherFieldCaptionTD" width="196 px">*Fecha Reporte </td>
-                            <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="date form-control height" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d"); ?>"   style="width:90%"/>                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d"); ?>"  /> 
+                            <td  colspan="1" class="StormyWeatherDataTD">
+                                <input type="text" class="date form-control height" name="fecha_reporte" id="fecha_reporte" size="60"  value="<?php echo date("Y-m-d"); ?>"   style="width:90%"/>                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d"); ?>"  />
                             </td>
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">*Validado Por</td>
                             <td class="StormyWeatherDataTD" colspan="3">
                                 <div id="divEncargado">
-                                    <select id="cmbEmpleados" name="cmbEmpleados" size="1" class="form-control  height">
+                                    <select id="cmbEmpleados" name="cmbEmpleados" size="1" class="height js-example-basic-single">
                                         <option value="0" >--Seleccione Empleado--</option>
                                     </select>
                                 </div>
@@ -398,11 +415,11 @@ $edad=$objdatos->calc_edad($IdHistorial);
                              <td class="StormyWeatherFieldCaptionTD">*Resultado</td>
                              <td class="StormyWeatherDataTD" colspan="3">
                                  <div id="divResult">
-                                    <textarea  name="txtresultado" cols="50" size="43"  id="txtresultado" placeholder="Debe seleccionar una metodología" disabled="disabled" class="form-control  height placeholder" style="width:96%"/></textarea> <input type="hidden" id="idresultado" name="idresultado" value="x" />    
+                                    <textarea  name="txtresultado" cols="50" size="43"  id="txtresultado" placeholder="Debe seleccionar una metodología" disabled="disabled" class="form-control  height placeholder" style="width:96%"/></textarea> <input type="hidden" id="idresultado" name="idresultado" value="x" />
                                 </div>
-                               
+
                              </td>
-                             
+
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Marca</td>
@@ -424,12 +441,12 @@ $edad=$objdatos->calc_edad($IdHistorial);
                                 <div id="divCodResultado">
                                    <select id="cmbResultado2" name="cmbResultado2" size="1" style="width:100%" class="form-control  height">
                                 <option value="0" >--Seleccione Resultado--</option>
-                              
-                                <?php 
+
+                                <?php
                                 $resscod=$objdatos->BuscarResultados($IdEstandar);
-                               
+
                                 while ($rows = pg_fetch_array($resscod)){
-                                        echo '<option value="' . $rows['idresultado'] . '">' . $rows['idresultado'] . '  -  ' . $rows['resultado'] . '</option>'; 
+                                        echo '<option value="' . $rows['idresultado'] . '">' . $rows['idresultado'] . '  -  ' . $rows['resultado'] . '</option>';
                                 }
                                 ?>
 				</select>
@@ -438,26 +455,26 @@ $edad=$objdatos->calc_edad($IdHistorial);
                             <td  class="StormyWeatherDataTD" colspan="2"></td>
                         </tr>
                         <tr>
-			<?php 
+			<?php
 			if ($bandera==1){
 		 	 ?>
-		
+
                             <td colspan="4" align="center" class="StormyWeatherDataTD" style="color:#DD0000; font:bold"><h3>El m&eacute;dico ha solicitado la impresi&oacute;n de este Resultado </h3></td>
                         </tr>
                         <tr>
-                            <?php 
+                            <?php
                           }?>
                            <td colspan="4" style="text-align:right">
-                              <a href="#masunoresultado">  <button type="button" align="right" id="agregarresults" class="btn btn-primary" onclick="agregaresultado('0');"><span class='glyphicon glyphicon-plus-sign'></span>&nbsp;Agregar Resultado </button>       </a>                         
+                              <a href="#masunoresultado">  <button type="button" align="right" id="agregarresults" class="btn btn-primary" onclick="agregaresultado('0');"><span class='glyphicon glyphicon-plus-sign'></span>&nbsp;Agregar Resultado </button>       </a>
                             </td>
                         </tr>
-                        
+
                         </table>
                     <table width="100%" border="0" align="center">
                         <tr><td colspan="4">
 		<div id = 'masunoresultado' style="display: none;"><br/>
 			<table id="addresultado" name="addresult" cellpadding="0" cellspacing="0" border="1" id="table" class="table table-bordered table-condensed table-white" style="table-layout:fixed;font-size:89%; color: #000000" width="100%">
-                           <thead>   <tr>	
+                           <thead>   <tr>
 					<td colspan="11"  style="text-align:center;background-color: '#D0E6FF';">
 						Resultados Ingresados
 					</td>
@@ -474,15 +491,15 @@ $edad=$objdatos->calc_edad($IdHistorial);
 					<th  width="12%" title="Observacion">Observaci&oacute;n</th>
 					<th  width="8%" title="Tabulador">Tabulador</th>
 					<th  width="5%" title="Eliminar">Elim.</th>
-					
+
 				</tr>
                            </thead>
 			</table>
                                 </div>
 
                                 </td>
-                        </tr>	
-                        
+                        </tr>
+
                         <tr><td colspan="4"><center><br>
                         <div id="valresult" style="display:none; width: 80%;" >
                                 <br/>
@@ -490,20 +507,20 @@ $edad=$objdatos->calc_edad($IdHistorial);
                 <table align="left" border="0"cellpadding="0" class="table table-bordered table-condensed table-white no-v-border">
                 <tr>
                    <td><b>Resultado Final:</b></td>
-                        <td colspan="1">
+                        <td colspan="1" >
                            <?php
                            $buscarResfin=$objdatos->buscarresfin($idexamen_);
-                           
+
                            $canti=pg_num_rows($buscarResfin);
                            echo '<input type="hidden" id="cantresultfin" class="form-control  height" name="cantresultfin" value="'.$canti.'"/>';
                            if ($canti>0){
-                              echo '<select id="idresultadofin" name="idresultadofin" style="width:96%" class="form-control  height">';
+                              echo '<select id="idresultadofin" name="idresultadofin" style="width:96%" class="height js-example-basic-single">';
 
                             if ($canti>1){
 echo '<option value="xyz">Seleccione una opción</option>';
                               while ($pr= pg_fetch_array($buscarResfin)){
                                  echo '<option value='.$pr["id"].'>'.$pr["posible_resultado"].'</option>';
-                                 
+
                               }//fin while posible resultado
                             }//fin if cant>1
                             else{
@@ -511,16 +528,16 @@ echo '<option value="xyz">Seleccione una opción</option>';
                             }
                              echo '</select>';
                           }
-                          else {                                                                        echo '<textarea  name="v_resultfin" cols="50" size="43"  id="v_resultfin" class="form-control height"/></textarea><input type="hidden" id="idresultadofin" name="idresultadofin" value="x"/>';
+                          else {                                                                        echo '<textarea  name="v_resultfin" cols="50" size="43"  id="v_resultfin" class="form-control height"/></textarea><input type="hidden" id="idresultadofin" name="idresultadofin" value="x" class="height js-example-basic-single"/>';
                           }
-                          
+
                            ?>
-<!--                           
+<!--
                                 <input type="text" id="v_resultfin" name="v_resultfin" style="width:100%">										-->
                         </td>
-                        <td align="right"><b>F. Emisión Resultado final:</b></td>
-                        <td colspan="1" >
-                                 <input type="text" class="date form-control height" name="d_resultfin" id="d_resultfin" size="60"  value="<?php echo date("Y-m-d"); ?>"  />	<input type="hidden" name="fechaact" id="fechaact" size="60"  value="<?php echo date("Y-m-d"); ?>"  />	
+                        <td align="right"  width="20%"><b>F. Emisión Resultado final:</b></td>
+                        <td colspan="1"  width="20%" >
+                                 <input type="text" class="date form-control height" name="d_resultfin" id="d_resultfin" size="60"  value="<?php echo date("Y-m-d"); ?>"  />	<input type="hidden" name="fechaact" id="fechaact" size="60"  value="<?php echo date("Y-m-d"); ?>"  />
                         </td>
                 </tr>
                 <tr>
@@ -534,56 +551,56 @@ echo '<option value="xyz">Seleccione una opción</option>';
                 <tr>
                         <td><b>Observaci&oacute;n Final:</b></td>
                         <td colspan="3">
-                                <input type="text" id="v_obseresultfin" name="v_obseresultfin" style="width:100%" class="form-control">										
+                                <input type="text" id="v_obseresultfin" name="v_obseresultfin" style="width:100%" class="form-control">
                         </td>
-                </tr>	
+                </tr>
                  <tr>
                         <td><b>Valido Resultado:</b></td>
                         <td colspan="3">
                            <div id="divEncargado1" style="width:100%">
-                                    <select id="cmbEmpleadosfin" name="cmbEmpleadosfin" size="1" style="width:100%" class="form-control  height">
+                                    <select id="cmbEmpleadosfin" name="cmbEmpleadosfin" size="1" style="width:100%" class="height js-example-basic-single">
                                         <option value="0" >--Seleccione Empleado--</option>
                                     </select>
-                                </div>										
+                                </div>
                         </td>
                 </tr>
                 </table>
                 </fieldset>
 
-                         
+
                 <p><center><br />
 <!--                        <div id="responde2" style="display: block">-->
 <a href="#divresultado2">    <button type="button" align="center" class="btn btn-primary" onclick="enviarDatosResult(1,0);" ><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar</button></a>
-   <button type="button" align="center" class="btn btn-primary" onclick="Cerrar();"><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cancelar</button> 
-   
-  
-                  
+   <button type="button" align="center" class="btn btn-primary" onclick="Cerrar();"><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cancelar</button>
+
+
+
                                 </center></p>
                         </div>
                             </center>
                 </td></tr>
-                        
-                 <tr>    
+
+                 <tr>
                      <td colspan="6" align="center">
                          <div id="responde" style="display: none">
                             <center><br>
                                <a href="#valresult">      <button type="button" align="center" class="btn btn-primary" onclick="ValidarResultado();" title="Validar y Finalizar"><span class='glyphicon glyphicon-check'></span>&nbsp;Validar</button></a>
 	<!--<button type="button" align="center" class="fg-button ui-state-default ui-corner-all" onclick="enviarDatosResult(0,0);" title="Guardar sin validar">Guardar</button>-->
-       
+
                            <button type="button" align="center" class="btn btn-primary" title="Regresar a Inicio"  onclick="Cerrar();"><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button>
-	
-	</center>  
+
+	</center>
                           </div>
-                          
-                         
-                         
+
+
+
                      </td>
-                     
+
                  </tr>
-                        
-                        
-                        
-                        
+
+
+
+
                   </table>
                 </form>
             </div>
@@ -608,7 +625,7 @@ else{
    . '&nbsp;'
             . 'El resultado del exámen seleccionado del expediente "'.$_GET['var1'].'",<br/> ya fue ingresado.</h1> ';
             echo " <button type='submit' class='btn btn-primary' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' /><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button></center>";
-               
+
 }
 ?>
 <!-- <script type="text/javascript" src="../../../public/datepicker/jquery-1.11.1.min.js"></script>
@@ -618,10 +635,10 @@ else{
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui-timepicker-es.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/jquery-ui-sliderAccess.js"></script>
                 <script type="text/javascript" src="../../../public/datepicker/script.js"></script>    -->
-   
+
 <!-- Button trigger modal -->
- 
+
    <?php// include_once 'ProcDatosResultadosModal_PA.php';?>
-  
+
 </body>
 </html>
