@@ -1,5 +1,6 @@
 <?php
 session_start();
+//Administrador DTIC
 //include_once("../Conexion/ConexionBD.php"); //Agregamos el Archivo con las clases y funciones a utilizar
 include_once ("../encabezado.php");
 $nivel = $_SESSION['NIVEL'];

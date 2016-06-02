@@ -37,27 +37,33 @@ switch ($opcion)
 	$pag =$_POST['pag'];
 	$inicio = ($pag-1) * $registros;
         
-        
+        $IdEstab=$_POST['IdEstab'];
         
         
       //  echo $IdEstab." - ".$lugar;
-        if (!empty($_POST['IdEstab'])) {
+        if ($_POST['IdEstab']<>0) {
            if ($_POST['IdEstab']<>$lugar){
-               $cond1 .=$cond0. "  t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " ";
-               $cond2 .=$cond0. "  t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " ";
-           }
+               $cond1 .= " AND t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " ";
+               $cond2 .= " AND t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " ";
+            }
+            else {
+               $cond1 .= " AND t02.id_establecimiento_externo = " . $lugar . " ";
+               $cond2 .= " AND t02.id_establecimiento_externo = " . $lugar . " ";
+            }
           
         }
-       
-        if (!empty($_POST['IdSubServ'])) {
-            $cond1 .= $cond0." t10.id = " . $_POST['IdSubServ'] . "    ";
-            $cond2 .= $cond0." t10.id = " . $_POST['IdSubServ'] . "   ";
-        }
- if ($_POST['IdServ'] <> 0) {
-            $cond1 .= " t12.id  = " . $_POST['IdServ'] . " AND";
-            $cond2 .= " t12.id  = " . $_POST['IdServ'] . " AND";
+       if ($_POST['IdServ'] <> 0) {
+            $cond1 .= " AND t12.id  = " . $_POST['IdServ'] . " ";
+            $cond2 .= " AND t12.id  = " . $_POST['IdServ'] . " ";
             $where_with = "t03.id = $IdServ AND ";
         }
+
+        if (!empty($_POST['IdSubServ'])) {
+            $cond1 .= "AND t10.id = " . $_POST['IdSubServ'] . " ";
+            $cond2 .= "AND t10.id = " . $_POST['IdSubServ'] . " ";
+        }
+       
+ 
       /*  if (!empty($_POST['IdServ'])) {
             $cond1 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . "     ";
             $cond2 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . "     ";
@@ -65,8 +71,8 @@ switch ($opcion)
         }*/
         
         if (!empty($_POST['medico']))
-		{ $cond1 .= "   and t24.id='".$_POST['medico']."' ";
-                  $cond2 .= "   and t24.id='".$_POST['medico']."' ";
+		{ $cond1 .= "AND  t24.id='".$_POST['medico']."' ";
+                  $cond2 .= "AND  t24.id='".$_POST['medico']."' ";
                 }
 	
                
@@ -78,8 +84,8 @@ switch ($opcion)
                 $Nfechaini=$Nfechaini[2]."-".$Nfechaini[1]."-".$Nfechaini[0]; 
 		$Nfechafin=$Nfechafin[2]."-".$Nfechafin[1]."-".$Nfechafin[0]; */
                      
-		$cond1 .= " and     t02.fecha_solicitud BETWEEN '".$_POST['fechainicio']."'     AND     '".$_POST['fechafin']."'    ";
-                $cond2 .= " and     t02.fecha_solicitud BETWEEN '".$_POST['fechainicio']."'     AND     '".$_POST['fechafin']."'    ";
+		$cond1 .= "AND t02.fecha_solicitud BETWEEN '".$_POST['fechainicio']."' AND '".$_POST['fechafin']."' AND ";
+                $cond2 .= "AND t02.fecha_solicitud BETWEEN '".$_POST['fechainicio']."' AND '".$_POST['fechafin']."' AND ";
                 
         }
                 
@@ -91,8 +97,8 @@ switch ($opcion)
 	}
            if ($ban == 0) {
 
-            $cond1 = substr($cond1, 0, strlen($query) - 3);
-            $cond2 = substr($cond2, 0, strlen($query) - 3);
+            $cond1 = substr($cond1, 0, strlen($query) - 5);
+            $cond2 = substr($cond2, 0, strlen($query) - 5);
             
           //  echo $query1;
            // $query_search = 
@@ -126,7 +132,8 @@ switch ($opcion)
                WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' 
                WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
                WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
-               WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado, 
+               WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' 
+               WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelada' END AS estado, 
             t06.numero as expediente,
             TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud 
             FROM sec_detallesolicitudestudios t01 
@@ -149,7 +156,7 @@ switch ($opcion)
             INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo) 
             INNER JOIN tbl_servicio t20 ON (t20.id = t10.id AND t20.servicio IS NOT NULL) 
             LEFT JOIN mnt_empleado t24 ON (t09.id_empleado=t24.id) 
-            WHERE t02.id_establecimiento = $lugar  $cond1 
+            WHERE t02.id_establecimiento = $lugar AND t01.estadodetalle <> 8  $cond1 
             
             UNION
 
@@ -165,7 +172,9 @@ switch ($opcion)
                 WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' 
                 WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
                 WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
-                WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
+                WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo'
+                WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelada' 
+            END AS estado,
             t06.numero as expediente,
             TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud 
             FROM sec_detallesolicitudestudios t01 
@@ -187,8 +196,8 @@ switch ($opcion)
             INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico) 
             INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo) 
             LEFT JOIN mnt_empleado t24 ON (t09.id_empleado=t24.id) 
-            WHERE  t02.id_establecimiento = $lugar $cond2"; 
-      	//echo $query;
+            WHERE  t02.id_establecimiento = $lugar AND t01.estadodetalle <> 8   $cond2"; 
+      //	echo $query;
          $consulta=$objdatos->BuscarSolicitudesEspecialidad($query); 
 
         /*  ----------Datos para  Pacgianción----------------*/

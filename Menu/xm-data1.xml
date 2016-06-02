@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+ <!--jefe del laboratorio -->
 <menuinfo type="horz"
 
           baseOffsetY="-1"
@@ -68,8 +69,8 @@
 	<sep/>
 	<menu labelText="CONSULTAS">
 	  	<item labelText="Solicitudes por Servicio" url= "../LAB/Consultas_Reportes/Rpt_SolicitudPorServicioPeriodo/SolicitudPorServicioPeriodo.php"/>
-	  	<item labelText="Consulta e Impresión de Resultados" url="../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/>
-                      <!--url= "../LAB/Consultas_Reportes/Consulta_Resultados/ConsultaResultados.php"/>-->
+	  	<!--<item labelText="Consulta e Impresión de Resultados" url="../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/>-->
+                <!--url= "../LAB/Consultas_Reportes/Consulta_Resultados/ConsultaResultados.php"/>-->
                 <item labelText="Consulta Solicitudes por Paciente" url= "../LAB/Consultas_Reportes/ConsultaSolicitudesPaciente/SolicitudPorPaciente.php"/>
 		<item labelText="Consulta Citas Programadas" url= "../LAB/Consultas_Reportes/ConsultaCitas/CitasPorPaciente.php"/>
 		<!--<item labelText="Consulta Muestras Rechazadas" url= "../LAB/Consultas_Reportes/ConsultaMuestrasRechazadas/Proc_ConsultaMuestrasRechazadas.php"/>
@@ -78,7 +79,7 @@
 	</menu>
 	<sep/>
 	<menu labelText="REPORTES">
-		<!--<item labelText="Imprimir Resultado" url="../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/>-->
+		<item labelText="Imprimir Resultado" url="../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/>
 	  	<item labelText="Examenes por Servicio" url= "../LAB/Reportes/ReptExamenesPorServicio/ReporteExamenesporServicio.php"/>
                 <item labelText="Reporte por tipo de Resultado" url= "../LAB/Reportes/ReptTipoResultado/ReporteTiporesultado.php"/>
                 <item labelText="Tabulador Mensual" url= "../LAB/Reportes/ReporteTabulador/ReporteTabuladores.php"/>

@@ -150,7 +150,7 @@ if (isset($_SESSION['Correlativo'])) {
                                 <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:443px" onChange="BuscarEstablecimiento(this.value)" class="form-control height">
                                     <option value="0" > Todos los Tipo de Establecimiento</option>
                                     <?php
-                                    $db = new ConexionBD;
+                                        $db = new ConexionBD;
                                         if ($db->conectar() == true) {
                                             $consulta = "SELECT id, nombre
                                                          FROM ctl_tipo_establecimiento ORDER BY nombre";

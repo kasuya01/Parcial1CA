@@ -298,7 +298,11 @@ if ($nivel == 7) {
 	</div>
 	<div id="divRespuesta">
 
-	</div>
+        </div> 
+    </td>
+</tr>
+</table>
+
 
 </body>
 </html>

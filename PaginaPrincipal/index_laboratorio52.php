@@ -10,7 +10,7 @@ $corr  = $_SESSION['Correlativo'];
 $cod   = $_SESSION['IdEmpleado'];
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
 include_once $ROOT_PATH.'/public/css.php';
-
+/* Administrador Regional*/
 echo '<!-- Start Required XML Menu markup for head tag -->
 	<link href="../../../Menu/xm-style.css" rel="stylesheet" type="text/css">
 	<script src="../../../Menu/xm-menu.js" type="text/javascript"></script>
