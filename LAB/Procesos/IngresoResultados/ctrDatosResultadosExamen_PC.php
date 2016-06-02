@@ -125,7 +125,7 @@ switch ($opcion)
 		$datos_observacion=$objdatos->LeerObservacion($idobservacion);
 		$bateria=$objdatos->NombreBacteria($idbacteria);
              
-                print_r($vector_valores);
+               // print_r($vector_valores);
 		
                 
                 $row_generales= pg_fetch_array($datos_generales);
@@ -296,7 +296,7 @@ switch ($opcion)
 		$vector_antibioticos=EXPLODE("/",$codigos_antibioticos);
                 $vector_interpretacion=EXPLODE("/",$valores_interpretacion);
                 
-                print_r($vector_interpretacion);
+               // print_r($vector_interpretacion);
                 
 		$tamano_vector=count($vector_valores);
 		$tamano_vectoantibiotico=count($vector_antibioticos);
@@ -316,7 +316,7 @@ switch ($opcion)
                       $CodAntibiograma=6; 
                // echo "TAR=". $tarjeta;
                       $ultimo= $objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado);
-                 //     $insertardetalle=$objdatos->IngresarDetalle($idsolicitud,$idantibiograma,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$fecharealiz,$fecharesultado);
+                 //    $insertardetalle=$objdatos->IngresarDetalle($idsolicitud,$idantibiograma,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$fecharealiz,$fecharesultado);
                        $antibiograma= $objdatos->insertarAntibiograma($iddetalle,$idexamen,$CodAntibiograma,$usuario,$fecharealiz,$fecharesultado,$idempleado);
                       if (($ultimo != "") && ($antibiograma==TRUE))
                       {

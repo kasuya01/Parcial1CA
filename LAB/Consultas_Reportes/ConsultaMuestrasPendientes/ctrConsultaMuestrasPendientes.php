@@ -313,7 +313,7 @@ switch ($opcion)
                 ORDER BY to_date(ordenar.fechasolicitud, 'DD/MM/YYYY') DESC";   
                   
   //  $query . " ORDER BY t03.fecharecepcion DESC";
-    //echo $query;
+   //echo $query;
          $consulta=$objdatos->ListadoSolicitudesPorArea($query);  
       
 	$NroRegistros= $objdatos->NumeroDeRegistros($query);

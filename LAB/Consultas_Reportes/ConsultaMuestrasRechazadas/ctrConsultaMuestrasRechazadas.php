@@ -126,18 +126,17 @@ switch ($opcion)
           $query="WITH tbl_servicio AS ( SELECT t02.id, 
                 CASE WHEN t02.nombre_ambiente IS NOT NULL THEN 
                     CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' || t02.nombre_ambiente 
-                            --ELSE t02.nombre_ambiente 
+                           
                     END 
                     ELSE 
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre 
                                  WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)  
-                                    --THEN t07.nombre||'-'||t01.nombre
                                     THEN t01.nombre
                     END 
 
                 END AS servicio,
-               (CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->'  || t06.nombre
-                    ELSE   t07.nombre ||'-->' || t06.nombre
+               (CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||' - '  || t06.nombre
+                    ELSE   t07.nombre ||' - ' || t06.nombre
                 END) as procedencia
                 FROM ctl_atencion t01 
                 INNER JOIN mnt_aten_area_mod_estab t02 ON (t01.id = t02.id_atencion) 
@@ -249,11 +248,11 @@ switch ($opcion)
             INNER JOIN ctl_sexo t19                                 ON (t19.id = t07.id_sexo)
             WHERE (t16.idestado = 'RM') 
             AND t02.id_establecimiento = $lugar 
-                AND $cond2) ordenar
-                ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";  
+            AND $cond2) ordenar
+            ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";  
                   
   //  $query . " ORDER BY t03.fecharecepcion DESC";
-      //echo $query;
+    // echo $query;
         $consulta=$objdatos->ListadoSolicitudesPorArea($query);  
 	$NroRegistros= $objdatos->NumeroDeRegistros($query);
  
@@ -263,13 +262,13 @@ switch ($opcion)
         
               if ($NroRegistros==""){
                             $NroRegistros=0;
-                            $imprimir= "<table width='100%' border='0'  align='center'>
+                            $imprimir= "<table width='90%' border='0'  align='center'>
           <center>
                 <tr>
                         <td width='500'  align='center'  ><span style='color: #0101DF;'> <h4> TOTAL DE MUESTRAS RECHAZADAS:".$NroRegistros."</h4></span></td>
                 </tr>
                 </table>
-         <table width='100%' border='0'  align='center'>
+         <table width='90%' border='0'  align='center'>
                    <td width='3000'></td>   <td ' > <button type='button'  class='btn btn-primary'  onclick='VistaPrevia(); '><span class='glyphicon glyphicon-print'></span> IMPRIMIR REPORTE </button> </td>
 			<!--<td <td width='500'>  </td>  <td colspan='7'      style='color:#990000; font:bold'><a style ='text-decoration:underline;cursor:pointer; font:bold; size:36' onclick='VistaPrevia();'>IMPRIMIR REPORTE</a></td>	-->
 		</tr>
@@ -278,7 +277,7 @@ switch ($opcion)
                         }else{
               
 
-  $imprimir= "<table width='100%' border='0'  align='center'>
+  $imprimir= "<table width='90%' border='0'  align='center'>
           <center>
                 <tr>
                         <td width='500'  align='center'  ><span style='color: #0101DF;'> <h4> TOTAL DE MUESTRAS RECHAZADAS:".$NroRegistros."</h4></span></td>
@@ -287,7 +286,7 @@ switch ($opcion)
 
 
 
-        <table width='100%' border='0'  align='center'>
+        <table width='90%' border='0'  align='center'>
                    <td width='3000'></td>   <td ' > <button type='button'  class='btn btn-primary'  onclick='VistaPrevia(); '><span class='glyphicon glyphicon-print'></span> IMPRIMIR REPORTE </button> </td>
 			<!--<td <td width='500'>  </td>  <td colspan='7'      style='color:#990000; font:bold'><a style ='text-decoration:underline;cursor:pointer; font:bold; size:36' onclick='VistaPrevia();'>IMPRIMIR REPORTE</a></td>	-->
 		</tr>
@@ -303,7 +302,7 @@ switch ($opcion)
 
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);
 
-        echo "<div class='table-responsive' style='width: 100%;'>
+        echo "<div class='table-responsive' style='width: 90%;'>
                <table width='80%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
               <thead>  <tr >
 			<th>Muestra </th>
@@ -334,11 +333,11 @@ switch ($opcion)
 			            "<input name='idestablecimiento[".$pos."]' id='idestablecimiento[".$pos."]' type='hidden' size='60' value='".$IdEstab."' />".
 				  "<td width='17%'>".$row['paciente']."</td>
 				   <td width='4%'>".$row['idestandar']."</td>
-				   <td width='18%'>".htmlentities($row['nombreexamen'])."</td>
-				   <td width='10%'>".htmlentities($row['observacion'])."</td>
+				   <td width='16%'>".htmlentities($row['nombreexamen'])."</td>
+				   <td width='8%'>".htmlentities($row['observacion'])."</td>
 				   <td width='8%'>".htmlentities($row['nombresubservicio'])."</td>
-				   <td width='10%'>".htmlentities($row['nombreservicio'])."</td>
-                                   <td width='21%'>".htmlentities($row['estabext'])."</td>
+				   <td width='12%'>".htmlentities($row['nombreservicio'])."</td>
+                                   <td width='23%'>".htmlentities($row['estabext'])."</td>
 				   <td width='8%'>".$row['fecharecepcion']."</td>
 				   <td width='8%'>".($row['prioridad'])."</td>
                                       

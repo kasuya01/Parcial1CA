@@ -720,7 +720,7 @@ switch ($opcion) {
         $IdServ = $_POST['IdServicio'];
         //  echo $IdServ;
         $dtserv = $objdatos->LlenarCmbServ($IdServ, $lugar);
-        $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:443px" onChange="BuscarMedicos(this.value)" class="form-control height">';
+        $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:500px" onChange="BuscarMedicos(this.value)" class="form-control height">';
         $rslts .='<option value="0"> Seleccione un Servicio </option>';
         while ($rows = pg_fetch_array($dtserv)) {
             $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
