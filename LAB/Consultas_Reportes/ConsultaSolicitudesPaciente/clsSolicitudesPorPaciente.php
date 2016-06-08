@@ -228,8 +228,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' 
-                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelada'
-                        END AS estado,
+                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelado(a)' END AS estado,
 			
                     CASE t02.estado 
                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada' 
@@ -239,7 +238,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' 
-                       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelada' END AS estado1, 
+                       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelado(a)' END AS estado1, 
                         t01.indicacion as indicacion,
                         t01.idempleado as idempleado
                    
@@ -317,7 +316,7 @@ UNION
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo'
-                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelada' END AS estado,
+                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelado(a)' END AS estado,
                         
                     CASE t02.estado 
                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada' 
@@ -327,7 +326,7 @@ UNION
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' 
-                       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelada' END AS estado1, 
+                       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelado(a)' END AS estado1, 
 
 			t01.indicacion as indicacion,
                         t01.idempleado  as idempleado
