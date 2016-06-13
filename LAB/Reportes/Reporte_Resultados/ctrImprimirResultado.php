@@ -201,7 +201,8 @@ switch ($opcion) {
                group by id_historial_clinico, t2.id,descripcion
                order by t2.id asc
                limit 1) AS estado,
-            TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta, t02.id_establecimiento_externo
+            TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta, t02.id_establecimiento_externo,
+            t02.estado as idestado
             FROM sec_solicitudestudios t02
             INNER JOIN lab_recepcionmuestra t03                 ON (t03.idsolicitudestudio=t02.id)
 	    INNER JOIN mnt_expediente t06                       ON (t06.id = t02.id_expediente)
@@ -216,6 +217,7 @@ switch ($opcion) {
             INNER JOIN lab_tiposolicitud t17                    ON (t17.id = t02.idtiposolicitud)
             INNER JOIN tbl_servicio t20                         ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+            -- AND idestado <>8
             AND t02.id_establecimiento = $lugar $cond1
 
 
@@ -241,7 +243,8 @@ switch ($opcion) {
             group by id_historial_clinico, t2.id,descripcion
             order by t2.id asc
             limit 1) AS estado,
-            TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta, t02.id_establecimiento_externo
+            TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') asfecchaconsulta, t02.id_establecimiento_externo,
+            t02.estado as idestado
             FROM sec_solicitudestudios t02
             INNER JOIN lab_recepcionmuestra t03                     ON (t03.idsolicitudestudio=t02.id)
             INNER JOIN mnt_dato_referencia t09                      ON t09.id=t02.id_dato_referencia
@@ -255,6 +258,7 @@ switch ($opcion) {
             INNER JOIN cit_citas_serviciodeapoyo t15                ON (t15.id_solicitudestudios=t02.id)
             INNER JOIN lab_tiposolicitud t17 			    ON (t17.id = t02.idtiposolicitud)
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+           -- AND idestado <>8
             AND t02.id_establecimiento =$lugar $cond2   order by id_historial_clinico,fecharecepcion desc  ";
 
         /* if ($ban==0)
@@ -313,12 +317,19 @@ if ( $NroRegistros==""){
         while ($row = pg_fetch_array($consulta)) {
             echo "<tr>
 				<td>" .htmlentities($row['fecharecepcion']). "</td>";
-            echo "<td align='right'><span style='color: #0101DF; '><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a>" .
-                    "<input name='idhistorialclinico[" . $pos . "]' id='idhistorialclinico[" . $pos . "]' type='hidden' size='60' value='" . $row['id_historial_clinico'] . "' />" .
+                        if ($row['idestado']<>8) {                         
+                            echo "<td align='right'><span style='color: #0101DF; '><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a></td>" ;
+             
+                        }
+                        else{
+                            echo "<td align='right'>" . $row['idnumeroexp'] . "</a></td>" ;
+                        
+                        }
+                 echo   "<input name='idhistorialclinico[" . $pos . "]' id='idhistorialclinico[" . $pos . "]' type='hidden' size='60' value='" . $row['id_historial_clinico'] . "' />" .
                     "<input name='iddatoreferencia[" . $pos . "]' id='iddatoreferencia[" . $pos . "]' type='hidden' size='60' value='" . $row['id_dato_referencia'] . "' />" .
                     "<input name='idsolicitud[" . $pos . "]' id='idsolicitud[" . $pos . "]' type='hidden' size='60' value='" . $row[1] . "' />" .
                     "<input name='idexpediente[" . $pos . "]' id='idexpediente[" . $pos . "]' type='hidden' size='60' value='" . $row['idnumeroexp'] . "' />" .
-                    "<input name='idestablecimiento[" . $pos . "]' id='idestablecimiento[" . $pos . "]' type='hidden' size='60' value='" . $row['id_establecimiento_externo'] . "' /></td>" .
+                    "<input name='idestablecimiento[" . $pos . "]' id='idestablecimiento[" . $pos . "]' type='hidden' size='60' value='" . $row['id_establecimiento_externo'] . "' />" .
                     "<input name='subservicio[".$pos."]' id='subservicio[".$pos."]' type='hidden' size='60' value='".$row['nombresubservicio']."' />".
                     "<td>" . htmlentities($row['paciente']) . "</td>
 				 <td>" . htmlentities($row['nombresubservicio']) . "</td>

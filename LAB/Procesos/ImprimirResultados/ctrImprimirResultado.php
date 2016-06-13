@@ -167,8 +167,9 @@ switch ($opcion) {
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo'
-                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelada' END AS estado,
-            TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta
+                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelado(a)' END AS estado,
+            TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta,
+            t02.estado as idestado
             FROM sec_solicitudestudios t02                
             INNER JOIN lab_recepcionmuestra t03                 ON (t03.idsolicitudestudio=t02.id) 
 	    INNER JOIN mnt_expediente t06                       ON (t06.id = t02.id_expediente) 
@@ -182,7 +183,8 @@ switch ($opcion) {
             INNER JOIN cit_citas_serviciodeapoyo t15            ON (t15.id_solicitudestudios=t02.id) 
             INNER JOIN lab_tiposolicitud t17                    ON (t17.id = t02.idtiposolicitud) 
             INNER JOIN tbl_servicio t20                         ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
-            WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) AND t02.estado<>8
+            WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) 
+            -- AND t02.estado<>8
             AND t02.id_establecimiento = $lugar $cond1
             
         
@@ -207,9 +209,10 @@ switch ($opcion) {
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo'
-                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelada'
+                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelado(a)'
                          END AS estado,
-            TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta
+            TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta,
+            t02.estado as idestado
             FROM sec_solicitudestudios t02                    	   
             INNER JOIN lab_recepcionmuestra t03                     ON (t03.idsolicitudestudio=t02.id) 
             INNER JOIN mnt_dato_referencia t09                      ON t09.id=t02.id_dato_referencia 
@@ -222,7 +225,8 @@ switch ($opcion) {
             INNER JOIN ctl_establecimiento t14                      ON (t14.id = t09.id_establecimiento)
             INNER JOIN cit_citas_serviciodeapoyo t15                ON (t15.id_solicitudestudios=t02.id) 
             INNER JOIN lab_tiposolicitud t17 			    ON (t17.id = t02.idtiposolicitud) 
-            WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) AND t02.estado<>8
+            WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) 
+            -- AND t02.estado<>8
             AND t02.id_establecimiento =$lugar $cond2 ) ordenar
                 ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
 
@@ -230,7 +234,7 @@ switch ($opcion) {
           {   $query = substr($query ,0,strlen($query)-3);
           $query_search = $query. " ORDER BY IdSolicitudEstudio DESC";
           } */
-     //echo $query;
+    // echo $query;
         //$consulta=$objdatos->BuscarSolicitudesPaciente($query); 
         //$NroRegistros= $objdatos->NumeroDeRegistros($query);	
        
@@ -289,10 +293,15 @@ if ( $NroRegistros==""){
                 //if (!empty($recepcion)){
               echo "<tr>
                         <td width='5%'>" .htmlentities($row['fecharecepcion']). "</td>";
-                  echo "<td width='3%'><span style='color: #0101DF;'><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a>" .
-                            "<input name='idsolicitud[" . $pos . "]' id='idsolicitud[" . $pos . "]' type='hidden' size='60' value='" . $row[0] . "' />" .
+                if($row['idestado']<>8){  
+                  echo "<td width='3%'><span style='color: #0101DF;'><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a></td>";
+                } else{
+                  echo "<td width='3%'>".$row['idnumeroexp'] . "</td>";
+                
+                }
+                     echo   "<input name='idsolicitud[" . $pos . "]' id='idsolicitud[" . $pos . "]' type='hidden' size='60' value='" . $row[0] . "' />" .
                             "<input name='idexpediente[" . $pos . "]' id='idexpediente[" . $pos . "]' type='hidden' size='60' value='" . $row['idnumeroexp'] . "' />" .
-                            "<input name='idestablecimiento[" . $pos . "]' id='idestablecimiento[" . $pos . "]' type='hidden' size='60' value='" . $IdEstab . "' /></td>" .
+                            "<input name='idestablecimiento[" . $pos . "]' id='idestablecimiento[" . $pos . "]' type='hidden' size='60' value='" . $IdEstab . "' />" .
                             "<input name='subservicio[".$pos."]' id='subservicio[".$pos."]' type='hidden' size='60' value='".$row['nombresubservicio']."' />".
                        "<td width='18%'>" . htmlentities($row['paciente']) . "</td>
                         <td width='10%'>" . htmlentities($row['nombresubservicio']) . "</td>

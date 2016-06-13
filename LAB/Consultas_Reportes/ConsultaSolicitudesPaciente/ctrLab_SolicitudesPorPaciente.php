@@ -170,8 +170,9 @@ switch ($opcion)
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo'
-                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelada' END AS estado,
-            TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta
+                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelado(a)' END AS estado,
+            TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta,
+            t02.estado as idestado
             FROM sec_solicitudestudios              t02                
             INNER JOIN lab_recepcionmuestra         t03      ON (t03.idsolicitudestudio=t02.id) 
 	    INNER JOIN mnt_expediente               t06      ON (t06.id = t02.id_expediente) 
@@ -210,9 +211,10 @@ switch ($opcion)
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' 
-                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelada' 
+                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelad0(a)' 
                         END AS estado,
-            TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta
+            TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta,
+            t02.estado as idestado
             FROM sec_solicitudestudios              t02                    	   
             INNER JOIN lab_recepcionmuestra         t03         ON (t03.idsolicitudestudio=t02.id) 
             INNER JOIN mnt_dato_referencia          t09         ON t09.id=t02.id_dato_referencia 
@@ -228,7 +230,7 @@ switch ($opcion)
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
             AND t02.id_establecimiento =$lugar $cond2  ) ordenar
                 ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC"; 
-     //  echo $query;             
+     // echo $query;             
                  
      $consulta=$objdatos->BuscarSolicitudesPaciente($query); 
          
@@ -280,15 +282,20 @@ switch ($opcion)
             $pos = 0;
 
             while ($row = pg_fetch_array($consulta)) {
-                $esta =$row['estado'];
-                  echo "<tr>
-                            <td width='5%'><span style='color: #0101DF;'>
+               // $esta=$row['estado'];
+                  echo "<tr>";
+                    if($row['idestado'] <> 8){ 
+                       echo"<td width='5%'><span style='color: #0101DF;'>
 			        <a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(".$pos.");'>".
 					   $row['idnumeroexp']."</a>". 
-					   "</td>". 
-                                           "<input name='idsolicitud[".$pos."]' id='idsolicitud[".$pos."]' type='hidden' size='60' value='".$row[0]."' />".
-					   "<input name='idexpediente[".$pos."]' id='idexpediente[".$pos."]' type='hidden' size='60' value='".$row['idnumeroexp']."' />".
-					   "<input name='idestablecimiento[".$pos."]' id='idestablecimiento[".$pos."]' type='hidden' size='60' value='".$IdEstab."' />".
+					   "</td>"; 
+                    } else {
+                        echo "<td width='5%'>".$row['idnumeroexp']."</a></td>"; 
+                    }            
+                       echo "<input name='idsolicitud[".$pos."]' id='idsolicitud[".$pos."]' type='hidden' size='60' value='".$row[0]."' />".
+                               "<input name='idexpediente[".$pos."]' id='idexpediente[".$pos."]' type='hidden' size='60' value='".$row['idnumeroexp']."' />".
+                               "<input name='idestablecimiento[".$pos."]' id='idestablecimiento[".$pos."]' type='hidden' size='60' value='".$IdEstab."' />".
+                               
 		           "<td width='20%'>".$row['paciente']."</td>
 			    <td width='12%'>".htmlentities($row['nombresubservicio'])."</td>
 			    <td width='10%'>".htmlentities($row['nombreservicio'])."</td>
