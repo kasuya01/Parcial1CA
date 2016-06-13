@@ -79,7 +79,7 @@ echo '<h4><i>Fecha actual: '.strftime("%A, %d de %B de %Y").'<br/></i></h4>';
           </div>
         </div>
 
-        <div class="callout bg-navy disabled color-palette"  style="text-align: left;">
+        <div class="callout disabled color-palette"  style="text-align: left; background-color:rgba(0, 31, 63, 0.79); color:#fff;">
             <span class="info-box-icon"><i class="fa fa-calendar-check-o"></i></span>
 
 
@@ -108,7 +108,7 @@ echo '<h4><i>Fecha actual: '.strftime("%A, %d de %B de %Y").'<br/></i></h4>';
             </div>
             <!-- /.info-box-content -->
           </div>
-          <div class="callout bg-navy color-palette" style="text-align: left;">
+          <div class="callout color-palette" style="text-align: left; background-color:rgba(0, 31, 63, 0.79); color:#fff;">
               <span class="info-box-icon"><i class="fa fa-calendar-o"></i></span>
               <div class="info-box-content">
                 <span class="info-box-number">Estado de solicitudes registradas en el año  actual (<?php echo date('Y') ?>)</span>
@@ -133,7 +133,7 @@ echo '<h4><i>Fecha actual: '.strftime("%A, %d de %B de %Y").'<br/></i></h4>';
               </div>
               </div>
               <!-- /.info-box-content -->
-              <div class="callout bg-navy color-palette" style="text-align: left;">
+              <div class="callout color-palette" style="text-align: left; background-color:rgba(0, 31, 63, 0.79); color:#fff;">
                   <span class="info-box-icon"><i class="fa fa-tachometer"></i></span>
                   <div class="info-box-content">
                     <span class="info-box-number">Estado de solicitudes registradas en total</span>

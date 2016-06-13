@@ -243,3 +243,27 @@ table thead {
 
 .ui-datepicker{ z-index:1151 !important; }
 @media (max-width:979px) { #bannerlogo img#img-large {display: none;} #bannerlogo img#img-small {display: block !important; max-height: 91px; width: auto; margin-left: auto; margin-right: auto;} }
+
+.round-icon {
+    border-radius:50%;
+    width:30px;
+    height:30px;
+    line-height:30px !important;
+    font-size:15px !important;
+    text-align:center;
+}
+.tableinfo{
+    border: 1px solid black;
+}
+.th-info{
+    color:#666666 !important;
+    font-family: 'Source Sans Pro', sans-serif !important;
+    text-align:right;
+    margin-right: 10px;
+}
+
+.td-blue{
+    color:#194775 !important;
+    font-family: 'Source Sans Pro', sans-serif !important;
+    margin-left: 10px;
+}
