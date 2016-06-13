@@ -56,25 +56,34 @@ $con = new ConexionBD;
 function LlenarCmbServ($IdServ,$lugar){
 $con = new ConexionBD;
 	if($con->conectar()==true){
-		$sqlText= "WITH tbl_servicio AS (
-                            SELECT t02.id,
-                                CASE WHEN t02.nombre_ambiente IS NOT NULL THEN  	
-                                    CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
-                                         ELSE t02.nombre_ambiente
-                                    END
-                                ELSE
-                                    CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'--> ' || t01.nombre
-                                         WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre
-                                    END
-                                END AS servicio 
-                            FROM  ctl_atencion 				    t01 
-                            INNER JOIN mnt_aten_area_mod_estab              t02 ON (t01.id = t02.id_atencion)
-                            INNER JOIN mnt_area_mod_estab 	   	    t03 ON (t03.id = t02.id_area_mod_estab)
-                            LEFT  JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab)
-                            LEFT  JOIN mnt_servicio_externo 		    t05 ON (t05.id = t04.id_servicio_externo)
-                            WHERE id_area_atencion = $IdServ and t02.id_establecimiento = $lugar
-                            ORDER BY 2)
-                        SELECT id, servicio FROM tbl_servicio WHERE servicio IS NOT NULL";
+		$sqlText= "with tbl_servicio as (select mnt_3.id,
+                        CASE
+                        WHEN mnt_3.nombre_ambiente IS NOT NULL
+                        THEN  	
+                                CASE WHEN id_servicio_externo_estab IS NOT NULL
+                                        THEN mnt_ser.abreviatura ||'-->' ||mnt_3.nombre_ambiente
+                                        ELSE mnt_3.nombre_ambiente
+                                END
+
+                        ELSE
+                        CASE WHEN id_servicio_externo_estab IS NOT NULL 
+                                THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
+                             WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=cat.nombre)
+                                THEN cmo.nombre||'-'||cat.nombre
+                        END
+                        END AS servicio 
+                        from ctl_atencion cat 
+                        join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
+                        join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
+                        JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion=1)
+                        LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id
+                        LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id
+                        join mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab)
+                        join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
+                        where  mnt_2.id=$IdServ
+                        and mnt_3.id_establecimiento=$lugar
+                        order by 2)
+                        select id, servicio from tbl_servicio where servicio is not null";
                         
 		$dt = pg_query($sqlText) ;
 	}
@@ -1313,10 +1322,10 @@ function obtener_resultadoxtarjeta($iddetalleresultado){
     $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT lab_resultadosportarjeta.idantibiotico,antibiotico,resultado,valor,id_posible_resultado,posible_resultado 
+     $query = "SELECT lab_resultadosportarjeta.idantibiotico,antibiotico,resultado,valor,resultado,id_posible_resultado,posible_resultado 
 FROM lab_resultadosportarjeta 
 INNER JOIN lab_antibioticos ON lab_antibioticos.id=lab_resultadosportarjeta.idantibiotico
-INNER JOIN lab_posible_resultado ON lab_posible_resultado.id=lab_resultadosportarjeta.id_posible_resultado 
+LEFT JOIN lab_posible_resultado ON lab_posible_resultado.id=lab_resultadosportarjeta.id_posible_resultado 
 WHERE iddetalleresultado=$iddetalleresultado order by lab_resultadosportarjeta.id asc";
      $result = pg_query($query);
      if (!$result)

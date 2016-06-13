@@ -130,7 +130,7 @@ else
                            id_conf_examen_estab AS idexamen
                     FROM sec_detallesolicitudestudios 
                     WHERE idsolicitudestudio = $idsolicitud
-                        AND estadodetalle NOT IN (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado IN ('RC', 'RM'))";
+                        AND estadodetalle NOT IN (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado IN ('RC', 'RM', 'CA' ))";
        
             $detalle = pg_num_rows(pg_query($query));
            

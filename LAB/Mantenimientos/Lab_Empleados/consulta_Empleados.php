@@ -25,6 +25,9 @@ $idmodalidad        = $row['idmodalidad'];
 $nombremodalidad    = $row['nombremodalidad'];
 $id_area_mod_estab  = $row['id_area_mod_estab'];
 $areamodestab       = $row['areamod'];
+
+//echo "id modalidad= ".$idmodalidad." id_area_mod_estab ".$id_area_mod_estab; 
+
 //muestra los datos consultados en los campos del formulario
 ?>
 
@@ -61,9 +64,10 @@ $areamodestab       = $row['areamod'];
                 <select id="cmbModalidad" name="cmbModalidad" size="1" style="width:60%" class="form-control height">
                     <?php
                         $objeareas = new clsLab_Empleados;
+                        
                         $consulta = $objeareas->ModificarModalidad($lugar,$idmodalidad);
                         while ($row = pg_fetch_array($consulta)) {
-                            
+                            echo $idmodalidad;
                            /* if($row[0] == $idmodalidad)
                                 echo "<option value='" . $idmodalidad . "' selected='selected'>" . htmlentities($nombremodalidad) . "</option>";
                             else*/
@@ -80,6 +84,7 @@ $areamodestab       = $row['areamod'];
                 <select id="cmbPago" name="cmbPago" size="1" style="width:60%" class="form-control height">
                     <option value="0" >--Seleccione Fondo de Contratación--</option>
                     <?php
+                            echo "id=".$id_area_mod_estab;
                         $conempleador = $obj-> modificar_empleador($lugar,$id_area_mod_estab);
                         while ($row = pg_fetch_array($conempleador)) {
                             echo "<option value='" . $row[0] . "'>" . $row[1] . "</option>";

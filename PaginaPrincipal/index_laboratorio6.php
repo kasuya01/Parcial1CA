@@ -1,5 +1,6 @@
 <?php session_start();
 include_once ("../encabezado.php");
+// Administrador Central
 $nivel = $_SESSION['NIVEL'];
 $lugar = $_SESSION['Lugar'];
 $area  = $_SESSION['Idarea'];

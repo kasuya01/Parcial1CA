@@ -13,7 +13,7 @@ class clsLab_Posresultado
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_posible_resultado(posible_resultado,
+     $query = "INSERT INTO lab_posible_resultado(posible_resultado,
 				fechainicio,
 				id_user,
 				fecha_registro,

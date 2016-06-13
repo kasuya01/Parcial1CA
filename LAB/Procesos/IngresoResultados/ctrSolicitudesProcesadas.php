@@ -263,7 +263,6 @@ switch ($opcion) {
                 INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud)
                 INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico)
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo)
-
                 WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var2) ordenar
                 ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
 //ECHO $query;
@@ -721,7 +720,7 @@ switch ($opcion) {
         $IdServ = $_POST['IdServicio'];
         //  echo $IdServ;
         $dtserv = $objdatos->LlenarCmbServ($IdServ, $lugar);
-        $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:443px" onChange="BuscarMedicos(this.value)" class="form-control height">';
+        $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:500px" onChange="BuscarMedicos(this.value)" class="form-control height">';
         $rslts .='<option value="0"> Seleccione un Servicio </option>';
         while ($rows = pg_fetch_array($dtserv)) {
             $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';

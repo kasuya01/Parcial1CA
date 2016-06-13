@@ -158,7 +158,7 @@ switch ($opcion)
                        t03.numeromuestra, 
                        t06.numero AS idnumeroexp, 
                        t03.id AS idrecepcionmuestra, 
-                       t04.codigo_examen AS idexamen, 
+                       t18.idestandar AS idexamen, 
                        t04.nombre_examen AS nombreexamen, 
                        t01.indicacion, t08.nombrearea, 
                        CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,
@@ -211,7 +211,7 @@ switch ($opcion)
                    t03.numeromuestra,
                    t06.numero AS idnumeroexp,
                    t03.id AS idrecepcionmuestra,
-                   t04.codigo_examen AS idexamen,
+                   t18.idestandar AS idexamen,
                    t04.nombre_examen AS nombreexamen,
                    t01.indicacion, t08.nombrearea,
                    CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido,
@@ -286,8 +286,8 @@ switch ($opcion)
 
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);
 
-        echo "<center><div class='table-responsive' style='width: 80%;'>
-            <table width='81%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+        echo "<center><div class='table-responsive' style='width: 90%;'>
+            <table width='85%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
                 <thead><tr>
 			<th>Muestra </th>
 		        <th>NEC </th>
@@ -308,7 +308,7 @@ switch ($opcion)
             while ($row = pg_fetch_array($consulta)) {
                 echo "<tr>
 				   <td width='4%'>".$row['numeromuestra']."</td>
-				   <td width='6%'><span style='color: #0101DF;'>
+				   <td width='4%'><span style='color: #0101DF;'>
 					   <a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(".$pos.");'>".
 					   $row['idnumeroexp']."</a>". 
 					   "</td>". 
@@ -320,8 +320,8 @@ switch ($opcion)
 					   "<input name='idestablecimiento[".$pos."]' id='idestablecimiento[".$pos."]' type='hidden' size='60' value='".$IdEstab."' />".
                                            "<input name='subservicio[".$pos."]' id='subservicio[".$pos."]' type='hidden' size='60' value='".$row['nombresubservicio']."' />".
                                            "<input name='observacion[".$pos."]' id='observacion[".$pos."]' type='hidden' size='60' value='".$row['observacion']."' />".
-                                      "<td width='20%'>".$row['paciente']."</td>
-				   <td width='7%'>".$row['idexamen']."</td>
+                                      "<td width='22%'>".$row['paciente']."</td>
+				   <td width='4%'>".$row['idexamen']."</td>
 				   <td width='13%'>".htmlentities($row['nombreexamen'])."</td>";
                         if (!empty($row['observacion']))
 			     echo "<td width='12%'>".htmlentities($row['observacion'])."</td>";
@@ -329,10 +329,10 @@ switch ($opcion)
                             echo " <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
                              
 			    echo " <td width='10%'>".htmlentities($row['nombresubservicio'])."</td>
-				   <td width='10%'>".htmlentities($row['nombreservicio'])."</td>
+				   <td width='14%'>".htmlentities($row['nombreservicio'])."</td>
                                    <td width='38%'>".htmlentities($row['estabext'])."</td>
                                    <td width='5%'>" . ($row['fechasolicitud']) . "</td>    
-				   <td width='15%'>".$row['fecharecepcion']."</td>
+				   <td width='10%'>".$row['fecharecepcion']."</td>
 				   <td width='10%'>".($row['prioridad'])."</td>
                                       
 				 </tr>";

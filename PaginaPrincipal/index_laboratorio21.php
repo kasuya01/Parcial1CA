@@ -1,6 +1,7 @@
 <?php session_start();?>
 <link rel="stylesheet" type="text/css" href="../Themes/Cobalt/Style.css">
 <?php
+//SemiAdministrador o jefe se areas o secciones
 include_once ("../encabezado.php");
 	//$usuario=$_SESSION['user'];
 	//$_SESSION['NIVEL']=$_SESSION['NIVEL'];

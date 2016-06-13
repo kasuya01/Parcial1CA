@@ -151,13 +151,10 @@ if ($nivel == 6) {
 if ($nivel == 7) {
         include_once ('../../../PaginaPrincipal/index_laboratorio72.php'); }         
 ?><br>
-<table align="center" width="100%">
-<tr>
-<td>
 
 <div  id="divInicial" >
     <form>
-        <table  align="center" class="StormyWeatherFormTABLE" width="83%">
+        <table  align="center" class="StormyWeatherFormTABLE" width="66%">
             <tr>
                 <td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3><strong> Consultar Muestras Pendientes de Procesar por &Aacute;rea</strong></h3></td>
             </tr>

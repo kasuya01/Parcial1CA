@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--  Usuario Recepción -->
 <menuinfo type="horz" 
           
           baseOffsetY="-1" 
@@ -16,13 +17,14 @@
       <sep/>
 		
       <menu labelText="CONSULTAS">
-         <item labelText="Consulta e Impresión de Resultados" url="../../../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/>
+         <!--<item labelText="Consulta e Impresión de Resultados" url="../../../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/>-->
          <item labelText="Consulta Solicitudes por Paciente" url= "../../../LAB/Consultas_Reportes/ConsultaSolicitudesPaciente/SolicitudPorPaciente.php"/>
          <item labelText="Consulta Citas Programadas" url= "../../../LAB/Consultas_Reportes/ConsultaCitas/CitasPorPaciente.php"/> 
       </menu>
       <sep/>
 		
       <menu labelText="REPORTES">
+         <item labelText="Imprimir Resultado " url="../../../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/>
          <item labelText="Reporte Resultados" url= "../../../LAB/Reportes/Reporte_Resultados/ReporteResultados.php"/> 
       </menu>
       <sep/>

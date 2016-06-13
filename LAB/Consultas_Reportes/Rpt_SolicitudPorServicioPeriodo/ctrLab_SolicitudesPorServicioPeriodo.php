@@ -37,32 +37,42 @@ switch ($opcion)
 	$pag =$_POST['pag'];
 	$inicio = ($pag-1) * $registros;
         
-        
+        $IdEstab=$_POST['IdEstab'];
         
         
       //  echo $IdEstab." - ".$lugar;
-        if (!empty($_POST['IdEstab'])) {
+        if ($_POST['IdEstab']<>0) {
            if ($_POST['IdEstab']<>$lugar){
-               $cond1 .=$cond0. "  t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " ";
-               $cond2 .=$cond0. "  t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " ";
-           }
+               $cond1 .= " AND t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " ";
+               $cond2 .= " AND t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " ";
+            }
+            else {
+               $cond1 .= " AND t02.id_establecimiento_externo = " . $lugar . " ";
+               $cond2 .= " AND t02.id_establecimiento_externo = " . $lugar . " ";
+            }
           
         }
-        
-        if (!empty($_POST['IdSubServ'])) {
-            $cond1 .= $cond0." t10.id = " . $_POST['IdSubServ'] . "    ";
-            $cond2 .= $cond0." t10.id = " . $_POST['IdSubServ'] . "   ";
+       if ($_POST['IdServ'] <> 0) {
+            $cond1 .= " AND t12.id  = " . $_POST['IdServ'] . " ";
+            $cond2 .= " AND t12.id  = " . $_POST['IdServ'] . " ";
+            $where_with = "t03.id = $IdServ AND ";
         }
 
-        if (!empty($_POST['IdServ'])) {
+        if (!empty($_POST['IdSubServ'])) {
+            $cond1 .= "AND t10.id = " . $_POST['IdSubServ'] . " ";
+            $cond2 .= "AND t10.id = " . $_POST['IdSubServ'] . " ";
+        }
+       
+ 
+      /*  if (!empty($_POST['IdServ'])) {
             $cond1 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . "     ";
             $cond2 .=$cond0 ."  t13.id  = " . $_POST['IdServ'] . "     ";
             $where_with = "id_area_atencion = $IdServ AND ";
-        }
+        }*/
         
         if (!empty($_POST['medico']))
-		{ $cond1 .= "   and t24.id='".$_POST['medico']."' ";
-                  $cond2 .= "   and t24.id='".$_POST['medico']."' ";
+		{ $cond1 .= "AND  t24.id='".$_POST['medico']."' ";
+                  $cond2 .= "AND  t24.id='".$_POST['medico']."' ";
                 }
 	
                
@@ -74,8 +84,8 @@ switch ($opcion)
                 $Nfechaini=$Nfechaini[2]."-".$Nfechaini[1]."-".$Nfechaini[0]; 
 		$Nfechafin=$Nfechafin[2]."-".$Nfechafin[1]."-".$Nfechafin[0]; */
                      
-		$cond1 .= " and     t02.fecha_solicitud BETWEEN '".$_POST['fechainicio']."'     AND     '".$_POST['fechafin']."'    ";
-                $cond2 .= " and     t02.fecha_solicitud BETWEEN '".$_POST['fechainicio']."'     AND     '".$_POST['fechafin']."'    ";
+		$cond1 .= "AND t02.fecha_solicitud BETWEEN '".$_POST['fechainicio']."' AND '".$_POST['fechafin']."' AND ";
+                $cond2 .= "AND t02.fecha_solicitud BETWEEN '".$_POST['fechainicio']."' AND '".$_POST['fechafin']."' AND ";
                 
         }
                 
@@ -87,8 +97,8 @@ switch ($opcion)
 	}
            if ($ban == 0) {
 
-            $cond1 = substr($cond1, 0, strlen($query) - 3);
-            $cond2 = substr($cond2, 0, strlen($query) - 3);
+            $cond1 = substr($cond1, 0, strlen($query) - 5);
+            $cond2 = substr($cond2, 0, strlen($query) - 5);
             
           //  echo $query1;
            // $query_search = 
@@ -107,9 +117,9 @@ switch ($opcion)
             LEFT JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab) 
             LEFT JOIN mnt_servicio_externo t05 ON (t05.id = t04.id_servicio_externo) 
             INNER JOIN ctl_area_atencion t06 on t06.id = t03.id_area_atencion 
-            INNER JOIN ctl_modalidad t07 ON t07.id = t03.id_modalidad_estab WHERE t02.id_establecimiento = 372 ORDER BY 2) 
+            INNER JOIN ctl_modalidad t07 ON t07.id = t03.id_modalidad_estab WHERE t02.id_establecimiento = $lugar ORDER BY 2) 
 
-            SELECT t01.id , 
+            SELECT distinct(t02.id) , 
             t20.procedencia AS nombreservicio, 
             t19.nombre AS sexo, 
             t24.nombreempleado as medico, 
@@ -122,12 +132,12 @@ switch ($opcion)
                WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' 
                WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
                WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
-               WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado, 
+               WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' 
+               WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelada' END AS estado, 
             t06.numero as expediente,
             TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud 
             FROM sec_detallesolicitudestudios t01 
             INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio) 
-            INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio) 
             INNER JOIN lab_conf_examen_estab t04 ON (t04.id = t01.id_conf_examen_estab) 
             INNER JOIN mnt_area_examen_establecimiento t05 ON (t05.id = t04.idexamen) 
             INNER JOIN mnt_expediente t06 ON (t06.id = t02.id_expediente) 
@@ -140,17 +150,17 @@ switch ($opcion)
             INNER JOIN ctl_area_atencion t13 ON (t13.id = t12.id_area_atencion) 
             INNER JOIN ctl_establecimiento t14 ON (t14.id = t09.idestablecimiento) 
             INNER JOIN cit_citas_serviciodeapoyo t15 ON (t02.id = t15.id_solicitudestudios) 
-            INNER JOIN ctl_estado_servicio_diagnostico t16 ON (t16.id = t01.estadodetalle) 
+            INNER JOIN ctl_estado_servicio_diagnostico t16 ON (t16.id = t02.estado) 
             INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud) 
             INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico) 
             INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo) 
             INNER JOIN tbl_servicio t20 ON (t20.id = t10.id AND t20.servicio IS NOT NULL) 
             LEFT JOIN mnt_empleado t24 ON (t09.id_empleado=t24.id) 
-            WHERE t02.id_establecimiento = $lugar  $cond1 
+            WHERE t02.id_establecimiento = $lugar AND t01.estadodetalle <> 8  $cond1 
             
             UNION
 
-           SELECT t01.id, 
+           SELECT distinct(t02.id), 
            t13.nombre AS nombreservicio, 
            t19.nombre AS sexo, 
            t24.nombreempleado as medico, CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido, t07.apellido_casada) AS paciente, 
@@ -162,12 +172,13 @@ switch ($opcion)
                 WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' 
                 WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
                 WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
-                WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
+                WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo'
+                WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelada' 
+            END AS estado,
             t06.numero as expediente,
             TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud 
             FROM sec_detallesolicitudestudios t01 
             INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio) 
-            INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio) 
             INNER JOIN lab_conf_examen_estab t04 ON (t04.id = t01.id_conf_examen_estab) 
             INNER JOIN mnt_area_examen_establecimiento t05 ON (t05.id = t04.idexamen) 
             INNER JOIN mnt_dato_referencia t09 ON t09.id=t02.id_dato_referencia 
@@ -180,106 +191,13 @@ switch ($opcion)
             INNER JOIN ctl_area_atencion t13 ON (t13.id = t12.id_area_atencion) 
             INNER JOIN ctl_establecimiento t14 ON (t14.id = t09.id_establecimiento) 
             INNER JOIN cit_citas_serviciodeapoyo t15 ON (t02.id = t15.id_solicitudestudios) 
-            INNER JOIN ctl_estado_servicio_diagnostico t16 ON (t16.id = t01.estadodetalle) 
+            INNER JOIN ctl_estado_servicio_diagnostico t16 ON (t16.id = t02.estado) 
             INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud)
             INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico) 
             INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo) 
             LEFT JOIN mnt_empleado t24 ON (t09.id_empleado=t24.id) 
-            WHERE  t02.id_establecimiento = $lugar $cond2"; 
-               
-       /* $query="SELECT 
-                    t01.id,
-		   t13.nombre AS nombreservicio, 
-		   t19.nombre AS sexo,
-                   t24.nombreempleado as medico,
-                   CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido,
-                   t07.apellido_casada) AS paciente,
-                   (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-                   t11.nombre AS nombresubservicio,
-                  CASE t01.estadodetalle 
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada'
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='R') THEN 'Recibida'
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='P') THEN 'En Proceso'    
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' 
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
-		  t06.numero as expediente,
-                  TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud
-	    FROM sec_detallesolicitudestudios t01 
-            INNER JOIN sec_solicitudestudios t02 		ON (t02.id = t01.idsolicitudestudio) 
-            INNER JOIN lab_recepcionmuestra t03 		ON (t02.id = t03.idsolicitudestudio) 
-            INNER JOIN lab_conf_examen_estab t04 		ON (t04.id = t01.id_conf_examen_estab) 
-            INNER JOIN mnt_area_examen_establecimiento t05 	ON (t05.id = t04.idexamen) 
-            INNER JOIN mnt_expediente t06 			ON (t06.id = t02.id_expediente) 
-            INNER JOIN mnt_paciente t07 			ON (t07.id = t06.id_paciente) 
-            INNER JOIN ctl_area_servicio_diagnostico t08 	ON (t08.id = t05.id_area_servicio_diagnostico 
-            AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) 
-            INNER JOIN sec_historial_clinico t09 		ON (t09.id = t02.id_historial_clinico) 
-            INNER JOIN mnt_aten_area_mod_estab t10 		ON (t10.id = t09.idsubservicio) 
-            INNER JOIN ctl_atencion t11 			ON (t11.id = t10.id_atencion) 
-            INNER JOIN mnt_area_mod_estab t12 			ON (t12.id = t10.id_area_mod_estab) 
-            INNER JOIN ctl_area_atencion t13 			ON (t13.id = t12.id_area_atencion) 
-            INNER JOIN ctl_establecimiento t14 			ON (t14.id = t09.idestablecimiento) 
-            INNER JOIN cit_citas_serviciodeapoyo t15 		ON (t02.id = t15.id_solicitudestudios) 
-            INNER JOIN ctl_estado_servicio_diagnostico t16 	ON (t16.id = t01.estadodetalle) 
-            INNER JOIN lab_tiposolicitud t17 			ON (t17.id = t02.idtiposolicitud) 
-            INNER JOIN ctl_examen_servicio_diagnostico t18 	ON (t18.id = t05.id_examen_servicio_diagnostico) 
-            INNER JOIN ctl_sexo t19 				ON (t19.id = t07.id_sexo)
-           -- INNER JOIN tbl_servicio t20 			ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
-            left join sec_diagnostico_paciente 		t21 on (t21.id_historial_clinico=t09.id) 
-            left join mnt_snomed_cie10 			t22 on (t22.id=t21.id_snomed) 
-            left join sec_signos_vitales 			t23 on (t23.id_historial_clinico=t09.id) 
-            left join mnt_empleado 				t24 on (t09.id_empleado=t24.id)
-            inner join ctl_area_servicio_diagnostico 	t25 on (t25.id=t05.id_area_servicio_diagnostico) 
-            WHERE t01.idestablecimiento=$lugar  $cond1 
-
-UNION
-
-            SELECT t01.id,
-                   t13.nombre AS nombreservicio, 
-		   t19.nombre AS sexo,
-                   t24.nombreempleado as medico,
-                   CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido,
-                   t07.apellido_casada) AS paciente, 
-                  (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-		   t11.nombre AS nombresubservicio, 
-		CASE t01.estadodetalle 
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada'
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='R') THEN 'Recibida'
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='P') THEN 'En Proceso'    
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='C') THEN 'Completa' 
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
-			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' END AS estado,
-			t06.numero as expediente,
-			TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud
-            FROM sec_detallesolicitudestudios t01 
-            INNER JOIN sec_solicitudestudios t02 		ON (t02.id = t01.idsolicitudestudio) 
-            INNER JOIN lab_recepcionmuestra t03 		ON (t02.id = t03.idsolicitudestudio) 
-            INNER JOIN lab_conf_examen_estab t04	 	ON (t04.id = t01.id_conf_examen_estab) 
-            INNER JOIN mnt_area_examen_establecimiento t05  	ON (t05.id = t04.idexamen)
-            INNER JOIN mnt_dato_referencia t09 			ON t09.id=t02.id_dato_referencia 
-            INNER JOIN mnt_expediente_referido t06 		ON (t06.id = t09.id_expediente_referido) 
-            INNER JOIN mnt_paciente_referido t07 		ON (t07.id = t06.id_referido) 
-            INNER JOIN ctl_area_servicio_diagnostico t08 	ON (t08.id = t05.id_area_servicio_diagnostico 
-            AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) 
-            INNER JOIN mnt_aten_area_mod_estab t10 		ON (t10.id = t09.id_aten_area_mod_estab) 
-            INNER JOIN ctl_atencion t11 			ON (t11.id = t10.id_atencion) 
-            INNER JOIN mnt_area_mod_estab t12 			ON (t12.id = t10.id_area_mod_estab) 
-            INNER JOIN ctl_area_atencion t13 			ON (t13.id = t12.id_area_atencion) 
-            INNER JOIN ctl_establecimiento t14 			ON (t14.id = t09.id_establecimiento)
-	    INNER JOIN ctl_examen_servicio_diagnostico t18 	ON (t18.id = t05.id_examen_servicio_diagnostico) 
-            INNER JOIN ctl_sexo t19 				ON (t19.id = t07.id_sexo)
-            left join sec_diagnostico_paciente 		t21 on (t21.id_historial_clinico=t09.id) 
-            left join mnt_snomed_cie10 			t22 on (t22.id=t21.id_snomed) 
-            left join sec_signos_vitales 			t23 on (t23.id_historial_clinico=t09.id) 
-            left join mnt_empleado 				t24 on (t09.id_empleado=t24.id)
-            inner join ctl_area_servicio_diagnostico 	t25 on (t25.id=t05.id_area_servicio_diagnostico) 
-            where t01.idestablecimiento= $lugar  $cond2 order by fechasolicitud desc ";*/
-		
-		
-		//echo $query;
+            WHERE  t02.id_establecimiento = $lugar AND t01.estadodetalle <> 8   $cond2"; 
+      //	echo $query;
          $consulta=$objdatos->BuscarSolicitudesEspecialidad($query); 
 
         /*  ----------Datos para  Pacgianción----------------*/

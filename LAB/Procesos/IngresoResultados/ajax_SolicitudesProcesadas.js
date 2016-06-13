@@ -518,8 +518,11 @@ function ValidarCamposPlantillaC()
     {
         resp = false;
     }
-   // return resp;
-    for (i = 0; i < document.getElementById('oculto').value; i++)
+
+    return resp;
+ 
+
+   /* for (i = 0; i < document.getElementById('oculto').value; i++)
 
     {  // dato [i]= document.getElementById('cmbresultado[' + i + ']'.value;
         //alert(dato[i]);
@@ -529,7 +532,7 @@ function ValidarCamposPlantillaC()
         }
 
     }
-    return resp;
+    return resp;*/
 }
 
 

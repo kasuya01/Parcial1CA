@@ -66,7 +66,7 @@ function LlenarTodosEstablecimientos() {
 function LlenarCmbServ($IdServ,$lugar){
 $con = new ConexionBD;
 	if($con->conectar()==true){
-		$sqlText=  "with tbl_servicio as (select mnt_3.id,
+		$sqlText = "with tbl_servicio as (select mnt_3.id,
                         CASE
                         WHEN mnt_3.nombre_ambiente IS NOT NULL
                         THEN  	
@@ -95,6 +95,8 @@ $con = new ConexionBD;
                         order by 2)
                         select id, servicio from tbl_servicio where servicio is not null";
 		$dt = pg_query($sqlText) ;
+                
+                 
 	}
 	return $dt;
 }
