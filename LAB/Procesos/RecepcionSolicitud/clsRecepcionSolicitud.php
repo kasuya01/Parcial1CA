@@ -590,7 +590,7 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
         $con = new ConexionBD;
         if ($con->conectar() == true) {
 
-            $query = "SELECT t09.numero AS idnumeroexp,
+        $query = "SELECT t09.numero AS idnumeroexp,
                              t05.idarea,
                              t03.codigo_examen AS idexamen,
                              t03.nombre_examen AS nombreexamen,
@@ -600,7 +600,8 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
                              t02.id AS idsolicitudestudio,
                              t10.idestandar,
                              t01.id as iddetalle,
-                             t03.id as i_idexamen
+                             t03.id as i_idexamen,
+                             t05.id as id_area
                       FROM sec_detallesolicitudestudios 		 t01
                       INNER JOIN sec_solicitudestudios                   t02 ON (t02.id = t01.idsolicitudestudio)
                       INNER JOIN lab_conf_examen_estab 		         t03 ON (t03.id = t01.id_conf_examen_estab)
