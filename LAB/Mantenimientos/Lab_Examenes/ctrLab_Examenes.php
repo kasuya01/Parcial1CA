@@ -205,7 +205,7 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
    case 4:// PAGINACION
       //para manejo de la paginacion
 
-      $RegistrosAMostrar = 15;
+      $RegistrosAMostrar = 10;
       $RegistrosAEmpezar = ($_POST['Pag'] - 1) * $RegistrosAMostrar;
       $PagAct = $_POST['Pag'];
 
@@ -215,7 +215,7 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
 
       //muestra los datos consultados en la tabla
       echo "<center >
-               <table border = 1 style='width: 80%;'   class='table table-hover table-bordered table-condensed table-white' >
+               <table border = 1 style='width: 90%;'   class='table table-hover table-bordered table-condensed table-white' >
 	           <thead>
                         <tr>
                             <th aling='center' > Modificar</th>
@@ -485,10 +485,10 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
          $query_search = $query . " ORDER BY ctl_area_servicio_diagnostico.idarea,lab_conf_examen_estab.nombre_examen";
       }
 
-       $query_search;
+    // echo  $query_search;
       // echo $query_search;
       //para manejo de la paginacion
-      $RegistrosAMostrar = 4;
+      $RegistrosAMostrar = 10;
       $RegistrosAEmpezar = ($_POST['Pag'] - 1) * $RegistrosAMostrar;
       $PagAct = $_POST['Pag'];
 
@@ -499,7 +499,7 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
       //echo $query_search;
       //muestra los datos consultados en la tabla
       echo "<center >
-               <table border = 1 style='width: 80%;'   class='table table-hover table-bordered table-condensed table-white' >
+               <table border = 1 style='width: 90%;'   class='table table-hover table-bordered table-condensed table-white' >
 	           <thead>
                    <tr><td colspan='14'><h4><center><b>Resultado de Coincidencias...<b></center></h4></td></tr>
                         <tr>
@@ -632,7 +632,8 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
       //print_r ($ExisExa[0]);
 
 
-      $query = "SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.codigo_examen as idexamen, lab_conf_examen_estab.nombre_examen as nombreexamen, ctl_area_servicio_diagnostico.nombrearea,lab_plantilla.idplantilla,
+       $query = "SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.codigo_examen as idexamen,
+                                            lab_conf_examen_estab.nombre_examen as nombreexamen, ctl_area_servicio_diagnostico.nombrearea,lab_plantilla.idplantilla,
                                             ctl_examen_servicio_diagnostico.idestandar,
                                             (CASE WHEN lab_conf_examen_estab.ubicacion=0 THEN 'Todas las Procedencias'
                                             WHEN lab_conf_examen_estab.ubicacion=1 THEN 'Hospitalización y Emergencia'
@@ -643,19 +644,19 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
                                             lab_conf_examen_estab.impresion,urgente, ctl_sexo.nombre AS nombresexo,lab_conf_examen_estab.condicion,
                                             (CASE WHEN lab_conf_examen_estab.condicion='H' THEN 'Habilitado'
                                             WHEN lab_conf_examen_estab.condicion='I' THEN 'Inhabilitado' END) AS cond,cit_programacion_exams.rangotiempoprev,
-                                            (SELECT nombreformulario FROM mnt_formularios WHERE mnt_formularios.id=mnt_formulariosxestablecimiento.idformulario) AS nombreformulario
+                                             (SELECT nombreformulario FROM mnt_formularios WHERE mnt_formularios.id=lab_conf_examen_estab.idformulario) AS nombreformulario
                                             FROM lab_conf_examen_estab
                                             INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
                                             INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
                                             INNER JOIN ctl_examen_servicio_diagnostico ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico=ctl_examen_servicio_diagnostico.id
-                                            LEFT JOIN mnt_formulariosxestablecimiento ON lab_conf_examen_estab.idformulario= mnt_formulariosxestablecimiento.id
-                                            LEFT JOIN mnt_formularios  ON mnt_formularios.id=mnt_formulariosxestablecimiento.idformulario
+                                            LEFT JOIN mnt_formularios ON mnt_formularios.id=lab_conf_examen_estab.idformulario
                                             INNER JOIN lab_plantilla ON lab_conf_examen_estab.idplantilla=lab_plantilla.id
                                             LEFT JOIN ctl_sexo ON lab_conf_examen_estab.idsexo= ctl_sexo.id
                                             INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
                                             LEFT JOIN cit_programacion_exams ON lab_conf_examen_estab.id=cit_programacion_exams.id_examen_establecimiento
-                                            WHERE lab_areasxestablecimiento.condicion='H' AND ctl_examen_servicio_diagnostico.activo= TRUE
-                           AND mnt_area_examen_establecimiento.activo=TRUE AND lab_areasxestablecimiento.idestablecimiento=$lugar AND";
+                                            WHERE lab_areasxestablecimiento.condicion='H' AND ctl_examen_servicio_diagnostico.activo= TRUE AND mnt_area_examen_establecimiento.activo=TRUE 
+                                            AND lab_areasxestablecimiento.idestablecimiento=$lugar AND";
+       
       $ban = 0;
 
       //VERIFICANDO LOS POST ENVIADOS
@@ -677,6 +678,10 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
          $query .= " lab_conf_examen_estab.idplantilla=" . $_POST['plantilla'] . " AND";
       }
 
+       if (!empty($_POST['idestandar'])) {
+         $query .= " mnt_area_examen_establecimiento.id=" . $_POST['idestandar'] . " AND";
+      }
+
       if (!empty($_POST['idestandarRep'])) {
          $query .= " lab_conf_examen_estab.idestandarrep=" . $_POST['idestandarRep'] . " AND";
       }
@@ -685,29 +690,29 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
          $query .= " lab_conf_examen_estab.idformulario='" . $_POST['idformulario'] . "' AND";
       }
 
-      if (!empty($_POST['Ubicacion'])) {
-         $query .= " lab_conf_examen_estab.ubicacion='" . $_POST['Ubicacion'] . "' AND";
+      if (!empty($_POST['ubicacion'])) {
+         $query .= " lab_conf_examen_estab.ubicacion='" . $_POST['ubicacion'] . "' AND";
       }
 
-      if (!empty($_POST['etiqueta'])) {
+    /*  if (!empty($_POST['etiqueta'])) {
          if ($_POST['etiqueta'] == 'G') {
             $query .= "  lab_conf_examen_estab.impresion='G' AND";
          } else {
             $query .= "  lab_conf_examen_estab.impresion<>'G' AND";
          }
-      }
+      }*/
 
       if (!empty($_POST['urgente'])) {
          $query .= " lab_conf_examen_estab.urgente='" . $_POST['urgente'] . "' AND";
       }
 
 
-      if ($_POST['sexo'] <> 0) {
+   /*   if ($_POST['sexo'] <> 0) {
          if ($_POST['sexo'] <> 4)
             $query .= "  lab_conf_examen_estab.idsexo =" . $_POST['sexo'] . " AND";
          else
             $query .= "  lab_conf_examen_estab.idsexo IS NULL AND";
-      }
+      }*/
       /* if ($_POST['sexo']<>3)
         { if($_POST['sexo']<>0)
         $query .= "  lab_conf_examen_estab.idsexo =".$_POST['sexo']." AND";
@@ -717,7 +722,7 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
         } */
 
 
-      if (!empty($_POST['Hab'])) {
+     /* if (!empty($_POST['Hab'])) {
          if ($_POST['Hab'] == 'H') {
             $query .= "  lab_conf_examen_estab.condicion='H' AND";
          } else {
@@ -725,10 +730,10 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
          }
       } else {
          $ban = 1;
-      }
+      }*/
 
 
-      if ($ban == 0) {
+     if ($ban == 0) {
          $query = substr($query, 0, strlen($query) - 4);
          $query_search = $query . " ORDER BY ctl_area_servicio_diagnostico.idarea,lab_conf_examen_estab.nombre_examen";
       } else {
@@ -736,10 +741,10 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
          $query_search = $query . " ORDER BY ctl_area_servicio_diagnostico.idarea,lab_conf_examen_estab.nombre_examen";
       }
 
-      //echo $query_search;
+      // echo $query_search;
       //require_once("clsLab_Examenes.php");
       ////para manejo de la paginacion
-      $RegistrosAMostrar = 4;
+      $RegistrosAMostrar = 10;
       $RegistrosAEmpezar = ($_POST['Pag'] - 1) * $RegistrosAMostrar;
       $PagAct = $_POST['Pag'];
 
@@ -749,7 +754,7 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
 
       //muestra los datos consultados en la tabla
       echo "<center >
-               <table border = 1 style='width: 80%;'   class='table table-hover table-bordered table-condensed table-white' >
+               <table border = 1 style='width: 90%;'   class='table table-hover table-bordered table-condensed table-white' >
 	           <thead>
                         <tr>
 		      	    <th aling='center' > Modificar</th>

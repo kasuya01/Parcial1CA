@@ -1045,7 +1045,7 @@ $antibiotics[ $newAntibiotic[1] ] = array(
                                         'id'                       => $newAntibiotic[0],
                                         'nombre'                   => $newAntibiotic[1],
                                         'resultado'                => $newAntibiotic[2],
-                                        'lectura'                  => $newAntibiotic[3],
+                                        'lectura'                  => $newAntibiotic[2],
                                         'id_posible_resultado'     => $newAntibiotic[4],
                                         'nombre_posible_resultado' => $newAntibiotic[5]
 );

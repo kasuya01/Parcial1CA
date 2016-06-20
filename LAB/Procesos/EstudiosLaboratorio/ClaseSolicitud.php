@@ -1051,9 +1051,11 @@ values($idseq,$idexpediente, $IdEmpleado,$IdSubServicio, date_trunc('seconds',NO
       $query = "select distinct(casd.id), nombrearea
                 from ctl_area_servicio_diagnostico casd
                 join mnt_area_examen_establecimiento mnt4 on (casd.id=mnt4.id_area_servicio_diagnostico) 
+                inner join lab_areasxestablecimiento lae ON lae.idarea = casd.id
             where id_establecimiento=$lugar
             and activo=true
             and administrativa='N'
+            AND condicion = 'H'
             order by nombrearea;";
       $result = pg_query($query);
       //echo '<br/>'.$query.'<br/>';
