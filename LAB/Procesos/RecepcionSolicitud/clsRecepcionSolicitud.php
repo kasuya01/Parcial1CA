@@ -310,7 +310,7 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
                              t12.sct_name_es,
                              t05.conocido_por AS conocidopor,
                              t01.id as idhistorial,
-                             0 as referido
+                             0 as referido, t02.fecha_solicitud
                       FROM  sec_historial_clinico                t01
                       INNER JOIN sec_solicitudestudios           t02 ON (t01.id = t02.id_historial_clinico)
                       LEFT  JOIN mnt_empleado                    t03 ON (t03.id = t01.id_empleado)
@@ -361,7 +361,7 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
                              t01.id_establecimiento,
                              t14.tiposolicitud,
                              t02.id as idhistorial,
-                             1 as referido
+                             1 as referido, t02.fecha_solicitud
                       FROM  sec_solicitudestudios                t01
                       INNER JOIN mnt_dato_referencia           	 t02 ON (t02.id = t01.id_dato_referencia)
                       LEFT  JOIN mnt_empleado                    t03 ON (t03.id = t02.id_empleado)
@@ -630,6 +630,24 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
         }
     }
 
+    function BuscarEstabRealiza($id_conf_examen_estab) {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+
+        $query = "SELECT *
+                from lab_conf_examen_tipo_laboratorio 	t1
+                join ctl_establecimiento 		t2 on (t2.id=t1.id_establecimiento)
+                where id_conf_examen_estab=$id_conf_examen_estab
+                and t1.activo=true;";
+            //echo $query;
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }
+
     function DatosSolicitud($idsolicitud) {
         //creamos el objeto $con a partir de la clase ConexionBD
         $con = new ConexionBD;
@@ -715,11 +733,11 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
         }
     }
 //Fn para cancelar la solicitud
-    function cancelarsolicitud($cmbrechazoest, $cmbrechazosol, $fechanewcitasol, $observacion, $idsolicitud, $usuario, $fechacita, $lugar) {
+    function cancelarsolicitud($cmbrechazoest, $cmbrechazosol, $fechanewcitasol, $observacion, $idsolicitud, $usuario, $fechacita, $lugar, $fecharechazo) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-        $query="select lab_cancelarsolicitud($cmbrechazoest, $cmbrechazosol, $fechanewcitasol, $observacion, $idsolicitud, $usuario, $fechacita, $lugar)";
-        //var_dump($query);
+        $query="select lab_cancelarsolicitud($cmbrechazoest, $cmbrechazosol, $fechanewcitasol, $observacion, $idsolicitud, $usuario, $fechacita, $lugar, $fecharechazo)";
+      //  var_dump($query); 
               $result= @pg_query($query);
 
             if (!$result)

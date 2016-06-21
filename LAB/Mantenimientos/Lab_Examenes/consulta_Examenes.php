@@ -93,7 +93,7 @@
             </tr>
             <tr>
 	       	<td class="StormyWeatherFieldCaptionTD">C&oacute;digo del Examen</td>
-	       	<td class="StormyWeatherDataTD"><input type="text" name="txtidexamen" value="<?php echo $codexamen; ?>" disabled="disabled"  style="width:250px" class="form-control height placeholder"/></td>
+	       	<td class="StormyWeatherDataTD"><input type="text" id="txtidexamen" name="txtidexamen" value="<?php echo $codexamen; ?>" disabled="disabled"  style="width:250px" class="form-control height placeholder"/></td>
 	    </tr>
             <tr>
 	       	<td class="StormyWeatherFieldCaptionTD">C&oacute;digo del &Aacute;rea</td>
@@ -130,7 +130,7 @@
 	    <tr>
 	       	<td class="StormyWeatherFieldCaptionTD">Nombre del Examen *</td>
 	        <td class="StormyWeatherDataTD">
-                    <input type="text" name="txtnombreexamen" style="width:75%" class="form-control height placeholder" size="50" value="<?php echo htmlentities($nombreexamen); ?>"/>
+                    <input type="text" id="txtnombreexamen" name="txtnombreexamen" style="width:75%" class="form-control height placeholder" size="50" value="<?php echo htmlentities($nombreexamen); ?>"/>
                     <input type="hidden" name="txtidconf" size="50" style="width:75%" class="form-control height placeholder" value="<?php echo $idconf ; ?>"/>
                     <input type="hidden" name="txtctlidestandar" size="50" value="<?php //echo $ctlidestandar ; ?>"/>
                 </td>

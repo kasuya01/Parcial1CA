@@ -98,6 +98,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                                 <input name='txtprecedencia[" . $i . "]' id='txtprecedencia[" . $i . "]' type='hidden'  value='" . $row['precedencia'] . "'/>
                                 <input name='txtidsolicitud[" . $i . "]' id='txtidsolicitud[" . $i . "]' type='hidden' value='" . $arraysolic[$i] . "'/>
                                 <input name='txtfecha[" . $i . "]' id='txtfecha[" . $i . "]' type='hidden' value='" . $row['fecha'] . "'/>
+                                <input name='fecha_solicitud[" . $i . "]' id='fecha_solicitud' type='hidden' value='" . $row['fecha_solicitud'] . "'/>
                                 <input name='suEdad[" . $i . "]'' id='suEdad[" . $i . "]' type='hidden' value='" . $row['fechanacimiento'] . "'/>
                             </td>
                             <th class='th-info'>Origen</th>
@@ -132,7 +133,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                               <th >Fecha Toma Mx.<br/><input type='text' placeholder='aaaa-mm-dd HH:MM' class='datepicker form-control height' title='Seleccione la Fecha de toma de muestra igual para actualizar la de todas las pruebas.' id='fgentomamxgen'  name='fgentomamx' style='width:150px' value='" . $fecha . "' onchange= \"valfechasolicita(this.value, 'fgentomamxgen'), updatealldates()\"  ></th>
                               <th> Validar Muestra</th>
                               <th id='colnewdate_' class='hide_me newdate'>Nueva Cita</th>
-                             
+                              <th style='display:none;'> Lugar de Realización</th>
           		        </tr></thead><tbody>";
                   $detalle = $objdatos->BuscarDetalleSolicitud($idexpediente, $Nfechacita, $arraysolic[$i], $idEstablecimiento);
                   $k=1;
@@ -171,23 +172,24 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                       . '<div id="divopcionrechazo_'.$k.'" style="width:100%;display:none"></div>'
                               . '</td>';
                       echo '<td  id="colnewdate_" class="hide_me newdate"  style="width:100px"> <div id="divnewdate_'.$k.'" style="display:none"></div></td>';
-                    //   if ($rows['id_area']!=14){
-                    //       echo "<td>".$nestab."</td>";
-                    //   }
-                    //   else{
-                    //       echo "<td>";
-                    //       $ber=$objdatos->BuscarEstabRealiza($i_idexamen);
-                    //       if (pg_num_rows>=1){
-                    //           while ($rows2= pg_fetch_array($ber)){
-                    //               echo "ki tengo q poner un select para los diferentes lugares de donde solicitara el examen por defecto local.... y si es uno solo el que aplica";
-                    //           }
-                    //       }
-                    //       else {
-                    //           echo "Se debe de hacer la respectiva configuración del examen antes de continuar";
-                    //       }
-                    //       echo "</td>";
-                    //
-                    //   }
+                      if ($rows['id_area']!=14){
+                          echo "<td style='display:none'>".$nestab."</td>";
+                      }
+                      else{
+                          echo "<td style='display:none;'>";
+                          $ber=$objdatos->BuscarEstabRealiza($i_idexamen);
+                          if (pg_num_rows($ber)>=1){
+                              echo '<select id="estabarealiza'.$k.'" name="estabarealiza_" class="form-control height" style="width:300px">';
+                              while ($rows2= pg_fetch_array($ber)){
+                                 echo '<option value="'.$rows2["id_establecimiento"].'">'.$rows2["nombre"].'</option>';
+                              }
+                          }
+                          else {
+                              echo "Se debe de hacer la respectiva configuración del examen antes de continuar";
+                          }
+                          echo "</td>";
+
+                      }
                       echo "</tr>";
 
                       $k++;
@@ -202,7 +204,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                     <tr>
                         <td align='center'>
                             <button type='button'  name='btnActualizar[" . $i . "]' id='btnActualizar[" . $i . "]' align='right' style='text-align: right' class='btn btn-primary' onclick='AsignarNumeroMuestra(" . $i . ");'><span class='glyphicon glyphicon-check'></span>&nbsp;Procesar Solicitud </button>&nbsp;
-                            <button type='button'  name='btnRechazar[" . $i . "]' id='btnRechazar[" . $i . "]' align='right' style='text-align: right' class='btn btn-primary' data-toggle='modal' data-target='#myModal' ><span class='glyphicon glyphicon-remove'></span>&nbsp;Rechazar Solicitud </button>&nbsp;";
+                            <button type='button'  name='btnRechazar[" . $i . "]' id='btnRechazar[" . $i . "]' align='right' style='text-align: right' class='btn btn-primary' data-toggle='modal' data-target='#myModal' onclick='setfecharechazo();'><span class='glyphicon glyphicon-remove'></span>&nbsp;Rechazar Solicitud </button>&nbsp;";
             echo '<button type="button"  name="btnOtra" id="btnOtra" align="right" style="text-align: right" class="btn btn-primary" onclick="window.location.replace(\'Proc_RecepcionSolicitud.php\');"><span class="glyphicon glyphicon-refresh"></span>&nbsp;Ingresar otra solicitud </button>';
     //        echo
     //                        <input type='hidden' name='oculto' id='text' value='" . $i . "' />
@@ -242,6 +244,15 @@ echo "</div>";//fin div class row
         <h4 class="modal-title" id="myModalLabel">Rechazar Solicitud</h4>
       </div>
       <div class="modal-body">
+          *<label>Fecha de rechazo:</label>
+         <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1" style="width:inherit">
+                <i class="fa fa-calendar"></i>
+            </span>
+              <input type="text" class="date form-control" id="fecharechazo" name="fecharechazo" style="width:105px" value="<?php echo date("Y-m-d");?>" aria-describedby="basic-addon1">
+         </div>
+
+         <br>
          *<label>Tipo de Rechazo:</label>
          <select style="width: 90%" class="form-control height" id="cmbrechazoest" name="cmbrechazoest" onclick="rechazosolicitud(this.value)">
             <option value="0">Seleccione una opción</option>
@@ -268,7 +279,13 @@ echo "</div>";//fin div class row
          <br>
          <div id="newdatesol" style="display: none; width: 100%" >
             <label>*Fecha de nueva cita:</label>
-            <input type="text" class="date form-control height" id="fechanewcitasol" name="fechanewcitasol" style="width:105px">
+            <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1" style="width:inherit">
+                <i class="fa fa-calendar"></i>
+            </span>
+              <input type="text" class="date form-control" id="fechanewcitasol" name="fechanewcitasol" style="width:105px">
+         </div>
+
             <br>
          </div>
          <label>Observación:</label>
@@ -276,7 +293,7 @@ echo "</div>";//fin div class row
       </div>
       <div class="modal-footer">
          <button type="button" class="btn btn-default" data-dismiss="modal" onclick="cancelarechazo()">Cerrar</button>
-        <button type="button" class="btn btn-primary" onclick="cancelarsolicitud()">Guardar</button>
+        <button type="button" class="btn btn-primary" onclick="cancelarsolicitud()">Rechazar Solicitud</button>
       </div>
     </div>
   </div>

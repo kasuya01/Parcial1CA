@@ -300,6 +300,7 @@ function pedirDatos(idexamen){ //CARGAR DATOS A MODIFICAR
 			divFormulario.style.display="block";
 			divFormularioNuevo.style.display="none";
                         divFormularioNuevo.innerHTML="";
+                        idarea=$('#cmbArea').val();
                         if (idarea==14)
                             $('#estabreferido').show();
                         iniciarselects2();
