@@ -505,7 +505,7 @@ function cancelrechazo(cmbrechazo, k) {
     }
     else{
       opcion = 12;
-      temporal=$("#validarmuestra_"+k).val();
+      temporal=$("#validarmuestra_"+k).val();     
       //if(temporal==1){
          ajax = objetoAjax();
          //usando del medoto POST
@@ -524,8 +524,10 @@ function cancelrechazo(cmbrechazo, k) {
                  $( ".hide_me" ).removeClass( "hide_me" )
                   document.getElementById('divnewdate_'+k).style.display = "block";
                   document.getElementById('divnewdate_'+k).innerHTML = ajax.responseText;
+                     
                    classdate();
-                   $('.date').datepicker({ minDate: 1 });
+                 //  $("#f_newdate_"+k).datepicker({ minDate: newdates });
+                   // changenewdate(k);
                   // ajax.responseText;
                }
             }
@@ -533,6 +535,30 @@ function cancelrechazo(cmbrechazo, k) {
       //}
     }
 
+}
+//fn cambiar la nueva fecha
+function changenewdate(k){
+   //alert (k)
+  // var newdates=moment($('#f_tomamuestra_'+k).val()).format("YYYY-MM-DD");
+  if (($('#validarmuestra_'+k).val())==2){
+   /* 
+   var dateFormat = $('#f_tomamuestra_'+k).val();
+   console.log(dateFormat)
+  var dateFormat = $.datepicker.formatDate('yy-mm-dd', new Date(dateFormat));
+ alert (dateFormat)
+   $("#f_newdate_"+k).datepicker('option', 'minDate', new Date(dateFormat));
+    */  
+  // alert (newdates)
+//  //$("#f_newdate_"+k).datepicker({ minDate: newdates });
+//   $("#f_newdate_"+k).datepicker("option", "minDate", new Date(newdates));   
+//   
+   //var $datepickerStart = moment($('#f_tomamuestra_'+k).val()).format("YYYY-MM-DD"); 
+  //var newdates=moment($('#f_tomamuestra_'+k).val()).format("YYYY-MM-DD");
+//   $( "#f_newdate_"+k ).datepicker({
+//  minDate: new Date(newdates)
+//});
+// $( "#f_newdate_"+k ).datepicker( "option", "minDate", new Date(newdates) );
+  }
 }
 
 //FUNCION PARA CREAR ARCHIVO DE LA SOLICITUD
@@ -783,16 +809,25 @@ function cancelarechazo(){
 
 
 }
+//function to set fecharechazo > fechacita 
+function setfecharechazo(){
+   
+   classdate();
+   fechacita = $('#fecha_solicitud').val();
+   $("#fecharechazo").datepicker("option", "minDate", '2016-06-02');
+}
+
 
 function cancelarsolicitud(){
    cmbrechazoest=$('#cmbrechazoest').val();
    cmbrechazosol= $('#cmbrechazosol').val();
    fechanewcitasol=$('#fechanewcitasol').val();
+   fecharechazo=$('#fecharechazo').val();
    observacionrechazo=$('#observacionrechazo').val();
    idsolicitud=$('input[id^="txtidsolicitud[0]"]').val();
    fechacita = $('input[id^="txtfecha[0]"]').val();
    pasar=1;
-   if ((cmbrechazoest==0)||(cmbrechazoest==0)){
+   if ((cmbrechazoest==0)||(cmbrechazoest==0)||(fecharechazo=='')){
    pasar=0;
    alert ("Favor verificar que ha completado todos los campos obligatorios")
    return false;
@@ -801,14 +836,14 @@ function cancelarsolicitud(){
       alert ("Favor ingresar la fecha de la nueva cita")
       return false;
    }
- console.log('aca va al otro'+'cmbrechazoest'+ cmbrechazoest+ 'cmbrechazosol'+ cmbrechazosol+'fechanewcitasol'+ fechanewcitasol+ 'observacionrechazo'+ observacionrechazo+'idsolicitud'+idsolicitud+ 'fechacita'+fechacita)
+ console.log('aca va al otro'+'cmbrechazoest'+ cmbrechazoest+ 'cmbrechazosol'+ cmbrechazosol+'fechanewcitasol'+ fechanewcitasol+ 'observacionrechazo'+ observacionrechazo+'idsolicitud'+idsolicitud+ 'fechacita'+fechacita+'fecharechazo'+fecharechazo)
       jQuery.ajax({
           url: 'ctrRecepcionSolicitud.php',
           async: true,
           dataType: 'json',
           type: 'POST',
-          data: { opcion: 13 , cmbrechazoest: cmbrechazoest, cmbrechazosol: cmbrechazosol,fechanewcitasol: fechanewcitasol, observacionrechazo: observacionrechazo,idsolicitud:idsolicitud, fechacita:fechacita },
-        success: function(object) {
+          data: { opcion: 13 , cmbrechazoest: cmbrechazoest, cmbrechazosol: cmbrechazosol,fechanewcitasol: fechanewcitasol, observacionrechazo: observacionrechazo,idsolicitud:idsolicitud, fechacita:fechacita, fecharechazo:fecharechazo },
+        success: function(object) {           
             if(object.status) {
                 alert ('Solicitud cancelada');
                   $('#myModal').modal('hide');

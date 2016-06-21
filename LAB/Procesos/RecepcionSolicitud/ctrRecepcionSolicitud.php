@@ -432,6 +432,7 @@ switch ($opcion) {
       if ($idrechazo != 1) {
          $query = $object->obteneropcionesrechazo();
          $rslts = '<select name="cmbrechazo_' . $k . '" id="cmbrechazo_' . $k . '" class="form-control height" style="width:100%" onclick="cancelrechazo(this.value, ' . $k . ')">';
+         $rslts = "<select name='cmbrechazo_" . $k . "' id='cmbrechazo_" . $k . "' class='form-control height' style='width:100%' onclick=\"cancelrechazo(this.value, '" . $k . "')\">";
          $rslts .='<option value="0" selected>--Seleccione una opción--</option>';
          while ($rows = pg_fetch_array($query)) {
             $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
@@ -453,7 +454,7 @@ switch ($opcion) {
       if ($temporal == 2) {
          if ($idrechazo != 0 && $idrechazo != 'xyz') {
             //  $query = $object->obteneropcionesrechazo();
-            $rslts = "<input type='text' class='date form-control height placeholder'  id='f_newdate_" . $k . "' name='f_newdate_'  placeholder='aaaa-mm-dd' onchange=\"valfechasolicita(this.value, 'f_newdate_" . $k . "')\" style='width:105px' />";
+            $rslts = "<input type='text' class='date form-control height placeholder'  id='f_newdate_" . $k . "' name='f_newdate_'  placeholder='aaaa-mm-dd' onchange=\"valfechasolicita(this.value, 'f_newdate_" . $k . "')\"  style='width:105px' />";
          }
       } else {
          $rslts = "<p>Definitivo</p><input type='hidden' class='date form-control height'  id='f_newdate_" . $k . "' name='f_newdate_'  value='" . date('Y-m-d') . "' onchange=\"valfechasolicita(this.value, 'f_newdate_" . $k . "')\" style='width:100px' />";
@@ -468,6 +469,7 @@ switch ($opcion) {
       $cmbrechazoest = $_POST['cmbrechazoest'];
       $cmbrechazosol = $_POST['cmbrechazosol'];
       $idsolicitud = $_POST['idsolicitud'];
+      $fecharechazo = $_POST['fecharechazo'];
       $var = $_POST['fechacita'];
       $date = str_replace('/', '-', $var);
       $fechacita=date('Y-m-d', strtotime($date));
@@ -479,12 +481,13 @@ switch ($opcion) {
       //$fechanewcitasol = isset($_POST['fechanewcitasol']) ? $_POST['fechanewcitasol']
       $fechanewcitasol=(empty($_POST['fechanewcitasol'])) ? 'NULL' : "'" . pg_escape_string(trim($_POST['fechanewcitasol'])) . "'";
       $fechacita=(empty($fechacita)) ? 'NULL' : "'" . pg_escape_string(trim($fechacita)) . "'";
+      $fecharechazo=(empty($fecharechazo)) ? 'NULL' : "'" . pg_escape_string(trim($fecharechazo)) . "'";
 //      $observacionrechazo = isset($_POST['observacionrechazo']) ? $_POST['observacionrechazo']
       $observacionrechazo = (empty($_POST['observacionrechazo'])) ? 'NULL' : "'" . pg_escape_string(trim($_POST['observacionrechazo'])) . "'";
 
       $rslts = "";
       $cancelarsol = $object->cancelarsolicitud($cmbrechazoest, $cmbrechazosol,
-              $fechanewcitasol, $observacionrechazo, $idsolicitud, $usuario, $fechacita, $lugar);
+              $fechanewcitasol, $observacionrechazo, $idsolicitud, $usuario, $fechacita, $lugar, $fecharechazo);
 
      // var_dump($cancelarsol);
       if ($cancelarsol == true) {
