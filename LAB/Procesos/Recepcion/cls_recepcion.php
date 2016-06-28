@@ -62,7 +62,7 @@ where id_tipo_establecimiento not in (12,13,29,28) order by id_tipo_establecimie
         }
       }
 //Fn PG
-    function LlenarCmbServ($IdServ, $lugar) {
+    function LlenarCmbServ($IdServ,$lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
             /*$sqlText = "select mnt_3.id,
@@ -87,7 +87,7 @@ where id_tipo_establecimiento not in (12,13,29,28) order by id_tipo_establecimie
                         where id_area_atencion=$IdServ
                         and mnt_3.id_establecimiento=$lugar 
                         order by 2";*/
-            $sqlText="with tbl_servicio as (select mnt_3.id,
+         $sqlText="with tbl_servicio as (select mnt_3.id,
 CASE
 WHEN mnt_3.nombre_ambiente IS NOT NULL
 THEN  	
@@ -102,7 +102,7 @@ CASE WHEN id_servicio_externo_estab IS NOT NULL
      WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=cat.nombre)
 	THEN cat.nombre||'-'||cmo.nombre
 END
-END AS servicio 
+END AS servicio,mnt_2.id_area_atencion 
 from ctl_atencion cat 
 join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
 join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
@@ -113,7 +113,7 @@ join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
 where  mnt_2.id=$IdServ
 and mnt_3.id_establecimiento=$lugar
 order by 2)
-select id, servicio from tbl_servicio where servicio is not null;
+select id, servicio,id_area_atencion from tbl_servicio where servicio is not null;
 ";
             $dt = pg_query($sqlText) ;            
             if  (!$dt)
@@ -124,6 +124,22 @@ select id, servicio from tbl_servicio where servicio is not null;
         
     }
 
+     function BuscarPorcedencia($idSubEsp){
+          $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            
+            $sql="SELECT mnt_area_mod_estab.id_area_atencion 
+                  INNER JOIN mnt_area_mod_estab on mnt_area_mod_estab.id= mnt_aten_area_mod_estab.id_area_mod_estab
+                  WHERE mnt_aten_area_mod_estab.id=$idSubEsp";
+             $dt = pg_query($sql) ;
+            
+            if  (!$dt)
+                return false;
+            else
+                return $dt;
+        }
+         
+     }
     function LlenarCmbMed($idSubEsp, $lugar) {//echo $IdSub;
         $con = new ConexionBD;
         if ($con->conectar() == true) {
@@ -132,7 +148,7 @@ select id, servicio from tbl_servicio where servicio is not null;
 			   INNER JOIN mnt_usuarios ON mnt_empleados.IdEmpleado=mnt_usuarios.IdEmpleado 
 				WHERE mnt_usuarios.IdSubServicio=$idSubEsp  AND mnt_empleados.IdEstablecimiento=$lugar ORDER BY mnt_empleados.NombreEmpleado";
             $dt = mysql_query($sqlText) or die('La consulta fall&oacute;:' . mysql_error());*/
-            $sqlText="select mem.id as idemp, nombreempleado as nombre, idempleado  
+           $sqlText="select mem.id as idemp, nombreempleado as nombre, idempleado  
 from mnt_empleado_especialidad_estab empest
 join mnt_empleado mem on (empest.id_empleado=mem.id)
 where id_aten_area_mod_estab=$idSubEsp";
@@ -146,6 +162,27 @@ where id_aten_area_mod_estab=$idSubEsp";
         }
     }
 
+    function LlenarCmbMedTodos($lugar) {//echo $IdSub;
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+     /*       $sqlText = "SELECT mnt_empleados.IdEmpleado,mnt_empleados.NombreEmpleado 
+			   FROM mnt_empleados 
+			   INNER JOIN mnt_usuarios ON mnt_empleados.IdEmpleado=mnt_usuarios.IdEmpleado 
+				WHERE mnt_usuarios.IdSubServicio=$idSubEsp  AND mnt_empleados.IdEstablecimiento=$lugar ORDER BY mnt_empleados.NombreEmpleado";
+            $dt = mysql_query($sqlText) or die('La consulta fall&oacute;:' . mysql_error());*/
+           $sqlText="select mem.id as idemp, nombreempleado as nombre, idempleado  
+                    from mnt_empleado_especialidad_estab empest
+join mnt_empleado mem on (empest.id_empleado=mem.id)";
+            $dt = pg_query($sqlText) ;
+            
+            if  (!$dt)
+                return false;
+            else
+                return $dt;
+            
+        }
+    }
+    
     function LlenarCmbMedicos($lugar) {//echo $IdSub;
         $con = new ConexionBD;
         if ($con->conectar() == true) {
