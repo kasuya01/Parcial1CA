@@ -80,6 +80,7 @@
                 <item labelText="Examenes por Servicio" url= "../../../LAB/Reportes/ReptExamenesPorServicio/ReporteExamenesporServicio.php"/>
                 <item labelText="Reporte por tipo de Resultado" url= "../../../LAB/Reportes/ReptTipoResultado/ReporteTiporesultado.php"/>
                 <item labelText="Tabulador Mensual" url= "../../../LAB/Reportes/ReporteTabulador/ReporteTabuladores.php"/>
+                <item labelText="Imprimir Resultado" url="../../../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/>
                 <item labelText="Reporte Resultados" url= "../../../LAB/Reportes/Reporte_Resultados/ReporteResultados.php"/>
                 <item labelText="Demanda Insatisfecha" url= "../../../LAB/Reportes/ReporteDemanda/ReporteDemanda.php"/>
 
