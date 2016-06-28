@@ -138,10 +138,20 @@ switch ($opcion)
           // echo $cond2;
         }     
        // echo $cond2;
-         $query="WITH tbl_servicio AS ( SELECT t02.id, CASE WHEN t02.nombre_ambiente IS NOT NULL THEN 
-            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||' - ' || t02.nombre_ambiente END ELSE 
-            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||' - ' || t01.nombre WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre) THEN t01.nombre END END AS servicio, 
-            (CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' || t06.nombre ELSE t07.nombre ||'-->' || t06.nombre END) as procedencia 
+         $query="WITH tbl_servicio AS (SELECT t02.id,
+                CASE WHEN t02.nombre_ambiente IS NOT NULL THEN
+                    t02.nombre_ambiente
+                    ELSE
+                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre
+                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)
+                                   
+                                    THEN t01.nombre
+                    END
+
+                END AS servicio,
+               (CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->'  || t06.nombre
+                    ELSE   t07.nombre ||'-->' || t06.nombre
+                END) as procedencia 
             FROM ctl_atencion t01 
             INNER JOIN mnt_aten_area_mod_estab t02 ON (t01.id = t02.id_atencion) 
             INNER JOIN mnt_area_mod_estab t03 ON (t03.id = t02.id_area_mod_estab) 
