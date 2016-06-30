@@ -54,7 +54,7 @@ switch($Proceso){
     case 'fillServicio':
         $rslts='';
         $IdServ=$_POST['idserv'];
-	    //  echo $IdServ;
+	   //   echo $IdServ;
             $dtserv=$recepcion->LlenarCmbServ($IdServ,$lugar);
             $rslts = '<select name="cmbSubServ" id="cmbSubServ" onChange="fillMed(this.value)" style="width:350px" class="js-example-basic-single">';
             $rslts .='<option value="0">--Seleccione Subespecialidad--</option>';
@@ -69,8 +69,17 @@ switch($Proceso){
     case 'fillMed':
  	$rslts='';
         $idSubEsp=$_POST['idSubEsp'];
-       //echo $idSubEsp;
-            $dtmed=$recepcion->LlenarCmbMed($idSubEsp,$lugar);
+    
+      //echo $idSubEsp;
+        $dtproc=$recepcion->BuscarPorcedencia($idSubEsp);
+        $rowproc =pg_fetch_array($dtproc);
+        if ($rowproc[0]==1){
+            $dtmed=$recepcion->LlenarCmbMed($idSubEsp,$lugar);}
+        else {
+            $dtmed=$recepcion->LlenarCmbMedTodos($lugar);
+        
+        }
+        
             $rslts = '<select name="cmbMedico" id="cmbMedico"  style="width:350px" class="js-example-basic-single">';
             $rslts .='<option value="0">--selecione un M&eacute;dico--</option>';
             while ($rows =pg_fetch_array($dtmed)){
