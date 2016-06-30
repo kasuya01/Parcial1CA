@@ -130,7 +130,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                               <th>Cód. Area</th>
                               <th> Examen </th>
                               <th> Indicaciones </th>
-                              <th >Fecha Toma Mx.<br/><input type='text' placeholder='aaaa-mm-dd HH:MM' class='datepicker form-control height' title='Seleccione la Fecha de toma de muestra igual para actualizar la de todas las pruebas.' id='fgentomamxgen'  name='fgentomamx' style='width:150px' value='" . $fecha . "' onchange= \"valfechasolicita(this.value, 'fgentomamxgen'), updatealldates()\"  ></th>
+                              <th >Fecha Toma Mx.<br/><input type='text' placeholder='aaaa-mm-dd HH:MM' class='datepicker form-control height' title='Seleccione la Fecha de toma de muestra igual para actualizar la de todas las pruebas.' id='fgentomamxgen'  name='fgentomamx' style='width:150px' value='" . $fecha . "' onchange= \"valfechasolicita(this.value, 'fgentomamxgen'), updatealldates(), changefechatomamx()\"  ></th>
                               <th> Validar Muestra</th>
                               <th id='colnewdate_' class='hide_me newdate'>Nueva Cita</th>
                               <th style='display:none;'> Lugar de Realización</th>
@@ -149,7 +149,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                           $fecha= date('Y-m-d H:i');
                           $iddetalle=$rows['iddetalle'];
                           $i_idexamen=$rows['i_idexamen'];
-                      echo " <td style='width:150px'><input type='text' class='datepicker form-control height'  id='f_tomamuestra_".$k."' name='f_tomamuestra_'  value='". date('Y-m-d H:i')."' onchange=\"valfechasolicita(this.value, 'f_tomamuestra_".$k."')\" style='width:150px' />"
+                      echo " <td style='width:150px'><input type='text' class='datepicker form-control height'  id='f_tomamuestra_".$k."' name='f_tomamuestra_'  value='". date('Y-m-d H:i')."' onchange=\"valfechasolicita(this.value, 'f_tomamuestra_".$k."'); changenewdate('".$k."')\" style='width:150px' />"
                               . "<input type='hidden' id='iddetalle_".$k."' name='iddetalle_' value='".$iddetalle."'/>"
                               . "<input type='hidden' id='i_idexamen_".$k."' name='i_idexamen_' value='".$i_idexamen."'/>"
                               . "<input type='hidden' id='hdn_numexOrd".$k."' name='hdn_numexOrd' value='".$k."'/>"

@@ -73,6 +73,15 @@ echo '<h4><i>Fecha actual: '.strftime("%A, %d de %B de %Y").'<br/></i></h4>';
             <a href="../LAB/Procesos/IngresoResultados/Proc_SolicitudesProcesadas.php" class="btn btn-app" >
                 <i class="fa fa-edit" ></i> Ingreso de Resultados
             </a>
+                 <div class="col-md-1 text-right"   >
+                        <?php
+                        $tooltipexp="DIGITADA: Solicitudes de médicos, pendientes de recepcionar en el área. &#010;                        
+                              RECIBIDA: Solicitud pendiente de recepcionar en las secciones.  &#010;
+                        
+                              EN PROCESO: Solicitudes pendientes de ingresarles resultados de examenes. ";
+                        echo '<a href="#" style="html: true" title="'.$tooltipexp.'"><span class="glyphicon glyphicon-info-sign"  ></span></a>';
+                        ?>
+                    </div>
               <!-- <a href="../LAB/Procesos/Recepcion/RecepcionLab.php" class="btn btn-link" style="color:#c8f1ff !important;"><button class="btn btn-block btn-primary btn-xs" >Nueva Solicitud</button></a>
               <a href="../LAB/Procesos/RecepcionSolicitud/Proc_RecepcionSolicitud.php" class="btn btn-link" style="color:#c8f1ff !important;">Recepción muestra</a>
               <a href="../LAB/Procesos/IngresoResultados/Proc_SolicitudesProcesadas.php" class="btn btn-link" style="color:#c8f1ff !important;">Ingreso de Resultados</a> -->

@@ -272,9 +272,19 @@ function MostrarDatosGenerales(idexpediente, fechacita, idEstablecimiento, idsol
             {
                 //mostrar los nuevos registros en esta capa
                 document.getElementById('divResultado').innerHTML = ajax.responseText;
+                var myString = $('#fecha_solicitud').val();
+                var arr = myString.split('-');
+              //  console.log(arr[0]+','+arr[1]+','+arr[2])
+                
                 classdatepick();
 
                 calc_edad();
+               // console.log($('#fecha_solicitud').val())
+                 $('#fgentomamxgen').datetimepicker({'minDate': new Date(arr[0],arr[1] - 1,arr[2])});
+                 $("input[name^='f_tomamuestra_']").datetimepicker({'minDate': new Date(arr[0],arr[1] - 1,arr[2])});
+                 
+                //  $( "#fgentomamxgen" ).datepicker("refresh");
+           //      $('#fgentomamxgen').datepicker('option', 'minDate', new Date($('#fecha_solicitud').val()));
             }
         }
     }
@@ -526,6 +536,17 @@ function cancelrechazo(cmbrechazo, k) {
                   document.getElementById('divnewdate_'+k).innerHTML = ajax.responseText;
                      
                    classdate();
+                   changenewdate(k)
+                  // console.log('entro a cancelrechazo')
+//                  var myString = $('#validarmuestra_'+k).val();
+//                  var arr = myString.split('-');
+//                  console.log(arr[0]+','+arr[1]+','+arr[2])
+//                  calc_edad();
+//                  console.log($('#validarmuestra_'+k).val())
+//                  $("#f_newdate_"+k).datepicker({'minDate': new Date(arr[0],arr[1] - 1,arr[2])});
+                  
+  // $('#f_newdate_1').datepicker('option', 'minDate',  new Date('2016-06-12'));
+//                     }
                  //  $("#f_newdate_"+k).datepicker({ minDate: newdates });
                    // changenewdate(k);
                   // ajax.responseText;
@@ -536,29 +557,38 @@ function cancelrechazo(cmbrechazo, k) {
     }
 
 }
+
 //fn cambiar la nueva fecha
+
+function changefechatomamx(){
+    var dateFormat = $('#fgentomamxgen').val();
+    var dateFormat = $.datepicker.formatDate('yy-mm-dd', new Date(
+              dateFormat));
+   $('input[name="f_newdate_"]').each(function(){
+      var newdate=$(this).val();
+      if (dateFormat>newdate){
+         $(this).val(dateFormat);
+      }  
+        var id = $(this).attr('id').split('_')[2];
+        changenewdate(id)
+});
+}
+//fun changenewdate
 function changenewdate(k){
-   //alert (k)
-  // var newdates=moment($('#f_tomamuestra_'+k).val()).format("YYYY-MM-DD");
-  if (($('#validarmuestra_'+k).val())==2){
-   /* 
-   var dateFormat = $('#f_tomamuestra_'+k).val();
-   console.log(dateFormat)
-  var dateFormat = $.datepicker.formatDate('yy-mm-dd', new Date(dateFormat));
- alert (dateFormat)
-   $("#f_newdate_"+k).datepicker('option', 'minDate', new Date(dateFormat));
-    */  
-  // alert (newdates)
-//  //$("#f_newdate_"+k).datepicker({ minDate: newdates });
-//   $("#f_newdate_"+k).datepicker("option", "minDate", new Date(newdates));   
-//   
-   //var $datepickerStart = moment($('#f_tomamuestra_'+k).val()).format("YYYY-MM-DD"); 
-  //var newdates=moment($('#f_tomamuestra_'+k).val()).format("YYYY-MM-DD");
-//   $( "#f_newdate_"+k ).datepicker({
-//  minDate: new Date(newdates)
-//});
-// $( "#f_newdate_"+k ).datepicker( "option", "minDate", new Date(newdates) );
-  }
+
+   // var newdates=moment($('#f_tomamuestra_'+k).val()).format("YYYY-MM-DD");
+   if (($('#validarmuestra_' + k).val()) == 2) {
+      var dateFormat = $('#f_tomamuestra_' + k).val();
+      var dateFormat = $.datepicker.formatDate('yy-mm-dd', new Date(
+              dateFormat));
+      var arr = dateFormat.split('-');
+      
+      if($('#f_newdate_'+k).hasClass('hasDatepicker')) {
+         $('#f_newdate_'+k).datepicker( "option", "minDate", new Date(arr[0], arr[1] - 1, arr[2]));
+      } else {
+         $("#f_newdate_" + k).datepicker({'minDate': new Date(arr[0], arr[1] - 1, arr[2])});
+      }
+   }
 }
 
 //FUNCION PARA CREAR ARCHIVO DE LA SOLICITUD
