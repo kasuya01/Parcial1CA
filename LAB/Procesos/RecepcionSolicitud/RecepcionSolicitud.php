@@ -283,17 +283,21 @@ echo "</div>";//fin div class row
             ?>
          </select>
          <br>
-         <label>*Elija razón de rechazo de solicitud:</label>
-         <select style="width: 90%" class="form-control height" id="cmbrechazosol" name="cmbrechazosol">
-            <option value="0">Seleccione una opción</option>
-            <?php
-            $cmbrechazo=$objdatos->obteneropcionesrechazo();
-            while ($cmb=@pg_fetch_array($cmbrechazo)){
 
-               echo '<option value='.$cmb["id"].'>'.$cmb["posible_observacion"].'</option>';
-            }
-            ?>
-         </select>
+         <label>*Elija razón de rechazo de solicitud:</label>
+         <div id="newreasonsol" style="display: block; width: 100%" >
+             <select style="width: 90%" class="form-control height" id="cmbrechazosol" name="cmbrechazosol">
+                <option value="0">Seleccione una opción</option>
+                <?php
+                /*$cmbrechazo=$objdatos->obteneropcionesrechazo();
+                while ($cmb=@pg_fetch_array($cmbrechazo)){
+
+                   echo '<option value='.$cmb["id"].'>'.$cmb["posible_observacion"].'</option>';
+               }*/
+                ?>
+             </select>
+         </div>
+
          <br>
          <div id="newdatesol" style="display: none; width: 100%" >
             <label>*Fecha de nueva cita:</label>

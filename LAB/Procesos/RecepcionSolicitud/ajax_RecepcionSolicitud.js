@@ -461,6 +461,31 @@ function RegistrarNumeroMuestra(posicion)//Registrando Numero de Muestra asociad
 }
 //Fn_PG
 //FUNCION PARA CREAR ARCHIVO DE LA SOLICITUD
+function OpcionRechazoSol(idrechazo) {
+
+   //alert(posicion)
+   opcion = 14;
+   //instanciamos el objetoAjax
+   ajax = objetoAjax();
+   //usando del medoto POST
+   ajax.open("POST", "ctrRecepcionSolicitud.php", true);
+   //muy importante este encabezado ya que hacemos uso de un formulario
+   ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+   //enviando los valores
+   ajax.send("&opcion=" + opcion + "&idrechazo=" + idrechazo);
+   ajax.onreadystatechange = function() {
+       if (ajax.readyState == 4) {
+         if (ajax.status == 200)
+         {
+            //mostrar los nuevos registros en esta capa
+            $("#rowdetalle_"+k).css("background-color", "#FFFFE6");
+            document.getElementById('newreasonsol').innerHTML = ajax.responseText;
+            // ajax.responseText;
+         }
+      }
+   }
+}
+//FUNCION PARA CREAR ARCHIVO DE LA SOLICITUD
 function OpcionRechazo(idrechazo, k) {
 
    //alert(posicion)
@@ -797,6 +822,7 @@ function HabilitarBoton(idsolicitud, posicion) {
 }
 
 function rechazosolicitud(idcmbrechazoest){
+   OpcionRechazoSol(idcmbrechazoest);
    if (idcmbrechazoest==2){
       $( "#newdatesol" ).show();
        classdate();
@@ -885,7 +911,7 @@ function cancelarsolicitud(){
    idsolicitud=$('input[id^="txtidsolicitud[0]"]').val();
    fechacita = $('input[id^="txtfecha[0]"]').val();
    pasar=1;
-   if ((cmbrechazoest==0)||(cmbrechazoest==0)||(fecharechazo=='')){
+   if ((cmbrechazoest==0)||(cmbrechazosol==0)||(fecharechazo=='')){
    pasar=0;
    alert ("Favor verificar que ha completado todos los campos obligatorios")
    return false;
@@ -894,7 +920,7 @@ function cancelarsolicitud(){
       alert ("Favor ingresar la fecha de la nueva cita")
       return false;
    }
- console.log('aca va al otro'+'cmbrechazoest:'+ cmbrechazoest+ ' cmbrechazosol:'+ cmbrechazosol+' fechanewcitasol:'+ fechanewcitasol+ ' observacionrechazo:'+ observacionrechazo+' idsolicitud:'+idsolicitud+ ' fechacita:'+fechacita+' fecharechazo:'+fecharechazo)
+ //console.log('aca va al otro'+'cmbrechazoest:'+ cmbrechazoest+ ' cmbrechazosol:'+ cmbrechazosol+' fechanewcitasol:'+ fechanewcitasol+ ' observacionrechazo:'+ observacionrechazo+' idsolicitud:'+idsolicitud+ ' fechacita:'+fechacita+' fecharechazo:'+fecharechazo)
       jQuery.ajax({
           url: 'ctrRecepcionSolicitud.php',
           async: true,
@@ -904,8 +930,9 @@ function cancelarsolicitud(){
         success: function(object) {
             console.log(object.status)
             if(object.status) {
-                //alert ('Solicitud cancelada');
+
                   $('#myModal').modal('hide');
+                  alert ('Solicitud cancelada');
                   window.location='Proc_RecepcionSolicitud.php'
             } else {
                 alert('Error al cancelar la Solicitud')

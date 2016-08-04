@@ -42,12 +42,14 @@ class clsRecepcionSolicitud {
         return $resul;
     }
 //Fn_PG
-    function obteneropcionesrechazo() {
+    function obteneropcionesrechazo($idrech) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $NomAre = "select * from lab_posible_observacion
-where habilitado=true
-order by posible_observacion;";
+            $NomAre = "select *
+                from lab_observacion_rechazo t1
+                join lab_posible_observacion t2 on (t2.id=t1.id_posible_observacion)
+                where id_estado_rechazo= $idrech
+                and t1.habilitado=true;";
             $resul = pg_query($NomAre);
         }
         return $resul;
@@ -737,7 +739,7 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
         $con = new ConexionBD;
         if ($con->conectar() == true) {
         $query="select lab_cancelarsolicitud($cmbrechazoest, $cmbrechazosol, $fechanewcitasol, $observacion, $idsolicitud, $usuario, $fechacita, $lugar, $fecharechazo)";
-        //var_dump($query); 
+        //var_dump($query);
               $result= @pg_query($query);
 
             if (!$result)

@@ -57,29 +57,35 @@ switch ($opcion) {
                   //$hdnf_newdate_ = $_POST['f_newdate_'.$i];
                   $hdnf_newdate_ = isset($_POST['f_newdate_' . $i]) ? $_POST['f_newdate_' . $i]
                              : null;
-                  if ($hdnvalidarmuestra_ != 1) {
+                  if ($hdnvalidarmuestra_ != 1 && $hdnvalidarmuestra_ !=4) {
                      $idestado = 'RM';
                      if ($hdnvalidarmuestra_ == 2) {
                         $query0 = "select lab_reprogramarnuevacita($idhistorial, '$hdnf_newdate_', $hdniddeatalle_, $idsolicitud, $hdni_idexamen_, $usuario,$referido )";
                         $result0 = pg_query($query0);
                      }
                   } else {
-                     $sql3="select t3.id_area_servicio_diagnostico
-                     from  lab_conf_examen_estab t2
-                     join mnt_area_examen_establecimiento t3 on (t3.id=t2.idexamen)
-                     where t2.id=$hdni_idexamen_;";
-//                     $sql3="select t4.id
-//                     from  lab_conf_examen_estab t2
-//                     join ctl_examen_servicio_diagnostico t3 on (t3.id=t2.idestandarrep)
-//                     join lab_estandarxgrupo t4 on (t4.id=t3.idgrupo)
-//                     where t2.id=$hdni_idexamen_";
-                     $result3=pg_query($sql3);
-                     $rowtmu=  pg_fetch_array($result3);
-                     //14 es examen referido
-                     if ($rowtmu[0]==14)
-                          $idestado='RC';
-                     else
-                        $idestado = 'PM';
+                      if ($hdnvalidarmuestra_ == 4){
+                         $idestado = 'E';
+                      }
+                      else{
+                          $sql3="select t3.id_area_servicio_diagnostico
+                          from  lab_conf_examen_estab t2
+                          join mnt_area_examen_establecimiento t3 on (t3.id=t2.idexamen)
+                          where t2.id=$hdni_idexamen_;";
+     //                     $sql3="select t4.id
+     //                     from  lab_conf_examen_estab t2
+     //                     join ctl_examen_servicio_diagnostico t3 on (t3.id=t2.idestandarrep)
+     //                     join lab_estandarxgrupo t4 on (t4.id=t3.idgrupo)
+     //                     where t2.id=$hdni_idexamen_";
+                          $result3=pg_query($sql3);
+                          $rowtmu=  pg_fetch_array($result3);
+                          //14 es examen referido
+                          if ($rowtmu[0]==14)
+                               $idestado='RC';
+                          else
+                             $idestado = 'PM';
+                      }
+
                   }
                   //  (a_idhistorial integer, a_newfechacita date, a_iddetallesolicitud integer, a_idsolicitudestudio integer, a_idexamen integer,  a_idusuarioreg integer, referido integer)
                   // echo 'idestado:'.$idestado.'    hdni_idexamen:'.$hdni_idexamen_.'<br\>';
@@ -109,13 +115,18 @@ switch ($opcion) {
                   //$hdnf_newdate_ = $_POST['f_newdate_'.$i];
                   $hdnf_newdate_ = isset($_POST['f_newdate_' . $i]) ? $_POST['f_newdate_' . $i]
                              : null;
-                  if ($hdnvalidarmuestra_ != 1) {
+                  if ($hdnvalidarmuestra_ != 1 && $hdnvalidarmuestra_ !=4) {
                      $idestado = 'RM';
                      if ($hdnvalidarmuestra_ == 2) {
                         $query0 = "select lab_reprogramarnuevacita($idhistorial, '$hdnf_newdate_', $hdniddeatalle_, $idsolicitud, $hdni_idexamen_, $usuario,$referido)";
                         $result0 = pg_query($query0);
                      }
                   } else {
+                      if ($hdnvalidarmuestra_ == 4){
+                         $idestado = 'E';
+                      }
+                      else{
+
                      $sql3="select t3.id_area_servicio_diagnostico
                      from  lab_conf_examen_estab t2
                      join mnt_area_examen_establecimiento t3 on (t3.id=t2.idexamen)
@@ -132,6 +143,7 @@ switch ($opcion) {
                           $idestado='RC';
                      else
                           $idestado = 'D';
+                      }
                   }
 
                       $query1 = "UPDATE sec_detallesolicitudestudios
@@ -147,6 +159,20 @@ switch ($opcion) {
                }
             }
          }
+         $estadosol= "select count(*) as canti
+                from sec_detallesolicitudestudios
+                where idsolicitudestudio =$idsolicitud
+                and estadodetalle in (1,2,3,5);";
+            $resultes = @pg_query($estadosol);
+            $rowtcant=  @pg_fetch_array($resultes);
+            //14 es examen referido
+            if ($rowtcant['canti']==0){
+            $querysol = "UPDATE sec_solicitudestudios
+                      set estado = 4
+                      WHERE id = $idsolicitud";
+
+            $resultsol = @pg_query($querysol);
+             }
 
 
          if (!$result)
@@ -430,14 +456,14 @@ switch ($opcion) {
       $k = $_POST['idk'];
       $rslts = "";
       if ($idrechazo != 1) {
-         $query = $object->obteneropcionesrechazo();
+         $query = $object->obteneropcionesrechazo($idrechazo);
          $rslts = '<select name="cmbrechazo_' . $k . '" id="cmbrechazo_' . $k . '" class="form-control height" style="width:100%" onclick="cancelrechazo(this.value, ' . $k . ')">';
          $rslts = "<select name='cmbrechazo_" . $k . "' id='cmbrechazo_" . $k . "' class='form-control height' style='width:100%' onclick=\"cancelrechazo(this.value, '" . $k . "')\">";
          $rslts .='<option value="0" selected>--Seleccione una opción--</option>';
          while ($rows = pg_fetch_array($query)) {
-            $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
+            $rslts.= '<option value="' . $rows["id_posible_observacion"] . '" >' . htmlentities($rows["posible_observacion"]) . '</option>';
          }
-         $rslts .='<option value="xyz">*Cancelar Rechazo</option>';
+         $rslts .='<option value="xyz">*Validar nuevamente</option>';
 
          $rslts .= '</select>';
       }
@@ -457,7 +483,12 @@ switch ($opcion) {
             $rslts = "<input type='text' class='date form-control height placeholder'  id='f_newdate_" . $k . "' name='f_newdate_'  placeholder='aaaa-mm-dd' onchange=\"valfechasolicita(this.value, 'f_newdate_" . $k . "')\"  style='width:105px' />";
          }
       } else {
-         $rslts = "<p>Definitivo</p><input type='hidden' class='date form-control height'  id='f_newdate_" . $k . "' name='f_newdate_'  value='" . date('Y-m-d') . "' onchange=\"valfechasolicita(this.value, 'f_newdate_" . $k . "')\" style='width:100px' />";
+          if ($temporal== 3){
+              $rslts = "<p>Definitivo</p><input type='hidden' class='date form-control height'  id='f_newdate_" . $k . "' name='f_newdate_'  value='" . date('Y-m-d') . "' onchange=\"valfechasolicita(this.value, 'f_newdate_" . $k . "')\" style='width:100px' />";
+           }
+          else {
+              $rslts = "<p>Cancelado</p><input type='hidden' class='date form-control height'  id='f_newdate_" . $k . "' name='f_newdate_'  value='" . date('Y-m-d') . "' onchange=\"valfechasolicita(this.value, 'f_newdate_" . $k . "')\" style='width:100px' />";
+          }
       }
       echo $rslts;
       break;
@@ -500,4 +531,26 @@ switch ($opcion) {
       echo json_encode($jsonresponse);
 
       break;
+
+      case 14:
+         $idrechazo = $_POST['idrechazo'];
+         $rslts = "";
+         if ($idrechazo!=0){
+             $query = $object->obteneropcionesrechazo($idrechazo);
+             $rslts = "<select name='cmbrechazosol' id='cmbrechazosol' class='form-control height' style='width:90%' >";
+             $rslts .='<option value="0" selected>--Seleccione una opción--</option>';
+             while ($rows = pg_fetch_array($query)) {
+                $rslts.= '<option value="' . $rows["id_posible_observacion"] . '" >' . htmlentities($rows["posible_observacion"]) . '</option>';
+             }
+             $rslts .= '</select>';
+         }
+         else{
+             $rslts = "<select name='cmbrechazosol' id='cmbrechazosol' class='form-control height' style='width:90%' >";
+             $rslts .='<option value="0" selected>--Seleccione una opción--</option>';
+             $rslts .= '</select>'; 
+         }
+
+
+         echo $rslts;
+         break;
 }
