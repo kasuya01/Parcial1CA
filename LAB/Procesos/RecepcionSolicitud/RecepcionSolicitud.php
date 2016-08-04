@@ -5,8 +5,25 @@ $usuario = $_SESSION['Correlativo'];
 $lugar   = $_SESSION['Lugar'];
 $area    = $_SESSION['Idarea'];
 $nestab  = $_SESSION['nombre_estab'];
+
 ?>
 <script language="JavaScript" type="text/javascript" src="ajax_RecepcinSolicitud.js"></script>
+<script language="JavaScript" >
+$(document).ready(function () {
+
+    $('#myModal').dialog({
+        modal: true,
+        autoOpen: false
+    });
+
+    $('#estabarealiza2').change(function () {
+        if ($(this).val() == "1") {
+            $('#myModal8').dialog('open');
+        }
+    });
+
+});
+</script>
 <?php
 
 //variables POST
@@ -133,7 +150,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                               <th >Fecha Toma Mx.<br/><input type='text' placeholder='aaaa-mm-dd HH:MM' class='datepicker form-control height' title='Seleccione la Fecha de toma de muestra igual para actualizar la de todas las pruebas.' id='fgentomamxgen'  name='fgentomamx' style='width:150px' value='" . $fecha . "' onchange= \"valfechasolicita(this.value, 'fgentomamxgen'), updatealldates(), changefechatomamx()\"  ></th>
                               <th> Validar Muestra</th>
                               <th id='colnewdate_' class='hide_me newdate'>Nueva Cita</th>
-                              <th style='display:none;'> Lugar de Realización</th>
+                              <th > Lugar de Realización</th>
           		        </tr></thead><tbody>";
                   $detalle = $objdatos->BuscarDetalleSolicitud($idexpediente, $Nfechacita, $arraysolic[$i], $idEstablecimiento);
                   $k=1;
@@ -173,19 +190,20 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                               . '</td>';
                       echo '<td  id="colnewdate_" class="hide_me newdate"  style="width:100px"> <div id="divnewdate_'.$k.'" style="display:none"></div></td>';
                       if ($rows['id_area']!=14){
-                          echo "<td style='display:none'>".$nestab."</td>";
+                          echo "<td class='th-info' style='text-align:left !important;'>".$nestab."</td>";
                       }
                       else{
-                          echo "<td style='display:none;'>";
+                     //     echo "<td>";
                           $ber=$objdatos->BuscarEstabRealiza($i_idexamen);
                           if (pg_num_rows($ber)>=1){
-                              echo '<select id="estabarealiza'.$k.'" name="estabarealiza_" class="form-control height" style="width:300px">';
+                              echo '<td><select id="estabarealiza'.$k.'" name="estabarealiza_" class="form-control height" style="width:300px" onchange="abrirmodal2('.$k.');"  data-toggle="modal" data-target="#myModal2">';
+                                    echo '<option value="0" selected>Seleccione una opción</option>';
                               while ($rows2= pg_fetch_array($ber)){
                                  echo '<option value="'.$rows2["id_establecimiento"].'">'.$rows2["nombre"].'</option>';
                               }
                           }
                           else {
-                              echo "Se debe de hacer la respectiva configuración del examen antes de continuar";
+                              echo "<td class='bg-danger'> Se debe de hacer la respectiva configuración del examen referido antes de continuar";
                           }
                           echo "</td>";
 
@@ -204,7 +222,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                     <tr>
                         <td align='center'>
                             <button type='button'  name='btnActualizar[" . $i . "]' id='btnActualizar[" . $i . "]' align='right' style='text-align: right' class='btn btn-primary' onclick='AsignarNumeroMuestra(" . $i . ");'><span class='glyphicon glyphicon-check'></span>&nbsp;Procesar Solicitud </button>&nbsp;
-                            <button type='button'  name='btnRechazar[" . $i . "]' id='btnRechazar[" . $i . "]' align='right' style='text-align: right' class='btn btn-primary' data-toggle='modal' data-target='#myModal' onclick='setfecharechazo();'><span class='glyphicon glyphicon-remove'></span>&nbsp;Rechazar Solicitud </button>&nbsp;";
+                            <button type='button'  name='btnRechazar[" . $i . "]' id='btnRechazar[" . $i . "]' align='right' style='text-align: right' class='btn btn-primary' data-toggle='modal' data-target='#myModal' onclick='setfecharechazo();fecharechazosol();'><span class='glyphicon glyphicon-remove'></span>&nbsp;Rechazar Solicitud </button>&nbsp;";
             echo '<button type="button"  name="btnOtra" id="btnOtra" align="right" style="text-align: right" class="btn btn-primary" onclick="window.location.replace(\'Proc_RecepcionSolicitud.php\');"><span class="glyphicon glyphicon-refresh"></span>&nbsp;Ingresar otra solicitud </button>';
     //        echo
     //                        <input type='hidden' name='oculto' id='text' value='" . $i . "' />
@@ -249,7 +267,7 @@ echo "</div>";//fin div class row
             <span class="input-group-addon" id="basic-addon1" style="width:inherit">
                 <i class="fa fa-calendar"></i>
             </span>
-              <input type="text" class="date form-control" id="fecharechazo" name="fecharechazo" style="width:105px" value="<?php echo date("Y-m-d");?>" aria-describedby="basic-addon1">
+              <input type="text" class="date form-control" id="fecharechazo" name="fecharechazo" style="width:105px" value="<?php echo date("Y-m-d");?>" aria-describedby="basic-addon1" onchange="valdatesolicita(this.value, 'fecharechazo'); fecharechazosol();">
          </div>
 
          <br>

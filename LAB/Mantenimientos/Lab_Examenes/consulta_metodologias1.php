@@ -5,7 +5,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
 ?>
 <html>
     <head>
-       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
         <title>Seleccionar Posibles Resultados</title>
         <?php include_once $ROOT_PATH."/public/css.php";?>
         <?php include_once $ROOT_PATH."/public/js.php";?>
@@ -226,7 +226,7 @@ function abrirmodal(){
         $table .= "<td><select name='lista_sel' id='lista_sel' size=22 style='width: 100%; height:400px;' ondblclick='list_reload(this,2)'>";
         for ($i=0;$i<count($aposresultados);$i++){
             if ($aposresultados[$i]!=""){
-                $table .= "<option value='$aposresultados[$i]' id='$aposresultados_id[$i]'>".utf8_encode($aposresultados_text[$i])."</option>"; 
+                $table .= "<option value='$aposresultados[$i]' id='$aposresultados_id[$i]'>".  $aposresultados_text[$i]."</option>"; 
             }
         }
         

@@ -490,6 +490,7 @@ switch ($opcion) {
               $fechanewcitasol, $observacionrechazo, $idsolicitud, $usuario, $fechacita, $lugar, $fecharechazo);
 
      // var_dump($cancelarsol);
+     // exit();
       if ($cancelarsol == true) {
          $jsonresponse['status'] = true;
       } else

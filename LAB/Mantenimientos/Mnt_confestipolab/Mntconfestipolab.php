@@ -24,6 +24,10 @@
         }
         jQuery(document).ready(function($) {
           iniciarselects2();
+        $("[id^=cmbEstablecimiento]").on("select2-removing", function(e) {
+                  console.log(e.val);
+          });
+
         });
         </script>
     </head>
@@ -78,7 +82,7 @@
                                                 echo "<tr><td class='ridge' style='width:25%'>
                                                 <span class='glyphicon glyphicon-home' style='color:#31708f'></span> &nbsp;" .$row['nombre']."</td>";
 
-                                                echo '<td><select id="cmbEstablecimiento'.$row["id"].'" name="cmbEstablecimiento'.$row["id"].'[]" size="1" style="width:100%"  class="height js-example-placeholder-multiple  select2-lightblue" multiple="multiple">';
+                                                echo '<td><select id="cmbEstablecimiento'.$row["id"].'" name="cmbEstablecimiento'.$row["id"].'[]" size="1" style="width:100%"  class="height js-example-placeholder-multiple  select2-lightblue" multiple="multiple" >';
 
                                                         $tipomuestra=$mntconfestipolab->getconfestab($row['id']);
                                                         while($row2 = pg_fetch_array($tipomuestra)){

@@ -72,3 +72,13 @@ function insertRegisters() {
 function LimpiarCampos(){
     $("[id^=cmbEstablecimiento]").select2("val", "");
 }
+
+function deseleccionaropcion(idest){
+//    alert('jii')
+console.log(idest)
+    console.log($('#cmbEstablecimiento'+idest).val());
+    $('#cmbEstablecimiento'+idest).on("select2-removing", function(e) {
+            console.log(e.val);
+    });
+
+}

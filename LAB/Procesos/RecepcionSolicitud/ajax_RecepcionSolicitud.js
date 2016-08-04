@@ -275,14 +275,14 @@ function MostrarDatosGenerales(idexpediente, fechacita, idEstablecimiento, idsol
                 var myString = $('#fecha_solicitud').val();
                 var arr = myString.split('-');
               //  console.log(arr[0]+','+arr[1]+','+arr[2])
-                
+
                 classdatepick();
 
                 calc_edad();
                // console.log($('#fecha_solicitud').val())
                  $('#fgentomamxgen').datetimepicker({'minDate': new Date(arr[0],arr[1] - 1,arr[2])});
                  $("input[name^='f_tomamuestra_']").datetimepicker({'minDate': new Date(arr[0],arr[1] - 1,arr[2])});
-                 
+
                 //  $( "#fgentomamxgen" ).datepicker("refresh");
            //      $('#fgentomamxgen').datepicker('option', 'minDate', new Date($('#fecha_solicitud').val()));
             }
@@ -515,7 +515,7 @@ function cancelrechazo(cmbrechazo, k) {
     }
     else{
       opcion = 12;
-      temporal=$("#validarmuestra_"+k).val();     
+      temporal=$("#validarmuestra_"+k).val();
       //if(temporal==1){
          ajax = objetoAjax();
          //usando del medoto POST
@@ -534,7 +534,7 @@ function cancelrechazo(cmbrechazo, k) {
                  $( ".hide_me" ).removeClass( "hide_me" )
                   document.getElementById('divnewdate_'+k).style.display = "block";
                   document.getElementById('divnewdate_'+k).innerHTML = ajax.responseText;
-                     
+
                    classdate();
                    changenewdate(k)
                   // console.log('entro a cancelrechazo')
@@ -544,7 +544,7 @@ function cancelrechazo(cmbrechazo, k) {
 //                  calc_edad();
 //                  console.log($('#validarmuestra_'+k).val())
 //                  $("#f_newdate_"+k).datepicker({'minDate': new Date(arr[0],arr[1] - 1,arr[2])});
-                  
+
   // $('#f_newdate_1').datepicker('option', 'minDate',  new Date('2016-06-12'));
 //                     }
                  //  $("#f_newdate_"+k).datepicker({ minDate: newdates });
@@ -568,7 +568,7 @@ function changefechatomamx(){
       var newdate=$(this).val();
       if (dateFormat>newdate){
          $(this).val(dateFormat);
-      }  
+      }
         var id = $(this).attr('id').split('_')[2];
         changenewdate(id)
 });
@@ -582,7 +582,7 @@ function changenewdate(k){
       var dateFormat = $.datepicker.formatDate('yy-mm-dd', new Date(
               dateFormat));
       var arr = dateFormat.split('-');
-      
+
       if($('#f_newdate_'+k).hasClass('hasDatepicker')) {
          $('#f_newdate_'+k).datepicker( "option", "minDate", new Date(arr[0], arr[1] - 1, arr[2]));
       } else {
@@ -800,7 +800,8 @@ function rechazosolicitud(idcmbrechazoest){
    if (idcmbrechazoest==2){
       $( "#newdatesol" ).show();
        classdate();
-       $('.date').datepicker({ minDate: 1 });
+       //$('.date').datepicker({ minDate: 1 });
+
    }
    else{
       $( "#newdatesol" ).hide();
@@ -808,6 +809,20 @@ function rechazosolicitud(idcmbrechazoest){
 
    }
    $('select[id^=validarmuestra_]').each(function() { $(this).val(idcmbrechazoest);});
+
+}
+//fn cambiar fecha de nueva cita
+function fecharechazosol(){
+//    if ()$('#fechanewcitasol').val()="" || )
+    var dateFormat = $('#fecharechazo' ).val();
+    var arr = dateFormat.split('-');
+
+    if($('#fechanewcitasol').hasClass('hasDatepicker')) {
+       $('#fechanewcitasol').datepicker( "option", "minDate", new Date(arr[0], arr[1] - 1, arr[2]));
+    } else {
+       $("#fechanewcitasol").datepicker({'minDate': new Date(arr[0], arr[1] -1, arr[2])});
+    }
+
 
 }
 //
@@ -836,15 +851,28 @@ function cancelarechazo(){
    $('#fechanewcitasol').val(null);
    $('#observacionrechazo').val(null);
    $('#newdatesol').hide();
-
+$('#myModal').modal('hide');
+$('.modal-backdrop').remove();
 
 }
-//function to set fecharechazo > fechacita 
+//function to set fecharechazo > fechacita
 function setfecharechazo(){
-   
+
    classdate();
-   fechacita = $('#fecha_solicitud').val();
-   $("#fecharechazo").datepicker("option", "minDate", '2016-06-02');
+//   fechacita = $('#fecha_solicitud').val();
+//   $("#fecharechazo").datepicker("option", "minDate", '2016-06-02');
+
+
+      var dateFormat = $('#fecha_solicitud' ).val();
+      var arr = dateFormat.split('-');
+
+      if($('#fecharechazo').hasClass('hasDatepicker')) {
+         $('#fecharechazo').datepicker( "option", "minDate", new Date(arr[0], arr[1] - 1, arr[2]));
+      } else {
+         $("#fecharechazo").datepicker({'minDate': new Date(arr[0], arr[1] - 1, arr[2])});
+      }
+
+
 }
 
 
@@ -866,16 +894,17 @@ function cancelarsolicitud(){
       alert ("Favor ingresar la fecha de la nueva cita")
       return false;
    }
- console.log('aca va al otro'+'cmbrechazoest'+ cmbrechazoest+ 'cmbrechazosol'+ cmbrechazosol+'fechanewcitasol'+ fechanewcitasol+ 'observacionrechazo'+ observacionrechazo+'idsolicitud'+idsolicitud+ 'fechacita'+fechacita+'fecharechazo'+fecharechazo)
+ console.log('aca va al otro'+'cmbrechazoest:'+ cmbrechazoest+ ' cmbrechazosol:'+ cmbrechazosol+' fechanewcitasol:'+ fechanewcitasol+ ' observacionrechazo:'+ observacionrechazo+' idsolicitud:'+idsolicitud+ ' fechacita:'+fechacita+' fecharechazo:'+fecharechazo)
       jQuery.ajax({
           url: 'ctrRecepcionSolicitud.php',
           async: true,
           dataType: 'json',
           type: 'POST',
           data: { opcion: 13 , cmbrechazoest: cmbrechazoest, cmbrechazosol: cmbrechazosol,fechanewcitasol: fechanewcitasol, observacionrechazo: observacionrechazo,idsolicitud:idsolicitud, fechacita:fechacita, fecharechazo:fecharechazo },
-        success: function(object) {           
+        success: function(object) {
+            console.log(object.status)
             if(object.status) {
-                alert ('Solicitud cancelada');
+                //alert ('Solicitud cancelada');
                   $('#myModal').modal('hide');
                   window.location='Proc_RecepcionSolicitud.php'
             } else {
@@ -890,3 +919,8 @@ function cancelarsolicitud(){
  function updatealldates(){
     $( "input[name^='f_tomamuestra_']" ).val( $('#fgentomamxgen').val() );
  };
+
+//fn para crear el modal de referidos
+function abrirmodal2(){
+    $('#myModal2').dialog('open');
+}
