@@ -6,9 +6,9 @@ if(isset($_SESSION['Correlativo'])) {
     $nivel = $_SESSION['NIVEL'];
     $ROOT_PATH = $_SESSION['ROOT_PATH'];
     $base_url  = $_SESSION['base_url'];
-   
+
     include_once("clsRMAutomatizada.php");
-    
+
     $obj = new clsRMAutomatizada;
     $consulta = $obj->DatosEstablecimiento($lugar);
     $row = pg_fetch_array($consulta);
@@ -31,13 +31,15 @@ if(isset($_SESSION['Correlativo'])) {
     <html>
         <head>
             <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-                      
+
             <title>Rechazar Muestras en &Aacute;rea</title>
-            <script language="JavaScript" type="text/javascript" src="ajax_RMAutomatizada.js"></script> 
-            <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
-            <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+
             <?php include_once $ROOT_PATH.'/public/css.php';?>
             <?php include_once $ROOT_PATH.'/public/js.php';?>
+            <script language="JavaScript" type="text/javascript" src="ajax_RMAutomatizada.js"></script>
+            <link rel="shortcut icon" href="/Laboratorio/Imagenes/favicon.ico" />
+            <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
+            <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
             <script language="JavaScript" type="text/javascript">
 
                 function MostrarMuestrasRechazadas()
@@ -51,28 +53,28 @@ if(isset($_SESSION['Correlativo'])) {
                             && (document.getElementById('cmbTipoSolic') == 0)) {
                              alert("Ingrese un parámetro de búsqueda");
                     }
-                  else if (document.getElementById('cmbArea').value == 0) {
+                  else{ /*if (document.getElementById('cmbArea').value == 0) {
                         alert("Debe de ingresar un Área");
-                    }
-                
-                        else {
+                    }*/
+
+                        //else {
                         jQuery('#divBusqueda').empty();
                         jQuery('#divBusqueda').append('<center><img id="wait" src="<?php echo $base_url; ?>/Laboratorio/public/images/spin.gif" alt="wait" width="24" height="24"><div id="search-message" style="color:#888888;font-weight: bold;">Buscando...</div></center>');
-                        
+
                         setTimeout(function() {
                             jQuery('#divBusqueda').empty();
                             MuestrasRechazadas();
                         }, 500);
                     }
-        
-        
-        
-        
+
+
+
+
                 }
 
                 function BuscarExamen(idarea) {
                     if (document.getElementById('cmbArea').value == 0) {
-                        alert("Debe Seleccionar una Área");
+                        //alert("Debe Seleccionar una Área");
                     }
                     else {
                         LlenarComboExamen(idarea);
@@ -94,12 +96,10 @@ if(isset($_SESSION['Correlativo'])) {
             <?php include_once $ROOT_PATH."/public/css.php";?>
             <?php include_once $ROOT_PATH."/public/js.php";?>
             <script  type="text/javascript">
-                $(document).ready(function() {
-                $("#cmbEstablecimiento").select2({
-                 allowClear: true,
-                 dropdownAutoWidth: true
+                jQuery(document).ready(function($) {
+                classdate();
              });
-        });</script>    
+        </script>
         </head>
         <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7">
 
@@ -124,7 +124,7 @@ if(isset($_SESSION['Correlativo'])) {
             if ($nivel == 6) {
                 include_once ('../../../PaginaPrincipal/index_laboratorio62.php');}
             if ($nivel == 7) {
-                 include_once ('../../../PaginaPrincipal/index_laboratorio72.php'); } 
+                 include_once ('../../../PaginaPrincipal/index_laboratorio72.php'); }
             ?>
             <br>
             <div  id="divInicial" >
@@ -190,14 +190,14 @@ if(isset($_SESSION['Correlativo'])) {
                                                        ELSE   ctl_modalidad.nombre ||'-->' || ctl_area_atencion.nombre
                                                        END
                                                        FROM mnt_area_mod_estab
-                                                      
+
                                                        INNER JOIN  ctl_area_atencion  on (ctl_area_atencion.id = mnt_area_mod_estab.id_area_atencion AND ctl_area_atencion.id_tipo_atencion=1)
                                                        --LEFT JOIN mnt_aten_area_mod_estab ON (ctl_area_atencion.id = mnt_aten_area_mod_estab.id_atencion)
                                                        INNER JOIN ctl_modalidad ON ctl_modalidad.id = mnt_area_mod_estab.id_modalidad_estab
                                                        LEFT JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab.id_servicio_externo_estab)
                                                        LEFT JOIN mnt_servicio_externo ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo)
                                                        ORDER by ctl_modalidad.nombre,ctl_area_atencion.nombre ";
-                                      
+
                                         $resultado = pg_query($consulta);
 
                                         //por cada registro encontrado en la tabla me genera un <option>
@@ -269,7 +269,7 @@ if(isset($_SESSION['Correlativo'])) {
                             <td  class="StormyWeatherDataTD">
                                 <input type="text" size="28" name="txtfecharecep" id="txtfecharecep" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" style="width:500px"/>
                             </td>
-                        </tr>  
+                        </tr>
                         <tr>
                             <td  class="StormyWeatherFieldCaptionTD" align="left"><strong>Primer Nombre&nbsp;</strong>   </td>
                             <td class="StormyWeatherDataTD" >
@@ -285,23 +285,23 @@ if(isset($_SESSION['Correlativo'])) {
                                 <td class="StormyWeatherDataTD" >
                                     <input maxlength="35" size="28" name="SegundoApellido" id="SegundoApellido" class="form-control height" style="width:500px" placeholder="Ingrese Segundo Apellido"/></td>
                         </tr>
-                       
+
                        <!-- <tr>
                             <td class="StormyWeatherDataTD" colspan="4" align="right">
                                 <input type="button" name="Submit" value="Buscar Solicitudes" onClick="MostrarMuestrasRechazadas()">
-                                <input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('Proc_RMAutomatizada.php')">		
+                                <input type="button" id="btnClear" value="Nueva Busqueda" class="MailboxButton" onClick="window.location.replace('Proc_RMAutomatizada.php')">
                             </td>
                         <tr> -->
-                            
+
                      <tr>
                             <td class="StormyWeatherDataTD" colspan="4" align="right">
-                        
+
                                 <button type='button' align="center" class='btn btn-primary' id='buscarsolicitud' onclick='MostrarMuestrasRechazadas(); '><span class='glyphicon glyphicon-search'></span> Buscar Solicitudes</button>
                                 <button type='button' align="center" class='btn btn-primary' id='nuevabusqueda' onclick="window.location.replace('Proc_RMAutomatizada.php')"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
                             </td>
                     </tr>
-                            
-                            
+
+
                     </table>
                 </form>
             </div>
@@ -315,7 +315,7 @@ if(isset($_SESSION['Correlativo'])) {
             </div>
             <div id="divImprimir">
 
-        </body> 
+        </body>
     </html>
     <?php
 } else {

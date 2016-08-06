@@ -478,7 +478,7 @@ function OpcionRechazoSol(idrechazo) {
          if (ajax.status == 200)
          {
             //mostrar los nuevos registros en esta capa
-            $("#rowdetalle_"+k).css("background-color", "#FFFFE6");
+        //    $("#rowdetalle_"+k).css("background-color", "#FFFFE6");
             document.getElementById('newreasonsol').innerHTML = ajax.responseText;
             // ajax.responseText;
          }

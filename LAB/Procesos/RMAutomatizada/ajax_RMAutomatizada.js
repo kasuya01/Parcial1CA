@@ -129,8 +129,8 @@ function LlenarComboExamen(idarea)
 {
     // alert(idarea);
     ajax = objetoAjax();
-    
-    
+
+
     opcion = 5;
 
       ajax.open("POST", "ctrRMAutomatizada.php", true);
@@ -185,7 +185,7 @@ function CambiarEstadoDetalleSolicitud(estado)
             if (ajax.status == 200)
             {
                 //mostrar los nuevos registros en esta capa
-                //document.getElementById('divCambioEstado').innerHTML = ajax.responseText;	
+                //document.getElementById('divCambioEstado').innerHTML = ajax.responseText;
                 alert(ajax.responseText);
             }
         }
@@ -226,7 +226,7 @@ function CambiarEstadoDetalleSolicitud1(estado, idexamen)
             if (ajax.status == 200)
             {
                 //mostrar los nuevos registros en esta capa
-                //document.getElementById('divCambioEstado').innerHTML = ajax.responseText;	
+                //document.getElementById('divCambioEstado').innerHTML = ajax.responseText;
                 alert(ajax.responseText);
             }
         }
@@ -295,8 +295,10 @@ function RechazarMuestra()
             if (ajax.status == 200)
             {
                 //mostrar los nuevos registros en esta capa
-                //document.getElementById('divCambioEstado').innerHTML = 
+                //document.getElementById('divCambioEstado').innerHTML =
                 alert(ajax.responseText);
+                return false;
+                //refreshParent();
             }
         }
     }
@@ -304,7 +306,7 @@ function RechazarMuestra()
 
 function RechazarMuestra1(idexamen)
 {
-    estado='RM'
+    //estado='RM'
     //estado = 6
     idsolicitudPadre = document.frmDatos.idsolicitudPadre.value;
     idsolicitud = document.frmDatos.idsolicitud.value;
@@ -314,6 +316,22 @@ function RechazarMuestra1(idexamen)
     idarea = document.frmDatos.idarea.value;
     idobservacion = document.frmDatos.CmbObserv.value;
     idrechazo = document.frmDatos.CmbRechazo.value;
+    fecharechazo=$('#fecharechazo').val();
+    fechanewcitasol=$('#fechanewcitasol').val();
+    if (idrechazo==4)
+        estado="E"
+    else {
+        estado="RM"
+    }
+    if ((idrechazo==0)||(idobservacion==0)||(fecharechazo=='')){
+    pasar=0;
+    alert ("Favor verificar que ha completado todos los campos obligatorios")
+    return false;
+    }
+    if (idrechazo==2 && fechanewcitasol==''){
+       alert ("Favor ingresar la fecha de la nueva cita")
+       return false;
+    }
     opcion = 4;
     idsolicitud = trim(idsolicitud);
     //idsolicitudP = trim(idsolicitudP);
@@ -329,8 +347,8 @@ function RechazarMuestra1(idexamen)
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
     ajax.send("idexpediente=" + idexpediente + "&idarea=" + idarea + "&fechasolicitud=" + fechasolicitud + "&idsolicitud=" + idsolicitud + "&opcion=" + opcion +
-              "&estado=" + estado + "&idexamen=" + idexamen + "&idobservacion=" + idobservacion + 
-              "&idsolicitudPadre=" + idsolicitudPadre +"&idrechazo=" + idrechazo);
+              "&estado=" + estado + "&idexamen=" + idexamen + "&idobservacion=" + idobservacion +
+              "&idsolicitudPadre=" + idsolicitudPadre +"&idrechazo=" + idrechazo+"&fecharechazo="+fecharechazo+"&fechanewcitasol="+fechanewcitasol);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -338,9 +356,10 @@ function RechazarMuestra1(idexamen)
             if (ajax.status == 200)
             {
                 //mostrar los nuevos registros en esta capa
-                //document.getElementById('divCambioEstado').innerHTML =  
+                //document.getElementById('divCambioEstado').innerHTML =
                 alert(ajax.responseText);
                 window.close();
+                refreshParent();
 
             }
         }
@@ -362,7 +381,7 @@ function CargarDatosFormulario( idexpediente,idarea ,idexamen, idsolicitud )
 {
     ajax = objetoAjax();
     opcion = 2;
-    
+
     estado = "";
     //idexamen = "";
     //fecharecep = "";
@@ -404,11 +423,34 @@ function CargarDatosFormulario1(idexpediente,idexamen,idarea,idsolicitud)
         {
             if (ajax.status == 200)
             {  //mostrar los nuevos registros en esta capa
+
                 document.getElementById('divFormulario').innerHTML = ajax.responseText;
+                setfecharechazo();
+                fecharechazosol();
               //  calc_edad();
             }
         }
     }
+}
+
+//function to set fecharechazo > fechacita
+function setfecharechazo(){
+
+   classdate();
+//   fechacita = $('#fecha_solicitud').val();
+//   $("#fecharechazo").datepicker("option", "minDate", '2016-06-02');
+
+
+      var dateFormat = $('#fechasolicitud' ).val();
+      var arr = dateFormat.split('-');
+
+      if($('#fecharechazo').hasClass('hasDatepicker')) {
+         $('#fecharechazo').datepicker( "option", "minDate", new Date(arr[0], arr[1] - 1, arr[2]));
+      } else {
+         $("#fecharechazo").datepicker({'minDate': new Date(arr[0], arr[1] - 1, arr[2])});
+      }
+
+
 }
 
 //Esta funcion mandan a llamar
@@ -420,6 +462,11 @@ function CargarDatosFormulario1(idexpediente,idexamen,idarea,idsolicitud)
     document.getElementById("divsuedad").innerHTML = suEdades;
 }*/
 
+//fn recargar Pagina
+function refreshParent() {
+        //window.opener.location.reload();
+        opener.MostrarMuestrasRechazadas();
+    }
 
 //funcion para calculo de edad
 
@@ -508,7 +555,7 @@ function calcular_edad(fecha) {
 
     if (hoy.getMonth() + 1 - mes < 0) {
         return edad + " a\u00f1os y " + meses + " meses y " + Minimo;
-//       return edad;       
+//       return edad;
     } //+ 1 porque los meses empiezan en 0
     if (hoy.getMonth() + 1 - mes > 0) {
         return (edad + 1) + " a\u00f1os y " + meses + " meses y " + Minimo;
@@ -524,6 +571,61 @@ function calcular_edad(fecha) {
 //    return edad;
 }
 
+//Fn utilizada para cambio de solicitud
+function rechazosolicitud(idcmbrechazoest){
+   OpcionRechazoSol(idcmbrechazoest);
+   if (idcmbrechazoest==2){
+      $( "#newdatesol" ).show();
+       classdate();
+       //$('.date').datepicker({ minDate: 1 });
+
+   }
+   else{
+      $( "#newdatesol" ).hide();
+      $( "#newdatesol" ).val();
+
+   }
+
+
+}
+//FUNCION PARA CREAR ARCHIVO DE LA SOLICITUD
+function OpcionRechazoSol(idrechazo) {
+//console.log(idrechazo)
+   //alert(posicion)
+   opcion = 8;
+   //instanciamos el objetoAjax
+   ajax = objetoAjax();
+   //usando del medoto POST
+   ajax.open("POST", "ctrRMAutomatizada.php", true);
+   //muy importante este encabezado ya que hacemos uso de un formulario
+   ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+   //enviando los valores
+   ajax.send("&opcion=" + opcion + "&idrechazo=" + idrechazo);
+   ajax.onreadystatechange = function() {
+       if (ajax.readyState == 4) {
+         if (ajax.status == 200)
+         {
+            //mostrar los nuevos registros en esta capa
+            document.getElementById('newreasonsol').innerHTML = ajax.responseText;
+            // ajax.responseText;
+         }
+      }
+   }
+}
+//fn cambiar fecha de nueva cita
+function fecharechazosol(){
+//    if ()$('#fechanewcitasol').val()="" || )
+    var dateFormat = $('#fecharechazo' ).val();
+    var arr = dateFormat.split('-');
+
+    if($('#fechanewcitasol').hasClass('hasDatepicker')) {
+       $('#fechanewcitasol').datepicker( "option", "minDate", new Date(arr[0], arr[1] - 1, arr[2]));
+    } else {
+       $("#fechanewcitasol").datepicker({'minDate': new Date(arr[0], arr[1] -1, arr[2])});
+    }
+
+
+}
 
 
 
@@ -573,5 +675,3 @@ function MuestrasRechazadas()
         }
     }
 }
-
-

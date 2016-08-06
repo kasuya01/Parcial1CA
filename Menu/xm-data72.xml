@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Administrador DTIC -->
-<menuinfo type="horz" 
-          
-          baseOffsetY="-1" 
-          subOffsetX="-1" 
-         
-          delaySubClose="500" 
-   
+<menuinfo type="horz"
+
+          baseOffsetY="-1"
+          subOffsetX="-1"
+
+          delaySubClose="500"
+
 
           shadowOffset="1"
 		  overlapHack="true">
@@ -18,7 +18,7 @@
                     <item labelText="Ingreso de Resultados" url="../../../LAB/Procesos/IngresoResultados/Proc_SolicitudesProcesadas.php"/>
                     <!--<item labelText="Ingreso de Resultados Pendientes" url="../../../LAB/Procesos/SolicitudesPendientes/Proc_SolicitudesProcesadasPendientes.php"/-->
                     <!--<item labelText="Muestras Pendientes de Procesar" url="../../../LAB/Procesos/MuestrasPendientes/Proc_MuestrasPendientes.php"/>-->
-                    <item labelText="Rechazar Muestras" url="../../../LAB/Procesos/RMAutomatizada/Proc_RMAutomatizada.php"/>
+                    <item labelText="Rechazar/Cancelar Muestras" url="../../../LAB/Procesos/RMAutomatizada/Proc_RMAutomatizada.php"/>
                     <item labelText="Reactivar Muestras Rechazadas" url="../../../LAB/Procesos/MuestrasRechazadas/Proc_MuestrasRechazadas.php"/>
                     <item labelText="Eliminar Resultado" url="../../../LAB/Procesos/EliminarResultados/EliminarResultado.php"/>
                     <item labelText="Agregar Examen a Solicitud" url="../../../LAB/Procesos/AgregarExamen/AgregarExamen.php"/>

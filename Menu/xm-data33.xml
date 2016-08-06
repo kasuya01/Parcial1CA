@@ -14,7 +14,7 @@
           <!--<item labelText="Recepción de Solicitudes por Área" url="../../../LAB/Procesos/SolicitudesPorArea/Proc_SolicitudesPorArea.php"/>-->
          <item labelText="Ingreso de Resultados" url="../../../LAB/Procesos/IngresoResultados/Proc_SolicitudesProcesadas.php"/>
          <!--item labelText="Ingreso de Resultados Pendientes" url="../../../LAB/Procesos/SolicitudesPendientes/Proc_SolicitudesProcesadasPendientes.php"/-->
-         <item labelText="Rechazar Muestras" url="../../../LAB/Procesos/RMAutomatizada/Proc_RMAutomatizada.php"/>
+         <item labelText="Rechazar/Cancelar Muestras" url="../../../LAB/Procesos/RMAutomatizada/Proc_RMAutomatizada.php"/>
          <item labelText="Ractivar Muestras Rechazadas" url="../../../LAB/Procesos/MuestrasRechazadas/Proc_MuestrasRechazadas.php"/>
          <!--<item labelText="Muestras Pendientes de Procesar" url="../../../LAB/Procesos/MuestrasPendientes/Proc_MuestrasPendientes.php"/>-->
          <!-- <item labelText="Imprimir Resultado" url="../../../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/>-->
