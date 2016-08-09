@@ -24,6 +24,17 @@ class clsRecepcionSolicitud {
         return $resul;
     }
 
+    function BuscarProcReferido() {
+        $con = new ConexionBD;
+        if ($con->conectar() == true) {
+            $conNom = "SELECT * from lab_proceso_establecimiento
+                    where id_proceso_laboratorio=10
+                    and id_establecimiento=(select id from ctl_establecimiento where configurado=true);";
+            $resul = pg_query($conNom);
+        }
+        return $resul;
+    }
+
     function DatosArea($area) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {

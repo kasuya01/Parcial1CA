@@ -92,6 +92,19 @@ if(isset($_SESSION['Correlativo'])) {
                     LlenarComboServicio(IdServicio);
                 }
 
+                jQuery(document).ready(function($){
+
+
+
+                   $("#cmbEstablecimiento").select2({
+                	 allowClear: true,
+                	 dropdownAutoWidth: true
+                  });
+
+
+
+                });
+
             </script>
             <?php include_once $ROOT_PATH."/public/css.php";?>
             <?php include_once $ROOT_PATH."/public/js.php";?>
@@ -156,7 +169,7 @@ if(isset($_SESSION['Correlativo'])) {
                             <td class="StormyWeatherFieldCaptionTD" width="20%">Establecimiento</td>
                             <td class="StormyWeatherDataTD"  width="35%">
                                 <div id="divEstablecimiento">
-                                    <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:500px"  class="js-example-basic-single">
+                                    <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:500px"  class="js-example-basic-single height">
 
                                       <option value="0" >Todos los Establecimientos</option>
                                         <?php

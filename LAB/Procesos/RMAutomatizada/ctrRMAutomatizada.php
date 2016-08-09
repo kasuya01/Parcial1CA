@@ -716,14 +716,14 @@ switch ($opcion) {
                     // echo $Idtipoesta;
                     if ($Idtipoesta<>0){
                         $dtIdEstab = $objdatos->LlenarCmbEstablecimiento($Idtipoesta);
-                        $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:500px" class="form-control height">';
+                        $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:500px" class="js-example-basic-single height">';
                        // $rslts .='<option value="0"> Seleccione Establecimiento </option>';
                         while ($rows = pg_fetch_array($dtIdEstab)) {
                             $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
                         }
                     }else{
                          $dtIdEstab = $objdatos->LlenarTodosEstablecimientos();
-                          $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:500px" class="form-control height">';
+                          $rslts = '<select name="cmbEstablecimiento" id="cmbEstablecimiento" style="width:500px" class="js-example-basic-single height">';
                         $rslts .='<option value="0"> Seleccione Establecimiento </option>';
                         while ($rows = pg_fetch_array($dtIdEstab)) {
                             $rslts.= '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';

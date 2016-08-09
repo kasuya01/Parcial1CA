@@ -6,6 +6,9 @@ $lugar   = $_SESSION['Lugar'];
 $area    = $_SESSION['Idarea'];
 $nestab  = $_SESSION['nombre_estab'];
 
+
+
+
 ?>
 <script language="JavaScript" type="text/javascript" src="ajax_RecepcinSolicitud.js"></script>
 <script language="JavaScript" >
@@ -42,6 +45,9 @@ $ban = 0;
 $pos = 0;
 //actualiza los datos del empleados
 $objdatos = new clsRecepcionSolicitud;
+$procref=$objdatos->BuscarProcReferido();
+$refexterno=@pg_fetch_array($procref);
+$refext=$refexterno['activo'];
 $consulta = $objdatos->BuscarSolicitudes($idexpediente, $Nfechacita, $lugar, $idEstablecimiento, $idsolicitud);
 
 $NroRegistros = $objdatos->NumeroDeRegistros($idexpediente, $Nfechacita, $lugar, $idEstablecimiento, $idsolicitud);
@@ -149,9 +155,11 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                               <th> Indicaciones </th>
                               <th >Fecha Toma Mx.<br/><input type='text' placeholder='aaaa-mm-dd HH:MM' class='datepicker form-control height' title='Seleccione la Fecha de toma de muestra igual para actualizar la de todas las pruebas.' id='fgentomamxgen'  name='fgentomamx' style='width:150px' value='" . $fecha . "' onchange= \"valfechasolicita(this.value, 'fgentomamxgen'), updatealldates(), changefechatomamx()\"  ></th>
                               <th> Validar Muestra</th>
-                              <th id='colnewdate_' class='hide_me newdate'>Nueva Cita</th>
-                              <th > Lugar de Realización</th>
-          		        </tr></thead><tbody>";
+                              <th id='colnewdate_' class='hide_me newdate'>Nueva Cita</th>";
+
+                    if ($refext=='t')
+                              echo "<th > Lugar de Realización</th>";
+          		        echo "</tr></thead><tbody>";
                   $detalle = $objdatos->BuscarDetalleSolicitud($idexpediente, $Nfechacita, $arraysolic[$i], $idEstablecimiento);
                   $k=1;
                   while ($rows = pg_fetch_array($detalle)) {
@@ -189,24 +197,29 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                       . '<div id="divopcionrechazo_'.$k.'" style="width:100%;display:none"></div>'
                               . '</td>';
                       echo '<td  id="colnewdate_" class="hide_me newdate"  style="width:100px"> <div id="divnewdate_'.$k.'" style="display:none"></div></td>';
-                      if ($rows['id_area']!=14){
-                          echo "<td class='th-info' style='text-align:left !important;'>".$nestab."</td>";
-                      }
-                      else{
-                     //     echo "<td>";
-                          $ber=$objdatos->BuscarEstabRealiza($i_idexamen);
-                          if (pg_num_rows($ber)>=1){
-                              echo '<td><select id="estabarealiza'.$k.'" name="estabarealiza_" class="form-control height" style="width:300px" onchange="abrirmodal2('.$k.');"  data-toggle="modal" data-target="#myModal2">';
-                                    echo '<option value="0" selected>Seleccione una opción</option>';
-                              while ($rows2= pg_fetch_array($ber)){
-                                 echo '<option value="'.$rows2["id_establecimiento"].'">'.$rows2["nombre"].'</option>';
-                              }
-                          }
-                          else {
-                              echo "<td class='bg-danger'> Se debe de hacer la respectiva configuración del examen referido antes de continuar";
-                          }
-                          echo "</td>";
 
+
+                      if ($refext=='t'){
+
+                          if ($rows['id_area']!=14){
+                              echo "<td class='th-info' style='text-align:left !important;'>".$nestab."</td>";
+                          }
+                          else{
+                         //     echo "<td>";
+                              $ber=$objdatos->BuscarEstabRealiza($i_idexamen);
+                              if (pg_num_rows($ber)>=1){
+                                  echo '<td><select id="estabarealiza'.$k.'" name="estabarealiza_" class="form-control height" style="width:300px" onchange="abrirmodal2('.$k.');"  data-toggle="modal" data-target="#myModal2">';
+                                        echo '<option value="0" selected>Seleccione una opción</option>';
+                                  while ($rows2= pg_fetch_array($ber)){
+                                     echo '<option value="'.$rows2["id_establecimiento"].'">'.$rows2["nombre"].'</option>';
+                                  }
+                              }
+                              else {
+                                  echo "<td class='bg-danger'> Se debe de hacer la respectiva configuración del examen referido antes de continuar";
+                              }
+                              echo "</td>";
+
+                          }
                       }
                       echo "</tr>";
 
