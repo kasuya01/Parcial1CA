@@ -26,7 +26,7 @@
 		<menu labelText="CONFIGURACIÓN">
                     <item labelText="Áreas de Laboratorio" url="../../Mantenimientos/Lab_Areas/MntAreasLaboratorio.php"/>
                     <item labelText="Examenes por Área" url="../../Mantenimientos/Mnt_AreaExamenEstablecimiento/MntAreaExamenEstablecimiento.php"/>
-                    <item labelText="Procesos del Laboratorio" url="../../Mantenimientos/Lab_ProcesoLaboratorio/MntProcesoLaboratorio.php"/>
+                  <!--  <item labelText="Procesos del Laboratorio" url="../../Mantenimientos/Lab_ProcesoLaboratorio/MntProcesoLaboratorio.php"/>-->
 		</menu>
 		<sep/>
 		<!--<menu labelText="MANTENIMIENTOS">
@@ -82,6 +82,7 @@
                 <item labelText="Tabulador Mensual" url= "../../../LAB/Reportes/ReporteTabulador/ReporteTabuladores.php"/>
                 <item labelText="Reporte Resultados" url= "../../../LAB/Reportes/Reporte_Resultados/ReporteResultados.php"/>
                 <item labelText="Demanda Insatisfecha" url= "../../../LAB/Reportes/ReporteDemanda/ReporteDemanda.php"/>
+                <item labelText="Registro diario" url= "../../../LAB/Reportes/ReporteRegistroDiario/ReporteRegistroDiario.php"/>
 
             </menu>
             <sep/>

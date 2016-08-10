@@ -19,7 +19,7 @@
                     <item labelText="Muestras Pendientes de Procesar" url="../../../LAB/Procesos/MuestrasPendientes/Proc_MuestrasPendientes.php"/>-->
                     <item labelText="Rechazar/Cancelar Muestras" url="../../../LAB/Procesos/RMAutomatizada/Proc_RMAutomatizada.php"/>
                     <item labelText="Reactivar Muestras Rechazadas" url="../../../LAB/Procesos/MuestrasRechazadas/Proc_MuestrasRechazadas.php"/>
-                    <!--<item labelText="Eliminar Resultado" url="../../../LAB/Procesos/EliminarResultados/EliminarResultado.php"/>
+                    <item labelText="Eliminar Resultado" url="../../../LAB/Procesos/EliminarResultados/EliminarResultado.php"/>
                     <item labelText="Agregar Examen a Solicitud" url="../../../LAB/Procesos/AgregarExamen/AgregarExamen.php"/>
 		</menu>
 		<sep/>-->
@@ -82,6 +82,7 @@
                     <item labelText="Tabulador Mensual" url= "../../../LAB/Reportes/ReporteTabulador/ReporteTabuladores.php"/>
                     <item labelText="Reporte Resultados" url= "../../../LAB/Reportes/Reporte_Resultados/ReporteResultados.php"/>
                     <item labelText="Demanda Insatisfecha" url= "../../../LAB/Reportes/ReporteDemanda/ReporteDemanda.php"/>
+                    <item labelText="Registro diario" url= "../../../LAB/Reportes/ReporteRegistroDiario/ReporteRegistroDiario.php"/>
 
                 </menu>
             <sep/>

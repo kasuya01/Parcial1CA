@@ -361,7 +361,7 @@ case 11:  //LLENAR COMBO DE RANGOS
                                      $datosDB=existeOrden($idexa);
                                      
                                     //echo  $datosDB[3];
-                                        for ($index = 1 ; $index <=10 ; $index++) 
+                                        for ($index = 1 ; $index <=15 ; $index++) 
                                         {
                                           $rest=areglo ($datosDB,$index);
                                           if($rest==0){

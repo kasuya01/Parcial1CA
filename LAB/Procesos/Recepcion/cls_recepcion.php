@@ -128,9 +128,9 @@ select id, servicio,id_area_atencion from tbl_servicio where servicio is not nul
           $con = new ConexionBD;
         if ($con->conectar() == true) {
             
-            $sql="SELECT mnt_area_mod_estab.id_area_atencion 
-                  INNER JOIN mnt_area_mod_estab on mnt_area_mod_estab.id= mnt_aten_area_mod_estab.id_area_mod_estab
-                  WHERE mnt_aten_area_mod_estab.id=$idSubEsp";
+            $sql=" SELECT mnt_area_mod_estab.id_area_atencion from mnt_aten_area_mod_estab
+                      INNER JOIN mnt_area_mod_estab on mnt_area_mod_estab.id= mnt_aten_area_mod_estab.id_area_mod_estab 
+                      WHERE mnt_aten_area_mod_estab.id=$idSubEsp";
              $dt = pg_query($sql) ;
             
             if  (!$dt)
@@ -143,11 +143,7 @@ select id, servicio,id_area_atencion from tbl_servicio where servicio is not nul
     function LlenarCmbMed($idSubEsp, $lugar) {//echo $IdSub;
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-     /*       $sqlText = "SELECT mnt_empleados.IdEmpleado,mnt_empleados.NombreEmpleado 
-			   FROM mnt_empleados 
-			   INNER JOIN mnt_usuarios ON mnt_empleados.IdEmpleado=mnt_usuarios.IdEmpleado 
-				WHERE mnt_usuarios.IdSubServicio=$idSubEsp  AND mnt_empleados.IdEstablecimiento=$lugar ORDER BY mnt_empleados.NombreEmpleado";
-            $dt = mysql_query($sqlText) or die('La consulta fall&oacute;:' . mysql_error());*/
+    
            $sqlText="select mem.id as idemp, nombreempleado as nombre, idempleado  
 from mnt_empleado_especialidad_estab empest
 join mnt_empleado mem on (empest.id_empleado=mem.id)
@@ -165,14 +161,11 @@ where id_aten_area_mod_estab=$idSubEsp";
     function LlenarCmbMedTodos($lugar) {//echo $IdSub;
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-     /*       $sqlText = "SELECT mnt_empleados.IdEmpleado,mnt_empleados.NombreEmpleado 
-			   FROM mnt_empleados 
-			   INNER JOIN mnt_usuarios ON mnt_empleados.IdEmpleado=mnt_usuarios.IdEmpleado 
-				WHERE mnt_usuarios.IdSubServicio=$idSubEsp  AND mnt_empleados.IdEstablecimiento=$lugar ORDER BY mnt_empleados.NombreEmpleado";
-            $dt = mysql_query($sqlText) or die('La consulta fall&oacute;:' . mysql_error());*/
-           $sqlText="select mem.id as idemp, nombreempleado as nombre, idempleado  
+    
+         $sqlText="select DISTINCT (mem.id), nombreempleado as nombre, idempleado  
                     from mnt_empleado_especialidad_estab empest
-join mnt_empleado mem on (empest.id_empleado=mem.id)";
+join mnt_empleado mem on (empest.id_empleado=mem.id)
+where mem.id_tipo_empleado=2 OR mem.id_tipo_empleado=4 order by nombre ";
             $dt = pg_query($sqlText) ;
             
             if  (!$dt)

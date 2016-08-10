@@ -329,7 +329,7 @@ switch ($opcion)
                                                // echo $datosDB;
                                             }
                                         }
-                                        for ($index = 1 ; $index <=15 ; $index++) 
+                                        for ($index = 1 ; $index <=20 ; $index++) 
                                                 {
                                                      // $rest=$objdatos->arreglo ($datosDB,$index);
                                                    // if($rest==0){
@@ -389,7 +389,7 @@ switch ($opcion)
                             if(!empty($rowBuscar[0])){
                                 $orden=$rowBuscar[0];
                                 //echo "orden no vacio".$orden;
-                                 for ($index = 1 ; $index <=10 ; $index++) 
+                                 for ($index = 1 ; $index <=20 ; $index++) 
                                         {
                                         //  $rest=areglo ($datosDB,$index);
                                          // if($rest==0){
@@ -402,7 +402,7 @@ switch ($opcion)
                                 if (empty($orden))
                                     $orden=1; 
                                    // $rslts='<OPTION VALUE="'.$orden.'"  selected="selected">'.$orden.'</OPTION>';
-                                    for ($index = 1 ; $index <=10 ; $index++) 
+                                    for ($index = 1 ; $index <=20 ; $index++) 
                                         {
                                          if($index <> $orden){
                                                 $rslts.= '<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  

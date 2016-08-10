@@ -4,9 +4,7 @@
           
           baseOffsetY="-1" 
           subOffsetX="-1" 
-        
           delaySubClose="500" 
-         
           shadowOffset="1"
           overlapHack="true">
    <menu>

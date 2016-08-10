@@ -151,7 +151,7 @@ function RecogeValor() {
  //   print_r($cant);
     if (pg_num_rows($cant)>0){
         if($db->conectar()==true) {
-            $condatos = "SELECT t07.peso,t07.talla,t06.sct_name_es AS diagnostico,especificacion,conocido_por
+           $condatos = "SELECT t07.peso,t07.talla,t06.sct_name_es AS diagnostico,especificacion,conocido_por
                         FROM sec_historial_clinico               t01
                         INNER JOIN mnt_expediente                t02 ON (t02.id = t01.id_numero_expediente)
                         INNER JOIN mnt_paciente                  t03 ON (t03.id = t02.id_paciente)
@@ -172,6 +172,8 @@ function RecogeValor() {
             $fechatomamues= isset($ftx) ? $ftx : null;
             $timeftomamx = strtotime($fechatomamues);
             $dateftomamx = date("Y-m-d", $timeftomamx);
+            
+            
         }
     ?>
 

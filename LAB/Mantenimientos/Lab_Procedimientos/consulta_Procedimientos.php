@@ -150,7 +150,7 @@ $Fechaini = $anio . "/" . $mes . "/" . $dia;*/
                                        // } else
                                          /*   $datosDB=0;
                                              $datosDB=existeOrden($idexamen);*/
-                                                for ($index = 1 ; $index <=25 ; $index++) 
+                                                for ($index = 1 ; $index <=30 ; $index++) 
                                                 {
                                                       //$rest=areglo ($datosDB,$index);
                                                      // if($rest==0){

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Administrador DTIC -->
+
 <menuinfo type="horz"
 
           baseOffsetY="-1"
           subOffsetX="-1"
 
           delaySubClose="500"
-
-
           shadowOffset="1"
 		  overlapHack="true">
             <menu>
@@ -92,6 +91,10 @@
          <item labelText="Citas de Laboratorio" url="../../../LAB/Procesos/CitasServicio/busquedaexp.php"/>
       </menu>
       <sep/>
+      <!--<menu labelText="AYUDA">
+         <item labelText="Manual de Laboratorio" url="../../../Ayuda/MANUAL_LABORATORIO.html"/>
+      </menu>
+      <sep/>-->
       <item labelText="CAMBIAR CLAVE" url="../../../LAB/Procesos/CambioClave/CambioClave.php"/>
       <sep/>
       <item labelText="CERRAR SESIÓN" url="../../../cerrarsesion.php"/>
