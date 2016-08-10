@@ -26,7 +26,7 @@ class clsLab_Procedimientos {
          for ($i=0;$i<(count($aresultados)-1);$i++){
              
              
-            echo  $query = "UPDATE lab_procedimiento_posible_resultado 
+              $query = "UPDATE lab_procedimiento_posible_resultado 
                         SET habilitado = true,
                             fechafin = null,
                             id_user_mod = 8,
@@ -44,11 +44,7 @@ class clsLab_Procedimientos {
              
              
          }
-                         
-                         
-                         
-                         
-
+                
 			if (!$result)
 				return false;
 			else
@@ -60,7 +56,7 @@ class clsLab_Procedimientos {
 	function actualizar( $idproce, $proce, $idarea, $idexamen, $unidades, $rangoini, $rangofin, $usuario, $lugar, $Fechaini, $Fechafin, $sexo, $redad,$cmborden ) {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
-			$query ="UPDATE lab_procedimientosporexamen SET nombreprocedimiento='$proce', id_conf_examen_estab ='$idexamen', unidades = '$unidades', rangoinicio=$rangoini,
+                       $query ="UPDATE lab_procedimientosporexamen SET nombreprocedimiento='$proce', id_conf_examen_estab ='$idexamen', unidades = '$unidades', rangoinicio=$rangoini,
 				  rangofin=$rangofin, idusuariomod=$usuario, fechahoramod = NOW(), fechaini = $Fechaini, fechafin = $Fechafin,
 				  idsexo = $sexo, idrangoedad = $redad, orden=$cmborden
 		 		  WHERE lab_procedimientosporexamen.id = $idproce AND idestablecimiento = $lugar";
@@ -78,8 +74,8 @@ class clsLab_Procedimientos {
 	function eliminar( $idproce, $lugar ) {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
-			$query = "DELETE FROM lab_procedimientosporexamen WHERE id=$idproce
-               AND idestablecimiento=$lugar";
+                    $query = "DELETE FROM lab_procedimientosporexamen WHERE id=$idproce
+                    AND idestablecimiento=$lugar";
 			$result = pg_query( $query );
 
 			if ( !$result )
@@ -107,7 +103,7 @@ class clsLab_Procedimientos {
 	function Rangos($idproce) {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
-			$query = "SELECT orden FROM lab_procedimientosporexamen where id=$idproce";
+			 $query = "SELECT orden FROM lab_procedimientosporexamen where id=$idproce";
 			$result = pg_query( $query );
 			if ( !$result )
 				return false;
@@ -162,7 +158,7 @@ class clsLab_Procedimientos {
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if($con->conectar()==true){
-          $query = "UPDATE lab_subelemento_posible_resultado SET habilitado = false WHERE id_subelemento = '$id_subelemento'";
+           $query = "UPDATE lab_subelemento_posible_resultado SET habilitado = false WHERE id_subelemento = '$id_subelemento'";
             $result = pg_query($query);
             if (!$result)
               return false;
@@ -204,7 +200,7 @@ class clsLab_Procedimientos {
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if($con->conectar()==true){
-            $query = "UPDATE lab_subelemento_posible_resultado 
+           $query = "UPDATE lab_subelemento_posible_resultado 
                         SET habilitado = true,
                             fechafin = null,
                             id_user_mod = 8,
@@ -228,7 +224,7 @@ class clsLab_Procedimientos {
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if($con->conectar()==true){
-            $query = "UPDATE lab_procedimiento_posible_resultado 
+           $query = "UPDATE lab_procedimiento_posible_resultado 
                         SET habilitado = true,
                             fechafin = null,
                             id_user_mod = 8,
@@ -491,7 +487,7 @@ class clsLab_Procedimientos {
 		//usamos el metodo conectar para realizar la conexion
 		if ( $con->conectar()==true ) {
 
-			  $query ="select  orden  from lab_procedimientosporexamen 
+			echo  $query ="select  orden  from lab_procedimientosporexamen 
                                   where id_conf_examen_estab=$idexa order by orden asc
 ";
 
@@ -509,7 +505,7 @@ class clsLab_Procedimientos {
 		//usamos el metodo conectar para realizar la conexion
 		if ( $con->conectar()==true ) {
 
-			  $query ="select 
+			echo  $query ="select 
                                         count (*) cantidad
                                         from lab_procedimientosporexamen 
                                         where id_conf_examen_estab=$idexa";
@@ -564,7 +560,7 @@ class clsLab_Procedimientos {
         function updatehabilitadot() {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
-			 $query = "UPDATE lab_procedimientosporexamen SET habilitado='t' where   fechafin is null";
+		    $query = "UPDATE lab_procedimientosporexamen SET habilitado='t' where   fechafin is null";
 			$result = pg_query( $query );
 			if ( !$result )
 				return false;
@@ -577,7 +573,7 @@ class clsLab_Procedimientos {
         function updatehabilitadof() {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
-			 $query = "UPDATE lab_procedimientosporexamen SET habilitado='f' where fechafin = fechafin ";
+		     $query = "UPDATE lab_procedimientosporexamen SET habilitado='f' where fechafin = fechafin ";
 			$result = pg_query( $query );
 			if ( !$result )
 				return false;
@@ -677,7 +673,7 @@ class clsLab_Procedimientos {
             //habilitado='t' = 'Habilitado' --> pasara a f
             if($cond=='t'){
                 
-                $query="UPDATE lab_procedimientosporexamen SET habilitado='f',
+              $query="UPDATE lab_procedimientosporexamen SET habilitado='f',
 					fechafin=current_date,
 					idusuarioreg=$usuario,
 					fechahoramod=NOW()

@@ -474,7 +474,7 @@ WHERE iddetalleresultado=$iddetalleresultado order by lab_resultadosportarjeta.i
      $query = "SELECT DISTINCT lab_antibioticos.id as idantibiotico,antibiotico 
                FROM lab_antibioticos 
                INNER JOIN lab_antibioticosportarjeta ON lab_antibioticos.id=lab_antibioticosportarjeta.idantibiotico
-               WHERE lab_antibioticosportarjeta.idtarjeta=$idtarjeta";
+               WHERE lab_antibioticosportarjeta.idtarjeta=$idtarjeta order by antibiotico";
      $result = pg_query($query);
      if (!$result)
        return false;

@@ -92,7 +92,11 @@
          <item labelText="Citas de Laboratorio" url="../LAB/Procesos/CitasServicio/busquedaexp.php"/>
       </menu>
       <sep/>
-      <item labelText="CAMBIAR CLAVE" url="../LAB/Procesos/CambioClave/CambioClave.php"/>
+     <!-- <menu labelText="AYUDA">
+         <item labelText="Manual de Laboratorio" url="../Ayuda/MANUAL_LABORATORIO.html"/>
+      </menu>
+      <sep/>-->
+       <item labelText="CAMBIAR CLAVE" url="../LAB/Procesos/CambioClave/CambioClave.php"/>
       <sep/>
       <item labelText="CERRAR SESIÓN" url="../cerrarsesion.php"/>
       <sep/>

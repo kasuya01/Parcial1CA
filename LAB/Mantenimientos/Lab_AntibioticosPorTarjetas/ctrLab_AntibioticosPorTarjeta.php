@@ -25,10 +25,10 @@ switch ($opcion)
 		 if ($cantidad[0]==0){
 			if ($objdatos->insertar($idantibiotico,$idtarjeta,$usuario,$lugar)==true)
 			{
-					echo "Datos Ingresados";		   
+                            echo "Datos Ingresados";		   
 			}
 			else{
-					echo "El Registro no puede ser ingresado consulte al administrador";		
+                            echo "El Registro no puede ser ingresado consulte al administrador";		
 			}
 		 }
 		 else {
@@ -44,7 +44,7 @@ switch ($opcion)
 			echo "No se pudo actualizar";
 		}		
      break;
-	 case 3:  //ELIMINAR    
+	 case 3:   //ELIMINAR    
 		 //Vefificando Integridad de los datos
 		 //$idantibioticoportarjeta=$_POST['idantibioticoportarjeta'];
 		$idantibiotico=$_POST['idantibiotico'];
@@ -58,8 +58,26 @@ switch ($opcion)
 				echo "El registro no pudo ser eliminado ";
 		 }			
 	break;
-	case 4:// PAGINACION
-		
+	case 4:// Agregar
+		$idantibiotico=$_POST['idantibiotico'];
+		$idtarjeta=$_POST['idtarjeta'];
+	
+                $cant=$objdatos->Verificar_Antibiotico($idantibiotico,$idtarjeta,$lugar);
+		$cantidad=pg_fetch_array($cant);
+		//  echo $idantibiotico."*".$idtarjeta;
+                
+		if ($cantidad[0]==0){
+			if ($objdatos->Agregar($idantibiotico,$idtarjeta,$usuario,$lugar)==true)
+			{
+                            echo "Datos Ingresados";		   
+			}
+			else{
+                            echo "El Registro no puede ser ingresado consulte al administrador";		
+			}
+		 }
+		 else {
+		       echo "Los Antibioticos seleccionados ya estan asinados a la tarjeta";
+                 }
 	break;
 	case 5:  //LLENAR LISTA
 			//DIBUJANDO EL FORMULARIO NUEVAMENTE

@@ -224,6 +224,7 @@ if ($nivel == 7) {
                                 
                                                                             
                                                                             <button type='button' align="center" class='btn btn-primary'  onclick='GuardarItems(); '><span class='glyphicon glyphicon-floppy-disk'></span> Guardar </button>
+                                                                            <button type='button' align="center" class='btn btn-primary'  onclick='AgregarItems(); '><span class='glyphicon glyphicon-remove-circle'></span> Adicionar Antibiótico</button>
                                                                             <button type='button' align="center" class='btn btn-primary'  onclick='EliminarItems(); '><span class='glyphicon glyphicon-remove-circle'></span> Eliminar </button>
                                                                             
 

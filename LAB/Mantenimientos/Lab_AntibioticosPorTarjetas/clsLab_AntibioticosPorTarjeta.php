@@ -12,8 +12,8 @@ class clsLab_AntibioticosPorTarjeta
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-         $query = "INSERT INTO lab_antibioticosportarjeta(idantibiotico,idtarjeta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento) 
-		   VALUES($idantibiotico,$idtarjeta,$usuario,NOW(),$usuario,NOW(),$lugar)";
+       echo  $query = "INSERT INTO lab_antibioticosportarjeta(idantibiotico,idtarjeta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento) 
+		       VALUES($idantibiotico,$idtarjeta,$usuario,date_trunc('seconds', NOW()),$usuario,date_trunc('seconds', NOW()),$lugar)";
          $result = @pg_query($query);
 	 
      if (!$result)
@@ -22,13 +22,19 @@ class clsLab_AntibioticosPorTarjeta
        return true;	   
    }
  }
- function actualizar($idantibioticoportarjeta,$idantibiotico,$idtarjeta,$usuario)
+ function Agregar($idantibiotico,$idtarjeta,$usuario,$lugar)
+         
  {
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-      $query = "UPDATE lab_antibioticosportarjeta SET idantibiotico=$idantibiotico, idtarjeta=$idtarjeta,idusuariomod=$usuario,fechahoramod=NOW() 
-		WHERE id=$idantibioticoportarjeta";
+       $nextid="select nextval('lab_antibioticosportarjeta_id_seq')";
+                    $sql=  pg_query($nextid);
+                    $nextseq=  pg_fetch_array($sql);
+                    $ultimo=$nextseq[0];
+       
+       $query =  "INSERT INTO lab_antibioticosportarjeta(id,idantibiotico,idtarjeta,idusuarioreg,fechahorareg,idestablecimiento) 
+		  VALUES($ultimo,$idantibiotico,$idtarjeta,$usuario,date_trunc('seconds', NOW()),$lugar)";
      $result = @pg_query($query);
 	 
      if (!$result)
@@ -43,7 +49,7 @@ class clsLab_AntibioticosPorTarjeta
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "DELETE FROM lab_antibioticosportarjeta WHERE idantibiotico=$idantibiotico AND idtarjeta=$idtarjeta AND idestablecimiento=$lugar";
+   echo $query = "DELETE FROM lab_antibioticosportarjeta WHERE idantibiotico=$idantibiotico AND idtarjeta=$idtarjeta AND idestablecimiento=$lugar";
      $result = pg_query($query);
 	 
      if (!$result)
@@ -57,12 +63,12 @@ class clsLab_AntibioticosPorTarjeta
 function Verificar_Antibiotico($idantibiotico,$idtarjeta,$lugar){
  $con = new ConexionBD;
 	if($con->conectar()==true)
-	{ $query="SELECT count(*) FROM lab_antibioticosportarjeta WHERE idantibiotico=$idantibiotico and idtarjeta=$idtarjeta and idestablecimiento=$lugar";
-		$result = pg_query($query);
-		if (!$result)
-			return false;
-		else
-			return $result;
+	{  $query="SELECT count(*) FROM lab_antibioticosportarjeta WHERE idantibiotico=$idantibiotico and idtarjeta=$idtarjeta and idestablecimiento=$lugar";
+	   $result = pg_query($query);
+	   if (!$result)
+	    return false;
+	   else
+	    return $result;
 	}
   }
   
@@ -121,12 +127,12 @@ function Verificar_Antibiotico($idantibiotico,$idtarjeta,$lugar){
                 inner join lab_antibioticos B on A.idantibiotico=A.idtarjeta 
                 where idtarjeta=$idtarjeta" ;*/
      $query="select lab_antibioticos.id as 
-       antibiotico_id,
-       lab_tarjetasvitek.id,
-       lab_antibioticos.antibiotico 
-		           from lab_tarjetasvitek
-                   inner join lab_antibioticosportarjeta on (lab_tarjetasvitek.id=lab_antibioticosportarjeta.idtarjeta)
-                   inner join lab_antibioticos 		 on (lab_antibioticosportarjeta.idantibiotico=lab_antibioticos.id)
+                antibiotico_id,
+                lab_tarjetasvitek.id,
+                lab_antibioticos.antibiotico 
+		from lab_tarjetasvitek
+                inner join lab_antibioticosportarjeta on (lab_tarjetasvitek.id=lab_antibioticosportarjeta.idtarjeta)
+                inner join lab_antibioticos 		 on (lab_antibioticosportarjeta.idantibiotico=lab_antibioticos.id)
                    where lab_tarjetasvitek.id=$idtarjeta 
                    order by antibiotico";
 	 $result = @pg_query($query);
