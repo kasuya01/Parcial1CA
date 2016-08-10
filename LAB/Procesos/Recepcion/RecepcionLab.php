@@ -379,7 +379,7 @@ accion=6;
                    '&lugar='+lugar+'&IdSubServicio='+IdSubServicio+
                    '&FechaConsulta='+FechaConsulta+'&idexpediente='+idexpediente+'&IdEmpleado='+IdEmpleado;
         //  param += '&idext='+idext;
-         // alert (param)
+         // alert ("idsubservicio"+IdSubServicio +"- id empleado"+IdEmpleado);
 	  sendReq.send(param);
 
 }
