@@ -52,14 +52,16 @@ function RecogeValor()
                 if ( getVars[i].substr(0,5) == 'var4=' )
                        idexamen = getVars[i].substr(5);
                 if ( getVars[i].substr(0,5) == 'var5=' )
-                       cod = getVars[i].substr(5);      
+                       cod = getVars[i].substr(5);   
+                if ( getVars[i].substr(0,5) == 'var6=' )
+                       idestandar = getVars[i].substr(5);   
 
     }
 document.frmnuevo.idelemento.value=idelemento;
 //alert(idelemento);
 document.frmnuevo.txtelemento.value=elemento;
 
-document.frmnuevo.txtexamen.value=examen;
+document.frmnuevo.txtexamen.value= idestandar+" - "+examen;
 document.frmnuevo.idexamen.value=idexamen;
 //document.frmnuevo.txtcod.value=cod;
 

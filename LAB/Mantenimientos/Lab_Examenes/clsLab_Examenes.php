@@ -98,19 +98,19 @@ class clsLab_Examenes {
             }
          }
 
-         if ($i == 0) { // si no se han seleccionado metodologias
-           $sql = "INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin, nombre_reporta) VALUES ($ultimo, NULL, true, NOW(), NULL, '$nomexamen') returning id";
+        if ($i == 0) { // si no se han seleccionado metodologias
+            $sql = "INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin, nombre_reporta) VALUES ($ultimo, NULL, true, NOW(), NULL, '$nomexamen') returning id";
             $qry = pg_query($sql);
             if ($resultado != 'NULL') {
                $idmetodo = pg_fetch_array($qry);
                $idmet = $idmetodo['id'];
                for ($i = 0; $i < (count($aresultados) - 1); $i++) {
-                  $insert = "insert into lab_examen_metodo_pos_resultado (id_examen_metodologia, id_posible_resultado, fechainicio,  habilitado, id_user, fecha_registro, id_codigoresultado)
+                    $insert = "insert into lab_examen_metodo_pos_resultado (id_examen_metodologia, id_posible_resultado, fechainicio,  habilitado, id_user, fecha_registro, id_codigoresultado)
                     values ($idmet, $aresultados[$i], current_date, true,$usuario, date_trunc('seconds', NOW()), $aidresultados[$i])";
-                  $metpos = pg_query($insert);
+                    $metpos = pg_query($insert);
                }
             }
-         }
+        }
 
 
         $sqlText = "INSERT INTO cit_programacion_exams (id_examen_establecimiento,rangotiempoprev,id_atencion,id_establecimiento,idusuarioreg,fechahorareg)

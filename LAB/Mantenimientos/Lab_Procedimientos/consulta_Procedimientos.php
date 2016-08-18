@@ -36,7 +36,7 @@ $nombresexo=$row['sexovn'];
 $idedad=$row['idedad'];
 $rangoedad=$row['nombregrupoedad'];
 $orden=$row['orden'];
-/*list($anio, $mes, $dia) = split('[/.-]', $Fechaini);
+$idestandar=$row['idestandar'];/*list($anio, $mes, $dia) = split('[/.-]', $Fechaini);
 $Fechaini = $anio . "/" . $mes . "/" . $dia;*/
 
 //$Fechafin=$row['fechafin'];
@@ -80,9 +80,9 @@ $Fechaini = $anio . "/" . $mes . "/" . $dia;*/
 						$consultaex = $obj->ExamenesPorArea($idarea, $lugar);
 						while($row = @pg_fetch_array($consultaex)) {
 							if($row['idexamen'] === $idexamen)
-								echo "<option value='" . $idexamen . "' selected='selected'>" .$nombreexamen. "</option>";
+								echo "<option value='" . $idexamen . "' selected='selected'>".$row['idestandar'] ." - ".$nombreexamen. "</option>";
 							else
-								echo "<option value='" . $row['idexamen']. "'>" . $row['nombreexamen'] . "</option>";
+								echo "<option value='" . $row['idexamen']. "'>".$row['idestandar'] ." - " . $row['nombreexamen'] . "</option>";
 						}
 					?>
 		    	</select>
@@ -175,7 +175,7 @@ $Fechaini = $anio . "/" . $mes . "/" . $dia;*/
               <?php  
                 if ($habilitado=="f"){
                     
-                    ?>llenarrangosubele(
+                    ?>
                <td nowrap class="StormyWeatherFieldCaptionTD">Posibles Resultado </td>
                          <?php
                          echo "<td class='StormyWeatherDataTD'>
@@ -300,7 +300,9 @@ $Fechaini = $anio . "/" . $mes . "/" . $dia;*/
                                     }
                                     
            return $hola;                        
-        }
+    
+    }
+    
     function areglo ($arr,$dato){
         $respuesta=0;
         $max = sizeof($arr);

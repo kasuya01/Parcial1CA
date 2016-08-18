@@ -85,6 +85,7 @@ switch ($opcion)
                             <th aling='center' > Modificar</th>
                             <!--<th aling='center' class='CobaltFieldCaptionTD'> Eliminar</th>-->
                             <th> Orden          </th>
+                            <th> Código        </th>
                             <th> Examen             </th>
                             <th> Elemento           </th>
                             <th> Unidad             </th>
@@ -95,40 +96,47 @@ switch ($opcion)
                     	</tr>
                     </thead><tbody>
                 </center>";
-		while($row = pg_fetch_array($consulta)){
+	while($row = pg_fetch_array($consulta)){
+            if (!empty($row['fechafin'])){
+                echo"<tr>
+			<td aling='center'> 
+                            <img src='../../../Imagenes/Search.png' style=\"text-decoration:underline;cursor:pointer;\" 
+                            onclick=\"pedirDatos('".$row['idelemento']."')\" height='40' width='50'> </td>";
+             }
+         else{                    
                 echo"<tr>
 			<td aling='center'> 
                             <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-                            onclick=\"pedirDatos('".$row['idelemento']."')\"> </td>
-				<!--<td aling ='center'> 
-					<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-					onclick=\"eliminarDato('".$row['idelemento']."')\"> </td>-->
-				<td>".$row['orden']."</td>
+                            onclick=\"pedirDatos('".$row['idelemento']."')\"> </td>";
+             
+         }
+             echo"	<td>".$row['orden']."</td>
+         
+                                <td>".$row['idestandar']."</td>    
                                 <td>".$row['nombre_examen']."</td>
 				<td>".htmlentities($row['elemento'])."</td>";
-				if (empty($row['unidadelem']))
-					echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-				else 
-			        echo"<td>".htmlentities($row['unidadelem'])."</td>";
+                    if (empty($row['unidadelem']))
+		          echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+                    else 
+                          echo "<td>".htmlentities($row['unidadelem'])."</td>";
 				
-				if (empty($row['observelem']))
-					echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-				else 		
-					echo"<td>".htmlentities($row['observelem'])."</td>";
-				
-				echo "<td>".htmlentities($row['subelemento'])."</td>";
+                    if (empty($row['observelem']))
+                          echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+                    else 		
+                           echo"<td>".htmlentities($row['observelem'])."</td>";
+			  echo "<td>".htmlentities($row['subelemento'])."</td>";
 				//echo $row['fechaini'];
-                             if (!empty($row['fechaini']))
-                                echo "<td>".$row['fechaini']."</td>";
-                            else
-                                 echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
+                    if (!empty($row['fechaini']))
+                          echo "<td>".$row['fechaini']."</td>";
+                    else
+                          echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
                             
-                             if(!empty($row['fechafin']))
-                                 echo "<td>".$row['fechafin']."</td>";
-                            else
-                                 echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";	
+                    if(!empty($row['fechafin']))
+                          echo "<td>".$row['fechafin']."</td>";
+                    else
+                          echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";	
                           
-		    echo "</tr>";
+	     echo "</tr>";
 	}
   echo "</table>"; 
 
@@ -185,11 +193,12 @@ switch ($opcion)
                          THEN 'SI' 
                          ELSE 'NO' END ) AS subelemento,unidadelem,observelem,
                          to_char(fechaini,'dd/mm/YYYY') AS fechaini,
-                         to_char(fechafin,'dd/mm/YYYY') AS fechafin,lab_elementos.orden  
+                         to_char(fechafin,'dd/mm/YYYY') AS fechafin,lab_elementos.orden,ctl_examen_servicio_diagnostico.idestandar  
                          FROM lab_elementos  
 			 INNER JOIN lab_conf_examen_estab ON lab_elementos.id_conf_examen_estab=lab_conf_examen_estab.id 
                          INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
                          INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
+                         INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id = mnt_area_examen_establecimiento.id_examen_servicio_diagnostico 
                          INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
 			 WHERE lab_conf_examen_estab.condicion='H' 
 			 AND lab_areasxestablecimiento.condicion='H' AND lab_conf_examen_estab.idplantilla=2 
@@ -243,7 +252,7 @@ switch ($opcion)
                         $query = substr($query ,0,strlen($query)-4);
 			$query_search = $query. " ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,lab_elementos.id,lab_elementos.orden";
 		}	
-	//echo $query_search;
+	     $query_search;
 		////para manejo de la paginacion
 		$RegistrosAMostrar=4;
 		$RegistrosAEmpezar=($_POST['Pag']-1)*$RegistrosAMostrar;
@@ -262,6 +271,7 @@ switch ($opcion)
                             <th aling='center' > Modificar</th>
                             <!--<th aling='center' class='CobaltFieldCaptionTD'> Eliminar</th>-->
                             <th> Orden          </th>
+                            <th> Código          </th>
                             <th> Examen             </th>
                             <th> Elemento           </th>
                             <th> Unidad             </th>
@@ -272,15 +282,32 @@ switch ($opcion)
                     	</tr>
                     </thead><tbody>
                 </center>";
-		while($row = pg_fetch_array($consulta)){
-		echo "<tr>
-		        <td aling='center'> 
+         
+	    while($row = pg_fetch_array($consulta)){
+             //  echo $row['fechafin'];
+                /*echo "<tr>
+		           <td aling='center'> 
+				<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+				onclick=\"pedirDatos('".$row['id']."')\"> </td>";*/
+              if ($row['fechafin'] <> NULL){
+                echo"<tr>
+			<td aling='center'> 
+                            <img src='../../../Imagenes/Search.png' style=\"text-decoration:underline;cursor:pointer;\" 
+                            onclick=\"pedirDatos('".$row['id']."')\" height='40' width='50'> </td>";
+                }
+               else{                    
+                echo "<tr>
+		           <td aling='center'> 
 				<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 				onclick=\"pedirDatos('".$row['id']."')\"> </td>";
-			   /* <td aling ='center'> 
-				<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-				onclick=\"eliminarDato('".$row['id']."')\"> </td>*/
-                      echo" <td>".$row['orden']."</td>        
+             
+                }
+		
+                
+                
+			   
+                      echo" <td>".$row['orden']."</td> 
+                            <td>".$row['idestandar']."</td>
 			    <td>".$row['nombre_examen']."</td>
 			    <td>".htmlentities($row['elemento'])."</td>";
 			    
@@ -353,11 +380,12 @@ switch ($opcion)
                          THEN 'SI' 
                          ELSE 'NO' END ) AS subelemento,unidadelem,observelem,
                          to_char(fechaini,'dd/mm/YYYY') AS fechaini,
-                         to_char(fechafin,'dd/mm/YYYY') AS fechafin,lab_elementos.orden,lab_conf_examen_estab.id as idexamen  
+                         to_char(fechafin,'dd/mm/YYYY') AS fechafin,lab_elementos.orden,lab_conf_examen_estab.id as idexamen,ctl_examen_servicio_diagnostico.idestandar  
                          FROM lab_elementos  
 			 INNER JOIN lab_conf_examen_estab ON lab_elementos.id_conf_examen_estab=lab_conf_examen_estab.id 
                          INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
                          INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
+                         INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id = mnt_area_examen_establecimiento.id_examen_servicio_diagnostico 
                          INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
 			 WHERE lab_conf_examen_estab.condicion='H' 
 			 AND lab_areasxestablecimiento.condicion='H' AND lab_conf_examen_estab.idplantilla=2 
@@ -428,6 +456,7 @@ switch ($opcion)
                             <th aling='center' > Modificar</th>
                             <!--<th aling='center' class='CobaltFieldCaptionTD'> Eliminar</th>-->
                             <th> Orden          </th>
+                            <th> Código          </th>
                             <th> Examen             </th>
                             <th> Elemento           </th>
                             <th> Unidad             </th>
@@ -439,34 +468,46 @@ switch ($opcion)
                     </thead><tbody>
                 </center>";
 		while($row = pg_fetch_array($consulta)){
-		echo "<tr>
+		/*echo "<tr>
+		           <td aling='center'> 
+				<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+				onclick=\"pedirDatos('".$row['id']."')\"> </td>";*/
+                    
+                if ($row['fechafin'] <> NULL){
+                echo"<tr>
+			<td aling='center'> 
+                            <img src='../../../Imagenes/Search.png' style=\"text-decoration:underline;cursor:pointer;\" 
+                            onclick=\"pedirDatos('".$row['id']."')\" height='40' width='50'> </td>";
+                }
+               else{                    
+               echo "<tr>
 		           <td aling='center'> 
 				<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
 				onclick=\"pedirDatos('".$row['id']."')\"> </td>";
-			/*   <td aling ='center'> 
-				<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-				onclick=\"eliminarDato('".$row['id']."')\"> </td>*/
+             
+                }   
+			
                             
 		echo "	   <td>".$row['orden']."</td>
+                           <td>".$row['idestandar']."</td> 
                            <td>".$row['nombre_examen']."</td>
 			   <td>".htmlentities($row['elemento'])."</td>";
 			   
-			    if (empty($row['unidadelem']))
-					echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-				else 
-			        echo"<td>".htmlentities($row['unidadelem'])."</td>";
+                    if (empty($row['unidadelem']))
+		      echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+		    else 
+                       echo"<td>".htmlentities($row['unidadelem'])."</td>";
+			
+		    if (empty($row['observelem']))
+		      echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+		    else 		
+		       echo"<td>".htmlentities($row['observelem'])."</td>";
+	  	       echo"<td>".htmlentities($row['subelemento'])."</td>";
 				
-				if (empty($row['observelem']))
-					echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-				else 		
-					echo"<td>".htmlentities($row['observelem'])."</td>";
-				
-				echo "<td>".htmlentities($row['subelemento'])."</td>";
-				
-				if (($row['fechaini']=="00/00/0000") || ($row['fechaini']=="(NULL)") || (empty($row['fechaini'])))
-					echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-				else 		
-					echo "<td>".htmlentities($row['fechaini'])."</td>";
+		    if (($row['fechaini']=="00/00/0000") || ($row['fechaini']=="(NULL)") || (empty($row['fechaini'])))
+		      echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+		    else 		
+		echo "<td>".htmlentities($row['fechaini'])."</td>";
 				
 				if (($row['fechafin']=="00/00/0000") || ($row['fechafin']=="(NULL)") || (empty($row['fechafin'])))
 					echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
@@ -520,7 +561,7 @@ switch ($opcion)
 		$rslts .='<option value="0">--Seleccione un Examen--</option>';
 			
 		while ($rows =pg_fetch_array($consultaex)){
-			$rslts.= '<option value="' .$rows[0].'" >'.htmlentities($rows[1]).'</option>';
+			$rslts.= '<option value="' .$rows[0].'" >'.$rows[2]." - ".htmlentities($rows[1]).'</option>';
 		}
 		$rslts .= '</select>';
 		echo $rslts;	

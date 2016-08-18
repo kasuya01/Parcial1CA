@@ -187,6 +187,7 @@ case 4:// PAGINACION
                                 <!--<th   aling='center'> Eliminar</th>-->
                                 <th aling='center' > Habilitado</th>
                                 <th> Orden        </th>
+                                <th> Código        </th>
                                 <th> Examen            </th>
                                 
                                 <th> Procedimiento     </th>
@@ -225,6 +226,7 @@ case 4:// PAGINACION
                       <td width='6%'><span style='color: #0101DF;'>
                    	 <a style ='text-decoration:underline;cursor:pointer;' onclick='Estado(\"".$row['idlppe']."\",\"".$row['habilitado']."\")'>".$row['cond']."</a></td>
                     <td>".$row['orden']."</td>
+                    <td>".$row['idestandar']."</td>    
                     <td>".htmlentities( $row['nombreexamen'] )."</td>
                    
                     <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
@@ -255,11 +257,10 @@ case 4:// PAGINACION
                     <td aling='center'>
                         <img src='../../../Imagenes/Search.png' style=\"text-decoration:underline;cursor:pointer;\"
 			onclick=\"pedirDatos('".$row['idprocedimientoporexamen']."')\"  height='40' width='50'> </td>
-                   <!-- <td aling ='center'>
-			 <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
-			onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"> </td> -->
+                   
                       <td width='6%'>   ".$row['cond']."</td>
                     <td>".$row['orden']."</td>
+                        <td>".$row['idestandar']."</td>
                     <td>".htmlentities( $row['nombreexamen'] )."</td>
                     <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
                     <td>".htmlentities( $row['unidades'] )."</td>
@@ -342,7 +343,7 @@ case 5:  //LLENAR COMBO DE EXAMENES
 	$rslts .='<option value="0">--Seleccione un Examen--</option>';
 
 	while ( $rows =pg_fetch_array( $consultaex ) ) {
-		$rslts.= '<option value="' .$rows['idexamen'].'" >'.htmlentities( $rows['nombreexamen'] ).'</option>';
+		$rslts.= '<option value="' .$rows['idexamen'].'" >'.$rows['idestandar']." - ".htmlentities( $rows['nombreexamen'] ).'</option>';
 	}
 	$rslts .= '</select>';
 	echo $rslts;
@@ -417,7 +418,7 @@ case 7: //BUSQUEDA
         
         
 
-	$query = "SELECT lppe.id AS idprocedimientoporexamen,
+	 $query = "SELECT lppe.id AS idprocedimientoporexamen,
 					lcee.codigo_examen AS idexamen,
 					lcee.nombre_examen AS nombreexamen,
 					casd.id AS idarea,
@@ -444,7 +445,8 @@ case 7: //BUSQUEDA
                                                 lppe.id as idlppe,
                                                 mnt4.id as idmnt4,
                                                 lcee.condicion,
-                                                lppe.orden
+                                                lppe.orden,
+                                                cesd.idestandar
 			  FROM lab_procedimientosporexamen                      lppe
 			  INNER JOIN lab_conf_examen_estab 			lcee ON (lcee.id = lppe.id_conf_examen_estab)
 			  INNER JOIN lab_plantilla                              lpla ON (lpla.id = lcee.idplantilla)
@@ -453,11 +455,18 @@ case 7: //BUSQUEDA
 			  INNER JOIN ctl_area_servicio_diagnostico              casd ON (casd.id = mnt4.id_area_servicio_diagnostico)
 			  LEFT OUTER JOIN ctl_sexo                              cex  ON (cex.id  = lppe.idsexo AND cex.abreviatura != 'I')
 			  LEFT OUTER JOIN ctl_rango_edad 			cre  ON (cre.id  = lppe.idrangoedad)
-			  WHERE 
-                            lpla.idplantilla = 'E' 
-                            AND lcee.condicion = 'H' AND cesd.activo=TRUE
-                            AND 
-                            lppe.idestablecimiento = $lugar";
+                          INNER JOIN lab_areasxestablecimiento        laxe ON (casd.id = laxe.idarea)
+			  WHERE lpla.idplantilla = 'E' 
+                            AND lcee.condicion = 'H' 
+                            AND cesd.activo=TRUE
+                            AND mnt4.activo=TRUE 
+                            AND laxe.condicion = 'H' 
+                            AND lppe.idestablecimiento = $lugar";
+         
+         
+                                              
+                                                
+                                                
 
 	$ban=0;
 	//VERIFICANDO LOS POST ENVIADOS
@@ -562,6 +571,7 @@ case 7: //BUSQUEDA
                                 <th aling='center' > Habilitado</th>
                                 <!--<th   aling='center'> Eliminar</th>-->
                                 <th> Orden          </th>
+                                <th> Código        </th>
                                 <th> Examen            </th>
                                 <th> Procedimiento     </th>
                                 <th> Unidades          </th>
@@ -575,30 +585,7 @@ case 7: //BUSQUEDA
                    </thead><tbody>
                     </center>";
 	while ( $row = @pg_fetch_array( $consulta ) ) {
-		/*echo "<tr>
-                <td aling='center'><img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" onclick=\"pedirDatos('".$row['idprocedimientoporexamen']."')\"></td>
-               	<!-- <td aling ='center'><img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"></td> -->
-                 <td width='6%'><span style='color: #0101DF;'>
-                   	 <a style ='text-decoration:underline;cursor:pointer;' onclick='Estado(\"".$row['idlppe']."\",\"".$row['habilitado']."\")'>".$row['cond']."</a></td>
-                    
-                <td>".$row['idexamen']."</td> 
-                <td>".htmlentities( $row['nombreexamen'] )."</td>
-                <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
-                <td>".htmlentities( $row['unidades'] )."</td>
-                <td>".$row['rangoinicio']."-".$row['rangofin']."</td>
-                <td>".$row['sexovn']."</td>
-                <td>".$row['nombregrupoedad']."</td>";
-		if ( ( $row['fechaini']=="NULL" ) || ( $row['fechaini']=="00/00/0000" ) ||( empty( $row['fechaini'] ) ) )
-			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-		else
-			echo "<td>".$row['fechaini']."</td>";
-
-		if ( ( empty( $row['fechafin'] ) ) || ( $row['fechafin']=="NULL" ) || ( $row['fechafin']=="00/00/0000" ) )
-			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-		else
-			echo "<td>".$row['fechafin']."</td>
-		          ";
-		echo"</tr>";*/
+		
             
           $habilitado=$row['habilitado'] ;
                    // == "t") {
@@ -617,6 +604,7 @@ case 7: //BUSQUEDA
                       <td width='6%'><span style='color: #0101DF;'>
                    	 <a style ='text-decoration:underline;cursor:pointer;' onclick='Estado(\"".$row['idlppe']."\",\"".$row['habilitado']."\")'>".$row['cond']."</a></td>
                     <td>".$row['orden']."</td>
+                    <td>".$row['idestandar']."</td>    
                     <td>".htmlentities( $row['nombreexamen'] )."</td>
                     <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
                     <td>".htmlentities( $row['unidades'] )."</td>
@@ -647,6 +635,7 @@ case 7: //BUSQUEDA
 			onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"> </td> -->
                       <td width='6%'>   ".$row['cond']."</td>
                     <td>".$row['orden']."</td>
+                    <td>".$row['idestandar']."</td>    
                     <td>".htmlentities( $row['nombreexamen'] )."</td>
                     <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
                     <td>".htmlentities( $row['unidades'] )."</td>
@@ -768,30 +757,31 @@ case 8://PAGINACION DE BUSQUEDA
 				    END AS sexovn,
 				 	cre.id AS idedad,
 				 	cre.nombre AS nombregrupoedad,
-                                        (CASE WHEN lcee.condicion='H' THEN 'Habilitado'
-						WHEN lcee.condicion='I' THEN 'Inhabilitado' END) AS cond1,
-                                                
+                                        
                                                 (CASE WHEN lppe.habilitado='f' THEN 'Inhabilitado'
 						WHEN lppe.habilitado='t' THEN 'Habilitado' END) AS cond,
                                                 
-
 						lppe.habilitado,
                                                 lppe.id as idlppe,
                                                 mnt4.id as idmnt4,
                                                 lcee.condicion,
-                                                lppe.orden
+                                                lppe.orden,
+                                                cesd.idestandar
 			  FROM lab_procedimientosporexamen                      lppe
 			  INNER JOIN lab_conf_examen_estab 			lcee ON (lcee.id = lppe.id_conf_examen_estab)
 			  INNER JOIN lab_plantilla                              lpla ON (lpla.id = lcee.idplantilla)
 			  INNER JOIN mnt_area_examen_establecimiento            mnt4 ON (mnt4.id = lcee.idexamen)
+                          INNER JOIN ctl_examen_servicio_diagnostico cesd ON    cesd.id= mnt4.id_examen_servicio_diagnostico
 			  INNER JOIN ctl_area_servicio_diagnostico              casd ON (casd.id = mnt4.id_area_servicio_diagnostico)
 			  LEFT OUTER JOIN ctl_sexo                              cex  ON (cex.id  = lppe.idsexo AND cex.abreviatura != 'I')
 			  LEFT OUTER JOIN ctl_rango_edad 			cre  ON (cre.id  = lppe.idrangoedad)
-			  WHERE 
-                                lpla.idplantilla = 'E' 
-                                AND lcee.condicion = 'H'
-                                AND 
-                                lppe.idestablecimiento = $lugar AND";
+                          INNER JOIN lab_areasxestablecimiento        laxe ON (casd.id = laxe.idarea)
+			  WHERE lpla.idplantilla = 'E' 
+                            AND lcee.condicion = 'H' 
+                            AND cesd.activo=TRUE
+                            AND mnt4.activo=TRUE 
+                            AND laxe.condicion = 'H' 
+                            AND lppe.idestablecimiento = $lugar AND";
 
 	$ban=0;
 	//VERIFICANDO LOS POST ENVIADOS
@@ -877,6 +867,7 @@ case 8://PAGINACION DE BUSQUEDA
                                  <th aling='center' > Habilitado</th>
                                 <!--<th   aling='center'> Eliminar</th>-->
                                 <th> Orden          </th>
+                                <th> Código        </th>
                                 <th> Examen            </th>
                                 <th> Procedimiento     </th>
                                 <th> Unidades          </th>
@@ -890,31 +881,7 @@ case 8://PAGINACION DE BUSQUEDA
                    </thead><tbody>
                     </center>";
 	while ( $row = @pg_fetch_array( $consulta ) ) {
-		/*echo "<tr>
-                <td aling='center'><img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" onclick=\"pedirDatos('".$row['idprocedimientoporexamen']."')\"></td>
-               	<!-- <td aling ='center'><img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"></td> -->
-                <td width='6%'><span style='color: #0101DF;'>
-                   	 <a style ='text-decoration:underline;cursor:pointer;' onclick='Estado(\"".$row['idlppe']."\",\"".$row['habilitado']."\")'>".$row['cond']."</a></td>
-                    
-                <td>".$row['idexamen']."</td> 
-                <td>".htmlentities( $row['nombreexamen'] )."</td>
-                <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
-                <td>".htmlentities( $row['unidades'] )."</td>
-                <td>".$row['rangoinicio']."-".$row['rangofin']."</td>
-                <td>".$row['sexovn']."</td>
-                <td>".$row['nombregrupoedad']."</td>";
-		if ( ( $row['fechaini']=="NULL" ) || ( $row['fechaini']=="00/00/0000" ) ||( empty( $row['fechaini'] ) ) )
-			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-		else
-			echo "<td>".$row['fechaini']."</td>";
-
-		if ( ( empty( $row['fechafin'] ) ) || ( $row['fechafin']=="NULL" ) || ( $row['fechafin']=="00/00/0000" ) )
-			echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-		else
-			echo "<td>".$row['fechafin']."</td>
-		          ";
-		echo"</tr>";*/
-            
+		            
             
             $habilitado=$row['habilitado'] ;
                    // == "t") {
@@ -933,6 +900,7 @@ case 8://PAGINACION DE BUSQUEDA
                       <td width='6%'><span style='color: #0101DF;'>
                    	 <a style ='text-decoration:underline;cursor:pointer;' onclick='Estado(\"".$row['idlppe']."\",\"".$row['habilitado']."\")'>".$row['cond']."</a></td>
                     <td>".$row['orden']."</td>
+                    <td>".$row['idestandar']."</td>    
                     <td>".htmlentities( $row['nombreexamen'] )."</td>
                     <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
                     <td>".htmlentities( $row['unidades'] )."</td>
@@ -963,6 +931,7 @@ case 8://PAGINACION DE BUSQUEDA
 			onclick=\"eliminarDato('".$row['idprocedimientoporexamen']."',$lugar)\"> </td> -->
                       <td width='6%'>  ".$row['cond']."</td>
                     <td>".$row['orden']."</td>
+                        <td>".$row['idestandar']."</td>
                     <td>".htmlentities( $row['nombreexamen'] )."</td>
                     <td>".htmlentities( $row['nombreprocedimiento'] )."</td>
                     <td>".htmlentities( $row['unidades'] )."</td>

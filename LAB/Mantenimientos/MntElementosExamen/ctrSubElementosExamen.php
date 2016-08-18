@@ -108,48 +108,60 @@ switch ($opcion)
 	        </tr> </thead><tbody>
                     </center>";
     while($row = pg_fetch_array($consulta)){
-          echo "<tr>
-                    <td aling='center'> 
-			<img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-			onclick=\"pedirDatosSubElementos('".$row['id']."')\"> </td>";
-         /*    echo "   <td aling ='center'> 
-			<img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-			onclick=\"eliminarDatoSubElemento('".$row['id']."')\"> </td>":*/
-                 echo "            <td>".htmlentities($row['orden'])."</td>
-                    <td>".$row['subelemento']."</td>";
-           if (!empty($row['unidad']))            
-              echo" <td>".htmlentities($row['unidad'])."</td>";
-           else
-               echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
-               
-          if ((empty($row['rangoinicio'])) AND (empty($row['rangofin'])))
-              echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
-          else
-              echo "<td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
-              
-              echo "<td>".$row['nombreedad']."</td>";
-                     if (empty($row['nombresexo']))
-                            echo "<td> Ambos </td>";
-                        else
-                            echo "<td>".$row['nombresexo']."</td>";
-                        
-                           
-                   
-                 echo "   <td>".htmlentities($row['fechaini'])."</td>";
-	  if (($row['fechafin']=="00-00-0000") ||($row['fechafin']=="(NULL)") ||(empty($row['fechafin'])) )
-	      echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-	  else 	
-	      echo "<td>".htmlentities($row['fechafin'])."</td>";
-          
-          if ($row['catalogo'] != '{NULL}') { 
-                echo "<td><input type='button'  value='Cat&aacute;logo' onclick='popup(".'"consulta_SubElemento.php?id_subelemento='.$row['id'].'"'.")' /></td>";
-          }
-          else {
-              echo "<td><input type='button' value='...'  onclick='popup(".'"consulta_SubElemento.php?id_subelemento='.$row['id'].'"'.")' /></td>";
-          }
-          
-	  echo "</tr>";
-		}
+         if (empty($row['fechafin'])){
+                echo "<tr>
+                          <td aling='center'> 
+                              <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+         onclick=\"pedirDatosSubElementos('".$row['id']."')\"> </td>";
+                
+         }
+         else{
+             echo "<tr>
+                          <td aling='center'> 
+                              <img src='../../../Imagenes/Search.png' style=\"text-decoration:underline;cursor:pointer;\" 
+         onclick=\"pedirDatosSubElementos('".$row['id']."')\" height='40' width='50'> </td>";
+             
+         }
+        
+               /*    echo "   <td aling ='center'> 
+                              <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+                              onclick=\"eliminarDatoSubElemento('".$row['id']."')\"> </td>":*/
+                       echo "            <td>".htmlentities($row['orden'])."</td>
+                          <td>".$row['subelemento']."</td>";
+                 if (!empty($row['unidad']))            
+                    echo" <td>".htmlentities($row['unidad'])."</td>";
+                 else
+                     echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
+
+                if ((empty($row['rangoinicio'])) AND (empty($row['rangofin'])))
+                    echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
+                else
+                    echo "<td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
+
+                    echo "<td>".$row['nombreedad']."</td>";
+                           if (empty($row['nombresexo']))
+                                  echo "<td> Ambos </td>";
+                              else
+                                  echo "<td>".$row['nombresexo']."</td>";
+
+
+
+                       echo "   <td>".htmlentities($row['fechaini'])."</td>";
+                if (($row['fechafin']=="00-00-0000") ||($row['fechafin']=="(NULL)") ||(empty($row['fechafin'])) )
+                    echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+                else 	
+                    echo "<td>".htmlentities($row['fechafin'])."</td>";
+
+                if ($row['catalogo'] != '{NULL}') { 
+                      echo "<td><input type='button'  value='Cat&aacute;logo' onclick='popup(".'"consulta_SubElemento.php?id_subelemento='.$row['id'].'"'.")' /></td>";
+                }
+                else {
+                    echo "<td><input type='button' value='...'  onclick='popup(".'"consulta_SubElemento.php?id_subelemento='.$row['id'].'"'.")' /></td>";
+                }
+
+                echo "</tr>";
+                      }
+                
 	  echo "</table>"; 
 
 	//determinando el numero de paginas
@@ -199,6 +211,7 @@ switch ($opcion)
                 $nombresexo=$row['nombresexo'];
                 $idedad=$row['idedad'];
                 $rangoedad=$row['nombreedad'];
+                $idestandar =$row['idestandar'];
                 // $rangoini=(empty($row['rangoinicio'])) ? 0 : "'" .pg_escape_string($row['rangoinicio']). "'";
                //  echo $rangoini;
                if(empty($row['rangoinicio']))
@@ -231,7 +244,7 @@ switch ($opcion)
                             <tr>
                                 <td class='StormyWeatherFieldCaptionTD'>Elemento</td>
                                 <td colspan='3' class='StormyWeatherDataTD'>
-                                    <input name='txtexamen' type='text' id='txteaxmen' value='".htmlentities($examen)."' size='60' disabled='disabled' class='form-control height'>
+                                    <input name='txtexamen' type='text' id='txteaxmen' value='".$idestandar." - ".htmlentities($examen)."' size='60' disabled='disabled' class='form-control height'>
                                 </td>
                             </tr>
                             <tr>
@@ -342,17 +355,20 @@ switch ($opcion)
                         $imprimir.="     </select>
 				</div>
                             </td>
-        		</tr>
-                            <tr>
-                                 <td colspan='4' class='StormyWeatherDataTD' align='right'>
-                                    <button type='button' name='Submit' value='Actualizar' class='btn btn-primary'  onClick='enviarDatosSubElemento();'><span class='glyphicon glyphicon-floppy-disk'></span> Actualizar </button>
-                                  
-                                    <button type='button' name='btnCancelar' value='Cerrar' class='btn btn-primary' onClick='window.close();'>Cerrar </button>
-                                 </td>
-                             </tr>
-                        </table>
-                    </form>";
-		echo $imprimir;
+        		</tr><tr>";
+           if(!empty($FechaFin)){
+            $imprimir.="    <td colspan='4' class='StormyWeatherDataTD' align='right'>
+                                <button type='button' name='btnCancelar' value='Cerrar' class='btn btn-primary' onClick='window.close();'>Cerrar </button>
+                            </td>";
+           }else{
+            $imprimir.="  <td colspan='4' class='StormyWeatherDataTD' align='right'>
+                             <button type='button' name='Submit' value='Actualizar' class='btn btn-primary'  onClick='enviarDatosSubElemento();'><span class='glyphicon glyphicon-floppy-disk'></span> Actualizar </button>
+                             <button type='button' name='btnCancelar' value='Cerrar' class='btn btn-primary' onClick='window.close();'>Cerrar </button>
+                          </td>";}
+           $imprimir.=" </tr>
+                    </table>
+                </form>";         
+	   echo $imprimir;
 	break;
         case 11:  //LLENAR COMBO DE RANGOS
             $idelemento=$_POST['idelemento'];

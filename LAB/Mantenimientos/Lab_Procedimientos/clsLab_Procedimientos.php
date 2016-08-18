@@ -389,7 +389,7 @@ class clsLab_Procedimientos {
 	function consultarid( $idproce, $lugar ) {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
-		 $query ="SELECT lppe.id AS idprocedimientoporexamen,
+                    $query ="SELECT lppe.id AS idprocedimientoporexamen,
 							lcee.id AS idexamen,
 							lcee.nombre_examen AS nombreexamen,
 							casd.id AS idarea,
@@ -408,18 +408,17 @@ class clsLab_Procedimientos {
 				            END AS sexovn,
 				 			cre.id AS idedad,
 				 			cre.nombre AS nombregrupoedad,
-                                                        lppe.orden
+                                                        lppe.orden,cesd.idestandar 
 				 	 FROM lab_procedimientosporexamen			lppe
 				 	 INNER JOIN lab_conf_examen_estab 			lcee ON (lcee.id = lppe.id_conf_examen_estab)
 				 	 INNER JOIN mnt_area_examen_establecimiento mnt4 ON (mnt4.id = lcee.idexamen)
 				 	 INNER JOIN ctl_area_servicio_diagnostico	casd ON (casd.id = mnt4.id_area_servicio_diagnostico)
+                                         INNER JOIN ctl_examen_servicio_diagnostico cesd ON cesd.id= mnt4.id_examen_servicio_diagnostico 
 				 	 LEFT OUTER JOIN ctl_sexo 					cex  ON (cex.id  = lppe.idsexo AND cex.abreviatura != 'I')
 				 	 LEFT OUTER JOIN ctl_rango_edad 			cre  ON (cre.id  = lppe.idrangoedad)
 				 	 WHERE lppe.id = $idproce  
-                                            
-                                        AND lppe.idestablecimiento = $lugar
-                                             
-				 	 ORDER BY lcee.codigo_examen";
+                                         AND lppe.idestablecimiento = $lugar
+                                         ORDER BY lcee.codigo_examen";
 
 			$result = @pg_query( $query );
 			if ( !$result )
@@ -436,7 +435,7 @@ class clsLab_Procedimientos {
 		if ( $con->conectar()==true ) {
 
 		
-                  $query ="SELECT lab_conf_examen_estab.id AS idexamen, lab_conf_examen_estab.nombre_examen AS nombreexamen 
+                 $query ="SELECT lab_conf_examen_estab.id AS idexamen, lab_conf_examen_estab.nombre_examen AS nombreexamen,ctl_examen_servicio_diagnostico.idestandar 
                     FROM mnt_area_examen_establecimiento  
                     INNER JOIN lab_conf_examen_estab ON (mnt_area_examen_establecimiento.id = lab_conf_examen_estab.idexamen) 
                     INNER JOIN lab_plantilla  ON (lab_plantilla.id = lab_conf_examen_estab.idplantilla) 
@@ -447,16 +446,7 @@ class clsLab_Procedimientos {
                     AND lab_conf_examen_estab.condicion='H' 
                     AND mnt_area_examen_establecimiento.id_establecimiento = $lugar
                     ORDER BY lab_conf_examen_estab.nombre_examen";
-                         /*"SELECT lcee.id AS idexamen, 
-                                            lcee.nombre_examen AS nombreexamen
-                                    FROM mnt_area_examen_establecimiento maees
-                                    INNER JOIN lab_conf_examen_estab    lcee ON (maees.id = lcee.idexamen)
-                                    INNER JOIN lab_plantilla 		lpla ON (lpla.id  = lcee.idplantilla)
-                                    WHERE maees.id_area_servicio_diagnostico = $idarea 
-                                    AND lpla.id = 5 
-                                    AND lcee.condicion='H' 
-                                    AND maees.id_establecimiento = $lugar
-                                    ORDER BY lcee.nombre_examen";*/
+                
                         
 			$result = @pg_query( $query );
 			if ( !$result )
@@ -555,8 +545,6 @@ class clsLab_Procedimientos {
 		}
 	}
         
-        
-        
         function updatehabilitadot() {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
@@ -590,7 +578,7 @@ class clsLab_Procedimientos {
 		$con = new ConexionBD;
 		//usamos el metodo conectar para realizar la conexion
 		if ( $con->conectar()==true ) {
-			$query =  "SELECT lppe.id AS idprocedimientoporexamen,
+			 $query =  "SELECT lppe.id AS idprocedimientoporexamen,
 						lcee.codigo_examen AS idexamen,
 						lcee.nombre_examen AS nombreexamen,
 						lppe.nombreprocedimiento,
@@ -624,28 +612,12 @@ class clsLab_Procedimientos {
 						INNER JOIN lab_plantilla                    lpla ON (lpla.id = lcee.idplantilla)
 						LEFT OUTER JOIN ctl_sexo                    cex  ON (cex.id  = lppe.idsexo)
 						LEFT OUTER JOIN ctl_rango_edad              cre  ON (cre.id  = lppe.idrangoedad)
-                                                
-						WHERE 
-                                               lcee.condicion = 'H' AND laxe.condicion = 'H' AND cesd.activo=TRUE AND 
-                                                lppe.idestablecimiento = $lugar";
-                                /*"SELECT lcee.id,lcee.nombre_examen,
-                            lppe.nombreprocedimiento,
-                            lppe.unidades,lppe.rangoinicio,
-                            lppe.rangofin,(lppe.fechaini)AS fechaini,
-                            (lppe.fechafin)AS fechafin,cex.abreviatura,cre.nombre, lppe.id
-                            from ctl_area_servicio_diagnostico casd
-                            join mnt_area_examen_establecimiento mnt4 on mnt4.id_area_servicio_diagnostico=casd.id
-                            join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen)
-                            join lab_procedimientosporexamen lppe on (lppe.id_conf_examen_estab=lcee.id)
-                            left JOIN ctl_sexo cex ON lppe.idsexo = cex.id
-                            left JOIN ctl_rango_edad cre ON lppe.idrangoedad = cre.id
-                            WHERE lcee.condicion='H'
-                                    AND lcee.condicion='H' AND lcee.idplantilla=5
-                                    AND lppe.idestablecimiento=$lugar";*/
-
-
-
-			$numreg = pg_num_rows( pg_query( $query ) );
+                                           	WHERE lcee.condicion = 'H'
+                                                AND laxe.condicion = 'H' 
+                                                AND cesd.activo=TRUE 
+                                                AND mnt4.activo=TRUE 
+                                                AND lppe.idestablecimiento = $lugar";
+                        $numreg = pg_num_rows( pg_query( $query ) );
 			if ( !$numreg )
 				return false;
 			else
@@ -738,7 +710,8 @@ class clsLab_Procedimientos {
                                                 lppe.id as idlppe,
                                                 mnt4.id as idmnt4,
                                                 lcee.condicion,
-                                                lppe.orden
+                                                lppe.orden,
+                                                cesd.idestandar
 						FROM lab_procedimientosporexamen 		   lppe
 						INNER JOIN lab_conf_examen_estab		   lcee ON (lcee.id = lppe.id_conf_examen_estab)
                                                 INNER JOIN mnt_area_examen_establecimiento  mnt4 ON (mnt4.id = lcee.idexamen)
@@ -748,10 +721,11 @@ class clsLab_Procedimientos {
 						INNER JOIN lab_plantilla                    lpla ON (lpla.id = lcee.idplantilla)
 						LEFT OUTER JOIN ctl_sexo                    cex  ON (cex.id  = lppe.idsexo)
 						LEFT OUTER JOIN ctl_rango_edad              cre  ON (cre.id  = lppe.idrangoedad)
-                                                
-						WHERE 
-                                               lcee.condicion = 'H' AND laxe.condicion = 'H' AND cesd.activo=TRUE AND 
-                                                lppe.idestablecimiento = $lugar
+                                                WHERE lcee.condicion = 'H' 
+                                                AND laxe.condicion = 'H' 
+                                                AND cesd.activo=TRUE
+                                                AND mnt4.activo=TRUE 
+                                                AND lppe.idestablecimiento = $lugar
 						ORDER BY lcee.codigo_examen, lppe.orden LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
 
 			$result = @pg_query( $query );

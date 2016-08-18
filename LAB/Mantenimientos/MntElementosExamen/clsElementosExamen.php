@@ -69,7 +69,7 @@ function consultar($lugar){
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT lab_areas.id,nombrearea,lab_examenesxestablecimiento.idexamen,nombreexamen,
+    echo $query = "SELECT lab_areas.id,nombrearea,lab_examenesxestablecimiento.idexamen,nombreexamen,
                 idelemento,elemento,subelemento,unidadelem,observelem,fechaini,fechafin 
 		FROM lab_elementos 
 		INNER JOIN lab_examenes  ON lab_elementos.idexamen=lab_examenes.id
@@ -95,22 +95,11 @@ function consultar($lugar){
    $con = new ConexionBD;
    if($con->conectar()==true)
    {  
-//       $query = "SELECT mnt_area_examen_establecimiento.id_area_servicio_diagnostico as idarea,nombrearea, lab_conf_examen_estab.codigo_examen as codexamen,
-//                lab_conf_examen_estab.nombre_examen, lab_elementos.id,elemento, unidadelem,observelem,subelemento, lab_elementos.idestablecimiento, 
-//                to_char(fechaini,'dd/mm/YYYY')AS fechaini, to_char(fechafin,'dd/mm/YYYY')AS fechafin,ctl_examen_servicio_diagnostico.id as cod,
-//                ctl_examen_servicio_diagnostico.idestandar,lab_elementos.orden,lab_conf_examen_estab.id as idexamen  
-//                FROM lab_elementos 
-//                INNER JOIN lab_conf_examen_estab ON lab_elementos.id_conf_examen_estab=lab_conf_examen_estab.id 
-//                INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
-//                INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
-//                INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
-//                INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id=mnt_area_examen_establecimiento.id_examen_servicio_diagnostico
-//                WHERE lab_elementos.idestablecimiento=$lugar AND lab_elementos.id=$idelemento";
-//                $result = pg_query($query);
-       $query = "SELECT mnt_area_examen_establecimiento.id_area_servicio_diagnostico as idarea,nombrearea, lab_conf_examen_estab.codigo_examen as codexamen,
+
+      $query = "SELECT mnt_area_examen_establecimiento.id_area_servicio_diagnostico as idarea,nombrearea, lab_conf_examen_estab.codigo_examen as codexamen,
                 lab_conf_examen_estab.nombre_examen, lab_elementos.id,elemento, unidadelem,observelem,subelemento, lab_elementos.idestablecimiento, 
                 fechaini AS fechaini, fechafin AS fechafin,ctl_examen_servicio_diagnostico.id as cod,
-                ctl_examen_servicio_diagnostico.idestandar,lab_elementos.orden,lab_conf_examen_estab.id as idexamen  
+                ctl_examen_servicio_diagnostico.idestandar,lab_elementos.orden,lab_conf_examen_estab.id as idexamen,ctl_examen_servicio_diagnostico.idestandar  
                 FROM lab_elementos 
                 INNER JOIN lab_conf_examen_estab ON lab_elementos.id_conf_examen_estab=lab_conf_examen_estab.id 
                 INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
@@ -168,14 +157,16 @@ function consultar($lugar){
 	    //usamos el metodo conectar para realizar la conexion
 	    if($con->conectar()==true)
 		{
-                $query ="SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.nombre_examen 
+               $query ="SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.nombre_examen,ctl_examen_servicio_diagnostico.idestandar 
                          FROM lab_conf_examen_estab
                          INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
                          INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id=mnt_area_examen_establecimiento.id_examen_servicio_diagnostico
-                         WHERE mnt_area_examen_establecimiento.id_area_servicio_diagnostico=$idarea
-                         AND mnt_area_examen_establecimiento.activo=TRUE
+                         WHERE  mnt_area_examen_establecimiento.activo=TRUE
                          AND ctl_examen_servicio_diagnostico.activo=TRUE    
-                         AND lab_conf_examen_estab.idplantilla=2 AND lab_conf_examen_estab.condicion='H'
+                         AND lab_conf_examen_estab.condicion='H'
+                         AND ctl_examen_servicio_diagnostico.activo= TRUE
+                         AND lab_conf_examen_estab.idplantilla=2
+                         AND mnt_area_examen_establecimiento.id_area_servicio_diagnostico=$idarea
                          AND mnt_area_examen_establecimiento.id_establecimiento=$lugar
                          ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico";
                    
@@ -201,7 +192,9 @@ function consultar($lugar){
                INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
                INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
                INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
-               WHERE lab_areasxestablecimiento.condicion='H' AND lab_conf_examen_estab.condicion='H' 
+               WHERE lab_areasxestablecimiento.condicion='H' 
+               AND lab_conf_examen_estab.condicion='H'
+               AND mnt_area_examen_establecimiento.activo=TRUE
                AND lab_conf_examen_estab.idplantilla=2 AND lab_elementos.idestablecimiento=$lugar
 	       ORDER BY lab_elementos.id_conf_examen_estab";
     // echo $query;
@@ -233,19 +226,25 @@ function consultar($lugar){
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "SELECT mnt_area_examen_establecimiento.id_area_servicio_diagnostico as idarea,nombrearea,lab_conf_examen_estab.codigo_examen as idexamen,lab_conf_examen_estab.nombre_examen, 
-               lab_elementos.id as idelemento,Elemento, 
-               (case when subelemento='S' then 'SI' else 'NO' end ) as subelemento,lab_elementos.idestablecimiento,unidadelem,
-               observelem, to_char(fechaini,'dd/mm/YYYY') AS fechaini, to_char(fechafin,'dd/mm/YYYY') AS fechafin,lab_elementos.orden 
-               FROM lab_elementos 
-               INNER JOIN lab_conf_examen_estab ON lab_elementos.id_conf_examen_estab=lab_conf_examen_estab.id 
-               INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
-               INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
-               INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
-               WHERE lab_areasxestablecimiento.condicion='H' AND lab_conf_examen_estab.condicion='H' 
-               AND lab_conf_examen_estab.idplantilla=2 AND lab_elementos.idestablecimiento=$lugar
-               ORDER BY lab_elementos.id_conf_examen_estab,lab_elementos.orden
-               LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+     $query = "SELECT mnt_area_examen_establecimiento.id_area_servicio_diagnostico as idarea,nombrearea,
+        lab_conf_examen_estab.codigo_examen as idexamen,lab_conf_examen_estab.nombre_examen, lab_elementos.id as idelemento,Elemento, 
+        (case when subelemento='S' then 'SI' else 'NO' end ) as subelemento,lab_elementos.idestablecimiento,unidadelem, observelem, 
+        to_char(fechaini,'dd/mm/YYYY') AS fechaini, to_char(fechafin,'dd/mm/YYYY') AS fechafin,lab_elementos.orden,
+        ctl_examen_servicio_diagnostico.idestandar 
+        FROM lab_elementos 
+        INNER JOIN lab_conf_examen_estab ON lab_elementos.id_conf_examen_estab=lab_conf_examen_estab.id 
+        INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
+        INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
+        INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id = mnt_area_examen_establecimiento.id_examen_servicio_diagnostico 
+        INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
+        WHERE lab_areasxestablecimiento.condicion='H' 
+        AND lab_conf_examen_estab.condicion='H'
+        AND mnt_area_examen_establecimiento.activo= TRUE
+	AND ctl_examen_servicio_diagnostico.activo= TRUE
+        AND lab_conf_examen_estab.idplantilla=2 
+        AND lab_elementos.idestablecimiento=$lugar
+        ORDER BY lab_elementos.id_conf_examen_estab,lab_elementos.orden
+        LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
        //echo $query;
      
 	 $result = pg_query($query);

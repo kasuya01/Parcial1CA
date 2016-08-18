@@ -13,14 +13,32 @@ class clsLab_Antibioticos
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_antibioticos(antibiotico,idusuarioreg,fechahorareg,idusuariomod,fechahoramod) VALUES('$antibiotico','$usuario',NOW(),'$usuario',NOW())";
-     $result = pg_query($query);
-	 
-     if (!$result)
-       return false;
-     else
-       return true;	   
-   }
+       
+        $query = "INSERT INTO lab_antibioticos(antibiotico,idusuarioreg,fechahorareg) VALUES('$antibiotico','$usuario',date_trunc('seconds',NOW())) returning id";
+        $result =  pg_fetch_array(pg_query($query));
+        //$result = pg_fetch_array($result);
+        $idantibiotico= $result[0];
+
+        if ($idantibiotico==0)
+            return false;
+        else
+         /* Ingresando posibles resultados para el nuevo antibiotico ingresado 10-Resistente, 11-Intermedio y 12-Sensible */
+            $query1 = " INSERT INTO lab_antibiotico_posible_resultado (id, id_antibiotico, id_posible_resultado, fechainicio, fechafin, habilitado, id_user, fecha_registro) 
+                     VALUES ((select max(id)+1 from lab_antibiotico_posible_resultado), $idantibiotico, 10,CURRENT_DATE, NULL, true, '$usuario', date_trunc('seconds',NOW()))";
+            $query2 = " INSERT INTO lab_antibiotico_posible_resultado (id, id_antibiotico, id_posible_resultado, fechainicio, fechafin, habilitado, id_user, fecha_registro) 
+                     VALUES ((select max(id)+1 from lab_antibiotico_posible_resultado), $idantibiotico, 11,CURRENT_DATE, NULL, true, '$usuario', date_trunc('seconds',NOW()))";
+            $query3 = " INSERT INTO lab_antibiotico_posible_resultado (id, id_antibiotico, id_posible_resultado, fechainicio, fechafin, habilitado, id_user, fecha_registro) 
+                     VALUES ((select max(id)+1 from lab_antibiotico_posible_resultado), $idantibiotico, 12,CURRENT_DATE, NULL, true, '$usuario', date_trunc('seconds',NOW()))";
+         
+          $result1 = pg_query($query1);
+          $result2 = pg_query($query2);
+          $result3 = pg_query($query3);
+        if (($result1) && ($result2) && ($result3))
+            return true;     
+        else {
+            return false;
+        }    	   
+    }
  }
 
 function actualizar($idantibiotico,$antibiotico,$usuario)
@@ -28,7 +46,7 @@ function actualizar($idantibiotico,$antibiotico,$usuario)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "UPDATE lab_antibioticos SET antibiotico='$antibiotico',idusuarioreg='$usuario',fechahorareg=NOW() WHERE id='$idantibiotico'";
+     $query = "UPDATE lab_antibioticos SET antibiotico='$antibiotico',idusuariomod ='$usuario',fechahoramod=NOW() WHERE id='$idantibiotico'";
      $result = pg_query($query);
 	 
      if (!$result)

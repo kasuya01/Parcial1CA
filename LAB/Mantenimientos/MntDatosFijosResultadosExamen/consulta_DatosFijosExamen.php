@@ -33,6 +33,8 @@ $Fechaini=$row['fechaini'];
 $Fechafin=$row['fechafin'];
 $idsexo=$row['idsexo'];
 $nombresexo=$row['sexo'];
+$idestandar=$row['idestandar'];
+
 if (empty($idsexo)){
     $idsexo=0;
 $nombresexo="Ambos";}    
@@ -62,7 +64,7 @@ $rangoedad=$row['redad'];
                             echo "<option value='".$row['id']."'>".$row['nombrearea']."</option>";
                            
                         }
-                            echo "<option value='" . $idarea . "' selected='selected'>" .htmlentities($nombrearea). "</option>";
+                            echo "<option value='" . $idarea . "' selected='selected'>".htmlentities($nombrearea). "</option>";
                     ?>		  
 		</select>
             </td>
@@ -73,12 +75,12 @@ $rangoedad=$row['redad'];
                 <select id="cmbExamen" name="cmbExamen" style="width:75%" size="1" class="form-control height"> 
                     <option value="0">--Seleccione un Examen--</option>";
                     <?php
-                        $consultaex = $obj->ExamenesPorArea($idarea,$lugar);
+                     /*   $consultaex = $obj->ExamenesPorArea($idarea,$lugar);
                         while($row = pg_fetch_array($consultaex))
                         {
                             echo "<option value='" . $row['idexamen']. "'>" . $row['nombreexamen'] . "</option>";
-                        }						            	
-                            echo "<option value='" . $idexamen . "' selected='selected'>" .$nombreexamen. "</option>";
+                        }*/						            	
+                            echo "<option value='" . $idexamen . "' selected='selected'>".$idestandar ." - " .$nombreexamen. "</option>";
                     ?>	
 		</select>
             </td>

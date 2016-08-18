@@ -469,9 +469,10 @@ function MostrarSubElementos()
   examen=document.frmModificar.txtexamen.value;
   idexamen=document.frmModificar.idexamen.value;
   cod=document.frmModificar.cod.value;
+  idestandar=document.frmModificar.txtidestandar.value;
   //alert(idexamen);
   ventana_secundaria = window.open("MntSubElementosExamen.php?var1="+idelemento+
-    "&var2="+escape(elemento)+"&var3="+examen+"&var4="+idexamen+"&var5="+cod,"Resultados","width=1100,height=900,menubar=no,scrollbars=yes") ;
+    "&var2="+escape(elemento)+"&var3="+examen+"&var4="+idexamen+"&var5="+cod+"&var6="+idestandar,"Resultados","width=1100,height=900,menubar=no,scrollbars=yes") ;
    
 }
 

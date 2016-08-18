@@ -131,12 +131,14 @@ class clsLab_DatosFijosExamen
                         rangofin,lab_datosfijosresultado.nota,lab_datosfijosresultado.idestablecimiento, 
                         to_char( lab_datosfijosresultado.fechaini, 'dd/mm/YYYY' ) AS FechaIni,
                         to_char( lab_datosfijosresultado.fechafin, 'dd/mm/YYYY' ) AS FechaFin, 
-                        ctl_sexo.id as idsexo, ctl_sexo.nombre as sexo,ctl_rango_edad.id as idedad,ctl_rango_edad.nombre as redad,lab_datosfijosresultado.id 
+                        ctl_sexo.id as idsexo, ctl_sexo.nombre as sexo,ctl_rango_edad.id as idedad,ctl_rango_edad.nombre as redad,lab_datosfijosresultado.id,
+                        ctl_examen_servicio_diagnostico.idestandar
                         FROM lab_datosfijosresultado
                         INNER JOIN lab_conf_examen_estab ON lab_datosfijosresultado.id_conf_examen_estab=lab_conf_examen_estab.id 
                         INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
                         INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
                         INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
+                        INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id = mnt_area_examen_establecimiento.id_examen_servicio_diagnostico
                         LEFT JOIN ctl_sexo ON lab_datosfijosresultado.idsexo = ctl_sexo.id 
                         INNER JOIN ctl_rango_edad ON lab_datosfijosresultado.idedad = ctl_rango_edad.id 
                         WHERE lab_datosfijosresultado.id=$iddatosfijosresultado
@@ -158,7 +160,7 @@ class clsLab_DatosFijosExamen
 		$con = new ConexionBD;
 	    //usamos el metodo conectar para realizar la conexion
 	    if($con->conectar()==true){
-	       $query = " SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.nombre_examen 
+	       $query = " SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.nombre_examen,ctl_examen_servicio_diagnostico.idestandar 
                          FROM lab_conf_examen_estab
                          INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
                          INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id=mnt_area_examen_establecimiento.id_examen_servicio_diagnostico
@@ -188,10 +190,15 @@ class clsLab_DatosFijosExamen
                        INNER JOIN lab_conf_examen_estab ON lab_datosfijosresultado.id_conf_examen_estab=lab_conf_examen_estab.id 
                        INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
                        INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
+                       INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id = mnt_area_examen_establecimiento.id_examen_servicio_diagnostico 
                        INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
                        LEFT JOIN ctl_sexo ON lab_datosfijosresultado.idsexo = ctl_sexo.id 
                        INNER JOIN ctl_rango_edad ON lab_datosfijosresultado.idedad = ctl_rango_edad.id 
-                       WHERE lab_conf_examen_estab.idplantilla=1 AND lab_conf_examen_estab.condicion='H'AND lab_areasxestablecimiento.condicion='H'
+                       WHERE lab_conf_examen_estab.idplantilla=1 
+                       AND lab_conf_examen_estab.condicion='H'
+                       AND lab_areasxestablecimiento.condicion='H'
+                       AND mnt_area_examen_establecimiento.activo= TRUE
+		       AND ctl_examen_servicio_diagnostico.activo= TRUE
                        AND lab_datosfijosresultado.IdEstablecimiento=$lugar
                        ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,lab_conf_examen_estab.nombre_examen";
                //echo $query;
@@ -292,7 +299,8 @@ class clsLab_DatosFijosExamen
                                     CASE lab_datosfijosresultado.fechafin 
                                     WHEN lab_datosfijosresultado.fechafin THEN 'Inhabilitado'
                                     ELSE 'Habilitado' END AS habilitado,
-                                    lab_datosfijosresultado.id as idatofijo
+                                    lab_datosfijosresultado.id as idatofijo,
+                                    ctl_examen_servicio_diagnostico.idestandar
                           FROM lab_datosfijosresultado
                           INNER JOIN lab_conf_examen_estab              ON lab_datosfijosresultado.id_conf_examen_estab=lab_conf_examen_estab.id 
                           INNER JOIN mnt_area_examen_establecimiento    ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
@@ -300,9 +308,12 @@ class clsLab_DatosFijosExamen
                           INNER JOIN lab_areasxestablecimiento          ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
                           LEFT JOIN ctl_sexo                            ON lab_datosfijosresultado.idsexo = ctl_sexo.id 
                           INNER JOIN ctl_rango_edad                     ON lab_datosfijosresultado.idedad = ctl_rango_edad.id 
+                          INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id = mnt_area_examen_establecimiento.id_examen_servicio_diagnostico
                           WHERE lab_conf_examen_estab.idplantilla=1 
                           AND lab_conf_examen_estab.condicion='H'
                           AND lab_areasxestablecimiento.condicion='H'
+                          AND mnt_area_examen_establecimiento.activo= TRUE
+                          AND ctl_examen_servicio_diagnostico.activo= TRUE
                           AND lab_datosfijosresultado.IdEstablecimiento=$lugar
                           ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,
                           lab_conf_examen_estab.nombre_examen

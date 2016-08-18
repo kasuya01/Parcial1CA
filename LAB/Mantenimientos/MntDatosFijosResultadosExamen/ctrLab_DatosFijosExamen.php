@@ -100,7 +100,7 @@ switch ($opcion)
 				<th aling='center' > Modificar</td>
 				<!-- <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
 				<th > Habilitado              </th>
-                                
+                                <th > Código              </th> 
 				<th > Examen                </th>
 				<th > Unidades              </th>	   
 				<th > Valores Normales      </th>
@@ -131,7 +131,7 @@ switch ($opcion)
                    	 <a style ='text-decoration:underline;cursor:pointer;' title='Al dar Click inhabilitará el dato fijo' onclick='Estado(\"".$row['idatofijo']."\",\"".$row['habilitado']."\")'>".$row['habilitado']."</a></td>
                                    
                                   
-				
+				<td>".$row['idestandar']."</td>
 				<td>".htmlentities($row['nombre_examen'])."</td>";
 			if (empty($row['unidades']))
 				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
@@ -177,7 +177,7 @@ switch ($opcion)
                                             onclick=\"eliminarDato('".$row['id']."')\"> 
                                    </td> -->
                                    <td>". $row['habilitado'] ."</td>
-				
+				<td>".$row['idestandar']."</td>
 				<td>".htmlentities($row['nombre_examen'])."</td>";
 			if (empty($row['unidades']))
 				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
@@ -267,7 +267,7 @@ switch ($opcion)
 		$rslts .='<option value="0">--Seleccione un Examen--</option>';
 			
 		while ($rows =pg_fetch_array($consultaex)){
-			$rslts.= '<option value="' .$rows[0].'" >'.htmlentities($rows[1]).'</option>';
+			$rslts.= '<option value="' .$rows[0].'" >'.$rows[2]." - ".htmlentities($rows[1]).'</option>';
 		}
 				
 		$rslts .= '</select>';
@@ -306,18 +306,22 @@ switch ($opcion)
                                 CASE lab_datosfijosresultado.fechafin 
                                     WHEN lab_datosfijosresultado.fechafin THEN 'Inhabilitado'
                                     ELSE 'Habilitado' END AS habilitado,
-                                    lab_datosfijosresultado.id as idatofijo
+                                    lab_datosfijosresultado.id as idatofijo,
+                                    ctl_examen_servicio_diagnostico.idestandar 
                          FROM lab_datosfijosresultado
                          INNER JOIN lab_conf_examen_estab           ON lab_datosfijosresultado.id_conf_examen_estab=lab_conf_examen_estab.id 
                          INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
                          INNER JOIN ctl_area_servicio_diagnostico   ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
+                         INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id = mnt_area_examen_establecimiento.id_examen_servicio_diagnostico
                          INNER JOIN lab_areasxestablecimiento       ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
                          LEFT JOIN ctl_sexo                         ON lab_datosfijosresultado.idsexo = ctl_sexo.id 
                          INNER JOIN ctl_rango_edad                  ON lab_datosfijosresultado.idedad = ctl_rango_edad.id 
                          WHERE lab_conf_examen_estab.idplantilla=1 
                          AND lab_conf_examen_estab.condicion='H' 
                          AND lab_areasxestablecimiento.condicion='H' 
-                         AND lab_datosfijosresultado.idestablecimiento=$lugar   ";
+                         AND mnt_area_examen_establecimiento.activo= TRUE
+                         AND ctl_examen_servicio_diagnostico.activo= TRUE
+                         AND lab_datosfijosresultado.idestablecimiento=$lugar  ";
                         $ban=0;
                         //VERIFICANDO LOS POST ENVIADOS
                         if (!empty($_POST['idarea']))
@@ -388,7 +392,7 @@ switch ($opcion)
                             $query_search = $query. "  ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,lab_conf_examen_estab.id";
                         }
 				
-		// echo $query_search;
+		  $query_search;
 		//ENVIANDO A EJECUTAR LA BUSQUEDA!!
 		//para manejo de la paginacion
 		$RegistrosAMostrar=10;
@@ -407,7 +411,7 @@ switch ($opcion)
 				<th aling='center' > Modificar</td>
 				<!-- <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
 				<th > Habilitado              </th>
-                                
+                                <th > Código              </th>
 				<th > Examen                </th>
 				<th > Unidades              </th>	   
 				<th > Valores Normales      </th>
@@ -437,7 +441,7 @@ switch ($opcion)
                                     <td width='6%'><span style='color: #0101DF;'>
                    	 <a style ='text-decoration:underline;cursor:pointer;' onclick='Estado(\"".$row['idatofijo']."\",\"".$row['habilitado']."\")'>".$row['habilitado']."</a></td>
                                    
-                                			
+                                <td>".$row['idestandar']."</td>			
 				<td>".htmlentities($row['nombre_examen'])."</td>";
 			if (empty($row['unidades']))
 				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
@@ -483,7 +487,7 @@ switch ($opcion)
                                             onclick=\"eliminarDato('".$row['id']."')\"> 
                                    </td> -->
                                    <td>". $row['habilitado'] ."</td>
-				
+                                   <td>".$row['idestandar']."</td>    
 				<td>".htmlentities($row['nombre_examen'])."</td>";
 			if (empty($row['unidades']))
 				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
@@ -587,17 +591,21 @@ switch ($opcion)
                                 CASE lab_datosfijosresultado.fechafin 
                                     WHEN lab_datosfijosresultado.fechafin THEN 'Inhabilitado'
                                     ELSE 'Habilitado' END AS habilitado,
-                                    lab_datosfijosresultado.id as idatofijo
+                                    lab_datosfijosresultado.id as idatofijo,
+                                    ctl_examen_servicio_diagnostico.idestandar
                          FROM lab_datosfijosresultado
                          INNER JOIN lab_conf_examen_estab           ON lab_datosfijosresultado.id_conf_examen_estab=lab_conf_examen_estab.id 
                          INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
                          INNER JOIN ctl_area_servicio_diagnostico   ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
+                         INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id = mnt_area_examen_establecimiento.id_examen_servicio_diagnostico
                          INNER JOIN lab_areasxestablecimiento       ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
                          LEFT JOIN ctl_sexo                         ON lab_datosfijosresultado.idsexo = ctl_sexo.id 
                          INNER JOIN ctl_rango_edad                  ON lab_datosfijosresultado.idedad = ctl_rango_edad.id 
                          WHERE lab_conf_examen_estab.idplantilla=1 
                          AND lab_conf_examen_estab.condicion='H' 
                          AND lab_areasxestablecimiento.condicion='H' 
+                         AND mnt_area_examen_establecimiento.activo= TRUE
+                         AND ctl_examen_servicio_diagnostico.activo= TRUE
                          AND lab_datosfijosresultado.idestablecimiento=$lugar   ";
 		$ban=0;
 		
@@ -689,7 +697,7 @@ switch ($opcion)
 				<th aling='center' > Modificar</td>
 				<!-- <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
 				<th > Habilitado              </th>
-                                
+                                <th > Código                </th>
 				<th > Examen                </th>
 				<th > Unidades              </th>	   
 				<th > Valores Normales      </th>
@@ -720,7 +728,7 @@ switch ($opcion)
                    	 <a style ='text-decoration:underline;cursor:pointer;' onclick='Estado(\"".$row['idatofijo']."\",\"".$row['habilitado']."\")'>".$row['habilitado']."</a></td>
                                    
                                   
-				
+				<td>".$row['idestandar']."</td>	
 				<td>".htmlentities($row['nombre_examen'])."</td>";
 			if (empty($row['unidades']))
 				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
@@ -766,7 +774,7 @@ switch ($opcion)
                                             onclick=\"eliminarDato('".$row['id']."')\"> 
                                    </td> -->
                                    <td>". $row['habilitado'] ."</td>
-				
+				<td>".$row['idestandar']."</td>	
 				<td>".htmlentities($row['nombre_examen'])."</td>";
 			if (empty($row['unidades']))
 				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
