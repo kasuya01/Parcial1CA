@@ -109,8 +109,11 @@ function RecogeValor() {
                     tipomuestra=escape(getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'var21=' )
                     idestabext=escape(getVars[i].substr(5));
-                 if ( getVars[i].substr(0,5) == '$fecha_recepcion_=' )
+                if ( getVars[i].substr(0,5) == 'fecha_recepcion_=' )
                     $fecha_recepcion_=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'origenmuestra=' )
+                    origenmuestra=escape(getVars[i].substr(5));
+                
             }
             
             document.frmnuevo.txtnec.value=nec;
@@ -146,6 +149,9 @@ function RecogeValor() {
     $iddetallesolicitud= $_GET['var5'];
     $solicitud= $_GET['var6'];
     $idarea= $_GET['var4'];
+    
+   $origen=$_GET['var21'];
+  // echo $origen." - ".$_GET['var20'];
     //echo $solicitud." - ".$iddetallesolicitud." - ".$area;
     $cant=$obj->buscarAnterioresPUnica($solicitud,$iddetallesolicitud,$idarea);
  //   print_r($cant);
@@ -270,7 +276,7 @@ function RecogeValor() {
                             </tr>
                             <tr>
                                 <td class="StormyWeatherFieldCaptionTD">Muestra Recibida</td>
-                                <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var20'] ?></td>
+                                <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var20']." ".$_GET['origenmuestra'] ?></td>
                             </tr>
 
                              <tr>

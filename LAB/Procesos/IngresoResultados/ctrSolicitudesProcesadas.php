@@ -187,7 +187,8 @@ switch ($opcion) {
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
                        false AS referido, TO_CHAR(f_tomamuestra,'YYYY/mm/dd HH12:MI') AS f_tomamuestra,
                        (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
-                       t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar
+                       t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar,
+                       (select origenmuestra FROM mnt_origenmuestra where id=t01.idorigenmuestra) as origenmuestra
                 FROM sec_detallesolicitudestudios t01
                 INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
                 INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio)
@@ -209,7 +210,7 @@ switch ($opcion) {
                 INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico)
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo)
                 INNER JOIN tbl_servicio t20 ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
-
+                LEFT JOIN mnt_origenmuestra t21 ON (t21.id = t01.idorigenmuestra)
                 WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var1
 
                 UNION
@@ -241,7 +242,8 @@ switch ($opcion) {
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
                        true AS referido,TO_CHAR(f_tomamuestra,'YYYY/mm/dd HH12:MI') AS f_tomamuestra,
                        (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
-                       t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar
+                       t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar,
+                       (select origenmuestra FROM mnt_origenmuestra where id=t01.idorigenmuestra) as origenmuestra
                 FROM sec_detallesolicitudestudios t01
                 INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
                 INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio)
@@ -262,6 +264,7 @@ switch ($opcion) {
                 INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud)
                 INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico)
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo)
+                LEFT JOIN mnt_origenmuestra t21 ON (t21.id = t01.idorigenmuestra)
                 WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var2) ordenar
                 ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
 //ECHO $query;
@@ -317,6 +320,7 @@ switch ($opcion) {
                             "<input name='idestabext[" . $pos . "]' id='idestabext[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idestab"]) . "'/>" .
                             "<input name='f_tomamuestra[" . $pos . "]' id='f_tomamuestra[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["f_tomamuestra"]) . "'/>" .
                             "<input name='tipomuestra[" . $pos . "]' id='tipomuestra[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["tipomuestra"]) . "'/>" .
+                            "<input name='origenmuestra[" . $pos . "]' id='origenmuestra[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["origenmuestra"]) . "'/>" .
                             "<input name='idareaPA[" . $pos . "]' id='idareaPA[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idarea"]) . "'/>" .
                             "<input name='fecha_recepcion[" . $pos . "]' id='fecha_recepcion[" . $pos . "]' type='hidden' size='60' value='" . $datefrecep . "'/>" .
                         "<td width='18%'>" . htmlentities($row['paciente']) . "</td>

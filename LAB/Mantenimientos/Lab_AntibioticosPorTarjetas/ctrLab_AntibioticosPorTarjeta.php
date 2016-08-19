@@ -51,7 +51,7 @@ switch ($opcion)
 		"idtarjeta"."!!  ". $idtarjeta=$_POST['idtarjeta'];
 		//  echo $idantibiotico."*".$idtarjeta;
                 
-		 if ($objdatos->eliminar( $idantibiotico,$idtarjeta,$lugar)==true){		
+		 if ($objdatos->eliminar( $idantibiotico,$idtarjeta,$usuario,$lugar)==true){		
 			echo "Registro Eliminado" ;					
 		}
 		else{

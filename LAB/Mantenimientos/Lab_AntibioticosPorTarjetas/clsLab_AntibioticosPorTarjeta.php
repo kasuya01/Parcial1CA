@@ -12,8 +12,8 @@ class clsLab_AntibioticosPorTarjeta
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-       echo  $query = "INSERT INTO lab_antibioticosportarjeta(idantibiotico,idtarjeta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento) 
-		       VALUES($idantibiotico,$idtarjeta,$usuario,date_trunc('seconds', NOW()),$usuario,date_trunc('seconds', NOW()),$lugar)";
+         $query = "INSERT INTO lab_antibioticosportarjeta(idantibiotico,idtarjeta,idusuarioreg,fechahorareg,idestablecimiento) 
+		       VALUES($idantibiotico,$idtarjeta,$usuario,date_trunc('seconds', NOW()),$lugar)";
          $result = @pg_query($query);
 	 
      if (!$result)
@@ -44,13 +44,17 @@ class clsLab_AntibioticosPorTarjeta
 	   
    }
  }
-  function eliminar($idantibiotico,$idtarjeta,$lugar)
+  function eliminar($idantibiotico,$idtarjeta,$usuario,$lugar)
   {
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-   echo $query = "DELETE FROM lab_antibioticosportarjeta WHERE idantibiotico=$idantibiotico AND idtarjeta=$idtarjeta AND idestablecimiento=$lugar";
-     $result = pg_query($query);
+   // $query = "DELETE FROM lab_antibioticosportarjeta WHERE idantibiotico=$idantibiotico AND idtarjeta=$idtarjeta AND idestablecimiento=$lugar";
+       
+       $query ="UPDATE lab_antibioticosportarjeta SET habilitado= FALSE,idusuariomod=$usuario,fechahoramod=date_trunc('seconds', NOW())
+                WHERE idantibiotico=$idantibiotico AND idtarjeta=$idtarjeta AND idestablecimiento=$lugar";
+    
+       $result = pg_query($query);
 	 
      if (!$result)
        return false;
@@ -133,7 +137,7 @@ function Verificar_Antibiotico($idantibiotico,$idtarjeta,$lugar){
 		from lab_tarjetasvitek
                 inner join lab_antibioticosportarjeta on (lab_tarjetasvitek.id=lab_antibioticosportarjeta.idtarjeta)
                 inner join lab_antibioticos 		 on (lab_antibioticosportarjeta.idantibiotico=lab_antibioticos.id)
-                   where lab_tarjetasvitek.id=$idtarjeta 
+                   where lab_antibioticosportarjeta.habilitado= TRUE AND lab_tarjetasvitek.id=$idtarjeta 
                    order by antibiotico";
 	 $result = @pg_query($query);
 	 if (!$result)
@@ -148,7 +152,7 @@ function Verificar_Antibiotico($idantibiotico,$idtarjeta,$lugar){
    $con = new ConexionBD;
    //usamos el metodo conectar para realizar la conexion
    if($con->conectar()==true){
-     $query = "select * from lab_antibioticosportarjeta ";
+     $query = "select * from lab_antibioticosportarjeta where lab_antibioticosportarjeta.habilitado= TRUE";
 	 $numreg = pg_num_rows(pg_query($query));
 	 if (!$numreg )
 	   return false;

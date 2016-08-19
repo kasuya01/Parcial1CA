@@ -100,7 +100,11 @@ for ( i = 0; i < getVars.length; i++)
                   if ( getVars[i].substr(0,5) == 'var16=' )
                         IdEstandar=escape(getVars[i].substr(5));   
                   if ( getVars[i].substr(0,5) == 'var17=' )
-                        IdHistorial=escape(getVars[i].substr(5));   
+                        IdHistorial=escape(getVars[i].substr(5)); 
+                  if ( getVars[i].substr(0,5) == 'var20=' )
+                    tipomuestra=escape(getVars[i].substr(5)); 
+                  if ( getVars[i].substr(0,5) == 'origenmuestra=' )
+                    origenmuestra=escape(getVars[i].substr(5));
                   
 		}
 document.frmnuevo.txtnec.value=nec;
@@ -243,6 +247,10 @@ if (pg_num_rows($cant)>0){
                                         <td colspan="3" class="StormyWeatherDataTD"> <?php echo htmlentities($_GET['var9']) ;?>
                                                <input type="hidden" name="txtnombrearea" id="txtnombrearea" disabled="disabled" size="60" />
                                         </td>
+                                </tr>
+                                <tr>
+                                    <td class="StormyWeatherFieldCaptionTD">Muestra Recibida</td>
+                                    <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var20']." ".$_GET['origenmuestra'] ?></td>
                                 </tr>
                                 <tr>
                                         <td class="StormyWeatherFieldCaptionTD">Diagnostico</td>

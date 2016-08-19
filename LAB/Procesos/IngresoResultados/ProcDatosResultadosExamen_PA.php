@@ -186,6 +186,11 @@ for ( i = 0; i < getVars.length; i++)
                         IdHistorial=escape(getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'referido=' )
                         referido=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'var20=' )
+                    tipomuestra=escape(getVars[i].substr(5));  
+                if ( getVars[i].substr(0,5) == 'origenmuestra=' )
+                    origenmuestra=escape(getVars[i].substr(5));
+                    
 
 		}
 document.frmnuevo.txtnec.value=nec;
@@ -394,6 +399,10 @@ $edad=$objdatos->calc_edad($IdHistorial);
                                  <input type="hidden" id="num_campos" name="num_campos" value="0" />
                                     <input type="hidden" id="cant_campos" name="cant_campos" value="0" />
                             </td>
+                        </tr>
+                        <tr>
+                                <td class="StormyWeatherFieldCaptionTD">Muestra Recibida</td>
+                                <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var20']." ".$_GET['origenmuestra'] ?></td>
                         </tr>
                         <tr id="metodo" >
                             <td class="StormyWeatherFieldCaptionTD">*Metodologia</td>

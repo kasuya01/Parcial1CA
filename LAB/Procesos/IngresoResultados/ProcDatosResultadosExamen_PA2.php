@@ -149,13 +149,17 @@ for ( i = 0; i < getVars.length; i++)
         if ( getVars[i].substr(0,5) == 'var14=' )
         FechaNac=escape(getVars[i].substr(5));
         if ( getVars[i].substr(0,5) == 'var15=' )
-        Sexo=escape(getVars[i].substr(5));
+            Sexo=escape(getVars[i].substr(5));
         if ( getVars[i].substr(0,5) == 'var16=' )
-                IdEstandar=escape(getVars[i].substr(5));
+            IdEstandar=escape(getVars[i].substr(5));
         if ( getVars[i].substr(0,5) == 'var17=' )
-                IdHistorial=escape(getVars[i].substr(5));
+            IdHistorial=escape(getVars[i].substr(5));
         if ( getVars[i].substr(0,5) == 'referido=' )
-                referido=escape(getVars[i].substr(5));
+            referido=escape(getVars[i].substr(5));
+        if ( getVars[i].substr(0,5) == 'var20=' )
+            tipomuestra=escape(getVars[i].substr(5)); 
+        if ( getVars[i].substr(0,5) == 'origenmuestra=' )
+            origenmuestra=escape(getVars[i].substr(5));        
 
 		}
 document.frmnuevo.txtnec.value=nec;
@@ -328,11 +332,16 @@ $edad=$objdatos->calc_edad($IdHistorial);
                             <td class="StormyWeatherDataTD" colspan="1"> <?php echo $_GET['var9'] ;?>
                                 <input type="hidden" name="txtnombrearea" id="txtnombrearea" disabled="disabled" size="60" />
                             </td>
+                        
                              <td class="StormyWeatherFieldCaptionTD">F. Toma Muestra</td>
                              <td class="StormyWeatherDataTD" colspan="1"> <?php echo $fechatomamues ;?>
                                 <input type="hidden" id="fecha_tmuestra" name="f_tmuestra" value="<?php echo $fechatomamues;?>"/>
                                 <input type="hidden" id="dateftomamx" name="dateftomamx" value="<?php echo $dateftomamx;?>"/>
                             </td>
+                        </tr>
+                        <tr>
+                            <td class="StormyWeatherFieldCaptionTD">Muestra Recibida</td>
+                            <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var20']." ".$_GET['origenmuestra'] ?></td>
                         </tr>
                          <tr>
                             <td class="StormyWeatherFieldCaptionTD">Diagnostico</td>

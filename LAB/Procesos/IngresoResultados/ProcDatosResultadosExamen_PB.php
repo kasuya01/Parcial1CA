@@ -117,6 +117,8 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                     tipomuestra=escape(getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == '$fecha_recepcion_=' )
                     $fecha_recepcion_=escape(getVars[i].substr(5));
+               if ( getVars[i].substr(0,5) == 'origenmuestra=' )
+                    origenmuestra=escape(getVars[i].substr(5));
             }
            
             document.frmnuevo.txtnec.value=nec;
@@ -311,7 +313,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                                     </tr>
                                     <tr>
                                         <td class="StormyWeatherFieldCaptionTD">Muestra Recibida</td>
-                                        <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var21'] ?>
+                                        <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var21']." ".$_GET['origenmuestra'] ?>
 
                                         </td>
                                     </tr>
