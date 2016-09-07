@@ -121,20 +121,20 @@ if (isset($_SESSION['Correlativo']) || isset($_SESSION["ADM"])) {
                         <td align="center">
                     <center>
                         <div class="col-md-6 col-md-offset-3">
-                            <div class="panel panel-primary">                        
-                                <div class="panel-heading"><h3>Reporte de Registro diario</h3> </div>                        
+                            <div class="panel panel-primary">
+                                <div class="panel-heading"><h3>Reporte de Registro diario</h3> </div>
                                 <div class="panel-body" id="pb-primervez">
                                     <table class="table table-white no-v-border table-condensed" border="0" style="border:0px; width: 100%" cellpading="2">
                                         <tr>
                                             <th width="10%">Fecha de recepci&oacute;n:</th>
-                                            <td width="30%">   
-                                                <input type="text" id="d_fechadesde" name="d_fechadesde" style="width: 50%; text-align: center;  position: fix; top: auto " placeholder="<?php echo $feact; ?>"  class="date form-control height placeholder"  autocomplete="off" />
+                                            <td width="30%">
+                                                <input type="text" id="d_fechadesde" name="d_fechadesde" style="width: 50%; text-align: center;  position: fix; top: auto " placeholder="<?php echo $toy2; ?>" value="<?php echo $toy2;?>" class="date form-control height placeholder"  autocomplete="off" />
                                             </td>
 
                                         </tr>
                                         <tr>
                                             <th width="15%">&Aacute;rea</th>
-                                            <td width="85%"  colspan="3"> 
+                                            <td width="85%"  colspan="3">
                                                 <select id="cmbArea" name="cmbArea"  size="1" onChange="BuscarExamen(this.value)" style="width:100%;" class="height placeholder js-example-basic-single">
                                                     <?php
                                                     echo '<option></option>';
@@ -144,17 +144,17 @@ if (isset($_SESSION['Correlativo']) || isset($_SESSION["ADM"])) {
                                                     while ($row = pg_fetch_array($consulta)) {
                                                         echo "<option value='" . $row['idarea'] . "'>" . htmlentities($row['nombrearea']) . "</option>";
                                                     }
-                                                    ?>		  
-                                                </select> 
+                                                    ?>
+                                                </select>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="4" align="center"> 
+                                            <td colspan="4" align="center">
                                                 <br/>
                                                 <button type="button" align="right" style="text-align: right" class="btn btn-primary" onclick="MostrarReporteDemanda()"><span class='glyphicon glyphicon-list-alt'></span>&nbsp;Generar Reporte </button></td>
-                                        </tr>                  
-                                    </table>                        
-                                </div>                    
+                                        </tr>
+                                    </table>
+                                </div>
                             </div>
                         </div>
 

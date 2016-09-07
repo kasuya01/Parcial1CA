@@ -773,7 +773,7 @@ function cambioestexterno(){
                         <tr>
                                <td>Expediente</td>
                                <td>
-                                  <input id="txtexp" class="form-control height" style="width:188px; height:20px" size="26" maxlength="15" >
+                                  <input id="txtexp" class="form-control height" style="width:188px; height:20px" size="26" maxlength="20" >
                                        <input type="hidden" id="IdCitaServApoyo">
                                        <input type="hidden" id="IdEstablecimientoExterno" value="<?php echo $lugar; ?>">
 
@@ -782,7 +782,7 @@ function cambioestexterno(){
                        </tr>
                        <tr><td colspan="2" align="right">
                             <button type="button" id="btnverificar" name="btnverificar" class='btn btn-primary' onclick="searchpac()"><span class='glyphicon glyphicon glyphicon-search'>&nbsp;Verificar</button>
-                            <button type="button" id="Nuevo" name="Nuevo" class='btn btn-primary' onclick="window.location.replace('RecepcionLab.php')"><span class='glyphicon glyphicon-refresh'>&nbsp;Nueva Búsqueda</button>                                
+                            <button type="button" id="Nuevo" name="Nuevo" class='btn btn-primary' onclick="window.location.replace('RecepcionLab.php')"><span class='glyphicon glyphicon-refresh'>&nbsp;Nueva Búsqueda</button>
                         </td></tr>
                </table>
                 </div>

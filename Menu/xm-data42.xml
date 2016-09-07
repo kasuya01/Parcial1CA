@@ -22,6 +22,8 @@
 
           <menu labelText="REPORTES">
 		<item labelText="Reporte Resultados" url= "../LAB/Reportes/Reporte_Resultados/ReporteResultados.php"/>
+        <item labelText="Registro diario" url= "../LAB/Reportes/ReporteRegistroDiario/ReporteRegistroDiario.php"/>
+
             </menu>
 	<sep/>
 		<item labelText="CAMBIAR CLAVE" url="../LAB/Procesos/CambioClave/CambioClave.php"/>

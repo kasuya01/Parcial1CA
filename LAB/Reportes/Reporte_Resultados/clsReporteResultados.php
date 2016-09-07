@@ -1643,7 +1643,7 @@ $con = new ConexionBD;
                 LEFT JOIN mnt_empleado            t25 ON (t25.id = t17.idempleado)
                 LEFT JOIN lab_estado_rechazo      t26 ON (t26.id = t01.id_estado_rechazo)
                 LEFT JOIN lab_posible_observacion t27 ON (t27.id = t01.id_posible_observacion)
-                WHERE  t05.id<>14 AND  CASE WHEN $idHistorialClinico:: integer != 0
+                WHERE  CASE WHEN $idHistorialClinico:: integer != 0
                           THEN t11.id = $idHistorialClinico
                           ELSE t14.id = $idDatoReferencia
                           END

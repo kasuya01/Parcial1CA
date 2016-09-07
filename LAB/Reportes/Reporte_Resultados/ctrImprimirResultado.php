@@ -201,7 +201,7 @@ switch ($opcion) {
                group by id_historial_clinico, t2.id,descripcion
                order by t2.id asc
                limit 1) AS estado,
-            TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta, t02.id_establecimiento_externo,
+            TO_CHAR(t09.fechaconsulta, 'DD/MM/YYYY') as fecchaconsulta, t02.id_establecimiento_externo,
             t02.estado as idestado
             FROM sec_solicitudestudios t02
             INNER JOIN lab_recepcionmuestra t03                 ON (t03.idsolicitudestudio=t02.id)
@@ -243,7 +243,7 @@ switch ($opcion) {
             group by id_historial_clinico, t2.id,descripcion
             order by t2.id asc
             limit 1) AS estado,
-            TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') asfecchaconsulta, t02.id_establecimiento_externo,
+            TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') asfecchaconsulta, t02.id_establecimiento_externo,
             t02.estado as idestado
             FROM sec_solicitudestudios t02
             INNER JOIN lab_recepcionmuestra t03                     ON (t03.idsolicitudestudio=t02.id)
@@ -317,13 +317,13 @@ if ( $NroRegistros==""){
         while ($row = pg_fetch_array($consulta)) {
             echo "<tr>
 				<td>" .htmlentities($row['fecharecepcion']). "</td>";
-                        if ($row['idestado']<>8) {                         
+                        if ($row['idestado']<>8) {
                             echo "<td align='right'><span style='color: #0101DF; '><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a></td>" ;
-             
+
                         }
                         else{
                             echo "<td align='right'>" . $row['idnumeroexp'] . "</a></td>" ;
-                        
+
                         }
                  echo   "<input name='idhistorialclinico[" . $pos . "]' id='idhistorialclinico[" . $pos . "]' type='hidden' size='60' value='" . $row['id_historial_clinico'] . "' />" .
                     "<input name='iddatoreferencia[" . $pos . "]' id='iddatoreferencia[" . $pos . "]' type='hidden' size='60' value='" . $row['id_dato_referencia'] . "' />" .
