@@ -351,7 +351,7 @@ class SolicitudLaboratorio {
 
           if ($cantest == 0){
             $sql1="update sec_solicitudestudios
-                    set estado=7
+                    set estado=4
                     where id=$idsol;";
             $result = pg_query($sql1);
           }
