@@ -381,7 +381,7 @@ function MostrarDetalle(IdHistorialClinico){
 
 				}
 				CantCheck=$('input:checkbox:checked').length;
-				console.log('CantCheck'+CantCheck);
+			//	console.log('CantCheck'+CantCheck);
 
 // Comprobar todos los check box que esten chekeados,.....
 	//for (i=0;i<Tope;i++){
@@ -438,14 +438,14 @@ function MostrarDetalle(IdHistorialClinico){
 
 						j++;
 						Resta--;
-						console.log(ID+ '  Resta:'+Resta)
+						//console.log(ID+ '  Resta:'+Resta)
 						Retraso(ID);
 						//alert(ajax2.responseText);
 					}//Estado == 4
 				}//On ready state
 			var Proceso='GuardarDatos';
                      //   alert(' Proceso '+Proceso+' IdHistorialClinico '+IdHistorialClinico+' IdNumeroExp '+IdNumeroExp+' FechaSolicitud '+FechaSolicitud+' IdUsuarioReg '+IdUsuarioReg+' IdExamen '+NombreExamen+' Indicacion '+Indicacion+' NombreMuestra '+NombreMuestra+' NombreOrigen '+NombreOrigen+'idexpediente:'+idexpediente+'IdEstablecimiento'+IdEstablecimiento+'lugar'+lugar);
-					 console.log(NombreExamen+' NE')
+					// console.log(NombreExamen+' NE')
 		ajax2.open("GET",'Procesar.php?Proceso='+Proceso+'&IdHistorialClinico='+IdHistorialClinico+'&IdNumeroExp='+IdNumeroExp+'&idexpediente='+idexpediente+'&FechaSolicitud='+FechaSolicitud+'&IdUsuarioReg='+IdUsuarioReg+'&IdExamen='+NombreExamen+'&Indicacion='+Indicacion+'&IdTipoMuestra='+NombreMuestra+'&IdOrigen='+NombreOrigen,true);
 //console.log('SE fue y regreso')
 				/*	ajax.onreadystatechange=function() {
