@@ -1215,6 +1215,26 @@ function ObtenerResultadoxId($idsolicitud,$iddetalle)
     }
 }
 
+function cambioestiimprsoli($idsolicitud, $lugar, $tipo)
+{
+ $con = new ConexionBD;
+   if($con->conectar()==true)
+   {
+	   if ($tipo==0){
+		   $estado="true";
+	   }
+	   else{
+		   $estado="false";
+	   }
+	   $query = "update sec_solicitudestudios set  b_impresa=$estado where  id=$idsolicitud and id_establecimiento=$lugar;";
+    $result = @pg_query($query);
+     if (!$result)
+       return false;
+     else
+       return true;
+    }
+}
+
  function BuscarEmpleadoValidador($responsable)
  {
 	 $con = new ConexionBD;
