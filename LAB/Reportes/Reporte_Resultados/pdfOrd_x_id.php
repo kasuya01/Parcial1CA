@@ -54,9 +54,9 @@ class PDF extends PDF_PgSQL_Table
 
                    $this->SetFont('Arial','B',7);
                    //Fecha
-                   $date = date ("j/m/Y"); 
+                   $date = date ("j/m/Y");
                    $this->Text(160,20,$date);// si es vertical 240
-                   $this->Line(15,28,190,28); 
+                   $this->Line(15,28,190,28);
 
                    //Se empiezan a escribir los datos del paciente
                    $this->SetFont('Arial','B',7);
@@ -69,7 +69,7 @@ class PDF extends PDF_PgSQL_Table
                      $idDatoReferencia   = $_GET['idDatoReferencia'];
                      $idEstablecimiento  = $_GET['IdEstablecimiento'];
                        if($idDatoReferencia==""){
-                
+
                            $idDatoReferencia=0;
 
                        }else {
@@ -82,7 +82,7 @@ class PDF extends PDF_PgSQL_Table
                            $idHistorialClinico=$idHistorialClinico;
                        }
 
-       
+
                   $consulta= $objdatos->obtenerDatosGenerales($idHistorialClinico, $idDatoReferencia, $idEstablecimiento);
                   $row = @pg_fetch_array($consulta);
 
@@ -95,7 +95,7 @@ class PDF extends PDF_PgSQL_Table
                    $fecha_solicitud        = $row['fecha_solicitud'];
                    $fecha_recepcion        = $row['fecha_recepcion'];
 
-                //Inicio Datos Generales   
+                //Inicio Datos Generales
 	//	$this->Cell(25);
 		$this->SetFont('Arial','B',9);
                 $this->SetFillColor(255,255,255);
@@ -121,7 +121,7 @@ class PDF extends PDF_PgSQL_Table
                 $this->Cell(40,5,'Origen',0,0,'L', true);
 		 $this->SetFont('Arial','',9);
 		$this->Cell(65,5,utf8_decode($servicio),0,1,'L');
-		//$this->SetFillColor(224,235,255);		
+		//$this->SetFillColor(224,235,255);
 		$this->SetFont('Arial','B',9);
 		$this->Cell(40,5,utf8_decode('Fecha Solicitud'),0,0,'L', true);
 		 $this->SetFont('Arial','',9);
@@ -139,8 +139,8 @@ class PDF extends PDF_PgSQL_Table
                 $this->Line(5,70,200,70);   //si es horizonatal: Line(74,19.5,220,19.5) si es vertical: Line(5,81,200,81);
 		//salto de linea
 		$this->Ln(2);
-                
-                //fin Datos Generales                     
+
+                //fin Datos Generales
                    parent::Header();
            }
   //Page footer
@@ -154,10 +154,10 @@ class PDF extends PDF_PgSQL_Table
        //Page number
        $this->Cell(0,10,utf8_decode('Página ').$this->PageNo().'/{nb}',0,0,'R');
    }
-   
+
    //Clase donde estan los resultados
       function pdfid($i_idsolicitud, $idgrupoprueba, $nombregrupoprueba, $v_codgrupoprueba, $i_idestablocal)
-   	{	
+   	{
          $objdatos = new clsReporteResultados;
          $idexpediente       = $_GET['idexpediente'];
          $idsolicitud        = $_GET['idsolicitud'];
@@ -169,40 +169,40 @@ class PDF extends PDF_PgSQL_Table
 		//Titulos
          $this->SetFillColor(255,255,255);
          $ban1=0;
-        
+
         $this->Ln(2);
       $resultgetExamnResult    =  $this->getExamnResult($idHistorialClinico, $idDatoReferencia, $idEstablecimiento);
-      
+
       $this->SetFont('Arial','B',9);
       $this->SetFont('Arial','',9);
       $this->MuestrasRechazadas($resultgetExamnResult['RM']);
 
         if (count($resultgetExamnResult['RC']) > 0) {
             foreach($resultgetExamnResult['RC'] as $area) {
-                 
+
                 $arrayPlantillas= ['A','B','C','D','E'] ;
                 foreach ($arrayPlantillas as $pType) {
                     if(array_key_exists($pType, $area['plantillas'])) {
                        $this->bodyLayout($area, $pType);
                     }
                 }
-            }    
+            }
         } else {
-        
+
              {
                  $this->Cell(0,6,  ' -> Los examenes no han sido procesados aun...',0,1,'L');
 
             }
         }
-        
-        
-      
-        }//fin pdfid	
+
+
+
+        }//fin pdfid
       /**********************************/
- 
+
 
 /*
- * funciones array 
+ * funciones array
  */
 
  function getExamnResult($idHistorialClinico, $idDatoReferencia, $idEstablecimiento) {
@@ -210,11 +210,11 @@ class PDF extends PDF_PgSQL_Table
         if($idHistorialClinico === null || $idHistorialClinico === '') {
             $idHistorialClinico = 0;
         }
-        
+
         if($idDatoReferencia === null || $idDatoReferencia === '') {
             $idDatoReferencia = 0;
         }
-        
+
         $result = $objdatos->obtenerResultadoSolicitudExamen($idHistorialClinico, $idDatoReferencia, $idEstablecimiento);
         if($resultados = pg_fetch_all($result)) {
             $result = array();
@@ -256,11 +256,11 @@ class PDF extends PDF_PgSQL_Table
 
             return $result;
         }
-//        
+//
     }//fin getExamnResult
-  
 
-      //Funcion de Muestras Rechazadas       
+
+      //Funcion de Muestras Rechazadas
      function  MuestrasRechazadas($rm) {
         // $html = '';
         if(count($rm) > 0) {
@@ -281,23 +281,23 @@ class PDF extends PDF_PgSQL_Table
          $ye=$this->GetY();
          $this->SetDrawColor(4,79,144);
          $this->Line(7,$ye,195,$ye);
-         $this->SetFont('Arial','',10);       
+         $this->SetFont('Arial','',10);
          $this->SetWidths(array(55, 30, 50, 30,15,15));
          $this->SetFillColor(255,255,255);
-          
+
          $this->Ln(1);
          $this->SetFillColor(255,255,255);
-         
+
              foreach($rm as $examen) {
-               $this->SetX(7);  
+               $this->SetX(7);
                $this->Cell(108,5,utf8_decode($examen['nombre']),0,0,'L', true);
                $this->Cell(80,5,utf8_decode($examen['motivo_rechazo']),0,1,'L', true);
                $this->Ln(1);
              }
-         } 
-        $this->SetTextColor(0,0,0);                                
+         }
+        $this->SetTextColor(0,0,0);
      }//Fin muestrarechazada
-     
+
      //addExamenToLayout
           function addExamnToLayout($exams, $newExam, $row, $tipoPlantilla) {
         if( ! isset($exams[ $newExam[2] ]) )
@@ -426,9 +426,9 @@ class PDF extends PDF_PgSQL_Table
         /*Falta Logica para Resultados de la Metodologia*/
         return $exams;
     }//Fin addExamnToLayout
-     
+
     //addLayoutToArea
-        
+
      function addLayoutToArea($plantillas, $newPlantilla, $row) {
          if( ! isset($plantillas[ $newPlantilla[1] ]) )
              {
@@ -458,7 +458,7 @@ class PDF extends PDF_PgSQL_Table
       //BodyLayout
           // funciones otras
 function bodyLayout($area, $pType) {
-    $html = '';    
+    $html = '';
     foreach($area['plantillas'] as $plantilla) {
         if($plantilla['codigo'] === $pType) {
            $index=0;
@@ -477,7 +477,7 @@ function bodyLayout($area, $pType) {
 
     return $html;
    }//Fin bodyLayout
-   
+
    //fn headerLayout
    function headerLayout($examen, $examStatus, $pType, $area, $index) {
       $header="";
@@ -522,7 +522,7 @@ function bodyLayout($area, $pType) {
       $this->Row1(array(utf8_decode($examen['nombre']),'Estado:',utf8_decode($examen['nombre_estado_detalle'])));
       $this->Ln(1);
    }//fin HEaderLayout
-   
+
    //fn footerLayout
    function footerLayout($examen, $examStatus) {
       if($examStatus === 'RC') {
@@ -540,10 +540,10 @@ function bodyLayout($area, $pType) {
       $this->Ln(8);
    }//fin footerLayout
    //fn Plantillas
-   
+
    function plantillas($examen, $pType){
        $plantilla = 'plantilla'.$pType;
-       
+
        return $this->$plantilla($examen);
    //   }
    }//fin plantillas
@@ -563,16 +563,16 @@ function bodyLayout($area, $pType) {
          $this->SetDrawColor(4,79,144);
          $this->Line(7,$ye,195,$ye);
          $this->Ln(0);
-         $this->SetFont('Arial','',10);       
+         $this->SetFont('Arial','',10);
          $this->SetWidths(array(55, 30, 50, 53));
          $this->SetX(7);
 
       if (isset($examen['resultadoFinal']['id_posible_resultado']) && $examen['resultadoFinal']['id_posible_resultado'] !== '') {
          $resultado_p=$examen['resultadoFinal']['nombre_posible_resultado'];
-       
+
       } else {
          $resultado_p=$examen['resultadoFinal']['resultado'];
-     
+
       }
 
       $unidad_p=$examen['resultadoFinal']['unidad'];
@@ -581,16 +581,16 @@ function bodyLayout($area, $pType) {
       $this->SetFillColor(255,255,255);
       $this->SetX(7);
       $this->Row1(array(utf8_decode($resultado_p),  utf8_decode($unidad_p),utf8_decode($rangos_p),utf8_decode($observacion_p)));
-      $this->SetTextColor(0,0,0);   
+      $this->SetTextColor(0,0,0);
       $this->Ln(2);
 
    }//Fin PlantillaA
-   
+
    //Fn plantilla B
    // PLANTILLA B
 function plantillaB($examen) {
     $html= '';
-    
+
      $this->SetX(7);
         $this->SetFillColor(200,200,200);
         $this->SetFont('Arial','B',9);
@@ -603,19 +603,19 @@ function plantillaB($examen) {
          $this->SetDrawColor(4,79,144);
          $this->Line(7,$ye,195,$ye);
           $this->Ln(1);
-          
-      
-         
+
+
+
          $this->SetFillColor(255,255,255);
-    
-    foreach ($examen['elementos'] as $elemento){               
-    
+
+    foreach ($examen['elementos'] as $elemento){
+
         if ($examen['codigo'] === 'H50' ){
 
             $elenomb_b=$elemento['nombre'];
-            
-            
-            if($elemento['id_posible_resultado'] !== null || $elemento['id_posible_resultado'] !== '') {       
+
+
+            if($elemento['id_posible_resultado'] !== null || $elemento['id_posible_resultado'] !== '') {
                $elemreult_b=$elemento['nombre_posible_resultado'].' '.$elemento['resultado'];
 
            } else {
@@ -623,7 +623,7 @@ function plantillaB($examen) {
             }
             $elemunit_b=$elemento['unidad'];
             $elecontnormal_b=$elemento['control_normal'].' '.$elemento['unidad'];
-            
+
         } else {
             $elenomb_b=$elemento['nombre'];
             $elemreult_b='';
@@ -632,14 +632,14 @@ function plantillaB($examen) {
         }
          $this->SetX(7);
          $this->SetWidths(array(68, 60, 25, 35));
-        
+
         $this->Row1(array(utf8_decode($elenomb_b),  utf8_decode($elemreult_b), utf8_decode($elemunit_b) , utf8_decode($elecontnormal_b)));
-        
-        
+
+
         foreach($elemento['subelementos'] as $subelemento) {
             $subelemnomb_b=$subelemento['nombre'];
 
-            
+
             if($subelemento['id_posible_resultado'] !== null || $subelemento['id_posible_resultado'] !== '') {
                if ($subelemento['id_posible_resultado']==null){
                  $subelemres_b= $subelemento['resultado'];
@@ -649,7 +649,7 @@ function plantillaB($examen) {
               }
               // $subelemres_b=$subelemento['resultado'].' '. $subelemento['nombre_posible_resultado'];
             } else {
-               $subelemres_b=$subelemento['resultado'];             
+               $subelemres_b=$subelemento['resultado'];
             }
             $subeleunit_b=$subelemento['unidad'];
 
@@ -660,15 +660,15 @@ function plantillaB($examen) {
             }
          $this->SetWidths(array(68, 60, 25, 35));
          $this->SetX(10);
-         $this->Row1(array(utf8_decode($subelemnomb_b),  utf8_decode($subelemres_b), utf8_decode($subeleunit_b) , utf8_decode($subelecontnormal_b)));   
+         $this->Row1(array(utf8_decode($subelemnomb_b),  utf8_decode($subelemres_b), utf8_decode($subeleunit_b) , utf8_decode($subelecontnormal_b)));
         }
     }
     $this->Ln(2);
 
    }//fin plantilla B
-   
+
   //addElementtoExam
-  
+
     function addElementToExam($elements, $newElement, $row) {
         if( ! isset($elements[ $newElement[1] ]) )
         {
@@ -704,10 +704,10 @@ function plantillaB($examen) {
 
         return $elements;
     }
-    
-    
-    
-    
+
+
+
+
 
      function addSubElementToElement($subelements, $newSubelement) {
         if( ! isset($subelements[ $newSubelement[1] ]) )
@@ -755,12 +755,12 @@ function plantillaE($examen) {
                             $procunidad_e=$procedimiento['unidad'];
                             $procrangos_e=$procedimiento['rango_inicio'].' -  '.$procedimiento['rango_fin'];
                             $proccontrol_e=$procedimiento['control_diario'];
-                            $this->Row1(array(utf8_decode($procnombre_e),  utf8_decode($procresult_e), utf8_decode($procunidad_e) , utf8_decode($procrangos_e), utf8_decode($proccontrol_e))); 
+                            $this->Row1(array(utf8_decode($procnombre_e),  utf8_decode($procresult_e), utf8_decode($procunidad_e) , utf8_decode($procrangos_e), utf8_decode($proccontrol_e)));
                 }
                 $this->Cell(0,6,utf8_decode('Observación: '.$examen['resultadoFinal']['observacion']),0,1,'L');
          $this->Ln(2);
 
-            
+
 }//Plantilla E
    //addProcedureToExam
     function addProcedureToExam($procedures, $newProcedure) {
@@ -799,10 +799,10 @@ $resfinnombre_c="    ".$examen['resultadoFinal']['resultado']."   ";
 //    $html.="<div class='row' style='font-size: 17px;padding-top: 20px;padding-bottom: 20px;'>
 //    <div class='col-md-12 col-sm-12'>
 //        Resultado: <strong>";
-//                             
+//
 //               $html.= "</strong>
 //                </div>";
-               
+
      if( $examen['resultadoFinal']['id_observacion'] !==(null) ){
          $this->Cell(0, 6, $examen['resultadoFinal']['nombre_observacion'], 0, 1, 'C');
 //             $html.="<div class='col-md-12 col-sm-12'>
@@ -839,7 +839,7 @@ $resfinnombre_c="    ".$examen['resultadoFinal']['resultado']."   ";
             $this->SetX(7);
             $this->SetFillColor(200,200,200);
             $this->SetFont('Arial','B',9);
-            
+
             $this->Cell(105,5,utf8_decode('ANTIBIOTICO'),'L',0,'L', true);
             $this->Cell(30,5,utf8_decode('LECTURA'),0,0,'L', true);
             $this->Cell(53,5,utf8_decode('INTERPRETACIÓN'),'R',1,'L', true);
@@ -849,7 +849,7 @@ $resfinnombre_c="    ".$examen['resultadoFinal']['resultado']."   ";
             $this->SetDrawColor(194,194,194);
             $this->Line(7,$ye,195,$ye);
             $this->Ln(0);
-            $this->SetFont('Arial','',10);       
+            $this->SetFont('Arial','',10);
             $this->SetWidths(array(55, 30, 50, 53));
             $this->SetX(7);
 //              $html.="  <tr>
@@ -889,14 +889,14 @@ $resfinnombre_c="    ".$examen['resultadoFinal']['resultado']."   ";
                            $this->Ln(1);
                            $this->SetX(10);
                            $this->Row1(array(utf8_decode($antibiotico['nombre']),utf8_decode($antibiotico['lectura']),utf8_decode($nombreposres_c) ));
-                           
+
 //                                $html.="  <tr>
 //                                      <td></td>
 //                                      <td>". $antibiotico['nombre']."</td>
 //                                      <td>".$antibiotico['lectura']."</td>
 //                                      <td>";
 //                                          //{% if antibiotico.id_posible_resultado is not null or antibiotico.id_posible_resultado != '' %}
-//                                          
+//
 //                                     $html.= "</td>
 //                                  </tr>";
                         }
@@ -941,7 +941,7 @@ $resfinnombre_c="    ".$examen['resultadoFinal']['resultado']."   ";
         return $bacters;
     }//fin addBacterToExam
     //Fn addCardToBacter
-     
+
     function addCardToBacter($cards, $newCards, $row) {
         if( ! isset($cards[ $newCards[1] ]) )
             {
@@ -967,7 +967,7 @@ $resfinnombre_c="    ".$examen['resultadoFinal']['resultado']."   ";
 
         return $cards;
     }//fn addCardToBacter
-    
+
     //fn addAntibioticToCard
     function addAntibioticToCard($antibiotics, $newAntibiotic) {
         if( ! isset($antibiotics[ $newAntibiotic[1] ]) ){
@@ -991,7 +991,7 @@ $antibiotics[ $newAntibiotic[1] ] = array(
 $pdf=new PDF('p'); //p vertical
 $pdf->AliasNbPages();
 $grupopruecon=$objdatos->grupoprueconsul($idsolicitud, $lugar, $idHistorialClinico, $idDatoReferencia);
-                                                       
+
 $pdf->AddPage();
 $pdf->pdfid($idsolicitud, '', '', '', $lugar);
 ob_end_clean();

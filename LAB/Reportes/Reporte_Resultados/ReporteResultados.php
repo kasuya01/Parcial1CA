@@ -168,9 +168,9 @@ if ($nivel == 7) {
 
                             <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px" class="height placeholder js-example-basic-single">
 
-                            	<option value="0" >Seleccione un Establecimiento</option>
+                            	<option value="0" selected="selected">Todos los Establecimiento</option>
 				<?php
-				  echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
+				  echo '<option value="'. $lugar .'" >' .htmlentities($nombrEstab). '</option>';
                                   	include_once("../../../Conexion/ConexionBD.php");
 					$con = new ConexionBD;
 					if($con->conectar()==true){

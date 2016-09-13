@@ -218,7 +218,7 @@ switch ($opcion) {
             INNER JOIN tbl_servicio t20                         ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
             -- AND idestado <>8
-            AND t02.id_establecimiento = $lugar $cond1 
+            AND t02.id_establecimiento = $lugar $cond1
 
 
            UNION
@@ -1287,7 +1287,7 @@ function plantillaB($examen) {
                  $html.= "".$subelemento['resultado']."";
               }
               else{
-                 $html.= $subelemento['nombre_posible_resultado'];
+                 $html.= html_entity_decode($subelemento['nombre_posible_resultado']);
               }
 
             } else {
