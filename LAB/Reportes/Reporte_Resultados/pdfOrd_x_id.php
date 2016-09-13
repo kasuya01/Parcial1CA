@@ -465,10 +465,16 @@ function bodyLayout($area, $pType) {
             foreach($plantilla['examenes'] as  $examen) {
                 $examStatus = $examen['codigo_estado_detalle'];
                 $this->headerLayout($examen, $examStatus, $pType, $area, $index);
-                if($examStatus === 'RC') {
-                   $this->plantillas($examen, $pType);
+                if ($area['id']!=14){
+                    if($examStatus === 'RC') {
+                       $this->plantillas($examen, $pType);
+                    }
+                     $this->footerLayout($examen, $examStatus);
+
                 }
-                 $this->footerLayout($examen, $examStatus);
+                else{
+                     $this->footerLayoutref($examen, $examStatus);
+                }
 
                 $index++;
             }
@@ -483,25 +489,30 @@ function bodyLayout($area, $pType) {
       $header="";
       $valorY=  $this->GetY();
       $maxY=280;
-    switch ($pType){
-       case 'A':
-               if (($maxY-30)<$valorY){
-                  $this->AddPage();
-               }
-          break;
-       case 'B':
-               if (($this->GetY()>=85)){
-               $this->AddPage();
-               }
-          break;
-       case 'C':
-          break;
-       default :
-           if (($maxY-55)<$valorY){
-                  $this->AddPage();
-               }
-          break;
-    }
+      if ($area['id']==14){
+          $pType='A';
+      }
+          switch ($pType){
+             case 'A':
+                     if (($maxY-30)<$valorY){
+                        $this->AddPage();
+                     }
+                break;
+             case 'B':
+                     if (($this->GetY()>=85)){
+                     $this->AddPage();
+                     }
+                break;
+             case 'C':
+                break;
+             default :
+                 if (($maxY-55)<$valorY){
+                        $this->AddPage();
+                     }
+                break;
+          }
+
+
     if ($index==0){
          $this->Ln(3);
                $this->SetFont('Arial','B',14);
@@ -519,7 +530,13 @@ function bodyLayout($area, $pType) {
       $this->SetFont('Arial','B',11);
        $this->SetWidths(array(110, 18, 60));
        $this->Ln(1);
-      $this->Row1(array(utf8_decode($examen['nombre']),'Estado:',utf8_decode($examen['nombre_estado_detalle'])));
+      if ($area['id']!=14){
+            $this->Row1(array(utf8_decode($examen['nombre']),'Estado:',utf8_decode($examen['nombre_estado_detalle'])));
+       }
+       else {
+            $this->Row1(array(utf8_decode($examen['nombre'])));
+       }
+
       $this->Ln(1);
    }//fin HEaderLayout
 
@@ -530,6 +547,22 @@ function bodyLayout($area, $pType) {
       $this->SetFont('Arial','BI',8);
        $this->SetWidths(array(25,81,32,20,15,10));
       $this->Row1(array('Validado por:',utf8_decode($examen['resultadoFinal']['nombre_empleado']),' Fecha de Resultado:',$examen['resultadoFinal']['fecha_resultado'], 'Urgente:', $examen['resultadoFinal']['urgente']));
+      }
+      $this->SetX(7);
+      $this->SetFont('Arial','B',8);
+      $this->SetFillColor(255, 255, 255);
+      $this->SetTextColor(184,184,184);
+     $this->Cell(0, 1, '........................................................................................................................................................................................................................................', 0, 1, 'C',true);
+     $this->SetTextColor(0,0,0);
+      $this->Ln(8);
+   }//fin footerLayout
+   //fn footerLayout
+   function footerLayoutref($examen, $examStatus) {
+      if($examStatus === 'RC') {
+         $this->SetX(15);
+      $this->SetFont('Arial','BI',8);
+       $this->SetWidths(array(25,81,32,20,15,10));
+      $this->Cell(0,2,'Examen enviado a establecimiento de referencia','L',true);
       }
       $this->SetX(7);
       $this->SetFont('Arial','B',8);

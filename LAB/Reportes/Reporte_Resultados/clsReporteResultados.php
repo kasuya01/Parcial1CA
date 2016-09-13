@@ -1649,6 +1649,7 @@ $con = new ConexionBD;
                           ELSE t14.id = $idDatoReferencia
                           END
                          AND t02.id_establecimiento_externo = $idEstablecimiento
+						 AND t01.estadodetalle !=8
                 ORDER BY ref,1,id_estado_detalle, t20.pb_elemento_orden, t20.pb_subelemento_orden;";
 
                 $result = pg_query($sql);
