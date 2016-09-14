@@ -1,5 +1,6 @@
 <?php
 require('../../../pdfg.php');
+//require('../../../public/fpdf/class.html2pdf.php');
 include_once("clsReporteResultados.php");
 //include_once("ctrlFuncionesResultados.php");
 @session_start();
@@ -678,7 +679,7 @@ function plantillaB($examen) {
                  $subelemres_b= $subelemento['resultado'];
               }
               else{
-                 $subelemres_b= $subelemento['nombre_posible_resultado'];
+                 $subelemres_b= $subelemento['nombre_posible_resultado']);
               }
               // $subelemres_b=$subelemento['resultado'].' '. $subelemento['nombre_posible_resultado'];
             } else {

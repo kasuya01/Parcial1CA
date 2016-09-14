@@ -4,7 +4,8 @@
 //webmaster@streetpc.tk
 //http://www.streetpc.tk
 
-require('class.fpdf.php');
+require_once(dirname(__FILE__).'/class.fpdf.php');
+
 
 //function hex2dec
 //returns an associative array (keys: R,G,B) from
