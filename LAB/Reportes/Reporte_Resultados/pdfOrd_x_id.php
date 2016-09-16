@@ -688,7 +688,7 @@ function plantillaB($examen) {
               }
               else{
                   $this->SetX(78);
-                 $subelemres_b= ($subelemento['nombre_posible_resultado']);
+                 $subelemres_b= utf8_decode($subelemento['nombre_posible_resultado']);
               }
               // $subelemres_b=$subelemento['resultado'].' '. $subelemento['nombre_posible_resultado'];
             } else {
