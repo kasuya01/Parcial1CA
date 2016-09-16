@@ -239,8 +239,7 @@ switch ($opcion) {
             (select descripcion as estado
             from sec_solicitudestudios t1
             join ctl_estado_servicio_diagnostico t2 on (t2.id=t1.estado)
-            where id_historial_clinico=t02.id_historial_clinico
-            group by id_historial_clinico, t2.id,descripcion
+            where id_dato_referencia=t02.id_dato_referencia group by id_dato_referencia, t2.id,descripcion
             order by t2.id asc
             limit 1) AS estado,
             TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') as fecchaconsulta, t02.id_establecimiento_externo,
@@ -511,7 +510,7 @@ if ( $NroRegistros==""){
 			</tr>
 
                         <tr>
-                                <td>Fecha Recepción</td>
+                                <td>Fecha Solicitud</td>
                                 <td colspan='3'>" . $fecha_solicitud . "</td>
                         </tr>
                 </tbody>

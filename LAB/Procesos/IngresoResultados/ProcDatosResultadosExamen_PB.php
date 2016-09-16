@@ -11,19 +11,19 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
 ?>
 <html>
 <head>
-    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">    
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
     <title>Resultados de Examenes de Laboratorio </title>
     <?php include_once $ROOT_PATH."/public/css.php";?>
     <?php include_once $ROOT_PATH."/public/js.php";?>
-    <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script> 
+    <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script>
     <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
     <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
     <link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
     <link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
-    
+
     <script language="JavaScript" >
       //Recarga funcion buscar de la página padre
-      window.onunload = refreshParent;   
+      window.onunload = refreshParent;
         function Guardar() {
             GuardarResultadosPlantillaB();
 	       //window.close();
@@ -34,7 +34,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
             if (document.frmnuevo.cmbEmpleados.value == "0") {
                 resp= false;
             }
-       
+
             if (document.frmnuevo.txtresultado.value == "") {
                 resp= false;
             }
@@ -69,7 +69,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
             //alert(vtmp2);
             var query = unescape(top.location.search.substring(1));
             var getVars = query.split(/&/);
-            
+
             for ( i = 0; i < getVars.length; i++) {
                 //console.log('getVars[i].substr(0,5) == var4=' + getVars[i].substr(0,5) == 'var4=');
                 //console.log('getVars[i].substr(5)' + getVars[i].substr(5));
@@ -80,11 +80,11 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                 if ( getVars[i].substr(0,5) == 'var3=' )
                    codigoex = getVars[i].substr(5);
                 if ( getVars[i].substr(0,5) == 'var4=' )
-                   area = getVars[i].substr(5); 
+                   area = getVars[i].substr(5);
                 if ( getVars[i].substr(0,5) == 'var5=' )
                    iddetallesol = getVars[i].substr(5);
                 if ( getVars[i].substr(0,5) == 'var6=' )
-                  idsolicitudsol= getVars[i].substr(5);	
+                  idsolicitudsol= getVars[i].substr(5);
                 if ( getVars[i].substr(0,5) == 'var7=' )
                   paciente= getVars[i].substr(5);
                 if ( getVars[i].substr(0,5) == 'var8=' )
@@ -100,9 +100,9 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                 if ( getVars[i].substr(0,5) == 'var13=' )
                   establecimiento=escape(getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'var14=' )
-                  FechaNac=escape(getVars[i].substr(5)); 
+                  FechaNac=escape(getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'var15=' )
-                  Sexo=escape(getVars[i].substr(5)); 
+                  Sexo=escape(getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'var16=' )
                     IdEstandar=escape(getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'var17=' )
@@ -120,7 +120,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                if ( getVars[i].substr(0,5) == 'origenmuestra=' )
                     origenmuestra=escape(getVars[i].substr(5));
             }
-           
+
             document.frmnuevo.txtnec.value=nec;
             document.frmnuevo.txtarea.value=area;
             document.frmnuevo.txtpaciente.value=paciente;
@@ -134,7 +134,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
             LlenarComboResponsable(area);
 
         }
-        
+
         var nav4 = window.Event ? true : false;
         function acceptNum(evt){
         var key = nav4 ? evt.which : evt.keyCode;
@@ -144,15 +144,24 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
         }//Filtracion de teclas
 
          function iniciarselects2(){
-           jQuery('select[id^="txtresultadosub"]').each(function(){              
-               //var multiple=jQuery(this).hasClass("js-example-basic-multiple") ? true:false;      
+           jQuery('select[id^="txtresultadosub"]').each(function(){
+               //var multiple=jQuery(this).hasClass("js-example-basic-multiple") ? true:false;
                jQuery(this).select2({
                placeholder: "Seleccione resultado",
-               allowClear: true
+               allowClear: true,
+               formatResult: function(result){
+                   return result.text;
+               },
+               formatSelection: function (object, container){
+                   var text = object.text;
+
+                   return text;
+               }
+
                });
            });
          }
-         
+
 //           function iniciarselects2(){
 //                var select2Options = {
 //                placeholder: 'Seleccionar...',
@@ -175,15 +184,15 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
 
             $(".date").datepicker({
               onClose:  function() {
-                          validafecha($(this).val(), $(this).attr('name'),$('#dateftomamx').val() ); 
+                          validafecha($(this).val(), $(this).attr('name'),$('#dateftomamx').val() );
                           valdatesolicita($(this).val(), $(this).attr('name'));
                          }
             });
 
-         }); 
+         });
 </script>
 
-       
+
         <?php
          //FUNCION PARA VERIFICAR DATOS REQUERIDOS EN RESULTADOS
         $bandera     = $_GET['var12'];
@@ -210,10 +219,10 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
             $fechatomamues= isset($ftx) ? $ftx : null;
             $timeftomamx = strtotime($fechatomamues);
             $dateftomamx = date("Y-m-d", $timeftomamx);
-        
+
 
 //}
-        
+
        // $idarea      = $_GET['idarea'];
         ?>
 
@@ -233,7 +242,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                                         <td class="StormyWeatherFieldCaptionTD">Establecimiento Solicitante</td>
                                         <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var18'];?></td>
                                     </tr>
-                                    <tr>          	
+                                    <tr>
                                         <td class="StormyWeatherFieldCaptionTD" >NEC</td>
                                         <td class="StormyWeatherDataTD"><?php echo $_GET['var1'] ?></td>
                                         <td class="StormyWeatherFieldCaptionTD">No. Order</td>
@@ -259,7 +268,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                                             <input type="hidden" id="idexpediente_" name="idexpediente_" value="<?php echo $_GET['var1'];?>"/>
                                             <input type="hidden" id="fecharecepcion" name="fecharecepcion" value="<?php echo $_GET['fecha_recepcion'];?>"/>
                                             <input type="hidden" id="idestabext_" name="idestabext_" value="<?php echo $_GET['var19'];?>"/>
-                                            
+
                                         </td>
                                     </tr>
                                     <tr>
@@ -289,13 +298,13 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                                     <tr>
                                         <td class="StormyWeatherFieldCaptionTD">Peso</td>
                                         <td class="StormyWeatherDataTD">
-                                            <?php 
-                                            if (!empty($Peso)) 
+                                            <?php
+                                            if (!empty($Peso))
                                                 echo htmlentities($Peso)." Kg";
                                             ?>
                                         </td>
                                         <td class="StormyWeatherFieldCaptionTD">Talla</td>
-                                        <td class="StormyWeatherDataTD"><?php 
+                                        <td class="StormyWeatherDataTD"><?php
                                          if(!empty($Talla))
                                              echo htmlentities($Talla)." cm";?></td>
                                      </tr>
@@ -345,18 +354,18 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                                          <td class="StormyWeatherDataTD">
                                                 <input type="text" class="date form-control height placeholder" name="txtresultrealiza" id="txtresultrealiza" size="60"  placeholder="aaaa-mm-dd" style="width:100%"/>
 
-                                                <!--  <input type="text" class="date" id="txtresultrealiza"  name="txtresultrealiza" size="15">-->										
+                                                <!--  <input type="text" class="date" id="txtresultrealiza"  name="txtresultrealiza" size="15">-->
                                          </td>
 
                                          <td class="StormyWeatherFieldCaptionTD">*Fecha Resultado</td>
                                          <td class="StormyWeatherDataTD">
                                                  <!--<input type="text" class="date" name="txtresultfin" id="txtresultfin" size="15"  value="<?php// echo date("Y-m-d"); ?>"  />	-->
                                              <input type="text" class="date form-control height" name="txtresultfin" id="txtresultfin" size="60" style="width:90%"  value="<?php echo date("Y-m-d"); ?>"  />
-                                             <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d"); ?>"  /> 
+                                             <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d"); ?>"  />
 
                                          </td>
                                      </tr>
-                                    <?php 
+                                    <?php
                                   if ($bandera==1){
                                         ?>
                                     <tr>
@@ -364,7 +373,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                                                <h3>El m&eacute;dico ha solicitado la impresi&oacute;n de este Resultado </h3>
                                           </td>
                                     </tr>
-                                        <?php 
+                                        <?php
                                     }?>
                                     <tr>
                                         <td colspan="4" class="StormyWeatherDataTD">
@@ -388,12 +397,12 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                 <tr>
                  <td>
                      <div  id="divresultado" style="display:none" >
-                         
+
                      </div>
                 </td>
             </tr>
         </table>
-    
+
  <?php
     }
     else{
@@ -401,7 +410,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
             . '&nbsp;'
             . 'El resultado del exámen seleccionado del expediente "'.$_GET['var1'].'",<br/> ya fue ingresado.</h1> ';
         echo " <button type='submit' class='btn btn-primary' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' /><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button></center>";
-               
+
     }
 ?>
 </body>

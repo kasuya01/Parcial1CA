@@ -29,6 +29,10 @@ if($idHistorialClinico==""){
 
 class PDF extends PDF_PgSQL_Table
 {
+var $B;
+var $I;
+var $U;
+var $HREF;
 
    function Header()
            {
@@ -524,17 +528,21 @@ function bodyLayout($area, $pType) {
 
       $this->SetFont('Arial','B',9);
       $ye=$this->GetY();
+
       $this->SetDrawColor(4,79,144);
       $this->Line(7,$ye,195,$ye);
       $this->SetX(7);
+      //$xe=$this->GetX();
       $this->SetFont('Arial','B',11);
-       $this->SetWidths(array(110, 18, 60));
+
        $this->Ln(1);
       if ($area['id']!=14){
+            $this->SetWidths(array(110, 18, 60));
             $this->Row1(array(utf8_decode($examen['nombre']),'Estado:',utf8_decode($examen['nombre_estado_detalle'])));
        }
        else {
-            $this->Row1(array(utf8_decode($examen['nombre'])));
+           $this->Cell(0,6,utf8_decode($examen['nombre']),0,1,'L',true);
+        //    $this->Row1(array(utf8_decode($examen['nombre'])));
        }
 
       $this->Ln(1);
@@ -561,8 +569,8 @@ function bodyLayout($area, $pType) {
       if($examStatus === 'RC') {
          $this->SetX(15);
       $this->SetFont('Arial','BI',8);
-       $this->SetWidths(array(25,81,32,20,15,10));
-      $this->Cell(0,2,'Examen enviado a establecimiento de referencia','L',true);
+      // $this->SetWidths(array(25,81,32,20,15,10));
+      $this->Cell(0,2,'Examen enviado a establecimiento de referencia',0,1,'L',true);
       }
       $this->SetX(7);
       $this->SetFont('Arial','B',8);
@@ -670,19 +678,21 @@ function plantillaB($examen) {
 
 
         foreach($elemento['subelementos'] as $subelemento) {
+
             $subelemnomb_b=$subelemento['nombre'];
 
 
             if($subelemento['id_posible_resultado'] !== null || $subelemento['id_posible_resultado'] !== '') {
                if ($subelemento['id_posible_resultado']==null){
-                 $subelemres_b= $subelemento['resultado'];
+                 $subelemres_b= utf8_decode($subelemento['resultado']);
               }
               else{
-                 $subelemres_b= $subelemento['nombre_posible_resultado'];
+                  $this->SetX(78);
+                 $subelemres_b= ($subelemento['nombre_posible_resultado']);
               }
               // $subelemres_b=$subelemento['resultado'].' '. $subelemento['nombre_posible_resultado'];
             } else {
-               $subelemres_b=$subelemento['resultado'];
+               $subelemres_b=utf8_decode($subelemento['resultado']);
             }
             $subeleunit_b=$subelemento['unidad'];
 
@@ -693,7 +703,8 @@ function plantillaB($examen) {
             }
          $this->SetWidths(array(68, 60, 25, 35));
          $this->SetX(10);
-         $this->Row1(array(utf8_decode($subelemnomb_b),  utf8_decode($subelemres_b), utf8_decode($subeleunit_b) , utf8_decode($subelecontnormal_b)));
+         $this->SetFont('Arial','B',9);
+         $this->Row1(array(utf8_decode($subelemnomb_b),  ($subelemres_b), utf8_decode($subeleunit_b) , utf8_decode($subelecontnormal_b)));
         }
     }
     $this->Ln(2);
@@ -1016,6 +1027,86 @@ $antibiotics[ $newAntibiotic[1] ] = array(
 
         return $antibiotics;
     }//fn addAntibioticToCard
+
+///******Funciones para WriteHTML    **********///
+
+function WriteHTML($html)
+{
+    //HTML parser
+    $html=str_replace("\n",' ',$html);
+    $a=preg_split('/<(.*)>/U',$html,-1,PREG_SPLIT_DELIM_CAPTURE);
+    foreach($a as $i=>$e)
+    {
+        if($i%2==0)
+        {
+            //Text
+            if($this->HREF)
+                $this->PutLink($this->HREF,$e);
+            else
+                $this->Write(5,$e);
+        }
+        else
+        {
+            //Tag
+            if($e{0}=='/')
+                $this->CloseTag(strtoupper(substr($e,1)));
+            else
+            {
+                //Extract attributes
+                $a2=explode(' ',$e);
+                $tag=strtoupper(array_shift($a2));
+                $attr=array();
+                foreach($a2 as $v)
+                    if(ereg('^([^=]*)=["\']?([^"\']*)["\']?$',$v,$a3))
+                        $attr[strtoupper($a3[1])]=$a3[2];
+                $this->OpenTag($tag,$attr);
+            }
+        }
+    }
+}
+
+function OpenTag($tag,$attr)
+{
+    //Opening tag
+    if($tag=='B' or $tag=='I' or $tag=='U')
+        $this->SetStyle($tag,true);
+    if($tag=='A')
+        $this->HREF=$attr['HREF'];
+    if($tag=='BR')
+        $this->Ln(5);
+}
+
+function CloseTag($tag)
+{
+    //Closing tag
+    if($tag=='B' or $tag=='I' or $tag=='U')
+        $this->SetStyle($tag,false);
+    if($tag=='A')
+        $this->HREF='';
+}
+
+function SetStyle($tag,$enable)
+{
+    //Modify style and select corresponding font
+    $this->$tag+=($enable ? 1 : -1);
+    $style='';
+    foreach(array('B','I','U') as $s)
+        if($this->$s>0)
+            $style.=$s;
+    $this->SetFont('',$style);
+}
+
+function PutLink($URL,$txt)
+{
+    //Put a hyperlink
+    $this->SetTextColor(0,0,255);
+    $this->SetStyle('U',true);
+    $this->Write(5,$txt,$URL);
+    $this->SetStyle('U',false);
+    $this->SetTextColor(0);
+}
+///******Fin Funciones para WriteHTML**********///
+
 
 
 

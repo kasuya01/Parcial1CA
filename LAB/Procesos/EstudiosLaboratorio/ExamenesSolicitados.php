@@ -27,8 +27,6 @@ $sexo = $rowpa['id_sexo'];
 // recuperar el IdSolicituEstudio
 $IdSolicitudEstudio = $Paciente->RecuperarIdSolicituEstudio($idexpediente,
         $IdHistorialClinico, $IdEstablecimiento);
-
-//$sol=$Paciente->verificarestado($IdSolicitudEstudio);
 /* HACER AKI EL IF DE VERIFICACION DE IdCitaServApoyo Y ASI HACER EL INSERT O EL UPDATE */
 // echo 'idsol' .$IdSolicitudEstudio;
 // echo '$IdCitaServApoyo'.$IdCitaServApoyo.'<br/>';
@@ -48,9 +46,23 @@ if ($IdCitaServApoyo == "") {
       <?php include_once $ROOT_PATH . "/public/css.php"; ?>
       <?php include_once $ROOT_PATH . "/public/js.php"; ?>
       <script languaje="javascript">
-         var band=<?php echo $band; ?>;
-         var id_solicitud=<?php echo $IdSolicitudEstudio;?>;
+        var band=<?php echo $band; ?>;
+        var id_solicitud=<?php echo $IdSolicitudEstudio;?>;
+        var clearSession = true;
+        /*
+
+        window.onbeforeunload = confirmExit;
+            function confirmExit() {
+                if (true){
+                    console.log('jip');
+                }
+                else {
+                    console.log('noup');
+                }
+                return "Estas segura que quieres dejar la pagina?";
+            }*/
       </script>
+
       <script language="javascript" src="./ajax.js"></script>
    </head>
 

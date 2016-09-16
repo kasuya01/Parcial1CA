@@ -520,7 +520,7 @@ function ValidarCamposPlantillaC()
     }
 
     return resp;
- 
+
 
    /* for (i = 0; i < document.getElementById('oculto').value; i++)
 
@@ -1502,11 +1502,12 @@ function MostrarVistaPreviaPlantillaB(){
             for (i = 0; i < document.getElementById('oculto').value; i++) {
                 if ($("select[id='txtresultadosub["+i+"]'] option:selected").length>1){
                    var selectBox = document.getElementById('txtresultadosub['+i+']');
-                   valores_subelementos +=GetSelectValues(selectBox )+ '/';
+                   valores_subelementos +=GetSelectValues(selectBox )+ '|';
+                   //console.log(valores_subelementos);
                    valores_combos +=  "/";
             }
                 else{
-                valores_subelementos += document.getElementById('txtresultadosub[' + i + ']').value + "/";
+                valores_subelementos += document.getElementById('txtresultadosub[' + i + ']').value + "|";
                 valores_combos += document.getElementById('totcombo[' + i + ']').value + "/";
                }
 
@@ -1544,6 +1545,7 @@ function MostrarVistaPreviaPlantillaB(){
                 {  //mostrar los nuevos registros en esta capa
                     document.getElementById('divresultado').style.display = "block";
                     document.getElementById('divresultado').innerHTML = ajax.responseText;
+                    window.location.href = '#divresultado';
                     // document.getElementById('Imprimir').style.visibility = "hidden";
                     //calc_edad();
                     //alert(ajax.responseText);
@@ -1598,11 +1600,11 @@ function GuardarResultadosPlantillaB()
         {
             if ($("select[id='txtresultadosub["+i+"]'] option:selected").length>1){
                    var selectBox = document.getElementById('txtresultadosub['+i+']');
-                   valores_subelementos +=GetSelectValues(selectBox )+ '/';
+                   valores_subelementos +=GetSelectValues(selectBox )+ '|';
                    valores_combos +=  "/";
             }
                 else{
-                valores_subelementos += document.getElementById('txtresultadosub[' + i + ']').value + "/";
+                valores_subelementos += document.getElementById('txtresultadosub[' + i + ']').value + "|";
                 valores_combos += document.getElementById('totcombo[' + i + ']').value + "/";
                }
             /*valores_subelementos += document.getElementById('txtresultadosub[' + i + ']').value + "/";
@@ -1808,6 +1810,7 @@ function CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial
             {  //mostrar los nuevos registros en esta capa
                document.getElementById('divexamen').style.display = "block";
                document.getElementById('divexamen').innerHTML = ajax.responseText;
+               window.location.href = '#divexamen';
               iniciarselects2();
 
             }
@@ -1955,7 +1958,7 @@ function MostrarDatos(posicion)
                         "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idareaPA + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                         "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                         "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
-                        "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext+"&var19="+idestabext+"&fecha_recepcion="+fecha_recepcion+ 
+                        "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext+"&var19="+idestabext+"&fecha_recepcion="+fecha_recepcion+
                         "&var20="+tipomuestra+"&origenmuestra="+origenmuestra , "Resultados", "width=1200,height=900,scrollbars=yes,location=no");
                 }
                 else{
@@ -2904,7 +2907,15 @@ function focusselect2(nombre){
   $("select[id^=txtresultadosub]").select2({
     shouldFocusInput: function() {
         return false
-      }
+    },
+    formatResult: function(result){
+        return result.text;
+    },
+    formatSelection: function (object, container){
+        var text = object.text;
+
+        return text;
+    }
   });
 }
 
