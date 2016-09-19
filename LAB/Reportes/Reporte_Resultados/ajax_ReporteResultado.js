@@ -71,7 +71,6 @@ function calc_edad()
   document.getElementById("divsuedad").innerHTML=suEdades;
 }
 
-
 //funcion para calculo de edad
 
 function calcular_edad(fecha){
@@ -289,13 +288,15 @@ function MostrarDatos(posicion)
 		idexpediente=trim(idexpediente);
 		IdEstablecimiento=document.getElementById('idestablecimiento['+posicion+']').value;
                 subservicio=document.getElementById('subservicio['+posicion+']').value;
+                idestado=document.getElementById('idestado['+posicion+']').value;
 		//alert(IdEstablecimiento);
+		//console.log(idestado)
 		idsolicitud=trim(idsolicitud);
-		CargarDatosFormulario(idexpediente,idhistorialclinico,iddatoreferencia,idsolicitud,IdEstablecimiento,subservicio);
+		CargarDatosFormulario(idexpediente,idhistorialclinico,iddatoreferencia,idsolicitud,IdEstablecimiento,subservicio, idestado);
 
  }
 
- function CargarDatosFormulario(idexpediente,idhistorialclinico,iddatoreferencia,idsolicitud,IdEstablecimiento,subservicio)
+ function CargarDatosFormulario(idexpediente,idhistorialclinico,iddatoreferencia,idsolicitud,IdEstablecimiento,subservicio, idestado)
 
 {
 
@@ -308,7 +309,7 @@ function MostrarDatos(posicion)
 		  //enviando los valores
 
 
-        ajax.send("opcion="+opcion+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud+"&IdEstablecimiento="+IdEstablecimiento+"&subservicio="+subservicio+"&idHistorialClinico="+idhistorialclinico+"&idDatoReferencia="+iddatoreferencia);
+        ajax.send("opcion="+opcion+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud+"&IdEstablecimiento="+IdEstablecimiento+"&subservicio="+subservicio+"&idHistorialClinico="+idhistorialclinico+"&idDatoReferencia="+iddatoreferencia+"&idestado="+idestado);
 	ajax.onreadystatechange=function()
 	{
 		if (ajax.readyState==4)
@@ -316,6 +317,40 @@ function MostrarDatos(posicion)
 			{  //mostrar los nuevos registros en esta capa
 			  document.getElementById('divSolicitud').innerHTML = ajax.responseText;
                           document.getElementById('divSolicitud').scrollIntoView()
+			 }
+	     }
+	}
+}
+
+ function cambioestadoimp(idsolicitud, tipo)
+
+{
+
+	ajax=objetoAjax();
+	opcion=8;
+	//alert(IdEstablecimiento);
+	ajax.open("POST", "ctrImprimirResultado.php",true);
+		  //muy importante este encabezado ya que hacemos uso de un formulario
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		  //enviando los valores
+
+        ajax.send("opcion="+opcion+"&idsolicitud="+idsolicitud+"&tipo="+tipo);
+	ajax.onreadystatechange=function()
+	{
+		if (ajax.readyState==4)
+		{	 if (ajax.status == 200)
+			{  //mostrar los nuevos registros en esta capa
+			//	console.log (ajax.responseText)
+				if (ajax.responseText=='actualizado')
+				{
+					var table = $('#dataresultados').DataTable();
+					var info = table.page.info();
+ 					console.log((info.page+1))
+ 					//console.log((info.page+1))
+					BuscarDatos(1);
+				}
+			 //// document.getElementById('divSolicitud').innerHTML = ajax.responseText;
+                //          document.getElementById('divSolicitud').scrollIntoView()
 			 }
 	     }
 	}

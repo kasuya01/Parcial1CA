@@ -169,10 +169,10 @@ if (isset($_SESSION['Correlativo'])) {
                                 <div id="divEstablecimiento">
                                     <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:500px"  class="js-example-basic-single">
 
-                                      <option value="0" >Todos los Establecimientos</option>
+                                      <option value="0" selected="selected">Todos los Establecimientos</option>
                                         <?php
                                         //class="js-example-basic-single"
-                                        echo '<option value="' . $lugar . '" selected="selected">' . htmlentities($nombrEstab) . '</option>';
+                                        echo '<option value="' . $lugar . '" >' . htmlentities($nombrEstab) . '</option>';
                                         include_once("../../../Conexion/ConexionBD.php");
                                         $con = new ConexionBD;
                                         if ($con->conectar() == true) {

@@ -202,7 +202,7 @@ switch ($opcion) {
                order by t2.id asc
                limit 1) AS estado,
             TO_CHAR(t09.fechaconsulta, 'DD/MM/YYYY') as fecchaconsulta, t02.id_establecimiento_externo,
-            t02.estado as idestado
+            t02.estado as idestado, b_impresa
             FROM sec_solicitudestudios t02
             INNER JOIN lab_recepcionmuestra t03                 ON (t03.idsolicitudestudio=t02.id)
 	    INNER JOIN mnt_expediente t06                       ON (t06.id = t02.id_expediente)
@@ -239,12 +239,11 @@ switch ($opcion) {
             (select descripcion as estado
             from sec_solicitudestudios t1
             join ctl_estado_servicio_diagnostico t2 on (t2.id=t1.estado)
-            where id_historial_clinico=t02.id_historial_clinico
-            group by id_historial_clinico, t2.id,descripcion
+            where id_dato_referencia=t02.id_dato_referencia group by id_dato_referencia, t2.id,descripcion
             order by t2.id asc
             limit 1) AS estado,
-            TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') asfecchaconsulta, t02.id_establecimiento_externo,
-            t02.estado as idestado
+            TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') as fecchaconsulta, t02.id_establecimiento_externo,
+            t02.estado as idestado, b_impresa
             FROM sec_solicitudestudios t02
             INNER JOIN lab_recepcionmuestra t03                     ON (t03.idsolicitudestudio=t02.id)
             INNER JOIN mnt_dato_referencia t09                      ON t09.id=t02.id_dato_referencia
@@ -259,7 +258,7 @@ switch ($opcion) {
             INNER JOIN lab_tiposolicitud t17 			    ON (t17.id = t02.idtiposolicitud)
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
            -- AND idestado <>8
-            AND t02.id_establecimiento =$lugar $cond2   order by id_historial_clinico,fecharecepcion desc  ";
+            AND t02.id_establecimiento =$lugar $cond2   order by b_impresa, id_historial_clinico,fecharecepcion desc  ";
 
         /* if ($ban==0)
           {   $query = substr($query ,0,strlen($query)-3);
@@ -300,7 +299,7 @@ if ( $NroRegistros==""){
         //<td>Fecha Recepci&oacute;n</td>
 
         echo "<div class='table-responsive' style='width: 100%;'>
-           <table width='97%' border='1' align='center' data-table-enabled='true' class='table table-hover table-bordered table-condensed table-white'><thead>
+           <table width='97%' border='1' align='center' id='dataresultados' data-table-enabled='true' class='table table-hover table-bordered table-condensed table-white'><thead>
                     <tr>
 				<th>Fecha Recepci&oacute;n</th>
 				<th style='width: 8%;'>NEC </th>
@@ -310,15 +309,21 @@ if ( $NroRegistros==""){
 				<th>Establecimiento</th>
 				<th>Estado Solicitud</th>
 				<th>Fecha Consulta</th>
+				<th>Impresa</th>
 		     </tr></thead><tbody>";
         $pos = 0;
         // if(@pg_num_rows($consulta) >0)
         // {
         while ($row = pg_fetch_array($consulta)) {
-            echo "<tr>
-				<td>" .htmlentities($row['fecharecepcion']). "</td>";
+            if ($row['b_impresa']=='t'){
+                echo "<tr class='impresa'>";
+            }
+            else{
+                echo "<tr>";
+            }
+			echo "<td>" .htmlentities($row['fecharecepcion']). "</td>";
                         if ($row['idestado']<>8) {
-                            echo "<td align='right'><span style='color: #0101DF; '><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a></td>" ;
+                            echo "<td align='right'><span style='color: #0101DF; '><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] ."</a></td>" ;
 
                         }
                         else{
@@ -331,13 +336,20 @@ if ( $NroRegistros==""){
                     "<input name='idexpediente[" . $pos . "]' id='idexpediente[" . $pos . "]' type='hidden' size='60' value='" . $row['idnumeroexp'] . "' />" .
                     "<input name='idestablecimiento[" . $pos . "]' id='idestablecimiento[" . $pos . "]' type='hidden' size='60' value='" . $row['id_establecimiento_externo'] . "' />" .
                     "<input name='subservicio[".$pos."]' id='subservicio[".$pos."]' type='hidden' size='60' value='".$row['nombresubservicio']."' />".
+                    "<input name='idestado[".$pos."]' id='idestado[".$pos."]' type='hidden' size='60' value='".$row['idestado']."' />".
                     "<td>" . htmlentities($row['paciente']) . "</td>
 				 <td>" . htmlentities($row['nombresubservicio']) . "</td>
 				 <td>" . htmlentities($row['nombreservicio']) . "</td>
 				 <td>" . htmlentities($row['estabext']) . "</td>
 				 <td>" . $row['estado'] . "</td>
-				 <td>" . $row['fecchaconsulta'] . "</td>
-			</tr>";
+				 <td>" . $row['fecchaconsulta'] . "</td>";
+                 if ($row['b_impresa']=='t'){
+                     echo "<td><a href='#' title='Quitar estado de solicitud ya impresa' onclick='cambioestadoimp(".$row[1].",1)'>Si</a></td>";
+                 }
+                 else{
+                     echo "<td>No</td>";
+                 }
+			echo "</tr>";
 
             $pos = $pos + 1;
             }
@@ -413,8 +425,9 @@ if ( $NroRegistros==""){
         $idDatoReferencia   = $_POST['idDatoReferencia'];
         $idEstablecimiento  = $_POST['IdEstablecimiento'];
         $subservicio        =$_POST['subservicio'];
+        $idestado           =$_POST['idestado'];
 
-        //echo $subservicio;
+        //echo 'idestado:'.$idestado;
             if($idDatoReferencia==""){
 
                 $idDatoReferencia=0;
@@ -456,7 +469,14 @@ if ( $NroRegistros==""){
                 <table width='70%' border='0' class='table table-hover table-bordered table-condensed table-white'>
 			<thead>
                         <tr><td colspan='4' background-color='white'>";
-        $imprimir.='<a href="pdfOrd_x_id.php?idexpediente='.$idexpediente.'&idsolicitud='.$idsolicitud.'&idHistorialClinico='.$idHistorialClinico.'&idDatoReferencia='.$idDatoReferencia.'&IdEstablecimiento='.$idEstablecimiento.'&subservicio='.$subservicio.'&title=\'PDF\'" target="_blank"><img align="right" src="../../../Imagenes/pdf2.png" title="Exportar a PDF" alt="Exportar a PDF" style="padding-right:5px"></a></td></tr>';
+                if ($idestado == 1 || $idestado ==3){
+                    $imprimir.='<p style="text-align:right; color:#E12126;"><i>Solicitud en proceso</i>';
+                    $imprimir.='<a href="pdfOrd_x_id.php?idexpediente='.$idexpediente.'&idsolicitud='.$idsolicitud.'&idHistorialClinico='.$idHistorialClinico.'&idDatoReferencia='.$idDatoReferencia.'&IdEstablecimiento='.$idEstablecimiento.'&subservicio='.$subservicio.'&title=\'PDF\'" target="_blank" ><img align="right" valign="middle" src="../../../Imagenes/pdf2.png" title="Exportar a PDF" alt="Exportar a PDF" style="padding-right:5px" ></a></p></td></tr>';
+                }
+                else{
+                    $imprimir.='<a href="pdfOrd_x_id.php?idexpediente='.$idexpediente.'&idsolicitud='.$idsolicitud.'&idHistorialClinico='.$idHistorialClinico.'&idDatoReferencia='.$idDatoReferencia.'&IdEstablecimiento='.$idEstablecimiento.'&subservicio='.$subservicio.'&title=\'PDF\'" target="_blank"><img align="right" src="../../../Imagenes/pdf2.png" title="Exportar a PDF" alt="Exportar a PDF" style="padding-right:5px" onclick="cambioestadoimp('.$idsolicitud.',0);"></a></td></tr>';
+                }
+
 
         $imprimir.="<tr>
                                             <th colspan='4' align='center' style='background-color: #428bca; color: #ffffff'>
@@ -490,7 +510,7 @@ if ( $NroRegistros==""){
 			</tr>
 
                         <tr>
-                                <td>Fecha Recepción</td>
+                                <td>Fecha Solicitud</td>
                                 <td colspan='3'>" . $fecha_solicitud . "</td>
                         </tr>
                 </tbody>
@@ -621,6 +641,19 @@ if ( $NroRegistros==""){
         $rslts .='</select>';
         echo $rslts;
         break;
+
+    case 8:// Llenar combo Subservicio
+            $rslts = '';
+            $idsolicitud = $_POST['idsolicitud'];
+            $tipo = $_POST['tipo'];
+            //  echo $IdServ;
+            if ($objdatos->cambioestiimprsoli($idsolicitud, $lugar, $tipo) == true){
+                $rslts.= 'actualizado';
+            }
+
+            echo $rslts;
+            break;
+
 }//switch de opciones
 
 
@@ -1253,7 +1286,7 @@ function plantillaB($examen) {
                  $html.= "".$subelemento['resultado']."";
               }
               else{
-                 $html.= $subelemento['nombre_posible_resultado'];
+                 $html.= html_entity_decode($subelemento['nombre_posible_resultado']);
               }
 
             } else {

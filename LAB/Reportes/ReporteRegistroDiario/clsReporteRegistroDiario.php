@@ -205,7 +205,6 @@ WITH tbl_servicio AS ( SELECT t02.id,
                 INNER JOIN tbl_servicio t20 ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
 
                 WHERE t16.idestado != 'RM' AND t02.id_establecimiento = $lugar
-                AND t02.id_establecimiento_externo = $lugar
                 AND t08.id = $idarea
                 AND t03.fecharecepcion = '$d_fechadesde'
                 AND t01.estadodetalle in (3,5)
@@ -264,7 +263,6 @@ WITH tbl_servicio AS ( SELECT t02.id,
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo)
 
                 WHERE t16.idestado != 'RM' AND t02.id_establecimiento = $lugar
-                AND t02.id_establecimiento_externo = $lugar
                 AND t08.id = $idarea
                 AND t01.estadodetalle in (3,5)
                 AND t03.fecharecepcion = '$d_fechadesde' ) ordenar

@@ -17,6 +17,7 @@ $row = pg_fetch_array($consulta);
 $tipo=$row[0];
 $nombrEstab=$row[1];
 $nomtipo=$row[2];
+$d_fecha=date('Y-m-d');
  ?>
 <html>
 <head>
@@ -167,9 +168,9 @@ if ($nivel == 7) {
 
                             <select name="cmbEstablecimiento" id="cmbEstablecimiento"  style="width:375px" class="height placeholder js-example-basic-single">
 
-                            	<option value="0" >Seleccione un Establecimiento</option>
+                            	<option value="0" selected="selected">Todos los Establecimiento</option>
 				<?php
-				  echo '<option value="'. $lugar .'" selected="selected">' .htmlentities($nombrEstab). '</option>';
+				  echo '<option value="'. $lugar .'" >' .htmlentities($nombrEstab). '</option>';
                                   	include_once("../../../Conexion/ConexionBD.php");
 					$con = new ConexionBD;
 					if($con->conectar()==true){
@@ -197,17 +198,17 @@ if ($nivel == 7) {
                                     $db = new ConexionBD;
                                     if($db->conectar()==true){
 				        $consulta  = "SELECT mnt_area_mod_estab.id as codigo ,CASE WHEN id_servicio_externo_estab IS NOT NULL THEN mnt_servicio_externo.abreviatura ||'-->'  || ctl_area_atencion.nombre
-                                                            ELSE ctl_modalidad.nombre ||'-->' || ctl_area_atencion.nombre
-                                                            END
-                                                            FROM mnt_area_mod_estab
-                                                            INNER JOIN  ctl_area_atencion  on (ctl_area_atencion.id = mnt_area_mod_estab.id_area_atencion AND ctl_area_atencion.id_tipo_atencion=1)
-                                                            --LEFT JOIN mnt_aten_area_mod_estab ON (ctl_area_atencion.id = mnt_aten_area_mod_estab.id_atencion)
-                                                            INNER JOIN  mnt_modalidad_establecimiento ON mnt_modalidad_establecimiento.id=mnt_area_mod_estab.id_modalidad_estab
-                                                            INNER JOIN ctl_modalidad ON ctl_modalidad.id = mnt_modalidad_establecimiento.id_modalidad
-                                                            LEFT JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab.id_servicio_externo_estab)
-                                                            LEFT JOIN mnt_servicio_externo ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo)
-                                                            WHERE mnt_area_mod_estab.id_establecimiento=$lugar
-                                                            ORDER by mnt_area_mod_estab.id,ctl_modalidad.nombre,ctl_area_atencion.nombre;";
+                                    ELSE ctl_modalidad.nombre ||'-->' || ctl_area_atencion.nombre
+                                    END
+                                    FROM mnt_area_mod_estab
+                                    INNER JOIN  ctl_area_atencion  on (ctl_area_atencion.id = mnt_area_mod_estab.id_area_atencion AND ctl_area_atencion.id_tipo_atencion=1)
+                                    --LEFT JOIN mnt_aten_area_mod_estab ON (ctl_area_atencion.id = mnt_aten_area_mod_estab.id_atencion)
+                                    INNER JOIN  mnt_modalidad_establecimiento ON mnt_modalidad_establecimiento.id=mnt_area_mod_estab.id_modalidad_estab
+                                    INNER JOIN ctl_modalidad ON ctl_modalidad.id = mnt_modalidad_establecimiento.id_modalidad
+                                    LEFT JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab.id_servicio_externo_estab)
+                                    LEFT JOIN mnt_servicio_externo ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo)
+                                    WHERE mnt_area_mod_estab.id_establecimiento=$lugar
+                                    ORDER by mnt_area_mod_estab.id,ctl_modalidad.nombre,ctl_area_atencion.nombre;";
 
 						$resultado = pg_query($consulta);
 						//por cada registro encontrado en la tabla me genera un <option>
@@ -242,7 +243,7 @@ if ($nivel == 7) {
                              <td class="StormyWeatherDataTD" width="5%">
 
 
-                                     <input type="text" size="28"  name="txtfecharecep" id="txtfecharecep" class="date form-control height placeholder"  placeholder="aaaa-mm-dd"/>
+                                     <input type="text" size="28"  name="txtfecharecep" id="txtfecharecep" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" value="<?php echo $d_fecha ;?>" />
 
             </td>
                 </tr>

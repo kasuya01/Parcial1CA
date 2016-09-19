@@ -16,7 +16,7 @@ $IdNumeroExp = $_SESSION["IdNumeroExp"];
 $idexpediente = $_SESSION["idexpediente"];
 $iduser = $_SESSION["IdUsuarioReg"];
 $LugardeAtencion = $_SESSION["lugar"]; //Lugar de donde proviene
-//$NombrePaciente=$Paciente->RecuperarNombre($IdEstablecimiento,$IdNumeroExp);  
+//$NombrePaciente=$Paciente->RecuperarNombre($IdEstablecimiento,$IdNumeroExp);
 $NombrePa = $Paciente->RecuperarNombre($IdEstablecimiento, $idexpediente,
         $IdNumeroExp);
 $rowpa = pg_fetch_array($NombrePa);
@@ -46,9 +46,23 @@ if ($IdCitaServApoyo == "") {
       <?php include_once $ROOT_PATH . "/public/css.php"; ?>
       <?php include_once $ROOT_PATH . "/public/js.php"; ?>
       <script languaje="javascript">
-         var band=<?php echo $band; ?>;
-         var id_solicitud=<?php echo $IdSolicitudEstudio;?>;
+        var band=<?php echo $band; ?>;
+        var id_solicitud=<?php echo $IdSolicitudEstudio;?>;
+        var clearSession = true;
+        /*
+
+        window.onbeforeunload = confirmExit;
+            function confirmExit() {
+                if (true){
+                    console.log('jip');
+                }
+                else {
+                    console.log('noup');
+                }
+                return "Estas segura que quieres dejar la pagina?";
+            }*/
       </script>
+
       <script language="javascript" src="./ajax.js"></script>
    </head>
 
@@ -62,9 +76,11 @@ if ($IdCitaServApoyo == "") {
                   </td></tr></thead><tbody>
                <tr>
                   <td style="width: 10%"><b>Expediente:</b> </td>
-                  <td style="width: 90%; alignment-adjust: left"><?php echo $IdNumeroExp; ?></td></tr>
+                  <td style="width: 90%; alignment-adjust: left"><?php echo $IdNumeroExp; ?>
+                        <input type="hidden" id="id_solicitudest" name="id_solicitudest" value="<?php echo $IdSolicitudEstudio ?>"
+                  </td></tr>
                <tr>
-                  <td><font color='black'><b>Paciente:</b></td> 
+                  <td><font color='black'><b>Paciente:</b></td>
                   <td><font color='black'><?php echo $NombrePaciente; ?></td></tr>
             </tbody></table>
       </div>
@@ -81,8 +97,8 @@ if ($IdCitaServApoyo == "") {
                     <table  class='table table-hover table-bordered table-condensed table-white no-v-border'>
                     <thead><tr><td colspan='8' style='background-color: #428bca; color:#ffffff; text-align:left' ><h4>Examenes Solicitados a Laboratorio</h4> </td></tr>
                     <tr class='info'><td colspan='6' align='right' style=' vertical-align: middle'><h4><b>Solicitud Urgente:</b></h4></td><td style='vertical-align: middle'><input type='checkbox' id='tiposolgen' name='tiposolgen' data-switch-enabled='true' class='form height' onclick='SolicitudUrgente(" . $IdHistorialClinico . ", " . $IdSolicitudEstudio . ");'></td></tr>";
-            
-            
+
+
             $Ejecutar2 = $Laboratorio->impresionessoli($IdHistorialClinico,
                     $IdEstablecimiento);
             $Respuesta2 = pg_fetch_array($Ejecutar2);
@@ -92,7 +108,7 @@ if ($IdCitaServApoyo == "") {
                $check = "<input id='Imprimir' data-switch-enabled='true' type='checkbox'onclick='ImprimirResultados(" . $IdHistorialClinico . ", " . $IdSolicitudEstudio . ");'>";
             }
             echo "<tr class='info'><td colspan='6' align='right' style=' vertical-align: middle'>  <h4><b>Resultado de Examenes Impresos [Pre-Operatorios]</b></h4> </td><td>".$check."</td></tr>";
-            
+
             echo "<tr><th style='vertical-align: middle !important'>C&oacute;digo</th>
                         <th style='vertical-align: middle'>Nombre Examen</th>
                         <th style='vertical-align: middle'>Tipo Muestra</th>
@@ -104,7 +120,7 @@ if ($IdCitaServApoyo == "") {
             $i = 0;
             $t = 0;
             $s = 0;
-           
+
             while ($Respuesta = pg_fetch_array($result)) {
                echo "<tr><td>" . $Respuesta["codigo_examen"] . "</td>";
                echo "<td>" . ($Respuesta["nombre_examen"]) . "</td>";
@@ -167,23 +183,23 @@ if ($IdCitaServApoyo == "") {
             echo "<table border=0 style='width:100%'>
                             <tr><td align='right'>
                             <button type='button' class='btn btn-primary' id='Enviar' onclick='GuardarCambios(0); '>
-                                <span class='glyphicon glyphicon-floppy-disk'></span> 
+                                <span class='glyphicon glyphicon-floppy-disk'></span>
                                 Guardar Cambios
                              </button>
                             <button type='button' class='btn btn-primary' id='Agregar' onclick='AgregarExamen(); '>
-                                <span class='glyphicon glyphicon-plus'></span> 
+                                <span class='glyphicon glyphicon-plus'></span>
                                 Agregar Examen
                              </button>
                             <button type='button' class='btn btn-primary' id='Terminar' onclick='GuardarCambios($IdSolicitudEstudio); '>
-                                <span class='glyphicon glyphicon-ok'></span> 
+                                <span class='glyphicon glyphicon-ok'></span>
                                 Terminar Solitud
                              </button>
                              </td></tr></table>
                             <input type='hidden' name='total' id='total' value='" . $i . "'>
-                            <input type='hidden' id='totalurgente' value='" . $t . "'>    
+                            <input type='hidden' id='totalurgente' value='" . $t . "'>
                             <input type='hidden' id='IdHistorialClinico' name= 'IdHistorialClinico' value='" . $IdHistorialClinico . "'>
                             </form>";
-         }   //fin result=false     
+         }   //fin result=false
          ?>
       </div>
 

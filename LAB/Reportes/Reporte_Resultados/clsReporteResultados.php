@@ -1215,6 +1215,26 @@ function ObtenerResultadoxId($idsolicitud,$iddetalle)
     }
 }
 
+function cambioestiimprsoli($idsolicitud, $lugar, $tipo)
+{
+ $con = new ConexionBD;
+   if($con->conectar()==true)
+   {
+	   if ($tipo==0){
+		   $estado="true";
+	   }
+	   else{
+		   $estado="false";
+	   }
+	   $query = "update sec_solicitudestudios set  b_impresa=$estado where  id=$idsolicitud and id_establecimiento=$lugar;";
+    $result = @pg_query($query);
+     if (!$result)
+       return false;
+     else
+       return true;
+    }
+}
+
  function BuscarEmpleadoValidador($responsable)
  {
 	 $con = new ConexionBD;
@@ -1524,7 +1544,8 @@ $con = new ConexionBD;
                        t23.resultado_antibiotico,
                        t23.lectura_antibiotico,
                        t23.id_posible_resultado_antibiotico,
-                       t23.nombre_posible_resultado_antibiotico
+                       t23.nombre_posible_resultado_antibiotico,
+					   case when t05.id!=14 then t05.id else null end as ref
                 FROM sec_detallesolicitudestudios          t01
                 INNER JOIN sec_solicitudestudios           t02 ON (t02.id = t01.idsolicitudestudio)
                 INNER JOIN lab_conf_examen_estab           t03 ON (t03.id = t01.id_conf_examen_estab)
@@ -1643,12 +1664,13 @@ $con = new ConexionBD;
                 LEFT JOIN mnt_empleado            t25 ON (t25.id = t17.idempleado)
                 LEFT JOIN lab_estado_rechazo      t26 ON (t26.id = t01.id_estado_rechazo)
                 LEFT JOIN lab_posible_observacion t27 ON (t27.id = t01.id_posible_observacion)
-                WHERE  CASE WHEN $idHistorialClinico:: integer != 0
+                WHERE CASE WHEN $idHistorialClinico:: integer != 0
                           THEN t11.id = $idHistorialClinico
                           ELSE t14.id = $idDatoReferencia
                           END
                          AND t02.id_establecimiento_externo = $idEstablecimiento
-                ORDER BY 1,id_estado_detalle, t20.pb_elemento_orden, t20.pb_subelemento_orden;";
+						 AND t01.estadodetalle !=8
+                ORDER BY ref,1,id_estado_detalle, t20.pb_elemento_orden, t20.pb_subelemento_orden;";
 
                 $result = pg_query($sql);
       if (!$result)
