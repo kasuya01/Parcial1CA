@@ -189,27 +189,16 @@ function BuscarExamen($idsolicitudPa,$idexamen,$lugar){
 
  
  
-function insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$origen,$fechatomamuestra)
+function insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$origen,$fechatomamuestra,$estado)
  {
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "INSERT  INTO sec_detallesolicitudestudios (idsolicitudestudio,idexamen,
-					id_conf_examen_estab,indicacion,estadodetalle,
-					idtipomuestra,idorigenmuestra,observacion,idestablecimiento,idestablecimientoexterno,
-					    idempleado,idusuarioreg,fechahorareg,f_tomamuestra, id_estado_rechazo, f_estado)
-					    VALUES($idsolicitudPa,
-                                                $idexamen1,
-					      $IdExamen,
-					      '$indicacion',
-					      5,
-					      $IdTipo,
-					      '$origen',
-					      '$Observa',
-					      $lugar,
-					      $IdEstab,
-					      $Empleado,
-					      $usuario,NOW(),'$fechatomamuestra',1, current_date)";
+      $query = "INSERT  INTO sec_detallesolicitudestudios (idsolicitudestudio,idexamen,
+		    id_conf_examen_estab,indicacion,estadodetalle,idtipomuestra,idorigenmuestra,observacion,idestablecimiento,idestablecimientoexterno,
+		    idempleado,idusuarioreg,fechahorareg,f_tomamuestra, id_estado_rechazo, f_estado)
+		    VALUES($idsolicitudPa,$idexamen1,$IdExamen,'$indicacion',$estado,$IdTipo,'$origen','$Observa',
+                    $lugar,$IdEstab,$Empleado,$usuario,date_trunc('seconds',NOW()),'$fechatomamuestra',1, current_date)";
             
             $result = @pg_query($query);
     //echo $query;
@@ -223,16 +212,16 @@ function insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo
  
  
  
- function insertar_Examensin($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$fechatomamuestra)
+ function insertar_Examensin($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$fechatomamuestra,$estado)
  {
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-        $query = "INSERT  INTO sec_detallesolicitudestudios (idsolicitudestudio,idexamen,
+      $query = "INSERT  INTO sec_detallesolicitudestudios (idsolicitudestudio,idexamen,
 		id_conf_examen_estab,indicacion,estadodetalle,
 		idtipomuestra,observacion,idestablecimiento,idestablecimientoexterno,
 		idempleado,idusuarioreg,fechahorareg,f_tomamuestra,id_estado_rechazo, f_estado)
-		VALUES($idsolicitudPa,$idexamen1,$IdExamen,'$indicacion', 5,$IdTipo,'$Observa',
+		VALUES($idsolicitudPa,$idexamen1,$IdExamen,'$indicacion',$estado,$IdTipo,'$Observa',
                 $lugar,$IdEstab,$Empleado,$usuario,date_trunc('seconds',NOW()),'$fechatomamuestra',1, current_date)";
             
             $result = @pg_query($query);
@@ -245,8 +234,30 @@ function insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo
    }
  }
 
+ function CambiarEstadoSolicitud($idsolicitud){
+    $con = new ConexionBD;
+    if($con->conectar()==true){ 
+         $query="SELECT id,idexamen 
+                    FROM sec_detallesolicitudestudios WHERE idsolicitudestudio=$idsolicitud 
+                    AND EstadoDetalle=5 ";
+            //7 AND EstadoDetalle <> 6 AND EstadoDetalle <> 8
+            $detalle=pg_num_rows(pg_query($query));
+            //echo $detalle;
+            if($detalle>0){
+                $query="UPDATE sec_solicitudestudios SET estado= 3 WHERE id=$idsolicitud";
+                $result=pg_query($query);		
+                return true;	  
+            }else if($detalle==0){
+               $query="UPDATE sec_solicitudestudios SET estado= 4 WHERE id=$idsolicitud";
+                $result=pg_query($query);	
+                return true;
+            }else 
+                return false;
+            
+    }
+ }
  
- function ActualizarSolicitudEstudio($idsolicitud){
+function ActualizarSolicitudEstudio($idsolicitud){
   $con = new ConexionBD;
    if($con->conectar()==true) 
    {
@@ -259,26 +270,26 @@ function insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo
      else
        return true;
    } 
- }
+}
 
 function ObtenerCodigoTecnico($usuario){
 
-$con = new ConexionBD;
+    $con = new ConexionBD;
     //usamos el metodo conectar para realizar la conexion
-	if($con->conectar()==true){
-		 $query = "select IdEmpleado from mnt_empleados where IdTipoEmpleado='LAB' AND Correlativo=$usuario";
-		 $result = @pg_query($query);
-		 if (!$result)
-		   return false;
-		 else
-		   return $result;
-	}
+    if($con->conectar()==true){
+         $query = "select IdEmpleado from mnt_empleados where IdTipoEmpleado='LAB' AND Correlativo=$usuario";
+	 $result = @pg_query($query);
+            if (!$result)
+               return false;
+            else
+               return $result;
+    }
 }
 
 
 function ExamenesPorArea($idarea,$lugar)
 {
-	$con = new ConexionBD;
+    $con = new ConexionBD;
     //usamos el metodo conectar para realizar la conexion
 	if($con->conectar()==true){
 		   $query = /*"SELECT lab_examenes.IdExamen,NombreExamen FROM lab_examenes 

@@ -471,6 +471,8 @@ function GuardarExamen(cerrar)
                 IdEstab=document.getElementById('txtIdEstablecimiento').value;
                 OrigenMuestra=document.getElementById('cmbOrigen').value;
                 fechatomamuestra=document.getElementById('txttomamuestra').value;
+                idarea=document.getElementById('cmbArea').value;
+             //   alert(idarea);
                // alert(tipoMuestra+"**"+OrigenMuestra+'**'+idsolicitud+"%%"+IdEmpleado+"%%"+idsoli+'//'+idExamen+'**'+IdEstab);
 		//alert(idsolicitud+"%%"+IdEmpleado+"%%"+tipoMuestra);
 		ajax.open("POST", "../AgregarExamen/ctrAgregarExamen.php",true);
@@ -482,7 +484,7 @@ function GuardarExamen(cerrar)
 		//enviando los valores
 		ajax.send("opcion="+opcion+"&idsolicitud="+idsolicitud+"&idExamen="+idExamen+"&indicacion="+escape(indicacion)+"&tipoMuestra="+
 		tipoMuestra+"&Observacion="+escape(Observacion)+"&IdEmpleado="+IdEmpleado+"&IdEstab="+IdEstab+"&OrigenMuestra="+OrigenMuestra+
-                "&idsoli="+idsoli+"&fechatomamuestra="+fechatomamuestra);
+                "&idsoli="+idsoli+"&fechatomamuestra="+fechatomamuestra+"&idarea="+idarea);
 		ajax.onreadystatechange=function() 
 		{
 			if (ajax.readyState==4) 
