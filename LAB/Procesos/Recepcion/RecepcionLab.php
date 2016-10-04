@@ -636,8 +636,12 @@ function procesaEsp(){
                                     limpiar();
 
                             } else {
-                                alert ("Ya existe una solicitud con estos datos y su estado es "+respuesta.data[0].descripcion);
-                                limpiar();
+								if(confirm("Ya existe una solicitud con estos datos y su estado es "+respuesta.data[0].descripcion+" desea ingresar otra?")){
+                                    Examenes();
+									limpiar();
+                                }
+                                else
+                                    limpiar();
                             }
                         }else {
                             Examenes();

@@ -14,7 +14,7 @@ class clsLab_Examenes {
            $IdFormulario, $IdEstandarResp, $plantilla, $letra, $Urgente,
            $ubicacion, $TiempoPrevio, $sexo, $idestandar, $lugar,
            $metodologias_sel, $text_metodologias_sel, $id_metodologias_sel,
-           $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido) {
+           $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido,$cmbRealizadopor) {
 
                //echo '<br>LLegando al cls: '.$cmbEstabReferido.'<br>';
       $con = new ConexionBD;
@@ -153,7 +153,6 @@ class clsLab_Examenes {
          }
 
          //********Asignar establecimientos a referir
-          //Asignar posibles tipos de muestra
          $aEstabReferido = explode(',', $cmbEstabReferido);
         //echo '$cmbEstabReferido: '.$cmbEstabReferido.'   estabreferido:'.$aEstabReferido.'----'.count(array_filter($aEstabReferido)).' a1:'.$aEstabReferido[0];
 
@@ -166,11 +165,23 @@ class clsLab_Examenes {
                pg_query($sql6);
             }
          }
+
+         //********Asignar formas o suministrante a realizar
+         $aRealizadopor = explode(',', $cmbRealizadopor);
+
+         $i = 0;
+            for ($i = 0; $i < (count(array_filter($aRealizadopor)) ); $i++) {
+                //echo 'aConfexaTipolab:'.$aConfexaTipolab.'----0'.count($aConfexaTipolab);
+               $sql6 = "INSERT INTO lab_examen_suministrante (id_conf_examen_estab, id_suministrante, fecha_inicio)
+               values ($ultimo, $aRealizadopor[0], current_date);";
+               pg_query($sql6);
+            }
            if (!$result) {
             return false;
          } else {
             return true;
          }
+
       }
    }
 
@@ -192,11 +203,11 @@ class clsLab_Examenes {
                    $IdEstandarResp,$plantilla,'$nomexamen',$sexo,'$idexamen') ";
          // echo $query;
          $result = pg_query($query);
-         
-         
-         
-         
-         
+
+
+
+
+
 
          $query2 = "select COALESCE(max(id),1) from lab_conf_examen_estab";
          $result2 = pg_query($query2);
@@ -1430,6 +1441,20 @@ order by posible_resultado;";
                             where id=$idmntareaexest)
                 and t6.activo=true
                 order by 3;";
+
+         $result = pg_query($query);
+         if (!$result)
+            return false;
+         else
+            return $result;
+      }
+   }
+
+    //Funcion utilizada para seleccionar los perfiles
+   function forma_realizacion() {
+      $con = new ConexionBD;
+      if ($con->conectar() == true) {
+        $query = "select * from lab_suministrante order by 2;";
 
          $result = pg_query($query);
          if (!$result)

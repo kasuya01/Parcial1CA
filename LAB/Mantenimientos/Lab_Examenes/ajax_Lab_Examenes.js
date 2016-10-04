@@ -54,6 +54,7 @@ function LimpiarCampos(){
         $('#cmbTipoMuestra').select2('val',null);
         $('#cmbPerfil').select2('val',null);
         $('#cmbEstabReferido').select2('val',null);
+        $('#cmbRealizadopor').select2('val',null);
 }
 
 function ValidarCampos()
@@ -119,6 +120,9 @@ function ValidarCampos()
                  if ($("#cmbTipoMuestra :selected").length==0){
                     resp= false;
                  }
+                 if ($("#cmbRealizadopor :selected").length==0){
+                    resp= false;
+                 }
 
                    /* alert((document.getElementById('txtidexamen').value)
                          +" 2 "+(document.getElementById('cmbArea').value)
@@ -147,21 +151,22 @@ if (ValidarCampos())
 	idestandarRep=document.frmnuevo.cmbEstandarRep.value;
 	idformulario=document.frmnuevo.cmbFormularios.value;
 	etiqueta=document.frmnuevo.cmbEtiqueta.value;
-        urgente=document.frmnuevo.cmbUrgente.value;
+    urgente=document.frmnuevo.cmbUrgente.value;
 	sexo=document.frmnuevo.cmbsexo.value;
-        Hab=document.frmnuevo.cmbHabilitar.value;
-        cmbTipoMuestra=$('#cmbTipoMuestra').val();
-        cmbPerfil=$('#cmbPerfil').val();
-        cmbEstabReferido=$('#cmbEstabReferido').val();
-        tiempoprevio=document.getElementById('inidate').value;
-        metodologias_sel=frmnuevo.metodologias_sel.value;
-        text_metodologias_sel=frmnuevo.text_metodologias_sel.value;
-        id_metodologias_sel=frmnuevo.id_metodologias_sel.value;
-        resultado=frmnuevo.resultado.value;
-        resultado_nombre=frmnuevo.resultado_nombre.value;
-        id_resultado=frmnuevo.id_resultado.value;
-        //mismo=frmnuevo.mismo.value;
-        mismo=0;
+    Hab=document.frmnuevo.cmbHabilitar.value;
+    cmbTipoMuestra=$('#cmbTipoMuestra').val();
+    cmbPerfil=$('#cmbPerfil').val();
+    cmbEstabReferido=$('#cmbEstabReferido').val();
+    cmbRealizadopor=$('#cmbRealizadopor').val();
+    tiempoprevio=document.getElementById('inidate').value;
+    metodologias_sel=frmnuevo.metodologias_sel.value;
+    text_metodologias_sel=frmnuevo.text_metodologias_sel.value;
+    id_metodologias_sel=frmnuevo.id_metodologias_sel.value;
+    resultado=frmnuevo.resultado.value;
+    resultado_nombre=frmnuevo.resultado_nombre.value;
+    id_resultado=frmnuevo.id_resultado.value;
+    //mismo=frmnuevo.mismo.value;
+    mismo=0;
       // alert(sexo);
 	//codempresa=document.frmnuevo.txttxtcodempresa.value;
 	//alert(idestandar);
@@ -177,7 +182,7 @@ if (ValidarCampos())
 		if (ajax.readyState==4) {
 			//mostrar resultados en esta capa
 			//document.getElementById('divinicial').innerHTML = ajax.responseText;
-                        alert(ajax.responseText);
+            alert(ajax.responseText);
 			LimpiarCampos();
 			show_event(Pag);
 		}
@@ -189,7 +194,7 @@ if (ValidarCampos())
 	"&idestandar="+idestandar+"&Pag="+Pag+"&opcion="+opcion+"&plantilla="+plantilla+"&ubicacion="+ubicacion+
 	"&idformulario="+idformulario+"&idestandarRep="+idestandarRep+"&etiqueta="+etiqueta+"&urgente="+urgente+
         "&sexo="+sexo+"&Hab="+Hab+"&tiempoprevio="+tiempoprevio+"&metodologias_sel="+metodologias_sel+"&text_metodologias_sel="+text_metodologias_sel+"&id_metodologias_sel="+id_metodologias_sel
-        +"&resultado="+resultado+"&resultado_nombre="+resultado_nombre+"&id_resultado="+id_resultado+"&mismo="+mismo+"&cmbTipoMuestra="+cmbTipoMuestra+"&cmbPerfil="+cmbPerfil+"&cmbEstabReferido="+cmbEstabReferido);
+        +"&resultado="+resultado+"&resultado_nombre="+resultado_nombre+"&id_resultado="+id_resultado+"&mismo="+mismo+"&cmbTipoMuestra="+cmbTipoMuestra+"&cmbPerfil="+cmbPerfil+"&cmbEstabReferido="+cmbEstabReferido+"&cmbRealizadopor="+cmbRealizadopor);
    }
 
 else{

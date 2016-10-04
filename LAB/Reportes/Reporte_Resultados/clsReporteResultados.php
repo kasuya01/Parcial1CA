@@ -1215,26 +1215,6 @@ function ObtenerResultadoxId($idsolicitud,$iddetalle)
     }
 }
 
-function cambioestiimprsoli($idsolicitud, $lugar, $tipo)
-{
- $con = new ConexionBD;
-   if($con->conectar()==true)
-   {
-	   if ($tipo==0){
-		   $estado="true";
-	   }
-	   else{
-		   $estado="false";
-	   }
-	   $query = "update sec_solicitudestudios set  b_impresa=$estado where  id=$idsolicitud and id_establecimiento=$lugar;";
-    $result = @pg_query($query);
-     if (!$result)
-       return false;
-     else
-       return true;
-    }
-}
-
  function BuscarEmpleadoValidador($responsable)
  {
 	 $con = new ConexionBD;
@@ -1544,8 +1524,7 @@ $con = new ConexionBD;
                        t23.resultado_antibiotico,
                        t23.lectura_antibiotico,
                        t23.id_posible_resultado_antibiotico,
-                       t23.nombre_posible_resultado_antibiotico,
-					   case when t05.id!=14 then t05.id else null end as ref
+                       t23.nombre_posible_resultado_antibiotico
                 FROM sec_detallesolicitudestudios          t01
                 INNER JOIN sec_solicitudestudios           t02 ON (t02.id = t01.idsolicitudestudio)
                 INNER JOIN lab_conf_examen_estab           t03 ON (t03.id = t01.id_conf_examen_estab)
@@ -1669,8 +1648,7 @@ $con = new ConexionBD;
                           ELSE t14.id = $idDatoReferencia
                           END
                          AND t02.id_establecimiento_externo = $idEstablecimiento
-						 AND t01.estadodetalle !=8
-                ORDER BY ref,1,id_estado_detalle, t20.pb_elemento_orden, t20.pb_subelemento_orden;";
+                ORDER BY 1,id_estado_detalle, t20.pb_elemento_orden, t20.pb_subelemento_orden;";
 
                 $result = pg_query($sql);
       if (!$result)

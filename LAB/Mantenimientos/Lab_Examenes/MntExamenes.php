@@ -146,6 +146,12 @@ function mypopup(){
            allowClear: true,
            dropdownAutoWidth: true
         });
+
+        $("#cmbRealizadopor").select2({
+           placeholder: "Seleccione una opción",
+           allowClear: true,
+           dropdownAutoWidth: true
+        });
     }
     $(document).ready(function() {
       iniciarselects2();
@@ -375,11 +381,24 @@ if ($nivel == 7) {
                                      <?php
                                         $estref= $obj->establecimiento_referido();
                                         while($row2 = pg_fetch_array($estref)){
-                                            echo '<option value="' . $rows[0] . '|'.$rows[1].'" >' . htmlentities($rows[2]) . '</option>';
+                                            echo '<option value="' . $row2[0] . '|'.$row2[1].'" >' . htmlentities($row2[2]) . '</option>';
                                         }
 				    ?>
                                 </select>
                             </div>
+                            </td>
+                         </tr>
+                         <tr>
+                            <td class="StormyWeatherFieldCaptionTD" >A realizar :</td>
+                            <td class="StormyWeatherDataTD">
+                                <select id="cmbRealizadopor" name="cmbRealizadopor[]" size="1" style="width:75%"  class="height js-example-placeholder-multiple" multiple="multiple">
+                                     <?php
+                                        $estref= $obj->forma_realizacion();
+                                        while($row2 = pg_fetch_array($estref)){
+                                            echo '<option value="' . $row2[0] .'" >' . htmlentities($row2[1]) . '</option>';
+                                        }
+				    ?>
+                                </select>
                             </td>
                          </tr>
                          <tr>
