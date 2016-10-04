@@ -35,8 +35,8 @@ $obj=new clsConsultarElementosPlantillaC;
 <script language="JavaScript" type="text/javascript" src="ajax_SolicitudesProcesadas.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
 <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
-<link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
-<link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+<!--<link type="text/css" href="../../../public/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+<link type="text/css" href="../../../public/css/jquery-ui-timepicker-addon.css" rel="stylesheet" />-->
 <script language="JavaScript" >
 //Recarga funcion buscar de la página padre
 window.onunload = refreshParent;  
@@ -137,6 +137,11 @@ function RecogeValor() {
                           valdatesolicita($(this).val(), $(this).attr('name'));
                          }
             });
+              $("#cmbOrganismo").select2({
+                 allowClear: true,
+                 dropdownAutoWidth: true
+             });
+             
 
          });
     </script>
@@ -197,20 +202,20 @@ function RecogeValor() {
                                     <td colspan="5" align="center"> <h3>DATOS GENERALES</h3></td>
                                 </tr>
                                 <tr>
-                                    <td width="35%" class="StormyWeatherFieldCaptionTD" colspan="1">Establecimiento solicitante</td>
-                                    <td width="65%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var18'];?></td>
+                                    <td width="33%" class="StormyWeatherFieldCaptionTD" colspan="1">Establecimiento solicitante</td>
+                                    <td width="67%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var18'];?></td>
                                 </tr>
                                 <tr>
-                                    <td width="35%" class="StormyWeatherFieldCaptionTD" colspan="1">Procedencia</td>
-                                    <td width="65%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var10'] ?></td>
+                                    <td width="33%" class="StormyWeatherFieldCaptionTD" colspan="1">Procedencia</td>
+                                    <td width="67%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var10'] ?></td>
                                 </tr>
                                 <tr>
-                                    <td width="35%" class="StormyWeatherFieldCaptionTD" colspan="1">Servicio</td>
-                                    <td width="65%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var11'] ?></td>
+                                    <td width="33%" class="StormyWeatherFieldCaptionTD" colspan="1">Servicio</td>
+                                    <td width="67%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var11'] ?></td>
                                 </tr>
                                 <tr>
-                                    <td width="35%" colspan="1" class="StormyWeatherFieldCaptionTD">NEC</td>
-                                    <td width="65%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var1'] ?>
+                                    <td width="33%" colspan="1" class="StormyWeatherFieldCaptionTD">NEC</td>
+                                    <td width="67%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var1'] ?>
                                         <input type="hidden" name="txtnec" id="txtnec" disabled="disabled" />
                                         <input type="hidden" name="txtidsolicitud" id="txtidsolicitud" />
                                         <input type="hidden" name="txtiddetalle" id="txtiddetalle" />
@@ -230,8 +235,8 @@ function RecogeValor() {
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td width="35%" colspan="1" class="StormyWeatherFieldCaptionTD">Paciente</td>
-                                    <td width="65%" colspan="4" class="StormyWeatherDataTD" ><?php echo $_GET['var7'] ?>
+                                    <td width="33%" colspan="1" class="StormyWeatherFieldCaptionTD">Paciente</td>
+                                    <td width="67%" colspan="4" class="StormyWeatherDataTD" ><?php echo $_GET['var7'] ?>
                                         <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" /></td>
                                 </tr>
                                 <tr>
@@ -252,6 +257,7 @@ function RecogeValor() {
                            </tr>
                            <tr>
                                 <td class="StormyWeatherFieldCaptionTD" width="25%">Peso</td>
+                                        
                                 <td class="StormyWeatherDataTD" width="25%">
                                       <?php if (!empty($Peso))
                                                echo htmlentities($Peso)." Kg";
@@ -264,14 +270,14 @@ function RecogeValor() {
                                            echo htmlentities($Talla)." cm";?></td>
                            </tr>
                             <tr>
-                                <td width="35%" colspan="1" class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
-                                <td width="65%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var9'] ?>
+                                <td width="33%" colspan="1" class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
+                                <td width="67%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var9'] ?>
                                   <input type="hidden" name="txtnombrearea" id="txtnombrearea" disabled="disabled">
                                 </td>
                             </tr>
                             <tr>
-                                <td width="35%" colspan="1"  class="StormyWeatherFieldCaptionTD">Examen</td>
-                                <td width="65%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var2'] ?>
+                                <td width="33%" colspan="1"  class="StormyWeatherFieldCaptionTD">Examen</td>
+                                <td width="67%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var2'] ?>
                                         <input type="hidden" name="txtexamen" id="txtexamen" disabled="disabled" size="60" /></td>
                             </tr>
                             <tr>
@@ -304,8 +310,8 @@ function RecogeValor() {
                                 </td>
                             </tr>
                             <tr>
-                                <td width="35%" colspan="1"  class="StormyWeatherFieldCaptionTD">*Validado Por</td>
-                                <td width="65%" class="StormyWeatherDataTD" colspan="4">
+                                <td width="33%" colspan="1"  class="StormyWeatherFieldCaptionTD">*Validado Por</td>
+                                <td width="67%" class="StormyWeatherDataTD" colspan="4">
                                         <div id="divEncargado">
                                                 <select id="cmbEmpleados" name="cmbEmpleados" size="1" class="form-control height">
                                                         <option value="0" >--Seleccione Empleado--</option>
@@ -315,8 +321,8 @@ function RecogeValor() {
                             </tr> 
 
                             <tr>
-                                <td width="35%" class="StormyWeatherFieldCaptionTD">Resultado</td>
-                                <td width="65%" class="StormyWeatherDataTD" colspan="4">
+                                <td width="33%" colspan="1" class="StormyWeatherFieldCaptionTD">Resultado</td>
+                                <td width="67%" class="StormyWeatherDataTD" colspan="4">
                                     <select id="cmbResultado" name="cmbResultado" size="1" class="form-control height" onChange="LlenarObservaciones();" >
                                         <option value="0">--Seleccione--</option>
                                         <option value="P">Positivo</option>
@@ -326,12 +332,12 @@ function RecogeValor() {
                                 </td>
                             </tr>
                             <tr>
-                                <td width="100%" colspan="5" class="StormyWeatherDataTD">
+                                <td width="100%" colspan="5" class="StormyWeatherFieldCaptionTD">
                                     <div id="divObservacion" style="display:none">
                                         <table class="StormyWeatherFormTABLE" width="80%" >
                                             <tr>
-                                                <td width="35%" class="StormyWeatherFieldCaptionTD">Observaci&oacute;n</td>
-                                                <td width="65%" class="StormyWeatherDataTD" >
+                                                <td width="33%" colspan="1" class="StormyWeatherFieldCaptionTD">Observaci&oacute;n</td>
+                                                <td width="67%"  colspan="4" class="StormyWeatherDataTD" >
                                                     <select id="cmbObservacion" name="cmbObservacion" size="1" style="width:100%" class="form-control height" >
                                                         <option value="0" >--Seleccione Observaci&oacute;n--</option>
                                                     </select>
@@ -341,7 +347,7 @@ function RecogeValor() {
                                     </div>
                                 </td>
                             </tr>
-                            <tr  class="StormyWeatherDataTD">
+                            <tr class="StormyWeatherDataTD">
                                 <td colspan="5" width="100%">
                                     <div id="divResPositivo" style="display:none" >
                                         <table class="StormyWeatherFormTABLE" width="100%" >
@@ -353,10 +359,10 @@ function RecogeValor() {
                                             <tr>
                                                 <td width="35%" class="StormyWeatherFieldCaptionTD">Organismos</td>
                                                 <td width="65%" class="StormyWeatherDataTD">
-                                                    <select id="cmbOrganismo" name="cmbOrganismo" size="1" class="form-control  height">
+                                                    <select id="cmbOrganismo" name="cmbOrganismo" style="width:100%" class="height js-example-basic-single">
                                                         <option value="0" >--Seleccione una bacteria--</option>
                                                         <?php
-
+                                                            //style="width:450px"
                                                             $consulta_bac= $obj->LeerBacterias();
                                                                             while($row = pg_fetch_array($consulta_bac)){
                                                                             echo "<option value='" . $row[0]. "'>" . $row[1] . "</option>";
@@ -369,7 +375,7 @@ function RecogeValor() {
                                             <tr>
                                                 <td width="35%" class="StormyWeatherFieldCaptionTD">Tarjeta</td>
                                                 <td width="65%" class="StormyWeatherDataTD">
-                                                    <select id="cmbTarjeta" name="cmbTarjeta" size="1" class="form-control  height" onChange="MostrarAntibioticos();">
+                                                    <select id="cmbTarjeta" name="cmbTarjeta" style="width:100%" class="form-control  height" onChange="MostrarAntibioticos();">
                                                         <option value="0" >-- Seleccione una tarjeta --</option>
                                                         <?php
                                                             //$obj=new clsConsultarElementosPlantillaC;

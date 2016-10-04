@@ -741,7 +741,8 @@ switch ($opcion)
 		$IdEstab=$_POST['IdEstab'];     //si!!
                 $origen=$_POST['OrigenMuestra'];        //si
                 $fechatomamuestra=$_POST['fechatomamuestra'];
-               // echo $fechatomamuestra;
+                $idarea=$_POST['idarea'];
+                //echo $idarea;
                 
               //echo 'idtipo='.$IdTipo."**".$origen.'**'.$idsolicitud."%%".$IdEmpleado."%%".$idsolicitudPa.'//'.$IdExamen.'**'.$IdEstab;  
                 $consulta=$objdatos->opteneridexamen($IdExamen);
@@ -756,11 +757,15 @@ switch ($opcion)
 		}	
 		else{
                     
+                    if ($idarea==14)
+                        $estado=7;
+                    else
+                        $estado=5;
                     
                     if ($origen==0){
                         //$var=$objdatos->insertar_Examensin($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$fechatomamuestra);
                       //echo $var;
-                            if (($objdatos->insertar_Examensin($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$fechatomamuestra)==1) && ($objdatos-> ActualizarSolicitudEstudio($idsolicitudPa)==TRUE)){
+                            if (($objdatos->insertar_Examensin($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$fechatomamuestra,$estado)==1) && ($objdatos-> CambiarEstadoSolicitud($idsolicitudPa)==TRUE)){
 				echo "Examen Agregado!!";
                             }
                             else{
@@ -770,11 +775,11 @@ switch ($opcion)
                     }
                     else{
                                 
-                        if (($objdatos->insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$origen,$fechatomamuestra)==1) && ($objdatos-> ActualizarSolicitudEstudio($idsolicitudPa)==TRUE)){
+                        if (($objdatos->insertar_Examen($idsolicitudPa,$idexamen1,$IdExamen,$indicacion,$IdTipo,$Observa,$lugar,$Empleado,$usuario,$IdEstab,$origen,$fechatomamuestra,$estado)==1) && ($objdatos-> CambiarEstadoSolicitud($idsolicitudPa)==TRUE)){
 				echo "Examen Agregado!!";
 			}
 			else{
-				echo "No se pudo Agregar el Examen!!".$idsolicitudPa.'-'.$idexamen1.'-'.$IdExamen.'-'.$indicacion.'-'.$IdTipo.'-'.$Observa.'-'.$lugar.'-'.$Empleado.'-'.$usuario.'-'.$IdEstab.'-'.$fechatomamuestra.'-'.$origen;
+				echo "No se pudo Agregar el Examen 2!!".$idsolicitudPa.'-'.$idexamen1.'-'.$IdExamen.'-'.$indicacion.'-'.$IdTipo.'-'.$Observa.'-'.$lugar.'-'.$Empleado.'-'.$usuario.'-'.$IdEstab.'-'.$fechatomamuestra.'-'.$origen;
 			}
                             
                     }
