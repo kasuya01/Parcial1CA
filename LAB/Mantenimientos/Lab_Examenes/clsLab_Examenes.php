@@ -173,7 +173,7 @@ class clsLab_Examenes {
             for ($i = 0; $i < (count(array_filter($aRealizadopor)) ); $i++) {
                 //echo 'aConfexaTipolab:'.$aConfexaTipolab.'----0'.count($aConfexaTipolab);
                $sql6 = "INSERT INTO lab_examen_suministrante (id_conf_examen_estab, id_suministrante, fecha_inicio)
-               values ($ultimo, $aRealizadopor[0], current_date);";
+               values ($ultimo, $aRealizadopor[$i], current_date);";
                pg_query($sql6);
             }
            if (!$result) {
@@ -308,7 +308,7 @@ class clsLab_Examenes {
            $IdFormulario, $IdEstandarResp, $plantilla, $letra, $Urgente,
            $ubicacion, $Hab, $TiempoPrevio, $idsexo, $idestandar,
            $ctlidestandar, $metodologias_sel, $text_metodologias_sel,
-           $id_metodologias_sel, $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido ) {
+           $id_metodologias_sel, $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido, $cmbRealizadopor ) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
          if ($IdFormulario == 0)
@@ -654,6 +654,41 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
          }
 
          //-***Fin actualizar perfiles
+         //**Actualizar los suministrante
+         $arealizador = explode(',', $cmbRealizadopor);
+         $cantsumi=count(array_filter($arealizador));
+
+         $sqlA="update lab_examen_suministrante
+            set activo=false,
+             fecha_fin=current_date
+            where id_conf_examen_estab=$idconf
+            and activo=true;";
+         $queryA=pg_query($sqlA);
+         if ($cantsumi>0){
+            $sqlB="select * from lab_examen_suministrante where id_conf_examen_estab=$idconf;";
+            for($l=0; $l<$cantsumi; $l++){
+               $bandl=0;
+               $queryB=  pg_query($sqlB);
+               while ($sumi=@pg_fetch_array($queryB)){
+                  if($sumi['id_suministrante']==$arealizador[$l]){
+                     $sqlC="update lab_examen_suministrante
+                           set activo=true,
+                           fecha_fin=null
+                           where id_conf_examen_estab=$idconf
+                           and id_suministrante=$arealizador[$l];";
+                     $queryC=  pg_query($sqlC);
+                     $bandl=1;
+                  }
+               }
+               if ($bandl==0){
+                 $sqlD="insert into lab_examen_suministrante (id_suministrante, id_conf_examen_estab, activo, fecha_inicio) values($arealizador[$l], $idconf, true,current_date);";
+                  $queryD=  pg_query($sqlD);
+
+               }
+            }
+         }
+
+         //-***Fin actualizar suministrante
 
 
          //**Actualizar los establecimientos a referir
@@ -891,7 +926,12 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                             join lab_conf_examen_tipo_laboratorio	t2 on (t1.id=t2.id_conf_examen_estab)
                             where t1.id=$idexamen
                             and (t2.activo=true or fecha_fin >= current_date))
-                			else null end) as id_idestab_idexatipolab
+                			else null end) as id_idestab_idexatipolab,
+        		    (SELECT array_to_string(array_agg(t02.id order by t02.suministrante), ',') as suministrante
+            			from lab_examen_suministrante t01
+            			join lab_suministrante t02 on (t02.id=t01.id_suministrante)
+            			where id_conf_examen_estab=$idexamen
+                        and t01.activo=true) as id_suministrante
                     FROM lab_conf_examen_estab
                     INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
                     INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id

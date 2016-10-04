@@ -353,10 +353,11 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
         cmbTipoMuestra=$('#cmbTipoMuestra').val();
         cmbPerfil=$('#cmbPerfil').val();
         cmbEstabReferido=$('#cmbEstabReferido').val();
+        cmbRealizadopor=$('#cmbRealizadopor').val();
 	//alert (text_metodologias_sel);
 	//alert (cmbEstabReferido);
 
-        if (nomexamen=='' || ($('#cmbTipoMuestra option:selected').length==0) || (Tiempo=='') || (Tiempo==0)){
+        if (nomexamen=='' || ($('#cmbTipoMuestra option:selected').length==0) || (Tiempo=='') || (Tiempo==0) || ($('#cmbRealizadopor option:selected').length==0)){
            alert ('Ingrese los datos obligatorios por favor; se encuentran marcados con *');
            return false;
         }
@@ -373,7 +374,7 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
 	ajax.send("idexamen="+idexamen+"&idarea="+idarea+"&nomexamen="+nomexamen+
 	"&idestandar="+idestandar+"&Pag="+Pag+"&opcion="+opcion+"&plantilla="+plantilla+"&ubicacion="+ubicacion+
 	"&idformulario="+idformulario+"&idestandarRep="+idestandarRep+"&Etiqueta="+Etiqueta+"&urgente="+urgente+
-        "&idsexo="+idsexo+"&Hab="+Hab+"&Tiempo="+Tiempo+"&idconf="+idconf+"&ctlidestandar="+ctlidestandar+"&metodologias_sel="+metodologias_sel+"&text_metodologias_sel="+text_metodologias_sel+"&id_metodologias_sel="+id_metodologias_sel+"&resultado="+resultado+"&resultado_nombre="+resultado_nombre+"&id_resultado="+id_resultado+"&cmbTipoMuestra="+cmbTipoMuestra+"&cmbPerfil="+cmbPerfil+"&cmbEstabReferido="+cmbEstabReferido);
+        "&idsexo="+idsexo+"&Hab="+Hab+"&Tiempo="+Tiempo+"&idconf="+idconf+"&ctlidestandar="+ctlidestandar+"&metodologias_sel="+metodologias_sel+"&text_metodologias_sel="+text_metodologias_sel+"&id_metodologias_sel="+id_metodologias_sel+"&resultado="+resultado+"&resultado_nombre="+resultado_nombre+"&id_resultado="+id_resultado+"&cmbTipoMuestra="+cmbTipoMuestra+"&cmbPerfil="+cmbPerfil+"&cmbEstabReferido="+cmbEstabReferido+"&cmbRealizadopor="+cmbRealizadopor);
 //+"&observacion="+observacion
 	ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {

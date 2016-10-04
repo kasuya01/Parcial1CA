@@ -141,6 +141,7 @@ switch ($opcion) {
       $cmbTipoMuestra = $_POST['cmbTipoMuestra'];
       $cmbPerfil = $_POST['cmbPerfil'];
       $cmbEstabReferido = $_POST['cmbEstabReferido'];
+      $cmbRealizadopor = $_POST['cmbRealizadopor'];
       //  echo $IdEstandarResp." sexo=".$sexo;
       if ($sexo <> 4)
          $idsexo = $sexo;
@@ -184,7 +185,7 @@ switch ($opcion) {
                       $usuario, $IdFormulario, $IdEstandarResp, $plantilla,
                       $letra, $Urgente, $ubicacion, $Hab, $TiempoPrevio,
                       $idsexo, $idestandar, $ctlidestandar, $metodologias_sel,
-$text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido) == true) {
+$text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido,$cmbRealizadopor) == true) {
          /*
           * creando arreglo de elementos seleccionados
           */
