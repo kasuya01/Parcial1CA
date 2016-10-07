@@ -257,7 +257,7 @@ function GuardarResultados()
     ajax.open("POST", "ctrSolicitudesProcesadas.php", true);
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     ajax.send("opcion=" + opcion + "&idsolicitud=" + idsolicitud + "&iddetalle=" + iddetalle + "&idexamen=" + idexamen +
-            "&idrecepcion=" + idrecepcion + "&resultado=" + resultado + "&lectura=" + lectura +
+            "&idrecepcion=" + idrecepcion + "&resultado=" + encodeURIComponent(resultado) + "&lectura=" + lectura +
             "&interpretacion=" + interpretacion + "&observacion=" +observacion+
             "&responsable=" + responsable + "&procedencia=" + procedencia + "&origen=" + origen + "&codigo=" + codigo+ "&fecha_realizacion=" + fecha_realizacion+ "&fecha_reporte=" + fecha_reporte+"&idresultado="+idresultado+"&marca="+marca);
     ajax.onreadystatechange = function()
