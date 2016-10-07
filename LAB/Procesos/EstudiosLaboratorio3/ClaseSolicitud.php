@@ -254,24 +254,6 @@ class SolicitudLaboratorio {
       }
    }
 
-//Funcion PG
-   function CantiSuministrante($IdExamen) {
-      $Conexion = new ConexionBD();
-      $conectar = $Conexion->conectar();
-      if ($conectar == true) {
-         $SQL2 = "select t2.id as idsumi, t2.suministrante, t1.id as id_examen_suministrante
-                from lab_examen_suministrante t1
-                join lab_suministrante t2 on (t2.id=t1.id_suministrante)
-                where id_conf_examen_estab=$IdExamen";
-         $result = pg_query($SQL2);
-         if (!$result) {
-            return false;
-         } else {
-            return $result;
-         }
-      }
-   }
-
 //Eliminar no se usuara
    function MostrarMuestra($IdExamen) {
       $Conexion = new ConexionBD();
@@ -429,7 +411,7 @@ class SolicitudLaboratorio {
    function GuardarDatos($IdHistorialClinico, $IdNumeroExp, $idexpediente,
            $FechaSolicitud, $IdUsuarioReg, $IdExamen, $Indicacion,
            $IdTipoMuestra, $IdOrigen, $IdEstablecimiento, $lugar,
-           $id_expediente_referido, $idsuministrante) {
+           $id_expediente_referido) {
       $Conexion = new ConexionBD();
       $conectar = $Conexion->conectar();
       //echo "funcion GuardarDatos IdHistorialClinico ".$IdHistorialClinico." IdNumeroExp ";//.$IdNumeroExp ." FechaSolicitud ". $FechaSolicitud." IdUsuarioReg ".$IdUsuarioReg." FechaHoraReg ".$FechaHoraReg." IdExamen ".$IdExamen." Indicacion ".$Indicacion." IdTipoMuestra ".$IdTipoMuestra." IdOrigen ".$IdOrigen." IdEstablecimiento ".$IdEstablecimiento;
@@ -477,8 +459,7 @@ class SolicitudLaboratorio {
             //$call = "datos: ".$IdHistorialClinico.",".$IdNumeroExp.",".$FechaSolicitud.",".$IdUsuarioReg.",".$IdExamen.",".$Indicacion.",".$IdTipoMuestra.",".$IdOrigen.",".$IdEstablecimiento.",".$lugar.",".@erro;
             //echo $call;
             //exit;
-            $envio = "select solicitudestudiosexternos($IdHistorialClinico,$idexpediente,'$FechaSolicitud',$IdUsuarioReg,$IdExamen,'$Indicacion',$IdTipoMuestra,$IdOrigen,$IdEstablecimiento,$lugar, $p_id_dato_referencia, $idsuministrante, $lugar)";
-
+            $envio = "select solicitudestudiosexternos($IdHistorialClinico,$idexpediente,'$FechaSolicitud',$IdUsuarioReg,$IdExamen,'$Indicacion',$IdTipoMuestra,$IdOrigen,$IdEstablecimiento,$lugar, $p_id_dato_referencia)";
             $env = pg_query($envio);
             // echo $envio;
             //echo '<br/>Envio'.$envio.'<br/>';

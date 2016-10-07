@@ -16,7 +16,7 @@ function objetoAjax(){
 }
 
 //////////////////////////*************FUNCIONES PARA EL MANEJO DE CADENAS ELININACION DE ESPACIOS EN BLANCO **********//////////////////////
-function trim( str ) 
+function trim( str )
 {
 	var resultstr = "";
 
@@ -30,13 +30,13 @@ function trimright( str ) {
 	var i = 0;
 
 	// Return immediately if an invalid value was passed in
-	if (str+"" == "undefined" || str == null)	
+	if (str+"" == "undefined" || str == null)
 		return null;
 
 	// Make sure the argument is a string
 	str += "";
-	
-	if (str.length == 0) 
+
+	if (str.length == 0)
 		resultStr = "";
 	else {
   		// Loop through string starting at the end as long as there
@@ -44,16 +44,16 @@ function trimright( str ) {
   		i = str.length - 1;
   		while ((i >= 0) && (str.charAt(i) == " "))
  			i--;
- 			
+
  		// When the loop is done, we're sitting at the last non-space char,
  		// so return that char plus all previous chars of the string.
   		resultStr = str.substring(0, i + 1);
   	}
-  	
-  	return resultStr;  	
+
+  	return resultStr;
 }
 
-function trimleft(str) { 
+function trimleft(str) {
 	for(var k = 0; k < str.length && isWhitespace(str.charAt(k)); k++);
 	return str.substring(k, str.length);
 }
@@ -95,7 +95,7 @@ function calcular_edad(fecha){
     }
 
     var mes;
-    mes = fecha.substring(3,5);   
+    mes = fecha.substring(3,5);
     if (isNaN(mes)){
        return false;
     }
@@ -107,7 +107,7 @@ function calcular_edad(fecha){
     }
     //si el aï¿½o de la fecha que recibo solo tiene 2 cifras hay que cambiarlo a 4
     if (ano<=99){
-       ano +=1900;       
+       ano +=1900;
     }
 
 // alert("dia: "+dia+" mes:"+mes+" anio:"+ano);
@@ -116,9 +116,9 @@ function calcular_edad(fecha){
     annios=hoy.getFullYear()- ano;
         edad=hoy.getFullYear()- ano - 1; //-1 porque no se si ha cumplido aï¿½os ya este aï¿½o
     //si resto los meses y me da menor que 0 entonces no ha cumplido aï¿½os. Si da mayor si ha cumplido
-   
-   
-    var meses=hoy.getMonth() + 1 - mes;   
+
+
+    var meses=hoy.getMonth() + 1 - mes;
 
     var dias=hoy.getUTCDate() - dia    ;
 
@@ -137,12 +137,12 @@ function calcular_edad(fecha){
     }
 
     //alert(diasx+" dias:"+dias);
-   
+
     if(Minimo=="0 dias" && dias >=0){Minimo=dias+" dias";}
-   
+
     if(diasx<0){
         meses=meses-1;
-       
+
     }
 
     if(meses==0 && annios==0){return dias+" DIAS";}
@@ -152,8 +152,8 @@ function calcular_edad(fecha){
 
 
     if (hoy.getMonth() + 1 - mes < 0){
-       return edad+" a\u00f1os y "+meses+" meses y "+Minimo;       
-//       return edad;       
+       return edad+" a\u00f1os y "+meses+" meses y "+Minimo;
+//       return edad;
     } //+ 1 porque los meses empiezan en 0
     if (hoy.getMonth() + 1 - mes > 0){
        return (edad+1)+" a\u00f1os y "+meses+" meses y "+Minimo;
@@ -162,7 +162,7 @@ function calcular_edad(fecha){
     //entonces es que eran iguales. miro los dias
     //si resto los dias y me da menor que 0 entonces no ha cumplido aï¿½os. Si da mayor o igual si ha cumplido
     if (hoy.getUTCDate() - dia >= 0){
-       return (edad+1)+" a\u00f1os y "+meses+" meses y "+Minimo;       
+       return (edad+1)+" a\u00f1os y "+meses+" meses y "+Minimo;
 //       return edad + 1;
     }
     return edad+" a\u00f1os y "+meses+" meses y "+Minimo;
@@ -171,7 +171,7 @@ function calcular_edad(fecha){
 
 //FUNCION PARA BUSCAR DATOS DE LA SOLICITUD
 function BuscarDatos(pag)
-{	
+{
 		opcion=1;
 		IdEstab=document.getElementById('cmbEstablecimiento').value;
 		IdServ=document.getElementById('CmbServicio').value;
@@ -195,9 +195,9 @@ function BuscarDatos(pag)
 			if (ajax.readyState==4) {
 				//mostrar los nuevos registros en esta capa
 				document.getElementById('divBusqueda').innerHTML = ajax.responseText;
-			
+
 			}
-	    }	
+	    }
 
 }
 
@@ -206,7 +206,7 @@ function CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento,fechar
 	ajax=objetoAjax();
 	opcion=2;
 	especialidad=0;
-		
+
 	//alert(fecharecepcion);
 	ajax.open("POST", "../AgregarExamen/ctrAgregarExamen.php",true);
 		  //muy importante este encabezado ya que hacemos uso de un formulario
@@ -216,9 +216,9 @@ function CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento,fechar
 	//alert(idsolicitud+"-"+idexpediente+"-"+idestablecimiento);
 	ajax.send("opcion="+opcion+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud+"&idestablecimiento="+idestablecimiento+
 	"&especialidad="+especialidad+"&fecharecepcion="+fecharecepcion);
-	ajax.onreadystatechange=function() 
+	ajax.onreadystatechange=function()
 	{
-		if (ajax.readyState==4) 
+		if (ajax.readyState==4)
 		{	 if (ajax.status == 200)
 			{  //mostrar los nuevos registros en esta capa
 			  document.getElementById('divSolicitud').innerHTML = ajax.responseText;
@@ -240,9 +240,9 @@ function CargarDatosFormularioSolicitud(idexpediente,idsolicitud,idestablecimien
 		  //enviando los valores
 
 	ajax.send("opcion="+opcion+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud+"&idestablecimiento="+idestablecimiento);
-	ajax.onreadystatechange=function() 
+	ajax.onreadystatechange=function()
 	{
-		if (ajax.readyState==4) 
+		if (ajax.readyState==4)
 		{    if (ajax.status == 200)
                      {  //mostrar los nuevos registros en esta capa
 			    document.getElementById('divFormulario').innerHTML = ajax.responseText;
@@ -262,23 +262,49 @@ function LlenarComboExamen(idarea)
 		  //muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		  //enviando los valores
-	ajax.send("opcion="+opcion+"&idarea="+idarea);	 
-	ajax.onreadystatechange=function() 
+	ajax.send("opcion="+opcion+"&idarea="+idarea);
+	ajax.onreadystatechange=function()
 	{
-		
+
 		if (ajax.readyState == 4){//4 The request is complete
 			if (ajax.status == 200){//200 means no error.
-	  			//respuesta = ajax.responseText;	
+	  			//respuesta = ajax.responseText;
 	 			// alert (respuesta)
 		 document.getElementById('divExamen').innerHTML = ajax.responseText;
-			}	  	
-			
+			}
+
    		}
    	}
 }
 
+function llenararealizar(IdExamen)
+
+{
+     // alerrt ("siii"+IdExamen);
+	ajax=objetoAjax();
+	opcion=12;
+        txtIdexpediente
+	ajax.open("POST", "../AgregarExamen/ctrAgregarExamen.php",true);
+  	//muy importante este encabezado ya que hacemos uso de un formulario
+	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	//enviando los valores
+	ajax.send("opcion="+opcion+"&IdExamen="+IdExamen);
+	ajax.onreadystatechange=function()
+	{
+
+		if (ajax.readyState == 4){//4 The request is complete
+			if (ajax.status == 200){//200 means no error.
+	  			respuesta = ajax.responseText;
+
+				document.getElementById('divarealizar').innerHTML = respuesta;
+				$('#arealizar').show();
+	 		}
+   	 	}
+   	}
+}
+
 function LlenarComboMuestra1(IdExamen)
-         
+
 {
      // alerrt ("siii"+IdExamen);
 	ajax=objetoAjax();
@@ -288,25 +314,26 @@ function LlenarComboMuestra1(IdExamen)
   	//muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
-	ajax.send("opcion="+opcion+"&IdExamen="+IdExamen);	 
-	ajax.onreadystatechange=function() 
+	ajax.send("opcion="+opcion+"&IdExamen="+IdExamen);
+	ajax.onreadystatechange=function()
 	{
-		
+
 		if (ajax.readyState == 4){//4 The request is complete
 			if (ajax.status == 200){//200 means no error.
-	  			respuesta = ajax.responseText;	
+	  			respuesta = ajax.responseText;
 				document.getElementById('divMuestra').innerHTML = respuesta;
-	 		}	  	
+				 llenararealizar(IdExamen)
+	 		}
    	 	}
    	}
 }
 
 function LlenarComboOrigen1(IdTipo){
-	
+
         //alert(IdTipo);
         ajax=objetoAjax();
 	opcion=9;
-        
+
         idexpediente=document.getElementById('txtIdexpediente').value;
 	idsolicitud=document.getElementById('txtidsolicitud').value;
 	ajax.open("POST", "../AgregarExamen/ctrAgregarExamen.php",true);
@@ -314,27 +341,27 @@ function LlenarComboOrigen1(IdTipo){
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
 	//alert(IdTipo);
-	ajax.send("opcion="+opcion+"&IdTipo="+IdTipo+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud);	 
-	ajax.onreadystatechange=function() 
+	ajax.send("opcion="+opcion+"&IdTipo="+IdTipo+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud);
+	ajax.onreadystatechange=function()
 	{
-		
+
 		if (ajax.readyState == 4){//4 The request is complete
 			if (ajax.status == 200){//200 means no error.
-	  			respuesta = ajax.responseText;	
+	  			respuesta = ajax.responseText;
 				document.getElementById('divOrigen').innerHTML = respuesta;
                                 Buscarfechamuestra(IdTipo);
-	 		}	  	
+	 		}
    	 	}
    	}
 
 }
 
 function LlenarComboOrigen1(IdTipo){
-	
+
         //alert(IdTipo);
         ajax=objetoAjax();
 	opcion=9;
-        
+
         idexpediente=document.getElementById('txtIdexpediente').value;
 	idsolicitud=document.getElementById('txtidsolicitud').value;
 	ajax.open("POST", "../AgregarExamen/ctrAgregarExamen.php",true);
@@ -342,16 +369,16 @@ function LlenarComboOrigen1(IdTipo){
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
 	//alert(IdTipo);
-	ajax.send("opcion="+opcion+"&IdTipo="+IdTipo+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud);	 
-	ajax.onreadystatechange=function() 
+	ajax.send("opcion="+opcion+"&IdTipo="+IdTipo+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud);
+	ajax.onreadystatechange=function()
 	{
-		
+
 		if (ajax.readyState == 4){//4 The request is complete
 			if (ajax.status == 200){//200 means no error.
-	  			respuesta = ajax.responseText;	
+	  			respuesta = ajax.responseText;
 				document.getElementById('divOrigen').innerHTML = respuesta;
                                 Buscarfechamuestra(IdTipo);
-	 		}	  	
+	 		}
    	 	}
    	}
 
@@ -365,20 +392,20 @@ function LlenarComboEstablecimiento(idtipoesta)
   	//muy importante este encabezado ya que hacemos uso de un formulario
   	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
   	//enviando los valores
-	ajax.send("opcion="+opcion+"&idtipoesta="+idtipoesta);	
-	ajax.onreadystatechange=function() 
+	ajax.send("opcion="+opcion+"&idtipoesta="+idtipoesta);
+	ajax.onreadystatechange=function()
 	{
-		
+
 		if (ajax.readyState == 4){//4 The request is complete
 			if (ajax.status == 200){//200 means no error.
-				respuesta = ajax.responseText;	
+				respuesta = ajax.responseText;
 				// alert (respuesta)
 				document.getElementById('divEstablecimiento').innerHTML = respuesta;
                                  $("#cmbEstablecimiento").select2({
                                  allowClear: true,
                                  dropdownAutoWidth: true
                 });
-			}	  	
+			}
 		}
    	}
 }
@@ -394,16 +421,16 @@ function Buscarfechamuestra(IdTipo)
   	//muy importante este encabezado ya que hacemos uso de un formulario
   	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
   	//enviando los valores
-	ajax.send("opcion="+opcion+"&IdTipo="+IdTipo+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud+"&fecharecep="+fecharecep);	
-	ajax.onreadystatechange=function() 
+	ajax.send("opcion="+opcion+"&IdTipo="+IdTipo+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud+"&fecharecep="+fecharecep);
+	ajax.onreadystatechange=function()
 	{
             if (ajax.readyState == 4){//4 The request is complete
 		if (ajax.status == 200){//200 means no error.
-                    respuesta = ajax.responseText;	
+                    respuesta = ajax.responseText;
 				// alert (respuesta)
                     document.getElementById('divfechatoma').innerHTML = respuesta;
                      classdatepick();
-		}	  	
+		}
             }
    	}
 }
@@ -416,15 +443,15 @@ function LlenarComboServicio(IdServicio)
 	//muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
-	ajax.send("opcion="+opcion+"&IdServicio="+IdServicio);	 
-	ajax.onreadystatechange=function() 
+	ajax.send("opcion="+opcion+"&IdServicio="+IdServicio);
+	ajax.onreadystatechange=function()
 	{
-		
+
 		if (ajax.readyState == 4){//4 The request is complete
 			if (ajax.status == 200){//200 means no error.
-	  			respuesta = ajax.responseText;	
+	  			respuesta = ajax.responseText;
 				document.getElementById('divsubserv').innerHTML = respuesta;
-	 		}	  	
+	 		}
    	 	}
    	}
 }
@@ -442,8 +469,8 @@ function MostrarDatos(posicion)
 		CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento,fecharecepcion);
  }
 
- 
- 
+
+
 
 function imprimiretiquetas()
 {//cambiar imprimir  etiquetas1.php  por imprimir.php
@@ -452,7 +479,7 @@ function imprimiretiquetas()
 	//alert idexpediente;
 	ventana_secundaria = window.open("etiquetas.php?var1="+idexpediente+
 	"&var2="+idsolicitud,"etiquetas","width=500,height=600,menubar=no,location=no,scrollbars=yes") ;
-		
+
 }
 
 function GuardarExamen(cerrar)
@@ -472,29 +499,31 @@ function GuardarExamen(cerrar)
                 OrigenMuestra=document.getElementById('cmbOrigen').value;
                 fechatomamuestra=document.getElementById('txttomamuestra').value;
                 idarea=document.getElementById('cmbArea').value;
+                idsuministrante=document.getElementById('cmbSuministrante').value;
              //   alert(idarea);
                // alert(tipoMuestra+"**"+OrigenMuestra+'**'+idsolicitud+"%%"+IdEmpleado+"%%"+idsoli+'//'+idExamen+'**'+IdEstab);
 		//alert(idsolicitud+"%%"+IdEmpleado+"%%"+tipoMuestra);
 		ajax.open("POST", "../AgregarExamen/ctrAgregarExamen.php",true);
     //alert(IdEmpleado);
-    
-    
+
+
 		//muy importante este encabezado ya que hacemos uso de un formulario
 		ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores
 		ajax.send("opcion="+opcion+"&idsolicitud="+idsolicitud+"&idExamen="+idExamen+"&indicacion="+escape(indicacion)+"&tipoMuestra="+
 		tipoMuestra+"&Observacion="+escape(Observacion)+"&IdEmpleado="+IdEmpleado+"&IdEstab="+IdEstab+"&OrigenMuestra="+OrigenMuestra+
-                "&idsoli="+idsoli+"&fechatomamuestra="+fechatomamuestra+"&idarea="+idarea);
-		ajax.onreadystatechange=function() 
+                "&idsoli="+idsoli+"&fechatomamuestra="+fechatomamuestra+"&idarea="+idarea+"&idsuministrante="+idsuministrante);
+		ajax.onreadystatechange=function()
 		{
-			if (ajax.readyState==4) 
+			if (ajax.readyState==4)
 			{	if (ajax.status == 200)
 				{  //mostrar los nuevos registros en esta capa
-                                    
+
 				//document.getElementById('otrospace').innerHTML=ajax.responseText;
                                         //CargarDatosFormulario(idexpediente,idsolicitud,idestablecimiento)
                                        $("#cmbArea").val(0);
                                        $("#cmbExamen").val(0);
+                                       $("#cmbMuestra").val(0);
                                        $("#cmbMuestra").val(0);
                                        var opt_sel = $('#cmbOrigen option:selected');
                                        opt_sel.val(0);
@@ -502,7 +531,8 @@ function GuardarExamen(cerrar)
                                        $("#txttomamuestra").val('');
                                        $("#txtindicacion").val('');
                                        $("#txtObservacion").val('');
-                                       if (cerrar==0){                                          
+                                       $("#arealizar").hide();
+                                       if (cerrar==0){
                                           alert(ajax.responseText);
                                           window.close();
                                       }
@@ -512,8 +542,8 @@ function GuardarExamen(cerrar)
                                 }
 		     }
 		}
-		//idrecepcion	
-	
+		//idrecepcion
+
 }
 
 function Cerrar(){
@@ -528,7 +558,7 @@ fecharecepcion=document.frmDatos.fecharecepcion.value;
 //idestablecimiento=document.frmDatos.idestablecimiento.value;
 //alert (fecharecepcion)
 ventana_secundaria = window.open("SolicitudEstudiosPaciente.php?var1="+idexpediente+
-  "&var2="+idsolicitud+"&var3="+idestablecimiento+"&var4="+fecharecepcion,"solicitud","width=800,height=700,menubar=no,location=no,scrollbars=yes"); 
+  "&var2="+idsolicitud+"&var3="+idestablecimiento+"&var4="+fecharecepcion,"solicitud","width=800,height=700,menubar=no,location=no,scrollbars=yes");
 }
 
 function Imprimir1(){

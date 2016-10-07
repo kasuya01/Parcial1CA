@@ -26,12 +26,30 @@
             $Solicitud=$SolicitudLab->CantiMuestra($IdExamen);
             $cant= pg_num_rows($Solicitud);
 
+            $Suministrante=$SolicitudLab->CantiSuministrante($IdExamen);
+            $cant_sumi= pg_num_rows($Suministrante);
+
            // echo 'cant:'.$cant;
 	   // $Solicitud=$SolicitudLab->MostrarMuestra($IdExamen);
           //  $sol=  pg_fetch_array($Solicitud);
+          if ($cant_sumi>1){
+              echo "<strong><font color='red'>Realizar:&nbsp;&nbsp;&nbsp;&nbsp;  </font></strong>";
+              echo "<select name= 'sumi_".$IdExamen."' id= 'sumi_".$IdExamen."' style='width:140px' class='Muestra' >";
+              echo '<option value="0"> Seleccione forma de realizacion</option>';
+              while($Respuesta= pg_fetch_array($Suministrante)) {
+                  $idsumi=$Respuesta['idsumi'];
+                  $suministrante=$Respuesta['suministrante'];
+                  echo '<option value= "'.$idsumi.'">'.$suministrante.'</option>';
+          }
+      }
+          else{
+              $Respuesta = pg_fetch_array($Suministrante);
+              echo "<input type='hidden' value='".$Respuesta["idsumi"]."' name='sumi_".$IdExamen."' id='sumi_".$IdExamen."'>";
+              //echo "<input type='hidden' value='".$cant_sumi."' name='sumi_".$IdExamen."' id='sumi_".$IdExamen."'>";
+
+          }
 
             if ($cant>1){
-               // if ($cant>0){
                     echo "<strong><font color='red'>Tipo de Muestra:&nbsp;&nbsp;&nbsp;&nbsp;  </font></strong>";
                     echo "<select name= 'M".$IdExamen."' Id= 'M".$IdExamen."' style='width:140px' class='Muestra' onchange='MostrarOrigen(this.value,\"".$IdExamen."\");'>";
                     echo '<option value="0"> Seleccione una Muestra</option>';
@@ -57,6 +75,7 @@
                 $Respuesta=  pg_fetch_array($Solicitud);
                 echo "<input type='hidden' value='".$Respuesta["idtipo"]."' name='M".$IdExamen."' id='M".$IdExamen."'> <input type='hidden' value='0' name='Origen".$IdExamen."' id='Origen".$IdExamen."'>";
             }
+
 
    break;
 
@@ -103,6 +122,7 @@
   	$Indicacion=$_GET["Indicacion"];
   	$IdTipoMuestra=$_GET["IdTipoMuestra"];
 	$IdOrigen=$_GET["IdOrigen"];
+    $idsuministrante=$_GET["idsuministrante"];
          if ($IdTipoMuestra==0){
             $IdTipoMuestra='NULL';
         }
@@ -116,9 +136,12 @@
         else{
             $id_expediente_referido='NULL';
         }
+        if ($idsuministrante==0){
+            $idsuministrante=1;
+        }
 
 
-	$sol=$SolicitudLab->GuardarDatos($IdHistorialClinico,$IdNumeroExp,$idexpediente,$FechaSolicitud,$IdUsuarioReg,$IdExamen,$Indicacion,$IdTipoMuestra,$IdOrigen,$IdEstablecimiento,$lugar, $id_expediente_referido);
+	$sol=$SolicitudLab->GuardarDatos($IdHistorialClinico,$IdNumeroExp,$idexpediente,$FechaSolicitud,$IdUsuarioReg,$IdExamen,$Indicacion,$IdTipoMuestra,$IdOrigen,$IdEstablecimiento,$lugar, $id_expediente_referido, $idsuministrante);
       // echo '<br\>Solicitud: -'.$sol.' -fin solicitud';
         return $sol;
 

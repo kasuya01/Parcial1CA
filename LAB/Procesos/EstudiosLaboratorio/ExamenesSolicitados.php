@@ -95,8 +95,16 @@ if ($IdCitaServApoyo == "") {
             echo " <form  method='post' name='Editar' id='Editar'>
                  <div class='panel panel-primary'>
                     <table  class='table table-hover table-bordered table-condensed table-white no-v-border'>
-                    <thead><tr><td colspan='8' style='background-color: #428bca; color:#ffffff; text-align:left' ><h4>Examenes Solicitados a Laboratorio</h4> </td></tr>
-                    <tr class='info'><td colspan='6' align='right' style=' vertical-align: middle'><h4><b>Solicitud Urgente:</b></h4></td><td style='vertical-align: middle'><input type='checkbox' id='tiposolgen' name='tiposolgen' data-switch-enabled='true' class='form height' onclick='SolicitudUrgente(" . $IdHistorialClinico . ", " . $IdSolicitudEstudio . ");'></td></tr>";
+                    <thead>
+                    <tr> <td colspan='9' style='background-color: #428bca; color:#ffffff; text-align:left' >
+                    <h4>Examenes Solicitados a Laboratorio</h4>
+                    </td></tr>
+                    <tr class='info'>
+                    <td colspan='7' align='right' style=' vertical-align: middle'>
+                    <h4><b>Solicitud Urgente:</b></h4>
+                    </td>
+                    <td style='vertical-align: middle'>
+                    <input type='checkbox' id='tiposolgen' name='tiposolgen' data-switch-enabled='true' class='form height' onclick='SolicitudUrgente(" . $IdHistorialClinico . ", " . $IdSolicitudEstudio . ");'></td></tr>";
 
 
             $Ejecutar2 = $Laboratorio->impresionessoli($IdHistorialClinico,
@@ -107,12 +115,14 @@ if ($IdCitaServApoyo == "") {
             } else {
                $check = "<input id='Imprimir' data-switch-enabled='true' type='checkbox'onclick='ImprimirResultados(" . $IdHistorialClinico . ", " . $IdSolicitudEstudio . ");'>";
             }
-            echo "<tr class='info'><td colspan='6' align='right' style=' vertical-align: middle'>  <h4><b>Resultado de Examenes Impresos [Pre-Operatorios]</b></h4> </td><td>".$check."</td></tr>";
+            echo "<tr class='info'><td colspan='7' align='right' style=' vertical-align: middle'>
+            <h4><b>Resultado de Examenes Impresos [Pre-Operatorios]</b></h4> </td><td>".$check."</td></tr>";
 
             echo "<tr><th style='vertical-align: middle !important'>C&oacute;digo</th>
                         <th style='vertical-align: middle'>Nombre Examen</th>
                         <th style='vertical-align: middle'>Tipo Muestra</th>
                         <th style='vertical-align: middle'>Origen Muestra</th>
+                        <th style='vertical-align: middle'>A Realizar</th>
                         <th style='vertical-align: middle'>Indicaci&oacute;n</th>
                         <th title='Seleccione la Fecha de toma de muestra igual para actualizar la de todas las pruebas.'>F. Toma Mx.<br/><input type='text' class='datepicker' id='fgentomamxgen' class='form-control height' name='fgentomamx'value='" . $fecha . "' onchange= \"valfechasolicita(this.value, 'fgentomamxgen".$k."'), updatealldates()\"  ></th>
                         <th style='vertical-align: middle'>Borrar</th>
@@ -126,6 +136,7 @@ if ($IdCitaServApoyo == "") {
                echo "<td>" . ($Respuesta["nombre_examen"]) . "</td>";
                echo "<td><font color='#084B8A'><b>" . ($Respuesta["tipomuestra"]) . "</b></font></td>";
                echo "<td><font color='#084B8A'><b>" . ($Respuesta["origenmuestra"]) . "</b></font></td>";
+               echo "<td><font color='#084B8A'><b>" . ($Respuesta["suministrante"]) . "</b></font></td>";
                echo "<td><input type='text' id='Indicacion" . $Respuesta['idexamen'] . "' name='Indicacion" . $Respuesta['idexamen'] . "'value='" . ($Respuesta["indicacion"]) . "'>";
                if ($Respuesta['f_tomamuestra']!=''){
                  $fecha= $Respuesta['f_tomamuestra'];
@@ -176,7 +187,7 @@ if ($IdCitaServApoyo == "") {
 //               $check = "<input id='Imprimir' type='checkbox'onclick='ImprimirResultados(" . $IdHistorialClinico . ", " . $IdSolicitudEstudio . ");'>";
 //            }
             //echo "<tr><td colspan='6' align='right'><br><h3><b>".$check."Resultado de Examenes Impresos [Pre-Operatorios]</b></h3> </td></tr></table><br>";
-            echo "<tr><td colspan='6'><br><b>Total de Examenes Solicitados:" . $i . "</b> </td></tr>"
+            echo "<tr><td colspan='7'><br><b>Total de Examenes Solicitados:" . $i . "</b> </td></tr>"
             . ""
             . "</tbody></table></div><br>";
 

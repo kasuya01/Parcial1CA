@@ -395,14 +395,23 @@ function MostrarDetalle(IdHistorialClinico){
                                    // console.log('NombreExamen: '+NombreExamen);
                                     Muestra='M'+ NombreExamen;
                                     Origen='Origen'+ NombreExamen;
+                                    Suministrante='sumi_'+ NombreExamen;
                                    // NombreMuestra=document.getElementById(Muestra).value;
                                     NombreMuestra=$('#'+Muestra).val();
+                                    NombreSuministrante=$('#'+Suministrante).val();
                                    // console.log('Muestra: '+Muestra+' Origen: '+Origen+' NombreMuestra: '+NombreMuestra)
                                    // alert (Muestra)
                                     cantselectmuest=$('#'+Muestra+' option').size();
+                                    cantselectsumi=$('#'+Suministrante+' option').size();
                                     //alert ('cantselectmuest:'+cantselectmuest+'  NombreMuestra:'+NombreMuestra)
                                     if (cantselectmuest>0 && NombreMuestra==0){
                                         alert ('Debe seleccionar los tipos de muestra de las pruebas seleccionadas, que lo requieran');
+                                        $('#Enviar').removeAttr('disabled')
+                                        return false;
+                                    }
+
+                                    if (cantselectsumi>0 && NombreSuministrante==0){
+                                        alert ('Debe seleccionar la forma o suministrante de realizar la prueba');
                                         $('#Enviar').removeAttr('disabled')
                                         return false;
                                     }
@@ -445,8 +454,8 @@ function MostrarDetalle(IdHistorialClinico){
 				}//On ready state
 			var Proceso='GuardarDatos';
                      //   alert(' Proceso '+Proceso+' IdHistorialClinico '+IdHistorialClinico+' IdNumeroExp '+IdNumeroExp+' FechaSolicitud '+FechaSolicitud+' IdUsuarioReg '+IdUsuarioReg+' IdExamen '+NombreExamen+' Indicacion '+Indicacion+' NombreMuestra '+NombreMuestra+' NombreOrigen '+NombreOrigen+'idexpediente:'+idexpediente+'IdEstablecimiento'+IdEstablecimiento+'lugar'+lugar);
-					// console.log(NombreExamen+' NE')
-		ajax2.open("GET",'Procesar.php?Proceso='+Proceso+'&IdHistorialClinico='+IdHistorialClinico+'&IdNumeroExp='+IdNumeroExp+'&idexpediente='+idexpediente+'&FechaSolicitud='+FechaSolicitud+'&IdUsuarioReg='+IdUsuarioReg+'&IdExamen='+NombreExamen+'&Indicacion='+Indicacion+'&IdTipoMuestra='+NombreMuestra+'&IdOrigen='+NombreOrigen,true);
+					// console.log(NombreSuministrante+' NS'+ ' idexamen: '+NombreExamen)
+		ajax2.open("GET",'Procesar.php?Proceso='+Proceso+'&IdHistorialClinico='+IdHistorialClinico+'&IdNumeroExp='+IdNumeroExp+'&idexpediente='+idexpediente+'&FechaSolicitud='+FechaSolicitud+'&IdUsuarioReg='+IdUsuarioReg+'&IdExamen='+NombreExamen+'&Indicacion='+Indicacion+'&IdTipoMuestra='+NombreMuestra+'&IdOrigen='+NombreOrigen+"&idsuministrante="+NombreSuministrante,true);
 //console.log('SE fue y regreso')
 				/*	ajax.onreadystatechange=function() {
 	if (ajax.readyState==4)

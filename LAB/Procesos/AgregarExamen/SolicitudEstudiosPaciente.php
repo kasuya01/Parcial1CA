@@ -12,8 +12,8 @@ $base_url  = $_SESSION['base_url'];
 
 ?>
 
-<?php 
-	$idexpediente=$_GET['var1'];	
+<?php
+	$idexpediente=$_GET['var1'];
 	$idsolicitud=$_GET['var2'];
 	$idestablecimiento=$_GET['var3'];
         $fecharecepcion=$_GET['var4'];
@@ -27,17 +27,17 @@ $base_url  = $_SESSION['base_url'];
 	//$rowEmp=pg_fetch_array($ConEmp);
 	//$CodEmpleado=$rowEmp[0];
 	//echo $CodEmpleado;
-	
+
 	$conEst=$obj->DatosEstablecimiento($idestablecimiento);
 	$rowEst = pg_fetch_array($conEst);
 	$tipo=$rowEst[0];
 	$nombrEstab=$rowEst[1];
 	$nomtipo=$rowEst[2];
-	
+
 	$consulta=$obj->DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar);
 	$row = pg_fetch_array($consulta);
-	
-	
+
+
 //valores de las consultas                        console.log(modalBody);
 
 	//obteniedo los datos generales de la solicitud
@@ -53,7 +53,7 @@ $base_url  = $_SESSION['base_url'];
 	$Estado=$row['Estado'];
 	$fechasolicitud=$row['FechaSolicitud'];
 	$FechaNac=$row['FechaNacimiento'];*/
-        
+
                 $idsolicitudPadre=$row[0];
 		$medico=$row['medico'];
 		$idempleadop=$row['idempleado'];
@@ -91,7 +91,7 @@ if ($banderacerrar==0){
 </head>
 <body >
    <?php
-  
+
 }//fin if $banderacerrar
 echo' <script language="JavaScript" type="text/javascript" src="../AgregarExamen/ajax_AgregarExamen.js"></script>';
    ?>
@@ -102,7 +102,7 @@ echo' <script language="JavaScript" type="text/javascript" src="../AgregarExamen
 			<tr>
 
 				  <td width="6%" class="StormyWeatherFieldCaptionTD" >Establecimiento Solicitante</td>
-				  <td width="12%" class="StormyWeatherDataTD" class="height" style="height: 25px"><?php echo $nombrEstab;?></td> 
+				  <td width="12%" class="StormyWeatherDataTD" class="height" style="height: 25px"><?php echo $nombrEstab;?></td>
 
 
                                   <input type="hidden" name="txtidsolicitud" id="txtidsolicitud" value="<?php echo $idsolicitud ?>"/>
@@ -111,7 +111,7 @@ echo' <script language="JavaScript" type="text/javascript" src="../AgregarExamen
                                   <input type="hidden" name="txtIdEstablecimiento" id="txtIdEstablecimiento" value="<?php echo $idestablecimiento ?>"/>
                                   <input type="hidden" name="txtIdexpediente" id="txtIdexpediente" value="<?php echo $idexpediente ?>"/>
                                   <input type="hidden" name="txtfecharecep" id="txtfecharecep" value="<?php echo  $fecharecepcion ?>"/>
-			</tr>	   
+			</tr>
 		 	<tr>
 
 				  <td width="6%" class="StormyWeatherFieldCaptionTD" >Procedencia</td>
@@ -122,18 +122,18 @@ echo' <script language="JavaScript" type="text/javascript" src="../AgregarExamen
 				  <td width="6%" class="StormyWeatherFieldCaptionTD" >Servicio</td>
 				  <td width="12%" class="StormyWeatherDataTD" style="height: 25px"><?php echo $origen;?></td>
 
-                       
+
 				  </tr>
-				
+
 			<tr>
-		        <td width="6%" class="StormyWeatherFieldCaptionTD" >NEC</td> 
+		        <td width="6%" class="StormyWeatherFieldCaptionTD" >NEC</td>
                         <td width="12%" class="StormyWeatherDataTD" style="height: 25px"><?php echo $idexpediente; ?>
 			</tr>
 			<tr>
 		        <td width="6%" class="StormyWeatherFieldCaptionTD">Área</td>
 		        <td width="12%" class="StormyWeatherDataTD">
                            <select id="cmbArea" name="cmbArea" size="1"  onChange="LlenarComboExamen(this.value)" style="width:405px" class="form-control height">
-                               <option value="0" >--Seleccione Área--</option> 
+                               <option value="0" >--Seleccione Área--</option>
                                     <?php
 				include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
 				$objeareas=new clsLab_Areas;
@@ -145,17 +145,17 @@ echo' <script language="JavaScript" type="text/javascript" src="../AgregarExamen
 				?>
                             </select></td>
 			</tr>
-                        
+
 			<tr>
                             <td width="6%" class="StormyWeatherFieldCaptionTD">Examen</td>
                             <td width="12%" class="StormyWeatherDataTD">
                                 <div id="divExamen">
-                                    <select id="cmbExamen" name="cmbExamen" size="1" onchange="LlenarComboMuestra1(this.value)" style="width:405px" class="form-control height">
+                                    <select id="cmbExamen" name="cmbExamen" size="1" onchange="LlenarComboMuestra1(this.value); llenararealizar(this.value);" style="width:405px" class="form-control height">
 					<option value="0" >--Seleccione Examen--</option>
                                     </select>
-				</div>	
+				</div>
                             </td>
-			</tr>	
+			</tr>
 			<tr>
 				<td width="6%" class="StormyWeatherFieldCaptionTD">Tipo Muestra</td>
 		        <td width="12%" class="StormyWeatherDataTD">
@@ -163,7 +163,7 @@ echo' <script language="JavaScript" type="text/javascript" src="../AgregarExamen
 						<select id="cmbMuestra" name="cmbMuestra" size="1" onchange="LlenarComboOrigen1(this.value)" style="width:405px" class="form-control height">
 							<option value="0" >--Seleccione Tipo de Muestra--</option>
 						</select>
-					</div>	
+					</div>
 				</td>
 			</tr>
 			<tr>
@@ -176,12 +176,22 @@ echo' <script language="JavaScript" type="text/javascript" src="../AgregarExamen
 					</div>
 			    </td>
 			</tr>
+			<tr>
                         <td class="StormyWeatherFieldCaptionTD">*Fecha Toma de Muestra</td>
                             <td class="StormyWeatherDataTD">
                                 <div id="divfechatoma">
-                                
-                                </div>    
+									<input type="text" style="width:405px" class="datepicker form-control height" disabled name="txttomamuestra" id="txttomamuestra" size="15" />
+                                </div>
                             </td>
+			</tr>
+			<tr id="arealizar" style="display:none">
+				<td width="8%" class="StormyWeatherFieldCaptionTD">A realizar</td>
+				<td width="12%" class="StormyWeatherDataTD">
+				<div id="divarealizar">
+
+				</div>
+				</td>
+			</tr>
 			<tr>
 
 				<td width="6%" class="StormyWeatherFieldCaptionTD">Indicación</td>
@@ -198,12 +208,12 @@ echo' <script language="JavaScript" type="text/javascript" src="../AgregarExamen
                                         <button type='button' align="center" class='btn btn-primary' id='buscarsolicitud' onclick='GuardarExamen(<?php echo $banderacerrar;?>); '><span class='glyphicon glyphicon-floppy-save'></span> Guardar Cambios</button>
                             </td>
                         </tr>
-			
-		</table>	
+
+		</table>
 	</form>
 </div>
 
-   <?php 
+   <?php
    if ($banderacerrar==0){
                 ?>
 </body>
