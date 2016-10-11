@@ -1719,7 +1719,8 @@ function obtenerDatosGenerales($idHistorialClinico, $idDatoReferencia, $idEstabl
                        CASE WHEN t03.id IS NOT NULL
                             THEN t11.nombreempleado
                             ELSE t20.nombreempleado
-                       END AS nombre_empleado
+                       END AS nombre_empleado,
+					   t22.tipo as tipoempleado
                 FROM sec_solicitudestudios          t01
                 INNER JOIN ctl_establecimiento     t02 ON (t02.id = t01.id_establecimiento_externo)
                 -- Historial Clinico
@@ -1743,6 +1744,7 @@ function obtenerDatosGenerales($idHistorialClinico, $idDatoReferencia, $idEstabl
                 LEFT  JOIN ctl_area_atencion       t19 ON (t19.id = t18.id_area_atencion)
                 LEFT  JOIN mnt_empleado            t20 ON (t20.id = t12.id_empleado)
                 INNER JOIN lab_recepcionmuestra	   t21 ON(t01.id=t21.idsolicitudestudio)
+				left join mnt_tipo_empleado 	   t22 on (t22.id=t20.id_tipo_empleado or t22.id=t11.id_tipo_empleado)
                 WHERE CASE WHEN $idHistorialClinico::integer != 0
                         THEN t03.id = $idHistorialClinico
                         ELSE t12.id = $idDatoReferencia

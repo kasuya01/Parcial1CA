@@ -98,6 +98,7 @@ var $HREF;
                    $nombre_paciente        = $row['nombre_paciente'];
                    $fecha_solicitud        = $row['fecha_solicitud'];
                    $fecha_recepcion        = $row['fecha_recepcion'];
+                   $tipoempleado           = $row['tipoempleado'];
 
                 //Inicio Datos Generales
 	//	$this->Cell(25);
@@ -136,7 +137,7 @@ var $HREF;
 		$this->Cell(45,5,$fecha_recepcion,0,1,'L');
                 $this->SetFont('Arial','B',9);
 		//$this->SetFillColor(224,235,255);
-                $this->Cell(40,5,utf8_decode('Médico'),0,0,'L', true);
+                $this->Cell(40,5,utf8_decode('Indicado por '. $tipoempleado),0,0,'L', true);
 		 $this->SetFont('Arial','',9);
 		$this->Cell(65,5,utf8_decode($nombre_empleado),0,1,'L');
 

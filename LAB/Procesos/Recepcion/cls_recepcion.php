@@ -4,16 +4,16 @@ include_once("../../../Conexion/ConexionBD.php");
 
 class clsRecepcion {
 
-    //constructor	
+    //constructor
     function clsRecepcion() {
-        
+
     }
 
     function DatosEstablecimiento($lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $conNom = "SELECT mnt_establecimiento.IdTipoEstablecimiento,Nombre,NombreTipoEstablecimiento 
-			    FROM mnt_establecimiento 
+            $conNom = "SELECT mnt_establecimiento.IdTipoEstablecimiento,Nombre,NombreTipoEstablecimiento
+			    FROM mnt_establecimiento
 			    INNER JOIN mnt_tipoestablecimiento ON mnt_establecimiento.IdTipoEstablecimiento= mnt_tipoestablecimiento.IdTipoEstablecimiento
 			    WHERE IdEstablecimiento=$lugar";
             $resul = mysql_query($conNom) or die('La consulta fall&oacute;: ' . mysql_error());
@@ -24,11 +24,11 @@ class clsRecepcion {
     function LlenarCmbEstablecimiento($Idtipo, $lugar, $idext) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $sqlText = "SELECT e.id as idestablecimiento,nombre 
-                FROM ctl_establecimiento e 
+            $sqlText = "SELECT e.id as idestablecimiento,nombre
+                FROM ctl_establecimiento e
                 WHERE id_tipo_establecimiento=$Idtipo
                 AND case  $idext
-                    when 0 then e.id = $lugar 
+                    when 0 then e.id = $lugar
                     else e.id= $idext
                     end
                 ORDER BY nombre;";
@@ -48,7 +48,7 @@ class clsRecepcion {
            // $sqlText = "select id,nombre from ctl_establecimiento where id_tipo_establecimiento not in (12,13,29,28) order by nombre;";
             $sqlText = "
 select t01.id, case when t02.nombre ilike '%isss%' then (t01.nombre||' - ' ||t02.nombre)
-		else t01.nombre end as nombre, id_tipo_establecimiento 
+		else t01.nombre end as nombre, id_tipo_establecimiento
 from ctl_establecimiento 	t01
 join ctl_tipo_establecimiento 	t02 on (t02.id=t01.id_tipo_establecimiento)
 where id_tipo_establecimiento not in (12,13,29,28) order by id_tipo_establecimiento,  t01.nombre;";
@@ -78,32 +78,32 @@ where id_tipo_establecimiento not in (12,13,29,28) order by id_tipo_establecimie
                                 THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
                                 ELSE cat.nombre
                                 END
-                        END AS servicio 
-                        from ctl_atencion cat 
+                        END AS servicio
+                        from ctl_atencion cat
                         join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
                         join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
                         LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id
                         LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id
                         where id_area_atencion=$IdServ
-                        and mnt_3.id_establecimiento=$lugar 
+                        and mnt_3.id_establecimiento=$lugar
                         order by 2";*/
               $sqlText="with tbl_servicio as (select mnt_3.id,
                         CASE
                         WHEN mnt_3.nombre_ambiente IS NOT NULL
-                        THEN  	
+                        THEN
                                 CASE WHEN id_servicio_externo_estab IS NOT NULL
                                         THEN mnt_ser.abreviatura ||'-->' ||mnt_3.nombre_ambiente
                                         ELSE mnt_3.nombre_ambiente
                                 END
 
                         ELSE
-                        CASE WHEN id_servicio_externo_estab IS NOT NULL 
+                        CASE WHEN id_servicio_externo_estab IS NOT NULL
                                 THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
                              WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=cat.nombre)
                                 THEN cmo.nombre||'-'||cat.nombre
                         END
-                        END AS servicio 
-                        from ctl_atencion cat 
+                        END AS servicio
+                        from ctl_atencion cat
                         join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
                         join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
                         JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion=1)
@@ -115,73 +115,74 @@ where id_tipo_establecimiento not in (12,13,29,28) order by id_tipo_establecimie
                         and mnt_3.id_establecimiento=$lugar
                         order by 2)
                         select id, servicio from tbl_servicio where servicio is not null;";
-          
-            $dt = pg_query($sqlText) ;            
+
+            $dt = pg_query($sqlText) ;
             if  (!$dt)
                 return false;
             else
                 return $dt;
         }
-        
+
     }
 
      function BuscarPorcedencia($idSubEsp){
           $con = new ConexionBD;
         if ($con->conectar() == true) {
-            
+
            $sql="SELECT mnt_area_mod_estab.id_area_atencion from mnt_aten_area_mod_estab
-                      INNER JOIN mnt_area_mod_estab on mnt_area_mod_estab.id= mnt_aten_area_mod_estab.id_area_mod_estab 
+                      INNER JOIN mnt_area_mod_estab on mnt_area_mod_estab.id= mnt_aten_area_mod_estab.id_area_mod_estab
                       WHERE mnt_aten_area_mod_estab.id=$idSubEsp";
              $dt = pg_query($sql) ;
-            
+
             if  (!$dt)
                 return false;
             else
                 return $dt;
         }
-         
+
      }
     function LlenarCmbMed($idSubEsp, $lugar) {//echo $IdSub;
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-    
-           $sqlText="select mem.id as idemp, nombreempleado as nombre, idempleado  
-from mnt_empleado_especialidad_estab empest
-join mnt_empleado mem on (empest.id_empleado=mem.id)
-where id_aten_area_mod_estab=$idSubEsp";
+
+           $sqlText="select distinct mem.id as idemp, nombreempleado as nombre, idempleado
+                    from mnt_empleado_especialidad_estab empest
+                    join mnt_empleado mem on (empest.id_empleado=mem.id)
+                    where id_aten_area_mod_estab=$idSubEsp
+                    or id_tipo_empleado=2";
             $dt = pg_query($sqlText) ;
-            
+
             if  (!$dt)
                 return false;
             else
                 return $dt;
-            
+
         }
     }
 
     function LlenarCmbMedTodos($lugar) {//echo $IdSub;
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-    
-         $sqlText="select DISTINCT (mem.id),mem.id as idemp ,nombreempleado as nombre, idempleado  
+
+         $sqlText="select DISTINCT (mem.id),mem.id as idemp ,nombreempleado as nombre, idempleado
                     from mnt_empleado_especialidad_estab empest
 join mnt_empleado mem on (empest.id_empleado=mem.id)
 where mem.id_tipo_empleado=2 OR mem.id_tipo_empleado=4 order by nombre ";
             $dt = pg_query($sqlText) ;
-            
+
             if  (!$dt)
                 return false;
             else
                 return $dt;
-            
+
         }
     }
-    
+
     function LlenarCmbMedicos($lugar) {//echo $IdSub;
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $sqlText = "SELECT mnt_empleados.IdEmpleado,mnt_empleados.NombreEmpleado 
-			   FROM mnt_empleados 
+            $sqlText = "SELECT mnt_empleados.IdEmpleado,mnt_empleados.NombreEmpleado
+			   FROM mnt_empleados
 			   WHERE  mnt_empleados.IdEstablecimiento=$lugar  AND IdTipoEmpleado='MED' AND IdEmpleado<>'MED0000'
 			   ORDER BY mnt_empleados.NombreEmpleado
 ";
@@ -197,7 +198,7 @@ where mem.id_tipo_empleado=2 OR mem.id_tipo_empleado=4 order by nombre ";
             $dt = mysql_query($sqlText) or die('La consulta fall&oacute;:' . mysql_error());
         }
         return $dt;*/
-            	$sqlText= "select id_atencion 
+            	$sqlText= "select id_atencion
 from mnt_aten_area_mod_estab mnt_3
 where id=$idSubEsp";
 		$dt = pg_query($sqlText);
@@ -222,9 +223,9 @@ where id=$idSubEsp";
     function LlenarCmbMuestra($IdEstudio) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $sqlText = "SELECT  TipoMuestra, lab_tipomuestraporexamen.IdTipoMuestra 
-			   FROM lab_tipomuestraporexamen  
-			   INNER JOIN lab_tipomuestra ON lab_tipomuestra.IdTipoMuestra=lab_tipomuestraporexamen.IdTipoMuestra 
+            $sqlText = "SELECT  TipoMuestra, lab_tipomuestraporexamen.IdTipoMuestra
+			   FROM lab_tipomuestraporexamen
+			   INNER JOIN lab_tipomuestra ON lab_tipomuestra.IdTipoMuestra=lab_tipomuestraporexamen.IdTipoMuestra
 			   WHERE lab_tipomuestraporexamen.idexamen='$IdEstudio' ORDER BY TipoMuestra";
             $dt = mysql_query($sqlText) or die('La consulta fall&oacute;:' . mysql_error());
         }
@@ -234,7 +235,7 @@ where id=$idSubEsp";
     function LlenarCmbArea($IdArea, $lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            $sqlText = "SELECT nombreexamen,lab_examenes.IdExamen FROM lab_examenes 
+            $sqlText = "SELECT nombreexamen,lab_examenes.IdExamen FROM lab_examenes
 INNER JOIN lab_examenesxestablecimiento ON lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
 WHERE IdArea='$IdArea'AND  lab_examenesxestablecimiento.Condicion='H'  AND IdEstablecimiento=$lugar ORDER BY nombreexamen ";
             $dt = mysql_query($sqlText) or die('La consulta fall&oacute;:' . mysql_error());
@@ -322,34 +323,34 @@ WHERE IdArea='$IdArea'AND  lab_examenesxestablecimiento.Condicion='H'  AND IdEst
             //    echo 'IF';
             $query_Search = "SELECT e.numero
 , (primer_apellido||' '||coalesce(segundo_apellido,'' )||' '||coalesce(apellido_casada,'')
-||', '||primer_nombre||' '||coalesce(segundo_nombre,'')||' '||coalesce(tercer_nombre,'')) as nombre 
-FROM mnt_paciente d 
-INNER JOIN mnt_expediente e ON e.id_paciente=d.id 
+||', '||primer_nombre||' '||coalesce(segundo_nombre,'')||' '||coalesce(tercer_nombre,'')) as nombre
+FROM mnt_paciente d
+INNER JOIN mnt_expediente e ON e.id_paciente=d.id
 WHERE e.numero ='$nec'";
             /* $query_Search= 	"SELECT e.idnumeroexp, if(d.SegundoApellido IS NULL and d.SegundoNombre IS NULL, CONCAT(d.PrimerApellido,', ',d.PrimerNombre),
               IF(d.SegundoApellido IS NOT NULL and d.SegundoNombre IS NOT NULL,CONCAT(d.PrimerApellido,' ',d.SegundoApellido,', ',d.PrimerNombre,' ',d.SegundoNombre),
               IF(d.SegundoNombre IS NULL, CONCAT(d.PrimerApellido,' ',d.SegundoApellido,', ',d.PrimerNombre),CONCAT(d.PrimerApellido,', ',d.PrimerNombre,' ',d.SegundoNombre)))) AS Nombre
               FROM mnt_datospaciente d INNER JOIN mnt_expediente AS e ON e.idpaciente=d.idpaciente WHERE e.idnumeroexp ='$nec'"; */
             $query = pg_query($query_Search);
-            //si no 
+            //si no
             }
             /*****EStE ELSE SIII solo para ver que pasa*////
             else{
               // echo 'Else';
-             $query_Search="select e.numero, (primer_apellido||' '||coalesce(segundo_apellido,'' )||' '||coalesce(apellido_casada,'')||', '||primer_nombre||' '||coalesce(segundo_nombre,'')||' '||coalesce(tercer_nombre,'')) as nombre, id_establecimiento_origen  
+             $query_Search="select e.numero, (primer_apellido||' '||coalesce(segundo_apellido,'' )||' '||coalesce(apellido_casada,'')||', '||primer_nombre||' '||coalesce(segundo_nombre,'')||' '||coalesce(tercer_nombre,'')) as nombre, id_establecimiento_origen
                             from mnt_paciente_referido d
                             join mnt_expediente_referido e on (d.id = e.id_referido)
-                            where e.numero= '$nec' 
+                            where e.numero= '$nec'
                             and id_establecimiento_origen=$idext;";
-             
+
              $query=  pg_query($query_Search);
             }
            /* if (pg_num_rows($query)==0){
                 $query_Search = "SELECT e.numero
 , (primer_apellido||' '||coalesce(segundo_apellido,'' )||' '||coalesce(apellido_casada,'')
-||', '||primer_nombre||' '||coalesce(segundo_nombre,'')||' '||coalesce(tercer_nombre,'')) as nombre 
-FROM mnt_paciente d 
-INNER JOIN mnt_expediente e ON e.id_paciente=d.id 
+||', '||primer_nombre||' '||coalesce(segundo_nombre,'')||' '||coalesce(tercer_nombre,'')) as nombre
+FROM mnt_paciente d
+INNER JOIN mnt_expediente e ON e.id_paciente=d.id
 WHERE e.numero ='$nec'";
             /* $query_Search= 	"SELECT e.idnumeroexp, if(d.SegundoApellido IS NULL and d.SegundoNombre IS NULL, CONCAT(d.PrimerApellido,', ',d.PrimerNombre),
               IF(d.SegundoApellido IS NOT NULL and d.SegundoNombre IS NOT NULL,CONCAT(d.PrimerApellido,' ',d.SegundoApellido,', ',d.PrimerNombre,' ',d.SegundoNombre),
@@ -379,19 +380,19 @@ WHERE e.numero ='$nec'";
                     INNER JOIN mnt_expediente e ON e.id_paciente = d.id
                     INNER JOIN ctl_sexo s on (d.id_sexo=s.id)
                     WHERE e.numero ='$nec'";*/
-            // echo $query_Search;        
+            // echo $query_Search;
             $query_Search="
                 with tbl_datos_paciente as(
-                select e.id as idexpediente, e.numero as numero, 
-                concat_ws (' ',d.primer_apellido,d.segundo_apellido, d.apellido_casada, d.primer_nombre, d.segundo_nombre, d.tercer_nombre) as nombre,  
+                select e.id as idexpediente, e.numero as numero,
+                concat_ws (' ',d.primer_apellido,d.segundo_apellido, d.apellido_casada, d.primer_nombre, d.segundo_nombre, d.tercer_nombre) as nombre,
                 s.nombre AS sexoconv, extract(year from age(fecha_nacimiento)) AS Edad, conocido_por,id_sexo, id_establecimiento as idestab
-                FROM mnt_paciente d 
-                JOIN mnt_expediente e ON (d.id=e.id_paciente) 
+                FROM mnt_paciente d
+                JOIN mnt_expediente e ON (d.id=e.id_paciente)
                 JOIN ctl_sexo s on (s.id=d.id_sexo)
                 where e.id_establecimiento=$idext
-                union 
-                select e.id as idexpediente, e.numero as numero, 
-                concat_ws (' ',d.primer_apellido,d.segundo_apellido, d.apellido_casada, d.primer_nombre, d.segundo_nombre, d.tercer_nombre) as nombre, 
+                union
+                select e.id as idexpediente, e.numero as numero,
+                concat_ws (' ',d.primer_apellido,d.segundo_apellido, d.apellido_casada, d.primer_nombre, d.segundo_nombre, d.tercer_nombre) as nombre,
                 s.nombre AS sexoconv, extract(year from age(fecha_nacimiento)) AS Edad,'' as conocido_por,  id_sexo, id_establecimiento_origen as idestab
                 FROM mnt_paciente_referido d
                 JOIN mnt_expediente_referido e on (d.id= e.id_referido)
@@ -445,7 +446,7 @@ WHERE e.numero ='$nec'";
         }
         return $totalRegs;
     }
-    
+
     function VerificarExisteSolicitud($IdSubServicio,$IdEmpleado,$FechaConsulta,$idexpediente,$IdEstabExt,$lugar){
         $con = new ConexionBD;
         if ($con->conectar() == true) {
@@ -455,9 +456,9 @@ WHERE e.numero ='$nec'";
                           INNER JOIN sec_solicitudestudios ON sec_solicitudestudios.id_historial_clinico= sec_historial_clinico.id
                           INNER JOIN ctl_estado_servicio_diagnostico ON ctl_estado_servicio_diagnostico.id = sec_solicitudestudios.estado
                           LEFT  JOIN cit_citas_serviciodeapoyo ON (sec_solicitudestudios.id = cit_citas_serviciodeapoyo.id_solicitudestudios)
-                          WHERE sec_historial_clinico.idsubservicio=$IdSubServicio AND sec_historial_clinico.id_empleado= $IdEmpleado 
+                          WHERE sec_historial_clinico.idsubservicio=$IdSubServicio AND sec_historial_clinico.id_empleado= $IdEmpleado
                           AND sec_historial_clinico.fechaconsulta='$FechaConsulta' AND sec_solicitudestudios.id_expediente=$idexpediente";
-            $result = pg_query($SQL); 
+            $result = pg_query($SQL);
 
         }
         if (!$result) {
@@ -497,16 +498,16 @@ WHERE e.numero ='$nec'";
 //                join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
 //                where mame.id_establecimiento=$idestablecimiento";
            $sql="SELECT mnt_area_mod_estab.id as codigo,
-               CASE WHEN id_servicio_externo_estab IS NOT NULL 
+               CASE WHEN id_servicio_externo_estab IS NOT NULL
                        THEN mnt_servicio_externo.abreviatura ||'--'  || ctl_area_atencion.nombre
-                       ELSE       ctl_modalidad.nombre ||'--' || ctl_area_atencion.nombre 
+                       ELSE       ctl_modalidad.nombre ||'--' || ctl_area_atencion.nombre
                        END as nombre
                FROM mnt_area_mod_estab
                INNER JOIN  ctl_area_atencion  on  ctl_area_atencion.id = mnt_area_mod_estab.id_area_atencion
                INNER JOIN  mnt_modalidad_establecimiento ON mnt_modalidad_establecimiento.id=mnt_area_mod_estab.id_modalidad_estab
                INNER JOIN ctl_modalidad ON ctl_modalidad.id = mnt_modalidad_establecimiento.id_modalidad
-               LEFT JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab.id_servicio_externo_estab) 
-               LEFT JOIN mnt_servicio_externo ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo) 
+               LEFT JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab.id_servicio_externo_estab)
+               LEFT JOIN mnt_servicio_externo ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo)
                WHERE mnt_area_mod_estab.id_establecimiento=$idestablecimiento
                ORDER by mnt_area_mod_estab.id,ctl_modalidad.nombre,ctl_area_atencion.nombre";
             $result = pg_query($sql);
@@ -517,7 +518,7 @@ WHERE e.numero ='$nec'";
             }
         }
     }//fin tipoestservicio
-   
+
 }
 
 //clase
