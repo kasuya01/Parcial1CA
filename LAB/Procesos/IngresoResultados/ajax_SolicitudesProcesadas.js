@@ -2859,6 +2859,60 @@ function reloaddetallemodal(idsolicitud){
   content=detallemodaladdexam(idsolicitud);
   jQuery('#agregarexamen').append(content);
 }
+
+function default_subelementos(idelemento){
+    idexamen=$('#txtidexamen').val();
+//    console.log(idexamen+' - '+idelemento);
+    jQuery.ajax({
+       url: "ctrSolicitudesProcesadas.php",
+       method: "POST",
+       async: false,
+       data: {idelemento: idelemento, opcion: 17, idexamen: idexamen },
+       dataType: "json",
+       success: function (object) {
+           //console.log(object.status)
+          if (object.status) {
+              $('input[id^="oidsubelemento"]').each(function(i) {
+                 var idsubfuera=this.value;
+                // var name=this.prop('id');
+                 var $input = $( this );
+                  var id_val= $input.attr( "id" );
+                  var str= id_val.replace("]", "[");
+
+                ready = str.split('[');
+
+
+            //      console.log(this.value+' / '+$input+' /position'+ready[1]);
+                  jQuery.each(object.data,function(index, value){
+                      if (value.idsubelemento==idsubfuera){
+                          $('[name="txtresultadosub['+ready[1]+']"]').select2('val',value.id_posible_resultado);
+                        //  $('#txtresultadosub['+ready[1]+']').val(value.id_posible_resultado);
+                        //  console.log('estos son los que tengo q setear'+value.idsubelemento+' - '+this.value);
+                      }
+                //     console.log('idsubelemento'+value.idsubelemento+ ' oid: '+this.value);
+                  });
+              });
+        /*     content +='<table class="table table-bordered table-condensed table-hover table-white">'+
+                      '<thead>'+
+                         '<tr><th colspan="2">'+
+                         '<center>Listado de examenes solicitados en la orden de laboratorio'+
+                         '</center></th></tr>'+
+                         '<tr><th>Exámen</th>'+
+                         '<th>Estado</th>'+
+                         '</tr>'+
+                      '</thead>'+
+                      '<tbody>';*/
+             /*jQuery.each(object.data,function(index, value){
+                content+='<tr><td> '+value.nombre_examen+'</td>'+
+                         '<td> '+value.descripcion+'</td></tr>';
+             });*/
+
+            // content+='</tbody></table>';
+          }
+       }
+   });
+
+}
 /*
 //Fn para modal del reporte vih
 
@@ -2921,6 +2975,9 @@ function focusselect2(nombre){
 
 function noseobserva(thisid){
   document.getElementById('txtresultadosub['+thisid+']').value = 'No Se Observa';
+}
+function blastocystis(thisid){
+  document.getElementById('txtresultadosub['+thisid+']').value = 'Blastocystis hominis';
 }
 //funcion para obtener el texto del select multiple
 function GetSelectValues(select) {

@@ -5,9 +5,9 @@ include_once("../../../Conexion/ConexionBD.php");
 //implementamos la clase lab_areas
 class clsSolicitudesProcesadas {
 
-   //constructor	
+   //constructor
    function clsSolicitudesProcesadas() {
-      
+
    }
 
    function DatosArea($area) {
@@ -61,7 +61,7 @@ class clsSolicitudesProcesadas {
    function ObtenerCodigoRango($dias) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "select * from ctl_rango_edad 
+         $query = "select * from ctl_rango_edad
                     where cod_modulo='LAB'
                     and $dias BETWEEN edad_minima_dias AND edad_maxima_dias
                     AND id != 4";
@@ -117,20 +117,20 @@ class clsSolicitudesProcesadas {
          $sqlText = "with tbl_servicio as (select mnt_3.id,
                         CASE
                         WHEN mnt_3.nombre_ambiente IS NOT NULL
-                        THEN  	
+                        THEN
                                 CASE WHEN id_servicio_externo_estab IS NOT NULL
                                         THEN mnt_ser.abreviatura ||'-->' ||mnt_3.nombre_ambiente
                                         ELSE mnt_3.nombre_ambiente
                                 END
 
                         ELSE
-                        CASE WHEN id_servicio_externo_estab IS NOT NULL 
+                        CASE WHEN id_servicio_externo_estab IS NOT NULL
                                 THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
                              WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=cat.nombre)
                                 THEN cmo.nombre||'-'||cat.nombre
                         END
-                        END AS servicio 
-                        from ctl_atencion cat 
+                        END AS servicio
+                        from ctl_atencion cat
                         join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
                         join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
                         JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion=1)
@@ -182,10 +182,10 @@ class clsSolicitudesProcesadas {
       $con = new ConexionBD;
       //usamos el metodo conectar para realizar la conexion
       if ($con->conectar() == true) {
-         $query = "select sse.id as idsolicitudestudio, sds.id as iddetallesolicitud, sse.id_establecimiento_externo, 
+         $query = "select sse.id as idsolicitudestudio, sds.id as iddetallesolicitud, sse.id_establecimiento_externo,
                       id_area_servicio_diagnostico, sds.id_conf_examen_estab,nombre_examen, id_area_servicio_diagnostico as idarea, ces.idestandar,
-                      ldf.unidades, ldf.rangoinicio, ldf.rangofin, lem.id as idexametodologia, nombre_reporta, (case when rangofin is null and rangoinicio is not null then ('Mayor a '||rangoinicio||' '||unidades) 
-	     when rangoinicio is null and rangofin is not null then ('Menor a '||rangofin||' '||unidades) 
+                      ldf.unidades, ldf.rangoinicio, ldf.rangofin, lem.id as idexametodologia, nombre_reporta, (case when rangofin is null and rangoinicio is not null then ('Mayor a '||rangoinicio||' '||unidades)
+	     when rangoinicio is null and rangofin is not null then ('Menor a '||rangofin||' '||unidades)
 	else (rangoinicio||' - '||rangofin||' '||unidades) end )as rangos
                       from sec_solicitudestudios 		sse
                       join sec_detallesolicitudestudios	sds on (sse.id=sds.idsolicitudestudio)
@@ -196,7 +196,7 @@ class clsSolicitudesProcesadas {
             join lab_examen_metodologia 	lem on (lex.id=lem.id_conf_exa_estab)
             where sse.id=$idsolicitud
             and id_area_servicio_diagnostico=$idarea
-            and estadodetalle=5 
+            and estadodetalle=5
             and idplantilla=1
             and ldf.idestablecimiento=$idestab
             and (current_date between fechaini and (case when fechafin is null then current_date else (fechafin - 1) end))
@@ -238,10 +238,10 @@ class clsSolicitudesProcesadas {
            AND CURDATE() BETWEEN lab_datosfijosresultado.FechaIni AND IF(lab_datosfijosresultado.FechaFin  = '0000-00-00',CURDATE(),lab_datosfijosresultado.FechaFin)
            AND (lab_datosfijosresultado.idsexo=$sexo OR lab_datosfijosresultado.idsexo=3) AND (idedad=4 OR idedad=$idedad)
            ORDER BY NombreExamen"; */
-         $query = "select t01.id as iddetallesolicitud, t01.id_conf_examen_estab, t02.nombre_examen, t05.resultado, t04.unidades, 
+         $query = "select t01.id as iddetallesolicitud, t01.id_conf_examen_estab, t02.nombre_examen, t05.resultado, t04.unidades,
 t04.rangoinicio, t04.rangofin, t05.observacion, t03.id_area_servicio_diagnostico, t07.idestandar,
-to_char(t05.fecha_resultado, 'dd/mm/yyyy') as fecharesultado, t06.nombre_reporta,(case when rangofin is null and rangoinicio is not null then ('Mayor a '||rangoinicio||' '||unidades) 
-	     when rangoinicio is null and rangofin is not null then ('Menor a '||rangofin||' '||unidades) 
+to_char(t05.fecha_resultado, 'dd/mm/yyyy') as fecharesultado, t06.nombre_reporta,(case when rangofin is null and rangoinicio is not null then ('Mayor a '||rangoinicio||' '||unidades)
+	     when rangoinicio is null and rangofin is not null then ('Menor a '||rangofin||' '||unidades)
 	else (rangoinicio||' - '||rangofin||' '||unidades) end )as rangos
                     from sec_detallesolicitudestudios 	t01
                     join lab_conf_examen_estab 		t02 on (t02.id=t01.id_conf_examen_estab)
@@ -275,7 +275,7 @@ to_char(t05.fecha_resultado, 'dd/mm/yyyy') as fecharesultado, t06.nombre_reporta
    function BuscarEmpleadoValidador($responsable, $lugar) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "select (nombreempleado||' '||coalesce(numero_junta_vigilancia,''))  as empleado  
+         $query = "select (nombreempleado||' '||coalesce(numero_junta_vigilancia,''))  as empleado
                 from mnt_empleado
                  where id=$responsable
                  and id_establecimiento=$lugar;";
@@ -305,8 +305,8 @@ to_char(t05.fecha_resultado, 'dd/mm/yyyy') as fecharesultado, t06.nombre_reporta
    function ObtenerFechaResultado1($IdSolicitud, $IdExamen, $lugar) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "SELECT DATE_FORMAT(FechaHoraReg,'%d/%m/%Y %H:%i:%s') FROM lab_resultados 
-                        WHERE IdSolicitudEstudio=$IdSolicitud AND IdExamen='$IdExamen' 
+         $query = "SELECT DATE_FORMAT(FechaHoraReg,'%d/%m/%Y %H:%i:%s') FROM lab_resultados
+                        WHERE IdSolicitudEstudio=$IdSolicitud AND IdExamen='$IdExamen'
                         AND IdEstablecimiento=$lugar";
          // echo $query;
          $result = pg_query($query);
@@ -337,7 +337,7 @@ to_char(t05.fecha_resultado, 'dd/mm/yyyy') as fecharesultado, t06.nombre_reporta
    function BuscarEmpleados($idarea, $lugar) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "SELECT t02.codigo 
+         $query = "SELECT t02.codigo
                       FROM ctl_establecimiento            t01
                       INNER JOIN ctl_tipo_establecimiento t02 ON (t02.id = t01.id_tipo_establecimiento)
                       WHERE t01.id = $lugar";
@@ -373,7 +373,7 @@ to_char(t05.fecha_resultado, 'dd/mm/yyyy') as fecharesultado, t06.nombre_reporta
    function BuscarMetodologia($idexamen) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "select *, lem.id as idexamet  
+         $query = "select *, lem.id as idexamet
                     from lab_examen_metodologia lem
                     join lab_metodologia lmd on (lem.id_metodologia=lmd.id)
                     where id_conf_exa_estab=$idexamen
@@ -393,7 +393,7 @@ to_char(t05.fecha_resultado, 'dd/mm/yyyy') as fecharesultado, t06.nombre_reporta
    function BuscarExaMetodologia($idexamen) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "select *, lem.id as idexamet  
+         $query = "select *, lem.id as idexamet
                     from lab_examen_metodologia lem
                     where id_conf_exa_estab=$idexamen
                     and activo=true;";
@@ -411,7 +411,7 @@ to_char(t05.fecha_resultado, 'dd/mm/yyyy') as fecharesultado, t06.nombre_reporta
    function BuscarResultados($idestandar) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "select idresultado, resultado, lce.id as idcodexa 
+         $query = "select idresultado, resultado, lce.id as idcodexa
                     from lab_codigosxexamen lce
                     join lab_codigosresultados lcr on (lcr.id=lce.idresultado)
                     where lcr.id !=5
@@ -456,7 +456,7 @@ to_char(t05.fecha_resultado, 'dd/mm/yyyy') as fecharesultado, t06.nombre_reporta
    function MostrarResultadoGenerales($idsolicitud, $idexamen, $lugar) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         /*  $query = "SELECT lab_recepcionmuestra.IdSolicitudEstudio, mnt_expediente.IdNumeroExp, 
+         /*  $query = "SELECT lab_recepcionmuestra.IdSolicitudEstudio, mnt_expediente.IdNumeroExp,
            CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoApellido) AS NombrePaciente,
            (year(CURRENT_DATE)-year(FechaNacimiento))AS Edad,IF(Sexo=1,'Masculino','Femenino') AS Sexo,
            TelefonoCasa,Direccion,NombreSubServicio AS Origen,NombreServicio AS Procedencia,
@@ -476,7 +476,7 @@ to_char(t05.fecha_resultado, 'dd/mm/yyyy') as fecharesultado, t06.nombre_reporta
            WHERE sec_detallesolicitudestudios.IdExamen='$idexamen' AND lab_recepcionmuestra.IdSolicitudEstudio=$idsolicitud
            AND sec_solicitudestudios.IdEstablecimiento=$lugar AND mnt_expediente.IdEstablecimiento=$lugar"; */
          $query = "select sse.id as idsolicitudestudio, nombrearea, numeromuestra, fecharecepcion, lrm.fechahorareg as fecha,
-(case when id_historial_clinico is not null then id_historial_clinico	
+(case when id_historial_clinico is not null then id_historial_clinico
       else id_dato_referencia end)as idhistoref, id_historial_clinico, id_dato_referencia, sse.id_establecimiento_externo, id_area_servicio_diagnostico
 from sec_solicitudestudios 		sse
 join sec_detallesolicitudestudios	sds on (sse.id=sds.idsolicitudestudio)
@@ -502,7 +502,7 @@ and sse.id_establecimiento=$lugar;";
       $con = new ConexionBD;
       if ($con->conectar() == true) {
          $query = "select sse.id as idsolicitudestudio, nombrearea, numeromuestra, fecharecepcion, lrm.fechahorareg as fecha,
-(case when id_historial_clinico is not null then id_historial_clinico	
+(case when id_historial_clinico is not null then id_historial_clinico
       else id_dato_referencia end)as idhistoref, id_historial_clinico, id_dato_referencia, sse.id_establecimiento_externo, id_area_servicio_diagnostico
             from sec_solicitudestudios 		sse
             join sec_detallesolicitudestudios	sds on (sse.id=sds.idsolicitudestudio)
@@ -596,19 +596,19 @@ and b_reporta=true order by nombre_metodologia";
       $con = new ConexionBD;
       if ($con->conectar() == true) {
          $query = "with tbl_datos_paciente as(
-select e.id as idexpediente, e.numero as numero, 
-concat_ws (' ',d.primer_apellido,d.segundo_apellido, d.apellido_casada, d.primer_nombre, d.segundo_nombre, d.tercer_nombre) as nombre,  
-s.nombre AS sexoconv, (select fn_calcular_edad (d.id, 'completa') ) AS edad, conocido_por,id_sexo, id_establecimiento as idestab, telefono_casa, direccion, 
+select e.id as idexpediente, e.numero as numero,
+concat_ws (' ',d.primer_apellido,d.segundo_apellido, d.apellido_casada, d.primer_nombre, d.segundo_nombre, d.tercer_nombre) as nombre,
+s.nombre AS sexoconv, (select fn_calcular_edad (d.id, 'completa') ) AS edad, conocido_por,id_sexo, id_establecimiento as idestab, telefono_casa, direccion,
 fecha_nacimiento, h.id as idhistoref, date (current_date)  - date (fecha_nacimiento) as dias, s.nombre as sexo
-FROM mnt_paciente d 
-JOIN mnt_expediente e ON (d.id=e.id_paciente) 
+FROM mnt_paciente d
+JOIN mnt_expediente e ON (d.id=e.id_paciente)
 JOIN ctl_sexo s on (s.id=d.id_sexo)
 JOIN sec_historial_clinico h on (e.id=h.id_numero_expediente)
 and habilitado=true
-union 
-select e.id as idexpediente, e.numero as numero, 
-concat_ws (' ',d.primer_apellido,d.segundo_apellido, d.apellido_casada, d.primer_nombre, d.segundo_nombre, d.tercer_nombre) as nombre, 
-s.nombre AS sexoconv, (select fn_calcular_edad_referido(d.id, 'completa') ) AS edad,'' as conocido_por,  id_sexo, id_establecimiento_origen as idestab, '-', '-', 
+union
+select e.id as idexpediente, e.numero as numero,
+concat_ws (' ',d.primer_apellido,d.segundo_apellido, d.apellido_casada, d.primer_nombre, d.segundo_nombre, d.tercer_nombre) as nombre,
+s.nombre AS sexoconv, (select fn_calcular_edad_referido(d.id, 'completa') ) AS edad,'' as conocido_por,  id_sexo, id_establecimiento_origen as idestab, '-', '-',
 fecha_nacimiento, r.id as idhistoref, date (current_date)  - date (fecha_nacimiento) as dias, s.nombre as sexo
 FROM mnt_paciente_referido d
 JOIN mnt_expediente_referido e on (d.id= e.id_referido)
@@ -616,7 +616,7 @@ JOIN ctl_sexo s on (s.id=d.id_sexo)
 JOIN mnt_dato_referencia r on (e.id=r.id_expediente_referido)
 )
 select * from tbl_datos_paciente
-where numero='$nec' 
+where numero='$nec'
 and idestab=$id_establecimiento_externo
 and idhistoref=$idhistoref;";
          // echo '<br>'.$query.'<br><br>';
@@ -631,17 +631,17 @@ and idhistoref=$idhistoref;";
    function MostrarResultadoGenerales1($idsolicitud, $idarea, $lugar) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "SELECT lab_recepcionmuestra.IdSolicitudEstudio, mnt_expediente.IdNumeroExp, 
+         $query = "SELECT lab_recepcionmuestra.IdSolicitudEstudio, mnt_expediente.IdNumeroExp,
 		CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoApellido) AS NombrePaciente,
 		(year(CURRENT_DATE)-year(FechaNacimiento))AS Edad,IF(Sexo=1,'Masculino','Femenino') AS Sexo,
 		TelefonoCasa,Direccion,NombreSubServicio AS Origen,NombreServicio AS Procedencia,
 		NombreArea,NumeroMuestra,DATE_FORMAT(lab_recepcionmuestra.FechaHoraReg,'%d/%m/%Y %H:%i:%s') AS Fecha,sec_solicitudestudios.IdEstablecimiento, DATE_FORMAT(FechaNacimiento,'%d/%m/%Y') AS FechaNacimiento
-		FROM sec_detallesolicitudestudios 
+		FROM sec_detallesolicitudestudios
 		INNER JOIN sec_solicitudestudios ON sec_solicitudestudios.IdSolicitudEstudio=sec_detallesolicitudestudios.IdSolicitudEstudio
 		INNER JOIN lab_recepcionmuestra ON lab_recepcionmuestra.IdSolicitudEstudio=sec_solicitudestudios.IdSolicitudEstudio
 		INNER JOIN sec_historial_clinico ON sec_historial_clinico.IdHistorialClinico=sec_solicitudestudios.IdHistorialClinico
 		INNER JOIN mnt_expediente ON mnt_expediente.IdNumeroExp=sec_historial_clinico.IdNumeroExp
-		INNER JOIN mnt_datospaciente ON mnt_datospaciente.IdPaciente=mnt_expediente.IdPaciente 
+		INNER JOIN mnt_datospaciente ON mnt_datospaciente.IdPaciente=mnt_expediente.IdPaciente
 		INNER JOIN mnt_subservicio ON mnt_subservicio.IdSubServicio= sec_historial_clinico.IdSubServicio
 		INNER JOIN mnt_servicio ON mnt_servicio.IdServicio= mnt_subservicio.IdServicio
 		INNER JOIN lab_examenes ON lab_examenes.IdExamen=sec_detallesolicitudestudios.IdExamen
@@ -678,11 +678,11 @@ and idhistoref=$idhistoref;";
 		INNER JOIN sec_solicitudestudios G ON G.IdSolicitudEstudio=C.IdSolicitudEstudio
 		INNER JOIN sec_historial_clinico H ON H.IdHistorialClinico=G.IdHistorialClinico
 		INNER JOIN mnt_expediente I ON I.IdNumeroExp=H.IdNumeroExp
-		INNER JOIN mnt_datospaciente J ON J.IdPaciente=I.IdPaciente 
+		INNER JOIN mnt_datospaciente J ON J.IdPaciente=I.IdPaciente
 		INNER JOIN mnt_subservicio K ON K.IdSubServicio= H.IdSubServicio
 		INNER JOIN mnt_servicio L ON L.IdServicio= K.IdServicio
-		WHERE A.IdExamen='$idexamen' AND C.IdSolicitudEstudio=$idsolicitud  
-                AND (lab_datosfijosresultado.idsexo=$sexo OR lab_datosfijosresultado.idsexo=3) 
+		WHERE A.IdExamen='$idexamen' AND C.IdSolicitudEstudio=$idsolicitud
+                AND (lab_datosfijosresultado.idsexo=$sexo OR lab_datosfijosresultado.idsexo=3)
                 AND (idedad=4 OR idedad=$idedad)";
 
          //echo $query;
@@ -718,8 +718,8 @@ and idhistoref=$idhistoref;";
       $con = new ConexionBD;
       //usamos el metodo conectar para realizar la conexion
       if ($con->conectar() == true) {
-         $query = "select * 
-            from lab_examen_metodologia 
+         $query = "select *
+            from lab_examen_metodologia
             where id_conf_exa_estab=$idexamen
             and id_metodologia is not null
             and activo is true
@@ -742,17 +742,17 @@ and idhistoref=$idhistoref;";
       if ($con->conectar() == true) {
 
          $query = "SELECT sec_detallesolicitudestudios.IdDetalleSolicitud,lab_examenes.IdExamen,lab_examenes.NombreExamen,
-			lab_resultados.Resultado,lab_datosfijosresultado.Unidades,lab_datosfijosresultado.RangoInicio, 
-			lab_datosfijosresultado.RangoFin   
-			FROM sec_detallesolicitudestudios 
+			lab_resultados.Resultado,lab_datosfijosresultado.Unidades,lab_datosfijosresultado.RangoInicio,
+			lab_datosfijosresultado.RangoFin
+			FROM sec_detallesolicitudestudios
 			INNER JOIN lab_examenes ON sec_detallesolicitudestudios.IdExamen=lab_examenes.IdExamen
 			INNER JOIN lab_examenesxestablecimiento on lab_examenes.IdExamen=lab_examenesxestablecimiento.IdExamen
 			INNER JOIN lab_datosfijosresultado ON lab_examenes.IdExamen=lab_datosfijosresultado.IdExamen
 			INNER JOIN lab_resultados ON sec_detallesolicitudestudios.IdDetalleSolicitud=lab_resultados.IdDetalleSolicitud
 			WHERE sec_detallesolicitudestudios.IdSolicitudEstudio=$idsolicitud AND lab_examenes.IdExamen LIKE'$idarea%'
-			AND lab_examenesxestablecimiento.IdPlantilla='A' 
-			AND sec_detallesolicitudestudios.EstadoDetalle='RC' AND lab_datosfijosresultado.IdEstablecimiento=$lugar AND CURDATE() 
-			BETWEEN FechaIni AND IF(lab_datosfijosresultado.FechaFin ='0000-00-00',CURDATE(),lab_datosfijosresultado.FechaFin) 
+			AND lab_examenesxestablecimiento.IdPlantilla='A'
+			AND sec_detallesolicitudestudios.EstadoDetalle='RC' AND lab_datosfijosresultado.IdEstablecimiento=$lugar AND CURDATE()
+			BETWEEN FechaIni AND IF(lab_datosfijosresultado.FechaFin ='0000-00-00',CURDATE(),lab_datosfijosresultado.FechaFin)
                         AND (lab_datosfijosresultado.idsexo=$sexo OR lab_datosfijosresultado.idsexo=3) AND (idedad=4 OR idedad=$idedad)
 			AND CURDATE() BETWEEN FechaIni AND IF(lab_datosfijosresultado.FechaFin ='0000-00-00',CURDATE(),lab_datosfijosresultado.FechaFin)
                         ORDER BY NombreExamen";
@@ -792,7 +792,7 @@ and idhistoref=$idhistoref;";
 
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "select * 
+         $query = "select *
                         from lab_resultados
                         where  idsolicitudestudio=$idsolicitud
                         and iddetallesolicitud=$iddetalle";
@@ -952,20 +952,20 @@ and idhistoref=$idhistoref;";
    function CambiarEstadoSolicitud($idsolicitud) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "select id, id_conf_examen_estab 
+         $query = "select id, id_conf_examen_estab
                     from sec_detallesolicitudestudios
                     where idsolicitudestudio=$idsolicitud
-                    and estadodetalle in (select id 
-                                            from ctl_estado_servicio_diagnostico 
+                    and estadodetalle in (select id
+                                            from ctl_estado_servicio_diagnostico
                                             where idestado not in ('RC', 'RM', 'CA'));";
-         //    echo '<br>cantidad'.$query.'<br>';                            
+         //    echo '<br>cantidad'.$query.'<br>';
          $detalle = pg_num_rows(pg_query($query));
          //  echo '<br>empty(detalle) '.$detalle.'<br>';
          if ($detalle == 0) {
-            $query = "UPDATE sec_solicitudestudios 
-                          SET estado=(select id 
-                                from ctl_estado_servicio_diagnostico 
-                                where idestado ='C') 
+            $query = "UPDATE sec_solicitudestudios
+                          SET estado=(select id
+                                from ctl_estado_servicio_diagnostico
+                                where idestado ='C')
                           WHERE id=$idsolicitud";
             $result = @pg_query($query);
             //   echo '<br>Actualizo porque entro: '.$query.'<br>';
@@ -982,14 +982,14 @@ and idhistoref=$idhistoref;";
       if ($con->conectar() == true) {
          $query = " SELECT sec_solicitudestudios .IdSolicitudEstudio AS IdSolicitudEstudio,NumeroMuestra,Observacion,
                     mnt_empleados.IdEmpleado AS IdMedico,NombreEmpleado AS NombreMedico, NombreSubServicio AS Origen,
-                    NombreServicio AS Precedencia, mnt_expediente.IdNumeroExp, 
+                    NombreServicio AS Precedencia, mnt_expediente.IdNumeroExp,
                     CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoApellido) AS NombrePaciente,CURDATE() AS Fecha,(year(CURRENT_DATE)-year(FechaNacimiento))AS Edad,
                     IF(Sexo=1,'Masculino','Femenino') AS Sexo, DATE_FORMAT(FechaNacimiento,'%d/%m/%Y') AS FechaNacimiento
-                    FROM sec_historial_clinico 		 
+                    FROM sec_historial_clinico
                     INNER JOIN sec_solicitudestudios ON sec_historial_clinico.IdHistorialClinico= sec_solicitudestudios.IdHistorialClinico
                     INNER JOIN mnt_empleados 		 ON sec_historial_clinico.IDEmpleado= mnt_empleados.IdEmpleado
                     INNER JOIN mnt_expediente 		 ON sec_historial_clinico.IdNumeroExp= mnt_expediente.IdNumeroExp
-                    INNER JOIN mnt_datospaciente 	 ON mnt_expediente .IdPaciente=mnt_datospaciente.IdPaciente  
+                    INNER JOIN mnt_datospaciente 	 ON mnt_expediente .IdPaciente=mnt_datospaciente.IdPaciente
                     INNER JOIN mnt_subservicio 		 ON mnt_subservicio .IdSubServicio= sec_historial_clinico.IDSubServicio
                     INNER JOIN mnt_servicio 		 ON mnt_servicio.IdServicio= mnt_subservicio.IdServicio
                     INNER JOIN lab_recepcionmuestra  ON sec_solicitudestudios.IdSolicitudEstudio= lab_recepcionmuestra.IdSolicitudEstudio
@@ -1006,7 +1006,7 @@ and idhistoref=$idhistoref;";
    function DatosDetalleSolicitud($idarea, $idsolicitud) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "SELECT B.IdExamen,NombreExamen,Indicacion 
+         $query = "SELECT B.IdExamen,NombreExamen,Indicacion
 				 FROM sec_detallesolicitudestudios AS A
 				 INNER JOIN lab_examenes  AS B ON A.IdExamen=B.IdExamen
 				 WHERE idSolicitudEstudio = $idsolicitud AND
@@ -1036,14 +1036,14 @@ and idhistoref=$idhistoref;";
    }
 
    //Fn_pg
-   //Funcion para consultar datos obligatorios de 
+   //Funcion para consultar datos obligatorios de
    function condatos($idhistorialclinico, $lugar, $fechadatosfijos) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
          $query = "select sef.peso, sef.talla, (sct_name_es ||', ' ||especificacion) as diagnostico, conocido_por, (date('$fechadatosfijos')  - date (fecha_nacimiento)) as dias, id_sexo
-                    from sec_historial_clinico shc 
-                    join mnt_expediente mex on (mex.id = shc.id_numero_expediente) 
-                    join mnt_paciente mpa on (mpa.id = mex.id_paciente) 
+                    from sec_historial_clinico shc
+                    join mnt_expediente mex on (mex.id = shc.id_numero_expediente)
+                    join mnt_paciente mpa on (mpa.id = mex.id_paciente)
                     left join sec_diagnostico_paciente sdp on (shc.id= sdp.id_historial_clinico)
                     left join mnt_snomed_cie10 mns	on (mns.id= sdp.id_snomed)
                     left join sec_signos_vitales sef on (shc.id = sef.id_historial_clinico)
@@ -1059,14 +1059,14 @@ and idhistoref=$idhistoref;";
       }
    }
    //Fn_pg
-   //Funcion para consultar datos obligatorios de 
+   //Funcion para consultar datos obligatorios de
    function condatosref($idhistorial, $lugar, $fechadatosfijos) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
          $query = "select (date('$fechadatosfijos')  - date (fecha_nacimiento)) as dias, id_sexo
-from mnt_dato_referencia shc 
-join mnt_expediente_referido mex on (mex.id = shc.id_expediente_referido) 
-join mnt_paciente_referido mpa on (mpa.id = mex.id_referido) 
+from mnt_dato_referencia shc
+join mnt_expediente_referido mex on (mex.id = shc.id_expediente_referido)
+join mnt_paciente_referido mpa on (mpa.id = mex.id_referido)
 where shc.id=$idhistorial
 and shc.id_establecimiento=$lugar";
          //echo $query;
@@ -1080,13 +1080,13 @@ and shc.id_establecimiento=$lugar";
    }
 
    //Fn_pg
-   //Funcion para consultar datos obligatorios de 
+   //Funcion para consultar datos obligatorios de
    function calc_edad($idhistorial) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "select fn_calcular_edad((select id_paciente 
+         $query = "select fn_calcular_edad((select id_paciente
                      from mnt_expediente t01
-                     join sec_historial_clinico t02 on (t01.id=t02.id_numero_expediente) 
+                     join sec_historial_clinico t02 on (t01.id=t02.id_numero_expediente)
                      where t02.id=$idhistorial ), 'completa') as edad;";
          //echo $query;
          $result = pg_query($query);
@@ -1101,13 +1101,13 @@ and shc.id_establecimiento=$lugar";
    }
 
    //Fn_pg
-   //Funcion para consultar datos obligatorios de 
+   //Funcion para consultar datos obligatorios de
    function calc_edadref($idhistref) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
          $query = "select fn_calcular_edad_referido((select id_referido
 from mnt_expediente_referido  t01
-join mnt_dato_referencia t02 on (t01.id=t02.id_expediente_referido) 
+join mnt_dato_referencia t02 on (t01.id=t02.id_expediente_referido)
 where t02.id=$idhistref), 'completa') as edad;
 
 ";
@@ -1128,7 +1128,7 @@ where t02.id=$idhistref), 'completa') as edad;
    function buscarAnteriores($idsolicitud, $iddetallesolicitud, $idarea) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "select nombre_examen, sds.id as iddetallesolicitud, lce.id as idexamen 
+         $query = "select nombre_examen, sds.id as iddetallesolicitud, lce.id as idexamen
 from sec_solicitudestudios sse
 join sec_detallesolicitudestudios sds 	on (sse.id = sds.idsolicitudestudio)
 join lab_conf_examen_estab lce 		on (lce.id = sds.id_conf_examen_estab)
@@ -1152,7 +1152,7 @@ order by nombre_examen;";
    function buscarAnterioresPUnica($idsolicitud, $iddetallesolicitud, $idarea) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-      $query = "select nombre_examen, sds.id as iddetallesolicitud, lce.id as idexamen 
+      $query = "select nombre_examen, sds.id as iddetallesolicitud, lce.id as idexamen
 from sec_solicitudestudios sse
 join sec_detallesolicitudestudios sds 	on (sse.id = sds.idsolicitudestudio)
 join lab_conf_examen_estab lce 		on (lce.id = sds.id_conf_examen_estab)
@@ -1200,13 +1200,13 @@ order by nombre_examen;";
       $con = new ConexionBD;
       if ($con->conectar() == true) {
          $query = " select  t04.id, t04.resultado
-                  from lab_examen_metodo_pos_resultado t01 
-                 join lab_examen_metodologia t02 on (t02.id=t01.id_examen_metodologia) 
-                 join lab_posible_resultado t03 on (t03.id=t01.id_posible_resultado) 
+                  from lab_examen_metodo_pos_resultado t01
+                 join lab_examen_metodologia t02 on (t02.id=t01.id_examen_metodologia)
+                 join lab_posible_resultado t03 on (t03.id=t01.id_posible_resultado)
                  join lab_codigosresultados t04 on (t04.id=t01.id_codigoresultado)
                  where id_conf_exa_estab =$idexamen
                  and t03.id=$idposres
-                  and t01.habilitado=true 
+                  and t01.habilitado=true
                   and t02.activo=true
                   and t03.habilitado=true;";
          //echo $query;
@@ -1227,7 +1227,7 @@ order by nombre_examen;";
 from lab_examen_metodo_pos_resultado t01
 join lab_posible_resultado t02 on (t02.id=t01.id_posible_resultado)
 where id_examen_metodologia =$idexametodologia
-and t01.habilitado=true 
+and t01.habilitado=true
 and t02.habilitado=true
 and (date(t01.fechafin) >= current_date or date(t01.fechafin) is null)
 and (date(t02.fechafin) >= current_date or date(t02.fechafin) is null);";
@@ -1249,7 +1249,7 @@ and (date(t02.fechafin) >= current_date or date(t02.fechafin) is null);";
 from lab_examen_metodo_pos_resultado t01
 join lab_posible_resultado t02 on (t02.id=t01.id_posible_resultado)
 where id_examen_metodologia =$idexametodologia
-and t01.habilitado=true 
+and t01.habilitado=true
 and t02.habilitado=true
 and (date(t01.fechafin) >= current_date or date(t01.fechafin) is null)
 and (date(t02.fechafin) >= current_date or date(t02.fechafin) is null);";
@@ -1267,11 +1267,11 @@ and (date(t02.fechafin) >= current_date or date(t02.fechafin) is null);";
    function buscarresfin($idexamen) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "  select t01.id, posible_resultado 
+         $query = "  select t01.id, posible_resultado
               from lab_posible_resultado t01
               join lab_examen_posible_resultado t02 on (t01.id=t02.id_posible_resultado)
               where id_conf_examen_estab=$idexamen
-              and t01.habilitado=true 
+              and t01.habilitado=true
               and t02.habilitado=true
               and (date(t01.fechafin) >= current_date or date(t01.fechafin) is null)
               and (date(t02.fechafin) >= current_date or date(t02.fechafin) is null)
@@ -1315,7 +1315,7 @@ join tar_solicitud_fvih 	t02 on (t01.id=t02.id_historial_clinico)
 join tar_motivo_solicitud	t03 on (t03.id=t02.id_motivo_solicitud)
 join sec_solicitudestudios	t04 on (t01.id=t04.id_historial_clinico)
 join sec_detallesolicitudestudios t05 on (t04.id=t05.idsolicitudestudio)
-join lab_conf_examen_estab	t06 on (t06.id=t05.id_conf_examen_estab)  
+join lab_conf_examen_estab	t06 on (t06.id=t05.id_conf_examen_estab)
 where t04.id=$idsolicitud
 and t04.id_establecimiento=$lugar
 and t06.nombre_examen ilike '%VIH%'
@@ -1334,9 +1334,9 @@ and '$prueba' ilike '%VIH%';";
    function ConsDatoFijo($iddetallesolicitud, $lugar, $id_sexo, $idedad) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-        $query = "select (case when rangofin is null and rangoinicio is not null then ('Valores Normales: Mayor a '||rangoinicio||(case when unidades is null then '' else (' Unidades: '||unidades) end )) 
-	when rangoinicio is null and rangofin is not null then ('Valores Normales: Menor a '||rangofin||(case when unidades is null then '' else (' Unidades: '||unidades) end )) 
-	else ('Valores Normales: '||rangoinicio||' - '||rangofin|| (case when unidades is null then '' else (' Unidades: '||unidades) end )) end )as rangos 
+        $query = "select (case when rangofin is null and rangoinicio is not null then ('Valores Normales: Mayor a '||rangoinicio||(case when unidades is null then '' else (' Unidades: '||unidades) end ))
+	when rangoinicio is null and rangofin is not null then ('Valores Normales: Menor a '||rangofin||(case when unidades is null then '' else (' Unidades: '||unidades) end ))
+	else ('Valores Normales: '||rangoinicio||' - '||rangofin|| (case when unidades is null then '' else (' Unidades: '||unidades) end )) end )as rangos
 from lab_datosfijosresultado t01
 join lab_conf_examen_estab t02 on (t02.id=t01.id_conf_examen_estab)
 join sec_detallesolicitudestudios t03 on (t02.id=t03.id_conf_examen_estab)
@@ -1360,7 +1360,7 @@ and (idedad=4 or idedad=$idedad);";
       $con = new ConexionBD;
       if ($con->conectar() == true) {
          $query = "select nombre_examen, descripcion
-                  from  sec_detallesolicitudestudios t2 
+                  from  sec_detallesolicitudestudios t2
                   join lab_conf_examen_estab t3 on (t3.id=t2.id_conf_examen_estab)
                   join ctl_estado_servicio_diagnostico t4 on (t4.id=t2.estadodetalle)
                   where idsolicitudestudio=$solicitud
@@ -1374,6 +1374,26 @@ and (idedad=4 or idedad=$idedad);";
          }
       }
    }
+   //Fn PG
+   function setear_elementos($idelemento, $idexamen) {
+      $con = new ConexionBD;
+      if ($con->conectar() == true) {
+         $query = "select t1.id, t1.elemento, t2.id as idsubelemento, t2.subelemento, t3.*
+                from lab_elementos t1
+                join lab_subelementos t2 on (t1.id=t2.idelemento)
+                join lab_subelemento_posible_resultado t3 on (t2.id=t3.id_subelemento)
+                where t1.id=$idelemento
+                and id_conf_examen_estab=$idexamen
+                and t3.habilitado=true
+                and b_default=true;";
+         $result = pg_query($query);
+         if (!$result) {
+            return false;
+         } else {
+            return $result;
+         }
+      }
+  }
 
 }
 

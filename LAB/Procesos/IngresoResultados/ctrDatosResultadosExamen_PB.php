@@ -53,6 +53,7 @@ switch ($opcion) {
 
 			   	$consulta2=$objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
 				while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
+					$otrosproto=$rowsub['siotrosproto'];
 				$imprimir.= "<tr>
 						<td width='30%' class='StormyWeatherDataTD'>".htmlentities($rowsub['subelemento'])."</td>
 						<td width='30%' class='StormyWeatherDataTD'>";
@@ -74,8 +75,12 @@ switch ($opcion) {
                                                 else{
 
 
-                                   $imprimir.= "<input size='20' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]'><span class='glyphicon glyphicon-eye-close' onClick='noseobserva(".$pos.")' style='padding: 0 0 3 8; cursor: pointer' title='No se observa'></span>
-                                                <input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>
+                                   $imprimir.= "<input size='20' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]'><span class='glyphicon glyphicon-eye-close' onClick='noseobserva(".$pos.")' style='padding: 0 0 3 8; cursor: pointer' title='No se observa'></span>";
+								   if ($otrosproto=='t'){
+									   $imprimir.="<span class='glyphicon glyphicon-xbt' onClick='blastocystis(".$pos.")' style='padding: 0 0 3 8; cursor: pointer' title='Blastocystis hominis'></span>";
+								   }
+
+								   $imprimir.= "<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>
                                                 <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''  >
 						</td>";
                                               }
@@ -169,16 +174,17 @@ switch ($opcion) {
                                  if($row['subelemento']=="S") {
 			          $imprimir.= "
                                         <tr class='StormyWeatherFieldCaptionTD'>
-                                            <td colspan='4' style='font:bold'>".htmlentities($row['elemento'])."</td>
+                                            <td colspan='3' style='font:bold'>".htmlentities($row['elemento'])."</td>
+                                            <td style='font:bold; text-align:right; color:black'><span class='glyphicon glyphicon-pushpin' onClick='default_subelementos(".$row['idelemento'].")' style='padding: 0 0 3 8; cursor: pointer' title='Resultados por defecto'>&nbsp;</span></td>
                                         </tr>";
 						$consulta2=$objdatos->LeerSubElementosExamen($row['idelemento'],$lugar,$sexo,$idedad);
 
                                     while($rowsub = pg_fetch_array($consulta2)) { //SUBELEMENTOS
-
+										$otrosproto=$rowsub['siotrosproto'];
                                             $imprimir.= "
                                         <tr>
                                             <td width='30%' class='StormyWeatherDataTD'>".htmlentities($rowsub['subelemento'])."</td>
-                                            <td width='25%' class='StormyWeatherDataTD'>";
+                                            <td width='30%' class='StormyWeatherDataTD'>";
                                              $imprimir.="<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>";
                                                    $con_total=$objdatos->contar_posibles_resultados($rowsub['idsubelemento']);
                                                    $total=pg_fetch_array($con_total);
@@ -210,13 +216,32 @@ switch ($opcion) {
                                                 //  $imprimir.="<option value='" . $row_result['id_posible_resultado'] . "'>" . htmlentities($row_result['posible_resultado']) . "</option>";
                                                 }
                                                 else{
-                                                                           //  print_r($row_result);
-                                                    // <input size='30' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]' onKeyPress='return acceptNum(event)'>
-                                                    $imprimir.= "<textarea name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]' cols='30' onKeyPress='return acceptNum(event)'></textarea>"
-                                                            . "<span class='glyphicon glyphicon-eye-close' onClick='noseobserva(".$pos.")' style='padding: 0 0 3 8; cursor: pointer' title='No se observa'></span>
+													$imprimir.="<table style='width:100%'>";
+													$imprimir.="<tr>";
+													$imprimir.="<td rowspan='2'>";
+													    $imprimir.= "<textarea name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]' cols='30' onKeyPress='return acceptNum(event)'></textarea>";
+													$imprimir.="</td>";
+													$imprimir.="<td>";
+													if ($otrosproto=='t'){
+														$imprimir.="<span class='glyphicon glyphicon-flash' onClick='blastocystis(".$pos.")' style='padding: 0 0 3 8; cursor: pointer' title='Blastocystis hominis'></span>";
+													}
+													$imprimir.="</td>";
+													$imprimir.="</tr>";
+													$imprimir.="<tr>";
+													$imprimir.="<td>";
+													$imprimir.= "<span class='glyphicon glyphicon-eye-close' onClick='noseobserva(".$pos.")' style='padding: 0 0 3 8; cursor: pointer' title='No se observa'></span>
 								 <input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'>
                                                                  <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''  >
 					    </td>";
+													$imprimir.="</td>";
+													$imprimir.="</tr>";
+													$imprimir.="</table>";
+                                                                           //  print_r($row_result);
+                                                    // <input size='30' name='txtresultadosub[".$pos."]' type='text' id='txtresultadosub[".$pos."]' onKeyPress='return acceptNum(event)'>
+
+
+
+
 
                                                 }
 				$imprimir.="<td  align='center' class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."</td>
