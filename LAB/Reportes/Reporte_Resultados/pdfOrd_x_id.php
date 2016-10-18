@@ -152,7 +152,7 @@ var $HREF;
    function Footer()
    {
        //Position at 1.5 cm from bottom
-       $this->SetY(-15);
+       $this->SetY(-20);
        //Arial italic 7
        $this->SetFont('Arial','I',7);
        $this->Cell(75,5,utf8_decode('NOTA: (*) IMPLICA VALOR FUERA DE RANGO DE REFERENCIA'),0,0,'L');

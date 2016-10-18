@@ -477,10 +477,10 @@ class SolicitudLaboratorio {
             //$call = "datos: ".$IdHistorialClinico.",".$IdNumeroExp.",".$FechaSolicitud.",".$IdUsuarioReg.",".$IdExamen.",".$Indicacion.",".$IdTipoMuestra.",".$IdOrigen.",".$IdEstablecimiento.",".$lugar.",".@erro;
             //echo $call;
             //exit;
-            $envio = "select solicitudestudiosexternos($IdHistorialClinico,$idexpediente,'$FechaSolicitud',$IdUsuarioReg,$IdExamen,'$Indicacion',$IdTipoMuestra,$IdOrigen,$IdEstablecimiento,$lugar, $p_id_dato_referencia, $idsuministrante, $lugar)";
+            $envio = "select solicitudestudiosexternos($IdHistorialClinico,$idexpediente,'$FechaSolicitud',$IdUsuarioReg,$IdExamen,'$Indicacion',$IdTipoMuestra,$IdOrigen,$IdEstablecimiento,$lugar, $p_id_dato_referencia, false, 0, 'create','{}', false, $idsuministrante, $lugar)";
 
             $env = pg_query($envio);
-            // echo $envio;
+             echo $envio;
             //echo '<br/>Envio'.$envio.'<br/>';
             if ($envio == true) {
                // echo $envio;
