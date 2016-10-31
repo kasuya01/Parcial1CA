@@ -45,7 +45,14 @@
     $id_tipomuestra=$row['id_tipo_muestra'];
     $id_perfil=$row['id_perfil'];
     $id_idestab_idexatipolab=$row['id_idestab_idexatipolab'];
-
+    $Represultado = $row['verresultado'];
+    if ($Represultado=='t'){
+        $reporta='Si';
+    }
+    else {
+        $reporta='No';
+    }
+   // echo  "reporta ".$reporta;
     /*
      * quitar signos raros en la cadena de texto de la consulta CONCAT
      */
@@ -112,23 +119,23 @@
 	          	</select>
 		</td>
 	    </tr>
-             <tr>
-                            <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo del Est&aacute;ndar</td>
-                            <td class="StormyWeatherDataTD">
-                                 <select name="cmbEstandar" id="cmbEstandar"  style="width:75%" class="height js-example-basic-single">
-                                     <?php
-                                       /*  $consultaex= $obj->ExamenesPorArea($mntidarea,$lugar);
-                                         while($row = pg_fetch_array($consultaex))
-				           {
+            <tr>
+                <td class="StormyWeatherFieldCaptionTD" >C&oacute;digo del Est&aacute;ndar</td>
+                <td class="StormyWeatherDataTD">
+                    <select name="cmbEstandar" id="cmbEstandar"  style="width:75%" class="height js-example-basic-single">
+                        <?php
+                            /*  $consultaex= $obj->ExamenesPorArea($mntidarea,$lugar);
+                               while($row = pg_fetch_array($consultaex))
+                                {
 					     echo "<option value='" .$rows['id']."' >".$rows['idestandar']." - ".htmlentities($rows['descripcion'])."</option>";
-                                           }*/
-                                          echo "<option value='" . $mntid . "' selected='selected'>" . $idestandar . "-" .htmlentities($nombreestandar). "</option>";
-                                     ?>
-                                 </select>
-                            </td>
+                                 }*/
+                                 echo "<option value='" . $mntid . "' selected='selected'>" . $idestandar . "-" .htmlentities($nombreestandar). "</option>";
+                        ?>
+                    </select>
+                </td>
             </tr>
 	    <tr>
-	       	<td class="StormyWeatherFieldCaptionTD">Nombre del Examen *</td>
+	       	<td class="StormyWeatherFieldCapt$row['verresultado']ionTD">Nombre del Examen *</td>
 	        <td class="StormyWeatherDataTD">
                     <input type="text" id="txtnombreexamen" name="txtnombreexamen" style="width:75%" class="form-control height placeholder" size="50" value="<?php echo htmlentities($nombreexamen); ?>"/>
                     <input type="hidden" name="txtidconf" size="50" style="width:75%" class="form-control height placeholder" value="<?php echo $idconf ; ?>"/>
@@ -455,6 +462,25 @@
 
                               </td>
                         </tr>
+                        <tr>
+                            <td class="StormyWeatherFieldCaptionTD">Mostrar Resultado al Médico</td>
+                            <td class="StormyWeatherDataTD">
+                                <select id="cmbRepResultado" name="cmbRepResultado"  size="1" style="width:23%" class="height js-example-basic-single">
+                                <?php
+                                        //echo '<option value="'.$row['verresultado'].'" >' . $reporta . '</option>';
+                                    if ($Represultado=='t'){
+                                       echo " <option value='true' selected >Si</option>
+                                              <option value='false' >No</option>  ";
+                                    }
+                                     else {
+                                          echo "<option value='true' >Si</option>
+                                                <option value='false' selected >No</option> ";
+                                     }
+                   
+                                ?>       
+                                </select>
+                            </td>
+                         </tr>
 		<tr>
                     <td colspan="2" align="right" class="StormyWeatherDataTD">
                         <!--<input type="button" name="btnActualizar" value="Actualizar" onclick="Modificar();" />

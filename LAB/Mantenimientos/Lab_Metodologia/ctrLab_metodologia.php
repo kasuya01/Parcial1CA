@@ -96,6 +96,7 @@ switch ($opcion)
                         <tr>
 				<th aling='center' > Modificar</td>
 				<!-- <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
+                                <th > Área              </th>
                                 <th > Cód. Estándar              </th>
 				<th > Examen                </th>
 				<th > Metodología              </th>	   
@@ -109,7 +110,7 @@ switch ($opcion)
                                     <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
                                     onclick=\"pedirDatos('".$row['id']."')\"> </td>
                                    
-                                  
+                                <td>". $row['nombrearea'] ."</td>  
 				<td>". $row['idestandar'] ."</td>
 				<td>".htmlentities($row['nombre_examen'])."</td>";
 			echo "<td>".$row['nombre_reporta']."</td>";	
@@ -164,7 +165,7 @@ switch ($opcion)
         
 	break;
         case 5:   //fn pg
-		$idarea=$_POST['idarea'];
+		$idarea=$_POST['idarea'];         
             $rslts='';
                 if ($idarea==0){
                    $rslts .= '<select name="cmbExamen" id="cmbExamen" size="1" class="form-control height" style="width:75%" onchange="buscaranteriores();">';
@@ -208,52 +209,31 @@ switch ($opcion)
 		$idreporta=$_POST['idreporta'];		              
                 $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
 		
-	  	
-		$query = "SELECT lab_datosfijosresultado.id,
-                                lab_conf_examen_estab.codigo_examen as idexamen,
-                                lab_conf_examen_estab.nombre_examen as nombreexamen, 
-                                lab_datosfijosresultado.unidades,
-                                lab_datosfijosresultado.rangoinicio,
-                                rangofin, lab_datosfijosresultado.nota, 
-                                to_char(lab_datosfijosresultado.fechaini,'dd/mm/YYYY') AS FechaIni, 
-                                to_char(lab_datosfijosresultado.fechafin,'dd/mm/YYYY') AS FechaFin, 
-                                ctl_sexo.nombre as sexo,
-                                ctl_rango_edad.nombre as redad,
-                                CASE lab_datosfijosresultado.fechafin 
-                                    WHEN lab_datosfijosresultado.fechafin THEN 'Inhabilitado'
-                                    ELSE 'Habilitado' END AS habilitado,
-                                    lab_datosfijosresultado.id as idatofijo
-                         FROM lab_datosfijosresultado
-                         INNER JOIN lab_conf_examen_estab           ON lab_datosfijosresultado.id_conf_examen_estab=lab_conf_examen_estab.id 
-                         INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id 
-                         INNER JOIN ctl_area_servicio_diagnostico   ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id 
-                         INNER JOIN lab_areasxestablecimiento       ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea 
-                         LEFT JOIN ctl_sexo                         ON lab_datosfijosresultado.idsexo = ctl_sexo.id 
-                         INNER JOIN ctl_rango_edad                  ON lab_datosfijosresultado.idedad = ctl_rango_edad.id 
-                         WHERE lab_conf_examen_estab.idplantilla=1 
-                         AND lab_conf_examen_estab.condicion='H' 
-                         AND lab_areasxestablecimiento.condicion='H' 
-                         AND lab_datosfijosresultado.idestablecimiento=$lugar   ";
-                        $ban=0;
+	  	 $query = "select idestandar, nombre_examen, nombre_reporta, b_reporta, t01.id as id, t05.nombrearea 
+                            from lab_examen_metodologia t01 
+                            join lab_conf_examen_estab t02 on (t02.id=t01.id_conf_exa_estab) 
+                            join mnt_area_examen_establecimiento t03 on (t03.id=t02.idexamen) 
+                            join ctl_examen_servicio_diagnostico t04 on (t04.id=t03.id_examen_servicio_diagnostico) 
+                            join ctl_area_servicio_diagnostico t05 ON (t05.id = id_area_servicio_diagnostico)
+                            where id_metodologia is not null
+                            and t01.activo=true
+                            and condicion='H'
+                            and id_establecimiento=$lugar and ";
+		      $ban=0;
                         //VERIFICANDO LOS POST ENVIADOS
                         if (!empty($_POST['idarea']))
-                        { $query .= " AND  mnt_area_examen_establecimiento.id_area_servicio_diagnostico=".$_POST['idarea']."        "; }
+                        { $query .= " t03.id_area_servicio_diagnostico=".$_POST['idarea']." AND"; }
 
                         if (!empty($_POST['idexamen']))
-                        { $query .= " AND lab_conf_examen_estab.id=".$_POST['idexamen']."  "; }
+                        { $query .= " t02.id=".$_POST['idexamen']." AND"; }
 
-                       if (!empty($_POST['unidades']))
-                        { $query .= " AND unidades='".$_POST['unidades']."'     "; }
+                       if (!empty($_POST['idemetodologia']))
+                        { $query .= " t01.id='".$_POST['idemetodologia']."' AND"; }
 
-                        if (!empty($_POST['rangoinicio']))
-                        { $query .= "AND  rangoinicio='".$_POST['rangoinicio']."'    "; }
+                      /*  if (!empty($_POST['idreporta']))
+                        { $query .= "AND  b_reporta='".$_POST['idreporta']."'    "; }*/
 
-                        if (!empty($_POST['rangofin']))
-                        { $query .= " AND  rangofin='".$_POST['rangofin']."'     "; }
-                        
-                         if (!empty($_POST['nota']))
-                        { $query .= " AND nota ILIKE '%".$_POST['nota']."%'     "; }
-                        
+                                               
                       /*  if (!empty($_POST['sexo'])){
                             if ($_POST['sexo']<>3)
                               $query .= " AND ctl_sexo.id=".$_POST['sexo']."  ";
@@ -261,37 +241,13 @@ switch ($opcion)
                         else
                         { $query .= " AND ctl_sexo.id is null   "; }*/
                         
-                        if ( !empty( $_POST['sexo'] ) && $_POST['sexo'] !== '0' ) 
-                            {
-                              //  $query .= "  AND CASE WHEN ctl_sexo.id IS NULL THEN 'NULL' ELSE ctl_sexo.id::text END = '".$_POST['sexo']."'   ";
-                        
-                              if ( $_POST['sexo']==3){
-                    
-                                            $query .= "AND ((ctl_sexo.id IS NULL) or (ctl_sexo.id=".$_POST['sexo']."))        ";
-                             } else{
-                                    $query .="AND ctl_sexo.id=".$_POST['sexo']."         ";
-                    
-                                    }
-                            }
-                        
-                        
                        
-                        if (!empty($_POST['redad']))
-                        { $query .= " AND ctl_rango_edad.id=".$_POST['redad']."      "; }
-
-                        if (!empty($_POST['Fechaini']))
-                        { 	/*$FechaI=explode('/',$_POST['Fechaini']);
-                                $Fechaini=$FechaI[2].'/'.$FechaI[1].'/'.$FechaI[0];*/
-                            
-                                $query .= " AND  lab_datosfijosresultado.fechaini='".$_POST['Fechaini']."'      "; }
-
-                        if (!empty($_POST['Fechafin'])){
+                        if (!empty($_POST['Fechaini'])){
                                 /*$FechaF=explode('/',$_POST['Fechafin']);
                                 $Fechafin=$FechaF[2].'/'.$FechaF[1].'/'.$FechaF[0];*/
-                                $query .= " AND  fechafin='".$_POST['Fechafin']."'   "; } 
+                                $query .= " t01.fecha_inicio='".$_POST['Fechaini']."' AND"; } 
 
                        
-
                         if((empty($_POST['idexamen'])) and (empty($_POST['idarea'])) and (empty($_POST['unidades'])) and 
                                 (empty($_POST['rangoinicio'])) and (empty($_POST['rangofin'])) and (empty($_POST['nota'])) and 
                                 (empty($_POST['Fechafin'])) and (empty($_POST['Fechaini'])) and (empty($_POST['sexo']))
@@ -301,10 +257,10 @@ switch ($opcion)
                         }
                         if ($ban==0)
                         {   $query = substr($query ,0,strlen($query)-3); 
-                            $query_search = $query. "  ORDER BY mnt_area_examen_establecimiento.id_area_servicio_diagnostico,lab_conf_examen_estab.id";
+                            $query_search = $query. "  order by nombrearea,idestandar,nombre_examen, nombre_reporta";
                         }
 				
-		// echo $query_search;
+		  $query_search;
 		//ENVIANDO A EJECUTAR LA BUSQUEDA!!
 		//para manejo de la paginacion
 		$RegistrosAMostrar=10;
@@ -322,121 +278,35 @@ switch ($opcion)
                         <tr>
 				<th aling='center' > Modificar</td>
 				<!-- <td aling='center' class='CobaltFieldCaptionTD'> Eliminar</td> -->
-				<th > Habilitado              </th>
-                                <th > IdExamen              </th>
+                                <th > Área              </th>
+                                <th > Cód. Estándar              </th>
 				<th > Examen                </th>
-				<th > Unidades              </th>	   
-				<th > Valores Normales      </th>
-				<th > Observacion           </th>
-                                <th > Sexo                  </th>
-                                <th > Rango de Edad         </th>
-				<th > Fecha Inicio          </th>	 
-				<th > Fecha Finalización    </th>
+				<th > Metodología              </th>	   
+				<th title='Reporta resultado en metodología'> Reporta Resultado      </th>
+                        </tr>
                         </tr>
                     </thead><tbody>
                     </center>";
-				while($row = @pg_fetch_array($consulta)){
-                    $idatofijo=$row['idatofijo'];
-                    $habilitado= $row['habilitado'];
-                   
-                  if ($habilitado=='Habilitado'){
-                      
-                      echo "<tr>
+		//while($row = @pg_fetch_array($consulta)){
+                while($row = pg_fetch_array($consulta)){
+                     echo "<tr>
 				<td aling='center'> 
                                     <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
                                     onclick=\"pedirDatos('".$row['id']."')\"> </td>
-				<!--<td aling ='center'> 
-                                            <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-                                            onclick=\"eliminarDato('".$row['id']."')\"> 
-                                   </td> -->
                                    
-                                    <td width='6%'><span style='color: #0101DF;'>
-                   	 <a style ='text-decoration:underline;cursor:pointer;' onclick='Estado(\"".$row['idatofijo']."\",\"".$row['habilitado']."\")'>".$row['habilitado']."</a></td>
-                                   
-                                  
-				<td>". $row['codigo_examen'] ."</td>
+                                <td>". $row['nombrearea'] ."</td>  
+				<td>". $row['idestandar'] ."</td>
 				<td>".htmlentities($row['nombre_examen'])."</td>";
-			if (empty($row['unidades']))
-				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-			else
-				echo"<td>".htmlentities($row['unidades'])."</td>";
-					
-                        if ((empty($row['rangoInicio'])) && (empty($row['rangofin'])))
-                                echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-			else 
-                               echo "<td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
-			
-			if (empty($row['nota']))	
-                            echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-			else
-                            echo "<td>".htmlentities($row['nota'])."</td>";	
+			echo "<td>".$row['nombre_reporta']."</td>";	
                         
-                        if (empty($row['sexo']))
-                            echo "<td> Ambos </td>";
+                        if (($row['b_reporta'])=='t')
+                            echo "<td title='Reporta resultado de metodología'> Si  </td>";
                         else
-                            echo "<td>".$row['sexo']."</td>";
-                        
-                            echo "<td>".$row['redad']."</td>";
-			//echo $row[7];
-			if((empty($row[7])) || ($row[7]=="NULL") || ($row[7]=="00-00-0000"))
-				     echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
-				else
-					 echo"<td>".$row[7]."</td>";
-			if((empty($row[8])) || ($row[8]=="(NULL)") || ($row[8]=="00/00/0000"))
-			     echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
-			else
-					echo"<td>".$row[8]."</td></tr>";
+                            echo "<td title='No Reporta resultado de metodología'>No </td>";
             echo "</tr>";
-                      
-                      
-                  }ELSE{
-                    
-		  echo "<tr>
-				<td aling='center'> 
-                                    <img src='../../../Imagenes/Search.png' style=\"text-decoration:underline;cursor:pointer;\" 
-                                    onclick=\"pedirDatos('".$row['id']."')\"height='40' width='50'> </td>
-				<!--<td aling ='center'> 
-                                            <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
-                                            onclick=\"eliminarDato('".$row['id']."')\"> 
-                                   </td> -->
-                                   <td>". $row['habilitado'] ."</td>
-				<td>". $row['codigo_examen'] ."</td>
-				<td>".htmlentities($row['nombre_examen'])."</td>";
-			if (empty($row['unidades']))
-				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-			else
-				echo"<td>".htmlentities($row['unidades'])."</td>";
-					
-                        if ((empty($row['rangoInicio'])) && (empty($row['rangofin'])))
-                                echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-			else 
-                               echo "<td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
-			
-			if (empty($row['nota']))	
-                            echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-			else
-                            echo "<td>".htmlentities($row['nota'])."</td>";	
-                        
-                        if (empty($row['sexo']))
-                            echo "<td> Ambos </td>";
-                        else
-                            echo "<td>".$row['sexo']."</td>";
-                        
-                            echo "<td>".$row['redad']."</td>";
-			//echo $row[7];
-			if((empty($row[7])) || ($row[7]=="NULL") || ($row[7]=="00-00-0000"))
-				     echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
-				else
-					 echo"<td>".$row[7]."</td>";
-			if((empty($row[8])) || ($row[8]=="(NULL)") || ($row[8]=="00/00/0000"))
-			     echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
-			else
-					echo"<td>".$row[8]."</td></tr>";
-            echo "</tr>";
-                  }
-                                    
-                                    
 		}
+                    
+               
 		          echo "</table>"; 
 		//determinando el numero de paginas
 		 $NroRegistros= $objdatos->NumeroDeRegistrosbus($query_search);
@@ -833,7 +703,7 @@ switch ($opcion)
            $idmetodologia=$_POST['idmetodologia'];
            $rslts='';
            if ($idmetodologia==0){
-              $rslts .= '<select name="cmbreporta" id="cmbreporta" size="1" class="form-control height" style="width:75%" title="Indicar si se mostrará el nombre de la metodología en el reporte final">';
+              $rslts .= '<select name="cmbreporta" id="cmbreporta" size="1" class="form-control height" style="width:75%" >';
               $rslts.= '<option value="0" >--Seleccione una opción--</option>';
 //              $rslts.= '<option value="true" >Si</option>';
 //              $rslts.= '<option value="false" >No</option>';

@@ -14,7 +14,7 @@ class clsLab_Examenes {
            $IdFormulario, $IdEstandarResp, $plantilla, $letra, $Urgente,
            $ubicacion, $TiempoPrevio, $sexo, $idestandar, $lugar,
            $metodologias_sel, $text_metodologias_sel, $id_metodologias_sel,
-           $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido) {
+           $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido,$RepResultado) {
 
                //echo '<br>LLegando al cls: '.$cmbEstabReferido.'<br>';
       $con = new ConexionBD;
@@ -28,10 +28,10 @@ class clsLab_Examenes {
          $query = "INSERT INTO lab_conf_examen_estab
                 (id, condicion,idformulario,urgente,impresion,ubicacion,codigosumi,
                  idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idexamen,idestandarrep,idplantilla,nombre_examen,
-                 idsexo,codigo_examen)
+                 idsexo,codigo_examen,verresultado)
                  VALUES
                  ($ultimo,'$Hab', $IdFormulario,$Urgente,'$letra',$ubicacion,NULL,$usuario,NOW(),$usuario,NOW(),$idestandar,
-                   $IdEstandarResp,$plantilla,'$nomexamen',$sexo,'$idexamen') ";
+                   $IdEstandarResp,$plantilla,'$nomexamen',$sexo,'$idexamen','$RepResultado') ";
          // echo $query;
          $result = pg_query($query);
 
@@ -177,7 +177,7 @@ class clsLab_Examenes {
    function IngExamenxEstablecimiento2($idexamen, $nomexamen, $Hab, $usuario,
            $IdFormulario, $IdEstandarResp, $plantilla, $letra, $Urgente,
            $ubicacion, $TiempoPrevio, $sexo, $idestandar, $lugar,
-           $metodologias_sel, $text_metodologias_sel, $id_metodologias_sel) {
+           $metodologias_sel, $text_metodologias_sel, $id_metodologias_sel,$RepResultado) {
 
       $con = new ConexionBD;
       if ($con->conectar() == true) {
@@ -186,10 +186,10 @@ class clsLab_Examenes {
              $query = "INSERT INTO lab_conf_examen_estab
                 (condicion,idformulario,urgente,impresion,ubicacion,codigosumi,
                  idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idexamen,idestandarrep,idplantilla,nombre_examen,
-                 idsexo,codigo_examen)
+                 idsexo,codigo_examen,verresultado)
                  VALUES
                  ('$Hab',$IdFormulario,$Urgente,'$letra',$ubicacion,NULL,$usuario,NOW(),$usuario,NOW(),$idestandar,
-                   $IdEstandarResp,$plantilla,'$nomexamen',$sexo,'$idexamen') ";
+                   $IdEstandarResp,$plantilla,'$nomexamen',$sexo,'$idexamen','$RepResultado') ";
          // echo $query;
          $result = pg_query($query);
          
@@ -297,15 +297,15 @@ class clsLab_Examenes {
            $IdFormulario, $IdEstandarResp, $plantilla, $letra, $Urgente,
            $ubicacion, $Hab, $TiempoPrevio, $idsexo, $idestandar,
            $ctlidestandar, $metodologias_sel, $text_metodologias_sel,
-           $id_metodologias_sel, $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido ) {
+           $id_metodologias_sel, $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido,$RepResultado ) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
          if ($IdFormulario == 0)
             $IdFormulario = 'NULL';
 
-              $query = "UPDATE lab_conf_examen_estab
+             $query = "UPDATE lab_conf_examen_estab
                               SET idusuariomod=$usuario,fechahoramod=NOW(),idformulario=$IdFormulario,
-                              idestandarrep=$IdEstandarResp,IdPlantilla=$plantilla,impresion='$letra',urgente=$Urgente,ubicacion=$ubicacion,condicion='$Hab',nombre_examen='$nomexamen',idsexo=$idsexo
+                              idestandarrep=$IdEstandarResp,IdPlantilla=$plantilla,impresion='$letra',urgente=$Urgente,ubicacion=$ubicacion,condicion='$Hab',nombre_examen='$nomexamen',idsexo=$idsexo,verresultado=$RepResultado
                               WHERE lab_conf_examen_estab.id=$idconf";
          //echo $query;
          $result = pg_query($query);
@@ -830,7 +830,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
       $con = new ConexionBD;
       if ($con->conectar() == true) {
          //$query = "SELECT * FROM lab_examenes WHERE idexamen='$idexamen'";
-        $query = "SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.codigo_examen as idexamen,
+       $query = "SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.codigo_examen as idexamen,
                     lab_conf_examen_estab.nombre_examen as nombreexamen, ctl_area_servicio_diagnostico.nombrearea,
                     lab_plantilla.id as idplantilla,ctl_examen_servicio_diagnostico.idestandar,
                     (CASE WHEN lab_conf_examen_estab.ubicacion=0 THEN 'Todas las Procedencias'
@@ -880,7 +880,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                             join lab_conf_examen_tipo_laboratorio	t2 on (t1.id=t2.id_conf_examen_estab)
                             where t1.id=$idexamen
                             and (t2.activo=true or fecha_fin >= current_date))
-                			else null end) as id_idestab_idexatipolab
+                			else null end) as id_idestab_idexatipolab,verresultado
                     FROM lab_conf_examen_estab
                     INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
                     INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
