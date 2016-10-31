@@ -460,6 +460,7 @@ if ( $NroRegistros==""){
         $numero_expediente      = $row['numero_expediente'];
         $nombre_paciente        = $row['nombre_paciente'];
         $fecha_solicitud        = $row['fecha_solicitud'];
+        $tipoempleado           = $row['tipoempleado'];
 
 
         //  DATOS GENERALES
@@ -505,7 +506,7 @@ if ( $NroRegistros==""){
                                 <td>".$servicio."</td>
                         </tr>
                         <tr>
-				<td>M&eacute;dico</td>
+				<td>Indicado por $tipoempleado</td>
 				<td colspan='3'>" . $nombre_empleado . "
 			</tr>
 

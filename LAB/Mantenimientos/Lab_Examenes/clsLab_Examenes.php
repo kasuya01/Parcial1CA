@@ -14,7 +14,7 @@ class clsLab_Examenes {
            $IdFormulario, $IdEstandarResp, $plantilla, $letra, $Urgente,
            $ubicacion, $TiempoPrevio, $sexo, $idestandar, $lugar,
            $metodologias_sel, $text_metodologias_sel, $id_metodologias_sel,
-           $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido,$RepResultado) {
+           $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido,$RepResultado,$cmbRealizadopor) {
 
                //echo '<br>LLegando al cls: '.$cmbEstabReferido.'<br>';
       $con = new ConexionBD;
@@ -153,7 +153,6 @@ class clsLab_Examenes {
          }
 
          //********Asignar establecimientos a referir
-          //Asignar posibles tipos de muestra
          $aEstabReferido = explode(',', $cmbEstabReferido);
         //echo '$cmbEstabReferido: '.$cmbEstabReferido.'   estabreferido:'.$aEstabReferido.'----'.count(array_filter($aEstabReferido)).' a1:'.$aEstabReferido[0];
 
@@ -166,11 +165,23 @@ class clsLab_Examenes {
                pg_query($sql6);
             }
          }
+
+         //********Asignar formas o suministrante a realizar
+         $aRealizadopor = explode(',', $cmbRealizadopor);
+
+         $i = 0;
+            for ($i = 0; $i < (count(array_filter($aRealizadopor)) ); $i++) {
+                //echo 'aConfexaTipolab:'.$aConfexaTipolab.'----0'.count($aConfexaTipolab);
+               $sql6 = "INSERT INTO lab_examen_suministrante (id_conf_examen_estab, id_suministrante, fecha_inicio)
+               values ($ultimo, $aRealizadopor[$i], current_date);";
+               pg_query($sql6);
+            }
            if (!$result) {
             return false;
          } else {
             return true;
          }
+
       }
    }
 
@@ -192,11 +203,11 @@ class clsLab_Examenes {
                    $IdEstandarResp,$plantilla,'$nomexamen',$sexo,'$idexamen','$RepResultado') ";
          // echo $query;
          $result = pg_query($query);
-         
-         
-         
-         
-         
+
+
+
+
+
 
          $query2 = "select COALESCE(max(id),1) from lab_conf_examen_estab";
          $result2 = pg_query($query2);
@@ -297,7 +308,7 @@ class clsLab_Examenes {
            $IdFormulario, $IdEstandarResp, $plantilla, $letra, $Urgente,
            $ubicacion, $Hab, $TiempoPrevio, $idsexo, $idestandar,
            $ctlidestandar, $metodologias_sel, $text_metodologias_sel,
-           $id_metodologias_sel, $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido,$RepResultado ) {
+           $id_metodologias_sel, $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido,$RepResultado,$cmbRealizadopor ) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
          if ($IdFormulario == 0)
@@ -643,6 +654,41 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
          }
 
          //-***Fin actualizar perfiles
+         //**Actualizar los suministrante
+         $arealizador = explode(',', $cmbRealizadopor);
+         $cantsumi=count(array_filter($arealizador));
+
+         $sqlA="update lab_examen_suministrante
+            set activo=false,
+             fecha_fin=current_date
+            where id_conf_examen_estab=$idconf
+            and activo=true;";
+         $queryA=pg_query($sqlA);
+         if ($cantsumi>0){
+            $sqlB="select * from lab_examen_suministrante where id_conf_examen_estab=$idconf;";
+            for($l=0; $l<$cantsumi; $l++){
+               $bandl=0;
+               $queryB=  pg_query($sqlB);
+               while ($sumi=@pg_fetch_array($queryB)){
+                  if($sumi['id_suministrante']==$arealizador[$l]){
+                     $sqlC="update lab_examen_suministrante
+                           set activo=true,
+                           fecha_fin=null
+                           where id_conf_examen_estab=$idconf
+                           and id_suministrante=$arealizador[$l];";
+                     $queryC=  pg_query($sqlC);
+                     $bandl=1;
+                  }
+               }
+               if ($bandl==0){
+                 $sqlD="insert into lab_examen_suministrante (id_suministrante, id_conf_examen_estab, activo, fecha_inicio) values($arealizador[$l], $idconf, true,current_date);";
+                  $queryD=  pg_query($sqlD);
+
+               }
+            }
+         }
+
+         //-***Fin actualizar suministrante
 
 
          //**Actualizar los establecimientos a referir
@@ -880,7 +926,12 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                             join lab_conf_examen_tipo_laboratorio	t2 on (t1.id=t2.id_conf_examen_estab)
                             where t1.id=$idexamen
                             and (t2.activo=true or fecha_fin >= current_date))
-                			else null end) as id_idestab_idexatipolab,verresultado
+                			else null end) as id_idestab_idexatipolab,
+        		    (SELECT array_to_string(array_agg(t02.id order by t02.suministrante), ',') as suministrante
+            			from lab_examen_suministrante t01
+            			join lab_suministrante t02 on (t02.id=t01.id_suministrante)
+            			where id_conf_examen_estab=$idexamen
+                        and t01.activo=true) as id_suministrante, b_verresultado
                     FROM lab_conf_examen_estab
                     INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
                     INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
@@ -1430,6 +1481,20 @@ order by posible_resultado;";
                             where id=$idmntareaexest)
                 and t6.activo=true
                 order by 3;";
+
+         $result = pg_query($query);
+         if (!$result)
+            return false;
+         else
+            return $result;
+      }
+   }
+
+    //Funcion utilizada para seleccionar los perfiles
+   function forma_realizacion() {
+      $con = new ConexionBD;
+      if ($con->conectar() == true) {
+        $query = "select * from lab_suministrante order by 2;";
 
          $result = pg_query($query);
          if (!$result)

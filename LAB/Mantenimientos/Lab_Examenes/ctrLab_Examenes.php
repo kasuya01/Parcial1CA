@@ -42,7 +42,8 @@ switch ($opcion) {
       $cmbTipoMuestra = $_POST['cmbTipoMuestra'];
       $cmbPerfil = $_POST['cmbPerfil'];
       $cmbEstabReferido = $_POST['cmbEstabReferido'];
-      $RepResultado = $_POST['RepResultado'];  
+      $RepResultado = $_POST['RepResultado'];
+      $cmbRealizadopor = $_POST['cmbRealizadopor'];
       //echo $sexo;
       if ($sexo <> 4)
          $idsexo = $sexo;
@@ -81,7 +82,7 @@ switch ($opcion) {
                          $letra, $Urgente, $ubicacion, $TiempoPrevio, $idsexo,
                          $idestandar, $lugar, $metodologias_sel,
                          $text_metodologias_sel, $id_metodologias_sel,
-                         $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido,$RepResultado) == true) {
+                         $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido,$RepResultado,$cmbRealizadopor) == true) {
             // asignar_resultados($resultado);
             echo "Registro Agregado";
          } else {
@@ -96,7 +97,7 @@ switch ($opcion) {
                          $letra, $Urgente, $ubicacion, $TiempoPrevio, $idsexo,
                          $idestandar, $lugar, $metodologias_sel,
                          $text_metodologias_sel, $id_metodologias_sel,
-                         $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido,$RepResultado) == true) {
+                         $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido,$RepResultado, $cmbRealizadopor) == true) {
             // asignar_resultados($resultado);
             echo "Registro Agregado";
          } else {
@@ -141,7 +142,8 @@ switch ($opcion) {
       $cmbTipoMuestra = $_POST['cmbTipoMuestra'];
       $cmbPerfil = $_POST['cmbPerfil'];
       $cmbEstabReferido = $_POST['cmbEstabReferido'];
-      $RepResultado = $_POST['RepResultado']; 
+      $RepResultado = $_POST['RepResultado'];
+      $cmbRealizadopor = $_POST['cmbRealizadopor'];
       //  echo $IdEstandarResp." sexo=".$sexo;
       if ($sexo <> 4)
          $idsexo = $sexo;
@@ -185,7 +187,7 @@ switch ($opcion) {
                       $usuario, $IdFormulario, $IdEstandarResp, $plantilla,
                       $letra, $Urgente, $ubicacion, $Hab, $TiempoPrevio,
                       $idsexo, $idestandar, $ctlidestandar, $metodologias_sel,
-$text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido,$RepResultado) == true) {
+                      $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido,$RepResultado, $cmbRealizadopor) == true) {
          /*
           * creando arreglo de elementos seleccionados
           */
@@ -657,9 +659,9 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
                                             LEFT JOIN ctl_sexo ON lab_conf_examen_estab.idsexo= ctl_sexo.id
                                             INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
                                             LEFT JOIN cit_programacion_exams ON lab_conf_examen_estab.id=cit_programacion_exams.id_examen_establecimiento
-                                            WHERE lab_areasxestablecimiento.condicion='H' AND ctl_examen_servicio_diagnostico.activo= TRUE AND mnt_area_examen_establecimiento.activo=TRUE 
+                                            WHERE lab_areasxestablecimiento.condicion='H' AND ctl_examen_servicio_diagnostico.activo= TRUE AND mnt_area_examen_establecimiento.activo=TRUE
                                             AND lab_areasxestablecimiento.idestablecimiento=$lugar AND";
-       
+
       $ban = 0;
 
       //VERIFICANDO LOS POST ENVIADOS

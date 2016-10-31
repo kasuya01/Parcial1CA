@@ -52,6 +52,7 @@
     else {
         $reporta='No';
     }
+    $id_suministrante=$row['id_suministrante'];
    // echo  "reporta ".$reporta;
     /*
      * quitar signos raros en la cadena de texto de la consulta CONCAT
@@ -360,7 +361,7 @@
                       </select>
                   </td>
                </tr>
-               <tr>
+
                <tr>
                   <td class="StormyWeatherFieldCaptionTD" title="Seleccione los perfiles a los que la prueba pertenece">Perfiles</td>
                   <td class="StormyWeatherDataTD">
@@ -431,6 +432,33 @@
                   </td>
                </tr>
                <tr>
+                 <td class="StormyWeatherFieldCaptionTD">A realizar *</td>
+                 <td class="StormyWeatherDataTD">
+                     <select id="cmbRealizadopor" name="cmbRealizadopor[]" size="1" style="width:75%"  class="height js-example-placeholder-multiple" multiple="multiple">
+<!--                                    <option value="0">-- Seleccione Condici&oacute;n --</option>-->
+                         <?php
+                         $id_realizadopor=  explode(',', $id_suministrante);
+                             $estref= $obj->forma_realizacion();
+                             while($row = pg_fetch_array($estref)){
+                                $ban=0;
+                                $i=0;
+                                 if ($id_realizadopor[0] != "") {
+                                   for ($i = 0; $i < (count(array_filter($id_realizadopor))); $i++) {
+                                   if ($id_realizadopor[$i]==$row['id']){
+                             echo "<option value='" . $row['id']. "' selected>" .$row['suministrante'] . "</option>";
+                             $ban=1;
+
+                                   }
+                             }
+                          }
+                          if ($ban==0)
+                                 echo "<option value='" . $row['id']. "'>" .$row['suministrante'] . "</option>";
+                             }
+                         ?>
+                     </select>
+                 </td>
+              </tr>
+               <tr>
                             <td nowrap class="StormyWeatherFieldCaptionTD">Tiempo Previo para <br>entrega de resultado(en dias)&nbsp; *</td>
                             <td class="StormyWeatherDataTD">
                             <input id="inidates" name="inidate" class="form-control" value="<?php echo $TiempoPrevio;?>"style="width:250px; height:28px;" maxlength=3 onkeypress='return isNumberKey(event);' ></td>
@@ -476,8 +504,8 @@
                                           echo "<option value='true' >Si</option>
                                                 <option value='false' selected >No</option> ";
                                      }
-                   
-                                ?>       
+
+                                ?>
                                 </select>
                             </td>
                          </tr>

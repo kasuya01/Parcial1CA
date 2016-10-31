@@ -636,8 +636,12 @@ function procesaEsp(){
                                     limpiar();
 
                             } else {
-                                alert ("Ya existe una solicitud con estos datos y su estado es "+respuesta.data[0].descripcion);
-                                limpiar();
+								if(confirm("Ya existe una solicitud con estos datos y su estado es "+respuesta.data[0].descripcion+" desea ingresar otra?")){
+                                    Examenes();
+									limpiar();
+                                }
+                                else
+                                    limpiar();
                             }
                         }else {
                             Examenes();
@@ -882,18 +886,18 @@ function cambioestexterno(){
                     </td>
             </tr>
             <tr>
-                    <td class="StormyWeatherFieldCaptionTD">M&eacute;dico&nbsp;</td>
+                    <td class="StormyWeatherFieldCaptionTD">Indicado por:</td>
                     <td class="StormyWeatherDataTD">
                             <div id="lyMed">
                                <select name="cmbMedico" class="js-example-basic-single" id="cmbMedico" onChange="fillMed(this.value)" style="width:350px">
-                                            <option value="0" selected="selected">--Seleccione M&eacute;dico&nbsp;--</option>
+                                            <option value="0" selected="selected">--Seleccione una opción;--</option>
 
                                     </select>
                             </div>
                     </td>
             </tr>
             <tr>
-                    <td class="StormyWeatherFieldCaptionTD" align="center">Fecha en que paso Consulta</td>
+                    <td class="StormyWeatherFieldCaptionTD" align="center">Fecha en que paso Consulta:</td>
                     <td class="StormyWeatherDataTD" colspan="2">
                         <input name="Input" class="date" id="txtconsulta" style="width:188px; height:20px" size="26" placeholder="aaaa-mm-dd">
                     </td>

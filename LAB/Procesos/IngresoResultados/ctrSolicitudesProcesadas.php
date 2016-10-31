@@ -143,7 +143,7 @@ switch ($opcion) {
                     ELSE
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre
                                  WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)
-                                   
+
                                     THEN t01.nombre
                     END
 
@@ -1192,6 +1192,20 @@ switch ($opcion) {
     case 16:
        $idsolicitud=$_POST['solicitud'];
       $result = $objdatos->buscartodosexamens($idsolicitud);
+        if ($result !== false) {
+            $jsonresponse['status'] = true;
+            $jsonresponse['data'] = pg_fetch_all($result);
+        } else {
+            $jsonresponse['status'] = false;
+        }
+
+          echo json_encode($jsonresponse);
+      break;
+
+    case 17:
+       $idelemento=$_POST['idelemento'];
+       $idexamen=$_POST['idexamen'];
+      $result = $objdatos->setear_elementos($idelemento, $idexamen);
         if ($result !== false) {
             $jsonresponse['status'] = true;
             $jsonresponse['data'] = pg_fetch_all($result);

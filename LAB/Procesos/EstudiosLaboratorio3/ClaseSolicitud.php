@@ -254,24 +254,6 @@ class SolicitudLaboratorio {
       }
    }
 
-//Funcion PG
-   function CantiSuministrante($IdExamen) {
-      $Conexion = new ConexionBD();
-      $conectar = $Conexion->conectar();
-      if ($conectar == true) {
-         $SQL2 = "select t2.id as idsumi, t2.suministrante, t1.id as id_examen_suministrante
-                from lab_examen_suministrante t1
-                join lab_suministrante t2 on (t2.id=t1.id_suministrante)
-                where id_conf_examen_estab=$IdExamen";
-         $result = pg_query($SQL2);
-         if (!$result) {
-            return false;
-         } else {
-            return $result;
-         }
-      }
-   }
-
 //Eliminar no se usuara
    function MostrarMuestra($IdExamen) {
       $Conexion = new ConexionBD();
@@ -429,7 +411,7 @@ class SolicitudLaboratorio {
    function GuardarDatos($IdHistorialClinico, $IdNumeroExp, $idexpediente,
            $FechaSolicitud, $IdUsuarioReg, $IdExamen, $Indicacion,
            $IdTipoMuestra, $IdOrigen, $IdEstablecimiento, $lugar,
-           $id_expediente_referido, $idsuministrante) {
+           $id_expediente_referido) {
       $Conexion = new ConexionBD();
       $conectar = $Conexion->conectar();
       //echo "funcion GuardarDatos IdHistorialClinico ".$IdHistorialClinico." IdNumeroExp ";//.$IdNumeroExp ." FechaSolicitud ". $FechaSolicitud." IdUsuarioReg ".$IdUsuarioReg." FechaHoraReg ".$FechaHoraReg." IdExamen ".$IdExamen." Indicacion ".$Indicacion." IdTipoMuestra ".$IdTipoMuestra." IdOrigen ".$IdOrigen." IdEstablecimiento ".$IdEstablecimiento;
@@ -477,10 +459,9 @@ class SolicitudLaboratorio {
             //$call = "datos: ".$IdHistorialClinico.",".$IdNumeroExp.",".$FechaSolicitud.",".$IdUsuarioReg.",".$IdExamen.",".$Indicacion.",".$IdTipoMuestra.",".$IdOrigen.",".$IdEstablecimiento.",".$lugar.",".@erro;
             //echo $call;
             //exit;
-            $envio = "select solicitudestudiosexternos($IdHistorialClinico,$idexpediente,'$FechaSolicitud',$IdUsuarioReg,$IdExamen,'$Indicacion',$IdTipoMuestra,$IdOrigen,$IdEstablecimiento,$lugar, $p_id_dato_referencia, false, 0, 'create','{}', false, $idsuministrante, $lugar)";
-
+            $envio = "select solicitudestudiosexternos($IdHistorialClinico,$idexpediente,'$FechaSolicitud',$IdUsuarioReg,$IdExamen,'$Indicacion',$IdTipoMuestra,$IdOrigen,$IdEstablecimiento,$lugar, $p_id_dato_referencia)";
             $env = pg_query($envio);
-             echo $envio;
+            // echo $envio;
             //echo '<br/>Envio'.$envio.'<br/>';
             if ($envio == true) {
                // echo $envio;
@@ -552,7 +533,7 @@ indicacion, sds.idtipomuestra,tipomuestra, idorigenmuestra, origenmuestra,
 case when id_historial_clinico is null then id_dato_referencia
 else id_historial_clinico
 end as idhistorialclinico,  id_atencion, estado, sds.idsolicitudestudio,
-codigo_examen,nombre_examen,urgente, to_char(f_tomamuestra, 'YYYY-MM-DD HH24:MI') as f_tomamuestra, lsu.suministrante, les.id as id_examen_suministrante
+codigo_examen,nombre_examen,urgente, to_char(f_tomamuestra, 'YYYY-MM-DD HH24:MI') as f_tomamuestra
 from sec_solicitudestudios sse
 left join sec_historial_clinico shc 			on (sse.id_historial_clinico=shc.id)
 join sec_detallesolicitudestudios sds 		on (sds.idsolicitudestudio= sse.id)
@@ -560,8 +541,6 @@ join mnt_area_examen_establecimiento mnt4	on (sds.idexamen=mnt4.id)
 join lab_conf_examen_estab lce			on (sds.id_conf_examen_estab=lce.id)
 left join lab_tipomuestra ltm			on (sds.idtipomuestra=ltm.id)
 left join mnt_origenmuestra mom			on (sds.idorigenmuestra=mom.id)
-left join lab_examen_suministrante les  on (les.id_suministrante=sds.id_suministrante and les.id_conf_examen_estab=sds.id_conf_examen_estab)
-left join lab_suministrante   lsu       on (lsu.id=les.id_suministrante)
 where sse.id_establecimiento_externo=$IdEstablecimiento
 and case $IdEstablecimiento
 	when sse.id_establecimiento then id_historial_clinico=$IdHistorialClinico

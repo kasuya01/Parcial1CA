@@ -18,9 +18,9 @@ $opcion=$_POST['opcion'];
 //actualiza los datos del empleados
 
 $usuario=1;
-switch ($opcion) 
+switch ($opcion)
 {
-	case 1:  //INSERTAR	
+	case 1:  //INSERTAR
 		$idelemento=$_POST['idelemento'];
 		$subelemento=utf8_encode($_POST['subelemento']);
                // echo $subelemento;
@@ -28,67 +28,67 @@ switch ($opcion)
 		//$unidad=$_POST['unidad'];
                 //$sexo=$_POST['sexo'];
                 //$redad=$_POST['redad'];
-               // $unidad=(empty($_POST['unidad'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidad']) . "'"; 
+               // $unidad=(empty($_POST['unidad'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidad']) . "'";
                 $unidad=$_POST['unidad'];
-                $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";        
-                $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'"; 
+                $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";
+                $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'";
                 $rangoini=(empty($_POST['rangoini'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangoini']) . "'";
                 $rangofin=(empty($_POST['rangofin'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangofin']) . "'";
                 $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
-		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";              
+		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
 		$orden=$_POST['orden'];
-        	if ($objdatos->insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad,$orden)==true) 
+        	if ($objdatos->insertar($idelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad,$orden)==true)
                     echo "Registro Agregado";
 		//}
 		else
-			echo "No se pudo Ingresar el Registro";			
-		
-		
-	
+			echo "No se pudo Ingresar el Registro";
+
+
+
 	break;
-	case 2:  //MODIFICAR   
+	case 2:  //MODIFICAR
 		$idsubelemento=$_POST['idsubelemento'];
 		//$examen=$_POST['examen'];
 		$subelemento=utf8_encode($_POST['subelemento']);
-                
-                $unidad=(empty($_POST['unidad'])) ? 'NULL' : "'" . pg_escape_string(utf8_encode($_POST['unidad'])) . "'"; 
-                $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";        
-                $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'"; 
+
+                $unidad=(empty($_POST['unidad'])) ? 'NULL' : "'" . pg_escape_string(utf8_encode($_POST['unidad'])) . "'";
+                $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";
+                $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'";
                 $rangoini=(empty($_POST['rangoini'])) ? 0 : "'" . pg_escape_string($_POST['rangoini']) . "'";
                 $rangofin=(empty($_POST['rangofin'])) ? 0 : "'" . pg_escape_string($_POST['rangofin']) . "'";
                 $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
-		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";   
+		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
                 $orden=$_POST['orden'];
            //   echo $subelemento;
 		//echo $rangoini."-".$rangofin;
-		if ($objdatos->actualizar($idsubelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad,$orden)==true) 
+		if ($objdatos->actualizar($idsubelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad,$orden)==true)
                    //&& ($Clases->actualizar_labo($idsubelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad)==true)){
-			echo "Registro Actualizado"; 
-		else 
+			echo "Registro Actualizado";
+		else
                         echo "No se pudo actualizar el registro";
 	break;
-	case 3:  //ELIMINAR 
+	case 3:  //ELIMINAR
 		//Vefificando Integridad de los datos
 		$idsubelemento=$_POST['idsubelemento'];
-		if ($objdatos->eliminar($idsubelemento)==true){ 
-                        //&& ($Clases->eliminar_labo($idsubelemento)== true)){		
-			echo "Registro Eliminado" ;		
+		if ($objdatos->eliminar($idsubelemento)==true){
+                        //&& ($Clases->eliminar_labo($idsubelemento)== true)){
+			echo "Registro Eliminado" ;
 		}
 		else{
 			echo "El registro no pudo ser eliminado";
-		}			
-		
+		}
+
 	break;
 	case 4:// PAGINACION
 		$idelemento=$_POST['idelemento'];
-	
+
 		$Pag =$_POST['Pag'];
 		////para manejo de la paginacion
 		$RegistrosAMostrar=4;
 		$RegistrosAEmpezar=($_POST['Pag']-1)*$RegistrosAMostrar;
 		$PagAct=$_POST['Pag'];
-	
-		 /////LAMANDO LA FUNCION DE LA CLASE 
+
+		 /////LAMANDO LA FUNCION DE LA CLASE
 		$consulta= $objdatos->consultarpag($idelemento,$RegistrosAEmpezar, $RegistrosAMostrar);
 
 		//muestra los datos consultados en la tabla
@@ -102,7 +102,7 @@ switch ($opcion)
                     <th> Valores Normales </th>
                     <th> Rango Edad </th>
                     <th> Sexo</td>
-		    <th> Fecha Inicio</th>	
+		    <th> Fecha Inicio</th>
                     <th> Fecha Fin</th>
                     <th> Atar a cat&aacute;logo</th>
 	        </tr> </thead><tbody>
@@ -110,25 +110,23 @@ switch ($opcion)
     while($row = pg_fetch_array($consulta)){
         // if (empty($row['fechafin'])){
                 echo "<tr>
-                          <td aling='center'> 
-                              <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+                          <td aling='center'>
+                              <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\"
          onclick=\"pedirDatosSubElementos('".$row['id']."')\"> </td>";
-                
       /*   }
          else{
              echo "<tr>
-                          <td aling='center'> 
-                              <img src='../../../Imagenes/Search.png' style=\"text-decoration:underline;cursor:pointer;\" 
+                          <td aling='center'>
+                              <img src='../../../Imagenes/Search.png' style=\"text-decoration:underline;cursor:pointer;\"
          onclick=\"pedirDatosSubElementos('".$row['id']."')\" height='40' width='50'> </td>";
-             
          }*/
-        
-               /*    echo "   <td aling ='center'> 
-                              <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" 
+
+               /*    echo "   <td aling ='center'>
+                              <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"
                               onclick=\"eliminarDatoSubElemento('".$row['id']."')\"> </td>":*/
                        echo "            <td>".htmlentities($row['orden'])."</td>
                           <td>".$row['subelemento']."</td>";
-                 if (!empty($row['unidad']))            
+                 if (!empty($row['unidad']))
                     echo" <td>".htmlentities($row['unidad'])."</td>";
                  else
                      echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>";
@@ -149,10 +147,10 @@ switch ($opcion)
                        echo "   <td>".htmlentities($row['fechaini'])."</td>";
                 if (($row['fechafin']=="00-00-0000") ||($row['fechafin']=="(NULL)") ||(empty($row['fechafin'])) )
                     echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-                else 	
+                else
                     echo "<td>".htmlentities($row['fechafin'])."</td>";
 
-                if ($row['catalogo'] != '{NULL}') { 
+                if ($row['catalogo'] != '{NULL}') {
                       echo "<td><input type='button'  value='Cat&aacute;logo' onclick='popup(".'"consulta_SubElemento.php?id_subelemento='.$row['id'].'"'.")' /></td>";
                 }
                 else {
@@ -161,16 +159,16 @@ switch ($opcion)
 
                 echo "</tr>";
                       }
-                
-	  echo "</table>"; 
+
+	  echo "</table>";
 
 	//determinando el numero de paginas
 	 $NroRegistros= $objdatos->NumeroDeRegistros($idelemento);
 	 $PagAnt=$PagAct-1;
 	 $PagSig=$PagAct+1;
-		 
+
 	 $PagUlt=$NroRegistros/$RegistrosAMostrar;
-		 
+
 	 //verificamos residuo para ver si llevar� decimales
 	 $Res=$NroRegistros%$RegistrosAMostrar;
 	 //si hay residuo usamos funcion floor para que me
@@ -184,22 +182,22 @@ switch ($opcion)
 		<tr>
 			<td><a onclick=\"show_subelemento('1',$idelemento)\">Primero</a> </td>";
 		//// desplazamiento
-        
-	  if($PagAct>1) 
+
+	  if($PagAct>1)
 	           echo "<td> <a onclick=\"show_subelemento('$PagAnt',$idelemento)\">Anterior</a> </td>";
-	  if($PagAct<$PagUlt)  
+	  if($PagAct<$PagUlt)
 	    echo "<td><a onclick=\"show_subelemento('$PagSig',$idelemento)\">Siguiente</a></td>";
 		echo "<td><a onclick=\"show_subelemento('$PagUlt',$idelemento)\">Ultimo</a></td>";
          echo "</tr>
 	         </table>";
 	break;
         case 5: /* Consulta sub-elemento */
-		              
+
                 $idsubelemento=$_POST['idsubelemento'];
-		
+
                 $consulta=$objdatos->consultarid($idsubelemento);
 		$row = pg_fetch_array($consulta);
-        
+
 		//valores de las consultas
 		$unidad=$row['unidad'];
 		$subelemento=$row['subelemento'];
@@ -222,20 +220,20 @@ switch ($opcion)
                 if(empty($row['rangofin']))
                     $rangofin=0;
                 else
-                    
+
                    $rangofin=$row['rangofin'];
-                
+
                 $orden=$row['orden'];
                 //echo $orden;
                 $examen=$row['nombre_examen'];
                // echo "orde=".$orden;
                // $orden=$row['orden'];
              //   echo $rangoini."-". $rangofin;
-                
+
             //    echo "Rango Ini".$rangoini."Rango fin". $rangofin;
                 if (empty($row['idsexo'])){
                     $idsexo=0;
-                    $nombresexo="Ambos";} 
+                    $nombresexo="Ambos";}
 	$imprimir="<form name= 'frmModificar' >
                         <table width='90%' border='0' align='center' class='StormyWeatherFormTABLE'>
                             <tr>
@@ -273,8 +271,8 @@ switch ($opcion)
                                                 }
                                                $imprimir.= "<option value='" . $idsexo . "' selected='selected'>" .$nombresexo. "</option>";
 
-                             $imprimir.="</select>		  
-                                </td>        
+                             $imprimir.="</select>
+                                </td>
                             </tr>
                             <tr>
                                 <td class='StormyWeatherFieldCaptionTD'>Rango Edad</td>
@@ -287,8 +285,8 @@ switch ($opcion)
                                                  $imprimir.="<option value='" . $row[0]. "'>". $row[1] . "</option>";
                                             }
                                              $imprimir.= "<option value='" . $idedad . "' selected='selected'>" .$rangoedad. "</option>";
-                            $imprimir.="</select>		  
-                                </td>        
+                            $imprimir.="</select>
+                                </td>
                             </tr>
                             <tr>
                                 <td class='StormyWeatherFieldCaptionTD'>Unidad</td>
@@ -301,7 +299,7 @@ switch ($opcion)
                                     <fieldset><legend><span>Rangos</span></legend>
                                     <table width='200' border='0' align='center' class='StormyWeatherFormTABLE'>
                                     <tr>
-                                            <td class='StormyWeatherFieldCaptionTD'>Inicio</td>            
+                                            <td class='StormyWeatherFieldCaptionTD'>Inicio</td>
                                             <td class='StormyWeatherDataTD'>
                                                 <input name='txtrangoinicio' type='text' id='txtrangoini' value='".$rangoini."' size='8'>
                                             </td>
@@ -310,16 +308,16 @@ switch ($opcion)
                                                 <input name='txtrangofin' type='text' id='txtrangofin' value='".$rangofin." ' size='8'></td>
                                     </tr>
                                     </table>
-                                    </fieldset>               
+                                    </fieldset>
                                 </td>
                             </tr>
                             <tr>
 				<td  class='StormyWeatherFieldCaptionTD'>Fecha Inicio</TD>
 				<td class='StormyWeatherDataTD'>
 					<input name='txtFechainicio1' type='text' id='txtFechainicio1' size='10'  class='date form-control height placeholder' placeholder='aaaa-mm-dd' style='width:75%' value='".$FechaIni."'/>
-				        
+
                                 </td>
-                                
+
 				<td  class='StormyWeatherFieldCaptionTD'>Fecha Final</TD>
 				<td  class='StormyWeatherDataTD'>
                                         <input name='txtFechaFin1' type='text' id='txtFechaFin1' size='10' class='date form-control height placeholder' placeholder='aaaa-mm-dd' style='width:75%' value='".$FechaFin."'/ >
@@ -328,7 +326,7 @@ switch ($opcion)
                             <tr>
                                 <td  class='StormyWeatherFieldCaptionTD'>Orden </td>
                                 <td   class='StormyWeatherDataTD' colspan='3'>
-                                <select   name='cmborden'  id='cmborden' style='width:50%'  class='form-control height'  > 
+                                <select   name='cmborden'  id='cmborden' style='width:50%'  class='form-control height'  >
                                         <option value='0'>--Seleccione un Orden--</option>";
                                        $datosDB=0;
                                      //  echo $idele;
@@ -342,11 +340,11 @@ switch ($opcion)
                                                // echo $datosDB;
                                             }
                                         }
-                                        for ($index = 1 ; $index <=20 ; $index++) 
+                                        for ($index = 1 ; $index <=20 ; $index++)
                                                 {
                                                      // $rest=$objdatos->arreglo ($datosDB,$index);
                                                    // if($rest==0){
-                                                       $imprimir.='<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
+                                                       $imprimir.='<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';
                                                    // }
 
 
@@ -367,37 +365,68 @@ switch ($opcion)
                           </td>";}
            $imprimir.=" </tr>
                     </table>
-                </form>";         
+                </form>";
 	   echo $imprimir;
 	break;
-        case 11:  //LLENAR COMBO DE RANGOS
+	case 6:  //ELIMINAR
+	$idsolicitud=$_POST['solicitud'];
+    $result = $objdatos->resultados_seleccionados($idsolicitud);
+	 if ($result !== false) {
+		 $jsonresponse['status'] = true;
+		 $jsonresponse['data'] = pg_fetch_all($result);
+	 } else {
+		 $jsonresponse['status'] = false;
+	 }
+
+	   echo json_encode($jsonresponse);
+
+	break;
+	case 7:  //ELIMINAR
+	$idsubelemento=$_POST['solicitud'];
+	$iddefault=$_POST['iddefault'];
+	$result= $objdatos->setfalsepr($idsubelemento,$usuario);
+	if ($iddefault!='xyz'){
+		$result = $objdatos->adddefault_pr($idsubelemento, $iddefault, $usuario);
+	}
+	 if ($result !== false) {
+		 $jsonresponse['status'] = true;
+	 } else {
+		 $jsonresponse['status'] = false;
+	 }
+
+	   echo json_encode($jsonresponse);
+
+	break;
+
+
+    case 11:  //LLENAR COMBO DE RANGOS
             $idelemento=$_POST['idelemento'];
-            $subelemento=utf8_encode($_POST['subelemento']);    
-           //echo $idele; 
+            $subelemento=utf8_encode($_POST['subelemento']);
+           //echo $idele;
             $rslts='';
-        
+
             $rslts = '<select name="cmborden" id="cmborden" style="width:50%"  class="form-control height" OnChance="Llenarorden1(); onclick="Llenarorden1();">';
             $rslts .='<option value="0">--Seleccione un Orden--</option>';
             //"onclick="Llenarorden1();"
-            
+
               /*  $conelem=$objdatos->BuscarElemento($idelemento);
                 $rowtotal = pg_fetch_array($conelem);
                 $total=$rowtotal[0];
                 if ($total=0){
                     $orden=1;
-                    $rslts.='<OPTION VALUE="'.$orden.'">'.$orden.'</OPTION>'; 
-                    for ($index = $orden+1 ; $index <=25 ; $index++) 
+                    $rslts.='<OPTION VALUE="'.$orden.'">'.$orden.'</OPTION>';
+                    for ($index = $orden+1 ; $index <=25 ; $index++)
                                         {
                                         //  $rest=areglo ($datosDB,$index);
                                          // if($rest==0){
-                                            $rslts.='<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
+                                            $rslts.='<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';
                                           //}
-                                            
-                           
+
+
                                          }
                 }
                 else{*/
-                        
+
                             $conBuscar=$objdatos->BuscarExisteOrden($idelemento,$subelemento);
                             $rowBuscar = pg_fetch_array($conBuscar);
                              $orden=$rowBuscar[0];
@@ -405,7 +434,7 @@ switch ($opcion)
                             if(!empty($rowBuscar[0])){
                                 $orden=$rowBuscar[0];
                                 //echo "orden no vacio".$orden;
-                                 for ($index = 1 ; $index <=20 ; $index++) 
+                                 for ($index = 1 ; $index <=20 ; $index++)
                                         {
                                         //  $rest=areglo ($datosDB,$index);
                                          // if($rest==0){
@@ -416,19 +445,19 @@ switch ($opcion)
                                 $roworden=pg_fetch_array($conorden);
                                 $orden=$roworden[0];
                                 if (empty($orden))
-                                    $orden=1; 
+                                    $orden=1;
                                    // $rslts='<OPTION VALUE="'.$orden.'"  selected="selected">'.$orden.'</OPTION>';
-                                    for ($index = 1 ; $index <=20 ; $index++) 
+                                    for ($index = 1 ; $index <=20 ; $index++)
                                         {
                                          if($index <> $orden){
-                                                $rslts.= '<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
+                                                $rslts.= '<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';
                                             } else {
                                                  $rslts.="<option value='" . $orden . "' selected='selected'>" .$orden. "</option>";
                                             }
                                         //  $rest=areglo ($datosDB,$index);
                                          // if($rest==0){
                                         }
-                               //echo "orden vacio".$orden;  
+                               //echo "orden vacio".$orden;
                             }
                                 $conorden1=$objdatos->ObtenerNuevoOrden($idelemento);
                                 $roworden1=pg_fetch_array($conorden1);
@@ -437,31 +466,33 @@ switch ($opcion)
                            // echo $total;
                             //echo $orden;
                            //  $rslts.="<option value='" . $orden . "' selected='selected'>" .$orden. "</option>";
-                                       
+
                                  //    $datosDB=existeOrden($idele);
-                                     
+
                                     //echo  $datosDB[3];
-                                      /*  for ($index = 1 ; $index <=10 ; $index++) 
+                                      /*  for ($index = 1 ; $index <=10 ; $index++)
                                         {
                                         //  $rest=areglo ($datosDB,$index);
                                          // if($rest==0){
-                                            $rslts.='<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';  
+                                            $rslts.='<OPTION VALUE="'.$index.'">'.$index.'</OPTION>';
                                           //}
-                                            
-                           
+
+
                                          }*/
-                                        
+
                // }
-                            
+
             $rslts .= '</select>';
                             echo $rslts;
-	
-                      
+
+
 
 	break;
-        
-        
-		
+
+
+
+
+
 }
 
 ?>
