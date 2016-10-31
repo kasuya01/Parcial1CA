@@ -25,10 +25,10 @@ class clsLab_Examenes {
                     $sql=  pg_query($nextid);
                     $nextseq=  pg_fetch_array($sql);
                     $ultimo=$nextseq[0];
-         $query = "INSERT INTO lab_conf_examen_estab
+       $query = "INSERT INTO lab_conf_examen_estab
                 (id, condicion,idformulario,urgente,impresion,ubicacion,codigosumi,
                  idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idexamen,idestandarrep,idplantilla,nombre_examen,
-                 idsexo,codigo_examen,verresultado)
+                 idsexo,codigo_examen,b_verresultado)
                  VALUES
                  ($ultimo,'$Hab', $IdFormulario,$Urgente,'$letra',$ubicacion,NULL,$usuario,NOW(),$usuario,NOW(),$idestandar,
                    $IdEstandarResp,$plantilla,'$nomexamen',$sexo,'$idexamen','$RepResultado') ";
@@ -60,7 +60,7 @@ class clsLab_Examenes {
                         WHERE id_posible_resultado = '$aresultados[$i]' AND id_conf_examen_estab=$ultimo";
             $result = pg_query($query);
             if (pg_affected_rows($result) == 0) {
-              $query = "INSERT INTO lab_examen_posible_resultado(
+             $query = "INSERT INTO lab_examen_posible_resultado(
                             id_conf_examen_estab, id_posible_resultado, fechainicio, fechafin,
                             habilitado, id_user, fecha_registro, id_user_mod, fecha_mod)
                     VALUES ('$ultimo', '$aresultados[$i]', date_trunc('seconds',NOW()), null,
@@ -147,7 +147,7 @@ class clsLab_Examenes {
          $i = 0;
          if ($aPerfil[0] != "") {
             for ($i = 0; $i < (count(array_filter($aPerfil)) ); $i++) {
-               $sql = "INSERT INTO lab_perfil_prueba(id_perfil,id_conf_examen_estab, id_establecimiento, fecha_inicio, fechahorareg, idusuarioreg) VALUES ($aPerfil[$i], $ultimo, $lugar, current_date,  date_trunc('seconds', NOW()), $usuario)";
+              $sql = "INSERT INTO lab_perfil_prueba(id_perfil,id_conf_examen_estab, id_establecimiento, fecha_inicio, fechahorareg, idusuarioreg) VALUES ($aPerfil[$i], $ultimo, $lugar, current_date,  date_trunc('seconds', NOW()), $usuario)";
                pg_query($sql);
             }
          }
@@ -161,7 +161,7 @@ class clsLab_Examenes {
             for ($i = 0; $i < (count(array_filter($aEstabReferido)) ); $i++) {
                 $aConfexaTipolab= explode('|', $aEstabReferido[$i]);
                 //echo 'aConfexaTipolab:'.$aConfexaTipolab.'----0'.count($aConfexaTipolab);
-               $sql6 = "INSERT INTO lab_conf_examen_tipo_laboratorio (id_establecimiento, id_examen_tipo_laboratorio, fecha_inicio, id_conf_examen_estab) values ($aConfexaTipolab[1], $aConfexaTipolab[0], current_date, $ultimo);";
+              $sql6 = "INSERT INTO lab_conf_examen_tipo_laboratorio (id_establecimiento, id_examen_tipo_laboratorio, fecha_inicio, id_conf_examen_estab) values ($aConfexaTipolab[1], $aConfexaTipolab[0], current_date, $ultimo);";
                pg_query($sql6);
             }
          }
@@ -172,7 +172,7 @@ class clsLab_Examenes {
          $i = 0;
             for ($i = 0; $i < (count(array_filter($aRealizadopor)) ); $i++) {
                 //echo 'aConfexaTipolab:'.$aConfexaTipolab.'----0'.count($aConfexaTipolab);
-               $sql6 = "INSERT INTO lab_examen_suministrante (id_conf_examen_estab, id_suministrante, fecha_inicio)
+             $sql6 = "INSERT INTO lab_examen_suministrante (id_conf_examen_estab, id_suministrante, fecha_inicio)
                values ($ultimo, $aRealizadopor[$i], current_date);";
                pg_query($sql6);
             }
@@ -228,7 +228,7 @@ class clsLab_Examenes {
          $i = 0;
          if ($aMetodologias[0] != "") {
             for ($i = 0; $i < (count($aMetodologias) - 1); $i++) {
-               $sql = "INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin,nombre_reporta) VALUES ($ultimo, $aMetodologias[$i], true, NOW(), NULL, '$aMetodologias_id[$i]')";
+              $sql = "INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin,nombre_reporta) VALUES ($ultimo, $aMetodologias[$i], true, NOW(), NULL, '$aMetodologias_id[$i]')";
                pg_query($sql);
             }
          }
@@ -316,7 +316,7 @@ class clsLab_Examenes {
 
              $query = "UPDATE lab_conf_examen_estab
                               SET idusuariomod=$usuario,fechahoramod=NOW(),idformulario=$IdFormulario,
-                              idestandarrep=$IdEstandarResp,IdPlantilla=$plantilla,impresion='$letra',urgente=$Urgente,ubicacion=$ubicacion,condicion='$Hab',nombre_examen='$nomexamen',idsexo=$idsexo,verresultado=$RepResultado
+                              idestandarrep=$IdEstandarResp,IdPlantilla=$plantilla,impresion='$letra',urgente=$Urgente,ubicacion=$ubicacion,condicion='$Hab',nombre_examen='$nomexamen',idsexo=$idsexo,b_verresultado=$RepResultado
                               WHERE lab_conf_examen_estab.id=$idconf";
          //echo $query;
          $result = pg_query($query);
@@ -366,14 +366,14 @@ class clsLab_Examenes {
              */
             if (pg_num_rows($con) > 0) {
               $sql = "UPDATE lab_examen_metodologia SET activo=true,fecha_inicio=NOW(),fecha_fin=NULL WHERE id_conf_exa_estab=$idconf AND id_metodologia is null returning id";
-               $upd = pg_query($sql);
+              $upd = pg_query($sql);
                $idexametodologia=  pg_fetch_array($upd);
                $idexameto=$idexametodologia['id'];
 
                $sql = "UPDATE lab_examen_metodologia SET activo=false,fecha_fin=NOW() WHERE id_conf_exa_estab=$idconf AND id_metodologia is not null";
                $upd = pg_query($sql);
             } else { // si no existen registro con metodologia NULL
-              $sql = "INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin, nombre_reporta) VALUES ($idconf, null, true, NOW(), NULL, '$nomexamen') returning id";
+               $sql = "INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin, nombre_reporta) VALUES ($idconf, null, true, NOW(), NULL, '$nomexamen') returning id";
                $resultexme=pg_query($sql);
                $idexametodologia=  pg_fetch_array($resultexme);
                $idexameto=$idexametodologia['id'];
@@ -478,7 +478,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                $con = pg_query($sql1);
                while ($rome = pg_fetch_array($con)) {
                   if ($rome['id_metodologia'] == $aMetodologias[$i]) {
-                     $sql = "UPDATE lab_examen_metodologia SET activo=true,fecha_inicio=NOW(),fecha_fin=NULL,nombre_reporta='$aMetodologias_id[$i]' WHERE id_conf_exa_estab=$idconf AND id_metodologia=$aMetodologias[$i] returning id;";
+                   echo  $sql = "UPDATE lab_examen_metodologia SET activo=true,fecha_inicio=NOW(),fecha_fin=NULL,nombre_reporta='$aMetodologias_id[$i]' WHERE id_conf_exa_estab=$idconf AND id_metodologia=$aMetodologias[$i] returning id;";
                      $upd = pg_query($sql);
                      $idexametodologia=  pg_fetch_array($upd);
                      $idexameto=$idexametodologia['id'];
@@ -527,7 +527,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
 
                           }
                           if ($bandera==0){
-                             $sql2="insert into lab_examen_posible_resultado(id_conf_examen_estab, id_posible_resultado, fechainicio, habilitado, id_user, fecha_registro)
+                            $sql2="insert into lab_examen_posible_resultado(id_conf_examen_estab, id_posible_resultado, fechainicio, habilitado, id_user, fecha_registro)
         values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seconds', NOW()))";
                              $query2=pg_query($sql2);
                           }
@@ -635,7 +635,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                $queryB=  pg_query($sqlB);
                while ($per=@pg_fetch_array($queryB)){
                   if($per['id_perfil']==$aperfil[$l]){
-                     $sqlC="update lab_perfil_prueba
+                      $sqlC="update lab_perfil_prueba
                            set habilitado=true,
                             idusuariomod=$usuario,
                            fechahoramod=date_trunc('seconds', NOW())
@@ -658,7 +658,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
          $arealizador = explode(',', $cmbRealizadopor);
          $cantsumi=count(array_filter($arealizador));
 
-         $sqlA="update lab_examen_suministrante
+          $sqlA="update lab_examen_suministrante
             set activo=false,
              fecha_fin=current_date
             where id_conf_examen_estab=$idconf
@@ -681,7 +681,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                   }
                }
                if ($bandl==0){
-                 $sqlD="insert into lab_examen_suministrante (id_suministrante, id_conf_examen_estab, activo, fecha_inicio) values($arealizador[$l], $idconf, true,current_date);";
+               echo  $sqlD="insert into lab_examen_suministrante (id_suministrante, id_conf_examen_estab, activo, fecha_inicio) values($arealizador[$l], $idconf, true,current_date);";
                   $queryD=  pg_query($sqlD);
 
                }
@@ -694,7 +694,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
          //**Actualizar los establecimientos a referir
          $acmbEstabReferido = explode(',', $cmbEstabReferido);
          $cancmbEstabReferido=count(array_filter($acmbEstabReferido));
-         $sqlA="UPDATE lab_conf_examen_tipo_laboratorio
+          $sqlA="UPDATE lab_conf_examen_tipo_laboratorio
                 set activo= false,
                 fecha_fin= current_date
                 where id_conf_examen_estab =$idconf
@@ -1262,7 +1262,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
       $con = new ConexionBD;
       //usamos el metodo conectar para realizar la conexion
       if ($con->conectar() == true) {
-         $query = "INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin) VALUES ($id_examen, $id_metodologia, true, NOW(), NULL)";
+       echo  $query = "INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin) VALUES ($id_examen, $id_metodologia, true, NOW(), NULL)";
 
          $result = pg_query($query);
          if (!$result)
@@ -1320,7 +1320,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                         WHERE id_posible_resultado = '$id_posible_resultado' AND id_conf_examen_estab='$idconf'";
          $result = pg_query($query);
          if (pg_affected_rows($result) == 0) {
-            $query = "INSERT INTO lab_examen_posible_resultado(
+          echo  $query = "INSERT INTO lab_examen_posible_resultado(
                             id_conf_examen_estab,
                             id_posible_resultado,
                             fechainicio, fechafin,
@@ -1515,7 +1515,7 @@ class clsLabor_Examenes {
            $plantilla, $observacion, $activo, $ubicacion, $usuario) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "INSERT INTO laboratorio.lab_examenes(idexamen,IdArea,nombreExamen,IdEstandar,Observacion,IdPlantilla,Habilitado,Ubicacion,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod) VALUES('$idexamen','$idarea','$nomexamen','$idestandar','$observacion','$plantilla','$activo',$ubicacion,$usuario,NOW(),$usuario,NOW())";
+         echo $query = "INSERT INTO laboratorio.lab_examenes(idexamen,IdArea,nombreExamen,IdEstandar,Observacion,IdPlantilla,Habilitado,Ubicacion,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod) VALUES('$idexamen','$idarea','$nomexamen','$idestandar','$observacion','$plantilla','$activo',$ubicacion,$usuario,NOW(),$usuario,NOW())";
          $result = pg_query($query);
 
          if (!$result)

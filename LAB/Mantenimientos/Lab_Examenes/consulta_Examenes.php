@@ -45,7 +45,7 @@
     $id_tipomuestra=$row['id_tipo_muestra'];
     $id_perfil=$row['id_perfil'];
     $id_idestab_idexatipolab=$row['id_idestab_idexatipolab'];
-    $Represultado = $row['verresultado'];
+    $Represultado = $row['b_verresultado'];
     if ($Represultado=='t'){
         $reporta='Si';
     }
