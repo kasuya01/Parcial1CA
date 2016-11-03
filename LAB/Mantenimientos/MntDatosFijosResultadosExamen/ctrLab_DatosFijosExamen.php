@@ -19,7 +19,7 @@ switch ($opcion)
 		
 		$idexamen=$_POST['idexamen'];
 		$idarea=$_POST['idarea'];
-		$unidades=(empty($_POST['unidades'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidades']) . "'"; 
+		$unidades=(empty($_POST['unidades'])) ? 'NULL' : "'" . pg_escape_string(utf8_encode($_POST['unidades'])) . "'"; 
                 $nota=(empty($_POST['nota'])) ? 'NULL' : "'" . pg_escape_string($_POST['nota']) . "'";  
                 $sexo=$_POST['sexo'];    
                 if ($sexo==3)
@@ -30,7 +30,7 @@ switch ($opcion)
                 $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
 		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
                 
-        
+        echo $unidades;
 
 		if ($objdatos->insertar($idarea,$idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,$lugar,$Fechaini,$Fechafin,$sexo,$redad)==true) 
                      /*   && 
@@ -49,7 +49,7 @@ switch ($opcion)
 			$iddatosfijosresultado=$_POST['iddatosfijosexamen'];
 		        $redad=(empty($_POST['redad'])) ? 'NULL' : "'" . pg_escape_string($_POST['redad']) . "'";
                         $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";  
-                        $unidades=(empty($_POST['unidades'])) ? 'NULL' : "'" . pg_escape_string($_POST['unidades']) . "'";
+                        $unidades=(empty($_POST['unidades'])) ? 'NULL' : "'" . pg_escape_string(utf8_encode($_POST['unidades'])) . "'";
                         $rangoinicio=(empty($_POST['rangoinicio'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangoinicio']) . "'";
                         $rangofin=(empty($_POST['rangofin'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangofin']) . "'";
                         $nota=(empty($_POST['nota'])) ? 'NULL' : "'" . pg_escape_string($_POST['nota']) . "'";  
@@ -141,7 +141,7 @@ switch ($opcion)
                         if ((empty($row['rangoInicio'])) && (empty($row['rangofin'])))
                                 echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 			else 
-                               echo "<td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
+                               echo "<td>".$row['rangoinicio']." - ".$row['rangofin']."</td>";
 			
 			if (empty($row['nota']))	
                             echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
@@ -187,7 +187,7 @@ switch ($opcion)
                         if ((empty($row['rangoInicio'])) && (empty($row['rangofin'])))
                                 echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 			else 
-                               echo "<td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
+                               echo "<td>".$row['rangoinicio']." - ".$row['rangofin']."</td>";
 			
 			if (empty($row['nota']))	
                             echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
@@ -451,7 +451,7 @@ switch ($opcion)
                         if ((empty($row['rangoInicio'])) && (empty($row['rangofin'])))
                                 echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 			else 
-                               echo "<td>".$row['rangoinicio']."-".$row['rangofin']."</td>";
+                               echo "<td>".$row['rangoinicio']." - ".$row['rangofin']."</td>";
 			
 			if (empty($row['nota']))	
                             echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";

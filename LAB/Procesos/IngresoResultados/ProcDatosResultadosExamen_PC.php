@@ -162,12 +162,17 @@ function RecogeValor() {
  //   print_r($cant);
     if (pg_num_rows($cant)>0){
         if($db->conectar()==true) {
-           $condatos = "SELECT t07.peso,t07.talla,t06.sct_name_es AS diagnostico,especificacion,conocido_por
+       $condatos = "SELECT t07.peso,t07.talla,
+                        CASE WHEN t04.id_snomed IS NOT NULL
+                            THEN t06.sct_name_es 
+                            ELSE t08.diagnostico
+                        END AS diagnostico,especificacion,conocido_por
                         FROM sec_historial_clinico               t01
                         INNER JOIN mnt_expediente                t02 ON (t02.id = t01.id_numero_expediente)
                         INNER JOIN mnt_paciente                  t03 ON (t03.id = t02.id_paciente)
                         LEFT OUTER JOIN sec_diagnostico_paciente t04 ON (t01.id = t04.id_historial_clinico)
                         LEFT OUTER JOIN mnt_snomed_cie10         t06 ON (t06.id = t04.id_snomed)
+                        LEFT OUTER JOIN mnt_cie10 t08 ON (t08.id = t04.id_cie10_medico)
                         LEFT OUTER JOIN sec_signos_vitales       t07 ON (t01.id = t07.id_historial_clinico)
                         WHERE t01.id = $IdHistorial AND t01.idestablecimiento = $lugar";
 

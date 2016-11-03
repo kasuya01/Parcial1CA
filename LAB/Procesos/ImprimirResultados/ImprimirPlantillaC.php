@@ -141,6 +141,8 @@ $row_cantidad=pg_fetch_array($Catidad);
       $contar=$obj->contar_resultados($idsolicitud,$idexamen);
             //$row_totresult= pg_fetch_array($contar); 
       while($row_totresult = pg_fetch_array($contar)){
+          $contarpadre=$obj->contar_resultadospadre($row_totresult['idresultado']);
+          while($row_totresultpadre = pg_fetch_array($contarpadre)){
         ?>
                             
             <tr>
@@ -148,16 +150,16 @@ $row_cantidad=pg_fetch_array($Catidad);
             </tr> 
             <tr>
                 <td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>
-                <td colspan='5' class="Estilo6"><?php echo $row_totresult['nombreempleado'];?></td>
+                <td colspan='5' class="Estilo6"><?php echo $row_totresultpadre['nombreempleado'];?></td>
             </tr>
                   
             <tr>
                 <td colspan='1' class="Estilo5"><strong>Observación:</strong></td>
-                <td colspan='5' class="Estilo5"><?php echo $row_totresult['observacion']; ?></td>
+                <td colspan='5' class="Estilo5"><?php echo $row_totresultpadre['observacion']; ?></td>
            </tr>
                                 <?php 
      
-   $detalle = $obj->obtener_detalle_resultado($row_totresult['idresultado']);
+   $detalle = $obj->obtener_detalle_resultado($row_totresultpadre['idresultado']);
     //$row_det= pg_fetch_array($detalle);
         while($row_det = pg_fetch_array($detalle)){?>
             <tr>
@@ -213,7 +215,8 @@ $row_cantidad=pg_fetch_array($Catidad);
                         </tr> 
                     </table><?php 
         }
-}?>
+}
+      }//aqui positivo?>
                  </td>
             </tr>
             

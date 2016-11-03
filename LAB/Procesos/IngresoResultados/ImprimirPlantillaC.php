@@ -163,6 +163,7 @@ function calc_edad()
       $contar=$obj->contar_resultados($idsolicitud,$idexamen);
             //$row_totresult= pg_fetch_array($contar); 
       while($row_totresult = pg_fetch_array($contar)){
+        
         ?>
              <tr><td colspan='6'><hr></td></tr> 
             <tr>
@@ -176,7 +177,13 @@ function calc_edad()
              
             
  <?php
-   $detalle = $obj->obtener_detalle_resultado($row_totresult['idresultado']);
+ $idresultado=$row_totresult['idresultado'];
+  $idpadre=$obj->buscar_resultado_padre($idresultado);
+       //  echo $idpadre;
+ //  $detalle = $obj->obtener_detalle_resultado($idresultado);
+   $detalle = $obj->obtener_detalle_resultado($idpadre);
+    
+         
     //$row_det= pg_fetch_array($detalle);
          while($row_det = pg_fetch_array($detalle)){?>
             <tr>

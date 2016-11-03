@@ -17,7 +17,7 @@ class clsLab_DatosFijosExamen
 	    $query = "INSERT INTO lab_datosfijosresultado
 		      (id_conf_examen_estab,unidades,rangoinicio,rangofin,nota,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,fechaini,fechafin,idsexo,idedad) 
                       VALUES($idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,date_trunc('seconds',NOW()),$usuario,date_trunc('seconds', NOW()),$lugar,$Fechaini,$Fechafin,$sexo,$redad)";
-		//echo $query;
+		echo $query;
 	     $result = pg_query($query);
 	
 	     if (!$result)
