@@ -29,7 +29,7 @@ echo '<h4><i>Fecha actual: '.strftime("%A, %d de %B de %Y").'<br/></i></h4>';
                 from sec_solicitudestudios t1
                 join ctl_estado_servicio_diagnostico t2 on (t2.id=t1.estado)
                 where extract (month from fechahorareg)= extract (month from current_date)
-                and extract (year from fechahorareg)= extract(year from fechahorareg)
+                and extract (year from fechahorareg)= extract(year from current_date)
                 group by idestado, descripcion, t2.id
                 order by t2.id;  ";
 	$result2 = @pg_query($query2);
@@ -75,9 +75,9 @@ echo '<h4><i>Fecha actual: '.strftime("%A, %d de %B de %Y").'<br/></i></h4>';
             </a>
                  <div class="col-md-1 text-right"   >
                         <?php
-                        $tooltipexp="DIGITADA: Solicitudes de médicos, pendientes de recepcionar en el área. &#010;                        
+                        $tooltipexp="DIGITADA: Solicitudes de médicos, pendientes de recepcionar en el área. &#010;
                               RECIBIDA: Solicitud pendiente de recepcionar en las secciones.  &#010;
-                        
+
                               EN PROCESO: Solicitudes pendientes de ingresarles resultados de examenes. ";
                         echo '<a href="#" style="html: true" title="'.$tooltipexp.'"><span class="glyphicon glyphicon-info-sign"  ></span></a>';
                         ?>
