@@ -108,20 +108,18 @@ switch ($opcion)
 	        </tr> </thead><tbody>
                     </center>";
     while($row = pg_fetch_array($consulta)){
-         if (empty($row['fechafin'])){
+        // if (empty($row['fechafin'])){
                 echo "<tr>
                           <td aling='center'>
                               <img src='../../../Iconos/modificar.gif' style=\"text-decoration:underline;cursor:pointer;\"
          onclick=\"pedirDatosSubElementos('".$row['id']."')\"> </td>";
-
-         }
+      /*   }
          else{
              echo "<tr>
                           <td aling='center'>
                               <img src='../../../Imagenes/Search.png' style=\"text-decoration:underline;cursor:pointer;\"
          onclick=\"pedirDatosSubElementos('".$row['id']."')\" height='40' width='50'> </td>";
-
-         }
+         }*/
 
                /*    echo "   <td aling ='center'>
                               <img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\"

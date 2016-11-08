@@ -42,6 +42,7 @@ switch ($opcion) {
       $cmbTipoMuestra = $_POST['cmbTipoMuestra'];
       $cmbPerfil = $_POST['cmbPerfil'];
       $cmbEstabReferido = $_POST['cmbEstabReferido'];
+      $RepResultado = $_POST['RepResultado'];
       $cmbRealizadopor = $_POST['cmbRealizadopor'];
       //echo $sexo;
       if ($sexo <> 4)
@@ -81,7 +82,7 @@ switch ($opcion) {
                          $letra, $Urgente, $ubicacion, $TiempoPrevio, $idsexo,
                          $idestandar, $lugar, $metodologias_sel,
                          $text_metodologias_sel, $id_metodologias_sel,
-                         $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido, $cmbRealizadopor) == true) {
+                         $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido,$RepResultado,$cmbRealizadopor) == true) {
             // asignar_resultados($resultado);
             echo "Registro Agregado";
          } else {
@@ -96,7 +97,7 @@ switch ($opcion) {
                          $letra, $Urgente, $ubicacion, $TiempoPrevio, $idsexo,
                          $idestandar, $lugar, $metodologias_sel,
                          $text_metodologias_sel, $id_metodologias_sel,
-                         $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido, $cmbRealizadopor) == true) {
+                         $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido,$RepResultado, $cmbRealizadopor) == true) {
             // asignar_resultados($resultado);
             echo "Registro Agregado";
          } else {
@@ -141,6 +142,7 @@ switch ($opcion) {
       $cmbTipoMuestra = $_POST['cmbTipoMuestra'];
       $cmbPerfil = $_POST['cmbPerfil'];
       $cmbEstabReferido = $_POST['cmbEstabReferido'];
+      $RepResultado = $_POST['RepResultado'];
       $cmbRealizadopor = $_POST['cmbRealizadopor'];
       //  echo $IdEstandarResp." sexo=".$sexo;
       if ($sexo <> 4)
@@ -185,7 +187,7 @@ switch ($opcion) {
                       $usuario, $IdFormulario, $IdEstandarResp, $plantilla,
                       $letra, $Urgente, $ubicacion, $Hab, $TiempoPrevio,
                       $idsexo, $idestandar, $ctlidestandar, $metodologias_sel,
-$text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido,$cmbRealizadopor) == true) {
+                      $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTipoMuestra, $cmbPerfil, $cmbEstabReferido,$RepResultado, $cmbRealizadopor) == true) {
          /*
           * creando arreglo de elementos seleccionados
           */
@@ -500,6 +502,7 @@ $text_metodologias_sel, $id_metodologias_sel, $resultado, $id_resultado, $cmbTip
               $RegistrosAMostrar);
       //echo $query_search;
       //muestra los datos consultados en la tabla
+     // echo $row[0];
       echo "<center >
                <table border = 1 style='width: 90%;'   class='table table-hover table-bordered table-condensed table-white' >
 	           <thead>

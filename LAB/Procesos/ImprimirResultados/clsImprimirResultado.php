@@ -1302,7 +1302,7 @@ function ObtenerResultadoxId($idsolicitud,$iddetalle)
      $con = new ConexionBD;
     if($con->conectar()==true)
    {
-        $query = "SELECT lab_resultados.id as idresultado,resultado,observacion,nombreempleado 
+      echo  $query = "SELECT lab_resultados.id as idresultado,resultado,observacion,nombreempleado 
                FROM lab_resultados 
                INNER JOIN mnt_empleado ON mnt_empleado.id= lab_resultados.idempleado
                WHERE idsolicitudestudio=$idsolicitud AND idexamen=$idexamen order by lab_resultados.id asc ";
@@ -1320,7 +1320,7 @@ function obtener_detalle_resultado($idresulatado){
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query = "SELECT lab_detalleresultado.id as iddetalleresultado,idtarjeta,nombretarjeta,idbacteria,bacteria,cantidad 
+     echo $query = "SELECT lab_detalleresultado.id as iddetalleresultado,idtarjeta,nombretarjeta,idbacteria,bacteria,cantidad 
                FROM lab_detalleresultado 
                INNER JOIN lab_tarjetasvitek ON  lab_tarjetasvitek.id=lab_detalleresultado.idtarjeta
                INNER JOIN lab_bacterias ON lab_bacterias.id= lab_detalleresultado.idbacteria

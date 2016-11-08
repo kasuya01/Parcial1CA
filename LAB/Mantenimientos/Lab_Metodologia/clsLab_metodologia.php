@@ -252,17 +252,18 @@ from lab_examen_metodo_pos_resultado t01
 	   $con = new ConexionBD;
 	   //usamos el metodo conectar para realizar la conexion
             if($con->conectar()==true){
-              $query = "select idestandar, nombre_examen, nombre_reporta, b_reporta, t01.id as id
-               from lab_examen_metodologia t01
-               join lab_conf_examen_estab  t02 on (t02.id=t01.id_conf_exa_estab)
-               join mnt_area_examen_establecimiento  t03 on (t03.id=t02.idexamen)
-               join ctl_examen_servicio_diagnostico t04 on (t04.id=t03.id_examen_servicio_diagnostico)
-               where id_metodologia is not null
-               and t01.activo=true
-               and condicion='H'
-               and id_establecimiento=$lugar
-               order by idestandar,nombre_examen, nombre_reporta
-               LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
+              $query = "select idestandar, nombre_examen, nombre_reporta, b_reporta, t01.id as id, t05.nombrearea 
+                            from lab_examen_metodologia t01 
+                            join lab_conf_examen_estab t02 on (t02.id=t01.id_conf_exa_estab) 
+                            join mnt_area_examen_establecimiento t03 on (t03.id=t02.idexamen) 
+                            join ctl_examen_servicio_diagnostico t04 on (t04.id=t03.id_examen_servicio_diagnostico) 
+                            join ctl_area_servicio_diagnostico t05 ON (t05.id = id_area_servicio_diagnostico)
+                            where id_metodologia is not null
+                            and t01.activo=true
+                            and condicion='H'
+                            and id_establecimiento=$lugar
+                            order by nombrearea,idestandar,nombre_examen, nombre_reporta
+                            LIMIT $RegistrosAMostrar OFFSET $RegistrosAEmpezar";
                 //echo $query;
                     $result = pg_query($query);
                     if (!$result)

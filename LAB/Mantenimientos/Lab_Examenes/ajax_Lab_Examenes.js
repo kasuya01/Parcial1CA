@@ -157,7 +157,6 @@ if (ValidarCampos())
     cmbTipoMuestra=$('#cmbTipoMuestra').val();
     cmbPerfil=$('#cmbPerfil').val();
     cmbEstabReferido=$('#cmbEstabReferido').val();
-    cmbRealizadopor=$('#cmbRealizadopor').val();
     tiempoprevio=document.getElementById('inidate').value;
     metodologias_sel=frmnuevo.metodologias_sel.value;
     text_metodologias_sel=frmnuevo.text_metodologias_sel.value;
@@ -165,9 +164,10 @@ if (ValidarCampos())
     resultado=frmnuevo.resultado.value;
     resultado_nombre=frmnuevo.resultado_nombre.value;
     id_resultado=frmnuevo.id_resultado.value;
+    RepResultado=frmnuevo.cmbRepResultado.value;
     //mismo=frmnuevo.mismo.value;
     mismo=0;
-      // alert(sexo);
+   //alert(RepResultado);
 	//codempresa=document.frmnuevo.txttxtcodempresa.value;
 	//alert(idestandar);
 	//alert (idPrograma+"*****"+idestandarRep);
@@ -193,8 +193,9 @@ if (ValidarCampos())
 	ajax.send("idexamen="+idexamen+"&idarea="+idarea+"&nomexamen="+nomexamen+
 	"&idestandar="+idestandar+"&Pag="+Pag+"&opcion="+opcion+"&plantilla="+plantilla+"&ubicacion="+ubicacion+
 	"&idformulario="+idformulario+"&idestandarRep="+idestandarRep+"&etiqueta="+etiqueta+"&urgente="+urgente+
-        "&sexo="+sexo+"&Hab="+Hab+"&tiempoprevio="+tiempoprevio+"&metodologias_sel="+metodologias_sel+"&text_metodologias_sel="+text_metodologias_sel+"&id_metodologias_sel="+id_metodologias_sel
-        +"&resultado="+resultado+"&resultado_nombre="+resultado_nombre+"&id_resultado="+id_resultado+"&mismo="+mismo+"&cmbTipoMuestra="+cmbTipoMuestra+"&cmbPerfil="+cmbPerfil+"&cmbEstabReferido="+cmbEstabReferido+"&cmbRealizadopor="+cmbRealizadopor);
+    "&sexo="+sexo+"&Hab="+Hab+"&tiempoprevio="+tiempoprevio+"&metodologias_sel="+metodologias_sel+"&text_metodologias_sel="+text_metodologias_sel+"&id_metodologias_sel="+id_metodologias_sel
+    +"&resultado="+resultado+"&resultado_nombre="+resultado_nombre+"&id_resultado="+id_resultado+"&mismo="+mismo+"&cmbTipoMuestra="+cmbTipoMuestra+"&cmbPerfil="+cmbPerfil
+    +"&cmbEstabReferido="+cmbEstabReferido+"&RepResultado="+RepResultado+"&cmbRealizadopor="+cmbRealizadopor);
    }
 
 else{
@@ -353,9 +354,10 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
         cmbTipoMuestra=$('#cmbTipoMuestra').val();
         cmbPerfil=$('#cmbPerfil').val();
         cmbEstabReferido=$('#cmbEstabReferido').val();
+        RepResultado=frmModificar.cmbRepResultado.value;
         cmbRealizadopor=$('#cmbRealizadopor').val();
 	//alert (text_metodologias_sel);
-	//alert (cmbEstabReferido);
+	//alert (RepResultado);
 
         if (nomexamen=='' || ($('#cmbTipoMuestra option:selected').length==0) || (Tiempo=='') || (Tiempo==0) || ($('#cmbRealizadopor option:selected').length==0)){
            alert ('Ingrese los datos obligatorios por favor; se encuentran marcados con *');
@@ -374,7 +376,9 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
 	ajax.send("idexamen="+idexamen+"&idarea="+idarea+"&nomexamen="+nomexamen+
 	"&idestandar="+idestandar+"&Pag="+Pag+"&opcion="+opcion+"&plantilla="+plantilla+"&ubicacion="+ubicacion+
 	"&idformulario="+idformulario+"&idestandarRep="+idestandarRep+"&Etiqueta="+Etiqueta+"&urgente="+urgente+
-        "&idsexo="+idsexo+"&Hab="+Hab+"&Tiempo="+Tiempo+"&idconf="+idconf+"&ctlidestandar="+ctlidestandar+"&metodologias_sel="+metodologias_sel+"&text_metodologias_sel="+text_metodologias_sel+"&id_metodologias_sel="+id_metodologias_sel+"&resultado="+resultado+"&resultado_nombre="+resultado_nombre+"&id_resultado="+id_resultado+"&cmbTipoMuestra="+cmbTipoMuestra+"&cmbPerfil="+cmbPerfil+"&cmbEstabReferido="+cmbEstabReferido+"&cmbRealizadopor="+cmbRealizadopor);
+    "&idsexo="+idsexo+"&Hab="+Hab+"&Tiempo="+Tiempo+"&idconf="+idconf+"&ctlidestandar="+ctlidestandar+"&metodologias_sel="+metodologias_sel+"&text_metodologias_sel="+text_metodologias_sel+
+    "&id_metodologias_sel="+id_metodologias_sel+"&resultado="+resultado+"&resultado_nombre="+resultado_nombre+"&id_resultado="+id_resultado+"&cmbTipoMuestra="+cmbTipoMuestra+"&cmbPerfil="+
+    cmbPerfil+"&cmbEstabReferido="+cmbEstabReferido+"&RepResultado="+RepResultado+"&cmbRealizadopor="+cmbRealizadopor);
 //+"&observacion="+observacion
 	ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {

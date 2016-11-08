@@ -147,10 +147,11 @@ if ($nivel == 7) {
                     </tr>
                     <tr>
                        
-                       <td width="17%" class="StormyWeatherFieldCaptionTD" title="Indicar si se mostrará el nombre de la metodología en el reporte final">Reporta *</td>
-                        <td class="StormyWeatherDataTD" colspan="3" title="Indicar si se mostrará el nombre de la metodología en el reporte final">
+                       <td width="17%" class="StormyWeatherFieldCaptionTD" >Reporta *</td>
+                        <td class="StormyWeatherDataTD" colspan="3" >
                            <div id="divReporta">
-                              <select id="cmbreporta" name="cmbreporta" size="1" class="form-control height"  style="width:75%" title="Indicar si se mostrará el nombre de la metodología en el reporte final">                                              <option value="0" selected="selected">--Seleccione un opción--</option>
+                              <select id="cmbreporta" name="cmbreporta" size="1" class="form-control height"  style="width:75%" >                               
+                                  <option value="0" selected="selected">--Seleccione un opción--</option>
                               <option value="true" >Si</option>
                               <option value="false" >No</option>     
                              </select>	
@@ -177,7 +178,7 @@ if ($nivel == 7) {
                      <tr>
                         <td class="StormyWeatherFieldCaptionTD">Fecha Inicio *</td>
                         <td  class="StormyWeatherDataTD">
-                            <input  name="txtFechainicio" type="text" id="txtFechainicio" size="25" class="date form-control  height placeholder"  placeholder="aaaa-mm-dd" style="width:100%"  value="<?php echo date("Y-m-d"); ?>"/>		  
+                            <input  name="txtFechainicio" type="text" id="txtFechainicio" size="25" class="date form-control  height placeholder"  placeholder="aaaa-mm-dd" style="width:100%" value="<?php echo date("Y-m-d"); ?>"/>		  
 			</td>      
                           <td class="StormyWeatherFieldCaptionTD" style="width:250px" >Fecha Final</td>
                         <td  class="StormyWeatherDataTD">
@@ -187,7 +188,7 @@ if ($nivel == 7) {
                     <tr>  
                             <td class="StormyWeatherDataTD" colspan="4" align="right"><br/>
                                 <button type='button' align="center" class='btn btn-primary'  onclick='Guardar(); '> <span   class='glyphicon glyphicon-floppy-disk'>    </span> Guardar </button>
-<!--                                <button type='button' align="center" class='btn btn-primary'  onclick='Buscar(); '>  <span    class='glyphicon glyphicon-search'>         </span> Buscar </button>-->
+                          <!--       <button type='button' align="center" class='btn btn-primary'  onclick='Buscar(); '>  <span    class='glyphicon glyphicon-search'>         </span> Buscar </button>-->
                                 <button type='button' align="center" class='btn btn-primary'  onclick='Cancelar(); '><span  class='glyphicon glyphicon-refresh'>        </span> Nueva Busqueda</button>
                             </td>
                          </tr>

@@ -147,6 +147,12 @@ function mypopup(){
            dropdownAutoWidth: true
         });
 
+        $("#cmbRepResultado").select2({
+          // placeholder: "Seleccione un Tipo de etiqueta...",
+           allowClear: true,
+           dropdownAutoWidth: true
+        });
+
         $("#cmbRealizadopor").select2({
            placeholder: "Seleccione una opción",
            allowClear: true,
@@ -406,6 +412,7 @@ if ($nivel == 7) {
                             <td class="StormyWeatherDataTD">
                                 <input id="inidate" name="inidate" class="form-control" style="width:250px; height:28px;" maxlength=3 onkeypress='return isNumberKey(event);' ></td>
                         </tr>
+
                         <tr>
                         <td nowrap class="StormyWeatherFieldCaptionTD">Metodologías</td>
                         <td class="StormyWeatherDataTD">
@@ -442,9 +449,20 @@ if ($nivel == 7) {
                                 <input type="button" name="btnGuardar" value="Guardar" onClick="Guardar();">
                                 <input type="button" name="btnBuscar" value="Buscar" onClick="Buscar();">
 				<input type="button" name="btnCancelar" value="Cancelar" onClick="Cancelar();">
-                            </td>
-			</tr>-->
+                            </td>-->
+			</tr>
                         <tr>
+                            <td class="StormyWeatherFieldCaptionTD">Mostrar Resultado al Médico</td>
+                            <td class="StormyWeatherDataTD">
+                                <select id="cmbRepResultado" name="cmbRepResultado" size="1" style="width:23%" class="height js-example-basic-single">
+<!--                                    <option value="0">-- Seleccione Condici&oacute;n --</option>-->
+                                    <option value="true" >Si</option>
+                                    <option value="false" >No</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+
                             <td class="StormyWeatherDataTD" colspan="6" align="right">
                                 <button type='button' align="center" id="btnGuardar" class='btn btn-primary'  onclick='Guardar(); '><span class='glyphicon glyphicon-floppy-disk'></span> Guardar </button>
                                 <button type='button' align="center" id="btnBuscar" class='btn btn-primary'  onclick='Buscar(); '><span class='glyphicon glyphicon-search'></span>  Buscar </button>
