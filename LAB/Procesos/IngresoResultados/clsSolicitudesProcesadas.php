@@ -604,6 +604,7 @@ FROM mnt_paciente d
 JOIN mnt_expediente e ON (d.id=e.id_paciente)
 JOIN ctl_sexo s on (s.id=d.id_sexo)
 JOIN sec_historial_clinico h on (e.id=h.id_numero_expediente)
+where numero='$nec'
 and habilitado=true
 union
 select e.id as idexpediente, e.numero as numero,
@@ -614,6 +615,7 @@ FROM mnt_paciente_referido d
 JOIN mnt_expediente_referido e on (d.id= e.id_referido)
 JOIN ctl_sexo s on (s.id=d.id_sexo)
 JOIN mnt_dato_referencia r on (e.id=r.id_expediente_referido)
+where numero='$nec'
 )
 select * from tbl_datos_paciente
 where numero='$nec'
