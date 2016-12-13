@@ -99,7 +99,11 @@ where id_tipo_establecimiento not in (12,13,29,28) order by id_tipo_establecimie
                         ELSE
                         CASE WHEN id_servicio_externo_estab IS NOT NULL
                                 THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
-                             WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=cat.nombre)
+                             WHEN not exists (select nombre_ambiente
+                                            from mnt_aten_area_mod_estab maame
+                                            join mnt_area_mod_estab mame on (maame.id_area_mod_estab = mame.id)
+                                            where nombre_ambiente=cat.nombre
+                                            and mame.id_area_atencion=mnt_2.id_area_atencion)
                                 THEN cmo.nombre||'-'||cat.nombre
                         END
                         END AS servicio
