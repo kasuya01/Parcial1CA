@@ -141,8 +141,13 @@ switch ($opcion) {
                 CASE WHEN t02.nombre_ambiente IS NOT NULL THEN
                     t02.nombre_ambiente
                     ELSE
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre
-                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)
+                        CASE WHEN id_servicio_externo_estab IS NOT NULL
+                                THEN t05.abreviatura  ||'   -   ' ||  t01.nombre
+                            WHEN not exists (select nombre_ambiente
+              							 from mnt_aten_area_mod_estab maame
+              							 join mnt_area_mod_estab mame on (maame.id_area_mod_estab = mame.id)
+              							 where nombre_ambiente=t01.nombre
+              							 and mame.id_area_atencion=t03.id_area_atencion)
 
                                     THEN t01.nombre
                     END
