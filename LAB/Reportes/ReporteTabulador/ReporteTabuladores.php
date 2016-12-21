@@ -138,7 +138,7 @@ $toy2=date('Y-m-d');
                       <th>Examen</th>
                       <td>
                         <div id="divExamen">
-                           <select name="cmbExamen[]" id="cmbExamen[]" class="height js-example-basic-multiple placeholder" style="width:100%" size="1" multiple="multiple"  > 
+                           <select name="cmbExamen[]" id="cmbExamen" class="height js-example-basic-multiple placeholder" style="width:100%" size="1" multiple="multiple"  > 
 
                            </select>
                        </div>

@@ -147,9 +147,10 @@ $styleArray3=array(
    $final=$todos+1;
    $var=0;
    //Desde aqui debo de configurar
-   $idpruebas= isset($_POST['cmbExamen[]']) ? $_POST['cmbExamen[]'] : null;
+   $idpruebas= isset($_POST['cmbExamen']) ? $_POST['cmbExamen'] : null;
 $pruebas=count($idpruebas);
-//echo $idpruebas.' - '.$pruebas; 
+/*echo $idpruebas[0].'-'.$idpruebas[1].' - '.$pruebas.' - '.$_POST['cmbExamen'];
+exit();*/
 //Si ha seleccionado algunas pruebas del catalogo
 if ($pruebas==0){ //Si no selecciono ninguna prueba por defecto le cargara el reporte de todas las que tengan en el catalogo
     $prues=$objeto->prxmes($month, $year, $lugar, $idarea, $idame);
