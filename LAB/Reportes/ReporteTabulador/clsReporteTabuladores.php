@@ -1,14 +1,14 @@
-<?php 
+<?php
 include_once("../../../Conexion/ConexionBD.php");
 
 //implementamos la clase lab_areas
 class clsReporteTabuladores
 {
-	 //constructor	
+	 //constructor
 	 function clsReporteTabuladores()
 	 {
-	 }	
-	
+	 }
+
    //FN Pg
    //
    //
@@ -35,13 +35,13 @@ class clsReporteTabuladores
                 return $result;
 	}
    }
-                //Funcion utilizada para el tabulador para Servicio d eProcedencia 
+                //Funcion utilizada para el tabulador para Servicio d eProcedencia
  	public function prxmes($mes, $anio, $lugar, $idarea, $idame){
            $con = new ConexionBD;
     //usamos el metodo conectar para realizar la conexion
-	if($con->conectar()==true){	
+	if($con->conectar()==true){
 	$sql = " select distinct(t02.idexamen) as id_pruebadetsol, t06.idestandar
-               from sec_detallesolicitudestudios 	t01 
+               from sec_detallesolicitudestudios 	t01
                join lab_resultados 			t02 on (t01.id=t02.iddetallesolicitud)
                join ctl_establecimiento			t03 on (t03.id=t02.idestablecimiento)
                join lab_conf_examen_estab		t04 on (t04.id=t02.idexamen)
@@ -49,7 +49,7 @@ class clsReporteTabuladores
                join ctl_examen_servicio_diagnostico	t06 on (t06.id=t05.id_examen_servicio_diagnostico)
                join mnt_empleado			t07 on (t07.id=t02.idempleado)
                join fos_user_user			t08 on (t07.id=t08.id_empleado)
-               where  extract('year' from fecha_resultado)=$anio	
+               where  extract('year' from fecha_resultado)=$anio
                and extract('month' from fecha_resultado)=$mes
                and estadodetalle in (6,7)
                and t02.idestablecimiento=$lugar
@@ -58,7 +58,7 @@ class clsReporteTabuladores
                else id_area_servicio_diagnostico =$idarea
                end)
                and id_area_mod_estab=$idame
-               order by t06.idestandar";	
+               order by t06.idestandar";
      //   echo '<br>'.$sql.'<br/>';
 	$result=  @pg_query($sql);
 	if (!$result)
@@ -73,9 +73,9 @@ class clsReporteTabuladores
       $con = new ConexionBD;
       //usamos el metodo conectar para realizar la conexion
       if($con->conectar()==true){
-       $sql = "select t01.id, t02.idestandar as v_codprueba, t02.descripcion 
+       $sql = "select t01.id, t02.idestandar as v_codprueba, t02.descripcion
             from lab_conf_examen_estab 	t01
-            join ctl_examen_servicio_diagnostico	t02 on (t02.id=t01.idestandarrep)
+            join ctl_examen_servicio_diagnostico t02 on (t02.id=t01.idestandarrep)
             where t01.id=$id";
            $result =  @pg_query($sql);
        if (!$result)
@@ -84,13 +84,13 @@ class clsReporteTabuladores
          return $result;
       }
    }
- 
+
 //Funcion utilizada para el tabulador para resultado
  	public function prxdia($idpr, $idcod, $dia, $mes, $anio, $lugar, $idame){
            $con = new ConexionBD;
       //usamos el metodo conectar para realizar la conexion
       if($con->conectar()==true){
-	$sql = "select count (case when id_codigoresultado=$idcod then 'uno' else null end) as res 
+	$sql = "select count (case when id_codigoresultado=$idcod then 'uno' else null end) as res
                from lab_resultado_metodologia t01
                join lab_examen_metodologia t02 on (t02.id=t01.id_examen_metodologia)
                join sec_detallesolicitudestudios t03 on (t03.id=t01.id_detallesolicitudestudio)
@@ -102,7 +102,7 @@ class clsReporteTabuladores
                and extract('day' from fecha_resultado)=$dia
                and estadodetalle in (6,7)
                and id_area_mod_estab=$idame
-               and t03.idestablecimiento=$lugar;";	
+               and t03.idestablecimiento=$lugar;";
       //  echo '<br>'.$sql.'<br/>';
 	$result= pg_query($sql);
 	if (!$result)
@@ -111,18 +111,18 @@ class clsReporteTabuladores
 		return $result;
 	}//fin de la funcion consultarTipoResultado
         }
-   
-    //Funcion utilizada para el tabulador para Servicio d eProcedencia 
+
+    //Funcion utilizada para el tabulador para Servicio d eProcedencia
    public function prxservicio($idpr, $lugar, $dia, $mes, $anio, $idame){
          $con = new ConexionBD;
       //usamos el metodo conectar para realizar la conexion
       if($con->conectar()==true){
-   $sql = "select 
+   $sql = "select
    count (case when id_area_atencion=1 and id_servicio_externo_estab is null  then 'uno' else null end) as uno,
    count (case when id_area_atencion=3 and id_servicio_externo_estab is null then 'dos' else null end) as dos,
    count (case when id_area_atencion=2 and id_servicio_externo_estab is null  then 'tres' else null end) as tres
    --count (case when id_servicio_externo_estab is not null then 'cinco' else null end) as otros
-   from sec_detallesolicitudestudios t00 	
+   from sec_detallesolicitudestudios t00
    join sec_solicitudestudios t01 on (t01.id=t00.idsolicitudestudio)
    join lab_resultado_metodologia t0c on (t00.id=t0c.id_detallesolicitudestudio)
    join sec_historial_clinico t02 on (t02.id=t01.id_historial_clinico)
@@ -138,7 +138,7 @@ class clsReporteTabuladores
    and extract('year' from fecha_resultado)=$anio
    and extract('month' from fecha_resultado)=$mes
    and extract('day' from fecha_resultado)=$dia "
-           . "and t08.id_area_mod_estab=$idame";	
+           . "and t08.id_area_mod_estab=$idame";
     //   echo '<br>'.$sql.'<br/>';
 	$result= pg_query($sql);
 	if (!$result)
@@ -147,14 +147,14 @@ class clsReporteTabuladores
 		return $result;
 	}//fin de la funcion consultarTipoResultado
  }
- 
+
     //Funcion utilizada para el tabulador para Servicio d eProcedencia  de referidos externos
    public function prxservicioref($idpr, $lugar, $dia, $mes, $anio, $idame){
          $con = new ConexionBD;
       //usamos el metodo conectar para realizar la conexion
       if($con->conectar()==true){
    $sql = "select count (distinct(t0c.id)) as cuatro
-         from sec_detallesolicitudestudios t00 
+         from sec_detallesolicitudestudios t00
          join sec_solicitudestudios t01 on (t01.id=t00.idsolicitudestudio)
          join lab_resultado_metodologia t0c on (t00.id=t0c.id_detallesolicitudestudio)
          join mnt_empleado			t03 on (t03.id=t0c.id_empleado)
@@ -166,7 +166,7 @@ class clsReporteTabuladores
          and extract('month' from fecha_resultado)=$mes
          and extract('day' from fecha_resultado)=$dia
          and id_conf_examen_estab=$idpr"
-           . " and t04.id_area_mod_estab=$idame";	
+           . " and t04.id_area_mod_estab=$idame";
     //   echo '<br>'.$sql.'<br/>';
 	$result= pg_query($sql);
 	if (!$result)
@@ -175,8 +175,8 @@ class clsReporteTabuladores
 		return $result;
 	}//fin de la funcion consultarTipoResultado
  }
- 
-    //Funcion utilizada para el tabulador para Servicio d eProcedencia 
+
+    //Funcion utilizada para el tabulador para Servicio d eProcedencia
  public function pruebatotallab($idpr, $mes, $anio, $lugar, $idame){
             $con = new ConexionBD;
       //usamos el metodo conectar para realizar la conexion
@@ -191,7 +191,7 @@ class clsReporteTabuladores
          and extract('month' from fecha_resultado)=$mes
          and id_conf_examen_estab= $idpr
          and idestablecimiento=$lugar
-            and t04.id_area_mod_estab=$idame;";	
+            and t04.id_area_mod_estab=$idame;";
     //   echo '<br>'.$sql.'<br/>';
 	$result= pg_query($sql);
 	if (!$result)
@@ -204,8 +204,8 @@ class clsReporteTabuladores
 //Fn Pg
    function buscarinstitucion($idestab) {
    //   echo 'buscarinstitucion:'.$idestab;
- //  include_once("DBManager.php"); 
-   
+ //  include_once("DBManager.php");
+
       $con=new ConexionBD();
 //     // echo 'Conexion: '.$con->conectar();
       if ($con->conectar()==true){
@@ -229,16 +229,16 @@ class clsReporteTabuladores
          else
             return $result;
 //      return true;
-         
+
       }
-      
-   }     
+
+   }
 
 //Fn Pg
    function nombreinstitucion($idame) {
    //   echo 'buscarinstitucion:'.$idestab;
- //  include_once("DBManager.php"); 
-   
+ //  include_once("DBManager.php");
+
       $con=new ConexionBD();
 //     // echo 'Conexion: '.$con->conectar();
       if ($con->conectar()==true){
@@ -258,10 +258,10 @@ class clsReporteTabuladores
          else
             return $result;
 //      return true;
-         
+
       }
-      
-   }     
+
+   }
    //Fin funcion Postgres
 
 }//CLASE

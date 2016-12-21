@@ -1,14 +1,14 @@
-<?php 
+<?php
 include_once("clsReporteTabuladores.php");
 @session_start();
-$objeto = new clsReporteTabuladores(); 
+$objeto = new clsReporteTabuladores();
 //creando los objetos de las clases
 //$objeto = new clsReporteTabuladores();
  if(isset($_SESSION['Correlativo']) || isset($_SESSION["ADM"])){
 $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
-$area=$_SESSION['Idarea']; 
+$area=$_SESSION['Idarea'];
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
  ?>
 <html>
@@ -39,7 +39,7 @@ function MostrarBusqueda()
 	 {
 		alert("Seleccione un rango de fechas!");
 	 }
-	 else 
+	 else
 		BuscarDatos();
 }
 
@@ -47,11 +47,11 @@ function BuscarExamen(idarea){
 
 	if (document.getElementById('cmbArea').value == 0){
 		  alert("Debe Seleccionar una Area");
- 
-	} 
+
+	}
 	else{
 		LlenarComboExamen(idarea);
-	
+
 	}
 }
 $(document).ready(function() {
@@ -86,7 +86,7 @@ $(document).ready(function() {
 </head>
 <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" onload="mesanio();">
 
-<?php 
+<?php
 
 if ($nivel==1){
 	if(!isset($_SESSION["ADM"])){
@@ -103,9 +103,9 @@ if ($nivel == 5) {
 if ($nivel == 6) {
         include_once ('../../../PaginaPrincipal/index_laboratorio62.php');}
 if ($nivel == 7) {
-        include_once ('../../../PaginaPrincipal/index_laboratorio72.php'); }         
+        include_once ('../../../PaginaPrincipal/index_laboratorio72.php'); }
 $toy=date('Y-m');
-$toy2=date('Y-m-d');        
+$toy2=date('Y-m-d');
 ?><br>
 
 <!-- <form name=" cons_tabulador" onSubmit="return false;" action="excelOrd_x_id.php" method="post" target="_blank">-->
@@ -116,11 +116,11 @@ $toy2=date('Y-m-d');
 <td align="center">
 <center>
    <div  style="width: 45%">
-      <div class="panel panel-primary">                        
-         <div class="panel-heading"><h3>Tabulador</h3> </div>                        
-          <div class="panel-body" id="pb-primervez">                            
+      <div class="panel panel-primary">
+         <div class="panel-heading"><h3>Tabulador</h3> </div>
+          <div class="panel-body" id="pb-primervez">
             <table class="table table-white no-v-border table-condensed" border="0" style="border:0px; width: 100%" >                              <tr><th width="15%">&Aacute;rea</th>
-                  <td width="85%"> 
+                  <td width="85%">
                      <select id="cmbArea" name="cmbArea"  size="1" onChange="BuscarExamen(this.value)" style="width:100%;" class="height placeholder js-example-basic-single">
                         <?php
                         echo '<option></option>';
@@ -130,20 +130,20 @@ $toy2=date('Y-m-d');
                         while ($row = pg_fetch_array($consulta)) {
                             echo "<option value='" . $row['idarea'] . "'>" . htmlentities($row['nombrearea']) . "</option>";
                         }
-                        ?>		  
-                     </select> 
+                        ?>
+                     </select>
                   </td>
                    </tr>
                    <tr>
                       <th>Examen</th>
                       <td>
                         <div id="divExamen">
-                           <select name="cmbExamen" id="cmbExamen" class="height js-example-basic-multiple placeholder" style="width:100%" size="1" multiple="multiple"  > 
-                                
+                           <select name="cmbExamen[]" id="cmbExamen[]" class="height js-example-basic-multiple placeholder" style="width:100%" size="1" multiple="multiple"  > 
+
                            </select>
                        </div>
                       </td>
-                      
+
                    </tr>
                    <tr>
                       <th>Institución</th>
@@ -155,27 +155,27 @@ $toy2=date('Y-m-d');
                          while ($rowi=  pg_fetch_array($insti)){
                             echo '<option value='.$rowi[0].'>'.$rowi[1].'</option>';
                          }
-                        
-                         
-                         echo '</select> '; 
+
+
+                         echo '</select> ';
                          echo '<input id="nombareamodestab" value="nombareamodestab" type="hidden" />';
                          ?>
                       </td>
                    </tr>
                    <tr>
                        <th>Año-Mes</th>
-                                                          <td>   
+                                                          <td>
                                                              <input type="text" id="d_fecha" name="d_fecha" style="width: 25%; text-align: center; position: inherit; top: auto" placeholder="<?php echo $toy; ?>"  class="datepicker form-control height placeholder"  autocomplete="off" />
                                                               </td>
                    </tr>
-                   
+
                    <tr>
-                      <td colspan="2" align="center"> 
+                      <td colspan="2" align="center">
                          <br/>
                          <button type="submit" align="right" style="text-align: right" class="btn btn-primary"><span class='glyphicon glyphicon-file'></span>&nbsp;Generar Resultado </button></td>
-                   </tr>                  
-            </table>                        
-         </div>                    
+                   </tr>
+            </table>
+         </div>
       </div>
    </div>
 </center></td></tr></table>
