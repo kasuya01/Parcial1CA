@@ -180,7 +180,7 @@ switch ($opcion)
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo'
-                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelado(a)' END AS estado,
+                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='E') THEN 'Cancelado(a)' END AS estado,
             TO_CHAR(t15.fechahorareg, 'DD/MM/YYYY') as fecchaconsulta,
             t02.estado as idestado
             FROM sec_solicitudestudios              t02                
@@ -363,6 +363,7 @@ switch ($opcion)
 	case 2:  // solicitud estudios
 		$idexpediente       =$_POST['idexpediente'];
 		$idsolicitud        =$_POST['idsolicitud'];
+                
 		//$IdEstablecimiento  =$POST['idestablecimiento'];
 		//$IdEstablecimiento;
 		include_once("clsSolicitudesPorPaciente.php");

@@ -1932,7 +1932,9 @@ function MostrarDatos(posicion)
     idareaPA=document.getElementById('idareaPA[' + posicion + ']').value;
     fecha_recepcion=document.getElementById('fecha_recepcion[' + posicion + ']').value;
     origenmuestra= document.getElementById('origenmuestra[' + posicion + ']').value;
-   //alert (origenmuestra);
+    edad= document.getElementById('edad[' + posicion + ']').value;
+    nomsexo= document.getElementById('nomsexo[' + posicion + ']').value;
+  // alert (nomsexo);
     //alert ("Plnatilla="+plantilla+" Experiente="+idexpediente+" Solicitud="+idsolicitud+" idarea="+idarea+" idhistorial="+IdHistorial+" IdEstandar="+IdEstandar);
     //idhistorial=document.getElementById('idhistorial['+posicion+']').value;
     //alert(plantilla);
@@ -1978,16 +1980,17 @@ function MostrarDatos(posicion)
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                     "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
                     "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+encodeURIComponent(estabext) + "&var19="+idestabext +
-                    "&var20="+ f_tomamuestra + "&var21="+tipomuestra +"&fecha_recepcion="+fecha_recepcion+"&origenmuestra="+origenmuestra, "Resultados", "width=950,height=700,menubar=no,scrollbars=yes,location=no");
+                    "&var20="+ f_tomamuestra + "&var21="+tipomuestra +"&fecha_recepcion="+fecha_recepcion+"&origenmuestra="+origenmuestra+"&edad="+edad+"&nomsexo="+nomsexo, "Resultados", "width=950,height=700,menubar=no,scrollbars=yes,location=no");
             break;
         case "3":
           // alert (origenmuestra);
+            //alert (nomsexo);
                 ventana_dos = window.open("ProcDatosResultadosExamen_PC.php?var1=" + idexpediente +
                     "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                     "&var12=" + impresion + "&var13=" + estab +"&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar + "&var17=" + IdHistorial +
                     "&referido=" + referido + "&var18="+estabext +"&var19="+f_tomamuestra+"&var20="+tipomuestra+"&fecha_recepcion="+fecha_recepcion+
-                    "&var21="+idestabext+"&origenmuestra="+origenmuestra, "Resultados", "width=950,height=650,menubar=no,scrollbars=yes,location=no");
+                    "&var21="+idestabext+"&origenmuestra="+origenmuestra+"&edad="+edad+"&nomsexo="+nomsexo, "Resultados", "width=950,height=650,menubar=no,scrollbars=yes,location=no");
             break;
         case "4":
            //
@@ -1997,16 +2000,16 @@ function MostrarDatos(posicion)
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                     "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac+ "&var15=" + Sexo +"&var16=" + IdEstandar +
                     "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext+"&var18="+estabext+"&var19="+f_tomamuestra+
-                    "&var20="+ tipomuestra+"&fecha_recepcion="+fecha_recepcion+"&var21="+idestabext+"&origenmuestra="+origenmuestra, "Resultados", "width=950,height=700,menubar=no,scrollbars=yes");
+                    "&var20="+ tipomuestra+"&fecha_recepcion="+fecha_recepcion+"&var21="+idestabext+"&origenmuestra="+origenmuestra+"&edad="+edad+"&nomsexo="+nomsexo, "Resultados", "width=950,height=700,menubar=no,scrollbars=yes");
             break;
         case "5":
-          //alert (idestabext);
+        // alert (nomsexo);
                 ventana_dos = window.open("ProcDatosResultadosExamen_PE.php?var1=" + idexpediente +
                     "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                     "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
                     "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+estabext+"&var19="+ f_tomamuestra+
-                    "&var20="+tipomuestra+"&fecha_recepcion="+fecha_recepcion+"&var21="+idestabext+"&origenmuestra="+origenmuestra, "Resultados", "width=950,height=950,menubar=no,scrollbars=yes");
+                    "&var20="+tipomuestra+"&fecha_recepcion="+fecha_recepcion+"&var21="+idestabext+"&origenmuestra="+origenmuestra+"&edad="+edad+"&nomsexo="+nomsexo, "Resultados", "width=950,height=950,menubar=no,scrollbars=yes");
             break;
     }
 

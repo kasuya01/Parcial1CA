@@ -38,7 +38,7 @@ class clsLab_DatosFijosExamen
 	    		  unidades=$unidades, rangoinicio=$rangoinicio , rangofin=$rangofin , nota=$nota,idsexo=$sexo,idedad=$redad,
                           idusuariomod= $usuario, fechahoramod=date_trunc('seconds', NOW()) ,FechaIni=$Fechaini,fechafin=$Fechafin 
                           WHERE id=$iddatosfijosresultado AND idestablecimiento=$lugar";
-                          //    echo $query;
+                             echo $query;
                                 
 		$result = pg_query($query);
 		if (!$result)

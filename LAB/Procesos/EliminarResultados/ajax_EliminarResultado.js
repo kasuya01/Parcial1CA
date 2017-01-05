@@ -175,25 +175,26 @@ function BuscarDatos()
 {
 		idexpediente=document.getElementById('idexpediente['+posicion+']').value;
 		idsolicitud=document.getElementById('idsolicitud['+posicion+']').value;
+                expediente=document.getElementById('expediente['+posicion+']').value;
 		idexpediente=trim(idexpediente);
-		//alert(idexpediente+"-"+idsolicitud);
+		//alert(idexpediente+"-"+idsolicitud+"-"+expediente);
 		idsolicitud=trim(idsolicitud);
-		CargarDatosFormulario(idexpediente,idsolicitud);
+		CargarDatosFormulario(idexpediente,idsolicitud,expediente);
 		
   
  }
 
- function CargarDatosFormulario(idexpediente,idsolicitud)
+ function CargarDatosFormulario(idexpediente,idsolicitud,expediente)
 {
 	ajax=objetoAjax();
 	opcion=3;
-	
+	//alert(expediente);
 	ajax.open("POST", "ctrEliminarResultado.php",true);
 		  //muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		  //enviando los valores
 	
-	ajax.send("opcion="+opcion+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud);
+	ajax.send("opcion="+opcion+"&idexpediente="+idexpediente+"&idsolicitud="+idsolicitud+"&expediente="+expediente);
 	ajax.onreadystatechange=function() 
 	{
 		if (ajax.readyState==4) 
