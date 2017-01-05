@@ -44,174 +44,184 @@ case 1:
 
 		case "H15":
 			$consulta=$obj->LeerProcesoExamen($idexamen,$lugar,$sexo,$idedad);
+                          if (pg_num_rows($consulta) >0){ 
 
-			$imprimir="
-			<table width='95%' border='0' align='center' class='StormyWeatherFormTABLE'>
-				<tr class='CobaltButton'>
-				    <td width='85%'> Prueba </td>
-				    <td width='5%'> Resultado </td>
-				        <td width='2%'> Unidades </td>
-					<td width='5%' colspan='2'> Control Diario </td>
-				</tr>
-                                ";
-					$pos=0;
-				while($row = pg_fetch_array($consulta))//ELEMENTOS
-				{
-				$imprimir.= "
-				<tr>
-					<td class='StormyWeatherFieldCaptionTD'>".$row['nombreprocedimiento']."</td>
-					<td class='StormyWeatherDataTD' >
-                                            <input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['idprocedimiento']."'>";
-                                        $con_total=$obj->contar_posibles_resultados_procedimientos($row['idprocedimiento']);
-                                            $total=pg_fetch_array($con_total);
-                                                   //echo $total[0];
-                                            if($total[0]>=1){  
+                                        $imprimir="
+                                        <table width='95%' border='0' align='center' class='StormyWeatherFormTABLE'>
+                                                <tr class='CobaltButton'>
+                                                    <td width='85%'> Prueba </td>
+                                                    <td width='5%'> Resultado </td>
+                                                        <td width='2%'> Unidades </td>
+                                                        <td width='5%' colspan='2'> Control Diario </td>
+                                                </tr>
+                                                ";
+                                                        $pos=0;
+                                                while($row = pg_fetch_array($consulta))//ELEMENTOS
+                                                {
+                                                $imprimir.= "
+                                                <tr>
+                                                        <td class='StormyWeatherFieldCaptionTD'>".$row['nombreprocedimiento']."</td>
+                                                        <td class='StormyWeatherDataTD' >
+                                                            <input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['idprocedimiento']."'>";
+                                                        $con_total=$obj->contar_posibles_resultados_procedimientos($row['idprocedimiento']);
+                                                            $total=pg_fetch_array($con_total);
+                                                                   //echo $total[0];
+                                                            if($total[0]>=1){  
 
-                                    $imprimir.= "<select id='txtresultado[".$pos."]' name='txtresultado[".$pos."]' size='1' style='width:260px' class='form-control  height'>
+                                                    $imprimir.= "<select id='txtresultado[".$pos."]' name='txtresultado[".$pos."]' size='1' style='width:260px' class='form-control  height'>
 
-                                                    <option value='0' >--Seleccione Resultado--</option>";
-                                                    $con_result=$obj->leer_posibles_resultados_procedimientos($row['idprocedimiento']);
-                                                    while ($row_result=pg_fetch_array($con_result)) {
-                                         $imprimir.="<option value='" . $row_result['id_posible_resultado'] . "'>" . htmlentities($row_result['posible_resultado']) . "</option>";
-                                                    }   
-                                $imprimir.= "   <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]' value='".$pos."'></td> ";                
-                                                    
-                                }
-                                else{    
-					$imprimir.="	<input name='txtresultado[".$pos."]' type='text' id='txtresultado[".$pos."]' size='25'>
-                                                        <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''>
-					</td>
-					<td class='StormyWeatherDataTD'>".$row['unidades']."</td>
-					<td class='StormyWeatherDataTD' >
-						<input name='txtcomentario[".$pos."]' type='text' id='txtcomentario[".$pos."]' size='10'>".$row['unidades']." 
-					</td>";
-                                }       
-		   $imprimir.= "</tr>";
-					$pos=$pos + 1;
-				}
-				pg_free_result($consulta);
-                                $imprimir.= "  <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
-                                                <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />
-                                               <input type='hidden' name='txttipomuestra' id='txttipomuestra' disabled='disabled' value='".$tipomuestra."' />
-                                             <input type='hidden' name='txtf_tomamuestra' id='txtf_tomamuestra' disabled='disabled' value='".$f_tomamuestra."' />"; 
-                                $imprimir.="<tr>
-                                <td class='StormyWeatherFieldCaptionTD'>Observaci&oacute;n </td>
-                                <td class='StormyWeatherDataTD' colspan='5'>
-                                    <textarea name='txtobservacion' cols='75' id='txtobservacion'></textarea>
-                                </td>
-                            </tr>";
-				$imprimir.="
-				<tr><td class='StormyWeatherFieldCaptionTD'>*Resultado Tabulador</td>
-					<TD colspan='3' class='StormyWeatherDataTD'>
-						<select id='cmbTabulador' name='cmbTabulador' size='1' class='form-control height'>
-							<option value='0' >--Seleccione Resultado--</option>";
-							$conResult=$obj->LlenarResultados($IdEstandar);
-							while ($rows =pg_fetch_array($conResult)){
-				$imprimir.="<option value='" . $rows[0] ."' >".$rows[0]." - ". htmlentities($rows[1])."</option>";
-							}
-			$imprimir.="</select></TD></tr>";
+                                                                    <option value='0' >--Seleccione Resultado--</option>";
+                                                                    $con_result=$obj->leer_posibles_resultados_procedimientos($row['idprocedimiento']);
+                                                                    while ($row_result=pg_fetch_array($con_result)) {
+                                                         $imprimir.="<option value='" . $row_result['id_posible_resultado'] . "'>" . htmlentities($row_result['posible_resultado']) . "</option>";
+                                                                    }   
+                                                $imprimir.= "   <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]' value='".$pos."'></td> ";                
+
+                                                }
+                                                else{    
+                                                        $imprimir.="	<input name='txtresultado[".$pos."]' type='text' id='txtresultado[".$pos."]' size='25'>
+                                                                        <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''>
+                                                        </td>
+                                                        <td class='StormyWeatherDataTD'>".$row['unidades']."</td>
+                                                        <td class='StormyWeatherDataTD' >
+                                                                <input name='txtcomentario[".$pos."]' type='text' id='txtcomentario[".$pos."]' size='10'>".$row['unidades']." 
+                                                        </td>";
+                                                }       
+                                   $imprimir.= "</tr>";
+                                                        $pos=$pos + 1;
+                                                }
+                                                pg_free_result($consulta);
+                                                $imprimir.= "  <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
+                                                                <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />
+                                                               <input type='hidden' name='txttipomuestra' id='txttipomuestra' disabled='disabled' value='".$tipomuestra."' />
+                                                             <input type='hidden' name='txtf_tomamuestra' id='txtf_tomamuestra' disabled='disabled' value='".$f_tomamuestra."' />"; 
+                                                $imprimir.="<tr>
+                                                <td class='StormyWeatherFieldCaptionTD'>Observaci&oacute;n </td>
+                                                <td class='StormyWeatherDataTD' colspan='5'>
+                                                    <textarea name='txtobservacion' cols='75' id='txtobservacion'></textarea>
+                                                </td>
+                                            </tr>";
+                                                $imprimir.="
+                                                <tr><td class='StormyWeatherFieldCaptionTD'>*Resultado Tabulador</td>
+                                                        <TD colspan='3' class='StormyWeatherDataTD'>
+                                                                <select id='cmbTabulador' name='cmbTabulador' size='1' class='form-control height'>
+                                                                        <option value='0' >--Seleccione Resultado--</option>";
+                                                                        $conResult=$obj->LlenarResultados($IdEstandar);
+                                                                        while ($rows =pg_fetch_array($conResult)){
+                                                $imprimir.="<option value='" . $rows[0] ."' >".$rows[0]." - ". htmlentities($rows[1])."</option>";
+                                                                        }
+                                        $imprimir.="</select></TD></tr>";
 
 
-				$imprimir.="
-				<tr>
-					<td colspan='5' align='right' class='StormyWeatherDataTD'>
-						<input  type='hidden' id='oculto' value='".$pos."'>
-				                <button type='button' id='Submit' align='center' class='btn btn-primary' title='Vista Previa de Resultados'  onclick='MostrarVistaPreviaPlantillaE();'>&nbsp;Vista Previa de Resultados</button>
-					</td>
-				</tr>
-				
-            </table>";
-//<input type='button' name='Submit' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaE()'>
-		echo $imprimir;
-		break;
+                                                $imprimir.="
+                                                <tr>
+                                                        <td colspan='5' align='right' class='StormyWeatherDataTD'>
+                                                                <input  type='hidden' id='oculto' value='".$pos."'>
+                                                                <button type='button' id='Submit' align='center' class='btn btn-primary' title='Vista Previa de Resultados'  onclick='MostrarVistaPreviaPlantillaE();'>&nbsp;Vista Previa de Resultados</button>
+                                                        </td>
+                                                </tr>
 
-		default:
+                            </table>";
+                //<input type='button' name='Submit' value='Vista Previa de Resultados' onclick='MostrarVistaPreviaPlantillaE()'>
+                                echo $imprimir;
+                  }else{
+            echo '<center><br><br><h1><img src="../../../Imagenes/warning.png" valign="middle"/>'
+            . 'Favor de Revisar la correcta configuración de los exámenes solicitados, tanto en tipo de muestra y Procedimientos de Examenes.</h1> ';
+            echo " <button type='submit' class='fg-button ui-state-default ui-corner-all' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' /><span class='glyphicon glyphicon-remove-sign'></span>Cerrar</button></center>";
+                                        
+        }                           
+
+        break;
+        default:
    		/*$idexamen=$_POST['idexamen'];
 		$observacion= $_POST['observacion']; */
 
 		$consulta=$obj->LeerProcesoExamen($idexamen,$lugar,$sexo,$idedad);
-
-		$imprimir="
-                        <table width='80%' border='0' align='center' class='StormyWeatherFormTABLE'>
-			    <tr class='CobaltButton'>
-				<td> Prueba </td>
-				<td> Resultado </td>
-				<td> Unidades </td>
-				<td> Rango </td>
-			    </tr>";
-					$pos=0;
-			while($row = pg_fetch_array($consulta))//ELEMENTOS
-			{
-	       $imprimir.= "<tr>
-				<td class='StormyWeatherFieldCaptionTD'>".$row['nombreprocedimiento']."</td>
-				<td class='StormyWeatherDataTD'>
-                                    <input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['idprocedimiento']."'>";
-                                              $con_total=$obj->contar_posibles_resultados_procedimientos($row['idprocedimiento']);
+                
+            if (pg_num_rows($consulta) >0){
+                        $imprimir=" <table width='80%' border='0' align='center' class='StormyWeatherFormTABLE'>
+                                        <tr class='CobaltButton'>
+                                            <td> Prueba </td>
+                                            <td> Resultado </td>
+                                            <td> Unidades </td>
+                                            <td> Rango </td>
+                                        </tr>";
+                                                              $pos=0;
+                        while($row = pg_fetch_array($consulta))//ELEMENTOS
+                        {
+                            $imprimir.= "<tr>
+                                            <td class='StormyWeatherFieldCaptionTD'>".$row['nombreprocedimiento']."</td>
+                                            <td class='StormyWeatherDataTD'>
+                                                  <input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['idprocedimiento']."'>";
+                                                   $con_total=$obj->contar_posibles_resultados_procedimientos($row['idprocedimiento']);
                                                    $total=pg_fetch_array($con_total);
-                                                   //echo $total[0];
-                                if($total[0]>=1){  
-                           $imprimir.= "<select id='txtresultado[".$pos."]' name='txtresultado[".$pos."]'  size='1' style='width:260px' class='form-control  height'>
-                                            <option value='0' >--Seleccione Resultado--</option>";
-                                                    $con_result=$obj->leer_posibles_resultados_procedimientos($row['idprocedimiento']);
-                                      while ($row_result=pg_fetch_array($con_result)) {
-                                $imprimir.="<option value='" . $row_result['id_posible_resultado'] . "'>" . htmlentities($row_result['posible_resultado']) . "</option>";
-                                                    }   
-                                $imprimir.= "   <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]' value='".$pos."'></td> ";                
-                                                    
-                                }
-                                else{
-                                                                                                       
-			        $imprimir.= "
-                                        	<textarea name='txtresultado[".$pos."]' type='text' id='txtresultado[".$pos."]' cols='50' onKeyPress='return acceptNum(event)'></textarea>
-                                                <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''></td>";
-                                }
-                    $imprimir.="<td class='StormyWeatherDataTD' >".$row['unidades']."</td>";
-		    $imprimir.="<td class='StormyWeatherDataTD' aligh='center'>".$row['rangoinicio']."-".$row['rangofin']."
-					<input name='txtcomentario[".$pos."]' type='hidden' id='txtcomentario[".$pos."]'>
-				</td> ";            
-                                                   
-					$pos=$pos + 1;
-			}
-                        pg_free_result($consulta);
-                                    $imprimir.= "<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
-                                                 <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />
-                                                 <input type='hidden' name='txttipomuestra' id='txttipomuestra' disabled='disabled' value='".$tipomuestra."' />
-                                                 <input type='hidden' name='txtf_tomamuestra' id='txtf_tomamuestra' disabled='disabled' value='".$f_tomamuestra."' />"; 
-                                  
-					
-		$imprimir.="<tr>
-                                <td class='StormyWeatherFieldCaptionTD'>Observaci&oacute;n </td>
-                                <td class='StormyWeatherDataTD' colspan='5'>
-                                    <textarea name='txtobservacion' cols='75' id='txtobservacion'></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class='StormyWeatherFieldCaptionTD'>*Resultado Tabulador</td>
-				<td colspan='3' class='StormyWeatherDataTD'>
-                                    <select id='cmbTabulador' name='cmbTabulador' size='1' class='form-control height'>
-					<option value='0' >--Seleccione Resultado--</option>";
-					$conResult=$obj->LlenarResultados($IdEstandar);
-					while ($rows =pg_fetch_array($conResult)){
-			    $imprimir.="<option value='" . $rows[0] ."' >".$rows[0]." - ". htmlentities($rows[1])."</option>";
-							}
-			$imprimir.="</select></td>"
-                         . "</tr>";
-		$imprimir.="<tr>
-				<td colspan='5'  align='right' class='StormyWeatherDataTD'>
-                                    <input type='hidden' id='oculto' value='".$pos."'>
-                                    
-                                    <button type='button' id='Submit' align='center' class='btn btn-primary' title='Vista Previa de Resultados'  onclick='MostrarVistaPreviaPlantillaE();'>&nbsp;Vista Previa de Resultados</button>
-				</td>
-			    </tr>
-			    <tr>
-				<td colspan='5'>&nbsp;</td>
-			    </tr>
-		        </table>";
-		echo $imprimir;
-			//mysql_free_result($consulta);
-                //
-		break;
-		}
+                                                                           //echo $total[0];
+                                    if($total[0]>=1){  
+                                      $imprimir.= "<select id='txtresultado[".$pos."]' name='txtresultado[".$pos."]'  size='1' style='width:260px' class='form-control  height'>
+                                                    <option value='0' >--Seleccione Resultado--</option>";
+                                                      $con_result=$obj->leer_posibles_resultados_procedimientos($row['idprocedimiento']);
+                                            while ($row_result=pg_fetch_array($con_result)) {
+                                        $imprimir.="<option value='" . $row_result['id_posible_resultado'] . "'>" . htmlentities($row_result['posible_resultado']) . "</option>";
+                                            }   
+                                       $imprimir.= "   <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]' value='".$pos."'></td> ";                
+
+                                    }
+                                    else{
+                                        $imprimir.= "
+                                                  <textarea name='txtresultado[".$pos."]' type='text' id='txtresultado[".$pos."]' cols='50' onKeyPress='return acceptNum(event)'></textarea>
+                                                 <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''></td>";
+                                        }
+                                    $imprimir.="<td class='StormyWeatherDataTD' >".$row['unidades']."</td>";
+                                    $imprimir.="<td class='StormyWeatherDataTD' aligh='center'>".$row['rangoinicio']."-".$row['rangofin']."
+                                                    <input name='txtcomentario[".$pos."]' type='hidden' id='txtcomentario[".$pos."]'>
+                                                </td> ";            
+                                                    $pos=$pos + 1;
+                            } // WHILE
+                            pg_free_result($consulta);
+                            $imprimir.= "<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
+                                         <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />
+                                         <input type='hidden' name='txttipomuestra' id='txttipomuestra' disabled='disabled' value='".$tipomuestra."' />
+                                         <input type='hidden' name='txtf_tomamuestra' id='txtf_tomamuestra' disabled='disabled' value='".$f_tomamuestra."' />"; 
+
+                            $imprimir.="<tr>
+                                            <td class='StormyWeatherFieldCaptionTD'>Observaci&oacute;n </td>
+                                            <td class='StormyWeatherDataTD' colspan='5'>
+                                                <textarea name='txtobservacion' cols='75' id='txtobservacion'></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class='StormyWeatherFieldCaptionTD'>*Resultado Tabulador</td>
+                                            <td colspan='3' class='StormyWeatherDataTD'>
+                                                <select id='cmbTabulador' name='cmbTabulador' size='1' class='form-control height'>
+                                                    <option value='0' >--Seleccione Resultado--</option>";
+                                                        $conResult=$obj->LlenarResultados($IdEstandar);
+                                                while ($rows =pg_fetch_array($conResult)){
+                                        $imprimir.="<option value='" . $rows[0] ."' >".$rows[0]." - ". htmlentities($rows[1])."</option>";
+                                                } //WHILE DEL TABULADOR
+                                    $imprimir.="</select></td>"
+                                        . "</tr>";
+                            $imprimir.="<tr>
+                                            <td colspan='5'  align='right' class='StormyWeatherDataTD'>
+                                                 <input type='hidden' id='oculto' value='".$pos."'>
+                                                   <button type='button' id='Submit' align='center' class='btn btn-primary' title='Vista Previa de Resultados'  onclick='MostrarVistaPreviaPlantillaE();'>&nbsp;Vista Previa de Resultados</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                           <td colspan='5'>&nbsp;</td>
+                                        </tr>
+                                    </table>";
+                                        echo $imprimir;
+                                //mysql_free_result($consulta);
+                        //
+                        //break;
+                        }else{
+                     echo '<center><br><br><h1><img src="../../../Imagenes/warning.png" valign="middle"/>'
+            . 'Favor de Revisar la correcta configuración de los exámenes solicitados, tanto en tipo de muestra y Procedimientos de Examenes.</h1> ';
+            echo " <button type='submit' class='fg-button ui-state-default ui-corner-all' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' /><span class='glyphicon glyphicon-remove-sign'></span>Cerrar</button></center>";
+                    
+                }                       
+                        }
+
 break;
 
 case 2://vista Previa de Resultado

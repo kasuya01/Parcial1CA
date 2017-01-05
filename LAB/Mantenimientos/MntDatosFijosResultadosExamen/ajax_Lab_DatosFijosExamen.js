@@ -125,7 +125,7 @@ function IngresarRegistro(){ //INGRESAR REGISTROS
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
 	ajax.send("idarea="+idarea+"&opcion="+opcion+"&idexamen="+idexamen+
-        "&unidades="+escape(unidades)+"&Pag="+Pag+"&rangoinicio="+rangoinicio+
+        "&unidades="+encodeURIComponent(unidades)+"&Pag="+Pag+"&rangoinicio="+rangoinicio+
         "&rangofin="+rangofin+"&nota="+escape(nota)+"&Fechaini="+Fechaini+
         "&Fechafin="+Fechafin+"&sexo="+sexo+"&redad="+redad);
 }
@@ -186,7 +186,7 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
 	//muy importante este encabezado ya que hacemos uso de un formulario
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
-	ajax.send("idarea="+idarea+"&opcion="+opcion+"&idexamen="+idexamen+"&unidades="+escape(unidades)+
+	ajax.send("idarea="+idarea+"&opcion="+opcion+"&idexamen="+idexamen+"&unidades="+encodeURIComponent(unidades)+
                 "&Pag="+Pag+"&rangoinicio="+rangoinicio+"&rangofin="+rangofin+"&nota="+escape(nota)+
                 "&iddatosfijosexamen="+iddatosfijosexamen+"&Fechaini="+Fechaini+"&Fechafin="+Fechafin+
                 "&sexo="+sexo+"&redad="+redad);

@@ -178,7 +178,7 @@ switch ($opcion) {
                        t01.indicacion, t08.nombrearea,
                        CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,
                        t07.segundo_apellido,t07.apellido_casada) AS paciente,
-                       t20.servicio AS nombresubservicio,
+                       t20.servicio AS mbresubservicio,
                        t20.procedencia AS nombreservicio,
                        t02.impresiones,
                        t14.nombre,
@@ -193,7 +193,10 @@ switch ($opcion) {
                        false AS referido, TO_CHAR(f_tomamuestra,'YYYY/mm/dd HH12:MI') AS f_tomamuestra,
                        (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
                        t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar,
-                       (select origenmuestra FROM mnt_origenmuestra where id=t01.idorigenmuestra) as origenmuestra
+                       (select origenmuestra FROM mnt_origenmuestra where id=t01.idorigenmuestra) as origenmuestra,
+                        REPLACE( REPLACE( REPLACE( REPLACE( REPLACE( REPLACE( AGE(t07.fecha_nacimiento::timestamp)::text, 'years', 'años'), 'year', 'año'), 'mons', 'meses'), 'mon', 'mes'), 'days', 'días'), 'day', 'día') as edad,
+                        t19.nombre as nomsexo
+                        
                 FROM sec_detallesolicitudestudios t01
                 INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
                 INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio)
@@ -248,7 +251,10 @@ switch ($opcion) {
                        true AS referido,TO_CHAR(f_tomamuestra,'YYYY/mm/dd HH12:MI') AS f_tomamuestra,
                        (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
                        t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar,
-                       (select origenmuestra FROM mnt_origenmuestra where id=t01.idorigenmuestra) as origenmuestra
+                       (select origenmuestra FROM mnt_origenmuestra where id=t01.idorigenmuestra) as origenmuestra,
+                       REPLACE( REPLACE( REPLACE( REPLACE( REPLACE( REPLACE( AGE(t07.fecha_nacimiento::timestamp)::text, 'years', 'años'), 'year', 'año'), 'mons', 'meses'), 'mon', 'mes'), 'days', 'días'), 'day', 'día') as edad,
+                       t19.nombre as nomsexo
+                       
                 FROM sec_detallesolicitudestudios t01
                 INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
                 INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio)
@@ -272,6 +278,7 @@ switch ($opcion) {
                 LEFT JOIN mnt_origenmuestra t21 ON (t21.id = t01.idorigenmuestra)
                 WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var2) ordenar
                 ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
+       
 //ECHO $query;
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);
 
@@ -327,6 +334,8 @@ switch ($opcion) {
                             "<input name='tipomuestra[" . $pos . "]' id='tipomuestra[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["tipomuestra"]) . "'/>" .
                             "<input name='origenmuestra[" . $pos . "]' id='origenmuestra[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["origenmuestra"]) . "'/>" .
                             "<input name='idareaPA[" . $pos . "]' id='idareaPA[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["idarea"]) . "'/>" .
+                            "<input name='edad[" . $pos . "]' id='edad[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["edad"]) . "'/>" .
+                            "<input name='nomsexo[" . $pos . "]' id='nomsexo[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["nomsexo"]) . "'/>" .
                             "<input name='fecha_recepcion[" . $pos . "]' id='fecha_recepcion[" . $pos . "]' type='hidden' size='60' value='" . $datefrecep . "'/>" .
                         "<td width='18%'>" . htmlentities($row['paciente']) . "</td>
                         <td width='3%'>" . $row['estandar'] . "</td>

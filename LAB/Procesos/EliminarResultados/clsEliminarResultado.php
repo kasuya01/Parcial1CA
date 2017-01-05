@@ -250,9 +250,9 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
             END AS subservicio ,
             ctl_area_atencion.nombre AS procedencia,to_char(lab_recepcionmuestra.fechahorareg,'dd/mm/YYYY HH12:MI:SS' ) AS fecharecep,
             (SELECT nombre FROM ctl_establecimiento WHERE id=sec_solicitudestudios.id_establecimiento_externo) AS estabext,
-            (SELECT nombre FROM mnt_empleado WHERE mnt_empleado.id = sec_historial_clinico.id_empleado OR mnt_empleado.id = mnt_dato_referencia.id_empleado) AS medico,
+            (SELECT nombreempleado FROM mnt_empleado WHERE mnt_empleado.id = sec_historial_clinico.id_empleado OR mnt_empleado.id = mnt_dato_referencia.id_empleado) AS medico,
             (CASE WHEN sec_solicitudestudios.id_expediente IS NULL THEN (sec_solicitudestudios.id_dato_referencia) 
-            
+         
 ELSE (sec_solicitudestudios.id_expediente) end) as idexpediente
             FROM lab_recepcionmuestra
             INNER JOIN sec_solicitudestudios                ON sec_solicitudestudios.id = lab_recepcionmuestra.idsolicitudestudio
@@ -270,7 +270,7 @@ ELSE (sec_solicitudestudios.id_expediente) end) as idexpediente
             LEFT  JOIN mnt_servicio_externo 		ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo)
             INNER JOIN ctl_area_atencion                    ON ctl_area_atencion.id=mnt_area_mod_estab.id_area_atencion
             INNER JOIN ctl_atencion                         ON ctl_atencion.id=mnt_aten_area_mod_estab.id_atencion
-            WHERE lab_recepcionmuestra.IdSolicitudEstudio=$idsolicitud AND id_expediente=$idexpediente OR id_dato_referencia=$idexpediente";
+            WHERE lab_recepcionmuestra.IdSolicitudEstudio=$idsolicitud AND id_expediente=$idexpediente OR id_dato_referencia=$idexpediente ";
 		$result = @pg_query($query);
      if (!$result)
       return false;
@@ -284,7 +284,7 @@ function DatosDetalleSolicitud($idsolicitud)
     $con = new ConexionBD;
     if($con->conectar()==true) 
     {
-	   $query = "SELECT ctl_area_servicio_diagnostico.idarea AS IdArea,lab_conf_examen_estab.codigo_examen AS IdExamen,nombre_examen,
+	  $query = "SELECT ctl_area_servicio_diagnostico.idarea AS IdArea,lab_conf_examen_estab.codigo_examen AS IdExamen,nombre_examen,
             indicacion,fecha_solicitud,idsolicitudestudio,sec_detallesolicitudestudios.id as IdDetalleSolicitud,lab_plantilla.id as idplantilla,
             (CASE sec_detallesolicitudestudios.estadodetalle WHEN 1 THEN 'Digitado' 
              WHEN 5 THEN 'Muestra Procesada' 
@@ -298,7 +298,7 @@ function DatosDetalleSolicitud($idsolicitud)
              INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id= mnt_area_examen_establecimiento.id_examen_servicio_diagnostico
              INNER JOIN lab_plantilla ON lab_plantilla.id = lab_conf_examen_estab.idplantilla 
              WHERE sec_solicitudestudios.id_atencion = 98 AND EstadoDetalle=7
-             AND sec_solicitudestudios.id=$idsolicitud
+             AND sec_solicitudestudios.id=$idsolicitud AND b_verresultado=true
              ORDER BY ctl_area_servicio_diagnostico.idarea";
 	  	$result = @pg_query($query);
 	     if (!$result)

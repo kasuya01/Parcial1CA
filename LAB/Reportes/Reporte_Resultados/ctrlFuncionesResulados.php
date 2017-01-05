@@ -98,7 +98,7 @@ $objdatos = new clsReporteResultados;
     
     
     
-     function addLayoutToArea($plantillas, $newPlantilla, $row) {
+function addLayoutToArea($plantillas, $newPlantilla, $row) {
 if( ! isset($plantillas[ $newPlantilla[1] ]) )
     {
             $plantillas[ $newPlantilla[1] ] = array(

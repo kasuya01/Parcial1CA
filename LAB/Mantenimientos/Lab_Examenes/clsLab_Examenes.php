@@ -197,7 +197,7 @@ class clsLab_Examenes {
              $query = "INSERT INTO lab_conf_examen_estab
                 (condicion,idformulario,urgente,impresion,ubicacion,codigosumi,
                  idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idexamen,idestandarrep,idplantilla,nombre_examen,
-                 idsexo,codigo_examen,verresultado)
+                 idsexo,codigo_examen,b_verresultado)
                  VALUES
                  ('$Hab',$IdFormulario,$Urgente,'$letra',$ubicacion,NULL,$usuario,NOW(),$usuario,NOW(),$idestandar,
                    $IdEstandarResp,$plantilla,'$nomexamen',$sexo,'$idexamen','$RepResultado') ";
@@ -926,12 +926,13 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                             join lab_conf_examen_tipo_laboratorio	t2 on (t1.id=t2.id_conf_examen_estab)
                             where t1.id=$idexamen
                             and (t2.activo=true or fecha_fin >= current_date))
-                			else null end) as id_idestab_idexatipolab,
+               			else null end) as id_idestab_idexatipolab,b_verresultado
         		    (SELECT array_to_string(array_agg(t02.id order by t02.suministrante), ',') as suministrante
             			from lab_examen_suministrante t01
             			join lab_suministrante t02 on (t02.id=t01.id_suministrante)
             			where id_conf_examen_estab=$idexamen
                         and t01.activo=true) as id_suministrante, b_verresultado
+
                     FROM lab_conf_examen_estab
                     INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
                     INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id

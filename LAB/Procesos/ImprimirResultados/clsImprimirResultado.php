@@ -296,7 +296,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
             LEFT JOIN mnt_empleado 			t24     ON (t09.id_empleado=t24.id) 
             LEFT JOIN ctl_area_servicio_diagnostico    t25     ON (t25.id=t05.id_area_servicio_diagnostico)
             
-            WHERE  t02.id=$idsolicitud AND t08.idarea <> 'TMU' and t06.numero='$idexpediente' 
+            WHERE  t02.id=$idsolicitud AND t08.idarea <> 'TMU' and t06.numero='$idexpediente' AND b_verresultado=true
 
 UNION
 
@@ -382,7 +382,7 @@ UNION
             left  join mnt_empleado 			t24     on (t09.id_empleado=t24.id) 
             inner join ctl_area_servicio_diagnostico    t25     on (t25.id=t05.id_area_servicio_diagnostico)
             
-            WHERE   t02.id=$idsolicitud AND t08.idarea <> 'TMU' and t06.numero='$idexpediente'  order by codigo_area";
+            WHERE   t02.id=$idsolicitud AND t08.idarea <> 'TMU' and t06.numero='$idexpediente' AND b_verresultado=true order by codigo_area";
                  
 		//echo $query;
 		$result = @pg_query($query);
@@ -1302,7 +1302,7 @@ function ObtenerResultadoxId($idsolicitud,$iddetalle)
      $con = new ConexionBD;
     if($con->conectar()==true)
    {
-      echo  $query = "SELECT lab_resultados.id as idresultado,resultado,observacion,nombreempleado 
+        $query = "SELECT lab_resultados.id as idresultado
                FROM lab_resultados 
                INNER JOIN mnt_empleado ON mnt_empleado.id= lab_resultados.idempleado
                WHERE idsolicitudestudio=$idsolicitud AND idexamen=$idexamen order by lab_resultados.id asc ";
@@ -1315,12 +1315,31 @@ function ObtenerResultadoxId($idsolicitud,$iddetalle)
     
 }
 
+
+function contar_resultadospadre($idresultado){
+    $con = new ConexionBD;
+    if($con->conectar()==true)
+   { 
+    $query ="SELECT lab_resultados.id as idresultado,resultado,observacion,nombreempleado 
+FROM lab_resultados 
+INNER JOIN mnt_empleado ON mnt_empleado.id= lab_resultados.idempleado 
+WHERE lab_resultados.id_resultado_padre=$idresultado
+";
+    
+      $result = pg_query($query);
+     if (!$result)
+       return false;
+     else
+       return $result;
+    }
+}
+
 function obtener_detalle_resultado($idresulatado){
     
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     echo $query = "SELECT lab_detalleresultado.id as iddetalleresultado,idtarjeta,nombretarjeta,idbacteria,bacteria,cantidad 
+      $query = "SELECT lab_detalleresultado.id as iddetalleresultado,idtarjeta,nombretarjeta,idbacteria,bacteria,cantidad 
                FROM lab_detalleresultado 
                INNER JOIN lab_tarjetasvitek ON  lab_tarjetasvitek.id=lab_detalleresultado.idtarjeta
                INNER JOIN lab_bacterias ON lab_bacterias.id= lab_detalleresultado.idbacteria

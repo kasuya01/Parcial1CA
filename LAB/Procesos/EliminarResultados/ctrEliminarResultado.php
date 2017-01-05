@@ -207,7 +207,7 @@ switch ($opcion)
                 WHERE (t16.idestado = 'P' OR t16.idestado = 'C') AND t02.id_establecimiento = $var2 ) ordenar
          ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
             
-        //  echo $query;
+         // echo $query;
 		
 		$consulta=$objdatos->BuscarSolicitudesPaciente($query); 
 		$NroRegistros= $objdatos->NumeroDeRegistros($query);				
@@ -249,6 +249,7 @@ switch ($opcion)
 	           $imprimir .="<td><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(".$pos.");'>".$row['idnumeroexp']."</a>". 
 					"<input name='idsolicitud[".$pos."]' id='idsolicitud[".$pos."]' type='hidden' size='60' value='".$row["idsolicitudestudio"]."' />".
 					"<input name='idexpediente[".$pos."]' id='idexpediente[".$pos."]' type='hidden' size='60' value='".$row["id_expediente"]."' /></td>".
+                                        "<input name='expediente[".$pos."]' id='expediente[".$pos."]' type='hidden' size='60' value='".$row["idnumeroexp"]."' /></td>".
 				"<td>".htmlentities($row['paciente'])."</td>
                                  <td>".htmlentities($row['nombreservicio'])."</td>    
 				 <td>".htmlentities($row['nombresubservicio'])."</td>
@@ -278,9 +279,10 @@ switch ($opcion)
 		//recuperando los valores generales de la solicitud
 		$idexpediente=$_POST['idexpediente'];
 		$idsolicitud=$_POST['idsolicitud'];
+                $expediente=$_POST['expediente'];
 		$consulta=$objdatos->DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar);
 		$row = pg_fetch_array($consulta);
-              //  echo $idexpediente;
+               // echo $expediente;
 		//obteniedo los datos generales de la solicitud
 		$medico=$row['medico'];
 		//$idmedico=$row['id_empleado'];
@@ -311,21 +313,25 @@ switch ($opcion)
                                     <input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled'/>
                                     <input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled'/></td>
                     </tr>
-                    <tr>
-                            <th class='StormyWeatherFieldCaptionTD'>Medico: </th>
-                            <td class='StormyWeatherDataTD'>".htmlentities($medico)."</td>
-                            <th class='StormyWeatherFieldCaptionTD'>Fecha Recepcion</th>
-                            <td class='StormyWeatherDataTD'>".$fecharecep."</td>
+                     <tr>
+                            <th class='StormyWeatherFieldCaptionTD' width='25%'>Paciente: </th>
+                            <td class='StormyWeatherDataTD' >".htmlentities($paciente)."</td>
+                             <td class='StormyWeatherFieldCaptionTD'>Expediente</td>
+                            <td class='StormyWeatherDataTD'>".$expediente."</td>      
                     </tr>
-                    <tr>
-                            <th class='StormyWeatherFieldCaptionTD'>Paciente: </th>
-                            <td class='StormyWeatherDataTD' colspan='3'>".htmlentities($paciente)."</td>
-                    </tr>
+                    
+                   
                     <tr>
                         <th class='StormyWeatherFieldCaptionTD'>Edad: </th>
                         <td class='StormyWeatherDataTD'>". $edad."</td>
                         <th class='StormyWeatherFieldCaptionTD'>Sexo: </th>
                         <td class='StormyWeatherDataTD'>".$sexo."</td>
+                    </tr>
+                    <tr>
+                            <th class='StormyWeatherFieldCaptionTD'>Medico: </th>
+                            <td class='StormyWeatherDataTD'>".htmlentities($medico)."</td>
+                            <th class='StormyWeatherFieldCaptionTD'>Fecha Recepcion</th>
+                            <td class='StormyWeatherDataTD'>".$fecharecep."</td>
                     </tr>
 		</table>
 		<br><br>

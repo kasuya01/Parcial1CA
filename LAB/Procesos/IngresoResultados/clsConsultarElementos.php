@@ -365,7 +365,7 @@ else
     function LeerElementosExamen($idexamen, $lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-            $query = "SELECT t01.id AS idelemento,
+           $query = "SELECT t01.id AS idelemento,
                              t01.elemento,
                              t01.unidadelem,
                              t01.subelemento,
