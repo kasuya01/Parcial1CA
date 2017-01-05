@@ -178,7 +178,7 @@ switch ($opcion) {
                        t01.indicacion, t08.nombrearea,
                        CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,
                        t07.segundo_apellido,t07.apellido_casada) AS paciente,
-                       t20.servicio AS mbresubservicio,
+                       t20.servicio AS nombresubservicio,
                        t20.procedencia AS nombreservicio,
                        t02.impresiones,
                        t14.nombre,
