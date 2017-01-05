@@ -136,7 +136,7 @@
                 </td>
             </tr>
 	    <tr>
-	       	<td class="StormyWeatherFieldCapt$row['verresultado']ionTD">Nombre del Examen *</td>
+	       	<td class="StormyWeatherFieldCaptionTD">Nombre del Examen *</td>
 	        <td class="StormyWeatherDataTD">
                     <input type="text" id="txtnombreexamen" name="txtnombreexamen" style="width:75%" class="form-control height placeholder" size="50" value="<?php echo htmlentities($nombreexamen); ?>"/>
                     <input type="hidden" name="txtidconf" size="50" style="width:75%" class="form-control height placeholder" value="<?php echo $idconf ; ?>"/>

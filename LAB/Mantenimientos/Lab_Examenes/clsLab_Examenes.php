@@ -926,7 +926,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                             join lab_conf_examen_tipo_laboratorio	t2 on (t1.id=t2.id_conf_examen_estab)
                             where t1.id=$idexamen
                             and (t2.activo=true or fecha_fin >= current_date))
-               			else null end) as id_idestab_idexatipolab,b_verresultado
+               			else null end) as id_idestab_idexatipolab,b_verresultado,
         		    (SELECT array_to_string(array_agg(t02.id order by t02.suministrante), ',') as suministrante
             			from lab_examen_suministrante t01
             			join lab_suministrante t02 on (t02.id=t01.id_suministrante)
