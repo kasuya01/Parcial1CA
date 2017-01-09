@@ -118,6 +118,10 @@ function VerResultados()
                     idestabext=escape(getVars[i].substr(5));
                  if ( getVars[i].substr(0,5) == '$fecha_recepcion_=' )
                     $fecha_recepcion_=escape(getVars[i].substr(5));
+                 if ( getVars[i].substr(0,5) == 'edad=' )
+                    origenmuestra=escape(getVars[i].substr(5));
+                 if ( getVars[i].substr(0,5) == 'nomsexo=' )
+                    nomsexo=escape(getVars[i].substr(5));
             }
             
             document.frmnuevo.txtnec.value=nec;
@@ -162,7 +166,8 @@ jQuery(document).ready(function($){
        // $codarea=$_GET['var4'];
         $ftx= $_GET['var19'];
         $idsolicitud=$_GET['var6'];
-         
+        $edad=$_GET['edad'];
+        $nomsexo=$_GET['nomsexo'];
         $IdDetalleSolicitud=$_GET['var5'];
         $idarea= $_GET['var4'];
        // echo $idsolicitud." - ".$IdDetalleSolicitud." - ".$idarea;
@@ -257,6 +262,12 @@ jQuery(document).ready(function($){
                         <td colspan="3" class="StormyWeatherDataTD"><?php echo $ConocidoPor;?>
                                 <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
                         </td>
+                </tr>
+                <tr>                                     
+                       <td class="StormyWeatherFieldCaptionTD">Edad</td>
+                        <td class="StormyWeatherDataTD" ><?php echo $edad;?></td>
+                        <td class="StormyWeatherFieldCaptionTD">Sexo</td>
+                       <td class="StormyWeatherDataTD" ><?php echo $nomsexo;?></td>
                 </tr>
                  <tr>
                        <td class="StormyWeatherFieldCaptionTD">Diagnostico</td>

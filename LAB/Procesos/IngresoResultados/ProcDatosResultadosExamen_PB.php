@@ -119,6 +119,10 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                     $fecha_recepcion_=escape(getVars[i].substr(5));
                if ( getVars[i].substr(0,5) == 'origenmuestra=' )
                     origenmuestra=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'edad=' )
+                    origenmuestra=escape(getVars[i].substr(5));
+                 if ( getVars[i].substr(0,5) == 'nomsexo=' )
+                    nomsexo=escape(getVars[i].substr(5));
             }
 
             document.frmnuevo.txtnec.value=nec;
@@ -203,6 +207,9 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
         $fecha_recepcion_=$_GET['fecha_recepcion'];
         $iddetallesolicitud=$_GET['var5'];
         $idarea=$_GET['var4'];
+        $edad=$_GET['edad'];
+        $nomsexo=$_GET['nomsexo'];
+        $sexo=$_GET['var15'];
         //$idsolicitud;
         $ftx= $_GET['var20'];
      // echo $idsolicitud." - ".$iddetallesolicitud." - ".$idarea;
@@ -239,8 +246,14 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                                         <td colspan="5" align="center"> <h3>DATOS GENERALES</h3></td>
                                     </tr>
                                     <tr>
-                                        <td class="StormyWeatherFieldCaptionTD">Establecimiento Solicitante</td>
-                                        <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var18'];?></td>
+                                        <td width="33%" class="StormyWeatherFieldCaptionTD">Establecimiento Solicitante</td>
+                                        <td width="67%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var18'];?></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
+                                        <td class="StormyWeatherDataTD"><?php echo $_GET['var10'];?></td>
+                                        <td class="StormyWeatherFieldCaptionTD">Servicio</td>
+                                        <td class="StormyWeatherDataTD"><?php echo $_GET['var11'];?></td>
                                     </tr>
                                     <tr>
                                         <td class="StormyWeatherFieldCaptionTD" >NEC</td>
@@ -277,12 +290,17 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                                             <input type="hidden" name="txtpaciente" id="txtpacientea" disabled="disabled" size="60" />
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
-                                        <td class="StormyWeatherDataTD"><?php echo $_GET['var10'];?></td>
-                                        <td class="StormyWeatherFieldCaptionTD">Servicio</td>
-                                        <td class="StormyWeatherDataTD"><?php echo $_GET['var11'];?></td>
+                                     <tr>
+                                        <td class="StormyWeatherFieldCaptionTD">Conocido Por</td>
+                                        <td class="StormyWeatherDataTD" colspan="4"><?php echo $ConocidoPor;?></td>
+                                     </tr>    
+                                     <tr>                                     
+                                            <td class="StormyWeatherFieldCaptionTD">Edad</td>
+                                            <td class="StormyWeatherDataTD" ><?php echo $edad;?></td>
+                                            <td class="StormyWeatherFieldCaptionTD">Sexo</td>
+                                            <td class="StormyWeatherDataTD" ><?php echo $nomsexo;?></td>
                                     </tr>
+                                    
                                     <tr>
                                         <td class="StormyWeatherFieldCaptionTD">Diagnostico</td>
                                         <td colspan="3" class="StormyWeatherDataTD"><?php echo htmlentities($Diagnostico);?>

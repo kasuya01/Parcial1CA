@@ -171,7 +171,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-	   $query = "WITH tbl_servicio AS (
+	  $query = "WITH tbl_servicio AS (
                     SELECT t02.id,
                         CASE WHEN t02.nombre_ambiente IS NOT NULL THEN      
                             CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->' ||t02.nombre_ambiente
@@ -228,7 +228,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' 
-                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelado(a)' END AS estado,
+                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='E') THEN 'Cancelado(a)' END AS estado,
 			
                     CASE t02.estado 
                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada' 
@@ -238,7 +238,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' 
-                       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelado(a)' END AS estado1, 
+                       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='E') THEN 'Cancelado(a)' END AS estado1, 
                         t01.indicacion as indicacion,
                         t01.idempleado as idempleado
                    
@@ -273,7 +273,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
 
             inner join ctl_area_servicio_diagnostico     t25   on (t25.id=t05.id_area_servicio_diagnostico)
             
-            WHERE  t02.id=$idsolicitud and  t06.numero='$idexpediente'
+            WHERE  t02.id=$idsolicitud and  t06.numero='$idexpediente'AND b_verresultado=true
 
 UNION
 
@@ -316,7 +316,7 @@ UNION
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo'
-                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelado(a)' END AS estado,
+                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='E') THEN 'Cancelado(a)' END AS estado,
                         
                     CASE t02.estado 
                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada' 
@@ -326,7 +326,7 @@ UNION
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' 
-                       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelado(a)' END AS estado1, 
+                       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='E') THEN 'Cancelado(a)' END AS estado1, 
 
 			t01.indicacion as indicacion,
                         t01.idempleado  as idempleado
@@ -356,7 +356,7 @@ UNION
             
             inner join ctl_area_servicio_diagnostico    t25   on (t25.id=t05.id_area_servicio_diagnostico)
             
-            WHERE   t02.id=$idsolicitud and  t06.numero='$idexpediente'  order by codigo_area";
+            WHERE   t02.id=$idsolicitud and  t06.numero='$idexpediente' AND b_verresultado=true  order by codigo_area";
                 
                 
 		$result = @pg_query($query);

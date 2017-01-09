@@ -312,17 +312,39 @@ switch ($opcion)
                 //echo $v_id_elementos[1];
                 if ($resultado=="P")
                 {
-                      $codigoResultado=4;
-                      $CodAntibiograma=6; 
+                    $codigoResultado=4;
+                    $CodAntibiograma=6; 
+                      $con = new ConexionBD;
+            if($con->conectar()==true) 
+            {
+                   $query = "SELECT lab_examen_metodologia.id AS idmetodologia,ctl_examen_servicio_diagnostico.id AS idcatalogo,
+                    mnt_area_examen_establecimiento.id AS idmnt,lab_conf_examen_estab.id AS idconf
+                    FROM ctl_examen_servicio_diagnostico 
+                    INNER JOIN mnt_area_examen_establecimiento ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico = ctl_examen_servicio_diagnostico.id
+                    INNER JOIN lab_conf_examen_estab ON lab_conf_examen_estab.idexamen = mnt_area_examen_establecimiento.id
+                    INNER JOIN lab_examen_metodologia ON lab_examen_metodologia.id_conf_exa_estab = lab_conf_examen_estab.id
+                    WHERE idestandar='M24' ";
+                    $result = pg_query($query);
+                    $row_exam_metod = pg_fetch_array($result);
+                    $id_metod = $row_exam_metod['idmetodologia'];
+                    $idcof = $row_exam_metod['idconf'];
+                    $idcat = $row_exam_metod['idcatalogo'];
+                    $idmnt = $row_exam_metod['idmnt'];
+            }                         
+                  
+                 //  echo $idcof." - ".$idmnt ." - ". $idcat;
                // echo "TAR=". $tarjeta;
-                      $ultimo= $objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado);
-                 //    $insertardetalle=$objdatos->IngresarDetalle($idsolicitud,$idantibiograma,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$fecharealiz,$fecharesultado);
-                       $antibiograma= $objdatos->insertarAntibiograma($iddetalle,$idexamen,$CodAntibiograma,$usuario,$fecharealiz,$fecharesultado,$idempleado);
-                      if (($ultimo != "") && ($antibiograma==TRUE))
+               $detantib=$objdatos->insertar_detalle_antibiograma($idsolicitud,$iddetalle,$usuario,$lugar,$idcat,$idmnt,$idcof);
+               $ultimo= $objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado);
+                 // $ultimoantb= $objdatos->_antibiograma($idsolicitud,$detantib,$idcof,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$CodAntibiograma,$lugar,$idobservacion,$fecharealiz,$fecharesultado,$id_metod);
+               $ultimoantb= $objdatos->insertar_encabezado_antibiograma($idsolicitud,$detantib,$idcof,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$CodAntibiograma,$lugar,$idobservacion,$fecharealiz,$fecharesultado,$id_metod,$ultimo);                  
+                   //  $antibiograma= $objdatos->insertarAntibiograma($iddetalle,$idexamen,$CodAntibiograma,$usuario,$fecharealiz,$fecharesultado,$idempleado);
+                      if (($ultimo != "") && ($ultimoantb != ""))
+                            /*($antibiograma==TRUE))*/
                       {
-                              $idresultado=$ultimo;
+                        $idresultado=$ultimoantb;
                               //insertando el detalle
-                              $iddetalleresultado=$objdatos->insertar_detalle($idresultado,$idbacteria,$tarjeta,$cantidad,$lugar);
+                            $iddetalleresultado=$objdatos->insertar_detalle($idresultado,$idbacteria,$tarjeta,$cantidad,$lugar);
                                                                         
                               //insertando el detalle de resultados de la tarjeta asociada
                               if (($tamano_vector-1)>0)
@@ -351,9 +373,9 @@ switch ($opcion)
                                       //actualiza el estado del detalle de la solicitud para indicar que el resultado esta completo para el examen
 
                                       echo "Datos Guardados";
+                                      //echo $detantib;
 
-
-                                    if (($objdatos->CambiarEstadoDetalle($iddetalle)==true)&&($objdatos->CambiarEstadoSolicitud($idsolicitud)==true))
+                                    if (($objdatos->CambiarEstadoDetalle($iddetalle)==true)&&($objdatos->CambiarEstadoDetalle($detantib)==true)&&($objdatos->CambiarEstadoSolicitud($idsolicitud)==true))
                                     {
                                         echo " Correctamente";
                                     }
@@ -379,9 +401,8 @@ switch ($opcion)
 	$idarea=$_POST['idarea'];
 	$idtarjeta=$_POST['idtarjeta'];
 	$tiporespuesta=$_POST['tiporespuesta'];
-      //  $f_tomamuestra=$_POST['f_tomamuestra'];
+        //$f_tomamuestra=$_POST['f_tomamuestra'];
         //$tipomuestra=$_POST['tipomuestra'];
-        
         // echo " opcion 4 ".$f_tomamuestra."  ".$tipomuestra;
 	$consulta_ob=$objdatos->LeerObservaciones($idarea,$tiporespuesta);
 
