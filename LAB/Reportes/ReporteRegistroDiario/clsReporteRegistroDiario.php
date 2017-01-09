@@ -1,4 +1,4 @@
-get<?php
+<?php
 include_once("../../../Conexion/ConexionBD.php");
         //include($_SERVER['DOCUMENT_ROOT']."/Laboratorio/Conexion/ConexionBD.php");
 //include_once("DBManager.php");
@@ -125,17 +125,18 @@ order by t02.id;";
 	$con = new ConexionBD;
     //usamos el metodo conectar para realizar la conexion
 	if($con->conectar()==true){
-        $query = "
-
-WITH tbl_servicio AS ( SELECT t02.id,
+        $query = "WITH tbl_servicio AS ( SELECT t02.id,
                 CASE WHEN t02.nombre_ambiente IS NOT NULL THEN
-                    CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' || t02.nombre_ambiente
-                            --ELSE t02.nombre_ambiente
-                    END
+                    t02.nombre_ambiente
                     ELSE
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre
-                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)
-                                    --THEN t07.nombre||'-'||t01.nombre
+                        CASE WHEN id_servicio_externo_estab IS NOT NULL
+                                THEN t05.abreviatura  ||'   -   ' ||  t01.nombre
+                            WHEN not exists (select nombre_ambiente
+              							 from mnt_aten_area_mod_estab maame
+              							 join mnt_area_mod_estab mame on (maame.id_area_mod_estab = mame.id)
+              							 where nombre_ambiente=t01.nombre
+              							 and mame.id_area_atencion=t03.id_area_atencion)
+
                                     THEN t01.nombre
                     END
 

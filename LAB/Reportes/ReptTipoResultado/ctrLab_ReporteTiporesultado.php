@@ -118,34 +118,18 @@ switch ($opcion)
         }     
        // echo $cond2;
 		//print_r($arraynombres);	
-		  $query =/*"SELECT $cadena
-                      SUM (CASE WHEN t02.id<>0 THEN 1 else 0 END )AS total,
-                      t02.id, 
-                      t02.resultado, 
-                      t07.nombrearea,
-                      t05.nombre_examen as nombre_examen
-                      FROM lab_resultado_metodologia    t01
-            JOIN lab_codigosresultados  		t02 ON (t02.id=t01.id_codigoresultado)
-            JOIN lab_codigosxexamen			t03 ON (t03.idresultado=t02.id)
-            JOIN lab_examen_metodologia 		t04 ON (t04.id=t01.id_examen_metodologia)
-            JOIN lab_conf_examen_estab 			t05 ON (t05.id=t04.id_conf_exa_estab)
-            INNER JOIN mnt_area_examen_establecimiento  t06 ON (t06.id = t05.idexamen) 
-            JOIN ctl_area_servicio_diagnostico    	t07 ON (t07.id = t06.id_area_servicio_diagnostico)
-            where $cond1   
-                          GROUP BY  t02.id, 
-                      t02.resultado, 
-                      t07.nombrearea,t05.nombre_examen  " ;*/
-                          
+		 $query =                     
                 "SELECT $cadena
                 id_examen_metodologia,  
                 t03.nombre_examen,
                 t05.nombrearea,
                 count(*) as total 
-                from lab_resultado_metodologia          t01 
-                JOIN lab_codigosresultados              t02 ON (t02.id = t01.id_codigoresultado)
-                join lab_conf_examen_estab              t03 on (t03.id = t01.id_examen_metodologia)
-                JOIN mnt_area_examen_establecimiento    t04 ON (t04.id = t03.idexamen) 
-                JOIN ctl_area_servicio_diagnostico      t05 ON (t05.id = t04.id_area_servicio_diagnostico) 
+                from lab_resultado_metodologia t01 
+JOIN lab_codigosresultados t02 ON (t02.id = t01.id_codigoresultado) 
+join lab_examen_metodologia t06 ON (t06.id= t01.id_examen_metodologia) 
+join lab_conf_examen_estab t03 on (t03.id = t06.id_conf_exa_estab) 
+JOIN mnt_area_examen_establecimiento t04 ON (t04.id = t03.idexamen) 
+JOIN ctl_area_servicio_diagnostico t05 ON (t05.id = t04.id_area_servicio_diagnostico)
                 where $cond1 
 
                 group by t01.id_examen_metodologia, t03.nombre_examen,t05.nombrearea
