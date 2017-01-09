@@ -118,13 +118,14 @@ function MostrarDatos(posicion)
     idexpediente = document.getElementById('idexpediente[' + posicion + ']').value;
     //idsolicitud = document.getElementById('idsolicitud[' + posicion + ']').value;
     idsolicitudP=document.getElementById('idsolicitudP[' + posicion + ']').value;
+    idsolicitudestudio=document.getElementById('idsolicitudestudio[' + posicion + ']').value;
     idarea = document.getElementById('idarea[' + posicion + ']').value;
     idexamen = document.getElementById('idexamen[' + posicion + ']').value;
     idexpediente = trim(idexpediente);
     idsolicitud = trim(idsolicitud);
     //idsolicitudP = trim(idsolicitudP);
     ventana_secundaria = window.open("DatosSolicitudesPorArea1.php?var1=" + idexpediente +
-            "&var2=" + idarea + "&var3=" + idsolicitud  +  "&var4=" + idexamen, "Datos1", "width=850,height=475,menubar=no,scrollbars=yes");
+            "&var2=" + idarea + "&var3=" + idsolicitud  +  "&var4=" + idexamen , "Datos1", "width=850,height=475,menubar=no,scrollbars=yes");
 
 }
 
@@ -420,7 +421,7 @@ function CargarDatosFormulario1(idexpediente,idexamen,idarea,idsolicitud)
     //muy importante este encabezado ya que hacemos uso de un formulario
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     //enviando los valores
-    ajax.send("opcion=" + opcion + "&estado=" + estado + "&idarea=" + idarea + "&fechasolicitud=" + fechasolicitud + "&idexpediente=" + idexpediente + "&idsolicitud=" + idsolicitud  + "&idexamen=" + idexamen + "&fecharecep=" + fecharecep);
+    ajax.send("opcion=" + opcion + "&estado=" + estado + "&idarea=" + idarea + "&fechasolicitud=" + fechasolicitud + "&idexpediente=" + idexpediente + "&idsolicitud=" + idsolicitud  + "&idexamen=" + idexamen + "&fecharecep=" + fecharecep );
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)

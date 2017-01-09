@@ -216,7 +216,7 @@ switch ($opcion) {
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo)
                 INNER JOIN tbl_servicio t20 ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
                 LEFT JOIN mnt_origenmuestra t21 ON (t21.id = t01.idorigenmuestra)
-                WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var1
+                WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var1 AND t01.id_suministrante=1
 
                 UNION
 
@@ -270,7 +270,7 @@ switch ($opcion) {
                 INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico)
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo)
                 LEFT JOIN mnt_origenmuestra t21 ON (t21.id = t01.idorigenmuestra)
-                WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var2) ordenar
+                WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var2 and t01.id_suministrante=1) ordenar
                 ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
 //ECHO $query;
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);

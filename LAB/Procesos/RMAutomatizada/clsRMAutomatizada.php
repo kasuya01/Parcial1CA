@@ -637,12 +637,37 @@ VALUES($idexmen_metodologia,
 
 
     //FUNCION PARA CAMBIAR EL ESTADO DE PROCESADO AL DETALLE DE LA SOLICITUD
-    function CambiarEstadoDetalle1($idsolicitud, $estado, $idexamen,  $idobservacion, $idrechazo, $fecharechazosol, $fechanewcitasol, $idsolicitudPadre, $usuario) {
+    function CambiarEstadoDetalle1($idsolicitud, $estado, $idexamen,  $idobservacion, $idrechazo, $fecharechazosol, $fechanewcitasol, $idsolicitudPadre, $usuario, $idsolicitudestudio) {
     //                                $idsolicitud, $estado, $idexamen, $idobservacion, $idrechazo, $fecharechazosol, $fechanewcitasol, $idsolicitudP, $usuario)
+    //echo $idrechazo;
+
         $con = new ConexionBD;
         if ($con->conectar() == true) {
             //Verifica si el tipo de rechazo es temporal o definitivo
-            if ($estadorechazo==2){
+            if ($idrechazo==2){
+                $sql0="select * from sec_solicitudestudios where id=$idsolicitudestudio;";
+                $return0=@pg_query($sql0);
+                $row0=pg_fetch_array($return0);
+            //    $id_historial_clinico_0=$row0['id_historial_clinico'];
+                $id_historial_clinico_0=(empty($row0['id_historial_clinico'])) ? 'NULL' :  pg_escape_string($row0['id_historial_clinico']);
+            //    $id_dato_referencia_0=$row0['id_dato_referencia'];
+                $id_dato_referencia_0=(empty($row0['id_dato_referencia'])) ? 'NULL' :  pg_escape_string($row0['id_dato_referencia']);
+
+                $sql1="select t1.id
+                        from sec_solicitudestudios t1
+                        join cit_citas_serviciodeapoyo t2 on (t1.id=t2.id_solicitudestudios)
+                        where date(t2.fecha)=date ($fechanewcitasol)
+                        and case when (select id_historial_clinico from sec_solicitudestudios where id=$idsolicitudestudio) is not null
+                        then t1.id_historial_clinico in ( $id_historial_clinico_0)
+                        else t1.id_dato_referencia  in ($id_dato_referencia_0)
+                        end";
+                $return1=pg_query($sql1);
+                $row1=pg_fetch_array($return1);
+            //echo ' id/sec/sol: '.
+               $id_sec_sol=$row1['id'];
+
+                if ($id_sec_sol=='' || $id_sec_sol==NULL){
+                //echo 'si entro';
                 //Max valor de sec_solicitudestudios
                 $query00="select nextval('sec_solicitudestudios_id_seq');";
                 $result00=pg_query($query00);
@@ -651,20 +676,29 @@ VALUES($idexmen_metodologia,
 
                 //Inserta una nueva solicita con los datos de la que se eliminará
         		$query01 ="INSERT INTO sec_solicitudestudios (id,id_historial_clinico, fecha_solicitud, idusuarioreg, fechahorareg, id_atencion, impresiones, cama, id_establecimiento, id_establecimiento_externo, id_expediente, estado, idtiposolicitud, id_dato_referencia)
-        		SELECT $idsoli, id_historial_clinico, fecha_solicitud, idusuarioreg, date_trunc('seconds', NOW()), id_atencion,impresiones, cama, id_establecimiento, id_establecimiento_externo, id_expediente, estado, idtiposolicitud, id_dato_referencia FROM sec_solicitudestudios
-        		WHERE id=$idsolicitudPadre";
+        		SELECT $idsoli, id_historial_clinico, fecha_solicitud, idusuarioreg, date_trunc('seconds', NOW()), id_atencion,impresiones, cama, id_establecimiento, id_establecimiento_externo, id_expediente, 1, idtiposolicitud, id_dato_referencia FROM sec_solicitudestudios
+        		WHERE id=$idsolicitudestudio";
                 $result01=pg_query($query01);
-
+                //echo $query01;
         		//Insertar todos los detalles de la solicitud anterior.
         		$query02="INSERT INTO sec_detallesolicitudestudios (idsolicitudestudio, indicacion, idtipomuestra, idorigenmuestra, observacion, idexamen, idestablecimiento, idestablecimientoexterno, idempleado, idusuarioreg, fechahorareg, estadodetalle, id_conf_examen_estab, f_tomamuestra)
         		SELECT $idsoli, indicacion, idtipomuestra, idorigenmuestra, observacion, idexamen, idestablecimiento, idestablecimientoexterno, idempleado, idusuarioreg, date_trunc('seconds', NOW()), 1, id_conf_examen_estab, f_tomamuestra FROM sec_detallesolicitudestudios
-        		WHERE idsolicitudestudio=$idsolicitudPadre and id=$idsolicitud";
+        		WHERE idsolicitudestudio=$idsolicitudestudio and id=$idsolicitud";
                 $result02=pg_query($query02);
 
                 $query03="INSERT INTO cit_citas_serviciodeapoyo (fecha, id_solicitudestudios, idusuarioreg, fechahorareg)
         		VALUES ($fechanewcitasol,$idsoli, $usuario, date_trunc('seconds', NOW()))  ";
                 $result03=pg_query($query03);
             }
+            else{
+                //echo 'else';
+                //Insertar todos los detalles de la solicitud anterior.
+        		$query02="INSERT INTO sec_detallesolicitudestudios (idsolicitudestudio, indicacion, idtipomuestra, idorigenmuestra, observacion, idexamen, idestablecimiento, idestablecimientoexterno, idempleado, idusuarioreg, fechahorareg, estadodetalle, id_conf_examen_estab, f_tomamuestra)
+        		SELECT $id_sec_sol, indicacion, idtipomuestra, idorigenmuestra, observacion, idexamen, idestablecimiento, idestablecimientoexterno, idempleado, idusuarioreg, date_trunc('seconds', NOW()), 1, id_conf_examen_estab, f_tomamuestra FROM sec_detallesolicitudestudios
+        		WHERE idsolicitudestudio=$idsolicitudestudio and id=$idsolicitud";
+                $result02=pg_query($query02);
+            }//fin else
+        }//fin if idrechazo=2
              $query =  "UPDATE sec_detallesolicitudestudios
                         SET estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = '$estado' AND id_atencion = 98),
                         id_estado_rechazo=$idrechazo,

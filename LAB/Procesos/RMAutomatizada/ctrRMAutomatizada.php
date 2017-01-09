@@ -310,6 +310,7 @@ switch ($opcion) {
                            <a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" .$row['idnumeroexp'] . "</a></td>
                            <input name='idsolicitudP[" . $pos . "]' id='idsolicitudP[" . $pos . "]' type='hidden' size='60' value='" . $row[1] . "' />" .
                             "<input name='idsolicitud[" . $pos . "]' id='idsolicitud[" . $pos . "]' type='hidden' size='60' value='" . $row[1] . "' />" .
+                            "<input name='[" . $pos . "]' id='idsolicitudestudio[" . $pos . "]' type='hidden' size='60' value='" . $row[2] . "' />" .
                            "<input name='idexpediente[" . $pos . "]' id='idexpediente[" . $pos . "]' type='hidden' size='60' value='" . $row['idnumeroexp'] . "' />" .
                            "<input name='idarea[" . $pos . "]' id='idarea[" . $pos . "]' type='hidden' size='60' value='" . $idarea . "' />" .
                            "<input name='idexamen[" . $pos . "]' id='idexamen[" . $pos . "]' type='hidden' size='60' value='" . $row[1] . "' />" .
@@ -572,7 +573,7 @@ switch ($opcion) {
                                  </td>
                                     </tr>
                                     <tr>
-                                            <td class='StormyWeatherDataTD' colspan='4' align='right'><input type='button' name='btnRechazar' class='btn btn-primary'  id='btnRechazar' value='Rechazar Muestra' onClick=\"RechazarMuestra1('" . $idexamen . "')\">
+                                            <td class='StormyWeatherDataTD' colspan='4' align='right'><input type='button' name='btnRechazar' class='btn btn-primary'  id='btnRechazar' value='Rechazar/Cancelar Muestra' onClick=\"RechazarMuestra1('" . $idexamen . "')\">
                                                     <input type='button' class='btn btn-primary' name='btnCerrar'  value='Cerrar' onClick='Cerrar()'>
                                             </td>
                                     </tr>";
@@ -654,7 +655,7 @@ switch ($opcion) {
 
             //$print="/";
 
-            if ($objdatos->CambiarEstadoDetalle1($idsolicitud, $estado, $idexamen, $idobservacion, $idrechazo, $fecharechazo, $fechanewcitasol, $idsolicitudP, $usuario) == true)
+            if ($objdatos->CambiarEstadoDetalle1($idsolicitud, $estado, $idexamen, $idobservacion, $idrechazo, $fecharechazo, $fechanewcitasol, $idsolicitudP, $usuario, $idsolicitudPadre) == true)
             {  // echo "Muestra Rechazada, ";
         //        if($TotalD <>$TotalGral){
             //    $print .="estadodetalle"
@@ -664,7 +665,7 @@ switch ($opcion) {
                         {*/
                             if ($objdatos->AgregarResultadoMetodologia($idsolicitudP,$idsolicitud,$id_codigoresultado,$idexmen_metodologia,$id_empleado,$usuario)==true)
                             {
-                                echo "Muestra Rechazada";
+                                echo "Muestra Rechazada o Cancelada.";
 
                             }
                         //}
