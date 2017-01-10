@@ -208,6 +208,7 @@ class clsSolicitudesProcesadas {
                             and (idedad=4 or idedad=$idedad)
             and sse.id_establecimiento=$lugar
             and lem.activo=true
+            and (rangofin is not null or rangoinicio is not null)
             order by nombre_examen;";
 
          // echo '<br><br>---'.$query.'---s<br><br>';

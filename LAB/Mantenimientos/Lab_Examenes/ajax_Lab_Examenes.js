@@ -157,6 +157,7 @@ if (ValidarCampos())
     cmbTipoMuestra=$('#cmbTipoMuestra').val();
     cmbPerfil=$('#cmbPerfil').val();
     cmbEstabReferido=$('#cmbEstabReferido').val();
+    cmbRealizadopor=$('#cmbRealizadopor').val();
     tiempoprevio=document.getElementById('inidate').value;
     metodologias_sel=frmnuevo.metodologias_sel.value;
     text_metodologias_sel=frmnuevo.text_metodologias_sel.value;

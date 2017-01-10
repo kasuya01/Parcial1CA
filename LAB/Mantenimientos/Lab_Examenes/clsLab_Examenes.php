@@ -478,7 +478,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                $con = pg_query($sql1);
                while ($rome = pg_fetch_array($con)) {
                   if ($rome['id_metodologia'] == $aMetodologias[$i]) {
-                   echo  $sql = "UPDATE lab_examen_metodologia SET activo=true,fecha_inicio=NOW(),fecha_fin=NULL,nombre_reporta='$aMetodologias_id[$i]' WHERE id_conf_exa_estab=$idconf AND id_metodologia=$aMetodologias[$i] returning id;";
+                     $sql = "UPDATE lab_examen_metodologia SET activo=true,fecha_inicio=NOW(),fecha_fin=NULL,nombre_reporta='$aMetodologias_id[$i]' WHERE id_conf_exa_estab=$idconf AND id_metodologia=$aMetodologias[$i] returning id;";
                      $upd = pg_query($sql);
                      $idexametodologia=  pg_fetch_array($upd);
                      $idexameto=$idexametodologia['id'];
@@ -681,7 +681,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                   }
                }
                if ($bandl==0){
-               echo  $sqlD="insert into lab_examen_suministrante (id_suministrante, id_conf_examen_estab, activo, fecha_inicio) values($arealizador[$l], $idconf, true,current_date);";
+                 $sqlD="insert into lab_examen_suministrante (id_suministrante, id_conf_examen_estab, activo, fecha_inicio) values($arealizador[$l], $idconf, true,current_date);";
                   $queryD=  pg_query($sqlD);
 
                }
@@ -1263,7 +1263,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
       $con = new ConexionBD;
       //usamos el metodo conectar para realizar la conexion
       if ($con->conectar() == true) {
-       echo  $query = "INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin) VALUES ($id_examen, $id_metodologia, true, NOW(), NULL)";
+         $query = "INSERT INTO lab_examen_metodologia(id_conf_exa_estab,id_metodologia,activo,fecha_inicio,fecha_fin) VALUES ($id_examen, $id_metodologia, true, NOW(), NULL)";
 
          $result = pg_query($query);
          if (!$result)
@@ -1321,7 +1321,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                         WHERE id_posible_resultado = '$id_posible_resultado' AND id_conf_examen_estab='$idconf'";
          $result = pg_query($query);
          if (pg_affected_rows($result) == 0) {
-          echo  $query = "INSERT INTO lab_examen_posible_resultado(
+            $query = "INSERT INTO lab_examen_posible_resultado(
                             id_conf_examen_estab,
                             id_posible_resultado,
                             fechainicio, fechafin,
@@ -1516,7 +1516,7 @@ class clsLabor_Examenes {
            $plantilla, $observacion, $activo, $ubicacion, $usuario) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         echo $query = "INSERT INTO laboratorio.lab_examenes(idexamen,IdArea,nombreExamen,IdEstandar,Observacion,IdPlantilla,Habilitado,Ubicacion,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod) VALUES('$idexamen','$idarea','$nomexamen','$idestandar','$observacion','$plantilla','$activo',$ubicacion,$usuario,NOW(),$usuario,NOW())";
+          $query = "INSERT INTO laboratorio.lab_examenes(idexamen,IdArea,nombreExamen,IdEstandar,Observacion,IdPlantilla,Habilitado,Ubicacion,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod) VALUES('$idexamen','$idarea','$nomexamen','$idestandar','$observacion','$plantilla','$activo',$ubicacion,$usuario,NOW(),$usuario,NOW())";
          $result = pg_query($query);
 
          if (!$result)

@@ -1934,7 +1934,8 @@ function MostrarDatos(posicion)
     origenmuestra= document.getElementById('origenmuestra[' + posicion + ']').value;
     edad= document.getElementById('edad[' + posicion + ']').value;
     nomsexo= document.getElementById('nomsexo[' + posicion + ']').value;
-  // alert (nomsexo);
+    datofijo= document.getElementById('dato_fijo[' + posicion + ']').value;
+
     //alert ("Plnatilla="+plantilla+" Experiente="+idexpediente+" Solicitud="+idsolicitud+" idarea="+idarea+" idhistorial="+IdHistorial+" IdEstandar="+IdEstandar);
     //idhistorial=document.getElementById('idhistorial['+posicion+']').value;
     //alert(plantilla);
@@ -1945,7 +1946,7 @@ function MostrarDatos(posicion)
     switch (plantilla)
     {
         case "1":
-            if (idareaPA == 12) {
+            if (idareaPA == 12 && datofijo=='true') {
                 ventana_secundaria = window.open("ProcDatosResultadosExamen_PA1.php?var1=" + idexpediente +
                         "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idareaPA + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                         "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +

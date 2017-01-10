@@ -196,7 +196,7 @@ switch ($opcion) {
                        (select origenmuestra FROM mnt_origenmuestra where id=t01.idorigenmuestra) as origenmuestra,
                         REPLACE( REPLACE( REPLACE( REPLACE( REPLACE( REPLACE( AGE(t07.fecha_nacimiento::timestamp)::text, 'years', 'años'), 'year', 'año'), 'mons', 'meses'), 'mon', 'mes'), 'days', 'días'), 'day', 'día') as edad,
                         t19.nombre as nomsexo
-                        
+
                 FROM sec_detallesolicitudestudios t01
                 INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
                 INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio)
@@ -254,7 +254,7 @@ switch ($opcion) {
                        (select origenmuestra FROM mnt_origenmuestra where id=t01.idorigenmuestra) as origenmuestra,
                        REPLACE( REPLACE( REPLACE( REPLACE( REPLACE( REPLACE( AGE(t07.fecha_nacimiento::timestamp)::text, 'years', 'años'), 'year', 'año'), 'mons', 'meses'), 'mon', 'mes'), 'days', 'días'), 'day', 'día') as edad,
                        t19.nombre as nomsexo
-                       
+
                 FROM sec_detallesolicitudestudios t01
                 INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
                 INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio)
@@ -278,7 +278,7 @@ switch ($opcion) {
                 LEFT JOIN mnt_origenmuestra t21 ON (t21.id = t01.idorigenmuestra)
                 WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var2 and t01.id_suministrante=1) ordenar
                 ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
-       
+
 //ECHO $query;
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);
 
@@ -306,6 +306,18 @@ switch ($opcion) {
              //   echo 'Consmet: '.$consmet;
                $timefrecep = strtotime($row['fecharecepcion']);
                $datefrecep = date("Y-m-d", $timefrecep);
+               $sql0="select * from lab_datosfijosresultado
+               where id_conf_examen_estab =  ".$row['idexamen']."
+               and (fechafin is null or fechafin < current_date)
+               and (rangofin is not null or rangoinicio is not null);";
+            //   echo $sql0;
+               $return=pg_query ($sql0);
+               if (pg_num_rows($return)==0){
+                   $df='false';
+               }
+               else{
+                   $df='true';
+               }
                 echo "<tr>
                         <td width='3%'>" . $row['numeromuestra'] . "</td>
                         <td width='3%'><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] . "</a></td>" .
@@ -337,6 +349,7 @@ switch ($opcion) {
                             "<input name='edad[" . $pos . "]' id='edad[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["edad"]) . "'/>" .
                             "<input name='nomsexo[" . $pos . "]' id='nomsexo[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["nomsexo"]) . "'/>" .
                             "<input name='fecha_recepcion[" . $pos . "]' id='fecha_recepcion[" . $pos . "]' type='hidden' size='60' value='" . $datefrecep . "'/>" .
+                            "<input name='dato_fijo[" . $pos . "]' id='dato_fijo[" . $pos . "]' type='hidden' size='60' value='" . $df . "'/>" .
                         "<td width='18%'>" . htmlentities($row['paciente']) . "</td>
                         <td width='3%'>" . $row['estandar'] . "</td>
                         <td width='18%'>" . htmlentities($row['nombreexamen']) . "</td>
