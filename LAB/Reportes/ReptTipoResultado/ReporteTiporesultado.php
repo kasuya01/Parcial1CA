@@ -9,23 +9,23 @@ $base_url  = $_SESSION['base_url'];
  ?>
 
 <html>
-<head>
-<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-<!--<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />-->
-<link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
-<link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
-<title>Recepcion de Examenes en &Aacute;reas de Laboratorio</title>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+        <!--<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />-->
+        <link rel="stylesheet" type="text/css" href="../../../Themes/Cobalt/Style.css">
+        <link rel="stylesheet" type="text/css" href="../../../Themes/StormyWeather/Style.css">
+        <title>Recepcion de Examenes en &Aacute;reas de Laboratorio</title>
 
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
 
-<script language="JavaScript" type="text/javascript" src="ajax_ReporteTiporesultado.js"></script>
-<!--referencias del estilo del calendario-->
-<?php include_once $ROOT_PATH."/public/css.php";?>
-<?php include_once $ROOT_PATH."/public/js.php";?>
+        <script language="JavaScript" type="text/javascript" src="ajax_ReporteTiporesultado.js"></script>
+        <!--referencias del estilo del calendario-->
+        <?php include_once $ROOT_PATH."/public/css.php";?>
+        <?php include_once $ROOT_PATH."/public/js.php";?>
 
-<script language="JavaScript" type="text/javascript">
+        <script language="JavaScript" type="text/javascript">
 
 
 
