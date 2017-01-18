@@ -21,13 +21,21 @@ if (isset($_SESSION['Correlativo'])) {
     $nombrEstab = $row[1];
     $nomtipo    = $row[2];
     $tipoarea   = $rowArea[1];
+    $tipoestab  = $row['idtipoestablecimiento'];
 
-    if ($tipoarea == 'S') {
+    if($tipoestab==30){
+       if ($tipoarea == 'S') {
         $area1 = 0;
         $nomarea = "Seleccione un Area";
-    } else {
-        $area1 = $area;
-        $nomarea = $rowArea[0];
+       }else {
+            $area1 = $area;
+            $nomarea = $rowArea[0];
+        }
+    }
+    else{
+         $area1 = 0;
+        $nomarea = "Seleccione un Area";
+        
     }
     ?>
     <html>
@@ -234,15 +242,19 @@ if (isset($_SESSION['Correlativo'])) {
                                 <select id="cmbArea" name="cmbArea"  size="1" onChange="BuscarExamen(this.value)" style="width:443px" class="form-control height">
                                      <option value="0" >Seleccione un Área</option>
                                     <?php
-                                   // echo '<option value="' . $area1 . '" selected="selected">' . htmlentities($nomarea) . '</option>';
-                                    include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
-                                    $objeareas = new clsLab_Areas;
-                                    $consulta = $objeareas->consultaractivas($lugar);
-                                    while ($row = pg_fetch_array($consulta)) {
-                                      // if ($row['idarea']!=$area){
-                                        echo "<option value='" . $row['idarea'] . "'>" . htmlentities($row['nombrearea']) . "</option>";
-                                       //}
-                                    }
+                                   // echo $area;
+                                     echo '<option value="' . $area1 . '" selected="selected">' . htmlentities($nomarea) . '</option>';
+                                 
+                                        include('../../../../Laboratorio/LAB/Mantenimientos/Lab_Areas/clsLab_Areas.php');
+                                        $objeareas = new clsLab_Areas;
+                                        $consulta = $objeareas->consultaractivas($lugar);
+                                        while ($row = pg_fetch_array($consulta)) {
+                                          if ($row['idarea']!=$area){
+                                            echo "<option value='" . $row['idarea'] . "'>" . htmlentities($row['nombrearea']) . "</option>";
+                                           }
+                                        }
+                                    
+                                    
                                     ?>
                                 </select>
                             </td>

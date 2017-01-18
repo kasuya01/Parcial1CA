@@ -212,6 +212,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
         $sexo=$_GET['var15'];
         //$idsolicitud;
         $ftx= $_GET['var20'];
+        
      // echo $idsolicitud." - ".$iddetallesolicitud." - ".$idarea;
         $cant=$objdatos->buscarAnterioresPUnica($idsolicitud,$iddetallesolicitud,$idarea);
         if (pg_num_rows($cant)>0){
@@ -356,7 +357,9 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                                        <td class="StormyWeatherDataTD" colspan="4" >
                                            <div id="divEncargado">
                                                <select id="cmbEmpleados" name="cmbEmpleados" size="1"  class="form-control  height">
-                                                   <option value="0" >--Seleccione Empleado--</option>
+                                                                                     
+ <!--<option value="0" >--Seleccione Empleado--</option-->
+                                                   
                                                </select>
                                            </div>
                                        </td>

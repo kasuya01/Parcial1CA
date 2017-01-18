@@ -254,7 +254,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' 
-                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelado(a)'
+                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='E') THEN 'Cancelado(a)'
                         END AS estado,
 			
                     CASE t02.estado 
@@ -265,7 +265,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' 
-                       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelado(a)'
+                       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='E') THEN 'Cancelado(a)'
                        END AS estado1, 
                     t01.indicacion AS indicacion,
                     t01.idempleado AS idempleado,t01.id_conf_examen_estab as idexamen,t07.fecha_nacimiento as fechanac,
@@ -342,7 +342,7 @@ UNION
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' 
-                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelado(a)' END AS estado,
+                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='E') THEN 'Cancelado(a)' END AS estado,
                         
                     CASE t02.estado 
                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada' 
@@ -352,7 +352,7 @@ UNION
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' 
-                       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Cancelado(a)'
+                       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='E') THEN 'Cancelado(a)'
                        END AS estado1, 
 
                     t01.indicacion as indicacion,
@@ -394,73 +394,6 @@ UNION
 	}
  }
 
-/*//FUNCION PARA MOSTRAR LOS DATOS Resultado Plantilla A  
- function MostrarResultadoGenerales($idsolicitud,$idexamen,$lugar)
- {
-	$con = new ConexionBD;
-    if($con->conectar()==true) 
-    {	$query="SELECT lab_recepcionmuestra.IdSolicitudEstudio, mnt_expediente.IdNumeroExp, CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoApellido) AS NombrePaciente,
-	(year(CURRENT_DATE)-year(FechaNacimiento))AS Edad,IF(Sexo=1,'Masculino','Femenino') AS Sexo,
-	NombreSubServicio AS Origen,NombreServicio AS Procedencia,NombreArea,NumeroMuestra,
-	DATE_FORMAT(lab_resultados.FechaHoraReg,'%d/%m/%Y %H:%i:%s') AS Fecha,mnt_establecimiento.Nombre,
-	DATE_FORMAT(FechaNacimiento,'%d/%m/%Y') as FechaNacimiento, mnt_empleados.NombreEmpleado,
-	lab_resultados.Resultado,lab_resultados.Lectura,lab_resultados.Interpretacion, lab_resultados.Observacion,
-	lab_resultados.Observacion
-	FROM sec_detallesolicitudestudios 
-	INNER JOIN sec_solicitudestudios  ON sec_solicitudestudios.IdSolicitudEstudio=sec_detallesolicitudestudios.IdSolicitudEstudio
-	INNER JOIN lab_recepcionmuestra  ON  lab_recepcionmuestra.IdSolicitudEstudio=sec_solicitudestudios.IdSolicitudEstudio
-	INNER JOIN sec_historial_clinico  ON  sec_historial_clinico.IdHistorialClinico=sec_solicitudestudios.IdHistorialClinico
-	INNER JOIN mnt_expediente  ON mnt_expediente.IdNumeroExp= sec_historial_clinico.IdNumeroExp
-	INNER JOIN mnt_datospaciente  ON mnt_datospaciente.IdPaciente=mnt_expediente.IdPaciente 
-	INNER JOIN mnt_subservicio ON mnt_subservicio.IdSubServicio=  sec_historial_clinico.IdSubServicio
-	INNER JOIN mnt_servicio  ON mnt_servicio.IdServicio= mnt_subservicio.IdServicio
-	INNER JOIN lab_examenes  ON lab_examenes.IdExamen=sec_detallesolicitudestudios.IdExamen
-	INNER JOIN lab_areas  ON  lab_areas.IdArea=lab_examenes.IdArea
-        INNER JOIN mnt_establecimiento ON sec_historial_clinico.IdEstablecimiento=mnt_establecimiento.IdEstablecimiento
-	INNER JOIN lab_resultados ON sec_detallesolicitudestudios.IdDetalleSolicitud=lab_resultados.IdDetalleSolicitud
-	INNER JOIN mnt_empleados ON lab_resultados.Responsable=mnt_empleados.IdEmpleado
-	WHERE sec_detallesolicitudestudios.IdExamen='$idexamen' AND lab_recepcionmuestra.IdSolicitudEstudio=$idsolicitud AND sec_solicitudestudios.IdEstablecimiento=$lugar AND mnt_expediente.IdEstablecimiento=$lugar";
- //echo $query;
-	$result = @pg_query($query);
-        if (!$result)
-            return false;
-        else
-       return $result;	   
-   }
- }
-
-
- function MostrarResultadoGenerales1($idsolicitud,$idarea,$lugar)
- {
-    $con = new ConexionBD;
-    if($con->conectar()==true) 
-    {	$query="SELECT lab_recepcionmuestra.IdSolicitudEstudio, mnt_expediente.IdNumeroExp, 
-		CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoApellido) AS NombrePaciente,
-		(year(CURRENT_DATE)-year(FechaNacimiento))AS Edad,IF(Sexo=1,'Masculino','Femenino') AS Sexo,
-		TelefonoCasa,Direccion,NombreSubServicio AS Origen,NombreServicio AS Procedencia,
-		NombreArea,NumeroMuestra,DATE_FORMAT(lab_recepcionmuestra.FechaHoraReg,'%d/%m/%Y %H:%i:%s') AS Fecha,sec_solicitudestudios.IdEstablecimiento, DATE_FORMAT(FechaNacimiento,'%d/%m/%Y') AS FechaNacimiento,
-		sec_historial_clinico.IdEstablecimiento,mnt_establecimiento.Nombre
-		FROM sec_detallesolicitudestudios 
-		INNER JOIN sec_solicitudestudios ON sec_solicitudestudios.IdSolicitudEstudio=sec_detallesolicitudestudios.IdSolicitudEstudio
-		INNER JOIN lab_recepcionmuestra ON lab_recepcionmuestra.IdSolicitudEstudio=sec_solicitudestudios.IdSolicitudEstudio
-		INNER JOIN sec_historial_clinico ON sec_historial_clinico.IdHistorialClinico=sec_solicitudestudios.IdHistorialClinico
-		INNER JOIN mnt_expediente ON mnt_expediente.IdNumeroExp=sec_historial_clinico.IdNumeroExp
-		INNER JOIN mnt_datospaciente ON mnt_datospaciente.IdPaciente=mnt_expediente.IdPaciente 
-		INNER JOIN mnt_subservicio ON mnt_subservicio.IdSubServicio= sec_historial_clinico.IdSubServicio
-		INNER JOIN mnt_servicio ON mnt_servicio.IdServicio= mnt_subservicio.IdServicio
-		INNER JOIN lab_examenes ON lab_examenes.IdExamen=sec_detallesolicitudestudios.IdExamen
-		INNER JOIN lab_areas ON lab_areas.IdArea=lab_examenes.IdArea
-		INNER JOIN mnt_establecimiento ON sec_solicitudestudios.IdEstablecimiento=mnt_establecimiento.IdEstablecimiento
-		WHERE lab_areas.IdArea='$idarea' AND  lab_recepcionmuestra.IdSolicitudEstudio=$idsolicitud AND mnt_establecimiento.IdEstablecimiento=$lugar
-		AND mnt_expediente.IdEstablecimiento=$lugar";
-       // echo $query;
-	$result = @pg_query($query);
-     if (!$result)
-       return false;
-     else
-       return $result;	   
-    }
- }*/
 
 
   //DATOS DEL DETALLE DE LA SOLICITUD
@@ -477,7 +410,7 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
 		WHEN 'PM' THEN 'En Proceso'
 		WHEN 'RM' THEN 'Muestra Rechazada'    
 		WHEN 'RC' THEN 'Resultado Completo' 
-                WHEN 'CA' THEN 'Cancelado(a)' 
+                WHEN 'E' THEN 'Cancelado(a)' 
                 END AS Estado
 		FROM sec_detallesolicitudestudios 
 		INNER JOIN sec_solicitudestudios  ON sec_detallesolicitudestudios.IdSolicitudEstudio=sec_solicitudestudios.IdSolicitudEstudio
@@ -499,16 +432,7 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
  {
 	 $con = new ConexionBD;
 	   if($con->conectar()==true) 
-	  {	$query=/*"SELECT lab_examenes.IdExamen,NombreExamen,Unidades,RangoInicio,RangoFin
-				FROM lab_datosfijosresultado 
-				INNER JOIN lab_examenes ON lab_datosfijosresultado.IdExamen=lab_examenes.IdExamen
-				INNER JOIN lab_resultados ON lab_examenes.IdExamen=lab_resultados.IdExamen  
-				WHERE lab_datosfijosresultado.IdEstablecimiento=$lugar AND  lab_examenes.IdExamen='$idexamen' 
-				AND IdSolicitudEstudio=$idsolicitud
-				AND DATE_FORMAT(lab_resultados.FechaHoraReg,'%Y/%m/%d') BETWEEN lab_datosfijosresultado.FechaIni AND IF(lab_datosfijosresultado.FechaFin ='0000-00-00',CURDATE(),lab_datosfijosresultado.FechaFin)";*/
-                  
-                   
-                  
+	  {	$query=
                   "select 
                   t02.id, 
                   t03.id, 
@@ -661,7 +585,7 @@ function MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar)
 	$con = new ConexionBD;
    if($con->conectar()==true)
    {
-        $query ="SELECT 
+         $query ="SELECT 
                     TO_CHAR(t03.fechahorareg, 'DD/MM/YYYY') AS fecharecepcion,
                     t06.numero AS idnumeroexp,
                     t01.id as iddetallesolicitud,
@@ -703,7 +627,7 @@ function MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar)
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' 
-                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Canceñado(a)' 
+                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='E') THEN 'Canceñado(a)' 
                         END AS estado,
 			
                     CASE t02.estado 
@@ -714,7 +638,7 @@ function MostrarDatosGenerales($idsolicitud,$iddetalle,$lugar)
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' 
-                       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Canceñado(a)' 
+                       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='E') THEN 'Canceñado(a)' 
                        END AS estado1, 
                     t01.indicacion as indicacion,
                     t01.idempleado as idempleado,
@@ -801,7 +725,7 @@ UNION
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 			WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo' 
-                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Canceñado(a)' END AS estado,
+                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='E') THEN 'Canceñado(a)' END AS estado,
                         
                 CASE t02.estado 
                        WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='D') THEN 'Digitada' 
@@ -811,7 +735,7 @@ UNION
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='PM') THEN 'Procesar Muestra' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RM') THEN 'Muestra Rechazada' 
 		       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='RC') THEN 'Resultado Completo'
-                       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='CA') THEN 'Canceñado(a)' END AS estado1, 
+                       WHEN (select id FROM ctl_estado_servicio_diagnostico where idestado='E') THEN 'Canceñado(a)' END AS estado1, 
 
 		t01.indicacion as indicacion,
                 t01.idempleado  as idempleado,
