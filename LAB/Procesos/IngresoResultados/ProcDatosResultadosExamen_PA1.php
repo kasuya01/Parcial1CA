@@ -179,7 +179,7 @@ if (pg_num_rows($cant)>0){
 	<td>
 		<div  id="divFrmNuevo" style="display:block" >
 		<form name="frmnuevo" method="get" action="ProcDatosResultadosExamen_PA.php" enctype="multipart/form-data">
-			<table width="70%" border="0" align="center" class="StormyWeatherFormTABLE">
+			<table width="60%" border="0" align="center" class="StormyWeatherFormTABLE">
 				<tr>
 					<td colspan="4" align="center" class="CobaltFieldCaptionTD"><h3>INGRESO DE RESULTADOS</h3></td>
 				</tr>
@@ -260,6 +260,12 @@ if (pg_num_rows($cant)>0){
                                         </td>
                                 </tr>
                                 <tr>
+                                    <td class="StormyWeatherFieldCaptionTD">Datos Clinicos</td>
+                                    <td colspan="3" class="StormyWeatherDataTD"><?php echo $Especificacion;?>
+                                        <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
+                                    </td>
+                                </tr>
+                                <tr>
                                         <td class="StormyWeatherFieldCaptionTD">Peso</td>
                                         <td class="StormyWeatherDataTD"><?php 
                                                 if (!empty($Peso))
@@ -269,17 +275,7 @@ if (pg_num_rows($cant)>0){
                                                 if(!empty($Talla))
                                                     echo $Talla." cm";?></td>
                                 </tr>
-                                <tr>
-                                   <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">*Fecha Realización </td>
-                            <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="date form-control height placeholder" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" />
-                            </td>
-                            <td class="StormyWeatherFieldCaptionTD" width="196 px" style="white-space:nowrap;">*Fecha Reporte </td>
-                            <td  colspan="1" class="StormyWeatherDataTD"> 
-                                <input type="text" class="date form-control height" name="fecha_reporte" id="fecha_reporte" size="40"  value="<?php echo date("Y-m-d"); ?>"  />                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d"); ?>"  /> 
-                            </td>
-                            </tr>
-                                <tr>
+                                 <tr>
                                         <td class="StormyWeatherFieldCaptionTD">*Validado Por</td>
                                         <td colspan="3" class="StormyWeatherDataTD">
                                               <div id="divEncargado">
@@ -290,8 +286,18 @@ if (pg_num_rows($cant)>0){
                                         </td>
                                 </tr>
                                 <tr>
-                                        <td class="StormyWeatherFieldCaptionTD">Observación</td>
-                                        <td colspan="3" class="StormyWeatherDataTD">
+                                    <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">*Fecha Realización </td>
+                                    <td  colspan="1" class="StormyWeatherDataTD"> 
+                                        <input type="text" class="date form-control height placeholder" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" />
+                                    </td>
+                                    <td class="StormyWeatherFieldCaptionTD" width="196 px" style="white-space:nowrap;">*Fecha Reporte </td>
+                                    <td  colspan="1" class="StormyWeatherDataTD"> 
+                                        <input type="text" class="date form-control height" name="fecha_reporte" id="fecha_reporte" size="40"  value="<?php echo date("Y-m-d"); ?>"  />                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d"); ?>"  /> 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="StormyWeatherFieldCaptionTD">Observación</td>
+                                    <td colspan="3" class="StormyWeatherDataTD">
                                               
                                            <textarea id="observaciongnral" name="observaciongnral" cols="81%" rows="3"></textarea>
                                         </td>

@@ -259,6 +259,8 @@ else
 
         }
     }
+    
+    
 
     //FUNCION PARA MOSTRAR DATOS GENERALES
     function MostrarDatosGenerales($idsolicitud,$lugar) {
@@ -467,7 +469,7 @@ else
 
     }
 
-
+// Datos de la condulta recibida 
     function DatosConsulta($IdHistorial,$lugar){
           $con = new ConexionBD;
         if($con->conectar()==true) {
@@ -492,6 +494,7 @@ else
         }
 
     }
+    
     //Buscar si existen solicitudes anteriores con ese mismo detalle.
   function buscarAnterioresPUnica($idsolicitud, $iddetallesolicitud, $idarea) {
       $con = new ConexionBD;

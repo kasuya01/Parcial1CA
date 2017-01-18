@@ -361,16 +361,26 @@ switch ($opcion) {
 
     case 2://LLENANDO COMBO DE EMPLEADOS
         $idarea = $_POST['idarea'];
+        $datos_empleado=$objdatos->Empleadologeado($usuario,$lugar);
+        $row_emppleado = pg_fetch_array($datos_empleado);
+        $idempleado=$row_emppleado[0];
+        $nomempleado=$row_emppleado[1];
+      //  echo $idempleado." - ".$nomempleado;
        // echo $idarea;
-        $resultado = "<select id='cmbEmpleados' name='cmbEmpleados' size='1' style='width:96%' class='height js-example-basic-single'>
-                        <option value='0' >Seleccione...</option>";
+        //<option value='0' >Seleccione...</option>
+        $resultado = "<select id='cmbEmpleados' name='cmbEmpleados' size='1' style='width:96%' class='height js-example-basic-single'> ";
+        
+        $resultado.=  '<option value="' . $idempleado . '" selected="selected">' . htmlentities($nomempleado) . '</option>';
         require_once('clsSolicitudesProcesadas.php');
         $obje = new clsSolicitudesProcesadas;
         $consulta = $obje->BuscarEmpleados($idarea, $lugar);
         while ($row = pg_fetch_array($consulta)) {
-            $resultado .="<option value='" . $row[0] . "'>" . htmlentities($row[1]) . "</option>";
+            if ($row[1]!=$nomempleado){
+              
+            $resultado .="<option value='" . $row[0] . "'>" . htmlentities($row[1]) . "</option>";}
         }
         pg_free_result($consulta);
+        
         $resultado.= "</select>";
         echo $resultado;
 

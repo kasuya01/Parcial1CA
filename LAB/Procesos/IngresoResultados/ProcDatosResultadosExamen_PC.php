@@ -152,7 +152,7 @@ function RecogeValor() {
 
 <?php   
         
-    //$IdHistorial=$_GET['var17'];
+    $IdHistorial=$_GET['var17'];
     $bandera=$_GET['var12'];
     $ftx= $_GET['var19'];
     $iddetallesolicitud= $_GET['var5'];
@@ -167,7 +167,7 @@ function RecogeValor() {
  //   print_r($cant);
     if (pg_num_rows($cant)>0){
         if($db->conectar()==true) {
-       $condatos = "SELECT t07.peso,t07.talla,
+      $condatos = "SELECT t07.peso,t07.talla,
                         CASE WHEN t04.id_snomed IS NOT NULL
                             THEN t06.sct_name_es 
                             ELSE t08.diagnostico
@@ -180,6 +180,9 @@ function RecogeValor() {
                         LEFT OUTER JOIN mnt_cie10 t08 ON (t08.id = t04.id_cie10_medico)
                         LEFT OUTER JOIN sec_signos_vitales       t07 ON (t01.id = t07.id_historial_clinico)
                         WHERE t01.id = $IdHistorial AND t01.idestablecimiento = $lugar";
+      
+      
+      
 
             $resultado = pg_query($condatos);
             $rows = pg_fetch_array($resultado);
@@ -212,8 +215,8 @@ function RecogeValor() {
                                     <td colspan="5" align="center"> <h3>DATOS GENERALES</h3></td>
                                 </tr>
                                 <tr>
-                                    <td width="25%" class="StormyWeatherFieldCaptionTD" colspan="1">Establecimiento solicitante</td>
-                                    <td width="75%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var18'];?></td>
+                                    <td width="22%" class="StormyWeatherFieldCaptionTD" colspan="1">Establecimiento solicitante</td>
+                                    <td width="78%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var18'];?></td>
                                 </tr>
                                 <tr>
                                     <td class="StormyWeatherFieldCaptionTD" colspan="1">Procedencia</td>
@@ -268,147 +271,146 @@ function RecogeValor() {
                                 </tr>
                                 <tr>
                                     <td class="StormyWeatherFieldCaptionTD">Datos Clinicos</td>
-                                <td colspan="3" class="StormyWeatherDataTD"><?php echo $Especificacion;?>
-                                    <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
-                                </td>
-                           </tr>
-                           <tr>
-                                <td class="StormyWeatherFieldCaptionTD" width="25%">Peso</td>
-                                        
-                                <td class="StormyWeatherDataTD" width="25%">
-                                      <?php if (!empty($Peso))
-                                               echo htmlentities($Peso)." Kg";
+                                    <td colspan="3" class="StormyWeatherDataTD"><?php echo $Especificacion;?>
+                                        <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="StormyWeatherFieldCaptionTD" width="25%">Peso</td>
+                                    <td class="StormyWeatherDataTD" width="25%">
+                                           <?php if (!empty($Peso))
+                                                    echo htmlentities($Peso)." Kg";
 
-                                      ?>
-                                </td>
-                                <td class="StormyWeatherFieldCaptionTD" width="25%">Talla</td>
-                                <td class="StormyWeatherDataTD"><?php 
-                                       if(!empty($Talla))
-                                           echo htmlentities($Talla)." cm";?></td>
-                           </tr>
-                            <tr>
-                                <td colspan="1" class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
-                                <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var9'] ?>
-                                  <input type="hidden" name="txtnombrearea" id="txtnombrearea" disabled="disabled">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="1"  class="StormyWeatherFieldCaptionTD">Examen</td>
-                                <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var2'] ?>
-                                        <input type="hidden" name="txtexamen" id="txtexamen" disabled="disabled" size="60" /></td>
-                            </tr>
-                            <tr>
-                                <td class="StormyWeatherFieldCaptionTD">Muestra Recibida</td>
-                                <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var20']." ".$_GET['origenmuestra'] ?></td>
-                            </tr>
+                                           ?>
+                                    </td>
+                                    <td class="StormyWeatherFieldCaptionTD" width="18%">Talla</td>
+                                    <td class="StormyWeatherDataTD"><?php 
+                                            if(!empty($Talla))
+                                                echo htmlentities($Talla)." cm";?></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="1" class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
+                                    <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var9'] ?>
+                                       <input type="hidden" name="txtnombrearea" id="txtnombrearea" disabled="disabled">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="1"  class="StormyWeatherFieldCaptionTD">Examen</td>
+                                    <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var2'] ?>
+                                             <input type="hidden" name="txtexamen" id="txtexamen" disabled="disabled" size="60" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="StormyWeatherFieldCaptionTD">Muestra Recibida</td>
+                                    <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var20']." ".$_GET['origenmuestra'] ?></td>
+                                </tr>
 
-                             <tr>
-                                <td class="StormyWeatherFieldCaptionTD">Fecha de Toma de Muestra</td>
-                                <td class="StormyWeatherDataTD" colspan="4" width="65%"><?php echo $_GET['var19'] ?>
-                                    <input type="hidden" id="fecha_tmuestra" name="f_tmuestra" value="<?php echo $ftx;?>"/>
-                                    <input type="hidden" id="dateftomamx" name="dateftomamx" value="<?php echo $dateftomamx;?>"/>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td class="StormyWeatherFieldCaptionTD">Fecha de Toma de Muestra</td>
+                                    <td class="StormyWeatherDataTD" colspan="4" width="65%"><?php echo $_GET['var19'] ?>
+                                        <input type="hidden" id="fecha_tmuestra" name="f_tmuestra" value="<?php echo $ftx;?>"/>
+                                        <input type="hidden" id="dateftomamx" name="dateftomamx" value="<?php echo $dateftomamx;?>"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                     <td colspan="1"  class="StormyWeatherFieldCaptionTD">*Validado Por</td>
+                                     <td class="StormyWeatherDataTD" colspan="4">
+                                             <div id="divEncargado">
+                                                     <select id="cmbEmpleados" name="cmbEmpleados" size="1" class="form-control height">
+                                                             <option value="0" >--Seleccione Empleado--</option>
+                                                     </select>
+                                             </div>
+                                     </td>
+                                 </tr> 
+                                 <tr>
+                                     <td class="StormyWeatherFieldCaptionTD" width="35%">Fecha y hora inicio Proceso</td>
+                                     <td class="StormyWeatherDataTD" width="15%" >
+                                         <input type="text" class="date form-control height placeholder" name="txtresultrealiza" id="txtresultrealiza" size="15"  placeholder="aaaa-mm-dd" style="width:100%"/>
+                                         <!-- <input type="text" class="date" id="txtresultrealiza"  name="txtresultrealiza" size="15">-->
 
-                            <tr>
-                                <td class="StormyWeatherFieldCaptionTD" width="35%">Fecha y hora inicio Proceso</td>
-                                <td class="StormyWeatherDataTD" width="15%" >
-                                    <input type="text" class="date form-control height placeholder" name="txtresultrealiza" id="txtresultrealiza" size="15"  placeholder="aaaa-mm-dd" style="width:100%"/>
-                                    <!-- <input type="text" class="date" id="txtresultrealiza"  name="txtresultrealiza" size="15">-->
+              <!-- <input type="text" class="date" id="txtresultrealiza"  name="txtresultrealiza" size="15">--> 
+                                     </td>
+                                     <td class="StormyWeatherFieldCaptionTD" width="15%">Fecha Resultado</td>
+                                     <td class="StormyWeatherDataTD" width="35%">
+                                         <input type="text" class="date form-control height" name="txtresultfin" id="txtresultfin" size="35" style="width:100%"  value="<?php echo date("Y-m-d"); ?>"  />
+                                         <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="35"  value="<?php echo date("Y-m-d"); ?>"  /> 
+                                        <!-- <input type="text" class="date" name="txtresultfin" id="txtresultfin" size="15"  value="<?php //echo date("Y-m-d"); ?>"/>-->
 
-         <!-- <input type="text" class="date" id="txtresultrealiza"  name="txtresultrealiza" size="15">--> 
-                                </td>
-                                <td class="StormyWeatherFieldCaptionTD" width="15%">Fecha Resultado</td>
-                                <td class="StormyWeatherDataTD" width="35%">
-                                    <input type="text" class="date form-control height" name="txtresultfin" id="txtresultfin" size="35" style="width:100%"  value="<?php echo date("Y-m-d"); ?>"  />
-                                    <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="35"  value="<?php echo date("Y-m-d"); ?>"  /> 
-                                   <!-- <input type="text" class="date" name="txtresultfin" id="txtresultfin" size="15"  value="<?php //echo date("Y-m-d"); ?>"/>-->
+                                     </td>
+                                 </tr>
 
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="1"  class="StormyWeatherFieldCaptionTD">*Validado Por</td>
-                                <td class="StormyWeatherDataTD" colspan="4">
-                                        <div id="divEncargado">
-                                                <select id="cmbEmpleados" name="cmbEmpleados" size="1" class="form-control height">
-                                                        <option value="0" >--Seleccione Empleado--</option>
-                                                </select>
-                                        </div>
-                                </td>
-                            </tr> 
 
-                            <tr>
-                                <td colspan="1" class="StormyWeatherFieldCaptionTD">Resultado</td>
-                                <td class="StormyWeatherDataTD" colspan="4">
-                                    <select id="cmbResultado" name="cmbResultado" size="1" class="form-control height" onChange="LlenarObservaciones();" >
-                                        <option value="0">--Seleccione--</option>
-                                        <option value="P">Positivo</option>
-                                        <option value="N">Negativo</option>
-                                        <option value="O">Otro</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="100%" colspan="5" class="StormyWeatherFieldCaptionTD">
-                                    <div id="divObservacion" style="display:none">
-                                        <table class="StormyWeatherFormTABLE" width="80%" >
-                                            <tr>
-                                                <td width="30%" colspan="1" class="StormyWeatherFieldCaptionTD">Observaci&oacute;n</td>
-                                                <td width="70%"  colspan="4" class="StormyWeatherDataTD" >
-                                                    <select id="cmbObservacion" name="cmbObservacion" size="1" style="width:100%" class="form-control height" >
-                                                        <option value="0" >--Seleccione Observaci&oacute;n--</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="StormyWeatherDataTD">
-                                <td colspan="5" width="100%">
-                                    <div id="divResPositivo" style="display:none" >
-                                        <table class="StormyWeatherFormTABLE" width="100%" >
-                                           <!-- <tr>
-                                                <td class="StormyWeatherFieldCaptionTD">Observación:</td>
-                                                <td class="StormyWeatherDataTD"><textarea name="txtobservacion" type="text" id="txtobservacion" size="50" cols="50"></textarea></td>
-                                            </tr>-->
+                                 <tr>
+                                     <td colspan="1" class="StormyWeatherFieldCaptionTD">Resultado</td>
+                                     <td class="StormyWeatherDataTD" colspan="4">
+                                         <select id="cmbResultado" name="cmbResultado" size="1" class="form-control height" onChange="LlenarObservaciones();" >
+                                             <option value="0">--Seleccione--</option>
+                                             <option value="P">Positivo</option>
+                                             <option value="N">Negativo</option>
+                                             <option value="O">Otro</option>
+                                         </select>
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td width="100%" colspan="5" class="StormyWeatherFieldCaptionTD">
+                                         <div id="divObservacion" style="display:none">
+                                             <table class="StormyWeatherFormTABLE" width="80%" >
+                                                 <tr>
+                                                     <td width="30%" colspan="1" class="StormyWeatherFieldCaptionTD">Observaci&oacute;n</td>
+                                                     <td width="70%"  colspan="4" class="StormyWeatherDataTD" >
+                                                         <select id="cmbObservacion" name="cmbObservacion" size="1" style="width:100%" class="form-control height" >
+                                                             <option value="0" >--Seleccione Observaci&oacute;n--</option>
+                                                         </select>
+                                                     </td>
+                                                 </tr>
+                                             </table>
+                                         </div>
+                                     </td>
+                                 </tr>
+                                 <tr class="StormyWeatherDataTD">
+                                     <td colspan="5" width="100%">
+                                         <div id="divResPositivo" style="display:none" >
+                                             <table class="StormyWeatherFormTABLE" width="100%" >
+                                                <!-- <tr>
+                                                     <td class="StormyWeatherFieldCaptionTD">Observación:</td>
+                                                     <td class="StormyWeatherDataTD"><textarea name="txtobservacion" type="text" id="txtobservacion" size="50" cols="50"></textarea></td>
+                                                 </tr>-->
 
-                                            <tr>
-                                                <td width="35%" class="StormyWeatherFieldCaptionTD">Organismos</td>
-                                                <td width="65%" class="StormyWeatherDataTD">
-                                                    <select id="cmbOrganismo" name="cmbOrganismo" style="width:100%" class="height js-example-basic-single">
-                                                        <option value="0" >--Seleccione una bacteria--</option>
-                                                        <?php
-                                                            //style="width:450px"
-                                                            $consulta_bac= $obj->LeerBacterias();
-                                                                            while($row = pg_fetch_array($consulta_bac)){
-                                                                            echo "<option value='" . $row[0]. "'>" . $row[1] . "</option>";
-                                                                            }
-                                                                            pg_free_result($consulta_bac);
-                                                                    ?>	
-                                                    </select>			
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td width="35%" class="StormyWeatherFieldCaptionTD">Tarjeta</td>
-                                                <td width="65%" class="StormyWeatherDataTD">
-                                                    <select id="cmbTarjeta" name="cmbTarjeta" style="width:100%" class="form-control  height" onChange="MostrarAntibioticos();">
-                                                        <option value="0" >-- Seleccione una tarjeta --</option>
-                                                        <?php
-                                                            //$obj=new clsConsultarElementosPlantillaC;
-                                                            $consulta= $obj->LeerTarjeta($lugar);
-                                                                    while($row = pg_fetch_array($consulta)){
-                                                                            echo "<option value='" . $row[0]. "'>" . $row[1] . "</option>";
-                                                                    }
-                                                                    pg_free_result($consulta);
-                                                                            ?>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </td>
-                            </tr>
+                                                 <tr>
+                                                     <td width="35%" class="StormyWeatherFieldCaptionTD">Organismos</td>
+                                                     <td width="65%" class="StormyWeatherDataTD">
+                                                         <select id="cmbOrganismo" name="cmbOrganismo" style="width:100%" class="height js-example-basic-single">
+                                                             <option value="0" >--Seleccione una bacteria--</option>
+                                                             <?php
+                                                                 //style="width:450px"
+                                                                 $consulta_bac= $obj->LeerBacterias();
+                                                                                 while($row = pg_fetch_array($consulta_bac)){
+                                                                                 echo "<option value='" . $row[0]. "'>" . $row[1] . "</option>";
+                                                                                 }
+                                                                                 pg_free_result($consulta_bac);
+                                                                         ?>	
+                                                         </select>			
+                                                     </td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td width="35%" class="StormyWeatherFieldCaptionTD">Tarjeta</td>
+                                                     <td width="65%" class="StormyWeatherDataTD">
+                                                         <select id="cmbTarjeta" name="cmbTarjeta" style="width:100%" class="form-control  height" onChange="MostrarAntibioticos();">
+                                                             <option value="0" >-- Seleccione una tarjeta --</option>
+                                                             <?php
+                                                                 //$obj=new clsConsultarElementosPlantillaC;
+                                                                 $consulta= $obj->LeerTarjeta($lugar);
+                                                                         while($row = pg_fetch_array($consulta)){
+                                                                                 echo "<option value='" . $row[0]. "'>" . $row[1] . "</option>";
+                                                                         }
+                                                                         pg_free_result($consulta);
+                                                                                 ?>
+                                                         </select>
+                                                     </td>
+                                                 </tr>
+                                             </table>
+                                         </div>
+                                     </td>
+                                 </tr>
                  <?php 
                 if ($bandera==1){
                 ?>
