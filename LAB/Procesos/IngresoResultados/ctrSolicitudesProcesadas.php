@@ -384,6 +384,8 @@ switch ($opcion) {
       //  echo $idempleado." - ".$nomempleado;
        // echo $idarea;
         //<option value='0' >Seleccione...</option>
+        require_once('clsSolicitudesProcesadas.php');
+        $obje = new clsSolicitudesProcesadas;
          $resultado = "<select id='cmbEmpleados' name='cmbEmpleados' size='1' style='width:96%' class='height js-example-basic-single'> ";
         if ($tipoarea=='S'){
              $resultado.=  "<option value='0' >Seleccione...</option>";
@@ -391,13 +393,18 @@ switch ($opcion) {
            $resultado.=  "<option value='. $idarea .' selected='selected'>". htmlentities($nomempleado). "</option>";
            
         }
-        require_once('clsSolicitudesProcesadas.php');
-        $obje = new clsSolicitudesProcesadas;
+        
         $consulta = $obje->BuscarEmpleados($idarea,$lugar);
         while ($row = pg_fetch_array($consulta)) {
-            if ($row[1]!=$nomempleado){
-              
-            $resultado .="<option value='" . $row[0] . "'>" . htmlentities($row[1]) . "</option>";}
+           if ($tipoarea=='S'){
+               $resultado .="<option value='" . $row[0] . "'>" . htmlentities($row[1]) . "</option>";
+           }
+           else{
+                if ($row[1]!=$nomempleado){
+                     $resultado .="<option value='" . $row[0] . "'>" . htmlentities($row[1]) . "</option>";
+                 
+                }
+           }     
         }
         pg_free_result($consulta);
         

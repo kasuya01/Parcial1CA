@@ -369,7 +369,7 @@ to_char(t05.fecha_resultado, 'dd/mm/yyyy') as fecharesultado, t06.nombre_reporta
          $idarea;
          $where = "";
 
-          $query = "SELECT t01.id AS idempleado, t01.nombreempleado
+        $query = "SELECT t01.id AS idempleado, t01.nombreempleado
                       FROM mnt_empleado                        t01
                       INNER JOIN mnt_cargoempleados            t02 ON (t02.id = t01.id_cargo_empleado)
                       INNER JOIN ctl_area_servicio_diagnostico t03 ON (t03.id = t01.idarea)
