@@ -258,7 +258,7 @@ if (isset($_SESSION['Correlativo'])) {
                                              echo '<option value="' . $area1 . '" selected="selected">' . htmlentities($nomarea) . '</option>';
                                             $consulta = $objeareas->consultaractivas($lugar);
                                             while ($row = pg_fetch_array($consulta)) {
-                                                if ($row['idarea']!=$area){
+                                               if ($row['idarea']!=$area){
                                                     echo "<option value='" . $row['idarea'] . "'>" . htmlentities($row['nombrearea']) . "</option>";
                                                 }
                                             }
@@ -270,9 +270,9 @@ if (isset($_SESSION['Correlativo'])) {
                                            
                                             $consulta = $objeareas->consultaractivas($lugar);
                                             while ($row = pg_fetch_array($consulta)) {
-                                                if ($row['idarea']!=$area){
+                                             //   if ($row['idarea']!=$area){
                                                     echo "<option value='" . $row['idarea'] . "'>" . htmlentities($row['nombrearea']) . "</option>";
-                                                }
+                                              //  }
                                             }
                                      }
                                    // echo $area;
