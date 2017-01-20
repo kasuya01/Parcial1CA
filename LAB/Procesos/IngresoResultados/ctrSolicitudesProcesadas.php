@@ -390,7 +390,7 @@ switch ($opcion) {
         if ($tipoarea=='S'){
              $resultado.=  "<option value='0' >Seleccione...</option>";
         }else{
-           $resultado.=  "<option value='. $idarea .' selected='selected'>". htmlentities($nomempleado). "</option>";
+           $resultado.=  "<option value='$idempleado' selected='selected'>". htmlentities($nomempleado). "</option>";
            
         }
         
