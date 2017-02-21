@@ -78,7 +78,9 @@
     <sep/>
 	<item labelText="CAMBIAR CLAVE" url="../LAB/Procesos/CambioClave/CambioClave.php"/>
     <sep/>
-        <item labelText="CERRAR SESIÓN" url="../cerrarsesion.php"/>
+    <item labelText="AYUDA " url="javascript:var w=window.open('../Ayuda/ManualLaboratorioClinico.pdf','ayuda');"/>
+    <sep/>
+    <item labelText="CERRAR SESIÓN" url="../cerrarsesion.php"/>
     <sep/>
     </menu>
 

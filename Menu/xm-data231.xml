@@ -36,5 +36,7 @@
       <sep/>
       <item labelText="CERRAR SESIÓN" url="../cerrarsesion.php"/>
       <sep/>
+       <item labelText="AYUDA " url="javascript:var w=window.open('../Ayuda/ManualLaboratorioClinico.pdf','ayuda');"/>
+        <sep/>
    </menu>
 </menuinfo>
