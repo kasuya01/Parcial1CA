@@ -195,7 +195,7 @@ switch ($opcion) {
                        t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar,
                        (select origenmuestra FROM mnt_origenmuestra where id=t01.idorigenmuestra) as origenmuestra,
                         REPLACE( REPLACE( REPLACE( REPLACE( REPLACE( REPLACE( AGE(t07.fecha_nacimiento::timestamp)::text, 'years', 'años'), 'year', 'año'), 'mons', 'meses'), 'mon', 'mes'), 'days', 'días'), 'day', 'día') as edad,
-                        t19.nombre as nomsexo
+                        t19.nombre as nomsexo,t08.administrativa
 
                 FROM sec_detallesolicitudestudios t01
                 INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
@@ -253,7 +253,7 @@ switch ($opcion) {
                        t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar,
                        (select origenmuestra FROM mnt_origenmuestra where id=t01.idorigenmuestra) as origenmuestra,
                        REPLACE( REPLACE( REPLACE( REPLACE( REPLACE( REPLACE( AGE(t07.fecha_nacimiento::timestamp)::text, 'years', 'años'), 'year', 'año'), 'mons', 'meses'), 'mon', 'mes'), 'days', 'días'), 'day', 'día') as edad,
-                       t19.nombre as nomsexo
+                       t19.nombre as nomsexo,t08.administrativa
 
                 FROM sec_detallesolicitudestudios t01
                 INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
@@ -350,6 +350,7 @@ switch ($opcion) {
                             "<input name='nomsexo[" . $pos . "]' id='nomsexo[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["nomsexo"]) . "'/>" .
                             "<input name='fecha_recepcion[" . $pos . "]' id='fecha_recepcion[" . $pos . "]' type='hidden' size='60' value='" . $datefrecep . "'/>" .
                             "<input name='dato_fijo[" . $pos . "]' id='dato_fijo[" . $pos . "]' type='hidden' size='60' value='" . $df . "'/>" .
+                            "<input name='tipoarea[" . $pos . "]' id='tipoarea[" . $pos . "]' type='hidden' size='60' value='" . $row["administrativa"]. "'/>" .
                         "<td width='18%'>" . htmlentities($row['paciente']) . "</td>
                         <td width='3%'>" . $row['estandar'] . "</td>
                         <td width='18%'>" . htmlentities($row['nombreexamen']) . "</td>
@@ -374,16 +375,39 @@ switch ($opcion) {
 
     case 2://LLENANDO COMBO DE EMPLEADOS
         $idarea = $_POST['idarea'];
+        $datos_empleado=$objdatos->Empleadologeado($usuario,$lugar);
+        $row_emppleado = pg_fetch_array($datos_empleado);
+        $idempleado=$row_emppleado[0];
+        $nomempleado=$row_emppleado[1];
+        $tipoarea=$row_emppleado[2];
+        $idarealog=$row_emppleado[3];
+      //  echo $idempleado." - ".$nomempleado;
        // echo $idarea;
-        $resultado = "<select id='cmbEmpleados' name='cmbEmpleados' size='1' style='width:96%' class='height js-example-basic-single'>
-                        <option value='0' >Seleccione...</option>";
+        //<option value='0' >Seleccione...</option>
         require_once('clsSolicitudesProcesadas.php');
         $obje = new clsSolicitudesProcesadas;
-        $consulta = $obje->BuscarEmpleados($idarea, $lugar);
+         $resultado = "<select id='cmbEmpleados' name='cmbEmpleados' size='1' style='width:96%' class='height js-example-basic-single'> ";
+        if ($tipoarea=='S'){
+             $resultado.=  "<option value='0' >Seleccione...</option>";
+        }else{
+           $resultado.=  "<option value='$idempleado' selected='selected'>". htmlentities($nomempleado). "</option>";
+           
+        }
+        
+        $consulta = $obje->BuscarEmpleados($idarea,$lugar);
         while ($row = pg_fetch_array($consulta)) {
-            $resultado .="<option value='" . $row[0] . "'>" . htmlentities($row[1]) . "</option>";
+           if ($tipoarea=='S'){
+               $resultado .="<option value='" . $row[0] . "'>" . htmlentities($row[1]) . "</option>";
+           }
+           else{
+                if ($row[1]!=$nomempleado){
+                     $resultado .="<option value='" . $row[0] . "'>" . htmlentities($row[1]) . "</option>";
+                 
+                }
+           }     
         }
         pg_free_result($consulta);
+        
         $resultado.= "</select>";
         echo $resultado;
 

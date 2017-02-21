@@ -99,7 +99,7 @@ class clsSolicitudesProcesadas {
       }
       return $dt;
    }
-
+   
    function LlenarTodosEstablecimientos() {
 
       $con = new ConexionBD;
@@ -280,7 +280,7 @@ to_char(t05.fecha_resultado, 'dd/mm/yyyy') as fecharesultado, t06.nombre_reporta
    function BuscarEmpleadoValidador($responsable, $lugar) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "select (nombreempleado||' '||coalesce(numero_junta_vigilancia,''))  as empleado
+        $query = "select (nombreempleado||' '||coalesce(numero_junta_vigilancia,''))  as empleado
                 from mnt_empleado
                  where id=$responsable
                  and id_establecimiento=$lugar;";
@@ -337,32 +337,51 @@ to_char(t05.fecha_resultado, 'dd/mm/yyyy') as fecharesultado, t06.nombre_reporta
       }
    }
 
+   function Empleadologeado($usuario,$lugar){
+         $con = new ConexionBD;
+        if($con->conectar()==true) {
+            $query = "SELECT mnt_empleado.id, nombreempleado, ctl_area_servicio_diagnostico.administrativa , mnt_empleado.idarea
+                      FROM fos_user_user 
+                      INNER JOIN mnt_empleado ON mnt_empleado.id=fos_user_user.id_empleado
+                      INNER JOIN ctl_area_servicio_diagnostico ON ctl_area_servicio_diagnostico.id=mnt_empleado.idarea
+                      WHERE fos_user_user.id=$usuario";
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+        
+    }
+   
    //fn pg
    //FUNCION PARA LLAMAR EMPLEADOS DE LABORATORIOS FILTRADOS POR AREA
-   function BuscarEmpleados($idarea, $lugar) {
+   function BuscarEmpleados($idarea,$lugar) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "SELECT t02.codigo
+          $query = "SELECT t01.id_tipo_establecimiento
                       FROM ctl_establecimiento            t01
                       INNER JOIN ctl_tipo_establecimiento t02 ON (t02.id = t01.id_tipo_establecimiento)
                       WHERE t01.id = $lugar";
          $result = pg_query($query);
          $rowtipo = pg_fetch_array($result);
          $tipo = $rowtipo[0];
+         $idarea;
          $where = "";
 
-         $query = "SELECT t01.id AS idempleado, t01.nombreempleado
+        $query = "SELECT t01.id AS idempleado, t01.nombreempleado
                       FROM mnt_empleado                        t01
                       INNER JOIN mnt_cargoempleados            t02 ON (t02.id = t01.id_cargo_empleado)
                       INNER JOIN ctl_area_servicio_diagnostico t03 ON (t03.id = t01.idarea)
                       WHERE t02.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')
                       AND t03.idarea NOT IN ('INF','REC') AND habilitado=TRUE AND t01.id_establecimiento = $lugar";
 
-         if ($tipo === "H") {
-            $where = " AND t01.idarea = $idarea";
+         if ($tipo == 14 ) {
+             if ($tipoarea=='N'){
+                $where = " AND t01.idarea = $idarea";}
          }
 
-         $query = $query . $where;
+        $query = $query . $where;
 
          $result = pg_query($query);
 
@@ -1047,13 +1066,18 @@ and idhistoref=$idhistoref;";
    function condatos($idhistorialclinico, $lugar, $fechadatosfijos) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "select sef.peso, sef.talla, (sct_name_es ||', ' ||especificacion) as diagnostico, conocido_por, (date('$fechadatosfijos')  - date (fecha_nacimiento)) as dias, id_sexo
-                    from sec_historial_clinico shc
-                    join mnt_expediente mex on (mex.id = shc.id_numero_expediente)
-                    join mnt_paciente mpa on (mpa.id = mex.id_paciente)
-                    left join sec_diagnostico_paciente sdp on (shc.id= sdp.id_historial_clinico)
-                    left join mnt_snomed_cie10 mns	on (mns.id= sdp.id_snomed)
-                    left join sec_signos_vitales sef on (shc.id = sef.id_historial_clinico)
+         $query = "select sef.peso, sef.talla, CASE WHEN sdp.id_snomed IS NOT NULL
+					THEN mns.sct_name_es 
+				ELSE mnc.diagnostico
+				end as diagnostico,  
+				especificacion, conocido_por, (date('$fechadatosfijos')  - date (fecha_nacimiento)) as dias, id_sexo
+                    from sec_historial_clinico shc 
+ join mnt_expediente mex on (mex.id = shc.id_numero_expediente) 
+ join mnt_paciente mpa on (mpa.id = mex.id_paciente) 
+ left join sec_diagnostico_paciente sdp on (shc.id= sdp.id_historial_clinico) 
+ left join mnt_snomed_cie10 mns on (mns.id= sdp.id_snomed) 
+ left join sec_signos_vitales sef on (shc.id = sef.id_historial_clinico) 
+  LEFT join mnt_cie10 mnc ON (mnc.id = sdp.id_cie10_medico)
                     where shc.id=$idhistorialclinico
                     and shc.idestablecimiento=$lugar";
          //echo $query;
@@ -1402,6 +1426,17 @@ and (idedad=4 or idedad=$idedad);";
       }
   }
 
+  
+/********************************************/
+
+/*select * from fos_user_user 
+inner join mnt_empleado on mnt_empleado.id=fos_user_user.id_empleado
+where fos_user_user.id=515*/
+
+/********************************************/
+  
+  
+  
 }
 
 //CLASE

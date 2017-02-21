@@ -19,6 +19,31 @@ function Nombre_Establecimiento($lugar){
 
 }
 
+ function DatosConsulta($IdHistorial,$lugar){
+          $con = new ConexionBD;
+        if($con->conectar()==true) {
+         echo $query = "SELECT t07.peso,t07.talla,
+                        CASE WHEN t04.id_snomed IS NOT NULL
+                            THEN t06.sct_name_es 
+                            ELSE t08.diagnostico
+                        END AS diagnostico,especificacion,conocido_por
+                        FROM sec_historial_clinico               t01
+                        INNER JOIN mnt_expediente                t02 ON (t02.id = t01.id_numero_expediente)
+                        INNER JOIN mnt_paciente                  t03 ON (t03.id = t02.id_paciente)
+                        LEFT OUTER JOIN sec_diagnostico_paciente t04 ON (t01.id = t04.id_historial_clinico)
+                        LEFT OUTER JOIN mnt_snomed_cie10         t06 ON (t06.id = t04.id_snomed)
+                        LEFT OUTER JOIN mnt_cie10 t08 ON (t08.id = t04.id_cie10_medico)
+                        LEFT OUTER JOIN sec_signos_vitales       t07 ON (t01.id = t07.id_historial_clinico)
+                        WHERE t01.id = $IdHistorial AND t01.idestablecimiento = $lugar";
+             $result = @pg_query($query);
+             if (!$result)
+                return false;
+            else
+                return $result;
+        }
+
+    }
+
 function DatosAntibiograma(){
    $con = new ConexionBD;
    if($con->conectar()==true){ 
@@ -70,6 +95,58 @@ function insertar_detalle_antibiograma($idsolicitud,$iddetalle,$usuario,$lugar,$
     }
 } 
 
+function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$responsable,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado)
+{
+   $con = new ConexionBD;
+   if ($resultado=='P')
+       $NomResultado='Positivo';
+   else if($resultado=='N')
+       $NomResultado='Negativo';
+   else if($resultado=='O')
+       $NomResultado='---';
+   //echo $resultado;
+    if($con->conectar()==true) 
+    {
+        $queryexiste= "select id from lab_resultados where idsolicitudestudio=$idsolicitud AND iddetallesolicitud=$iddetalle";
+        $resultexiste = pg_query($queryexiste);
+        if( $rowexiste = pg_fetch_array($resultexiste)){
+            $idultimo = $rowexiste[0];
+                return $idultimo;
+        }else{
+            $query = "INSERT INTO lab_resultados
+                     (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
+                      observacion,resultado,idempleado,idusuarioreg,fechahorareg,idestablecimiento,id_observacion,fecha_resultado) 
+                      VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,
+                      '$observacion','$NomResultado',$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,$idobservacion,'$fecharesultado')RETURNING id";
+                  //echo $query;
+            $result = pg_query($query);
+            if($row = pg_fetch_array($result)) {
+               $query1 = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen  AND activo = true";
+                                            //AND id_metodologia IS NULL
+                    $result1 = pg_query($query1);
+                    if($result && pg_num_rows($result1) == 1) {
+                        $row_exam_metod = pg_fetch_array($result1);
+                        $id_exam_metod = $row_exam_metod[0];
+                                        // $id_exam_metod;
+                            $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
+                                     VALUES($id_exam_metod, $iddetalle, $codigoResultado, $usuario, date_trunc('seconds',NOW()),'$fecharealiz','$fecharesultado',$responsable)";
+                            $result = pg_query($query);
+                            if($result) {
+                                $idultimo = $row[0];
+                                return $idultimo;
+                            }else
+                                return false;
+
+                                            }else
+                                                return false; // Aqui va la logica si hay mas de una metodologia en el examen
+
+                            }else 
+                        return false;
+                
+         }
+    }
+}
+
 //INSERTA RESULTADOS   ENCABEZADO
 function insertar_encabezado_antibiograma($idsolicitud,$detantib,$idcof,$idrecepcion,$observacion,$resultado,$responsable,$usuario,$CodAntibiograma,$lugar,$idobservacion,$fecharealiz,$fecharesultado,$id_metod,$ultimo)
 {
@@ -105,55 +182,7 @@ function insertar_encabezado_antibiograma($idsolicitud,$detantib,$idcof,$idrecep
       
 }
 
-function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$responsable,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado)
-{
-   $con = new ConexionBD;
-   if ($resultado=='P')
-       $NomResultado='Positivo';
-   else if($resultado=='N')
-       $NomResultado='Negativo';
-   else if($resultado=='O')
-       $NomResultado='---';
-   //echo $resultado;
-    if($con->conectar()==true) 
-    {
-        $query = "INSERT INTO lab_resultados
-	       (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
-               observacion,resultado,idempleado,idusuarioreg,fechahorareg,idestablecimiento,id_observacion,fecha_resultado) 
-	       VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,
-               '$observacion','$NomResultado',$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,$idobservacion,'$fecharesultado')RETURNING id";
-      //echo $query;
-                $result = pg_query($query);
-                
-                if($row = pg_fetch_array($result)) {
-                    
-        $query1 = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen  AND activo = true";
-                    //AND id_metodologia IS NULL
-                    $result1 = pg_query($query1);
-                    if($result && pg_num_rows($result1) == 1) {
-                        $row_exam_metod = pg_fetch_array($result1);
-                        $id_exam_metod = $row_exam_metod[0];
-                       // $id_exam_metod;
-        $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
-                  VALUES($id_exam_metod, $iddetalle, $codigoResultado, $usuario, date_trunc('seconds',NOW()),'$fecharealiz','$fecharesultado',$responsable)";
-                        
-                  $result = pg_query($query);
 
-                        if($result) {
-                            $idultimo = $row[0];
-                            return $idultimo;
-                        }else
-                            return false;
-                    
-                    }else
-                        return false; // Aqui va la logica si hay mas de una metodologia en el examen
-            
-                }else 
-                    return false;
-    }
-   
-     
-}
 
 function insertarAntibiograma($iddetalle,$idexamen,$codigoResultado,$usuario,$fecharealiz,$fecharesultado,$idempleado){
      $con = new ConexionBD;
@@ -491,12 +520,14 @@ function buscar_resultado_padre($idresultado){
     if($con->conectar()==true)
    {
         $query = "SELECT lab_resultados.id as idresultado FROM lab_resultados WHERE id_resultado_padre=$idresultado";
-       $result = pg_fetch_array(pg_query($query));
+       //$result = pg_fetch_array(pg_query($query));
+        $result =pg_query($query);
      if (!$result)
        return false;
      else 
-         $idpadre=$result[0];
-       return $idpadre;
+      //   $idpadre=$result[0];
+      // return $idpadre;
+         return $result;
     }
     
 }

@@ -147,6 +147,10 @@ function calc_edad()
 		<td colspan='1' class="Estilo5"><strong>Servicio:</strong></td>
 		<td colspan='1' class="Estilo6" align="left"><?php echo htmlentities($row_generales['subservicio']);?></td>
             </tr>
+            
+            <tr>
+                            <td colspan='6' class="Estilo6" width='100%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        </tr>
             <tr>
 		<td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
 	  	<td colspan='5' class="Estilo6" align="left"><?php echo htmlentities($row_area['nombre_examen']);?></td>
@@ -162,10 +166,10 @@ function calc_edad()
      <?php 
       $contar=$obj->contar_resultados($idsolicitud,$idexamen);
             //$row_totresult= pg_fetch_array($contar); 
-      while($row_totresult = pg_fetch_array($contar)){
-        
+    //  while($row_totresult = pg_fetch_array($contar)){
+        $row_totresult = pg_fetch_array($contar);
         ?>
-             <tr><td colspan='6'><hr></td></tr> 
+             
             <tr>
                 <td colspan='1' class="Estilo5"><strong>Validado Por:</strong></td>
                 <td colspan='5' class="Estilo6"><?php echo $row_totresult['nombreempleado'];?></td>
@@ -177,15 +181,16 @@ function calc_edad()
              
             
  <?php
- $idresultado=$row_totresult['idresultado'];
-  $idpadre=$obj->buscar_resultado_padre($idresultado);
-       //  echo $idpadre;
- //  $detalle = $obj->obtener_detalle_resultado($idresultado);
-   $detalle = $obj->obtener_detalle_resultado($idpadre);
+    $idresultado=$row_totresult['idresultado'];
+    $idpadre=$obj->buscar_resultado_padre($idresultado);
+    while ($row_idantb = pg_fetch_array($idpadre)){
+         //echo $row_idantb[0];
+        //  $detalle = $obj->obtener_detalle_resultado($idresultado);
+        $detalle = $obj->obtener_detalle_resultado($row_idantb[0]);
     
-         
     //$row_det= pg_fetch_array($detalle);
          while($row_det = pg_fetch_array($detalle)){?>
+             <tr><td colspan='6'><hr></td></tr>
             <tr>
                 <td colspan='1' class="Estilo5"><strong>Organismo:</strong></td>
                 <td colspan='5' class="Estilo5" align="left"><?php echo htmlentities($row_det['bacteria']); ?></td>
@@ -223,7 +228,15 @@ function calc_edad()
                                  </table>
                             </td>
                         </tr>
-                        <tr>
+                                   
+            
+                    </table><?php 
+    }//while del detalle
+ // }
+}?>
+                </td>
+            </tr>
+          <tr>
                             <td colspan='6' class="Estilo6" width='100%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         </tr>
                         <tr>
@@ -233,14 +246,7 @@ function calc_edad()
                         </tr>
                         <tr>
                            <td colspan='6' class="Estilo6" width='100%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                       </tr>                
-            
-                    </table><?php 
-    }//while del detalle
-}?>
-                </td>
-            </tr>
-                            
+                       </tr>                       
         
         </table>
         <div id="boton">

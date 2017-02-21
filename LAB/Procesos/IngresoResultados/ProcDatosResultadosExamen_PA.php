@@ -286,6 +286,7 @@ $edad=$objdatos->calc_edad($IdHistorial);
       $edad=$objdatos->calc_edadref($IdHistorial);
       $dias=$rows['dias'];
       $id_sexo=$rows['id_sexo'];
+      $Especificacion=$rows['especificacion'];
   }
    $ConRangos=$objdatos->ObtenerCodigoRango($dias);
    $row_rangos= pg_fetch_array($ConRangos);
@@ -378,6 +379,12 @@ $edad=$objdatos->calc_edad($IdHistorial);
                             </td>
 			</tr>
                         <tr>
+                            <td class="StormyWeatherFieldCaptionTD">Datos Clinicos</td>
+                            <td colspan="3" class="StormyWeatherDataTD"><?php echo $Especificacion;?>
+                                <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
+                            </td>
+                        </tr>
+                        <tr>
                             <td class="StormyWeatherFieldCaptionTD">Peso</td>
                             <td class="StormyWeatherDataTD">
                                 <?php
@@ -418,16 +425,6 @@ $edad=$objdatos->calc_edad($IdHistorial);
 
                             </td>
                         </tr>
-                         <tr>
-                            <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">Fecha Realización </td>
-                            <td  colspan="1" class="StormyWeatherDataTD">
-                               <input type="text" class="date form-control height placeholder" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" style="width:100%"/>
-                            </td>
-                             <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">Fecha Reporte </td>
-                            <td  colspan="1" class="StormyWeatherDataTD">
-                                <input type="text" class="date form-control height" name="fecha_reporte" id="fecha_reporte" size="60" style="width:90%"  value="<?php echo date("Y-m-d"); ?>"  /><input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d"); ?>"  />
-                            </td>
-                        </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">*Validado Por</td>
                             <td class="StormyWeatherDataTD" colspan="3">
@@ -438,6 +435,17 @@ $edad=$objdatos->calc_edad($IdHistorial);
                                 </div>
                             </td>
                         </tr>
+                        <tr>
+                            <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">Fecha Realización </td>
+                            <td  colspan="1" class="StormyWeatherDataTD">
+                               <input type="text" class="date form-control height placeholder" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd" style="width:100%"/>
+                            </td>
+                             <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">Fecha Reporte </td>
+                            <td  colspan="1" class="StormyWeatherDataTD">
+                                <input type="text" class="date form-control height" name="fecha_reporte" id="fecha_reporte" size="60" style="width:90%"  value="<?php echo date("Y-m-d"); ?>"  /><input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d"); ?>"  />
+                            </td>
+                        </tr>
+                        
                         <tr>
                              <td class="StormyWeatherFieldCaptionTD">*Resultado</td>
                              <td class="StormyWeatherDataTD" colspan="3">
@@ -450,7 +458,7 @@ $edad=$objdatos->calc_edad($IdHistorial);
                                      echo '<select id="idresultado" name="idresultado" onchange="setCodResultado(this.value)" style="width:96%" class="height js-example-basic-single">';
 
                                    if ($cant>1){
-echo '<option value="xyz">Seleccione una opción</option>';
+                                        echo '<option value="xyz">Seleccione una opción</option>';
                                       while ($pr= pg_fetch_array($posible)){
                                                                                echo '<option value='.$pr["id"].'>'.$pr["posible_resultado"].'</option>';
 
