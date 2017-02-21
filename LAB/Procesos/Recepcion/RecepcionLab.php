@@ -49,7 +49,7 @@ if ($nivel == 7) {
 <style type="text/css">
 			*{ font-size:12px; font-family:verdana; }
 			h1 { font-size:22px; }
-			//input { width:250px; border: 2px solid #CCC; line-height:20px;height:20px; border-radius:3px; padding:2px; }
+		/*	//input { width:250px; border: 2px solid #CCC; line-height:20px;height:20px; border-radius:3px; padding:2px; }*/
 		</style>
 <?php include_once $ROOT_PATH."/public/css.php";?>
 <?php include_once $ROOT_PATH."/public/js.php";?>
@@ -312,7 +312,8 @@ accion=6;
 //	}
 
 	if(document.getElementById('txtexp').value==""){
-		alert(".: Error: Debe Ingresar un Numero de Expediente");
+		showDialogMsg("Error: ", "Debe Ingresar un Numero de Expediente", 'dialog-error', 'Aceptar');
+		//alert(".: Error: ");
 		return false;
 	}
 
@@ -358,7 +359,8 @@ accion=6;
         mensaje +="\nIngrese el dato del subservicio"
     }
     if (mensaje !=''){
-       alert (mensaje)
+		showDialogMsg("Advertencia: ", mensaje, 'dialog-warning', 'Cerrar');
+       //alert (mensaje)
         return false;
     }
 
@@ -527,8 +529,7 @@ function procesaEsp(){
  if (sendReq.readyState == 4){//4 The request is complete
    if (sendReq.status == 200){//200 means no error.
 	  respuesta = sendReq.responseText;
-	  //alert ('RESPUESTA '+respuesta+' FIN RESPUESTA');
-          //return false;
+         //return false;
 	  switch(accion){
 		case 1:
 		  	document.getElementById('lyMed').innerHTML = respuesta;
@@ -619,8 +620,10 @@ function procesaEsp(){
 			break;
 
                 case 13:
-                        respuesta= JSON.parse(sendReq.responseText);
-
+				//alert (respuesta);
+                        respuesta= JSON.parse(respuesta);
+					//	alert (respuesta.status+'--'+respuesta.data);
+						//return false;
                         if(respuesta.status && respuesta.data !== undefined && respuesta.data !== false) {
                             if (respuesta.data[0].estado === '1') { // estado es DIGITADA
                                 //redireccionando al paso de recepción de solicitud
@@ -749,7 +752,7 @@ function cambioestexterno(){
 
 
       <div class="panel-body" id="pb-primervez" style="width:45%; border: 1px solid; border-color: #428BCA;min-width: 507px;">
-               <table border = 0 class="table table-white no-v-border table-condensed" border="0" style="border:0px; width: 100%; margin-bottom: 2px !important;" cellspacing="0" cellpadding="3" align="center">
+               <table border = 0 class="table table-white no-v-border table-condensed" border="0" style="border:0px; width: 100%; margin-bottom: 2px !important; table-layout:fixed;" cellspacing="0" cellpadding="3" align="center">
    <!--
                         <tr>
                            <td colspan="3" align="center" class="CobaltFieldCaptionTD">
@@ -757,7 +760,7 @@ function cambioestexterno(){
                            </td>
                         </tr>-->
                         <tr>
-                                 <th>Establecimiento</th>
+                                 <th width="22%">Establecimiento</th>
                                  <td> <select id="cmb_establecimiento" name="cmb_establecimiento" style="width:100%; size: 10" class="height placeholder js-example-basic-single" onchange="cambioestexterno();">
                                                        <?php
 

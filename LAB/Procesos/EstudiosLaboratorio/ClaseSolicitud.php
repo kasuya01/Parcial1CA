@@ -160,6 +160,21 @@ AND t02.id_establecimiento = $LugardeAtencion";
          }
       }// fin if conectar
    }
+//Funcion utilizada para saber si se encuantra activo el proceso para envio de HL7
+function ConsultaEnvioHL7($idestab) {
+   $Conexion = new ConexionBD();
+   $conectar = $Conexion->conectar();
+   if ($conectar == true) {
+      $SQL = "select * from lab_proceso_establecimiento where id_proceso_laboratorio=11 and activo=true and id_establecimiento=$idestab";
+      $Resultado = pg_query($SQL);
+      if (!$Resultado)
+         return false;
+      else {
+         $num = pg_num_rows($Resultado);
+         return $num;
+      }
+   }// fin if conectar
+}//fin funcion ConsultaEnvioHL7
 
 // fin function IdCitaServApoyoInsertUpdate
 //
@@ -1131,11 +1146,14 @@ values($idseq,$idexpediente, $IdEmpleado,$IdSubServicio, date_trunc('seconds',NO
            $IdHistorialClinico, $idestab) {
       //$ippc=$_SERVER["REMOTE_ADDR"];
       // echo $idarea.'-area sexo-'.$idsexo.'<br/>';
-      $query = "select lcee.id as idconf, nombre_examen, mnt4.id_examen_servicio_diagnostico
+      $query = "select distinct lcee.id as idconf, nombre_examen, mnt4.id_examen_servicio_diagnostico
             from mnt_area_examen_establecimiento mnt4
             join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen)
+            join lab_examen_suministrante lesu on (lcee.id=lesu.id_conf_examen_estab)
+            join lab_suministrante lsum on (lsum.id = lesu.id_suministrante)
             where id_area_servicio_diagnostico=$idarea
-            and activo=true
+            and mnt4.activo=true
+            and lesu.activo=true
             and condicion= 'H'
             and id_establecimiento=$lugar
             and (idsexo is NULL or idsexo=$idsexo)
@@ -1147,6 +1165,14 @@ values($idseq,$idexpediente, $IdEmpleado,$IdSubServicio, date_trunc('seconds',NO
                                     when id_establecimiento then id_historial_clinico=$IdHistorialClinico
                                     else id_dato_referencia=$IdHistorialClinico
                             end)
+            and (id_tipo_conexion in (select case when id_proceso_laboratorio=11 then 1 --hl7
+						    when id_proceso_laboratorio=12  then 2 --base intermedia
+						    else null
+						end
+					from lab_proceso_establecimiento t04
+					where t04.id in (11,12)
+					and t04.activo =true)
+	        or id_tipo_conexion is null)
             order by nombre_examen asc;";
       $result = pg_query($query);
       if (!$result) {

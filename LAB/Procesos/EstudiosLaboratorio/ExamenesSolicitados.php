@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once("ClaseSolicitud.php"); //Agregamos el Archivo con las clases y funciones a utilizar
+include_once("envioSolicitudWS.php");
 $Paciente = new Paciente;
 $Laboratorio = new SolicitudLaboratorio;
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
@@ -28,7 +29,7 @@ $sexo = $rowpa['id_sexo'];
 $IdSolicitudEstudio = $Paciente->RecuperarIdSolicituEstudio($idexpediente,
         $IdHistorialClinico, $IdEstablecimiento);
 /* HACER AKI EL IF DE VERIFICACION DE IdCitaServApoyo Y ASI HACER EL INSERT O EL UPDATE */
-// echo 'idsol' .$IdSolicitudEstudio;
+
 // echo '$IdCitaServApoyo'.$IdCitaServApoyo.'<br/>';
 if ($IdCitaServApoyo == "") {
    $IdCitaServApoyo = $Paciente->IdCitaServApoyoInsertUpdate($IdSolicitudEstudio,
@@ -37,6 +38,21 @@ if ($IdCitaServApoyo == "") {
    $IdCitaServApoyo = $Paciente->IdCitaServApoyoInsertUpdate($IdSolicitudEstudio,
            $iduser, $IdNumeroExp, $LugardeAtencion, $IdCitaServApoyo, 0);
 }
+//Verificar si el establecimeitno soporta la conexion por medio de HL7
+$enviohl7= $Paciente->ConsultaEnvioHL7($IdEstablecimiento);
+if ($enviohl7!=0){
+   if (enviarSolicitudWS($IdSolicitudEstudio)=='false'){
+        echo '<span class="glyphicon glyphicon-warning-sign"></span><i>  Error Envío a Equipos Automatizados, favor intentar enviar esta solicitud más tarde....</i>';
+
+    }
+    else{
+        echo '<i>'.$envio.'</i>';
+    }
+    /*$envio=enviarSolicitudWS($IdSolicitudEstudio);
+    echo 'Envio: '.$envio;*/
+}
+
+
 ?>
 <html>
    <head>

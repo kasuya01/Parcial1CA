@@ -1528,7 +1528,8 @@ $con = new ConexionBD;
                        t23.resultado_antibiotico,
                        t23.lectura_antibiotico,
                        t23.id_posible_resultado_antibiotico,
-                       t23.nombre_posible_resultado_antibiotico
+                       t23.nombre_posible_resultado_antibiotico,
+					   t17.id_resultado_padre
                 FROM sec_detallesolicitudestudios          t01
                 INNER JOIN sec_solicitudestudios           t02 ON (t02.id = t01.idsolicitudestudio)
                 INNER JOIN lab_conf_examen_estab           t03 ON (t03.id = t01.id_conf_examen_estab)
@@ -1653,7 +1654,7 @@ $con = new ConexionBD;
                           END
                          AND t02.id_establecimiento_externo = $idEstablecimiento
                 ORDER BY 1,id_estado_detalle, t20.pb_elemento_orden, t20.pb_subelemento_orden;";
-
+				//echo $sql;
                 $result = pg_query($sql);
       if (!$result)
        return false;

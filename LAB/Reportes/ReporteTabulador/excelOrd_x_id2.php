@@ -131,10 +131,10 @@ $styleArray3=array(
             'name'  => 'Verdana'
         ),
     );
-   $objPHPExcel->getActiveSheet()->getStyle('A1:ZZ5')->applyFromArray($styleArray1);
+   $objPHPExcel->getActiveSheet()->getStyle('A1:AEZ5')->applyFromArray($styleArray1);
    $objPHPExcel->getActiveSheet()->getStyle('A3:A39')->applyFromArray($styleArray1);
-   $objPHPExcel->getActiveSheet()->getStyle('B6:ZZ40')->applyFromArray($styleArray2);
-   for ($col = 'A'; $col != 'ZZ'; $col++) {
+   $objPHPExcel->getActiveSheet()->getStyle('B6:AEZ40')->applyFromArray($styleArray2);
+   for ($col = 'A'; $col != 'AEZ'; $col++) {
        $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setWidth(3.05);
    }//fin for columnas aa a zz
    $ini='B';
@@ -351,7 +351,7 @@ $objPHPExcel->getActiveSheet()->getStyle('A'.$final.':'.$starletrafin.$final)->a
    $final=$final+2;
    $t2="\t\t\t\t";
 
-   $objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&C&H&C&9 MINISTERIO DE SALUD'."\n".' Tabulador Diario de Actividades de laboratorio Clinico'."\n".'Institución:'.$nomreadme[$ame].' ( X )'."\n".'Establecimiento:'.$lugar_name."\t\t\t\t\t\t".'Sección:        '."\t\t\t\t".'Mes:'.$mes."\t".'Año: '.$year);
+   $objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&C&H&C&9 MINISTERIO DE SALUD'."\n".' Tabulador Diario de Actividades de laboratorio Clinico'."\n".'Institución:'.$nomreadme[$ame].' ( X )'."\n".'Establecimiento:'.$lugar_name."\t\t\t\t".'Sección:        '."\t\t\t".'Mes:'.$mes."\t".'Año: '.$year);
    $objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddFooter('&C&H&5Resultados: 1 NORMAL, 2 NEGATIVO, 3 ANORMAL, 4 POSITIVO, 5 MUESTRA INADECUADA, 6 OTROS, 7 REACTIVO, 8 INDETERMINADO y 9 NO REACTIVO             PROCEDENCIA: 1 CONSULTA EXTERNA, 2 HOSPITALIZACION, 3 EMERGENCIA, 4 REFERIDO  Y 5 OTROS'."\n \n \n \n \n \n \n \n \n".'&C&H&9Nombre del Responsable '.$t2.'Firma  del Profesional de laboratorio  '.$t2.' JVPLC &R&8 '."\n \n \n \n".'Pag. &P of &N');
    // Rename sheet
    $pageMargins = $objPHPExcel->getActiveSheet()->getPageMargins();

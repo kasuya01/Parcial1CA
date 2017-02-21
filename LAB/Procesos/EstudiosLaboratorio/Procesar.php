@@ -33,7 +33,7 @@
 	   // $Solicitud=$SolicitudLab->MostrarMuestra($IdExamen);
           //  $sol=  pg_fetch_array($Solicitud);
           if ($cant_sumi>1){
-              echo "<strong><font color='red'>Realizar:&nbsp;&nbsp;&nbsp;&nbsp;  </font></strong>";
+              echo "<strong><font color='#428bca'>Realizar :&nbsp;&nbsp;&nbsp;&nbsp;  </font></strong>";
               echo "<select name= 'sumi_".$IdExamen."' id= 'sumi_".$IdExamen."' style='width:140px' class='Muestra' >";
               echo '<option value="0"> Seleccione forma de realizacion</option>';
               while($Respuesta= pg_fetch_array($Suministrante)) {
@@ -41,6 +41,7 @@
                   $suministrante=$Respuesta['suministrante'];
                   echo '<option value= "'.$idsumi.'">'.$suministrante.'</option>';
           }
+          echo '</select><br/>';
       }
           else{
               $Respuesta = pg_fetch_array($Suministrante);
@@ -50,7 +51,7 @@
           }
 
             if ($cant>1){
-                    echo "<strong><font color='red'>Tipo de Muestra:&nbsp;&nbsp;&nbsp;&nbsp;  </font></strong>";
+                    echo "<strong><font color='#428bca'>Tipo MX :&nbsp;&nbsp;&nbsp;&nbsp;  </font></strong>";
                     echo "<select name= 'M".$IdExamen."' Id= 'M".$IdExamen."' style='width:140px' class='Muestra' onchange='MostrarOrigen(this.value,\"".$IdExamen."\");'>";
                     echo '<option value="0"> Seleccione una Muestra</option>';
                     while($Respuesta= pg_fetch_array($Solicitud)) {
@@ -85,7 +86,7 @@
 	 	$origen= $SolicitudLab->MostrarOrigenMuestra($IdMuestra,$IdExamen);
                  $cant=  pg_num_rows($origen);
                  if ($cant>0){
-                     echo "<strong><font color='darkblue'>Origen de Muestra:</font></strong> ";
+                     echo "<strong><font color='#428bca'>Origen MX:</font></strong> ";
                      echo "<select class='Origen' name='Origen".$IdExamen."'	Id='Origen".$IdExamen."' style='width:140px'>";
                      while ($Respuesta=  pg_fetch_array($origen)){
                          echo '<option value= "'.$Respuesta["id"].'">'.($Respuesta["origenmuestra"]).'</option>';

@@ -572,10 +572,11 @@ if ( $NroRegistros==""){
                                             </h4>
                                         </div>
                         </div>";
-
-                $arrayPlantillas= ['A','B','C','D','E'] ;
+               
+               $arrayPlantillas = ['A','B','C','D','E'];
                 foreach ($arrayPlantillas as $pType) {
                     if(array_key_exists($pType, $area['plantillas'])) {
+                        //var_dump($area)
                         $print .= bodyLayout($area, $pType);
                     }
                 }
@@ -688,7 +689,8 @@ if ( $NroRegistros==""){
                     $newExam = array(
                             $row['id_examen'],
                             $row['codigo_examen'],
-                            $row['nombre_examen']
+                            $row['nombre_examen'],
+                            $row['id_resultado_padre']
                         );
 
                     $result['RM'] = addExamnToLayout($result['RM'], $newExam, $row, $row['codigo_plantilla']);
@@ -702,7 +704,6 @@ if ( $NroRegistros==""){
             $result['RC'][$id]['codigo'] = $row['codigo_area'];
             $result['RC'][$id]['nombre'] = $row['nombre_area'];
         }
-
         if( ! isset($result['RC'][$id]['plantillas']) ){
         $result['RC'][$id]['plantillas'] = array();
                     }
@@ -761,7 +762,8 @@ if( ! isset($plantillas[ $newPlantilla[1] ]) )
         $newExam = array(
                 $row['id_examen'],
                 $row['codigo_examen'],
-                $row['nombre_examen']
+                $row['nombre_examen'],
+                $row['id_resultado_padre']
             );
 
         $plantillas[ $newPlantilla[1] ]['examenes'] = addExamnToLayout($plantillas[ $newPlantilla[1] ]['examenes'], $newExam, $row, $newPlantilla[1]);
@@ -779,12 +781,15 @@ return $plantillas;
                                         'id'                    => $newExam[0],
                                         'codigo'                => $newExam[1],
                                         'nombre'                => $newExam[2],
+                                        'result_padre'          => $newExam[3],
                                         'id_estado_detalle'     => $row['id_estado_detalle'],
                                         'codigo_estado_detalle' => $row['codigo_estado_detalle'],
                                         'nombre_estado_detalle' => $row['nombre_estado_detalle']
                                             );
         }
-
+        /*echo '<br/>';
+        var_dump($exams[ $newExam[2] ]);
+        echo '<br/>';*/
         if( ! isset($exams[ $newExam[2] ]['resultadoFinal']) ){
             $exams[ $newExam[2] ]['resultadoFinal'] = array();
         }
@@ -806,7 +811,6 @@ return $plantillas;
                 # code...
                 break;
         }
-
         switch ($tipoPlantilla) {
             case 'A':
                 if($row['codigo_estado_detalle'] === 'RC') {
@@ -856,6 +860,8 @@ return $plantillas;
                     $exams[ $newExam[2] ]['resultadoFinal']['codigo_observacion']       = $row['codigo_observacion_bacteria'];
 
                     if($row['id_observacion_bacteria'] === null) {
+                        //Aqui me indica q es positivo y que debo mandar a llamar los hijos
+
                         $newBacter = array(
                             $row['id_bacteria'],
                             $row['nombre_bacteria'],
@@ -865,7 +871,7 @@ return $plantillas;
                             $row['nombre_posible_resultado'],
                             $row['cantidad_bacterias']
                         );
-
+                        //var_dump($row);
                         $exams[ $newExam[2] ]['bacterias'] = addBacterToExamn($exams[ $newExam[2] ]['bacterias'], $newBacter, $row);
                     }
                 }
@@ -1012,6 +1018,7 @@ return $plantillas;
 
 
     function addBacterToExamn($bacters, $newBacter, $row) {
+        //var_dump($newBacter);
         if( ! isset($bacters[ $newBacter[1] ]) )
             {
                     $bacters[ $newBacter[1] ] = array(
@@ -1100,7 +1107,8 @@ function bodyLayout($area, $pType) {
         if($plantilla['codigo'] === $pType) {
             foreach($plantilla['examenes'] as $examen) {
                 $examStatus = $examen['codigo_estado_detalle'];
-                $html .= headerLayout($examen, $examStatus);
+                if ($examen['result_padre']=='' && $examen['result_padre']==NULL)
+                    $html .= headerLayout($examen, $examStatus);
                // $html .= MuestrasRechazadas($examen,$examStatus);
                 if($examStatus === 'RC') {
                     $html .= plantillas($examen, $pType);
@@ -1319,6 +1327,7 @@ function plantillaB($examen) {
 function plantillaC($examen) {
     $html="";
     //$html.="plantillaC";
+    if ($examen['result_padre']=='' || $examen['result_padre']==NULL){
     $html.="<div class='row' style='font-size: 17px;padding-top: 20px;padding-bottom: 20px;'>
     <div class='col-md-12 col-sm-12'>
         Resultado: <strong>";
@@ -1337,12 +1346,13 @@ function plantillaC($examen) {
                 </div>";
             }
             $html.="</div>";
+        }
+
  if (count($examen['bacterias']) > 0) {
- //if ($examen['bacterias'] |length > 0 ){
   $html.=  "<table class='table table-white'>
         <tbody>";
+        if ($examen['result_padre']!='' || $examen['result_padre']!=NULL){
             foreach ($examen['bacterias'] as $bacteria){
-           // {% for bacteria in examen.bacterias %}
               $html.="  <tr>
                     <td colspan='4'>
                         <div class='row'>
@@ -1387,10 +1397,12 @@ function plantillaC($examen) {
                         }
                 }
             }
+            }//fin if has result_padre
        $html.= "</tbody>
                 </table>";
        return $html;
-}
+}//count($examen['bacterias'])
+
 }
 //PLANTILLA D
 function plantillaD($examen) {
