@@ -83,7 +83,7 @@
                 <item labelText="Imprimir Resultado" url="../../../LAB/Procesos/ImprimirResultados/ImprimirResultado.php"/>
                 <item labelText="Reporte Resultados" url= "../../../LAB/Reportes/Reporte_Resultados/ReporteResultados.php"/>
                 <item labelText="Demanda Insatisfecha" url= "../../../LAB/Reportes/ReporteDemanda/ReporteDemanda.php"/>
-                <item labelText="Registro diario" url= "../LAB/Reportes/ReporteRegistroDiario/ReporteRegistroDiario.php"/>
+                <item labelText="Registro diario" url= "../../../LAB/Reportes/ReporteRegistroDiario/ReporteRegistroDiario.php"/>
 
       </menu>
       <sep/>
