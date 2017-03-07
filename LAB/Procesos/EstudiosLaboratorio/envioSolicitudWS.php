@@ -8,9 +8,9 @@ function enviarSolicitudWS($id){
     list($modulo,$dominio)=explode(".", $host);
     $requestScheme=$_SERVER['REQUEST_SCHEME'];
     $return_='';
-    //$url = $requestScheme.'://siap.'.$dominio.'/app.php/soap/interfaceliswebservice?wsdl';
+    $url = $requestScheme.'://siap.'.$dominio.'/app.php/soap/interfaceliswebservice?wsdl';
     //echo $url;
-   $url = 'http://siap.localhost/app_dev.php/soap/interfaceliswebservice?wsdl';
+   //$url = 'http://siap.localhost/app_dev.php/soap/interfaceliswebservice?wsdl';
     $action = 'checkin';
     $soapParameters = array('trace' => true, 'exceptions' => true);
 
@@ -21,9 +21,9 @@ function enviarSolicitudWS($id){
 
     try {
         $soapClient = new Soapclient($url, $soapParameters);
-        $soapClient->__setLocation('http://siap.localhost/app_dev.php/soap/interfaceliswebservice');
+    //    $soapClient->__setLocation('http://siap.localhost/app_dev.php/soap/interfaceliswebservice');
 
-    //    $soapClient->__setLocation($requestScheme.'://siap.'.$dominio.'/app.php/soap/interfaceliswebservice');
+        $soapClient->__setLocation($requestScheme.'://siap.'.$dominio.'/app.php/soap/interfaceliswebservice');
         $data = $soapClient->__soapCall($action, $array_param);
     } catch (Exception $e) {
         return 'false';
