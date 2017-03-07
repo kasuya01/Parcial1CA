@@ -77,7 +77,7 @@ switch ($opcion)
                                     <textarea name='txtobser[".$pos."]' cols='52' style='width:100%' id='txtobser[".$pos."]'>".$observaciongnral."</textarea>
 				</td>
                             </tr>
-                                                        
+
                                                         </table>
                                                         </div>
                                                     </div></td></tr>";
@@ -138,7 +138,7 @@ switch ($opcion)
             echo '<center><br><br><h1><img src="../../../Imagenes/warning.png" valign="middle"/>'
             . 'Favor de Revisar la correcta configuración de los exámenes solicitados, tanto en tipo de muestra y datos fijos.</h1> ';
             echo " <button type='submit' class='fg-button ui-state-default ui-corner-all' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' /><span class='glyphicon glyphicon-remove-sign'></span>Cerrar</button></center>";
-                                        
+
         }
        //echo $imprimir;
 
@@ -175,13 +175,13 @@ switch ($opcion)
 
                 $Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
 		$row_estab = pg_fetch_array($Consulta_Estab);
-                
+
                 $consulta = $objdatos->MostrarResultadoGeneralesPA1($idsolicitud, $lugar, $idarea);
                 $row = pg_fetch_array($consulta);
                 $nombre = $row['nombrearea'];
                 $id_establecimiento_externo = $row['id_establecimiento_externo'];
                 $idhistoref = $row['idhistoref'];
-                
+
                 $datospaciente=$objdatos->MostrarDatosPersona($idsolicitud, $lugar, $id_establecimiento_externo, $txtnec, $idhistoref);
                 $rowpa = pg_fetch_array($datospaciente);
                 $dias = $rowpa['dias'];
@@ -189,11 +189,11 @@ switch ($opcion)
                 $ConRangos = $objdatos->ObtenerCodigoRango($dias);
                 $row_rangos = pg_fetch_array($ConRangos);
                 $idedad = $row_rangos[0];
-        
+
                 /*$consulta=$objdatos->MostrarResultadoGenerales1($idsolicitud,$idarea,$lugar);
 		$row = mysql_fetch_array($consulta);
 		$nombre=$row['NombreArea'];*/
-		$vector_resultados=EXPLODE("/",$valores_resultados);                
+		$vector_resultados=EXPLODE("/",$valores_resultados);
 		$vector_codigos=EXPLODE("/",$codigos_resultados);
 		//$vector_lecturas=EXPLODE("/",$valores_lecturas);
 		//$vector_inter=EXPLODE("/",$valores_inter);
@@ -236,7 +236,7 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
             <tr>
 		<td colspan='1' style='font:bold'><strong>Edad:</strong></td>
 		<td colspan='2' style='font:bold'>".$rowpa['edad']."
-                    
+
 		</td>
 		<td colspan='1' style='font:bold'><strong>Sexo:</strong></td>
 		<td colspan='2' style='font:bold'>".$rowpa['sexo']."</td>
@@ -361,7 +361,7 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
 		  $vector_idexametodologia=EXPLODE("/",$idexametodologia);
 		  $vector_tabuladores=EXPLODE("/",$tabuladores);
 		  $obj = new clsSolicitudesProcesadas;
-		  $tamano_vector=count($vector_resultados);		 
+		  $tamano_vector=count($vector_resultados);
 		  $pos=0;
 		  $ban=0;
 		  $ban1=1;
@@ -375,7 +375,7 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
 			// if ($obj->InsertarResultadoPlantillaA1($vector_examenes[$pos],$idsolicitud,$vector_codigos[$pos],$vector_resultados[$pos],$vector_lecturas[$pos],$idrecepcion,$vector_inter[$pos],$vector_obser[$pos],$responsable,$usuario,$vector_tabuladores[$pos],$lugar)==true)
                     $observacion= (empty($vector_obser[$pos])) ? 'NULL' : "'" . pg_escape_string($vector_obser[$pos]) . "'";
                     $resultado=(empty($vector_resultados[$pos])) ? 'NULL' : "'" . pg_escape_string($vector_resultados[$pos]) . "'";
-                    
+
                     $idresultado='NULL';
                     $marca='NULL';
                     $lectura='NULL';
@@ -394,7 +394,7 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
 				}
                          }
                     }
-                    
+
                     /*
                          if ($obj->InsertarResultadoPlantillaA1($vector_examenes[$pos],$idsolicitud,$vector_codigos[$pos],$vector_resultados[$pos],$idrecepcion,$vector_obser[$pos],$responsable,$usuario,$vector_tabuladores[$pos],$lugar,$vector_idexametodologia[$pos])==true)
 			 {
@@ -405,7 +405,7 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
 			 }
 			 else{
 				 $ban=1;
-                                 
+
                              }*/
 					 $pos=$pos+1;
 			 }
@@ -425,7 +425,7 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
 		//	echo $ban ."-".$ban1;
 			echo "Los resultados no pueden ser guardados consulte al Administrador...";
 		}
-                
+
 
 		//*************************************************************************
 
@@ -514,7 +514,7 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
 			$Imprimir.="
 						<tr>
 							<td align='center' style='font:bold'><strong>".htmlentities($fila['NombreExamen'])."</strong></td>
-							<td align='center'>".htmlentities($resultado)."</td>
+							<td align='justify'>".htmlentities($resultado)."</td>
 							<td align='center'>".htmlentities($fila['Unidades'])."</td>
 							<td align='justify'>".$fila['RangoInicio']."-".$fila['RangoFin']."</td>
 							<td align='justify'>".htmlentities($lectura)."</td>
@@ -535,7 +535,7 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
 					<input type='submit' id='btnGuardar' value='Guardar Resultados' Onclick='GuardarResultados();' />
 					<input type='submit' id='btnImprimir' value='Imprimir' Onclick='ImprimirA() ;' />
 					<input type='submit' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' />
-                                        Onclick='Cerrar() ;' 
+                                        Onclick='Cerrar() ;'
                                          <button type='submit' class='btn btn-primary' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' /><span class='glyphicon glyphicon-remove-sign'></span>Cerrar</button>
 				</td>
 			</tr></table>

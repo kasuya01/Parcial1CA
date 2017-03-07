@@ -28,23 +28,9 @@ class clsRecepcionSolicitud {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
             $conNom = "SELECT * from lab_proceso_establecimiento
-                    where id_establecimiento=(select id from ctl_establecimiento where configurado=true);";
+                    where id_proceso_laboratorio=10
+                    and id_establecimiento=(select id from ctl_establecimiento where configurado=true);";
             $resul = pg_query($conNom);
-        }
-        return $resul;
-    }
-//**Funcion buscar quien realiza examen
-    function buscarrealizar($i_idexamen) {
-        $con = new ConexionBD;
-        if ($con->conectar() == true) {
-            $forma = "SELECT *
-                    from lab_examen_suministrante 	t1
-                    join lab_suministrante	 	t2 on (t2.id = t1.id_suministrante)
-                    where id_conf_examen_estab =$i_idexamen
-                    and t1.activo = true
-                    and t2.activo = true;";
-            $resul = pg_query($forma);
-            //echo $forma;
         }
         return $resul;
     }
@@ -356,11 +342,11 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
                       INNER JOIN mnt_area_mod_estab 		 t16 ON (t16.id = t07.id_area_mod_estab)
                       INNER JOIN ctl_area_atencion		 t17 ON (t17.id = t16.id_area_atencion)
                       WHERE t04.numero = '$idexpediente'
-                            AND t15.idestado = 'D' AND t02.id = $IdSolicitud AND t09.fecha = '$fechacita' AND t02.id_establecimiento = $lugar  and (id_tipo_diagnostico=1 or id_tipo_diagnostico is null)";
+                            AND t15.idestado = 'D' AND t02.id = $IdSolicitud AND t09.fecha = '$fechacita' AND t02.id_establecimiento = $lugar  and id_tipo_diagnostico=1";
             $result = @pg_query($query);
-
             if (pg_num_rows($result)==0){ // busqueda si el paciente es de referencia
-              $query = "SELECT t03.idempleado AS idmedico,
+              $query = "
+                     SELECT t03.idempleado AS idmedico,
                              t03.nombreempleado AS nombremedico,
                              t08.nombre AS Origen,
                              t02.id AS idsolicitudestudio,
@@ -404,8 +390,7 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
                       INNER JOIN ctl_estado_servicio_diagnostico t15 ON (t15.id = t01.estado AND t15.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
                         INNER JOIN mnt_area_mod_estab 		 t16 ON (t16.id = t07.id_area_mod_estab)
                       INNER JOIN ctl_area_atencion		 t17 ON (t17.id = t16.id_area_atencion)
-                      WHERE t04.numero = '$idexpediente' AND t15.idestado = 'D' AND t01.id = $IdSolicitud AND t09.fecha = '$fechacita' AND t02.id_establecimiento = $lugar
-                      and (id_tipo_diagnostico=1 or id_tipo_diagnostico is null)";
+                      WHERE t04.numero = '$idexpediente' AND t15.idestado = 'D' AND t01.id = $IdSolicitud AND t09.fecha = '$fechacita' AND t02.id_establecimiento = $lugar  and id_tipo_diagnostico=1";
             $result = @pg_query($query);
 
             if (!$result)

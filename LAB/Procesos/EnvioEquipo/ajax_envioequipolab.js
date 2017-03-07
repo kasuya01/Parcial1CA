@@ -198,7 +198,6 @@ function BuscarDatos() {
 
 //FUNCION PARA VERIFICAR SI EXISTEN  DATOS DE LA SOLICITUD
 function VerificarExistencia(idexpediente, fechacita, idEstablecimiento, omitir_verificacion, idsolicitud) {
-
     if (DatosCompletos() || omitir_verificacion) {
         //divResultado=document.getElementById('divResultado');
         ajax = objetoAjax();
@@ -686,7 +685,6 @@ function CambiarEstadoSolicitud(estado, idsolicitud, posicion)
           parametros=parametros+"&f_tomamuestra_"+j+"="+document.getElementById("f_tomamuestra_" + this.value).value;
           parametros=parametros+"&iddetalle_"+j+"="+document.getElementById("iddetalle_" + this.value).value;
           parametros=parametros+"&i_idexamen_"+j+"="+document.getElementById("i_idexamen_" + this.value).value;
-          parametros=parametros+"&id_suministante_"+j+"="+document.getElementById("arealizar_" + this.value).value;
           validarmuestra=document.getElementById("validarmuestra_" + this.value).value;
           parametros=parametros+"&validarmuestra_"+j+"="+validarmuestra
           if (validarmuestra!=1){
@@ -728,6 +726,7 @@ function CambiarEstadoSolicitud(estado, idsolicitud, posicion)
                 //mostrar los nuevos registros en esta capa
                 document.getElementById('divCambioEstado').style.display = "none";
                 document.getElementById('divCambioEstado').innerHTML = ajax.responseText;
+
                 //verificando el cambio de estado
                 if (ajax.responseText.replace(/(\r\n|\n|\r| )/gm,'') == "Y")
                 {

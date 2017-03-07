@@ -495,7 +495,6 @@ class SolicitudLaboratorio {
             $envio = "select solicitudestudiosexternos($IdHistorialClinico,$idexpediente,'$FechaSolicitud',$IdUsuarioReg,$IdExamen,'$Indicacion',$IdTipoMuestra,$IdOrigen,$IdEstablecimiento,$lugar, $p_id_dato_referencia, false, 0, 'create','{}', false, $idsuministrante, $lugar)";
 
             $env = pg_query($envio);
-             echo $envio;
             //echo '<br/>Envio'.$envio.'<br/>';
             if ($envio == true) {
                // echo $envio;
@@ -1165,8 +1164,8 @@ values($idseq,$idexpediente, $IdEmpleado,$IdSubServicio, date_trunc('seconds',NO
                                     when id_establecimiento then id_historial_clinico=$IdHistorialClinico
                                     else id_dato_referencia=$IdHistorialClinico
                             end)
-            and (id_tipo_conexion in (select case when id_proceso_laboratorio=11 then 1 --hl7
-						    when id_proceso_laboratorio=12  then 2 --base intermedia
+            and (id_tipo_conexion in (select case when id_proceso_laboratorio=11 then 2 --hl7
+						    when id_proceso_laboratorio=12  then 3 --base intermedia
 						    else null
 						end
 					from lab_proceso_establecimiento t04
@@ -1174,6 +1173,12 @@ values($idseq,$idexpediente, $IdEmpleado,$IdSubServicio, date_trunc('seconds',NO
 					and t04.activo =true)
 	        or id_tipo_conexion is null)
             order by nombre_examen asc;";
+            /*Debido a que en lab_proceso_establecimiento se configura:
+            el id_proceso_laboratorio = 11 activo si el establecimiento tiene equipos con conexion de equipos automatizados
+            el id_proceso_laboratorio = 12 activo si el establecimiento tiene equipos con conexion de equipos por base intermedia
+            Y la tabla suministrante tiene:
+             id_tipo_conexion = 1 si es por medio de hl7
+             id_tipo_conexion */
       $result = pg_query($query);
       if (!$result) {
          return false;

@@ -554,15 +554,16 @@ function CambioEstadoSol(idsol){
 /* 			Funcion Para Guardar Cambios a los examenes solicitados								*/
 /************************************************************************************************/
  function GuardarCambios(band){
+	 //console.log (band)
 	// Definicion de Variables
 		var Indicacion;
 		var Indica;
 		var IdExamen;
 		var IdDetalle;
 		var Contar=document.getElementById('total').value;
-                var IdHistorialClinico=document.getElementById('IdHistorialClinico').value;
-                var  IdCitaServApoyo=document.getElementById('IdCitaServApoyo').value;
-				var  id_solicitudest=document.getElementById('id_solicitudest').value;
+        var IdHistorialClinico=document.getElementById('IdHistorialClinico').value;
+        var  IdCitaServApoyo=document.getElementById('IdCitaServApoyo').value;
+		var  id_solicitudest=document.getElementById('id_solicitudest').value;
 		var accion=4;
 		var j=0;
 		var i=0;
@@ -658,7 +659,7 @@ function CambioEstadoSol(idsol){
                         ListaExamenes(IdHistorialClinico,IdCitaServApoyo, band)
                      }
                      else{
-                         ListaExamenes(IdHistorialClinico,IdCitaServApoyo,0)
+                         ListaExamenes(IdHistorialClinico,IdCitaServApoyo,band)
                          //alert('no es cerrar')
                         window.close();
                      }

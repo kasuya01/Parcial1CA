@@ -1070,7 +1070,7 @@ and idhistoref=$idhistoref;";
 					THEN mns.sct_name_es 
 				ELSE mnc.diagnostico
 				end as diagnostico,  
-				especificacion, conocido_por, (date('$fechadatosfijos')  - date (fecha_nacimiento)) as dias, id_sexo
+				especificacion, conocido_por, (date('$fechadatosfijos')  - date (fecha_nacimiento)) as dias, id_sexo, cse.nombre as sexo
                     from sec_historial_clinico shc 
  join mnt_expediente mex on (mex.id = shc.id_numero_expediente) 
  join mnt_paciente mpa on (mpa.id = mex.id_paciente) 
@@ -1078,6 +1078,7 @@ and idhistoref=$idhistoref;";
  left join mnt_snomed_cie10 mns on (mns.id= sdp.id_snomed) 
  left join sec_signos_vitales sef on (shc.id = sef.id_historial_clinico) 
   LEFT join mnt_cie10 mnc ON (mnc.id = sdp.id_cie10_medico)
+  join ctl_sexo cse on (cse.id = mpa.id_sexo)
                     where shc.id=$idhistorialclinico
                     and shc.idestablecimiento=$lugar";
          //echo $query;

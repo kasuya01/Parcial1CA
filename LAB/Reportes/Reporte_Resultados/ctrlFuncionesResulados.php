@@ -14,10 +14,10 @@ $objdatos = new clsReporteResultados;
 
 
 /**********************************
- 
- 
+
+
 /*
- * funciones array 
+ * funciones array
  */
 
  function getExamnResult($idHistorialClinico, $idDatoReferencia, $idEstablecimiento) {
@@ -27,11 +27,11 @@ $objdatos = new clsReporteResultados;
         if($idHistorialClinico === null || $idHistorialClinico === '') {
             $idHistorialClinico = 0;
         }
-        
+
         if($idDatoReferencia === null || $idDatoReferencia === '') {
             $idDatoReferencia = 0;
         }
-        
+
         $result = $objdatos->obtenerResultadoSolicitudExamen($idHistorialClinico, $idDatoReferencia, $idEstablecimiento);
         if($resultados = pg_fetch_all($result)) {
             $result = array();
@@ -74,30 +74,30 @@ $objdatos = new clsReporteResultados;
 
             return $result;
         }
-        
+
     }
 
- 
-    
-    function getDatosGenerales($idHistorialClinico, $idDatoReferencia, $idEstablecimiento) 
+
+
+    function getDatosGenerales($idHistorialClinico, $idDatoReferencia, $idEstablecimiento)
     {
        // $em = $this->container->get('doctrine')->getManager();
        //$datosGenerales = $em->getRepository('MinsalSeguimientoBundle:SecSolicitudestudios')->obtenerDatosGenerales($idHistorialClinico, $idDatoReferencia, $idEstablecimiento);
-       
-        
+
+
         // ¿ obtenerDatosGenerales ??
         $objdatos = new clsReporteResultados;
         $datosGenerales= $objdatos->obtenerDatosGenerales($idHistorialClinico, $idDatoReferencia, $idEstablecimiento);
 
-        
-        
+
+
         return count($datosGenerales) > 0 ? $datosGenerales[0] : null;
     }
 
-    
-    
-    
-    
+
+
+
+
 function addLayoutToArea($plantillas, $newPlantilla, $row) {
 if( ! isset($plantillas[ $newPlantilla[1] ]) )
     {
@@ -305,10 +305,10 @@ return $plantillas;
 
         return $elements;
     }
-    
-    
-    
-    
+
+
+
+
 
      function addSubElementToElement($subelements, $newSubelement) {
         if( ! isset($subelements[ $newSubelement[1] ]) )
@@ -362,10 +362,10 @@ return $plantillas;
         return $procedures;
     }
 
-    
-    
-    
-    
+
+
+
+
     function addBacterToExamn($bacters, $newBacter, $row) {
         if( ! isset($bacters[ $newBacter[1] ]) )
             {
@@ -395,9 +395,9 @@ return $plantillas;
         return $bacters;
     }
 
-    
-    
-    
+
+
+
     function addCardToBacter($cards, $newCards, $row) {
         if( ! isset($cards[ $newCards[1] ]) )
             {
@@ -424,10 +424,10 @@ return $plantillas;
         return $cards;
     }
 
-    
-    
-    
-    
+
+
+
+
     function addAntibioticToCard($antibiotics, $newAntibiotic) {
         if( ! isset($antibiotics[ $newAntibiotic[1] ]) ){
 $antibiotics[ $newAntibiotic[1] ] = array(
@@ -442,9 +442,9 @@ $antibiotics[ $newAntibiotic[1] ] = array(
 
         return $antibiotics;
     }
-    
-    
-    
+
+
+
     // funciones otras
 function bodyLayout($area, $pType) {
     $html = '';
@@ -468,11 +468,11 @@ function bodyLayout($area, $pType) {
 
     return $html;
 }
-    
+
 function headerLayout($examen, $examStatus) {
     $header="";
     //$header.=  "headerLayout";
-    
+
     $header.=  "
             <div class='panel panel-primary'>
                 <div class='panel-heading'>
@@ -484,7 +484,7 @@ function headerLayout($examen, $examStatus) {
                             <div class='col-md-2 col-sm-2'>
                                 Estado: <strong>".$examen['nombre_estado_detalle']."</strong>
                             </div>";
-    
+
     if($examStatus === 'RC') {
         $header.= "
                             <div class='col-md-3 col-sm-3'>
@@ -497,7 +497,7 @@ function headerLayout($examen, $examStatus) {
                                 Urgente: <strong>".$examen['resultadoFinal']['urgente']."</strong>
                             </div>";
     }
-    
+
     $header.= "        </div>
                     </h5>
                 </div>";
@@ -515,8 +515,8 @@ function  MuestrasRechazadas($rm) {
                         </div>";
     $html.= "<div class='panel panel-primary'>
                                         <div class='panel-heading mouse-pointer' role='tab' id='heading- data-toggle='collapse' >
-                                            
-                                        
+
+
                         </div>";
     $html.="<table class='table table-hover  table-condensed table-white' >
                 <thead>
@@ -527,7 +527,7 @@ function  MuestrasRechazadas($rm) {
                     </tr>
                 </thead>
                 <tbody>";
-    
+
     if(count($rm) > 0) {
         foreach($rm as $examen) {
             $html.= "<tr>
@@ -541,16 +541,16 @@ function  MuestrasRechazadas($rm) {
                     <td>No existen examenes rechazados...</td>
                 </tr>";
     }
-    
+
     $html.= "</tbody>
         </table></div>";
-          
-    return $html;                            
+
+    return $html;
 }
 
 function plantillas($examen, $pType){
     $plantilla = 'plantilla'.$pType;
-    
+
     return $plantilla($examen);
 }
 //PLANTILLA A
@@ -577,7 +577,7 @@ function plantillaA($examen) {
        $html.= "<td>".$examen['resultadoFinal']['resultado']."</td>";
         // $html.= "<td>".$examen['resultadoFinal']['nombre_posible_resultado']."</td>";
     }
-    
+
     $html.= "
                     <td>".$examen['resultadoFinal']['unidad']."</td>
                     <td>".$examen['resultadoFinal']['rango_inicio']."-".$examen['resultadoFinal']['rango_fin']."</td>
@@ -604,14 +604,14 @@ function plantillaB($examen) {
                 </thead>
                 <tbody>";
 
-    foreach ($examen['elementos'] as $elemento){               
+    foreach ($examen['elementos'] as $elemento){
         $html.= "<tr>";
-        
+
         if ($examen['codigo'] === 'H50' ){
             $html.= "
                  <td  colspan='2' class='pb-element'>".$elemento['nombre']."</td>
                     <td>";
-            
+
             if($elemento['id_posible_resultado'] !== null || $elemento['id_posible_resultado'] !== '') {
                 $html.= " ".$elemento['nombre_posible_resultado']."";
                 $html.="    ".$elemento['resultado']."  ";
@@ -625,15 +625,15 @@ function plantillaB($examen) {
         } else {
             $html.= '<td colspan="6" class="pb-element">'.$elemento['nombre'].'</td>';
         }
-        
+
         $html.= '</tr>';
-        
+
         foreach($elemento['subelementos'] as $subelemento) {
             $html.= '<tr>
                     <td></td>
                     <td class="pb-subelement">'.$subelemento['nombre'].'</td>
                     <td>';
-            
+
             if($subelemento['id_posible_resultado'] !== null || $subelemento['id_posible_resultado'] !== '') {
               // $html.= $subelemento['nombre_posible_resultado'];
                  $html.= "".$subelemento['resultado']."";
@@ -653,14 +653,14 @@ function plantillaB($examen) {
                 $html.= '<td>'.$subelemento['rango_inicio'].' - '.$subelemento['rango_fin'].'</td>
                 <td></td>';
             }
-            
+
             $html.= '</tr>';
         }
     }
-    
+
     $html.= '</body>
             </table>';
-    
+
     return $html;
 }
 // PLANTILLA C
@@ -674,11 +674,14 @@ function plantillaC($examen) {
                                  $html.="   ". $examen['resultadoFinal']['ombre_posible_resultado']."   ";
                                 } else {
                                           $html.=  "    ".$examen['resultadoFinal']['resultado']."   ";
-                                                    
+
                                 }
+                            if (if( $examen['resultadoFinal']['resultado']==='Positivo'){
+                                $html.="<p> Si llego aqui</p>";
+                            }
                $html.= "</strong>
                 </div>";
-               
+
      if( $examen['resultadoFinal']['id_observacion'] !==(null) ){
              $html.="<div class='col-md-12 col-sm-12'>
                     Observacion: <strong>".$examen['resultadoFinal']['nombre_observacion']."</strong>
@@ -761,7 +764,7 @@ function plantillaD($examen) {
                 }
             $html.=" </tbody>
                     </table>";
-   
+
    return $html;
 }
 //PLANTILLA E
@@ -803,9 +806,9 @@ $html="";
                     Observaci&oacute;n: <strong>". $examen['resultadoFinal']['observacion']."</strong>
                 </div>
             </div>";
-        
 
-            
+
+
      return $html;
 }
 ?>

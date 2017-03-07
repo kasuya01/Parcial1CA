@@ -40,16 +40,22 @@ if ($IdCitaServApoyo == "") {
 }
 //Verificar si el establecimeitno soporta la conexion por medio de HL7
 $enviohl7= $Paciente->ConsultaEnvioHL7($IdEstablecimiento);
-if ($enviohl7!=0){
-   if (enviarSolicitudWS($IdSolicitudEstudio)=='false'){
+if ($enviohl7!=0 && $band == 0){
+    //echo 'Entro porque es diferente de cero';
+
+    //echo 'resultado: '.enviarSolicitudWS($IdSolicitudEstudio);
+     $retorno =enviarSolicitudWS($IdSolicitudEstudio);
+     //echo 'band:'.$band;
+   if ($retorno=='false'){
         echo '<span class="glyphicon glyphicon-warning-sign"></span><i>  Error Envío a Equipos Automatizados, favor intentar enviar esta solicitud más tarde....</i>';
 
     }
     else{
-        echo '<i>'.$envio.'</i>';
+        echo '<i>Envío equipos automatizados: '.$retorno.'</i>';
     }
     /*$envio=enviarSolicitudWS($IdSolicitudEstudio);
     echo 'Envio: '.$envio;*/
+
 }
 
 
@@ -219,7 +225,7 @@ if ($enviohl7!=0){
                              </button>
                             <button type='button' class='btn btn-primary' id='Terminar' onclick='GuardarCambios($IdSolicitudEstudio); '>
                                 <span class='glyphicon glyphicon-ok'></span>
-                                Terminar Solitud
+                                Terminar Solicitud
                              </button>
                              </td></tr></table>
                             <input type='hidden' name='total' id='total' value='" . $i . "'>

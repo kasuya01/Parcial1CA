@@ -3,8 +3,6 @@
 session_start();
 include_once("Clases.php");
 include ("clsRecepcionSolicitud.php");
-include_once("../EstudiosLaboratorio/ClaseSolicitud.php");
-include_once("../EstudiosLaboratorio/envioSolicitudWS.php");
 $usuario = $_SESSION['Correlativo'];
 $lugar = $_SESSION['Lugar'];
 $area = $_SESSION['Idarea'];
@@ -13,7 +11,6 @@ $Clases = new cls_Clases;
 //variables POST
 $opcion = $_POST['opcion'];
 $object = new clsRecepcionSolicitud;
-$Paciente = new Paciente;
 //include_once $ROOT_PATH."/public/css.php";
 //include_once $ROOT_PATH."/public/js.php";
 //creando los objetos de las clases
@@ -28,8 +25,6 @@ switch ($opcion) {
       $cantidadnum = $_POST['cantidadnum'];
       $idhistorial = $_POST['idhistorial'];
       $referido = $_POST['referido'];
-      $return_='';
-      $enviohl7= $Paciente->ConsultaEnvioHL7($lugar);
 
       if ($con->conectar() == true) {
          $query = "UPDATE sec_solicitudestudios "
@@ -44,7 +39,7 @@ switch ($opcion) {
          $aux_result = @pg_query($aux_query);
          $sirecep = pg_fetch_array($aux_result);
          $numero = $sirecep['numero'];
-         $hl7conexion=0;
+
          if ($numero == '0') {
             //if($sirecep[0] === 0) {
 
@@ -53,20 +48,10 @@ switch ($opcion) {
                   $hdniddeatalle_ = $_POST['iddetalle_' . $i];
                   $hdni_idexamen_ = $_POST['i_idexamen_' . $i];
                   $hdnfechatmx_ = $_POST['f_tomamuestra_' . $i];
-                  $hdnid_suministrante_ = $_POST['id_suministante_' . $i];
-
                   $hdnvalidarmuestra_ = $_POST['validarmuestra_' . $i];
                   //$hdncmbrechazo_ = $_POST['cmbrechazo_'.$i];
                   $hdncmbrechazo_ = isset($_POST['cmbrechazo_' . $i]) ? $_POST['cmbrechazo_' . $i]
                              : null;
-
-                 ///Buscar si el idsuministrante tiene conexion tipo hl7
-                 $tipo_conexion="SELECT id_tipo_conexion from lab_suministrante where id= $hdnid_suministrante_";
-
-                 $resulthl7=pg_fetch_array(pg_query($tipo_conexion));
-                 if (($resulthl7['id_tipo_conexion'])==2){
-                     $hl7conexion=1;
-                 }
                   if ($hdncmbrechazo_ == 0)
                      $hdncmbrechazo_ = 'NULL';
                   //$hdnf_newdate_ = $_POST['f_newdate_'.$i];
@@ -110,7 +95,6 @@ switch ($opcion) {
                       f_tomamuestra= '$hdnfechatmx_',
                       id_estado_rechazo=$hdnvalidarmuestra_,
                       id_posible_observacion=$hdncmbrechazo_,
-                      id_suministrante = $hdnid_suministrante_,
                          f_estado=current_date
                                  WHERE idsolicitudestudio = $idsolicitud "
                           . "AND idestablecimiento = $lugar
@@ -124,7 +108,6 @@ switch ($opcion) {
                for ($i = 1; $i <= $cantidadnum; $i++) {
                   $hdniddeatalle_ = $_POST['iddetalle_' . $i];
                   $hdnfechatmx_ = $_POST['f_tomamuestra_' . $i];
-                  $hdnid_suministrante_ = $_POST['id_suministrante_' . $i];
                   $hdnvalidarmuestra_ = $_POST['validarmuestra_' . $i];
                   $hdni_idexamen_ = $_POST['i_idexamen_' . $i];
                   $hdncmbrechazo_ = isset($_POST['cmbrechazo_' . $i]) ? $_POST['cmbrechazo_' . $i]
@@ -132,11 +115,6 @@ switch ($opcion) {
                   //$hdnf_newdate_ = $_POST['f_newdate_'.$i];
                   $hdnf_newdate_ = isset($_POST['f_newdate_' . $i]) ? $_POST['f_newdate_' . $i]
                              : null;
-                 $tipo_conexion="SELECT id_tipo_conexion from lab_suministrante where id= $hdnid_suministrante";
-                 $resulthl7=pg_fetch_array(pg_query($tipo_conexion));
-                 if (($resulthl7['id_tipo_conexion'])==2){
-                     $hl7conexion=1;
-                 }
                   if ($hdnvalidarmuestra_ != 1 && $hdnvalidarmuestra_ !=4) {
                      $idestado = 'RM';
                      if ($hdnvalidarmuestra_ == 2) {
@@ -181,21 +159,6 @@ switch ($opcion) {
                }
             }
          }
-         //Si hay conexiones de tipo hl7 debe invocar el envio de la SolicitudLab
-//         echo $return_.='enviohl7: '.$enviohl7.' $hl7conexo: '.$hl7conexion;
-         if ($enviohl7!=0 && $hl7conexion==1){
-              $retorno =enviarSolicitudWS($idsolicitud);
-         if ($retorno=='false'){
-              $return_.= ' Error Envío a Equipos Automatizados, favor intentar enviar esta solicitud más tarde....';
-
-          }
-          else{
-              $return_.=  'Solicitud Enviada a equipos automatizados correctamente...';
-              $envio='Y';
-          }
-          /*$envio=enviarSolicitudWS($IdSolicitudEstudio);
-          echo 'Envio: '.$envio;*/
-        }
          $estadosol= "select count(*) as canti
                 from sec_detallesolicitudestudios
                 where idsolicitudestudio =$idsolicitud
@@ -213,11 +176,9 @@ switch ($opcion) {
 
 
          if (!$result)
-            echo   "N";
+            echo "N";
          else
-            echo  "Y";
-
-        //echo $return_;
+            echo "Y";
       } else {
          echo "No se conecta a la base de datos";
       }
@@ -586,7 +547,7 @@ switch ($opcion) {
          else{
              $rslts = "<select name='cmbrechazosol' id='cmbrechazosol' class='form-control height' style='width:90%' >";
              $rslts .='<option value="0" selected>--Seleccione una opción--</option>';
-             $rslts .= '</select>';
+             $rslts .= '</select>'; 
          }
 
 

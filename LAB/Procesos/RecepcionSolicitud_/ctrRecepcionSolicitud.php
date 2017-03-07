@@ -53,7 +53,7 @@ switch ($opcion) {
                   $hdniddeatalle_ = $_POST['iddetalle_' . $i];
                   $hdni_idexamen_ = $_POST['i_idexamen_' . $i];
                   $hdnfechatmx_ = $_POST['f_tomamuestra_' . $i];
-                  $hdnid_suministrante_ = $_POST['id_suministante_' . $i];
+                  $hdnid_suministrante_ = $_POST['id_suministrante_' . $i];
 
                   $hdnvalidarmuestra_ = $_POST['validarmuestra_' . $i];
                   //$hdncmbrechazo_ = $_POST['cmbrechazo_'.$i];
@@ -61,10 +61,10 @@ switch ($opcion) {
                              : null;
 
                  ///Buscar si el idsuministrante tiene conexion tipo hl7
-                 $tipo_conexion="SELECT id_tipo_conexion from lab_suministrante where id= $hdnid_suministrante_";
-
-                 $resulthl7=pg_fetch_array(pg_query($tipo_conexion));
-                 if (($resulthl7['id_tipo_conexion'])==2){
+                 $tipo_conexion="SELECT id_tipo_conexion from lab_suministrante where id= $hdnid_suministrante";
+                 $return_.=$tipo_conexion;
+                 $resulthl7=pg_query($tipo_conexion);
+                 if (pg_fetch_array($resulthl7)==2){
                      $hl7conexion=1;
                  }
                   if ($hdncmbrechazo_ == 0)
@@ -133,8 +133,8 @@ switch ($opcion) {
                   $hdnf_newdate_ = isset($_POST['f_newdate_' . $i]) ? $_POST['f_newdate_' . $i]
                              : null;
                  $tipo_conexion="SELECT id_tipo_conexion from lab_suministrante where id= $hdnid_suministrante";
-                 $resulthl7=pg_fetch_array(pg_query($tipo_conexion));
-                 if (($resulthl7['id_tipo_conexion'])==2){
+                 $resulthl7=pg_query($tipo_conexion);
+                 if (pg_fetch_array($resulthl7)==2){
                      $hl7conexion=1;
                  }
                   if ($hdnvalidarmuestra_ != 1 && $hdnvalidarmuestra_ !=4) {
@@ -182,9 +182,11 @@ switch ($opcion) {
             }
          }
          //Si hay conexiones de tipo hl7 debe invocar el envio de la SolicitudLab
-//         echo $return_.='enviohl7: '.$enviohl7.' $hl7conexo: '.$hl7conexion;
+         echo $return_.='enviohl7: '.$enviohl7.' $hl7conexo: '.$hl7conexion;
          if ($enviohl7!=0 && $hl7conexion==1){
-              $retorno =enviarSolicitudWS($idsolicitud);
+              $retorno =enviarSolicitudWS($IdSolicitudEstudio);
+              var_dump($retorno); exit();
+              $return_.=$retorno;
          if ($retorno=='false'){
               $return_.= ' Error Envío a Equipos Automatizados, favor intentar enviar esta solicitud más tarde....';
 
@@ -213,11 +215,11 @@ switch ($opcion) {
 
 
          if (!$result)
-            echo   "N";
+            $return_.=  "N";
          else
-            echo  "Y";
+            $return_.=  "Y";
 
-        //echo $return_;
+        echo $return_;
       } else {
          echo "No se conecta a la base de datos";
       }
