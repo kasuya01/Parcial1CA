@@ -1171,7 +1171,7 @@ values($idseq,$idexpediente, $IdEmpleado,$IdSubServicio, date_trunc('seconds',NO
 					from lab_proceso_establecimiento t04
 					where t04.id in (11,12)
 					and t04.activo =true)
-	        or id_tipo_conexion is null)
+	        or id_tipo_conexion =1)
             order by nombre_examen asc;";
             /*Debido a que en lab_proceso_establecimiento se configura:
             el id_proceso_laboratorio = 11 activo si el establecimiento tiene equipos con conexion de equipos automatizados
