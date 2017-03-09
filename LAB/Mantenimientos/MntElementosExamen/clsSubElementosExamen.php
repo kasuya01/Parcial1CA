@@ -391,7 +391,7 @@ function consultarpagbus($query_search,$RegistrosAEmpezar, $RegistrosAMostrar)
             id_user_mod =$user,
             fecha_mod= date_trunc('seconds', NOW())
             WHERE id_subelemento = '$id_subelemento'";
-            $result = pg_query($query);        
+            $result = pg_query($query);
             if (!$result)
               return false;
             else
@@ -559,6 +559,29 @@ function consultarpagbus($query_search,$RegistrosAEmpezar, $RegistrosAMostrar)
 			return $result;
 		}
 	}
+
+    function order_subelement($idelemento){
+        $con = new ConexionBD;
+       if ( $con->conectar()==true ) {
+            $query = "with tb_orden as (
+               select generate_series(1, 25, 1) as orden_prop )
+               select orden_prop
+               from tb_orden
+               where orden_prop not in (select orden
+               from lab_subelementos
+               where idelemento = $idelemento
+               and fechafin is null)
+               order by 1;";
+           $result = pg_query( $query );
+
+           if (!$result)
+          return false;
+        else
+          return $result;
+
+               }
+    }
+
   function BuscarExisteOrden($idelemento,$subelemento){
       $con = new ConexionBD;
 	//usamos el metodo conectar para realizar la conexion

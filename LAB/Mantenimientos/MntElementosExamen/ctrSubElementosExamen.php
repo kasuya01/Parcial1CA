@@ -329,6 +329,11 @@ switch ($opcion)
                                 <select   name='cmborden'  id='cmborden' style='width:50%'  class='form-control height'  >
                                         <option value='0'>--Seleccione un Orden--</option>";
                                        $datosDB=0;
+
+								/*	   $datosDBele=$objdatos->order_subelement($idelemento);
+					   				while ($row_p=@pg_fetch_array($datosDBele)){
+					   					$rslts.='<OPTION VALUE="'.$row_p['orden_prop'].'">'.$row_p['orden_prop'].'</OPTION>';
+					   				}*/
                                      //  echo $idele;
                                         $conOrden = $objdatos->llenarrangosubele($idelemento);
                                         while($row = pg_fetch_array($conOrden)){
@@ -348,7 +353,7 @@ switch ($opcion)
                                                    // }
 
 
-                                                    }
+											   }
                                    //   $imprimir.="<option value='" . $orden . "' selected='selected'>" .$orden. "</option>";
                         $imprimir.="     </select>
 				</div>

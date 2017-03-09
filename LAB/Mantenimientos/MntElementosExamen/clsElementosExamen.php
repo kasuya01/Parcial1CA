@@ -14,7 +14,7 @@ class clsElementosExamen
    $con = new ConexionBD;
    if($con->conectar()==true)
    {
-    $query = "INSERT INTO lab_elementos(id_conf_examen_estab,elemento,subelemento,UnidadElem,ObservElem,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod,IdEstablecimiento,FechaIni,FechaFin,orden) 
+    $query = "INSERT INTO lab_elementos(id_conf_examen_estab,elemento,subelemento,UnidadElem,ObservElem,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod,IdEstablecimiento,FechaIni,FechaFin,orden)
     VALUES($idexamen,'$nomelemento','$subelemento',$unidadele,$observacionele,$usuario,NOW(),$usuario,NOW(),$lugar,$Fechaini,$Fechafin,$orden)";
      $result = pg_query($query);
 
@@ -275,15 +275,20 @@ function consultar($lugar){
  function existeordenele($idexamen){
          $con = new ConexionBD;
 		if ( $con->conectar()==true ) {
-			ECHO $query = "SELECT max(orden) FROM lab_elementos where id_conf_examen_estab=$idexamen";
+			 $query = "with tb_orden as (
+                select generate_series(1, 25, 1) as orden_prop )
+                select orden_prop
+                from tb_orden
+                where orden_prop not in (select orden
+                from lab_elementos
+                where id_conf_examen_estab = $idexamen
+                and fechafin is null)";
 			$result = pg_query( $query );
 
-                    while ($row=pg_fetch_array($result))
-                    {
-                       $hola=$row[0];
-                    }
-
-                    return $hola;
+            if (!$result)
+           return false;
+         else
+           return $result;
 
                 }
  }
