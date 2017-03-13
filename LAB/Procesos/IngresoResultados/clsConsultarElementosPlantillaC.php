@@ -1,3 +1,4 @@
+
 <?php 
 include_once("../../../Conexion/ConexionBD.php");
 
@@ -22,7 +23,7 @@ function Nombre_Establecimiento($lugar){
  function DatosConsulta($IdHistorial,$lugar){
           $con = new ConexionBD;
         if($con->conectar()==true) {
-         echo $query = "SELECT t07.peso,t07.talla,
+             $query = "SELECT t07.peso,t07.talla,
                         CASE WHEN t04.id_snomed IS NOT NULL
                             THEN t06.sct_name_es 
                             ELSE t08.diagnostico
@@ -60,7 +61,7 @@ function DatosAntibiograma(){
 }
 ////**********************************************************************************************************************************************////
 //
-function insertar_detalle_antibiograma($idsolicitud,$iddetalle,$usuario,$lugar,$idcat,$idmnt,$idcof){
+function insertar_detalle_solicitud($idsolicitud,$iddetalle,$usuario,$lugar,$idcat,$idmnt,$idcof){
     $con = new ConexionBD;
    if($con->conectar()==true) 
    {
@@ -80,7 +81,7 @@ function insertar_detalle_antibiograma($idsolicitud,$iddetalle,$usuario,$lugar,$
             $query2="INSERT INTO sec_detallesolicitudestudios (idsolicitudestudio, indicacion, idtipomuestra,idorigenmuestra,observacion,idexamen,idestablecimiento,idestablecimientoexterno,idempleado,
                        idusuarioreg,fechahorareg,estadodetalle,id_conf_examen_estab,f_tomamuestra,id_estado_rechazo,id_posible_observacion,f_estado,id_suministrante) 
                        VALUES($idsolicitud, $indicacion,$row[2],$origen,$observacion,$idmnt,$row[5],$row[6],$row[7],
-                       $usuario,date_trunc('seconds',NOW()),$row[10],$idcof,'$row[11]',$row[12],$idobservacion,'$row[14]',$suministrante)RETURNING id";
+                       $usuario,date_trunc('seconds',NOW()),7,$idcof,'$row[11]',$row[12],$idobservacion,'$row[14]',$suministrante)RETURNING id";
                $result2 = pg_query($query2);
                   $row2 = pg_fetch_array($result2);
                   if($result2) {
@@ -94,6 +95,72 @@ function insertar_detalle_antibiograma($idsolicitud,$iddetalle,$usuario,$lugar,$
     
     }
 } 
+
+function datos_resiembras($idsolicitud,$iddetalle,$usuario,$numresiembras,$lugar){
+     if($con->conectar()==true) 
+            {
+                  $queryids = "SELECT lab_examen_metodologia.id AS idmetodologia,ctl_examen_servicio_diagnostico.id AS idcatalogo,
+                    mnt_area_examen_establecimiento.id AS idmnt,lab_conf_examen_estab.id AS idconf
+                    FROM ctl_examen_servicio_diagnostico 
+                    INNER JOIN mnt_area_examen_establecimiento ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico = ctl_examen_servicio_diagnostico.id
+                    INNER JOIN lab_conf_examen_estab ON lab_conf_examen_estab.idexamen = mnt_area_examen_establecimiento.id
+                    INNER JOIN lab_examen_metodologia ON lab_examen_metodologia.id_conf_exa_estab = lab_conf_examen_estab.id
+                    WHERE idestandar='M73' ";
+                    $resultids = pg_query($queryids);
+                    if(!empty($resultids )){ 
+                        $rowids = pg_fetch_array($resultids);
+                        $idmetRes= $rowids['idmetodologia'];
+                        $idcatRes= $rowids['idcatalogo'];
+                        $idmntRes= $rowids['idmnt'];
+                        $idconfRes= $rowids['idconf'];
+                    }
+                
+              $querydet="SELECT idsolicitudestudio, indicacion,idtipomuestra,idorigenmuestra,observacion,idestablecimiento,idestablecimientoexterno,idempleado,
+                              idusuarioreg,fechahorareg,estadodetalle,f_tomamuestra,id_estado_rechazo,id_posible_observacion,f_estado,id_suministrante
+                              FROM sec_detallesolicitudestudios 
+                              WHERE idsolicitudestudio=$idsolicitud AND id=$iddetalle";
+                    $resultdet = pg_query($querydet);
+                    $rowdet = pg_fetch_array($resultdet);
+                        if(!empty($resultdet)){ 
+                            $indicacion= ($rowdet['indicacion']=='') ? 'NULL' : "'" . pg_escape_string($rowdet['indicacion']) . "'";
+                            $observacion= ($rowdet['observacion']=='') ? 'NULL' : "'" . pg_escape_string($rowdet['observacion']) . "'";
+                            $origen= ($rowdet['idorigenmuestra']=='') ? 'NULL' : "'" . pg_escape_string($rowdet['idorigenmuestra']) . "'";
+                            $idobservacion =($rowdet['id_posible_observacion']=='') ? 'NULL' : "'" . pg_escape_string($rowdet['id_posible_observacion']) . "'";
+                            $suministrante =($rowdet['id_suministrante']=='') ? 'NULL' : "'" . pg_escape_string($rowdet['id_suministrante']) . "'";
+                           // $tipomuestra =($rowdet['idtipomuestra']=='') ? 'NULL' : "'" . pg_escape_string($rowdet['idtipomuestra']) . "'";    
+                        }
+                        
+                    for ($i = 1; $i <= $numresiembras; $i++) {
+                            $query2="INSERT INTO sec_detallesolicitudestudios (idsolicitudestudio, indicacion, idtipomuestra,idorigenmuestra,observacion,idexamen,idestablecimiento,idestablecimientoexterno,idempleado,
+                                         idusuarioreg,fechahorareg,estadodetalle,id_conf_examen_estab,f_tomamuestra,id_estado_rechazo,id_posible_observacion,f_estado,id_suministrante) 
+                                         VALUES($idsolicitud,$indicacion,$rowdet[3],$origen,$observacion,$idmntRes,$rowdet[5],$rowdet[6],$rowdet[7],
+                                         $usuario,date_trunc('seconds',NOW()),$rowdet[10],$idconfRes,'$rowdet[11]',$rowdet[12],$idobservacion,'$rowdet[14]',$suministrante)RETURNING id";
+                                $result2 = pg_query($query2);
+                                //$row2 = pg_fetch_array($result2);
+                                 
+                                if( $row2 = pg_fetch_array($result2)){
+                                  $idultimo = $row2[0];
+                                  $queryexiste= "select id from lab_resultados where idsolicitudestudio=$idsolicitud AND iddetallesolicitud=$idultimo";
+                                  $resultexiste = pg_query($queryexiste);
+                                    if( $rowexiste = pg_fetch_array($resultexiste)){
+                                        $idultimo = $rowexiste[0];
+                                         return $idultimores;
+                                    }else{
+                                        $query = "INSERT INTO lab_resultados
+                                                 (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
+                                                  observacion,resultado,idempleado,idusuarioreg,fechahorareg,idestablecimiento,id_observacion,fecha_resultado) 
+                                                  VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,
+                                                  '$observacion','$NomResultado',$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,$idobservacion,'$fecharesultado')RETURNING id";
+                                              //echo $query;
+                                        $result = pg_query($query);
+
+                                    }// if existe
+                                }// if de id ultimo    
+
+                    }// for    
+                   
+            }
+}
 
 function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$responsable,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado)
 {
@@ -128,7 +195,7 @@ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$obs
                         $row_exam_metod = pg_fetch_array($result1);
                         $id_exam_metod = $row_exam_metod[0];
                                         // $id_exam_metod;
-                            $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
+                           $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
                                      VALUES($id_exam_metod, $iddetalle, $codigoResultado, $usuario, date_trunc('seconds',NOW()),'$fecharealiz','$fecharesultado',$responsable)";
                             $result = pg_query($query);
                             if($result) {
@@ -156,7 +223,7 @@ function insertar_encabezado_antibiograma($idsolicitud,$detantib,$idcof,$idrecep
    //echo $resultado;
     if($con->conectar()==true) 
     {
-        $query = "INSERT INTO lab_resultados
+       $query = "INSERT INTO lab_resultados
 	       (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,observacion,resultado,idempleado,idusuarioreg,fechahorareg,idestablecimiento,id_observacion,fecha_resultado,id_resultado_padre) 
 	       VALUES($idsolicitud,$detantib,$idcof ,$idrecepcion,'$observacion','$NomResultado',$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,$idobservacion,'$fecharesultado',$ultimo)RETURNING id";
       //echo $query;

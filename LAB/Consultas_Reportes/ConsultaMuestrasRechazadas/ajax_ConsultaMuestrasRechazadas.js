@@ -196,9 +196,12 @@ function MuestrasRechazadas()
 	PApellido=document.getElementById('PrimerApellido').value;
         SApellido=document.getElementById('SegundoApellido').value;
 	ventana_secundaria = window.open("ReporteMuestrasRechazadas.php?var1="+idarea+
-				  "&var2="+idexpediente+"&var3="+fecharecep+"&var4="+IdEstab+"&var5="+IdServ+"&var6="+IdSubServ+
-			"&var7="+idexamen+"&var8="+PNombre+"&var9="+SNombre+"&var10="+PApellido+
-			"&var11="+ SApellido,"VistaRechazadas","width=1250,height=575,menubar=no,scrollbars=yes") ;
+	"&var2="+idexpediente+"&var3="+fecharecep+"&var4="+IdEstab+"&var5="+IdServ+"&var6="+IdSubServ+
+	"&var7="+idexamen+"&var8="+PNombre+"&var9="+SNombre+"&var10="+PApellido+
+	"&var11="+ SApellido,"VistaRechazadas","width=1250,height=575,menubar=no,scrollbars=yes") ;
   
  }
+
+
+
 

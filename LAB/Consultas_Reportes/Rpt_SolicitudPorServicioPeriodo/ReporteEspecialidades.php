@@ -73,11 +73,11 @@ document.getElementById('btnImprimir').style.visibility="visible";
 
 <?php 
 include_once("clsSolicitudesPorServicioPeriodo.php");
-     $especialidad   =$_GET['var1'];
+    $especialidad   =$_GET['var1'];
     $fechainicio    =$_GET['var2'];
-      $fechafin       =$_GET['var3'];                    
-     $IdServ         =$_GET['var6'];               
-     $IdEstab        =$_GET['var5'];
+    $fechafin       =$_GET['var3'];                    
+    $IdServ         =$_GET['var6'];               
+    $IdEstab        =$_GET['var5'];
     $medico         =$_GET['var4'];
     $objdatos       = new clsSolicitudesPorServicioPeriodo;
     $cond1="";

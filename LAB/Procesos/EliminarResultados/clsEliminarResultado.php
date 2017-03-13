@@ -359,7 +359,7 @@ function DatosDetalleSolicitud($idsolicitud)
   $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-   $query ="SELECT * FROM lab_resultados 
+    $query ="SELECT * FROM lab_resultados 
             WHERE idsolicitudestudio=$idsolicitud AND iddetalleSolicitud=$iddetalle";
   $result = @pg_query($query);
    if (!$result)
@@ -387,7 +387,7 @@ function DatosDetalleSolicitud($idsolicitud)
      $con = new ConexionBD;
 	if($con->conectar()==true)
 	{
-      $query ="DELETE FROM lab_detalleresultado WHERE idresultado=$idresultado";
+    $query ="DELETE FROM lab_detalleresultado WHERE idresultado=$idresultado";
 		$result = pg_query($query);
 		if (!$result)
 			return -1;
@@ -440,6 +440,18 @@ function ObtenerIdDetalleResultado($idresultado){
    
  }
  
+ function ObtenerIdAntibiograma(){
+    if($con->conectar()==true)
+    {
+        $query="select id from lab_conf_examen_estab where idexamen=(select id from  mnt_area_examen_establecimiento where id_examen_servicio_diagnostico=303)";
+        $result = pg_fetch_array(pg_query($query));
+        if (!$result)
+	   return false;
+	 else 
+		return $result[0];
+        
+    }
+ }
  
 function ObtenerIdResultado($idsolicitud,$iddetalle){
         $con = new ConexionBD;
@@ -456,11 +468,26 @@ function ObtenerIdResultado($idsolicitud,$iddetalle){
         }
   }
   
+  function ObtenerIdResultadoPadre($idresultado){
+        $con = new ConexionBD;
+        if($con->conectar()==true)
+        {
+           $query ="SELECT id,iddetallesolicitud,idexamen 
+                  FROM lab_resultados 
+                  WHERE id_resultado_padre=$idresultado or id= $idresultado";
+              $result = @pg_query($query);
+              if (!$result)
+                return false;
+              else 
+                     return $result;
+        }
+  }
+  
  function ObtenerIdDetalleRes($idresultado){
  $con = new ConexionBD;
    if($con->conectar()==true)
    {
-     $query ="select id FROM lab_detalleresultado WHERE idresultado=$idresultado";
+        $query ="select id FROM lab_detalleresultado WHERE idresultado=$idresultado";
 	 $result = pg_query($query);
 	 if (!$result)
 	   return false;
@@ -504,7 +531,7 @@ function ObtenerIdResultado($idsolicitud,$iddetalle){
  {
    $con = new ConexionBD;
    if($con->conectar()==true) //Estado PM--> Muestra en Proceso
-   {	$query="UPDATE sec_detallesolicitudestudios SET estadodetalle=5 WHERE id=$iddetalle";	
+   {  $query="UPDATE sec_detallesolicitudestudios SET estadodetalle=5 WHERE id=$iddetalle";	
      $result = pg_query($query);
      if (!$result)
        return false;
@@ -513,6 +540,19 @@ function ObtenerIdResultado($idsolicitud,$iddetalle){
    }
  }
  
+   /*Funcion para Cancelar el estado del detalla de la solicitud */
+ function CancelarEstadoDetalle($iddetalle)
+ {
+   $con = new ConexionBD;
+   if($con->conectar()==true) //Estado PM--> Muestra en Proceso
+   {      $query="UPDATE sec_detallesolicitudestudios SET estadodetalle=8, id_posible_observacion=10 WHERE id=$iddetalle";	
+     $result = pg_query($query);
+     if (!$result)
+       return false;
+     else
+       return true;	   
+   }
+ }
  
  
 /*Actualiza el estado de la solicitud*/

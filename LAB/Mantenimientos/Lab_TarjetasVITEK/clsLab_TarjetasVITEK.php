@@ -76,7 +76,7 @@ class clsLab_TarjetasVITEK
 		$con = new ConexionBD;
    		//usamos el metodo conectar para realizar la conexion
 		if($con->conectar()==true){
-			echo $query = "SELECT * FROM lab_tarjetasvitek WHERE idestablecimiento=$lugar ORDER BY id  ";
+			 $query = "SELECT * FROM lab_tarjetasvitek WHERE idestablecimiento=$lugar AND fechafin IS NULL ORDER BY id  ";
 			$result = pg_query($query);
 			if (!$result)
 				return false;

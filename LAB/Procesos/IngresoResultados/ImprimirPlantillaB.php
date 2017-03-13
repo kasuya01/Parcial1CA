@@ -332,10 +332,10 @@ $tipomuestra          = $_GET['var21'];
 
                                     <table width="100%" border="0" align="center" cellpadding="0%"  cellspacing="0%">
                                        <tr>
-                                            <td width="40%" colspan="1" align="left" class="Estilo5"></td>
-                                            <td width="35%" colspan="1" align="left" class="Estilo5"><strong>Resultado</strong></td>
+                                            <td width="30%" colspan="1" align="left" class="Estilo5"></td>
+                                            <td width="20%" colspan="1" align="left" class="Estilo5"><strong>Resultado</strong></td>
                                             <td width="15%" colspan="1" align="justify" class="Estilo5"><strong>Unidades</strong></td>
-                                            <td width="10%" colspan="3" align="justify" class="Estilo5"><strong>&nbsp;&nbsp;Rangos de Referencia</strong></td>
+                                            <td width="20%" colspan="3" align="justify" class="Estilo5"><strong>&nbsp;&nbsp;Rangos de Referencia</strong></td>
                                         </tr>
                                         <tr><td colspan="6"><hr></td></tr>
                                     <?php
@@ -369,7 +369,7 @@ $tipomuestra          = $_GET['var21'];
                                                         $row_dresult=  pg_fetch_array($conresult);?>
                                             <td width="25%" class="Estilo5" align="left" colspan='1'><?php echo $row_dresult['posible_resultado']?></td>
                                   <?php }?>
-                                            <td width="15%" class="Estilo5" align="justify" colspan='1'>&nbsp;&nbsp;<?php echo utf8_encode($rowsub['unidad'])?></td>
+                                            <td width="15%" class="Estilo5" align="justify" colspan='1'>&nbsp;&nbsp;<?php echo htmlentities($rowsub['unidad'])?></td>
                                                     <?php
                                         if ((!empty($rowsub['rangoinicio'])) AND (!empty($rowsub['rangofin']))) {
                                                     ?>

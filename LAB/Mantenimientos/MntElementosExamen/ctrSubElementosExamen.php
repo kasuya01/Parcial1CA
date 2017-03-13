@@ -50,6 +50,7 @@ switch ($opcion)
 		$idsubelemento=$_POST['idsubelemento'];
 		//$examen=$_POST['examen'];
 		$subelemento=utf8_encode($_POST['subelemento']);
+                echo $unidad;
 
                 $unidad=(empty($_POST['unidad'])) ? 'NULL' : "'" . pg_escape_string(utf8_encode($_POST['unidad'])) . "'";
                 $sexo=(empty($_POST['sexo'])) ? 'NULL' : "'" . pg_escape_string($_POST['sexo']) . "'";
@@ -59,7 +60,7 @@ switch ($opcion)
                 $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
 		$Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
                 $orden=$_POST['orden'];
-           //   echo $subelemento;
+         //    echo $unidad;
 		//echo $rangoini."-".$rangofin;
 		if ($objdatos->actualizar($idsubelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad,$orden)==true)
                    //&& ($Clases->actualizar_labo($idsubelemento,$unidad,$subelemento,$rangoini,$rangofin,$Fechaini,$Fechafin,$lugar,$sexo,$redad)==true)){
@@ -291,7 +292,7 @@ switch ($opcion)
                             <tr>
                                 <td class='StormyWeatherFieldCaptionTD'>Unidad</td>
                                 <td colspan='3' Class='StormyWeatherDataTD'>
-                                    <input name='txtunidad' type='text' id='txtunidad' value='".htmlentities($unidad)."' size='20' class='form-control height'>
+                                    <input name='txtunidad' type='text' id='txtunidad' value='".($unidad)."' size='20' class='form-control height'>
                                 </td>
                             </tr>
                             <tr>
