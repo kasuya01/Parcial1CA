@@ -239,16 +239,20 @@ function calc_edad()
           <tr>
                             <td colspan='6' class="Estilo6" width='100%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         </tr>
-                        <tr>
-                            <td colspan="6" class="Estilo6" align='right'>
+                                        
+        
+        </table>
+        <table width='100%' border='0' align='center' cellspacing="0%" cellpadding="0%">
+               <tr>
+                            <td colspan='6' class="Estilo6" align='right'>
                                     <br><br>Sello: _______________________ &nbsp;&nbsp;&nbsp;     Firma: _______________________
                             </td>
                         </tr>
                         <tr>
                            <td colspan='6' class="Estilo6" width='100%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                       </tr>                       
-        
-        </table>
+                       </tr>    
+                <tr>
+            </table>
         <div id="boton">
             <table align='center' border="0">
                 <tr>

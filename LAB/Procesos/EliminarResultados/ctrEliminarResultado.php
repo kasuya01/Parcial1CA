@@ -467,13 +467,43 @@ switch ($opcion)
 					  // echo "ENTRO B,D,E";
 					 break; 	
                                         case 3: /* ELIMINAR PLANTILLA C */
-								
+						$ban=0;
+                                               $con = new ConexionBD;
+                                                if($con->conectar()==true) 
+                                                {
+                                                        $query = "select id, idexamen from lab_conf_examen_estab where idexamen=(select id from  mnt_area_examen_establecimiento where id_examen_servicio_diagnostico=303) ";
+                                                        $result_antib = pg_query($query);
+                                                        $row_antibio = pg_fetch_array($result_antib);
+                                                        $id_antib = $row_antibio['id'];
+                                                        
+                                                        $query1 = "select id, idexamen from lab_conf_examen_estab where idexamen=(select id from  mnt_area_examen_establecimiento where id_examen_servicio_diagnostico=352) ";
+                                                        $result_res = pg_query($query1);
+                                                        $row_res = pg_fetch_array($result_res);
+                                                        $id_res = $row_res['id'];
+                                                        $mnt_res= $row_res['idexamen'];
+                                                        
+                                                        $query2 = "select id,idexamen from lab_conf_examen_estab where idexamen=(select id from  mnt_area_examen_establecimiento where id_examen_servicio_diagnostico=345) ";
+                                                        $result_bio = pg_query($query2);
+                                                        $row_bio = pg_fetch_array($result_bio);
+                                                        $id_bio = $row_bio['id'];
+                                                        $mnt_bio=$row_bio['idexamen'];
+
+                                                
+                                                
+                                                }
+                                                //echo $idantbio=$objdatos->ObtenerIdAntibiograma();
+						//$resultantib=pg_fetch_array($rantbio);
+						//echo $idantbio;
+                                            
+                                            
+                                                
 						$r=$objdatos->ObtenerIdResultado($idsolicitud,$iddetalle);
 								//$idresultado=$result['IdResultado'];
+                                                
 							
 						while($result = pg_fetch_array($r)){
 						   // echo "entro".$idplantilla;
-                                                     $idresultado=$result['id'];
+                                                    $idresultado=$result['id']; 
 								// echo $iddetalle;
 								//$tr=$objetos->ObtenerTipoResultado($idresultado);
 								//$tipo=mysql_fetch_array($tr);
@@ -482,31 +512,115 @@ switch ($opcion)
 								switch($TipoResultado){
 								case 'Positivo':
 						//	 while($result = mysql_fetch_array($r)){
-                                                                    $idresultado=$result['id'];
-                                                                    //echo $idresultado;
-									$det=$objdatos->ObtenerIdDetalleRes($idresultado);
-									$detalle=pg_fetch_array($det);
-									$iddetalleres=$detalle[0];
-						 	//	echo "SOL=".$idsolicitud." iddet".$iddetalle." idresultado".$idresultado." lo demas". $iddetalleres;
-                                                                      if($dr=$objdatos->Eliminar_metodologia($iddetalle)==1){  
-                                                                            if($dr=$objdatos->EliminarResultadoTarjeta($iddetalleres)==1){
-                                                                                if($dr=$objdatos->EliminarDetalleResultado($idresultado)==1){
-                                                                                    if ($objdatos->EliminarResultado($idresultado) == 1){
-                                                                                        if (($objdatos->ActualizarEstadoDetalle($iddetalle)==true)||($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true))
-                                                                                            echo "Resultado Eliminado";
+                                                                   // $idresultado=$result['id'];
+                                                                  // echo $idresultado;
+                                                                    $rp=$objdatos->ObtenerIdResultadoPadre($idresultado);
+                                                                    while($resultp = pg_fetch_array($rp)){
+                                                                        $IdResultadop=$resultp['id'];
+                                                                        $IdDetallep=$resultp['iddetallesolicitud'];
+                                                                   $idexamenp=$resultp['idexamen'];
+                                                                        //echo $idexamenp." - ".$id_antib;
+                                                                        if ($idexamenp == $id_antib){
+                                                                              //  echo  $IdResultadop;
+                                                                                 $det=$objdatos->ObtenerIdDetalleRes($IdResultadop);
+                                                                                 $detalle=pg_fetch_array($det);
+                                                                                 $iddetalleres=$detalle[0];
+                                                                 //	echo "SOL=".$idsolicitud." iddet".$iddetalle." idresultado".$idresultado." lo demas". $iddetalleres;
+                                                                               if($dr=$objdatos->Eliminar_metodologia($IdDetallep)==1){  
+                                                                                     if($dr=$objdatos->EliminarResultadoTarjeta($iddetalleres)==1){
+                                                                                         if($dr=$objdatos->EliminarDetalleResultado($IdResultadop)==1){
+                                                                                            if ($objdatos->EliminarResultado($IdResultadop) == 1){
+                                                                                                 if (($objdatos->CancelarEstadoDetalle($IdDetallep)==true)||($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true))
+                                                                                                     //echo "Resultado Eliminado";
+                                                                                                  //   echo $IdDetallep;
+                                                                                                     $ban=0;
+                                                                                                 }
+                                                                                                 else
+                                                                                                     //echo "No se pudo eliminar el registro";
+                                                                                                    $ban=1;
+                                                                                             }
+                                                                                             else
+                                                                                                 //echo "No se pudo eliminar el registro";
+                                                                                                $ban=1;
+                                                                                     }else
+                                                                                          //echo "No se pudo eliminar el registro";
+                                                                                         $ban=1;
+                                                                                }
+                                                                       
+                                                                        }else if (($idexamenp != $id_res) && ($idexamenp != $id_bio)){
+                                                                                    if($dr=$objdatos->Eliminar_metodologia($IdDetallep)==1){
+                                                                                        if($objdatos->EliminarResultado($IdResultadop) == 1){
+                                                                                   // if ($idexamenp != $id_res && $idexamenp != $id_bio){
+                                                                                            if (($objdatos->ActualizarEstadoDetalle($IdDetallep)==true)||($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true)){
+                                                                                      //  echo "Resultado Eliminado";
+                                                                                                 $ban=0;
+                                                                                            }
+                                                                                            else{
+                                                                                                $ban=1;
+                                                                                       // echo "No se pudo eliminar el registro";
+                                                                                            }
+                                                                                    
+                                                                                   /* }else if
+                                                                                        if($objdatos->CancelarEstadoDetalle($IdDetallep)==true){
+                                                                                             echo  $ban=0;
                                                                                         }
-                                                                                        else
-                                                                                            echo "No se pudo eliminar el registro";
+                                                                                         else{
+                                                                                            $ban=1;
+                                                                                       // echo "No se pudo eliminar el registro";
+                                                                                        }
                                                                                     }
-                                                                                    else
-                                                                                        echo "No se pudo eliminar el registro";
-									    }else
-                                                                                 echo "No se pudo eliminar el registro";
-                                                                       }
-								     else
-									 echo "No se pudo eliminar el registro";
-									
-							
+                                                                                        
+                                                                                    }*/
+                                                                                        }else{
+                                                                                            $ban=1; 
+                                                                                    // echo "No se pudo eliminar el registro";    
+                                                                                        }
+                                                                                    }else{
+                                                                                        $ban=1;   
+                                                                                             //echo "No se pudo eliminar el registro";
+                                                                                    }
+                                                                        }   
+                                                                        else{ 
+                                                                            if($dr=$objdatos->Eliminar_metodologia($IdDetallep)==1){
+                                                                                if ($objdatos->EliminarResultado($IdResultadop) == 1){
+                                                                                   // if ($idexamenp != $id_res && $idexamenp != $id_bio){
+                                                                                            if (($objdatos->CancelarEstadoDetalle($IdDetallep)==true)||($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true)){
+                                                                                      //  echo "Resultado Eliminado";
+                                                                                                $ban=0;
+                                                                                            }
+                                                                                            else{
+                                                                                                $ban=1;
+                                                                                       // echo "No se pudo eliminar el registro";
+                                                                                            }
+                                                                                    
+                                                                                   /* }else if
+                                                                                        if($objdatos->CancelarEstadoDetalle($IdDetallep)==true){
+                                                                                             echo  $ban=0;
+                                                                                        }
+                                                                                         else{
+                                                                                            $ban=1;
+                                                                                       // echo "No se pudo eliminar el registro";
+                                                                                        }
+                                                                                    }
+                                                                                        
+                                                                                    }*/
+                                                                                        }else{
+                                                                                            $ban=1; 
+                                                                                    // echo "No se pudo eliminar el registro";    
+                                                                                        }
+                                                                                    }else{
+                                                                                        $ban=1;   
+                                                                                             //echo "No se pudo eliminar el registro";
+                                                                                    }
+                                                                        }
+                                                                        //echo $ban;
+                                                                       
+
+                                                                    }//while
+                                                                     if ($ban==0){
+                                                                            echo "Resultado Eliminado";
+                                                                        }else
+                                                                            echo "No se pudo eliminar el registro";
 								break;
 								case 'Negativo':
 								case '---':

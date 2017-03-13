@@ -571,8 +571,11 @@ function MostrarVistaPreviaPlantillaC()
         fecharesultado =document.getElementById('txtresultfin').value;
         f_tomamuestra=document.getElementById('txtf_tomamuestra').value;
         tipomuestra=document.getElementById('txttipomuestra').value;
-
-       // alert (f_tomamuestra+" ** "+f tipomuestra);
+        resiembras=document.getElementById('txtresiembra').value;
+        bioquimicas=document.getElementById('txtbioquimicas').value;
+        
+         
+       // alert (resiembras+" - "+bioquimicas);
         //DATOS PARA EL DETALLE DE LOS RESULTADOS
         valores_antibioticos = "";
         codigos_antibioticos = "";
@@ -599,7 +602,7 @@ function MostrarVistaPreviaPlantillaC()
                 "&idbacteria=" + idbacteria + "&cantidad=" + encodeURIComponent(cantidad) +
                 "&estab=" + estab+"&idobservacion=" + idobservacion + "&fecharealiz=" + fecharealiz +
                 "&fecharesultado="+fecharesultado+"&valores_interpretacion="+valores_interpretacion+"&f_tomamuestra="+f_tomamuestra+
-                "&tipomuestra="+tipomuestra);
+                "&tipomuestra="+tipomuestra+"&resiembras="+resiembras+"&bioquimicas="+bioquimicas);
         ajax.onreadystatechange = function()
         {
             if (ajax.readyState == 4)
@@ -653,8 +656,10 @@ function GuardarResultadosPlantillaC()
     cantidad = document.getElementById('txtcantidad').value;
     fecharealiz = document.getElementById('txtresultrealiza').value;
     fecharesultado =document.getElementById('txtresultfin').value;
+    numresiembras=document.getElementById('txtresiembras').value;
+    numbioquimicas=document.getElementById('txtbioquimicas').value;
     nombrearea = "";
-   //alert (fecharealiz+" ** "+fecharesultado)
+ //  alert (numresiembras+" ** "+numbioquimicas);
     //hasta aqui todos los datos estan bien
     //DATOS PARA EL DETALLE DE LOS RESULTADOS
     valores_antibioticos = "";
@@ -681,7 +686,8 @@ function GuardarResultadosPlantillaC()
             encodeURIComponent(valores_antibioticos) + "&codigos_antibioticos=" + codigos_antibioticos + "&idtarjeta=" + idtarjeta +
             "&tiporespuesta=" + tiporespuesta + "&idarea=" + idarea + "&nombrearea=" + escape(nombrearea) + "&resultado=" + resultado +
             "&idbacteria=" + idbacteria + "&cantidad=" + encodeURIComponent(cantidad)+"&idobservacion=" + idobservacion +
-            "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado+"&valores_interpretacion="+valores_interpretacion);
+            "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado+"&valores_interpretacion="+valores_interpretacion+
+            "&numresiembras="+numresiembras+"&numbioquimicas="+numbioquimicas);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
