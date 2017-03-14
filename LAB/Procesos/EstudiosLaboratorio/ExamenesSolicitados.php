@@ -32,12 +32,13 @@ $IdSolicitudEstudio = $Paciente->RecuperarIdSolicituEstudio($idexpediente,
 
 // echo '$IdCitaServApoyo'.$IdCitaServApoyo.'<br/>';
 if ($IdCitaServApoyo == "") {
-   $IdCitaServApoyo = $Paciente->IdCitaServApoyoInsertUpdate($IdSolicitudEstudio,
+   $IdCitaServApoy = $Paciente->IdCitaServApoyoInsertUpdate($IdSolicitudEstudio,
            $iduser, $IdNumeroExp, $LugardeAtencion, $IdCitaServApoyo, 1);
 } else {
-   $IdCitaServApoyo = $Paciente->IdCitaServApoyoInsertUpdate($IdSolicitudEstudio,
+   $IdCitaServApoy = $Paciente->IdCitaServApoyoInsertUpdate($IdSolicitudEstudio,
            $iduser, $IdNumeroExp, $LugardeAtencion, $IdCitaServApoyo, 0);
 }
+list($IdCitaServApoyo,$numeromuestra)=explode("_", $IdCitaServApoy);
 //Verificar si el establecimeitno soporta la conexion por medio de HL7
 $enviohl7= $Paciente->ConsultaEnvioHL7($IdEstablecimiento);
 if ($enviohl7!=0 && $band == 0){
@@ -91,10 +92,11 @@ if ($enviohl7!=0 && $band == 0){
 <!--<body onload="MostrarDetalle(<?php //echo $IdHistorialClinico; ?>);">-->
    <body >
       <br>
+
       <div class='panel panel-primary'>
          <table  class='table table-bordered table-condensed table-white no-v-border'  >
             <thead><tr><td colspan='2' style='background-color: #428bca; color:#ffffff; text-align:left' >
-                     <h4>Datos Paciente</h4>
+                     <h4>Datos Paciente     <p style="text-align:right"></h4>
                   </td></tr></thead><tbody>
                <tr>
                   <td style="width: 10%"><b>Expediente:</b> </td>
@@ -118,9 +120,11 @@ if ($enviohl7!=0 && $band == 0){
                  <div class='panel panel-primary'>
                     <table  class='table table-hover table-bordered table-condensed table-white no-v-border'>
                     <thead>
-                    <tr> <td colspan='9' style='background-color: #428bca; color:#ffffff; text-align:left' >
+                    <tr> <td colspan='6' style='background-color: #428bca; color:#ffffff; text-align:left' >
                     <h4>Examenes Solicitados a Laboratorio</h4>
-                    </td></tr>
+                    </td>
+                    <td colspan='3' style='background-color: #428bca; color:#ffffff; text-align:right'><strong>Número de muestra asignado a Paciente:  ". $numeromuestra."</strong> </p></td>
+                    </tr>
                     <tr class='info'>
                     <td colspan='7' align='right' style=' vertical-align: middle'>
                     <h4><b>Solicitud Urgente:</b></h4>

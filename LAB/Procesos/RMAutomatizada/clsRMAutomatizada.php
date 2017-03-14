@@ -228,13 +228,18 @@ VALUES($idexmen_metodologia,
                         ELSE
                         CASE WHEN id_servicio_externo_estab IS NOT NULL
                                 THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
-                             WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=cat.nombre)
+                             WHEN not exists (select nombre_ambiente
+                                            from mnt_aten_area_mod_estab maame
+                                            join mnt_area_mod_estab mame on (maame.id_area_mod_estab = mame.id)
+                                            where nombre_ambiente=cat.nombre
+                                            and mame.id_area_atencion=mnt_2.id_area_atencion)
                                 THEN cmo.nombre||'-'||cat.nombre
                         END
                         END AS servicio
                         from ctl_atencion cat
                         join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
                         join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
+                        JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion=1)
                         LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id
                         LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id
                         join mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab)
