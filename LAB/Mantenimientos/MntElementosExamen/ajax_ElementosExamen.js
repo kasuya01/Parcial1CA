@@ -311,7 +311,7 @@ function enviarDatosSubElemento()
 	ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	//enviando los valores
         //alert(rangoini+"-"+rangofin+"-"+sexo+"-"+redad);
-	ajax.send("idsubelemento="+idsubelemento+"&subelemento="+escape(subelemento)+"&unidad="+unidad+
+	ajax.send("idsubelemento="+idsubelemento+"&subelemento="+escape(subelemento)+"&unidad="+escape(unidad)+
         "&rangoini="+rangoini+"&rangofin="+rangofin+"&idelemento="+idelemento+"&elemento="+escape(elemento)+
         "&Pag="+Pag+"&opcion="+opcion+"&Fechaini="+Fechaini+"&Fechafin="+Fechafin+"&sexo="+sexo+"&redad="+redad+"&orden="+orden);
 	ajax.onreadystatechange=function() {

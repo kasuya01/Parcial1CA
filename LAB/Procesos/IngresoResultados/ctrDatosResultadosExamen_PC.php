@@ -69,8 +69,16 @@ switch ($opcion)
                             <td class='StormyWeatherFieldCaptionTD'>Observación:</td>
                             <td colspan='2'class='StormyWeatherDataTD'><textarea name='txtobservacion' type='text' id='txtobservacion' size='50' cols='50'></textarea></td>
                         </tr>
+                         <tr>
+                            <td class='StormyWeatherFieldCaptionTD'>Número de Resiembras:</td>
+                            <td colspan='2'class='StormyWeatherDataTD'><input name='txtresiembra' type='text' id='txtresiembra' size='10' /></td>
+                        </tr>
                         <tr>
-                            <td width='100%' colspan='3' class='StormyWeatherDataTD'  align='right'>
+                            <td class='StormyWeatherFieldCaptionTD'>Número de Pruebas Bioquimicas:</td>
+                            <td colspan='2'class='StormyWeatherDataTD'><input name='txtbioquimicas' type='text' id='txtbioquimicas' size='10' /></td>
+                        </tr>
+                        <tr>
+                            <td width='100%' colspan='3' class='StormyWeatherDataTD' align='right'>
                                 
                                 <button type='button' id='Submit' align='center' class='btn btn-primary' title='Vista Previa de Resultados'  onclick='MostrarVistaPreviaPlantillaC();'>&nbsp;Vista Previa de Resultados</button>
                             </td>
@@ -109,8 +117,9 @@ switch ($opcion)
 		$resultado="Positivo";
                // echo $resultado;
                 $establecimiento=$_POST['estab'];
-
-               // echo $f_tomamuestra." - ".$tipomuestra;
+                $numresiembras=$_POST['resiembras'];
+                $numbioquimicas=$_POST['bioquimicas'];
+              // echo $numresiembras." - ".$numbioquimicas;
           //echo " Solicitud=".$idsolicitud." empleado=".$idempleado." Examen=".$idexamen." detalle=".$iddetalle." detalle=".$establecimiento;
 		$Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
 		$row_estab = pg_fetch_array($Consulta_Estab);
@@ -231,8 +240,10 @@ switch ($opcion)
                                    pg_free_result($consulta);
 
                                     $imprimir.= "<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
-                                                 <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
-
+                                                 <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."'/>
+                                            <input type='hidden' name='txtresiembras' id='txtresiembras' disabled='disabled' value='".$numresiembras."' />
+                                            <input type='hidden' name='txtbioquimicas' id='txtbioquimicas' disabled='disabled' value='".$numbioquimicas."' />";
+                                                  
                             $imprimir.="<tr>
                                             <td colspan='6'>&nbsp;</td>
                                         </tr>
@@ -243,6 +254,21 @@ switch ($opcion)
                                 <td colspan='1'>Observación:</td>
                                 <td colspan='5' align='left'>".$observacion."</td>
                             </tr>
+                            <tr> 
+                                <td colspan='6'>
+                                    <table width='25%' border='0' align='left' cellspacing='0'>
+                                    <br>
+                                    <tr>
+                                        <td colspan='2'>Número de Resiembras:</td>
+                                        <td colspan='1' align='left'>".$numresiembras."</td></tr>
+                                    <tr>
+                                        <td colspan='2'>Número de Pruebas Bioquimicas:</td>
+                                        <td colspan='1' align='left'>".$numbioquimicas."</td>
+                                    </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            
                             <tr>
                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             </tr>
@@ -296,6 +322,8 @@ switch ($opcion)
 		$vector_antibioticos=EXPLODE("/",$codigos_antibioticos);
                 $vector_interpretacion=EXPLODE("/",$valores_interpretacion);
                 
+                $numresiembras=$_POST['numresiembras'];
+                $numbioquimicas=$_POST['numbioquimicas'];
                // print_r($vector_interpretacion);
                 
 		$tamano_vector=count($vector_valores);
@@ -312,8 +340,8 @@ switch ($opcion)
                 //echo $v_id_elementos[1];
                 if ($resultado=="P")
                 {
-                    $codigoResultado=4;
-                    $CodAntibiograma=6; 
+                    $codigoResultado=4;// código resultado positivo
+                    $CodAntibiograma=6; // resultado otros
                       $con = new ConexionBD;
             if($con->conectar()==true) 
             {
@@ -330,11 +358,40 @@ switch ($opcion)
                     $idcof = $row_exam_metod['idconf'];
                     $idcat = $row_exam_metod['idcatalogo'];
                     $idmnt = $row_exam_metod['idmnt'];
-            }                         
+                    
+                   $query2 = "SELECT lab_examen_metodologia.id AS idmetodologia,ctl_examen_servicio_diagnostico.id AS idcatalogo,
+                    mnt_area_examen_establecimiento.id AS idmnt,lab_conf_examen_estab.id AS idconf
+                    FROM ctl_examen_servicio_diagnostico 
+                    INNER JOIN mnt_area_examen_establecimiento ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico = ctl_examen_servicio_diagnostico.id
+                    INNER JOIN lab_conf_examen_estab ON lab_conf_examen_estab.idexamen = mnt_area_examen_establecimiento.id
+                    INNER JOIN lab_examen_metodologia ON lab_examen_metodologia.id_conf_exa_estab = lab_conf_examen_estab.id
+                    WHERE idestandar='M73' ";
+                    $result2 = pg_query($query2);
+                    $row_exam_metodres = pg_fetch_array($result2);
+                    $id_metodres = $row_exam_metodres['idmetodologia'];
+                    $idcofres = $row_exam_metodres['idconf'];
+                    $idcatres = $row_exam_metodres['idcatalogo'];
+                    $idmntres = $row_exam_metodres['idmnt'];
+                    
+                    $query3 = "SELECT lab_examen_metodologia.id AS idmetodologia,ctl_examen_servicio_diagnostico.id AS idcatalogo,
+                    mnt_area_examen_establecimiento.id AS idmnt,lab_conf_examen_estab.id AS idconf
+                    FROM ctl_examen_servicio_diagnostico 
+                    INNER JOIN mnt_area_examen_establecimiento ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico = ctl_examen_servicio_diagnostico.id
+                    INNER JOIN lab_conf_examen_estab ON lab_conf_examen_estab.idexamen = mnt_area_examen_establecimiento.id
+                    INNER JOIN lab_examen_metodologia ON lab_examen_metodologia.id_conf_exa_estab = lab_conf_examen_estab.id
+                    WHERE idestandar='M66' ";
+                    $result3 = pg_query($query3);
+                    $row_exam_metodbio = pg_fetch_array($result3);
+                    $id_metodbio = $row_exam_metodbio['idmetodologia'];
+                    $idcofbio = $row_exam_metodbio['idconf'];
+                    $idcatbio = $row_exam_metodbio['idcatalogo'];
+                    $idmntbio = $row_exam_metodbio['idmnt'];
+                   
+            }          //  ECHO   $idcofbio;                                                                                     
                   
                  //  echo $idcof." - ".$idmnt ." - ". $idcat;
                // echo "TAR=". $tarjeta;
-               $detantib=$objdatos->insertar_detalle_antibiograma($idsolicitud,$iddetalle,$usuario,$lugar,$idcat,$idmnt,$idcof);
+               $detantib=$objdatos->insertar_detalle_solicitud($idsolicitud,$iddetalle,$usuario,$lugar,$idcat,$idmnt,$idcof);
                $ultimo= $objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado);
                  // $ultimoantb= $objdatos->_antibiograma($idsolicitud,$detantib,$idcof,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$CodAntibiograma,$lugar,$idobservacion,$fecharealiz,$fecharesultado,$id_metod);
                $ultimoantb= $objdatos->insertar_encabezado_antibiograma($idsolicitud,$detantib,$idcof,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$CodAntibiograma,$lugar,$idobservacion,$fecharealiz,$fecharesultado,$id_metod,$ultimo);                  
@@ -368,6 +425,29 @@ switch ($opcion)
                                          $posele=$posele+1;
                                  }
                                     
+                              }
+                              
+                             // $datos_res=$objdatos-> datos_resiembras($idsolicitud,$iddetalle,$usuario,$numresiembras,$lugar);
+                             // $ressiembra=pg_fech_array($datos_res);
+                              for ($i=0; $i < $numresiembras; $i++)
+                              {
+                                  //echo $idcofres;
+                                $detres=$objdatos->insertar_detalle_solicitud($idsolicitud,$iddetalle,$usuario,$lugar,$idcatres,$idmntres,$idcofres);
+                                if($detres){
+                                    $ultimores= $objdatos->insertar_encabezado_antibiograma($idsolicitud,$detres,$idcofres,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$CodAntibiograma,$lugar,$idobservacion,$fecharealiz,$fecharesultado,$id_metodres,$ultimo); 
+                                
+                                }
+                              }
+                              
+                              for ($i=0; $i < $numbioquimicas; $i++)
+                              {
+                                  //ECHO $idcofbio;
+                                $detbio=$objdatos->insertar_detalle_solicitud($idsolicitud,$iddetalle,$usuario,$lugar,$idcatbio,$idmntbio,$idcofbio);
+                                
+                                if($detres){
+                                    $ultimores= $objdatos->insertar_encabezado_antibiograma($idsolicitud,$detbio,$idcofbio,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$CodAntibiograma,$lugar,$idobservacion,$fecharealiz,$fecharesultado,$id_metodbio,$ultimo); 
+                                
+                                }
                               }
                               if($ban==0){
                                       //actualiza el estado del detalle de la solicitud para indicar que el resultado esta completo para el examen

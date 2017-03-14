@@ -488,7 +488,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
                 left  join mnt_empleado 			t24 	on (t09.id_empleado=t24.id)
                 inner join ctl_area_servicio_diagnostico t25      on (t25.id=t05.id_area_servicio_diagnostico)
 
-            WHERE  t02.id=$idsolicitud and  t06.numero='$idexpediente'
+            WHERE  t02.id=$idsolicitud and  t06.numero='$idexpediente'  AND b_verresultado=true
 
 UNION
 
@@ -557,8 +557,7 @@ UNION
             LEFT JOIN mnt_empleado 			t24 	ON (t09.id_empleado=t24.id)
             INNER JOIN ctl_area_servicio_diagnostico t25      ON (t25.id=t05.id_area_servicio_diagnostico)
 
-            WHERE   t02.id=$idsolicitud and  t06.numero='$idexpediente'";
-
+            WHERE   t02.id=$idsolicitud and  t06.numero='$idexpediente' AND b_verresultado=true";
 
 	 $result = @pg_query($query);
         if (!$result)

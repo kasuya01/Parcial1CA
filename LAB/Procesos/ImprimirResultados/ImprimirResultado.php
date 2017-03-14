@@ -173,13 +173,8 @@ if ($nivel == 7) {
                                                        INNER JOIN ctl_modalidad ON ctl_modalidad.id = mnt_modalidad_establecimiento.id_modalidad
                                                        LEFT JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab.id_servicio_externo_estab)
                                                        LEFT JOIN mnt_servicio_externo ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo)
-                                                       ORDER by ctl_modalidad.nombre,ctl_area_atencion.nombre";
-                                             /*"SELECT t01.id,
-                                                      t01.nombre
-                                                      FROM ctl_area_atencion t01
-                                                      WHERE t01.id IN (
-                                                      SELECT DISTINCT id_area_atencion 
-                                                      FROM mnt_area_mod_estab WHERE id_establecimiento = $lugar)";*/
+                                                       ORDER by ctl_modalidad.nombre,mnt_servicio_externo.nombre,ctl_area_atencion.nombre";
+                                            
                                                                                     
 						$resultado = pg_query($consulta);
 						//por cada registro encontrado en la tabla me genera un <option>

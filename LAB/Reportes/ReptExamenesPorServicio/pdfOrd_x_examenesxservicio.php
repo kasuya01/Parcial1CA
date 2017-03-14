@@ -1,6 +1,6 @@
 <?php
 require('../../../pdfg.php');
-include_once("clsReporteTiporesultado.php");
+include_once("clsReporteExamenesporServicio.php");
 @session_start();
 $usuario=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
@@ -63,14 +63,18 @@ class PDF extends PDF_PgSQL_Table
 $pdf=new PDF('L'); //p vertical
 $pdf->AliasNbPages();
 $pdf->AddPage();
-$idarea    =$_GET['idarea'];
-$idexamen   =$_GET['idexamen'];
-$fechainicio=$_GET['fechaini'];
+$procedencia   =$_GET['procedencia'];
+$subservicio  =$_GET['subservicio'];
+$fechainicio=$_GET['fechainicio'];
 $fechafin   =$_GET['fechafin'];
-$cond1="";
+$ffechaini=$fechainicio." 00:00:00";
+$ffechafin=$fechafin." 23:59:59";
+echo $cond1= $_GET['cond1'];
+$cond2= $_GET['cond2'];
+$cadena=$_GET['cadena'];
 
 
-if (!empty($idarea)) {
+/*if (!empty($idarea)) {
    $cond1 .= " t05.id = " . $idarea. " AND";
    //$cond1 .= " t05.id = " . $_POST['idarea'] . " AND";
 }
@@ -83,11 +87,11 @@ $cond1 .= " t03.id = " . $idexamen . " AND";
 if ((!empty($fechainicio)) and (!empty($fechafin)))
 { $cond1.= "   (t01.fecha_resultado >='".$fechainicio."' AND t01.fecha_resultado <='".$fechafin."')         ";
  // $cond2.= " AND  (t02 .fechahorareg >='".$ffechaini."' AND t02 .fechahorareg <='".$ffechafin."')    AND     ";
-}
+}*/
 
 
 //consulta todos los registros
-$objeto = new clsReporteTiporesultado(); 
+$objeto = new clsReporteExamenesporServicio(); 
 $sql = $objeto->reporte_tiporesultado($idarea, $idexamen,$fechainicio, $fechafin, $cond1);  
 $pdf->Cell(0,1,'PERIODO DEL: '.$fechainicio.' AL '.$fechafin,0,1,'C');
 $pdf->Ln(5);
