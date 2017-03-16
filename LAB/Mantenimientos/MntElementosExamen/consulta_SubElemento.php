@@ -139,12 +139,14 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
               return content;
             }
             function detallemodaladdexam(idsolicitud){
+               var metodologias_sel=$("#metodologias_sel").val();
+               var id_subelemento=$("#id_subelemento").val();
                var content= '';
                jQuery.ajax({
                   url: "ctrSubElementosExamen.php",
                   method: "POST",
                   async: false,
-                  data: {solicitud: idsolicitud, opcion: 6 },
+                  data: {solicitud: idsolicitud, opcion: 6, metodologias_sel: metodologias_sel, id_subelemento: id_subelemento },
                   dataType: "json",
                   success: function (object) {
                      if (object.status) {
@@ -193,21 +195,21 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
             /*
              * verificar si se estan guardando los resultados
              */
-            if(isset($btnGuardar)){
-                /*
-                 * cambiar estado de habilitado
-                 */
-                $obj->cambiar_estado($id_subelemento);
-                /*
-                 * activar id de resultados seleccionados
-                 */
-                $elementos = split(',',$metodologias_sel);
-                for ($i=0;$i<count($elementos)-1;$i++){
-                    $obj->cambiar_estado_id($elementos[$i],$id_subelemento);
-                }
-
-            //    echo "<script>window.close();</script>";
-            }
+//            if(isset($btnGuardar)){
+//                /*
+//                 * cambiar estado de habilitado
+//                 */
+//                $obj->cambiar_estado($id_subelemento);
+//                /*
+//                 * activar id de resultados seleccionados
+//                 */
+//                $elementos = split(',',$metodologias_sel);
+//                for ($i=0;$i<count($elementos)-1;$i++){
+//                    $obj->cambiar_estado_id($elementos[$i],$id_subelemento);
+//                }
+//
+//            //    echo "<script>window.close();</script>";
+//            }
 
 
 
