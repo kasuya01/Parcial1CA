@@ -375,7 +375,19 @@ switch ($opcion)
 	   echo $imprimir;
 	break;
 	case 6:  //ELIMINAR
-	$idsolicitud=$_POST['solicitud'];
+            $idsolicitud=$_POST['solicitud'];
+            $metodologias_sel=$_POST['metodologias_sel'];
+            $id_subelemento=$_POST['id_subelemento'];
+            $objdatos->cambiar_estado($id_subelemento);
+                /*
+                 * activar id de resultados seleccionados
+                 */
+                $elementos = split(',',$metodologias_sel);
+                for ($i=0;$i<count($elementos)-1;$i++){
+                    $objdatos->cambiar_estado_id($elementos[$i],$id_subelemento);
+                }
+            
+            
     $result = $objdatos->resultados_seleccionados($idsolicitud);
 	 if ($result !== false) {
 		 $jsonresponse['status'] = true;

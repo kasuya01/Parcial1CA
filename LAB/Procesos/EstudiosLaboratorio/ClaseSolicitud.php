@@ -116,6 +116,8 @@ class Paciente {
          $recep = "select * from lab_recepcionmuestra where idsolicitudestudio=$IdSolicitudEstudio";
          $sql3 = pg_query($recep);
          $rec = pg_num_rows($sql3);
+         $rownm= pg_fetch_array($sql3);
+         $nummuestra = $rownm['numeromuestra'];
          if ($rec == 0) {
             $num = "SELECT (coalesce(MAX(t01.numeromuestra),0) + 1)
 FROM lab_recepcionmuestra        t01
@@ -127,9 +129,11 @@ AND t02.id_establecimiento = $LugardeAtencion";
 
             $remuestra = "insert into lab_recepcionmuestra (numeromuestra, fecharecepcion, idsolicitudestudio, fechacita, idestablecimiento, idusuarioreg, fechahorareg) VALUES ($nmuestra[0], current_date, $IdSolicitudEstudio, current_date, $LugardeAtencion, $iduser, date_trunc('seconds',NOW()))";
             $rep = pg_query($remuestra);
+            $nummuestra = $nmuestra[0];
             if (!$rep)
                return false;
          }
+
          // echo '<br/>Badera: '.$badera;
          if ($badera == 1) { // crear la cita
             $nextid = "select nextval('cit_citas_serviciodeapoyo_idcitaservapoyo_seq')";
@@ -143,7 +147,7 @@ AND t02.id_establecimiento = $LugardeAtencion";
             if (!$queryIns)
                return false;
             else {
-               return $idnext;
+               return $idnext.'_'.$nummuestra;
             }
          } else { // actualizar la cita
             $UpdateCit = "update cit_citas_serviciodeapoyo
@@ -155,7 +159,7 @@ AND t02.id_establecimiento = $LugardeAtencion";
             if (!$query)
                return false;
             else
-               return $IdCitaServApoyo;
+               return $IdCitaServApoyo.'_'.$nummuestra;
             //   mysql_query($UpdateCit) or die('La consulta fall&oacute;: ' . mysql_error());
          }
       }// fin if conectar
@@ -1109,7 +1113,7 @@ values($idseq,$idexpediente, $IdEmpleado,$IdSubServicio, date_trunc('seconds',NO
          /*   $sqlInsertCita= "insert into sec_historial_clinico (id, fechaconsulta, idsubservicio,        idusuarioreg, fechahorareg, piloto, ipaddress, idestablecimiento, idnumeroexp, id_numero_expediente, id_empleado)
            values($idseq,'$FechaConsulta', $IdSubServicio, $iduser,NOW(), 'V', '$ippc', $lugar, '$IdNumeroExp', $idexpediente, $IdEmpleado)"; */
       }
-      echo $sqlInsertCita;
+//      echo $sqlInsertCita;
       $query = pg_query($sqlInsertCita);
       if (!$query) {
          return false;
