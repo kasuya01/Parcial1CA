@@ -322,8 +322,8 @@ switch ($opcion)
 		$vector_antibioticos=EXPLODE("/",$codigos_antibioticos);
                 $vector_interpretacion=EXPLODE("/",$valores_interpretacion);
                 
-               echo $numresiembras=$_POST['numresiembras'];
-                echo $numbioquimicas=$_POST['numbioquimicas'];
+                $numresiembras=$_POST['numresiembras'];
+                $numbioquimicas=$_POST['numbioquimicas'];
                // print_r($vector_interpretacion);
                 
 		$tamano_vector=count($vector_valores);
