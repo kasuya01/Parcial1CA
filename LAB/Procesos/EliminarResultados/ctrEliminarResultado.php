@@ -53,16 +53,7 @@ switch ($opcion)
             $cond1 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
             $cond2 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
         }
-                /* if (!empty($_POST['IdServ'])) {
-                     $cond1 .= " t12.id  = " . $_POST['IdServ'] . " AND";
-                     $cond2 .= " t12.id  = " . $_POST['IdServ'] . " AND";
-                     $where_with = "t03.id = $IdServ AND ";
-                 }
-
-                 if (!empty($_POST['IdSubServ'])) {
-                     $cond1 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
-                     $cond2 .= " t10.id = " . $_POST['IdSubServ'] . " AND";
-                 }*/
+               
                  
                  if (!empty($_POST['idexpediente'])) {
                     $cond1 .= " t06.numero = '" . $_POST['idexpediente'] . "' AND";
@@ -101,10 +92,7 @@ switch ($opcion)
                     $cond2 = substr($cond2, 0, strlen($query) - 3);
                     $var1 = $lugar." AND ".$cond1;
                     $var2 = $lugar." AND ".$cond2;
-                    /* $condf1 = substr($cond1, 0, strlen($cond1) - 3);
-                    $condf2 = substr($cond2, 0, strlen($cond2) - 3);
-                    $var1 = $lugar ." AND ". $cond1;
-                    $var2 = $lugar ." AND ". $cond2;*/
+                   
 		}
                     
                 else{
@@ -297,115 +285,134 @@ switch ($opcion)
 		$fecharecep=$row['fecharecep'];
 		//recuperando los valores del detalle de la solicitud
 		$consultadetalle=$objdatos->DatosDetalleSolicitud($idsolicitud);
-		$imprimir="<form name='frmDatos'>
-		<table width='55%' border='0' align='center' >
-                    <tr>
-                            <td colspan='4' align='center' class='CobaltFieldCaptionTD'><h3><strong>DATOS SOLICITUD</strong></h3></td>
-                    </tr>
-                    <tr>    <th class='StormyWeatherFieldCaptionTD'>Establecimiento:</th>
-                            <td class='StormyWeatherDataTD' colspan='3'>".$row['estabext']."</td>
-                    </tr>
-                    <tr>
-                            <th class='StormyWeatherFieldCaptionTD'>Procedencia: </th>
-                            <td class='StormyWeatherDataTD'>".$precedencia."</td>
-                            <th class='StormyWeatherFieldCaptionTD'>Origen: </th>
-                            <td class='StormyWeatherDataTD'>".htmlentities($origen)."
-                                    <input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled'/>
-                                    <input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled'/></td>
-                    </tr>
-                     <tr>
-                            <th class='StormyWeatherFieldCaptionTD' width='25%'>Paciente: </th>
-                            <td class='StormyWeatherDataTD' >".htmlentities($paciente)."</td>
-                             <td class='StormyWeatherFieldCaptionTD'>Expediente</td>
-                            <td class='StormyWeatherDataTD'>".$expediente."</td>      
-                    </tr>
-                    
-                   
-                    <tr>
-                        <th class='StormyWeatherFieldCaptionTD'>Edad: </th>
-                        <td class='StormyWeatherDataTD'>". $edad."</td>
-                        <th class='StormyWeatherFieldCaptionTD'>Sexo: </th>
-                        <td class='StormyWeatherDataTD'>".$sexo."</td>
-                    </tr>
-                    <tr>
-                            <th class='StormyWeatherFieldCaptionTD'>Medico: </th>
-                            <td class='StormyWeatherDataTD'>".htmlentities($medico)."</td>
-                            <th class='StormyWeatherFieldCaptionTD'>Fecha Recepcion</th>
-                            <td class='StormyWeatherDataTD'>".$fecharecep."</td>
-                    </tr>
-		</table>
-		<br><br>
-		<table width='90%' border='0' align='center'>
-                   
-                    <tr>
-                            <td>
-                                <table border = 1 align='center' class='estilotabla' >
+                $cant= $objdatos->ContarDatosDetalleSolicitud($idsolicitud);
+                if($cant>=1){
+                           // echo $cantidad = pg_fetch_array($cant);
+                    $imprimir="<form name='frmDatos'>
+                                <table width='50%' border='0' align='center' >
                                 <tr>
-                                        <td colspan='6' class='CobaltFieldCaptionTD' align='center' >ESTUDIOS SOLICITADO</td>
+                                    <td colspan='4' align='center' class='CobaltFieldCaptionTD'><h3><strong>DATOS SOLICITUD</strong></h3></td>
                                 </tr>
-                                    <tr>
+                                <tr>    
+                                    <th class='StormyWeatherFieldCaptionTD'>Establecimiento:</th>
+                                    <td class='StormyWeatherDataTD' colspan='3'>".$row['estabext']."</td>
+                                </tr>
+                                <tr>
+                                    <th class='StormyWeatherFieldCaptionTD'>Procedencia: </th>
+                                    <td class='StormyWeatherDataTD'>".$precedencia."</td>
+                                    <th class='StormyWeatherFieldCaptionTD'>Origen: </th>
+                                    <td class='StormyWeatherDataTD'>".htmlentities($origen)."
+                                                    <input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled'/>
+                                                    <input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled'/></td>
+                                </tr>
+                                <tr>
+                                    <th class='StormyWeatherFieldCaptionTD' width='25%'>Paciente: </th>
+                                    <td class='StormyWeatherDataTD' >".htmlentities($paciente)."</td>
+                                    <td class='StormyWeatherFieldCaptionTD'>Expediente</td>
+                                    <td class='StormyWeatherDataTD'>".$expediente."</td>      
+                                </tr>
+                                <tr>
+                                    <th class='StormyWeatherFieldCaptionTD'>Edad: </th>
+                                    <td class='StormyWeatherDataTD'>". $edad."</td>
+                                    <th class='StormyWeatherFieldCaptionTD'>Sexo: </th>
+                                    <td class='StormyWeatherDataTD'>".$sexo."</td>
+                                </tr>
+                                <tr>
+                                    <th class='StormyWeatherFieldCaptionTD'>Medico: </th>
+                                    <td class='StormyWeatherDataTD'>".htmlentities($medico)."</td>
+                                    <th class='StormyWeatherFieldCaptionTD'>Fecha Recepcion</th>
+                                    <td class='StormyWeatherDataTD'>".$fecharecep."</td>
+                                </tr>
+                                </table>
+                                <br><br>
+                                <table width='90%' border='0' align='center'>
+                                <tr>
+                                    <td>
+                                        <table border = 1 align='center' class='estilotabla' >
+                                        <tr>
+                                           <td colspan='6' class='CobaltFieldCaptionTD' align='center' >ESTUDIOS SOLICITADO</td>
+                                        </tr>
+                                        <tr>
                                             <td class='CobaltFieldCaptionTD'> Eliminar</td>
                                             <td class='CobaltFieldCaptionTD'> Código</td>
                                             <td class='CobaltFieldCaptionTD'> Examen </td>
                                             <td class='CobaltFieldCaptionTD'> IdArea </td>
                                             <td class='CobaltFieldCaptionTD'> Indicacion Medica </td>
                                             <td class='CobaltFieldCaptionTD'> Estado </td>
-                                    </tr>";
-                            $pos=0;
-     while($fila = pg_fetch_array($consultadetalle)){
-                //print "\$fila = " . $fila['idplantilla'] . "\n";
-                //print_r($fila);
-              //  echo $fila['idplantilla'];
-                $imprimir .= "<tr>";
-         if($fila['estado']=="Resultado Completo")  { 	
-                    $imprimir .="<td><img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" onclick=\"EliminarDatos('".$fila['iddetallesolicitud']."','".$fila['idsolicitudestudio']."','".$idexpediente."','".$fila['idplantilla']."')\"></td>
-                                 <td>".htmlentities($fila['idestandar'])."</td>
-                                 <td>".htmlentities($fila['nombre_examen'])."	
-                                    <input name='iddetalle[".$pos."]' type='hidden' id='iddetalle[".$pos."]' value='".$fila['iddetallesolicitud']."'>
-                                    <input name='idsolicitud[".$pos."]' type='hidden' id='idsolicitud[".$pos."]' value='".$fila['idsolicitudestudio']."'>
-                                    <input name='idexpediente[".$pos."]' type='hidden' id='idexpediente[".$pos."]' value='".$idexpediente."'></td>
-                                    <input name='idplantilla[".$pos."]' type='hidden' id='idplantilla[".$pos."]' value='".$fila['idplantilla']."'></td>    
-                                 <td>".$fila['idarea']."</td>";	
-                if (!empty($fila['indicacion']))     				
-                    $imprimir .="<td>".htmlentities($fila['indicacion'])."</td>";
-                else
-                    $imprimir .="<td>&nbsp;&nbsp;&nbsp;&nbsp</td>";
+                                      </tr>";
+                                            $pos=0;
+                    while($fila = pg_fetch_array($consultadetalle)){
+                        $imprimir .= "<tr>";
+                         if($fila['estado']=="Resultado Completo")  { 	
+                               $imprimir .="<td><img src='../../../Iconos/eliminar.gif' style=\"text-decoration:underline;cursor:pointer;\" onclick=\"EliminarDatos('".$fila['iddetallesolicitud']."','".$fila['idsolicitudestudio']."','".$idexpediente."','".$fila['idplantilla']."')\"></td>
+                                            <td>".htmlentities($fila['idestandar'])."</td>
+                                            <td>".htmlentities($fila['nombre_examen'])."	
+                                                    <input name='iddetalle[".$pos."]' type='hidden' id='iddetalle[".$pos."]' value='".$fila['iddetallesolicitud']."'>
+                                                    <input name='idsolicitud[".$pos."]' type='hidden' id='idsolicitud[".$pos."]' value='".$fila['idsolicitudestudio']."'>
+                                                    <input name='idexpediente[".$pos."]' type='hidden' id='idexpediente[".$pos."]' value='".$idexpediente."'></td>
+                                                    <input name='idplantilla[".$pos."]' type='hidden' id='idplantilla[".$pos."]' value='".$fila['idplantilla']."'></td>    
+                                            <td>".$fila['idarea']."</td>";	
+                             if (!empty($fila['indicacion']))     				
+                               $imprimir .="<td>".htmlentities($fila['indicacion'])."</td>";
+                             else
+                               $imprimir .="<td>&nbsp;&nbsp;&nbsp;&nbsp</td>";
+                               $imprimir .="<td>".$fila['estado']."</td>";
+                           $imprimir .="</tr>";
+                       }
+                            $pos=$pos + 1;
+
+                    }
+
+
+
+                     $imprimir .= "<input type='hidden' name='oculto' id='oculto' value='".$pos."' />
+                                        </table>
+
+                                        </form>";
+                     echo $imprimir;
+                    pg_free_result($consultadetalle);
+                }else{
+                     $imprimir=" <table width='50%' border='0' align='center' >
+                                <tr>
+                                    <td colspan='4' align='center' class='CobaltFieldCaptionTD'><h3><strong>DATOS SOLICITUD</strong></h3></td>
+                                </tr>
+                                <tr>    
+                                    <th class='StormyWeatherFieldCaptionTD'>Establecimiento:</th>
+                                    <td class='StormyWeatherDataTD' colspan='3'>".$row['estabext']."</td>
+                                </tr>
+                                <tr>
+                                    <th class='StormyWeatherFieldCaptionTD'>Procedencia: </th>
+                                    <td class='StormyWeatherDataTD'>".$precedencia."</td>
+                                    <th class='StormyWeatherFieldCaptionTD'>Origen: </th>
+                                    <td class='StormyWeatherDataTD'>".htmlentities($origen)."
+                                                    <input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled'/>
+                                                    <input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled'/></td>
+                                </tr>
+                                <tr>
+                                    <th class='StormyWeatherFieldCaptionTD' width='25%'>Paciente: </th>
+                                    <td class='StormyWeatherDataTD' >".htmlentities($paciente)."</td>
+                                    <td class='StormyWeatherFieldCaptionTD'>Expediente</td>
+                                    <td class='StormyWeatherDataTD'>".$expediente."</td>      
+                                </tr>
+                                <tr>
+                                    <th class='StormyWeatherFieldCaptionTD'>Edad: </th>
+                                    <td class='StormyWeatherDataTD'>". $edad."</td>
+                                    <th class='StormyWeatherFieldCaptionTD'>Sexo: </th>
+                                    <td class='StormyWeatherDataTD'>".$sexo."</td>
+                                </tr>
+                                <tr>
+                                    <th class='StormyWeatherFieldCaptionTD'>Medico: </th>
+                                    <td class='StormyWeatherDataTD'>".htmlentities($medico)."</td>
+                                    <th class='StormyWeatherFieldCaptionTD'>Fecha Recepcion</th>
+                                    <td class='StormyWeatherDataTD'>".$fecharecep."</td>
+                                </tr>
+                                <tr>
+                                    <td colspan='4' align='center' class='StormyWeatherDataTD' ><h3><strong> No Hay Resultados para Eliminar de esta Solicitud</strong></h3></td>
+                                </tr>
+                                </table>";
+                     echo  $imprimir;
+                }
                     
-                    $imprimir .="<td>".$fila['estado']."</td>";
-                    $imprimir .="</tr>";
-                
-                
-       }
-       /*else{
-                    $imprimir .="<td>".$fila['idestandar']."</td>
-                                 <td>".htmlentities($fila['nombre_examen'])."</td>	
-                                 <td>".$fila['idarea']."</td>";	
-                        if (!empty($fila['indicacion'])){     				
-                    $imprimir .="<td>".htmlentities($fila['indicacion'])."</td>";
-                        
-                    $imprimir .="<td>".$fila['estado']."</td>
-                            </tr>";
-                        }else{
-                     $imprimir .="<td>&nbsp;&nbsp;&nbsp;&nbsp</td>
-                                  <td>".$fila['estado']."</td>
-                                  <td>".$fila['idplantilla']."</td>
-                            </tr>";	
-
-                        }
-                 }  */
-                    $pos=$pos + 1;
-
-            }
-
-
-
-     $imprimir .= "<input type='hidden' name='oculto' id='oculto' value='".$pos."' />
-			</table>
-			
-			</form>";
-     echo $imprimir;
-    pg_free_result($consultadetalle);
-  
   break;
   case 4:
 
@@ -625,16 +632,54 @@ switch ($opcion)
 								case 'Negativo':
 								case '---':
 									//echo "idresultado=".$idresultado." iddetalle=".$iddetalle;
-                                                                        
+                                                                        $rp=$objdatos->ObtenerIdResultadoPadre($idresultado);
+                                                                    while($resultp = pg_fetch_array($rp)){
+                                                                        $IdResultadop=$resultp['id'];
+                                                                        $IdDetallep=$resultp['iddetallesolicitud'];
+                                                                        $idexamenp=$resultp['idexamen'];
+                                                                        if ($idexamenp == $id_res){
+                                                                            if($dr=$objdatos->Eliminar_metodologia($IdDetallep)==1){
+                                                                                if ($objdatos->EliminarResultado($IdResultadop) == 1){
+                                                                                    if (($objdatos->CancelarEstadoDetalle($IdDetallep)==true)||($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true)){
+                                                                                        $ban=0;
+                                                                                    }
+                                                                                    else{
+                                                                                        $ban=1;}
+                                                                                }else {
+                                                                                    $ban=1;
+                                                                                }        
+                                                                            }else{
+                                                                                    $ban=1;} 
+                                                                                    // echo "No se pudo eliminar el registro";    
+                                                                            
+                                                                        }      
+                                                                                    
+                                                                        else{
                                                                                if($dr=$objdatos->Eliminar_Metodologia($iddetalle)==1){  
                                                                                     if ($objdatos->EliminarResultado($idresultado) == 1){	 
 											if (($objdatos->ActualizarEstadoDetalle($iddetalle)==true)||($objdatos->ActualizarEstadoSolicitud($idsolicitud)==true)){
-												echo "Resultado Eliminado";}
-                                                                                    }            
+												$ban=0;
+                                                                                                
+                                                                                        }
+                                                                                        else{
+                                                                                            $ban=1;}
+                                                                                    }
+                                                                                    else{
+                                                                                        $ban=1;}
 											
-										}else{
-											echo "No se pudo eliminar el registro";
-										}
+										}else
+											 $ban=1;
+                                                                              		
+                                                                        }
+                                                                    }// while
+                                                                     if ($ban==0){
+                                                                            echo "Resultado Eliminado";
+                                                                        }else
+                                                                            echo "No se pudo eliminar el registro";
+                                                                    
+                                                                    
+                                                                    
+                                                                  
 								break; 
 								}	
 										
