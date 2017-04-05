@@ -71,7 +71,7 @@ switch ($opcion)
                         </tr>
                          <tr>
                             <td class='StormyWeatherFieldCaptionTD'>Número de Resiembras:</td>
-                            <td colspan='2'class='StormyWeatherDataTD'><input name='txtresiembra' type='text' id='txtresiembra' size='10' /></td>
+                            <td colspan='2'class='StormyWeatherDataTD'><input name='txtresiembras' type='text' id='txtresiembras' size='10' /></td>
                         </tr>
                         <tr>
                             <td class='StormyWeatherFieldCaptionTD'>Número de Pruebas Bioquimicas:</td>
@@ -481,10 +481,13 @@ switch ($opcion)
 	$idarea=$_POST['idarea'];
 	$idtarjeta=$_POST['idtarjeta'];
 	$tiporespuesta=$_POST['tiporespuesta'];
+        $idareaPA=$_POST['idareaPA'];
+     //  echo "$idareaPA ".$idareaPA;
+        
         //$f_tomamuestra=$_POST['f_tomamuestra'];
         //$tipomuestra=$_POST['tipomuestra'];
         // echo " opcion 4 ".$f_tomamuestra."  ".$tipomuestra;
-	$consulta_ob=$objdatos->LeerObservaciones($idarea,$tiporespuesta);
+	$consulta_ob=$objdatos->LeerObservaciones($idareaPA,$tiporespuesta);
 
         $imprimir="<table class='StormyWeatherFormTABLE' width='100%' >
             	   <tr>
@@ -512,7 +515,7 @@ switch ($opcion)
 	$idarea=$_POST['idarea'];
 	$idsolicitud= $_POST['idsolicitud'];
 	$idempleado= $_POST['idempleado'];
-        
+        $idareaPA=$_POST['idareaPA'];
 	//$observacion= (empty($_POST['observacion'])) ? ' ' : "'" . pg_escape_string($_POST['observacion']) . "'";
         
         $idobservacion=$_POST['idobservacion'];
@@ -523,6 +526,8 @@ switch ($opcion)
         $fecharesultado=$_POST['fecharesultado'];
         $f_tomamuestra=$_POST['f_tomamuestra'];
         $tipomuestra=$_POST['tipomuestra'];
+        $numresiembras=$_POST['resiembras'];
+        $observacion=$_POST['observacion'];
       //  echo " opcion 5 ".$f_tomamuestra."  ".$tipomuestra;
 	$Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
 	$row_estab = pg_fetch_array($Consulta_Estab);
@@ -535,6 +540,8 @@ switch ($opcion)
 	$row_empleado = pg_fetch_array($datos_empleado);
 	$datos_observacion=$objdatos->LeerObservacion($idobservacion);
 	$row_observacion = pg_fetch_array($datos_observacion);
+      
+            
 	//$observacion="Resultado Negativo";
 	$imprimir="<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
 			<tr>
@@ -613,11 +620,24 @@ switch ($opcion)
 	   	break;
 	}
             $imprimir.= "   <input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
-                            <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />";
+                            <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."' />"
+                    . "<input type='hidden' name='txtresiembras' id='txtresiembras' disabled='disabled' value='".$numresiembras."' />";
 	   $imprimir.= "</tr>
 			<tr>
-				<td colspan='1'><strong>Observaci&oacute;n</strong></td>
-			        <td colspan='5'>".htmlentities($row_observacion['observacion'])."</td>
+				<td colspan='1'><strong>Observaci&oacute;n</strong></td>";
+           
+            if($idobservacion<>0){ 
+                $observacionf=$row_observacion['observacion'];
+                   $imprimir.= "<td colspan='5'>".htmlentities($row_observacion['observacion'])."</td>";}
+                       
+            else{
+                $observacionf=$observacion;
+                $imprimir.= "<td colspan='5'>".htmlentities($observacion)."</td>";}
+                
+	   $imprimir.= "</tr>
+                        <tr>
+				<td colspan='1'><strong>Resiembras</strong></td>
+			        <td colspan='5'>".$numresiembras."</td>
 
 			</tr>
 			<tr>
@@ -627,9 +647,10 @@ switch ($opcion)
 		<div id='divBotones'>
 			<tr>
                             <td colspan='6' align='center'>
-                                <button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarResultadosNegativosPlantillaC();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>
-				
-                                <button style='display:none' type='button' class='btn btn-primary'  name='Imprimir' id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaCN(".$idsolicitud.",\"".$idexamen."\",\"".$idarea."\",\"".$resultado."\",\"".htmlentities($row_empleado['empleado'])."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($row_observacion['observacion'])."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
+                                <button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarResultadosNegativosPlantillaC();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>";
+				 $observacionf;
+                                         //<button style='display:none' type='button' class='btn btn-primary'  name='Imprimir' id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaCN(".$idsolicitud.",\"".$idexamen."\",\"".$idarea."\",\"".$resultado."\",\"".htmlentities($row_empleado['empleado'])."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($row_observacion['observacion'])."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
+                          $imprimir.= "    <button style='display:none' type='button' class='btn btn-primary'  name='Imprimir' id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaCN(".$idsolicitud.",\"".$idexamen."\",\"".$idarea."\",\"".$resultado."\",\"".htmlentities($row_empleado['empleado'])."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($observacionf)."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>                                    
                                 <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true' style='display:none; height:20px'><button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>                               
                                 <button type='button' id='btnSalir' align='center' class='btn btn-primary' title='Cerrar'  onclick='Cerrar();'><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button>
                             </td>
@@ -647,32 +668,78 @@ switch ($opcion)
 case 6:
 	$idexamen=$_POST['idexamen'];
 	//$tiporespuesta=$_POST['tiporespuesta'];
-	$idsolicitud= $_POST['idsolicitud'];
+	 $idsolicitud= $_POST['idsolicitud'];
 	$idempleado= $_POST['idempleado'];
 	$idrecepcion= $_POST['idrecepcion'];
-	$iddetalle= $_POST['iddetalle'];
-	
+	 $iddetalle= $_POST['iddetalle'];
+	//echo $idsolicitud ." - ". $iddetalle;
         $idobservacion=$_POST['idobservacion'];
 	$resultado=$_POST['resultado'];
         $fecharealiz=$_POST['fecharealiz'];
         $fecharesultado=$_POST['fecharesultado'];
+        $numresiembras=$_POST['resiembras'];
+        $observacion1=$_POST['observacion'];
         $datos_observacion=$objdatos->LeerObservacion($idobservacion);
 	$row_observacion = pg_fetch_array($datos_observacion);
         //$observacion= (empty($row_observacion['observacion'])) ? 'NULL' : "'" . pg_escape_string($row_observacion['observacion']) . "'";
         $observacion=$row_observacion['observacion'];
+        if ($idobservacion==0){
+            $observacionf= $observacion1;      
+        }
+        else{
+            $observacionf=$observacion;
+        }
+        
+        $CodAntibiograma=6;
+          $con = new ConexionBD;
+            if($con->conectar()==true) 
+            {
+                $query2 = "SELECT lab_examen_metodologia.id AS idmetodologia,ctl_examen_servicio_diagnostico.id AS idcatalogo,
+                    mnt_area_examen_establecimiento.id AS idmnt,lab_conf_examen_estab.id AS idconf
+                    FROM ctl_examen_servicio_diagnostico 
+                    INNER JOIN mnt_area_examen_establecimiento ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico = ctl_examen_servicio_diagnostico.id
+                    INNER JOIN lab_conf_examen_estab ON lab_conf_examen_estab.idexamen = mnt_area_examen_establecimiento.id
+                    INNER JOIN lab_examen_metodologia ON lab_examen_metodologia.id_conf_exa_estab = lab_conf_examen_estab.id
+                    WHERE idestandar='M73' ";
+                    $result2 = pg_query($query2);
+                    $row_exam_metodres = pg_fetch_array($result2);
+                    $id_metodres = $row_exam_metodres['idmetodologia'];
+                    $idcofres = $row_exam_metodres['idconf'];
+                    $idcatres = $row_exam_metodres['idcatalogo'];
+                    $idmntres = $row_exam_metodres['idmnt'];
+            }
       //  echo $fecharealiz." - ".$fecharesultado;
      //echo "Examen=".$idexamen." - soli=".$idsolicitud." - empleado=".$idempleado." - idrecepcion=".$idrecepcion." - iddetalle=".$iddetalle." - observacion=".$observacion." - resultado=".$resultado;
+           // echo $fecharesultado;
 	if ($resultado=="N")
 	{
-                $codigoResultado=2;
-                $ultimo=$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado);
-
+               $codigoResultado=2;
+                $ultimo=$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacionf,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado);
+                 for ($i=0; $i < $numresiembras; $i++)
+                              {
+                                  //echo $idcofres;
+                                $detres=$objdatos->insertar_detalle_solicitud($idsolicitud,$iddetalle,$usuario,$lugar,$idcatres,$idmntres,$idcofres);
+                                                   
+                                if($detres){
+                                    $ultimores= $objdatos->insertar_encabezado_antibiograma($idsolicitud,$detres,$idcofres,$idrecepcion,$observacionf,$resultado,$idempleado,$usuario,$CodAntibiograma,$lugar,$idobservacion,$fecharealiz,$fecharesultado,$id_metodres,$ultimo); 
+                                
+                                }
+                              }
                 echo "Datos Guardados";
 	}
 	else{
                 $codigoResultado=5;
                 $ultimo=$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado);
-
+                for ($i=0; $i < $numresiembras; $i++)
+                              {
+                                  //echo $idcofres;
+                                $detres=$objdatos->insertar_detalle_solicitud($idsolicitud,$iddetalle,$usuario,$lugar,$idcatres,$idmntres,$idcofres);
+                                                   
+                                if($detres){
+                                    $ultimores= $objdatos->insertar_encabezado_antibiograma($idsolicitud,$detres,$idcofres,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$CodAntibiograma,$lugar,$idobservacion,$fecharealiz,$fecharesultado,$id_metodres,$ultimo); 
+                                
+                                }
+                              }
 	   echo "Datos Guardados";
 	}
 

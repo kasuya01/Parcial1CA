@@ -571,11 +571,11 @@ function MostrarVistaPreviaPlantillaC()
         fecharesultado =document.getElementById('txtresultfin').value;
         f_tomamuestra=document.getElementById('txtf_tomamuestra').value;
         tipomuestra=document.getElementById('txttipomuestra').value;
-        resiembras=document.getElementById('txtresiembra').value;
+        resiembras=document.getElementById('txtresiembras').value;
         bioquimicas=document.getElementById('txtbioquimicas').value;
         
          
-       // alert (resiembras+" - "+bioquimicas);
+      //  alert (resiembras+" - "+bioquimicas);
         //DATOS PARA EL DETALLE DE LOS RESULTADOS
         valores_antibioticos = "";
         codigos_antibioticos = "";
@@ -767,8 +767,10 @@ function LlenarObservaciones()
     idtarjeta = document.frmnuevo.cmbTarjeta.value;
     tiporespuesta = document.frmnuevo.cmbResultado.value;
     idarea = document.frmnuevo.txtarea.value;
-   // f_tomamuestra=document.frmnuevo.txtf_tomamuestra;
+    idareaPA=document.frmnuevo.txtidareaPA.value;
    // tipomuestra=document.frmnuevo.txttipomuestra;
+   
+   //alert("Aqui "+idareaPA);
     opcion = 4;
 //alert(f_tomamuestra);
     if (document.frmnuevo.cmbResultado.value == "P")
@@ -789,7 +791,7 @@ function LlenarObservaciones()
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
     ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idtarjeta=" + idtarjeta +
-            "&tiporespuesta=" + tiporespuesta + "&idarea=" + idarea);
+            "&tiporespuesta=" + tiporespuesta + "&idarea=" + idarea + "&idareaPA=" + idareaPA);
     //+"&f_tomamuestra="+f_tomamuestra+"&tipomuestra="+tipomuestra
     ajax.onreadystatechange = function()
     {
@@ -819,14 +821,17 @@ function PreviosNegativos()
        // observacion = document.frmnuevo.cmbObservacion.value;
        // alert("ajax"+observacion);
         idobservacion = document.getElementById('cmbObservacion').value;
+       // resiembras= document.getElementById('txtresiembra').value;
         resultado = document.frmnuevo.cmbResultado.value;
         estab = document.frmnuevo.txtEstablecimiento.value;
         fecharealiz = document.frmnuevo.txtresultrealiza.value;
         fecharesultado =document.frmnuevo.txtresultfin.value;
         f_tomamuestra=document.getElementById('txtf_tomamuestra').value;
         tipomuestra=document.getElementById('txttipomuestra').value;
-
-       // alert(f_tomamuestra+"  " +tipomuestra);
+        resiembras=document.getElementById('txtresiembra').value;
+        idareaPA=document.getElementById('txtidareaPA').value;
+        observacion=document.getElementById('txtObservacion').value;
+      //  alert (idobservacion +" - "+observacion);
         opcion = 5;
 
         if (document.frmnuevo.cmbResultado.value == "P")
@@ -834,15 +839,18 @@ function PreviosNegativos()
             document.getElementById('divResPositivo').style.display = "block";
         }
         else {
+           // alert ( resiembras);
+            resiembras=document.getElementById('txtresiembra').value;
             document.getElementById('divResPositivo').style.display = "none";
             document.getElementById('divBotonPrevie').style.display = "block";
         }
+       // alert(resiembras);
         ajax.open("POST", "ctrDatosResultadosExamen_PC.php", true);
         ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idtarjeta=" + idtarjeta + "&tiporespuesta=" + tiporespuesta +
                 "&idarea=" + idarea + "&idsolicitud=" + idsolicitud + "&idempleado=" + idempleado +
                 "&resultado=" + resultado + "&estab=" + estab + "&idobservacion=" + idobservacion + "&fecharealiz=" + fecharealiz + "&fecharesultado=" + fecharesultado+
-                "&f_tomamuestra="+f_tomamuestra+"&tipomuestra="+tipomuestra);
+                "&f_tomamuestra="+f_tomamuestra+"&tipomuestra="+ tipomuestra + "&resiembras=" + resiembras +"&idareaPA="+idareaPA+"&observacion="+observacion);
         //"&observacion=" + encodeURIComponent(observacion) +
         ajax.onreadystatechange = function()
         {
@@ -883,11 +891,14 @@ function GuardarResultadosNegativosPlantillaC()
     idempleado = document.getElementById('cmbEmpleados').value;
     fecharealiz = document.getElementById('txtresultrealiza').value;
     fecharesultado =document.getElementById('txtresultfin').value;
+    resiembras=document.getElementById('txtresiembras').value;
+    observacion=document.getElementById('txtObservacion').value;
+ //  alert(fecharesultado);
     ajax.open("POST", "ctrDatosResultadosExamen_PC.php", true);
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     ajax.send("opcion=" + opcion + "&idsolicitud=" + idsolicitud + "&idrecepcion=" + idrecepcion + "&iddetalle=" + iddetalle +
             "&idexamen=" + idexamen + "&resultado=" + resultado + "&idempleado=" + idempleado + "&idobservacion="+ idobservacion +
-            "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado);
+            "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado +"&resiembras=" + resiembras + "&observacion="+observacion);
     // "&observacion=" + escape(observacion) +
     ajax.onreadystatechange = function()
     {
@@ -1941,7 +1952,7 @@ function MostrarDatos(posicion)
     edad= document.getElementById('edad[' + posicion + ']').value;
     nomsexo= document.getElementById('nomsexo[' + posicion + ']').value;
     datofijo= document.getElementById('dato_fijo[' + posicion + ']').value;
-
+//alert(idareaPA);
     //alert ("Plnatilla="+plantilla+" Experiente="+idexpediente+" Solicitud="+idsolicitud+" idarea="+idarea+" idhistorial="+IdHistorial+" IdEstandar="+IdEstandar);
     //idhistorial=document.getElementById('idhistorial['+posicion+']').value;
     //alert(plantilla);
@@ -1992,12 +2003,13 @@ function MostrarDatos(posicion)
         case "3":
           // alert (origenmuestra);
             //alert (nomsexo);
+           // alert(idareaPA);
                 ventana_dos = window.open("ProcDatosResultadosExamen_PC.php?var1=" + idexpediente +
                     "&var2=" + examen + "&var3=" + idexamen + "&var4=" + idarea + "&var5=" + detallesolicitud + "&var6=" + idsolicitud +
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                     "&var12=" + impresion + "&var13=" + estab +"&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar + "&var17=" + IdHistorial +
                     "&referido=" + referido + "&var18="+estabext +"&var19="+f_tomamuestra+"&var20="+tipomuestra+"&fecha_recepcion="+fecha_recepcion+
-                    "&var21="+idestabext+"&origenmuestra="+origenmuestra+"&edad="+edad+"&nomsexo="+nomsexo, "Resultados", "width=950,height=650,menubar=no,scrollbars=yes,location=no");
+                    "&var21="+idestabext+"&origenmuestra="+origenmuestra+"&edad="+edad+"&nomsexo="+nomsexo+"&idareaPA="+idareaPA, "Resultados", "width=950,height=650,menubar=no,scrollbars=yes,location=no");
             break;
         case "4":
            //

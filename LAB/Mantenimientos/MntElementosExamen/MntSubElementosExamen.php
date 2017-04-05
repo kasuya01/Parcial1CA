@@ -131,7 +131,7 @@ function Llenarorden1(){
                     <tr>
                         <td  class="StormyWeatherFieldCaptionTD">Sexo</td>
                         <td colspan="3" class="StormyWeatherDataTD">
-                            <select id="cmbSexo" name="cmbSexo" size="1" class="form-control height" "Onclick="Llenarorden1();"
+                            <select id="cmbSexo" name="cmbSexo" size="1" class="form-control height" Onclick="Llenarorden1();">
                                 <option value="3">Seleccione Sexo </option>
                                 <option value="0">Ambos</option>
                                     <?php

@@ -1016,7 +1016,7 @@ function ObtenerObservacion($idsolicitud,$iddetalle){
     $con = new ConexionBD;
     if($con->conectar()==true)
     {
-    	$query ="SELECT t02.observacion as observacion from lab_resultados t01 
+    	 $query ="SELECT t01.observacion as observacion from lab_resultados t01 
 		LEFT JOIN lab_observaciones t02 on (t02.id=t01.id_observacion)
 		LEFT JOIN sec_solicitudestudios  t03 on (t01.idsolicitudestudio=t03.id)
 		WHERE t03.id=$idsolicitud and t01.iddetallesolicitud=$iddetalle";
