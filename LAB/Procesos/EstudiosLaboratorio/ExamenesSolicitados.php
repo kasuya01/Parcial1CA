@@ -10,6 +10,7 @@ $conectar = 1;
 $IdHistorialClinico = $_GET["IdHistorialClinico"];
 $IdCitaServApoyo = $_GET["IdCitaServApoyo"];
 $band = isset($_GET["band"]) ? $_GET["band"] : 0;
+$urgente = isset($_GET["urgente"]) ? $_GET["urgente"] : 2;
 
 // echo '<br/>idcitaservapoyo: '.$IdCitaServApoyo;
 $IdEstablecimiento = $_SESSION["IdEstablecimiento"]; //Elegido en el combo
@@ -39,6 +40,7 @@ if ($IdCitaServApoyo == "") {
            $iduser, $IdNumeroExp, $LugardeAtencion, $IdCitaServApoyo, 0);
 }
 list($IdCitaServApoyo,$numeromuestra)=explode("_", $IdCitaServApoy);
+ $prioridad= $Laboratorio->SolicitudUrgente($urgente, $IdHistorialClinico, $IdSolicitudEstudio);
 //Verificar si el establecimeitno soporta la conexion por medio de HL7
 $enviohl7= $Paciente->ConsultaEnvioHL7($IdEstablecimiento);
 if ($enviohl7!=0 && $band == 0){
@@ -120,29 +122,48 @@ if ($enviohl7!=0 && $band == 0){
                  <div class='panel panel-primary'>
                     <table  class='table table-hover table-bordered table-condensed table-white no-v-border'>
                     <thead>
-                    <tr> <td colspan='6' style='background-color: #428bca; color:#ffffff; text-align:left' >
-                    <h4>Examenes Solicitados a Laboratorio</h4>
-                    </td>
-                    <td colspan='3' style='background-color: #428bca; color:#ffffff; text-align:right'><strong>Número de muestra asignado a Paciente:  ". $numeromuestra."</strong> </p></td>
-                    </tr>
-                    <tr class='info'>
+                    <tr> <td colspan='8' style='background-color: #428bca; color:#ffffff; text-align:left' >
+                    <h4><b>Examenes Solicitados a Laboratorio</h4>
+                    </td>";
+            /*echo "        <td colspan='3' style='background-color: #428bca; color:#ffffff; text-align:right'>";
+                if ($urgente==1){
+                    echo   "    <h4><b>Solicitud Urgente</b></h5>
+                        </td>
+                        <td style='vertical-align: middle; display: none'>
+                    <input type='checkbox' id='tiposolgen' name='tiposolgen' data-switch-enabled='true' class='form height' checked></td></tr>";
+                }
+
+                else {
+                    echo   "<h4><b>Solicitud Normal</b></h4>
+                        </td>
+                        <td style='vertical-align: middle; display: none'><input type='checkbox' id='tiposolgen' name='tiposolgen' data-switch-enabled='true' class='form height'></td></tr>";
+                }*/
+
+                echo " <tr class='info'>
                     <td colspan='7' align='right' style=' vertical-align: middle'>
                     <h4><b>Solicitud Urgente:</b></h4>
                     </td>
                     <td style='vertical-align: middle'>
                     <input type='checkbox' id='tiposolgen' name='tiposolgen' data-switch-enabled='true' class='form height' onclick='SolicitudUrgente(" . $IdHistorialClinico . ", " . $IdSolicitudEstudio . ");'></td></tr>";
 
-
-            $Ejecutar2 = $Laboratorio->impresionessoli($IdHistorialClinico,
-                    $IdEstablecimiento);
+            $Ejecutar2 = $Laboratorio->impresionessoli($IdHistorialClinico,$IdEstablecimiento);
             $Respuesta2 = pg_fetch_array($Ejecutar2);
             if ($Respuesta2["impresiones"] == 1) {
                $check = "<input id='Imprimir' data-switch-enabled='true' type='checkbox'onclick='ImprimirResultados(" . $IdHistorialClinico . ", " . $IdSolicitudEstudio . ");' checked='checked'>";
             } else {
                $check = "<input id='Imprimir' data-switch-enabled='true' type='checkbox'onclick='ImprimirResultados(" . $IdHistorialClinico . ", " . $IdSolicitudEstudio . ");'>";
             }
+
             echo "<tr class='info'><td colspan='7' align='right' style=' vertical-align: middle'>
             <h4><b>Resultado de Examenes Impresos [Pre-Operatorios]</b></h4> </td><td>".$check."</td></tr>";
+            echo "<tr class='info'>
+                    <td colspan='8' style='text-align:right'>
+                    <div class='alert alert-info' role='alert'>
+                    <h2><b>Número de muestra asignado a Paciente:  &nbsp;&nbsp;". $numeromuestra."</b>
+<p></p></h2></div>
+
+
+                    </td></tr>";
 
             echo "<tr><th style='vertical-align: middle !important'>C&oacute;digo</th>
                         <th style='vertical-align: middle'>Nombre Examen</th>

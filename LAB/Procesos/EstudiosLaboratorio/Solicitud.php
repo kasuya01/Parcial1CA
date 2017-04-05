@@ -23,9 +23,9 @@ $sexo = $_GET["Sexo"];
 $idexpediente = $_GET["idexpediente"];
 //echo '<br\>.Idexpediente: '.$idexpediente.' IdNumeroExp:'.$IdNumeroExp. '  numhistorial: '.$_GET["IdHistorialClinico"].'  issethist: '.isset( $_GET["IdHistorialClinico"]);
 //IdHistorialClinico = $_GET["IdHistorialClinico"];
-$IdHistorialClinico = isset($_GET['IdHistorialClinico']) ? $_GET['IdHistorialClinico']
-           : null;
-//echo 'idexp: '.$idexpediente;
+$IdHistorialClinico = isset($_GET['IdHistorialClinico']) ? $_GET['IdHistorialClinico']: null;
+$prioridad= isset($_GET['prioridad']) ? $_GET['prioridad']: 2;
+$addexam= isset($_GET['addexam']) ? $_GET['addexam']: 0;
 $FechaSolicitud = $FechaConsulta;
 
 
@@ -42,6 +42,7 @@ else
 /* * *************************************************************** */
 $Historial = new CrearHistorialClinico;
 if (!isset($_GET["IdHistorialClinico"]) || $IdHistorialClinico == '') {
+    echo 'aqui no  existe: ';
    $IdHistorialClinico = $Historial->HistorialClinico($IdNumeroExp,
            $IdEstablecimiento, $IdSubServicio, $IdEmpleado, $FechaConsulta,
            $_SESSION['Correlativo'], $ippc, $idexpediente, $lugar);
@@ -128,7 +129,7 @@ $_SESSION["lugar"] = $lugar;
             if ($rnum > 0) {
                echo "<thead><tr><th colspan='5' valign='middle' style='vertical-align: middle;' ><h4><b>
                         <span class='glyphicon glyphicon-list-alt'></span>  &nbsp;&nbsp;PERFILES </b></h4></th>
-                         <td> 
+                         <td>
                            <button type='button' id='select_all_1' class='btn btn-link'>
                               <span class='glyphicon glyphicon-check' style='font-size: 10px;'>Seleccionar Todos</span>
                            </button>
@@ -152,6 +153,25 @@ $_SESSION["lugar"] = $lugar;
             echo '</div></div></td></tr>';
             echo '</tbody>';
 
+            echo "<tr class='info' style='display: none'>
+            <td colspan='6'>
+                <div class='row' >
+                    <div class='col-md-11' style='text-align:right; vertical-align: top;'>
+                    <h4><b>Solicitud Urgente: </b></h4></div>
+                    <div class='col-md-1' style='vertical-align: middle;'>";
+            if ($prioridad==1){
+                echo "<input type='checkbox' id='tiposolgen' name='tiposolgen' checked data-switch-enabled='true' class='form height'>";
+            }
+            else {
+                echo "<input type='checkbox' id='tiposolgen' name='tiposolgen' data-switch-enabled='true' class='form height'>";
+            }
+
+            echo "</div>
+                </div>
+            </td>
+
+            </tr>";
+
 
 
 //Llamar a funcion para buscar las areas que tiene configurado el establecimiento
@@ -169,21 +189,31 @@ $_SESSION["lugar"] = $lugar;
                   echo "<thead><tr><td colspan='6'><b>" . ($rowar['nombrearea']) . "</b></td></tr></thead><tbody>";
                   while ($ResultadoExamenes = pg_fetch_array($examen)) {
                      //Primera Columna
+
                      echo "<tr>
                                 <td style='width:3%'>
-                                    <input type='checkbox' name='Examenes'  Id='Examenes" . $i . "' value='" . $ResultadoExamenes['idconf'] . "' onclick=\"MostrarLista2(" . $ResultadoExamenes['idconf'] . ",$i)\" />
-                                </td>";
-                     echo "<td style='width:23%'><b>" . $ResultadoExamenes['nombre_examen'] . "</b>
-                                    <input type='hidden' id='Nombre" . $ResultadoExamenes['idconf'] . "' value='" . $ResultadoExamenes['nombre_examen'] . "'>
-                                </td>";
-                     echo "<td style='width:23%'><div id='" . $ResultadoExamenes['idconf'] . "'></div>";
+                                <div class='checkbox'><label>
+                                    <input type='checkbox' name='Examenes'  Id='Examenes" . $i . "' value='" . $ResultadoExamenes['idconf'] . "' onclick=\"MostrarLista2(" . $ResultadoExamenes['idconf'] . ",$i)\" /><b>" . $ResultadoExamenes['nombre_examen'] . "</b>
+                                </label></div><input type='hidden' id='Nombre" . $ResultadoExamenes['idconf'] . "' value='" . $ResultadoExamenes['nombre_examen'] . "'></td>";
+
+                     echo "<td style='width:26%'><div id='" . $ResultadoExamenes['idconf'] . "'>";
+                /*     if ($ResultadoExamenes['urgente']==1){
+                         echo '<div class="onoffswitch" style="width:100px"><strong><font color="#428bca">Urgente :&nbsp;&nbsp;&nbsp;&nbsp;  </font></strong>
+                                                    <input type="checkbox" id="tiposolgen'.$ResultadoExamenes['idconf'].'" name="tiposolgen" data-switch-enabled="true" class="form height">
+                                                </div>';
+                     }
+                     else {
+
+                     }*/
+                     echo " </div>";
                      echo "<div id='O" . $ResultadoExamenes['idconf'] . "'></div></td>";
                      $i++;
                      // SEGUNDA COLUMNA
                      if ($ResultadoExamenes = pg_fetch_array($examen)) {
-                        echo "<td style='width:3%'><input type='checkbox' name='Examenes'  Id='Examenes" . $i . "' value='" . $ResultadoExamenes['idconf'] . "' onclick=\"MostrarLista2(" . $ResultadoExamenes['idconf'] . ",$i)\" /></td>";
-                        echo "<td style='width:23%'><b>" . $ResultadoExamenes['nombre_examen'] . "</b>
-                            <input type='hidden' id='Nombre" . $ResultadoExamenes['idconf'] . "' value='" . $ResultadoExamenes['nombre_examen'] . "'></td>";
+                        echo "<td colspan='2' style='width:23%; vertical-align: top;' >
+                        <div  class='checkbox'><label>
+                        <input type='checkbox' name='Examenes'  Id='Examenes" . $i . "' value='" . $ResultadoExamenes['idconf'] . "' onclick=\"MostrarLista2(" . $ResultadoExamenes['idconf'] . ",$i)\" /><b>" . $ResultadoExamenes['nombre_examen'] . "</b></label></div><input type='hidden' id='Nombre" . $ResultadoExamenes['idconf'] . "' value='" . $ResultadoExamenes['nombre_examen'] . "'></td>";
+
                         echo "<td style='width:23%'><div  id='" . $ResultadoExamenes['idconf'] . "'></div>";
                         echo "<div  id='O" . $ResultadoExamenes['idconf'] . "'></div>";
                         echo "</td></tr>";
@@ -210,16 +240,20 @@ $_SESSION["lugar"] = $lugar;
               <table  class='table table-bordered table-condensed table-white'>
               <tr><td colspan='6'><div id='Resultados'></div></td></tr>
               <tr><td colspan='6' align='right' >
-              
+
               <span class='glyphicon glyphicon-chevron-right'></span>
               <span class='glyphicon glyphicon-chevron-right'></span>
               <span class='glyphicon glyphicon-chevron-right'></span>
               <span class='glyphicon glyphicon-chevron-right'></span>
               <button type='button' class='btn btn-primary' id='Enviar' onclick='GuardarSolicitud(); '><span class='glyphicon glyphicon-share-alt'></span> Enviar Solicitud</button>
-              <button type='button' class='btn btn-primary'  onclick='window.close();'><span class='glyphicon glyphicon-remove-circle'></span> Cancelar Solicitud</button></td></tr>";
+              <button type='button' class='btn btn-primary'  onclick='window.close();'><span class='glyphicon glyphicon-remove-circle'></span> Cancelar Solicitud</button>";
+              if ($addexam==1){
+                  echo "  <button type='button' class='btn btn-primary'  onclick='ListaExamenes(".$IdHistorialClinico.",".$IdCitaServApoyo.", 0)'><span class='glyphicon glyphicon-repeat'></span> Regresar listado</button>";
+              }
 
 
-            echo "</form>";
+
+            echo "</td></tr></form>";
             ?>
 
          </table>

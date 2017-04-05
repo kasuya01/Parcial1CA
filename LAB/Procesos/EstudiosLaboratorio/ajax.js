@@ -52,8 +52,14 @@ function AgregarExamen(){
 	var IdCitaServApoyo=document.getElementById('IdCitaServApoyo').value;
 	var Sexo=document.getElementById('Sexo').value;
 	var FechaConsulta=document.getElementById('FechaConsulta').value;
-
-
+	var urgente=document.getElementById('tiposolgen');
+	if(urgente.checked==true){
+		var prioridad='1';
+		//alert('SI');
+	}else{
+		var prioridad='2';
+	}
+	var agregarexamen=1;
 	var Parametros="?IdNumeroExp="+IdNumeroExp;
         Parametros+="&IdEstablecimiento="+IdEstablecimiento;
         Parametros+="&lugar="+lugar;
@@ -65,6 +71,8 @@ function AgregarExamen(){
 			Parametros+="&idexpediente="+idexpediente;
 			Parametros+="&Sexo="+Sexo;
 			Parametros+="&FechaConsulta="+FechaConsulta;
+			Parametros+="&prioridad="+prioridad;
+			Parametros+="&addexam="+agregarexamen;
 
 	location.href='./Solicitud.php'+Parametros;
 
@@ -74,7 +82,14 @@ function ListaExamenes(IdHistorialClinico,IdCitaServApoyo, band){
    if (band=='undefined' || band=='' || band==null){
       band=0;
    }
-   window.location.href='ExamenesSolicitados.php?IdHistorialClinico='+IdHistorialClinico+'&IdCitaServApoyo='+IdCitaServApoyo+'&band='+band;
+   var bandera=document.getElementById('tiposolgen');
+   if(bandera.checked==true){
+	   var Bandera='1';
+	   //alert('SI');
+   }else{
+	   var Bandera='2';
+   }
+   window.location.href='ExamenesSolicitados.php?IdHistorialClinico='+IdHistorialClinico+'&IdCitaServApoyo='+IdCitaServApoyo+'&band='+band+'&urgente='+Bandera;
 
         classdatepick();
 	//MostrarDetalle(IdHistorialClinico);
@@ -353,8 +368,8 @@ function MostrarDetalle(IdHistorialClinico){
 
 		//alert('Estas en Guardar Informacion');
 		// Parametros Generales
-                document.getElementById('Enviar').value='Enviando....!';
-                document.getElementById('Enviar').disabled=true;
+        document.getElementById('Enviar').value='Enviando....!';
+        document.getElementById('Enviar').disabled=true;
 		var IdHistorialClinico=document.getElementById('IdHistorialClinico').value;
 		var IdNumeroExp=document.getElementById('IdNumeroExp').value;
 		var idexpediente=document.getElementById('idexpediente').value;
@@ -444,11 +459,11 @@ function MostrarDetalle(IdHistorialClinico){
 
 					}//Estado == 1
 					if(ajax2.readyState==4){
-
 						j++;
 						Resta--;
 						//console.log(ID+ '  Resta:'+Resta)
 						Retraso(ID);
+
 						//alert(ajax2.responseText);
 					}//Estado == 4
 				}//On ready state

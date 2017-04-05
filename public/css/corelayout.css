@@ -369,3 +369,91 @@ div#dialog-message p {
 {
     display:none;
 }
+
+body.fixed .navbar {
+    position: relative;
+}
+
+body > .header .navbar {
+    height: auto !important;
+}
+
+.navbar-default {
+    background-color: #FFFFFF;
+}
+
+.content, .right-side {
+    background: #fdfdfd;
+}
+
+.navbar-btn.sidebar-toggle {
+    display: none;
+}
+
+.navbar-toggle {
+    float: left;
+}
+
+.navbar-toggle .icon-bar {
+    background: #3c8dbc;
+}
+
+.nav-tabs.nav-stacked > li.active > a {
+    border: 1px solid #bce8f1;
+    border-radius: 4px;
+    color: #31708f;
+    background-color: #d9edf7;
+    font-weight: bold;
+}
+
+.nav-tabs.nav-stacked > li.active > a:hover,
+.nav-tabs.nav-stacked > li.active > a:focus {
+    border: 1px solid #d9edf7;
+    color: #629BB6;
+    background-color: #EAF8FF;
+}
+
+.nav-tabs.nav-stacked > li > a:hover,
+.nav-tabs.nav-stacked > li > a:focus {
+    border-top-color: #eee;
+    border-bottom-color: #eee;
+    border-left-color: #eee;
+}
+
+.nav-tabs.nav-stacked > li > a,
+.nav-tabs.nav-stacked > li > a:visited {
+    border-right-color: #ddd;
+    border-top-right-radius: 0px;
+    border-width: 0px 0px 0px 0px;
+}
+
+.nav-tabs.nav-stacked {
+    border-bottom: 0px;
+}
+
+.nav-tabs.nav-stacked>li+li {
+    margin-top: 0px;
+}
+
+.nav-tabs.nav-stacked>li>a {
+    border-radius: 4px 0px 0px 4px;
+    margin-right: 0px;
+}
+
+.nav-tabs-stacked-content-left {
+    padding-right:0px;
+}
+
+.nav-tabs-stacked-content-right {
+    padding-left:15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.nav-tabs-stacked-table {
+    width: 100%;
+}
+
+.nav-tabs-stacked-table td {
+    vertical-align: top;
+}

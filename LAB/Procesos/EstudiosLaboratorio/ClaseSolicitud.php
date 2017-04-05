@@ -79,9 +79,8 @@ class Paciente {
                             where id_establecimiento_externo=$idestab
                             and case $idestab
                                     when id_establecimiento then id_historial_clinico=$IdHistorialClinico
-                                    else id_dato_referencia=$IdHistorialClinico
-                            end";
-         //     echo 'Idsolicitud '.$SQL.'-<br\>';
+                                    else id_dato_referencia=$IdHistorialClinico end";
+        //      echo 'Idsolicitud: '.$SQL.'<br/>';
          //exit;
          $Resultado = pg_query($SQL);
          // or die('La consulta fall&oacute;: ' . mysql_error());
@@ -114,6 +113,7 @@ class Paciente {
       $conectar = $Conexion->conectar();
       if ($conectar == true) {
          $recep = "select * from lab_recepcionmuestra where idsolicitudestudio=$IdSolicitudEstudio";
+//         echo $recep.'<br/>';
          $sql3 = pg_query($recep);
          $rec = pg_num_rows($sql3);
          $rownm= pg_fetch_array($sql3);
@@ -281,7 +281,8 @@ class SolicitudLaboratorio {
          $SQL2 = "select t2.id as idsumi, t2.suministrante, t1.id as id_examen_suministrante
                 from lab_examen_suministrante t1
                 join lab_suministrante t2 on (t2.id=t1.id_suministrante)
-                where id_conf_examen_estab=$IdExamen";
+                where id_conf_examen_estab=$IdExamen
+                and t1.activo=true";
          $result = pg_query($SQL2);
          if (!$result) {
             return false;
@@ -853,6 +854,7 @@ where idsolicitudestudio=$idsolicitud";
             set idtiposolicitud='$Bandera'
             where id_atencion= (select id from ctl_atencion where codigo_busqueda= 'DCOLAB')
             and id=$idsol;";
+        //    echo $sql;
       $Ejecutar = pg_query($sql);
       if (!$Ejecutar) {
          return false;
@@ -1149,7 +1151,7 @@ values($idseq,$idexpediente, $IdEmpleado,$IdSubServicio, date_trunc('seconds',NO
            $IdHistorialClinico, $idestab) {
       //$ippc=$_SERVER["REMOTE_ADDR"];
       // echo $idarea.'-area sexo-'.$idsexo.'<br/>';
-      $query = "select distinct lcee.id as idconf, nombre_examen, mnt4.id_examen_servicio_diagnostico
+     $query = "select distinct lcee.id as idconf, nombre_examen, mnt4.id_examen_servicio_diagnostico, urgente
             from mnt_area_examen_establecimiento mnt4
             join lab_conf_examen_estab lcee on (mnt4.id=lcee.idexamen)
             join lab_examen_suministrante lesu on (lcee.id=lesu.id_conf_examen_estab)
