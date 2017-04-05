@@ -830,7 +830,8 @@ function PreviosNegativos()
         tipomuestra=document.getElementById('txttipomuestra').value;
         resiembras=document.getElementById('txtresiembra').value;
         idareaPA=document.getElementById('txtidareaPA').value;
-      //  alert (tipomuestra+" - "+resiembras);
+        observacion=document.getElementById('txtObservacion').value;
+      //  alert (idobservacion +" - "+observacion);
         opcion = 5;
 
         if (document.frmnuevo.cmbResultado.value == "P")
@@ -849,7 +850,7 @@ function PreviosNegativos()
         ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idtarjeta=" + idtarjeta + "&tiporespuesta=" + tiporespuesta +
                 "&idarea=" + idarea + "&idsolicitud=" + idsolicitud + "&idempleado=" + idempleado +
                 "&resultado=" + resultado + "&estab=" + estab + "&idobservacion=" + idobservacion + "&fecharealiz=" + fecharealiz + "&fecharesultado=" + fecharesultado+
-                "&f_tomamuestra="+f_tomamuestra+"&tipomuestra="+ tipomuestra + "&resiembras=" + resiembras +"&idareaPA="+idareaPA);
+                "&f_tomamuestra="+f_tomamuestra+"&tipomuestra="+ tipomuestra + "&resiembras=" + resiembras +"&idareaPA="+idareaPA+"&observacion="+observacion);
         //"&observacion=" + encodeURIComponent(observacion) +
         ajax.onreadystatechange = function()
         {
@@ -891,12 +892,13 @@ function GuardarResultadosNegativosPlantillaC()
     fecharealiz = document.getElementById('txtresultrealiza').value;
     fecharesultado =document.getElementById('txtresultfin').value;
     resiembras=document.getElementById('txtresiembras').value;
-   // alert(resiembras);
+    observacion=document.getElementById('txtObservacion').value;
+ //  alert(fecharesultado);
     ajax.open("POST", "ctrDatosResultadosExamen_PC.php", true);
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     ajax.send("opcion=" + opcion + "&idsolicitud=" + idsolicitud + "&idrecepcion=" + idrecepcion + "&iddetalle=" + iddetalle +
             "&idexamen=" + idexamen + "&resultado=" + resultado + "&idempleado=" + idempleado + "&idobservacion="+ idobservacion +
-            "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado + "&resiembras=" + resiembras);
+            "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado +"&resiembras=" + resiembras + "&observacion="+observacion);
     // "&observacion=" + escape(observacion) +
     ajax.onreadystatechange = function()
     {

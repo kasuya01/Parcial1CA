@@ -344,8 +344,8 @@ function RecogeValor() {
 
 
                                 <tr>
-                                    <td colspan="1" class="StormyWeatherFieldCaptionTD">Resultado</td>
-                                    <td class="StormyWeatherDataTD" colspan="4">
+                                    <td width="35%" colspan="1" class="StormyWeatherFieldCaptionTD">Resultado</td>
+                                    <td width="65%" class="StormyWeatherDataTD" colspan="4">
                                         <select id="cmbResultado" name="cmbResultado" size="1" class="form-control height" onChange="LlenarObservaciones();" >
                                              <option value="0">--Seleccione--</option>
                                              <option value="P">Positivo</option>
@@ -359,19 +359,19 @@ function RecogeValor() {
                                          <div id="divObservacion" style="display:none">
                                              <table class="StormyWeatherFormTABLE" width="80%" >
                                                  <tr>
-                                                     <td width="30%" colspan="1" class="StormyWeatherFieldCaptionTD">Resultado</td>
-                                                     <td width="70%"  colspan="4" class="StormyWeatherDataTD" >
+                                                     <td  colspan="1" class="StormyWeatherFieldCaptionTD">Resultado</td>
+                                                     <td  colspan="4" class="StormyWeatherDataTD" >
                                                          <select id="cmbObservacion" name="cmbObservacion" size="1" style="width:100%" class="form-control height" >
                                                              <option value="0" >--Seleccione Observaci&oacute;n--</option>
                                                          </select>
                                                      </td>
-                                                 </tr>
-                                                 <tr>
-                                                        <td width="35%" colspan="1" class="StormyWeatherFieldCaptionTD">Número de Resiembras:</td>
-                                                        <td width="65%"  colspan="4" class="StormyWeatherDataTD" >
-                                                            <input name='txtresiembra' type='text' id='txtresiembra' size='10' />
-                                                        </td>
-                                                    </tr>
+                                                </tr>
+                                                <tr>
+                                                      <td width="35%" colspan="1" class="StormyWeatherFieldCaptionTD">Número de Resiembras:</td>
+                                                    <td width="65%"  colspan="4" class="StormyWeatherDataTD" >
+                                                        <input name='txtresiembra' type='text' id='txtresiembra' size='10' />
+                                                    </td>
+                                                </tr>
                                              </table>
                                          </div>
                                      </td>
@@ -443,14 +443,21 @@ else{
                                 <td height="100%" colspan="5" class="StormyWeatherDataTD" >
                                         <div id="divBotonPrevie" style="display:none">
                                                 <table width="100%" height="100%" >
+                                                     <tr>
+                                                        <td width="35%" colspan="1" class="StormyWeatherFieldCaptionTD">Observación</td>
+                                                        <td width="65%"  colspan="4" class="StormyWeatherDataTD" >
+                                                            <textarea name='txtObservacion' type='text' id='txtObservacion' cols='55'/></textarea>
+                                                        </td>
+                                                    </tr>
+                                                    <tr><td width="100%" colspan="5" class="StormyWeatherDataTD">NOTA: Debe de ingresar solo una de las observaciones. </td></tr>
                                                     <tr>
-                                                        <td width="35%" colspan="1" class="StormyWeatherFieldCaptionTD">Número de Resiembras:</td>
+                                                        <td width="35%" colspan="1" class="StormyWeatherFieldCaptionTD">Número de Resiembras</td>
                                                         <td width="65%"  colspan="4" class="StormyWeatherDataTD" >
                                                             <input name='txtresiembra' type='text' id='txtresiembra' size='10' />
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td  align="right">
+                                                        <td  colspan="5" align="right">
                                                       <!--  <input type="button" name="Submit" value="Mostrar Datos Previos" Onclick="PreviosNegativos() ;">-->
                                                         <button type='button' id='Submit' align='center' class='btn btn-primary' title='Vista Previa de Resultados'  onclick='PreviosNegativos();'>&nbsp;Vista Previa de Resultados</button>
                                                         </td>

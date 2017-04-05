@@ -18,6 +18,7 @@ $establecimiento=$_GET['var9'];
 $f_tomamuestra=$_GET['var10'];
 //echo $f_tomamuestra;
 $tipomuestra=$_GET['var11'];
+//$observacion1=$_GET['var12'];
 $Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
 $row_estab = pg_fetch_array($Consulta_Estab);
 

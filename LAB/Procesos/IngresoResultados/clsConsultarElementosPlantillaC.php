@@ -181,11 +181,22 @@ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$obs
             $idultimo = $rowexiste[0];
                 return $idultimo;
         }else{
+            
+            if($idobservacion<>0){
             $query = "INSERT INTO lab_resultados
                      (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
                       observacion,resultado,idempleado,idusuarioreg,fechahorareg,idestablecimiento,id_observacion,fecha_resultado) 
                       VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,
                       '$observacion','$NomResultado',$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,$idobservacion,'$fecharesultado')RETURNING id";
+            }
+            else{
+                
+           $query = "INSERT INTO lab_resultados
+                     (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
+                      observacion,resultado,idempleado,idusuarioreg,fechahorareg,idestablecimiento,fecha_resultado) 
+                      VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,
+                      '$observacion','$NomResultado',$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,'$fecharesultado')RETURNING id";
+            }
                   //echo $query;
             $result = pg_query($query);
             if($row = pg_fetch_array($result)) {
@@ -224,6 +235,7 @@ function insertar_encabezado_antibiograma($idsolicitud,$detantib,$idcof,$idrecep
    //echo $resultado;
     if($con->conectar()==true) 
     {
+        if ($idobservacion==0)
         $query = "INSERT INTO lab_resultados
 	       (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,observacion,resultado,idempleado,idusuarioreg,fechahorareg,idestablecimiento,id_observacion,fecha_resultado,id_resultado_padre) 
 	       VALUES($idsolicitud,$detantib,$idcof ,$idrecepcion,'$observacion','$NomResultado',$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,$idobservacion,'$fecharesultado',$ultimo)RETURNING id";

@@ -477,7 +477,7 @@ class clsLab_Procedimientos {
 		//usamos el metodo conectar para realizar la conexion
 		if ( $con->conectar()==true ) {
 
-			echo  $query ="select  orden  from lab_procedimientosporexamen 
+			 $query ="select  orden  from lab_procedimientosporexamen 
                                   where id_conf_examen_estab=$idexa order by orden asc
 ";
 
@@ -495,7 +495,7 @@ class clsLab_Procedimientos {
 		//usamos el metodo conectar para realizar la conexion
 		if ( $con->conectar()==true ) {
 
-			echo  $query ="select 
+			 $query ="select 
                                         count (*) cantidad
                                         from lab_procedimientosporexamen 
                                         where id_conf_examen_estab=$idexa";
@@ -612,7 +612,7 @@ class clsLab_Procedimientos {
 						INNER JOIN lab_plantilla                    lpla ON (lpla.id = lcee.idplantilla)
 						LEFT OUTER JOIN ctl_sexo                    cex  ON (cex.id  = lppe.idsexo)
 						LEFT OUTER JOIN ctl_rango_edad              cre  ON (cre.id  = lppe.idrangoedad)
-                                           	WHERE lcee.condicion = 'H'
+                                           	WHERE lpla.idplantilla = 'E' AND lcee.condicion = 'H'
                                                 AND laxe.condicion = 'H' 
                                                 AND cesd.activo=TRUE 
                                                 AND mnt4.activo=TRUE 
@@ -686,7 +686,7 @@ class clsLab_Procedimientos {
 		$con = new ConexionBD;
 		//usamos el metodo conectar para realizar la conexion
 		if ( $con->conectar()==true ) {
-			 $query = "SELECT lppe.id AS idprocedimientoporexamen,
+			  $query = "SELECT lppe.id AS idprocedimientoporexamen,
 						lcee.codigo_examen AS idexamen,
 						lcee.nombre_examen AS nombreexamen,
 						lppe.nombreprocedimiento,
@@ -721,7 +721,7 @@ class clsLab_Procedimientos {
 						INNER JOIN lab_plantilla                    lpla ON (lpla.id = lcee.idplantilla)
 						LEFT OUTER JOIN ctl_sexo                    cex  ON (cex.id  = lppe.idsexo)
 						LEFT OUTER JOIN ctl_rango_edad              cre  ON (cre.id  = lppe.idrangoedad)
-                                                WHERE lcee.condicion = 'H' 
+                                                WHERE lpla.idplantilla = 'E' AND lcee.condicion = 'H' 
                                                 AND laxe.condicion = 'H' 
                                                 AND cesd.activo=TRUE
                                                 AND mnt4.activo=TRUE 

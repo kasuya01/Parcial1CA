@@ -13,7 +13,7 @@ $resultado=$_GET['var4'];
 $responsable=$_GET['var5'];
 $procedencia=$_GET['var6'];
 $origen=$_GET['var7'];
-$observacion=$_GET['var8'];
+echo $observacion=$_GET['var8'];
 $establecimiento=$_GET['var9'];
 
 $Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
