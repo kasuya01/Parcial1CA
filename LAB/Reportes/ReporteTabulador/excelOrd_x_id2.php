@@ -256,7 +256,14 @@ if ($pruebas==0){ //Si no selecciono ninguna prueba por defecto le cargara el re
 
                         } else if ($codpro==5){
                             $codser="cinco";
-                            $objPHPExcel->getActiveSheet()->SetCellValue($startletra.$o, '');
+                        /*    $objPHPExcel->getActiveSheet()->SetCellValue($startletra.$o, '');*/
+                        $restres=$resultser['cinco'];
+                        if ($restres==0){
+                          $objPHPExcel->getActiveSheet()->SetCellValue($startletra.$o, '');
+                        }
+                        else{
+                          $objPHPExcel->getActiveSheet()->SetCellValue($startletra.$o, $restres);
+                        }
                         }
                     }
                     $o=5;

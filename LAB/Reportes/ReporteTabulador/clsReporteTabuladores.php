@@ -120,8 +120,8 @@ class clsReporteTabuladores
    $sql = "select
    count (case when id_area_atencion=1 and id_servicio_externo_estab is null  then 'uno' else null end) as uno,
    count (case when id_area_atencion=3 and id_servicio_externo_estab is null then 'dos' else null end) as dos,
-   count (case when id_area_atencion=2 and id_servicio_externo_estab is null  then 'tres' else null end) as tres
-   --count (case when id_servicio_externo_estab is not null then 'cinco' else null end) as otros
+   count (case when id_area_atencion=2 and id_servicio_externo_estab is null  then 'tres' else null end) as tres,
+   count (case when id_servicio_externo_estab is not null then 'cinco' else null end) as cinco
    from sec_detallesolicitudestudios t00
    join sec_solicitudestudios t01 on (t01.id=t00.idsolicitudestudio)
    join lab_resultado_metodologia t0c on (t00.id=t0c.id_detallesolicitudestudio)
