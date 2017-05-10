@@ -784,45 +784,47 @@ return $plantillas;
 }
 
 
+ function addExamnToLayout($exams, $newExam, $row, $tipoPlantilla) {
+        if( $row['id_resultado_padre'] === null ) {
+            if( ! isset($exams[ $newExam[2] ]) ){
+    			$exams[ $newExam[2] ] = array(
+                                            'id'     => $newExam[0],
+    										'codigo' => $newExam[1],
+    										'nombre' => $newExam[2],
+                                            'id_estado_detalle'     => $row['id_estado_detalle'],
+                                            'codigo_estado_detalle' => $row['codigo_estado_detalle'],
+                                            'nombre_estado_detalle' => $row['nombre_estado_detalle'],
+                                            'fecha_toma_muestra'    => $row['fecha_toma_muestra']
+    									);
+    		}
 
+            if( ! isset($exams[ $newExam[2] ]['resultadoFinal']) ){
+                $exams[ $newExam[2] ]['resultadoFinal'] = array();
+            }
 
-     function addExamnToLayout($exams, $newExam, $row, $tipoPlantilla) {
-        if( ! isset($exams[ $newExam[2] ]) )
-        {
-                $exams[ $newExam[2] ] = array(
-                                        'id'                    => $newExam[0],
-                                        'codigo'                => $newExam[1],
-                                        'nombre'                => $newExam[2],
-                                        'result_padre'          => $newExam[3],
-                                        'id_estado_detalle'     => $row['id_estado_detalle'],
-                                        'codigo_estado_detalle' => $row['codigo_estado_detalle'],
-                                        'nombre_estado_detalle' => $row['nombre_estado_detalle']
+            switch ($row['codigo_estado_detalle']) {
+                case 'RM':
+                    $exams[ $newExam[2] ]['id_estado_rechazo']          = $row['id_estado_rechazo'];
+                    $exams[ $newExam[2] ]['nombre_estado_rechazo']      = $row['nombre_estado_rechazo'];
+                    $exams[ $newExam[2] ]['id_observacion_rechazo']     = $row['id_observacion_rechazo'];
+                    $exams[ $newExam[2] ]['nombre_observacion_rechazo'] = $row['nombre_observacion_rechazo'];
+                    break;
+                case 'RC':
+        			$exams[ $newExam[2] ]['resultadoFinal'] = array(
+                                                'id_empleado'           => $row['id_empleado'],
+                                                'nombre_empleado'       => $row['nombre_empleado'],
+                                                'fecha_resultado'       => $row['fecha_resultado'],
+                                                'urgente'               => $row['urgente']
                                             );
-        }
-        /*echo '<br/>';
-        var_dump($exams[ $newExam[2] ]);
-        echo '<br/>';*/
-        if( ! isset($exams[ $newExam[2] ]['resultadoFinal']) ){
-            $exams[ $newExam[2] ]['resultadoFinal'] = array();
+
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
         }
 
-        switch ($row['codigo_estado_detalle']) {
-            case 'RM':
-                $exams[ $newExam[2] ]['motivo_rechazo'] = $row['nombre_observacion_rechazo'];
-                break;
-            case 'RC':
-    $exams[ $newExam[2] ]['resultadoFinal'] = array(
-                                            'id_empleado'           => $row['id_empleado'],
-                                            'nombre_empleado'       => $row['nombre_empleado'],
-                                            'fecha_resultado'       => $row['fecha_resultado'],
-                                            'urgente'               => $row['urgente']
-                                        );
-                break;
-
-            default:
-                # code...
-                break;
-        }
         switch ($tipoPlantilla) {
             case 'A':
                 if($row['codigo_estado_detalle'] === 'RC') {
@@ -840,8 +842,8 @@ return $plantillas;
                 break;
             case 'B':
                 if( ! isset($exams[ $newExam[2] ]['elementos']) ){
-        $exams[ $newExam[2] ]['elementos'] = array();
-        }
+        			$exams[ $newExam[2] ]['elementos'] = array();
+        		}
 
                 if($row['codigo_estado_detalle'] === 'RC') {
                     $newElement = array(
@@ -854,60 +856,67 @@ return $plantillas;
                         $row['control_normal_elemento']
                     );
 
-                    $exams[ $newExam[2] ]['elementos'] = addElementToExam($exams[ $newExam[2] ]['elementos'], $newElement, $row);
+                    $exams[ $newExam[2] ]['elementos'] = $this->addElementToExam($exams[ $newExam[2] ]['elementos'], $newElement, $row);
                 }
                 break;
             case 'C':
-                if( ! isset($exams[ $newExam[2] ]['bacterias']) ){
-        $exams[ $newExam[2] ]['bacterias'] = array();
-        }
+                $examKey = $row['id_resultado_padre'] === null ? $newExam[2] : $row['nombre_examen_padre'];
 
-                if($row['codigo_estado_detalle'] === 'RC') {
-                    $exams[ $newExam[2] ]['resultadoFinal']['id_resultado']             = $row['id_resultado'];
-                    $exams[ $newExam[2] ]['resultadoFinal']['resultado']                = $row['resultado'];
-                    $exams[ $newExam[2] ]['resultadoFinal']['id_posible_resultado']     = $row['id_posible_resultado'];
-                    $exams[ $newExam[2] ]['resultadoFinal']['nombre_posible_resultado'] = $row['nombre_posible_resultado'];
-                    $exams[ $newExam[2] ]['resultadoFinal']['id_observacion']           = $row['id_observacion_bacteria'];
-                    $exams[ $newExam[2] ]['resultadoFinal']['nombre_observacion']       = $row['nombre_observacion_bacteria'];
-                    $exams[ $newExam[2] ]['resultadoFinal']['codigo_observacion']       = $row['codigo_observacion_bacteria'];
+                if( $row['id_resultado_padre'] === null && !isset($exams[ $examKey ]['examenesDependientes']) ) {
+                    $exams[ $examKey ]['examenesDependientes'] = array();
+                }
 
-                    if($row['id_observacion_bacteria'] === null) {
-                        //Aqui me indica q es positivo y que debo mandar a llamar los hijos
+                if( $row['codigo_estado_detalle'] === 'RC' ) {
+                    if( $row['id_resultado_padre'] === NULL ) {
+                        $exams[ $examKey ]['resultadoFinal']['id_resultado']             = $row['id_resultado'];
+                        $exams[ $examKey ]['resultadoFinal']['resultado']                = $row['resultado'];
+                        $exams[ $examKey ]['resultadoFinal']['id_posible_resultado']     = $row['id_posible_resultado'];
+                        $exams[ $examKey ]['resultadoFinal']['nombre_posible_resultado'] = $row['nombre_posible_resultado'];
+                        $exams[ $examKey ]['resultadoFinal']['id_observacion']           = $row['id_observacion_bacteria'];
+                        $exams[ $examKey ]['resultadoFinal']['nombre_observacion']       = $row['nombre_observacion_bacteria'];
+                        $exams[ $examKey ]['resultadoFinal']['codigo_observacion']       = $row['codigo_observacion_bacteria'];
+                    } else {
+                        if( ! isset($exams[ $examKey ]['examenesDependientes'][ $newExam[2] ]['bacterias']) ) {
+                			$exams[ $examKey ]['examenesDependientes'] = array( $newExam[2] => array( 'bacterias' => array() ) );
+                		}
 
-                        $newBacter = array(
-                            $row['id_bacteria'],
-                            $row['nombre_bacteria'],
-                            $row['id_resultado'],
-                            $row['resultado'],
-                            $row['id_posible_resultado'],
-                            $row['nombre_posible_resultado'],
-                            $row['cantidad_bacterias']
-                        );
-                        //var_dump($row);
-                        $exams[ $newExam[2] ]['bacterias'] = addBacterToExamn($exams[ $newExam[2] ]['bacterias'], $newBacter, $row);
+                        if($row['id_observacion_bacteria'] === null) {
+                            $newBacter = array(
+                                $row['id_bacteria'],
+                                $row['nombre_bacteria'],
+                                $row['id_resultado'],
+                                $row['resultado'],
+                                $row['id_posible_resultado'],
+                                $row['nombre_posible_resultado'],
+                                $row['cantidad_bacterias']
+                            );
+
+                            $exams[ $examKey ]['examenesDependientes'][ $newExam[2] ]['bacterias'] = addBacterToExamn($exams[ $examKey ]['examenesDependientes'][ $newExam[2] ]['bacterias'], $newBacter, $row);
+
+                        }
                     }
                 }
                 break;
-//            case 'D':
-//                if( ! isset($exams[ $newExam[2] ]['elementos']) ){
-//        $exams[ $newExam[2] ]['elementos'] = array();
-//        }
-//
-//                if($row['codigo_estado_detalle'] === 'RC') {
-//                    $newElement = array(
-//                        $row['id_elemento_tincion'],
-//                        $row['nombre_elemento_tincion'],
-//                        $row['nombre_cantidad_tincion'],
-//                        $row['id_cantidad_tincion']
-//                    );
-//
-//                    $exams[ $newExam[2] ]['elementos'] = addTincionElementToExam($exams[ $newExam[2] ]['elementos'], $newElement);
-//                }
-//                break;
+            /*case 'D':
+                if( ! isset($exams[ $newExam[2] ]['elementos']) ){
+        			$exams[ $newExam[2] ]['elementos'] = array();
+        		}
+
+                if($row['codigo_estado_detalle'] === 'RC') {
+                    $newElement = array(
+                        $row['id_elemento_tincion'],
+                        $row['nombre_elemento_tincion'],
+                        $row['nombre_cantidad_tincion'],
+                        $row['id_cantidad_tincion']
+                    );
+
+                    $exams[ $newExam[2] ]['elementos'] = $this->addTincionElementToExam($exams[ $newExam[2] ]['elementos'], $newElement);
+                }
+                break;*/
             default:
                 if( ! isset($exams[ $newExam[2] ]['procedimientos']) ){
-        $exams[ $newExam[2] ]['procedimientos'] = array();
-        }
+        			$exams[ $newExam[2] ]['procedimientos'] = array();
+        		}
 
                 if($row['codigo_estado_detalle'] === 'RC') {
                     $exams[ $newExam[2] ]['resultadoFinal']['observacion'] = $row['resultado_observacion'];
@@ -924,7 +933,7 @@ return $plantillas;
                         $row['control_diario_procedimiento']
                     );
 
-                    $exams[ $newExam[2] ]['procedimientos'] = addProcedureToExam($exams[ $newExam[2] ]['procedimientos'], $newProcedure);
+                    $exams[ $newExam[2] ]['procedimientos'] = $this->addProcedureToExam($exams[ $newExam[2] ]['procedimientos'], $newProcedure);
                 }
                 break;
         }
@@ -932,6 +941,8 @@ return $plantillas;
         /*Falta Logica para Resultados de la Metodologia*/
         return $exams;
     }
+
+
 
     function addElementToExam($elements, $newElement, $row) {
         if( ! isset($elements[ $newElement[1] ]) )
@@ -1359,61 +1370,66 @@ function plantillaC($examen) {
             }
             $html.="</div>";
         }
+    if (count($examen['examenesDependientes']) > 0){
+            foreach ($examen['examenesDependientes'] as $examenDependiente){
+                if (count($examenDependiente['bacterias']) > 0) {
+                 $html.=  "<table class='table table-white'>
+                       <tbody>";
 
- if (count($examen['bacterias']) > 0) {
-  $html.=  "<table class='table table-white'>
-        <tbody>";
-        if ($examen['result_padre']!='' || $examen['result_padre']!=NULL){
-            foreach ($examen['bacterias'] as $bacteria){
-              $html.="  <tr>
-                    <td colspan='4'>
-                        <div class='row'>
-                            <div class='col-md-12 col-sm-12'>
-                                <table class='heading-bact-pc'>
-                                    <tbody>
-                                        <tr>
-                                            <td>Organismo:</td>
-                                            <td style='padding-left:15px;'><strong>".$bacteria['nombre']."</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Cultivo con cuenta de Colonias:</td>
-                                            <td style='padding-left:15px;'><strong>".$bacteria['cantidad']."</strong></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr style='font-weight: bold;'>
-                    <td></td>
-                    <td>Antibiotico</td>
-                    <td>Lectura</td>
-                    <td>Interpretacion</td>
-                </tr>";
-               foreach ($bacteria['tarjetas'] as $tarjeta){
-                        foreach ($tarjeta['antibioticos'] as $antibiotico){
-                                $html.="  <tr>
-                                      <td></td>
-                                      <td>". $antibiotico['nombre']."</td>
-                                      <td>".$antibiotico['lectura']."</td>
-                                      <td>";
-                                          //{% if antibiotico.id_posible_resultado is not null or antibiotico.id_posible_resultado != '' %}
-                                           if($antibiotico['id_posible_resultado'] !== null || $antibiotico['id_posible_resultado'] !== '') {
-                                              $html.="    ".$antibiotico['nombre_posible_resultado' ]."   ";
-                                          }else {
-                                            $html.=" ". $antibiotico['resultado']." " ;
-                                          }
-                                     $html.= "</td>
-                                  </tr>";
-                        }
-                }
+                           foreach ($examenDependiente['bacterias'] as $bacteria){
+                             $html.="  <tr>
+                                   <td colspan='4'>
+                                       <div class='row'>
+                                           <div class='col-md-12 col-sm-12'>
+                                               <table class='heading-bact-pc'>
+                                                   <tbody>
+                                                       <tr>
+                                                           <td>Organismo:</td>
+                                                           <td style='padding-left:15px;'><strong>".$bacteria['nombre']."</strong></td>
+                                                       </tr>
+                                                       <tr>
+                                                           <td>Cultivo con cuenta de Colonias:</td>
+                                                           <td style='padding-left:15px;'><strong>".$bacteria['cantidad']."</strong></td>
+                                                       </tr>
+                                                   </tbody>
+                                               </table>
+                                           </div>
+                                       </div>
+                                   </td>
+                               </tr>
+                               <tr style='font-weight: bold;'>
+                                   <td></td>
+                                   <td>Antibiotico</td>
+                                   <td>Lectura</td>
+                                   <td>Interpretacion</td>
+                               </tr>";
+                              foreach ($bacteria['tarjetas'] as $tarjeta){
+                                       foreach ($tarjeta['antibioticos'] as $antibiotico){
+                                               $html.="  <tr>
+                                                     <td></td>
+                                                     <td>". $antibiotico['nombre']."</td>
+                                                     <td>".$antibiotico['lectura']."</td>
+                                                     <td>";
+                                                         //{% if antibiotico.id_posible_resultado is not null or antibiotico.id_posible_resultado != '' %}
+                                                          if($antibiotico['id_posible_resultado'] !== null || $antibiotico['id_posible_resultado'] !== '') {
+                                                             $html.="    ".$antibiotico['nombre_posible_resultado' ]."   ";
+                                                         }else {
+                                                           $html.=" ". $antibiotico['resultado']." " ;
+                                                         }
+                                                    $html.= "</td>
+                                                 </tr>";
+                                       }
+                               }
+                           }
+                      $html.= "</tbody>
+                               </table>";
+                      return $html;
+               }//count($examen['bacterias'])
             }
-            }//fin if has result_padre
-       $html.= "</tbody>
-                </table>";
-       return $html;
-}//count($examen['bacterias'])
+
+    }
+
+
 
 }
 //PLANTILLA D

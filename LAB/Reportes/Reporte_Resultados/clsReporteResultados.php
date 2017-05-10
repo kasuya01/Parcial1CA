@@ -1465,6 +1465,16 @@ $con = new ConexionBD;
                        t17.lectura,
                        t17.interpretacion,
                        t17.observacion AS resultado_observacion,
+                       t17.id_resultado_padre,
+                       CASE WHEN t17.id_resultado_padre IS NOT NULL
+                            THEN (
+                                SELECT tt02.nombre_examen
+                                FROM lab_resultados tt01
+                                INNER JOIN lab_conf_examen_estab tt02 ON (tt02.id = tt01.idexamen)
+                                WHERE tt01.id = t17.id_resultado_padre
+                            )
+                            ELSE NULL
+                       END AS nombre_examen_padre,
                        t18.id AS id_posible_resultado,
                        t18.posible_resultado AS nombre_posible_resultado,
                        CASE t10.idplantilla WHEN 'B'
@@ -1514,6 +1524,7 @@ $con = new ConexionBD;
                        t22.id_posible_resultado_procedimiento,
                        t22.nombre_posible_resultado_procedimiento,
                        t22.control_diario_procedimiento,
+                       t23.id_detalle_resultado_bacteria,
                        t23.id_bacteria,
                        t23.nombre_bacteria,
                        t23.cantidad_bacterias,
@@ -1528,11 +1539,10 @@ $con = new ConexionBD;
                        t23.resultado_antibiotico,
                        t23.lectura_antibiotico,
                        t23.id_posible_resultado_antibiotico,
-                       t23.nombre_posible_resultado_antibiotico,
-					   t17.id_resultado_padre
+                       t23.nombre_posible_resultado_antibiotico
                 FROM sec_detallesolicitudestudios          t01
                 INNER JOIN sec_solicitudestudios           t02 ON (t02.id = t01.idsolicitudestudio)
-                INNER JOIN lab_conf_examen_estab           t03 ON (t03.id = t01.id_conf_examen_estab)
+                INNER JOIN lab_conf_examen_estab           t03 ON (t03.id = t01.id_conf_examen_estab AND t03.b_verresultado = true)
                 INNER JOIN mnt_area_examen_establecimiento t04 ON (t04.id = t03.idexamen)
                 INNER JOIN ctl_area_servicio_diagnostico   t05 ON (t05.id = t04.id_area_servicio_diagnostico)
                 INNER JOIN ctl_examen_servicio_diagnostico t06 ON (t06.id = t04.id_examen_servicio_diagnostico)
@@ -1625,6 +1635,7 @@ $con = new ConexionBD;
                 LEFT JOIN (
                     SELECT ti20.id AS id_bacteria,
                            ti20.bacteria AS nombre_bacteria,
+                           ti19.id AS id_detalle_resultado_bacteria,
                            ti19.cantidad AS cantidad_bacterias,
                            ti16.id AS id_tarjeta,
                            ti16.nombretarjeta AS nombre_tarjeta,
@@ -1651,8 +1662,8 @@ $con = new ConexionBD;
                 WHERE CASE WHEN $idHistorialClinico:: integer != 0
                           THEN t11.id = $idHistorialClinico
                           ELSE t14.id = $idDatoReferencia
-                          END
-                         AND t02.id_establecimiento_externo = $idEstablecimiento
+                       END
+                    AND t02.id_establecimiento_externo = $idEstablecimiento
                 ORDER BY 1,id_estado_detalle, t20.pb_elemento_orden, t20.pb_subelemento_orden;";
 				//echo $sql;
                 $result = pg_query($sql);
