@@ -26,7 +26,7 @@
 		<menu labelText="CONFIGURACIÓN">
                     <item labelText="Áreas de Laboratorio" url="../../Mantenimientos/Lab_Areas/MntAreasLaboratorio.php"/>
                     <item labelText="Examenes por Área" url="../../Mantenimientos/Mnt_AreaExamenEstablecimiento/MntAreaExamenEstablecimiento.php"/>
-                    <item labelText="Examenes por Área" url="../../Mantenimientos/Mnt_confestipolab/Mntconfestipolab.php"/>
+                    <item labelText="Establecimientos a Referir" url="../../Mantenimientos/Mnt_confestipolab/Mntconfestipolab.php"/>
                     <!--<item labelText="Procesos del Laboratorio" url="../../Mantenimientos/Lab_ProcesoLaboratorio/MntProcesoLaboratorio.php"/>-->
 		</menu>
 		<sep/>

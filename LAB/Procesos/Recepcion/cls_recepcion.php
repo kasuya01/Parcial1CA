@@ -129,8 +129,10 @@ where id_tipo_establecimiento not in (12,13,29,28) order by id_tipo_establecimie
          $sqlText="select distinct mem.id as idemp, nombreempleado as nombre, idempleado
                     from mnt_empleado_especialidad_estab empest
                     join mnt_empleado mem on (empest.id_empleado=mem.id)
-                    where id_aten_area_mod_estab=$idSubEsp
-                    or id_tipo_empleado=2";
+                    where (id_aten_area_mod_estab=$idSubEsp
+                     or id_tipo_empleado=2 )
+                    and mem.habilitado=true
+                    order by 2";
             $dt = pg_query($sqlText) ;
 
             if  (!$dt)
@@ -148,7 +150,7 @@ where id_tipo_establecimiento not in (12,13,29,28) order by id_tipo_establecimie
         $sqlText="select DISTINCT (mem.id),mem.id as idemp ,nombreempleado as nombre, idempleado
                     from mnt_empleado_especialidad_estab empest
 join mnt_empleado mem on (empest.id_empleado=mem.id)
-where mem.id_tipo_empleado=2 OR mem.id_tipo_empleado=4 order by nombre ";
+where (mem.id_tipo_empleado=2 OR mem.id_tipo_empleado=4) and mem.habilitado=true order by nombre ";
             $dt = pg_query($sqlText) ;
 
             if  (!$dt)

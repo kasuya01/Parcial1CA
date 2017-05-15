@@ -20,7 +20,6 @@ echo '<h4><i>Fecha actual: '.strftime("%A, %d de %B de %Y").'<br/></i></h4>';
        	$query="SELECT count(*) as total, idestado, descripcion
                 from sec_solicitudestudios t1
                 join ctl_estado_servicio_diagnostico t2 on (t2.id=t1.estado)
-                where idestado not in ('C', 'RM')
                 group by idestado, descripcion, t2.id
                 order by t2.id; ";
 	 $result = @pg_query($query);
