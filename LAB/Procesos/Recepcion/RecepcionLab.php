@@ -859,7 +859,7 @@ function cambioestexterno(){
                         <option value="0" selected="selected">--Seleccione Procedencia--</option>
                         <?php
                             $tiposerv=$recepcion->tipoestservicio($lugar);
-                            /*$rows=  pg_fetch_array($tiposerv);
+                                        /*$rows=  pg_fetch_array($tiposerv);
                                             $db = new ConexionBD;
                                                     if($db->conectar()==true){
                                                     $consulta  = "SELECT mnt_servicio.IdServicio,mnt_servicio.NombreServicio FROM mnt_servicio

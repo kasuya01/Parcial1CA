@@ -187,19 +187,12 @@ if (pg_num_rows($cant)>0){
 					<td class="StormyWeatherFieldCaptionTD">Establecimiento Solicitante</td>
 		  			<td colspan="3" class="StormyWeatherDataTD"><?php echo $_GET['var18'];?></td>
 				</tr>
-				<tr>
-					<td class="StormyWeatherFieldCaptionTD">Procedencia</td>
-					<td  colspan="3" class="StormyWeatherDataTD"><?php echo $_GET['var10'];?></td>
-				</tr>
-				<tr>
-					<td class="StormyWeatherFieldCaptionTD">Origen</td>
-					<td colspan="3" class="StormyWeatherDataTD"><?php echo $_GET['var11'];?></td>
-				</tr>
+				
 				<tr>
                                     <td class="StormyWeatherFieldCaptionTD">NEC</td>
                                     <td class="StormyWeatherDataTD"><?php echo $_GET['var1'];?>
                                     <input type="hidden" id="idexpediente_" name="idexpediente_" value="<?php echo $idexpediente_;?>"/></td>
-                                    <td class="StormyWeatherFieldCaptionTD">No. Order</td>
+                                    <td class="StormyWeatherFieldCaptionTD">No. Orden</td>
                                     <td class="StormyWeatherDataTD"><?php echo $_GET['var6'];?>
                                             <input type="hidden" name="txtnec" id="txtnec" disabled="disabled" />
                                             <input type="hidden" name="txtidsolicitud" id="txtidsolicitud" />

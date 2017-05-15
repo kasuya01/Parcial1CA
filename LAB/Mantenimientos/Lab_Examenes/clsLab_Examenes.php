@@ -30,7 +30,7 @@ class clsLab_Examenes {
                  idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idexamen,idestandarrep,idplantilla,nombre_examen,
                  idsexo,codigo_examen,b_verresultado)
                  VALUES
-                 ($ultimo,'$Hab', $IdFormulario,$Urgente,'$letra',$ubicacion,NULL,$usuario,NOW(),$usuario,NOW(),$idestandar,
+                 ($ultimo,'$Hab', $IdFormulario,$Urgente,'$letra',$ubicacion,NULL,$usuario,date_trunc('seconds',NOW()),$usuario,date_trunc('seconds',NOW()),$idestandar,
                    $IdEstandarResp,$plantilla,'$nomexamen',$sexo,'$idexamen','$RepResultado') ";
          // echo $query;
          $result = pg_query($query);
@@ -56,7 +56,7 @@ class clsLab_Examenes {
                         SET habilitado = true,
                             fechafin = null,
                             id_user_mod = $usuario,
-                            fecha_mod = now()
+                            fecha_mod = date_trunc('seconds',NOW())
                         WHERE id_posible_resultado = '$aresultados[$i]' AND id_conf_examen_estab=$ultimo";
             $result = pg_query($query);
             if (pg_affected_rows($result) == 0) {
@@ -199,7 +199,8 @@ class clsLab_Examenes {
                  idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idexamen,idestandarrep,idplantilla,nombre_examen,
                  idsexo,codigo_examen,b_verresultado)
                  VALUES
-                 ('$Hab',$IdFormulario,$Urgente,'$letra',$ubicacion,NULL,$usuario,NOW(),$usuario,NOW(),$idestandar,
+                 ('$Hab',$IdFormulario,$Urgente,'$letra',$ubicacion,NULL,$usuario,date_trunc('seconds', NOW())"
+                     . ",$usuario,date_trunc('seconds', NOW()),$idestandar,
                    $IdEstandarResp,$plantilla,'$nomexamen',$sexo,'$idexamen','$RepResultado') ";
          // echo $query;
          $result = pg_query($query);
@@ -239,7 +240,7 @@ class clsLab_Examenes {
 
 
          $sqlText = "INSERT INTO cit_programacion_exams (id_examen_establecimiento,rangotiempoprev,id_atencion,id_establecimiento,idusuarioreg,fechahorareg)
-                    VALUES ($ultimo,$TiempoPrevio,98,$lugar,$usuario,NOW())";
+                    VALUES ($ultimo,$TiempoPrevio,98,$lugar,$usuario,date_trunc('seconds', NOW()))";
 
          // echo $query2." - ".$ultimo." - ".$sqlText;
          $dtSub = pg_query($sqlText);
@@ -288,7 +289,7 @@ class clsLab_Examenes {
                         SET habilitado = true,
                             fechafin = null,
                             id_user_mod = 8,
-                            fecha_mod = now()
+                            fecha_mod = date_trunc('seconds', NOW())
                         WHERE id_posible_resultado = '$aresultados[$i]' AND id_conf_examen_estab='$ultimo'";
             $result = pg_query($query);
             if (pg_affected_rows($result) == 0) {
@@ -296,7 +297,7 @@ class clsLab_Examenes {
                             id_conf_examen_estab, id_posible_resultado, fechainicio, fechafin,
                             habilitado, id_user, fecha_registro, id_user_mod, fecha_mod)
                     VALUES ('$ultimo', '$aresultados[$i]', now(), null,
-                            true, 8, now(), null, null)";
+                            true, 8, date_trunc('seconds', NOW()), null, null)";
                $result = pg_query($query);
             }
          }
@@ -315,7 +316,7 @@ class clsLab_Examenes {
             $IdFormulario = 'NULL';
 
              $query = "UPDATE lab_conf_examen_estab
-                              SET idusuariomod=$usuario,fechahoramod=NOW(),idformulario=$IdFormulario,
+                              SET idusuariomod=$usuario,fechahoramod=date_trunc('seconds', NOW()),idformulario=$IdFormulario,
                               idestandarrep=$IdEstandarResp,IdPlantilla=$plantilla,impresion='$letra',urgente=$Urgente,ubicacion=$ubicacion,condicion='$Hab',nombre_examen='$nomexamen',idsexo=$idsexo,b_verresultado=$RepResultado
                               WHERE lab_conf_examen_estab.id=$idconf";
          //echo $query;
@@ -573,7 +574,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
             // $dtSub = pg_query($sqlText);
          } else {
             $sqlText = "INSERT INTO cit_programacion_exams (id_examen_establecimiento,rangotiempoprev,id_atencion,id_establecimiento,idusuarioreg,fechahorareg)
-                                     VALUES ($idconf,$TiempoPrevio,98,$lugar,$usuario,NOW())";
+                                     VALUES ($idconf,$TiempoPrevio,98,$lugar,$usuario,date_trunc('seconds', NOW()))";
          }
          //echo $sqlText;
          $dtSub = pg_query($sqlText);
@@ -1516,7 +1517,7 @@ class clsLabor_Examenes {
            $plantilla, $observacion, $activo, $ubicacion, $usuario) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-          $query = "INSERT INTO laboratorio.lab_examenes(idexamen,IdArea,nombreExamen,IdEstandar,Observacion,IdPlantilla,Habilitado,Ubicacion,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod) VALUES('$idexamen','$idarea','$nomexamen','$idestandar','$observacion','$plantilla','$activo',$ubicacion,$usuario,NOW(),$usuario,NOW())";
+          $query = "INSERT INTO laboratorio.lab_examenes(idexamen,IdArea,nombreExamen,IdEstandar,Observacion,IdPlantilla,Habilitado,Ubicacion,IdUsuarioReg,FechaHoraReg,IdUsuarioMod,FechaHoraMod) VALUES('$idexamen','$idarea','$nomexamen','$idestandar','$observacion','$plantilla','$activo',$ubicacion,$usuario,date_trunc('seconds', NOW()),$usuario,date_trunc('seconds', NOW()))";
          $result = pg_query($query);
 
          if (!$result)
@@ -1531,7 +1532,7 @@ class clsLabor_Examenes {
            $observacion, $plantilla, $ubicacion, $usuario) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-        $query = "UPDATE laboratorio.lab_examenes SET nombreExamen='$nomexamen' , idestandar='$idestandar', idarea='$idarea', IdPlantilla='$plantilla',Observacion='$observacion',Ubicacion=$ubicacion,IdUsuarioMod='$usuario', FechaHoraMod=NOW() WHERE idexamen='$idexamen'";
+        $query = "UPDATE laboratorio.lab_examenes SET nombreExamen='$nomexamen' , idestandar='$idestandar', idarea='$idarea', IdPlantilla='$plantilla',Observacion='$observacion',Ubicacion=$ubicacion,IdUsuarioMod='$usuario', FechaHoraMod=date_trunc('seconds', NOW()) WHERE idexamen='$idexamen'";
          $result = pg_query($query);
          if (!$result)
             return false;

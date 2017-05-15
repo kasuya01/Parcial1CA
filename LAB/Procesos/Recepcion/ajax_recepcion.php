@@ -70,10 +70,10 @@ switch($Proceso){
  	$rslts='';
         $idSubEsp=$_POST['idSubEsp'];
     
-      //echo $idSubEsp;
+     // echo $idSubEsp;
         $dtproc=$recepcion->BuscarPorcedencia($idSubEsp);
         $rowproc =pg_fetch_array($dtproc);
-        if ($rowproc[0]==1){
+        if ($rowproc[0]==1 or $rowproc[0]==6 ){
             $dtmed=$recepcion->LlenarCmbMed($idSubEsp,$lugar);}
         else {
             $dtmed=$recepcion->LlenarCmbMedTodos($lugar);

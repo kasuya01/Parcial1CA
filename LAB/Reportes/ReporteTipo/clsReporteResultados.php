@@ -26,11 +26,7 @@ function DatosEstablecimiento($lugar){
 $con = new ConexionBD;
 	if($con->conectar()==true){
 
-		$conNom  = /*"SELECT 	mnt_establecimiento.IdTipoEstablecimiento,Nombre,NombreTipoEstablecimiento
-			    FROM mnt_establecimiento
-			    INNER JOIN mnt_tipoestablecimiento ON mnt_establecimiento.IdTipoEstablecimiento= mnt_tipoestablecimiento.IdTipoEstablecimiento
-			    WHERE IdEstablecimiento=$lugar";*/
-                        "SELECT t02.id AS idtipoestablecimiento,
+		$conNom  =  "SELECT t02.id AS idtipoestablecimiento,
                               t01.nombre,
                               t02.nombre AS nombretipoestablecimiento
                         FROM ctl_establecimiento t01

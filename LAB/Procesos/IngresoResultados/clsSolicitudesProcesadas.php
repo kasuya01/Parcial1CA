@@ -113,36 +113,35 @@ class clsSolicitudesProcesadas {
 //FUNCIÓN PARA LLENAR EL COMBO DE SERVICIOS
    function LlenarCmbServ($IdServ, $lugar) {
       $con = new ConexionBD;
+      $condicionAmbiente="";
       if ($con->conectar() == true) {
-         $sqlText = "with tbl_servicio as (select mnt_3.id,
-                        CASE
-                        WHEN mnt_3.nombre_ambiente IS NOT NULL
-                        THEN
-                                CASE WHEN id_servicio_externo_estab IS NOT NULL
-                                        THEN mnt_ser.abreviatura ||'-->' ||mnt_3.nombre_ambiente
-                                        ELSE mnt_3.nombre_ambiente
-                                END
-
-                        ELSE
-                        CASE WHEN id_servicio_externo_estab IS NOT NULL
-                                THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
-                             WHEN not exists (select nombre_ambiente
-                                            from mnt_aten_area_mod_estab maame
-                                            join mnt_area_mod_estab mame on (maame.id_area_mod_estab = mame.id)
-                                            where nombre_ambiente=cat.nombre
-                                            and mame.id_area_atencion=mnt_2.id_area_atencion)
+          if ($IdServ==2){
+               $condicionAmbiente=' AND mnt_3.nombre_ambiente IS NOT NULL';
+          }
+       $sqlText = "with tbl_servicio as (SELECT mnt_3.id,
+        CASE
+        WHEN mnt_3.nombre_ambiente IS NOT NULL
+             THEN
+                 CASE WHEN id_servicio_externo_estab IS NOT NULL
+                     THEN mnt_ser.abreviatura ||'-->' ||mnt_3.nombre_ambiente
+                     ELSE mnt_3.nombre_ambiente
+                 END
+            ELSE
+                   CASE WHEN id_servicio_externo_estab IS NOT NULL
+                           THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
+                        WHEN not exists (SELECT nombre_ambiente FROM  mnt_aten_area_mod_estab WHERE nombre_ambiente=cat.nombre)
                                 THEN cmo.nombre||'-'||cat.nombre
-                        END
+                          END
                         END AS servicio
                         from ctl_atencion cat
                         join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
                         join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
-                        JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion=1)
+                        JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND (a.id_tipo_atencion=1 OR a.id_tipo_atencion=4)) 
                         LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id
                         LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id
                         join mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab)
                         join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
-                        where  mnt_2.id=$IdServ
+                        where  mnt_2.id=$IdServ  $condicionAmbiente
                         and mnt_3.id_establecimiento=$lugar
                         order by 2)
                         select id, servicio from tbl_servicio where servicio is not null";

@@ -46,7 +46,7 @@ function actualizar($idantibiotico,$antibiotico,$usuario)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "UPDATE lab_antibioticos SET antibiotico='$antibiotico',idusuariomod ='$usuario',fechahoramod=NOW() WHERE id='$idantibiotico'";
+     $query = "UPDATE lab_antibioticos SET antibiotico='$antibiotico',idusuariomod ='$usuario',fechahoramod=date_trunc('seconds',NOW()) WHERE id='$idantibiotico'";
      $result = pg_query($query);
 	 
      if (!$result)

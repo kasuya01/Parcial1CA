@@ -61,61 +61,38 @@ where id_tipo_establecimiento not in (12,13,29,28) order by id_tipo_establecimie
             }
         }
       }
-//Fn PG
+//Fn PG     
     function LlenarCmbServ($IdServ,$lugar) {
         $con = new ConexionBD;
+         $condicionAmbiente="";
         if ($con->conectar() == true) {
-            /*$sqlText = "select mnt_3.id,
-                        CASE
-                        WHEN mnt_3.nombre_ambiente IS NOT NULL
-                        THEN  	CASE WHEN id_servicio_externo_estab IS NOT NULL
-                                THEN mnt_ser.abreviatura ||'-->' ||mnt_3.nombre_ambiente
-                                ELSE mnt_3.nombre_ambiente
-                                END
-
-                        ELSE
-                                CASE WHEN id_servicio_externo_estab IS NOT NULL
-                                THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
-                                ELSE cat.nombre
-                                END
-                        END AS servicio
-                        from ctl_atencion cat
-                        join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
-                        join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
-                        LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id
-                        LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id
-                        where id_area_atencion=$IdServ
-                        and mnt_3.id_establecimiento=$lugar
-                        order by 2";*/
-              $sqlText="with tbl_servicio as (select mnt_3.id,
-                        CASE
-                        WHEN mnt_3.nombre_ambiente IS NOT NULL
-                        THEN
-                                CASE WHEN id_servicio_externo_estab IS NOT NULL
-                                        THEN mnt_ser.abreviatura ||'-->' ||mnt_3.nombre_ambiente
-                                        ELSE mnt_3.nombre_ambiente
-                                END
-
-                        ELSE
-                        CASE WHEN id_servicio_externo_estab IS NOT NULL
-                                THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
-                             WHEN not exists (select nombre_ambiente
-                                            from mnt_aten_area_mod_estab maame
-                                            join mnt_area_mod_estab mame on (maame.id_area_mod_estab = mame.id)
-                                            where nombre_ambiente=cat.nombre
-                                            and mame.id_area_atencion=mnt_2.id_area_atencion)
+             if ($IdServ==2){
+               $condicionAmbiente=' AND mnt_3.nombre_ambiente IS NOT NULL';
+             }
+                $sqlText="with tbl_servicio as (SELECT mnt_3.id,
+                   CASE
+                             WHEN mnt_3.nombre_ambiente IS NOT NULL
+                            THEN
+                   CASE WHEN id_servicio_externo_estab IS NOT NULL
+                        THEN mnt_ser.abreviatura ||'-->' ||mnt_3.nombre_ambiente
+                        ELSE mnt_3.nombre_ambiente
+                    END
+                ELSE
+                   CASE WHEN id_servicio_externo_estab IS NOT NULL
+                           THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
+                        WHEN not exists (SELECT nombre_ambiente FROM  mnt_aten_area_mod_estab WHERE nombre_ambiente=cat.nombre)
                                 THEN cmo.nombre||'-'||cat.nombre
-                        END
+                          END
                         END AS servicio
                         from ctl_atencion cat
                         join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
                         join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
-                        JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion=1)
+                        JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND (a.id_tipo_atencion=1 OR a.id_tipo_atencion=4)) 
                         LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id
                         LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id
                         join mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab)
                         join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
-                        where  mnt_2.id=$IdServ
+                        where  mnt_2.id=$IdServ $condicionAmbiente
                         and mnt_3.id_establecimiento=$lugar
                         order by 2)
                         select id, servicio from tbl_servicio where servicio is not null;";
@@ -133,7 +110,7 @@ where id_tipo_establecimiento not in (12,13,29,28) order by id_tipo_establecimie
           $con = new ConexionBD;
         if ($con->conectar() == true) {
 
-           $sql="SELECT mnt_area_mod_estab.id_area_atencion from mnt_aten_area_mod_estab
+          $sql="SELECT mnt_area_mod_estab.id_area_atencion from mnt_aten_area_mod_estab
                       INNER JOIN mnt_area_mod_estab on mnt_area_mod_estab.id= mnt_aten_area_mod_estab.id_area_mod_estab
                       WHERE mnt_aten_area_mod_estab.id=$idSubEsp";
              $dt = pg_query($sql) ;
@@ -149,7 +126,7 @@ where id_tipo_establecimiento not in (12,13,29,28) order by id_tipo_establecimie
         $con = new ConexionBD;
         if ($con->conectar() == true) {
 
-           $sqlText="select distinct mem.id as idemp, nombreempleado as nombre, idempleado
+         $sqlText="select distinct mem.id as idemp, nombreempleado as nombre, idempleado
                     from mnt_empleado_especialidad_estab empest
                     join mnt_empleado mem on (empest.id_empleado=mem.id)
                     where id_aten_area_mod_estab=$idSubEsp
@@ -168,7 +145,7 @@ where id_tipo_establecimiento not in (12,13,29,28) order by id_tipo_establecimie
         $con = new ConexionBD;
         if ($con->conectar() == true) {
 
-         $sqlText="select DISTINCT (mem.id),mem.id as idemp ,nombreempleado as nombre, idempleado
+        $sqlText="select DISTINCT (mem.id),mem.id as idemp ,nombreempleado as nombre, idempleado
                     from mnt_empleado_especialidad_estab empest
 join mnt_empleado mem on (empest.id_empleado=mem.id)
 where mem.id_tipo_empleado=2 OR mem.id_tipo_empleado=4 order by nombre ";
@@ -325,7 +302,7 @@ WHERE IdArea='$IdArea'AND  lab_examenesxestablecimiento.Condicion='H'  AND IdEst
            // echo 'idext: '.$idext;
             if ($idext==$lugar){
             //    echo 'IF';
-            $query_Search = "SELECT e.numero
+           $query_Search = "SELECT e.numero
 , (primer_apellido||' '||coalesce(segundo_apellido,'' )||' '||coalesce(apellido_casada,'')
 ||', '||primer_nombre||' '||coalesce(segundo_nombre,'')||' '||coalesce(tercer_nombre,'')) as nombre
 FROM mnt_paciente d
@@ -495,25 +472,20 @@ WHERE e.numero ='$nec'";
     function tipoestservicio($idestablecimiento) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-//            $sql = "select distinct(mame.id), (caa.nombre||'-'||cmo.nombre) as nombre
-//                from ctl_area_atencion caa
-//                join mnt_area_mod_estab mame on(caa.id=mame.id_area_atencion)
-//                join mnt_modalidad_establecimiento mme on (mme.id=mame.id_modalidad_estab)
-//                join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
-//                where mame.id_establecimiento=$idestablecimiento";
-           $sql="SELECT mnt_area_mod_estab.id as codigo,
+//           
+          $sql="SELECT mnt_area_mod_estab.id as codigo,
                CASE WHEN id_servicio_externo_estab IS NOT NULL
                        THEN mnt_servicio_externo.abreviatura ||'--'  || ctl_area_atencion.nombre
                        ELSE       ctl_modalidad.nombre ||'--' || ctl_area_atencion.nombre
                        END as nombre
                FROM mnt_area_mod_estab
-               INNER JOIN  ctl_area_atencion  on  ctl_area_atencion.id = mnt_area_mod_estab.id_area_atencion
+               INNER JOIN  ctl_area_atencion  on (ctl_area_atencion.id = mnt_area_mod_estab.id_area_atencion AND (ctl_area_atencion.id_tipo_atencion=1 OR ctl_area_atencion.id_tipo_atencion=4))
                INNER JOIN  mnt_modalidad_establecimiento ON mnt_modalidad_establecimiento.id=mnt_area_mod_estab.id_modalidad_estab
                INNER JOIN ctl_modalidad ON ctl_modalidad.id = mnt_modalidad_establecimiento.id_modalidad
                LEFT JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab.id_servicio_externo_estab)
                LEFT JOIN mnt_servicio_externo ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo)
                WHERE mnt_area_mod_estab.id_establecimiento=$idestablecimiento
-               ORDER by mnt_area_mod_estab.id,ctl_modalidad.nombre,ctl_area_atencion.nombre";
+               ORDER by ctl_modalidad.nombre,mnt_servicio_externo.nombre,ctl_area_atencion.nombre";
             $result = pg_query($sql);
             if (!$result) {
                 return false;

@@ -144,24 +144,20 @@ switch ($opcion) {
                        END as procedencia,
  
                         CASE
-                        WHEN mnt_3.nombre_ambiente IS NOT NULL
-                        THEN
-                                CASE WHEN id_servicio_externo_estab IS NOT NULL
-                                        THEN mnt_ser.abreviatura ||'-->' ||mnt_3.nombre_ambiente
-                                        ELSE mnt_3.nombre_ambiente
-                                END
-
-                        ELSE
-                        CASE WHEN id_servicio_externo_estab IS NOT NULL
-                                THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
-                             WHEN not exists (select nombre_ambiente
-                                            from mnt_aten_area_mod_estab maame
-                                            join mnt_area_mod_estab mame on (maame.id_area_mod_estab = mame.id)
-                                            where nombre_ambiente=cat.nombre
-                                            and mame.id_area_atencion=mnt_2.id_area_atencion)
-                                THEN cmo.nombre||'-'||cat.nombre
-                        END
-                        END AS servicio
+                      WHEN mnt_3.nombre_ambiente IS NOT NULL
+                          THEN
+                                  CASE WHEN id_servicio_externo_estab IS NOT NULL
+                                          THEN mnt_ser.abreviatura ||'-->' ||mnt_3.nombre_ambiente
+                                          ELSE mnt_3.nombre_ambiente
+                                  END
+                      ELSE
+                          CASE WHEN id_servicio_externo_estab IS NOT NULL
+                                  THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
+                               WHEN not exists (SELECT nombre_ambiente FROM  mnt_aten_area_mod_estab WHERE nombre_ambiente=cat.nombre)
+                                  THEN cmo.nombre||'-'||cat.nombre
+                          END
+                      
+                        END AS servicio 
                         from ctl_atencion cat
                         join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
                         join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)

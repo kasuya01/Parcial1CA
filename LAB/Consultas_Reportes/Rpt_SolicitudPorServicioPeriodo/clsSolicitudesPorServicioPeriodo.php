@@ -76,13 +76,7 @@ function LlenarCmbEstablecimiento($Idtipoesta){
 function LlenarCmbServ($IdServ,$lugar){
 $con = new ConexionBD;
 	if($con->conectar()==true){
-		$sqlText= /*"SELECT mnt_subservicio.IdSubServicio,mnt_subservicio.NombreSubServicio
-			FROM mnt_subservicio 
-			INNER JOIN mnt_subservicioxestablecimiento ON mnt_subservicio.IdSubServicio=mnt_subservicioxestablecimiento.IdSubServicio
-			WHERE mnt_subservicio.IdServicio='$IdServ' AND IdEstablecimiento=$lugar 
-			ORDER BY NombreSubServicio";	*/
-                        
-                        "with tbl_servicio as (select mnt_3.id,
+		$sqlText= "with tbl_servicio as (select mnt_3.id,
                         CASE
                         WHEN mnt_3.nombre_ambiente IS NOT NULL
                         THEN  	

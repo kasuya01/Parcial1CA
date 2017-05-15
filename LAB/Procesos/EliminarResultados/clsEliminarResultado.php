@@ -57,7 +57,11 @@ function LlenarCmbEstablecimiento($Idtipoesta){
 
 function LlenarCmbServ($IdServ,$lugar){
 $con = new ConexionBD;
+ $condicionAmbiente="";
 	if($con->conectar()==true){
+            if ($IdServ==2){
+               $condicionAmbiente=' AND mnt_3.nombre_ambiente IS NOT NULL';
+             }
 		$sqlText= "with tbl_servicio as (select mnt_3.id,
                         CASE
                         WHEN mnt_3.nombre_ambiente IS NOT NULL
@@ -81,7 +85,7 @@ $con = new ConexionBD;
                         LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id
                         join mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab)
                         join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
-                        where  mnt_2.id=$IdServ
+                        where  mnt_2.id=$IdServ $condicionAmbiente
                         and mnt_3.id_establecimiento=$lugar
                         order by 2)
                         select id, servicio from tbl_servicio where servicio is not null" ;
