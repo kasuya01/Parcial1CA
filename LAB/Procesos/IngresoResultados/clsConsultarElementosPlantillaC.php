@@ -238,7 +238,7 @@ function insertar_encabezado_antibiograma($idsolicitud,$detantib,$idcof,$idrecep
    //echo $resultado;
     if($con->conectar()==true) 
     {
-        
+      //  echo $idobservacion." ".$observacion;
         if ($idobservacion!=0){
             $query0="   select observacion from lab_observaciones  
                        where id=$idobservacion";
@@ -248,6 +248,7 @@ function insertar_encabezado_antibiograma($idsolicitud,$detantib,$idcof,$idrecep
         }
         else{
             $idobservacion ='NULL';
+            $textobs=$observacion;
         }  
       
         
@@ -260,7 +261,7 @@ function insertar_encabezado_antibiograma($idsolicitud,$detantib,$idcof,$idrecep
                 
                 if ($result){
                     $row = pg_fetch_array($result);
-                    $query1 = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
+                   $query1 = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
                    VALUES($id_metod, $detantib, $CodAntibiograma, $usuario, date_trunc('seconds',NOW()),'$fecharealiz','$fecharesultado',$responsable)";
                     
                     $result1 = pg_query($query1);

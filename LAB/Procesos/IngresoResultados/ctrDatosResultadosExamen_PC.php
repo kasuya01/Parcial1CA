@@ -67,15 +67,15 @@ switch ($opcion)
                         </tr> 
                         <tr>
                             <td class='StormyWeatherFieldCaptionTD'>Observación:</td>
-                            <td colspan='2'class='StormyWeatherDataTD'><textarea name='txtobservacion' type='text' id='txtobservacion' size='50' cols='50'></textarea></td>
+                            <td colspan='2'class='StormyWeatherDataTD'><textarea name='txtobservacion' type='text' id='txtobservacion' size='50' cols='50'  ></textarea></td>
                         </tr>
                          <tr>
                             <td class='StormyWeatherFieldCaptionTD'>Número de Resiembras:</td>
-                            <td colspan='2'class='StormyWeatherDataTD'><input name='txtresiembras' type='text' id='txtresiembras' size='10' /></td>
+                            <td colspan='2'class='StormyWeatherDataTD'><input name='txtresiembras' type='text' id='txtresiembras' size='10' value='0' /></td>
                         </tr>
                         <tr>
                             <td class='StormyWeatherFieldCaptionTD'>Número de Pruebas Bioquimicas:</td>
-                            <td colspan='2'class='StormyWeatherDataTD'><input name='txtbioquimicas' type='text' id='txtbioquimicas' size='10' /></td>
+                            <td colspan='2'class='StormyWeatherDataTD'><input name='txtbioquimicas' type='text' id='txtbioquimicas' size='10' value='0'/></td>
                         </tr>
                         <tr>
                             <td width='100%' colspan='3' class='StormyWeatherDataTD' align='right'>
@@ -687,12 +687,15 @@ case 6:
         //$observacion= (empty($row_observacion['observacion'])) ? 'NULL' : "'" . pg_escape_string($row_observacion['observacion']) . "'";
         $observacion=$row_observacion['observacion'];
         if ($idobservacion==0){
-            $observacionf= $observacion1;      
+            $observacionf= $observacion1; 
+            $idobservacionf=NULL;
+            
         }
         else{
+            $idobservacionf=$idobservacion;
             $observacionf=$observacion;
         }
-        
+       // echo $observacionf;
         $CodAntibiograma=6;
           $con = new ConexionBD;
             if($con->conectar()==true) 
@@ -718,16 +721,16 @@ case 6:
 	if ($resultado=="N")
 	{
                $codigoResultado=2;
-                $ultimo=$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacionf,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado);
+                $ultimo=$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacionf,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacionf,$fecharealiz,$fecharesultado);
              
                 for ($i=0; $i < $numresiembras; $i++)
                               {
-                   // echo 'i :' . $i;
+                  // echo 'i :' . $i;
                                  // echo $idcofres;
                                 $detres=$objdatos->insertar_detalle_solicitud($idsolicitud,$iddetalle,$usuario,$lugar,$idcatres,$idmntres,$idcofres);
                                                    
                                 if($detres!=0){
-                                    $ultimores= $objdatos->insertar_encabezado_antibiograma($idsolicitud,$detres,$idcofres,$idrecepcion,$observacionf,$resultado,$idempleado,$usuario,$CodAntibiograma,$lugar,$idobservacion,$fecharealiz,$fecharesultado,$id_metodres,$ultimo); 
+                                    $ultimores= $objdatos->insertar_encabezado_antibiograma($idsolicitud,$detres,$idcofres,$idrecepcion,$observacionf,$resultado,$idempleado,$usuario,$CodAntibiograma,$lugar,$idobservacionf,$fecharealiz,$fecharesultado,$id_metodres,$ultimo); 
                                 
                                 }
                               }
