@@ -456,14 +456,49 @@ WHERE e.numero ='$nec'";
     function VerificarExisteSolicitud($IdSubServicio,$IdEmpleado,$FechaConsulta,$idexpediente,$IdEstabExt,$lugar){
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-           $SQL = "SELECT sec_solicitudestudios.id, sec_solicitudestudios.estado, to_char(cit_citas_serviciodeapoyo.fecha, 'YYYY-MM-DD') AS fecha_cita,
+            $SQL = "SELECT t01.id_establecimiento, t01.id_establecimiento_externo,
+                    CASE WHEN t01.id_establecimiento == t01.id_establecimiento_externo
+                         THEN t04.id_empleado
+                         ELSE t05.id_empleado
+                         END AS id_empleado,
+                    CASE WHEN t01.id_establecimiento == t01.id_establecimiento_externo
+                         THEN t04.idsubservicio
+                         ELSE t05.id_aten_area_mod_estab
+                         END AS id_especialidad,
+                    CASE WHEN t01.id_establecimiento == t01.id_establecimiento_externo
+                         THEN t04.id
+                         ELSE t05.id
+                         END AS id_historial_clinico,
+                    TO_DATE(t01.fecha_solicitud, 'YYYY-MM-DD') AS fecha_solicitud
+                    FROM sec_solicitudestudios                 t01
+                    INNER JOIN ctl_estado_servicio_diagnostico t02 ON (t02.id = t01.estado)
+                    LEFT  JOIN cit_citas_serviciodeapoyo       t03 ON (t01.id = t03.id_solicitudestudios)
+                    LEFT  JOIN sec_historial_clinico           t04 ON (t04.id = t01.id_historial_clinico)
+                    LEFT  JOIN mnt_dato_referencia             t05 ON (t05.id = t01.id_dato_referencia)
+                    WHERE CASE WHEN t01.id_establecimiento == t01.id_establecimiento_externo
+                          THEN t04.idsubservicio = $IdSubServicio
+                          ELSE t05.id_aten_area_mod_estab = $IdSubServicio
+                          END
+                    AND CASE WHEN t01.id_establecimiento == t01.id_establecimiento_externo
+                        THEN t04.id_empleado = $IdEmpleado
+                        ELSE t05.id_empleado = $IdEmpleado
+                        END
+                    AND CASE WHEN t01.id_establecimiento == t01.id_establecimiento_externo
+                        THEN t04.fechaconsulta = $FechaConsulta
+                        ELSE date(t01.fecha_solicitud) = date($FechaConsulta) END
+                    AND CASE WHEN t01.id_establecimiento == t01.id_establecimiento_externo
+                        THEN t04.id_expediente = $idexpediente
+                        ELSE t05.id_expediente_referido = $idexpediente
+                        END
+                    AND t01.id_establecimiento_externo = $IdEstabExt";
+          /* $SQL = "SELECT sec_solicitudestudios.id, sec_solicitudestudios.estado, to_char(cit_citas_serviciodeapoyo.fecha, 'YYYY-MM-DD') AS fecha_cita,
                     ctl_estado_servicio_diagnostico.descripcion
                           FROM sec_historial_clinico
                           INNER JOIN sec_solicitudestudios ON sec_solicitudestudios.id_historial_clinico= sec_historial_clinico.id
                           INNER JOIN ctl_estado_servicio_diagnostico ON ctl_estado_servicio_diagnostico.id = sec_solicitudestudios.estado
                           LEFT  JOIN cit_citas_serviciodeapoyo ON (sec_solicitudestudios.id = cit_citas_serviciodeapoyo.id_solicitudestudios)
                           WHERE sec_historial_clinico.idsubservicio=$IdSubServicio AND sec_historial_clinico.id_empleado= $IdEmpleado
-                          AND sec_historial_clinico.fechaconsulta='$FechaConsulta' AND sec_solicitudestudios.id_expediente=$idexpediente";
+                          AND sec_historial_clinico.fechaconsulta='$FechaConsulta' AND sec_solicitudestudios.id_expediente=$idexpediente";*/
             $result = pg_query($SQL);
 
         }

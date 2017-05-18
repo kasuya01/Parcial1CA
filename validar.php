@@ -18,6 +18,8 @@ $password = htmlentities($_POST['txtpassword']);
         $corr  = $row_datos['correlativo'];
         $cod   = $row_datos['id_empleado'];
         $estab = $row_datos['nombre_establecimiento'];
+        $idtipoestab = $row_datos['id_tipo_establecimiento'];
+        $hospital = $row_datos['hospital'];
 
         $_SESSION['ROOT_PATH'] = realpath(__DIR__);
 
@@ -30,6 +32,8 @@ $password = htmlentities($_POST['txtpassword']);
         $base_url = $REQUEST_SCHEME.'://'.$_SERVER['HTTP_HOST'];
         $_SESSION['base_url'] = $base_url;
         $_SESSION['nombre_estab']=$estab;
+        $_SESSION['id_tipo_estab']=$idtipoestab;
+        $_SESSION['hospital']=$hospital;
 
 
 	switch ($nivel) {

@@ -7,8 +7,11 @@ $nivel=$_SESSION['NIVEL'];
 $corr=$_SESSION['Correlativo'];
 $lugar=$_SESSION['Lugar'];
 $area=$_SESSION['Idarea'];
+$idtipoestab=$_SESSION['id_tipo_estab'];
+$hospital=$_SESSION['hospital'];
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
 $recepcion = new clsRecepcion;
+
 // echo $lugar;
 /***************/
 if ($nivel==1){
@@ -902,7 +905,15 @@ function cambioestexterno(){
             <tr>
                     <td class="StormyWeatherFieldCaptionTD" align="center">Fecha en que paso Consulta:</td>
                     <td class="StormyWeatherDataTD" colspan="2">
-                        <input name="Input" class="date" id="txtconsulta" style="width:188px; height:20px" size="26" placeholder="aaaa-mm-dd">
+						<?php
+						 if ($hospital=='t'){
+							 echo "<input type='text' class='datepicker form-control height'  id='txtconsulta' name='txtconsulta'  value='". date('Y-m-d H:i')."' onchange=\"valfechasolicita(this.value, 'txtconsulta');\" style='width:150px' />";
+						 }
+						 else{
+							 echo '<input name="Input" class="date" id="txtconsulta" style="width:188px; height:20px" size="26" placeholder="aaaa-mm-dd">';
+						 }
+						 ?>
+
                     </td>
             </tr>
             <tr>

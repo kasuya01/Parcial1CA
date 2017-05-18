@@ -69,7 +69,7 @@ switch($Proceso){
     case 'fillMed':
  	$rslts='';
         $idSubEsp=$_POST['idSubEsp'];
-    
+
       //echo $idSubEsp;
         $dtproc=$recepcion->BuscarPorcedencia($idSubEsp);
         $rowproc =pg_fetch_array($dtproc);
@@ -77,9 +77,9 @@ switch($Proceso){
             $dtmed=$recepcion->LlenarCmbMed($idSubEsp,$lugar);}
         else {
             $dtmed=$recepcion->LlenarCmbMedTodos($lugar);
-        
+
         }
-        
+
             $rslts = '<select name="cmbMedico" id="cmbMedico"  style="width:350px" class="js-example-basic-single">';
             $rslts .='<option value="0">--selecione un M&eacute;dico--</option>';
             while ($rows =pg_fetch_array($dtmed)){
@@ -430,7 +430,7 @@ switch($Proceso){
 
         case 'VerificarSolicitud':
             $IdNumeroExp=$POST['IdNumeroExp'];
-            $Establecimiento=$_POST['establecimiento'];
+            $Establecimiento=$_POST['IdEstablecimiento'];
             $lugar = $_POST['lugar'];
             $IdSubServicio = $_POST['IdSubServicio'];
             $IdEmpleado = $_POST['IdEmpleado'];
@@ -438,7 +438,7 @@ switch($Proceso){
             $idexpediente=$_POST['idexpediente'];
              //  echo $idexpediente;
 
-            $ContSolic=$recepcion->VerificarExisteSolicitud($IdSubServicio,$IdEmpleado,$FechaConsulta,$idexpediente,$IdEstabExt,$lugar);
+            $ContSolic=$recepcion->VerificarExisteSolicitud($IdSubServicio,$IdEmpleado,$FechaConsulta,$idexpediente,$Establecimiento,$lugar);
 
             if($ContSolic !== false) {
                 $jsonresponse['status'] = true;

@@ -333,8 +333,12 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
                              TO_CHAR(t05.fecha_nacimiento, 'DD/MM/YYYY') AS fechanacimiento,
                              t01.idestablecimiento,
                              t14.tiposolicitud,
-                             t12.id AS iddiagnostico1,
-                             t12.sct_name_es,
+                            -- t12.id AS iddiagnostico1,
+                            -- t12.sct_name_es,
+                             t12_1.id as iddiagnostico1,
+                             case when t12_1.diagnostico is not null then t12_1.diagnostico
+                             else t11.especificacion
+                             end as sct_name_es,
                              t05.conocido_por AS conocidopor,
                              t01.id as idhistorial,
                              0 as referido, t02.fecha_solicitud
@@ -349,7 +353,8 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
                       INNER JOIN cit_citas_serviciodeapoyo       t09 ON (t02.id = t09.id_solicitudestudios)
                       LEFT JOIN sec_signos_vitales t10 ON (t01.id = t10.id_historial_clinico)
                       LEFT JOIN sec_diagnostico_paciente t11 ON (t01.id = t11.id_historial_clinico)
-                      LEFT JOIN mnt_snomed_cie10 t12 ON (t12.id = t11.id_snomed)
+                    --  LEFT JOIN mnt_snomed_cie10 t12 ON (t12.id = t11.id_snomed)
+                      LEFT JOIN mnt_cie10 t12_1 on (t12_1.id=t11.id_cie10_medico)
                       INNER JOIN ctl_establecimiento             t13 ON (t13.id = t01.idestablecimiento)
                       INNER JOIN lab_tiposolicitud               t14 ON (t14.id = t02.idtiposolicitud)
                       INNER JOIN ctl_estado_servicio_diagnostico t15 ON (t15.id = t02.estado AND t15.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
