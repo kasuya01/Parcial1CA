@@ -13,7 +13,7 @@ class clsLab_TarjetasVITEK
 		$con = new ConexionBD;
 		if($con->conectar()==true) 
 		{
-			$query = "INSERT INTO lab_tarjetasvitek(nombretarjeta,idusuarioreg,fechahorareg,idestablecimiento,fechaini,fechafin) VALUES('$nombretarjeta',$usuario,NOW(),$lugar,$Fechaini,$Fechafin)";
+			$query = "INSERT INTO lab_tarjetasvitek(nombretarjeta,idusuarioreg,fechahorareg,idestablecimiento,fechaini,fechafin) VALUES('$nombretarjeta',$usuario,date_trunc('seconds', NOW()),$lugar,$Fechaini,$Fechafin)";
 			$result = pg_query($query);
 
 			if (!$result)
@@ -28,7 +28,7 @@ class clsLab_TarjetasVITEK
 		$con = new ConexionBD;
 		if($con->conectar()==true) 
 		{
-			$query = "UPDATE lab_tarjetasvitek SET nombretarjeta = '$nombretarjeta', idusuariomod = '$usuario', fechahoramod = NOW(), fechaini = $Fechaini, fechafin = $Fechafin WHERE id = $idtarjeta AND idestablecimiento = $lugar";
+			$query = "UPDATE lab_tarjetasvitek SET nombretarjeta = '$nombretarjeta', idusuariomod = '$usuario', fechahoramod = date_trunc('seconds', NOW()), fechaini = $Fechaini, fechafin = $Fechafin WHERE id = $idtarjeta AND idestablecimiento = $lugar";
 			$result = pg_query($query);
 
 			if (!$result)
@@ -151,7 +151,7 @@ class clsLabor_TarjetasVITEK
 	{
 		$con2 = new ConexionBDLab;
 		if($con2->conectarT()==true){
-			echo $query = "INSERT INTO laboratorio.lab_tarjetasvitek(nombretarjeta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,fechaini,fechafin) VALUES('$nombretarjeta','$usuario',NOW(),'$usuario',NOW(),$lugar,'$Fechaini','$Fechafin')";
+			echo $query = "INSERT INTO laboratorio.lab_tarjetasvitek(nombretarjeta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,fechaini,fechafin) VALUES('$nombretarjeta','$usuario',date_trunc('seconds', NOW()),'$usuario',date_trunc('seconds', NOW()),$lugar,'$Fechaini','$Fechafin')";
 			$result = pg_query($query);
 
 			if (!$result)
@@ -165,7 +165,7 @@ class clsLabor_TarjetasVITEK
 	{
 		$con2 = new ConexionBDLab;
 		if($con2->conectarT()==true){
-			$query = "UPDATE laboratorio.lab_tarjetasvitek SET nombretarjeta='$nombretarjeta',IdUsuarioReg='$usuario', FechaHoraMod=NOW(),FechaIni='$Fechaini',FechaFin='$Fechafin' WHERE IdTarjeta=$idtarjeta AND IdEstablecimiento=$lugar";
+			$query = "UPDATE laboratorio.lab_tarjetasvitek SET nombretarjeta='$nombretarjeta',IdUsuarioReg='$usuario', FechaHoraMod=date_trunc('seconds', NOW()),FechaIni='$Fechaini',FechaFin='$Fechafin' WHERE IdTarjeta=$idtarjeta AND IdEstablecimiento=$lugar";
 			$result = pg_query($query);
 
 			if (!$result)
