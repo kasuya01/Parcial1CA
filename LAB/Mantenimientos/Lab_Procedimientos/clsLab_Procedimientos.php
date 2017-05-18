@@ -57,7 +57,7 @@ class clsLab_Procedimientos {
 		$con = new ConexionBD;
 		if ( $con->conectar()==true ) {
                        $query ="UPDATE lab_procedimientosporexamen SET nombreprocedimiento='$proce', id_conf_examen_estab ='$idexamen', unidades = '$unidades', rangoinicio=$rangoini,
-				  rangofin=$rangofin, idusuariomod=$usuario, fechahoramod = NOW(), fechaini = $Fechaini, fechafin = $Fechafin,
+				  rangofin=$rangofin, idusuariomod=$usuario, fechahoramod = date_trunc('seconds',NOW()), fechaini = $Fechaini, fechafin = $Fechafin,
 				  idsexo = $sexo, idrangoedad = $redad, orden=$cmborden
 		 		  WHERE lab_procedimientosporexamen.id = $idproce AND idestablecimiento = $lugar";
 			$result = pg_query( $query );

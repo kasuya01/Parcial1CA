@@ -13,7 +13,7 @@ class clsLab_Bacterias
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_bacterias(bacteria,idusuarioreg,fechahorareg,idusuariomod,fechahoramod) VALUES('$bacteria','$usuario',NOW(),'$usuario',NOW())";
+    $query = "INSERT INTO lab_bacterias(bacteria,idusuarioreg,fechahorareg,idusuariomod,fechahoramod) VALUES('$bacteria','$usuario',date_trunc('seconds',NOW()),'$usuario',date_trunc('seconds',NOW()))";
      $result = @pg_query($query);
 	 
    if (!$result){
@@ -32,7 +32,7 @@ class clsLab_Bacterias
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-     $query = "UPDATE lab_bacterias SET bacteria='$bacteria',idusuariomod='$usuario',fechahoramod=NOW() WHERE id ='$idbacteria'";
+     $query = "UPDATE lab_bacterias SET bacteria='$bacteria',idusuariomod='$usuario',fechahoramod=date_trunc('seconds',NOW()) WHERE id ='$idbacteria'";
      $result = @pg_query($query);
 	 
      if (!$result)

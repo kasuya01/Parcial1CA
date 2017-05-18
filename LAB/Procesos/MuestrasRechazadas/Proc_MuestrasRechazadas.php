@@ -238,14 +238,14 @@ if ($nivel == 7) {
                        ELSE       ctl_modalidad.nombre ||'--' || ctl_area_atencion.nombre
                        END as nombre
                FROM mnt_area_mod_estab
-               INNER JOIN  ctl_area_atencion  on  ctl_area_atencion.id = mnt_area_mod_estab.id_area_atencion
+               INNER JOIN  ctl_area_atencion  on (ctl_area_atencion.id = mnt_area_mod_estab.id_area_atencion AND (ctl_area_atencion.id_tipo_atencion=1 OR ctl_area_atencion.id_tipo_atencion=4))
                INNER JOIN  mnt_modalidad_establecimiento ON mnt_modalidad_establecimiento.id=mnt_area_mod_estab.id_modalidad_estab
                INNER JOIN ctl_modalidad ON ctl_modalidad.id = mnt_modalidad_establecimiento.id_modalidad
                LEFT JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab.id_servicio_externo_estab)
                LEFT JOIN mnt_servicio_externo ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo)
                WHERE mnt_area_mod_estab.id_establecimiento=$lugar
-               ORDER by mnt_area_mod_estab.id,ctl_modalidad.nombre,ctl_area_atencion.nombre;";
-
+               ORDER by ctl_modalidad.nombre,mnt_servicio_externo,ctl_area_atencion.nombre;";
+                                         
 
                                         $resultado = pg_query($consulta);
 

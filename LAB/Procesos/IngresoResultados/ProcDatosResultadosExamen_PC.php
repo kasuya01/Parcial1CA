@@ -369,7 +369,7 @@ function RecogeValor() {
                                                 <tr>
                                                       <td width="35%" colspan="1" class="StormyWeatherFieldCaptionTD">Número de Resiembras:</td>
                                                     <td width="65%"  colspan="4" class="StormyWeatherDataTD" >
-                                                        <input name='txtresiembra' type='text' id='txtresiembra' size='10' />
+                                                        <input name='txtresiembra' type='text' id='txtresiembra' size='10' value='0' />
                                                     </td>
                                                 </tr>
                                              </table>
@@ -443,17 +443,17 @@ else{
                                 <td height="100%" colspan="5" class="StormyWeatherDataTD" >
                                         <div id="divBotonPrevie" style="display:none">
                                                 <table width="100%" height="100%" >
-                                                     <tr>
-                                                        <td width="35%" colspan="1" class="StormyWeatherFieldCaptionTD">Observación</td>
+                                                    <tr> 
+                                                        <td width="35%" colspan="1" class="StormyWeatherFieldCaptionTD">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                                         <td width="65%"  colspan="4" class="StormyWeatherDataTD" >
-                                                            <textarea name='txtObservacion' type='text' id='txtObservacion' cols='55'/></textarea>
+                                                            <textarea name='txtObservacion' type='text' id='txtObservacion' cols='55' placeholder='Escriba aqui la Observación si no le parece ninguna de la lista'/></textarea>
                                                         </td>
                                                     </tr>
                                                     <tr><td width="100%" colspan="5" class="StormyWeatherDataTD">NOTA: Debe de ingresar solo una de las observaciones. </td></tr>
                                                     <tr>
                                                         <td width="35%" colspan="1" class="StormyWeatherFieldCaptionTD">Número de Resiembras</td>
                                                         <td width="65%"  colspan="4" class="StormyWeatherDataTD" >
-                                                            <input name='txtresiembra' type='text' id='txtresiembra' size='10' />
+                                                            <input name='txtresiembra' type='text' id='txtresiembra' size='10' value='0' />
                                                         </td>
                                                     </tr>
                                                     <tr>

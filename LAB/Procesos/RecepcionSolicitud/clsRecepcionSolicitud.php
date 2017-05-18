@@ -623,7 +623,7 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
         $con = new ConexionBD;
         if ($con->conectar() == true) {
 
-        $query = "SELECT t09.numero AS idnumeroexp,
+      echo  $query = "SELECT t09.numero AS idnumeroexp,
                              t05.idarea,
                              t03.codigo_examen AS idexamen,
                              t03.nombre_examen AS nombreexamen,

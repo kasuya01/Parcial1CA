@@ -58,10 +58,12 @@ switch ($opcion)
                 $cond1 .= "t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " AND";
                 $cond2 .= "t02.id_establecimiento_externo = " . $_POST['IdEstab'] . " AND";
             }
-            else{
+           /* else{
                 $cond1 .= "t02.id_establecimiento_externo = " . $lugar . " AND";
                 $cond2 .= "t02.id_establecimiento_externo = " . $lugar . " AND";
-            }
+            }*/
+            
+            
         }
 
         if ($_POST['IdServ'] <> 0) {
@@ -179,7 +181,8 @@ switch ($opcion)
                         from ctl_atencion cat
                         join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
                         join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
-                        JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion=1)
+                        JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND (a.id_tipo_atencion=1 OR a.id_tipo_atencion=4))
+                                                               
                         LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id
                         LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id
                         join mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab)

@@ -23,7 +23,7 @@ switch ($opcion)
      //  echo $fecharealiz." * ".$fecharesultado;
 	$consulta=$objdatos->LeerAntibioticos($idtarjeta);
 	$pos=0;
-	     $imprimir="<table width='75%' border='0' align='center' class='StormyWeatherFormTABLE'>
+	     $imprimir="<table width='80%' border='0' align='center' class='StormyWeatherFormTABLE'>
 			<tr>
 				<td width='40%' class='StormyWeatherFieldCaptionTD'> CULTIVO CON CUENTA DE COLONIAS</td>
 				<td width='60%' colspan='2' class='StormyWeatherDataTD'>
@@ -31,7 +31,7 @@ switch ($opcion)
 				</td>
 			</tr>
 			<tr class='CobaltButton'>
-				<td width='70%' >ANTIBIOTICO</td>
+				<td width='60%' >ANTIBIOTICO</td>
 				<td width='20%' >LECTURA</td>
                                 <td width='20%' >INTERPRETACIÓN</td>
 			</tr>";
@@ -67,15 +67,15 @@ switch ($opcion)
                         </tr> 
                         <tr>
                             <td class='StormyWeatherFieldCaptionTD'>Observación:</td>
-                            <td colspan='2'class='StormyWeatherDataTD'><textarea name='txtobservacion' type='text' id='txtobservacion' size='50' cols='50'></textarea></td>
+                            <td colspan='2'class='StormyWeatherDataTD'><textarea name='txtobservacion' type='text' id='txtobservacion' size='50' cols='50'  ></textarea></td>
                         </tr>
                          <tr>
                             <td class='StormyWeatherFieldCaptionTD'>Número de Resiembras:</td>
-                            <td colspan='2'class='StormyWeatherDataTD'><input name='txtresiembras' type='text' id='txtresiembras' size='10' /></td>
+                            <td colspan='2'class='StormyWeatherDataTD'><input name='txtresiembras' type='text' id='txtresiembras' size='10' value='0' /></td>
                         </tr>
                         <tr>
                             <td class='StormyWeatherFieldCaptionTD'>Número de Pruebas Bioquimicas:</td>
-                            <td colspan='2'class='StormyWeatherDataTD'><input name='txtbioquimicas' type='text' id='txtbioquimicas' size='10' /></td>
+                            <td colspan='2'class='StormyWeatherDataTD'><input name='txtbioquimicas' type='text' id='txtbioquimicas' size='10' value='0'/></td>
                         </tr>
                         <tr>
                             <td width='100%' colspan='3' class='StormyWeatherDataTD' align='right'>
@@ -302,7 +302,7 @@ switch ($opcion)
 		$idrecepcion= $_POST['idrecepcion'];
 		$iddetalle= $_POST['iddetalle'];
 		$observacion= $_POST['observacion'];
-                $idobservacion= ($_POST['idobservacion']==0) ? 'NULL' : "'" . pg_escape_string($_POST['idobservacion']) . "'";
+                $idobservacion= $_POST['idobservacion'];
                 //echo $idobservacion;
                 $observacion= $_POST['observacion'];
                 $fecharealiz=$_POST['fecharealiz'];
@@ -447,6 +447,9 @@ switch ($opcion)
                                 if($detres){
                                     $ultimores= $objdatos->insertar_encabezado_antibiograma($idsolicitud,$detbio,$idcofbio,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$CodAntibiograma,$lugar,$idobservacion,$fecharealiz,$fecharesultado,$id_metodbio,$ultimo); 
                                 
+                                    if ($ultimo=='false'){
+                                        $ban=1;
+                                    }
                                 }
                               }
                               if($ban==0){
@@ -648,7 +651,7 @@ switch ($opcion)
 			<tr>
                             <td colspan='6' align='center'>
                                 <button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarResultadosNegativosPlantillaC();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>";
-				 $observacionf;
+				// $observacionf;
                                          //<button style='display:none' type='button' class='btn btn-primary'  name='Imprimir' id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaCN(".$idsolicitud.",\"".$idexamen."\",\"".$idarea."\",\"".$resultado."\",\"".htmlentities($row_empleado['empleado'])."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($row_observacion['observacion'])."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
                           $imprimir.= "    <button style='display:none' type='button' class='btn btn-primary'  name='Imprimir' id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaCN(".$idsolicitud.",\"".$idexamen."\",\"".$idarea."\",\"".$resultado."\",\"".htmlentities($row_empleado['empleado'])."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($observacionf)."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>                                    
                                 <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true' style='display:none; height:20px'><button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>                               
@@ -668,7 +671,7 @@ switch ($opcion)
 case 6:
 	$idexamen=$_POST['idexamen'];
 	//$tiporespuesta=$_POST['tiporespuesta'];
-	 $idsolicitud= $_POST['idsolicitud'];
+	$idsolicitud= $_POST['idsolicitud'];
 	$idempleado= $_POST['idempleado'];
 	$idrecepcion= $_POST['idrecepcion'];
 	 $iddetalle= $_POST['iddetalle'];
@@ -684,12 +687,15 @@ case 6:
         //$observacion= (empty($row_observacion['observacion'])) ? 'NULL' : "'" . pg_escape_string($row_observacion['observacion']) . "'";
         $observacion=$row_observacion['observacion'];
         if ($idobservacion==0){
-            $observacionf= $observacion1;      
+            $observacionf= $observacion1; 
+            $idobservacionf=NULL;
+            
         }
         else{
+            $idobservacionf=$idobservacion;
             $observacionf=$observacion;
         }
-        
+       // echo $observacionf;
         $CodAntibiograma=6;
           $con = new ConexionBD;
             if($con->conectar()==true) 
@@ -711,20 +717,24 @@ case 6:
       //  echo $fecharealiz." - ".$fecharesultado;
      //echo "Examen=".$idexamen." - soli=".$idsolicitud." - empleado=".$idempleado." - idrecepcion=".$idrecepcion." - iddetalle=".$iddetalle." - observacion=".$observacion." - resultado=".$resultado;
            // echo $fecharesultado;
+            
 	if ($resultado=="N")
 	{
                $codigoResultado=2;
-                $ultimo=$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacionf,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacion,$fecharealiz,$fecharesultado);
-                 for ($i=0; $i < $numresiembras; $i++)
+                $ultimo=$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacionf,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacionf,$fecharealiz,$fecharesultado);
+             
+                for ($i=0; $i < $numresiembras; $i++)
                               {
-                                  //echo $idcofres;
+                  // echo 'i :' . $i;
+                                 // echo $idcofres;
                                 $detres=$objdatos->insertar_detalle_solicitud($idsolicitud,$iddetalle,$usuario,$lugar,$idcatres,$idmntres,$idcofres);
                                                    
-                                if($detres){
-                                    $ultimores= $objdatos->insertar_encabezado_antibiograma($idsolicitud,$detres,$idcofres,$idrecepcion,$observacionf,$resultado,$idempleado,$usuario,$CodAntibiograma,$lugar,$idobservacion,$fecharealiz,$fecharesultado,$id_metodres,$ultimo); 
+                                if($detres!=0){
+                                    $ultimores= $objdatos->insertar_encabezado_antibiograma($idsolicitud,$detres,$idcofres,$idrecepcion,$observacionf,$resultado,$idempleado,$usuario,$CodAntibiograma,$lugar,$idobservacionf,$fecharealiz,$fecharesultado,$id_metodres,$ultimo); 
                                 
                                 }
                               }
+                             
                 echo "Datos Guardados";
 	}
 	else{
@@ -735,7 +745,7 @@ case 6:
                                   //echo $idcofres;
                                 $detres=$objdatos->insertar_detalle_solicitud($idsolicitud,$iddetalle,$usuario,$lugar,$idcatres,$idmntres,$idcofres);
                                                    
-                                if($detres){
+                                if($detres!=0){
                                     $ultimores= $objdatos->insertar_encabezado_antibiograma($idsolicitud,$detres,$idcofres,$idrecepcion,$observacion,$resultado,$idempleado,$usuario,$CodAntibiograma,$lugar,$idobservacion,$fecharealiz,$fecharesultado,$id_metodres,$ultimo); 
                                 
                                 }

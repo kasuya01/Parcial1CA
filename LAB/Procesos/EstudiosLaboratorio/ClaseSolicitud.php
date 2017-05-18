@@ -570,8 +570,8 @@ class SolicitudLaboratorio {
 indicacion, sds.idtipomuestra,tipomuestra, idorigenmuestra, origenmuestra,
 case when id_historial_clinico is null then id_dato_referencia
 else id_historial_clinico
-end as idhistorialclinico,  id_atencion, estado, sds.idsolicitudestudio,
-codigo_examen,nombre_examen,urgente, to_char(f_tomamuestra, 'YYYY-MM-DD HH24:MI') as f_tomamuestra, lsu.suministrante, les.id as id_examen_suministrante
+end as idhistorialclinico,cesd.id_atencion, estado, sds.idsolicitudestudio,
+idestandar as codigo_examen,nombre_examen,urgente, to_char(f_tomamuestra, 'YYYY-MM-DD HH24:MI') as f_tomamuestra, lsu.suministrante, les.id as id_examen_suministrante
 from sec_solicitudestudios sse
 left join sec_historial_clinico shc 			on (sse.id_historial_clinico=shc.id)
 join sec_detallesolicitudestudios sds 		on (sds.idsolicitudestudio= sse.id)
@@ -581,6 +581,7 @@ left join lab_tipomuestra ltm			on (sds.idtipomuestra=ltm.id)
 left join mnt_origenmuestra mom			on (sds.idorigenmuestra=mom.id)
 left join lab_examen_suministrante les  on (les.id_suministrante=sds.id_suministrante and les.id_conf_examen_estab=sds.id_conf_examen_estab)
 left join lab_suministrante   lsu       on (lsu.id=les.id_suministrante)
+inner join  ctl_examen_servicio_diagnostico cesd on cesd.id = mnt4.id_examen_servicio_diagnostico
 where sse.id_establecimiento_externo=$IdEstablecimiento
 and case $IdEstablecimiento
 	when sse.id_establecimiento then id_historial_clinico=$IdHistorialClinico
