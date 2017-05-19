@@ -142,7 +142,7 @@ switch ($opcion) {
                        THEN mnt_ser.abreviatura ||'--'  || a.nombre
                        ELSE       cmo.nombre ||'--' || a.nombre
                        END as procedencia,
- 
+
                         CASE
                       WHEN mnt_3.nombre_ambiente IS NOT NULL
                           THEN
@@ -156,8 +156,8 @@ switch ($opcion) {
                                WHEN not exists (SELECT nombre_ambiente FROM  mnt_aten_area_mod_estab WHERE nombre_ambiente=cat.nombre)
                                   THEN cmo.nombre||'-'||cat.nombre
                           END
-                      
-                        END AS servicio 
+
+                        END AS servicio
                         from ctl_atencion cat
                         join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
                         join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
@@ -223,7 +223,7 @@ switch ($opcion) {
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo)
                 INNER JOIN tbl_servicio t20 ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
                 LEFT JOIN mnt_origenmuestra t21 ON (t21.id = t01.idorigenmuestra)
-                WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var1 AND t01.id_suministrante=1
+                WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var1
 
                 UNION
 
@@ -280,7 +280,7 @@ switch ($opcion) {
                 INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico)
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo)
                 LEFT JOIN mnt_origenmuestra t21 ON (t21.id = t01.idorigenmuestra)
-                WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var2 and t01.id_suministrante=1) ordenar
+                WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var2 ) ordenar
                 ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
 
 //ECHO $query;
@@ -395,9 +395,9 @@ switch ($opcion) {
              $resultado.=  "<option value='0' >Seleccione...</option>";
         }else{
            $resultado.=  "<option value='$idempleado' selected='selected'>". htmlentities($nomempleado). "</option>";
-           
+
         }
-        
+
         $consulta = $obje->BuscarEmpleados($idarea,$lugar);
         while ($row = pg_fetch_array($consulta)) {
            if ($tipoarea=='S'){
@@ -406,12 +406,12 @@ switch ($opcion) {
            else{
                 if ($row[1]!=$nomempleado){
                      $resultado .="<option value='" . $row[0] . "'>" . htmlentities($row[1]) . "</option>";
-                 
+
                 }
-           }     
+           }
         }
         pg_free_result($consulta);
-        
+
         $resultado.= "</select>";
         echo $resultado;
 
