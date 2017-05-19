@@ -896,7 +896,7 @@ function cambioestexterno(){
                     <td class="StormyWeatherDataTD">
                             <div id="lyMed">
                                <select name="cmbMedico" class="js-example-basic-single" id="cmbMedico" onChange="fillMed(this.value)" style="width:350px">
-                                            <option value="0" selected="selected">--Seleccione una opción;--</option>
+                                            <option value="0" selected="selected">--Seleccione una opción--</option>
 
                                     </select>
                             </div>

@@ -113,7 +113,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                           </tr>
                           <tr>
                               <th class='th-info'>Edad</th>
-                              <td class='td-blue'><div id='divsuedad[" . $i . "]'></div></td>
+                              <td class='td-blue'>".$row['edad']."</td>
                               <th class='th-info'>Sexo:</th>
                               <td class='td-blue'>" . $row['sexo'] . "</td>
                           </tr>
