@@ -59,7 +59,7 @@ switch($Proceso){
             $rslts = '<select name="cmbSubServ" id="cmbSubServ" onChange="fillMed(this.value)" style="width:350px" class="js-example-basic-single">';
             $rslts .='<option value="0">--Seleccione Subespecialidad--</option>';
             while ($rows =pg_fetch_array($dtserv)){
-                $rslts.= '<option value="' . $rows['id'] .'" >'. $rows['servicio'].'</option>';
+                $rslts.= '<option value="' . $rows['id'] .'" >'. $rows['nombre'].'</option>';
             }
 
             $rslts .='</select>';
