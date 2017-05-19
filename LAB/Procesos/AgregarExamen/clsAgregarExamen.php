@@ -313,6 +313,7 @@ function ExamenesPorArea($idarea,$lugar)
                     WHERE maees.id_area_servicio_diagnostico=$idarea
                     AND maees.id_establecimiento=$lugar
                     AND lcee.condicion= 'H'
+                    AND b_verresultado=true
                     ORDER BY lcee.nombre_examen asc";
 
 

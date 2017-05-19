@@ -249,7 +249,7 @@ class clsLab_DatosFijosExamen
 			  $query = "UPDATE lab_datosfijosresultado SET
 					fechafin=current_date,
 					idusuarioreg=$usuario,
-					fechahoramod=NOW()
+					fechahoramod=date_trunc('seconds', NOW())
 					 WHERE id=$idatofijo ";
 			$result = pg_query( $query );
 			if ( !$result )
