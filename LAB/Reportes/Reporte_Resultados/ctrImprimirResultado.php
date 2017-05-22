@@ -1041,10 +1041,10 @@ return $plantillas;
 
 
     function addBacterToExamn($bacters, $newBacter, $row) {
-        //var_dump($newBacter);
-        if( ! isset($bacters[ $newBacter[1] ]) )
+        $id=$newBacter[1].'-'.$newBacter[2];
+        if( ! isset($bacters[ $id ]) )
             {
-                    $bacters[ $newBacter[1] ] = array(
+                    $bacters[ $id ] = array(
                                         'id'                       => $newBacter[0],
                                         'nombre'                   => $newBacter[1],
                                         'id_resultado'             => $newBacter[2],
@@ -1055,9 +1055,9 @@ return $plantillas;
                                                     );
             }
 
-        if( ! isset($bacters[ $newBacter[1] ]['tarjetas']) )
+        if( ! isset($bacters[ $id ]['tarjetas']) )
             {
-                    $bacters[ $newBacter[1] ]['tarjetas'] = array();
+                    $bacters[ $id ]['tarjetas'] = array();
             }
 
         $newCard = array(
@@ -1065,7 +1065,7 @@ return $plantillas;
             $row['nombre_tarjeta']
         );
 
-        $bacters[ $newBacter[1] ]['tarjetas'] = addCardToBacter($bacters[ $newBacter[1] ]['tarjetas'], $newCard, $row);
+        $bacters[ $id ]['tarjetas'] = addCardToBacter($bacters[ $id ]['tarjetas'], $newCard, $row);
 
         return $bacters;
     }

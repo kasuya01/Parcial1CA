@@ -1648,12 +1648,13 @@ $con = new ConexionBD;
                            ti22.posible_resultado AS nombre_posible_resultado_antibiotico,
                            ti19.idresultado AS id_resultado
                     FROM lab_tarjetasvitek                ti16
-                    INNER JOIN lab_antibioticosportarjeta ti17 ON (ti16.id = ti17.idtarjeta)
+                    INNER JOIN lab_antibioticosportarjeta ti17 ON (ti16.id = ti17.idtarjeta and ti17.habilitado=true)
                     INNER JOIN lab_antibioticos           ti18 ON (ti18.id = ti17.idantibiotico)
                     LEFT  JOIN lab_detalleresultado       ti19 ON (ti16.id = ti19.idtarjeta)
                     LEFT  JOIN lab_bacterias              ti20 ON (ti20.id = ti19.idbacteria)
                     LEFT  JOIN lab_resultadosportarjeta   ti21 ON (ti19.id = ti21.iddetalleresultado AND ti18.id = ti21.idantibiotico)
                     LEFT  JOIN lab_posible_resultado      ti22 ON (ti22.id = ti21.id_posible_resultado)
+                    WHERE ti21.valor IS NOT null
                 ) t23 ON (t17.id = t23.id_resultado)
                 LEFT JOIN lab_observaciones       t24 ON (t24.id = t17.id_observacion)
                 LEFT JOIN mnt_empleado            t25 ON (t25.id = t17.idempleado)
