@@ -128,31 +128,37 @@ class clsRecepcionSolicitud {
            //fecha de cita de laboratorio asi que en recepcion no mostrara las fechas de cita que no son urgentes
            //linea original: TO_CHAR(t02.fecha, 'DD/MM/YYYY') AS fecha_cita,
 
-            $query = "with tbl_servicio as (select mnt_3.id,
-               CASE
-               WHEN mnt_3.nombre_ambiente IS NOT NULL
-               THEN
-                       CASE WHEN id_servicio_externo_estab IS NOT NULL
-                               THEN mnt_ser.abreviatura ||'-->' ||mnt_3.nombre_ambiente
-                               ELSE mnt_3.nombre_ambiente
-                       END
-
-               ELSE
-               CASE WHEN id_servicio_externo_estab IS NOT NULL
-                       THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
-                    WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=cat.nombre)
-                       THEN cat.nombre||'-'||cmo.nombre
-               END
-               END AS servicio
-               from ctl_atencion cat
-               join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
-               join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
-               LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id
-               LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id
-               join mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab)
-               join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
-               where   mnt_3.id_establecimiento=$lugar
-               order by 2)
+            $query = "WITH tbl_servicio as (select mnt_3.id,
+			  CASE WHEN id_servicio_externo_estab IS NOT NULL
+                       THEN mnt_ser.abreviatura ||'--'  || a.nombre
+                       ELSE       cmo.nombre ||'--' || a.nombre
+                       END as procedencia,
+ 
+                        CASE
+                      WHEN mnt_3.nombre_ambiente IS NOT NULL
+                          THEN
+                                  CASE WHEN id_servicio_externo_estab IS NOT NULL
+                                          THEN mnt_ser.abreviatura ||'-->' ||mnt_3.nombre_ambiente
+                                          ELSE mnt_3.nombre_ambiente
+                                  END
+                      ELSE
+                          CASE WHEN id_servicio_externo_estab IS NOT NULL
+                                  THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
+                               WHEN not exists (SELECT nombre_ambiente FROM  mnt_aten_area_mod_estab WHERE nombre_ambiente=cat.nombre)
+                                  THEN cmo.nombre||'-'||cat.nombre
+                          END
+                      
+                        END AS servicio 
+                        from ctl_atencion cat
+                        join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
+                        join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
+                        JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion=1)
+                        LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id
+                        LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id
+                        join mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab)
+                        join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
+                        where  mnt_3.id_establecimiento=$lugar
+                        order by 2)
 SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
                              COALESCE(t05.numero,t10.numero) AS numero_expediente,
                              TO_CHAR(t02.fecha, 'DD/MM/YYYY') AS fecha_cita,

@@ -773,6 +773,7 @@ function cambioestexterno(){
                                                               if ($row['id']==$lugar){
                                                                  echo '<option value="'.$lugar.'" selected>'.$row['nombre'].'</option>';
                                                               }
+															  if ($row['id']!=$lugar)
                                                                echo "<option value='" . $row['id']. "'>" . $row['nombre'] . "</option>";
                                                            }
                                                                                //mysql_free_result($row);
