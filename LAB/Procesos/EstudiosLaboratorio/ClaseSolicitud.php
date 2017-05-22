@@ -1163,6 +1163,7 @@ values($idseq,$idexpediente, $IdEmpleado,$IdSubServicio, date_trunc('seconds',NO
             and condicion= 'H'
             and id_establecimiento=$lugar
             and (idsexo is NULL or idsexo=$idsexo)
+            and ubicacion!=3
             and lcee.id not in (select id_conf_examen_estab
 		  from sec_solicitudestudios sse
 		  join sec_detallesolicitudestudios sds on (sse.id =sds.idsolicitudestudio)

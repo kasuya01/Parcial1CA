@@ -186,11 +186,12 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
                       LEFT JOIN mnt_expediente                   t05 ON (t05.id = t01.id_expediente)
                       left JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)
                       LEFT JOIN mnt_paciente                     t07 ON (t07.id = t05.id_paciente)
+                      LEFT JOIN mnt_aten_area_mod_estab    t08 ON (t08.id = t03.idsubservicio)
                       left join mnt_dato_referencia t12 on (t12.id=t01.id_dato_referencia)
                       LEFT JOIN mnt_expediente_referido          t10 ON (t10.id = t12.id_expediente_referido)
                       LEFT JOIN mnt_paciente_referido            t11 ON (t11.id = t10.id_referido)
                       LEFT JOIN lab_tiposolicitud		 t13 ON (t13.id = t01.idtiposolicitud)
-                      LEFT JOIN tbl_servicio		         t14 ON	(t14.id=t03.idsubservicio)	";
+                      LEFT JOIN tbl_servicio		         t14 ON	(t14.id=t08.id AND t14.servicio IS NOT NULL)	";
 
             $where = " WHERE t01.id_establecimiento = $lugar
                          AND t04.idestado = 'D'              AND t06.codigo_busqueda = 'DCOLAB'";

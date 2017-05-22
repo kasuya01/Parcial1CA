@@ -192,7 +192,7 @@ $_SESSION["lugar"] = $lugar;
 
                      echo "<tr>
                                 <td style='width:3%'>
-                                <div class='checkbox'><label>
+                                <div class=''><label>
                                     <input type='checkbox' name='Examenes'  Id='Examenes" . $i . "' value='" . $ResultadoExamenes['idconf'] . "' onclick=\"MostrarLista2(" . $ResultadoExamenes['idconf'] . ",$i)\" /><b>" . $ResultadoExamenes['nombre_examen'] . "</b>
                                 </label></div><input type='hidden' id='Nombre" . $ResultadoExamenes['idconf'] . "' value='" . $ResultadoExamenes['nombre_examen'] . "'></td>";
 
