@@ -164,6 +164,8 @@ AND t02.id_establecimiento = $LugardeAtencion";
          }
       }// fin if conectar
    }
+
+   /*
 //Funcion utilizada para saber si se encuantra activo el proceso para envio de HL7
 function ConsultaEnvioHL7($idestab) {
    $Conexion = new ConexionBD();
@@ -179,7 +181,7 @@ function ConsultaEnvioHL7($idestab) {
       }
    }// fin if conectar
 }//fin funcion ConsultaEnvioHL7
-
+*/
 // fin function IdCitaServApoyoInsertUpdate
 //
 //	function FechaHoraNow($conectar){
@@ -571,7 +573,7 @@ indicacion, sds.idtipomuestra,tipomuestra, idorigenmuestra, origenmuestra,
 case when id_historial_clinico is null then id_dato_referencia
 else id_historial_clinico
 end as idhistorialclinico,cesd.id_atencion, estado, sds.idsolicitudestudio,
-idestandar as codigo_examen,nombre_examen,urgente, to_char(f_tomamuestra, 'YYYY-MM-DD HH24:MI') as f_tomamuestra, lsu.suministrante, les.id as id_examen_suministrante
+idestandar as codigo_examen,nombre_examen,urgente, to_char(f_tomamuestra, 'YYYY-MM-DD HH24:MI') as f_tomamuestra, lsu.suministrante, les.id as id_examen_suministrante, lsu.id as id_suministrante
 from sec_solicitudestudios sse
 left join sec_historial_clinico shc 			on (sse.id_historial_clinico=shc.id)
 join sec_detallesolicitudestudios sds 		on (sds.idsolicitudestudio= sse.id)

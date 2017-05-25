@@ -4,7 +4,8 @@ session_start();
 include_once("Clases.php");
 include ("clsRecepcionSolicitud.php");
 include_once("../EstudiosLaboratorio/ClaseSolicitud.php");
-include_once("../EstudiosLaboratorio/envioSolicitudWS.php");
+include_once("../ComunicacionEquipos/envioSolicitudWS.php");
+include_once("../ComunicacionEquipos/ClaseComunicacion.php");
 $usuario = $_SESSION['Correlativo'];
 $lugar = $_SESSION['Lugar'];
 $area = $_SESSION['Idarea'];
@@ -13,7 +14,7 @@ $Clases = new cls_Clases;
 //variables POST
 $opcion = $_POST['opcion'];
 $object = new clsRecepcionSolicitud;
-$Paciente = new Paciente;
+$Comunicacion = new Comunicacion;
 //include_once $ROOT_PATH."/public/css.php";
 //include_once $ROOT_PATH."/public/js.php";
 //creando los objetos de las clases
@@ -29,7 +30,7 @@ switch ($opcion) {
       $idhistorial = $_POST['idhistorial'];
       $referido = $_POST['referido'];
       $return_='';
-      $enviohl7= $Paciente->ConsultaEnvioHL7($lugar);
+      $enviohl7= $Comunicacion->ConsultaEnvioHL7($lugar);
 
       if ($con->conectar() == true) {
          $query = "UPDATE sec_solicitudestudios "
@@ -64,7 +65,7 @@ switch ($opcion) {
                  $tipo_conexion="SELECT id_tipo_conexion from lab_suministrante where id= $hdnid_suministrante_";
 
                  $resulthl7=pg_fetch_array(pg_query($tipo_conexion));
-                 if (($resulthl7['id_tipo_conexion'])==2){
+                 if (($resulthl7['id_tipo_conexion'])==2 && $hdnvalidarmuestra_ == 1){
                      $hl7conexion=1;
                  }
                   if ($hdncmbrechazo_ == 0)
@@ -134,7 +135,7 @@ switch ($opcion) {
                              : null;
                  $tipo_conexion="SELECT id_tipo_conexion from lab_suministrante where id= $hdnid_suministrante";
                  $resulthl7=pg_fetch_array(pg_query($tipo_conexion));
-                 if (($resulthl7['id_tipo_conexion'])==2){
+                 if (($resulthl7['id_tipo_conexion'])==2 && $hdnvalidarmuestra_ == 1){
                      $hl7conexion=1;
                  }
                   if ($hdnvalidarmuestra_ != 1 && $hdnvalidarmuestra_ !=4) {
@@ -186,7 +187,7 @@ switch ($opcion) {
          if ($enviohl7!=0 && $hl7conexion==1){
               $retorno =enviarSolicitudWS($idsolicitud);
          if ($retorno=='false'){
-              $return_.= ' Error Envío a Equipos Automatizados, favor intentar enviar esta solicitud más tarde....';
+              $return_.= '..Pero hubo error de envío a Equipos Automatizados, favor intentar enviar esta solicitud a equipos automatizados más tarde....';
 
           }
           else{
@@ -213,11 +214,13 @@ switch ($opcion) {
 
 
          if (!$result)
-            echo   "N";
+            //echo   "N";
+            $return_ .=   "|N";
          else
-            echo  "Y";
+            //echo  "Y";
+            $return_.=  "|Y";
 
-        //echo $return_;
+        echo $return_;
       } else {
          echo "No se conecta a la base de datos";
       }

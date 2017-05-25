@@ -1,8 +1,10 @@
 <?php
 session_start();
 include_once("ClaseSolicitud.php"); //Agregamos el Archivo con las clases y funciones a utilizar
-include_once("envioSolicitudWS.php");
+include_once("../ComunicacionEquipos/envioSolicitudWS.php");
+include_once("../ComunicacionEquipos/ClaseComunicacion.php");
 $Paciente = new Paciente;
+$Comunicacion = new Comunicacion;
 $Laboratorio = new SolicitudLaboratorio;
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
 //$_SESSION["conectar"]=$conectar;
@@ -24,6 +26,7 @@ $NombrePa = $Paciente->RecuperarNombre($IdEstablecimiento, $idexpediente,
 $rowpa = pg_fetch_array($NombrePa);
 $NombrePaciente = $rowpa['nombre'];
 $sexo = $rowpa['id_sexo'];
+$hl7conexion =0;
 //echo 'IdHistorialClinico:'.$IdHistorialClinico .' IdCitaServApoyo:  '.$IdCitaServApoyo.'  IdNumeroExp: '.$IdNumeroExp. '</br>';
 //exit;
 // recuperar el IdSolicituEstudio
@@ -42,24 +45,7 @@ if ($IdCitaServApoyo == "") {
 list($IdCitaServApoyo,$numeromuestra)=explode("_", $IdCitaServApoy);
  $prioridad= $Laboratorio->SolicitudUrgente($urgente, $IdHistorialClinico, $IdSolicitudEstudio);
 //Verificar si el establecimeitno soporta la conexion por medio de HL7
-$enviohl7= $Paciente->ConsultaEnvioHL7($IdEstablecimiento);
-if ($enviohl7!=0 && $band == 0){
-    //echo 'Entro porque es diferente de cero';
 
-    //echo 'resultado: '.enviarSolicitudWS($IdSolicitudEstudio);
-     $retorno =enviarSolicitudWS($IdSolicitudEstudio);
-     //echo 'band:'.$band;
-   if ($retorno=='false'){
-        echo '<span class="glyphicon glyphicon-warning-sign"></span><i>  Error Envío a Equipos Automatizados, favor intentar enviar esta solicitud más tarde....</i>';
-
-    }
-    else{
-        echo '<i>Envío equipos automatizados: '.$retorno.'</i>';
-    }
-    /*$envio=enviarSolicitudWS($IdSolicitudEstudio);
-    echo 'Envio: '.$envio;*/
-
-}
 
 
 ?>
@@ -93,7 +79,6 @@ if ($enviohl7!=0 && $band == 0){
 
 <!--<body onload="MostrarDetalle(<?php //echo $IdHistorialClinico; ?>);">-->
    <body >
-      <br>
 
       <div class='panel panel-primary'>
          <table  class='table table-bordered table-condensed table-white no-v-border'  >
@@ -183,7 +168,7 @@ if ($enviohl7!=0 && $band == 0){
                echo "<td>" . ($Respuesta["nombre_examen"]) . "</td>";
                echo "<td><font color='#084B8A'><b>" . ($Respuesta["tipomuestra"]) . "</b></font></td>";
                echo "<td><font color='#084B8A'><b>" . ($Respuesta["origenmuestra"]) . "</b></font></td>";
-               echo "<td><font color='#084B8A'><b>" . ($Respuesta["suministrante"]) . "</b></font></td>";
+               echo "<td><font color='#084B8A'><b>" . ($Respuesta["suministrante"])."</b></font></td>";
                echo "<td><input type='text' id='Indicacion" . $Respuesta['idexamen'] . "' name='Indicacion" . $Respuesta['idexamen'] . "'value='" . ($Respuesta["indicacion"]) . "'>";
                if ($Respuesta['f_tomamuestra']!=''){
                  $fecha= $Respuesta['f_tomamuestra'];
@@ -220,6 +205,12 @@ if ($enviohl7!=0 && $band == 0){
                  }//fin if Respuesta3=null
                 */
                echo "</tr>";
+               $tipo_conexion =$Comunicacion->ConsultaTipoConexion($Respuesta['id_suministrante']);
+
+               $resulthl7=pg_fetch_array($tipo_conexion);
+               if (($resulthl7['id_tipo_conexion'])==2){
+                   $hl7conexion=1;
+               }
                $i++;
                //aqui me quede
             }//fin while respuesta
@@ -236,9 +227,30 @@ if ($enviohl7!=0 && $band == 0){
             //echo "<tr><td colspan='6' align='right'><br><h3><b>".$check."Resultado de Examenes Impresos [Pre-Operatorios]</b></h3> </td></tr></table><br>";
             echo "<tr><td colspan='7'><br><b>Total de Examenes Solicitados:" . $i . "</b> </td></tr>"
             . ""
-            . "</tbody></table></div><br>";
+            . "</tbody></table></div>";
 
-            echo "<table border=0 style='width:100%'>
+            $enviohl7= $Comunicacion->ConsultaEnvioHL7($LugardeAtencion);
+            if ($enviohl7!=0 && $band == 0 && $hl7conexion==1){
+
+                //echo 'resultado: '.enviarSolicitudWS($IdSolicitudEstudio);
+                 $retorno =enviarSolicitudWS($IdSolicitudEstudio);
+                 //echo 'band:'.$band;
+               if ($retorno=='false'){
+                    echo '&nbsp; &nbsp;<font style="color:#fcd608" size ="5"><span class="glyphicon glyphicon-warning-sign"></span></font><i> <font size="3">Error Envío a Equipos Automatizados, favor intentar enviar esta solicitud más tarde....</font></i>';
+
+                }
+                else{
+                    echo '&nbsp; &nbsp;<font style="color:#3c5db6" size ="5"><span class="glyphicon glyphicon-ok-sign"></span></font><i> <font size="3"><i>Envío equipos automatizados: '.$retorno.'</font></i>';
+                }
+                /*$envio=enviarSolicitudWS($IdSolicitudEstudio);
+                echo 'Envio: '.$envio;*/
+
+            }
+            /*else{
+                echo 'No hay pruebas que requieran comunicación con equipos automatizados'.$hl7conexion;
+            }*/
+
+            echo "<br><table border=0 style='width:100%'>
                             <tr><td align='right'>
                             <button type='button' class='btn btn-primary' id='Enviar' onclick='GuardarCambios(0); '>
                                 <span class='glyphicon glyphicon-floppy-disk'></span>
@@ -249,8 +261,8 @@ if ($enviohl7!=0 && $band == 0){
                                 Agregar Examen
                              </button>
                             <button type='button' class='btn btn-primary' id='Terminar' onclick='GuardarCambios($IdSolicitudEstudio); '>
-                                <span class='glyphicon glyphicon-ok'></span>
-                                Terminar Solicitud
+                                <span class='glyphicon glyphicon-remove'></span>
+                                Cerrar Solicitud
                              </button>
                              </td></tr></table>
                             <input type='hidden' name='total' id='total' value='" . $i . "'>

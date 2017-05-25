@@ -2,28 +2,31 @@
 ini_set('soap.wsdl_cache_enabled', '0');
 ini_set('soap.wsdl_cache_ttl', '0');
 ini_set('default_socket_timeout', 120);
+include_once("../../../Conexion/ConexionEquipos.php");
+
 
 function enviarSolicitudWS($id){
     $host= $_SERVER['HTTP_HOST'];
     list($modulo,$dominio)=explode(".", $host);
     $requestScheme=$_SERVER['REQUEST_SCHEME'];
     $return_='';
-    $url = $requestScheme.'://siap.'.$dominio.'/app.php/soap/interfaceliswebservice?wsdl';
+//    $url = $requestScheme.'://siap.'.$dominio.'/app.php/soap/interfaceliswebservice';
     //echo $url;
-   //$url = 'http://siap.localhost/app_dev.php/soap/interfaceliswebservice?wsdl';
+   $url = 'http://siaps.localhost/app_dev.php/soap/interfaceliswebservice';
     $action = 'checkin';
     $soapParameters = array('trace' => true, 'exceptions' => true);
 
-    $array = array('AppUser'=>'eautomatizado','Password'=>'34ut0m4t1z4d0');
+    $array = array('AppUser'=>USUARIO_HL7,'Password'=>CLAVE_HL7);
     $json_array = json_encode($array);
     $array_param = array('json_array' => $json_array);
 
 
     try {
-        $soapClient = new Soapclient($url, $soapParameters);
-    //    $soapClient->__setLocation('http://siap.localhost/app_dev.php/soap/interfaceliswebservice');
+        $soapClient = new Soapclient($url.'?wsdl', $soapParameters);
+    //    $soapClient->__setLocation('http://siaps.localhost/app_dev.php/soap/interfaceliswebservice');
 
-        $soapClient->__setLocation($requestScheme.'://siap.'.$dominio.'/app.php/soap/interfaceliswebservice');
+    //    $soapClient->__setLocation($requestScheme.'://siap.'.$dominio.'/app.php/soap/interfaceliswebservice');
+        $soapClient->__setLocation($url);
         $data = $soapClient->__soapCall($action, $array_param);
     } catch (Exception $e) {
         return 'false';
@@ -41,7 +44,7 @@ function enviarSolicitudWS($id){
 
             $action= 'generarMensajeSolicitud';
             $mensaje = $soapClient->__soapCall($action, $array_param);
-            return 'Solicitud enviada con éxito';
+            $return_ .= 'Solicitud enviada con éxito';
 
         } catch (Exception $e) {
             // enviar mensaje de error a tabla
@@ -55,8 +58,8 @@ function enviarSolicitudWS($id){
 
             $action= 'checkout';
             $mensaje = $soapClient->__soapCall($action, $array_param);
-            return '....';
-            //return $return_;
+            $return_ .= '....';
+            return $return_;
 
         } catch (Exception $e) {
             // enviar mensaje de error a tabla

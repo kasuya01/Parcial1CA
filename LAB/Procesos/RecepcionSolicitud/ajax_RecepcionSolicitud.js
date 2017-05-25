@@ -728,14 +728,16 @@ function CambiarEstadoSolicitud(estado, idsolicitud, posicion)
                 //mostrar los nuevos registros en esta capa
                 document.getElementById('divCambioEstado').style.display = "none";
                 document.getElementById('divCambioEstado').innerHTML = ajax.responseText;
+                comu = ajax.responseText.split("|");
+            //    alert (ajax.responseText+' *** '+comu[0]+' ---- comu 1: '+comu[1])
                 //verificando el cambio de estado
-                if (ajax.responseText.replace(/(\r\n|\n|\r| )/gm,'') == "Y")
+                if (comu[1].replace(/(\r\n|\n|\r| )/gm,'') == "Y")
                 {
                    $(".datepicker").prop( "disabled", true );
                     //alert(ajax.responseText);
                     /* ****** ingresar datos temporales ********************* */
                     //IngresarDatosTemp(Solicitud,posicion);
-                    alert("La solicitud fue procesada con exito...");
+                    alert("La solicitud fue procesada con exito...  "+"\r\n"+comu[0]);
                     //Crear_Archivo(Solicitud,posicion);
 
                 }
