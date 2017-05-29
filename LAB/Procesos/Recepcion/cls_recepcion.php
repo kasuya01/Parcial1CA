@@ -66,7 +66,9 @@ where id_tipo_establecimiento not in (12,13,29,28) order by id_tipo_establecimie
         $con = new ConexionBD;
          $condicionAmbiente="";
         if ($con->conectar() == true) {
-             if ($IdServ==2){
+            $sql = "select id_area_atencion from mnt_area_mod_estab where id =$IdServ";
+            $dt = pg_fetch_array (pg_query($sqlText)) ;
+             if ($dt[0]==2){
                $condicionAmbiente=' AND mnt_3.nombre_ambiente IS NOT NULL';
              }
                 $sqlText="WITH tbl_servicio as (SELECT mnt_3.id,

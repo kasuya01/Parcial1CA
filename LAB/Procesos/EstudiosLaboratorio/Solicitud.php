@@ -42,7 +42,7 @@ else
 /* * *************************************************************** */
 $Historial = new CrearHistorialClinico;
 if (!isset($_GET["IdHistorialClinico"]) || $IdHistorialClinico == '') {
-    echo 'aqui no  existe: ';
+    //echo 'aqui no  existe: ';
    $IdHistorialClinico = $Historial->HistorialClinico($IdNumeroExp,
            $IdEstablecimiento, $IdSubServicio, $IdEmpleado, $FechaConsulta,
            $_SESSION['Correlativo'], $ippc, $idexpediente, $lugar);
