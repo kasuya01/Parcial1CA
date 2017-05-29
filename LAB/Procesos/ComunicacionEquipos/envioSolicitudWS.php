@@ -10,9 +10,9 @@ function enviarSolicitudWS($id){
     list($modulo,$dominio)=explode(".", $host);
     $requestScheme=$_SERVER['REQUEST_SCHEME'];
     $return_='';
-//    $url = $requestScheme.'://siap.'.$dominio.'/app.php/soap/interfaceliswebservice';
+   $url = $requestScheme.'://siap.'.$dominio.'/app.php/soap/interfaceliswebservice';
     //echo $url;
-   $url = 'http://siaps.localhost/app_dev.php/soap/interfaceliswebservice';
+  // $url = 'http://siaps.localhost/app_dev.php/soap/interfaceliswebservice';
     $action = 'checkin';
     $soapParameters = array('trace' => true, 'exceptions' => true);
 
