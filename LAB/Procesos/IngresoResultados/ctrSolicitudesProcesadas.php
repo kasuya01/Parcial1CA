@@ -1304,4 +1304,5 @@ switch ($opcion) {
       break;
 
 }
+
 ?>
