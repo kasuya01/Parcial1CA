@@ -302,7 +302,7 @@ function DatosDetalleSolicitud($idsolicitud)
              INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id= mnt_area_examen_establecimiento.id_examen_servicio_diagnostico
              INNER JOIN lab_plantilla ON lab_plantilla.id = lab_conf_examen_estab.idplantilla 
              WHERE sec_solicitudestudios.id_atencion = 98 AND EstadoDetalle=7
-             AND sec_solicitudestudios.id=$idsolicitud AND b_verresultado=true
+             AND sec_solicitudestudios.id=$idsolicitud AND b_verresultado=true AND ubicacion<>3
              ORDER BY ctl_area_servicio_diagnostico.idarea";
 	  	$result = @pg_query($query);
 	     if (!$result)
@@ -329,7 +329,7 @@ function ContarDatosDetalleSolicitud($idsolicitud)
              INNER JOIN ctl_examen_servicio_diagnostico ON ctl_examen_servicio_diagnostico.id= mnt_area_examen_establecimiento.id_examen_servicio_diagnostico
              INNER JOIN lab_plantilla ON lab_plantilla.id = lab_conf_examen_estab.idplantilla 
              WHERE sec_solicitudestudios.id_atencion = 98 AND EstadoDetalle=7
-             AND sec_solicitudestudios.id=$idsolicitud AND b_verresultado=true
+             AND sec_solicitudestudios.id=$idsolicitud AND b_verresultado=true  AND ubicacion<>3
              ORDER BY ctl_area_servicio_diagnostico.idarea";
         $numreg = pg_num_rows(pg_query($query));
          if (!$numreg)

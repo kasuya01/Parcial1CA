@@ -102,29 +102,36 @@ switch ($opcion)
                 }
                //echo "var1=".$var1;
                 
-            $query = "WITH tbl_servicio AS ( SELECT t02.id,
-                CASE WHEN t02.nombre_ambiente IS NOT NULL THEN
-                    t02.nombre_ambiente
-                    ELSE
-                            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' ||  t01.nombre
-                                 WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=t01.nombre)
-                                   
-                                    THEN t01.nombre
-                    END
+            $query = "WITH tbl_servicio as (SELECT mnt_3.id, CASE WHEN id_servicio_externo_estab IS NOT NULL
+                       THEN mnt_ser.abreviatura ||'--'  || a.nombre
+                       ELSE       cmo.nombre ||'--' || a.nombre
+                       END as procedencia,
 
-                END AS servicio,
-               (CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura ||'-->'  || t06.nombre
-                    ELSE   t07.nombre ||'-->' || t06.nombre
-                END) as procedencia
-                FROM ctl_atencion t01 
-                INNER JOIN mnt_aten_area_mod_estab t02 ON (t01.id = t02.id_atencion) 
-                INNER JOIN mnt_area_mod_estab t03 ON (t03.id = t02.id_area_mod_estab) 
-                LEFT JOIN mnt_servicio_externo_establecimiento t04 ON (t04.id = t03.id_servicio_externo_estab) 
-                LEFT JOIN mnt_servicio_externo t05 ON (t05.id = t04.id_servicio_externo) 
-                INNER JOIN  ctl_area_atencion t06  on  t06.id = t03.id_area_atencion
-                INNER JOIN ctl_modalidad  t07 ON t07.id = t03.id_modalidad_estab
-                    WHERE $where_with t02.id_establecimiento = $lugar
-                    ORDER BY 2)
+                       CASE WHEN mnt_3.nombre_ambiente IS NOT NULL THEN mnt_3.nombre_ambiente ELSE cat.nombre END AS servicio 
+
+                    FROM ctl_atencion cat JOIN mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion) 
+                    JOIN mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id) JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion in (1,4)) 
+                    LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id 
+                    LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id 
+                    JOIN mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab) 
+                    JOIN ctl_modalidad cmo on (cmo.id=mme.id_modalidad) 
+                    WHERE mnt_3.nombre_ambiente IS NOT NULL AND mnt_3.id_establecimiento=$lugar 
+
+                    UNION 
+
+                    SELECT mnt_3.id,CASE WHEN id_servicio_externo_estab IS NOT NULL
+                                           THEN mnt_ser.abreviatura ||'--'  || a.nombre
+                                           ELSE       cmo.nombre ||'--' || a.nombre
+                                           END as procedencia,
+                                           cat.nombre AS servicio
+                    FROM ctl_atencion cat JOIN mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion) JOIN mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id) 
+                    JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion in (1,4)) 
+                    LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id 
+                    JOIN mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab) 
+                    JOIN ctl_modalidad cmo on (cmo.id=mme.id_modalidad) 
+                    WHERE mnt_3.id_establecimiento=$lugar 
+                    AND mnt_3.id_atencion ||'-'|| mnt_3.id_area_mod_estab ||'-'||mnt_3.id_establecimiento NOT IN (SELECT id_atencion ||'-'|| id_area_mod_estab ||'-'||id_establecimiento 
+                    FROM mnt_aten_area_mod_estab WHERE nombre_ambiente IS NOT NULL))
             SELECT ordenar.* FROM (
                 SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                 t02.id AS idsolicitudestudio, 
@@ -300,7 +307,7 @@ switch ($opcion)
                                 <tr>
                                     <th class='StormyWeatherFieldCaptionTD'>Procedencia: </th>
                                     <td class='StormyWeatherDataTD'>".$precedencia."</td>
-                                    <th class='StormyWeatherFieldCaptionTD'>Origen: </th>
+                                    <th class='StormyWeatherFieldCaptionTD'>Servicio: </th>
                                     <td class='StormyWeatherDataTD'>".htmlentities($origen)."
                                                     <input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled'/>
                                                     <input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled'/></td>
@@ -383,7 +390,7 @@ switch ($opcion)
                                 <tr>
                                     <th class='StormyWeatherFieldCaptionTD'>Procedencia: </th>
                                     <td class='StormyWeatherDataTD'>".$precedencia."</td>
-                                    <th class='StormyWeatherFieldCaptionTD'>Origen: </th>
+                                    <th class='StormyWeatherFieldCaptionTD'>Servicio: </th>
                                     <td class='StormyWeatherDataTD'>".htmlentities($origen)."
                                                     <input name='idsolicitud' id='idsolicitud'  type='hidden' size='40' value='".$idsolicitud."' disabled='disabled'/>
                                                     <input name='idexpediente' id='idexpediente'  type='hidden' size='40' value='".$idexpediente."' disabled='disabled'/></td>

@@ -247,7 +247,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-	  $query ="SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
+	 $query ="SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                     t01.id as iddetallesolicitud,
                     t02.id as idsolicitudestudio,
                     t04.idplantilla  as idplantilla,
@@ -329,7 +329,7 @@ function DatosGeneralesSolicitud($idexpediente,$idsolicitud,$lugar)
             LEFT JOIN mnt_empleado 			t24     ON (t09.id_empleado=t24.id) 
             LEFT JOIN ctl_area_servicio_diagnostico    t25     ON (t25.id=t05.id_area_servicio_diagnostico)
             
-            WHERE  t02.id=$idsolicitud AND t08.idarea <> 'TMU' and t06.numero='$idexpediente' AND b_verresultado=true
+            WHERE  t02.id=$idsolicitud AND t08.idarea <> 'TMU' and t06.numero='$idexpediente' AND b_verresultado=true AND ubicacion <> 3
 
 UNION
 
@@ -415,7 +415,7 @@ UNION
             left  join mnt_empleado 			t24     on (t09.id_empleado=t24.id) 
             inner join ctl_area_servicio_diagnostico    t25     on (t25.id=t05.id_area_servicio_diagnostico)
             
-            WHERE   t02.id=$idsolicitud AND t08.idarea <> 'TMU' and t06.numero='$idexpediente' AND b_verresultado=true order by codigo_area";
+            WHERE   t02.id=$idsolicitud AND t08.idarea <> 'TMU' and t06.numero='$idexpediente' AND b_verresultado=true  AND ubicacion <> 3 order by codigo_area";
                  
 		//echo $query;
 		$result = @pg_query($query);
@@ -506,7 +506,8 @@ function DatosDetalleSolicitud($idexpediente,$idsolicitud)
                 INNER JOIN lab_resultados ON lab_resultados.idexamen= lab_conf_examen_estab.id
                 WHERE lab_elementos.id_conf_examen_estab=$idexamen
                 AND iddetallesolicitud=$iddetalle AND lab_elementos.idestablecimiento=$lugar
-                AND date(lab_resultados.fecha_resultado) BETWEEN lab_elementos.fechaini AND CASE WHEN fechafin IS NULL THEN CURRENT_DATE ELSE lab_elementos.fechafin END
+                AND date(lab_resultados.fecha_resultado) BETWEEN lab_elementos.fechaini AND 
+                CASE WHEN fechafin IS NULL THEN CURRENT_DATE ELSE lab_elementos.fechafin END
                 ORDER BY orden";
         
 

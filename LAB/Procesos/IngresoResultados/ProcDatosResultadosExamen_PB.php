@@ -123,6 +123,8 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                     origenmuestra=escape(getVars[i].substr(5));
                  if ( getVars[i].substr(0,5) == 'nomsexo=' )
                     nomsexo=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'f_consulta=' )
+                    f_consulta=escape(getVars[i].substr(5));
             }
 
             document.frmnuevo.txtnec.value=nec;
@@ -212,7 +214,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
         $sexo=$_GET['var15'];
         //$idsolicitud;
         $ftx= $_GET['var20'];
-        
+        $f_consulta=$_GET['f_consulta'];
      // echo $idsolicitud." - ".$iddetallesolicitud." - ".$idarea;
         $cant=$objdatos->buscarAnterioresPUnica($idsolicitud,$iddetallesolicitud,$idarea);
         if (pg_num_rows($cant)>0){
@@ -251,9 +253,9 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                                         <td width="67%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var18'];?></td>
                                     </tr>
                                     <tr>
-                                        <td class="StormyWeatherFieldCaptionTD">Procedencia</td>
+                                        <td width="30%" class="StormyWeatherFieldCaptionTD">Procedencia</td>
                                         <td class="StormyWeatherDataTD"><?php echo $_GET['var10'];?></td>
-                                        <td class="StormyWeatherFieldCaptionTD">Servicio</td>
+                                        <td width="21%" class="StormyWeatherFieldCaptionTD">Servicio</td>
                                         <td class="StormyWeatherDataTD"><?php echo $_GET['var11'];?></td>
                                     </tr>
                                     <tr>
@@ -347,10 +349,12 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                                     </tr>
                                     <tr>
                                        <td class="StormyWeatherFieldCaptionTD">Fecha de Toma de Muestra</td>
-                                       <td class="StormyWeatherDataTD" colspan="4"><?php echo $ftx; ?>
+                                       <td class="StormyWeatherDataTD" colspan="1"><?php echo $ftx; ?>
                                            <input type="hidden" id="fecha_tmuestra" name="f_tmuestra" value="<?php echo $ftx;?>"/>
                                            <input type="hidden" id="dateftomamx" name="dateftomamx" value="<?php echo $dateftomamx;?>"/>
-                                       </td>
+                                           <input type="hidden" id="f_consulta" name="f_consulta" value="<?php echo $f_consulta;?>"/></td>
+                                        <td class="StormyWeatherFieldCaptionTD">Fecha de Consulta</td> 
+                                        <td class="StormyWeatherDataTD" colspan="1"><?php echo $f_consulta; ?></td>
                                    </tr>
                                    <tr>
                                        <td class="StormyWeatherFieldCaptionTD">*Validado Por</td>
@@ -371,7 +375,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                                          </td>
                                      </tr>-->
                                      <tr>
-                                         <td class="StormyWeatherFieldCaptionTD">*Fecha y hora inicio Proceso</td>
+                                         <td class="StormyWeatherFieldCaptionTD">*Fecha inicio Proceso</td>
                                          <td class="StormyWeatherDataTD">
                                                 <input type="text" class="date form-control height placeholder" name="txtresultrealiza" id="txtresultrealiza" size="60"  placeholder="aaaa-mm-dd" style="width:100%"/>
 

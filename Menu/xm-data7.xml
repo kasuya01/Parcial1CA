@@ -14,7 +14,7 @@
       <menu labelText="PROCESOS">
          <item labelText="Ingresar Solicitud" url= "../LAB/Procesos/Recepcion/RecepcionLab.php"/>
          <item labelText="Recepción de Solicitudes" url="../LAB/Procesos/RecepcionSolicitud/Proc_RecepcionSolicitud.php"/>
-         <item labelText="Recepción de Solicitudes en Área" url="../LAB/Procesos/SolicitudesPorArea/Proc_SolicitudesPorArea.php"/>
+         <!--<item labelText="Recepción de Solicitudes en Área" url="../LAB/Procesos/SolicitudesPorArea/Proc_SolicitudesPorArea.php"/>-->
          <item labelText="Ingreso de Resultados" url="../LAB/Procesos/IngresoResultados/Proc_SolicitudesProcesadas.php"/>
          <!--item labelText="Ingreso de Resultados Pendientes" url="../LAB/Procesos/SolicitudesPendientes/Proc_SolicitudesProcesadasPendientes.php"/-->
           <item labelText="Rechazar/Cancelar Muestras" url="../LAB/Procesos/RMAutomatizada/Proc_RMAutomatizada.php"/>
