@@ -538,16 +538,22 @@ function MostrarDatosGenerales($idsolicitud,$lugar)
                 (SELECT nombre from ctl_sexo WHERE id=mnt_paciente_referido.id_sexo)
             ELSE (SELECT nombre from ctl_sexo WHERE id=mnt_paciente.id_sexo) end) AS sexo,
 
-            CASE WHEN mnt_aten_area_mod_estab.nombre_ambiente IS NOT NULL THEN  	
-                CASE WHEN id_servicio_externo_estab IS NOT NULL THEN mnt_servicio_externo.abreviatura ||'-->' ||mnt_aten_area_mod_estab.nombre_ambiente
-                    ELSE mnt_aten_area_mod_estab.nombre_ambiente
-                END
-            ELSE
-                CASE WHEN id_servicio_externo_estab IS NOT NULL THEN mnt_servicio_externo.abreviatura ||'--> ' || ctl_atencion.nombre
-                    WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=ctl_atencion.nombre) THEN ctl_atencion.nombre
-                END
-            END AS subservicio ,
-            ctl_area_atencion.nombre AS procedencia,to_char(lab_recepcionmuestra.fechahorareg,'dd/mm/YYYY' ) AS fecharecep,
+            CASE WHEN mnt_aten_area_mod_estab.nombre_ambiente IS NOT NULL THEN 
+                CASE WHEN id_servicio_externo_estab IS NOT NULL THEN mnt_servicio_externo.abreviatura ||'-' ||mnt_aten_area_mod_estab.nombre_ambiente 
+                    ELSE mnt_aten_area_mod_estab.nombre_ambiente 
+                END 
+            ELSE 
+                CASE WHEN id_servicio_externo_estab IS NOT NULL THEN ctl_atencion.nombre WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=ctl_atencion.nombre) 
+                    THEN ctl_atencion.nombre 
+                END 
+            END AS subservicio, 
+            
+
+            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN mnt_servicio_externo.abreviatura ||'-'  || ctl_area_atencion.nombre
+            ELSE   ctl_modalidad.nombre ||'-' || ctl_area_atencion.nombre
+            END AS procedencia,
+            
+            to_char(lab_recepcionmuestra.fechahorareg,'dd/mm/YYYY' ) AS fecharecep,
             (SELECT nombre FROM ctl_establecimiento WHERE id=sec_solicitudestudios.id_establecimiento_externo) AS estabext
             FROM lab_recepcionmuestra
             INNER JOIN sec_solicitudestudios                ON sec_solicitudestudios.id = lab_recepcionmuestra.idsolicitudestudio
@@ -565,6 +571,8 @@ function MostrarDatosGenerales($idsolicitud,$lugar)
             LEFT  JOIN mnt_servicio_externo 		ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo)
             INNER JOIN ctl_area_atencion                    ON ctl_area_atencion.id=mnt_area_mod_estab.id_area_atencion
             INNER JOIN ctl_atencion                         ON ctl_atencion.id=mnt_aten_area_mod_estab.id_atencion
+            INNER JOIN  mnt_modalidad_establecimiento       ON mnt_modalidad_establecimiento.id=mnt_area_mod_estab.id_modalidad_estab
+            INNER JOIN ctl_modalidad                    ON ctl_modalidad.id = mnt_modalidad_establecimiento.id_modalidad
             WHERE lab_recepcionmuestra.IdSolicitudEstudio=$idsolicitud";
 
      $result = pg_query($query);

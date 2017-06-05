@@ -32,6 +32,7 @@ switch ($opcion) {
         $query="";
         $query2="";
         $where_with="";
+       
         //echo $IdEstab;
 
         if ($_POST['IdEstab']<>0) {
@@ -50,6 +51,7 @@ switch ($opcion) {
             $cond1 .= " t12.id  = " . $_POST['IdServ'] . " AND";
             $cond2 .= " t12.id  = " . $_POST['IdServ'] . " AND";
             $where_with = "t03.id = $IdServ AND ";
+                      
         }
 
         if (!empty($_POST['IdSubServ'])) {
@@ -135,39 +137,44 @@ switch ($opcion) {
             $var1 = $lugar;
             $var2 = $lugar;
         }
-        //echo $cond2;
-        // CASE WHEN id_servicio_externo_estab IS NOT NULL THEN t05.abreviatura  ||'   -   ' || t02.nombre_ambiente END
-       $query="WITH tbl_servicio as (select mnt_3.id,
-			  CASE WHEN id_servicio_externo_estab IS NOT NULL
+       
+           
+              $query="WITH tbl_servicio as (SELECT mnt_3.id, CASE WHEN id_servicio_externo_estab IS NOT NULL
                        THEN mnt_ser.abreviatura ||'--'  || a.nombre
                        ELSE       cmo.nombre ||'--' || a.nombre
                        END as procedencia,
- 
-                        CASE
-                      WHEN mnt_3.nombre_ambiente IS NOT NULL
-                          THEN
-                                  CASE WHEN id_servicio_externo_estab IS NOT NULL
-                                          THEN mnt_ser.abreviatura ||'-->' ||mnt_3.nombre_ambiente
-                                          ELSE mnt_3.nombre_ambiente
-                                  END
-                      ELSE
-                          CASE WHEN id_servicio_externo_estab IS NOT NULL
-                                  THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
-                               WHEN not exists (SELECT nombre_ambiente FROM  mnt_aten_area_mod_estab WHERE nombre_ambiente=cat.nombre)
-                                  THEN cmo.nombre||'-'||cat.nombre
-                          END
-                      
-                        END AS servicio 
-                        from ctl_atencion cat
-                        join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
-                        join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
-                        JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion=1)
-                        LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id
-                        LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id
-                        join mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab)
-                        join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
-                        where  mnt_3.id_establecimiento=$lugar
-                        order by 2)
+
+                       CASE WHEN mnt_3.nombre_ambiente IS NOT NULL THEN mnt_3.nombre_ambiente 
+                       ELSE cmo.nombre ||'--' ||cat.nombre END AS servicio 
+
+                    FROM ctl_atencion cat 
+                    JOIN mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion) 
+                    JOIN mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id) 
+                    JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion in (1,4)) 
+                    LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id 
+                    LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id 
+                    JOIN mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab) 
+                    JOIN ctl_modalidad cmo on (cmo.id=mme.id_modalidad) 
+                    WHERE mnt_3.nombre_ambiente IS NOT NULL AND mnt_3.id_establecimiento=$lugar 
+
+                    UNION 
+
+                    SELECT mnt_3.id,CASE WHEN id_servicio_externo_estab IS NOT NULL
+                                           THEN mnt_ser.abreviatura ||'--'  || a.nombre
+                                           ELSE       cmo.nombre ||'--' || a.nombre
+                                           END as procedencia,
+                                           cat.nombre AS servicio
+                    FROM ctl_atencion cat JOIN mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion) 
+                    JOIN mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id) 
+                    JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion in (1,4)) 
+                    LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id 
+                    LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id 
+                    JOIN mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab) 
+                    JOIN ctl_modalidad cmo on (cmo.id=mme.id_modalidad) 
+                    WHERE mnt_3.id_establecimiento=$lugar 
+                    AND mnt_3.id_atencion ||'-'|| mnt_3.id_area_mod_estab ||'-'||mnt_3.id_establecimiento NOT IN (SELECT id_atencion ||'-'|| id_area_mod_estab ||'-'||id_establecimiento 
+                    FROM mnt_aten_area_mod_estab WHERE nombre_ambiente IS NOT NULL))
+
                     SELECT ordenar.* FROM (
                        SELECT TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
                        t02.id AS idsolicitudestudio,
@@ -187,20 +194,19 @@ switch ($opcion) {
                        t02.impresiones,
                        t14.nombre,
                        t09.id AS idhistorialclinico,
-                       TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud,
+                       TO_CHAR(t02.fecha_solicitud, 'dd/mm/yyyy HH12:MI') AS fechasolicitud,
                        t17.tiposolicitud AS prioridad,
                        t07.fecha_nacimiento AS fechanacimiento,
                        t19.id AS sexo,
                        t18.idestandar,
                        t02.id_establecimiento_externo as IdEstab,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-                       false AS referido, TO_CHAR(f_tomamuestra,'YYYY/mm/dd HH12:MI') AS f_tomamuestra,
+                       false AS referido, TO_CHAR(f_tomamuestra,'dd/mm/YYYY HH12:MI') AS f_tomamuestra,
                        (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
                        t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar,
                        (select origenmuestra FROM mnt_origenmuestra where id=t01.idorigenmuestra) as origenmuestra,
                         REPLACE( REPLACE( REPLACE( REPLACE( REPLACE( REPLACE( AGE(t07.fecha_nacimiento::timestamp)::text, 'years', 'años'), 'year', 'año'), 'mons', 'meses'), 'mon', 'mes'), 'days', 'días'), 'day', 'día') as edad,
                         t19.nombre as nomsexo,t08.administrativa
-
                 FROM sec_detallesolicitudestudios t01
                 INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
                 INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio)
@@ -223,7 +229,7 @@ switch ($opcion) {
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo)
                 INNER JOIN tbl_servicio t20 ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
                 LEFT JOIN mnt_origenmuestra t21 ON (t21.id = t01.idorigenmuestra)
-                WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var1 AND t01.id_suministrante=1
+                WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var1 
 
                 UNION
 
@@ -240,25 +246,24 @@ switch ($opcion) {
                        t01.indicacion, t08.nombrearea,
                        CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido,
                        t07.apellido_casada) AS paciente,
-                       t11.nombre AS nombresubservicio,
-                       t13.nombre AS nombreservicio,
+                       t20.servicio AS nombresubservicio,
+                       t20.procedencia AS nombreservicio,
                        t02.impresiones,
                        t14.nombre,
                        t09.id AS idhistorialclinico,
-                       TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') AS fechasolicitud,
+                       TO_CHAR(t02.fecha_solicitud, 'dd/mm/yyyy HH12:MI') AS fechasolicitud,
                        t17.tiposolicitud AS prioridad,
                        t07.fecha_nacimiento AS fechanacimiento,
                        t19.id AS sexo,
                        t18.idestandar,
                        t02.id_establecimiento_externo,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-                       true AS referido,TO_CHAR(f_tomamuestra,'YYYY/mm/dd HH12:MI') AS f_tomamuestra,
+                       true AS referido,TO_CHAR(f_tomamuestra,'dd/mm/YYYY HH12:MI') AS f_tomamuestra,
                        (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
                        t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar,
                        (select origenmuestra FROM mnt_origenmuestra where id=t01.idorigenmuestra) as origenmuestra,
                        REPLACE( REPLACE( REPLACE( REPLACE( REPLACE( REPLACE( AGE(t07.fecha_nacimiento::timestamp)::text, 'years', 'años'), 'year', 'año'), 'mons', 'meses'), 'mon', 'mes'), 'days', 'días'), 'day', 'día') as edad,
                        t19.nombre as nomsexo,t08.administrativa
-
                 FROM sec_detallesolicitudestudios t01
                 INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
                 INNER JOIN lab_recepcionmuestra t03 ON (t02.id = t03.idsolicitudestudio)
@@ -279,23 +284,48 @@ switch ($opcion) {
                 INNER JOIN lab_tiposolicitud t17 ON (t17.id = t02.idtiposolicitud)
                 INNER JOIN ctl_examen_servicio_diagnostico t18 ON (t18.id = t05.id_examen_servicio_diagnostico)
                 INNER JOIN ctl_sexo t19 ON (t19.id = t07.id_sexo)
+                INNER JOIN tbl_servicio t20 ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
                 LEFT JOIN mnt_origenmuestra t21 ON (t21.id = t01.idorigenmuestra)
-                WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var2 and t01.id_suministrante=1) ordenar
+                WHERE t16.idestado = 'PM' AND t02.id_establecimiento = $var2 ) ordenar
                 ORDER BY to_date(ordenar.fecharecepcion, 'DD/MM/YYYY') DESC";
 
 //ECHO $query;
         $consulta = $objdatos->ListadoSolicitudesPorArea($query);
+        $NroRegistros= $objdatos->NumeroDeRegistros($query);
+ if ($NroRegistros=="")
+        {
+            $NroRegistros=0;
 
-        echo "<div class='table-responsive' style='width:93%;'>
-            <table width='100%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+             echo "<table width='35%' border='0'  align='center'>
+                    <center>
+                        <tr>
+                            <td colspan='11' align='center'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES: ".$NroRegistros."</h3></span>
+                            </td>
+                        </tr>
+                    </center>
+                </table> ";
+
+        }else {
+                       echo "<table width='35%' border='0'  align='center'>
+                    <center>
+                        <tr>
+                            <td colspan='11' align='center'><span style='color: #0101DF;'> <h3> TOTAL DE SOLICITUDES: ".$NroRegistros."</h3></span>
+                            </td>
+                        </tr>
+                    </center>
+                </table> ";
+
+                  }
+        echo "<div class='table-responsive' style='width:100%;'>
+            <table width='5%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
                 <thead><tr>
                     <th>Muestra </th>
                     <th>NEC </th>
-                    <th>paciente </th>
+                    <th>Paciente </th>
                     <th>Id Examen</th>
                     <th>Examen</th>
-                    <th>Servicio</th>
                     <th>Procedencia</v>
+                    <th>Servicio</th>
                     <th>Establecimiento</th>
                     <th>Fecha Consulta</th>
                     <th>Fecha Recepcion</th>
@@ -355,14 +385,15 @@ switch ($opcion) {
                             "<input name='fecha_recepcion[" . $pos . "]' id='fecha_recepcion[" . $pos . "]' type='hidden' size='60' value='" . $datefrecep . "'/>" .
                             "<input name='dato_fijo[" . $pos . "]' id='dato_fijo[" . $pos . "]' type='hidden' size='60' value='" . $df . "'/>" .
                             "<input name='tipoarea[" . $pos . "]' id='tipoarea[" . $pos . "]' type='hidden' size='60' value='" . $row["administrativa"]. "'/>" .
+                            "<input name='f_consulta[" . $pos . "]' id='f_consulta[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["fechasolicitud"]) . "'/>" .
                         "<td width='18%'>" . htmlentities($row['paciente']) . "</td>
                         <td width='3%'>" . $row['estandar'] . "</td>
-                        <td width='18%'>" . htmlentities($row['nombreexamen']) . "</td>
+                        <td width='15%'>" . htmlentities($row['nombreexamen']) . "</td>
+                        <td width='9%'>" . htmlentities($row['nombreservicio']) . "</td>    
                         <td width='10%'>" . htmlentities($row['nombresubservicio']) . "</td>
-                        <td width='12%'>" . htmlentities($row['nombreservicio']) . "</td>
-                        <td width='20%'>" . htmlentities($row['estabext']) . "</td>
-                        <td width='5%'>" . ($row['fechasolicitud']) . "</td>
-                        <td width='5%'>" . ($row['fecharecepcion']) . "</td>
+                        <td width='16%'>" . htmlentities($row['estabext']) . "</td>
+                        <td width='6%'>" . ($row['fechasolicitud']) . "</td>
+                        <td width='3%'>" . ($row['fecharecepcion']) . "</td>
                         <td width='3%'>" . ($row['prioridad']) . "</td>
                     </tr>";
                 $pos = $pos + 1;
@@ -775,9 +806,10 @@ switch ($opcion) {
 
     case 7:// Llenar combo Subservicio
         $rslts = '';
-        $IdServ = $_POST['IdServicio'];
+       $IdServ = $_POST['IdServicio'];
+       $IdAreaAtencion=$objdatos->ObtenerAreaAtencion($IdServ, $lugar);
         //  echo $IdServ;
-        $dtserv = $objdatos->LlenarCmbServ($IdServ, $lugar);
+        $dtserv = $objdatos->LlenarCmbServ($IdServ, $lugar,$IdAreaAtencion);
         $rslts = '<select name="cmbSubServ" id="cmbSubServ" style="width:500px" onChange="BuscarMedicos(this.value)" class="form-control height">';
         $rslts .='<option value="0"> Seleccione un Servicio </option>';
         while ($rows = pg_fetch_array($dtserv)) {

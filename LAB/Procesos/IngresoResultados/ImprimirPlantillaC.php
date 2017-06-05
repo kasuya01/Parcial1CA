@@ -26,6 +26,7 @@ $idobservacion=$_GET['var15'];
 $valores_interpretacion=$_GET['var16'];
 $f_tomamuestra=$_GET['var17'];
 $tipomuestra=$_GET['var18'];
+$f_consulta= $_GET['var22'];
 //echo $idobservacion;
 $Consulta_Estab=$obj->Nombre_Establecimiento($lugar);
 $row_estab = pg_fetch_array($Consulta_Estab);
@@ -136,6 +137,11 @@ function calc_edad()
                 <td colspan="1" class="Estilo6" align="left"><?php echo $f_tomamuestra ?></td>
             </tr>
             <tr>
+                <td colspan='4' class='Estilo5'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td colspan='1' class='Estilo5'><strong>Fecha Consulta:</strong></td>
+                <td colspan='1' class='Estilo6'align='left' ><?php echo $f_consulta ?></td>
+            </tr>
+            <tr>
 		<td colspan="1" class="Estilo5"><strong>Edad:</strong></td>
 		<td colspan="3" class="Estilo6" align="left"><?php echo $row_generales['edad']?></td>
 		<td colspan='1' class="Estilo5"><strong>Sexo:</strong></td>
@@ -149,8 +155,8 @@ function calc_edad()
             </tr>
             
             <tr>
-                            <td colspan='6' class="Estilo6" width='100%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        </tr>
+                <td colspan='6' class="Estilo6" width='100%'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            </tr>
             <tr>
 		<td colspan='1' class="Estilo5"><strong>Examen Realizado:</strong></td>
 	  	<td colspan='5' class="Estilo6" align="left"><?php echo htmlentities($row_area['nombre_examen']);?></td>

@@ -12,8 +12,8 @@ class clsLab_Observaciones
    $con = new ConexionBD;
    if($con->conectar()==true) 
    {
-    $query = "INSERT INTO lab_observaciones(observacion,idarea,tiporespuesta,idusuarioreg,fechahorareg,idusuariomod,fechahoramod) 
-	          VALUES('$observacion','$idarea','$tiporespuesta','$usuario',NOW(),'$usuario',NOW())";
+    $query = "INSERT INTO lab_observaciones(observacion,idarea,tiporespuesta,idusuarioreg,fechahorareg) 
+	          VALUES('$observacion','$idarea','$tiporespuesta','$usuario',NOW())";
      $result = @pg_query($query);
 	 
      if (!$result)

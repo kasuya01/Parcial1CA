@@ -70,6 +70,7 @@ $base_url  = $_SESSION['base_url'];
 		$fechasolicitud=$DatosClinicos=isset($row['FechaSolicitud']) ? $row['FechaSolicitud'] : null ;
                 $FechaNac=isset($row['FechaNacimiento']) ? $row['FechaNacimiento'] : null ;
                 $fechatomamuestra=$row['fechatomamuestra'];
+                $fechaConsulta=$row['fecha_solicitud'];
 	        //recuperando los valores del detalle de la solicitud
 	        //$consultadetalle=$obj->obtener_fecha_tomamuestra($idexpediente,$idsolicitud,$lugar);
  //               $row_detalle = pg_fetch_array($con_detalle);

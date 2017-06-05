@@ -107,49 +107,66 @@ class clsSolicitudesProcesadas {
          $sqlText = "SELECT id, nombre FROM ctl_establecimiento ORDER BY nombre";
          $dt = pg_query($sqlText);
       }
-      return $dt;
+      return $dt[0];
    }
+function ObtenerAreaAtencion($IdServ,$lugar) {
 
-//FUNCIÓN PARA LLENAR EL COMBO DE SERVICIOS
-   function LlenarCmbServ($IdServ, $lugar) {
       $con = new ConexionBD;
-      $condicionAmbiente="";
       if ($con->conectar() == true) {
-          if ($IdServ==2){
-               $condicionAmbiente=' AND mnt_3.nombre_ambiente IS NOT NULL';
-          }
-       $sqlText = "with tbl_servicio as (SELECT mnt_3.id,
-        CASE
-        WHEN mnt_3.nombre_ambiente IS NOT NULL
-             THEN
-                 CASE WHEN id_servicio_externo_estab IS NOT NULL
-                     THEN mnt_ser.abreviatura ||'-->' ||mnt_3.nombre_ambiente
-                     ELSE mnt_3.nombre_ambiente
-                 END
-            ELSE
-                   CASE WHEN id_servicio_externo_estab IS NOT NULL
-                           THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
-                        WHEN not exists (SELECT nombre_ambiente FROM  mnt_aten_area_mod_estab WHERE nombre_ambiente=cat.nombre)
-                                THEN cmo.nombre||'-'||cat.nombre
-                          END
-                        END AS servicio
-                        from ctl_atencion cat
-                        join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
-                        join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
-                        JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND (a.id_tipo_atencion=1 OR a.id_tipo_atencion=4)) 
-                        LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id
-                        LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id
-                        join mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab)
-                        join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
-                        where  mnt_2.id=$IdServ  $condicionAmbiente
-                        and mnt_3.id_establecimiento=$lugar
-                        order by 2)
-                        select id, servicio from tbl_servicio where servicio is not null";
-         $dt = pg_query($sqlText);
+         $sqlText = "SELECT id_area_atencion FROM mnt_area_mod_estab where id=$IdServ AND id_establecimiento=$lugar";
+         $dt = pg_fetch_array(pg_query($sqlText));
+         $r=$dt[0];
       }
-      return $dt;
-   }
+      return $r;
+   }   
+    
+    
+function LlenarCmbServ($IdServ,$lugar,$IdAreaAtencion){
+$con = new ConexionBD;
+ $condicionAmbiente="";
+ $unionAmbiente='';
+	if($con->conectar()==true){
+            if ($IdAreaAtencion==3){
+                $condicionAmbiente=' AND mnt_3.nombre_ambiente IS NOT NULL';
+                $unionAmbiente="UNION
+                    SELECT mnt_3.id,cat.nombre
+                    FROM  ctl_atencion cat
+                              JOIN mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
+                              JOIN mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
+                              JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion in (1,4))
+                              LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id
+                              LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id
+                              JOIN mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab)
+                              JOIN ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
+                    WHERE  mnt_2.id=$IdServ  AND mnt_3.id_establecimiento=$lugar
+                                    AND mnt_3.id_atencion ||'-'|| mnt_3.id_area_mod_estab ||'-'||mnt_3.id_establecimiento
+                                    NOT IN (SELECT id_atencion ||'-'|| id_area_mod_estab ||'-'||id_establecimiento
+                                            FROM mnt_aten_area_mod_estab WHERE nombre_ambiente IS NOT NULL)";   
+            }
+       $sqlText = "WITH tbl_servicio as (SELECT mnt_3.id,
+                  CASE
+                      WHEN mnt_3.nombre_ambiente IS NOT NULL
+                          THEN mnt_3.nombre_ambiente
+                          ELSE cat.nombre
+                  END AS nombre
+                  FROM  ctl_atencion cat
+                          JOIN mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
+                          JOIN mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
+                          JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion in (1,4))
+                          LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id
+                          LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id
+                          JOIN mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab)
+                          JOIN ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
+                  WHERE  mnt_2.id=$IdServ $condicionAmbiente
+                           AND mnt_3.id_establecimiento=$lugar
+                  $unionAmbiente
+                  ORDER BY 2)
+                  SELECT id, nombre FROM tbl_servicio WHERE nombre IS NOT NULL";
 
+                $dt = pg_query($sqlText) ;
+	}
+	return $dt;
+}
    //FUNCION PARA MOSTRAR DATOS FIJOS DE LA PLANTILLA
    function MostrarDatosFijosPlantillaA($idexamen, $lugar, $sexo, $idedad,
            $idmetodologia) {
@@ -718,7 +735,19 @@ and idhistoref=$idhistoref;";
             return true;
       }
    }
-
+function NumeroDeRegistros($query){
+   //creamos el objeto $con a partir de la clase ConexionBD
+   $con = new ConexionBD;
+   //usamos el metodo conectar para realizar la conexion
+   if($con->conectar()==true){
+     $query = $query;
+	 $numreg = pg_num_rows(pg_query($query));
+	 if (!$numreg )
+	   return false;
+	 else
+	   return $numreg ;
+   }
+  }
 //Fn Pg
    //FUNCION PARA MOSTRAR DATOS GENERALES DE LA SOLICITUD PROCESADAS POR AREA Y ESTADO de muestras procesadas PM
    function ListadoSolicitudesPorArea($query_search) {

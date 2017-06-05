@@ -394,7 +394,7 @@ function ImprimirPlantillaA1(idsolicitud, idarea, responsable, valores_resultado
             "&var14=" + txtnec , "ImprimirA1", "width=700,ccc=500,menubar=no,scrollbars=yes,location=no");
 }
 
-function ImprimirPlantillaB(idsolicitud, idexamen, responsable, procedencia, origen, observacion, valores_subelementos, codigos_subelementos, valores_elementos, codigos_elementos, controles, controles_ele, nombrearea, establecimiento, responsable, sexo, idedad, valores_combos,idestab,f_tomamuestra,tipomuestra) {
+function ImprimirPlantillaB(idsolicitud, idexamen, responsable, procedencia, origen, observacion, valores_subelementos, codigos_subelementos, valores_elementos, codigos_elementos, controles, controles_ele, nombrearea, establecimiento, responsable, sexo, idedad, valores_combos,idestab,f_tomamuestra,tipomuestra,fconsulta) {
 
 //alert(f_tomamuestra+" muestra= "+tipomuestra);
     ventana_secundaria = window.open("ImprimirPlantillaB.php?var1=" + idsolicitud +
@@ -405,10 +405,10 @@ function ImprimirPlantillaB(idsolicitud, idexamen, responsable, procedencia, ori
             "&var12=" + controles_ele + "&var13=" + nombrearea +
             "&var14=" + escape(establecimiento) + "&var15=" + responsable +
             "&var16=" + sexo + "&var17=" + idedad + "&var18=" + valores_combos +"&var19="+idestab+
-            "&var20="+f_tomamuestra+"&var21="+tipomuestra, "ImprimirB", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
+            "&var20="+f_tomamuestra+"&var21="+tipomuestra+"&var22="+fconsulta, "ImprimirB", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
 }
 
-function ImprimirPlantillaC(idsolicitud, idexamen, resultado, responsable, procedencia, origen, observacion, valores_antibioticos, codigos_antibioticos, idbacteria, cantidad, idtarjeta, nombrearea, estab,idobservacion,valores_interpretacion,f_tomamuestra,tipomuestra) {
+function ImprimirPlantillaC(idsolicitud, idexamen, resultado, responsable, procedencia, origen, observacion, valores_antibioticos, codigos_antibioticos, idbacteria, cantidad, idtarjeta, nombrearea, estab,idobservacion,valores_interpretacion,f_tomamuestra,tipomuestra,fconsulta) {
 //alert(valores_interpretacion);
     ventana_secundaria = window.open("ImprimirPlantillaC.php?var1=" + idsolicitud +
             "&var2=" + idexamen +
@@ -427,10 +427,11 @@ function ImprimirPlantillaC(idsolicitud, idexamen, resultado, responsable, proce
             "&var15=" + idobservacion +
             "&var16=" + valores_interpretacion+
             "&var17="+f_tomamuestra+
-            "&var18="+tipomuestra, "ImprimirC", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
+            "&var18="+tipomuestra+
+            "&var22="+fconsulta, "ImprimirC", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
 }
 
-function ImprimirPlantillaCN(idsolicitud, idexamen, idarea, resultado, responsable, procedencia, origen, observacion,f_tomamuestra,tipomuestra) {
+function ImprimirPlantillaCN(idsolicitud, idexamen, idarea, resultado, responsable, procedencia, origen, observacion,f_tomamuestra,tipomuestra,fconsulta) {
 //alert (f_tomamuestra);
     ventana_secundaria = window.open("ImprimirPlantillaCN.php?\n\
           var1=" + idsolicitud +
@@ -443,7 +444,8 @@ function ImprimirPlantillaCN(idsolicitud, idexamen, idarea, resultado, responsab
             "&var8=" + encodeURIComponent(observacion) +
             "&var9=" + escape(estab)+
             "&var10="+f_tomamuestra+
-            "&var11="+tipomuestra, "ImprimirCN", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
+            "&var11="+tipomuestra+
+            "&var22="+fconsulta, "ImprimirCN", "width=950,ccc=700,menubar=no,scrollbars=yes,location=no");
 }
 
 function ImprimirPlantillaD(idsolicitud, idexamen, idresultado, idempleado, estab,f_tomamuestra,tipomuestra) {
@@ -481,12 +483,13 @@ function MostrarAntibioticos()
     fecharesultado = document.frmnuevo.txtresultfin.value;
     f_tomamuestra=document.frmnuevo.txtf_tomamuestra;
     tipomuestra=document.frmnuevo.txttipomuestra;
+    f_consulta=document.getElementById('f_consulta').value;
     //alert (fecharealiz+" * "+fecharesultado);
     ajax.open("POST", "ctrDatosResultadosExamen_PC.php", true);
     ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
     ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idtarjeta=" + idtarjeta+
-    "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado+"&f_tomamuestra="+f_tomamuestra+"&tipomuestra="+tipomuestra );
+    "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado+"&f_tomamuestra="+f_tomamuestra+"&tipomuestra="+tipomuestra+"&f_consulta="+f_consulta );
 
 //+ "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado
     ajax.onreadystatechange = function()
@@ -573,8 +576,9 @@ function MostrarVistaPreviaPlantillaC()
         tipomuestra=document.getElementById('txttipomuestra').value;
         resiembras=document.getElementById('txtresiembras').value;
         bioquimicas=document.getElementById('txtbioquimicas').value;
-        
-         
+        //f_consulta=document.getElementById('f_consulta').value;
+        f_consulta=document.getElementById('f_consulta').value;
+      //  alert(f_consulta);
       //  alert (resiembras+" - "+bioquimicas);
         //DATOS PARA EL DETALLE DE LOS RESULTADOS
         valores_antibioticos = "";
@@ -602,7 +606,7 @@ function MostrarVistaPreviaPlantillaC()
                 "&idbacteria=" + idbacteria + "&cantidad=" + encodeURIComponent(cantidad) +
                 "&estab=" + estab+"&idobservacion=" + idobservacion + "&fecharealiz=" + fecharealiz +
                 "&fecharesultado="+fecharesultado+"&valores_interpretacion="+valores_interpretacion+"&f_tomamuestra="+f_tomamuestra+
-                "&tipomuestra="+tipomuestra+"&resiembras="+resiembras+"&bioquimicas="+bioquimicas);
+                "&tipomuestra="+tipomuestra+"&resiembras="+resiembras+"&bioquimicas="+bioquimicas+"&f_consulta="+f_consulta);
         ajax.onreadystatechange = function()
         {
             if (ajax.readyState == 4)
@@ -831,6 +835,8 @@ function PreviosNegativos()
         resiembras=document.getElementById('txtresiembra').value;
         idareaPA=document.getElementById('txtidareaPA').value;
         observacion=document.getElementById('txtObservacion').value;
+       f_consulta=document.getElementById('f_consulta').value;
+       // alert(f_consulta);
       //  alert (idobservacion +" - "+observacion);
         opcion = 5;
 
@@ -850,7 +856,8 @@ function PreviosNegativos()
         ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&idtarjeta=" + idtarjeta + "&tiporespuesta=" + tiporespuesta +
                 "&idarea=" + idarea + "&idsolicitud=" + idsolicitud + "&idempleado=" + idempleado +
                 "&resultado=" + resultado + "&estab=" + estab + "&idobservacion=" + idobservacion + "&fecharealiz=" + fecharealiz + "&fecharesultado=" + fecharesultado+
-                "&f_tomamuestra="+f_tomamuestra+"&tipomuestra="+ tipomuestra + "&resiembras=" + resiembras +"&idareaPA="+idareaPA+"&observacion="+observacion);
+                "&f_tomamuestra="+f_tomamuestra+"&tipomuestra="+ tipomuestra + "&resiembras=" + resiembras +"&idareaPA="+idareaPA+"&observacion="+observacion+
+                "&f_consulta="+f_consulta);
         //"&observacion=" + encodeURIComponent(observacion) +
         ajax.onreadystatechange = function()
         {
@@ -1502,6 +1509,8 @@ function MostrarVistaPreviaPlantillaB(){
         idestab = document.getElementById('txtIdEstablecimiento').value;
         f_tomamuestra=document.getElementById('txtf_tomamuestra').value;
         tipomuestra=document.getElementById('txttipomuestra').value;
+         f_consulta=document.getElementById('txtf_consulta').value;
+        // alert(f_consulta);
        // alert(f_tomamuestra+"  "+tipomuestra);
         // alert (idsolicitud+"-"+idrecepcion+"-"+iddetalle+"-"+idexamen+"-"+observacion+"-"+estab);
         // alert (fechanac+"-"+sexo);
@@ -1553,7 +1562,7 @@ function MostrarVistaPreviaPlantillaB(){
                 "&valores_elementos=" + escape(valores_elementos) + "&codigos_elementos=" + codigos_elementos + "&controles=" + encodeURIComponent(controles) +
                 "&controles_ele=" + encodeURIComponent(controles_ele) + "&estab=" + encodeURIComponent(estab) + "&tab=" + tab + "&fechanac=" + fechanac + "&sexo=" + sexo+
                 "&fecharealiz=" + fecharealiz + "&fecharesultado="+fecharesultado+"&subservicio="+subservicio+"&valores_combos="+ valores_combos+"&idestab="+idestab+
-                "&f_tomamuestra="+f_tomamuestra+"&tipomuestra="+encodeURIComponent(tipomuestra));
+                "&f_tomamuestra="+f_tomamuestra+"&tipomuestra="+encodeURIComponent(tipomuestra)+"&f_consulta="+f_consulta);
         ajax.onreadystatechange = function()
         {
             if (ajax.readyState == 4)
@@ -1802,7 +1811,7 @@ function CargarExamenes(idsolicitud, idarea, fechanac, sexo, idestandar, idhisto
 
 
 //FUNCION PARA CARGAR LOS ELEMENTOS Y SUBELEMENTOS DE UN EXAMEN
-function CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial,fecharealiz,fecharesultado,subservicio,f_tomamuestra,tipomuestra)
+function CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial,fecharealiz,fecharesultado,subservicio,f_tomamuestra,tipomuestra,f_consulta)
 {
     ajax = objetoAjax();
     idexamen = codigoex;
@@ -1818,7 +1827,7 @@ function CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial
     i
     ajax.send("opcion=" + opcion + "&idexamen=" + idexamen + "&FechaNac=" + FechaNac + "&Sexo=" + Sexo +
               "&idestandar=" + idestandar + "&idhistorial=" + idhistorial+"&fecharealiz="+fecharealiz+
-              "&fecharesultado="+fecharesultado+"&f_tomamuestra="+f_tomamuestra+"&tipomuestra="+tipomuestra+"&subservicio="+subservicio);
+              "&fecharesultado="+fecharesultado+"&f_tomamuestra="+f_tomamuestra+"&tipomuestra="+tipomuestra+"&subservicio="+subservicio+"&f_consulta="+f_consulta);
     ajax.onreadystatechange = function()
     {
         if (ajax.readyState == 4)
@@ -1879,10 +1888,10 @@ function IngresarResultados() {
         subservicio=document.frmnuevo.txtsubservicio.value;
         f_tomamuestra=document.frmnuevo.txtf_tomamuestra.value;
         tipomuestra=document.frmnuevo.txttipomuestra.value;
-
-      //  alert (tipomuestra);
+        f_consulta=document.frmnuevo.f_consulta.value;
+       // alert (f_consulta);
         //alert (fecharealiz+'-'+fecharesultado);
-        CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial,fecharealiz,fecharesultado,subservicio,f_tomamuestra,tipomuestra);
+        CargarElementosExamen(codigoex, fechanac, sexo, idestandar, idhistorial,fecharealiz,fecharesultado,subservicio,f_tomamuestra,tipomuestra,f_consulta);
     } else {
         alert("Por favor ingrese los campos obligatorios(*)");
     }
@@ -1952,6 +1961,8 @@ function MostrarDatos(posicion)
     edad= document.getElementById('edad[' + posicion + ']').value;
     nomsexo= document.getElementById('nomsexo[' + posicion + ']').value;
     datofijo= document.getElementById('dato_fijo[' + posicion + ']').value;
+    f_consulta=document.getElementById('f_consulta[' + posicion + ']').value;
+    
 //alert(idareaPA);
     //alert ("Plnatilla="+plantilla+" Experiente="+idexpediente+" Solicitud="+idsolicitud+" idarea="+idarea+" idhistorial="+IdHistorial+" IdEstandar="+IdEstandar);
     //idhistorial=document.getElementById('idhistorial['+posicion+']').value;
@@ -1969,7 +1980,7 @@ function MostrarDatos(posicion)
                         "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                         "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
                         "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+estabext+"&var19="+idestabext+"&fecha_recepcion="+fecha_recepcion+
-                        "&var20="+tipomuestra+"&origenmuestra="+origenmuestra , "Resultados", "width=1200,height=900,menubar=no,scrollbars=yes,location=no");
+                        "&var20="+tipomuestra+"&origenmuestra="+origenmuestra+"&f_consulta="+f_consulta , "Resultados", "width=1200,height=900,menubar=no,scrollbars=yes,location=no");
             }
             else {
               //  alert(cant_metodologia)
@@ -1979,7 +1990,7 @@ function MostrarDatos(posicion)
                         "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                         "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
                         "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext+"&var19="+idestabext+"&fecha_recepcion="+fecha_recepcion+
-                        "&var20="+tipomuestra+"&origenmuestra="+origenmuestra , "Resultados", "width=1200,height=900,scrollbars=yes,location=no");
+                        "&var20="+tipomuestra+"&origenmuestra="+origenmuestra +"&f_consulta="+f_consulta, "Resultados", "width=1200,height=900,scrollbars=yes,location=no");
                 }
                 else{
                    ventana_secundaria = window.open("ProcDatosResultadosExamen_PA2.php?var1=" + idexpediente +
@@ -1987,7 +1998,7 @@ function MostrarDatos(posicion)
                         "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                         "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
                         "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext+"&var19="+idestabext+"&fecha_recepcion="+fecha_recepcion+
-                        "&var20="+tipomuestra+"&origenmuestra="+origenmuestra, "Resultados", "width=1200,height=900,scrollbars=yes,location=no");
+                        "&var20="+tipomuestra+"&origenmuestra="+origenmuestra+"&f_consulta="+f_consulta , "Resultados", "width=1200,height=900,scrollbars=yes,location=no");
                 }
             }
             break;
@@ -1998,7 +2009,8 @@ function MostrarDatos(posicion)
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                     "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
                     "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+encodeURIComponent(estabext) + "&var19="+idestabext +
-                    "&var20="+ f_tomamuestra + "&var21="+tipomuestra +"&fecha_recepcion="+fecha_recepcion+"&origenmuestra="+origenmuestra+"&edad="+edad+"&nomsexo="+nomsexo, "Resultados", "width=950,height=700,menubar=no,scrollbars=yes,location=no");
+                    "&var20="+ f_tomamuestra + "&var21="+tipomuestra +"&fecha_recepcion="+fecha_recepcion+"&origenmuestra="+origenmuestra+
+                    "&edad="+edad+"&nomsexo="+nomsexo+"&f_consulta="+f_consulta, "Resultados", "width=950,height=700,menubar=no,scrollbars=yes,location=no");
             break;
         case "3":
           // alert (origenmuestra);
@@ -2009,7 +2021,8 @@ function MostrarDatos(posicion)
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                     "&var12=" + impresion + "&var13=" + estab +"&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar + "&var17=" + IdHistorial +
                     "&referido=" + referido + "&var18="+estabext +"&var19="+f_tomamuestra+"&var20="+tipomuestra+"&fecha_recepcion="+fecha_recepcion+
-                    "&var21="+idestabext+"&origenmuestra="+origenmuestra+"&edad="+edad+"&nomsexo="+nomsexo+"&idareaPA="+idareaPA, "Resultados", "width=950,height=650,menubar=no,scrollbars=yes,location=no");
+                    "&var21="+idestabext+"&origenmuestra="+origenmuestra+"&edad="+edad+"&nomsexo="+nomsexo+"&idareaPA="+idareaPA+
+                    "&f_consulta="+f_consulta, "Resultados", "width=950,height=650,menubar=no,scrollbars=yes,location=no");
             break;
         case "4":
            //
@@ -2019,7 +2032,8 @@ function MostrarDatos(posicion)
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                     "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac+ "&var15=" + Sexo +"&var16=" + IdEstandar +
                     "&var17=" + IdHistorial + "&referido=" + referido+ "&var18="+estabext+"&var18="+estabext+"&var19="+f_tomamuestra+
-                    "&var20="+ tipomuestra+"&fecha_recepcion="+fecha_recepcion+"&var21="+idestabext+"&origenmuestra="+origenmuestra+"&edad="+edad+"&nomsexo="+nomsexo, "Resultados", "width=950,height=700,menubar=no,scrollbars=yes");
+                    "&var20="+ tipomuestra+"&fecha_recepcion="+fecha_recepcion+"&var21="+idestabext+"&origenmuestra="+origenmuestra+
+                    "&edad="+edad+"&nomsexo="+nomsexo+"&f_consulta="+f_consulta, "Resultados", "width=950,height=700,menubar=no,scrollbars=yes");
             break;
         case "5":
         // alert (nomsexo);
@@ -2028,7 +2042,8 @@ function MostrarDatos(posicion)
                     "&var7=" + paciente + "&var8=" + idrecepcion + "&var9=" + nombrearea + "&var10=" + procedencia + "&var11=" + origen +
                     "&var12=" + impresion + "&var13=" + estab + "&var14=" + FechaNac + "&var15=" + Sexo + "&var16=" + IdEstandar +
                     "&var17=" + IdHistorial + "&referido=" + referido + "&var18="+estabext+"&var19="+ f_tomamuestra+
-                    "&var20="+tipomuestra+"&fecha_recepcion="+fecha_recepcion+"&var21="+idestabext+"&origenmuestra="+origenmuestra+"&edad="+edad+"&nomsexo="+nomsexo, "Resultados", "width=950,height=950,menubar=no,scrollbars=yes");
+                    "&var20="+tipomuestra+"&fecha_recepcion="+fecha_recepcion+"&var21="+idestabext+"&origenmuestra="+origenmuestra+
+                    "&edad="+edad+"&nomsexo="+nomsexo+"&f_consulta="+f_consulta, "Resultados", "width=950,height=950,menubar=no,scrollbars=yes");
             break;
     }
 
