@@ -20,6 +20,7 @@ switch ($opcion)
         $fecharesultado=$_POST['fecharesultado'];
         $f_tomamuestra=$_POST['f_tomamuestra'];
         $tipomuestra=$_POST['tipomuestra'];
+        $f_consulta=$_POST['f_consulta'];
      //  echo $fecharealiz." * ".$fecharesultado;
 	$consulta=$objdatos->LeerAntibioticos($idtarjeta);
 	$pos=0;
@@ -59,6 +60,7 @@ switch ($opcion)
         $imprimir.= "<input type='hidden' name='txtresultrealiza' id='txtresultrealiza' disabled='disabled' value='".$fecharealiz."'>
                      <input type='hidden' name='txtfresultado' id='txtfresultado' disabled='disabled' value='".$fecharesultado."'/>
                      <input type='hidden' name='txttipomuestra' id='txttipomuestra' disabled='disabled' value='".$tipomuestra."' />
+                    <input type='hidden' name='f_consulta' id='f_consulta' disabled='disabled' value='".$f_consulta."' />     
                      <input type='hidden' name='txtf_tomamuestra' id='txtf_tomamuestra' disabled='disabled' value='".$f_tomamuestra."' /> ";
 	$imprimir .="<input  type='hidden' id='oculto' value='".$pos."'>";
 
@@ -98,7 +100,7 @@ switch ($opcion)
                 $fecharesultado=$_POST['fecharesultado'];
                 $f_tomamuestra=$_POST['f_tomamuestra'];
                 $tipomuestra=$_POST['tipomuestra'];
-                                
+                $f_consulta= $_POST['f_consulta'];               
 		$idrecepcion= $_POST['idrecepcion'];
 		$iddetalle= $_POST['iddetalle'];
 
@@ -170,7 +172,9 @@ switch ($opcion)
                            </tr>
                            <tr>
                                 <td colspan='1'><strong>Paciente:</strong></td>
-                                <td colspan='5' align='left'>".htmlentities($row_generales['paciente'])."</td>
+                                <td colspan='3' align='left'>".htmlentities($row_generales['paciente'])."</td>
+                                <td colspan='1'><strong>Fecha consulta:</strong></td>    
+                                <td colspan='1'>".$f_consulta ."</td>    
                            </tr>
                            <tr>
                                 <td colspan='1'><strong>Edad:</strong></td>
@@ -280,7 +284,7 @@ switch ($opcion)
                                 <td colspan='6'>
                                      <button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarResultadosPlantillaC();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>
                                      <button type='button' id='Ingresar' align='center' class='btn btn-primary' title='Ingresar otro Resultado'  onclick='IngresarOtro();'>&nbsp;Ingresar otro Resultado</button>     
-                                     <button style='display:none' type='button' class='btn btn-primary'  name='Imprimir'  id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaC(".$idsolicitud.",\"".$idexamen."\",\"".$resultado."\",\"".$row_empleado['empleado']."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_antibioticos)."\",\"".$codigos_antibioticos."\",".$idbacteria.",\"".$cantidad."\",".$idtarjeta.",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".$idobservacion."\",\"".$valores_interpretacion."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\");'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>     
+                                     <button style='display:none' type='button' class='btn btn-primary'  name='Imprimir'  id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaC(".$idsolicitud.",\"".$idexamen."\",\"".$resultado."\",\"".$row_empleado['empleado']."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_antibioticos)."\",\"".$codigos_antibioticos."\",".$idbacteria.",\"".$cantidad."\",".$idtarjeta.",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".$idobservacion."\",\"".$valores_interpretacion."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\",\"".$f_consulta."\",\"".$f_consulta."\");'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>     
                                       <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true' style='display:none; height:20px'><button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>                                                  
                                       <button type='button' id='btnSalir' align='center' class='btn btn-primary' title='Cerrar'  onclick='Cerrar();'><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br/><br><br/>     
                                 </td>
@@ -485,6 +489,7 @@ switch ($opcion)
 	$idtarjeta=$_POST['idtarjeta'];
 	$tiporespuesta=$_POST['tiporespuesta'];
         $idareaPA=$_POST['idareaPA'];
+        $f_consulta=$_POST['f_consulta'];
      //  echo "$idareaPA ".$idareaPA;
         
         //$f_tomamuestra=$_POST['f_tomamuestra'];
@@ -502,7 +507,7 @@ switch ($opcion)
                                      $imprimir.="<option value='" . $row['idobservacion']. "'>" . $row['observacion'] . "</option>";
                                    }
                 $imprimir.="</select>
-                        </td>
+                        </td><input type='hidden' name='txtf_consulta' id='txtf_consulta' disabled='disabled' value='".$f_consulta."' />
 		   </tr>
                    </table>";
             echo $imprimir;
@@ -531,6 +536,7 @@ switch ($opcion)
         $tipomuestra=$_POST['tipomuestra'];
         $numresiembras=$_POST['resiembras'];
         $observacion=$_POST['observacion'];
+        $f_consulta= $_POST['f_consulta'];
       //  echo " opcion 5 ".$f_tomamuestra."  ".$tipomuestra;
 	$Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
 	$row_estab = pg_fetch_array($Consulta_Estab);
@@ -544,7 +550,7 @@ switch ($opcion)
 	$datos_observacion=$objdatos->LeerObservacion($idobservacion);
 	$row_observacion = pg_fetch_array($datos_observacion);
       
-            
+         // echo $row_generales['subservicio'];  
 	//$observacion="Resultado Negativo";
 	$imprimir="<table width='100%' border='0' align='center' class='StormyWeatherFormTABLE'>
 			<tr>
@@ -575,7 +581,9 @@ switch ($opcion)
                         </tr>
                         <tr>
 				<td colspan='1' style='font:bold'><strong>Paciente:</strong></td>
-				<td colspan='5'>".htmlentities($row_generales['paciente'])."</td>
+				<td colspan='2'>".htmlentities($row_generales['paciente'])."</td>
+                                <td colspan='1'><strong>Fecha consulta:</strong></td>    
+                                <td colspan='2'>".$f_consulta ."</td>    
 			</tr>
 
 			<tr>
@@ -653,7 +661,7 @@ switch ($opcion)
                                 <button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarResultadosNegativosPlantillaC();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>";
 				// $observacionf;
                                          //<button style='display:none' type='button' class='btn btn-primary'  name='Imprimir' id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaCN(".$idsolicitud.",\"".$idexamen."\",\"".$idarea."\",\"".$resultado."\",\"".htmlentities($row_empleado['empleado'])."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($row_observacion['observacion'])."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
-                          $imprimir.= "    <button style='display:none' type='button' class='btn btn-primary'  name='Imprimir' id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaCN(".$idsolicitud.",\"".$idexamen."\",\"".$idarea."\",\"".$resultado."\",\"".htmlentities($row_empleado['empleado'])."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($observacionf)."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>                                    
+                          $imprimir.= "    <button style='display:none' type='button' class='btn btn-primary'  name='Imprimir' id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaCN(".$idsolicitud.",\"".$idexamen."\",\"".$idarea."\",\"".$resultado."\",\"".htmlentities($row_empleado['empleado'])."\",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($row_generales['subservicio'])."\",\"".htmlentities($observacionf)."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\",\"".$f_consulta."\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>                                    
                                 <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true' style='display:none; height:20px'><button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>                               
                                 <button type='button' id='btnSalir' align='center' class='btn btn-primary' title='Cerrar'  onclick='Cerrar();'><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button>
                             </td>

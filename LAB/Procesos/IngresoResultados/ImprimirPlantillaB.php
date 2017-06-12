@@ -26,7 +26,7 @@ $valores_combos       = $_GET['var18'];
 $idestab              = $_GET['var19'];
 $f_tomamuestra        = $_GET['var20'];
 $tipomuestra          = $_GET['var21'];
-
+$f_consulta           = $_GET['var22'];
 //echo $valores_subelementos ;
 ?>
 <html>
@@ -131,6 +131,11 @@ $tipomuestra          = $_GET['var21'];
                                <td colspan='3' class='Estilo6' align='left'><?php echo utf8_encode($row_generales['nombrepaciente'])?></td>
                                <td colspan='1' class='Estilo5' ><strong>Fecha Toma Muestra:</strong></td>
                                <td colspan='1' class='Estilo6'align='left' ><?php echo $f_tomamuestra ?></td>
+                            </tr>
+                           <tr>
+                                <td colspan='4' class='Estilo5'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td colspan='1' class='Estilo5'><strong>Fecha Consulta:</strong></td>
+                                <td colspan='1' class='Estilo6'align='left' ><?php echo $f_consulta ?></td>
                             </tr>
                             <tr>
                                 <td colspan='1' class="Estilo5"><strong>Edad:</strong></td>
@@ -304,6 +309,11 @@ $tipomuestra          = $_GET['var21'];
                                 <td colspan="3" class="Estilo6" align="left"><?php echo htmlentities($row_generales['nombrepaciente'])?></td>
                                 <td colspan="1" class="Estilo5" align="left"><strong>Fecha Toma Muestra:</strong></td>
                                 <td colspan="1" class="Estilo6" align="left"><?php echo $f_tomamuestra ?></td>
+                            </tr>
+                            <tr>
+                                <td colspan='4' class='Estilo5'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td colspan='1' class='Estilo5'><strong>Fecha Consulta:</strong></td>
+                                <td colspan='1' class='Estilo6'align='left' ><?php echo $f_consulta ?></td>
                             </tr>
                             <tr>
                                 <td colspan="1" class="Estilo5" align="left"><strong>Edad:</strong></td>

@@ -119,7 +119,8 @@ function RecogeValor() {
                     nomsexo=escape(getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'idareaPA=' )
                     idareaPA=escape(getVars[i].substr(5));
-                
+                if ( getVars[i].substr(0,5) == 'f_consulta=' )
+                    f_consulta=escape(getVars[i].substr(5));
             }
             
             document.frmnuevo.txtnec.value=nec;
@@ -164,6 +165,7 @@ function RecogeValor() {
     $nomsexo=$_GET['nomsexo'];
    $origen=$_GET['var21'];
    $idarea= $_GET['idareaPA'];
+    $f_consulta=$_GET['f_consulta'];
   // echo $origen." - ".$_GET['var20'];
     //echo $solicitud." - ".$iddetallesolicitud." - ".$area;
     $cant=$obj->buscarAnterioresPUnica($solicitud,$iddetallesolicitud,$idarea);
@@ -218,8 +220,8 @@ function RecogeValor() {
                                     <td colspan="5" align="center"> <h3>DATOS GENERALES</h3></td>
                                 </tr>
                                 <tr>
-                                    <td width="22%" class="StormyWeatherFieldCaptionTD" colspan="1">Establecimiento solicitante</td>
-                                    <td width="78%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var18'];?></td>
+                                    <td width="35%" class="StormyWeatherFieldCaptionTD" colspan="1">Establecimiento solicitante</td>
+                                    <td width="65%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var18'];?></td>
                                 </tr>
                                 <tr>
                                     <td class="StormyWeatherFieldCaptionTD" colspan="1">Procedencia</td>
@@ -310,10 +312,13 @@ function RecogeValor() {
 
                                 <tr>
                                     <td class="StormyWeatherFieldCaptionTD">Fecha de Toma de Muestra</td>
-                                    <td class="StormyWeatherDataTD" colspan="4" width="65%"><?php echo $_GET['var19'] ?>
+                                    <td class="StormyWeatherDataTD" colspan="1" width="25%"><?php echo $_GET['var19'] ?>
                                         <input type="hidden" id="fecha_tmuestra" name="f_tmuestra" value="<?php echo $ftx;?>"/>
                                         <input type="hidden" id="dateftomamx" name="dateftomamx" value="<?php echo $dateftomamx;?>"/>
+                                        <input type="hidden" id="f_consulta" name="f_consulta" value="<?php echo $f_consulta;?>"/></td>
                                     </td>
+                                    <td class="StormyWeatherFieldCaptionTD" width="20%">Fecha de Consulta</td> 
+                                        <td class="StormyWeatherDataTD" colspan="1" width="20%"><?php echo $f_consulta; ?></td>
                                 </tr>
                                 <tr>
                                      <td colspan="1"  class="StormyWeatherFieldCaptionTD">*Validado Por</td>
