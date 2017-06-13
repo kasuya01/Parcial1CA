@@ -1,6 +1,7 @@
 <?php session_start();
 include_once("../../../Conexion/ConexionBD.php");
 include_once("cls_recepcion.php");
+include_once("../../Funciones/clsFuncionesGenerales.php");
 //include_once("cls_recepcion.php");
 if(isset($_SESSION['Correlativo'])){
 $nivel=$_SESSION['NIVEL'];
@@ -11,6 +12,8 @@ $idtipoestab=$_SESSION['id_tipo_estab'];
 $hospital=$_SESSION['hospital'];
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
 $recepcion = new clsRecepcion;
+//$funcGeneral = new clsRecepcion;
+$funcGeneral = new clsFuncionesGenerales();
 
 // echo $lugar;
 /***************/
@@ -862,17 +865,7 @@ function cambioestexterno(){
                     <select name="CmbServicio" id="CmbServicio" class="js-example-basic-single" style="width:350px" onChange="fillservicio(this.value)" >
                         <option value="0" selected="selected">--Seleccione Procedencia--</option>
                         <?php
-                            $tiposerv=$recepcion->tipoestservicio($lugar);
-                                        /*$rows=  pg_fetch_array($tiposerv);
-                                            $db = new ConexionBD;
-                                                    if($db->conectar()==true){
-                                                    $consulta  = "SELECT mnt_servicio.IdServicio,mnt_servicio.NombreServicio FROM mnt_servicio
-                                                    INNER JOIN mnt_servicioxestablecimiento
-                                                    ON mnt_servicio.IdServicio=mnt_servicioxestablecimiento.IdServicio
-                                                    WHERE IdTipoServicio<>'DCO' AND IdTipoServicio<>'FAR' AND IdEstablecimiento=$lugar";
-                                                    $resultado = mysql_query($consulta) or die('La consulta fall&oacute;: ' . mysql_error());
-
-                                            //por cada registro encontrado en la tabla me genera un <option>*/
+                            $tiposerv=$funcGeneral->LlenarProcedencia($lugar);
                             while ($rows = pg_fetch_array($tiposerv)){
                                 echo '<option value="' . $rows['0'] . '">' . $rows['nombre'] . '</option>';
                             }

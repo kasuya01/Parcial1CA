@@ -1,6 +1,7 @@
 <?php
 include("../../../Conexion/ConexionBD.php");
 include_once("cls_recepcion.php");
+include_once("../../Funciones/clsFuncionesGenerales.php");
 
 session_start();
 $usuario=$_SESSION['Correlativo'];
@@ -9,7 +10,10 @@ $area=$_SESSION['Idarea'];
 
 
 $recepcion = new clsRecepcion;
+$funcGeneral = new clsFuncionesGenerales();
+//$funcGeneral = new clsRecepcion;
 $con = new ConexionBD;
+//$funcGeneral = new clsFuncionesGenerales
 $Proceso = $_POST['Proceso'];
 
 switch($Proceso){
@@ -55,7 +59,7 @@ switch($Proceso){
         $rslts='';
         $IdServ=$_POST['idserv'];
 	   //   echo $IdServ;
-            $dtserv=$recepcion->LlenarCmbServ($IdServ,$lugar);
+            $dtserv=$funcGeneral->LlenarCmbServ($IdServ,$lugar);
             $rslts = '<select name="cmbSubServ" id="cmbSubServ" onChange="fillMed(this.value)" style="width:350px" class="js-example-basic-single">';
             $rslts .='<option value="0">--Seleccione Subespecialidad--</option>';
             while ($rows =pg_fetch_array($dtserv)){
