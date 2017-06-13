@@ -266,7 +266,85 @@ else
     function MostrarDatosGenerales($idsolicitud,$lugar) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-        $query = "SELECT DISTINCT t01.idsolicitudestudio,
+       $query = "SELECT lab_recepcionmuestra.idsolicitudestudio, 
+             (CASE WHEN sec_solicitudestudios.id_historial_clinico IS NULL THEN 
+             (mnt_expediente_referido.numero)
+             ELSE (mnt_expediente.numero) end) as idnumeroexp,
+             (CASE WHEN sec_solicitudestudios.id_historial_clinico IS NULL THEN 
+             CONCAT_WS(' ',mnt_paciente_referido.primer_nombre,mnt_paciente_referido.segundo_nombre,mnt_paciente_referido.tercer_nombre,mnt_paciente_referido.primer_apellido,mnt_paciente_referido.segundo_apellido,
+             mnt_paciente_referido.apellido_casada) 
+             ELSE CONCAT_WS(' ',mnt_paciente.primer_nombre,mnt_paciente.segundo_nombre,mnt_paciente.tercer_nombre,mnt_paciente.primer_apellido,
+             mnt_paciente.segundo_apellido,mnt_paciente.apellido_casada) end) as nombrepaciente,
+            (CASE WHEN sec_solicitudestudios.id_historial_clinico IS NULL THEN 
+                (REPLACE(
+                    REPLACE(
+                        REPLACE(
+                            REPLACE(
+                                REPLACE(
+                                    REPLACE(
+                                        AGE(mnt_paciente_referido.fecha_nacimiento::timestamp)::text,
+                                    'years', 'años'),
+                                'year', 'año'),
+                            'mons', 'meses'),
+                        'mon', 'mes'),
+                    'days', 'días'),
+                'day', 'día'))
+            ELSE (
+                REPLACE(
+                    REPLACE(
+                        REPLACE(
+                            REPLACE(
+                                REPLACE(
+                                    REPLACE(
+                                        AGE(mnt_paciente.fecha_nacimiento::timestamp)::text,
+                                    'years', 'años'),
+                                'year', 'año'),
+                            'mons', 'meses'),
+                        'mon', 'mes'),
+                    'days', 'días'),
+                'day', 'día')) end) as edad,
+            (CASE WHEN sec_solicitudestudios.id_historial_clinico IS NULL THEN 
+                (SELECT nombre from ctl_sexo WHERE id=mnt_paciente_referido.id_sexo)
+            ELSE (SELECT nombre from ctl_sexo WHERE id=mnt_paciente.id_sexo) end) AS sexo,
+
+            CASE WHEN mnt_aten_area_mod_estab.nombre_ambiente IS NOT NULL THEN 
+                CASE WHEN id_servicio_externo_estab IS NOT NULL THEN mnt_servicio_externo.abreviatura ||'-' ||mnt_aten_area_mod_estab.nombre_ambiente 
+                    ELSE mnt_aten_area_mod_estab.nombre_ambiente 
+                END 
+            ELSE 
+                CASE WHEN id_servicio_externo_estab IS NOT NULL THEN ctl_atencion.nombre WHEN not exists (select nombre_ambiente from mnt_aten_area_mod_estab where nombre_ambiente=ctl_atencion.nombre) 
+                    THEN ctl_atencion.nombre 
+                END 
+            END AS subservicio, 
+            
+
+            CASE WHEN id_servicio_externo_estab IS NOT NULL THEN mnt_servicio_externo.abreviatura ||'-'  || ctl_area_atencion.nombre
+            ELSE   ctl_modalidad.nombre ||'-' || ctl_area_atencion.nombre
+            END AS procedencia,
+            
+            to_char(lab_recepcionmuestra.fechahorareg,'dd/mm/YYYY' ) AS fecha,
+            (SELECT nombre FROM ctl_establecimiento WHERE id=sec_solicitudestudios.id_establecimiento_externo) AS estabext
+            FROM lab_recepcionmuestra
+            INNER JOIN sec_solicitudestudios                ON sec_solicitudestudios.id = lab_recepcionmuestra.idsolicitudestudio
+            LEFT JOIN sec_historial_clinico                 ON sec_historial_clinico.id = sec_solicitudestudios.id_historial_clinico
+            LEFT JOIN mnt_expediente                        ON mnt_expediente.id = sec_historial_clinico.id_numero_expediente
+            LEFT JOIN mnt_paciente                          ON mnt_paciente.id=mnt_expediente.id_paciente
+            LEFT JOIN mnt_dato_referencia                   ON mnt_dato_referencia.id=sec_solicitudestudios.id_dato_referencia
+            LEFT JOIN mnt_expediente_referido               ON mnt_expediente_referido.id=mnt_dato_referencia.id_expediente_referido
+            LEFT JOIN mnt_paciente_referido                 ON mnt_paciente_referido.id=mnt_expediente_referido.id_referido
+            INNER JOIN ctl_sexo                             ON (ctl_sexo.id = mnt_paciente.id_sexo OR ctl_sexo.id =mnt_paciente_referido.id_sexo)
+            INNER JOIN mnt_aten_area_mod_estab              ON (mnt_aten_area_mod_estab.id = mnt_dato_referencia.id_aten_area_mod_estab 
+            OR mnt_aten_area_mod_estab.id= sec_historial_clinico.idsubservicio)
+            INNER JOIN mnt_area_mod_estab                   ON (mnt_area_mod_estab.id = mnt_aten_area_mod_estab.id_area_mod_estab)
+            LEFT  JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab .id_servicio_externo_estab)
+            LEFT  JOIN mnt_servicio_externo 		ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo)
+            INNER JOIN ctl_area_atencion                    ON ctl_area_atencion.id=mnt_area_mod_estab.id_area_atencion
+            INNER JOIN ctl_atencion                         ON ctl_atencion.id=mnt_aten_area_mod_estab.id_atencion
+            INNER JOIN  mnt_modalidad_establecimiento       ON mnt_modalidad_establecimiento.id=mnt_area_mod_estab.id_modalidad_estab
+            INNER JOIN ctl_modalidad                    ON ctl_modalidad.id = mnt_modalidad_establecimiento.id_modalidad
+            WHERE lab_recepcionmuestra.IdSolicitudEstudio=$idsolicitud";
+                
+               /* "SELECT DISTINCT t01.idsolicitudestudio,
                              CASE WHEN t02.id_historial_clinico IS NOT NULL
                                  THEN t04.numero
                                  ELSE t13.numero
@@ -336,7 +414,7 @@ else
                       LEFT OUTER JOIN mnt_paciente_referido    t14 ON (t14.id = t13.id_referido)
                       WHERE  t01.idsolicitudestudio = $idsolicitud AND t02.id_establecimiento = $lugar
                       AND CASE WHEN t02.id_historial_clinico IS NOT NULL THEN t04.id_establecimiento
-                      ELSE t13.id_establecimiento END = $lugar";
+                      ELSE t13.id_establecimiento END = $lugar";*/
             $result = @pg_query($query);
             if (!$result)
                 return false;
@@ -394,7 +472,8 @@ else
     function LeerSubElementosExamen($idelemento,$lugar,$sexo,$idedad) {
         $con = new ConexionBD;
         if($con->conectar()==true) {
-          $query = "SELECT t01.id AS idsubelemento,
+            
+         $query = "SELECT t01.id AS idsubelemento,
                              t01.subelemento,
                              t01.unidad,
                              t01.observsubelem,

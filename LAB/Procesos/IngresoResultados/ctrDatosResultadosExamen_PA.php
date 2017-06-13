@@ -29,6 +29,7 @@ switch ($opcion)
          $nombre = $row2['nombrearea'];
         $id_establecimiento_externo = $row2['id_establecimiento_externo'];
         $idhistoref = $row2['idhistoref'];
+        $f_consulta = $_POST['f_consulta'];
        // echo "CTR ".$IdHistorial;
        // echo $fechanac."***".$sexo."***".$idarea."***".$idsolicitud."***".$IdEstandar."***".$IdHistorial;
           $datospaciente=$objdatos->MostrarDatosPersona($idsolicitud, $lugar, $id_establecimiento_externo, $txtnec, $idhistoref);
@@ -77,7 +78,7 @@ switch ($opcion)
                                     <textarea name='txtobser[".$pos."]' cols='52' style='width:100%' id='txtobser[".$pos."]'>".$observaciongnral."</textarea>
 				</td>
                             </tr>
-
+    
                                                         </table>
                                                         </div>
                                                     </div></td></tr>";
@@ -129,6 +130,7 @@ switch ($opcion)
 					<tr>
 						<td colspan='4' align='right'>
 						<input  type='hidden' name='oculto' id='oculto' value='".$pos."'> <br/>
+                                                <input type='hidden' id='f_consulta' name='f_consulta' value='$f_consulta'/>  
 						<button type='button' name='Submit' value='Vista Previa de Resultados' class='btn btn-primary'  onclick='MostrarVistaPreviaPlantillaA1()'><span class='glyphicon glyphicon-file'></span>&nbsp;Vista Previa de Resultados</button>
 						</td>
 					</tr>
@@ -165,6 +167,7 @@ switch ($opcion)
                 $txtnec=$_POST['txtnec'];
                 $fecha_realizacion=$_POST['fecha_realizacion'];
                 $fecha_reporte=$_POST['fecha_reporte'];
+                $f_consulta = $_POST['f_consulta'];
                // $Cuentadias=$objdatos->CalculoDias($fechanac);
                // $Cdias= pg_fetch_array($Cuentadias);
                // $dias=$Cdias[0];
@@ -222,6 +225,7 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
 		<td colspan='1' style='font:bold'><strong>Fecha Recepci&oacute;n:</strong></td>
 		<td colspan='2' style='font:bold'>".$row['fecharecepcion']."</td>
                     <input name='suEdad' id='suEdad'  type='hidden'  value='".$rowpa['fecha_nacimiento']."'/>
+                    <input type='hidden' id='f_consulta' name='f_consulta' value='".$f_consulta."'/>    
             </tr>
             <tr>
 		<td colspan='1' style='font:bold'><strong>NEC:</strong></td>
@@ -231,7 +235,9 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
             </tr>
             <tr>
                 <td colspan='1' style='font:bold'><strong>Paciente:</strong></td>
-		<td colspan='5'style='font:bold'>".$rowpa['nombre']."</td>
+		<td colspan='2'style='font:bold'>".$rowpa['nombre']."</td>
+                <td colspan='1'><strong>Fecha consulta:</strong></td>        
+                <td colspan='1'>".$f_consulta ."</td>    
             </tr>
             <tr>
 		<td colspan='1' style='font:bold'><strong>Edad:</strong></td>
@@ -316,7 +322,7 @@ $Imprimir="<table width='100%' align='center' class='StormyWeatherFormTABLE'>
                                       <td colspan='5' align='center' >
                                       <input  type='hidden' id='oculto' value='".$pos."'>
                                       <button type='submit' class='btn btn-primary' id='btnGuardar' value='Guardar Resultados' Onclick='GuardarResultadosPlantillaA();' /><span class='glyphicon glyphicon-remove-sign'></span>Guardar Resultados</button>
-                                      <button style='display:none' type='button' class='btn btn-primary'  name='Imprimir'  id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaA1(".$idsolicitud.",\"".$idarea."\",\"".$responsable."\", \"".$valores_resultados."\",\"".$codigos_resultados."\",\"".$valores_obser."\",\"".$codigos_examenes."\",\"".$establecimiento."\",\"".$sexo."\",\"".$idedad."\",\"".$examen_metodologia."\",\"".$txtnec."\",\"".$fecha_reporte."\",\"".$procedencia."\",\"".$origen."\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
+                                      <button style='display:none' type='button' class='btn btn-primary'  name='Imprimir'  id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaA1(".$idsolicitud.",\"".$idarea."\",\"".$responsable."\", \"".$valores_resultados."\",\"".$codigos_resultados."\",\"".$valores_obser."\",\"".$codigos_examenes."\",\"".$establecimiento."\",\"".$sexo."\",\"".$idedad."\",\"".$examen_metodologia."\",\"".$txtnec."\",\"".$fecha_reporte."\",\"".$procedencia."\",\"".$origen."\",\"".$f_consulta."\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
                                          <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true' style='display:none; height:20px'><button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>
                                                     <button type='submit' class='btn btn-primary' id='btnSalir' value='Cerrar' Onclick='Cerrar() ;' /><span class='glyphicon glyphicon-remove-sign'></span>Cerrar</button><br/>
                                             <br></td>

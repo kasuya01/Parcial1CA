@@ -517,7 +517,8 @@ to_char(t05.fecha_resultado, 'dd/mm/yyyy') as fecharesultado, t06.nombre_reporta
            AND sec_solicitudestudios.IdEstablecimiento=$lugar AND mnt_expediente.IdEstablecimiento=$lugar"; */
          $query = "select sse.id as idsolicitudestudio, nombrearea, numeromuestra, fecharecepcion, lrm.fechahorareg as fecha,
 (case when id_historial_clinico is not null then id_historial_clinico
-      else id_dato_referencia end)as idhistoref, id_historial_clinico, id_dato_referencia, sse.id_establecimiento_externo, id_area_servicio_diagnostico
+      else id_dato_referencia end)as idhistoref, id_historial_clinico, id_dato_referencia, sse.id_establecimiento_externo, id_area_servicio_diagnostico,
+      sse.fecha_solicitud 
 from sec_solicitudestudios 		sse
 join sec_detallesolicitudestudios	sds on (sse.id=sds.idsolicitudestudio)
 join lab_recepcionmuestra		lrm on (sse.id=lrm.idsolicitudestudio)
@@ -677,7 +678,8 @@ and idhistoref=$idhistoref;";
 		CONCAT_WS(' ',PrimerNombre,NULL,SegundoNombre,NULL,PrimerApellido,NULL,SegundoApellido) AS NombrePaciente,
 		(year(CURRENT_DATE)-year(FechaNacimiento))AS Edad,IF(Sexo=1,'Masculino','Femenino') AS Sexo,
 		TelefonoCasa,Direccion,NombreSubServicio AS Origen,NombreServicio AS Procedencia,
-		NombreArea,NumeroMuestra,DATE_FORMAT(lab_recepcionmuestra.FechaHoraReg,'%d/%m/%Y %H:%i:%s') AS Fecha,sec_solicitudestudios.IdEstablecimiento, DATE_FORMAT(FechaNacimiento,'%d/%m/%Y') AS FechaNacimiento
+		NombreArea,NumeroMuestra,DATE_FORMAT(lab_recepcionmuestra.FechaHoraReg,'%d/%m/%Y %H:%i:%s') AS Fecha,sec_solicitudestudios.IdEstablecimiento, DATE_FORMAT(FechaNacimiento,'%d/%m/%Y') AS FechaNacimiento,
+                sec_solicitudestudios.fecha_solicitud 
 		FROM sec_detallesolicitudestudios
 		INNER JOIN sec_solicitudestudios ON sec_solicitudestudios.IdSolicitudEstudio=sec_detallesolicitudestudios.IdSolicitudEstudio
 		INNER JOIN lab_recepcionmuestra ON lab_recepcionmuestra.IdSolicitudEstudio=sec_solicitudestudios.IdSolicitudEstudio
@@ -1350,11 +1352,11 @@ and (date(t02.fechafin) >= current_date or date(t02.fechafin) is null);";
    function consfecha($idsolicitud, $iddetallesolicitud, $lugar) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "select * , case when f_tomamuestra is not null then date(f_tomamuestra)
-		else date(fechahorareg) end as fechadatosfijos
-from sec_detallesolicitudestudios t01
-where t01.id=$iddetallesolicitud
-and idestablecimiento=$lugar;";
+        $query = "select * , case when f_tomamuestra is not null then date(f_tomamuestra)
+		  else date(fechahorareg) end as fechadatosfijos
+                  from sec_detallesolicitudestudios t01
+                  where t01.id=$iddetallesolicitud
+                  and idestablecimiento=$lugar;";
          //echo $query;
          $result = pg_query($query);
          if (!$result) {

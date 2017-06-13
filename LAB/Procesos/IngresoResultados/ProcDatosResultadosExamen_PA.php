@@ -134,8 +134,10 @@ function VerResultados()
         txtnec=document.frmnuevo.txtnec.value;
         fecha_realizacion=document.frmnuevo.fecha_realizacion.value;
         fecha_reporta=document.frmnuevo.fecha_reporte.value;
+        f_consulta=document.frmnuevo.f_consulta.value;
+       // alert ("aqui"+f_consulta);
 
-	MostrarResultadoExamen(idsolicitud,iddetalle,idarea,idexamen,resultado,lectura,interpretacion,observacion,responsable,nombrearea,procedencia,origen,impresion,establecimiento,codresult,fechanac,sexo, cmbmetodologia, txtnec, fecha_realizacion, fecha_reporta, idresultado, marca);
+	MostrarResultadoExamen(idsolicitud,iddetalle,idarea,idexamen,resultado,lectura,interpretacion,observacion,responsable,nombrearea,procedencia,origen,impresion,establecimiento,codresult,fechanac,sexo, cmbmetodologia, txtnec, fecha_realizacion, fecha_reporta, idresultado, marca,f_consulta);
 
     }else
     {    alert("Complete la Informacion Requerida");   }
@@ -190,6 +192,8 @@ for ( i = 0; i < getVars.length; i++)
                     tipomuestra=escape(getVars[i].substr(5));  
                 if ( getVars[i].substr(0,5) == 'origenmuestra=' )
                     origenmuestra=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'f_consulta=' )
+                    f_consulta=escape(getVars[i].substr(5));
                     
 
 		}
@@ -245,6 +249,7 @@ $idarea=$_GET['var4'];
 $idexpediente_=$_GET['var1'];
 $fecha_recepcion_=$_GET['fecha_recepcion'];
 $idestabext_=$_GET['var19'];
+$f_consulta=$_GET['f_consulta'];
 $cant=$objdatos->buscarAnterioresPUnica($solicitud,$iddetallesolicitud, $idarea);
 
 if (pg_num_rows($cant)>0){
@@ -257,6 +262,7 @@ $rowdeta=pg_fetch_array($buscarinfo);
 $fechatomamues= isset($rowdeta['f_tomamuestra']) ? $rowdeta['f_tomamuestra'] : null;
 $timeftomamx = strtotime($fechatomamues);
 $dateftomamx = date("Y-m-d", $timeftomamx);
+$ftomamuestra=date("d-m-Y H:i",$timeftomamx);
 //para calcular la fecha de cuando fue la toma de muestra y no la actual
 $fechadatosfijos=$rowdeta['fechadatosfijos'];
 if ($referido!="t"){
@@ -364,15 +370,15 @@ $edad=$objdatos->calc_edad($IdHistorial);
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
-                            <td class="StormyWeatherDataTD" colspan="1"> <?php echo $_GET['var9'] ;?>
+                            <td class="StormyWeatherDataTD" colspan="3"> <?php echo $_GET['var9'] ;?>
                                 <input type="hidden" name="txtnombrearea" id="txtnombrearea" disabled="disabled" size="60" />
                             </td>
-                            <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">F. Toma Muestra</td>
-                            <td class="StormyWeatherDataTD" colspan="1"> <?php echo $fechatomamues ;?>
+                            
                                 <input type="hidden" id="fecha_tmuestra" name="f_tmuestra" value="<?php echo $fechatomamues;?>"/>
                                 <input type="hidden" id="dateftomamx" name="dateftomamx" value="<?php echo $dateftomamx;?>"/>
-                            </td>
-                        </tr>
+                                <input type="hidden" id="f_consulta" name="f_consulta" value="<?php echo $f_consulta;?>"/></td>
+                            
+                         </tr>
                          <tr>
                             <td class="StormyWeatherFieldCaptionTD">Diagnostico</td>
                             <td colspan="3" class="StormyWeatherDataTD"><?php echo $Diagnostico;?>
@@ -425,16 +431,11 @@ $edad=$objdatos->calc_edad($IdHistorial);
 
                             </td>
                         </tr>
-                        <tr>
-                            <td class="StormyWeatherFieldCaptionTD">*Validado Por</td>
-                            <td class="StormyWeatherDataTD" colspan="3">
-                                <div id="divEncargado">
-                                   <select id="cmbEmpleados" name="cmbEmpleados" size="1" style="width:96%" class="form-control  height">
-                                        <option value="0" >--Seleccione Empleado--</option>
-                                    </select>
-                                </div>
-                            </td>
-                        </tr>
+                        
+                        <tr> <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">F. Toma Muestra</td>
+                            <td class="StormyWeatherDataTD" colspan="1"> <?php echo $ftomamuestra ;?></td>
+                            <td class="StormyWeatherFieldCaptionTD">Fecha de Consulta</td> 
+                            <td class="StormyWeatherDataTD" colspan="1"><?php echo $f_consulta; ?></td>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">Fecha Realización </td>
                             <td  colspan="1" class="StormyWeatherDataTD">
@@ -445,7 +446,16 @@ $edad=$objdatos->calc_edad($IdHistorial);
                                 <input type="text" class="date form-control height" name="fecha_reporte" id="fecha_reporte" size="60" style="width:90%"  value="<?php echo date("Y-m-d"); ?>"  /><input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d"); ?>"  />
                             </td>
                         </tr>
-                        
+                        <tr>
+                            <td class="StormyWeatherFieldCaptionTD">*Validado Por</td>
+                            <td class="StormyWeatherDataTD" colspan="3">
+                                <div id="divEncargado">
+                                   <select id="cmbEmpleados" name="cmbEmpleados" size="1" style="width:96%" class="form-control  height">
+                                        <option value="0" >--Seleccione Empleado--</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
                         <tr>
                              <td class="StormyWeatherFieldCaptionTD">*Resultado</td>
                              <td class="StormyWeatherDataTD" colspan="3">

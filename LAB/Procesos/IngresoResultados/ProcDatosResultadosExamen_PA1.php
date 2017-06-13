@@ -105,7 +105,8 @@ for ( i = 0; i < getVars.length; i++)
                     tipomuestra=escape(getVars[i].substr(5)); 
                   if ( getVars[i].substr(0,5) == 'origenmuestra=' )
                     origenmuestra=escape(getVars[i].substr(5));
-                  
+                  if ( getVars[i].substr(0,5) == 'f_consulta=' )
+                    f_consulta=escape(getVars[i].substr(5));
 		}
 document.frmnuevo.txtnec.value=nec;
 document.frmnuevo.txtarea.value=area;
@@ -140,16 +141,16 @@ $idarea=$_GET['var4'];
 $idexpediente_=$_GET['var1'];
 $fecha_recepcion_=$_GET['fecha_recepcion'];
 $idestabext_=$_GET['var19'];
-
+$f_consulta=$_GET['f_consulta'];
 $buscarinfo=$objdatos->consfecha($idsolicitud, $iddetallesolicitud,  $lugar);
 //echo 'bucarinfo: '.$buscarinfo;
 $rowdeta=pg_fetch_array($buscarinfo);
 $fechadatosfijos=$rowdeta['fechadatosfijos'];
 if ($referido!="t"){
     
-$condatos=$objdatos->condatos($IdHistorial, $lugar, $fechadatosfijos);
-$edad=$objdatos->calc_edad($IdHistorial);
-	$rows = pg_fetch_array($condatos);
+    $condatos=$objdatos->condatos($IdHistorial, $lugar, $fechadatosfijos);
+    $edad=$objdatos->calc_edad($IdHistorial);
+    $rows = pg_fetch_array($condatos);
         
         $Peso=$rows['peso'];
         $Talla=$rows['talla'];
@@ -210,15 +211,15 @@ if (pg_num_rows($cant)>0){
                                             <input type="hidden" name="txtIdHistorial" id="txtIdHistorial" value="<?php echo $_GET['var17']?>" />
                                             <input type="hidden" name="referido" id="referido" value="<?php echo $_GET['referido']?>" />
                                             <input type="hidden" name="solicitud_" id="solicitud_" value="<?php echo $idsolicitud;?>" />
-                                          <input type="hidden" id="fecharecepcion" name="fecharecepcion" value="<?php echo $fecha_recepcion_;?>"/>
-                                          <input type="hidden" id="idestabext_" name="idestabext_" value="<?php echo $idestabext_;?>"/>
+                                            <input type="hidden" id="fecharecepcion" name="fecharecepcion" value="<?php echo $fecha_recepcion_;?>"/>
+                                            <input type="hidden" id="idestabext_" name="idestabext_" value="<?php echo $idestabext_;?>"/>
 				</tr>
                                 
 				<tr>
-					<td class="StormyWeatherFieldCaptionTD">Paciente</td>
-					<td colspan="3" class="StormyWeatherDataTD"><?php echo $_GET['var7'];?>
-						<input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
-						</td>
+				    <td class="StormyWeatherFieldCaptionTD">Paciente</td>
+				    <td colspan="3" class="StormyWeatherDataTD"><?php echo $_GET['var7'];?>
+					<input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
+				    </td>
 				</tr>
                                 <tr>
                                         <td class="StormyWeatherFieldCaptionTD">Conocido Por</td>
@@ -239,6 +240,7 @@ if (pg_num_rows($cant)>0){
                                         <td  class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
                                         <td colspan="3" class="StormyWeatherDataTD"> <?php echo htmlentities($_GET['var9']) ;?>
                                                <input type="hidden" name="txtnombrearea" id="txtnombrearea" disabled="disabled" size="60" />
+                                               
                                         </td>
                                 </tr>
                                 <tr>
@@ -268,15 +270,10 @@ if (pg_num_rows($cant)>0){
                                                 if(!empty($Talla))
                                                     echo $Talla." cm";?></td>
                                 </tr>
-                                 <tr>
-                                        <td class="StormyWeatherFieldCaptionTD">*Validado Por</td>
-                                        <td colspan="3" class="StormyWeatherDataTD">
-                                              <div id="divEncargado">
-                                                    <select id="cmbEmpleados" name="cmbEmpleados" size="1">
-                                                             <option value="0" >--Seleccione Empleado--</option>
-                                                    </select>
-                                              </div>
-                                        </td>
+                                <tr>
+                                    <td class="StormyWeatherFieldCaptionTD">Fecha de Consulta</td> 
+                                    <td class="StormyWeatherDataTD" colspan="3"><?php echo $f_consulta; ?></td>
+                                <input type="hidden" id="f_consulta" name="f_consulta" value="<?php echo $f_consulta;?>"/>
                                 </tr>
                                 <tr>
                                     <td class="StormyWeatherFieldCaptionTD" style="white-space:nowrap;">*Fecha Realización </td>
@@ -287,6 +284,16 @@ if (pg_num_rows($cant)>0){
                                     <td  colspan="1" class="StormyWeatherDataTD"> 
                                         <input type="text" class="date form-control height" name="fecha_reporte" id="fecha_reporte" size="40"  value="<?php echo date("Y-m-d"); ?>"  />                                               <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="60"  value="<?php echo date("Y-m-d"); ?>"  /> 
                                     </td>
+                                </tr>
+                                 <tr>
+                                        <td class="StormyWeatherFieldCaptionTD">*Validado Por</td>
+                                        <td colspan="3" class="StormyWeatherDataTD">
+                                              <div id="divEncargado">
+                                                    <select id="cmbEmpleados" name="cmbEmpleados" size="1">
+                                                             <option value="0" >--Seleccione Empleado--</option>
+                                                    </select>
+                                              </div>
+                                        </td>
                                 </tr>
                                 <tr>
                                     <td class="StormyWeatherFieldCaptionTD">Observación</td>
