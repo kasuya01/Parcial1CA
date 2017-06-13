@@ -13,6 +13,7 @@ $Consulta_Estab=$objdatos->Nombre_Establecimiento($lugar);
 $row_estab = pg_fetch_array($Consulta_Estab);
 
 switch ($opcion) {
+    
 	case 1:
 		$idexamen = $_POST['idexamen'];
 		$fechanac = $_POST['FechaNac'];
@@ -383,7 +384,7 @@ switch ($opcion) {
 	   	$idedad=$row_rangos[0];
                 //echo $idsolicitud;
 	   	switch ($codigo_estandar) {
-	   		case "H50":
+	   		case "H50":/*************************************************************************************************/
 		   		$cadena 		  = $valores_subelementos;
 		   		$vector 		  = EXPLODE("|",$cadena);
                                 $datos_combos             = $valores_combos;
@@ -425,7 +426,9 @@ switch ($opcion) {
 				   		</tr>
 			   			<tr>
                                                         <td colspan='1'><strong>Paciente:</strong></td>
-			   				<td colspan='5'>".$row_generales['nombrepaciente']."</td>
+			   				<td colspan='3'>".$row_generales['nombrepaciente']."</td>
+                                                        <td colspan='1'><strong>Fecha consulta:</strong></td>        
+                                                        <td colspan='1'>".$f_consulta ."</td>
 			   			</tr>
 		   				<tr>
 			   				<td colspan='1'><strong>Edad:</strong></td>
@@ -547,7 +550,7 @@ switch ($opcion) {
                                                          <input type='hidden' name='txtfresultado' id='txtfresultado' value='".$fecharesultado."' />";
                                             $imprimir .="<td colspan='3' align='center'>
                                                 <button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarResultadosPlantillaB();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>
-                                                <button style='display:none' type='button' class='btn btn-primary'  name='Imprimir'  id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".utf8_encode($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\",\"".$valores_combos."\",".$idestab.",\"".$f_tomamuestra."\",\"".$tipomuestra."\",\"".$f_consulta."\",\"".$f_consulta."\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
+                                                <button style='display:none' type='button' class='btn btn-primary'  name='Imprimir'  id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".utf8_encode($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\",\"".$valores_combos."\",".$idestab.",\"".$f_tomamuestra."\",\"".$tipomuestra."\",\"".$f_consulta."\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
                                                 <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true' style='display:none; height:20px'><button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>
                                                 <button type='button' id='btnSalir' align='center' class='btn btn-primary' title='Cerrar'  onclick='Cerrar();'><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br/><br><br/>
                                                             </td>
@@ -558,7 +561,7 @@ switch ($opcion) {
                     // <input type='button' name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaB(".$idsolicitud.",".$idexamen.",".$idempleado.",\"".htmlentities($row_generales['procedencia'])."\",\"".htmlentities($subservicio)."\",\"".htmlentities($observacion)."\",\"".htmlentities($valores_subelementos)."\",\"".$codigos_subelementos."\",\"".htmlentities($valores_elementos)."\",\"".$codigos_elementos."\",\"".htmlentities($controles)."\",\"".htmlentities($controles_ele)."\",\"".htmlentities($row_area['nombrearea'])."\",\"".htmlentities($establecimiento)."\",\"".htmlentities($row_empleado['nombreempleado'])."\",".$sexo.",\"".$idedad."\",\"".$valores_combos."\",".$idestab.",\"".$f_tomamuestra."\",\"".$tipomuestra."\") ;'>
 	        	echo $imprimir;
 	        	break;
-		    default:
+		    default: /****************************************************************************************/
 		        $cadena 	   = $valores_subelementos;
                         $datos_combos      = $valores_combos;
 		        $vector 	   = EXPLODE("|",$cadena);
@@ -609,7 +612,7 @@ switch ($opcion) {
                                     <td colspan='1'><strong>Paciente:</strong></td>
                                     <td colspan='3'>".htmlentities($row_generales['nombrepaciente'])."</td>
                                     <td colspan='1'><strong>Fecha consulta:</strong></td>    
-                                    <td colspan='1'>".$f_consulta ."</td>
+                                    <td colspan='1'>".$f_consulta."</td>
 		        	</tr>
 		        	<tr>
                                     <td colspan='1'><strong>Edad:</strong></td>

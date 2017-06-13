@@ -194,14 +194,14 @@ switch ($opcion) {
                        t02.impresiones,
                        t14.nombre,
                        t09.id AS idhistorialclinico,
-                       TO_CHAR(t02.fecha_solicitud, 'dd/mm/yyyy HH12:MI') AS fechasolicitud,
+                       TO_CHAR(t02.fecha_solicitud, 'dd-mm-yyyy HH12:MI') AS fechasolicitud,
                        t17.tiposolicitud AS prioridad,
                        t07.fecha_nacimiento AS fechanacimiento,
                        t19.id AS sexo,
                        t18.idestandar,
                        t02.id_establecimiento_externo as IdEstab,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-                       false AS referido, TO_CHAR(f_tomamuestra,'dd/mm/YYYY HH12:MI') AS f_tomamuestra,
+                       false AS referido, TO_CHAR(f_tomamuestra,'dd-mm-YYYY HH12:MI') AS f_tomamuestra,
                        (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
                        t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar,
                        (select origenmuestra FROM mnt_origenmuestra where id=t01.idorigenmuestra) as origenmuestra,
@@ -252,14 +252,14 @@ switch ($opcion) {
                        t02.impresiones,
                        t14.nombre,
                        t09.id AS idhistorialclinico,
-                       TO_CHAR(t02.fecha_solicitud, 'dd/mm/yyyy HH12:MI') AS fechasolicitud,
+                       TO_CHAR(t02.fecha_solicitud, 'dd-mm-yyyy HH12:MI') AS fechasolicitud,
                        t17.tiposolicitud AS prioridad,
                        t07.fecha_nacimiento AS fechanacimiento,
                        t19.id AS sexo,
                        t18.idestandar,
                        t02.id_establecimiento_externo,
                        (SELECT nombre FROM ctl_establecimiento WHERE id=t02.id_establecimiento_externo) AS estabext,
-                       true AS referido,TO_CHAR(f_tomamuestra,'dd/mm/YYYY HH12:MI') AS f_tomamuestra,
+                       true AS referido,TO_CHAR(f_tomamuestra,'dd-mm-YYYY HH12:MI') AS f_tomamuestra,
                        (SELECT tipomuestra FROM lab_tipomuestra WHERE id=t01.idtipomuestra) AS tipomuestra,
                        t17.idtiposolicitud,t08.id as idarea,t18.idestandar as estandar,
                        (select origenmuestra FROM mnt_origenmuestra where id=t01.idorigenmuestra) as origenmuestra,
@@ -387,6 +387,7 @@ switch ($opcion) {
                             "<input name='dato_fijo[" . $pos . "]' id='dato_fijo[" . $pos . "]' type='hidden' size='60' value='" . $df . "'/>" .
                             "<input name='tipoarea[" . $pos . "]' id='tipoarea[" . $pos . "]' type='hidden' size='60' value='" . $row["administrativa"]. "'/>" .
                             "<input name='f_consulta[" . $pos . "]' id='f_consulta[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["fechasolicitud"]) . "'/>" .
+                            "<input name='nummuestra[" . $pos . "]' id='nummuestra[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["numeromuestra"]) . "'/>" .
                         "<td width='18%'>" . htmlentities($row['paciente']) . "</td>
                         <td width='3%'>" . $row['estandar'] . "</td>
                         <td width='15%'>" . htmlentities($row['nombreexamen']) . "</td>
@@ -557,7 +558,7 @@ switch ($opcion) {
         $fecha_realizacion = $_POST['fecha_realizacion'];
         $fecha_reporta = $_POST['fecha_reporta'];
         $idresultado = $_POST['idresultado'];
-
+       $f_consulta  = $_POST['f_consulta'];
         $Consulta_Estab = $objdatos->Nombre_Establecimiento($lugar);
         $row_estab = pg_fetch_array($Consulta_Estab);
 
@@ -620,6 +621,10 @@ switch ($opcion) {
 			<td colspan='2' style='font:bold'>" . $fecha_reporta . "
                         <input type='hidden' id='fecha_reporte_' name='fecha_reporte_' value='" . $fecha_reporta . "'/>
                         <input type='hidden' id='fecha_realiza_' name='fecha_realiza_' value='" . $fecha_realizacion . "'/></td>
+                    </tr>
+                    <tr><td colspan='3'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> 
+                        <td colspan='1'><strong>Fecha consulta:</strong></td>        
+                        <td colspan='1'>".$f_consulta ."</td>
                     </tr>
                     <tr>
 			<td colspan='1' style='font:bold'><strong>Edad:</strong></td>
@@ -751,7 +756,7 @@ switch ($opcion) {
                         <tr>
                             <td colspan='7' align='center' >
                             <button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarResultados();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>
-                            <button style='display:none' type='button' id='Imprimir' name='Imprimir' align='center' class='btn btn-primary' title='Imprimir'  onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $resultado . "\",\"" . $fecha_reporta . "\", \"" . $lectura . "\",\"" . $interpretacion . "\",\"" . $observacion . "\",\"" . $responsable . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec . "\",\"" . $proce . "\",\"" . $origen . "\",\"" . $iddetalle . "\",\"" . $marca . "\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
+                            <button style='display:none' type='button' id='Imprimir' name='Imprimir' align='center' class='btn btn-primary' title='Imprimir'  onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $resultado . "\",\"" . $fecha_reporta . "\", \"" . $lectura . "\",\"" . $interpretacion . "\",\"" . $observacion . "\",\"" . $responsable . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec . "\",\"" . $proce . "\",\"" . $origen . "\",\"" . $iddetalle . "\",\"" . $marca . "\",\"".$f_consulta."\") ;'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
                             <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true' style='display:none; height:20px'>
                             <button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>
 
@@ -840,7 +845,8 @@ switch ($opcion) {
             $jsonresponse['status'] = true;
             $jsonresponse['data'] = pg_fetch_all($result);
             $jsonresponse['nums'] = pg_num_rows($result);
-        } else {
+        } 
+        else{
             $jsonresponse['status'] = false;
         }
 
@@ -894,6 +900,7 @@ switch ($opcion) {
         $iddetalle = $_POST['iddetalle'];
         $idrecepcion = $_POST['idrecepcion'];
         $val = $_POST['val'];
+         echo $f_consulta  = $_POST['f_consulta'];
        /* if ($val==1){
             $v_resultfin = $_POST['v_resultfin'];
             $v_obseresultfin = $_POST['v_obseresultfin'];
@@ -1023,7 +1030,7 @@ switch ($opcion) {
         $establecimiento = $_POST['establecimiento'];
         $cmbEmpleadosfin=$_POST['cmbEmpleadosfin'];
         $d_resultfin=$_POST['d_resultfin'];
-
+        echo $f_consulta  = $_POST['f_consulta'];
         $cantingresados=0;
         $cantidadnum=$_POST['cantidadnum'];
         $flag=0;
@@ -1087,6 +1094,10 @@ switch ($opcion) {
 			<td colspan='2'>" . $txtnec . "<input type='hidden' id='idexpedientenec' name='idexpedientenec' value='".$txtnec."'/></td>
                         <td colspan='1'style='font:bold'><strong>Fecha Recepción:</strong></td>
                     	<td colspan='2' style='font:bold'>" . $row['fecharecepcion'] . "<input name='suEdad' id='suEdad'  type='hidden'  value='" . $rowpa['fecha_nacimiento'] . "'/></td>
+                    </tr>
+                    <tr><td colspan='3'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> 
+                        <td colspan='1'><strong>Fecha consulta:</strong></td>        
+                        <td colspan='1'>".$f_consulta ."</td>
                     </tr>
 		    <tr>
                         <td colspan='1' style='font:bold'><strong>Paciente:</strong></td>
@@ -1185,7 +1196,7 @@ switch ($opcion) {
                     <tr>
                         <td colspan='8' align='center' >
 
-                        <button name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $v_resultfin. "\",\"" . $d_resultfin . "\", \"" . $v_lectura . "\",\"" . $v_interpretacion . "\",\"" . $v_obserrecep. "\",\"" . $cmbEmpleadosfin . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec. "\",\"" . $proce. "\",\"" . $origen . "\",\"" . $iddetalle  . "\") ;' class='btn btn-primary'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
+                        <button name='Imprimir'  id='Imprimir' value='Imprimir' Onclick='ImprimirPlantillaA(" . $idsolicitud . ",\"" . $idexamen . "\",\"" . $v_resultfin. "\",\"" . $d_resultfin . "\", \"" . $v_lectura . "\",\"" . $v_interpretacion . "\",\"" . $v_obserrecep. "\",\"" . $cmbEmpleadosfin . "\",\"" . $sexo . "\",\"" . $idedad . "\",\"" . $txtnec. "\",\"" . $proce. "\",\"" . $origen . "\",\"" . $iddetalle  . "\",\"".$f_consulta."\") ;' class='btn btn-primary'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
 
                             <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true'>
                             <button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>&nbsp;";

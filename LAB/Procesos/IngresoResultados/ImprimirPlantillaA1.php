@@ -19,6 +19,7 @@ $txtnec =$_GET['var14'];
 $fechareporte =$_GET['var15'];
 $procedencia =$_GET['var16'];
 $origen =$_GET['var17'];
+$f_consulta= $_GET['var22'];
 //echo $sexo."###".$idedad;
 //echo $idsolicitud."-".$idarea."-".$idempleado."-".$valores_resultados."-".$codigos_resultados."-".$valores_lecturas."-".$valores_inter."-".$valores_obser."-".$codigos_examenes;
 //echo $codigos_examenes;
@@ -88,7 +89,7 @@ $rowpa = pg_fetch_array($datpac);
     $fechanac=isset($row['FechaNacimiento']) ? $row['FechaNacimiento'] : null;
 
 ?>
-	<table width='85%' align='center' class='StormyWeatherFormTABLE'>
+	<table width='90%' align='center' class='StormyWeatherFormTABLE'>
 		<tr>
                      <td colspan="1" align="left" width="20%"><img id="Image1" style="WIDTH: 80px; HEIGHT: 55px" height="86" src="../../../Imagenes/escudo.png" width="210" name="Image1"></td>
                 <td align="center" colspan="4" width="60%" class="Estilo6">
@@ -118,8 +119,9 @@ $rowpa = pg_fetch_array($datpac);
 
                 <tr>
 			<td colspan='1' class="Estilo5"><strong>Paciente:</strong></td>
-			<td colspan='5' class="Estilo6"><?php echo $rowpa['nombre']?></td>
-
+			<td colspan='2' class="Estilo6"><?php echo $rowpa['nombre']?></td>
+                        <td colspan='1' class='Estilo5'><strong>Fecha Consulta:</strong></td>
+                        <td colspan='1' class='Estilo6'align='left' ><?php echo $f_consulta ?></td>
                             <input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $fechanac;?> />
 		<tr>
 

@@ -14,6 +14,7 @@ $proce=$_GET['var12'];
 $origen=$_GET['var13'];
 $iddetalle=$_GET['var14'];
 $marca=$_GET['var15'];
+$f_consulta= $_GET['var22'];
 //echo $sexo."***".$idedad;
 ?>
 <html>
@@ -67,6 +68,7 @@ $row = pg_fetch_array($consulta);
 $nombre = $row['nombrearea'];
 $id_establecimiento_externo = $row['id_establecimiento_externo'];
 $idhistoref = $row['idhistoref'];
+$fsolicitud = $row['fecha_solicitud'];
 $Consulta_Estab2=$objdatos->Nombre_Establecimiento($id_establecimiento_externo);
 $row_estab2 = pg_fetch_array($Consulta_Estab2);
 $datpac=$objdatos->MostrarDatosPersona($idsolicitud, $lugar, $id_establecimiento_externo, $txtnec, $idhistoref);
@@ -111,6 +113,11 @@ $fechares = date("Y-m-d", $timefresult);
 		<td colspan="2" class="Estilo6"><?php echo $f_tomamuestra;?></td>
 		
 <!--                    <input name='suEdad' id='suEdad'  type='hidden'  value=<?php echo $row['FechaNacimiento']?>>-->
+            </tr>
+            <tr>
+                <td colspan='3' class='Estilo5'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td colspan='1' class='Estilo5'><strong>Fecha Consulta:</strong></td>
+                <td colspan='1' class='Estilo6'align='left' ><?php echo $fsolicitud; ?></td>
             </tr>
             <tr>
             	<td colspan="1" class="Estilo5"><strong>Expediente:</strong></td>

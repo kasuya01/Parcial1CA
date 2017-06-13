@@ -276,8 +276,12 @@ $f_consulta           = $_GET['var22'];
 
                 $ConRangos  = $obj->ObtenerCodigoRango($row_generales['fechanac']);
                 $row_rangos = pg_fetch_array($ConRangos);
-                $idedad     = $row_rangos[0];
-           //   echo $cadena;
+               // $idedad     = $row_rangos[0];
+                if (isset($row_rangos[0]))
+                   {$idedad= $row_rangos[0];}
+                else
+                    {$idedad='NULL';}
+           //  echo $idedad;
         ?>
                 <table width="100%" border="0" align="center"  cellspacing="0%" cellpadding="0%" >
                             <tr>

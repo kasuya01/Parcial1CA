@@ -248,6 +248,7 @@ case 2://vista Previa de Resultado
 		$tab=$_POST['tab'];
 		$fechanac=$_POST['fechanac'];
                 $sexo=$_POST['sexo'];
+                $f_consulta = $_POST['f_consulta'];
              //   echo  $valores_combos;
 		$ConEstandar=$obj->Obtener_Estandar($idexamen);
 		$CodEstandar= pg_fetch_array($ConEstandar);
@@ -303,7 +304,9 @@ case 2://vista Previa de Resultado
                                 </tr>
 				<tr>
 					<td colspan='1' style='font:bold'><strong>Paciente:</strong></td>
-					<td colspan='5'>".htmlentities($row_generales['paciente'])."</td>
+					<td colspan='3'>".htmlentities($row_generales['paciente'])."</td>
+                                        <td colspan='1'><strong>Fecha consulta:</strong></td>    
+                                        <td colspan='1'>".$f_consulta."</td>
 				</tr>
 				<tr>
 					<td colspan='1' style='font:bold'><strong>Edad:</strong></td>
@@ -397,7 +400,7 @@ case 2://vista Previa de Resultado
                                     <tr>
                                         <td colspan='4' align='rigth'>
                                             <button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarPlantillaE();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>
-                                            <button style='display:none' type='button' class='btn btn-primary'  name='Imprimir'  id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaE(".$idsolicitud.",\"".$idexamen."\",\"".$row_empleado['empleado']."\",\"".$row_generales['procedencia']."\",\"".$row_generales['subservicio']."\",\"".$comentarios."\",\"".$valores."\",\"".$codigos."\",\"".$observacion."\",\"".htmlentities($establecimiento)."\",\"".$sexo."\",\"".$idedad."\",\"".$valores_combos."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\");'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
+                                            <button style='display:none' type='button' class='btn btn-primary'  name='Imprimir'  id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaE(".$idsolicitud.",\"".$idexamen."\",\"".$row_empleado['empleado']."\",\"".$row_generales['procedencia']."\",\"".$row_generales['subservicio']."\",\"".$comentarios."\",\"".$valores."\",\"".$codigos."\",\"".$observacion."\",\"".htmlentities($establecimiento)."\",\"".$sexo."\",\"".$idedad."\",\"".$valores_combos."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\",\"".$f_consulta."\");'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
                                             <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true' style='display:none; height:20px'><button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>                               
                                             <button type='button' id='btnSalir' align='center' class='btn btn-primary' title='Cerrar'  onclick='Cerrar();'><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br/><br><br/>    
                                         </td>                                                                                                                                                                                                      
@@ -456,7 +459,9 @@ $imprimir.="</table>";
 			</tr>
                         <tr>
                             <td colspan='1'><strong>Paciente:</strong></td>
-                            <td colspan='5' align='left'>".htmlentities($row_generales['paciente'])."</td>
+                            <td colspan='3' align='left'>".htmlentities($row_generales['paciente'])."</td>
+                            <td colspan='1'><strong>Fecha consulta:</strong></td>    
+                            <td colspan='1'>".$f_consulta."</td>    
 			</tr>
 			<tr>
                             <td colspan='1'><strong>Edad:</strong></td>
@@ -557,7 +562,7 @@ $imprimir.="</table>";
                 <tr>
                     <td colspan='5' align='center'>
                         <button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarPlantillaE();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>
-                        <button style='display:none' type='button' class='btn btn-primary'  name='Imprimir'  id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaE(".$idsolicitud.",\"".$idexamen."\",\"".$row_empleado['empleado']."\",\"".$row_generales['procedencia']."\",\"".$row_generales['subservicio']."\",\"".$comentarios."\",\"".$valores."\",\"".$codigos."\",\"".$observacion."\",\"".htmlentities($establecimiento)."\",\"".$sexo."\",\"".$idedad."\",\"".$valores_combos."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\");'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
+                        <button style='display:none' type='button' class='btn btn-primary'  name='Imprimir'  id='Imprimir' value='Imprimir' class='fg-button ui-state-default ui-corner-all'  Onclick='ImprimirPlantillaE(".$idsolicitud.",\"".$idexamen."\",\"".$row_empleado['empleado']."\",\"".$row_generales['procedencia']."\",\"".$row_generales['subservicio']."\",\"".$comentarios."\",\"".$valores."\",\"".$codigos."\",\"".$observacion."\",\"".htmlentities($establecimiento)."\",\"".$sexo."\",\"".$idedad."\",\"".$valores_combos."\",\"".$f_tomamuestra."\",\"".$tipomuestra."\",\"".$f_consulta."\");'><span class='glyphicon glyphicon-print'></span>&nbsp;Vista Previa</button>
                             <a  href='#myModal' id='addexam_modal' role='button' data-toggle='modal' data-modal-enabled='true' style='display:none; height:20px'><button type='button' id='modaladdexam' align='center' class='btn btn-primary' title='Agregar Examen' ><span class='glyphicon glyphicon-plus'></span>&nbsp;Agregar Examen</button></a>                               
                         <button type='button' id='btnSalir' align='center' class='btn btn-primary' title='Cerrar'  onclick='Cerrar();'><span class='glyphicon glyphicon-remove-circle'></span>&nbsp;Cerrar</button><br/><br><br/>     
                     </td>
