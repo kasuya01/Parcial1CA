@@ -160,7 +160,9 @@ for ( i = 0; i < getVars.length; i++)
             tipomuestra=escape(getVars[i].substr(5)); 
         if ( getVars[i].substr(0,5) == 'origenmuestra=' )
             origenmuestra=escape(getVars[i].substr(5));        
-
+         if ( getVars[i].substr(0,5) == 'f_consulta=' )
+                    f_consulta=escape(getVars[i].substr(5));
+       // alert ("aqui"+f_consulta);
 		}
 document.frmnuevo.txtnec.value=nec;
 document.frmnuevo.txtarea.value=area;
@@ -229,6 +231,7 @@ $idexamen_=$_GET['var3'];
 $idexpediente_=$_GET['var1'];
 $fecha_recepcion_=$_GET['fecha_recepcion'];
 $idestabext_=$_GET['var19'];
+$f_consulta=$_GET['f_consulta'];
 $cant=$objdatos->buscarAnterioresPUnica($solicitud,$iddetallesolicitud, $idarea);
 
 if (pg_num_rows($cant)>0){
@@ -239,7 +242,7 @@ $fechatomamues= isset($rowdeta['f_tomamuestra']) ? $rowdeta['f_tomamuestra'] : n
 //echo strtotime(date( 'Y-m-d', $fechatomamues ));
 $timeftomamx = strtotime($fechatomamues);
 $dateftomamx = date("Y-m-d", $timeftomamx);
-
+$ftomamuestra=date("d-m-Y H:i",$timeftomamx);
 $fechadatosfijos=$rowdeta['fechadatosfijos'];
 if ($referido!="t"){
 
@@ -310,6 +313,7 @@ $edad=$objdatos->calc_edad($IdHistorial);
                             <td colspan="3" class="StormyWeatherDataTD"><?php echo $_GET['var7'];?>
                                 <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
                             </td>
+                           
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Conocido Por</td>
@@ -334,14 +338,18 @@ $edad=$objdatos->calc_edad($IdHistorial);
                             </td>
                         
                              <td class="StormyWeatherFieldCaptionTD">F. Toma Muestra</td>
-                             <td class="StormyWeatherDataTD" colspan="1"> <?php echo $fechatomamues ;?>
+                             <td class="StormyWeatherDataTD" colspan="1"> <?php echo $ftomamuestra ;?>
                                 <input type="hidden" id="fecha_tmuestra" name="f_tmuestra" value="<?php echo $fechatomamues;?>"/>
                                 <input type="hidden" id="dateftomamx" name="dateftomamx" value="<?php echo $dateftomamx;?>"/>
+                                 <input type="hidden" id="f_consulta" name="f_consulta" value="<?php echo $f_consulta;?>"/></td>
                             </td>
+                            
                         </tr>
                         <tr>
                             <td class="StormyWeatherFieldCaptionTD">Muestra Recibida</td>
-                            <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var20']." ".$_GET['origenmuestra'] ?></td>
+                            <td class="StormyWeatherDataTD" colspan="1"><?php echo $_GET['var20']." ".$_GET['origenmuestra'] ?></td>
+                            <td colspan='1' class="StormyWeatherFieldCaptionTD">Fecha Consulta</td>
+                            <td colspan='3' class="StormyWeatherDataTD" align='left' ><?php echo $f_consulta ?></td>
                         </tr>
                          <tr>
                             <td class="StormyWeatherFieldCaptionTD">Diagnostico</td>
@@ -399,7 +407,7 @@ $edad=$objdatos->calc_edad($IdHistorial);
 
                             </td>
                         </tr>
-                         <tr>
+                        <tr>
                             <td class="StormyWeatherFieldCaptionTD" style="white-space: nowrap;">*Fecha Realización </td>
                             <td  colspan="1" class="StormyWeatherDataTD">
 <!--                               <input type="text" class="date form-control height" name="fecha_realizacion" id="fecha_realizacion" size="60"  placeholder="aaaa-mm-dd"  onchange="validafecha(this.value,'fecha_realizacion' ,<?php echo "'". $dateftomamx."'" ;?>); valdatesolicita(this.value, 'fecha_realizacion');"/>-->
@@ -539,7 +547,7 @@ echo '<option value="xyz">Seleccione una opción</option>';
                           }
                           else {                                                                        echo '<textarea  name="v_resultfin" cols="50" size="43"  id="v_resultfin" class="form-control height"/></textarea><input type="hidden" id="idresultadofin" name="idresultadofin" value="x" class="height js-example-basic-single"/>';
                           }
-
+                          echo '<input type="hidden" id="hdnf_consulta" class="form-control  height" name="hdnf_consulta" value="'.$f_consulta.'"/>';
                            ?>
 <!--
                                 <input type="text" id="v_resultfin" name="v_resultfin" style="width:100%">										-->

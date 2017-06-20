@@ -174,7 +174,6 @@ switch ($opcion)
                     WHERE mnt_3.id_establecimiento=$lugar 
                     AND mnt_3.id_atencion ||'-'|| mnt_3.id_area_mod_estab ||'-'||mnt_3.id_establecimiento NOT IN (SELECT id_atencion ||'-'|| id_area_mod_estab ||'-'||id_establecimiento 
                     FROM mnt_aten_area_mod_estab WHERE nombre_ambiente IS NOT NULL))
-
                 SELECT ordenar.* FROM (
                 SELECT t02.id,
                 TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,

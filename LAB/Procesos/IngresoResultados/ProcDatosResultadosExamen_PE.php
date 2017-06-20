@@ -114,14 +114,16 @@ function VerResultados()
                     f_tomamuestra=escape(getVars[i].substr(5));
                 if ( getVars[i].substr(0,5) == 'var20=' )
                     tipomuestra=escape(getVars[i].substr(5));
-                 if ( getVars[i].substr(0,5) == 'var21=' )
+                if ( getVars[i].substr(0,5) == 'var21=' )
                     idestabext=escape(getVars[i].substr(5));
-                 if ( getVars[i].substr(0,5) == '$fecha_recepcion_=' )
+                if ( getVars[i].substr(0,5) == '$fecha_recepcion_=' )
                     $fecha_recepcion_=escape(getVars[i].substr(5));
-                 if ( getVars[i].substr(0,5) == 'edad=' )
+                if ( getVars[i].substr(0,5) == 'edad=' )
                     origenmuestra=escape(getVars[i].substr(5));
-                 if ( getVars[i].substr(0,5) == 'nomsexo=' )
+                if ( getVars[i].substr(0,5) == 'nomsexo=' )
                     nomsexo=escape(getVars[i].substr(5));
+                if ( getVars[i].substr(0,5) == 'f_consulta=' )
+                    f_consulta=escape(getVars[i].substr(5));
             }
             
             document.frmnuevo.txtnec.value=nec;
@@ -170,6 +172,7 @@ jQuery(document).ready(function($){
         $nomsexo=$_GET['nomsexo'];
         $IdDetalleSolicitud=$_GET['var5'];
         $idarea= $_GET['var4'];
+        $f_consulta=$_GET['f_consulta'];
        // echo $idsolicitud." - ".$IdDetalleSolicitud." - ".$idarea;
         $cant=$obj->buscarAnterioresPUnica($idsolicitud,$IdDetalleSolicitud,$idarea);
         if (pg_num_rows($cant)>0){
@@ -312,10 +315,13 @@ jQuery(document).ready(function($){
             </tr>
             <tr>
                 <td class="StormyWeatherFieldCaptionTD">Fecha de Toma de Muestra</td>
-                <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var19'] ?>
+                <td class="StormyWeatherDataTD" colspan="1"><?php echo $_GET['var19'] ?>
                      <input type="hidden" id="fecha_tmuestra" name="f_tmuestra" value="<?php echo $ftx;?>"/>
                      <input type="hidden" id="dateftomamx" name="dateftomamx" value="<?php echo $dateftomamx;?>"/>
+                     <input type="hidden" id="f_consulta" name="f_consulta" value="<?php echo $f_consulta;?>"/>
                 </td>
+                <td class="StormyWeatherFieldCaptionTD">Fecha de Consulta</td> 
+                <td class="StormyWeatherDataTD" colspan="1"><?php echo $f_consulta; ?></td>
             </tr>
             <tr>
                 <td class="StormyWeatherFieldCaptionTD">*Validado Por</td>
