@@ -249,6 +249,8 @@ function LlenarComboExamen(idarea)
 function BuscarDatos(pag)
 {
 	opcion=1;
+
+	IdTipoEstab=document.getElementById('cmbTipoEstab').value;
 	IdEstab=document.getElementById('cmbEstablecimiento').value;
 	IdServ=document.getElementById('CmbServicio').value;
 	IdSubServ=document.getElementById('cmbSubServ').value;
@@ -267,7 +269,7 @@ function BuscarDatos(pag)
 	//enviando los valores
 	ajax.send("idexpediente="+idexpediente+"&opcion="+opcion+"&primernombre="+escape(primernombre)+
 	"&segundonombre="+escape(segundonombre)+"&primerapellido="+escape(primerapellido)+"&segundoapellido="+escape(segundoapellido)+
-	"&fecharecep="+fecharecep+"&IdEstab="+IdEstab+"&IdServ="+IdServ+"&IdSubServ="+IdSubServ+"&pag="+pag);
+	"&fecharecep="+fecharecep+"&IdEstab="+IdEstab+"&IdServ="+IdServ+"&IdSubServ="+IdSubServ+"&pag="+pag+"&IdTipoEstab="+IdTipoEstab);
 
 	ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {

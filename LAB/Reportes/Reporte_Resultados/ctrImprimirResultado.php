@@ -44,6 +44,7 @@ switch ($opcion) {
         $inicio = ($pag - 1) * $registros;
 
         $ban = 0;
+        $IdTipoEstab = $_POST['IdTipoEstab'];    // $idEstablecimiento  id_establecimiento_externo
         $IdEstab = $_POST['IdEstab'];    // $idEstablecimiento  id_establecimiento_externo
         $IdServ = $_POST['IdServ'];
         $IdSubServ = $_POST['IdSubServ'];
@@ -74,9 +75,6 @@ switch ($opcion) {
             else{
                 $cond1 .=$cond0 . "  t02.id_establecimiento_externo >0 ";
                 $cond2 .=$cond0 . "  t02.id_establecimiento_externo >0 ";
-
-                // $cond1 .=$cond0 . "  t02.id_establecimiento_externo = " . $lugar . " ";
-                // $cond2 .=$cond0 . "  t02.id_establecimiento_externo = " . $lugar . " ";
             }
         }
 
@@ -115,10 +113,7 @@ switch ($opcion) {
             $cond2 .= " and  t02.fecha_solicitud = '" . $_POST['fechasolicitud'] . "' ";
         }*/
 
-        if (!empty($_POST['fecharecep'])) {
-            $cond1 .= " and t03.fecharecepcion = '" . $_POST['fecharecep'] . "'    ";
-            $cond2 .= " and t03.fecharecepcion = '" . $_POST['fecharecep'] . "'    ";
-        }
+
         // else {
         //     $cond1 .= " and t03.fecharecepcion  >=date(current_date -   INTERVAL'6 month')    ";
         //     $cond2 .= " and t03.fecharecepcion  >=date(current_date -   INTERVAL'6 month')     ";
@@ -155,6 +150,21 @@ switch ($opcion) {
                 AND ( empty($_POST['IdServ'])) AND ( empty($_POST['IdSubServ'])) AND ( empty($_POST['fecharecep']))) {
             $ban = 1;
         }
+          if (!empty($_POST['fecharecep'])) {
+            $cond1 .= " and t03.fecharecepcion = '" . $_POST['fecharecep'] . "'    ";
+            $cond2 .= " and t03.fecharecepcion = '" . $_POST['fecharecep'] . "'    ";
+        }
+        else {
+            // echo 'long. '.strlen(utf8_decode($cond1)). ' cond2: '.strlen ($cond2);
+             if (strlen(utf8_decode($cond1))==0 and strlen ($cond2)==0){
+                 $cond1 .= " and t03.fecharecepcion  >=date(current_date -   INTERVAL'15 days')   ";
+                 $cond2 .= " and t03.fecharecepcion  >=date(current_date -   INTERVAL'15 days')     ";
+             }
+         }
+    /*     if (!empty($_POST['IdTipoEstab'])) {
+             $cond1 .= $cond0 . " t14.id_tipo_establecimiento = " . $_POST['IdTipoEstab'] . "    ";
+             $cond2 .= $cond0 . " t14.id_tipo_establecimiento = " . $_POST['IdTipoEstab'] . "   ";
+         }*/
 
 //        if ($ban == 0) {
 //
@@ -198,6 +208,7 @@ switch ($opcion) {
                 t02.id,
                 t02.id_dato_referencia,
                 TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
+                t03.fecharecepcion as frecepcion,
                 t06.numero AS idnumeroexp,
                 CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,
                 t07.segundo_apellido,t07.apellido_casada) AS paciente,
@@ -214,7 +225,7 @@ switch ($opcion) {
                order by t2.id asc
                limit 1) AS estado,
             TO_CHAR(t09.fechaconsulta, 'DD/MM/YYYY') as fecchaconsulta, t02.id_establecimiento_externo,
-            t02.estado as idestado, b_impresa
+            t02.estado as idestado, b_impresa, t03.numeromuestra
             FROM sec_solicitudestudios t02
             INNER JOIN lab_recepcionmuestra t03                 ON (t03.idsolicitudestudio=t02.id)
 	    INNER JOIN mnt_expediente t06                       ON (t06.id = t02.id_expediente)
@@ -229,7 +240,6 @@ switch ($opcion) {
             INNER JOIN lab_tiposolicitud t17                    ON (t17.id = t02.idtiposolicitud)
             INNER JOIN tbl_servicio t20                         ON (t20.id = t10.id AND t20.servicio IS NOT NULL)
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-            -- AND idestado <>8
             AND t02.id_establecimiento = $lugar $cond1
 
 
@@ -240,6 +250,7 @@ switch ($opcion) {
             t02.id,
             t02.id_dato_referencia,
             TO_CHAR(t03.fecharecepcion, 'DD/MM/YYYY') AS fecharecepcion,
+            t03.fecharecepcion as frecepcion,
             t06.numero AS idnumeroexp,
             CONCAT_WS(' ',t07.primer_nombre,t07.segundo_nombre,t07.tercer_nombre,t07.primer_apellido,t07.segundo_apellido,
             t07.apellido_casada) AS paciente,
@@ -255,7 +266,7 @@ switch ($opcion) {
             order by t2.id asc
             limit 1) AS estado,
             TO_CHAR(t02.fecha_solicitud, 'DD/MM/YYYY') as fecchaconsulta, t02.id_establecimiento_externo,
-            t02.estado as idestado, b_impresa
+            t02.estado as idestado, b_impresa, t03.numeromuestra
             FROM sec_solicitudestudios t02
             INNER JOIN lab_recepcionmuestra t03                     ON (t03.idsolicitudestudio=t02.id)
             INNER JOIN mnt_dato_referencia t09                      ON t09.id=t02.id_dato_referencia
@@ -269,8 +280,7 @@ switch ($opcion) {
             INNER JOIN cit_citas_serviciodeapoyo t15                ON (t15.id_solicitudestudios=t02.id)
             INNER JOIN lab_tiposolicitud t17 			    ON (t17.id = t02.idtiposolicitud)
             WHERE (t02.id_atencion=(SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-           -- AND idestado <>8
-            AND t02.id_establecimiento =$lugar $cond2   order by b_impresa, id_historial_clinico,fecharecepcion desc  ";
+            AND t02.id_establecimiento =$lugar $cond2   order by b_impresa, frecepcion desc  ";
 
         /* if ($ban==0)
           {   $query = substr($query ,0,strlen($query)-3);
@@ -313,6 +323,7 @@ if ( $NroRegistros==""){
         echo "<div class='table-responsive' style='width: 100%;'>
            <table width='97%' border='1' align='center' id='dataresultados' data-table-enabled='true' class='table table-hover table-bordered table-condensed table-white'><thead>
                     <tr>
+                    <th>No Mx</th>
 				<th>Fecha Recepci&oacute;n</th>
 				<th style='width: 8%;'>NEC </th>
 				<th>Nombre Paciente</th>
@@ -333,6 +344,7 @@ if ( $NroRegistros==""){
             else{
                 echo "<tr>";
             }
+            echo "<td>".$row['numeromuestra']."</td>";
 			echo "<td>" .htmlentities($row['fecharecepcion']). "</td>";
                         if ($row['idestado']<>8) {
                             echo "<td align='right'><span style='color: #0101DF; '><a style ='text-decoration:underline;cursor:pointer;' onclick='MostrarDatos(" . $pos . ");'>" . $row['idnumeroexp'] ."</a></td>" ;
@@ -856,7 +868,7 @@ return $plantillas;
                         $row['control_normal_elemento']
                     );
 
-                    $exams[ $newExam[2] ]['elementos'] = $this->addElementToExam($exams[ $newExam[2] ]['elementos'], $newElement, $row);
+                    $exams[ $newExam[2] ]['elementos'] =addElementToExam($exams[ $newExam[2] ]['elementos'], $newElement, $row);
                 }
                 break;
             case 'C':
@@ -933,7 +945,7 @@ return $plantillas;
                         $row['control_diario_procedimiento']
                     );
 
-                    $exams[ $newExam[2] ]['procedimientos'] = $this->addProcedureToExam($exams[ $newExam[2] ]['procedimientos'], $newProcedure);
+                    $exams[ $newExam[2] ]['procedimientos'] = addProcedureToExam($exams[ $newExam[2] ]['procedimientos'], $newProcedure);
                 }
                 break;
         }

@@ -74,6 +74,7 @@ function BuscarServicio(IdServicio){
 
 }
 $(document).ready(function() {
+    MostrarBusqueda();
         $("#cmbTipoEstab").select2({
           placeholder: "Tipo Establecimiento",
           allowClear: true,
@@ -146,7 +147,7 @@ if ($nivel == 7) {
 
                         <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:405px" onChange="BuscarEstablecimiento(this.value) "  class="height placeholder js-example-basic-single">
 
-                            <option value="0">Seleccione un Tipo de Establecimiento</option>
+                            <option value="0" selected>Seleccione un Tipo de Establecimiento</option>
 			<?php
 				$db = new ConexionBD;
 				if($db->conectar()==true){
@@ -157,7 +158,7 @@ if ($nivel == 7) {
                                            if ($rows[0]!=$tipo)
 						echo '<option value="' . $rows[0] . '">' . $rows[1] . '</option>';
 					}
-						echo '<option value="'. $tipo .'" selected="selected">' .htmlentities($nomtipo). '</option>';
+						echo '<option value="'. $tipo .'" >' .htmlentities($nomtipo). '</option>';
 				}
 			?>
                         </select>
@@ -243,7 +244,7 @@ if ($nivel == 7) {
                              <td class="StormyWeatherDataTD" width="5%">
 
 
-                                     <input type="text" size="28"  name="txtfecharecep" id="txtfecharecep" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" value="<?php echo $d_fecha ;?>" />
+                                     <input type="text" size="28"  name="txtfecharecep" id="txtfecharecep" class="date form-control height placeholder"  placeholder="aaaa-mm-dd" value="" />
 
             </td>
                 </tr>
