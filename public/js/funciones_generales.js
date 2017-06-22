@@ -97,7 +97,7 @@ function getCurrentDateTime(format) {
 
 
 function valfechasolicita(obj, nombre) {
-
+alert ('entro'+obj+)
    //fecha0=document.getElementById('d_fechatoma').value;
    fecha1 = obj;
    var fecha_actual = new Date();
@@ -689,6 +689,7 @@ function setDataTableOptions(element) {
                 loadingRecords: "Cargando...",
                 processing:     "Procesando...",
                 search:         "Buscar en la Tabla:",
+                bSortable:      false,
                 zeroRecords:    "No se encontraron coincidencias",
                 paginate: {
                     first:      "Primero",
