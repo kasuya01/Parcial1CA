@@ -139,7 +139,7 @@ switch ($opcion) {
         }
        
            
-              $query="WITH tbl_servicio as (SELECT mnt_3.id, CASE WHEN id_servicio_externo_estab IS NOT NULL
+            $query="WITH tbl_servicio as (SELECT mnt_3.id, CASE WHEN id_servicio_externo_estab IS NOT NULL
                        THEN mnt_ser.abreviatura ||'--'  || a.nombre
                        ELSE       cmo.nombre ||'--' || a.nombre
                        END as procedencia,
