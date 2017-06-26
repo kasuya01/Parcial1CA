@@ -11,7 +11,7 @@ $area      = $_SESSION['Idarea'];
 //variables POST
 $idexpediente = $_POST['idexpediente'];
 $fechacita    = $_POST['fechacita'];
-$idEstablecimiento = $_POST['idEstablecimiento'];
+echo "estab" .$idEstablecimientoExt = $_POST['idEstablecimiento'];
 
 $Nfechacita = "";
 if($fechacita != "") {
@@ -19,7 +19,7 @@ if($fechacita != "") {
     $Nfechacita = $Nfecha[2] . "/" . $Nfecha[1] . "/" . $Nfecha[0];
 }
 $estado     = 'D';
-
+//echo "Nfechacita". $Nfechacita;
 $objdatos = new clsRecepcionSolicitud;
 $consulta = $objdatos->BuscarTodasSolicitudes($idexpediente, $Nfechacita, $lugar, $idEstablecimiento);
 $NroRegistros = $numreg = pg_num_rows($consulta);
@@ -48,7 +48,8 @@ if($NroRegistros !== -1) {
 }
 
 for ($i = 0; $i < $NroRegistros; $i++) {
-    $ConsultaDatos = $objdatos->BuscarDatosSolicitudes($idexpediente, $Nfechacita, $arraysolic[$i], $lugar);
+    //echo $arraysolic[$i];
+    $ConsultaDatos = $objdatos->BuscarDatosSolicitudes($idexpediente, $Nfechacita, $arraysolic[$i], $lugar, $idEstablecimiento);
     while ($row = pg_fetch_array($ConsultaDatos)) {
         echo "<table width='70%' border='0' align='center' class='StormyWeatherFormTABLE'>
                 <tr>

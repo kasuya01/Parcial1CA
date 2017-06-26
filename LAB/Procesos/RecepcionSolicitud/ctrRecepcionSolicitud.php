@@ -227,9 +227,9 @@ switch ($opcion) {
       break;
    case 2:  //verificar existencia de datos para los parametros de una solicitud
      $idexpediente = $_POST['idexpediente'];
-      $fechacita = $_POST['fechacita'];
+     $fechacita = $_POST['fechacita'];
      $idEstablecimiento = $_POST['idEstablecimiento'];
-      $idsolicitud = $_POST['idsolicitud'];
+     $idsolicitud = $_POST['idsolicitud'];
      $Nfechacita = $fechacita;
      $idestabext= $_POST['idestablecimientoext'];
       //$Nfecha     = explode("/", $fechacita);
@@ -243,11 +243,12 @@ switch ($opcion) {
                 //$idexp=1;
             }
 
-            if($fechacita !== '') {
+            if($Nfechacita !== '--') {
+                //echo $Nfechacita;
                 $where = $where." AND t01.fecha = '$Nfechacita'";
             }
             
-            if ($idEstablecimiento!==0){
+            if ($idestabext!=0){
                $where = $where." AND t02.id_establecimiento_externo = $idestabext "; 
             }
           //  echo "where ".$where;
@@ -288,11 +289,11 @@ switch ($opcion) {
                 //$idexp=1;
             }
 
-            if($fechacita !== '') {
+            if($Nfechacita !== '--') {
                 $where2 = $where2." AND t02.fecha = '$Nfechacita'";
             }
             
-            if ($idEstablecimiento!==0){
+            if ($idestabext!=0){
                $where2 = $where2." AND t01.id_establecimiento_externo = $idestabext "; 
             }
          if ($numreg[0] == 1) {//verificando existencia de datos para los parametros de la busqueda no referido
@@ -387,14 +388,14 @@ switch ($opcion) {
                 //$idexp=1;
             }
 
-            if($fechacita !== '') {
+            if($Nfechacita !== '--') {
                 $where3 = $where3." AND t02.fecha = '$Nfechacita'";
             }
             
-            if ( $idestabext!==0){
+            if ( $idestabext!=0){
                $where3 = $where3." AND t01.id_establecimiento_externo =  $idestabext "; 
             }
-            $query_estado = "SELECT CASE t04.idestado
+           $query_estado = "SELECT CASE t04.idestado
                 WHEN 'D' THEN 'Digitada'
                 WHEN 'R' then 'Recibida'
                 WHEN 'P' then 'En Proceso'
@@ -458,8 +459,9 @@ switch ($opcion) {
                echo "No hay solicitudes que procesar de este paciente";
             }
          }
-         if ($numreg[0] == '0') {
-            echo "La Solicitud no Existe";
+         if ($numreg[0] == 0) {
+        
+            echo "NO EXISTE SOLICITUD CON ESTOS DATOS";
          }
       } else
          echo "No se conecta a la base de datos";
@@ -589,8 +591,7 @@ switch ($opcion) {
       $fechacita = $_POST['fechacita'];
       $idEstablecimiento = $_POST['idEstablecimiento'];
 
-      $query = $object->buscarTodasSolicitudes($idexpediente, $fechacita,
-              $lugar, $idEstablecimiento);
+      $query = $object->buscarTodasSolicitudes($idexpediente, $fechacita,$lugar, $idEstablecimiento);
 
       if ($query !== false) {
          $jsonresponse['status'] = true;
