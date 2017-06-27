@@ -74,7 +74,7 @@ while ($rowsolic = pg_fetch_array($consulta)) {
     $i++;
 }
 //echo "antes del for".$idestablecimientoext;
-/*for ($i = 0; $i < $NroRegistros; $i++) {*/
+for ($i = 0; $i < $NroRegistros; $i++) {
    // echo $i;
     echo "<div class='row'>
     <div class='col-md-1'></div>";
@@ -305,7 +305,7 @@ while ($rowsolic = pg_fetch_array($consulta)) {
         echo "</div>";//fin div class box box-primary
     echo "</div>";//fin div class col-md-8
 echo "</div>";//fin div class row
-//}// for
+}// for
 ?>
 
 <!--    <table align="center">
