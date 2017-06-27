@@ -338,6 +338,8 @@ function MostrarTodos() {
             } else if (exception === 'abort') {
                 alert('Ajax request aborted.');
             } else {
+                alert(responseText);
+              //  eval(responseText);
                 alert('Uncaught Error.\n' + jqXHR.responseText);
             }
         }
@@ -766,6 +768,21 @@ function DatosCompletos()
 {
     var resp = true;
     if ((document.getElementById('txtidexpediente').value == "")
+            ||(document.getElementById('txtfechasolicitud').value == "") 
+            
+          ||(document.getElementById('cmbEstablecimiento').value == 0)
+            ) {
+        resp = false;
+    }
+   
+    else{
+        resp= true;}
+  
+  
+      return resp;//}
+    
+    
+    /*if ((document.getElementById('txtidexpediente').value == "")
             &&(document.getElementById('txtfechasolicitud').value == "") 
             
         //  ||(document.getElementById('cmbEstablecimiento').value == 0)
@@ -775,14 +792,9 @@ function DatosCompletos()
    
     else{
         resp= true;}
-   /* if (document.getElementById('txtfechasolicitud').value == "") {
-        resp = false;
-    }*/
-   /*  if (document.getElementById('cmbEstablecimiento').value == 0) {
-        resp = false;
-    }*/
   
-      return resp;//}
+  
+      return resp;//}*/
 }
 
 //FUNCION PARA BUSCAR DATOS DE LA SOLICITUD

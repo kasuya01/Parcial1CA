@@ -178,7 +178,7 @@ class clsRecepcionSolicitud {
             }
            
            
-           $query = "
+          $query = "
                 WITH tbl_servicio as (SELECT mnt_3.id, CASE WHEN id_servicio_externo_estab IS NOT NULL
                        THEN mnt_ser.abreviatura ||' - '  || a.nombre
                        ELSE       cmo.nombre ||' - ' || a.nombre
@@ -289,7 +289,7 @@ class clsRecepcionSolicitud {
                  INNER JOIN ctl_establecimiento          t11 ON t11.id = t01.id_establecimiento_externo
                $where ) ordenar 
                    ORDER BY ordenar.fecha_cita desc, ordenar.id_tiposolicitud , ordenar.numero_expediente";
-
+       //   exit();
             //var_dump( $query.$where.$orderBy);
             $result = @pg_query($query);
 
@@ -432,7 +432,7 @@ class clsRecepcionSolicitud {
                   if ($idestablecimientoext!=0){
                       $where = $where." AND t02.id_establecimiento_externo = $idestablecimientoext "; 
                    }
-           $query = "WITH tbl_servicio as (SELECT mnt_3.id, CASE WHEN id_servicio_externo_estab IS NOT NULL
+         $query = "WITH tbl_servicio as (SELECT mnt_3.id, CASE WHEN id_servicio_externo_estab IS NOT NULL
                        THEN mnt_ser.abreviatura ||'--'  || a.nombre
                        ELSE       cmo.nombre ||'--' || a.nombre
                        END as procedencia,
@@ -543,7 +543,7 @@ class clsRecepcionSolicitud {
                if($fechacita !== '--') {
                    $where1 = $where1." AND t09.fecha = '$fechacita'";
                }
-      $query="WITH tbl_servicio as (SELECT mnt_3.id, CASE WHEN id_servicio_externo_estab IS NOT NULL
+     $query="WITH tbl_servicio as (SELECT mnt_3.id, CASE WHEN id_servicio_externo_estab IS NOT NULL
                        THEN mnt_ser.abreviatura ||' - '  || a.nombre
                        ELSE       cmo.nombre ||' - ' || a.nombre
                        END as procedencia,

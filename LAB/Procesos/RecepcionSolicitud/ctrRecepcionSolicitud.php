@@ -269,7 +269,7 @@ switch ($opcion) {
                $where = $where."AND t02.id_establecimiento_externo = $idEstablecimiento "; 
             }*/
             
-      $query = "SELECT COUNT(t01.id_solicitudestudios) AS numreg, (CASE WHEN t10.id is null THEN false ELSE true END) referido
+    $query = "SELECT COUNT(t01.id_solicitudestudios) AS numreg, (CASE WHEN t10.id is null THEN false ELSE true END) referido
                       FROM cit_citas_serviciodeapoyo        t01
                       INNER JOIN sec_solicitudestudios      t02 ON (t02.id = t01.id_solicitudestudios)
                       LEFT JOIN sec_historial_clinico       t03 ON (t03.id = t02.id_historial_clinico)
