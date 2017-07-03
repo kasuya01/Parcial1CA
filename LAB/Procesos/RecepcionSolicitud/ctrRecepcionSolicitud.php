@@ -226,32 +226,111 @@ switch ($opcion) {
       }
       break;
    case 2:  //verificar existencia de datos para los parametros de una solicitud
-      $idexpediente = $_POST['idexpediente'];
-      $fechacita = $_POST['fechacita'];
-      $idEstablecimiento = $_POST['idEstablecimiento'];
-      $idsolicitud = $_POST['idsolicitud'];
-      // echo 'fechaCita:'.$fechacita;
+     $idexpediente = $_POST['idexpediente'];
+     $fechacita = $_POST['fechacita'];
+     $idEstablecimiento = $_POST['idEstablecimiento'];
+     $idsolicitud = $_POST['idsolicitud'];
+     $Nfechacita = $fechacita;
+     $idestabext= $_POST['idestablecimientoext'];
       //$Nfecha     = explode("/", $fechacita);
       //$Nfechacita = $Nfecha[2] . "-" . $Nfecha[1] . "-" . $Nfecha[0];
-      $Nfechacita = $fechacita;
+      
+      // echo " case 2 exp:".$idexpediente." estab".$idEstablecimiento ;
+      $where="WHERE t02.id_establecimiento = $lugar";
+          $group =' GROUP BY (CASE WHEN t10.id is null THEN false ELSE true END)';
+           if($idexpediente !== '') {
+                $where = $where." AND (t04.numero = '$idexpediente' OR t11.numero = '$idexpediente')";
+                //$idexp=1;
+            }
 
+            if($Nfechacita !== '--') {
+                //echo $Nfechacita;
+                $where = $where." AND t01.fecha = '$Nfechacita'";
+            }
+            
+            if ($idestabext!=0){
+               $where = $where." AND t02.id_establecimiento_externo = $idestabext "; 
+            }
+          //  echo "where ".$where;
+     // echo "case 2" .$idEstablecimiento;
       if ($con->conectar() == true) {
-         $query = "SELECT COUNT(t01.id_solicitudestudios) AS numreg, (CASE WHEN t10.id is null THEN false ELSE true END) referido
+        /*  $where="WHERE t02.id_establecimiento = $lugar";
+          $group =' GROUP BY (CASE WHEN t10.id is null THEN false ELSE true END)';
+           if($idexpediente !== '') {
+                $where = $where." AND (t04.numero = (t04.numero = '$idexpediente' OR t11.numero = '$idexpediente')";
+                //$idexp=1;
+            }
+
+            if($fechacita !== '') {
+                $where = $where." AND t01.fecha = '$Nfechacita'";
+            }
+            
+            if ($idEstablecimiento!==0){
+               $where = $where."AND t02.id_establecimiento_externo = $idEstablecimiento "; 
+            }*/
+            
+    $query = "SELECT COUNT(t01.id_solicitudestudios) AS numreg, (CASE WHEN t10.id is null THEN false ELSE true END) referido
                       FROM cit_citas_serviciodeapoyo        t01
                       INNER JOIN sec_solicitudestudios      t02 ON (t02.id = t01.id_solicitudestudios)
                       LEFT JOIN sec_historial_clinico       t03 ON (t03.id = t02.id_historial_clinico)
                       LEFT JOIN mnt_expediente              t04 ON (t04.id = t02.id_expediente)
                       LEFT JOIN mnt_dato_referencia	    t10 ON (t10.id = t02.id_dato_referencia)
                       LEFT JOIN mnt_expediente_referido     t11 ON (t11.id = t10.id_expediente_referido)
-
-                      WHERE t01.fecha = '$Nfechacita' AND (t04.numero = '$idexpediente' OR t11.numero = '$idexpediente') AND t02.id_establecimiento = $lugar";
-         $query .=' GROUP BY (CASE WHEN t10.id is null THEN false ELSE true END)';
+                      $where $group";
+                      
+       // echo $query;
+         //WHERE t01.fecha = '$Nfechacita' AND (t04.numero = '$idexpediente' OR t11.numero = '$idexpediente') AND t02.id_establecimiento = $lugar AND t02.id_establecimiento_externo = $idEstablecimiento ";
          $numreg = pg_fetch_array(pg_query($query));
          // echo $query;
+   
+         $where2="WHERE t01.id_establecimiento = $lugar AND t06.codigo_busqueda = 'DCOLAB' ";
+         if($idexpediente !== '') {
+                $where2 = $where2." AND t05.numero = '$idexpediente'";
+                //$idexp=1;
+            }
 
+            if($Nfechacita !== '--') {
+                $where2 = $where2." AND t02.fecha = '$Nfechacita'";
+            }
+            
+            if ($idestabext!=0){
+               $where2 = $where2." AND t01.id_establecimiento_externo = $idestabext "; 
+            }
          if ($numreg[0] == 1) {//verificando existencia de datos para los parametros de la busqueda no referido
-            if ($numreg['referido'] == 'f') {
-               $query_estado = "SELECT CASE t04.idestado
+            $query_estado ="SELECT CASE t04.idestado
+                WHEN 'D' THEN 'Digitada'
+                WHEN 'R' then 'Recibida'
+                WHEN 'P' then 'En Proceso'
+                WHEN 'C' then 'Completa'
+                WHEN 'RM' then 'Muestra Rechazada'
+            END AS estado
+            FROM sec_solicitudestudios                 t01
+            INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
+            INNER JOIN sec_historial_clinico           t03 ON (t03.id = t01.id_historial_clinico)
+            INNER JOIN ctl_estado_servicio_diagnostico t04 ON (t04.id = t01.estado AND t04.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+            INNER JOIN mnt_expediente                  t05 ON (t05.id = t01.id_expediente)
+            INNER JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)
+            $where2  
+                            UNION
+
+            SELECT CASE t04.idestado
+                WHEN 'D' THEN 'Digitada'
+                WHEN 'R' then 'Recibida'
+                WHEN 'P' then 'En Proceso'
+                WHEN 'C' then 'Completa'
+                WHEN 'RM' then 'Muestra Rechazada'
+            END AS estado
+            FROM sec_solicitudestudios                 t01
+            INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
+            INNER JOIN mnt_dato_referencia	           t03 ON (t03.id = t01.id_dato_referencia)
+            INNER JOIN ctl_estado_servicio_diagnostico t04 ON (t04.id = t01.estado AND t04.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+            LEFT JOIN mnt_expediente_referido          t05 ON (t05.id = t03.id_expediente_referido)
+            INNER JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)
+            $where2 ";                    
+                     
+                   
+         /*   if ($numreg['referido'] == 'f') {
+              echo "1  ".$query_estado = "SELECT CASE t04.idestado
                                                 WHEN 'D' THEN 'Digitada'
                                                 WHEN 'R' then 'Recibida'
                                                 WHEN 'P' then 'En Proceso'
@@ -264,11 +343,12 @@ switch ($opcion) {
                                      INNER JOIN ctl_estado_servicio_diagnostico t04 ON (t04.id = t01.estado AND t04.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
                                      INNER JOIN mnt_expediente                  t05 ON (t05.id = t01.id_expediente)
                                      INNER JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)
-                                     WHERE t05.numero = '$idexpediente' AND t02.fecha = '$Nfechacita' AND  t01.id_establecimiento = $lugar
-                                           AND t03.idestablecimiento = $idEstablecimiento AND t06.codigo_busqueda = 'DCOLAB' ";
+                                     $where2";
+                                 // --   WHERE t05.numero = '$idexpediente' AND t02.fecha = '$Nfechacita' AND  t01.id_establecimiento = $lugar
+                                  //  --       AND t03.idestablecimiento = $idEstablecimiento AND t06.codigo_busqueda = 'DCOLAB' ";
 //echo $query_estado;
             } else { // verificar existencia para datos de referencia
-               $query_estado = "SELECT CASE t04.idestado
+             echo  "2  ".$query_estado = "SELECT CASE t04.idestado
                                             WHEN 'D' THEN 'Digitada'
                                             WHEN 'R' then 'Recibida'
                                             WHEN 'P' then 'En Proceso'
@@ -278,13 +358,13 @@ switch ($opcion) {
 				 FROM sec_solicitudestudios                 t01
 				 INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
                                  INNER JOIN ctl_estado_servicio_diagnostico t04 ON (t04.id = t01.estado AND t04.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-                                 LEFT JOIN mnt_expediente                  t05 ON (t05.id = t01.id_expediente)
                                  INNER JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)
-                                 LEFT JOIN mnt_dato_referencia	    t10 ON (t10.id = t01.id_dato_referencia)
-                                 LEFT JOIN mnt_expediente_referido     t11 ON (t11.id = t10.id_expediente_referido)
-				 WHERE (t05.numero = '$idexpediente' OR t11.numero = '$idexpediente') AND t02.fecha = '$Nfechacita' AND  t01.id_establecimiento = $lugar
-                                       AND t10.id_establecimiento = $idEstablecimiento AND t06.codigo_busqueda = 'DCOLAB'";
-            }
+                                 LEFT JOIN mnt_dato_referencia	    t03 ON (t03.id = t01.id_dato_referencia)
+                                 LEFT JOIN mnt_expediente_referido     t05 ON (t05.id = t03.id_expediente_referido)
+                                 $where2";
+				//-- WHERE t05.numero = '$idexpediente'  AND t02.fecha = '$Nfechacita' AND  t01.id_establecimiento = $lugar
+                                //  --     AND t03.id_establecimiento = $idEstablecimiento AND t06.codigo_busqueda = 'DCOLAB'";*/
+          //  }
             //echo $query_estado;
             $result = @pg_query($query_estado);
             $row = pg_fetch_array($result);
@@ -293,8 +373,8 @@ switch ($opcion) {
             if ($estadosolicitud == "Digitada") { //Mostrar datos de la solicitud
                echo "D";
             } else {
-               if ($estadosolicitud == "Recibida" or $estadosolicitud == "En Proceso" or $estadosolicitud
-                       == "Completa" or $estadosolicitud == "Muestra Rechazada") {
+               if ($estadosolicitud == "Recibida" or $estadosolicitud == "En Proceso" or 
+                       $estadosolicitud== "Completa" or $estadosolicitud == "Muestra Rechazada") {
                   echo "La Solicitud esta: " . $estadosolicitud;
                }
             }
@@ -302,7 +382,53 @@ switch ($opcion) {
          // echo 'numreg: '.$numreg[0];
 
          if ($numreg[0] > 1) {
-            $query_estado = "SELECT CASE t04.idestado
+            //  $where3="WHERE t01.id_establecimiento = $lugar AND t06.codigo_busqueda = 'DCOLAB' ";
+         if($idexpediente !== '') {
+                $where3 = $where3." AND t05.numero = '$idexpediente'";
+                //$idexp=1;
+            }
+
+            if($Nfechacita !== '--') {
+                $where3 = $where3." AND t02.fecha = '$Nfechacita'";
+            }
+            
+            if ( $idestabext!=0){
+               $where3 = $where3." AND t01.id_establecimiento_externo =  $idestabext "; 
+            }
+           $query_estado = "SELECT CASE t04.idestado
+                WHEN 'D' THEN 'Digitada'
+                WHEN 'R' then 'Recibida'
+                WHEN 'P' then 'En Proceso'
+                WHEN 'C' then 'Completa'
+                WHEN 'RM' then 'Muestra Rechazada'
+            END AS estado
+            FROM sec_solicitudestudios                 t01
+            INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
+            INNER JOIN sec_historial_clinico           t03 ON (t03.id = t01.id_historial_clinico)
+            INNER JOIN ctl_estado_servicio_diagnostico t04 ON (t04.id = t01.estado AND t04.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+            INNER JOIN mnt_expediente                  t05 ON (t05.id = t01.id_expediente)
+            INNER JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)
+            WHERE  t04.idestado = 'D' AND t06.codigo_busqueda = 'DCOLAB'   
+            AND t01.id_establecimiento = $lugar $where3
+
+        UNION
+
+        SELECT CASE t04.idestado
+                WHEN 'D' THEN 'Digitada'
+                WHEN 'R' then 'Recibida'
+                WHEN 'P' then 'En Proceso'
+                WHEN 'C' then 'Completa'
+                WHEN 'RM' then 'Muestra Rechazada'
+            END AS estado
+            FROM sec_solicitudestudios                 t01
+            INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
+            INNER JOIN mnt_dato_referencia	           t03 ON (t03.id = t01.id_dato_referencia)
+            INNER JOIN ctl_estado_servicio_diagnostico t04 ON (t04.id = t01.estado AND t04.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+            LEFT JOIN mnt_expediente_referido          t05 ON (t05.id = t03.id_expediente_referido)
+            INNER JOIN ctl_atencion     t06 ON (t06.id = t01.id_atencion)
+	    WHERE t04.idestado = 'D' AND t06.codigo_busqueda = 'DCOLAB' 
+            AND  t01.id_establecimiento = $lugar $where3";
+                    /*"SELECT CASE t04.idestado
                                             WHEN 'D' THEN 'Digitada'
                                             WHEN 'R' then 'Recibida'
                                             WHEN 'P' then 'En Proceso'
@@ -315,7 +441,7 @@ switch ($opcion) {
                                  INNER JOIN ctl_estado_servicio_diagnostico t04 ON (t04.id = t01.estado AND t04.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
                                  INNER JOIN mnt_expediente                  t05 ON (t05.id = t01.id_expediente)
                                  INNER JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)
-				                 WHERE t05.numero = '$idexpediente' AND t02.fecha = '$Nfechacita' AND t04.idestado = 'D' AND t01.id_establecimiento = $lugar AND t03.idestablecimiento = $idEstablecimiento AND t06.codigo_busqueda = 'DCOLAB'";
+				 WHERE t05.numero = '$idexpediente' AND t02.fecha = '$Nfechacita' AND t04.idestado = 'D' AND t01.id_establecimiento = $lugar AND t03.idestablecimiento = $idEstablecimiento AND t06.codigo_busqueda = 'DCOLAB'";*/
 
             $result = @pg_query($query_estado);
             $row = pg_fetch_array($result);
@@ -333,8 +459,9 @@ switch ($opcion) {
                echo "No hay solicitudes que procesar de este paciente";
             }
          }
-         if ($numreg[0] == '0') {
-            echo "La Solicitud no Existe";
+         if ($numreg[0] == 0) {
+        
+            echo "NO EXISTE SOLICITUD CON ESTOS DATOS";
          }
       } else
          echo "No se conecta a la base de datos";
@@ -464,13 +591,12 @@ switch ($opcion) {
       $fechacita = $_POST['fechacita'];
       $idEstablecimiento = $_POST['idEstablecimiento'];
 
-      $query = $object->buscarTodasSolicitudes($idexpediente, $fechacita,
-              $lugar, $idEstablecimiento);
+      $query = $object->buscarTodasSolicitudes($idexpediente, $fechacita,$lugar, $idEstablecimiento);
 
       if ($query !== false) {
          $jsonresponse['status'] = true;
          $jsonresponse['num_rows'] = pg_num_rows($query);
-//            $jsonresponse['consuls'] = $resulti;
+            $jsonresponse['consuls'] = $resulti;
 
          if (pg_num_rows($query) > 0)
             $jsonresponse['data'] = pg_fetch_all($query);

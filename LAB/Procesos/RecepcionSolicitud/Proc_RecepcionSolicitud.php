@@ -34,7 +34,7 @@ if (isset($_SESSION['Correlativo'])) {
     $fechaCita        = $_POST['fechaCita'] ? $_POST['fechaCita'] : '';
     $numeroExpediente = $_POST['numeroExpediente'] ? $_POST['numeroExpediente'] : '';
     $idExpediente     = $_POST['idExpediente'] ? $_POST['idExpediente'] : '';
-
+    $idestablecimiento = $_POST['idestablecimiento']? $POST['idestablecimiento'] :'';
 
     ?>
     <html>
@@ -53,10 +53,12 @@ if (isset($_SESSION['Correlativo'])) {
                     var idSolicitud = '<?php echo $idSolicitud; ?>';
                     var fechaCita = '<?php echo $fechaCita; ?>';
                     var numeroExpediente = '<?php echo $numeroExpediente; ?>';
+                    var idestablecimiento = '<?php echo $idestablecimiento; ?>';
 
                     if(idSolicitud !== 'undefined' && idSolicitud !== null && idSolicitud !== '') {
                         $('#txtidexpediente').val(numeroExpediente);
                         $('#txtfechasolicitud').val(fechaCita);
+                        $('#cmbEstablecimiento').val(idestablecimiento);
                         BuscarDatos();
                     }
                     //Select2 inicializacion
@@ -109,7 +111,9 @@ if (isset($_SESSION['Correlativo'])) {
                                                     <th>Fecha Consulta</th>\
                                                     <th>Fecha Cita</th>\
                                                     <th>Nombre Paciente</th>\
+                                                    <th>Establecimiento</th>\
                                                     <th>Procedencia</th>\
+                                                    <th>Servicio</th>\
                                                     <th>Estado</th>\
                                                     <th>Tipo Solicitud</th>\
                                                 </tr>\
@@ -132,10 +136,12 @@ if (isset($_SESSION['Correlativo'])) {
                                     html = html + '<tr>\
                                             ';
                                 }
-                                html = html + '<td><a href="#" onclick="VerificarExistencia('+' \''+val.numero_expediente+'\', \''+val.fecha_cita+'\', '+val.id_establecimiento+', true,'+val.id+');return false;" style="padding-left:7px;">'+val.numero_expediente+'</a><input id="idsolicitud" value="'+val.id+'" name="idsolicitud" type="hidden" /></td>\
+                                html = html + '<td><a href="#" onclick="VerificarExistencia('+' \''+val.numero_expediente+'\', \''+val.fecha_cita+'\', '+val.id_establecimiento+', true,'+val.id+','+val.idestablecimientoext+');return false;" style="padding-left:7px;">'+val.numero_expediente+'</a><input id="idsolicitud" value="'+val.id+'" name="idsolicitud" type="hidden" /><input id="idestabext" value="'+val.idestablecimientoext+'" name="idestabext" type="hidden" /></td>\
                                                 <td title="Han pasado '+val.diaswithoutweekend+' dias desde la fecha de cita para el expediente '+val.numero_expediente+'.">'+val.fecha_consulta+'</td>\
                                                 <td title="Han pasado '+val.diaswithoutweekend+' dias desde la fecha de cita para el expediente '+val.numero_expediente+'.">'+date_cita+'</td>\
                                                 <td title="Han pasado '+val.diaswithoutweekend+' dias desde la fecha de cita para el expediente '+val.numero_expediente+'.">'+val.nombre_paciente+'</td>\
+                                                <td title="Han pasado '+val.diaswithoutweekend+' dias desde la fecha de cita para el expediente '+val.numero_expediente+'.">'+val.establecimiento+'</td>\
+                                                <td title="Han pasado '+val.diaswithoutweekend+' dias desde la fecha de cita para el expediente '+val.numero_expediente+'.">'+val.procedencia+'</td>\
                                                 <td title="Han pasado '+val.diaswithoutweekend+' dias desde la fecha de cita para el expediente '+val.numero_expediente+'.">'+val.servicio+'</td>\
                                                 <td title="Han pasado '+val.diaswithoutweekend+' dias desde la fecha de cita para el expediente '+val.numero_expediente+'.">'+val.estado+'</td>\
                                                 <td title="Han pasado '+val.diaswithoutweekend+' dias desde la fecha de cita para el expediente '+val.numero_expediente+'.">'+val.tiposolicitud+'</td>\
@@ -205,16 +211,18 @@ if (isset($_SESSION['Correlativo'])) {
                                                 include_once("../../../Conexion/ConexionBD.php");
                                                 $con = new ConexionBD;
                                                 if ($con->conectar() == true) {
-                                                    $consulta = "SELECT id AS idtipoestablecimiento, nombre AS nombretipoestablecimiento FROM ctl_tipo_establecimiento WHERE id != $tipo ORDER BY nombre";
+                                                    $consulta = "SELECT id AS idtipoestablecimiento, nombre AS nombretipoestablecimiento FROM ctl_tipo_establecimiento ORDER BY nombre";
                                                     $resultado = @pg_query($consulta);
                                                     //por cada registro encontrado en la tabla me genera un <option>
                                                     while ($rows = @pg_fetch_array($resultado)) {
                                                         echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
                                                     }
-                                                    echo '<option value="' . $tipo . '" selected="selected">' . htmlentities($nomtipo) . '</option>';
+                                                 //   echo '<option value="' . $tipo . '" selected="selected">' . htmlentities($nomtipo) . '</option>';
                                                     //@pg_free_result($consulta); // Liberar memoria usada por consulta.
                                                 }
                                                 ?>
+                                                
+                                              
                                             </select>
                                         </TD>
                                     </tr>
@@ -222,21 +230,25 @@ if (isset($_SESSION['Correlativo'])) {
                                         <TD class="StormyWeatherFieldCaptionTD">Establecimiento Solicitante</TD>
                                         <td class="StormyWeatherDataTD">
                                            <div id="divEstablecimiento" style="display: block">
-                                                <select name="cmbEstablecimiento" id="cmbEstablecimiento" class="height js-example-basic-single" style="width:400px" ><?php
-                                                    echo '<option value="' . $lugar . '" selected="selected">' . htmlentities($nombrEstab) . '</option>';
+                                                <select name="cmbEstablecimiento" id="cmbEstablecimiento" class="height js-example-basic-single" style="width:400px" >
+                                                     <option value="0" selected="selected">Todos los Establecimientos</option>
+                                                    <?php
+                                                  echo '<option value="' . $lugar . '" selected="selected">' . htmlentities($nombrEstab) . '</option>';
                                                     include_once("../../../Conexion/ConexionBD.php");
                                                     $con = new ConexionBD;
                                                     if ($con->conectar() == true) {
-                                                        $consulta = "SELECT id AS idestablecimiento, nombre FROM ctl_establecimiento where id_tipo_establecimiento = $tipo ORDER BY nombre";
+                                                        $consulta = "SELECT id AS idestablecimiento, nombre FROM ctl_establecimiento  ORDER BY nombre";
                                                         $resultado = @pg_query($consulta);
                                                         //por cada registro encontrado en la tabla me genera un <option>
                                                         while ($rows = @pg_fetch_array($resultado)) {
-                                                            if ($rows[0]!=$lugar)
+                                                            //if ($rows[0]!=$lugar)
                                                             echo '<option value="' . $rows[0] . '" >' . htmlentities($rows[1]) . '</option>';
                                                         }
                                                         //@pg_free_result($consulta); // Liberar memoria usada por consulta.
                                                     }
                                                     ?>
+                                                  
+                                                    
                                                 </select>
                                             </div>
                                         </td>

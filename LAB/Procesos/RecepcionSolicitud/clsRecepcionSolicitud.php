@@ -90,16 +90,47 @@ class clsRecepcionSolicitud {
         return $dt;
     }
 
-    function BuscarSolicitudes($idexpediente, $fechacita, $lugar, $idEstablecimiento, $idsolicitud) {
+    function BuscarSolicitudes($idexpediente, $fechacita, $lugar, $idEstablecimiento, $idsolicitud,$idestablecimientoext) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
-            if ($idsolicitud==0){
-                $addquery=' ';
-            }
-            else{
+          //  ECHO $idsolicitud;
+            if ($idsolicitud!=0){
+             
                 $addquery=" and t01.id=$idsolicitud ";
             }
-                $query = "SELECT t01.id AS idsolicitudestudio
+            
+             if($idexpediente !== '') {
+                $addquery = $addquery." AND t04.numero = '$idexpediente'";
+                //$idexp=1;
+            }
+              //  echo $fechacita;
+            if($fechacita !== '--') {
+                $addquery = $addquery." AND t02.fecha = '$fechacita'";
+            }
+            
+            if ($idEstablecimiento!==0){
+               $addquery = $addquery." AND t01.id_establecimiento_externo = $idestablecimientoext "; 
+            }
+        //echo $addquery;
+        $query="SELECT t01.id AS idsolicitudestudio 
+                    FROM sec_solicitudestudios           t01 
+                    INNER JOIN cit_citas_serviciodeapoyo t02 ON (t01.id = t02.id_solicitudestudios) 
+                    INNER JOIN sec_historial_clinico     t03 ON (t03.id = t01.id_historial_clinico) 
+                    INNER JOIN mnt_expediente            t04 ON (t04.id = t03.id_numero_expediente) 
+                    INNER JOIN ctl_estado_servicio_diagnostico t05 ON (t05.id = t01.estado) 
+                    WHERE t05.idestado = 'D' AND t01.id_establecimiento = $lugar  $addquery       
+                     
+                    UNION
+                        
+                    SELECT t01.id AS idsolicitudestudio 
+                    FROM sec_solicitudestudios           t01 
+                    INNER JOIN cit_citas_serviciodeapoyo t02 ON (t01.id = t02.id_solicitudestudios) 
+                    INNER JOIN mnt_dato_referencia       t03 ON (t03.id = t01.id_dato_referencia) 
+                    INNER JOIN mnt_expediente_referido   t04 ON (t04.id = t03.id_expediente_referido) 
+                    INNER JOIN ctl_estado_servicio_diagnostico t05 ON (t05.id = t01.estado)
+                    WHERE t05.idestado = 'D' AND t01.id_establecimiento = $lugar  $addquery";                    
+                   
+             /* $query = "SELECT t01.id AS idsolicitudestudio
                       FROM  sec_solicitudestudios                t01
                       INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
                       LEFT JOIN sec_historial_clinico           t03 ON (t03.id = t01.id_historial_clinico)
@@ -109,7 +140,7 @@ class clsRecepcionSolicitud {
                       LEFT JOIN mnt_dato_referencia              t10 ON (t10.id = t01.id_dato_referencia)
                       LEFT JOIN mnt_expediente_referido          t11 ON (t11.id = t10.id_expediente_referido)
                       WHERE (t04.numero = '$idexpediente' OR t11.numero='$idexpediente') $addquery AND t05.idestado = 'D' AND t02.fecha = '$fechacita' AND t01.id_establecimiento = $lugar
-                            AND (t03.idestablecimiento = $idEstablecimiento OR t11.id_establecimiento = $idEstablecimiento) AND t06.codigo_busqueda = 'DCOLAB'";
+                            AND (t03.idestablecimiento = $idEstablecimiento OR t11.id_establecimiento = $idEstablecimiento) AND t06.codigo_busqueda = 'DCOLAB'";*/
             //echo $query;
 
             $result = @pg_query($query);
@@ -128,78 +159,13 @@ class clsRecepcionSolicitud {
            //fecha de cita de laboratorio asi que en recepcion no mostrara las fechas de cita que no son urgentes
            //linea original: TO_CHAR(t02.fecha, 'DD/MM/YYYY') AS fecha_cita,
 
-            $query = "WITH tbl_servicio as (select mnt_3.id,
-			  CASE WHEN id_servicio_externo_estab IS NOT NULL
-                       THEN mnt_ser.abreviatura ||'--'  || a.nombre
-                       ELSE       cmo.nombre ||'--' || a.nombre
-                       END as procedencia,
- 
-                        CASE
-                      WHEN mnt_3.nombre_ambiente IS NOT NULL
-                          THEN
-                                  CASE WHEN id_servicio_externo_estab IS NOT NULL
-                                          THEN mnt_ser.abreviatura ||'-->' ||mnt_3.nombre_ambiente
-                                          ELSE mnt_3.nombre_ambiente
-                                  END
-                      ELSE
-                          CASE WHEN id_servicio_externo_estab IS NOT NULL
-                                  THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
-                               WHEN not exists (SELECT nombre_ambiente FROM  mnt_aten_area_mod_estab WHERE nombre_ambiente=cat.nombre)
-                                  THEN cmo.nombre||'-'||cat.nombre
-                          END
-                      
-                        END AS servicio 
-                        from ctl_atencion cat
-                        join mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion)
-                        join mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id)
-                        JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion=1)
-                        LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id
-                        LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id
-                        join mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab)
-                        join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
-                        where  mnt_3.id_establecimiento=$lugar
-                        order by 2)
-SELECT t01.id, COALESCE(t05.id,t10.id) AS id_expediente,
-                             COALESCE(t05.numero,t10.numero) AS numero_expediente,
-                             TO_CHAR(t02.fecha, 'DD/MM/YYYY') AS fecha_cita,
-                             COALESCE(TO_CHAR(t03.fechaconsulta, 'DD/MM/YYYY'),'referido') AS fecha_consulta,
-                             (CASE when (t07.primer_nombre is not null ) then
-                             CONCAT_WS(' ', t07.primer_apellido, t07.segundo_apellido, t07.apellido_casada) || ', ' || CONCAT_WS(' ', t07.primer_nombre, t07.segundo_nombre, t07.tercer_nombre)
-                             else
-                             CONCAT_WS(' ', t11.primer_apellido, t11.segundo_apellido, t11.apellido_casada) || ', ' || CONCAT_WS(' ', t11.primer_nombre, t11.segundo_nombre, t11.tercer_nombre)
-                             end ) AS nombre_paciente,
-                             CASE t04.idestado
-                                WHEN 'D' THEN 'Digitada'
-                                WHEN 'R' then 'Recibida'
-                                WHEN 'P' then 'En Proceso'
-                                WHEN 'C' then 'Completa'
-                             END AS estado,
-                             COALESCE(t03.idestablecimiento,t10.id_establecimiento) AS id_establecimiento,
-                              tiposolicitud,t14.id as idmnatenareamodestab, t14.servicio as servicio, current_date-t02.fecha as dias,
-(select count(dia) from
-    (select generate_series(t02.fecha::date, current_date::date, '1 day') as dia) dias
-where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
-                      FROM sec_solicitudestudios                 t01
-                      left JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
-                      LEFT JOIN sec_historial_clinico            t03 ON (t03.id = t01.id_historial_clinico)
-                      left JOIN ctl_estado_servicio_diagnostico t04 ON (t04.id = t01.estado AND t04.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-                      LEFT JOIN mnt_expediente                   t05 ON (t05.id = t01.id_expediente)
-                      left JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)
-                      LEFT JOIN mnt_paciente                     t07 ON (t07.id = t05.id_paciente)
-                      LEFT JOIN mnt_aten_area_mod_estab    t08 ON (t08.id = t03.idsubservicio)
-                      left join mnt_dato_referencia t12 on (t12.id=t01.id_dato_referencia)
-                      LEFT JOIN mnt_expediente_referido          t10 ON (t10.id = t12.id_expediente_referido)
-                      LEFT JOIN mnt_paciente_referido            t11 ON (t11.id = t10.id_referido)
-                      LEFT JOIN lab_tiposolicitud		 t13 ON (t13.id = t01.idtiposolicitud)
-                      LEFT JOIN tbl_servicio		         t14 ON	(t14.id=t08.id AND t14.servicio IS NOT NULL)	";
-
             $where = " WHERE t01.id_establecimiento = $lugar
-                         AND t04.idestado = 'D'              AND t06.codigo_busqueda = 'DCOLAB'";
+                         AND t04.idestado = 'D' AND t06.codigo_busqueda = 'DCOLAB'";
 
-            $orderBy = " ORDER BY t02.fecha desc, t13.id, t05.numero";
+         //   $orderBy = " ORDER BY t02.fecha desc, t09.id, t05.numero";
 
             if($idexpediente !== '') {
-                $where = $where." AND (t05.numero = '$idexpediente' OR t10.numero = '$idexpediente')";
+                $where = $where." AND (t05.numero = '$idexpediente')";
                 $idexp=1;
             }
 
@@ -210,8 +176,122 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
                if ($idexp==0)
                $where = $where." AND date(t02.fecha) between date('2016-01-01') and current_date ";
             }
+           
+           
+          $query = "
+                WITH tbl_servicio as (SELECT mnt_3.id, CASE WHEN id_servicio_externo_estab IS NOT NULL
+                       THEN mnt_ser.abreviatura ||' - '  || a.nombre
+                       ELSE       cmo.nombre ||' - ' || a.nombre
+                       END as procedencia,
+
+                       CASE WHEN mnt_3.nombre_ambiente IS NOT NULL THEN mnt_3.nombre_ambiente 
+                       ELSE cmo.nombre ||' - ' ||cat.nombre END AS servicio 
+
+                    FROM ctl_atencion cat 
+                    JOIN mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion) 
+                    JOIN mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id) 
+                    JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion in (1,4)) 
+                    LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id 
+                    LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id 
+                    JOIN mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab) 
+                    JOIN ctl_modalidad cmo on (cmo.id=mme.id_modalidad) 
+                    WHERE mnt_3.nombre_ambiente IS NOT NULL AND mnt_3.id_establecimiento=$lugar
+                    UNION 
+
+                    SELECT mnt_3.id,CASE WHEN id_servicio_externo_estab IS NOT NULL
+                                           THEN mnt_ser.abreviatura ||' - '  || a.nombre
+                                           ELSE       cmo.nombre ||' - ' || a.nombre
+                                           END as procedencia,
+                                           cat.nombre AS servicio
+                    FROM ctl_atencion cat 
+                    JOIN mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion) 
+                    JOIN mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id) 
+                    JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion in (1,4)) 
+                    LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id 
+                    LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id 
+                    JOIN mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab) 
+                    JOIN ctl_modalidad cmo on (cmo.id=mme.id_modalidad) 
+                    WHERE mnt_3.id_establecimiento=$lugar 
+                    AND mnt_3.id_atencion ||'-'|| mnt_3.id_area_mod_estab ||'-'||mnt_3.id_establecimiento NOT IN (SELECT id_atencion ||'-'|| id_area_mod_estab ||'-'||id_establecimiento 
+                    FROM mnt_aten_area_mod_estab WHERE nombre_ambiente IS NOT NULL))
+                SELECT ordenar.* FROM                   
+                (SELECT t01.id, 
+                       t05.id AS id_expediente,
+                       t05.numero AS numero_expediente,
+                       TO_CHAR(t02.fecha, 'DD/MM/YYYY') AS fecha_cita,
+                       TO_CHAR(t01.fecha_solicitud, 'DD/MM/YYYY') AS fecha_consulta,
+                       CONCAT_WS(' ', t07.primer_apellido, t07.segundo_apellido, t07.apellido_casada) || ', ' || CONCAT_WS(' ', t07.primer_nombre, t07.segundo_nombre, t07.tercer_nombre)AS nombre_paciente,
+                       CASE t04.idestado
+                                               WHEN 'D' THEN 'Digitada'
+                                               WHEN 'R' then 'Recibida'
+                                               WHEN 'P' then 'En Proceso'
+                                               WHEN 'C' then 'Completa'
+                                            END AS estado,
+                       t05.id_establecimiento AS id_establecimiento, 
+                       tiposolicitud,
+                       t10.id as idmnatenareamodestab, 
+                       t10.servicio as servicio,
+                       t10.procedencia as procedencia,
+                       t09.id as id_tiposolicitud,
+                       t11.nombre as establecimiento,
+                       current_date-t02.fecha as dias,
+               (SELECT count(dia) from
+                   (select generate_series(t02.fecha::date, current_date::date, '1 day') AS dia) dias
+               WHERE extract('dow' from dia) not in (0,6)) as diaswithoutweekend ,t01.id_establecimiento_externo AS idestablecimientoext                
+                FROM sec_solicitudestudios                 t01
+               INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
+               INNER JOIN mnt_dato_referencia t03 on (t03.id=t01.id_dato_referencia)           
+               INNER JOIN ctl_estado_servicio_diagnostico t04 ON (t04.id = t01.estado AND t04.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+               INNER JOIN mnt_expediente_referido          t05 ON (t05.id = t03.id_expediente_referido) --t10   
+               INNER JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)
+               INNER JOIN mnt_paciente_referido            t07 ON (t07.id = t05.id_referido)    
+               INNER JOIN mnt_aten_area_mod_estab    t08 ON (t08.id = t03.id_aten_area_mod_estab)
+               INNER JOIN lab_tiposolicitud		 t09 ON (t09.id = t01.idtiposolicitud)
+               INNER JOIN tbl_servicio		         t10 ON	(t10.id=t08.id AND t10.servicio IS NOT NULL)
+                INNER JOIN ctl_establecimiento          t11 ON t11.id = t01.id_establecimiento_externo
+               $where
+
+               UNION                    
+
+               select t01.id, 
+                      t05.id AS id_expediente,
+                      t05.numero AS numero_expediente,
+                      TO_CHAR(t02.fecha, 'DD/MM/YYYY') AS fecha_cita,
+                      TO_CHAR(t01.fecha_solicitud, 'DD/MM/YYYY') AS fecha_consulta,
+                      CONCAT_WS(' ', t07.primer_apellido, t07.segundo_apellido, t07.apellido_casada) || ', ' || CONCAT_WS(' ', t07.primer_nombre, t07.segundo_nombre, t07.tercer_nombre)AS nombre_paciente,
+                      CASE t04.idestado
+                           WHEN 'D' THEN 'Digitada'
+                           WHEN 'R' then 'Recibida'
+                           WHEN 'P' then 'En Proceso'
+                           WHEN 'C' then 'Completa'
+                      END AS estado,
+                      t03.idestablecimiento AS id_establecimiento,
+                      tiposolicitud,
+                      t10.id AS idmnatenareamodestab, 
+                      t10.servicio AS servicio, 
+                      t10.procedencia AS procedencia,
+                      t09.id as id_tiposolicitud,
+                      t11.nombre as establecimiento,
+                      current_date-t02.fecha AS dias,
+                      (SELECT count(dia) FROM
+                   (SELECT generate_series(t02.fecha::date, current_date::date, '1 day') AS dia) dias
+               WHERE extract('dow' FROM dia) not in (0,6)) as diaswithoutweekend, t01.id_establecimiento_externo as idestablecimientoext
+               FROM sec_solicitudestudios                 t01
+                INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
+                INNER JOIN sec_historial_clinico            t03 ON (t03.id = t01.id_historial_clinico)
+                INNER JOIN ctl_estado_servicio_diagnostico t04 ON (t04.id = t01.estado AND t04.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+                INNER JOIN mnt_expediente                   t05 ON (t05.id = t01.id_expediente)
+                INNER JOIN ctl_atencion                    t06 ON (t06.id = t01.id_atencion)
+                INNER JOIN mnt_paciente                     t07 ON (t07.id = t05.id_paciente)
+                INNER JOIN mnt_aten_area_mod_estab    t08 ON (t08.id = t03.idsubservicio)
+                INNER JOIN lab_tiposolicitud		 t09 ON (t09.id = t01.idtiposolicitud)
+                INNER JOIN tbl_servicio		         t10 ON	(t10.id=t08.id AND t10.servicio IS NOT NULL)
+                 INNER JOIN ctl_establecimiento          t11 ON t11.id = t01.id_establecimiento_externo
+               $where ) ordenar 
+                   ORDER BY ordenar.fecha_cita desc, ordenar.id_tiposolicitud , ordenar.numero_expediente";
+       //   exit();
             //var_dump( $query.$where.$orderBy);
-            $result = @pg_query($query.$where.$orderBy);
+            $result = @pg_query($query);
 
             if (!$result)
                 return false;
@@ -220,29 +300,45 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
         }
     }
 
-    function NumeroDeRegistros($idexpediente, $fechacita, $lugar, $idEstablecimiento, $idsolicitud) {
+    function NumeroDeRegistros($idexpediente, $fechacita, $lugar, $idEstablecimiento, $idsolicitud,$idestablecimientoext) {
         //creamos el objeto $con a partir de la clase ConexionBD
         $con = new ConexionBD;
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
-            if ($idsolicitud==0){
-                $addquery=' ';
-            }
-            else{
+            if ($idsolicitud!=0){
+              
                 $addquery=" and t01.id=$idsolicitud ";
             }
-           $query = "SELECT t01.id AS idsolicitudestudio
-                      FROM sec_solicitudestudios                 t01
-                      LEFT JOIN cit_citas_serviciodeapoyo        t02 ON (t01.id = t02.id_solicitudestudios)
-                      LEFT JOIN sec_historial_clinico            t03 ON (t03.id = t01.id_historial_clinico)
-                      LEFT JOIN mnt_expediente                   t04 ON (t04.id = t01.id_expediente)
-                      LEFT JOIN ctl_estado_servicio_diagnostico  t05 ON (t05.id = t01.estado)
-                      LEFT JOIN ctl_atencion                     t06 ON (t06.id = t05.id_atencion)
-                      LEFT JOIN mnt_dato_referencia              t10 ON (t10.id = t01.id_dato_referencia)
-                      LEFT JOIN mnt_expediente_referido          t11 ON (t11.id = t10.id_expediente_referido)
+            
+             if($idexpediente !== '') {
+                $addquery = $addquery." AND t04.numero = '$idexpediente'";
+                //$idexp=1;
+            }
 
-                      WHERE (t04.numero = '$idexpediente' OR t11.numero='$idexpediente') AND t05.idestado = 'D' AND t02.fecha = '$fechacita' AND t01.id_establecimiento = $lugar
-                            AND (t03.idestablecimiento = $idEstablecimiento OR t11.id_establecimiento = $idEstablecimiento) AND t06.codigo_busqueda = 'DCOLAB'";
+            if($fechacita!=='--') {
+                $addquery = $addquery." AND t02.fecha = '$fechacita'";
+            }
+            
+            if ($idestablecimientoext!=0){
+               $addquery = $addquery." AND t01.id_establecimiento_externo = $idestablecimientoext "; 
+            }
+         $query = "SELECT t01.id AS idsolicitudestudio 
+                    FROM sec_solicitudestudios           t01 
+                    INNER JOIN cit_citas_serviciodeapoyo t02 ON (t01.id = t02.id_solicitudestudios) 
+                    INNER JOIN sec_historial_clinico     t03 ON (t03.id = t01.id_historial_clinico) 
+                    INNER JOIN mnt_expediente            t04 ON (t04.id = t03.id_numero_expediente) 
+                    INNER JOIN ctl_estado_servicio_diagnostico t05 ON (t05.id = t01.estado) 
+                    WHERE t05.idestado = 'D' AND t01.id_establecimiento = $lugar  $addquery       
+                     
+                    UNION
+                        
+                    SELECT t01.id AS idsolicitudestudio 
+                    FROM sec_solicitudestudios           t01 
+                    INNER JOIN cit_citas_serviciodeapoyo t02 ON (t01.id = t02.id_solicitudestudios) 
+                    INNER JOIN mnt_dato_referencia       t03 ON (t03.id = t01.id_dato_referencia) 
+                    INNER JOIN mnt_expediente_referido   t04 ON (t04.id = t03.id_expediente_referido) 
+                    INNER JOIN ctl_estado_servicio_diagnostico t05 ON (t05.id = t01.estado)
+                    WHERE t05.idestado = 'D' AND t01.id_establecimiento = $lugar  $addquery";
             $numreg = pg_num_rows(pg_query($query));
              //echo $numreg;
             if (!$numreg)
@@ -307,15 +403,76 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
         }
     }
 
-    function BuscarDatosSolicitudes($idexpediente, $fechacita, $IdSolicitud, $lugar) {
+    function BuscarDatosSolicitudes($idexpediente, $fechacita, $IdSolicitud, $lugar,$idestablecimientoext) {
+            
         $con = new ConexionBD;
+       // echo $IdSolicitud;
         if ($con->conectar() == true) {
+       // echo "idexp=".$idexpediente." fechacita=".$fechacita." idsol=".$IdSolicitud." estabext=".$idestablecimientoext;
 
-            $query = "SELECT t03.idempleado AS idmedico,
+            
+            if ($lugar==$idestablecimientoext){
+                
+                    if ($idsolicitud!=0){
+                       $where=" and t02.id=$idsolicitud ";
+                   }
+
+                   if($idexpediente !== '') {
+                       $where = $where." AND (t04.numero = '$idexpediente')";
+                       $idexp=1;
+                   }
+
+                   if($fechacita !== '--') {
+                       $where = $where." AND t09.fecha = '$fechacita'";
+                   }
+                   /*else {
+                      if ($idexp==0)
+                      $where = $where." AND date(t09.fecha) between date('2016-01-01') and current_date ";
+                   }*/
+                  if ($idestablecimientoext!=0){
+                      $where = $where." AND t02.id_establecimiento_externo = $idestablecimientoext "; 
+                   }
+         $query = "WITH tbl_servicio as (SELECT mnt_3.id, CASE WHEN id_servicio_externo_estab IS NOT NULL
+                       THEN mnt_ser.abreviatura ||'--'  || a.nombre
+                       ELSE       cmo.nombre ||'--' || a.nombre
+                       END as procedencia,
+
+                       CASE WHEN mnt_3.nombre_ambiente IS NOT NULL THEN mnt_3.nombre_ambiente 
+                       ELSE cmo.nombre ||'--' ||cat.nombre END AS servicio 
+
+                    FROM ctl_atencion cat 
+                    JOIN mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion) 
+                    JOIN mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id) 
+                    JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion in (1,4)) 
+                    LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id 
+                    LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id 
+                    JOIN mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab) 
+                    JOIN ctl_modalidad cmo on (cmo.id=mme.id_modalidad) 
+                    WHERE mnt_3.nombre_ambiente IS NOT NULL AND mnt_3.id_establecimiento=$lugar
+
+                    UNION 
+
+                    SELECT mnt_3.id,CASE WHEN id_servicio_externo_estab IS NOT NULL
+                                           THEN mnt_ser.abreviatura ||'--'  || a.nombre
+                                           ELSE       cmo.nombre ||'--' || a.nombre
+                                           END as procedencia,
+                                           cat.nombre AS servicio
+                    FROM ctl_atencion cat JOIN mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion) 
+                    JOIN mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id) 
+                    JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion in (1,4)) 
+                    LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id 
+                    LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id 
+                    JOIN mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab) 
+                    JOIN ctl_modalidad cmo on (cmo.id=mme.id_modalidad) 
+                    WHERE mnt_3.id_establecimiento=$lugar
+                    AND mnt_3.id_atencion ||'-'|| mnt_3.id_area_mod_estab ||'-'||mnt_3.id_establecimiento NOT IN (SELECT id_atencion ||'-'|| id_area_mod_estab ||'-'||id_establecimiento 
+                    FROM mnt_aten_area_mod_estab WHERE nombre_ambiente IS NOT NULL))
+                    
+                            SELECT t03.idempleado AS idmedico,
                              t03.nombreempleado AS nombremedico,
-                             t08.nombre AS Origen,
+                             t20.servicio AS Origen,
                              t02.id AS idsolicitudestudio,
-                             t17.nombre AS Precedencia,
+                             t20.procedencia AS Precedencia,
                              t04.numero AS idnumeroexp,
                              CONCAT_WS(' ',t05.primer_nombre, t05.segundo_nombre,t05.tercer_nombre, t05.primer_apellido, t05.segundo_apellido, t05.apellido_casada) as nombrepaciente,
                              TO_CHAR(NOW(), 'DD/MM/YYYY') as fecha,
@@ -340,9 +497,7 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
                              TO_CHAR(t05.fecha_nacimiento, 'DD/MM/YYYY') AS fechanacimiento,
                              t01.idestablecimiento,
                              t14.tiposolicitud,
-                            -- t12.id AS iddiagnostico1,
-                            -- t12.sct_name_es,
-                             t12_1.id as iddiagnostico1,
+                              t12_1.id as iddiagnostico1,
                              case when t12_1.diagnostico is not null then t12_1.diagnostico
                              else t11.especificacion
                              end as sct_name_es,
@@ -360,19 +515,232 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
                       INNER JOIN cit_citas_serviciodeapoyo       t09 ON (t02.id = t09.id_solicitudestudios)
                       LEFT JOIN sec_signos_vitales t10 ON (t01.id = t10.id_historial_clinico)
                       LEFT JOIN sec_diagnostico_paciente t11 ON (t01.id = t11.id_historial_clinico)
-                    --  LEFT JOIN mnt_snomed_cie10 t12 ON (t12.id = t11.id_snomed)
                       LEFT JOIN mnt_cie10 t12_1 on (t12_1.id=t11.id_cie10_medico)
-                      INNER JOIN ctl_establecimiento             t13 ON (t13.id = t01.idestablecimiento)
+                      INNER JOIN ctl_establecimiento             t13 ON (t13.id = t02.id_establecimiento_externo)
                       INNER JOIN lab_tiposolicitud               t14 ON (t14.id = t02.idtiposolicitud)
                       INNER JOIN ctl_estado_servicio_diagnostico t15 ON (t15.id = t02.estado AND t15.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
                       INNER JOIN mnt_area_mod_estab 		 t16 ON (t16.id = t07.id_area_mod_estab)
                       INNER JOIN ctl_area_atencion		 t17 ON (t17.id = t16.id_area_atencion)
-                      WHERE t04.numero = '$idexpediente'
-                            AND t15.idestado = 'D' AND t02.id = $IdSolicitud AND t09.fecha = '$fechacita' AND t02.id_establecimiento = $lugar  and (id_tipo_diagnostico=1 or id_tipo_diagnostico is null)";
+                      INNER JOIN tbl_servicio t20 ON (t20.id = t07.id AND t20.servicio IS NOT NULL)
+            WHERE t15.idestado = 'D' AND t02.id_establecimiento = $lugar  and (id_tipo_diagnostico=1 or id_tipo_diagnostico is null)  $where";
+                 
+            }
+            else {
+                
+                /*  if (pg_num_rows($result)==0){ // busqueda si el paciente es de referencia*/
+                    if ($idestablecimientoext!=0){
+                  $where1 = $where1." AND t01.id_establecimiento_externo = $idestablecimientoext "; 
+                   }
+                   if ($idsolicitud!=0){
+                   $where1=" and t01.id=$idsolicitud ";
+               }
+
+               if($idexpediente !== '') {
+                   $where1 = $where1." AND t04.numero = '$idexpediente'";
+                   $idexp=1;
+               }
+
+               if($fechacita !== '--') {
+                   $where1 = $where1." AND t09.fecha = '$fechacita'";
+               }
+     $query="WITH tbl_servicio as (SELECT mnt_3.id, CASE WHEN id_servicio_externo_estab IS NOT NULL
+                       THEN mnt_ser.abreviatura ||' - '  || a.nombre
+                       ELSE       cmo.nombre ||' - ' || a.nombre
+                       END as procedencia,
+
+                       CASE WHEN mnt_3.nombre_ambiente IS NOT NULL THEN mnt_3.nombre_ambiente 
+                       ELSE cmo.nombre ||' - ' ||cat.nombre END AS servicio 
+
+                    FROM ctl_atencion cat 
+                    JOIN mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion) 
+                    JOIN mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id) 
+                    JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion in (1,4)) 
+                    LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id 
+                    LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id 
+                    JOIN mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab) 
+                    JOIN ctl_modalidad cmo on (cmo.id=mme.id_modalidad) 
+                    WHERE mnt_3.nombre_ambiente IS NOT NULL AND mnt_3.id_establecimiento=$lugar
+
+                    UNION 
+
+                    SELECT mnt_3.id,CASE WHEN id_servicio_externo_estab IS NOT NULL
+                                           THEN mnt_ser.abreviatura ||' - '  || a.nombre
+                                           ELSE       cmo.nombre ||' - ' || a.nombre
+                                           END as procedencia,
+                                           cat.nombre AS servicio
+                    FROM ctl_atencion cat JOIN mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion) 
+                    JOIN mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id) 
+                    JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion in (1,4)) 
+                    LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id 
+                    LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id 
+                    JOIN mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab) 
+                    JOIN ctl_modalidad cmo on (cmo.id=mme.id_modalidad) 
+                    WHERE mnt_3.id_establecimiento=$lugar 
+                    AND mnt_3.id_atencion ||'-'|| mnt_3.id_area_mod_estab ||'-'||mnt_3.id_establecimiento NOT IN (SELECT id_atencion ||'-'|| id_area_mod_estab ||'-'||id_establecimiento 
+                    FROM mnt_aten_area_mod_estab WHERE nombre_ambiente IS NOT NULL))
+
+
+            SELECT t03.idempleado AS idmedico,
+                             t03.nombreempleado AS nombremedico,
+                             t20.servicio AS Origen,
+                             t02.id AS idsolicitudestudio,
+                             t20.procedencia  AS Precedencia,
+                             t04.numero AS idnumeroexp,
+                             CONCAT_WS(' ',t05.primer_nombre, t05.segundo_nombre,t05.tercer_nombre, t05.primer_apellido, t05.segundo_apellido, t05.apellido_casada) as nombrepaciente,
+                             TO_CHAR(NOW(), 'DD/MM/YYYY') as fecha,
+                             REPLACE(
+                                REPLACE(
+                                    REPLACE(
+                                        REPLACE(
+                                            REPLACE(
+                                                REPLACE(
+                                                    AGE(t05.fecha_nacimiento::timestamp)::text,
+                                                'years', 'años'),
+                                            'year', 'año'),
+                                        'mons', 'meses'),
+                                    'mon', 'mes'),
+                                'days', 'días'),
+                             'day', 'día') AS edad,
+                             t06.nombre AS sexo,
+                             t07.id AS idsubservicio,
+                             t13.nombre,
+                             TO_CHAR(t05.fecha_nacimiento, 'DD/MM/YYYY') AS fechanacimiento,
+                             t01.id_establecimiento,
+                             t14.tiposolicitud,
+                             t02.id as idhistorial,
+                             1 as referido, 
+                             t01.fecha_solicitud,t01.id as idsolicitudestudio
+                      FROM  sec_solicitudestudios                t01
+                      INNER JOIN mnt_dato_referencia           	 t02 ON (t02.id = t01.id_dato_referencia)
+                      LEFT  JOIN mnt_empleado                    t03 ON (t03.id = t02.id_empleado)
+                      INNER JOIN mnt_expediente_referido                  t04 ON (t04.id = t02.id_expediente_referido)
+                      LEFT  JOIN mnt_paciente_referido                    t05 ON (t05.id = t04.id_referido)
+                      INNER JOIN ctl_sexo                        t06 ON (t06.id = t05.id_sexo)
+                      INNER JOIN mnt_aten_area_mod_estab         t07 ON (t07.id = t02.id_aten_area_mod_estab)
+                      INNER JOIN ctl_atencion                    t08 ON (t08.id = t07.id_atencion)
+                      LEFT JOIN cit_citas_serviciodeapoyo       t09 ON (t01.id = t09.id_solicitudestudios)
+
+                      INNER JOIN ctl_establecimiento             t13 ON (t13.id = t01.id_establecimiento_externo)
+                      INNER JOIN lab_tiposolicitud               t14 ON (t14.id = t01.idtiposolicitud)
+                      INNER JOIN ctl_estado_servicio_diagnostico t15 ON (t15.id = t01.estado AND t15.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+                        INNER JOIN mnt_area_mod_estab 		 t16 ON (t16.id = t07.id_area_mod_estab)
+                      INNER JOIN ctl_area_atencion		 t17 ON (t17.id = t16.id_area_atencion)
+                      INNER JOIN tbl_servicio t20 ON (t20.id = t07.id AND t20.servicio IS NOT NULL)
+                      WHERE  t15.idestado = 'D' AND t01.id_establecimiento = $lugar 
+                      and (id_tipo_diagnostico=1 or id_tipo_diagnostico is null) $where1";
+                
+            }
+           // $result = @pg_query($query);
             $result = @pg_query($query);
 
-            if (pg_num_rows($result)==0){ // busqueda si el paciente es de referencia
-              $query = "SELECT t03.idempleado AS idmedico,
+            if (!$result)
+                return false;
+            else
+                return $result;
+           // }
+          /*  if (pg_num_rows($result)==0){ // busqueda si el paciente es de referencia
+                 if ($idestablecimientoext!=0){
+               $where1 = $where1." AND t01.id_establecimiento_externo = $idestablecimientoext "; 
+                }
+                if ($idsolicitud!=0){
+                $where1=" and t01.id=$idsolicitud ";
+            }
+            
+            if($idexpediente !== '') {
+                $where1 = $where1." AND (t04.numero = '$idexpediente')";
+                $idexp=1;
+            }
+
+            if($fechacita !== '--') {
+                $where1 = $where1." AND t09.fecha = '$fechacita'";
+            }
+            
+            echo    $query="WITH tbl_servicio as (SELECT mnt_3.id, CASE WHEN id_servicio_externo_estab IS NOT NULL
+                       THEN mnt_ser.abreviatura ||'--'  || a.nombre
+                       ELSE       cmo.nombre ||'--' || a.nombre
+                       END as procedencia,
+
+                       CASE WHEN mnt_3.nombre_ambiente IS NOT NULL THEN mnt_3.nombre_ambiente 
+                       ELSE cmo.nombre ||'--' ||cat.nombre END AS servicio 
+
+                    FROM ctl_atencion cat 
+                    JOIN mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion) 
+                    JOIN mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id) 
+                    JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion in (1,4)) 
+                    LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id 
+                    LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id 
+                    JOIN mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab) 
+                    JOIN ctl_modalidad cmo on (cmo.id=mme.id_modalidad) 
+                    WHERE mnt_3.nombre_ambiente IS NOT NULL AND mnt_3.id_establecimiento=30
+
+                    UNION 
+
+                    SELECT mnt_3.id,CASE WHEN id_servicio_externo_estab IS NOT NULL
+                                           THEN mnt_ser.abreviatura ||'--'  || a.nombre
+                                           ELSE       cmo.nombre ||'--' || a.nombre
+                                           END as procedencia,
+                                           cat.nombre AS servicio
+                    FROM ctl_atencion cat JOIN mnt_aten_area_mod_estab mnt_3 on (cat.id=mnt_3.id_atencion) 
+                    JOIN mnt_area_mod_estab mnt_2 on (mnt_3.id_area_mod_estab=mnt_2.id) 
+                    JOIN ctl_area_atencion a ON (mnt_2.id_area_atencion=a.id AND a.id_tipo_atencion in (1,4)) 
+                    LEFT JOIN mnt_servicio_externo_establecimiento msee on mnt_2.id_servicio_externo_estab = msee.id 
+                    LEFT JOIN mnt_servicio_externo mnt_ser on msee.id_servicio_externo = mnt_ser.id 
+                    JOIN mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab) 
+                    JOIN ctl_modalidad cmo on (cmo.id=mme.id_modalidad) 
+                    WHERE mnt_3.id_establecimiento=30 
+                    AND mnt_3.id_atencion ||'-'|| mnt_3.id_area_mod_estab ||'-'||mnt_3.id_establecimiento NOT IN (SELECT id_atencion ||'-'|| id_area_mod_estab ||'-'||id_establecimiento 
+                    FROM mnt_aten_area_mod_estab WHERE nombre_ambiente IS NOT NULL))
+
+
+            SELECT t03.idempleado AS idmedico,
+                             t03.nombreempleado AS nombremedico,
+                             t20.servicio AS Origen,
+                             t02.id AS idsolicitudestudio,
+                             t20.procedencia  AS Precedencia,
+                             t04.numero AS idnumeroexp,
+                             CONCAT_WS(' ',t05.primer_nombre, t05.segundo_nombre,t05.tercer_nombre, t05.primer_apellido, t05.segundo_apellido, t05.apellido_casada) as nombrepaciente,
+                             TO_CHAR(NOW(), 'DD/MM/YYYY') as fecha,
+                             REPLACE(
+                                REPLACE(
+                                    REPLACE(
+                                        REPLACE(
+                                            REPLACE(
+                                                REPLACE(
+                                                    AGE(t05.fecha_nacimiento::timestamp)::text,
+                                                'years', 'años'),
+                                            'year', 'año'),
+                                        'mons', 'meses'),
+                                    'mon', 'mes'),
+                                'days', 'días'),
+                             'day', 'día') AS edad,
+                             t06.nombre AS sexo,
+                             t07.id AS idsubservicio,
+                             t13.nombre,
+                             TO_CHAR(t05.fecha_nacimiento, 'DD/MM/YYYY') AS fechanacimiento,
+                             t01.id_establecimiento,
+                             t14.tiposolicitud,
+                             t02.id as idhistorial,
+                             1 as referido, 
+                             t01.fecha_solicitud
+                      FROM  sec_solicitudestudios                t01
+                      INNER JOIN mnt_dato_referencia           	 t02 ON (t02.id = t01.id_dato_referencia)
+                      LEFT  JOIN mnt_empleado                    t03 ON (t03.id = t02.id_empleado)
+                      INNER JOIN mnt_expediente_referido                  t04 ON (t04.id = t02.id_expediente_referido)
+                      LEFT  JOIN mnt_paciente_referido                    t05 ON (t05.id = t04.id_referido)
+                      INNER JOIN ctl_sexo                        t06 ON (t06.id = t05.id_sexo)
+                      INNER JOIN mnt_aten_area_mod_estab         t07 ON (t07.id = t02.id_aten_area_mod_estab)
+                      INNER JOIN ctl_atencion                    t08 ON (t08.id = t07.id_atencion)
+                      LEFT JOIN cit_citas_serviciodeapoyo       t09 ON (t01.id = t09.id_solicitudestudios)
+
+                      INNER JOIN ctl_establecimiento             t13 ON (t13.id = t01.id_establecimiento)
+                      INNER JOIN lab_tiposolicitud               t14 ON (t14.id = t01.idtiposolicitud)
+                      INNER JOIN ctl_estado_servicio_diagnostico t15 ON (t15.id = t01.estado AND t15.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+                        INNER JOIN mnt_area_mod_estab 		 t16 ON (t16.id = t07.id_area_mod_estab)
+                      INNER JOIN ctl_area_atencion		 t17 ON (t17.id = t16.id_area_atencion)
+                      INNER JOIN tbl_servicio t20 ON (t20.id = t07.id AND t20.servicio IS NOT NULL)
+                      WHERE  t15.idestado = 'D' AND t01.id_establecimiento = $lugar 
+                      and (id_tipo_diagnostico=1 or id_tipo_diagnostico is null) $where1";
+             /* $query = "SELECT t03.idempleado AS idmedico,
                              t03.nombreempleado AS nombremedico,
                              t08.nombre AS Origen,
                              t02.id AS idsolicitudestudio,
@@ -400,7 +768,8 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
                              t01.id_establecimiento,
                              t14.tiposolicitud,
                              t02.id as idhistorial,
-                             1 as referido, t02.fecha_solicitud
+                             1 as referido, 
+                             t01.fecha_solicitud
                       FROM  sec_solicitudestudios                t01
                       INNER JOIN mnt_dato_referencia           	 t02 ON (t02.id = t01.id_dato_referencia)
                       LEFT  JOIN mnt_empleado                    t03 ON (t03.id = t02.id_empleado)
@@ -417,8 +786,8 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
                         INNER JOIN mnt_area_mod_estab 		 t16 ON (t16.id = t07.id_area_mod_estab)
                       INNER JOIN ctl_area_atencion		 t17 ON (t17.id = t16.id_area_atencion)
                       WHERE t04.numero = '$idexpediente' AND t15.idestado = 'D' AND t01.id = $IdSolicitud AND t09.fecha = '$fechacita' AND t02.id_establecimiento = $lugar
-                      and (id_tipo_diagnostico=1 or id_tipo_diagnostico is null)";
-            $result = @pg_query($query);
+                      and (id_tipo_diagnostico=1 or id_tipo_diagnostico is null)";*/
+         /*   $result = @pg_query($query);
 
             if (!$result)
                 return false;
@@ -426,7 +795,7 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
                 return $result;
             }
             else
-                return $result;
+                return $result;*/
         }
     }
 
@@ -628,9 +997,26 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
 
     function BuscarDetalleSolicitud($idexpediente, $fechacita, $IdSolicitud, $idEstablecimiento) {
         $con = new ConexionBD;
+       // echo "funcion".$IdSolicitud;
         if ($con->conectar() == true) {
-
-        $query = "SELECT t09.numero AS idnumeroexp,
+            if($idexpediente !== '') {
+                   $where = $where1." AND (t09.numero = '$idexpediente' OR t21.numero = '$idexpediente')";
+                   
+                   
+                  // $idexp=1;
+               }
+            
+            if($fechacita !== '--') {
+                $where = $where." AND t07.fecha = '$fechacita'";
+            }
+          /*  else {
+               if ($idexp==0)
+               $where = $where." AND date(t09.fecha) between date('2016-01-01') and current_date ";
+            }*/
+            if ($IdSolicitud!=0){
+                $where = $where." and t02.id=$IdSolicitud ";
+            }
+       $query = "SELECT t09.numero AS idnumeroexp,
                              t05.idarea,
                              t03.codigo_examen AS idexamen,
                              t03.nombre_examen AS nombreexamen,
@@ -658,8 +1044,9 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
                       LEFT JOIN mnt_expediente_referido                  t21 ON (t21.id = t20.id_expediente_referido)
 
 
-                      WHERE t11.codigo_busqueda = 'DCOLAB' AND (t09.numero = '$idexpediente' OR t21.numero = '$idexpediente') AND t07.fecha = '$fechacita'
-                            AND t02.id = $IdSolicitud AND t01.estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = 'D' AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
+                      WHERE t11.codigo_busqueda = 'DCOLAB'  
+                             AND t01.estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = 'D' 
+                                AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) $where
                       ORDER BY t05.idarea";
             //echo $query;
             $result = @pg_query($query);
@@ -739,19 +1126,40 @@ where extract('dow' from dia) not in (0,6)) as diaswithoutweekend
         }
     }
 
-    function Piloto($idexpediente, $fechacita, $lugar, $idEstablecimiento, $idsolicitud) {
+    function Piloto($idexpediente, $fechacita, $lugar, $idEstablecimiento, $idsolicitud,$idestablecimientoext) {
         //creamos el objeto $con a partir de la clase ConexionBD
         $con = new ConexionBD;
+        $addquery=' ';
         //usamos el metodo conectar para realizar la conexion
         if ($con->conectar() == true) {
-            $query = "SELECT t03.piloto
+            if ($idsolicitud!==0){
+                $addquery=" and t01.id=$idsolicitud ";
+            }
+              //  $addquery=" and t01.id=$idsolicitud ";
+            
+          
+             if($idexpediente !== '') {
+                $addquery = $addquery." AND t04.numero = '$idexpediente'";
+                //$idexp=1;
+            }
+
+            if($fechacita!=='--') {
+                $addquery = $addquery." AND t02.fecha = '$fechacita'";
+            }
+            
+            if ($idEstablecimiento!==0){
+               $addquery = $addquery." AND t01.id_establecimiento_externo = $idestablecimientoext "; 
+            }
+            
+           // echo$addquery;
+         $query = "SELECT t03.piloto
                       FROM  sec_solicitudestudios                t01
                       INNER JOIN cit_citas_serviciodeapoyo       t02 ON (t01.id = t02.id_solicitudestudios)
                       INNER JOIN sec_historial_clinico           t03 ON (t03.id = t01.id_historial_clinico)
                       INNER JOIN mnt_expediente                  t04 ON (t04.id = t01.id_expediente)
                       INNER JOIN ctl_estado_servicio_diagnostico t05 ON (t05.id = t01.estado AND t05.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
-                      WHERE t04.numero = '$idexpediente' AND t01.id=$idsolicitud AND t05.idestado = 'D' AND t02.fecha='$fechacita' AND t01.id_establecimiento = $lugar
-                            AND t03.idestablecimiento = $idEstablecimiento";
+                      WHERE t05.idestado = 'D' AND t01.id_establecimiento = $lugar $addquery
+                            ";
             $result = @pg_query($query);
             if (!$result)
                 return false;

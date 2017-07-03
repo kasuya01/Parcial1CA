@@ -31,12 +31,13 @@ $(document).ready(function () {
 
 //variables POST
 $idexpediente = $_POST['idexpediente'];
-$fechacita    = $_POST['fechacita'];
+ $fechacita    = $_POST['fechacita'];
 $Nfecha       = explode("/", $fechacita);
-$Nfechacita = $Nfecha[2] . "/" . $Nfecha[1] . "/" . $Nfecha[0];
+$Nfechacita = $Nfecha[2] . "-" . $Nfecha[1] . "-" . $Nfecha[0];
 $estado     = 'D';
-$idEstablecimiento = $_POST['idEstablecimiento'];
-$idsolicitud = $_POST['idsolicitud'];
+ $idEstablecimiento = $_POST['idEstablecimiento'];
+ $idsolicitud = $_POST['idsolicitud'];
+ $idestablecimientoext = $_POST['idestablecimientoext'];
 $arraysolic  = array();
 $arraypiloto = array();
 $i   = 0;
@@ -56,30 +57,33 @@ while ($row_pl=@pg_fetch_array($procref)){
 }
 $configuracion=0;
 
-$consulta = $objdatos->BuscarSolicitudes($idexpediente, $Nfechacita, $lugar, $idEstablecimiento, $idsolicitud);
-
-$NroRegistros = $objdatos->NumeroDeRegistros($idexpediente, $Nfechacita, $lugar, $idEstablecimiento, $idsolicitud);
-$pil = $objdatos->Piloto($idexpediente, $Nfechacita, $lugar, $idEstablecimiento, $idsolicitud);
-
+$consulta = $objdatos->BuscarSolicitudes($idexpediente,  $fechacita, $lugar, $idEstablecimiento, $idsolicitud, $idestablecimientoext);
+//echo "Nfecha= ".$Nfechacita;
+$NroRegistros = $objdatos->NumeroDeRegistros($idexpediente,  $fechacita, $lugar, $idEstablecimiento, $idsolicitud,$idestablecimientoext);
+$pil = $objdatos->Piloto($idexpediente,  $fechacita, $lugar, $idEstablecimiento, $idsolicitud ,$idestablecimientoext);
+//echo "NUM ".$NroRegistros ;
 while ($piloto = pg_fetch_array($pil)) {
-    $arraypiloto[$j] = $piloto[0];
+  $arraypiloto[$j] = $piloto[0];
     $j++;
 }
 
 while ($rowsolic = pg_fetch_array($consulta)) {
     $arraysolic[$i] = $rowsolic[0];
+    
+  //  echo $rowsolic[0];
     $i++;
 }
-
+//echo "antes del for".$idestablecimientoext;
 for ($i = 0; $i < $NroRegistros; $i++) {
+   // echo $i;
     echo "<div class='row'>
     <div class='col-md-1'></div>";
 
         echo "<div class='col-md-10'>";
             echo "<div class='box box-primary'>";
+//echo "despues del for ".$idestablecimientoext;
 
-
-    $ConsultaDatos = $objdatos->BuscarDatosSolicitudes($idexpediente, $Nfechacita, $arraysolic[$i], $lugar);
+    $ConsultaDatos = $objdatos->BuscarDatosSolicitudes($idexpediente, $fechacita, $arraysolic[$i], $lugar,$idestablecimientoext);
 
     while ($row = pg_fetch_array($ConsultaDatos)) {
         echo '<div class="box-header with-border">
@@ -165,11 +169,13 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                               <th>A Realizar</th>
                               <th> Validar Muestra</th>
                               <th id='colnewdate_' class='hide_me newdate'>Nueva Cita</th>";
-
+//echo "solicitud ".$row['idsolicitudestudio'];
                     if ($refext=='t')
                               echo "<th > Lugar de Realización</th>";
           		        echo "</tr></thead><tbody>";
-                  $detalle = $objdatos->BuscarDetalleSolicitud($idexpediente, $Nfechacita, $arraysolic[$i], $idEstablecimiento);
+                                
+                                
+                  $detalle = $objdatos->BuscarDetalleSolicitud($idexpediente, $fechacita, $row['idsolicitudestudio'], $idEstablecimiento);
                   $k=1;
                   while ($rows = pg_fetch_array($detalle)) {
                     echo "<tr id='rowdetalle_".$k."'>
@@ -293,12 +299,13 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                              </center>
                         </td></tr></table>
               </div>";
+              
     }//del while
     echo "<input type='hidden' name='topei' id='topei' value='" . $NroRegistros . "' /> ";
         echo "</div>";//fin div class box box-primary
     echo "</div>";//fin div class col-md-8
 echo "</div>";//fin div class row
-}
+}// for
 ?>
 
 <!--    <table align="center">
