@@ -18,6 +18,7 @@ $IdSubServicio = isset($_GET['IdSubServicio']) ? $_GET['IdSubServicio'] : null;
 $IdEmpleado = isset($_GET['IdEmpleado']) ? $_GET['IdEmpleado'] : null;
 $IdUsuarioReg = $_SESSION['Correlativo'];
 $FechaConsulta = $_GET["FechaConsulta"];
+$FechaRecepcion = $_GET["FechaRecepcion"];
 $IdCitaServApoyo = $_GET["IdCitaServApoyo"];
 $sexo = $_GET["Sexo"];
 $idexpediente = $_GET["idexpediente"];
@@ -52,6 +53,7 @@ $_SESSION["idexpediente"] = $idexpediente;
 $_SESSION["IdHistorialClinico"] = $IdHistorialClinico;
 $_SESSION["Fecha"] = $FechaSolicitud;
 $_SESSION["FechaConsulta"] = $FechaConsulta;
+$_SESSION["FechaRecepcion"] = $FechaRecepcion;
 $_SESSION["IdUsuarioReg"] = $IdUsuarioReg;
 $_SESSION["IdEstablecimiento"] = $IdEstablecimiento;
 $_SESSION["lugar"] = $lugar;
@@ -69,6 +71,7 @@ $_SESSION["lugar"] = $lugar;
          <script languaje="javascript">
             var band = 0;
             jQuery(document).ready(function ($) {
+                $('#tabla_examenes').DataTable();
                /*Habilitar todos los registros*/
                $('button[id^="select_all"]').on("click", function (e) {
                   $('input[id^="Examenes"]').each(function () {
@@ -105,7 +108,7 @@ $_SESSION["lugar"] = $lugar;
    <body>
 
       <div class="panel panel-primary">
-         <table  cellspacing="1" cellpadding="2" border="1" align="justify" width="100%"  class="table table-bordered table-condensed table-white no-v-border">
+         <table  cellspacing="1" cellpadding="2" border="1" align="justify" width="100%"  class="table table-bordered table-condensed table-white no-v-border" id="tabla_examenes">
             <thead><tr>
 
 <!--<td colspan='7'color='white' nowrap><strong><font color="white">P R U E B A S &nbsp;&nbsp;&nbsp; I N D I V I D U A L E S  </font></strong>-->
@@ -172,6 +175,22 @@ $_SESSION["lugar"] = $lugar;
 
             </tr>";
 
+            echo "<tr><td colspan='6' align='right' >
+
+            <span class='glyphicon glyphicon-chevron-right'></span>
+            <span class='glyphicon glyphicon-chevron-right'></span>
+            <span class='glyphicon glyphicon-chevron-right'></span>
+            <span class='glyphicon glyphicon-chevron-right'></span>
+            <button type='button' class='btn btn-primary' id='Enviar' onclick='GuardarSolicitud(); '><span class='glyphicon glyphicon-share-alt'></span> Enviar Solicitud</button>
+            <button type='button' class='btn btn-primary'  onclick='window.close();'><span class='glyphicon glyphicon-remove-circle'></span> Cancelar Solicitud</button>";
+            if ($addexam==1){
+                echo "  <button type='button' class='btn btn-primary'  onclick='ListaExamenes(".$IdHistorialClinico.",".$IdCitaServApoyo.", 0)'><span class='glyphicon glyphicon-repeat'></span> Regresar listado</button>";
+            }
+
+
+
+          echo "</td></tr>";
+
 
 
 //Llamar a funcion para buscar las areas que tiene configurado el establecimiento
@@ -229,6 +248,7 @@ $_SESSION["lugar"] = $lugar;
               <input type='hidden' name='idexpediente' Id='idexpediente' value='" . $idexpediente . "'>
               <input type='hidden' name='IdHistorialClinico' Id='IdHistorialClinico' value='" . $IdHistorialClinico . "'>
               <input type='hidden' name='FechaSolicitud' Id='FechaSolicitud' value='" . $FechaSolicitud . "'>
+              <input type='hidden' name='FechaRecepcion' Id='FechaRecepcion' value='" . $FechaRecepcion . "'>
               <input type='hidden' name='IdUsuarioReg' Id='IdUsuarioReg' value='" . $IdUsuarioReg . "'>
               <input type='hidden' name='IdCitaServApoyo' Id='IdCitaServApoyo' value='" . $IdCitaServApoyo . "'>
               <input type='hidden' name='IdEstablecimiento' Id='IdEstablecimiento' value='" . $IdEstablecimiento . "'>

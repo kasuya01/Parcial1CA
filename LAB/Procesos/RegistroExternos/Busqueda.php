@@ -1,4 +1,4 @@
-<?php 
+<?php
 @session_start();
 //include("../indexCitas2.php");
 include_once("../../../Conexion/ConexionBD.php");
@@ -10,16 +10,16 @@ $estabnombre=$_GET['estabnombre'];
 $idexpedienteex=$_GET['idexpedienteex'];
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
 //echo 'estab: '.$estabnombre;
-//busqueda de establecimiento 
+//busqueda de establecimiento
   $con = new ConexionBD;
         if ($con->conectar() == true) {
            $query="
-                select replace(nombre, '\"', '') as nombre 
+                select replace(nombre, '\"', '') as nombre
                 from ctl_establecimiento where id=$idest; ";
            $result=  pg_query($query);
            $roweest=  pg_fetch_array($result);
-           $nombreest=$roweest['nombre']; 
-           
+           $nombreest=$roweest['nombre'];
+
            $query2="select *, extract(year from age(fecha_nacimiento)) AS edad, d.id as idpacienteref
             FROM mnt_paciente_referido d
             JOIN mnt_expediente_referido e on (d.id= e.id_referido)
@@ -42,14 +42,14 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
            $nombrerespon=$row2['nombre_responsable'];
            $edad=$row2['edad'];
            $pacienteref=$row2['idpacienteref'];
-           
-           
+
+
         }
 ?>
 <html>
 <head>
 <title>Procedimientos..</title>
-	
+
       <?php include_once $ROOT_PATH."/public/css.php";?>
       <?php include_once $ROOT_PATH."/public/js.php";?>
       <script type="text/javascript" src="scripts/prototype.js"></script>
@@ -60,7 +60,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
   // we call the function
  VerificarExistente(); //works
 });
-  
+
 </script>-->
 <script language="javascript" src="Includes/Funciones.js">
 </script>
@@ -106,19 +106,19 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                         &nbsp;Busqueda de paciente Externo   </h3>
             </td></tr></thead>
                   <tbody><tr>
-      <td align="left">Nombre del Establecimiento Externo:&nbsp;</td> 
+      <td align="left">Nombre del Establecimiento Externo:&nbsp;</td>
       <td colspan="3">
          <input class="0" maxlength="20" size="80" id="NombreEstablecimiento" value='<?php echo $nombreest;?>'></td>
-          
+
     </tr>
     <tr>
-        <td align="left">Nombre Paciente:&nbsp;</td> 
+        <td align="left">Nombre Paciente:&nbsp;</td>
         <td colspan="3"><input class="CobaltInput" maxlength="40" size="80" id="NombrePaciente">
         <input type="hidden" id="nec" value= '<?php echo $nec;?>'>
         </td>
     </tr>
     <tr style="border-bottom-color: #428BCA; border-bottom-style: inset">
-        <td colspan="4" align="right"> 
+        <td colspan="4" align="right">
            <input  type="button" id="ClearInfo" name="ClearInfo" value="NUEVA BUSQUEDA" onClick="javascript:LimpiarConExpe('<?php echo $nec; ?>');">
             <button type='button' align="center" class='btn btn-primary' id='ClearInfo' name="ClearInfo" onClick="javascript:LimpiarConExpe('<?php echo $nec; ?>');"><span class='glyphicon glyphicon-refresh'></span> Nueva Busqueda</button>
            <br>
@@ -128,7 +128,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                   </tbody>
                   <thead>
                      <tr >
-       <th style='background-color: #428bca; color:#ffffff; text-align:center' nowrap colspan="4"><h3 align="center">Datos de la Busqueda</h3></th> 
+       <th style='background-color: #428bca; color:#ffffff; text-align:center' nowrap colspan="4"><h3 align="center">Datos de la Busqueda</h3></th>
     </tr>
     <tr>
         <th align="center"><h4 align="center">Numero Correlativo Interno</h4></th>
@@ -137,7 +137,7 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
                </tr> </thead>
                <tbody>
     <tr>
-        <td class="CobaltDataTD" align="center"> Enviodatos() 
+        <td class="CobaltDataTD" align="center"> Enviodatos()
             <a class="CobaltDataLink" href="javascript: VerificarExistente();"><div id="IdNumeroExp"> </div></a></td>
 	<td class="CobaltDataTD" align="center">
             <input type="hidden" id="PrimerNombre" >
@@ -153,9 +153,9 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
             <input type="hidden" id="NombrePadre">
             <input type="hidden" id="NombreResponsable">
             <input type="hidden" id="idnumeroexpediente">
-            
+
             <input type="hidden" id="edad">
-            
+
 	<div id="Paciente"><a class="CobaltDataLink"></a></div></td>
 	<td class="CobaltDataTD" align="center">
 	<div id="NombreMadre1"><a class="CobaltDataLink"></a></div></td>
@@ -172,68 +172,77 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
        <tr>
       <td colspan="4" nowrap style='background-color: #428bca; color:#ffffff; text-align:center'>
          <h3 align="center"><span class='glyphicon glyphicon-list-alt'></span>
-            Datos del Paciente</h3></td> 
+            Datos del Paciente</h3></td>
 	</tr>
+
       </thead>
         <tbody>
+            <tr>
+                <td colspan="4" >
+                    <div class="panel panel-info">
+                    <div class="panel-heading" style="padding: 2px 15px !important">
+                    <h4><b>Expediente <?php echo $nec;?> No encontrado</b>, Por Favor Registrarlo....&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4> </div>
+                     </div>
+                </td>
+            </tr>
            <tr>
-              <td nowrap class="CobaltFieldCaptionTD"><strong>Establecimiento:<font color="#ff0000">*</font> </strong></td> 
+              <td nowrap class="CobaltFieldCaptionTD"><strong>Establecimiento:<font color="#ff0000">*</font> </strong></td>
               <td class="CobaltDataTD" colspan="3"><input type="text" readonly="readonly" id='nombrestablecimiento' value='<?php echo $nombreest;?>' style="WIDTH: 527px"/></td>
            </tr>
       <tr>
-            <td nowrap class="CobaltFieldCaptionTD"><strong>Numero de Expediente de Referencia:<font color="#ff0000">*</font> </strong></td> 
+            <td nowrap class="CobaltFieldCaptionTD"><strong>Numero de Expediente de Referencia:<font color="#ff0000">*</font> </strong></td>
             <td class="CobaltDataTD" colspan="4">
-               <input class="CobaltInput" maxlength="80" size="21" id="NumeroExpediente_Referencia" style="WIDTH: 190px;" value="<?php echo $nec;?>"></td> 
-            </tr>    
+               <input class="CobaltInput" maxlength="80" size="21" id="NumeroExpediente_Referencia" style="WIDTH: 190px;" value="<?php echo $nec;?>"></td>
+            </tr>
      <tr>
-      <td nowrap class="CobaltFieldCaptionTD"><strong>Nombre:<font color="#ff0000">*</font> </strong></td> 
+      <td nowrap class="CobaltFieldCaptionTD"><strong>Nombre:<font color="#ff0000">*</font> </strong></td>
       <td class="CobaltDataTD">
-	  <input class="MailboxInput" style="WIDTH: 190px;" maxlength="20" name="PrimerNombre_Name" id="PrimerNombre_Name" placeholder="Primer Nombre" autofocus></td> 
+	  <input class="MailboxInput" style="WIDTH: 190px;" maxlength="20" name="PrimerNombre_Name" id="PrimerNombre_Name" placeholder="Primer Nombre" autofocus></td>
 <!--      <td nowrap class="CobaltFieldCaptionTD"><strong>Segundo Nombre: <font color="#ff0000">*</font> </strong></td> -->
       <td class="CobaltDataTD">
-	  <input class="MailboxInput" style="WIDTH: 190px;" maxlength="20" name="SegundoNombre_Name" id="SegundoNombre_Name" placeholder="Segundo Nombre"></td> 
+	  <input class="MailboxInput" style="WIDTH: 190px;" maxlength="20" name="SegundoNombre_Name" id="SegundoNombre_Name" placeholder="Segundo Nombre"></td>
 <!--      <td nowrap class="CobaltFieldCaptionTD"><strong>Tercer Nombre: <font color="#ff0000">*</font> </strong></td> -->
       <td class="CobaltDataTD">
-	  <input class="MailboxInput" style="WIDTH: 190px;" maxlength="20" name="TercerNombre_Name" id="TercerNombre_Name" placeholder="Tercer Nombre"></td> 
-    </tr> 
+	  <input class="MailboxInput" style="WIDTH: 190px;" maxlength="20" name="TercerNombre_Name" id="TercerNombre_Name" placeholder="Tercer Nombre"></td>
+    </tr>
     <tr>
-      <td nowrap class="CobaltFieldCaptionTD"><strong>Apellidos:<font color="#ff0000">*</font> </strong></td> 
+      <td nowrap class="CobaltFieldCaptionTD"><strong>Apellidos:<font color="#ff0000">*</font> </strong></td>
       <td class="CobaltDataTD">
-	  <input class="MailboxInput" style="WIDTH: 190px;" maxlength="20" name="PrimerApellido_Name" id="PrimerApellido_Name" placeholder="Primer Apellido"></td> 
-     
+	  <input class="MailboxInput" style="WIDTH: 190px;" maxlength="20" name="PrimerApellido_Name" id="PrimerApellido_Name" placeholder="Primer Apellido"></td>
+
       <td class="CobaltDataTD">
-	  <input class="MailboxInput" style="WIDTH: 190px;" maxlength="20" name="SegundoApellido_Name" id="SegundoApellido_Name" placeholder="Segundo Apellido"></td> 
+	  <input class="MailboxInput" style="WIDTH: 190px;" maxlength="20" name="SegundoApellido_Name" id="SegundoApellido_Name" placeholder="Segundo Apellido"></td>
       <td class="CobaltDataTD">
-	  <input class="MailboxInput" style="WIDTH: 190px;" maxlength="20" name="CasadaApellido_Name" id="CasadaApellido_Name" placeholder="Apellido de Casada"></td> 
-    </tr>   
+	  <input class="MailboxInput" style="WIDTH: 190px;" maxlength="20" name="CasadaApellido_Name" id="CasadaApellido_Name" placeholder="Apellido de Casada"></td>
+    </tr>
     <tr>
-       <td nowrap class="CobaltFieldCaptionTD"><strong>Edad <font color="#ff0000">*</font> </strong></td> 
+       <td nowrap class="CobaltFieldCaptionTD"><strong>Edad <font color="#ff0000">*</font> </strong></td>
       <td class="CobaltDataTD">
 	  <input onBlur="esEdadValida(this)" onkeyup="limpiarcampoedad('Edad', this)" id="Edad" class="MailboxInput" maxlength="3" style="width:50px;" size="3" min="0" max="120">
           <input type="hidden" id="Edadini">
           <input id="FechaNacimiento_Name" maxlength="10" class="MailboxInput" style="width:135px;" size="10" disabled="disabled" style="">
-		  
-      <td nowrap class="CobaltFieldCaptionTD" align="center"><strong>Sexo: <font color="#ff0000">*</font></strong></td> 
+
+      <td nowrap class="CobaltFieldCaptionTD" align="center"><strong>Sexo: <font color="#ff0000">*</font></strong></td>
       <td class="CobaltDataTD">
       <select id="Sexo_Name" class="form-control height" style="WIDTH: 190px;">
                   <option value="0" selected>Seleccionar</option>
                   <option value="1">Masculino</option>
 		  <option value="2">Femenino</option>
-        </select></td>   
+        </select></td>
 	</tr>
-	
+
 	<tr>
-      <td nowrap class="CobaltFieldCaptionTD"><strong>Nombre de la Madre: </strong></td> 
+      <td nowrap class="CobaltFieldCaptionTD"><strong>Nombre de la Madre: </strong></td>
       <td class="CobaltDataTD" colspan="4">
         <input class="CobaltInput" maxlength="80" size="21" id="NombreMadre_Name" style="WIDTH: 527px;"></td>
         </tr>
         <tr>
-      <td nowrap class="CobaltFieldCaptionTD"><strong>Nombre del Padre:</strong></td> 
+      <td nowrap class="CobaltFieldCaptionTD"><strong>Nombre del Padre:</strong></td>
       <td class="CobaltDataTD" colspan="4">
         <input class="CobaltInput" maxlength="80" size="21" id="NombrePadre_Name" style="WIDTH: 527px;"></td>
         </tr>
            <tr>
-      <td nowrap class="CobaltFieldCaptionTD"><strong>Nombre Responsable:</strong></td> 
+      <td nowrap class="CobaltFieldCaptionTD"><strong>Nombre Responsable:</strong></td>
       <td class="CobaltDataTD" colspan="4">
         <input class="CobaltInput" maxlength="80" size="21" id="NombreResponsable_Name" style="WIDTH: 527px;"></td>
         </tr>
@@ -260,9 +269,9 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
    </table></div></div>
 
 <script>
-	   new Autocomplete('NombreEstablecimiento', function() { 
-		
-		   return 'respuesta.php?Bandera=2&ctr=1&q=' + this.value; 
+	   new Autocomplete('NombreEstablecimiento', function() {
+
+		   return 'respuesta.php?Bandera=2&ctr=1&q=' + this.value;
 	   });
             new Autocomplete('NombrePaciente', function() {
 		var IdEstablecimiento = document.getElementById('EstablecimientoExterno').value;
@@ -270,21 +279,18 @@ $ROOT_PATH = $_SESSION['ROOT_PATH'];
             //    alert (num_exp)
                 if(IdEstablecimiento == '')
                 {
-                  alert("  Seleccione un establecimiento por favor")  
+                  alert("  Seleccione un establecimiento por favor")
                 }
                 else{
               alert('Estab'+IdEstablecimiento+ ' thisval: '+this.value+' num_exp: '+num_exp);
-                return 'respuesta.php?Bandera=3&ctr=1&q='+this.value+'&IdEstablecimiento='+IdEstablecimiento+'&num_exp='+num_exp; 
+                return 'respuesta.php?Bandera=3&ctr=1&q='+this.value+'&IdEstablecimiento='+IdEstablecimiento+'&num_exp='+num_exp;
                 }
 	   });
-           
-           
+
+
 	</script>
-        
+
 
 </body>
 </center>
 </html>
-
-
-

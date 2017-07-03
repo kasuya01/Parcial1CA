@@ -52,6 +52,7 @@ function AgregarExamen(){
 	var IdCitaServApoyo=document.getElementById('IdCitaServApoyo').value;
 	var Sexo=document.getElementById('Sexo').value;
 	var FechaConsulta=document.getElementById('FechaConsulta').value;
+	var FechaRecepcion=document.getElementById('FechaRecepcion').value;
 	var urgente=document.getElementById('tiposolgen');
 	if(urgente.checked==true){
 		var prioridad='1';
@@ -71,9 +72,9 @@ function AgregarExamen(){
 			Parametros+="&idexpediente="+idexpediente;
 			Parametros+="&Sexo="+Sexo;
 			Parametros+="&FechaConsulta="+FechaConsulta;
+			Parametros+="&FechaRecepcion="+FechaRecepcion;
 			Parametros+="&prioridad="+prioridad;
 			Parametros+="&addexam="+agregarexamen;
-
 	location.href='./Solicitud.php'+Parametros;
 
 }
@@ -89,7 +90,8 @@ function ListaExamenes(IdHistorialClinico,IdCitaServApoyo, band){
    }else{
 	   var Bandera='2';
    }
-   window.location.href='ExamenesSolicitados.php?IdHistorialClinico='+IdHistorialClinico+'&IdCitaServApoyo='+IdCitaServApoyo+'&band='+band+'&urgente='+Bandera;
+   var FechaRecepcion = document.getElementById('FechaRecepcion').value;
+   window.location.href='ExamenesSolicitados.php?IdHistorialClinico='+IdHistorialClinico+'&IdCitaServApoyo='+IdCitaServApoyo+'&band='+band+'&urgente='+Bandera+'&FechaRecepcion='+FechaRecepcion;
 
         classdatepick();
 	//MostrarDetalle(IdHistorialClinico);
@@ -374,6 +376,7 @@ function MostrarDetalle(IdHistorialClinico){
 		var IdNumeroExp=document.getElementById('IdNumeroExp').value;
 		var idexpediente=document.getElementById('idexpediente').value;
 		var FechaSolicitud=document.getElementById('FechaSolicitud').value;
+		var FechaRecepcion=document.getElementById('FechaRecepcion').value;
 		var IdUsuarioReg=document.getElementById('IdUsuarioReg').value;
 		var IdCitaServApoyo=document.getElementById('IdCitaServApoyo').value;
 		var IdEstablecimiento=document.getElementById('IdEstablecimiento').value;
@@ -470,7 +473,7 @@ function MostrarDetalle(IdHistorialClinico){
 			var Proceso='GuardarDatos';
                      //   alert(' Proceso '+Proceso+' IdHistorialClinico '+IdHistorialClinico+' IdNumeroExp '+IdNumeroExp+' FechaSolicitud '+FechaSolicitud+' IdUsuarioReg '+IdUsuarioReg+' IdExamen '+NombreExamen+' Indicacion '+Indicacion+' NombreMuestra '+NombreMuestra+' NombreOrigen '+NombreOrigen+'idexpediente:'+idexpediente+'IdEstablecimiento'+IdEstablecimiento+'lugar'+lugar);
 					// console.log(NombreSuministrante+' NS'+ ' idexamen: '+NombreExamen)
-		ajax2.open("GET",'Procesar.php?Proceso='+Proceso+'&IdHistorialClinico='+IdHistorialClinico+'&IdNumeroExp='+IdNumeroExp+'&idexpediente='+idexpediente+'&FechaSolicitud='+FechaSolicitud+'&IdUsuarioReg='+IdUsuarioReg+'&IdExamen='+NombreExamen+'&Indicacion='+Indicacion+'&IdTipoMuestra='+NombreMuestra+'&IdOrigen='+NombreOrigen+"&idsuministrante="+NombreSuministrante,true);
+		ajax2.open("GET",'Procesar.php?Proceso='+Proceso+'&IdHistorialClinico='+IdHistorialClinico+'&IdNumeroExp='+IdNumeroExp+'&idexpediente='+idexpediente+'&FechaSolicitud='+FechaSolicitud+'&FechaRecepcion='+FechaRecepcion+'&IdUsuarioReg='+IdUsuarioReg+'&IdExamen='+NombreExamen+'&Indicacion='+Indicacion+'&IdTipoMuestra='+NombreMuestra+'&IdOrigen='+NombreOrigen+"&idsuministrante="+NombreSuministrante,true);
 //console.log('SE fue y regreso')
 				/*	ajax.onreadystatechange=function() {
 	if (ajax.readyState==4)

@@ -113,6 +113,7 @@
         $idexpediente=$_GET["idexpediente"];
 
 	$FechaSolicitud=$_GET["FechaSolicitud"];
+	$FechaRecepcion=$_GET["FechaRecepcion"];
  	$IdUsuarioReg=$_GET["IdUsuarioReg"];
  	//$IdCitaServApoyo=$_GET["IdCitaServApoyo"];
 

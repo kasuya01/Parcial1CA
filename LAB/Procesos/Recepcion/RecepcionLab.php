@@ -301,8 +301,8 @@ accion=5;
 }
 
 function searchpac(){
-accion=6;
-
+//accion=6;
+//limpiar();
 	nec=document.getElementById('txtexp').value;
 	idext=document.getElementById('IdEstablecimientoExterno').value;
 
@@ -310,7 +310,7 @@ accion=6;
         if (idext == '' || idext==null || idext=='""'){
             idext=0;
         }
-       // alert(nec+' - '+idext)
+    //    alert(nec+' - '+idext)
 //	if(!IsNumeric(document.getElementById('txtexp').value)){
 //		alert('Por favor solo introduzca numeros en este campo')
 //		document.getElementById('txtexp').focus();
@@ -330,8 +330,8 @@ accion=6;
 	  } else{
 	  	alert("no pudo crearse el objeto")
 	  }
-
-	  sendReq.onreadystatechange = procesaEsp;
+MostrarDatos(nec, idext);
+	/*  sendReq.onreadystatechange = procesaEsp;
 	  sendReq.open("POST", 'ajax_recepcion.php', true);
 	  sendReq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 
@@ -339,7 +339,7 @@ accion=6;
 	  param += '&nec='+nec+'&idext='+idext;
         //  param += '&idext='+idext;
          // alert (param)
-	  sendReq.send(param);
+	  sendReq.send(param);*/
 }
 
 
@@ -352,14 +352,15 @@ accion=6;
     var IdSubServicio = document.getElementById("cmbSubServ").value;
     var IdEmpleado = document.getElementById("cmbMedico").value;
     var FechaConsulta = document.getElementById("txtconsulta").value;
+    var FechaRecepcion = document.getElementById("txtfrecepcion").value;
    // var IdCitaServApoyo = document.getElementById("IdCitaServApoyo").value;
   //  var Sexo = document.getElementById("tiposexo").value;
     var idexpediente = document.getElementById("idexpediente").value;
         // alert ("algo :"+idexpediente);
 
      var mensaje="";
-    if (FechaConsulta==''){
-        mensaje +="Ingrese el dato de la Fecha de la consulta ";
+    if (FechaConsulta=='' || FechaRecepcion==''){
+        mensaje +="Ingrese los datos de la Fecha de la consulta y/o recepcion";
     }
     if (IdSubServicio==0){
         mensaje +="\nIngrese el dato del subservicio"
@@ -385,9 +386,9 @@ accion=6;
 	  var param = 'Proceso=VerificarSolicitud';
 	  param += '&IdNumeroExp='+IdNumeroExp+'&IdEstablecimiento='+IdEstablecimiento+
                    '&lugar='+lugar+'&IdSubServicio='+IdSubServicio+
-                   '&FechaConsulta='+FechaConsulta+'&idexpediente='+idexpediente+'&IdEmpleado='+IdEmpleado;
+                   '&FechaConsulta='+FechaConsulta+'&idexpediente='+idexpediente+'&IdEmpleado='+IdEmpleado+"&FechaRecepcion="+FechaRecepcion;
         //  param += '&idext='+idext;
-         // alert ("idsubservicio"+IdSubServicio +"- id empleado"+IdEmpleado);
+        // alert (param);
 	  sendReq.send(param);
 
 }
@@ -473,7 +474,8 @@ function NoEncontrado(nec)
 }
 
 function limpiar(){
-   document.getElementById("frmdatosexpediente").reset();
+	window.location.replace('RecepcionLab.php');
+  /* document.getElementById("frmdatosexpediente").reset();
    document.getElementById("frmverificardatospac").reset();
   // document.getElementById("frmdatosgenerales").reset();
 
@@ -482,13 +484,13 @@ function limpiar(){
     $('#cmbMedico').select2('val', 0);
     $('#txtconsulta').val('');
     document.getElementById('lyLaboratorio').style.display="none"
-    document.getElementById('DatosPaciente').style.display="none"
+    //document.getElementById('DatosPaciente').style.display="none"
 
 //	document.getElementById('cmbarea').value=0;
 //	document.getElementById('cboEstudio').value=0;
 //	document.getElementById('cboMuestra').value=0;
 //	document.getElementById('cboOrigen').value=0;
-//	document.getElementById('Indicacion').value="";
+//	document.getElementById('Indicacion').value="";*/
 }
 
 function IsNumeric(sText){//funcion para verificar si el dato que entra es numerico
@@ -564,7 +566,7 @@ function procesaEsp(){
 				}else{document.getElementById('btnguardar').style.visibility='visible';}}
 			break;
 		case 6:
-                      //  alert ('respuesta:'+respuesta)
+                        alert ('respuesta:'+respuesta)
 			if(respuesta == 2)
                         {
                             //alert("No hay registros de este paciente debe ingresar los datos");
@@ -596,9 +598,21 @@ function procesaEsp(){
                         });
 			break;
 		case 10:
-		  	document.getElementById('DatosPaciente').innerHTML = respuesta;
+		var str = "0PCNT?";
+		ready = respuesta.split('|');
+		if(respuesta.includes(str)){
+			abreVentana(ready[1], ready[2]);
+		}
+		else{
+			document.getElementById('DatosPaciente').innerHTML = respuesta;
+
+		}
+		if(!respuesta.includes('....')){
+			document.getElementById('lyLaboratorio').style.display="block";
+		}
+
 		  	document.getElementById('DatosPaciente').style.display="block"
-                        document.getElementById('lyLaboratorio').style.display="block"; //
+                        //
                        // document.getElementById('cmbTipoEstab').focus();
 
                         idext=document.getElementById('IdEstablecimientoExterno').value;
@@ -667,7 +681,7 @@ function procesaEsp(){
 
 //pegar el correlativo del paciente externo para la busqueda y prescribir los examenes
 function pegarExp(IdExpediente,IdCitaServApoyo,IdEstablecimientoExterno,IdNumeroExpRef){
-    //alert(IdExpediente+'-'+IdCitaServApoyo+' -'+IdEstablecimientoExterno+' '+IdNumeroExpRef)
+    //alert('Llego aqui'+IdExpediente+'-'+IdCitaServApoyo+' -'+IdEstablecimientoExterno+' '+IdNumeroExpRef)
     //document.getElementById("txtexp").value = IdExpediente;
     document.getElementById("IdCitaServApoyo").value = IdCitaServApoyo;
     document.getElementById("IdEstablecimientoExterno").value = IdEstablecimientoExterno;
@@ -686,6 +700,7 @@ function Examenes()
     var IdSubServicio = document.getElementById("cmbSubServ").value;
     var IdEmpleado = document.getElementById("cmbMedico").value;
     var FechaConsulta = document.getElementById("txtconsulta").value;
+    var FechaRecepcion = document.getElementById("txtfrecepcion").value;
     var IdCitaServApoyo = document.getElementById("IdCitaServApoyo").value;
     var Sexo = document.getElementById("tiposexo").value;
     var idexpediente = document.getElementById("idexpediente").value;
@@ -713,6 +728,7 @@ function Examenes()
             Parametros+="&IdSubServicio="+IdSubServicio;
             Parametros+="&IdEmpleado="+IdEmpleado;
             Parametros+="&FechaConsulta="+FechaConsulta;
+            Parametros+="&FechaRecepcion="+FechaRecepcion;
             Parametros+="&IdCitaServApoyo="+IdCitaServApoyo;
             Parametros+="&Sexo="+Sexo;
             Parametros+="&idexpediente="+idexpediente;/*
@@ -733,6 +749,12 @@ function cambioestexterno(){
    // document.getElementById("IdEstablecimientoExterno").value = est;
     $('#IdEstablecimientoExterno').val($('#cmb_establecimiento').val())
 }
+
+function handle(e){
+	if(e.keyCode === 13){
+            searchpac();
+        }
+}
 //
 //$(document).ready(function() {
 //         $("#cmb_establecimiento").select2({
@@ -750,22 +772,20 @@ function cambioestexterno(){
 
 <body text="#000000" class="CobaltPageBody" onLoad="frmdatosexpediente.txtexp.focus();">
 
-<!--<link href="../../../css/paginalab.css" rel="stylesheet" type="text/css" />-->
-<div  style="width: 100%" >
-   <div class="panel panel-primary"  style="border:0px; height: 100%">
-      <div class="panel-heading" style="padding: 2px !important; width: 45%; min-width: 507px;"><h3>Verificar Expediente</h3> </div>
-      <form name="frmdatosexpediente" id="frmdatosexpediente" action="" method="post">
-
-
-      <div class="panel-body" id="pb-primervez" style="width:45%; border: 1px solid; border-color: #428BCA;min-width: 507px;">
-               <table border = 0 class="table table-white no-v-border table-condensed" border="0" style="border:0px; width: 100%; margin-bottom: 2px !important; table-layout:fixed;" cellspacing="0" cellpadding="3" align="center">
-   <!--
-                        <tr>
-                           <td colspan="3" align="center" class="CobaltFieldCaptionTD">
-                              <H3><strong>Verificar Expediente</strong></H3>
-                           </td>
-                        </tr>-->
-                        <tr>
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-5">
+			<div class="box box-info">
+				<div class="box-header">
+                    <div class="col-md-6">
+						<h3 class="box-title">Búsqueda de Paciente</h3>
+					</div>
+                </div>
+				<div class="box-body">
+					<div class="form-group">
+						<form name="frmdatosexpediente" id="frmdatosexpediente" action="" method="post">
+						 <table border = 0 class="table table-white no-v-border table-condensed" border="0" style="border:0px; width: 100%; margin-bottom: 2px !important; table-layout:fixed;" cellspacing="0" cellpadding="3" align="center">
+						<tr>
                                  <th width="22%">Establecimiento</th>
                                  <td> <select id="cmb_establecimiento" name="cmb_establecimiento" style="width:100%; size: 10" class="height placeholder js-example-basic-single" onchange="cambioestexterno();">
                                                        <?php
@@ -787,11 +807,223 @@ function cambioestexterno(){
                         <tr>
                                <td>Expediente</td>
                                <td>
-                                  <input id="txtexp" class="form-control height" style="width:188px; height:20px" size="26" maxlength="20" >
+                                  <input id="txtexp" class="form-control height" style="width:188px; height:20px" size="26" maxlength="20" onkeypress="handle(event)"  >
                                        <input type="hidden" id="IdCitaServApoyo">
                                        <input type="hidden" id="IdEstablecimientoExterno" value="<?php echo $lugar; ?>">
 
                <!--                        <input type="button" value="Verificar" id="btnverificar" onClick="searchpac();">-->
+                               </td>
+                       </tr>
+
+					   <tr><td colspan="2" align="center"><br><br>
+                            <button type="button" id="btnverificar" name="btnverificar" class='btn btn-primary' onclick="searchpac()"><span class='glyphicon glyphicon glyphicon-search'>&nbsp;Verificar</button>
+                            <button type="button" id="Nuevo" name="Nuevo" class='btn btn-primary' onclick="window.location.replace('RecepcionLab.php')"><span class='glyphicon glyphicon-refresh'>&nbsp;Nueva Búsqueda</button>
+                        </td></tr>
+				   </table>
+			   </form>
+				   <br><br>
+                    </div>
+				</div>
+			</div>
+		</div><!--md6-->
+		<div class="col-md-5">
+			<div class="box box-info">
+				<div class="box-header">
+					<div class="col-md-5">
+						<h3 class="box-title">Datos de Paciente</h3>
+					</div>
+
+                </div>
+				<div class="box-body">
+					<div id="DatosPaciente" >
+						<table style="width:90%; background-color:#ffffff; border: none;" border="0" align="center" class="table tableinfo">
+			                <tr>
+			                    <th class="th-info" style="width:30%">Expediente</th>
+								<td></td>
+
+			                </tr>
+			                <tr>
+			                    <th class="th-info">Nombre Completo</th>
+								<td></td>
+			                </tr>
+			                <tr>
+			                    <th class="th-info">Edad</th>
+								<td></td>
+			                </tr>
+			                <tr>
+			                    <th class="th-info">Sexo</th>
+								<td></td>
+			                </tr>
+			                <tr>
+			                    <th class="th-info">Conocido por</th>
+								<td></td>
+			                </tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div><!--md6-->
+		<br/>
+		<div class="col-md-12">
+			<div class="box box-info">
+				<div class="box-header">
+					<div class="col-md-5">
+						<h3 class="box-title">Datos Generales de Boleta de Ex&aacute;menes </h3>
+					</div>
+                </div>
+				<div class="box-body">
+					<div class="col-md-2"></div>
+					<div class="col-md-8">
+						<div id="lyLaboratorio" class="panel panel-body" style="display:none;">
+						    <form name="frmdatosgenerales" id="frmdatosgenerales" action="" method="post">
+						        <table style="width:90%; background-color:#ffffff; border: none;" border="0" align="center" class="table tableinfo">
+
+						            <tr>
+						                <td class="th-info" >Tipo Establecimiento</td>
+						                <td class="td-blue"><?php echo $rows['nombretipoestablecimiento']; ?>
+						                    <div id="lyTipoEstab">
+						                        <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:350px" class="form-control height"  onFocus="fillEstablecimiento(this.value)">
+						                                    <?php
+						                                    $tipoest=$recepcion->tipoestactual($lugar);
+						                                    $rows=  pg_fetch_array($tipoest);
+						                                       echo '<option value="' . $rows['idtipoestablecimiento'] . '" selected="selected" >' . $rows['nombretipoestablecimiento'] . '</option>';
+
+						                                    ?>
+						                        </select>
+						                    </div>
+						                </td>
+						            </tr>
+						            <tr>
+						                <td class="th-info">Establecimiento</td>
+						                <td class="td-blue">
+						                    <div id="lyEstab">
+						                        <select name="cmbEstablecimiento"  id="cmbEstablecimiento" style="width:350px" class="form-control height js-example-basic-single">
+						                            <option value="0">--Seleccione Establecimiento--</option>
+						                        </select>
+						                    </div>
+						                        <input id="lugar" type="hidden" value="<?php echo $lugar?>" />
+						                </td>
+						            </tr>
+						            <tr>
+						                <td class="th-info">Procedencia:&nbsp;</td>
+						                <td class="td-blue" >
+						                    <select name="CmbServicio" id="CmbServicio" class="js-example-basic-single" style="width:350px" onChange="fillservicio(this.value)" >
+						                        <option value="0" selected="selected">--Seleccione Procedencia--</option>
+						                        <?php
+						                            $tiposerv=$funcGeneral->LlenarProcedencia($lugar);
+						                            while ($rows = pg_fetch_array($tiposerv)){
+						                                echo '<option value="' . $rows['0'] . '">' . $rows['nombre'] . '</option>';
+						                            }
+						                                        //    }
+						                        ?>
+						                    </select>
+						                </td>
+						            </tr>
+						            <tr>
+						                    <td class="th-info">SubServicio:&nbsp;</td>
+						                    <td class="td-blue">
+						                            <div id="lysubserv">
+						                               <select name="cmbSubServ" id="cmbSubServ"  style="width:350px" class="js-example-basic-single">
+						                                            <option value="0" selected="selected">--Seleccione Subespecialidad--</option>
+
+						                                    </select>
+						                            </div>
+						                    </td>
+						            </tr>
+						            <tr>
+						                    <td class="th-info">Indicado por:</td>
+						                    <td class="td-blue">
+						                            <div id="lyMed">
+						                               <select name="cmbMedico" class="js-example-basic-single" id="cmbMedico" onChange="fillMed(this.value)" style="width:350px">
+						                                            <option value="0" selected="selected">--Seleccione una opción--</option>
+
+						                                    </select>
+						                            </div>
+						                    </td>
+						            </tr>
+						            <tr>
+						                    <td class="th-info" align="center">Fecha en que paso Consulta:</td>
+						                    <td class="td-blue" colspan="2">
+												<?php
+												 if ($hospital=='t'){
+													 echo "<input type='text' class='datepicker form-control height'  id='txtconsulta' name='txtconsulta'  value='". date('Y-m-d H:i')."' onchange=\"valfechasolicita(this.value, 'txtconsulta'); change_newdate('txtconsulta', 'txtfrecepcion')\" style='width:150px' />";
+												 }
+												 else{
+													 echo '<input name="Input" class="date" id="txtconsulta" style="width:188px; height:20px" size="26" placeholder="aaaa-mm-dd">';
+												 }
+												 ?>
+
+						                    </td>
+						            </tr>
+									<tr>
+						                    <td class="th-info" align="center">Fecha de Recepción:</td>
+						                    <td class="td-blue" colspan="2">
+												<?php
+													 echo "<input type='text' class='date form-control height'  id='txtfrecepcion' name='txtconsulta'  value='". date('Y-m-d')."' onchange=\"valfechasolicita(this.value, 'txtconsulta');\" style='width:150px' />";
+
+												 ?>
+
+						                    </td>
+						            </tr>
+						            <tr>
+
+						                <td class="th-info" colspan="2">
+						            <center>
+						               <button type="button" id="Examen" name="Examen" class='btn btn-primary' onclick="BuscarExistenciaSolicitud()"><span class='glyphicon glyphicon-plus'>&nbsp;Agregar Examenes</button>
+						               <button type="button" id="Nuevo" name="Nuevo" class='btn btn-primary' onclick="window.location.replace('RecepcionLab.php')"><span class='glyphicon '>&nbsp;Nueva Búsqueda</button>
+						            </center>
+
+						                </td>
+						            </tr>
+						        </table>
+						    </form>
+
+						</div><!--formulario-->
+					</div>
+				</div>
+			</div>
+		</div><!--md12-->
+	</div>
+
+
+
+<!--<link href="../../../css/paginalab.css" rel="stylesheet" type="text/css" />-->
+<div  style="width: 100%" >
+   <!-- <div class="panel panel-primary"  style="border:0px; height: 100%">
+      <div class="panel-heading" style="padding: 2px !important; width: 45%; min-width: 507px;"><h3>Verificar Expediente</h3> </div>
+	  <form name="frmdatosexpediente" id="frmdatosexpediente" action="" method="post">
+
+
+      <div class="panel-body" id="pb-primervez" style="width:45%; border: 1px solid; border-color: #428BCA;min-width: 507px;">
+               <table border = 0 class="table table-white no-v-border table-condensed" border="0" style="border:0px; width: 100%; margin-bottom: 2px !important; table-layout:fixed;" cellspacing="0" cellpadding="3" align="center">
+
+                        <tr>
+                                 <th width="22%">Establecimiento</th>
+                                 <td> <select id="cmb_establecimiento" name="cmb_establecimiento" style="width:100%; size: 10" class="height placeholder js-example-basic-single" onchange="cambioestexterno();">
+                                                       <?php
+/*
+                                                           //$obje=new clsLab_CodigosEstandar;
+                                                           $consulta= $recepcion->seleccionarestablecimientos();
+                                                           while($row = pg_fetch_array($consulta)){
+                                                              if ($row['id']==$lugar){
+                                                                 echo '<option value="'.$lugar.'" selected>'.$row['nombre'].'</option>';
+                                                              }
+															  if ($row['id']!=$lugar)
+                                                               echo "<option value='" . $row['id']. "'>" . $row['nombre'] . "</option>";
+                                                           }
+                                                            */
+                                                       ?>
+                                               </select>
+                                 </td>
+                        </tr>
+                        <tr>
+                               <td>Expediente</td>
+                               <td>
+                                  <input id="txtexp" class="form-control height" style="width:188px; height:20px" size="26" maxlength="20" >
+                                       <input type="hidden" id="IdCitaServApoyo">
+                                       <input type="hidden" id="IdEstablecimientoExterno" value="<?php echo $lugar; ?>">
+
+
                                </td>
                        </tr>
                        <tr><td colspan="2" align="right">
@@ -801,15 +1033,15 @@ function cambioestexterno(){
                </table>
                 </div>
 
-   </form>
+   </form> -->
     <form id="frm_send_recepcion" action="../RecepcionSolicitud/Proc_RecepcionSolicitud.php" method="POST" style="display:none;">
         <input type="hidden" id="idSolicitud" name="idSolicitud" value="" />
         <input type="hidden" id="fechaCita" name="fechaCita" value="" />
         <input type="hidden" id="numeroExpediente" name="numeroExpediente" value="" />
         <input type="hidden" id="idExpediente" name="idExpediente" value="" />
     </form>
-<div id="DatosPaciente" style="display:none;"></div>
-<div id="lyLaboratorio" class="panel panel-body" style="display:none;">
+
+<!-- <div id="lyLaboratorio" class="panel panel-body" style="display:none;">
     <form name="frmdatosgenerales" id="frmdatosgenerales" action="" method="post">
         <table cellspacing="0" cellpadding="0" align="center" border=1 class="StormyWeatherFormTABLE" style="height:275px">
             <tr>&nbsp;</tr>
@@ -825,24 +1057,11 @@ function cambioestexterno(){
                 <td class="StormyWeatherDataTD">
                     <div id="lyTipoEstab">
                         <select name="cmbTipoEstab" id="cmbTipoEstab" style="width:350px" class="form-control height"  onFocus="fillEstablecimiento(this.value)">
-                                    <?php //  <option value="0" selected="selected">--Seleccione un tipo de Establecimiento--</option>
+                                    <?php
                                     $tipoest=$recepcion->tipoestactual($lugar);
                                     $rows=  pg_fetch_array($tipoest);
                                        echo '<option value="' . $rows['idtipoestablecimiento'] . '" selected="selected" >' . $rows['nombretipoestablecimiento'] . '</option>';
-                                   /*         $db = new ConexionBD;
-                                            if($db->conectar()==true){// SELECT IdTipoEstablecimiento,NombreTipoEstablecimiento FROM mnt_tipoestablecimiento ORDER BY NombreTipoEstablecimiento
-                                                    $consulta  = "
-                                                            SELECT a.IdTipoEstablecimiento, a.NombreTipoEstablecimiento
-                                                            FROM mnt_tipoestablecimiento a
-                                                            INNER JOIN mnt_establecimiento b ON a.IdTipoEstablecimiento = b.IdTipoEstablecimiento
-                                                            WHERE IdEstablecimiento = $lugar";
-                                                    $resultado = mysql_query($consulta) or die('La consulta fall&oacute;: ' . mysql_error());
 
-                                            //por cada registro encontrado en la tabla me genera un <option>
-                                                    while ($rows = mysql_fetch_array($resultado)){
-                                                            echo '<option value="' . $rows[0] . '" selected="selected" >' . $rows[1] . '</option>';
-                                                    }
-                                            }*/
                                     ?>
                         </select>
                     </div>
@@ -919,15 +1138,11 @@ function cambioestexterno(){
             </center>
 
                 </td>
-<!--                    <td class="StormyWeatherFieldCaptionTD">Agregar Examenes</td>
-                    <td class="StormyWeatherDataTD">
-                            <input type="button" value=" Seleccionar " id="Examen" onclick="Examenes();">
-                    </td> -->
             </tr>
         </table>
     </form>
 
- </div>
+ </div> -->
 </div>
 
 </div>

@@ -108,10 +108,11 @@ class Paciente {
    /*    * ************************************************************************************** */
 
    function IdCitaServApoyoInsertUpdate($IdSolicitudEstudio, $iduser,
-           $IdNumeroExp, $LugardeAtencion, $IdCitaServApoyo, $badera) {
+           $IdNumeroExp, $LugardeAtencion, $IdCitaServApoyo, $badera, $FechaRecepcion) {
       $Conexion = new ConexionBD();
       $conectar = $Conexion->conectar();
       if ($conectar == true) {
+          $FechaRecepcion="'".$FechaRecepcion."'";
          $recep = "select * from lab_recepcionmuestra where idsolicitudestudio=$IdSolicitudEstudio";
 //         echo $recep.'<br/>';
          $sql3 = pg_query($recep);
@@ -120,16 +121,22 @@ class Paciente {
          $nummuestra = $rownm['numeromuestra'];
          if ($rec == 0) {
             $num = "SELECT (coalesce(MAX(t01.numeromuestra),0) + 1)
-FROM lab_recepcionmuestra        t01
-INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
-WHERE t01.fecharecepcion = current_date
-AND t02.id_establecimiento = $LugardeAtencion";
+                    FROM lab_recepcionmuestra        t01
+                    INNER JOIN sec_solicitudestudios t02 ON (t02.id = t01.idsolicitudestudio)
+                    WHERE t01.fecharecepcion = $FechaRecepcion
+                    AND t02.id_establecimiento = $LugardeAtencion";
             $sql2 = pg_query($num);
             $nmuestra = pg_fetch_array($sql2);
 
-            $remuestra = "insert into lab_recepcionmuestra (numeromuestra, fecharecepcion, idsolicitudestudio, fechacita, idestablecimiento, idusuarioreg, fechahorareg) VALUES ($nmuestra[0], current_date, $IdSolicitudEstudio, current_date, $LugardeAtencion, $iduser, date_trunc('seconds',NOW()))";
+            $remuestra = "insert into lab_recepcionmuestra (numeromuestra, fecharecepcion, idsolicitudestudio, fechacita, idestablecimiento, idusuarioreg, fechahorareg) VALUES ($nmuestra[0], $FechaRecepcion, $IdSolicitudEstudio, current_date, $LugardeAtencion, $iduser, date_trunc('seconds',NOW()))";
             $rep = pg_query($remuestra);
             $nummuestra = $nmuestra[0];
+
+        /*    $ftmx= date( "Y-m-d H:i:s", strtotime( $FechaRecepcion ) );
+
+            $ftomamx = "update sec_detallesolicitudestudios set f_tomamuestra= '".$ftmx."' where idsolicitudestudio= $IdSolicitudEstudio ";
+            $ft = pg_query($ftomamx);*/
+           //echo $remuestra;
             if (!$rep)
                return false;
          }
@@ -140,22 +147,26 @@ AND t02.id_establecimiento = $LugardeAtencion";
             $sql = pg_query($nextid);
             $nextseq = pg_fetch_array($sql);
             $idnext = $nextseq[0];
-            $InsertCit = "INSERT INTO cit_citas_serviciodeapoyo (id, fecha, id_solicitudestudios, idusuarioreg, fechahorareg)
-                                  VALUES ($idnext,current_date,$IdSolicitudEstudio,$iduser,date_trunc('seconds',NOW()))";
+            /*$InsertCit = "INSERT INTO cit_citas_serviciodeapoyo (id, fecha, id_solicitudestudios, idusuarioreg, fechahorareg)
+                                  VALUES ($idnext,current_date,$IdSolicitudEstudio,$iduser,date_trunc('seconds',NOW()))";*/
             // echo 'inse: '.$InsertCit.'<br/>';
-            $queryIns = pg_query($InsertCit);
-            if (!$queryIns)
+            //bin/$queryIns = pg_query($InsertCit);
+        //    echo $idnext.'_'.$nummuestra;
+             return $idnext.'_'.$nummuestra;
+        /*    if (!$queryIns)
                return false;
             else {
                return $idnext.'_'.$nummuestra;
-            }
+           }*/
          } else { // actualizar la cita
             $UpdateCit = "update cit_citas_serviciodeapoyo
-                                set fecha=current_date,
-                                id_solicitudestudios=$IdSolicitudEstudio
-                                where id=$IdCitaServApoyo";
+                                set fecha=current_date
+                                 where id_solicitudestudios=$IdSolicitudEstudio
+                                 returning id";
             $query = pg_query($UpdateCit);
-            //    echo $UpdateCit;
+            $idcita = pg_fetch_array($query);
+            $IdCitaServApoyo = $idcita['id'];
+                //echo $UpdateCit;
             if (!$query)
                return false;
             else

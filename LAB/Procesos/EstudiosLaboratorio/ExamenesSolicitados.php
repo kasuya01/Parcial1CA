@@ -13,6 +13,7 @@ $IdHistorialClinico = $_GET["IdHistorialClinico"];
 $IdCitaServApoyo = $_GET["IdCitaServApoyo"];
 $band = isset($_GET["band"]) ? $_GET["band"] : 0;
 $urgente = isset($_GET["urgente"]) ? $_GET["urgente"] : 2;
+$FechaRecepcion = $_GET["FechaRecepcion"];
 
 // echo '<br/>idcitaservapoyo: '.$IdCitaServApoyo;
 $IdEstablecimiento = $_SESSION["IdEstablecimiento"]; //Elegido en el combo
@@ -37,10 +38,10 @@ $IdSolicitudEstudio = $Paciente->RecuperarIdSolicituEstudio($idexpediente,
 // echo '$IdCitaServApoyo'.$IdCitaServApoyo.'<br/>';
 if ($IdCitaServApoyo == "") {
    $IdCitaServApoy = $Paciente->IdCitaServApoyoInsertUpdate($IdSolicitudEstudio,
-           $iduser, $IdNumeroExp, $LugardeAtencion, $IdCitaServApoyo, 1);
+           $iduser, $IdNumeroExp, $LugardeAtencion, $IdCitaServApoyo, 0, $FechaRecepcion);
 } else {
    $IdCitaServApoy = $Paciente->IdCitaServApoyoInsertUpdate($IdSolicitudEstudio,
-           $iduser, $IdNumeroExp, $LugardeAtencion, $IdCitaServApoyo, 0);
+           $iduser, $IdNumeroExp, $LugardeAtencion, $IdCitaServApoyo, 0, $FechaRecepcion);
 }
 list($IdCitaServApoyo,$numeromuestra)=explode("_", $IdCitaServApoy);
  $prioridad= $Laboratorio->SolicitudUrgente($urgente, $IdHistorialClinico, $IdSolicitudEstudio);
@@ -60,6 +61,12 @@ list($IdCitaServApoyo,$numeromuestra)=explode("_", $IdCitaServApoy);
         var band=<?php echo $band; ?>;
         var id_solicitud=<?php echo $IdSolicitudEstudio;?>;
         var clearSession = true;
+
+        jQuery(document).ready(function ($) {
+            change_newdatecontain('FechaRecepcion', 'ftomamx');
+            change_newdatecontain('FechaRecepcion', 'fgentomamxgen');
+
+        });
         /*
 
         window.onbeforeunload = confirmExit;
@@ -138,16 +145,15 @@ list($IdCitaServApoyo,$numeromuestra)=explode("_", $IdCitaServApoy);
             } else {
                $check = "<input id='Imprimir' data-switch-enabled='true' type='checkbox'onclick='ImprimirResultados(" . $IdHistorialClinico . ", " . $IdSolicitudEstudio . ");'>";
             }
-
+$date=date_create($FechaRecepcion);
             echo "<tr class='info'><td colspan='7' align='right' style=' vertical-align: middle'>
             <h4><b>Resultado de Examenes Impresos [Pre-Operatorios]</b></h4> </td><td>".$check."</td></tr>";
             echo "<tr class='info'>
                     <td colspan='8' style='text-align:right'>
                     <div class='alert alert-info' role='alert'>
                     <h2><b>Número de muestra asignado a Paciente:  &nbsp;&nbsp;". $numeromuestra."</b>
-<p></p></h2></div>
-
-
+<p></p></h2>
+<h4><b>Fecha de Recepción : ".date_format($date, 'd/m/Y ')."</b></h4></div>
                     </td></tr>";
 
             echo "<tr><th style='vertical-align: middle !important'>C&oacute;digo</th>
@@ -173,6 +179,7 @@ list($IdCitaServApoyo,$numeromuestra)=explode("_", $IdCitaServApoy);
                if ($Respuesta['f_tomamuestra']!=''){
                  $fecha= $Respuesta['f_tomamuestra'];
                }
+
                echo "<td><input type='text' class='datepicker' id='ftomamx" . $Respuesta['idexamen'] . "' name='ftomamx" . $Respuesta['idexamen'] . "'value='" . $fecha . "' class='form-control height' onchange=\"valfechasolicita(this.value, 'ftomamx".$Respuesta['idexamen']."')\"></td>";
 //              if ($Respuesta['urgente']==1){
 //               echo "<td><input type='checkbox' id='tiposol" . $Respuesta['idexamen'] . "' name='tiposol" . $Respuesta['idexamen'] . "' data-switch-enabled='true' ></td>";
@@ -283,6 +290,7 @@ list($IdCitaServApoyo,$numeromuestra)=explode("_", $IdCitaServApoy);
          <input type="hidden" id="FechaHoraReg" 		 value="<?php echo $_SESSION["FechaHoraReg"]; ?>">
          <input type="hidden" id="idexpediente" 		 value="<?php echo $_SESSION["idexpediente"]; ?>">
          <input type="hidden" id="FechaConsulta" 		 value="<?php echo $_SESSION["FechaConsulta"]; ?>">
+         <input type="hidden" id="FechaRecepcion" 		 value="<?php echo $_SESSION["FechaRecepcion"]; ?>">
          <input type="hidden" id="IdCitaServApoyo" 		 value="<?php echo $IdCitaServApoyo; ?>">
          <input type="hidden" id="lugar" 		 value="<?php echo $LugardeAtencion; ?>">
          <input type="hidden" id="IdEstablecimiento" 		 value="<?php echo $IdEstablecimiento; ?>">

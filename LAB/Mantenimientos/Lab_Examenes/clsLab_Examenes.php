@@ -822,11 +822,12 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
    function consultar_formularios($lugar) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {
-         $query = "SELECT mnt_formularios.id,nombreformulario
-				  FROM mnt_formularios
-				  INNER JOIN mnt_formulariosxestablecimiento
-				  ON mnt_formularios.id=mnt_formulariosxestablecimiento.idformulario
-		                  WHERE idestablecimiento=$lugar and mnt_formularios.activo=true";
+         $query = "select t2.id, t1.nombreformulario
+                from mnt_formularios t1
+                join mnt_formulariosxestablecimiento t2 on (t1.id=t2.idformulario)
+                where t1.activo =true
+                and t2.condicion='H'
+                and t2.idestablecimiento=$lugar;";
          // echo $query;
          $result = pg_query($query);
          if (!$result)
@@ -893,7 +894,7 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                     lab_conf_examen_estab.impresion,urgente, ctl_sexo.nombre AS nombresexo,lab_conf_examen_estab.condicion,
                     (CASE WHEN lab_conf_examen_estab.condicion='H' THEN 'Habilitado'
                     WHEN lab_conf_examen_estab.condicion='I' THEN 'Inhabilitado' END) AS cond,cit_programacion_exams.rangotiempoprev,
-                    mnt_formularios.nombreformulario,mnt_formularios.id as idformulario,lab_plantilla.plantilla,
+                    mnt_formularios.nombreformulario,mnt_formulariosxestablecimiento.id as idformulario,lab_plantilla.plantilla,
                     ctl_examen_servicio_diagnostico.descripcion,ctl_sexo.id as idsexo,ctl_sexo.nombre as sexo,mnt_area_examen_establecimiento.id as mntid,
                     id_area_servicio_diagnostico as idarea,
                     (SELECT ARRAY_AGG(m.id) metodologia
@@ -938,7 +939,8 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                     INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
                     INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
                     INNER JOIN ctl_examen_servicio_diagnostico ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico=ctl_examen_servicio_diagnostico.id
-                    LEFT JOIN mnt_formularios ON lab_conf_examen_estab.idformulario=mnt_formularios.id
+                    LEFT JOIN mnt_formulariosxestablecimiento ON mnt_formulariosxestablecimiento.id=lab_conf_examen_estab.idformulario
+                    LEFT JOIN mnt_formularios on mnt_formularios.id=mnt_formulariosxestablecimiento.idformulario
                     INNER JOIN lab_plantilla ON lab_conf_examen_estab.idplantilla=lab_plantilla.id
                     LEFT JOIN ctl_sexo ON lab_conf_examen_estab.idsexo= ctl_sexo.id
                     INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
@@ -1002,7 +1004,8 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
                 INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id
                 INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
                 INNER JOIN ctl_examen_servicio_diagnostico ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico=ctl_examen_servicio_diagnostico.id
-                LEFT JOIN mnt_formularios ON lab_conf_examen_estab.idformulario=mnt_formularios.id
+                LEFT JOIN mnt_formulariosxestablecimiento ON mnt_formulariosxestablecimiento.id=lab_conf_examen_estab.idformulario
+                LEFT JOIN mnt_formularios on mnt_formularios.id=mnt_formulariosxestablecimiento.idformulario
                 INNER JOIN lab_plantilla ON lab_conf_examen_estab.idplantilla=lab_plantilla.id
                 LEFT JOIN ctl_sexo ON lab_conf_examen_estab.idsexo= ctl_sexo.id
                 INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
@@ -1109,10 +1112,11 @@ values ($idconf,$aresultados[$j], current_date, true, $usuario, date_trunc('seco
       //usamos el metodo conectar para realizar la conexion
       if ($con->conectar() == true) {
         $query = "SELECT lab_conf_examen_estab.id,lab_conf_examen_estab.codigo_examen as idexamen, lab_conf_examen_estab.nombre_examen as nombreexamen, ctl_area_servicio_diagnostico.nombrearea,lab_plantilla.idplantilla, ctl_examen_servicio_diagnostico.idestandar, (CASE WHEN lab_conf_examen_estab.ubicacion=0 THEN 'Todas las Procedencias' WHEN lab_conf_examen_estab.ubicacion=1 THEN 'Hospitalización y Emergencia' WHEN lab_conf_examen_estab.ubicacion=3 THEN 'Ninguna' WHEN lab_conf_examen_estab.ubicacion=4 THEN 'Laboratorio' END ) AS Ubicacion,
-        (SELECT idestandar FROM ctl_examen_servicio_diagnostico WHERE lab_conf_examen_estab.idestandarrep=ctl_examen_servicio_diagnostico.id) AS estandarrep, (SELECT descripcion FROM ctl_examen_servicio_diagnostico WHERE lab_conf_examen_estab.idestandarrep=ctl_examen_servicio_diagnostico.id) AS descestandarrep, lab_conf_examen_estab.impresion,urgente, ctl_sexo.nombre AS nombresexo,lab_conf_examen_estab.condicion, (CASE WHEN lab_conf_examen_estab.condicion='H' THEN 'Habilitado' WHEN lab_conf_examen_estab.condicion='I' THEN 'Inhabilitado' END) AS cond,cit_programacion_exams.rangotiempoprev, ctl_examen_servicio_diagnostico.descripcion,mnt_formularios.id as idformulario, (SELECT nombreformulario FROM mnt_formularios WHERE mnt_formularios.id=lab_conf_examen_estab.idformulario) AS nombreformulario
+        (SELECT idestandar FROM ctl_examen_servicio_diagnostico WHERE lab_conf_examen_estab.idestandarrep=ctl_examen_servicio_diagnostico.id) AS estandarrep, (SELECT descripcion FROM ctl_examen_servicio_diagnostico WHERE lab_conf_examen_estab.idestandarrep=ctl_examen_servicio_diagnostico.id) AS descestandarrep, lab_conf_examen_estab.impresion,urgente, ctl_sexo.nombre AS nombresexo,lab_conf_examen_estab.condicion, (CASE WHEN lab_conf_examen_estab.condicion='H' THEN 'Habilitado' WHEN lab_conf_examen_estab.condicion='I' THEN 'Inhabilitado' END) AS cond,cit_programacion_exams.rangotiempoprev, ctl_examen_servicio_diagnostico.descripcion,mnt_formulariosxestablecimiento.id as idformulario, mnt_formularios.nombreformulario
         FROM lab_conf_examen_estab INNER JOIN mnt_area_examen_establecimiento ON lab_conf_examen_estab.idexamen=mnt_area_examen_establecimiento.id INNER JOIN ctl_area_servicio_diagnostico ON mnt_area_examen_establecimiento.id_area_servicio_diagnostico=ctl_area_servicio_diagnostico.id
         INNER JOIN ctl_examen_servicio_diagnostico ON mnt_area_examen_establecimiento.id_examen_servicio_diagnostico=ctl_examen_servicio_diagnostico.id
-        LEFT JOIN mnt_formularios ON mnt_formularios.id=lab_conf_examen_estab.idformulario
+        LEFT JOIN mnt_formulariosxestablecimiento ON mnt_formulariosxestablecimiento.id=lab_conf_examen_estab.idformulario
+        LEFT JOIN mnt_formularios on mnt_formularios.id=mnt_formulariosxestablecimiento.idformulario
         INNER JOIN lab_plantilla ON lab_conf_examen_estab.idplantilla=lab_plantilla.id
         LEFT JOIN ctl_sexo ON lab_conf_examen_estab.idsexo= ctl_sexo.id
         INNER JOIN lab_areasxestablecimiento ON ctl_area_servicio_diagnostico.id=lab_areasxestablecimiento.idarea
@@ -1484,6 +1488,22 @@ order by posible_resultado;";
                 and t6.activo=true
                 order by 3;";
 
+         $result = pg_query($query);
+         if (!$result)
+            return false;
+         else
+            return $result;
+      }
+   }
+   function examenes_configurados($idexamen, $idarea) {
+      $con = new ConexionBD;
+      if ($con->conectar() == true) {
+        $query = "select *
+            from lab_conf_examen_estab t1
+            join mnt_area_examen_establecimiento t2 on (t2.id=t1.idexamen)
+            where t2.id_area_servicio_diagnostico =$idarea
+            and  t2.id =$idexamen";
+//echo $query;
          $result = pg_query($query);
          if (!$result)
             return false;

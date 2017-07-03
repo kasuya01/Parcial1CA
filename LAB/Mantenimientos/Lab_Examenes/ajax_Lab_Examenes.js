@@ -490,6 +490,40 @@ function SolicitarUltimoCodigo(idarea){
 	}
 }
 
+function revisarsiexisten(idestandar)
+{
+var opcion=11;
+idarea = $('#cmbArea').val();
+//alert (idarea+'-'+idestandar)
+//instanciamos el objetoAjax
+ajax=objetoAjax();
+//archivo que realizar� la operacion ->actualizacion.php
+ajax.open("POST", "ctrLab_Examenes.php",true);
+
+//muy importante este encabezado ya que hacemos uso de un formulario
+ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+//enviando los valores
+ajax.send("idarea="+idarea+"&idexa="+idestandar+"&opcion="+opcion);
+ajax.onreadystatechange=function() {
+if (ajax.readyState==4) {
+    if (ajax.responseText=='Y'){
+        Buscar();
+        window.location.href = '#divinicial';
+
+    }
+    //mostrar los nuevos registros en esta capa
+    /*document.getElementById('divExamen').innerHTML = ajax.responseText;
+                 $("#cmbEstandar").select2({
+                   placeholder: "Seleccione un Exámen...",
+                   allowClear: true,
+                   dropdownAutoWidth: true
+                });
+                SolicitarUltimoCodigo(idarea);*/
+}
+}
+}
+
+
 
 function cargaestablecimientoaref(valor)
 {

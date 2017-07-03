@@ -97,7 +97,7 @@ function getCurrentDateTime(format) {
 
 
 function valfechasolicita(obj, nombre) {
-alert ('entro'+obj+)
+//alert ('entro'+obj+)
    //fecha0=document.getElementById('d_fechatoma').value;
    fecha1 = obj;
    var fecha_actual = new Date();
@@ -246,6 +246,34 @@ function validafecharesrep(nombre, fechacompara) {
    }
    //}
 }
+//fun changenewdate
+function change_newdate(fechacompara, fechainput){
+
+      var dateFormat = $('#'+fechacompara).val();
+        fecha=moment(dateFormat, 'YYYY-MM-DD');
+        //fecha=moment(dateFormat).format('YYYY-MM-DD');
+
+      if($('#'+fechainput).hasClass('hasDatepicker')) {
+         $('#'+fechainput).datepicker( "option", "minDate", fecha.toDate());
+      } else {
+         $('#'+fechainput).datepicker({'minDate': fecha.toDate()});
+      }
+
+}
+
+//fun changenewdate
+function change_newdatecontain(fechacompara, fechainput){
+
+      var dateFormat = $( "input[id*='"+fechacompara+"']" ).val();
+      fecha=moment(dateFormat, 'YYYY-MM-DD');
+      if($("input[id*='"+fechainput+"']" ).hasClass('hasDatepicker')) {
+         $("input[id*='"+fechainput+"']" ).datetimepicker( "option", "minDate", fecha.toDate());
+      } else {
+         $("input[id*='"+fechainput+"']" ).datetimepicker({'minDate': fecha.toDate()});
+      }
+
+}
+
 
 
 jQuery(document).ready(function ($) {

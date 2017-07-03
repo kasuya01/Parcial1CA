@@ -343,52 +343,47 @@ switch($Proceso){
         $nec = $_POST['nec'];
         $idext = $_POST['idext'];
       //  echo '<br/><br/>IDEXT: '.$idext.'<br/>';
-            $DatosPaciente=$recepcion->DatosPaciente($nec, $idext);
+            $DatosPaciente=$recepcion->DatosPaciente($nec, $idext, $lugar);
         //echo "  datos paciente ". count($DatosPaciente);
         //mysql_fetch_row($DatosPaciente);
-            $nec = "'".$nec."'";
+            //$nec = "'".$nec."'";
 
         $rslts='';
         if($DatosPaciente !=0 )
         {
     //    echo 'entroooooooooo a if';
-            $rslts.='</br><form name="frmverificardatospac" id="frmverificardatospac" action="" method="post">
-            <table border = 0 class="CobaltFormTABLE" cellspacing="0" cellpadding="0" style="height:200px" align="center">
+            $rslts.='<form name="frmverificardatospac" id="frmverificardatospac" action="" method="post">
+            <table style="width:90%; background-color:#ffffff; border: none;" border="0" align="center" class="table tableinfo">
                 <tr>
-                    <td colspan="3" align="center" class="CobaltFieldCaptionTD">
-                        <h2><strong>Verificar datos de paciente</strong></h2>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="StormyWeatherFieldCaptionTD">Expediente</td>
-                    <td class="StormyWeatherDataTD">
-                        <input id="IdNumeroExp" class="CobaltInput" style="width:400px; height:100%" size="26" value="'.$DatosPaciente["numero"].'" >
+                    <th class="th-info" style="width:30%">Expediente</th>
+                    <td class="td-blue">'.$DatosPaciente["numero"].'
+                        <input id="IdNumeroExp" class="CobaltInput" style="width:400px; height:100%" size="26" value="'.$DatosPaciente["numero"].'" type="hidden" >
                         <input type="hidden" id="idexpediente" name="idexpediente" value="'.$DatosPaciente["idexpediente"].'" style="height:100%">
                     </td>
                 </tr>
                 <tr>
-                    <td class="StormyWeatherFieldCaptionTD">Nombre Completo</td>
-                    <td class="StormyWeatherDataTD">
-                              <input id="Nombre" class="CobaltInput" style="width:400px; height:100%" size="50" value="'.$DatosPaciente["nombre"].'" >
+                    <th class="th-info">Nombre Completo</th>
+                    <td class="td-blue">'.$DatosPaciente["nombre"].'
+                     <input id="Nombre" class="CobaltInput" style="width:400px; height:100%" size="50" value="'.$DatosPaciente["nombre"].'" type="hidden" >
+                     </td>
+                </tr>
+                <tr>
+                    <th class="th-info">Edad</th>
+                    <td class="td-blue">'.$DatosPaciente["edad"].'
+                    <input id="Edad" class="CobaltInput" style="width:400px; height:100%" size="26" value="'.$DatosPaciente["edad"].'" type="hidden"  >
                     </td>
                 </tr>
                 <tr>
-                    <td class="StormyWeatherFieldCaptionTD">Edad</td>
-                    <td class="StormyWeatherDataTD">
-                        <input id="Edad" class="CobaltInput" style="width:400px; height:100%" size="26" value="'.$DatosPaciente["edad"].'" >
-                    </td>
-                </tr>
-                <tr>
-                    <td class="StormyWeatherFieldCaptionTD">Sexo</td>
-                    <td class="StormyWeatherDataTD">
-                        <input id="sexo" name ="sexo" class="CobaltInput" style="width:400px; height:100%" size="26" value="'.$DatosPaciente["sexoconv"].'" >
+                    <th class="th-info">Sexo</th>
+                    <td class="td-blue">'.$DatosPaciente["sexoconv"].'
+                        <input id="sexo" name ="sexo" class="CobaltInput" style="width:400px; height:100%" size="26" value="'.$DatosPaciente["sexoconv"].'"  type="hidden" >
                         <input id="tiposexo" type="hidden" class="CobaltInput" style="width:188px; height:20px" size="26" value="'.$DatosPaciente["id_sexo"].'" >
                     </td>
                 </tr>
                 <tr>
-                    <td class="StormyWeatherFieldCaptionTD" >Conocido por</td>
-                    <td class="StormyWeatherDataTD">
-                        <input id="ConocidoPor" class="CobaltInput" style="width:400px; height:100%" size="26" value="'.$DatosPaciente["conocido_por"].'" >
+                    <th class="th-info">Conocido por</th>
+                    <td class="td-blue">'.$DatosPaciente["conocido_por"].'
+                    <input id="ConocidoPor" class="CobaltInput" style="width:400px; height:100%" size="26" value="'.$DatosPaciente["conocido_por"].'"  type="hidden" >
                     </td>
                 </tr>';
 //        if ($lugar!=$idext){
@@ -404,14 +399,15 @@ switch($Proceso){
         else{
             if ($idext!=$lugar){
                 //echo 'Entro al else';
-                $rslts='</br><form name="pacnoencontrado" action="" method="post">
+                $rslts='0PCNT?'.'|'.$nec.'|'.$idext.'|....';
+        /*        $rslts='</br><form name="pacnoencontrado" action="" method="post">
                 <div  style="width: 100%">
                 <div class="panel panel-info">
                 <div class="panel-heading" style="padding: 2px 15px !important">
                 <h4>Paciente no encontrado....&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" id="Registrar" name="Registrar" style="WIDTH: 170px; HEIGHT: 33px" onclick="abreVentana('.$nec.', '.$idext.')" class="btn btn-primary"><span class="glyphicon glyphicon glyphicon-search">&nbsp;Registrar Paciente</button></h4> </div>
                  </div></div>
 
-           </form>';
+           </form>';*/
             }
             else{
                 //echo 'Entro al else';

@@ -66,9 +66,8 @@ where id_tipo_establecimiento not in (12,13,29,28) order by id_tipo_establecimie
         $con = new ConexionBD;
          $condicionAmbiente="";
         if ($con->conectar() == true) {
-            $sql = "select id_area_atencion from mnt_area_mod_estab where id =$IdServ";
-            $dt = pg_fetch_array (pg_query($sqlText)) ;
-             if ($dt[0]==2){
+            $sql = "s";
+             if ($IdServ==2){
                $condicionAmbiente=' AND mnt_3.nombre_ambiente IS NOT NULL';
              }
                 $sqlText="WITH tbl_servicio as (SELECT mnt_3.id,
@@ -349,9 +348,45 @@ WHERE e.numero ='$nec'";
     }
 
 //Fn PG
-    function DatosPaciente($nec, $idext) {
+    function DatosPaciente($nec, $idext, $lugar) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
+            $edad ="TO_CHAR(NOW(), 'DD/MM/YYYY') as fecha,
+                         REPLACE(
+                            REPLACE(
+                                REPLACE(
+                                    REPLACE(
+                                        REPLACE(
+                                            REPLACE(
+                                                age(fecha_nacimiento::timestamp)::text,
+                                            'years', 'años'),
+                                        'year', 'año'),
+                                    'mons', 'meses'),
+                                'mon', 'mes'),
+                            'days', 'días'),
+                         'day', 'día') AS Edad";
+            if ($idext==$lugar){
+                $query_Search="select e.id as idexpediente, e.numero as numero,
+                concat_ws (' ',d.primer_apellido,d.segundo_apellido, d.apellido_casada, d.primer_nombre, d.segundo_nombre, d.tercer_nombre) as nombre,
+                s.nombre AS sexoconv, $edad, conocido_por,id_sexo, id_establecimiento as idestab
+                FROM mnt_paciente d
+                JOIN mnt_expediente e ON (d.id=e.id_paciente)
+                JOIN ctl_sexo s on (s.id=d.id_sexo)
+                where e.id_establecimiento=$idext
+                and numero= '$nec'";
+
+            }
+            else{
+                $query_Search="select e.id as idexpediente, e.numero as numero,
+                concat_ws (' ',d.primer_apellido,d.segundo_apellido, d.apellido_casada, d.primer_nombre, d.segundo_nombre, d.tercer_nombre) as nombre,
+                s.nombre AS sexoconv, $edad,'' as conocido_por,  id_sexo, id_establecimiento_origen as idestab
+                FROM mnt_paciente_referido d
+                JOIN mnt_expediente_referido e on (d.id= e.id_referido)
+                JOIN ctl_sexo s on (s.id=d.id_sexo)
+                where id_establecimiento_origen=$idext
+                and  e.numero= '$nec'";
+            }
+            //echo $query_Search;
            /* $query_Search = "SELECT e.id, e.numero, (primer_apellido||' '||coalesce(segundo_apellido,'' )||' '||coalesce(apellido_casada,'')||', '||primer_nombre||' '||coalesce(segundo_nombre,'')||' '||coalesce(tercer_nombre,'')) as nombre ,
                     s.nombre AS sexoconv, extract(year from age(fecha_nacimiento)) AS Edad, conocido_por,id_sexo
                     FROM mnt_paciente d
@@ -359,27 +394,28 @@ WHERE e.numero ='$nec'";
                     INNER JOIN ctl_sexo s on (d.id_sexo=s.id)
                     WHERE e.numero ='$nec'";*/
             // echo $query_Search;
-            $query_Search="
+        /*    $query_Search="
                 with tbl_datos_paciente as(
                 select e.id as idexpediente, e.numero as numero,
                 concat_ws (' ',d.primer_apellido,d.segundo_apellido, d.apellido_casada, d.primer_nombre, d.segundo_nombre, d.tercer_nombre) as nombre,
-                s.nombre AS sexoconv, extract(year from age(fecha_nacimiento)) AS Edad, conocido_por,id_sexo, id_establecimiento as idestab
+                s.nombre AS sexoconv, age(fecha_nacimiento::timestamp)::text AS agedad, conocido_por,id_sexo, id_establecimiento as idestab
                 FROM mnt_paciente d
                 JOIN mnt_expediente e ON (d.id=e.id_paciente)
                 JOIN ctl_sexo s on (s.id=d.id_sexo)
                 where e.id_establecimiento=$idext
+                and numero= '$nec'
                 union
                 select e.id as idexpediente, e.numero as numero,
                 concat_ws (' ',d.primer_apellido,d.segundo_apellido, d.apellido_casada, d.primer_nombre, d.segundo_nombre, d.tercer_nombre) as nombre,
-                s.nombre AS sexoconv, extract(year from age(fecha_nacimiento)) AS Edad,'' as conocido_por,  id_sexo, id_establecimiento_origen as idestab
+                s.nombre AS sexoconv, (fecha_nacimiento::timestamp)::text AS agedad,'' as conocido_por,  id_sexo, id_establecimiento_origen as idestab
                 FROM mnt_paciente_referido d
                 JOIN mnt_expediente_referido e on (d.id= e.id_referido)
                 JOIN ctl_sexo s on (s.id=d.id_sexo)
-                where id_establecimiento_origen=$idext)
-                select * from tbl_datos_paciente
-                where numero= '$nec'";
+                where id_establecimiento_origen=$idext
+                and  e.numero= '$nec')
+                select * from tbl_datos_paciente";*/
             $query = pg_query($query_Search);
-           // echo '<br/>'.$query_Search.'<br/>';
+            //echo '<br/>'.$query_Search.'<br/>';
             $num = pg_num_rows($query);
             //echo 'ŃUM: '.$num;
             //mysql_fetch_row($query);
