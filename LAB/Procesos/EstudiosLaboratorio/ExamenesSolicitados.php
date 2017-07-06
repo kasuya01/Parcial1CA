@@ -13,7 +13,7 @@ $IdHistorialClinico = $_GET["IdHistorialClinico"];
 $IdCitaServApoyo = $_GET["IdCitaServApoyo"];
 $band = isset($_GET["band"]) ? $_GET["band"] : 0;
 $urgente = isset($_GET["urgente"]) ? $_GET["urgente"] : 2;
-$FechaRecepcion = $_GET["FechaRecepcion"];
+$FechaRecepcion = $_SESSION["FechaRecepcion"];;
 
 // echo '<br/>idcitaservapoyo: '.$IdCitaServApoyo;
 $IdEstablecimiento = $_SESSION["IdEstablecimiento"]; //Elegido en el combo
