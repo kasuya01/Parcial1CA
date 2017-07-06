@@ -600,14 +600,14 @@ function procesaEsp(){
 		case 10:
 		var str = "0PCNT?";
 		ready = respuesta.split('|');
-		if(respuesta.includes(str)){
+		if(respuesta.indexOf(str) !== -1){
 			abreVentana(ready[1], ready[2]);
 		}
 		else{
 			document.getElementById('DatosPaciente').innerHTML = respuesta;
 
 		}
-		if(!respuesta.includes('....')){
+		if((respuesta.indexOf('....') == -1)){
 			document.getElementById('lyLaboratorio').style.display="block";
 		}
 
