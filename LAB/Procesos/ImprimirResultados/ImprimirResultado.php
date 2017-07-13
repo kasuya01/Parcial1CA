@@ -81,7 +81,7 @@ function BuscarServicio(IdServicio){
 -->
 </style>
 </head>
-<tr link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" onLoad=" document.getElementById('txtexpediente').focus() ">
+<body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" onload="MostrarBusqueda(); document.getElementById('txtexpediente').focus();">
 
 <?php 
 
@@ -108,7 +108,7 @@ if ($nivel == 7) {
 <tr>
     <td>
         <div  id="divInicial" >
-            <form method="get" action="ImprimirResultado.php" name="frmdatos" enctype="multipart/form-data">
+            <form method="get" action="ImprimirResultado.php" name="frmdatos" enctype="multipart/form-data" >
            	<table align="center"  class="StormyWeatherFormTABLE" width="97%">
 		<tr>
                     <td colspan="5" align="center" class="CobaltFieldCaptionTD"><h3><strong>Imprimir Resultados</strong></h3></td>
@@ -163,8 +163,8 @@ if ($nivel == 7) {
 				<?php
                                     $db = new ConexionBD;
                                     if($db->conectar()==true){
-				       $consulta  = "SELECT mnt_area_mod_estab.id as codigo ,CASE WHEN id_servicio_externo_estab IS NOT NULL THEN mnt_servicio_externo.abreviatura ||'-->'  || ctl_area_atencion.nombre
-                                                       ELSE   ctl_modalidad.nombre ||'-->' || ctl_area_atencion.nombre
+				       $consulta = "SELECT mnt_area_mod_estab.id as codigo ,CASE WHEN id_servicio_externo_estab IS NOT NULL THEN mnt_servicio_externo.abreviatura ||'-'|| ctl_area_atencion.nombre
+                                                     ELSE   ctl_modalidad.nombre ||' - ' || ctl_area_atencion.nombre
                                                        END
                                                        FROM mnt_area_mod_estab
                                                        INNER JOIN  ctl_area_atencion  on (ctl_area_atencion.id = mnt_area_mod_estab.id_area_atencion AND (ctl_area_atencion.id_tipo_atencion=1 OR ctl_area_atencion.id_tipo_atencion=4))
@@ -173,6 +173,7 @@ if ($nivel == 7) {
                                                        INNER JOIN ctl_modalidad ON ctl_modalidad.id = mnt_modalidad_establecimiento.id_modalidad
                                                        LEFT JOIN mnt_servicio_externo_establecimiento ON (mnt_servicio_externo_establecimiento.id = mnt_area_mod_estab.id_servicio_externo_estab)
                                                        LEFT JOIN mnt_servicio_externo ON (mnt_servicio_externo.id = mnt_servicio_externo_establecimiento.id_servicio_externo)
+                                                       WHERE mnt_area_mod_estab.id_establecimiento=$lugar
                                                        ORDER by ctl_modalidad.nombre,mnt_servicio_externo.nombre,ctl_area_atencion.nombre";
                                             
                                                                                     

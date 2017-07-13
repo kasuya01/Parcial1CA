@@ -14,7 +14,7 @@ class clsLab_DatosFijosExamen
 	   $con = new ConexionBD;
 	   if($con->conectar()==true)
 	   {
-	    $query = "INSERT INTO lab_datosfijosresultado
+	 echo   $query = "INSERT INTO lab_datosfijosresultado
 		      (id_conf_examen_estab,unidades,rangoinicio,rangofin,nota,idusuarioreg,fechahorareg,idusuariomod,fechahoramod,idestablecimiento,fechaini,fechafin,idsexo,idedad)
                       VALUES($idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,date_trunc('seconds',NOW()),$usuario,date_trunc('seconds', NOW()),$lugar,$Fechaini,$Fechafin,$sexo,$redad)";
 		//echo $query;
@@ -34,12 +34,12 @@ class clsLab_DatosFijosExamen
 
 	   {
 
-		$query = "UPDATE lab_datosfijosresultado SET id_conf_examen_estab=$idexamen,
+		 $query = "UPDATE lab_datosfijosresultado SET id_conf_examen_estab=$idexamen,
 	    		  unidades=$unidades, rangoinicio=$rangoinicio , rangofin=$rangofin , nota=$nota,idsexo=$sexo,idedad=$redad,
                           idusuariomod= $usuario, fechahoramod=date_trunc('seconds', NOW()) ,FechaIni=$Fechaini,fechafin=$Fechafin
                           WHERE id=$iddatosfijosresultado AND idestablecimiento=$lugar";
                             // echo $query;
-
+                            //exit();
 		$result = pg_query($query);
 		if (!$result)
                     return false;

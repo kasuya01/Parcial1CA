@@ -94,6 +94,12 @@ $f_consulta           = $_GET['var22'];
                 $ConRangos  = $obj->ObtenerCodigoRango($row_generales['fechanac']);
                 $row_rangos = pg_fetch_array($ConRangos);
                 $idedad     = $row_rangos[0];
+                
+                 if (isset($idedad))
+                   {$idedad= $idedad;}
+                else
+                    {$idedad='NULL';}
+           //  echo $idedad;
     ?>
                  <div  id="divImpresion1" >
                     <form name="frmimpresion1" >
@@ -277,11 +283,11 @@ $f_consulta           = $_GET['var22'];
                 $ConRangos  = $obj->ObtenerCodigoRango($row_generales['fechanac']);
                 $row_rangos = pg_fetch_array($ConRangos);
                // $idedad     = $row_rangos[0];
-                if (isset($row_rangos[0]))
-                   {$idedad= $row_rangos[0];}
+                if (isset($idedad))
+                   {$idedad= $idedad;}
                 else
                     {$idedad='NULL';}
-           //  echo $idedad;
+             //echo $idedad;
         ?>
                 <table width="100%" border="0" align="center"  cellspacing="0%" cellpadding="0%" >
                             <tr>

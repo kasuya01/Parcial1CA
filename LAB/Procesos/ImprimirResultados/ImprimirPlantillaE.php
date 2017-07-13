@@ -109,7 +109,7 @@ $obj = new clsImprimirResultado;
                     </tr>
                     <tr>
 			<td colspan='1' class="Estilo5" align="left"><strong>Procedencia:</strong></td>
-			<td colspan='3' class="Estilo6" align="left"><?php echo htmlentities($row_generales['nombresubservicio'])?></td>
+			<td colspan='3' class="Estilo6" align="left"><?php echo htmlentities($row_generales['nombreservicio'])?></td>
 
 			<td colspan='1' class="Estilo5" align="left"><strong>Servicio:</strong></td>
 			<td colspan='1' class="Estilo6" align="left"><?php echo htmlentities($subservicio)?></td>

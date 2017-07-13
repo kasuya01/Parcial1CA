@@ -1,3 +1,4 @@
+
 <?php session_start();
 include("clsLab_DatosFijosExamen.php");
 $objdatos=new clsLab_DatosFijosExamen;
@@ -10,7 +11,7 @@ $base_url  = $_SESSION['base_url'];
 ?>
 <html>
 <head>
-<meta http-equiv="Content-type" content="text/html;charset=UTF-8">    
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <title>Mantenimiento de Examenes de Laboratorio</title>
 <script language="JavaScript" type="text/javascript" src="ajax_Lab_DatosFijosExamen.js"></script>
 <!--referencias del estilo del calendario-->

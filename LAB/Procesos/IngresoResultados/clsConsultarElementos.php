@@ -473,7 +473,7 @@ else
         $con = new ConexionBD;
         if($con->conectar()==true) {
             
-         $query = "SELECT t01.id AS idsubelemento,
+        $query = "SELECT t01.id AS idsubelemento,
                              t01.subelemento,
                              t01.unidad,
                              t01.observsubelem,

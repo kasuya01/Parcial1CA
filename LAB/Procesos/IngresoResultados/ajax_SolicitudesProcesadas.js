@@ -2561,6 +2561,10 @@ function ValidarCamposPlantillaE()
             resp = false;
         }
     }
+     if (document.getElementById('cmbTabulador').value == 0)
+    {
+        resp = false;
+    }
 
     return resp;
 }
