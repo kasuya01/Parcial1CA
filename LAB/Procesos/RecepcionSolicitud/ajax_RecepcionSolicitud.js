@@ -193,7 +193,7 @@ function BuscarDatos() {
     fechacita         = document.getElementById('txtfechasolicitud').value;
     idEstablecimiento = document.getElementById('cmbEstablecimiento').value;
     
-  //alert("EXP="+idexpediente+" fecha="+fechacita+" idEsta="+idEstablecimiento)
+ // alert("EXP="+idexpediente+" fecha="+fechacita+" idEsta="+idEstablecimiento);
   //alert(fechacita);
     $( "#divResultado" ).empty();
     VerificarExistencia(idexpediente, fechacita, idEstablecimiento, false,0, idEstablecimiento);
@@ -227,7 +227,7 @@ function VerificarExistencia(idexpediente, fechacita, idEstablecimiento, omitir_
 
                     } else { //mueestra el mensaje de estado de la solicitud
                         alert(ajax.responseText);
-                       // MostrarTodos();
+                       // MostrarTodos(idEstablecimiento);
                     }
                 }
             }
@@ -310,7 +310,7 @@ function MostrarTodos() {
     parameters['fechacita'] = fechacita;
     parameters['idEstablecimiento'] = idEstablecimiento;
     parameters['idEstablecimiento'] = idEstablecimiento;
-
+//alert(idEstablecimiento);
     jQuery.ajax({
         url: 'ctrRecepcionSolicitud.php',
         type: 'post',

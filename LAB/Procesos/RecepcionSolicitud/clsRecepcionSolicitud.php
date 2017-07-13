@@ -151,7 +151,7 @@ class clsRecepcionSolicitud {
         }
     }
 
-    function buscarTodasSolicitudes($idexpediente, $fechacita, $lugar, $idEstablecimiento) {
+    function buscarTodasSolicitudes($idexpediente, $fechacita, $lugar, $idestablecimientoext) {
         $con = new ConexionBD;
         if ($con->conectar() == true) {
            $idexp=0;
@@ -160,7 +160,7 @@ class clsRecepcionSolicitud {
            //linea original: TO_CHAR(t02.fecha, 'DD/MM/YYYY') AS fecha_cita,
 
             $where = " WHERE t01.id_establecimiento = $lugar
-                         AND t04.idestado = 'D' AND t06.codigo_busqueda = 'DCOLAB'";
+                       AND t04.idestado = 'D' AND t06.codigo_busqueda = 'DCOLAB'";
 
          //   $orderBy = " ORDER BY t02.fecha desc, t09.id, t05.numero";
 
@@ -177,6 +177,9 @@ class clsRecepcionSolicitud {
                $where = $where." AND date(t02.fecha) between date('2016-01-01') and current_date ";
             }
            
+             if ($idestablecimientoext!=0){
+               $where = $where." AND t01.id_establecimiento_externo=$idestablecimientoext "; 
+            }
            
           $query = "
                 WITH tbl_servicio as (SELECT mnt_3.id, CASE WHEN id_servicio_externo_estab IS NOT NULL
@@ -287,10 +290,9 @@ class clsRecepcionSolicitud {
                 INNER JOIN lab_tiposolicitud		 t09 ON (t09.id = t01.idtiposolicitud)
                 INNER JOIN tbl_servicio		         t10 ON	(t10.id=t08.id AND t10.servicio IS NOT NULL)
                  INNER JOIN ctl_establecimiento          t11 ON t11.id = t01.id_establecimiento_externo
-               $where ) ordenar 
-                   ORDER BY ordenar.fecha_cita desc, ordenar.id_tiposolicitud , ordenar.numero_expediente";
+               $where ) ordenar ORDER BY ordenar.fecha_cita desc, ordenar.id_tiposolicitud , ordenar.numero_expediente";
        //   exit();
-            //var_dump( $query.$where.$orderBy);
+       //  var_dump( $query);
             $result = @pg_query($query);
 
             if (!$result)
@@ -1048,7 +1050,7 @@ class clsRecepcionSolicitud {
                              AND t01.estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = 'D' 
                                 AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) $where
                       ORDER BY t05.idarea";
-            //echo $query;
+          //  echo $query;
             $result = @pg_query($query);
             if (!$result)
                 return false;

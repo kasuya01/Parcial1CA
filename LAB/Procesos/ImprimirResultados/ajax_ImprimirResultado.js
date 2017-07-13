@@ -279,7 +279,7 @@ function MostrarDatos(posicion)
                 subservicio=document.getElementById('subservicio['+posicion+']').value;
 		//alert(IdEstablecimiento);
 		idsolicitud=trim(idsolicitud);
-		CargarDatosFormulario(idexpediente,idsolicitud,IdEstablecimiento,subservicio);
+                CargarDatosFormulario(idexpediente,idsolicitud,IdEstablecimiento,subservicio);
 	 
  }
 

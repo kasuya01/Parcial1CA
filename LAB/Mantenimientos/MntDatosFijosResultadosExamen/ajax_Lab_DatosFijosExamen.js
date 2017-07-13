@@ -171,7 +171,7 @@ function enviarDatos(){//FUNCION PARA MODIFICAR
 	Fechaini=document.frmModificar.txtFechainicio.value;
 	Fechafin=document.frmModificar.txtFechaFin.value;	
 	iddatosfijosexamen=document.frmModificar.txtoculto.value;
-      
+     // alert( "js "+nota);
         sexo=document.frmModificar.cmbSexo.value;
         //  alert (sexo);
         redad=document.frmModificar.cmbEdad.value;

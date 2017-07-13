@@ -87,10 +87,10 @@ switch ($opcion) {
                                                 <input name='totcombo[".$pos."]' type='hidden' id='totcombo[".$pos."]'  value=''  >
 						</td>";
                                               }
-				$imprimir.= "<td width='5%' class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."</td>
+				$imprimir.= "<td width='5%' class='StormyWeatherDataTD'>".utf8_decode($rowsub['unidad'])."</td>
 					     <td width='30%' class='StormyWeatherDataTD'>
 							<input name='txtcontrol[".$pos."]' type='text' id='txtcontrol[".$pos."]'></td>
-						<td class='StormyWeatherDataTD'>".htmlentities($rowsub['unidad'])."</td>
+						<td class='StormyWeatherDataTD'>".utf8_decode($rowsub['unidad'])."</td>
                                             </tr>";
 							$pos=$pos + 1;
 				}
@@ -110,9 +110,9 @@ switch ($opcion) {
                                                             <input name='oidelemento[".$posele."]' type='hidden' id='oidelemento[".$posele."]' value='".$row['idelemento']."'>
 
                                                         </td>
-                                                        <td class='StormyWeatherDataTD'>".htmlentities($row['unidadelem'])."</td>
+                                                        <td class='StormyWeatherDataTD'>".utf8_decode($row['unidadelem'])."</td>
                                                         <td class='StormyWeatherDataTD' width='30%'><input name='txtcontrolele[".$posele."]' type='text' id='txtcontrolele[".$posele."]'></td>
-                                                        <td width='10%' class='StormyWeatherDataTD'>".htmlentities($row['unidadelem'])."</td>
+                                                        <td width='10%' class='StormyWeatherDataTD'>".utf8_decode($row['unidadelem'])."</td>
                                                 </tr>";
 
                                                         $posele=$posele + 1;
@@ -676,7 +676,7 @@ switch ($opcion) {
                         $imprimir.="<td width='25%'>".$row_dresult['posible_resultado']."<input name='oidsubelemento[".$pos."]' type='hidden' id='oidsubelemento[".$pos."]' value='".$rowsub['idsubelemento']."'></td>";
 
                     }
-                        $imprimir.="<td width='10%'>".htmlentities($rowsub['unidad'])."</td>";
+                        $imprimir.="<td width='10%'>".utf8_decode($rowsub['unidad'])."</td>";
 		    if (empty($rowsub['rangoinicio']) AND empty($rowsub['rangofin']))
                        $imprimir.= "<td >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 		    else
@@ -692,12 +692,12 @@ switch ($opcion) {
 		    $imprimir.= "<tr>
 			        	 <td style='font:bold;padding-bottom: 0.5em;'>".htmlentities($row['elemento'])."</td>
 					 <td>".htmlentities($vector_elementos[$posele])."<input name='oidelemento[".$posele."]' type='hidden' id='oidelemento[".$posele."]' value='".$row['idelemento']."'>			  </td>
-					 <td width='25%'>".htmlentities($row['unidadelem'])."</td>
+					 <td width='25%'>".utf8_decode($row['unidadelem'])."</td>
 		                </tr>";
 
 						$posele = $posele+1;
 						$imprimir.= "<tr>
-								<td colspan='5'>".htmlentities($row['observelem'])."</td>
+								<td colspan='5'>".utf8_decode($row['observelem'])."</td>
 							</tr>";
 		 }
 	    }
