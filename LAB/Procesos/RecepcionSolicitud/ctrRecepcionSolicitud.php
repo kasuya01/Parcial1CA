@@ -544,7 +544,7 @@ switch ($opcion) {
 			INNER JOIN lab_recepcionmuestra ON sec_solicitudestudios.IdSolicitudEstudio=lab_recepcionmuestra.IdSolicitudEstudio
 			WHERE sec_solicitudestudios.IdSolicitudEstudio='$Solicitud'";
 
-         echo $query;
+        // echo $query;
          $Cla = "";
          $result = pg_query($query);
          while ($row = pg_fetch_array($result)) {

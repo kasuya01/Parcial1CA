@@ -184,7 +184,7 @@ switch ($opcion) {
 
                 ELSE
                 CASE WHEN id_servicio_externo_estab IS NOT NULL
-                        THEN mnt_ser.abreviatura ||'--> ' || cat.nombre
+                        THEN mnt_ser.abreviatura ||' - ' || cat.nombre
                      WHEN not exists (select nombre_ambiente
                                     from mnt_aten_area_mod_estab maame
                                     join mnt_area_mod_estab mame on (maame.id_area_mod_estab = mame.id)
@@ -202,7 +202,9 @@ switch ($opcion) {
                 join mnt_modalidad_establecimiento mme on (mme.id=mnt_2.id_modalidad_estab)
                 join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
                 WHERE  $where_with   mnt_3.id_establecimiento=$lugar
-                order by 2)
+                 order by 2)
+                 
+
                  SELECT
                 distinct on (t02.id_historial_clinico)t02.id_historial_clinico,
                 t02.id,

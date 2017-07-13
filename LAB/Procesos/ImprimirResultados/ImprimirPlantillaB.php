@@ -187,8 +187,8 @@ function calc_edad()
                         <td width='25%' class="Estilo5"><?php echo htmlentities($rowsub['posible_resultado'])?></td>
                                <?php
                     } ?>
-                    	<td width='20%' class="Estilo5"><?php echo htmlentities($rowsub['unidad'])?></td>
-			<td width='45%' class="Estilo5"> <?php echo htmlentities($rowsub['observacion']) ." ".htmlentities($rowsub['unidad'])?> </td> 
+                        <td width='20%' class="Estilo5"><?php echo utf8_decode($rowsub['unidad'])?></td>
+                        <td width='45%' class="Estilo5"> <?php echo utf8_decode($rowsub['observacion']) ." ".htmlentities($rowsub['unidad'])?> </td> 
 		    </tr>
                         
                         

@@ -28,7 +28,7 @@ $unidades=$row['unidades'];
 //echo $unidades;
 $rangoinicio=$row['rangoinicio'];
 $rangofin=$row['rangofin'];
-$nota=$row['nota'];
+$nota=utf8_encode($row['nota']);
 $Fechaini=$row['fechaini'];
 $Fechafin=$row['fechafin'];
 $idsexo=$row['idsexo'];
@@ -120,7 +120,7 @@ $rangoedad=$row['redad'];
         </tr>
 	<tr>
             <td width="17%" class="StormyWeatherFieldCaptionTD">Unidades</td>
-            <td width="83%" class="StormyWeatherDataTD" colspan="3"><input class="form-control height placeholder" size="10" style="width:250px" name="txtunidades" type="text" id="txtunidades" value="<?php echo htmlentities($unidades); ?>" size="10"></td>
+            <td width="83%" class="StormyWeatherDataTD" colspan="3"><input class="form-control height placeholder" size="10" style="width:250px" name="txtunidades" type="text" id="txtunidades" value="<?php echo utf8_decode($unidades); ?>" size="10"></td>
    	</tr>
        	<tr>
             <td  class="StormyWeatherFieldCaptionTD">Rango Inicio</td>
@@ -136,9 +136,11 @@ $rangoedad=$row['redad'];
         <tr>
             <td class="StormyWeatherFieldCaptionTD">Observaci&oacute;n</td>
             <td class="StormyWeatherDataTD" colspan="3">
-          	<textarea name="txtnota" cols="65" rows="3" id="txtnota" style="width:98%" class="form-control"><?php echo htmlentities($nota); ?></textarea>
+                <textarea name="txtnota" cols="65" rows="3" id="txtnota" style="width:98%" class="form-control"><?php echo html_entity_decode($nota); ?></textarea>
+               
+                                                                           
                 
-	    </td>
+	    </td>    
        	</tr>
 	<tr>
             

@@ -20,7 +20,7 @@ switch ($opcion)
 		$idexamen=$_POST['idexamen'];
 		$idarea=$_POST['idarea'];
 		$unidades=(empty($_POST['unidades'])) ? 'NULL' : "'" . pg_escape_string(utf8_encode($_POST['unidades'])) . "'";
-                $nota=(empty($_POST['nota'])) ? 'NULL' : "'" . pg_escape_string($_POST['nota']) . "'";
+                $nota=(empty($_POST['nota'])) ? 'NULL' : "'" . pg_escape_string(utf8_encode($_POST['nota'])) . "'";
                 $sexo=$_POST['sexo'];
                 if ($sexo==3)
                     $sexo='NULL';
@@ -52,10 +52,10 @@ switch ($opcion)
                         $unidades=(empty($_POST['unidades'])) ? 'NULL' : "'" . pg_escape_string(utf8_encode($_POST['unidades'])) . "'";
                         $rangoinicio=(empty($_POST['rangoinicio'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangoinicio']) . "'";
                         $rangofin=(empty($_POST['rangofin'])) ? 'NULL' : "'" . pg_escape_string($_POST['rangofin']) . "'";
-                        $nota=(empty($_POST['nota'])) ? 'NULL' : "'" . pg_escape_string($_POST['nota']) . "'";
+                        $nota=(empty($_POST['nota'])) ? 'NULL' : "'" . pg_escape_string(utf8_encode($_POST['nota'])) . "'";
                         $Fechaini=(empty($_POST['Fechaini'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechaini']) . "'";
                         $Fechafin=(empty($_POST['Fechafin'])) ? 'NULL' : "'" . pg_escape_string($_POST['Fechafin']) . "'";
-                       // echo $sexo;
+                       // echo "ctr ".$nota;
 			if ($objdatos->actualizar($iddatosfijosresultado,$idarea,$idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,$lugar,$Fechaini,$Fechafin,$sexo,$redad)==true)
                            /* && $Clases->actualizar_labo($iddatosfijosresultado,$idarea,$idexamen,$unidades,$rangoinicio,$rangofin,$nota,$usuario,$lugar,$Fechaini,$Fechafin,$sexo,$redad)==true)*/
 			{
@@ -182,7 +182,7 @@ switch ($opcion)
 			if (empty($row['unidades']))
 				echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 			else
-				echo"<td>".htmlentities($row['unidades'])."</td>";
+				echo"<td>".utf8_decode($row['unidades'])."</td>";
 
                         if ((empty($row['rangoInicio'])) && (empty($row['rangofin'])))
                                 echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
@@ -192,7 +192,7 @@ switch ($opcion)
 			if (empty($row['nota']))
                             echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 			else
-                            echo "<td>".htmlentities($row['nota'])."</td>";
+                            echo "<td>".utf8_decode($row['nota'])."</td>";
 
                         if (empty($row['sexo']))
                             echo "<td> Ambos </td>";

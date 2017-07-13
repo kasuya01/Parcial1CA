@@ -233,7 +233,7 @@ if (isset($_SESSION['Correlativo'])) {
                                                 <select name="cmbEstablecimiento" id="cmbEstablecimiento" class="height js-example-basic-single" style="width:400px" >
                                                      <option value="0" selected="selected">Todos los Establecimientos</option>
                                                     <?php
-                                                  echo '<option value="' . $lugar . '" selected="selected">' . htmlentities($nombrEstab) . '</option>';
+                                                //  echo '<option value="' . $lugar . '" selected="selected">' . htmlentities($nombrEstab) . '</option>';
                                                     include_once("../../../Conexion/ConexionBD.php");
                                                     $con = new ConexionBD;
                                                     if ($con->conectar() == true) {

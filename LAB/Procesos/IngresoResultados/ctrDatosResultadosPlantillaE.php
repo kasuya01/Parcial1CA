@@ -367,8 +367,8 @@ case 2://vista Previa de Resultado
                                          $row_dresult=  pg_fetch_array($conresult);
                                     $imprimir.="<td align='justify' colspan='1'>".htmlentities($row_dresult['posible_resultado'])."<input name='oidprueba[".$pos."]' type='hidden' id='oidprueba[".$pos."]' value='".$row['idprocedimiento']."'></td>";
                                      } 
-				$imprimir.="	<td align='center'>".$row['unidades']."</td>
-						<td align='center'>".htmlentities($vector_comentarios[$pos])."  ".htmlentities($row['unidades'])."</td>
+				$imprimir.="	<td align='center'>".utf8_decode($row['unidades'])."</td>
+						<td align='center'>".htmlentities($vector_comentarios[$pos])."  ".utf8_decode($row['unidades'])."</td>
 						<td  class='Estilo6'>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                             </tr>";
 					  $pos=$pos + 1;
