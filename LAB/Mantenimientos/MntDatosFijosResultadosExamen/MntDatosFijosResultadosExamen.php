@@ -1,4 +1,3 @@
-
 <?php session_start();
 include("clsLab_DatosFijosExamen.php");
 $objdatos=new clsLab_DatosFijosExamen;
