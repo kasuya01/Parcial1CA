@@ -31,6 +31,7 @@ switch ($opcion) {
       //$observacion=(empty($_POST['observacion']))? 'NULL' : "'" . pg_escape_string($_POST['observacion']). "'";
       $ubicacion = $_POST['ubicacion'];
       $Idrio = $_POST['idrio'];
+      $idformulario = $_POST['idformulario'];
       $IdEstandarResp = $_POST['idestandarRep'];
       //echo $IdEstandarResp." idPlantilla=".$plantilla;
       $etiqueta = $_POST['etiqueta'];
@@ -78,7 +79,7 @@ switch ($opcion) {
 
       if ($resultado <> "") {
          If ($objdatos->IngExamenxEstablecimiento($idexamen, $nomexamen, $Hab,
-                         $usuario, $Idrio, $IdEstandarResp, $plantilla,
+                         $usuario, $idformulario, $IdEstandarResp, $plantilla,
                          $letra, $Urgente, $ubicacion, $TiempoPrevio, $idsexo,
                          $idestandar, $lugar, $metodologias_sel,
                          $text_metodologias_sel, $id_metodologias_sel,
@@ -93,7 +94,7 @@ switch ($opcion) {
          $id_resultado = 'NULL';
 
          If ($objdatos->IngExamenxEstablecimiento($idexamen, $nomexamen, $Hab,
-                         $usuario, $Idrio, $IdEstandarResp, $plantilla,
+                         $usuario, $idformulario, $IdEstandarResp, $plantilla,
                          $letra, $Urgente, $ubicacion, $TiempoPrevio, $idsexo,
                          $idestandar, $lugar, $metodologias_sel,
                          $text_metodologias_sel, $id_metodologias_sel,

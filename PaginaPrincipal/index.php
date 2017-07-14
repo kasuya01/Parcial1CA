@@ -64,10 +64,10 @@ echo '<h4><i>Fecha actual: '.strftime("%A, %d de %B de %Y").'<br/></i></h4>';
         <div class="box"  style="text-align: right;">
             <div class="box-header">
             <a href="../LAB/Procesos/Recepcion/RecepcionLab.php" class="btn btn-app" >
-                <i class="fa fa-file-o" ></i> Nueva Solicitud
+                <i class="fa fa-file-o" ></i> Ingresar Solicitud
             </a>
             <a href="../LAB/Procesos/RecepcionSolicitud/Proc_RecepcionSolicitud.php" class="btn btn-app" >
-                <i class="fa fa-check-square-o" ></i> Recepción muestra
+                <i class="fa fa-check-square-o" ></i> Recepción des solicitudes
             </a>
             <a href="../LAB/Procesos/IngresoResultados/Proc_SolicitudesProcesadas.php" class="btn btn-app" >
                 <i class="fa fa-edit" ></i> Ingreso de Resultados
