@@ -222,6 +222,7 @@ class clsRecepcionSolicitud {
                        t05.id AS id_expediente,
                        t05.numero AS numero_expediente,
                        TO_CHAR(t02.fecha, 'DD/MM/YYYY') AS fecha_cita,
+                       t02.fecha as cita,
                        TO_CHAR(t01.fecha_solicitud, 'DD/MM/YYYY') AS fecha_consulta,
                        CONCAT_WS(' ', t07.primer_apellido, t07.segundo_apellido, t07.apellido_casada) || ', ' || CONCAT_WS(' ', t07.primer_nombre, t07.segundo_nombre, t07.tercer_nombre)AS nombre_paciente,
                        CASE t04.idestado
@@ -260,6 +261,7 @@ class clsRecepcionSolicitud {
                       t05.id AS id_expediente,
                       t05.numero AS numero_expediente,
                       TO_CHAR(t02.fecha, 'DD/MM/YYYY') AS fecha_cita,
+                      t02.fecha as cita,
                       TO_CHAR(t01.fecha_solicitud, 'DD/MM/YYYY') AS fecha_consulta,
                       CONCAT_WS(' ', t07.primer_apellido, t07.segundo_apellido, t07.apellido_casada) || ', ' || CONCAT_WS(' ', t07.primer_nombre, t07.segundo_nombre, t07.tercer_nombre)AS nombre_paciente,
                       CASE t04.idestado
@@ -290,7 +292,8 @@ class clsRecepcionSolicitud {
                 INNER JOIN lab_tiposolicitud		 t09 ON (t09.id = t01.idtiposolicitud)
                 INNER JOIN tbl_servicio		         t10 ON	(t10.id=t08.id AND t10.servicio IS NOT NULL)
                  INNER JOIN ctl_establecimiento          t11 ON t11.id = t01.id_establecimiento_externo
-               $where ) ordenar ORDER BY ordenar.fecha_cita desc, ordenar.id_tiposolicitud , ordenar.numero_expediente";
+               $where ) ordenar ORDER BY ordenar.cita desc , ordenar.id_tiposolicitud , ordenar.numero_expediente";
+          //, ordenar.id_tiposolicitud , ordenar.numero_expediente
        //   exit();
        //  var_dump( $query);
             $result = @pg_query($query);
