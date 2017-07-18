@@ -186,7 +186,7 @@ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$obs
         }else{
             
             if($idobservacion<>0){
-               echo $query = "INSERT INTO lab_resultados
+              $query = "INSERT INTO lab_resultados
                          (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
                           observacion,resultado,idempleado,idusuarioreg,fechahorareg,idestablecimiento,id_observacion,fecha_resultado) 
                           VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,
@@ -194,7 +194,7 @@ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$obs
             }
             else{
                 
-              echo  $query = "INSERT INTO lab_resultados
+                $query = "INSERT INTO lab_resultados
                      (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
                       observacion,resultado,idempleado,idusuarioreg,fechahorareg,idestablecimiento,fecha_resultado) 
                       VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,
@@ -209,7 +209,7 @@ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$obs
             if( $idultimo>0 && pg_num_rows($result1) == 1) {
                 $row_exam_metod = pg_fetch_array($result1);
                 $id_exam_metod = $row_exam_metod[0];
-              echo  $querytab = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
+                $querytab = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
                             VALUES($id_exam_metod, $iddetalle, $codigoResultado, $usuario, date_trunc('seconds',NOW()),'$fecharealiz','$fecharesultado',$responsable)";
                  $resulttab = pg_query($querytab);
                  if($resulttab) {

@@ -727,7 +727,7 @@ function IngresarOtro() {
     document.getElementById('divresultado').style.display = "none";
     document.getElementById('divexamen').style.display = "none";
     document.getElementById('divResPositivo').style.display = "block";
-    document.getElementById('cmbOrganismo').value = "0";
+    document.frmnuevo.cmbOrganismo.value = "0";
     document.getElementById('cmbTarjeta').value = "0";
 }
 
@@ -795,6 +795,7 @@ function LlenarObservaciones()
         document.getElementById('divResPositivo').style.display = "none";
         document.getElementById('divBotonPrevie').style.display = "block";
         document.getElementById('divObservacion').style.display = "block";
+        document.getElementById('divexamen').style.display = "none";
     }
 
     ajax.open("POST", "ctrDatosResultadosExamen_PC.php", true);
