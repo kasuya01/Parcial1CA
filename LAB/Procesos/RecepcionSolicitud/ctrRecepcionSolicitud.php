@@ -31,6 +31,11 @@ switch ($opcion) {
       $referido = $_POST['referido'];
       $return_='';
       $enviohl7= $Comunicacion->ConsultaEnvioHL7($lugar);
+      $procref=$object->BuscarProcReferido();
+        while ($row_pl=@pg_fetch_array($procref)){
+            if($row_pl['id_proceso_laboratorio']==10)
+                $refext=$row_pl['activo'];
+        }
 
       if ($con->conectar() == true) {
          $query = "UPDATE sec_solicitudestudios "
@@ -96,8 +101,13 @@ switch ($opcion) {
                           $result3=pg_query($sql3);
                           $rowtmu=  pg_fetch_array($result3);
                           //14 es examen referido
-                          if ($rowtmu[0]==14)
+                          if ($rowtmu[0]==14){
+                              if ($refext=='t')
+                               $idestado='PR';
+                           else {
                                $idestado='RC';
+                           }
+                          }
                           else
                              $idestado = 'PM';
                       }

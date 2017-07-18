@@ -170,8 +170,8 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                               <th> Validar Muestra</th>
                               <th id='colnewdate_' class='hide_me newdate'>Nueva Cita</th>";
 //echo "solicitud ".$row['idsolicitudestudio'];
-                    if ($refext=='t')
-                              echo "<th > Lugar de Realización</th>";
+                    /*if ($refext=='t')
+                              echo "<th > Lugar de Realización</th>";*/
           		        echo "</tr></thead><tbody>";
                                 
                                 
@@ -241,7 +241,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                       echo '<td  id="colnewdate_" class="hide_me newdate"  style="width:100px"> <div id="divnewdate_'.$k.'" style="display:none"></div></td>';
 
 
-                      if ($refext=='t'){
+              /*     if ($refext=='t'){
 
                           if ($rows['id_area']!=14){
                               echo "<td class='th-info' style='text-align:left !important;'>".$nestab."</td>";
@@ -262,7 +262,7 @@ for ($i = 0; $i < $NroRegistros; $i++) {
                               echo "</td>";
 
                           }
-                      }
+                      }*/
                       echo "</tr>";
 
                       $k++;
