@@ -103,7 +103,7 @@ switch ($opcion)
                 $f_consulta= $_POST['f_consulta'];               
 		$idrecepcion= $_POST['idrecepcion'];
 		$iddetalle= $_POST['iddetalle'];
-
+                
 		$observacion= $_POST['observacion'];
                 $idobservacion= ($_POST['idobservacion']==0) ? 'NULL' : "'" . pg_escape_string($_POST['idobservacion']) . "'";
                 //echo $idobservacion;
@@ -526,7 +526,8 @@ switch ($opcion)
         $idareaPA=$_POST['idareaPA'];
 	//$observacion= (empty($_POST['observacion'])) ? ' ' : "'" . pg_escape_string($_POST['observacion']) . "'";
         
-        $idobservacion=$_POST['idobservacion'];
+        $idobservacion=(integer) $_POST['idobservacion'];
+       // var_dump($idobservacion);
        // echo "id=".$idobservacion; 
 	$resultado=$_POST['resultado'];
 	$establecimiento=$_POST['estab'];
@@ -676,7 +677,7 @@ switch ($opcion)
 	echo $imprimir;
 	break;
 
-case 6:
+        case 6: // Guardar resultado Negativo u otro
 	$idexamen=$_POST['idexamen'];
 	//$tiporespuesta=$_POST['tiporespuesta'];
 	$idsolicitud= $_POST['idsolicitud'];
@@ -684,12 +685,20 @@ case 6:
 	$idrecepcion= $_POST['idrecepcion'];
 	 $iddetalle= $_POST['iddetalle'];
 	//echo $idsolicitud ." - ". $iddetalle;
-        $idobservacion=$_POST['idobservacion'];
+        $idobservacion=(integer) $_POST['idobservacion'];
+      //  var_dump($idobservacion);
 	$resultado=$_POST['resultado'];
         $fecharealiz=$_POST['fecharealiz'];
         $fecharesultado=$_POST['fecharesultado'];
         $numresiembras=$_POST['resiembras'];
         $observacion1=$_POST['observacion'];
+          /*$idarea=$_POST['idarea'];
+		$tiporespuesta=$_POST['tiporespuesta'];
+		$nombrearea=$_POST['nombrearea'];*/
+        
+        
+        
+        
         $datos_observacion=$objdatos->LeerObservacion($idobservacion);
 	$row_observacion = pg_fetch_array($datos_observacion);
         //$observacion= (empty($row_observacion['observacion'])) ? 'NULL' : "'" . pg_escape_string($row_observacion['observacion']) . "'";
@@ -728,9 +737,9 @@ case 6:
             
 	if ($resultado=="N")
 	{
-               $codigoResultado=2;
-                $ultimo=$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacionf,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacionf,$fecharealiz,$fecharesultado);
-             
+            $codigoResultado=2;
+            $ultimo=$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacionf,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacionf,$fecharealiz,$fecharesultado);
+            echo  $ultimo;
                 for ($i=0; $i < $numresiembras; $i++)
                               {
                   // echo 'i :' . $i;

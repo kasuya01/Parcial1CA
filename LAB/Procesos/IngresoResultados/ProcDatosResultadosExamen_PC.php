@@ -236,7 +236,7 @@ function RecogeValor() {
                                     <td class="StormyWeatherDataTD"><?php echo $_GET['var6'];?>
                                         <input type="hidden" name="txtnec" id="txtnec" disabled="disabled" />
                                         <input type="hidden" name="txtidsolicitud" id="txtidsolicitud" />
-                                        <input type="hidden" name="txtiddetalle" id="txtiddetalle" />
+                                        <input type="hidden" name="txtiddetalle" id="txtiddetalle" value="<?php echo $_GET['var5']?>"/>
                                         <input type="hidden" name="txtidexamen" id="txtidexamen" />
                                         <input type="hidden" name="txtidrecepcion" id="txtidrecepcion" />
                                         <input type="hidden" name="txtarea" id="txtarea" />
@@ -351,8 +351,8 @@ function RecogeValor() {
                                 <tr>
                                     <td width="35%" colspan="1" class="StormyWeatherFieldCaptionTD">Resultado</td>
                                     <td width="65%" class="StormyWeatherDataTD" colspan="4">
-                                        <select id="cmbResultado" name="cmbResultado" size="1" class="form-control height" onChange="LlenarObservaciones();" >
-                                             <option value="0">--Seleccione--</option>
+                                        <select id="cmbResultado" name="cmbResultado" size="1" class="form-control height" onChange="LlenarObservaciones();"   >
+                                             <option value="0" >--Seleccione--</option>
                                              <option value="P">Positivo</option>
                                              <option value="N">Negativo</option>
                                              <option value="O">Otro</option>

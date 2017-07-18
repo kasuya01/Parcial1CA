@@ -19,7 +19,7 @@ $nomtipo=$row[2];
  ?>
 <html>
 <head>
-<meta http-equiv="Content-type" content="text/html;charset=UTF-8">    
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">  
 <title>Agregar Examen a Solicitud</title>
 
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
