@@ -186,15 +186,15 @@ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$obs
         }else{
             
             if($idobservacion<>0){
-            $query = "INSERT INTO lab_resultados
-                     (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
-                      observacion,resultado,idempleado,idusuarioreg,fechahorareg,idestablecimiento,id_observacion,fecha_resultado) 
-                      VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,
-                      '$observacion','$NomResultado',$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,$idobservacion,'$fecharesultado')RETURNING id";
+               echo $query = "INSERT INTO lab_resultados
+                         (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
+                          observacion,resultado,idempleado,idusuarioreg,fechahorareg,idestablecimiento,id_observacion,fecha_resultado) 
+                          VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,
+                          '$observacion','$NomResultado',$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,$idobservacion,'$fecharesultado')RETURNING id";
             }
             else{
                 
-           $query = "INSERT INTO lab_resultados
+              echo  $query = "INSERT INTO lab_resultados
                      (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
                       observacion,resultado,idempleado,idusuarioreg,fechahorareg,idestablecimiento,fecha_resultado) 
                       VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,
@@ -202,6 +202,28 @@ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$obs
             }
                   //echo $query;
             $result = pg_query($query);
+            $row = pg_fetch_array($result);
+            $idultimo = $row[0];
+            $query1 = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen  AND activo = true";
+            $result1 = pg_query($query1);
+            if( $idultimo>0 && pg_num_rows($result1) == 1) {
+                $row_exam_metod = pg_fetch_array($result1);
+                $id_exam_metod = $row_exam_metod[0];
+              echo  $querytab = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,idusuarioreg,fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
+                            VALUES($id_exam_metod, $iddetalle, $codigoResultado, $usuario, date_trunc('seconds',NOW()),'$fecharealiz','$fecharesultado',$responsable)";
+                 $resulttab = pg_query($querytab);
+                 if($resulttab) {
+                      return $idultimo;
+                 }else{
+                     return false;
+                 }
+                     
+            }
+            else{
+                return false;
+            }
+                
+        /*  $result = pg_query($query);
             if($row = pg_fetch_array($result)) {
                $query1 = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen  AND activo = true";
                                             //AND id_metodologia IS NULL
@@ -225,7 +247,8 @@ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$obs
                             }else 
                         return false;
                 
-         }
+         }*/
+        }
     }
 }
 

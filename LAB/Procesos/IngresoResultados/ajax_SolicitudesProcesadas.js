@@ -738,6 +738,10 @@ function validartarjeta()
     {
         resp = false;
     }
+    if((document.getElementById('cmbObservacion').value =="0")&&(document.getElementById('txtObservacion').value==""))
+     {
+        resp = false;
+    }
 
     return resp;
 }
@@ -824,6 +828,7 @@ function PreviosNegativos()
         idarea = document.frmnuevo.txtarea.value;
         idsolicitud = document.frmnuevo.txtidsolicitud.value;
         idempleado = document.frmnuevo.cmbEmpleados.value;
+     //    iddetalle = document.txtiddetalle.value;
        // observacion = document.frmnuevo.cmbObservacion.value;
        // alert("ajax"+observacion);
         idobservacion = document.getElementById('cmbObservacion').value;
@@ -838,7 +843,7 @@ function PreviosNegativos()
         idareaPA=document.getElementById('txtidareaPA').value;
         observacion=document.getElementById('txtObservacion').value;
        f_consulta=document.getElementById('f_consulta').value;
-       // alert(f_consulta);
+      //  alert(iddetalle);
       //  alert (idobservacion +" - "+observacion);
         opcion = 5;
 
@@ -877,7 +882,7 @@ function PreviosNegativos()
     }
     else
     {
-        alert("Seleccione el nombre del Responsable")
+        alert("Complete los datos a Ingresar")
     }
 }
 
@@ -891,7 +896,7 @@ function GuardarResultadosNegativosPlantillaC()
     idrecepcion = document.getElementById('txtidrecepcion').value;
     //detallesolicitud
     iddetalle = document.getElementById('txtiddetalle').value;
-    //idexamen
+       //idexamen
     idexamen = document.getElementById('txtidexamen').value;
     //observacion
    // observacion = document.getElementById('txtobservacion').value;
