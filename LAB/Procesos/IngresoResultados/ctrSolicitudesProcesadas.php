@@ -411,9 +411,9 @@ switch ($opcion) {
             pg_free_result($consulta);
             echo "<input type='hidden' name='oculto' id='text' value='" . $pos . "' />
                 </tbody></table></div>";
-        } else {
+        }/* else {
             echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></tbody></table></div>";
-        }
+        }*/
 
 
         break;
