@@ -739,7 +739,7 @@ switch ($opcion)
 	{
             $codigoResultado=2;
             $ultimo=$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacionf,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacionf,$fecharealiz,$fecharesultado);
-            echo  $ultimo;
+           // echo  $ultimo;
                 for ($i=0; $i < $numresiembras; $i++)
                               {
                   // echo 'i :' . $i;
