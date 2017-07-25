@@ -388,7 +388,7 @@ function RecogeValor() {
                                                  <tr>
                                                      <td width="35%" class="StormyWeatherFieldCaptionTD">Organismos</td>
                                                      <td width="65%" class="StormyWeatherDataTD">
-                                                         <select id="cmbOrganismo" name="cmbOrganismo" style="width:100%" class="height js-example-basic-single">
+                                                         <select id="cmbOrganismo" name="cmbOrganismo" style="width:100%" class="height js-example-basic-single" >
                                                              <option value="0" >--Seleccione una bacteria--</option>
                                                              <?php
                                                                  //style="width:450px"

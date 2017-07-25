@@ -727,7 +727,7 @@ function IngresarOtro() {
     document.getElementById('divresultado').style.display = "none";
     document.getElementById('divexamen').style.display = "none";
     document.getElementById('divResPositivo').style.display = "block";
-    document.frmnuevo.cmbOrganismo.value = "0";
+    document.frmnuevo.cmbOrganismo.value = 0 ;
     document.getElementById('cmbTarjeta').value = "0";
 }
 
@@ -820,7 +820,6 @@ function LlenarObservaciones()
 //FUNCION PARA MOSTRAR DATOS PREVIOS NEGATIVOS DE PLANTILLA C
 function PreviosNegativos()
 {
-
     if (validartarjeta())
     {
         idexamen = document.frmnuevo.txtidexamen.value;
@@ -2126,6 +2125,11 @@ function SolicitudesPorArea() {
             if (ajax.status == 200)
             {  //mostrar los nuevos registros en esta capa
                 document.getElementById('divBusqueda').innerHTML = ajax.responseText;
+                $(document).ready(function() {
+                   // $('#dataresultados').DataTable();
+                    setDataTables();
+                } );
+               
             }
         }
     }

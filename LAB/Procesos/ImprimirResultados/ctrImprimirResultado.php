@@ -271,7 +271,7 @@ switch ($opcion) {
         $RegistrosAEmpezar = ($_POST['pag'] - 1) * $RegistrosAMostrar;
         $PagAct = $_POST['pag'];
 
-        $consulta = $objdatos->consultarpag($query, $RegistrosAEmpezar, $RegistrosAMostrar);
+        
         $NroRegistros = $objdatos->NumeroDeRegistros($query);
 if ( $NroRegistros==""){
     $NroRegistros=0;
@@ -357,7 +357,7 @@ if ( $NroRegistros==""){
         $PagSig = $PagAct + 1;
 
         $PagUlt = $NroRegistros / $RegistrosAMostrar;
-
+        $consulta = $objdatos->consultarpag($query, $RegistrosAEmpezar, $RegistrosAMostrar);
         //verificamos residuo para ver si llevar� decimales
         $Res = $NroRegistros % $RegistrosAMostrar;
         //si hay residuo usamos funcion floor para que me

@@ -347,8 +347,8 @@ switch ($opcion)
                     $codigoResultado=4;// código resultado positivo
                     $CodAntibiograma=6; // resultado otros
                       $con = new ConexionBD;
-            if($con->conectar()==true) 
-            {
+                if($con->conectar()==true) 
+                {
                    $query = "SELECT lab_examen_metodologia.id AS idmetodologia,ctl_examen_servicio_diagnostico.id AS idcatalogo,
                     mnt_area_examen_establecimiento.id AS idmnt,lab_conf_examen_estab.id AS idconf
                     FROM ctl_examen_servicio_diagnostico 
@@ -391,7 +391,7 @@ switch ($opcion)
                     $idcatbio = $row_exam_metodbio['idcatalogo'];
                     $idmntbio = $row_exam_metodbio['idmnt'];
                    
-            }          //  ECHO   $idcofbio;                                                                                     
+                }          //  ECHO   $idcofbio;                                                                                     
                   
                  //  echo $idcof." - ".$idmnt ." - ". $idcat;
                // echo "TAR=". $tarjeta;

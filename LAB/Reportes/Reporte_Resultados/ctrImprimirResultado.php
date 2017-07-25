@@ -150,7 +150,7 @@ switch ($opcion) {
                 AND ( empty($_POST['IdServ'])) AND ( empty($_POST['IdSubServ'])) AND ( empty($_POST['fecharecep']))) {
             $ban = 1;
         }
-          if (!empty($_POST['fecharecep'])) {
+         if (!empty($_POST['fecharecep'])) {
             $cond1 .= " and t03.fecharecepcion = '" . $_POST['fecharecep'] . "'    ";
             $cond2 .= " and t03.fecharecepcion = '" . $_POST['fecharecep'] . "'    ";
         }
@@ -203,9 +203,7 @@ switch ($opcion) {
                 join ctl_modalidad cmo on (cmo.id=mme.id_modalidad)
                 WHERE  $where_with   mnt_3.id_establecimiento=$lugar
                  order by 2)
-                 
-
-                 SELECT
+                SELECT
                 distinct on (t02.id_historial_clinico)t02.id_historial_clinico,
                 t02.id,
                 t02.id_dato_referencia,

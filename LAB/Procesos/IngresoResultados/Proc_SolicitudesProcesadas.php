@@ -116,8 +116,8 @@ if (isset($_SESSION['Correlativo'])) {
              });
         });</script>
         </head>
-        <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" onload="BuscarExamen(<?php echo $area; ?>)">
-            <?php
+        <body link="#000000" vlink="#000000" alink="#ff0000" text="#000000" class="CobaltPageBODY" bottommargin="0" leftmargin="0" topmargin="0" rightmargin="0" marginwidth="0" marginheight="0" bgcolor="#fffff7" onload="BuscarExamen(<?php echo $area; ?>);document.getElementById('txtexpediente').focus();">
+            <?php                                                                                                                                                                                               //    onload="MostrarBusqueda(); document.getElementById('txtexpediente').focus();"
             if ($nivel == 1) {
                 include_once ('../../../PaginaPrincipal/index_laboratorio2.php');
             }
