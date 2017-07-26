@@ -13,6 +13,7 @@ $objdatos = new clsSolicitudesProcesadas;
 
 switch ($opcion) {
     case 1:
+        
         $ban = 0;
         $IdEstab        = $_POST['IdEstab'];
         $IdServ         = $_POST['IdServ'];
@@ -83,6 +84,13 @@ switch ($opcion) {
              $cond1 .= " t03.fecharecepcion = '" . $_POST['fecharecepcion'] . "' AND";
              $cond2 .= " t03.fecharecepcion = '" . $_POST['fecharecepcion'] . "' AND";
         }
+         else {
+            // echo 'long. '.strlen(utf8_decode($cond1)). ' cond2: '.strlen ($cond2);
+             if (strlen(utf8_decode($cond1))==0 and strlen ($cond2)==0){
+                 $cond1 .= " t03.fecharecepcion  >=date(current_date -   INTERVAL'30 days') AND";
+                 $cond2 .= " t03.fecharecepcion  >=date(current_date -   INTERVAL'30 days') AND";
+             }
+         }
 
           if (!empty($_POST['PNombre'])) {
             $cond1 .= " t07.primer_nombre ILIKE '" . $_POST['PNombre'] . "%' AND";
@@ -318,7 +326,7 @@ switch ($opcion) {
 
                   }
         echo "<div class='table-responsive' style='width:100%;'>
-            <table width='5%' border='1' align='center' class='table table-hover table-bordered table-condensed table-white'>
+            <table width='97%' border='1' align='center' id='dataresultados' data-table-enabled='true' class='table table-hover table-bordered table-condensed table-white'>
                 <thead><tr>
                     <th>Muestra </th>
                     <th>NEC </th>
@@ -388,24 +396,24 @@ switch ($opcion) {
                             "<input name='tipoarea[" . $pos . "]' id='tipoarea[" . $pos . "]' type='hidden' size='60' value='" . $row["administrativa"]. "'/>" .
                             "<input name='f_consulta[" . $pos . "]' id='f_consulta[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["fechasolicitud"]) . "'/>" .
                             "<input name='nummuestra[" . $pos . "]' id='nummuestra[" . $pos . "]' type='hidden' size='60' value='" . htmlentities($row["numeromuestra"]) . "'/>" .
-                        "<td width='18%'>" . htmlentities($row['paciente']) . "</td>
-                        <td width='3%'>" . $row['estandar'] . "</td>
+                        "<td width='16%'>" . htmlentities($row['paciente']) . "</td>
+                        <td width='2%'>" . $row['estandar'] . "</td>
                         <td width='15%'>" . htmlentities($row['nombreexamen']) . "</td>
-                        <td width='9%'>" . htmlentities($row['nombreservicio']) . "</td>    
+                        <td width='10%'>" . htmlentities($row['nombreservicio']) . "</td>    
                         <td width='10%'>" . htmlentities($row['nombresubservicio']) . "</td>
-                        <td width='16%'>" . htmlentities($row['estabext']) . "</td>
-                        <td width='6%'>" . ($row['fechasolicitud']) . "</td>
-                        <td width='3%'>" . ($row['fecharecepcion']) . "</td>
-                        <td width='3%'>" . ($row['prioridad']) . "</td>
+                        <td width='18%'>" . htmlentities($row['estabext']) . "</td>
+                        <td width='7%'>" . ($row['fechasolicitud']) . "</td>
+                        <td width='2%'>" . ($row['fecharecepcion']) . "</td>
+                        <td width='2%'>" . ($row['prioridad']) . "</td>
                     </tr>";
                 $pos = $pos + 1;
             }
             pg_free_result($consulta);
             echo "<input type='hidden' name='oculto' id='text' value='" . $pos . "' />
                 </tbody></table></div>";
-        } else {
+        }/* else {
             echo "<tr><td colspan='11'><span style='color: #575757;'>No se han encontrado resultados...</span></td></tr></tbody></table></div>";
-        }
+        }*/
 
 
         break;

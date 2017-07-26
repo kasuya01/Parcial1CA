@@ -6,7 +6,7 @@ $area=$_SESSION['Idarea'];
 $ROOT_PATH = $_SESSION['ROOT_PATH'];
 $base_url  = $_SESSION['base_url'];
 ?>
-?>
+
 <html>
 <head>
 	<meta http-equiv="Content-type" content="text/html;charset=UTF-8">    

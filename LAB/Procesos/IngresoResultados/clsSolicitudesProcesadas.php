@@ -45,6 +45,22 @@ class clsSolicitudesProcesadas {
       return $resul;
    }
 
+   function consultarpag($query_search,$RegistrosAEmpezar,$RegistrosAMostrar)
+{
+   //creamos el objeto $con a partir de la clase ConexionBD
+   $con = new ConexionBD;
+   //usamos el metodo conectar para realizar la conexion
+    if($con->conectar()==true){
+        $query = $query_search ." LIMIT $RegistrosAMostrar  OFFSET $RegistrosAEmpezar";
+        $result = @pg_query($query);
+	if (!$result)
+	   return false;
+	else
+	   return $result;
+    }
+} 
+
+   
    function CalculoDias($fechanac) {
       $con = new ConexionBD;
       if ($con->conectar() == true) {

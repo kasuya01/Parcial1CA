@@ -277,9 +277,9 @@ switch ($opcion)
                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             </tr>
                             <tr>
-                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                </td>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             </tr>
+                            
                             <tr>
                                 <td colspan='6'>
                                      <button type='button' id='btnGuardar' align='center' class='btn btn-primary' title='Guardar Resultados'  onclick='GuardarResultadosPlantillaC();'><span class='glyphicon glyphicon-floppy-disk'></span>&nbsp;Guardar Resultados</button>
@@ -347,8 +347,8 @@ switch ($opcion)
                     $codigoResultado=4;// código resultado positivo
                     $CodAntibiograma=6; // resultado otros
                       $con = new ConexionBD;
-            if($con->conectar()==true) 
-            {
+                if($con->conectar()==true) 
+                {
                    $query = "SELECT lab_examen_metodologia.id AS idmetodologia,ctl_examen_servicio_diagnostico.id AS idcatalogo,
                     mnt_area_examen_establecimiento.id AS idmnt,lab_conf_examen_estab.id AS idconf
                     FROM ctl_examen_servicio_diagnostico 
@@ -391,7 +391,7 @@ switch ($opcion)
                     $idcatbio = $row_exam_metodbio['idcatalogo'];
                     $idmntbio = $row_exam_metodbio['idmnt'];
                    
-            }          //  ECHO   $idcofbio;                                                                                     
+                }          //  ECHO   $idcofbio;                                                                                     
                   
                  //  echo $idcof." - ".$idmnt ." - ". $idcat;
                // echo "TAR=". $tarjeta;
@@ -739,7 +739,7 @@ switch ($opcion)
 	{
             $codigoResultado=2;
             $ultimo=$objdatos->insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$observacionf,$resultado,$idempleado,$usuario,$codigoResultado,$lugar,$idobservacionf,$fecharealiz,$fecharesultado);
-            echo  $ultimo;
+           // echo  $ultimo;
                 for ($i=0; $i < $numresiembras; $i++)
                               {
                   // echo 'i :' . $i;

@@ -210,151 +210,146 @@ function RecogeValor() {
 
 <body onLoad="RecogeValor();">
 
-        <table align="center" width="100%">
-            <tr>
-                <td>
-                    <div  id="divFrmNuevo" style="display:block" >
-                        <form name="frmnuevo">
-                            <table width="80%" border="0" align="center" class="StormyWeatherFormTABLE" >
-                                <tr class="CobaltButton">
-                                    <td colspan="5" align="center"> <h3>DATOS GENERALES</h3></td>
-                                </tr>
-                                <tr>
-                                    <td width="35%" class="StormyWeatherFieldCaptionTD" colspan="1">Establecimiento solicitante</td>
-                                    <td width="65%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var18'];?></td>
-                                </tr>
-                                <tr>
-                                    <td class="StormyWeatherFieldCaptionTD" colspan="1">Procedencia</td>
-                                    <td class="StormyWeatherDataTD" ><?php echo $_GET['var10'] ?></td>
-                                    <td class="StormyWeatherFieldCaptionTD" colspan="1">Servicio</td>
-                                    <td class="StormyWeatherDataTD" ><?php echo $_GET['var11'] ?></td>
-                                </tr>
-                                <tr>
-                                    <td class="StormyWeatherFieldCaptionTD">NEC</td>
-                                    <td class="StormyWeatherDataTD" ><?php echo $_GET['var1'] ?></td>
-                                    <td class="StormyWeatherFieldCaptionTD">No. Order</td>
-                                    <td class="StormyWeatherDataTD"><?php echo $_GET['var6'];?>
-                                        <input type="hidden" name="txtnec" id="txtnec" disabled="disabled" />
-                                        <input type="hidden" name="txtidsolicitud" id="txtidsolicitud" />
-                                        <input type="hidden" name="txtiddetalle" id="txtiddetalle" value="<?php echo $_GET['var5']?>"/>
-                                        <input type="hidden" name="txtidexamen" id="txtidexamen" />
-                                        <input type="hidden" name="txtidrecepcion" id="txtidrecepcion" />
-                                        <input type="hidden" name="txtarea" id="txtarea" />
-                                        <input type="hidden" name="txtprocedencia" id="txtprocedencia" />
-                                        <input type="hidden" name="txtorigen" id="txtorigen" />	
-                                        <input type="hidden" name="txtEstablecimiento" id="txtEstablecimiento" value="<?php echo $_GET['var13']?>" />
-                                        <input type="hidden" name="txtf_tomamuestra" id="txtf_tomamuestra" value="<?php echo $_GET['var19']?>" />
-                                        <input type="hidden" name="txttipomuestra" id="txttipomuestra" value="<?php echo $_GET['var20']?>" />
-                                        <input type="hidden" name="solicitud_" id="solicitud_" value="<?php echo $_GET['var6'];?>" />
-                                        <input type="hidden" name="idexpediente_" id="idexpediente_"  value="<?php echo $_GET['var1'];?>"/>
-                                        <input type="hidden" name="fecharecepcion" id="fecharecepcion"  value="<?php echo $_GET['fecha_recepcion'];?>"/>
-                                        <input type="hidden" name="idestabext_" id="idestabext_"  value="<?php echo $_GET['var21'];?>"/>
-                                        <input type="hidden" name="txtidareaPA" id="txtidareaPA" value="<?php echo $_GET['idareaPA']?>" />
+    <table align="center" width="100%">
+        <tr>
+            <td>
+                <div  id="divFrmNuevo" style="display:block" >
+                    <form name="frmnuevo">
+                        <table width="80%" border="0" align="center" class="StormyWeatherFormTABLE" >
+                            <tr class="CobaltButton">
+                                <td colspan="5" align="center"> <h3>DATOS GENERALES</h3></td>
+                            </tr>
+                            <tr>
+                                <td width="35%" class="StormyWeatherFieldCaptionTD" colspan="1">Establecimiento solicitante</td>
+                                <td width="65%" class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var18'];?></td>
+                            </tr>
+                            <tr>
+                                <td class="StormyWeatherFieldCaptionTD" colspan="1">Procedencia</td>
+                                <td class="StormyWeatherDataTD" ><?php echo $_GET['var10'] ?></td>
+                                <td class="StormyWeatherFieldCaptionTD" colspan="1">Servicio</td>
+                                <td class="StormyWeatherDataTD" ><?php echo $_GET['var11'] ?></td>
+                            </tr>
+                            <tr>
+                                <td class="StormyWeatherFieldCaptionTD">NEC</td>
+                                <td class="StormyWeatherDataTD" ><?php echo $_GET['var1'] ?></td>
+                                <td class="StormyWeatherFieldCaptionTD">No. Order</td>
+                                <td class="StormyWeatherDataTD"><?php echo $_GET['var6'];?>
+                                    <input type="hidden" name="txtnec" id="txtnec" disabled="disabled" />
+                                    <input type="hidden" name="txtidsolicitud" id="txtidsolicitud" />
+                                    <input type="hidden" name="txtiddetalle" id="txtiddetalle" value="<?php echo $_GET['var5']?>"/>
+                                    <input type="hidden" name="txtidexamen" id="txtidexamen" />
+                                    <input type="hidden" name="txtidrecepcion" id="txtidrecepcion" />
+                                    <input type="hidden" name="txtarea" id="txtarea" />
+                                    <input type="hidden" name="txtprocedencia" id="txtprocedencia" />
+                                    <input type="hidden" name="txtorigen" id="txtorigen" />	
+                                    <input type="hidden" name="txtEstablecimiento" id="txtEstablecimiento" value="<?php echo $_GET['var13']?>" />
+                                    <input type="hidden" name="txtf_tomamuestra" id="txtf_tomamuestra" value="<?php echo $_GET['var19']?>" />
+                                    <input type="hidden" name="txttipomuestra" id="txttipomuestra" value="<?php echo $_GET['var20']?>" />
+                                    <input type="hidden" name="solicitud_" id="solicitud_" value="<?php echo $_GET['var6'];?>" />
+                                    <input type="hidden" name="idexpediente_" id="idexpediente_"  value="<?php echo $_GET['var1'];?>"/>
+                                    <input type="hidden" name="fecharecepcion" id="fecharecepcion"  value="<?php echo $_GET['fecha_recepcion'];?>"/>
+                                    <input type="hidden" name="idestabext_" id="idestabext_"  value="<?php echo $_GET['var21'];?>"/>
+                                    <input type="hidden" name="txtidareaPA" id="txtidareaPA" value="<?php echo $_GET['idareaPA']?>" />
 
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="1" class="StormyWeatherFieldCaptionTD">Paciente</td>
-                                    <td colspan="4" class="StormyWeatherDataTD" ><?php echo $_GET['var7'] ?>
-                                        <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" /></td>
-                                </tr>
-                                <tr>
-                                    <td class="StormyWeatherFieldCaptionTD">Conocido Por</td>
-                                    <td colspan="3" class="StormyWeatherDataTD"><?php echo $ConocidoPor;?>
-                                        <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
-                                    </td>
-                                </tr>
-                                <tr>                                     
-                                    <td class="StormyWeatherFieldCaptionTD">Edad</td>
-                                    <td class="StormyWeatherDataTD" ><?php echo $edad;?></td>
-                                    <td class="StormyWeatherFieldCaptionTD">Sexo</td>
-                                    <td class="StormyWeatherDataTD" ><?php echo $nomsexo;?></td>
-                                </tr>
-                                
-                                <tr>
-                                    <td class="StormyWeatherFieldCaptionTD">Diagnostico</td>
-                                    <td colspan="3" class="StormyWeatherDataTD"><?php echo $Diagnostico;?> </td>
-                                </tr>
-                                <tr>
-                                    <td class="StormyWeatherFieldCaptionTD">Datos Clinicos</td>
-                                    <td colspan="3" class="StormyWeatherDataTD"><?php echo $Especificacion;?>
-                                        <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="StormyWeatherFieldCaptionTD" width="25%">Peso</td>
-                                    <td class="StormyWeatherDataTD" width="25%">
-                                           <?php if (!empty($Peso))
-                                                    echo htmlentities($Peso)." Kg";
-
-                                           ?>
-                                    </td>
-                                    <td class="StormyWeatherFieldCaptionTD" width="18%">Talla</td>
-                                    <td class="StormyWeatherDataTD"><?php 
-                                            if(!empty($Talla))
-                                                echo htmlentities($Talla)." cm";?></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="1" class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
-                                    <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var9'] ?>
-                                       <input type="hidden" name="txtnombrearea" id="txtnombrearea" disabled="disabled">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="1"  class="StormyWeatherFieldCaptionTD">Examen</td>
-                                    <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var2'] ?>
-                                             <input type="hidden" name="txtexamen" id="txtexamen" disabled="disabled" size="60" /></td>
-                                </tr>
-                                <tr>
-                                    <td class="StormyWeatherFieldCaptionTD">Muestra Recibida</td>
-                                    <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var20']." ".$_GET['origenmuestra'] ?></td>
-                                </tr>
-
-                                <tr>
-                                    <td class="StormyWeatherFieldCaptionTD">Fecha de Toma de Muestra</td>
-                                    <td class="StormyWeatherDataTD" colspan="1" width="25%"><?php echo $_GET['var19'] ?>
-                                        <input type="hidden" id="fecha_tmuestra" name="f_tmuestra" value="<?php echo $ftx;?>"/>
-                                        <input type="hidden" id="dateftomamx" name="dateftomamx" value="<?php echo $dateftomamx;?>"/>
-                                        <input type="hidden" id="f_consulta" name="f_consulta" value="<?php echo $f_consulta;?>"/></td>
-                                    </td>
-                                    <td class="StormyWeatherFieldCaptionTD" width="20%">Fecha de Consulta</td> 
-                                        <td class="StormyWeatherDataTD" colspan="1" width="20%"><?php echo $f_consulta; ?></td>
-                                </tr>
-                                <tr>
-                                     <td colspan="1"  class="StormyWeatherFieldCaptionTD">*Validado Por</td>
-                                     <td class="StormyWeatherDataTD" colspan="4">
-                                             <div id="divEncargado">
-                                                     <select id="cmbEmpleados" name="cmbEmpleados" size="1" class="form-control height">
-                                                             <option value="0" >--Seleccione Empleado--</option>
-                                                     </select>
-                                             </div>
-                                     </td>
-                                 </tr> 
-                                 <tr>
-                                     <td class="StormyWeatherFieldCaptionTD" width="35%">Fecha y hora inicio Proceso</td>
-                                     <td class="StormyWeatherDataTD" width="15%" >
-                                         <input type="text" class="date form-control height placeholder" name="txtresultrealiza" id="txtresultrealiza" size="15"  placeholder="aaaa-mm-dd" style="width:100%"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="1" class="StormyWeatherFieldCaptionTD">Paciente</td>
+                                <td colspan="4" class="StormyWeatherDataTD" ><?php echo $_GET['var7'] ?>
+                                    <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" /></td>
+                            </tr>
+                            <tr>
+                                <td class="StormyWeatherFieldCaptionTD">Conocido Por</td>
+                                <td colspan="3" class="StormyWeatherDataTD"><?php echo $ConocidoPor;?>
+                                    <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
+                                </td>
+                            </tr>
+                            <tr>                                     
+                                <td class="StormyWeatherFieldCaptionTD">Edad</td>
+                                <td class="StormyWeatherDataTD" ><?php echo $edad;?></td>
+                                <td class="StormyWeatherFieldCaptionTD">Sexo</td>
+                                <td class="StormyWeatherDataTD" ><?php echo $nomsexo;?></td>
+                            </tr>
+                            <tr>
+                                <td class="StormyWeatherFieldCaptionTD">Diagnostico</td>
+                                <td colspan="3" class="StormyWeatherDataTD"><?php echo $Diagnostico;?> </td>
+                            </tr>
+                            <tr>
+                                <td class="StormyWeatherFieldCaptionTD">Datos Clinicos</td>
+                                <td colspan="3" class="StormyWeatherDataTD"><?php echo $Especificacion;?>
+                                    <input type="hidden" name="txtpaciente" id="txtpaciente" disabled="disabled" size="60" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="StormyWeatherFieldCaptionTD" width="25%">Peso</td>
+                                <td class="StormyWeatherDataTD" width="25%">
+                                  <?php if (!empty($Peso))
+                                           echo htmlentities($Peso)." Kg";
+                                  ?>
+                                </td>
+                                <td class="StormyWeatherFieldCaptionTD" width="18%">Talla</td>
+                                <td class="StormyWeatherDataTD"><?php 
+                                    if(!empty($Talla))
+                                         echo htmlentities($Talla)." cm";?></td>
+                            </tr>
+                            <tr>
+                                <td colspan="1" class="StormyWeatherFieldCaptionTD">&Aacute;rea</td>
+                                <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var9'] ?>
+                                    <input type="hidden" name="txtnombrearea" id="txtnombrearea" disabled="disabled">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="1"  class="StormyWeatherFieldCaptionTD">Examen</td>
+                                <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var2'] ?>
+                                    <input type="hidden" name="txtexamen" id="txtexamen" disabled="disabled" size="60" /></td>
+                            </tr>
+                            <tr>
+                                <td class="StormyWeatherFieldCaptionTD">Muestra Recibida</td>
+                                <td class="StormyWeatherDataTD" colspan="4"><?php echo $_GET['var20']." ".$_GET['origenmuestra'] ?></td>
+                            </tr>
+                            <tr>
+                                <td class="StormyWeatherFieldCaptionTD">Fecha de Toma de Muestra</td>
+                                <td class="StormyWeatherDataTD" colspan="1" width="25%"><?php echo $_GET['var19'] ?>
+                                    <input type="hidden" id="fecha_tmuestra" name="f_tmuestra" value="<?php echo $ftx;?>"/>
+                                    <input type="hidden" id="dateftomamx" name="dateftomamx" value="<?php echo $dateftomamx;?>"/>
+                                    <input type="hidden" id="f_consulta" name="f_consulta" value="<?php echo $f_consulta;?>"/></td>
+                                </td>
+                                <td class="StormyWeatherFieldCaptionTD" width="20%">Fecha de Consulta</td> 
+                                <td class="StormyWeatherDataTD" colspan="1" width="20%"><?php echo $f_consulta; ?></td>
+                            </tr>
+                            <tr>
+                                <td colspan="1"  class="StormyWeatherFieldCaptionTD">*Validado Por</td>
+                                <td class="StormyWeatherDataTD" colspan="4">
+                                    <div id="divEncargado">
+                                        <select id="cmbEmpleados" name="cmbEmpleados" size="1" class="form-control height">
+                                            <option value="0" >--Seleccione Empleado--</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr> 
+                            <tr>
+                                <td class="StormyWeatherFieldCaptionTD" width="35%">Fecha y hora inicio Proceso</td>
+                                <td class="StormyWeatherDataTD" width="15%" >
+                                    <input type="text" class="date form-control height placeholder" name="txtresultrealiza" id="txtresultrealiza" size="15"  placeholder="aaaa-mm-dd" style="width:100%"/>
                                          <!-- <input type="text" class="date" id="txtresultrealiza"  name="txtresultrealiza" size="15">-->
 
               <!-- <input type="text" class="date" id="txtresultrealiza"  name="txtresultrealiza" size="15">--> 
-                                     </td>
-                                     <td class="StormyWeatherFieldCaptionTD" width="15%">Fecha Resultado</td>
-                                     <td class="StormyWeatherDataTD" width="35%">
-                                         <input type="text" class="date form-control height" name="txtresultfin" id="txtresultfin" size="35" style="width:100%"  value="<?php echo date("Y-m-d"); ?>"  />
-                                         <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="35"  value="<?php echo date("Y-m-d"); ?>"  /> 
+                                </td>
+                                <td class="StormyWeatherFieldCaptionTD" width="15%">Fecha Resultado</td>
+                                <td class="StormyWeatherDataTD" width="35%">
+                                    <input type="text" class="date form-control height" name="txtresultfin" id="txtresultfin" size="35" style="width:100%"  value="<?php echo date("Y-m-d"); ?>"  />
+                                    <input type="hidden" name="fecha_reporteaux" id="fecha_reporteaux" size="35"  value="<?php echo date("Y-m-d"); ?>"  /> 
                                         <!-- <input type="text" class="date" name="txtresultfin" id="txtresultfin" size="15"  value="<?php //echo date("Y-m-d"); ?>"/>-->
 
-                                    </td>
-                                </tr>
-
-
-                                <tr>
-                                    <td width="35%" colspan="1" class="StormyWeatherFieldCaptionTD">Resultado</td>
-                                    <td width="65%" class="StormyWeatherDataTD" colspan="4">
-                                        <select id="cmbResultado" name="cmbResultado" size="1" class="form-control height" onChange="LlenarObservaciones();"   >
-                                             <option value="0" >--Seleccione--</option>
-                                             <option value="P">Positivo</option>
-                                             <option value="N">Negativo</option>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="35%" colspan="1" class="StormyWeatherFieldCaptionTD">Resultado</td>
+                                <td width="65%" class="StormyWeatherDataTD" colspan="4">
+                                    <select id="cmbResultado" name="cmbResultado" size="1" class="form-control height" onChange="LlenarObservaciones();"   >
+                                        <option value="0" >--Seleccione--</option>
+                                        <option value="P">Positivo</option>
+                                         <option value="N">Negativo</option>
                                              <option value="O">Otro</option>
                                         </select>
                                     </td>
@@ -393,7 +388,7 @@ function RecogeValor() {
                                                  <tr>
                                                      <td width="35%" class="StormyWeatherFieldCaptionTD">Organismos</td>
                                                      <td width="65%" class="StormyWeatherDataTD">
-                                                         <select id="cmbOrganismo" name="cmbOrganismo" style="width:100%" class="height js-example-basic-single">
+                                                         <select id="cmbOrganismo" name="cmbOrganismo" style="width:100%" class="height js-example-basic-single" >
                                                              <option value="0" >--Seleccione una bacteria--</option>
                                                              <?php
                                                                  //style="width:450px"
@@ -407,10 +402,10 @@ function RecogeValor() {
                                                      </td>
                                                  </tr>
                                                  <tr>
-                                                     <td width="35%" class="StormyWeatherFieldCaptionTD">Tarjeta</td>
-                                                     <td width="65%" class="StormyWeatherDataTD">
-                                                         <select id="cmbTarjeta" name="cmbTarjeta" style="width:100%" class="form-control  height" onChange="MostrarAntibioticos();">
-                                                             <option value="0" >-- Seleccione una tarjeta --</option>
+                                                    <td width="35%" class="StormyWeatherFieldCaptionTD">Tarjeta</td>
+                                                    <td width="65%" class="StormyWeatherDataTD">
+                                                        <select id="cmbTarjeta" name="cmbTarjeta" style="width:100%" class="form-control  height" onChange="MostrarAntibioticos();">
+                                                            <option value="0" >-- Seleccione una tarjeta --</option>
                                                              <?php
                                                                  //$obj=new clsConsultarElementosPlantillaC;
                                                                  $consulta= $obj->LeerTarjeta($lugar);
@@ -419,8 +414,8 @@ function RecogeValor() {
                                                                          }
                                                                          pg_free_result($consulta);
                                                                                  ?>
-                                                         </select>
-                                                     </td>
+                                                        </select>
+                                                    </td>
                                                  </tr>
                                              </table>
                                          </div>
