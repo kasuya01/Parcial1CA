@@ -351,7 +351,7 @@ switch ($opcion) {
       $consultaex = $objdatos->ExamenesPorArea($idarea, $lugar);
       //$dtMed=$obj->LlenarSubServ($proce);
 
-      $rslts = '<select name="cmbEstandar" id="cmbEstandar" size="1" style="width:75%" class="js-example-basic-single" onchange="cargaestablecimientoaref();revisarsiexisten(this.value)">';
+      $rslts = '<select name="cmbEstandar" id="cmbEstandar" size="1" style="width:75%" class="js-example-basic-single" onchange="cargaestablecimientoaref(); ">';
       $rslts .='<option value="0">Seleccione un Examen...</option>';
 
       while ($rows = pg_fetch_array($consultaex)) {

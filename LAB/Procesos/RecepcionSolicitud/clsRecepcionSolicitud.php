@@ -508,7 +508,9 @@ class clsRecepcionSolicitud {
                              end as sct_name_es,
                              t05.conocido_por AS conocidopor,
                              t01.id as idhistorial,
-                             0 as referido, t02.fecha_solicitud
+                             0 as referido, t02.fecha_solicitud,
+                             t02.idusuarioreg as id_usuariosol,
+                             t21.username
                       FROM  sec_historial_clinico                t01
                       INNER JOIN sec_solicitudestudios           t02 ON (t01.id = t02.id_historial_clinico)
                       LEFT  JOIN mnt_empleado                    t03 ON (t03.id = t01.id_empleado)
@@ -527,6 +529,7 @@ class clsRecepcionSolicitud {
                       INNER JOIN mnt_area_mod_estab 		 t16 ON (t16.id = t07.id_area_mod_estab)
                       INNER JOIN ctl_area_atencion		 t17 ON (t17.id = t16.id_area_atencion)
                       INNER JOIN tbl_servicio t20 ON (t20.id = t07.id AND t20.servicio IS NOT NULL)
+                      JOIN fos_user_user t21 on (t21.id =t01.idusuarioreg)
             WHERE t15.idestado = 'D' AND t02.id_establecimiento = $lugar  and (id_tipo_diagnostico=1 or id_tipo_diagnostico is null)  $where";
                  
             }
@@ -614,7 +617,9 @@ class clsRecepcionSolicitud {
                              t14.tiposolicitud,
                              t02.id as idhistorial,
                              1 as referido, 
-                             t01.fecha_solicitud,t01.id as idsolicitudestudio
+                             t01.fecha_solicitud,t01.id as idsolicitudestudio,
+                             t02.idusuarioreg as id_usuariosol,
+                             t21.username
                       FROM  sec_solicitudestudios                t01
                       INNER JOIN mnt_dato_referencia           	 t02 ON (t02.id = t01.id_dato_referencia)
                       LEFT  JOIN mnt_empleado                    t03 ON (t03.id = t02.id_empleado)
@@ -631,6 +636,7 @@ class clsRecepcionSolicitud {
                         INNER JOIN mnt_area_mod_estab 		 t16 ON (t16.id = t07.id_area_mod_estab)
                       INNER JOIN ctl_area_atencion		 t17 ON (t17.id = t16.id_area_atencion)
                       INNER JOIN tbl_servicio t20 ON (t20.id = t07.id AND t20.servicio IS NOT NULL)
+                      JOIN fos_user_user t21 on (t21.id =t01.idusuarioreg)
                       WHERE  t15.idestado = 'D' AND t01.id_establecimiento = $lugar 
                       and (id_tipo_diagnostico=1 or id_tipo_diagnostico is null) $where1";
                 
@@ -1032,12 +1038,18 @@ class clsRecepcionSolicitud {
                              t10.idestandar,
                              t01.id as iddetalle,
                              t03.id as i_idexamen,
-                             t05.id as id_area
+                             t05.id as id_area,
+                             case when t01.nombre_examen_solicitado is not null 
+                                    then t01.nombre_examen_solicitado
+                                    else t03.nombre_examen
+                             end as nombre_examen_solicitado, 
+                             t01.id as iddetallesol,
+                             t01.idexamen as id_area_examen_estab
                       FROM sec_detallesolicitudestudios 		 t01
                       INNER JOIN sec_solicitudestudios                   t02 ON (t02.id = t01.idsolicitudestudio)
-                      INNER JOIN lab_conf_examen_estab 		         t03 ON (t03.id = t01.id_conf_examen_estab)
-                      INNER JOIN mnt_area_examen_establecimiento         t04 ON (t04.id = t03.idexamen)
-                      INNER JOIN ctl_area_servicio_diagnostico 	         t05 ON (t05.id = t04.id_area_servicio_diagnostico)
+                      LEFT JOIN lab_conf_examen_estab 		         t03 ON (t03.id = t01.id_conf_examen_estab)
+                      LEFT JOIN mnt_area_examen_establecimiento         t04 ON (t04.id = t03.idexamen)
+                      LEFT JOIN ctl_area_servicio_diagnostico 	         t05 ON (t05.id = t04.id_area_servicio_diagnostico)
                       LEFT JOIN sec_historial_clinico 		         t06 ON (t06.id = t02.id_historial_clinico)
                       INNER JOIN cit_citas_serviciodeapoyo 		 t07 ON (t02.id = t07.id_solicitudestudios)
                       INNER JOIN ctl_estado_servicio_diagnostico         t08 ON (t08.id = t02.estado AND t08.id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB'))
@@ -1053,6 +1065,21 @@ class clsRecepcionSolicitud {
                              AND t01.estadodetalle = (SELECT id FROM ctl_estado_servicio_diagnostico WHERE idestado = 'D' 
                                 AND id_atencion = (SELECT id FROM ctl_atencion WHERE codigo_busqueda = 'DCOLAB')) $where
                       ORDER BY t05.idarea";
+         //   echo $query;
+            $result = @pg_query($query);
+            if (!$result)
+                return false;
+            else
+                return $result;
+        }
+    }//fin buscardatosolicitud
+    
+    
+    function BuscarPosibleExamenes($id_area_examen_estab) {
+        $con = new ConexionBD;
+       // echo "funcion".$IdSolicitud;
+        if ($con->conectar() == true) {
+       $query = "select * from lab_conf_examen_estab where idexamen = $id_area_examen_estab";
           //  echo $query;
             $result = @pg_query($query);
             if (!$result)
@@ -1060,7 +1087,7 @@ class clsRecepcionSolicitud {
             else
                 return $result;
         }
-    }
+    }//BuscarPosibleExamenes
 
     function BuscarEstabRealiza($id_conf_examen_estab) {
         $con = new ConexionBD;
@@ -1225,6 +1252,18 @@ class clsRecepcionSolicitud {
             else
                 return $result_insert;
     }
+    }//fn insertrecepcionmuestra
+    
+    function actDetalleSolicitud ($idconfexamenestab, $iddetallesolicitud){
+            $con = new ConexionBD;
+        if ($con->conectar() == true) {
+             $query_insert = "update sec_detallesolicitudestudios set id_conf_examen_estab=$idconfexamenestab where id=$iddetallesolicitud;";
+                $result_insert = @pg_query($query_insert);
+              if (!$result_insert)
+                    return false;
+                else
+                    return $result_insert;
+        }
     }//fn insertrecepcionmuestra
 
 }

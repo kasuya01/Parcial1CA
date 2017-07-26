@@ -635,8 +635,8 @@ switch ($opcion) {
       $rslts = "";
       if ($idrechazo != 1) {
          $query = $object->obteneropcionesrechazo($idrechazo);
-         $rslts = '<select name="cmbrechazo_' . $k . '" id="cmbrechazo_' . $k . '" class="form-control height" style="width:100%" onclick="cancelrechazo(this.value, ' . $k . ')">';
-         $rslts = "<select name='cmbrechazo_" . $k . "' id='cmbrechazo_" . $k . "' class='form-control height' style='width:100%' onclick=\"cancelrechazo(this.value, '" . $k . "')\">";
+         $rslts = '<select name="cmbrechazo_' . $k . '" id="cmbrechazo_' . $k . '" class="form-control height" style="width:100%; font-size:12px !important;" onclick="cancelrechazo(this.value, ' . $k . ')">';
+         $rslts = "<select name='cmbrechazo_" . $k . "' id='cmbrechazo_" . $k . "' class='form-control height' style='width:100%; font-size:12px !important;' onclick=\"cancelrechazo(this.value, '" . $k . "')\">";
          $rslts .='<option value="0" selected>--Seleccione una opción--</option>';
          while ($rows = pg_fetch_array($query)) {
             $rslts.= '<option value="' . $rows["id_posible_observacion"] . '" >' . htmlentities($rows["posible_observacion"]) . '</option>';
@@ -658,7 +658,7 @@ switch ($opcion) {
       if ($temporal == 2) {
          if ($idrechazo != 0 && $idrechazo != 'xyz') {
             //  $query = $object->obteneropcionesrechazo();
-            $rslts = "<input type='text' class='date form-control height placeholder'  id='f_newdate_" . $k . "' name='f_newdate_'  placeholder='aaaa-mm-dd' onchange=\"valfechasolicita(this.value, 'f_newdate_" . $k . "')\"  style='width:105px' />";
+            $rslts = "<input type='text' class='date form-control height placeholder'  id='f_newdate_" . $k . "' name='f_newdate_'  placeholder='aaaa-mm-dd' onchange=\"valfechasolicita(this.value, 'f_newdate_" . $k . "')\"  style='width:105px;  font-size:12px;!important' />";
          }
       } else {
           if ($temporal== 3){
@@ -715,7 +715,7 @@ switch ($opcion) {
          $rslts = "";
          if ($idrechazo!=0){
              $query = $object->obteneropcionesrechazo($idrechazo);
-             $rslts = "<select name='cmbrechazosol' id='cmbrechazosol' class='form-control height' style='width:90%' >";
+             $rslts = "<select name='cmbrechazosol' id='cmbrechazosol' class='form-control height' style='width:90%;  font-size:12px;!important' >";
              $rslts .='<option value="0" selected>--Seleccione una opción--</option>';
              while ($rows = pg_fetch_array($query)) {
                 $rslts.= '<option value="' . $rows["id_posible_observacion"] . '" >' . htmlentities($rows["posible_observacion"]) . '</option>';
@@ -723,12 +723,33 @@ switch ($opcion) {
              $rslts .= '</select>';
          }
          else{
-             $rslts = "<select name='cmbrechazosol' id='cmbrechazosol' class='form-control height' style='width:90%' >";
+             $rslts = "<select name='cmbrechazosol' id='cmbrechazosol' class='form-control height' style='width:90%; font-size:12px;!important' >";
              $rslts .='<option value="0" selected>--Seleccione una opción--</option>';
              $rslts .= '</select>';
          }
 
 
          echo $rslts;
+         break;
+         
+      case 15:
+            //Ingresando a lab_recepcionmuestra
+      $jsonresponse['status'] = true;
+
+      $idconfexamenestab = $_POST['idconfexamenestab'];
+      $iddetallesolicitud = $_POST['iddetallesolicitud'];
+
+      $rslts = "";
+      $actDetalleSolicitud = $object->actDetalleSolicitud($idconfexamenestab, $iddetallesolicitud);
+
+     // var_dump($cancelarsol);
+     // exit();
+      if ($actDetalleSolicitud == true) {
+         $jsonresponse['status'] = true;
+      } else
+         $jsonresponse['status'] = FALSE;
+
+
+      echo json_encode($jsonresponse);
          break;
 }

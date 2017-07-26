@@ -978,6 +978,27 @@ function cancelarsolicitud(){
 
 };
 
+function asignarIdConf(idconf, k) {
+    var iddetallesolicitud = $('#iddetalle_'+k).val();
+  alert ('llego aki'+iddetallesolicitud+' k:'+k);
+ //console.log('aca va al otro'+'cmbrechazoest:'+ cmbrechazoest+ ' cmbrechazosol:'+ cmbrechazosol+' fechanewcitasol:'+ fechanewcitasol+ ' observacionrechazo:'+ observacionrechazo+' idsolicitud:'+idsolicitud+ ' fechacita:'+fechacita+' fecharechazo:'+fecharechazo)
+      jQuery.ajax({
+          url: 'ctrRecepcionSolicitud.php',
+          async: true,
+          dataType: 'json',
+          type: 'POST',
+          data: { opcion: 15 , idconfexamenestab: idconf, iddetallesolicitud: iddetallesolicitud },
+        success: function(object) {
+            if(object.status) {
+                  console.log ('Detalle de solicitud con examen asignado');
+            } else {
+                alert('Error al agregar Examen asociado al detalle de la Solicitud')
+            }
+        }
+    });
+
+};
+
  //fn pg
  function updatealldates(){
     $( "input[name^='f_tomamuestra_']" ).val( $('#fgentomamxgen').val() );

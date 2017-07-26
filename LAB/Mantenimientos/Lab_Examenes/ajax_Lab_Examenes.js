@@ -527,11 +527,13 @@ if (ajax.readyState==4) {
 
 function cargaestablecimientoaref(valor)
 {
+    idexa=$('#cmbEstandar').val();
   if ($('#cmbArea').val()!=14){
       $( "#estabreferido" ).hide();
+       revisarsiexisten(idexa);
       return false;
   }
-  idexa=$('#cmbEstandar').val();
+  
   //alert ($('#cmbArea').val())
       var opcion=10;
            //instanciamos el objetoAjax
@@ -566,6 +568,7 @@ function cargaestablecimientoaref(valor)
                                dropdownAutoWidth: true
                             });
                         }
+                        revisarsiexisten(idexa);
                     }
                 }
 
