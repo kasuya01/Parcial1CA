@@ -174,19 +174,19 @@ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$obs
    else if($resultado=='N')
        $NomResultado='Negativo';
    else if($resultado=='O')
-       $NomResultado='---';
+       $NomResultado='OTROS';
    //echo $resultado;
     if($con->conectar()==true) 
     {
         $queryexiste= "select id from lab_resultados where idsolicitudestudio=$idsolicitud AND iddetallesolicitud=$iddetalle";
         $resultexiste = pg_query($queryexiste);
         if( $rowexiste = pg_fetch_array($resultexiste)){
-            $idultimo = $rowexiste[0];
+                $idultimo = $rowexiste[0];
                 return $idultimo;
         }else{
             
             if($idobservacion<>0){
-               $query = "INSERT INTO lab_resultados
+                $query = "INSERT INTO lab_resultados
                          (idsolicitudestudio,iddetallesolicitud,idexamen,idrecepcionmuestra,     
                           observacion,resultado,idempleado,idusuarioreg,fechahorareg,idestablecimiento,id_observacion,fecha_resultado) 
                           VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,
@@ -210,9 +210,12 @@ function insertar_encabezado($idsolicitud,$iddetalle,$idexamen,$idrecepcion,$obs
                 $row_exam_metod = pg_fetch_array($result1);
                 $id_exam_metod = $row_exam_metod[0];
                $querytab = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio,id_codigoresultado,resultado,observacion,fecha_realizacion,fecha_resultado,idusuarioreg,fechahorareg, idusuariomod, fechahoramod,id_empleado, id_posible_resultado, 
-                         marca, lectura)VALUES($id_exam_metod, $iddetalle, $codigoResultado,'$NomResultado',NULL,'$fecharealiz','$fecharesultado',$usuario, date_trunc('seconds',NOW()),NULL,NULL,$responsable,NULL,NULL,NULL)";
-                $resulttab = pg_query($querytab);
-                if($resulttab) {
+                         marca, lectura)
+                         VALUES($id_exam_metod, $iddetalle, $codigoResultado,'$NomResultado',NULL,'$fecharealiz','$fecharesultado',$usuario, date_trunc('seconds',NOW()),NULL,NULL,$responsable,NULL,NULL,NULL)";
+           //  exit(); 
+             $resulttab = pg_query($querytab);
+             $rowresulmet = pg_fetch_array($resulttab);
+                if($rowresulmet) {
                     return $idultimo;
                 }else{
                      return false;

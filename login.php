@@ -13,6 +13,13 @@ include_once 'public/js.php';?>
    </style>
 <!--   <link rel="stylesheet" type="text/css" href="./Themes/Mailbox/Style.css">
    <link rel="stylesheet" type="text/css" href="./public/css/corelayout.css">-->
+<meta http-equiv="Expires" content="0">
+ 
+<meta http-equiv="Last-Modified" content="0">
+ 
+<meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+ 
+<meta http-equiv="Pragma" content="no-cache">  
    <link rel="shortcut icon" href="/Laboratorio/Imagenes/favicon.ico" />
 </head>
 <body>
