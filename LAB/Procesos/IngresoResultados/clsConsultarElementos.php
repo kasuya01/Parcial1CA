@@ -163,17 +163,19 @@ else
                       observacion,idempleado,idusuarioreg,fechahorareg,idestablecimiento,fecha_resultado)
                       VALUES($idsolicitud,$iddetalle,$idexamen,$idrecepcion,'$observacion',$responsable,$usuario,date_trunc('seconds',NOW()),$lugar,'$fecharesultado')
                       RETURNING id";
-           //$query;
+           //ejecuta query;
             $result = pg_query($query);
-
-            if ($row = pg_fetch_array($result)) {
-
-               $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen AND activo = true";
+            $row = pg_fetch_array($result);
+            $cantidad = pg_num_rows($result);
+            $id_resultado = $row['id'];
+            
+           
+            if ($cantidad > 0) {
+                $query = "SELECT id FROM lab_examen_metodologia WHERE id_conf_exa_estab = $idexamen AND activo = true";
                 $result = pg_query($query);
 
-                if($result && pg_num_rows($result) == 1) {
+                if(pg_num_rows($result) == 1) {
                     $row_exam_metod = pg_fetch_array($result);
-
                     $id_exam_metod = $row_exam_metod[0];
 
                     $query = "INSERT INTO lab_resultado_metodologia(id_examen_metodologia, id_detallesolicitudestudio, id_codigoresultado, idusuarioreg, fechahorareg,fecha_realizacion,fecha_resultado,id_empleado)
@@ -182,8 +184,7 @@ else
                     $result = pg_query($query);
 
                     if($result) {
-                        $idultimo = $row[0];
-                        return $idultimo;
+                        return $id_resultado;
                     } else {
                         return false;
                     }
